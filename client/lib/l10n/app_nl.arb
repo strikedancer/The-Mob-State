@@ -2407,6 +2407,153 @@
   "nightclubTheftTypeCustomer": "Klantdiefstal",
   "nightclubTheftTypeEmployee": "Medewerker-heist",
   "nightclubTheftTypeRival": "Rivaal-sabotage",
+  "nightclubErrorLoading": "Fout bij laden nightclub: {error}",
+  "nightclubServiceErrorStats": "Kon nightclub-statistieken niet laden",
+  "nightclubServiceErrorLeaderboard": "Kon leaderboard niet laden",
+  "nightclubServiceErrorSeason": "Kon seizoensranking niet laden",
+  "nightclubErrorWithDetail": "Fout: {detail}",
+  "nightclubResidentDjContractFailed": "Resident DJ-contract mislukt",
+  "nightclubScheduleEventFailed": "Event plannen mislukt",
+  "nightclubMarketingUpgradeFailed": "Marketing-upgrade mislukt",
+  "nightclubUpgradeFailed": "Upgrade mislukt",
+  "nightclubIncidentResponseFailed": "Incidentrespons mislukt",
+  "nightclubRivalActionFailed": "Rivaalactie mislukt",
+  "nightclubSupplierContractFailed": "Suppliercontract mislukt",
+  "nightclubPromoterFailed": "Promoter mislukt",
+  "nightclubHeatCooldownFailed": "Heat-cooldown mislukt",
+  "nightclubSmugglingFailed": "Smokkelroute mislukt",
+  "nightclubCounterIntelFailed": "Counter-intel mislukt",
+  "nightclubHospitalityStockFailed": "Horeca-voorraad mislukt",
+  "nightclubHospitalityPricingFailed": "Horeca-prijzen mislukt",
+  "nightclubCurrentVisitorsPct": "Huidige bezoekers: {pct}%",
+  "nightclubCommandDeckTitle": "Nightclub Command Deck",
+  "nightclubOpsDeckRevenueToday": "Omzet vandaag",
+  "nightclubStockValueLabel": "Stockwaarde",
+  "nightclubCrewOccupancy": "Crew bezetting",
+  "nightclubOperationalRisk": "Operationeel risico",
+  "nightclubIncidents24h": "{count} incidenten (24u)",
+  "nightclubActiveCrewShifts": "Actieve crew-shifts",
+  "nightclubRecentCrewHistory": "Recente crew-historie",
+  "nightclubBadgeVip": "VIP",
+  "nightclubBadgeStandard": "STANDAARD",
+  "nightclubActiveDj": "Actieve DJ",
+  "nightclubActiveDjNone": "Actieve DJ: geen",
+  "nightclubUntilTime": "tot {time}",
+  "nightclubActiveSecurity": "Actieve beveiliging",
+  "nightclubActiveSecurityNone": "Actieve beveiliging: geen",
+  "nightclubNoDjsLoaded": "Geen DJ's beschikbaar geladen. Ververs het scherm.",
+  "nightclubNoSecurityLoaded": "Geen beveiliging beschikbaar geladen. Ververs het scherm.",
+  "nightclubCrowdBoost": "Crowd boost",
+  "nightclubCostPerHour": "Kosten",
+  "nightclubReputationLabel": "Reputatie",
+  "nightclubSpecialtyLabel": "Specialiteit",
+  "nightclubTheftReduction": "Diefstalreductie",
+  "nightclubShiftCost": "Shift kosten",
+  "nightclubSelectedStock": "Geselecteerd",
+  "nightclubAvailableGrams": "Beschikbaar",
+  "nightclubMaxChip": "MAX",
+  "nightclubStoredInNightclub": "Opgeslagen in nightclub",
+  "nightclubCurrentStockGrams": "Huidige voorraad: {grams}g",
+  "nightclubNoStoredDrugs": "Nog geen opgeslagen drugs.",
+  "nightclubStockZeroSoldOut": "Voorraad is momenteel 0g (alles is verkocht).",
+  "nightclubQualityWithValue": "Kwaliteit: {value}",
+  "nightclubGramsStock": "{grams}g voorraad",
+  "nightclubOperationsLabTitle": "Operations Lab (11 systemen)",
+  "nightclubSectionResidentDjContract": "1) Resident DJ-contract",
+  "nightclubContractDiscount": "Contract korting",
+  "nightclubContractDuration": "Contract duur",
+  "nightclubContractDays": "{count, plural, one{{count} dag} other{{count} dagen}}",
+  "nightclubStartResidentContract": "Start resident contract",
+  "nightclubSectionEventCalendar": "2) Dynamic event kalender",
+  "nightclubRecommendedToday": "Aanbevolen vandaag",
+  "nightclubEventTemplate": "Event template",
+  "nightclubScheduleEventFiveMin": "Plan event (+5 min)",
+  "nightclubUpcomingEvents": "Komende events",
+  "nightclubSectionUpgradeTree": "3) Upgrade tree",
+  "nightclubUpgradeSoundRig": "Sound rig",
+  "nightclubUpgradeVipLounge": "VIP lounge",
+  "nightclubUpgradeSurveillance": "Surveillance",
+  "nightclubUpgradeWithCost": "{name} ({cost})",
+  "nightclubChooseUpgrade": "Kies upgrade",
+  "nightclubUpgradeAlreadyMaxMessage": "Deze upgrade zit al op max level.",
+  "nightclubUpgradeAlreadyMaxed": "Upgrade al maximaal",
+  "nightclubUpgradeNow": "Upgrade nu",
+  "nightclubMarketingInvestment": "Marketing investering",
+  "nightclubInvestMarketing": "Investeer in marketing",
+  "nightclubSectionPoliceHeat": "4) Police heat & incidenten",
+  "nightclubHeatLabel": "Heat",
+  "nightclubRaidRisk": "Raid risico",
+  "nightclubCooldownLabel": "Cooldown",
+  "nightclubStartHeatCooldown": "Start heat cooldown",
+  "nightclubBribe": "Omkopen",
+  "nightclubLockdown": "Lockdown",
+  "nightclubCounterIntelShort": "Counter-intel",
+  "nightclubSectionStaffMorale": "5) Staff fatigue & morale",
+  "nightclubMorale": "Morale",
+  "nightclubFatigue": "Fatigue",
+  "nightclubStaffing": "Bezetting",
+  "nightclubSectionSupplierPromoter": "6) Supplier & promoter",
+  "nightclubSupplierContract": "Supplier contract",
+  "nightclubActivateSupplier": "Activeer supplier",
+  "nightclubPromoterProfile": "Promoter profiel",
+  "nightclubHirePromoter": "Huur promoter",
+  "nightclubSectionVipClientele": "7) VIP clientele & staff traits",
+  "nightclubVipShare": "VIP share",
+  "nightclubSpendMultiplier": "Spend x",
+  "nightclubTier": "Tier",
+  "nightclubSectionSmugglingRoutes": "8) Smokkelroutes",
+  "nightclubReady": "Klaar",
+  "nightclubRoute": "Route",
+  "nightclubStartRoute": "Start route",
+  "nightclubLastRoute": "Laatste route",
+  "nightclubRouteLockUntil": "Route-lock actief tot {date}",
+  "nightclubSectionBarKitchen": "9) Bar & Kitchen management",
+  "nightclubServiceLevel": "Service level",
+  "nightclubStockStatus": "Stock status",
+  "nightclubSpoilageRisk": "Bederfrisico",
+  "nightclubDrinksFoodStock": "Drank/Food voorraad",
+  "nightclubBuyStock": "Voorraad inkopen",
+  "nightclubMenuPricingMode": "Menu pricing mode",
+  "nightclubApplyPricing": "Pricing toepassen",
+  "nightclubSectionRivals": "10) Rival clubs + counter-intel",
+  "nightclubSearchPlayerName": "Zoek spelernaam",
+  "nightclubTargetName": "Doelwit (naam)",
+  "nightclubRivalCrowdLine": "{name} • {country} • crowd {pct}%",
+  "nightclubSabotage": "Sabotage",
+  "nightclubPromoWar": "Promo war",
+  "nightclubCounterIntelSweep": "Counter-intel sweep",
+  "nightclubMitigation": "Mitigatie",
+  "nightclubSectionTimeline": "11) Operations timeline",
+  "nightclubNoTimelineEvents": "Geen timeline events.",
+  "nightclubOperationsAlerts": "Operations alerts",
+  "nightclubNoCriticalAlerts": "Geen kritieke alerts.",
+  "nightclubQuickAction": "Quick action",
+  "nightclubMgmtCrewTitle": "Crew & diensten",
+  "nightclubMgmtCrewSubtitle": "Bezetting, prestaties en shift-historie.",
+  "nightclubMgmtDrugsTitle": "Drugsopslag",
+  "nightclubMgmtDrugsSubtitle": "Voorraad in grammen beheren en verplaatsen.",
+  "nightclubMgmtDjTitle": "DJ Command",
+  "nightclubMgmtDjSubtitle": "Kies DJ, shiftduur en live crowd-boost.",
+  "nightclubMgmtSecurityTitle": "Security Unit",
+  "nightclubMgmtSecuritySubtitle": "Diefstalreductie, kosten en actieve beveiliging.",
+  "nightclubMgmtOpsLabTitle": "Ops Lab",
+  "nightclubMgmtOpsLabSubtitleAlert": "Live alerts: {alerts} | Smuggling: {smuggling}",
+  "nightclubMgmtOpsLabSubtitleDefault": "11 systemen voor events, upgrades, routes en rivalen.",
+  "nightclubManagementPanelTitle": "Nachtclub Beheer",
+  "nightclubChooseZoneHint": "Kies een managementzone en beheer alles zonder losse inner-scroll.",
+  "nightclubChipCrew": "Crew",
+  "nightclubChipStorage": "Opslag",
+  "nightclubChipDjShift": "DJ shift",
+  "nightclubChipSecurity": "Security",
+  "nightclubChipOpsAlerts": "Ops alerts",
+  "nightclubNone": "Geen",
+  "nightclubIntelligenceCardTitle": "Nightclub Intelligence",
+  "nightclubSeasonStatus": "Seizoen status",
+  "nightclubSeasonCountdown": "{days}d {hours}u {minutes}m",
+  "nightclubShiftHours": "{hours} u",
+  "nightclubTimeMinutes": "{minutes} min",
+  "nightclubTimeHoursOnly": "{hours} uur",
+  "nightclubTimeHoursMinutes": "{hours}u {minutes}m",
   "theftCooldownRedeemTitle": "Stelen-cooldown overslaan?",
   "theftCooldownRedeemMessage": "Weet je zeker dat je {cost} credits wilt uitgeven om de voertuigdiefstal-cooldown nu te beëindigen? Je saldo: {balance}.",
   "@theftCooldownRedeemMessage": {
@@ -5979,6 +6126,153 @@
   "@cryptoClientErrorPrefix": {
     "placeholders": {
       "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubErrorWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubCurrentVisitorsPct": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubIncidents24h": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubUntilTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubCurrentStockGrams": {
+    "placeholders": {
+      "grams": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubQualityWithValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubGramsStock": {
+    "placeholders": {
+      "grams": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubContractDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@nightclubUpgradeWithCost": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubRouteLockUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubRivalCrowdLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubMgmtOpsLabSubtitleAlert": {
+    "placeholders": {
+      "alerts": {
+        "type": "String"
+      },
+      "smuggling": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubSeasonCountdown": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubShiftHours": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubTimeMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubTimeHoursOnly": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "@nightclubTimeHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
         "type": "String"
       }
     }

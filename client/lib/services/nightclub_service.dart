@@ -35,7 +35,7 @@ class NightclubService {
       if (response.statusCode == 200) {
         return json.decode(response.body) as Map<String, dynamic>;
       }
-      return {'success': false, 'message': 'Kon stats niet laden'};
+      return {'success': false, 'message': 'Could not load nightclub stats'};
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
     }
@@ -382,7 +382,7 @@ class NightclubService {
       if (response.statusCode == 200) {
         return json.decode(response.body) as Map<String, dynamic>;
       }
-      return {'success': false, 'message': 'Kon leaderboard niet laden'};
+      return {'success': false, 'message': 'Could not load leaderboard'};
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
     }
@@ -394,7 +394,7 @@ class NightclubService {
       if (response.statusCode == 200) {
         return json.decode(response.body) as Map<String, dynamic>;
       }
-      return {'success': false, 'message': 'Kon season ranking niet laden'};
+      return {'success': false, 'message': 'Could not load season ranking'};
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
     }

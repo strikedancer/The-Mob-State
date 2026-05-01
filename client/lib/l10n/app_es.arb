@@ -5982,5 +5982,299 @@
         "type": "String"
       }
     }
+  },
+  "nightclubErrorLoading": "Error al cargar discoteca: {error}",
+  "@nightclubErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubServiceErrorStats": "No se pudieron cargar las estadísticas del Nightclub",
+  "nightclubServiceErrorLeaderboard": "No se pudo cargar la tabla de clasificación",
+  "nightclubServiceErrorSeason": "No se pudo cargar la clasificación de la temporada",
+  "nightclubErrorWithDetail": "Error: {detail}",
+  "@nightclubErrorWithDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubResidentDjContractFailed": "Contrato de DJ residente fallido",
+  "nightclubScheduleEventFailed": "No se pudo programar el evento",
+  "nightclubMarketingUpgradeFailed": "Error en la actualización de marketing",
+  "nightclubUpgradeFailed": "La actualización falló",
+  "nightclubIncidentResponseFailed": "La respuesta al incidente falló",
+  "nightclubRivalActionFailed": "La acción rival falló",
+  "nightclubSupplierContractFailed": "Contrato de proveedor fallido",
+  "nightclubPromoterFailed": "Promotora fallida",
+  "nightclubHeatCooldownFailed": "Falló el enfriamiento del calor",
+  "nightclubSmugglingFailed": "El contrabando fracasó",
+  "nightclubCounterIntelFailed": "La contrainteligencia falló",
+  "nightclubHospitalityStockFailed": "El stock de hostelería fracasó",
+  "nightclubHospitalityPricingFailed": "El precio de la hostelería falló",
+  "nightclubCurrentVisitorsPct": "Visitantes actuales: {pct}%",
+  "@nightclubCurrentVisitorsPct": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubCommandDeckTitle": "Cubierta de mando del Nightclub",
+  "nightclubOpsDeckRevenueToday": "Ingresos hoy",
+  "nightclubStockValueLabel": "Valor de las acciones",
+  "nightclubCrewOccupancy": "Ocupación de la Crew",
+  "nightclubOperationalRisk": "Riesgo operacional",
+  "nightclubIncidents24h": "{count} incidencias (24h)",
+  "@nightclubIncidents24h": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubActiveCrewShifts": "Turnos de Crew activos",
+  "nightclubRecentCrewHistory": "Historia reciente de la Crew",
+  "nightclubBadgeVip": "personaje",
+  "nightclubBadgeStandard": "ESTÁNDAR",
+  "nightclubActiveDj": "DJ activa",
+  "nightclubActiveDjNone": "DJ activa: ninguna",
+  "nightclubUntilTime": "hasta {time}",
+  "@nightclubUntilTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubActiveSecurity": "Seguridad activa",
+  "nightclubActiveSecurityNone": "Seguridad activa: ninguna",
+  "nightclubNoDjsLoaded": "No hay DJ cargados. Actualiza la pantalla.",
+  "nightclubNoSecurityLoaded": "No hay seguridad cargada. Actualiza la pantalla.",
+  "nightclubCrowdBoost": "aumento de multitud",
+  "nightclubCostPerHour": "Costo",
+  "nightclubReputationLabel": "Reputación",
+  "nightclubSpecialtyLabel": "Especialidad",
+  "nightclubTheftReduction": "Reducción de robo",
+  "nightclubShiftCost": "Costo de turno",
+  "nightclubSelectedStock": "Seleccionada",
+  "nightclubAvailableGrams": "Disponible",
+  "nightclubMaxChip": "MÁXIMO",
+  "nightclubStoredInNightclub": "Guardado en discoteca",
+  "nightclubCurrentStockGrams": "Existencias actuales: {grams}g",
+  "@nightclubCurrentStockGrams": {
+    "placeholders": {
+      "grams": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubNoStoredDrugs": "Aún no hay medicamentos almacenados.",
+  "nightclubStockZeroSoldOut": "El stock actual es de 0g (se ha vendido todo).",
+  "nightclubQualityWithValue": "Calidad: {value}",
+  "@nightclubQualityWithValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubGramsStock": "{grams}g de caldo",
+  "@nightclubGramsStock": {
+    "placeholders": {
+      "grams": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubOperationsLabTitle": "Laboratorio de Operaciones (11 sistemas)",
+  "nightclubSectionResidentDjContract": "1) Contrato de DJ residente",
+  "nightclubContractDiscount": "Descuento de contrato",
+  "nightclubContractDuration": "Duración del contrato",
+  "nightclubContractDays": "{count, plural, one{{count} day} other{{count} days}}",
+  "@nightclubContractDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nightclubStartResidentContract": "Iniciar contrato de residente",
+  "nightclubSectionEventCalendar": "2) Calendario de eventos dinámico",
+  "nightclubRecommendedToday": "Recomendada hoy",
+  "nightclubEventTemplate": "Plantilla de evento",
+  "nightclubScheduleEventFiveMin": "Agendar evento (+5 min)",
+  "nightclubUpcomingEvents": "Próximos eventos",
+  "nightclubSectionUpgradeTree": "3) Árbol de actualización",
+  "nightclubUpgradeSoundRig": "equipo de sonido",
+  "nightclubUpgradeVipLounge": "salón vip",
+  "nightclubUpgradeSurveillance": "Vigilancia",
+  "nightclubUpgradeWithCost": "{name} ({cost})",
+  "@nightclubUpgradeWithCost": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubChooseUpgrade": "Elija actualizar",
+  "nightclubUpgradeAlreadyMaxMessage": "Esta actualización ya es de nivel máximo.",
+  "nightclubUpgradeAlreadyMaxed": "Actualización ya al máximo",
+  "nightclubUpgradeNow": "Actualiza ahora",
+  "nightclubMarketingInvestment": "Inversión en marketing",
+  "nightclubInvestMarketing": "Invierte en marketing",
+  "nightclubSectionPoliceHeat": "4) Calor policial e incidentes",
+  "nightclubHeatLabel": "Calor",
+  "nightclubRaidRisk": "Riesgo de incursión",
+  "nightclubCooldownLabel": "Enfriarse",
+  "nightclubStartHeatCooldown": "Iniciar enfriamiento de calor",
+  "nightclubBribe": "Soborno",
+  "nightclubLockdown": "Aislamiento",
+  "nightclubCounterIntelShort": "Contrainteligencia",
+  "nightclubSectionStaffMorale": "5) Fatiga y moral del personal",
+  "nightclubMorale": "Moral",
+  "nightclubFatigue": "Fatiga",
+  "nightclubStaffing": "Dotación de personal",
+  "nightclubSectionSupplierPromoter": "6) Proveedor y promotora",
+  "nightclubSupplierContract": "Contrato de proveedor",
+  "nightclubActivateSupplier": "Activar proveedor",
+  "nightclubPromoterProfile": "Perfil del promotor",
+  "nightclubHirePromoter": "Contratar promotora",
+  "nightclubSectionVipClientele": "7) Clientela VIP y características del personal.",
+  "nightclubVipShare": "compartir vip",
+  "nightclubSpendMultiplier": "Gastar x",
+  "nightclubTier": "Nivel",
+  "nightclubSectionSmugglingRoutes": "8) Rutas de contrabando",
+  "nightclubReady": "Listo",
+  "nightclubRoute": "Ruta",
+  "nightclubStartRoute": "Iniciar ruta",
+  "nightclubLastRoute": "Última ruta",
+  "nightclubRouteLockUntil": "Bloqueo de ruta activo hasta {date}",
+  "@nightclubRouteLockUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubSectionBarKitchen": "9) Gestión de bar y cocina",
+  "nightclubServiceLevel": "Nivel de servicio",
+  "nightclubStockStatus": "Estado del stock",
+  "nightclubSpoilageRisk": "Riesgo de deterioro",
+  "nightclubDrinksFoodStock": "Bebidas/Caldo de comida",
+  "nightclubBuyStock": "comprar acciones",
+  "nightclubMenuPricingMode": "Modo de precios de menú",
+  "nightclubApplyPricing": "Aplicar precios",
+  "nightclubSectionRivals": "10) Clubes rivales + contrainteligencia",
+  "nightclubSearchPlayerName": "Buscar nombre del jugador",
+  "nightclubTargetName": "Objetivo (nombre)",
+  "nightclubRivalCrowdLine": "{name} • {country} • multitud {pct}%",
+  "@nightclubRivalCrowdLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubSabotage": "Sabotaje",
+  "nightclubPromoWar": "Guerra promocional",
+  "nightclubCounterIntelSweep": "Barrido de contrainteligencia",
+  "nightclubMitigation": "Mitigación",
+  "nightclubSectionTimeline": "11) Cronograma de operaciones",
+  "nightclubNoTimelineEvents": "Sin eventos en la línea de tiempo.",
+  "nightclubOperationsAlerts": "Alertas de operaciones",
+  "nightclubNoCriticalAlerts": "Sin alertas críticas.",
+  "nightclubQuickAction": "acción rápida",
+  "nightclubMgmtCrewTitle": "Crew y turnos",
+  "nightclubMgmtCrewSubtitle": "Dotación de personal, desempeño y historial de turnos.",
+  "nightclubMgmtDrugsTitle": "Almacenamiento de medicamentos",
+  "nightclubMgmtDrugsSubtitle": "Administrar y transferir inventario en gramos.",
+  "nightclubMgmtDjTitle": "comando de DJ",
+  "nightclubMgmtDjSubtitle": "Elija DJ, duración del turno y aumento de público en vivo.",
+  "nightclubMgmtSecurityTitle": "unidad de seguridad",
+  "nightclubMgmtSecuritySubtitle": "Reducción de robos, costes y seguridad activa.",
+  "nightclubMgmtOpsLabTitle": "Laboratorio de operaciones",
+  "nightclubMgmtOpsLabSubtitleAlert": "Alertas en vivo: {alerts} | Contrabando: {smuggling}",
+  "@nightclubMgmtOpsLabSubtitleAlert": {
+    "placeholders": {
+      "alerts": {
+        "type": "String"
+      },
+      "smuggling": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubMgmtOpsLabSubtitleDefault": "11 sistemas para eventos, mejoras, rutas y rivales.",
+  "nightclubManagementPanelTitle": "Gestión de discotecas",
+  "nightclubChooseZoneHint": "Elija una zona de gestión y controle todo sin desplazamiento interno anidado.",
+  "nightclubChipCrew": "Multitud",
+  "nightclubChipStorage": "Almacenamiento",
+  "nightclubChipDjShift": "turno de DJ",
+  "nightclubChipSecurity": "Seguridad",
+  "nightclubChipOpsAlerts": "Alertas de operaciones",
+  "nightclubNone": "Ninguna",
+  "nightclubIntelligenceCardTitle": "Inteligencia de discotecas",
+  "nightclubSeasonStatus": "Estado de la temporada",
+  "nightclubSeasonCountdown": "{days}d {hours}h {minutes}m",
+  "@nightclubSeasonCountdown": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubShiftHours": "{hours}h",
+  "@nightclubShiftHours": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubTimeMinutes": "{minutes} minutos",
+  "@nightclubTimeMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubTimeHoursOnly": "{hours}h",
+  "@nightclubTimeHoursOnly": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubTimeHoursMinutes": "{hours}h {minutes}m",
+  "@nightclubTimeHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -93,8 +93,40 @@ class _NightclubScreenState extends State<NightclubScreen> {
     return options;
   }
 
-  String _l(String nl, String en) {
-    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
+  String _apiOptionLabel(Map<String, dynamic> map) {
+    final code = Localizations.localeOf(context).languageCode;
+    if (code == 'nl') {
+      return (map['labelNl'] ?? map['nl'] ?? map['key'] ?? '').toString();
+    }
+    return (map['labelEn'] ?? map['en'] ?? map['key'] ?? '').toString();
+  }
+
+  String _pickLocaleField(
+    Map<String, dynamic> map,
+    String nlKey,
+    String enKey, [
+    String fallback = '-',
+  ]) {
+    final code = Localizations.localeOf(context).languageCode;
+    final v = code == 'nl' ? map[nlKey] : map[enKey];
+    return v?.toString() ?? fallback;
+  }
+
+  String _localizeNightclubApiMessage(String raw) {
+    final t = _t;
+    if (raw.startsWith('Error:')) {
+      return t.nightclubErrorWithDetail(raw.substring(6).trimLeft());
+    }
+    switch (raw) {
+      case 'Could not load nightclub stats':
+        return t.nightclubServiceErrorStats;
+      case 'Could not load leaderboard':
+        return t.nightclubServiceErrorLeaderboard;
+      case 'Could not load season ranking':
+        return t.nightclubServiceErrorSeason;
+      default:
+        return raw;
+    }
   }
 
   String _formatRemainingMinutesLabel(int minutesRaw) {
@@ -103,15 +135,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final remainingMinutes = minutes % 60;
 
     if (hours <= 0) {
-      return _l('$minutes min', '$minutes min');
+      return _t.nightclubTimeMinutes('$minutes');
     }
     if (remainingMinutes <= 0) {
-      return _l('$hours uur', '${hours}h');
+      return _t.nightclubTimeHoursOnly('$hours');
     }
-    return _l(
-      '${hours}u ${remainingMinutes}m',
-      '${hours}h ${remainingMinutes}m',
-    );
+    return _t.nightclubTimeHoursMinutes('$hours', '$remainingMinutes');
   }
 
   bool _isVipVariant(dynamic variantRaw) {
@@ -121,8 +150,8 @@ class _NightclubScreenState extends State<NightclubScreen> {
 
   String _vipStatusLabel(dynamic variantRaw) {
     return _isVipVariant(variantRaw)
-        ? _l('VIP', 'VIP')
-        : _l('STANDAARD', 'STANDARD');
+        ? _t.nightclubBadgeVip
+        : _t.nightclubBadgeStandard;
   }
 
   String _prostitutePortraitAsset(dynamic variantRaw) {
@@ -250,25 +279,25 @@ class _NightclubScreenState extends State<NightclubScreen> {
   }
 
   String _djNameById(int? djId) {
-    if (djId == null) return _l('Onbekend', 'Unknown');
+    if (djId == null) return _t.unknown;
     for (final dj in _djs) {
       final map = dj as Map<String, dynamic>;
       if ((map['id'] as num?)?.toInt() == djId) {
-        return (map['name'] ?? _l('Onbekend', 'Unknown')).toString();
+        return (map['name'] ?? _t.unknown).toString();
       }
     }
-    return _l('Onbekend', 'Unknown');
+    return _t.unknown;
   }
 
   String _guardNameById(int? guardId) {
-    if (guardId == null) return _l('Onbekend', 'Unknown');
+    if (guardId == null) return _t.unknown;
     for (final guard in _guards) {
       final map = guard as Map<String, dynamic>;
       if ((map['id'] as num?)?.toInt() == guardId) {
-        return (map['name'] ?? _l('Onbekend', 'Unknown')).toString();
+        return (map['name'] ?? _t.unknown).toString();
       }
     }
-    return _l('Onbekend', 'Unknown');
+    return _t.unknown;
   }
 
   Map<String, dynamic>? _activeDjShift() {
@@ -656,7 +685,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
           context,
           SnackBar(
             content: Text(
-              _l('Fout bij laden nightclub: $e', 'Error loading nightclub: $e'),
+              _t.nightclubErrorLoading('$e'),
             ),
           ),
         );
@@ -803,7 +832,10 @@ class _NightclubScreenState extends State<NightclubScreen> {
       return;
     }
 
-    final message = result['message']?.toString() ?? fallbackMessage;
+    final raw = result['message']?.toString();
+    final message = (raw != null && raw.isNotEmpty)
+        ? _localizeNightclubApiMessage(raw)
+        : fallbackMessage;
     showTopRightFromSnackBar(context, SnackBar(content: Text(message)));
   }
 
@@ -882,7 +914,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Resident DJ contract mislukt', 'Resident DJ contract failed'),
+      _t.nightclubResidentDjContractFailed,
     );
     _showAchievementsFromResult(result);
     await _load();
@@ -897,7 +929,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Event plannen mislukt', 'Failed to schedule event'),
+      _t.nightclubScheduleEventFailed,
     );
     _showAchievementsFromResult(result);
     await _load();
@@ -911,7 +943,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Marketing upgrade mislukt', 'Marketing upgrade failed'),
+      _t.nightclubMarketingUpgradeFailed,
     );
     await _load();
   }
@@ -922,7 +954,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
       venueId: _venueId!,
       upgradeType: _selectedUpgradeType,
     );
-    _showResultMessage(result, _l('Upgrade mislukt', 'Upgrade failed'));
+    _showResultMessage(result, _t.nightclubUpgradeFailed);
     await _load();
   }
 
@@ -934,7 +966,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Incident response mislukt', 'Incident response failed'),
+      _t.nightclubIncidentResponseFailed,
     );
     await _load();
   }
@@ -968,7 +1000,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Rival action mislukt', 'Rival action failed'),
+      _t.nightclubRivalActionFailed,
     );
     await _searchRivals();
     await _load();
@@ -982,7 +1014,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Supplier contract mislukt', 'Supplier contract failed'),
+      _t.nightclubSupplierContractFailed,
     );
     await _load();
   }
@@ -993,7 +1025,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
       venueId: _venueId!,
       profileType: _selectedPromoterProfile,
     );
-    _showResultMessage(result, _l('Promoter mislukt', 'Promoter failed'));
+    _showResultMessage(result, _t.nightclubPromoterFailed);
     await _load();
   }
 
@@ -1002,7 +1034,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final result = await _nightclubService.runHeatCooldown(venueId: _venueId!);
     _showResultMessage(
       result,
-      _l('Heat cooldown mislukt', 'Heat cooldown failed'),
+      _t.nightclubHeatCooldownFailed,
     );
     await _load();
   }
@@ -1013,7 +1045,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
       venueId: _venueId!,
       routeType: _selectedSmugglingRoute,
     );
-    _showResultMessage(result, _l('Smuggling mislukt', 'Smuggling failed'));
+    _showResultMessage(result, _t.nightclubSmugglingFailed);
     await _load();
   }
 
@@ -1022,7 +1054,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final result = await _nightclubService.runCounterIntel(venueId: _venueId!);
     _showResultMessage(
       result,
-      _l('Counter-intel mislukt', 'Counter-intel failed'),
+      _t.nightclubCounterIntelFailed,
     );
     await _load();
   }
@@ -1035,7 +1067,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Hospitality stock mislukt', 'Hospitality stock failed'),
+      _t.nightclubHospitalityStockFailed,
     );
     await _load();
   }
@@ -1048,7 +1080,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
     _showResultMessage(
       result,
-      _l('Hospitality pricing mislukt', 'Hospitality pricing failed'),
+      _t.nightclubHospitalityPricingFailed,
     );
     await _load();
   }
@@ -1204,7 +1236,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             if (_venueId != null) ...[
               const SizedBox(height: 8),
               Text(
-                '${_l('Huidige bezoekers', 'Current visitors')}: $crowd%',
+                _t.nightclubCurrentVisitorsPct('$crowd'),
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
@@ -1244,7 +1276,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _l('Nightclub Command Deck', 'Nightclub Command Deck'),
+              _t.nightclubCommandDeckTitle,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w800,
                 color: Colors.white,
@@ -1255,26 +1287,26 @@ class _NightclubScreenState extends State<NightclubScreen> {
               spacing: 8,
               runSpacing: 8,
               children: [
-                _kpiChip(_l('Vibe', 'Vibe'), vibe),
-                _kpiChip(_l('Crowd', 'Crowd'), '${crowd.toStringAsFixed(0)}%'),
+                _kpiChip(_t.nightclubKpiVibe, vibe),
+                _kpiChip(_t.nightclubKpiCrowd, '${crowd.toStringAsFixed(0)}%'),
                 _kpiChip(
-                  _l('Omzet vandaag', 'Revenue today'),
+                  _t.nightclubOpsDeckRevenueToday,
                   '€$revenueToday',
                 ),
-                _kpiChip(_l('Stockwaarde', 'Stock value'), '€$inventoryValue'),
+                _kpiChip(_t.nightclubStockValueLabel, '€$inventoryValue'),
               ],
             ),
             const SizedBox(height: 12),
             _progressRow(
-              _l('Crew bezetting', 'Crew occupancy'),
+              _t.nightclubCrewOccupancy,
               '$staffCount/$staffCap',
               staffingRatio,
               Colors.cyanAccent,
             ),
             const SizedBox(height: 8),
             _progressRow(
-              _l('Operationeel risico', 'Operational risk'),
-              _l('$thefts incidenten (24h)', '$thefts incidents (24h)'),
+              _t.nightclubOperationalRisk,
+              _t.nightclubIncidents24h('$thefts'),
               riskRatio,
               riskRatio >= 0.6 ? Colors.redAccent : Colors.orangeAccent,
             ),
@@ -1464,7 +1496,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('Actieve crew-shifts', 'Active crew shifts'),
+              _t.nightclubActiveCrewShifts,
               Icons.groups_2,
             ),
             const SizedBox(height: 6),
@@ -1561,7 +1593,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
               ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('Recente crew-historie', 'Recent crew history'),
+              _t.nightclubRecentCrewHistory,
               Icons.history,
             ),
             const SizedBox(height: 6),
@@ -1598,7 +1630,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   size: 30,
                 ),
                 title: Text(
-                  '${prostitute['name'] ?? _l('Onbekend', 'Unknown')} • $vipLabel (Lv ${prostitute['level'] ?? 1})',
+                  '${prostitute['name'] ?? _t.unknown} • $vipLabel (Lv ${prostitute['level'] ?? 1})',
                 ),
                 subtitle: Text(
                   '${_t.nightclubFrom}: $startText  |  ${_t.nightclubTo}: $endText\n${_t.nightclubRevenueImpact}: €$estimatedRevenue (${_t.nightclubSalesCountLabel}: $estimatedSalesCount)',
@@ -1628,6 +1660,9 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final reputation = ((selectedDj?['reputation'] as num?) ?? 0)
         .toDouble()
         .toStringAsFixed(2);
+    final djTimeClock = activeUntil == null
+        ? null
+        : '${activeUntil.hour.toString().padLeft(2, '0')}:${activeUntil.minute.toString().padLeft(2, '0')}';
 
     return _mafiaPanel(
       child: Padding(
@@ -1642,8 +1677,8 @@ class _NightclubScreenState extends State<NightclubScreen> {
             const SizedBox(height: 6),
             Text(
               activeShift != null
-                  ? '${_l('Actieve DJ', 'Active DJ')}: $activeDjName${activeUntil != null ? ' (${_l('tot', 'until')} ${activeUntil.hour.toString().padLeft(2, '0')}:${activeUntil.minute.toString().padLeft(2, '0')})' : ''}'
-                  : _l('Actieve DJ: geen', 'Active DJ: none'),
+                  ? '${_t.nightclubActiveDj}: $activeDjName${djTimeClock != null ? ' (${_t.nightclubUntilTime(djTimeClock)})' : ''}'
+                  : _t.nightclubActiveDjNone,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 8),
@@ -1651,10 +1686,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Text(
-                  _l(
-                    'Geen DJ\'s beschikbaar geladen. Ververs het scherm.',
-                    'No DJs available loaded. Refresh the screen.',
-                  ),
+                  _t.nightclubNoDjsLoaded,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -1690,17 +1722,17 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 runSpacing: 8,
                 children: [
                   _kpiChip(
-                    _l('Level', 'Level'),
+                    _t.level,
                     'Lv ${selectedDj['skillLevel']}',
                   ),
-                  _kpiChip(_l('Crowd boost', 'Crowd boost'), 'x$crowdBoost'),
+                  _kpiChip(_t.nightclubCrowdBoost, 'x$crowdBoost'),
                   _kpiChip(
-                    _l('Kosten', 'Cost'),
+                    _t.nightclubCostPerHour,
                     '€${selectedDj['costPerHour']}/h',
                   ),
-                  _kpiChip(_l('Reputatie', 'Reputation'), reputation),
+                  _kpiChip(_t.nightclubReputationLabel, reputation),
                   _kpiChip(
-                    _l('Specialiteit', 'Specialty'),
+                    _t.nightclubSpecialtyLabel,
                     (selectedDj['specialty'] ?? '-').toString(),
                   ),
                 ],
@@ -1709,9 +1741,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
             const SizedBox(height: 8),
             DropdownButtonFormField<int>(
               value: _djHours,
-              items: const [4, 8, 12, 24]
+              items: [4, 8, 12, 24]
                   .map(
-                    (h) => DropdownMenuItem<int>(value: h, child: Text('$h h')),
+                    (h) => DropdownMenuItem<int>(
+                      value: h,
+                      child: Text(_t.nightclubShiftHours('$h')),
+                    ),
                   )
                   .toList(),
               onChanged: (v) => setState(() => _djHours = v ?? 8),
@@ -1747,6 +1782,9 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final reputation = ((selectedGuard?['reputation'] as num?) ?? 0)
         .toDouble()
         .toStringAsFixed(2);
+    final guardTimeClock = activeUntil == null
+        ? null
+        : '${activeUntil.hour.toString().padLeft(2, '0')}:${activeUntil.minute.toString().padLeft(2, '0')}';
 
     return _mafiaPanel(
       child: Padding(
@@ -1761,8 +1799,8 @@ class _NightclubScreenState extends State<NightclubScreen> {
             const SizedBox(height: 6),
             Text(
               activeShift != null
-                  ? '${_l('Actieve beveiliging', 'Active security')}: $activeGuardName${activeUntil != null ? ' (${_l('tot', 'until')} ${activeUntil.hour.toString().padLeft(2, '0')}:${activeUntil.minute.toString().padLeft(2, '0')})' : ''}'
-                  : _l('Actieve beveiliging: geen', 'Active security: none'),
+                  ? '${_t.nightclubActiveSecurity}: $activeGuardName${guardTimeClock != null ? ' (${_t.nightclubUntilTime(guardTimeClock)})' : ''}'
+                  : _t.nightclubActiveSecurityNone,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 8),
@@ -1770,10 +1808,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Text(
-                  _l(
-                    'Geen beveiliging beschikbaar geladen. Ververs het scherm.',
-                    'No security loaded. Refresh the screen.',
-                  ),
+                  _t.nightclubNoSecurityLoaded,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -1811,20 +1846,20 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 runSpacing: 8,
                 children: [
                   _kpiChip(
-                    _l('Level', 'Level'),
+                    _t.level,
                     'Lv ${selectedGuard['skillLevel']}',
                   ),
                   _kpiChip(
-                    _l('Diefstalreductie', 'Theft reduction'),
+                    _t.nightclubTheftReduction,
                     '$theftReduction%',
                   ),
                   _kpiChip(
-                    _l('Shift kosten', 'Shift cost'),
+                    _t.nightclubShiftCost,
                     '€${selectedGuard['costPerShift']}',
                   ),
-                  _kpiChip(_l('Reputatie', 'Reputation'), reputation),
+                  _kpiChip(_t.nightclubReputationLabel, reputation),
                   _kpiChip(
-                    _l('Specialiteit', 'Specialty'),
+                    _t.nightclubSpecialtyLabel,
                     (selectedGuard['specialty'] ?? '-').toString(),
                   ),
                 ],
@@ -1914,11 +1949,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 runSpacing: 8,
                 children: [
                   _kpiChip(
-                    _l('Geselecteerd', 'Selected'),
+                    _t.nightclubSelectedStock,
                     '${selected['drugName']} (${selected['quality']})',
                   ),
                   _kpiChip(
-                    _l('Beschikbaar', 'Available'),
+                    _t.nightclubAvailableGrams,
                     '${selected['quantity']}g',
                   ),
                 ],
@@ -1951,7 +1986,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                     },
                   ),
                 ActionChip(
-                  label: Text(_l('MAX', 'MAX')),
+                  label: Text(_t.nightclubMaxChip),
                   onPressed: selectedMax > 0
                       ? () =>
                             setState(() => _setStoreQuantityValue(selectedMax))
@@ -1975,26 +2010,20 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              _l('Opgeslagen in nightclub', 'Stored in nightclub'),
+              _t.nightclubStoredInNightclub,
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 6),
             Text(
-              _l(
-                'Huidige voorraad: ${totalStoredGrams}g',
-                'Current stock: ${totalStoredGrams}g',
-              ),
+              _t.nightclubCurrentStockGrams('$totalStoredGrams'),
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 6),
             if (stored.isEmpty)
               Text(
                 storedAll.isEmpty
-                    ? _l('Nog geen opgeslagen drugs.', 'No stored drugs yet.')
-                    : _l(
-                        'Voorraad is momenteel 0g (alles is verkocht).',
-                        'Current stock is 0g (everything has been sold).',
-                      ),
+                    ? _t.nightclubNoStoredDrugs
+                    : _t.nightclubStockZeroSoldOut,
               ),
             if (stored.isNotEmpty)
               LayoutBuilder(
@@ -2063,7 +2092,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                                   border: Border.all(color: Colors.white24),
                                 ),
                                 child: Text(
-                                  '${_l('Kwaliteit', 'Quality')}: $quality',
+                                  _t.nightclubQualityWithValue(quality),
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.white70,
@@ -2074,7 +2103,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '${quantity}g ${_l('voorraad', 'stock')}',
+                                _t.nightclubGramsStock('$quantity'),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 13,
@@ -2156,7 +2185,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _l('Operations Lab (11 systemen)', 'Operations Lab (11 systems)'),
+              _t.nightclubOperationsLabTitle,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -2165,7 +2194,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 8),
             _intelligenceSectionTitle(
-              _l('1) Resident DJ contract', '1) Resident DJ contract'),
+              _t.nightclubSectionResidentDjContract,
               Icons.library_music,
             ),
             Wrap(
@@ -2173,13 +2202,13 @@ class _NightclubScreenState extends State<NightclubScreen> {
               runSpacing: 8,
               children: [
                 _kpiChip(
-                  _l('Actief', 'Active'),
+                  _t.nightclubStatusActive,
                   resident['isActive'] == true
-                      ? _l('Ja', 'Yes')
-                      : _l('Nee', 'No'),
+                      ? _t.yes
+                      : _t.no,
                 ),
                 _kpiChip(
-                  _l('Contract korting', 'Contract discount'),
+                  _t.nightclubContractDiscount,
                   '${resident['discountPct'] ?? 12}%',
                 ),
               ],
@@ -2187,17 +2216,17 @@ class _NightclubScreenState extends State<NightclubScreen> {
             const SizedBox(height: 8),
             DropdownButtonFormField<int>(
               value: _residentDays,
-              items: const [3, 7, 14]
+              items: [3, 7, 14]
                   .map(
                     (d) => DropdownMenuItem(
                       value: d,
-                      child: Text('$d ${d == 1 ? 'day' : 'days'}'),
+                      child: Text(_t.nightclubContractDays(d)),
                     ),
                   )
                   .toList(),
               onChanged: (v) => setState(() => _residentDays = v ?? 7),
               decoration: InputDecoration(
-                labelText: _l('Contract duur', 'Contract duration'),
+                labelText: _t.nightclubContractDuration,
               ),
             ),
             const SizedBox(height: 6),
@@ -2205,28 +2234,28 @@ class _NightclubScreenState extends State<NightclubScreen> {
               onPressed: _selectedDjId == null ? null : _hireResidentDj,
               icon: const Icon(Icons.verified),
               label: Text(
-                _l('Start resident contract', 'Start resident contract'),
+                _t.nightclubStartResidentContract,
               ),
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('2) Dynamic event kalender', '2) Dynamic event calendar'),
+              _t.nightclubSectionEventCalendar,
               Icons.event,
             ),
             if (dynamicCalendar.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 6),
                 child: _kpiChip(
-                  _l('Aanbevolen vandaag', 'Recommended today'),
-                  Localizations.localeOf(context).languageCode == 'nl'
-                      ? ((dynamicCalendar['today']
-                                    as Map<String, dynamic>?)?['nl'] ??
-                                '-')
-                            .toString()
-                      : ((dynamicCalendar['today']
-                                    as Map<String, dynamic>?)?['en'] ??
-                                '-')
-                            .toString(),
+                  _t.nightclubRecommendedToday,
+                  _apiOptionLabel({
+                    'labelNl': (dynamicCalendar['today']
+                            as Map<String, dynamic>?)?['nl']
+                        ?.toString(),
+                    'labelEn': (dynamicCalendar['today']
+                            as Map<String, dynamic>?)?['en']
+                        ?.toString(),
+                    'key': '-',
+                  }),
                 ),
               ),
             if (eventTemplates.isNotEmpty)
@@ -2235,10 +2264,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 items: eventTemplates.map((raw) {
                   final map = raw as Map<String, dynamic>;
                   final key = map['key']?.toString() ?? '';
-                  final label =
-                      Localizations.localeOf(context).languageCode == 'nl'
-                      ? (map['labelNl'] ?? key).toString()
-                      : (map['labelEn'] ?? key).toString();
+                  final label = _apiOptionLabel(map);
                   return DropdownMenuItem(
                     value: key,
                     child: Text('$label • €${map['investment'] ?? 0}'),
@@ -2249,19 +2275,19 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   setState(() => _selectedEventType = v);
                 },
                 decoration: InputDecoration(
-                  labelText: _l('Event template', 'Event template'),
+                  labelText: _t.nightclubEventTemplate,
                 ),
               ),
             const SizedBox(height: 6),
             FilledButton.icon(
               onPressed: _scheduleNightclubEvent,
               icon: const Icon(Icons.event_available),
-              label: Text(_l('Plan event (+5 min)', 'Schedule event (+5 min)')),
+              label: Text(_t.nightclubScheduleEventFiveMin),
             ),
             if (events.isNotEmpty) ...[
               const SizedBox(height: 6),
               Text(
-                _l('Komende events', 'Upcoming events'),
+                _t.nightclubUpcomingEvents,
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               ...events.take(3).map((raw) {
@@ -2278,7 +2304,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ],
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('3) Upgrade tree', '3) Upgrade tree'),
+              _t.nightclubSectionUpgradeTree,
               Icons.account_tree,
             ),
             Wrap(
@@ -2286,15 +2312,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
               runSpacing: 8,
               children: [
                 _kpiChip(
-                  _l('Sound rig', 'Sound rig'),
+                  _t.nightclubUpgradeSoundRig,
                   'Lv ${soundRig['level'] ?? 1}',
                 ),
                 _kpiChip(
-                  _l('VIP lounge', 'VIP lounge'),
+                  _t.nightclubUpgradeVipLounge,
                   'Lv ${vipLounge['level'] ?? 1}',
                 ),
                 _kpiChip(
-                  _l('Surveillance', 'Surveillance'),
+                  _t.nightclubUpgradeSurveillance,
                   'Lv ${surveillance['level'] ?? 1}',
                 ),
               ],
@@ -2306,19 +2332,34 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 DropdownMenuItem(
                   value: 'sound_rig',
                   child: Text(
-                    '${_l('Sound rig', 'Sound rig')} (${soundRig['nextCost'] != null ? '€${soundRig['nextCost']}' : _l('MAX', 'MAX')})',
+                    _t.nightclubUpgradeWithCost(
+                      _t.nightclubUpgradeSoundRig,
+                      soundRig['nextCost'] != null
+                          ? '€${soundRig['nextCost']}'
+                          : _t.nightclubMaxChip,
+                    ),
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'vip_lounge',
                   child: Text(
-                    '${_l('VIP lounge', 'VIP lounge')} (${vipLounge['nextCost'] != null ? '€${vipLounge['nextCost']}' : _l('MAX', 'MAX')})',
+                    _t.nightclubUpgradeWithCost(
+                      _t.nightclubUpgradeVipLounge,
+                      vipLounge['nextCost'] != null
+                          ? '€${vipLounge['nextCost']}'
+                          : _t.nightclubMaxChip,
+                    ),
                   ),
                 ),
                 DropdownMenuItem(
                   value: 'surveillance',
                   child: Text(
-                    '${_l('Surveillance', 'Surveillance')} (${surveillance['nextCost'] != null ? '€${surveillance['nextCost']}' : _l('MAX', 'MAX')})',
+                    _t.nightclubUpgradeWithCost(
+                      _t.nightclubUpgradeSurveillance,
+                      surveillance['nextCost'] != null
+                          ? '€${surveillance['nextCost']}'
+                          : _t.nightclubMaxChip,
+                    ),
                   ),
                 ),
               ],
@@ -2327,7 +2368,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 setState(() => _selectedUpgradeType = v);
               },
               decoration: InputDecoration(
-                labelText: _l('Kies upgrade', 'Choose upgrade'),
+                labelText: _t.nightclubChooseUpgrade,
               ),
             ),
             const SizedBox(height: 6),
@@ -2340,17 +2381,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
                     : surveillance;
                 if (selected['nextCost'] == null) {
                   _showResultMessage({
-                    'message': _l(
-                      'Deze upgrade zit al op max level.',
-                      'This upgrade is already max level.',
-                    ),
-                  }, _l('Upgrade al maximaal', 'Upgrade already maxed'));
+                    'message': _t.nightclubUpgradeAlreadyMaxMessage,
+                  }, _t.nightclubUpgradeAlreadyMaxed);
                   return;
                 }
                 _applyUpgradeTreeChoice();
               },
               icon: const Icon(Icons.upgrade),
-              label: Text(_l('Upgrade nu', 'Upgrade now')),
+              label: Text(_t.nightclubUpgradeNow),
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<int>(
@@ -2360,34 +2398,34 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   .toList(),
               onChanged: (v) => setState(() => _marketingAmount = v ?? 50000),
               decoration: InputDecoration(
-                labelText: _l('Marketing investering', 'Marketing investment'),
+                labelText: _t.nightclubMarketingInvestment,
               ),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
               onPressed: _investMarketing,
               icon: const Icon(Icons.trending_up),
-              label: Text(_l('Investeer in marketing', 'Invest in marketing')),
+              label: Text(_t.nightclubInvestMarketing),
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('4) Police heat & incidents', '4) Police heat & incidents'),
+              _t.nightclubSectionPoliceHeat,
               Icons.crisis_alert,
             ),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                _kpiChip(_l('Heat', 'Heat'), '${policeHeat['value'] ?? 0}'),
+                _kpiChip(_t.nightclubHeatLabel, '${policeHeat['value'] ?? 0}'),
                 _kpiChip(
-                  _l('Raid risico', 'Raid risk'),
+                  _t.nightclubRaidRisk,
                   '${policeHeat['raidRiskPct'] ?? 0}%',
                 ),
                 _kpiChip(
-                  _l('Cooldown', 'Cooldown'),
+                  _t.nightclubCooldownLabel,
                   policeHeat['cooldownActive'] == true
-                      ? _l('Actief', 'Active')
-                      : _l('Uit', 'Off'),
+                      ? _t.nightclubStatusActive
+                      : _t.nightclubStatusOff,
                 ),
               ],
             ),
@@ -2395,7 +2433,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             FilledButton.icon(
               onPressed: _runHeatCooldownAction,
               icon: const Icon(Icons.shield_moon),
-              label: Text(_l('Start heat cooldown', 'Start heat cooldown')),
+              label: Text(_t.nightclubStartHeatCooldown),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -2404,38 +2442,38 @@ class _NightclubScreenState extends State<NightclubScreen> {
               children: [
                 OutlinedButton(
                   onPressed: () => _respondToIncident('bribe'),
-                  child: Text(_l('Omkopen', 'Bribe')),
+                  child: Text(_t.nightclubBribe),
                 ),
                 OutlinedButton(
                   onPressed: () => _respondToIncident('lockdown'),
-                  child: Text(_l('Lockdown', 'Lockdown')),
+                  child: Text(_t.nightclubLockdown),
                 ),
                 OutlinedButton(
                   onPressed: () => _respondToIncident('counterintel'),
-                  child: Text(_l('Counter-intel', 'Counter-intel')),
+                  child: Text(_t.nightclubCounterIntelShort),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('5) Staff fatigue & morale', '5) Staff fatigue & morale'),
+              _t.nightclubSectionStaffMorale,
               Icons.psychology,
             ),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                _kpiChip(_l('Morale', 'Morale'), '${morale['morale'] ?? 1}'),
-                _kpiChip(_l('Fatigue', 'Fatigue'), '${morale['fatigue'] ?? 1}'),
+                _kpiChip(_t.nightclubMorale, '${morale['morale'] ?? 1}'),
+                _kpiChip(_t.nightclubFatigue, '${morale['fatigue'] ?? 1}'),
                 _kpiChip(
-                  _l('Bezetting', 'Staffing'),
+                  _t.nightclubStaffing,
                   '${morale['assignedStaff'] ?? 0}/${morale['staffCap'] ?? 0}',
                 ),
               ],
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('6) Supplier & promoter', '6) Supplier & promoter'),
+              _t.nightclubSectionSupplierPromoter,
               Icons.local_shipping,
             ),
             DropdownButtonFormField<String>(
@@ -2445,10 +2483,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                       .map((raw) {
                         final map = raw as Map<String, dynamic>;
                         final key = (map['key'] ?? '').toString();
-                        final label =
-                            Localizations.localeOf(context).languageCode == 'nl'
-                            ? (map['labelNl'] ?? key).toString()
-                            : (map['labelEn'] ?? key).toString();
+                        final label = _apiOptionLabel(map);
                         return DropdownMenuItem(value: key, child: Text(label));
                       })
                       .toList(),
@@ -2457,14 +2492,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 setState(() => _selectedSupplierContract = v);
               },
               decoration: InputDecoration(
-                labelText: _l('Supplier contract', 'Supplier contract'),
+                labelText: _t.nightclubSupplierContract,
               ),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
               onPressed: _activateSupplierContract,
               icon: const Icon(Icons.playlist_add_check),
-              label: Text(_l('Activeer supplier', 'Activate supplier')),
+              label: Text(_t.nightclubActivateSupplier),
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
@@ -2473,10 +2508,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 (raw) {
                   final map = raw as Map<String, dynamic>;
                   final key = (map['key'] ?? '').toString();
-                  final label =
-                      Localizations.localeOf(context).languageCode == 'nl'
-                      ? (map['labelNl'] ?? key).toString()
-                      : (map['labelEn'] ?? key).toString();
+                  final label = _apiOptionLabel(map);
                   return DropdownMenuItem(value: key, child: Text(label));
                 },
               ).toList(),
@@ -2485,21 +2517,18 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 setState(() => _selectedPromoterProfile = v);
               },
               decoration: InputDecoration(
-                labelText: _l('Promoter profiel', 'Promoter profile'),
+                labelText: _t.nightclubPromoterProfile,
               ),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
               onPressed: _hirePromoterProfile,
               icon: const Icon(Icons.record_voice_over),
-              label: Text(_l('Huur promoter', 'Hire promoter')),
+              label: Text(_t.nightclubHirePromoter),
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l(
-                '7) VIP clientele & staff traits',
-                '7) VIP clientele & staff traits',
-              ),
+              _t.nightclubSectionVipClientele,
               Icons.workspace_premium,
             ),
             Wrap(
@@ -2507,25 +2536,20 @@ class _NightclubScreenState extends State<NightclubScreen> {
               runSpacing: 8,
               children: [
                 _kpiChip(
-                  _l('VIP share', 'VIP share'),
+                  _t.nightclubVipShare,
                   '${vipClientele['sharePct'] ?? 0}%',
                 ),
                 _kpiChip(
-                  _l('Spend x', 'Spend x'),
+                  _t.nightclubSpendMultiplier,
                   '${vipClientele['spendMultiplier'] ?? 1}',
                 ),
-                _kpiChip(_l('Tier', 'Tier'), '${reputation['tier'] ?? '-'}'),
+                _kpiChip(_t.nightclubTier, '${reputation['tier'] ?? '-'}'),
               ],
             ),
             ...staffTraits.take(2).map((raw) {
               final map = raw as Map<String, dynamic>;
-              final title = Localizations.localeOf(context).languageCode == 'nl'
-                  ? (map['nl'] ?? '-').toString()
-                  : (map['en'] ?? '-').toString();
-              final effect =
-                  Localizations.localeOf(context).languageCode == 'nl'
-                  ? (map['effectNl'] ?? '-').toString()
-                  : (map['effectEn'] ?? '-').toString();
+              final title = _pickLocaleField(map, 'nl', 'en');
+              final effect = _pickLocaleField(map, 'effectNl', 'effectEn');
               return ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.zero,
@@ -2535,16 +2559,16 @@ class _NightclubScreenState extends State<NightclubScreen> {
             }),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('8) Smuggling routes', '8) Smuggling routes'),
+              _t.nightclubSectionSmugglingRoutes,
               Icons.route,
             ),
             _kpiChip(
-              _l('Cooldown', 'Cooldown'),
+              _t.nightclubCooldownLabel,
               smugglingCooldownActive
                   ? _formatRemainingMinutesLabel(
                       smugglingCooldownRemainingMinutes,
                     )
-                  : _l('Klaar', 'Ready'),
+                  : _t.nightclubReady,
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
@@ -2553,10 +2577,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 (raw) {
                   final map = raw as Map<String, dynamic>;
                   final key = (map['key'] ?? '').toString();
-                  final label =
-                      Localizations.localeOf(context).languageCode == 'nl'
-                      ? (map['labelNl'] ?? key).toString()
-                      : (map['labelEn'] ?? key).toString();
+                  final label = _apiOptionLabel(map);
                   return DropdownMenuItem(value: key, child: Text(label));
                 },
               ).toList(),
@@ -2564,7 +2585,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 if (v == null) return;
                 setState(() => _selectedSmugglingRoute = v);
               },
-              decoration: InputDecoration(labelText: _l('Route', 'Route')),
+              decoration: InputDecoration(labelText: _t.nightclubRoute),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2572,24 +2593,23 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   ? null
                   : _runSmugglingRouteAction,
               icon: const Icon(Icons.local_shipping),
-              label: Text(_l('Start route', 'Start route')),
+              label: Text(_t.nightclubStartRoute),
             ),
             const SizedBox(height: 6),
             Text(
-              '${_l('Laatste route', 'Last route')}: ${smuggling['lastRouteKey'] ?? '-'}',
+              '${_t.nightclubLastRoute}: ${smuggling['lastRouteKey'] ?? '-'}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             if (smugglingCooldownActive)
               Text(
-                _l(
-                  'Route-lock actief tot ${formatDate(smuggling['cooldownEndsAt'])}',
-                  'Route lock active until ${formatDate(smuggling['cooldownEndsAt'])}',
+                _t.nightclubRouteLockUntil(
+                  formatDate(smuggling['cooldownEndsAt']),
                 ),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('9) Bar & Kitchen management', '9) Bar & Kitchen management'),
+              _t.nightclubSectionBarKitchen,
               Icons.restaurant_menu,
             ),
             Wrap(
@@ -2597,15 +2617,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
               runSpacing: 8,
               children: [
                 _kpiChip(
-                  _l('Service level', 'Service level'),
+                  _t.nightclubServiceLevel,
                   '${hospitality['serviceLevel'] ?? 0}%',
                 ),
                 _kpiChip(
-                  _l('Stock status', 'Stock status'),
+                  _t.nightclubStockStatus,
                   (hospitality['stockStatus'] ?? '-').toString(),
                 ),
                 _kpiChip(
-                  _l('Bederfrisico', 'Spoilage risk'),
+                  _t.nightclubSpoilageRisk,
                   '${hospitality['spoilageRiskPct'] ?? 0}%',
                 ),
               ],
@@ -2618,10 +2638,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                       .map((raw) {
                         final map = raw as Map<String, dynamic>;
                         final key = (map['key'] ?? '').toString();
-                        final label =
-                            Localizations.localeOf(context).languageCode == 'nl'
-                            ? (map['labelNl'] ?? key).toString()
-                            : (map['labelEn'] ?? key).toString();
+                        final label = _apiOptionLabel(map);
                         return DropdownMenuItem(
                           value: key,
                           child: Text('$label • €${map['cost'] ?? 0}'),
@@ -2633,14 +2650,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 setState(() => _selectedHospitalityPack = v);
               },
               decoration: InputDecoration(
-                labelText: _l('Drank/Food voorraad', 'Drinks/Food stock'),
+                labelText: _t.nightclubDrinksFoodStock,
               ),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
               onPressed: _buyHospitalityStock,
               icon: const Icon(Icons.local_bar),
-              label: Text(_l('Voorraad inkopen', 'Buy stock')),
+              label: Text(_t.nightclubBuyStock),
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
@@ -2651,10 +2668,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                       .map((raw) {
                         final map = raw as Map<String, dynamic>;
                         final key = (map['key'] ?? '').toString();
-                        final label =
-                            Localizations.localeOf(context).languageCode == 'nl'
-                            ? (map['labelNl'] ?? key).toString()
-                            : (map['labelEn'] ?? key).toString();
+                        final label = _apiOptionLabel(map);
                         return DropdownMenuItem(value: key, child: Text(label));
                       })
                       .toList(),
@@ -2663,27 +2677,24 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 setState(() => _selectedHospitalityPricing = v);
               },
               decoration: InputDecoration(
-                labelText: _l('Menu pricing mode', 'Menu pricing mode'),
+                labelText: _t.nightclubMenuPricingMode,
               ),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
               onPressed: _setHospitalityPricingMode,
               icon: const Icon(Icons.price_change),
-              label: Text(_l('Pricing toepassen', 'Apply pricing')),
+              label: Text(_t.nightclubApplyPricing),
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l(
-                '10) Rival clubs + counter-intel',
-                '10) Rival clubs + counter-intel',
-              ),
+              _t.nightclubSectionRivals,
               Icons.sports_mma,
             ),
             TextField(
               controller: _rivalSearchController,
               decoration: InputDecoration(
-                labelText: _l('Zoek spelernaam', 'Search player name'),
+                labelText: _t.nightclubSearchPlayerName,
                 suffixIcon: IconButton(
                   onPressed: _searchRivals,
                   icon: const Icon(Icons.search),
@@ -2702,13 +2713,17 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   return DropdownMenuItem(
                     value: name,
                     child: Text(
-                      '$name • ${map['country'] ?? '-'} • crowd ${map['crowdSize'] ?? 0}%',
+                      _t.nightclubRivalCrowdLine(
+                        name,
+                        (map['country'] ?? '-').toString(),
+                        '${map['crowdSize'] ?? 0}',
+                      ),
                     ),
                   );
                 }).toList(),
                 onChanged: (v) => setState(() => _selectedRivalName = v),
                 decoration: InputDecoration(
-                  labelText: _l('Doelwit (naam)', 'Target (name)'),
+                  labelText: _t.nightclubTargetName,
                 ),
               ),
             const SizedBox(height: 6),
@@ -2720,32 +2735,32 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   onPressed: _selectedRivalName == null
                       ? null
                       : () => _runRivalAction('sabotage'),
-                  child: Text(_l('Sabotage', 'Sabotage')),
+                  child: Text(_t.nightclubSabotage),
                 ),
                 FilledButton(
                   onPressed: _selectedRivalName == null
                       ? null
                       : () => _runRivalAction('promo_war'),
-                  child: Text(_l('Promo war', 'Promo war')),
+                  child: Text(_t.nightclubPromoWar),
                 ),
                 OutlinedButton(
                   onPressed: _runCounterIntelSweep,
-                  child: Text(_l('Counter-intel sweep', 'Counter-intel sweep')),
+                  child: Text(_t.nightclubCounterIntelSweep),
                 ),
               ],
             ),
             const SizedBox(height: 6),
             Text(
-              '${_l('Mitigatie', 'Mitigation')}: ${counterIntel['mitigationPct'] ?? 0}% | ${_l('Actief', 'Active')}: ${counterIntel['active'] == true ? _l('Ja', 'Yes') : _l('Nee', 'No')}',
+              '${_t.nightclubMitigation}: ${counterIntel['mitigationPct'] ?? 0}% | ${_t.nightclubStatusActive}: ${counterIntel['active'] == true ? _t.yes : _t.no}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('11) Operations timeline', '11) Operations timeline'),
+              _t.nightclubSectionTimeline,
               Icons.timeline,
             ),
             if (timeline.isEmpty)
-              Text(_l('Geen timeline events.', 'No timeline events.')),
+              Text(_t.nightclubNoTimelineEvents),
             ...timeline.take(6).map((raw) {
               final map = raw as Map<String, dynamic>;
               final severity = (map['severity'] ?? 'low').toString();
@@ -2754,9 +2769,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   : (severity == 'medium'
                         ? Colors.orangeAccent
                         : Colors.lightGreenAccent);
-              final label = Localizations.localeOf(context).languageCode == 'nl'
-                  ? (map['labelNl'] ?? '-').toString()
-                  : (map['labelEn'] ?? '-').toString();
+              final label = _apiOptionLabel({
+                'labelNl': map['labelNl'],
+                'labelEn': map['labelEn'],
+                'key': '-',
+              });
               return ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.zero,
@@ -2771,11 +2788,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
             }),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('Operations alerts', 'Operations alerts'),
+              _t.nightclubOperationsAlerts,
               Icons.notifications_active,
             ),
             if (alerts.isEmpty)
-              Text(_l('Geen kritieke alerts.', 'No critical alerts.')),
+              Text(_t.nightclubNoCriticalAlerts),
             ...alerts.map((raw) {
               final map = raw as Map<String, dynamic>;
               final severity = (map['severity'] ?? 'low').toString();
@@ -2794,7 +2811,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 ),
                 title: Text((map['message'] ?? '-').toString()),
                 subtitle: Text(
-                  '${_l('Quick action', 'Quick action')}: ${map['quickAction'] ?? '-'}',
+                  '${_t.nightclubQuickAction}: ${map['quickAction'] ?? '-'}',
                 ),
               );
             }),
@@ -2821,51 +2838,39 @@ class _NightclubScreenState extends State<NightclubScreen> {
       _ManagementSectionMeta(
         key: _managementSectionCrew,
         icon: Icons.groups_2_rounded,
-        title: _l('Crew & diensten', 'Crew & shifts'),
-        subtitle: _l(
-          'Bezetting, prestaties en shift-historie.',
-          'Staffing, performance and shift history.',
-        ),
+        title: _t.nightclubMgmtCrewTitle,
+        subtitle: _t.nightclubMgmtCrewSubtitle,
       ),
       _ManagementSectionMeta(
         key: _managementSectionDrugs,
         icon: Icons.science_rounded,
-        title: _l('Drugsopslag', 'Drug storage'),
-        subtitle: _l(
-          'Voorraad in grammen beheren en verplaatsen.',
-          'Manage and transfer inventory in grams.',
-        ),
+        title: _t.nightclubMgmtDrugsTitle,
+        subtitle: _t.nightclubMgmtDrugsSubtitle,
       ),
       _ManagementSectionMeta(
         key: _managementSectionDj,
         icon: Icons.queue_music_rounded,
-        title: _l('DJ Command', 'DJ command'),
-        subtitle: _l(
-          'Kies DJ, shiftduur en live crowd-boost.',
-          'Choose DJ, shift length and live crowd boost.',
-        ),
+        title: _t.nightclubMgmtDjTitle,
+        subtitle: _t.nightclubMgmtDjSubtitle,
       ),
       _ManagementSectionMeta(
         key: _managementSectionSecurity,
         icon: Icons.shield_moon_rounded,
-        title: _l('Security Unit', 'Security unit'),
-        subtitle: _l(
-          'Diefstalreductie, kosten en actieve beveiliging.',
-          'Theft reduction, costs and active security.',
-        ),
+        title: _t.nightclubMgmtSecurityTitle,
+        subtitle: _t.nightclubMgmtSecuritySubtitle,
       ),
       _ManagementSectionMeta(
         key: _managementSectionOpsLab,
         icon: Icons.precision_manufacturing_rounded,
-        title: _l('Ops Lab', 'Ops Lab'),
-        subtitle: _l(
-          opsAlerts > 0
-              ? 'Live alerts: $opsAlerts | Smuggling: ${smugglingCooldown ? _formatRemainingMinutesLabel(smugglingMinutes) : _l('klaar', 'ready')}'
-              : '11 systemen voor events, upgrades, routes en rivalen.',
-          opsAlerts > 0
-              ? 'Live alerts: $opsAlerts | Smuggling: ${smugglingCooldown ? _formatRemainingMinutesLabel(smugglingMinutes) : 'ready'}'
-              : '11 systems for events, upgrades, routes and rivals.',
-        ),
+        title: _t.nightclubMgmtOpsLabTitle,
+        subtitle: opsAlerts > 0
+            ? _t.nightclubMgmtOpsLabSubtitleAlert(
+                '$opsAlerts',
+                smugglingCooldown
+                    ? _formatRemainingMinutesLabel(smugglingMinutes)
+                    : _t.nightclubReady,
+              )
+            : _t.nightclubMgmtOpsLabSubtitleDefault,
       ),
     ];
   }
@@ -3004,7 +3009,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _l('Nachtclub Beheer', 'Nightclub Management'),
+              _t.nightclubManagementPanelTitle,
               style: const TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 18,
@@ -3013,10 +3018,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 4),
             Text(
-              _l(
-                'Kies een managementzone en beheer alles zonder losse inner-scroll.',
-                'Choose a management zone and control everything without nested inner-scroll.',
-              ),
+              _t.nightclubChooseZoneHint,
               style: Theme.of(
                 context,
               ).textTheme.bodySmall?.copyWith(color: Colors.white70),
@@ -3026,21 +3028,21 @@ class _NightclubScreenState extends State<NightclubScreen> {
               spacing: 8,
               runSpacing: 8,
               children: [
-                _kpiChip(_l('Crew', 'Crew'), '$assignedCount/$staffCap'),
-                _kpiChip(_l('Opslag', 'Storage'), '${storedTotalGrams}g'),
+                _kpiChip(_t.nightclubChipCrew, '$assignedCount/$staffCap'),
+                _kpiChip(_t.nightclubChipStorage, '${storedTotalGrams}g'),
                 _kpiChip(
-                  _l('DJ shift', 'DJ shift'),
+                  _t.nightclubChipDjShift,
                   _activeDjShift() == null
-                      ? _l('Geen', 'None')
-                      : _l('Actief', 'Active'),
+                      ? _t.nightclubNone
+                      : _t.nightclubStatusActive,
                 ),
                 _kpiChip(
-                  _l('Security', 'Security'),
+                  _t.nightclubChipSecurity,
                   _activeSecurityShift() == null
-                      ? _l('Geen', 'None')
-                      : _l('Actief', 'Active'),
+                      ? _t.nightclubNone
+                      : _t.nightclubStatusActive,
                 ),
-                _kpiChip(_l('Ops alerts', 'Ops alerts'), '$opsAlerts'),
+                _kpiChip(_t.nightclubChipOpsAlerts, '$opsAlerts'),
               ],
             ),
             const SizedBox(height: 10),
@@ -3107,7 +3109,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final remaining = endAt != null ? endAt.difference(now) : const Duration();
     final remainingText = remaining.isNegative
         ? _t.nightclubSeasonProcessing
-        : '${remaining.inDays}d ${remaining.inHours % 24}h ${remaining.inMinutes % 60}m';
+        : _t.nightclubSeasonCountdown(
+            '${remaining.inDays}',
+            '${remaining.inHours % 24}',
+            '${remaining.inMinutes % 60}',
+          );
 
     return _mafiaPanel(
       child: Padding(
@@ -3119,7 +3125,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    _l('Nightclub Intelligence', 'Nightclub Intelligence'),
+                    _t.nightclubIntelligenceCardTitle,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -3151,7 +3157,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 10),
             _intelligenceSectionTitle(
-              _l('Live statistieken', 'Live statistics'),
+              _t.nightclubLiveStatistics,
               Icons.bar_chart_rounded,
             ),
             Wrap(
@@ -3194,7 +3200,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 10),
             _intelligenceSectionTitle(
-              _l('Seizoen status', 'Season status'),
+              _t.nightclubSeasonStatus,
               Icons.workspace_premium,
             ),
             Text('${_t.nightclubSeasonResetIn}: $remainingText'),

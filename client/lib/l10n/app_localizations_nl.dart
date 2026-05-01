@@ -7509,6 +7509,501 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubTheftTypeRival => 'Rivaal-sabotage';
 
   @override
+  String nightclubErrorLoading(String error) {
+    return 'Fout bij laden nightclub: $error';
+  }
+
+  @override
+  String get nightclubServiceErrorStats =>
+      'Kon nightclub-statistieken niet laden';
+
+  @override
+  String get nightclubServiceErrorLeaderboard => 'Kon leaderboard niet laden';
+
+  @override
+  String get nightclubServiceErrorSeason => 'Kon seizoensranking niet laden';
+
+  @override
+  String nightclubErrorWithDetail(String detail) {
+    return 'Fout: $detail';
+  }
+
+  @override
+  String get nightclubResidentDjContractFailed =>
+      'Resident DJ-contract mislukt';
+
+  @override
+  String get nightclubScheduleEventFailed => 'Event plannen mislukt';
+
+  @override
+  String get nightclubMarketingUpgradeFailed => 'Marketing-upgrade mislukt';
+
+  @override
+  String get nightclubUpgradeFailed => 'Upgrade mislukt';
+
+  @override
+  String get nightclubIncidentResponseFailed => 'Incidentrespons mislukt';
+
+  @override
+  String get nightclubRivalActionFailed => 'Rivaalactie mislukt';
+
+  @override
+  String get nightclubSupplierContractFailed => 'Suppliercontract mislukt';
+
+  @override
+  String get nightclubPromoterFailed => 'Promoter mislukt';
+
+  @override
+  String get nightclubHeatCooldownFailed => 'Heat-cooldown mislukt';
+
+  @override
+  String get nightclubSmugglingFailed => 'Smokkelroute mislukt';
+
+  @override
+  String get nightclubCounterIntelFailed => 'Counter-intel mislukt';
+
+  @override
+  String get nightclubHospitalityStockFailed => 'Horeca-voorraad mislukt';
+
+  @override
+  String get nightclubHospitalityPricingFailed => 'Horeca-prijzen mislukt';
+
+  @override
+  String nightclubCurrentVisitorsPct(String pct) {
+    return 'Huidige bezoekers: $pct%';
+  }
+
+  @override
+  String get nightclubCommandDeckTitle => 'Nightclub Command Deck';
+
+  @override
+  String get nightclubOpsDeckRevenueToday => 'Omzet vandaag';
+
+  @override
+  String get nightclubStockValueLabel => 'Stockwaarde';
+
+  @override
+  String get nightclubCrewOccupancy => 'Crew bezetting';
+
+  @override
+  String get nightclubOperationalRisk => 'Operationeel risico';
+
+  @override
+  String nightclubIncidents24h(String count) {
+    return '$count incidenten (24u)';
+  }
+
+  @override
+  String get nightclubActiveCrewShifts => 'Actieve crew-shifts';
+
+  @override
+  String get nightclubRecentCrewHistory => 'Recente crew-historie';
+
+  @override
+  String get nightclubBadgeVip => 'VIP';
+
+  @override
+  String get nightclubBadgeStandard => 'STANDAARD';
+
+  @override
+  String get nightclubActiveDj => 'Actieve DJ';
+
+  @override
+  String get nightclubActiveDjNone => 'Actieve DJ: geen';
+
+  @override
+  String nightclubUntilTime(String time) {
+    return 'tot $time';
+  }
+
+  @override
+  String get nightclubActiveSecurity => 'Actieve beveiliging';
+
+  @override
+  String get nightclubActiveSecurityNone => 'Actieve beveiliging: geen';
+
+  @override
+  String get nightclubNoDjsLoaded =>
+      'Geen DJ\'s beschikbaar geladen. Ververs het scherm.';
+
+  @override
+  String get nightclubNoSecurityLoaded =>
+      'Geen beveiliging beschikbaar geladen. Ververs het scherm.';
+
+  @override
+  String get nightclubCrowdBoost => 'Crowd boost';
+
+  @override
+  String get nightclubCostPerHour => 'Kosten';
+
+  @override
+  String get nightclubReputationLabel => 'Reputatie';
+
+  @override
+  String get nightclubSpecialtyLabel => 'Specialiteit';
+
+  @override
+  String get nightclubTheftReduction => 'Diefstalreductie';
+
+  @override
+  String get nightclubShiftCost => 'Shift kosten';
+
+  @override
+  String get nightclubSelectedStock => 'Geselecteerd';
+
+  @override
+  String get nightclubAvailableGrams => 'Beschikbaar';
+
+  @override
+  String get nightclubMaxChip => 'MAX';
+
+  @override
+  String get nightclubStoredInNightclub => 'Opgeslagen in nightclub';
+
+  @override
+  String nightclubCurrentStockGrams(String grams) {
+    return 'Huidige voorraad: ${grams}g';
+  }
+
+  @override
+  String get nightclubNoStoredDrugs => 'Nog geen opgeslagen drugs.';
+
+  @override
+  String get nightclubStockZeroSoldOut =>
+      'Voorraad is momenteel 0g (alles is verkocht).';
+
+  @override
+  String nightclubQualityWithValue(String value) {
+    return 'Kwaliteit: $value';
+  }
+
+  @override
+  String nightclubGramsStock(String grams) {
+    return '${grams}g voorraad';
+  }
+
+  @override
+  String get nightclubOperationsLabTitle => 'Operations Lab (11 systemen)';
+
+  @override
+  String get nightclubSectionResidentDjContract => '1) Resident DJ-contract';
+
+  @override
+  String get nightclubContractDiscount => 'Contract korting';
+
+  @override
+  String get nightclubContractDuration => 'Contract duur';
+
+  @override
+  String nightclubContractDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dagen',
+      one: '$count dag',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get nightclubStartResidentContract => 'Start resident contract';
+
+  @override
+  String get nightclubSectionEventCalendar => '2) Dynamic event kalender';
+
+  @override
+  String get nightclubRecommendedToday => 'Aanbevolen vandaag';
+
+  @override
+  String get nightclubEventTemplate => 'Event template';
+
+  @override
+  String get nightclubScheduleEventFiveMin => 'Plan event (+5 min)';
+
+  @override
+  String get nightclubUpcomingEvents => 'Komende events';
+
+  @override
+  String get nightclubSectionUpgradeTree => '3) Upgrade tree';
+
+  @override
+  String get nightclubUpgradeSoundRig => 'Sound rig';
+
+  @override
+  String get nightclubUpgradeVipLounge => 'VIP lounge';
+
+  @override
+  String get nightclubUpgradeSurveillance => 'Surveillance';
+
+  @override
+  String nightclubUpgradeWithCost(String name, String cost) {
+    return '$name ($cost)';
+  }
+
+  @override
+  String get nightclubChooseUpgrade => 'Kies upgrade';
+
+  @override
+  String get nightclubUpgradeAlreadyMaxMessage =>
+      'Deze upgrade zit al op max level.';
+
+  @override
+  String get nightclubUpgradeAlreadyMaxed => 'Upgrade al maximaal';
+
+  @override
+  String get nightclubUpgradeNow => 'Upgrade nu';
+
+  @override
+  String get nightclubMarketingInvestment => 'Marketing investering';
+
+  @override
+  String get nightclubInvestMarketing => 'Investeer in marketing';
+
+  @override
+  String get nightclubSectionPoliceHeat => '4) Police heat & incidenten';
+
+  @override
+  String get nightclubHeatLabel => 'Heat';
+
+  @override
+  String get nightclubRaidRisk => 'Raid risico';
+
+  @override
+  String get nightclubCooldownLabel => 'Cooldown';
+
+  @override
+  String get nightclubStartHeatCooldown => 'Start heat cooldown';
+
+  @override
+  String get nightclubBribe => 'Omkopen';
+
+  @override
+  String get nightclubLockdown => 'Lockdown';
+
+  @override
+  String get nightclubCounterIntelShort => 'Counter-intel';
+
+  @override
+  String get nightclubSectionStaffMorale => '5) Staff fatigue & morale';
+
+  @override
+  String get nightclubMorale => 'Morale';
+
+  @override
+  String get nightclubFatigue => 'Fatigue';
+
+  @override
+  String get nightclubStaffing => 'Bezetting';
+
+  @override
+  String get nightclubSectionSupplierPromoter => '6) Supplier & promoter';
+
+  @override
+  String get nightclubSupplierContract => 'Supplier contract';
+
+  @override
+  String get nightclubActivateSupplier => 'Activeer supplier';
+
+  @override
+  String get nightclubPromoterProfile => 'Promoter profiel';
+
+  @override
+  String get nightclubHirePromoter => 'Huur promoter';
+
+  @override
+  String get nightclubSectionVipClientele => '7) VIP clientele & staff traits';
+
+  @override
+  String get nightclubVipShare => 'VIP share';
+
+  @override
+  String get nightclubSpendMultiplier => 'Spend x';
+
+  @override
+  String get nightclubTier => 'Tier';
+
+  @override
+  String get nightclubSectionSmugglingRoutes => '8) Smokkelroutes';
+
+  @override
+  String get nightclubReady => 'Klaar';
+
+  @override
+  String get nightclubRoute => 'Route';
+
+  @override
+  String get nightclubStartRoute => 'Start route';
+
+  @override
+  String get nightclubLastRoute => 'Laatste route';
+
+  @override
+  String nightclubRouteLockUntil(String date) {
+    return 'Route-lock actief tot $date';
+  }
+
+  @override
+  String get nightclubSectionBarKitchen => '9) Bar & Kitchen management';
+
+  @override
+  String get nightclubServiceLevel => 'Service level';
+
+  @override
+  String get nightclubStockStatus => 'Stock status';
+
+  @override
+  String get nightclubSpoilageRisk => 'Bederfrisico';
+
+  @override
+  String get nightclubDrinksFoodStock => 'Drank/Food voorraad';
+
+  @override
+  String get nightclubBuyStock => 'Voorraad inkopen';
+
+  @override
+  String get nightclubMenuPricingMode => 'Menu pricing mode';
+
+  @override
+  String get nightclubApplyPricing => 'Pricing toepassen';
+
+  @override
+  String get nightclubSectionRivals => '10) Rival clubs + counter-intel';
+
+  @override
+  String get nightclubSearchPlayerName => 'Zoek spelernaam';
+
+  @override
+  String get nightclubTargetName => 'Doelwit (naam)';
+
+  @override
+  String nightclubRivalCrowdLine(String name, String country, String pct) {
+    return '$name • $country • crowd $pct%';
+  }
+
+  @override
+  String get nightclubSabotage => 'Sabotage';
+
+  @override
+  String get nightclubPromoWar => 'Promo war';
+
+  @override
+  String get nightclubCounterIntelSweep => 'Counter-intel sweep';
+
+  @override
+  String get nightclubMitigation => 'Mitigatie';
+
+  @override
+  String get nightclubSectionTimeline => '11) Operations timeline';
+
+  @override
+  String get nightclubNoTimelineEvents => 'Geen timeline events.';
+
+  @override
+  String get nightclubOperationsAlerts => 'Operations alerts';
+
+  @override
+  String get nightclubNoCriticalAlerts => 'Geen kritieke alerts.';
+
+  @override
+  String get nightclubQuickAction => 'Quick action';
+
+  @override
+  String get nightclubMgmtCrewTitle => 'Crew & diensten';
+
+  @override
+  String get nightclubMgmtCrewSubtitle =>
+      'Bezetting, prestaties en shift-historie.';
+
+  @override
+  String get nightclubMgmtDrugsTitle => 'Drugsopslag';
+
+  @override
+  String get nightclubMgmtDrugsSubtitle =>
+      'Voorraad in grammen beheren en verplaatsen.';
+
+  @override
+  String get nightclubMgmtDjTitle => 'DJ Command';
+
+  @override
+  String get nightclubMgmtDjSubtitle =>
+      'Kies DJ, shiftduur en live crowd-boost.';
+
+  @override
+  String get nightclubMgmtSecurityTitle => 'Security Unit';
+
+  @override
+  String get nightclubMgmtSecuritySubtitle =>
+      'Diefstalreductie, kosten en actieve beveiliging.';
+
+  @override
+  String get nightclubMgmtOpsLabTitle => 'Ops Lab';
+
+  @override
+  String nightclubMgmtOpsLabSubtitleAlert(String alerts, String smuggling) {
+    return 'Live alerts: $alerts | Smuggling: $smuggling';
+  }
+
+  @override
+  String get nightclubMgmtOpsLabSubtitleDefault =>
+      '11 systemen voor events, upgrades, routes en rivalen.';
+
+  @override
+  String get nightclubManagementPanelTitle => 'Nachtclub Beheer';
+
+  @override
+  String get nightclubChooseZoneHint =>
+      'Kies een managementzone en beheer alles zonder losse inner-scroll.';
+
+  @override
+  String get nightclubChipCrew => 'Crew';
+
+  @override
+  String get nightclubChipStorage => 'Opslag';
+
+  @override
+  String get nightclubChipDjShift => 'DJ shift';
+
+  @override
+  String get nightclubChipSecurity => 'Security';
+
+  @override
+  String get nightclubChipOpsAlerts => 'Ops alerts';
+
+  @override
+  String get nightclubNone => 'Geen';
+
+  @override
+  String get nightclubIntelligenceCardTitle => 'Nightclub Intelligence';
+
+  @override
+  String get nightclubSeasonStatus => 'Seizoen status';
+
+  @override
+  String nightclubSeasonCountdown(String days, String hours, String minutes) {
+    return '${days}d ${hours}u ${minutes}m';
+  }
+
+  @override
+  String nightclubShiftHours(String hours) {
+    return '$hours u';
+  }
+
+  @override
+  String nightclubTimeMinutes(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String nightclubTimeHoursOnly(String hours) {
+    return '$hours uur';
+  }
+
+  @override
+  String nightclubTimeHoursMinutes(String hours, String minutes) {
+    return '${hours}u ${minutes}m';
+  }
+
+  @override
   String get theftCooldownRedeemTitle => 'Stelen-cooldown overslaan?';
 
   @override

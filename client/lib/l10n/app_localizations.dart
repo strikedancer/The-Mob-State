@@ -13339,6 +13339,888 @@ abstract class AppLocalizations {
   /// **'Rival sabotage'**
   String get nightclubTheftTypeRival;
 
+  /// No description provided for @nightclubErrorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading nightclub: {error}'**
+  String nightclubErrorLoading(String error);
+
+  /// No description provided for @nightclubServiceErrorStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load nightclub stats'**
+  String get nightclubServiceErrorStats;
+
+  /// No description provided for @nightclubServiceErrorLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load leaderboard'**
+  String get nightclubServiceErrorLeaderboard;
+
+  /// No description provided for @nightclubServiceErrorSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load season ranking'**
+  String get nightclubServiceErrorSeason;
+
+  /// No description provided for @nightclubErrorWithDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {detail}'**
+  String nightclubErrorWithDetail(String detail);
+
+  /// No description provided for @nightclubResidentDjContractFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Resident DJ contract failed'**
+  String get nightclubResidentDjContractFailed;
+
+  /// No description provided for @nightclubScheduleEventFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to schedule event'**
+  String get nightclubScheduleEventFailed;
+
+  /// No description provided for @nightclubMarketingUpgradeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Marketing upgrade failed'**
+  String get nightclubMarketingUpgradeFailed;
+
+  /// No description provided for @nightclubUpgradeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade failed'**
+  String get nightclubUpgradeFailed;
+
+  /// No description provided for @nightclubIncidentResponseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Incident response failed'**
+  String get nightclubIncidentResponseFailed;
+
+  /// No description provided for @nightclubRivalActionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Rival action failed'**
+  String get nightclubRivalActionFailed;
+
+  /// No description provided for @nightclubSupplierContractFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier contract failed'**
+  String get nightclubSupplierContractFailed;
+
+  /// No description provided for @nightclubPromoterFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Promoter failed'**
+  String get nightclubPromoterFailed;
+
+  /// No description provided for @nightclubHeatCooldownFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat cooldown failed'**
+  String get nightclubHeatCooldownFailed;
+
+  /// No description provided for @nightclubSmugglingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling failed'**
+  String get nightclubSmugglingFailed;
+
+  /// No description provided for @nightclubCounterIntelFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-intel failed'**
+  String get nightclubCounterIntelFailed;
+
+  /// No description provided for @nightclubHospitalityStockFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Hospitality stock failed'**
+  String get nightclubHospitalityStockFailed;
+
+  /// No description provided for @nightclubHospitalityPricingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Hospitality pricing failed'**
+  String get nightclubHospitalityPricingFailed;
+
+  /// No description provided for @nightclubCurrentVisitorsPct.
+  ///
+  /// In en, this message translates to:
+  /// **'Current visitors: {pct}%'**
+  String nightclubCurrentVisitorsPct(String pct);
+
+  /// No description provided for @nightclubCommandDeckTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub Command Deck'**
+  String get nightclubCommandDeckTitle;
+
+  /// No description provided for @nightclubOpsDeckRevenueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue today'**
+  String get nightclubOpsDeckRevenueToday;
+
+  /// No description provided for @nightclubStockValueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock value'**
+  String get nightclubStockValueLabel;
+
+  /// No description provided for @nightclubCrewOccupancy.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew occupancy'**
+  String get nightclubCrewOccupancy;
+
+  /// No description provided for @nightclubOperationalRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Operational risk'**
+  String get nightclubOperationalRisk;
+
+  /// No description provided for @nightclubIncidents24h.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} incidents (24h)'**
+  String nightclubIncidents24h(String count);
+
+  /// No description provided for @nightclubActiveCrewShifts.
+  ///
+  /// In en, this message translates to:
+  /// **'Active crew shifts'**
+  String get nightclubActiveCrewShifts;
+
+  /// No description provided for @nightclubRecentCrewHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent crew history'**
+  String get nightclubRecentCrewHistory;
+
+  /// No description provided for @nightclubBadgeVip.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP'**
+  String get nightclubBadgeVip;
+
+  /// No description provided for @nightclubBadgeStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'STANDARD'**
+  String get nightclubBadgeStandard;
+
+  /// No description provided for @nightclubActiveDj.
+  ///
+  /// In en, this message translates to:
+  /// **'Active DJ'**
+  String get nightclubActiveDj;
+
+  /// No description provided for @nightclubActiveDjNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Active DJ: none'**
+  String get nightclubActiveDjNone;
+
+  /// No description provided for @nightclubUntilTime.
+  ///
+  /// In en, this message translates to:
+  /// **'until {time}'**
+  String nightclubUntilTime(String time);
+
+  /// No description provided for @nightclubActiveSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Active security'**
+  String get nightclubActiveSecurity;
+
+  /// No description provided for @nightclubActiveSecurityNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Active security: none'**
+  String get nightclubActiveSecurityNone;
+
+  /// No description provided for @nightclubNoDjsLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'No DJs loaded. Refresh the screen.'**
+  String get nightclubNoDjsLoaded;
+
+  /// No description provided for @nightclubNoSecurityLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'No security loaded. Refresh the screen.'**
+  String get nightclubNoSecurityLoaded;
+
+  /// No description provided for @nightclubCrowdBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'Crowd boost'**
+  String get nightclubCrowdBoost;
+
+  /// No description provided for @nightclubCostPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get nightclubCostPerHour;
+
+  /// No description provided for @nightclubReputationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reputation'**
+  String get nightclubReputationLabel;
+
+  /// No description provided for @nightclubSpecialtyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialty'**
+  String get nightclubSpecialtyLabel;
+
+  /// No description provided for @nightclubTheftReduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Theft reduction'**
+  String get nightclubTheftReduction;
+
+  /// No description provided for @nightclubShiftCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift cost'**
+  String get nightclubShiftCost;
+
+  /// No description provided for @nightclubSelectedStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get nightclubSelectedStock;
+
+  /// No description provided for @nightclubAvailableGrams.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get nightclubAvailableGrams;
+
+  /// No description provided for @nightclubMaxChip.
+  ///
+  /// In en, this message translates to:
+  /// **'MAX'**
+  String get nightclubMaxChip;
+
+  /// No description provided for @nightclubStoredInNightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored in nightclub'**
+  String get nightclubStoredInNightclub;
+
+  /// No description provided for @nightclubCurrentStockGrams.
+  ///
+  /// In en, this message translates to:
+  /// **'Current stock: {grams}g'**
+  String nightclubCurrentStockGrams(String grams);
+
+  /// No description provided for @nightclubNoStoredDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'No stored drugs yet.'**
+  String get nightclubNoStoredDrugs;
+
+  /// No description provided for @nightclubStockZeroSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Current stock is 0g (everything has been sold).'**
+  String get nightclubStockZeroSoldOut;
+
+  /// No description provided for @nightclubQualityWithValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality: {value}'**
+  String nightclubQualityWithValue(String value);
+
+  /// No description provided for @nightclubGramsStock.
+  ///
+  /// In en, this message translates to:
+  /// **'{grams}g stock'**
+  String nightclubGramsStock(String grams);
+
+  /// No description provided for @nightclubOperationsLabTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations Lab (11 systems)'**
+  String get nightclubOperationsLabTitle;
+
+  /// No description provided for @nightclubSectionResidentDjContract.
+  ///
+  /// In en, this message translates to:
+  /// **'1) Resident DJ contract'**
+  String get nightclubSectionResidentDjContract;
+
+  /// No description provided for @nightclubContractDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract discount'**
+  String get nightclubContractDiscount;
+
+  /// No description provided for @nightclubContractDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract duration'**
+  String get nightclubContractDuration;
+
+  /// No description provided for @nightclubContractDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} day} other{{count} days}}'**
+  String nightclubContractDays(int count);
+
+  /// No description provided for @nightclubStartResidentContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Start resident contract'**
+  String get nightclubStartResidentContract;
+
+  /// No description provided for @nightclubSectionEventCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'2) Dynamic event calendar'**
+  String get nightclubSectionEventCalendar;
+
+  /// No description provided for @nightclubRecommendedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended today'**
+  String get nightclubRecommendedToday;
+
+  /// No description provided for @nightclubEventTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Event template'**
+  String get nightclubEventTemplate;
+
+  /// No description provided for @nightclubScheduleEventFiveMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule event (+5 min)'**
+  String get nightclubScheduleEventFiveMin;
+
+  /// No description provided for @nightclubUpcomingEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming events'**
+  String get nightclubUpcomingEvents;
+
+  /// No description provided for @nightclubSectionUpgradeTree.
+  ///
+  /// In en, this message translates to:
+  /// **'3) Upgrade tree'**
+  String get nightclubSectionUpgradeTree;
+
+  /// No description provided for @nightclubUpgradeSoundRig.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound rig'**
+  String get nightclubUpgradeSoundRig;
+
+  /// No description provided for @nightclubUpgradeVipLounge.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP lounge'**
+  String get nightclubUpgradeVipLounge;
+
+  /// No description provided for @nightclubUpgradeSurveillance.
+  ///
+  /// In en, this message translates to:
+  /// **'Surveillance'**
+  String get nightclubUpgradeSurveillance;
+
+  /// No description provided for @nightclubUpgradeWithCost.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ({cost})'**
+  String nightclubUpgradeWithCost(String name, String cost);
+
+  /// No description provided for @nightclubChooseUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose upgrade'**
+  String get nightclubChooseUpgrade;
+
+  /// No description provided for @nightclubUpgradeAlreadyMaxMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This upgrade is already max level.'**
+  String get nightclubUpgradeAlreadyMaxMessage;
+
+  /// No description provided for @nightclubUpgradeAlreadyMaxed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade already maxed'**
+  String get nightclubUpgradeAlreadyMaxed;
+
+  /// No description provided for @nightclubUpgradeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade now'**
+  String get nightclubUpgradeNow;
+
+  /// No description provided for @nightclubMarketingInvestment.
+  ///
+  /// In en, this message translates to:
+  /// **'Marketing investment'**
+  String get nightclubMarketingInvestment;
+
+  /// No description provided for @nightclubInvestMarketing.
+  ///
+  /// In en, this message translates to:
+  /// **'Invest in marketing'**
+  String get nightclubInvestMarketing;
+
+  /// No description provided for @nightclubSectionPoliceHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'4) Police heat & incidents'**
+  String get nightclubSectionPoliceHeat;
+
+  /// No description provided for @nightclubHeatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat'**
+  String get nightclubHeatLabel;
+
+  /// No description provided for @nightclubRaidRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid risk'**
+  String get nightclubRaidRisk;
+
+  /// No description provided for @nightclubCooldownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown'**
+  String get nightclubCooldownLabel;
+
+  /// No description provided for @nightclubStartHeatCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Start heat cooldown'**
+  String get nightclubStartHeatCooldown;
+
+  /// No description provided for @nightclubBribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Bribe'**
+  String get nightclubBribe;
+
+  /// No description provided for @nightclubLockdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Lockdown'**
+  String get nightclubLockdown;
+
+  /// No description provided for @nightclubCounterIntelShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-intel'**
+  String get nightclubCounterIntelShort;
+
+  /// No description provided for @nightclubSectionStaffMorale.
+  ///
+  /// In en, this message translates to:
+  /// **'5) Staff fatigue & morale'**
+  String get nightclubSectionStaffMorale;
+
+  /// No description provided for @nightclubMorale.
+  ///
+  /// In en, this message translates to:
+  /// **'Morale'**
+  String get nightclubMorale;
+
+  /// No description provided for @nightclubFatigue.
+  ///
+  /// In en, this message translates to:
+  /// **'Fatigue'**
+  String get nightclubFatigue;
+
+  /// No description provided for @nightclubStaffing.
+  ///
+  /// In en, this message translates to:
+  /// **'Staffing'**
+  String get nightclubStaffing;
+
+  /// No description provided for @nightclubSectionSupplierPromoter.
+  ///
+  /// In en, this message translates to:
+  /// **'6) Supplier & promoter'**
+  String get nightclubSectionSupplierPromoter;
+
+  /// No description provided for @nightclubSupplierContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier contract'**
+  String get nightclubSupplierContract;
+
+  /// No description provided for @nightclubActivateSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate supplier'**
+  String get nightclubActivateSupplier;
+
+  /// No description provided for @nightclubPromoterProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Promoter profile'**
+  String get nightclubPromoterProfile;
+
+  /// No description provided for @nightclubHirePromoter.
+  ///
+  /// In en, this message translates to:
+  /// **'Hire promoter'**
+  String get nightclubHirePromoter;
+
+  /// No description provided for @nightclubSectionVipClientele.
+  ///
+  /// In en, this message translates to:
+  /// **'7) VIP clientele & staff traits'**
+  String get nightclubSectionVipClientele;
+
+  /// No description provided for @nightclubVipShare.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP share'**
+  String get nightclubVipShare;
+
+  /// No description provided for @nightclubSpendMultiplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend x'**
+  String get nightclubSpendMultiplier;
+
+  /// No description provided for @nightclubTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier'**
+  String get nightclubTier;
+
+  /// No description provided for @nightclubSectionSmugglingRoutes.
+  ///
+  /// In en, this message translates to:
+  /// **'8) Smuggling routes'**
+  String get nightclubSectionSmugglingRoutes;
+
+  /// No description provided for @nightclubReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get nightclubReady;
+
+  /// No description provided for @nightclubRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get nightclubRoute;
+
+  /// No description provided for @nightclubStartRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Start route'**
+  String get nightclubStartRoute;
+
+  /// No description provided for @nightclubLastRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Last route'**
+  String get nightclubLastRoute;
+
+  /// No description provided for @nightclubRouteLockUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Route lock active until {date}'**
+  String nightclubRouteLockUntil(String date);
+
+  /// No description provided for @nightclubSectionBarKitchen.
+  ///
+  /// In en, this message translates to:
+  /// **'9) Bar & Kitchen management'**
+  String get nightclubSectionBarKitchen;
+
+  /// No description provided for @nightclubServiceLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Service level'**
+  String get nightclubServiceLevel;
+
+  /// No description provided for @nightclubStockStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock status'**
+  String get nightclubStockStatus;
+
+  /// No description provided for @nightclubSpoilageRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Spoilage risk'**
+  String get nightclubSpoilageRisk;
+
+  /// No description provided for @nightclubDrinksFoodStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Drinks/Food stock'**
+  String get nightclubDrinksFoodStock;
+
+  /// No description provided for @nightclubBuyStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy stock'**
+  String get nightclubBuyStock;
+
+  /// No description provided for @nightclubMenuPricingMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu pricing mode'**
+  String get nightclubMenuPricingMode;
+
+  /// No description provided for @nightclubApplyPricing.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply pricing'**
+  String get nightclubApplyPricing;
+
+  /// No description provided for @nightclubSectionRivals.
+  ///
+  /// In en, this message translates to:
+  /// **'10) Rival clubs + counter-intel'**
+  String get nightclubSectionRivals;
+
+  /// No description provided for @nightclubSearchPlayerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search player name'**
+  String get nightclubSearchPlayerName;
+
+  /// No description provided for @nightclubTargetName.
+  ///
+  /// In en, this message translates to:
+  /// **'Target (name)'**
+  String get nightclubTargetName;
+
+  /// No description provided for @nightclubRivalCrowdLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} • {country} • crowd {pct}%'**
+  String nightclubRivalCrowdLine(String name, String country, String pct);
+
+  /// No description provided for @nightclubSabotage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sabotage'**
+  String get nightclubSabotage;
+
+  /// No description provided for @nightclubPromoWar.
+  ///
+  /// In en, this message translates to:
+  /// **'Promo war'**
+  String get nightclubPromoWar;
+
+  /// No description provided for @nightclubCounterIntelSweep.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-intel sweep'**
+  String get nightclubCounterIntelSweep;
+
+  /// No description provided for @nightclubMitigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Mitigation'**
+  String get nightclubMitigation;
+
+  /// No description provided for @nightclubSectionTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'11) Operations timeline'**
+  String get nightclubSectionTimeline;
+
+  /// No description provided for @nightclubNoTimelineEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No timeline events.'**
+  String get nightclubNoTimelineEvents;
+
+  /// No description provided for @nightclubOperationsAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations alerts'**
+  String get nightclubOperationsAlerts;
+
+  /// No description provided for @nightclubNoCriticalAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'No critical alerts.'**
+  String get nightclubNoCriticalAlerts;
+
+  /// No description provided for @nightclubQuickAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick action'**
+  String get nightclubQuickAction;
+
+  /// No description provided for @nightclubMgmtCrewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew & shifts'**
+  String get nightclubMgmtCrewTitle;
+
+  /// No description provided for @nightclubMgmtCrewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Staffing, performance and shift history.'**
+  String get nightclubMgmtCrewSubtitle;
+
+  /// No description provided for @nightclubMgmtDrugsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug storage'**
+  String get nightclubMgmtDrugsTitle;
+
+  /// No description provided for @nightclubMgmtDrugsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage and transfer inventory in grams.'**
+  String get nightclubMgmtDrugsSubtitle;
+
+  /// No description provided for @nightclubMgmtDjTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ command'**
+  String get nightclubMgmtDjTitle;
+
+  /// No description provided for @nightclubMgmtDjSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose DJ, shift length and live crowd boost.'**
+  String get nightclubMgmtDjSubtitle;
+
+  /// No description provided for @nightclubMgmtSecurityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Security unit'**
+  String get nightclubMgmtSecurityTitle;
+
+  /// No description provided for @nightclubMgmtSecuritySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theft reduction, costs and active security.'**
+  String get nightclubMgmtSecuritySubtitle;
+
+  /// No description provided for @nightclubMgmtOpsLabTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops Lab'**
+  String get nightclubMgmtOpsLabTitle;
+
+  /// No description provided for @nightclubMgmtOpsLabSubtitleAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Live alerts: {alerts} | Smuggling: {smuggling}'**
+  String nightclubMgmtOpsLabSubtitleAlert(String alerts, String smuggling);
+
+  /// No description provided for @nightclubMgmtOpsLabSubtitleDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'11 systems for events, upgrades, routes and rivals.'**
+  String get nightclubMgmtOpsLabSubtitleDefault;
+
+  /// No description provided for @nightclubManagementPanelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub management'**
+  String get nightclubManagementPanelTitle;
+
+  /// No description provided for @nightclubChooseZoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a management zone and control everything without nested inner-scroll.'**
+  String get nightclubChooseZoneHint;
+
+  /// No description provided for @nightclubChipCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get nightclubChipCrew;
+
+  /// No description provided for @nightclubChipStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get nightclubChipStorage;
+
+  /// No description provided for @nightclubChipDjShift.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ shift'**
+  String get nightclubChipDjShift;
+
+  /// No description provided for @nightclubChipSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get nightclubChipSecurity;
+
+  /// No description provided for @nightclubChipOpsAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops alerts'**
+  String get nightclubChipOpsAlerts;
+
+  /// No description provided for @nightclubNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get nightclubNone;
+
+  /// No description provided for @nightclubIntelligenceCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub Intelligence'**
+  String get nightclubIntelligenceCardTitle;
+
+  /// No description provided for @nightclubSeasonStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Season status'**
+  String get nightclubSeasonStatus;
+
+  /// No description provided for @nightclubSeasonCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d {hours}h {minutes}m'**
+  String nightclubSeasonCountdown(String days, String hours, String minutes);
+
+  /// No description provided for @nightclubShiftHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String nightclubShiftHours(String hours);
+
+  /// No description provided for @nightclubTimeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String nightclubTimeMinutes(String minutes);
+
+  /// No description provided for @nightclubTimeHoursOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h'**
+  String nightclubTimeHoursOnly(String hours);
+
+  /// No description provided for @nightclubTimeHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String nightclubTimeHoursMinutes(String hours, String minutes);
+
   /// No description provided for @theftCooldownRedeemTitle.
   ///
   /// In en, this message translates to:
