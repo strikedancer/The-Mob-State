@@ -58,19 +58,17 @@ const config: Config = {
       process.env.ALLOWED_ORIGINS?.split(',')
         .map((s) => s.trim())
         .filter(Boolean) ?? [];
-    if (fromEnv.length > 0) {
-      return fromEnv;
-    }
-    // Production: empty ALLOWED_ORIGINS breaks browser calls from the Flutter shell
-    // (e.g. landing GET https://api…/public/home). Keep in sync with real web + admin hosts.
+    // Production: always allow Mob State web shells (union with .env). A partial ALLOWED_ORIGINS
+    // (e.g. admin only) otherwise blocks https://themobstate.com → api.themobstate.com in the browser.
+    const mobstateShells = [
+      'https://themobstate.com',
+      'https://www.themobstate.com',
+      'https://admin.themobstate.com',
+    ];
     if (process.env.NODE_ENV === 'production') {
-      return [
-        'https://themobstate.com',
-        'https://www.themobstate.com',
-        'https://admin.themobstate.com',
-      ];
+      return [...new Set([...mobstateShells, ...fromEnv])];
     }
-    return [];
+    return fromEnv;
   })(),
   tickIntervalMinutes: parseFloat(process.env.TICK_INTERVAL_MINUTES || '5'),
   hospitalHealCost: parseInt(process.env.HOSPITAL_HEAL_COST || '10000', 10),

@@ -73,6 +73,24 @@ import path from 'path';
 
 const app: Application = express();
 
+// CORS must run before any middleware that can end the response (e.g. Prisma 503); otherwise
+// browsers report "No Access-Control-Allow-Origin" on failures and hide the real status body.
+app.use(
+  cors({
+    origin:
+      config.nodeEnv === 'development'
+        ? (origin, callback) => {
+            console.log(`[CORS] Request from origin: ${origin}`);
+            callback(null, origin || '*');
+          }
+        : config.allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'X-Requested-With'],
+    exposedHeaders: ['Content-Type', 'Cache-Control'],
+  }),
+);
+
 // CRITICAL: Wait for Prisma DB connection before processing any requests
 app.use(async (req, res, next) => {
   try {
@@ -119,22 +137,6 @@ if (configuredImageLibraryPath && clientImagesPath !== configuredImageLibraryPat
 console.log(`[App] Serving /assets/images from: ${clientImagesPath}`);
 
 app.use('/assets/images', express.static(clientImagesPath));
-
-// CORS configuration - allow all origins in development
-app.use(
-  cors({
-    origin: config.nodeEnv === 'development' 
-      ? (origin, callback) => {
-          console.log(`[CORS] Request from origin: ${origin}`);
-          callback(null, origin || '*'); // Allow the requesting origin or wildcard
-        }
-      : config.allowedOrigins,
-    credentials: true, // Always allow credentials for Flutter web
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'X-Requested-With'],
-    exposedHeaders: ['Content-Type', 'Cache-Control'],
-  })
-);
 
 // Global rate limiter (if Redis is available)
 app.use(globalRateLimiter);

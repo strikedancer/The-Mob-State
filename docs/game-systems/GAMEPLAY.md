@@ -1121,7 +1121,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren, en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
 - Juridische pagina’s: `/privacy` en `/digital-goods` (teksten volledig uit de client-ARB’s). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
 - Layout: hero-titel + pitch in een leesbare kolom (op desktop visueel meer naar het midden-rechts t.o.v. de achtergrond-titel), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan**. Ranglijsten: `GET /public/home` via dezelfde API-basis als de rest van de client (`AppConfig.apiBaseUrl`).
-- **CORS:** de API moet origins van de Flutter-web-shell (`https://themobstate.com`, `www`, `admin`) toestaan wanneer de client op een ander subdomein (`api.…`) aanroept; zie `ALLOWED_ORIGINS` / productie-default in `backend/src/config/index.ts`.
+- **CORS:** de API moet origins van de Flutter-web-shell (`https://themobstate.com`, `www`, `admin`) toestaan wanneer de client op een ander subdomein (`api.…`) aanroept; in productie worden die origins altijd met `ALLOWED_ORIGINS` geünioneerd (`config/index.ts`). Express zet `cors` vóór de Prisma-wachtmiddleware (`app.ts`) zodat ook fout- en 503-responses CORS-headers dragen.
 - Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`.
 
 ---
