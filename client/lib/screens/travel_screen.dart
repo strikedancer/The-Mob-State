@@ -40,12 +40,6 @@ class _TravelScreenState extends State<TravelScreen> {
   int _journeyCurrentLeg = 0;
   int _journeyTotalLegs = 0;
 
-  String _confirmTitle() {
-    return Localizations.localeOf(context).languageCode == 'nl'
-        ? 'Weet je het zeker?'
-        : 'Are you sure?';
-  }
-
   @override
   void initState() {
     super.initState();
@@ -229,7 +223,7 @@ class _TravelScreenState extends State<TravelScreen> {
                 height: 32,
               ),
               const SizedBox(width: 8),
-              Text(_confirmTitle()),
+              Expanded(child: Text(l10n.travelJourneyTitle)),
             ],
           ),
           content: Column(
@@ -427,7 +421,7 @@ class _TravelScreenState extends State<TravelScreen> {
               height: 32,
             ),
             const SizedBox(width: 8),
-            Text(_confirmTitle()),
+            Expanded(child: Text(l10n.travelContinueConfirmTitle)),
           ],
         ),
         content: Text(l10n.travelContinueConfirmBody),
@@ -651,7 +645,7 @@ class _TravelScreenState extends State<TravelScreen> {
               height: 32,
             ),
             const SizedBox(width: 8),
-            Text(_confirmTitle()),
+            Expanded(child: Text(l10n.travelCancelJourney)),
           ],
         ),
         content: Text(l10n.confirmAction),
@@ -678,18 +672,28 @@ class _TravelScreenState extends State<TravelScreen> {
 
     try {
       final response = await _apiClient.post('/travel/cancel', {});
-      final data = jsonDecode(response.body);
-      final messageKey = data['messageKey'] as String?;
-      if (mounted) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (!mounted) return;
+      final loc = AppLocalizations.of(context)!;
+      if (response.statusCode == 200 && data['success'] == true) {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              messageKey == 'travelJourneyCanceled'
-                  ? l10n.travelJourneyCanceled
-                  : l10n.travelJourneyCanceled,
-            ),
+            content: Text(loc.travelJourneyCanceled),
             backgroundColor: Colors.orange,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      } else {
+        final err = data['error'] as String?;
+        final body = err == 'NOT_IN_TRANSIT'
+            ? loc.travelNotInTransit
+            : (data['message'] as String? ?? loc.unknownError);
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(body),
+            backgroundColor: Colors.red,
             duration: const Duration(seconds: 4),
           ),
         );
@@ -913,7 +917,25 @@ class _TravelScreenState extends State<TravelScreen> {
           ? const Center(child: CircularProgressIndicator())
           : _error != null
           ? Center(
-              child: Text(_error!, style: const TextStyle(color: Colors.red)),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _error!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: _isTraveling ? null : _loadCountries,
+                      icon: const Icon(Icons.refresh),
+                      label: Text(l10n.retry),
+                    ),
+                  ],
+                ),
+              ),
             )
           : ListView(
               padding: const EdgeInsets.all(16),

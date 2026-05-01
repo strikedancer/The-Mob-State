@@ -7903,5 +7903,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "travelNotInTransit": "Je bent niet op reis."
 }

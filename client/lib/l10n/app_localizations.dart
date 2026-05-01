@@ -1310,6 +1310,12 @@ abstract class AppLocalizations {
   /// **'Journey canceled'**
   String get travelJourneyCanceled;
 
+  /// No description provided for @travelNotInTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not on a journey.'**
+  String get travelNotInTransit;
+
   /// No description provided for @travelDirect.
   ///
   /// In en, this message translates to:

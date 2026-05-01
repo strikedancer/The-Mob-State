@@ -303,6 +303,7 @@
   "travelContinue": "Continue",
   "travelCancelJourney": "Cancel journey",
   "travelJourneyCanceled": "Journey canceled",
+  "travelNotInTransit": "You are not on a journey.",
   "travelDirect": "Direct",
   "travelVia": "via {countries}",
   "@travelVia": {

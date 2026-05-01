@@ -656,6 +656,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get travelJourneyCanceled => 'Voyage annulé';
 
   @override
+  String get travelNotInTransit => 'Vous n\'êtes pas en voyage.';
+
+  @override
   String get travelDirect => 'Direct';
 
   @override
