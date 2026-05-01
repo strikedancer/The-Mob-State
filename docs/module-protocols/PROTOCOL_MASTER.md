@@ -329,8 +329,8 @@ Acceptatie-eis:
 
 Voor deze codebase geldt als standaard uitvoerflow na een functionele wijziging:
 1. Commit lokale wijzigingen.
-2. Push naar GitHub.
-3. Voer op VPS een `git pull origin main` uit.
+2. Push naar GitHub. **Productie/VPS (`vps_pull_and_build.ps1`, PuTTY-runbook):** die doet `git pull origin main` — wijzigingen staan dus op **`main`** (merge of cherry-pick) **vóór** deploy. Alleen pushen naar een feature-branch laat **online ongewijzigd** tot die code op `main` staat en stap 3–5 opnieuw lopen.
+3. Voer op VPS een `git pull origin main` uit (of het volledige Windows-deployscript dat dit voor je doet).
 4. Rebuild/herstart de relevante service(s) met `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
 5. Controleer direct de service-logs.
 
