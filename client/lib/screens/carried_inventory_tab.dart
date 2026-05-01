@@ -236,7 +236,7 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Je draagt momenteel geen tools, wapens of munitie.',
+                          l10n.inventoryCarriedEmpty,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey[400],
@@ -257,11 +257,11 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
                     padding: const EdgeInsets.all(8),
                     children: [
                       if (_tools.isNotEmpty) ...[
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
                           child: Text(
-                            'Gereedschap',
-                            style: TextStyle(
+                            l10n.inventorySectionTools,
+                            style: const TextStyle(
                               color: Color(0xFFD4AF37),
                               fontWeight: FontWeight.bold,
                             ),
@@ -277,11 +277,11 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
                         const SizedBox(height: 12),
                       ],
                       if (_weapons.isNotEmpty) ...[
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
                           child: Text(
-                            'Wapens',
-                            style: TextStyle(
+                            l10n.inventorySectionWeapons,
+                            style: const TextStyle(
                               color: Color(0xFFD4AF37),
                               fontWeight: FontWeight.bold,
                             ),
@@ -297,11 +297,14 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
                               title: Text(
                                 (weapon['name'] ??
                                         weapon['weaponId'] ??
-                                        'Wapen')
+                                        l10n.inventoryWeaponFallbackName)
                                     .toString(),
                               ),
                               subtitle: Text(
-                                'Conditie: ${weapon['condition'] ?? 100}% • Aantal: ${weapon['quantity'] ?? 1}',
+                                l10n.inventoryWeaponSubtitle(
+                                  '${weapon['condition'] ?? 100}',
+                                  '${weapon['quantity'] ?? 1}',
+                                ),
                               ),
                             ),
                           ),
@@ -309,11 +312,11 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
                         const SizedBox(height: 12),
                       ],
                       if (_ammo.isNotEmpty) ...[
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
                           child: Text(
-                            'Munitie',
-                            style: TextStyle(
+                            l10n.inventorySectionAmmo,
+                            style: const TextStyle(
                               color: Color(0xFFD4AF37),
                               fontWeight: FontWeight.bold,
                             ),
@@ -329,11 +332,13 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
                               title: Text(
                                 (ammoItem['displayName'] ??
                                         ammoItem['ammoType'] ??
-                                        'Munitie')
+                                        l10n.inventoryAmmoFallbackName)
                                     .toString(),
                               ),
                               subtitle: Text(
-                                'Aantal: ${ammoItem['quantity'] ?? 0}',
+                                l10n.inventoryAmmoQuantity(
+                                  '${ammoItem['quantity'] ?? 0}',
+                                ),
                               ),
                             ),
                           ),

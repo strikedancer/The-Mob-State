@@ -23,10 +23,6 @@ class _InventoryScreenState extends State<InventoryScreen>
   String? _selectedCrimeWeaponId;
   bool _loadingWeaponSelection = true;
 
-  String _tr(String nl, String en) {
-    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -128,7 +124,7 @@ class _InventoryScreenState extends State<InventoryScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _tr('Geselecteerd crime-wapen', 'Selected crime weapon'),
+                  l10n.inventoryCrimeWeaponTitle,
                   style: const TextStyle(
                     color: Color(0xFFD4AF37),
                     fontWeight: FontWeight.bold,
@@ -164,10 +160,7 @@ class _InventoryScreenState extends State<InventoryScreen>
                     ),
                     style: const TextStyle(color: Colors.white),
                     hint: Text(
-                      _tr(
-                        'Selecteer een wapen voor crimes',
-                        'Select a weapon for crimes',
-                      ),
+                      l10n.inventoryCrimeWeaponHint,
                       style: const TextStyle(color: Colors.white70),
                     ),
                     items: _weaponInventory
@@ -193,10 +186,7 @@ class _InventoryScreenState extends State<InventoryScreen>
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      _tr(
-                        'Kies hier je crime-wapen. Het crimes-scherm gebruikt deze selectie direct.',
-                        'Choose your crime weapon here. The crimes screen uses this selection immediately.',
-                      ),
+                      l10n.inventoryCrimeWeaponHelp,
                       style: TextStyle(color: Colors.orange, fontSize: 12),
                     ),
                   ),
@@ -204,10 +194,7 @@ class _InventoryScreenState extends State<InventoryScreen>
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      _tr(
-                        'Geen bruikbare wapens in inventory. Koop of verplaats eerst een wapen naar carried items.',
-                        'No usable weapons in inventory. Buy or move a weapon into carried items first.',
-                      ),
+                      l10n.inventoryCrimeWeaponEmpty,
                       style: TextStyle(color: Colors.orange, fontSize: 12),
                     ),
                   ),

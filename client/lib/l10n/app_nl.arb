@@ -7124,5 +7124,127 @@
       }
     }
   },
-  "propertyManageNightclub": "Beheer nachtclub"
+  "propertyManageNightclub": "Beheer nachtclub",
+  "inventoryCrimeWeaponTitle": "Geselecteerd crime-wapen",
+  "inventoryCrimeWeaponHint": "Selecteer een wapen voor crimes",
+  "inventoryCrimeWeaponHelp": "Kies hier je crime-wapen. Het crimes-scherm gebruikt deze selectie direct.",
+  "inventoryCrimeWeaponEmpty": "Geen bruikbare wapens in inventory. Koop of verplaats eerst een wapen naar carried items.",
+  "inventoryCarriedEmpty": "Je draagt momenteel geen tools, wapens of munitie.",
+  "inventorySectionTools": "Gereedschap",
+  "inventorySectionWeapons": "Wapens",
+  "inventorySectionAmmo": "Munitie",
+  "inventoryWeaponFallbackName": "Wapen",
+  "inventoryAmmoFallbackName": "Munitie",
+  "inventoryWeaponSubtitle": "Conditie: {condition}% • Aantal: {qty}",
+  "@inventoryWeaponSubtitle": {
+    "placeholders": {
+      "condition": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryAmmoQuantity": "Aantal: {qty}",
+  "@inventoryAmmoQuantity": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryQuantityValue": "Aantal: {qty}",
+  "@inventoryQuantityValue": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryWithdrawDialogTitle": "Neem uit opslag: {itemName}",
+  "@inventoryWithdrawDialogTitle": {
+    "placeholders": {
+      "itemName": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryMaxShort": "Max: {max}",
+  "@inventoryMaxShort": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryInvalidQuantity": "Ongeldige hoeveelheid",
+  "inventorySnackWeaponStored": "Wapen opgeslagen",
+  "inventorySnackWeaponWithdrawn": "Wapen opgenomen",
+  "inventorySnackCashStored": "Cash opgeslagen",
+  "inventorySnackCashWithdrawn": "Cash opgenomen",
+  "inventorySnackDrugsWithdrawn": "Drugs opgenomen",
+  "inventoryActionFailed": "Actie mislukt",
+  "inventoryStorageNoCategory": "Geen opslagtype",
+  "inventoryCountsWeapons": "Wapens",
+  "inventoryCountsDrugs": "Drugs",
+  "inventoryCountsCash": "Contant",
+  "inventoryStorageCountsLine": "{weapons}: {weaponCount} • {drugs}: {drugCount} • {cash}: €{cashAmount}",
+  "@inventoryStorageCountsLine": {
+    "placeholders": {
+      "weapons": {
+        "type": "String"
+      },
+      "weaponCount": {
+        "type": "int"
+      },
+      "drugs": {
+        "type": "String"
+      },
+      "drugCount": {
+        "type": "int"
+      },
+      "cash": {
+        "type": "String"
+      },
+      "cashAmount": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryStorageWrongCountry": "Je bent in een ander land. Je kunt deze opslag hier niet openen.",
+  "inventoryWeaponStorageTitle": "Wapenopslag",
+  "inventoryStoreWeapons": "Opslaan",
+  "inventoryInStorage": "In opslag",
+  "inventoryUnknownWeapon": "Onbekend wapen",
+  "inventoryTakeOne": "Neem 1",
+  "inventoryNoWeaponsInStorage": "Geen wapens in deze opslag.",
+  "inventoryCashStorageTitle": "Cashopslag",
+  "inventoryDepositCash": "Cash opslaan",
+  "inventoryWithdrawCash": "Cash opnemen",
+  "inventoryDrugStorageTitle": "Drugopslag",
+  "inventoryNoDrugsInStorage": "Geen drugs in opslag.",
+  "inventoryNotForTools": "Dit pand is niet voor gereedschap-opslag. Gebruik een magazijn voor tools.",
+  "inventoryCategoryTools": "Gereedschap",
+  "inventoryCategoryDrugs": "Drugs",
+  "inventoryCategoryWeapons": "Wapens",
+  "inventoryCategoryCash": "Contant geld",
+  "inventoryStorageSlotsDetail": "{used}/{max} plekken ({percent}%)",
+  "@inventoryStorageSlotsDetail": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryStorageAccessibleHere": "Toegankelijk in huidig land",
+  "inventoryStorageNotAccessibleHere": "Niet toegankelijk in dit land",
+  "loadoutEquipFailed": "Loadout activeren mislukt",
+  "loadoutDeleteFailed": "Loadout verwijderen mislukt"
 }

@@ -4288,6 +4288,181 @@ class AppLocalizationsIt extends AppLocalizations {
   String get storageFull => '📦 Il deposito della proprietà è pieno';
 
   @override
+  String get inventoryCrimeWeaponTitle => 'Arma del crimine selezionata';
+
+  @override
+  String get inventoryCrimeWeaponHint => 'Seleziona un\'arma per i crimini';
+
+  @override
+  String get inventoryCrimeWeaponHelp =>
+      'Scegli qui la tua arma del crimine. La schermata dei crimini utilizza immediatamente questa selezione.';
+
+  @override
+  String get inventoryCrimeWeaponEmpty =>
+      'Nessuna arma utilizzabile nell\'inventario. Acquista o sposta prima un\'arma negli oggetti trasportati.';
+
+  @override
+  String get inventoryCarriedEmpty =>
+      'Non stai trasportando strumenti, armi o munizioni.';
+
+  @override
+  String get inventorySectionTools => 'Utensili';
+
+  @override
+  String get inventorySectionWeapons => 'Armi';
+
+  @override
+  String get inventorySectionAmmo => 'Munizioni';
+
+  @override
+  String get inventoryWeaponFallbackName => 'Arma';
+
+  @override
+  String get inventoryAmmoFallbackName => 'Munizioni';
+
+  @override
+  String inventoryWeaponSubtitle(String condition, String qty) {
+    return 'Condizione: $condition% • Quantità: $qty';
+  }
+
+  @override
+  String inventoryAmmoQuantity(String qty) {
+    return 'Quantità: $qty';
+  }
+
+  @override
+  String inventoryQuantityValue(int qty) {
+    return 'Quantità: $qty';
+  }
+
+  @override
+  String inventoryWithdrawDialogTitle(String itemName) {
+    return 'Ritiro dal magazzino: $itemName';
+  }
+
+  @override
+  String inventoryMaxShort(int max) {
+    return 'Massimo: $max';
+  }
+
+  @override
+  String get inventoryInvalidQuantity => 'Quantità non valida';
+
+  @override
+  String get inventorySnackWeaponStored => 'Arma depositata';
+
+  @override
+  String get inventorySnackWeaponWithdrawn => 'Arma ritirata';
+
+  @override
+  String get inventorySnackCashStored => 'Depositato in contanti';
+
+  @override
+  String get inventorySnackCashWithdrawn => 'Contanti ritirati';
+
+  @override
+  String get inventorySnackDrugsWithdrawn => 'Farmaci ritirati';
+
+  @override
+  String get inventoryActionFailed => 'Azione fallita';
+
+  @override
+  String get inventoryStorageNoCategory => 'Nessun tipo di archiviazione';
+
+  @override
+  String get inventoryCountsWeapons => 'Armi';
+
+  @override
+  String get inventoryCountsDrugs => 'Droghe';
+
+  @override
+  String get inventoryCountsCash => 'Contanti';
+
+  @override
+  String inventoryStorageCountsLine(
+    String weapons,
+    int weaponCount,
+    String drugs,
+    int drugCount,
+    String cash,
+    int cashAmount,
+  ) {
+    return '$weapons: $weaponCount • $drugs: $drugCount • $cash: €$cashAmount';
+  }
+
+  @override
+  String get inventoryStorageWrongCountry =>
+      'Sei in un altro paese. Non puoi accedere a questo spazio di archiviazione qui.';
+
+  @override
+  String get inventoryWeaponStorageTitle => 'Deposito armi';
+
+  @override
+  String get inventoryStoreWeapons => 'Negozio';
+
+  @override
+  String get inventoryInStorage => 'In deposito';
+
+  @override
+  String get inventoryUnknownWeapon => 'Arma sconosciuta';
+
+  @override
+  String get inventoryTakeOne => 'Prendi 1';
+
+  @override
+  String get inventoryNoWeaponsInStorage => 'Nessuna arma in questo deposito.';
+
+  @override
+  String get inventoryCashStorageTitle => 'Deposito contanti';
+
+  @override
+  String get inventoryDepositCash => 'Depositare contanti';
+
+  @override
+  String get inventoryWithdrawCash => 'Prelevare contanti';
+
+  @override
+  String get inventoryDrugStorageTitle => 'Conservazione dei farmaci';
+
+  @override
+  String get inventoryNoDrugsInStorage => 'Nessun farmaco in deposito.';
+
+  @override
+  String get inventoryNotForTools =>
+      'Questa proprietà non è per la conservazione degli strumenti. Usa un magazzino per gli strumenti.';
+
+  @override
+  String get inventoryCategoryTools => 'Utensili';
+
+  @override
+  String get inventoryCategoryDrugs => 'Droghe';
+
+  @override
+  String get inventoryCategoryWeapons => 'Armi';
+
+  @override
+  String get inventoryCategoryCash => 'Contanti';
+
+  @override
+  String inventoryStorageSlotsDetail(int used, int max, String percent) {
+    return '$used/$max slot ($percent%)';
+  }
+
+  @override
+  String get inventoryStorageAccessibleHere => 'Accessibile nel paese attuale';
+
+  @override
+  String get inventoryStorageNotAccessibleHere =>
+      'Non accessibile in questo paese';
+
+  @override
+  String get loadoutEquipFailed =>
+      'Impossibile equipaggiare l\'equipaggiamento';
+
+  @override
+  String get loadoutDeleteFailed => 'Impossibile eliminare il caricamento';
+
+  @override
   String transferSuccess(String tool, String location) {
     return '✅ $tool spostato in $location';
   }

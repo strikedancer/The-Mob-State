@@ -65,9 +65,13 @@ class _LoadoutsTabState extends State<LoadoutsTab> {
         );
         await _loadLoadouts();
       } else {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
-            content: Text(result['error'] ?? 'Failed to equip loadout'),
+            content: Text(
+              result['error']?.toString() ??
+                  AppLocalizations.of(context)!.loadoutEquipFailed,
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -80,46 +84,53 @@ class _LoadoutsTabState extends State<LoadoutsTab> {
     
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[850],
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-          style: const TextStyle(color: Colors.white),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.deleteLoadout,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      builder: (dialogContext) {
+        final dlgL10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          backgroundColor: Colors.grey[850],
+          title: Text(
+            dlgL10n.propertiesConfirmPurchaseTitle,
+            style: const TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                dlgL10n.deleteLoadout,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                '${dlgL10n.confirmDeleteLoadout} "${loadout.name}"?',
+                style: const TextStyle(color: Colors.white70),
+              ),
+            ],
+          ),
+          contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+          actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(
+                dlgL10n.cancel,
+                style: const TextStyle(color: Colors.grey),
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              '${l10n.confirmDeleteLoadout} "${loadout.name}"?',
-              style: const TextStyle(color: Colors.white70),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              child: Text(dlgL10n.delete),
             ),
           ],
-        ),
-        contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-        actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel, style: const TextStyle(color: Colors.grey)),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-            ),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
+        );
+      },
     );
 
     if (confirmed != true) return;
@@ -136,9 +147,13 @@ class _LoadoutsTabState extends State<LoadoutsTab> {
         );
         await _loadLoadouts();
       } else {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
-            content: Text(result['error'] ?? 'Failed to delete loadout'),
+            content: Text(
+              result['error']?.toString() ??
+                  AppLocalizations.of(context)!.loadoutDeleteFailed,
+            ),
             backgroundColor: Colors.red,
           ),
         );

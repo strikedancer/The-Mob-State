@@ -38,9 +38,6 @@ class _StorageTabState extends State<StorageTab> {
   String? _error;
   String? _selectedPlayerWeaponId;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   @override
   void initState() {
     super.initState();
@@ -141,7 +138,10 @@ class _StorageTabState extends State<StorageTab> {
       weaponId: weaponId,
       quantity: 1,
     );
-    await _handleActionResult(result, 'Wapen opgenomen');
+    await _handleActionResult(
+      result,
+      AppLocalizations.of(context)!.inventorySnackWeaponWithdrawn,
+    );
   }
 
   Future<void> _depositCash() async {
@@ -154,7 +154,10 @@ class _StorageTabState extends State<StorageTab> {
       propertyId: _selectedStorage!.propertyId,
       amount: amount,
     );
-    await _handleActionResult(result, 'Cash opgeslagen');
+    await _handleActionResult(
+      result,
+      AppLocalizations.of(context)!.inventorySnackCashStored,
+    );
   }
 
   Future<void> _withdrawCash() async {
@@ -167,7 +170,10 @@ class _StorageTabState extends State<StorageTab> {
       propertyId: _selectedStorage!.propertyId,
       amount: amount,
     );
-    await _handleActionResult(result, 'Cash opgenomen');
+    await _handleActionResult(
+      result,
+      AppLocalizations.of(context)!.inventorySnackCashWithdrawn,
+    );
   }
 
   Future<int?> _askQuantity({
@@ -177,44 +183,43 @@ class _StorageTabState extends State<StorageTab> {
     final controller = TextEditingController(text: '1');
     final result = await showDialog<int>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          '${_tr('Neem uit opslag', 'Withdraw from storage')}: $itemName',
-        ),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            labelText: _tr('Aantal', 'Quantity'),
-            border: const OutlineInputBorder(),
-            helperText: '${_tr('Max', 'Max')}: $max',
+      builder: (dialogContext) {
+        final dlgL10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(dlgL10n.inventoryWithdrawDialogTitle(itemName)),
+          content: TextField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: dlgL10n.quantity,
+              border: const OutlineInputBorder(),
+              helperText: dlgL10n.inventoryMaxShort(max),
+            ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(_tr('Annuleren', 'Cancel')),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final qty = int.tryParse(controller.text.trim()) ?? 0;
-              if (qty <= 0 || qty > max) {
-                showTopRightFromSnackBar(
-                  context,
-                  SnackBar(
-                    content: Text(
-                      _tr('Ongeldige hoeveelheid', 'Invalid quantity'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(dlgL10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final qty = int.tryParse(controller.text.trim()) ?? 0;
+                if (qty <= 0 || qty > max) {
+                  showTopRightFromSnackBar(
+                    dialogContext,
+                    SnackBar(
+                      content: Text(dlgL10n.inventoryInvalidQuantity),
                     ),
-                  ),
-                );
-                return;
-              }
-              Navigator.of(context).pop(qty);
-            },
-            child: Text(_tr('Opnemen', 'Withdraw')),
-          ),
-        ],
-      ),
+                  );
+                  return;
+                }
+                Navigator.of(dialogContext).pop(qty);
+              },
+              child: Text(dlgL10n.bankScreenWithdrawButton),
+            ),
+          ],
+        );
+      },
     );
     controller.dispose();
     return result;
@@ -234,7 +239,7 @@ class _StorageTabState extends State<StorageTab> {
     );
     await _handleActionResult(
       result,
-      _tr('Drugs opgenomen', 'Drugs withdrawn'),
+      AppLocalizations.of(context)!.inventorySnackDrugsWithdrawn,
     );
   }
 
@@ -258,7 +263,10 @@ class _StorageTabState extends State<StorageTab> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(result['error']?.toString() ?? 'Actie mislukt'),
+            content: Text(
+              result['error']?.toString() ??
+                  AppLocalizations.of(context)!.inventoryActionFailed,
+            ),
           ),
         );
       }
@@ -305,16 +313,16 @@ class _StorageTabState extends State<StorageTab> {
     return propertyType[0].toUpperCase() + propertyType.substring(1);
   }
 
-  String _formatCategory(String category) {
+  String _formatCategory(AppLocalizations l10n, String category) {
     switch (category) {
       case 'tools':
-        return 'Gereedschap';
+        return l10n.inventoryCategoryTools;
       case 'drugs':
-        return 'Drugs';
+        return l10n.inventoryCategoryDrugs;
       case 'weapons':
-        return 'Wapens';
+        return l10n.inventoryCategoryWeapons;
       case 'cash':
-        return 'Contant geld';
+        return l10n.inventoryCategoryCash;
       default:
         return category;
     }
@@ -445,7 +453,11 @@ class _StorageTabState extends State<StorageTab> {
                                           ),
                                         ),
                                         Text(
-                                          '${storage.usage}/${storage.capacity} slots (${storage.percentFull}%)',
+                                          l10n.inventoryStorageSlotsDetail(
+                                            storage.usage,
+                                            storage.capacity,
+                                            '${storage.percentFull}',
+                                          ),
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey[400],
@@ -453,8 +465,8 @@ class _StorageTabState extends State<StorageTab> {
                                         ),
                                         Text(
                                           storage.accessibleInCurrentCountry
-                                              ? 'Toegankelijk in huidig land'
-                                              : 'Niet toegankelijk in dit land',
+                                              ? l10n.inventoryStorageAccessibleHere
+                                              : l10n.inventoryStorageNotAccessibleHere,
                                           style: TextStyle(
                                             fontSize: 11,
                                             color:
@@ -488,10 +500,7 @@ class _StorageTabState extends State<StorageTab> {
                                 ? [
                                     Chip(
                                       label: Text(
-                                        _tr(
-                                          'Geen opslagtype',
-                                          'No storage type',
-                                        ),
+                                        l10n.inventoryStorageNoCategory,
                                       ),
                                       backgroundColor: Colors.grey.shade800,
                                       labelStyle: const TextStyle(
@@ -503,7 +512,7 @@ class _StorageTabState extends State<StorageTab> {
                                       .map(
                                         (category) => Chip(
                                           label: Text(
-                                            _formatCategory(category),
+                                            _formatCategory(l10n, category),
                                           ),
                                           backgroundColor: Colors.grey.shade800,
                                           labelStyle: const TextStyle(
@@ -538,7 +547,14 @@ class _StorageTabState extends State<StorageTab> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            '${_tr('Wapens', 'Weapons')}: ${_selectedStorage!.weaponCount} • Drugs: ${_selectedStorage!.drugCount} • Cash: €${_selectedStorage!.cashAmount}',
+                            l10n.inventoryStorageCountsLine(
+                              l10n.inventoryCountsWeapons,
+                              _selectedStorage!.weaponCount,
+                              l10n.inventoryCountsDrugs,
+                              _selectedStorage!.drugCount,
+                              l10n.inventoryCountsCash,
+                              _selectedStorage!.cashAmount,
+                            ),
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[400],
@@ -556,10 +572,7 @@ class _StorageTabState extends State<StorageTab> {
                       ? Padding(
                           padding: const EdgeInsets.all(24),
                           child: Text(
-                            _tr(
-                              'Je bent in een ander land. Je kunt deze opslag hier niet openen.',
-                              'You are in another country. You cannot access this storage here.',
-                            ),
+                            l10n.inventoryStorageWrongCountry,
                             style: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 14,
@@ -583,7 +596,7 @@ class _StorageTabState extends State<StorageTab> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          _tr('Wapenopslag', 'Weapon storage'),
+                                          l10n.inventoryWeaponStorageTitle,
                                           style: const TextStyle(
                                             color: Color(0xFFD4AF37),
                                             fontWeight: FontWeight.bold,
@@ -639,10 +652,7 @@ class _StorageTabState extends State<StorageTab> {
                                                   color: Colors.white,
                                                 ),
                                                 decoration: InputDecoration(
-                                                  labelText: _tr(
-                                                    'Aantal',
-                                                    'Quantity',
-                                                  ),
+                                                  labelText: l10n.quantity,
                                                   labelStyle: TextStyle(
                                                     color: Colors.grey.shade300,
                                                   ),
@@ -664,7 +674,7 @@ class _StorageTabState extends State<StorageTab> {
                                                   Icons.inventory_2,
                                                 ),
                                                 label: Text(
-                                                  _tr('Opslaan', 'Store'),
+                                                  l10n.inventoryStoreWeapons,
                                                 ),
                                               ),
                                             ),
@@ -672,7 +682,7 @@ class _StorageTabState extends State<StorageTab> {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          _tr('In opslag', 'In storage'),
+                                          l10n.inventoryInStorage,
                                           style: const TextStyle(
                                             color: Colors.white70,
                                           ),
@@ -722,17 +732,16 @@ class _StorageTabState extends State<StorageTab> {
                                                 contentPadding: EdgeInsets.zero,
                                                 title: Text(
                                                   name.isEmpty
-                                                      ? _tr(
-                                                          'Onbekend wapen',
-                                                          'Unknown weapon',
-                                                        )
+                                                      ? l10n.inventoryUnknownWeapon
                                                       : name,
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                   ),
                                                 ),
                                                 subtitle: Text(
-                                                  '${_tr('Aantal', 'Quantity')}: $quantity',
+                                                  l10n.inventoryQuantityValue(
+                                                    quantity,
+                                                  ),
                                                   style: TextStyle(
                                                     color: Colors.grey.shade400,
                                                   ),
@@ -747,7 +756,7 @@ class _StorageTabState extends State<StorageTab> {
                                                           weaponId,
                                                         ),
                                                   child: Text(
-                                                    _tr('Neem 1', 'Take 1'),
+                                                    l10n.inventoryTakeOne,
                                                   ),
                                                 ),
                                               );
@@ -758,10 +767,7 @@ class _StorageTabState extends State<StorageTab> {
                                                 [])
                                             .isEmpty)
                                           Text(
-                                            _tr(
-                                              'Geen wapens in deze opslag.',
-                                              'No weapons in this storage.',
-                                            ),
+                                            l10n.inventoryNoWeaponsInStorage,
                                             style: TextStyle(
                                               color: Colors.grey.shade500,
                                               fontSize: 12,
@@ -783,7 +789,7 @@ class _StorageTabState extends State<StorageTab> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          _tr('Cashopslag', 'Cash storage'),
+                                          l10n.inventoryCashStorageTitle,
                                           style: const TextStyle(
                                             color: Color(0xFFD4AF37),
                                             fontWeight: FontWeight.bold,
@@ -797,7 +803,7 @@ class _StorageTabState extends State<StorageTab> {
                                             color: Colors.white,
                                           ),
                                           decoration: InputDecoration(
-                                            labelText: _tr('Bedrag', 'Amount'),
+                                            labelText: l10n.bankScreenAmountLabel,
                                             labelStyle: TextStyle(
                                               color: Colors.grey.shade300,
                                             ),
@@ -815,10 +821,7 @@ class _StorageTabState extends State<StorageTab> {
                                                     ? null
                                                     : _depositCash,
                                                 child: Text(
-                                                  _tr(
-                                                    'Cash opslaan',
-                                                    'Deposit cash',
-                                                  ),
+                                                  l10n.inventoryDepositCash,
                                                 ),
                                               ),
                                             ),
@@ -829,10 +832,7 @@ class _StorageTabState extends State<StorageTab> {
                                                     ? null
                                                     : _withdrawCash,
                                                 child: Text(
-                                                  _tr(
-                                                    'Cash opnemen',
-                                                    'Withdraw cash',
-                                                  ),
+                                                  l10n.inventoryWithdrawCash,
                                                 ),
                                               ),
                                             ),
@@ -854,7 +854,7 @@ class _StorageTabState extends State<StorageTab> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          _tr('Drugopslag', 'Drug storage'),
+                                          l10n.inventoryDrugStorageTitle,
                                           style: const TextStyle(
                                             color: Color(0xFFD4AF37),
                                             fontWeight: FontWeight.bold,
@@ -885,7 +885,9 @@ class _StorageTabState extends State<StorageTab> {
                                                   ),
                                                 ),
                                                 subtitle: Text(
-                                                  '${_tr('Aantal', 'Quantity')}: $quantity',
+                                                  l10n.inventoryQuantityValue(
+                                                    quantity,
+                                                  ),
                                                   style: TextStyle(
                                                     color: Colors.grey.shade400,
                                                   ),
@@ -900,7 +902,7 @@ class _StorageTabState extends State<StorageTab> {
                                                           quantity,
                                                         ),
                                                   child: Text(
-                                                    _tr('Opnemen', 'Withdraw'),
+                                                    l10n.bankScreenWithdrawButton,
                                                   ),
                                                 ),
                                               );
@@ -915,10 +917,7 @@ class _StorageTabState extends State<StorageTab> {
                                               vertical: 8,
                                             ),
                                             child: Text(
-                                              _tr(
-                                                'Geen drugs in opslag.',
-                                                'No drugs in storage.',
-                                              ),
+                                              l10n.inventoryNoDrugsInStorage,
                                               style: TextStyle(
                                                 color: Colors.grey.shade400,
                                               ),
@@ -934,10 +933,7 @@ class _StorageTabState extends State<StorageTab> {
                                 Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Text(
-                                    _tr(
-                                      'Dit pand is niet voor gereedschap-opslag. Gebruik een magazijn voor tools.',
-                                      'This property is not for tool storage. Use a warehouse for tools.',
-                                    ),
+                                    l10n.inventoryNotForTools,
                                     style: TextStyle(
                                       color: Colors.grey[400],
                                       fontSize: 14,

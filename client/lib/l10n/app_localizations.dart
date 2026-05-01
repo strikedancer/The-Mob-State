@@ -7557,6 +7557,307 @@ abstract class AppLocalizations {
   /// **'📦 Property storage is full'**
   String get storageFull;
 
+  /// No description provided for @inventoryCrimeWeaponTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected crime weapon'**
+  String get inventoryCrimeWeaponTitle;
+
+  /// No description provided for @inventoryCrimeWeaponHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a weapon for crimes'**
+  String get inventoryCrimeWeaponHint;
+
+  /// No description provided for @inventoryCrimeWeaponHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your crime weapon here. The crimes screen uses this selection immediately.'**
+  String get inventoryCrimeWeaponHelp;
+
+  /// No description provided for @inventoryCrimeWeaponEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No usable weapons in inventory. Buy or move a weapon into carried items first.'**
+  String get inventoryCrimeWeaponEmpty;
+
+  /// No description provided for @inventoryCarriedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not carrying any tools, weapons or ammo.'**
+  String get inventoryCarriedEmpty;
+
+  /// No description provided for @inventorySectionTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools'**
+  String get inventorySectionTools;
+
+  /// No description provided for @inventorySectionWeapons.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapons'**
+  String get inventorySectionWeapons;
+
+  /// No description provided for @inventorySectionAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo'**
+  String get inventorySectionAmmo;
+
+  /// No description provided for @inventoryWeaponFallbackName.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon'**
+  String get inventoryWeaponFallbackName;
+
+  /// No description provided for @inventoryAmmoFallbackName.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo'**
+  String get inventoryAmmoFallbackName;
+
+  /// No description provided for @inventoryWeaponSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition: {condition}% • Quantity: {qty}'**
+  String inventoryWeaponSubtitle(String condition, String qty);
+
+  /// No description provided for @inventoryAmmoQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity: {qty}'**
+  String inventoryAmmoQuantity(String qty);
+
+  /// No description provided for @inventoryQuantityValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity: {qty}'**
+  String inventoryQuantityValue(int qty);
+
+  /// No description provided for @inventoryWithdrawDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw from storage: {itemName}'**
+  String inventoryWithdrawDialogTitle(String itemName);
+
+  /// No description provided for @inventoryMaxShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Max: {max}'**
+  String inventoryMaxShort(int max);
+
+  /// No description provided for @inventoryInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid quantity'**
+  String get inventoryInvalidQuantity;
+
+  /// No description provided for @inventorySnackWeaponStored.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon stored'**
+  String get inventorySnackWeaponStored;
+
+  /// No description provided for @inventorySnackWeaponWithdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon withdrawn'**
+  String get inventorySnackWeaponWithdrawn;
+
+  /// No description provided for @inventorySnackCashStored.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash deposited'**
+  String get inventorySnackCashStored;
+
+  /// No description provided for @inventorySnackCashWithdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash withdrawn'**
+  String get inventorySnackCashWithdrawn;
+
+  /// No description provided for @inventorySnackDrugsWithdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs withdrawn'**
+  String get inventorySnackDrugsWithdrawn;
+
+  /// No description provided for @inventoryActionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Action failed'**
+  String get inventoryActionFailed;
+
+  /// No description provided for @inventoryStorageNoCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'No storage type'**
+  String get inventoryStorageNoCategory;
+
+  /// No description provided for @inventoryCountsWeapons.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapons'**
+  String get inventoryCountsWeapons;
+
+  /// No description provided for @inventoryCountsDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get inventoryCountsDrugs;
+
+  /// No description provided for @inventoryCountsCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get inventoryCountsCash;
+
+  /// No description provided for @inventoryStorageCountsLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{weapons}: {weaponCount} • {drugs}: {drugCount} • {cash}: €{cashAmount}'**
+  String inventoryStorageCountsLine(
+    String weapons,
+    int weaponCount,
+    String drugs,
+    int drugCount,
+    String cash,
+    int cashAmount,
+  );
+
+  /// No description provided for @inventoryStorageWrongCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'You are in another country. You cannot access this storage here.'**
+  String get inventoryStorageWrongCountry;
+
+  /// No description provided for @inventoryWeaponStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon storage'**
+  String get inventoryWeaponStorageTitle;
+
+  /// No description provided for @inventoryStoreWeapons.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get inventoryStoreWeapons;
+
+  /// No description provided for @inventoryInStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'In storage'**
+  String get inventoryInStorage;
+
+  /// No description provided for @inventoryUnknownWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown weapon'**
+  String get inventoryUnknownWeapon;
+
+  /// No description provided for @inventoryTakeOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Take 1'**
+  String get inventoryTakeOne;
+
+  /// No description provided for @inventoryNoWeaponsInStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'No weapons in this storage.'**
+  String get inventoryNoWeaponsInStorage;
+
+  /// No description provided for @inventoryCashStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash storage'**
+  String get inventoryCashStorageTitle;
+
+  /// No description provided for @inventoryDepositCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit cash'**
+  String get inventoryDepositCash;
+
+  /// No description provided for @inventoryWithdrawCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw cash'**
+  String get inventoryWithdrawCash;
+
+  /// No description provided for @inventoryDrugStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug storage'**
+  String get inventoryDrugStorageTitle;
+
+  /// No description provided for @inventoryNoDrugsInStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'No drugs in storage.'**
+  String get inventoryNoDrugsInStorage;
+
+  /// No description provided for @inventoryNotForTools.
+  ///
+  /// In en, this message translates to:
+  /// **'This property is not for tool storage. Use a warehouse for tools.'**
+  String get inventoryNotForTools;
+
+  /// No description provided for @inventoryCategoryTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools'**
+  String get inventoryCategoryTools;
+
+  /// No description provided for @inventoryCategoryDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get inventoryCategoryDrugs;
+
+  /// No description provided for @inventoryCategoryWeapons.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapons'**
+  String get inventoryCategoryWeapons;
+
+  /// No description provided for @inventoryCategoryCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get inventoryCategoryCash;
+
+  /// No description provided for @inventoryStorageSlotsDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{used}/{max} slots ({percent}%)'**
+  String inventoryStorageSlotsDetail(int used, int max, String percent);
+
+  /// No description provided for @inventoryStorageAccessibleHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessible in current country'**
+  String get inventoryStorageAccessibleHere;
+
+  /// No description provided for @inventoryStorageNotAccessibleHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Not accessible in this country'**
+  String get inventoryStorageNotAccessibleHere;
+
+  /// No description provided for @loadoutEquipFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to equip loadout'**
+  String get loadoutEquipFailed;
+
+  /// No description provided for @loadoutDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete loadout'**
+  String get loadoutDeleteFailed;
+
   /// No description provided for @transferSuccess.
   ///
   /// In en, this message translates to:

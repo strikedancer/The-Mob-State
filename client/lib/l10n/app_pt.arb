@@ -7124,5 +7124,127 @@
       }
     }
   },
-  "propertyManageNightclub": "Gerenciar boate"
+  "propertyManageNightclub": "Gerenciar boate",
+  "inventoryCrimeWeaponTitle": "Arma do crime selecionada",
+  "inventoryCrimeWeaponHint": "Selecione uma arma para crimes",
+  "inventoryCrimeWeaponHelp": "Escolha sua arma do crime aqui. A tela de crimes utiliza esta seleção imediatamente.",
+  "inventoryCrimeWeaponEmpty": "Nenhuma arma utilizável no inventário. Compre ou mova uma arma para os itens carregados primeiro.",
+  "inventoryCarriedEmpty": "Você não está carregando nenhuma ferramenta, arma ou munição.",
+  "inventorySectionTools": "Ferramentas",
+  "inventorySectionWeapons": "Armas",
+  "inventorySectionAmmo": "Munição",
+  "inventoryWeaponFallbackName": "Arma",
+  "inventoryAmmoFallbackName": "Munição",
+  "inventoryWeaponSubtitle": "Condição: {condition}% • Quantidade: {qty}",
+  "@inventoryWeaponSubtitle": {
+    "placeholders": {
+      "condition": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryAmmoQuantity": "Quantidade: {qty}",
+  "@inventoryAmmoQuantity": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryQuantityValue": "Quantidade: {qty}",
+  "@inventoryQuantityValue": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryWithdrawDialogTitle": "Retirar do armazenamento: {itemName}",
+  "@inventoryWithdrawDialogTitle": {
+    "placeholders": {
+      "itemName": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryMaxShort": "Máx.: {max}",
+  "@inventoryMaxShort": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryInvalidQuantity": "Quantidade inválida",
+  "inventorySnackWeaponStored": "Arma armazenada",
+  "inventorySnackWeaponWithdrawn": "Arma retirada",
+  "inventorySnackCashStored": "Dinheiro depositado",
+  "inventorySnackCashWithdrawn": "Dinheiro retirado",
+  "inventorySnackDrugsWithdrawn": "Drogas retiradas",
+  "inventoryActionFailed": "Falha na ação",
+  "inventoryStorageNoCategory": "Nenhum tipo de armazenamento",
+  "inventoryCountsWeapons": "Armas",
+  "inventoryCountsDrugs": "Drogas",
+  "inventoryCountsCash": "Dinheiro",
+  "inventoryStorageCountsLine": "{weapons}: {weaponCount} • {drugs}: {drugCount} • {cash}: €{cashAmount}",
+  "@inventoryStorageCountsLine": {
+    "placeholders": {
+      "weapons": {
+        "type": "String"
+      },
+      "weaponCount": {
+        "type": "int"
+      },
+      "drugs": {
+        "type": "String"
+      },
+      "drugCount": {
+        "type": "int"
+      },
+      "cash": {
+        "type": "String"
+      },
+      "cashAmount": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryStorageWrongCountry": "Você está em outro país. Você não pode acessar este armazenamento aqui.",
+  "inventoryWeaponStorageTitle": "Armazenamento de armas",
+  "inventoryStoreWeapons": "Loja",
+  "inventoryInStorage": "Em armazenamento",
+  "inventoryUnknownWeapon": "Arma desconhecida",
+  "inventoryTakeOne": "Pegue 1",
+  "inventoryNoWeaponsInStorage": "Não há armas neste depósito.",
+  "inventoryCashStorageTitle": "Armazenamento de dinheiro",
+  "inventoryDepositCash": "Depositar dinheiro",
+  "inventoryWithdrawCash": "Sacar dinheiro",
+  "inventoryDrugStorageTitle": "Armazenamento de medicamentos",
+  "inventoryNoDrugsInStorage": "Não há drogas armazenadas.",
+  "inventoryNotForTools": "Esta propriedade não é para armazenamento de ferramentas. Use um depósito para ferramentas.",
+  "inventoryCategoryTools": "Ferramentas",
+  "inventoryCategoryDrugs": "Drogas",
+  "inventoryCategoryWeapons": "Armas",
+  "inventoryCategoryCash": "Dinheiro",
+  "inventoryStorageSlotsDetail": "{used}/{max} slots ({percent}%)",
+  "@inventoryStorageSlotsDetail": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryStorageAccessibleHere": "Acessível no país atual",
+  "inventoryStorageNotAccessibleHere": "Não acessível neste país",
+  "loadoutEquipFailed": "Falha ao equipar o carregamento",
+  "loadoutDeleteFailed": "Falha ao excluir carregamento"
 }

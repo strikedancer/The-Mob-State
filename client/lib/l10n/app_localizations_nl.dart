@@ -4265,6 +4265,180 @@ class AppLocalizationsNl extends AppLocalizations {
   String get storageFull => '📦 Property opslag is vol';
 
   @override
+  String get inventoryCrimeWeaponTitle => 'Geselecteerd crime-wapen';
+
+  @override
+  String get inventoryCrimeWeaponHint => 'Selecteer een wapen voor crimes';
+
+  @override
+  String get inventoryCrimeWeaponHelp =>
+      'Kies hier je crime-wapen. Het crimes-scherm gebruikt deze selectie direct.';
+
+  @override
+  String get inventoryCrimeWeaponEmpty =>
+      'Geen bruikbare wapens in inventory. Koop of verplaats eerst een wapen naar carried items.';
+
+  @override
+  String get inventoryCarriedEmpty =>
+      'Je draagt momenteel geen tools, wapens of munitie.';
+
+  @override
+  String get inventorySectionTools => 'Gereedschap';
+
+  @override
+  String get inventorySectionWeapons => 'Wapens';
+
+  @override
+  String get inventorySectionAmmo => 'Munitie';
+
+  @override
+  String get inventoryWeaponFallbackName => 'Wapen';
+
+  @override
+  String get inventoryAmmoFallbackName => 'Munitie';
+
+  @override
+  String inventoryWeaponSubtitle(String condition, String qty) {
+    return 'Conditie: $condition% • Aantal: $qty';
+  }
+
+  @override
+  String inventoryAmmoQuantity(String qty) {
+    return 'Aantal: $qty';
+  }
+
+  @override
+  String inventoryQuantityValue(int qty) {
+    return 'Aantal: $qty';
+  }
+
+  @override
+  String inventoryWithdrawDialogTitle(String itemName) {
+    return 'Neem uit opslag: $itemName';
+  }
+
+  @override
+  String inventoryMaxShort(int max) {
+    return 'Max: $max';
+  }
+
+  @override
+  String get inventoryInvalidQuantity => 'Ongeldige hoeveelheid';
+
+  @override
+  String get inventorySnackWeaponStored => 'Wapen opgeslagen';
+
+  @override
+  String get inventorySnackWeaponWithdrawn => 'Wapen opgenomen';
+
+  @override
+  String get inventorySnackCashStored => 'Cash opgeslagen';
+
+  @override
+  String get inventorySnackCashWithdrawn => 'Cash opgenomen';
+
+  @override
+  String get inventorySnackDrugsWithdrawn => 'Drugs opgenomen';
+
+  @override
+  String get inventoryActionFailed => 'Actie mislukt';
+
+  @override
+  String get inventoryStorageNoCategory => 'Geen opslagtype';
+
+  @override
+  String get inventoryCountsWeapons => 'Wapens';
+
+  @override
+  String get inventoryCountsDrugs => 'Drugs';
+
+  @override
+  String get inventoryCountsCash => 'Contant';
+
+  @override
+  String inventoryStorageCountsLine(
+    String weapons,
+    int weaponCount,
+    String drugs,
+    int drugCount,
+    String cash,
+    int cashAmount,
+  ) {
+    return '$weapons: $weaponCount • $drugs: $drugCount • $cash: €$cashAmount';
+  }
+
+  @override
+  String get inventoryStorageWrongCountry =>
+      'Je bent in een ander land. Je kunt deze opslag hier niet openen.';
+
+  @override
+  String get inventoryWeaponStorageTitle => 'Wapenopslag';
+
+  @override
+  String get inventoryStoreWeapons => 'Opslaan';
+
+  @override
+  String get inventoryInStorage => 'In opslag';
+
+  @override
+  String get inventoryUnknownWeapon => 'Onbekend wapen';
+
+  @override
+  String get inventoryTakeOne => 'Neem 1';
+
+  @override
+  String get inventoryNoWeaponsInStorage => 'Geen wapens in deze opslag.';
+
+  @override
+  String get inventoryCashStorageTitle => 'Cashopslag';
+
+  @override
+  String get inventoryDepositCash => 'Cash opslaan';
+
+  @override
+  String get inventoryWithdrawCash => 'Cash opnemen';
+
+  @override
+  String get inventoryDrugStorageTitle => 'Drugopslag';
+
+  @override
+  String get inventoryNoDrugsInStorage => 'Geen drugs in opslag.';
+
+  @override
+  String get inventoryNotForTools =>
+      'Dit pand is niet voor gereedschap-opslag. Gebruik een magazijn voor tools.';
+
+  @override
+  String get inventoryCategoryTools => 'Gereedschap';
+
+  @override
+  String get inventoryCategoryDrugs => 'Drugs';
+
+  @override
+  String get inventoryCategoryWeapons => 'Wapens';
+
+  @override
+  String get inventoryCategoryCash => 'Contant geld';
+
+  @override
+  String inventoryStorageSlotsDetail(int used, int max, String percent) {
+    return '$used/$max plekken ($percent%)';
+  }
+
+  @override
+  String get inventoryStorageAccessibleHere => 'Toegankelijk in huidig land';
+
+  @override
+  String get inventoryStorageNotAccessibleHere =>
+      'Niet toegankelijk in dit land';
+
+  @override
+  String get loadoutEquipFailed => 'Loadout activeren mislukt';
+
+  @override
+  String get loadoutDeleteFailed => 'Loadout verwijderen mislukt';
+
+  @override
   String transferSuccess(String tool, String location) {
     return '✅ $tool verplaatst naar $location';
   }

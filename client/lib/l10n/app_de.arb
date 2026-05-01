@@ -7124,5 +7124,127 @@
       }
     }
   },
-  "propertyManageNightclub": "Nightclub verwalten"
+  "propertyManageNightclub": "Nightclub verwalten",
+  "inventoryCrimeWeaponTitle": "Ausgewählte Kriminalwaffe",
+  "inventoryCrimeWeaponHint": "Wählen Sie eine Waffe für Verbrechen",
+  "inventoryCrimeWeaponHelp": "Wählen Sie hier Ihre Kriminalwaffe. Die Verbrechensanzeige verwendet diese Auswahl sofort.",
+  "inventoryCrimeWeaponEmpty": "Keine verwendbaren Waffen im Inventar. Kaufen Sie zuerst eine Waffe oder verschieben Sie sie in getragene Gegenstände.",
+  "inventoryCarriedEmpty": "Sie tragen keine Werkzeuge, Waffen oder Munition.",
+  "inventorySectionTools": "Werkzeuge",
+  "inventorySectionWeapons": "Waffen",
+  "inventorySectionAmmo": "Munition",
+  "inventoryWeaponFallbackName": "Waffe",
+  "inventoryAmmoFallbackName": "Munition",
+  "inventoryWeaponSubtitle": "Zustand: {condition} % • Menge: {qty}",
+  "@inventoryWeaponSubtitle": {
+    "placeholders": {
+      "condition": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryAmmoQuantity": "Menge: {qty}",
+  "@inventoryAmmoQuantity": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryQuantityValue": "Menge: {qty}",
+  "@inventoryQuantityValue": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryWithdrawDialogTitle": "Aus dem Speicher entnehmen: {itemName}",
+  "@inventoryWithdrawDialogTitle": {
+    "placeholders": {
+      "itemName": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryMaxShort": "Maximal: {max}",
+  "@inventoryMaxShort": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryInvalidQuantity": "Ungültige Menge",
+  "inventorySnackWeaponStored": "Waffe aufbewahrt",
+  "inventorySnackWeaponWithdrawn": "Waffe abgezogen",
+  "inventorySnackCashStored": "Bargeld eingezahlt",
+  "inventorySnackCashWithdrawn": "Bargeld abgehoben",
+  "inventorySnackDrugsWithdrawn": "Drogenentzug",
+  "inventoryActionFailed": "Aktion fehlgeschlagen",
+  "inventoryStorageNoCategory": "Kein Speichertyp",
+  "inventoryCountsWeapons": "Waffen",
+  "inventoryCountsDrugs": "Drogen",
+  "inventoryCountsCash": "Kasse",
+  "inventoryStorageCountsLine": "{weapons}: {weaponCount} • {drugs}: {drugCount} • {cash}: €{cashAmount}",
+  "@inventoryStorageCountsLine": {
+    "placeholders": {
+      "weapons": {
+        "type": "String"
+      },
+      "weaponCount": {
+        "type": "int"
+      },
+      "drugs": {
+        "type": "String"
+      },
+      "drugCount": {
+        "type": "int"
+      },
+      "cash": {
+        "type": "String"
+      },
+      "cashAmount": {
+        "type": "int"
+      }
+    }
+  },
+  "inventoryStorageWrongCountry": "Sie befinden sich in einem anderen Land. Auf diesen Speicher können Sie hier nicht zugreifen.",
+  "inventoryWeaponStorageTitle": "Waffenlagerung",
+  "inventoryStoreWeapons": "Speichern",
+  "inventoryInStorage": "Im Lager",
+  "inventoryUnknownWeapon": "Unbekannte Waffe",
+  "inventoryTakeOne": "Nimm 1",
+  "inventoryNoWeaponsInStorage": "In diesem Lager befinden sich keine Waffen.",
+  "inventoryCashStorageTitle": "Bargeldaufbewahrung",
+  "inventoryDepositCash": "Bargeld einzahlen",
+  "inventoryWithdrawCash": "Bargeld abheben",
+  "inventoryDrugStorageTitle": "Lagerung von Arzneimitteln",
+  "inventoryNoDrugsInStorage": "Keine Medikamente im Lager.",
+  "inventoryNotForTools": "Diese Eigenschaft dient nicht zur Werkzeugaufbewahrung. Nutzen Sie ein Lager für Werkzeuge.",
+  "inventoryCategoryTools": "Werkzeuge",
+  "inventoryCategoryDrugs": "Drogen",
+  "inventoryCategoryWeapons": "Waffen",
+  "inventoryCategoryCash": "Kasse",
+  "inventoryStorageSlotsDetail": "{used}/{max} Slots ({percent}%)",
+  "@inventoryStorageSlotsDetail": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryStorageAccessibleHere": "Im aktuellen Land verfügbar",
+  "inventoryStorageNotAccessibleHere": "In diesem Land nicht zugänglich",
+  "loadoutEquipFailed": "Ausrüstung konnte nicht ausgerüstet werden",
+  "loadoutDeleteFailed": "Das Loadout konnte nicht gelöscht werden"
 }
