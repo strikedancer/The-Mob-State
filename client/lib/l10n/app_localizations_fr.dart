@@ -10748,6 +10748,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gameScreenUnknownPlayer => 'Inconnue';
 
   @override
+  String get gameScreenDash => '—';
+
+  @override
   String get gameCardActive => 'Active';
 
   @override

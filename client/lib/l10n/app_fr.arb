@@ -7946,5 +7946,6 @@
       }
     }
   },
-  "crimeCommitUnexpectedError": "Quelque chose s'est mal passé. Veuillez réessayer."
+  "crimeCommitUnexpectedError": "Quelque chose s'est mal passé. Veuillez réessayer.",
+  "gameScreenDash": "—"
 }

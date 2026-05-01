@@ -10697,6 +10697,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get gameScreenUnknownPlayer => 'Desconhecida';
 
   @override
+  String get gameScreenDash => '-';
+
+  @override
   String get gameCardActive => 'Ativa';
 
   @override

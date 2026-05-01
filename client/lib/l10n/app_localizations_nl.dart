@@ -10622,6 +10622,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gameScreenUnknownPlayer => 'Onbekend';
 
   @override
+  String get gameScreenDash => '—';
+
+  @override
   String get gameCardActive => 'Actief';
 
   @override

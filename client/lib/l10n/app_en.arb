@@ -5938,6 +5938,7 @@
   "gameScreenLeaderboard": "Leaderboard (top 10)",
   "gameScreenNoLeaderboard": "No leaderboard data yet.",
   "gameScreenUnknownPlayer": "Unknown",
+  "gameScreenDash": "—",
   "gameCardActive": "Active",
   "gameCardScheduled": "Planned",
   "gameCardYourScore": "Your score: {value}",

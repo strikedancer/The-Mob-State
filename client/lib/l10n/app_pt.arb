@@ -7946,5 +7946,6 @@
       }
     }
   },
-  "crimeCommitUnexpectedError": "Algo deu errado. Por favor, tente novamente."
+  "crimeCommitUnexpectedError": "Algo deu errado. Por favor, tente novamente.",
+  "gameScreenDash": "-"
 }

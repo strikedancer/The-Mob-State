@@ -8,7 +8,10 @@ import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 
 class EventsScreen extends StatefulWidget {
-  const EventsScreen({super.key});
+  /// When true (e.g. web dashboard panel), no [AppBar] — parent provides chrome.
+  final bool embedded;
+
+  const EventsScreen({super.key, this.embedded = false});
 
   @override
   State<EventsScreen> createState() => _EventsScreenState();
@@ -18,6 +21,7 @@ class _EventsScreenState extends State<EventsScreen> {
   final _apiClient = AuthService().apiClient;
 
   bool _isLoading = true;
+  String? _error;
   List<Map<String, dynamic>> _active = const [];
   List<Map<String, dynamic>> _upcoming = const [];
   Map<int, Map<String, dynamic>> _progressByEvent = const {};
@@ -29,7 +33,10 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Future<void> _loadOverview() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
 
     try {
       final response = await _apiClient.get('/game-events/overview');
@@ -65,11 +72,15 @@ class _EventsScreenState extends State<EventsScreen> {
         _upcoming = upcomingList;
         _progressByEvent = progressByEvent;
         _isLoading = false;
+        _error = null;
       });
     } catch (_) {
       if (!mounted) return;
-      setState(() => _isLoading = false);
       final l10n = AppLocalizations.of(context);
+      setState(() {
+        _isLoading = false;
+        _error = l10n?.connectionErrorGeneric;
+      });
       if (l10n == null) return;
       showTopRightFromSnackBar(
         context,
@@ -81,13 +92,13 @@ class _EventsScreenState extends State<EventsScreen> {
     }
   }
 
-  String _formatDateTime(String? iso) {
+  String _formatDateTime(String? iso, AppLocalizations l10n) {
     if (iso == null || iso.isEmpty) {
-      return '—';
+      return l10n.gameScreenDash;
     }
     final parsed = DateTime.tryParse(iso);
     if (parsed == null) {
-      return '—';
+      return l10n.gameScreenDash;
     }
     final local = parsed.toLocal();
     final day = local.day.toString().padLeft(2, '0');
@@ -191,13 +202,16 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                   Text(
                     l10n.gameScreenStartLine(
-                      _formatDateTime(details['startedAt']?.toString()),
+                      _formatDateTime(
+                        details['startedAt']?.toString(),
+                        l10n,
+                      ),
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   Text(
                     l10n.gameScreenEndLine(
-                      _formatDateTime(details['endsAt']?.toString()),
+                      _formatDateTime(details['endsAt']?.toString(), l10n),
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
@@ -219,7 +233,8 @@ class _EventsScreenState extends State<EventsScreen> {
                     ),
                     Text(
                       l10n.gameScreenRank(
-                        (myProgress['rank'] as num?)?.toInt().toString() ?? '—',
+                        (myProgress['rank'] as num?)?.toInt().toString() ??
+                            l10n.gameScreenDash,
                       ),
                       style: const TextStyle(color: Colors.white70),
                     ),
@@ -367,13 +382,13 @@ class _EventsScreenState extends State<EventsScreen> {
               const SizedBox(height: 10),
               Text(
                 l10n.gameScreenStartLine(
-                  _formatDateTime(event['startedAt']?.toString()),
+                  _formatDateTime(event['startedAt']?.toString(), l10n),
                 ),
                 style: const TextStyle(color: Colors.white60, fontSize: 12),
               ),
               Text(
                 l10n.gameScreenEndLine(
-                  _formatDateTime(event['endsAt']?.toString()),
+                  _formatDateTime(event['endsAt']?.toString(), l10n),
                 ),
                 style: const TextStyle(color: Colors.white60, fontSize: 12),
               ),
@@ -387,7 +402,7 @@ class _EventsScreenState extends State<EventsScreen> {
                 ),
                 Text(
                   l10n.gameCardYourRank(
-                    rank?.toString() ?? '—',
+                    rank?.toString() ?? l10n.gameScreenDash,
                   ),
                   style: const TextStyle(color: Colors.white),
                 ),
@@ -421,52 +436,81 @@ class _EventsScreenState extends State<EventsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    Widget body;
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_error != null) {
+      body = Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _error!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.red),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: _loadOverview,
+                icon: const Icon(Icons.refresh),
+                label: Text(l10n.retry),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      body = RefreshIndicator(
+        onRefresh: _loadOverview,
+        child: ListView(
+          padding: const EdgeInsets.all(12),
+          children: [
+            Text(
+              l10n.gameScreenSectionLive,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            if (_active.isEmpty)
+              Text(
+                l10n.gameScreenNoActive,
+                style: const TextStyle(color: Colors.white70),
+              ),
+            ..._active.map(
+              (event) => _buildEventCard(l10n, event, isActive: true),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              l10n.gameScreenSectionUpcoming,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            if (_upcoming.isEmpty)
+              Text(
+                l10n.gameScreenNoUpcoming,
+                style: const TextStyle(color: Colors.white70),
+              ),
+            ..._upcoming.map(
+              (event) => _buildEventCard(l10n, event, isActive: false),
+            ),
+          ],
+        ),
+      );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadOverview,
-      child: ListView(
-        padding: const EdgeInsets.all(12),
-        children: [
-          Text(
-            l10n.gameScreenSectionLive,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          if (_active.isEmpty)
-            Text(
-              l10n.gameScreenNoActive,
-              style: const TextStyle(color: Colors.white70),
-            ),
-          ..._active.map(
-            (event) => _buildEventCard(l10n, event, isActive: true),
-          ),
-          const SizedBox(height: 18),
-          Text(
-            l10n.gameScreenSectionUpcoming,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          if (_upcoming.isEmpty)
-            Text(
-              l10n.gameScreenNoUpcoming,
-              style: const TextStyle(color: Colors.white70),
-            ),
-          ..._upcoming.map(
-            (event) => _buildEventCard(l10n, event, isActive: false),
-          ),
-        ],
-      ),
+    return Scaffold(
+      appBar: widget.embedded ? null : AppBar(title: Text(l10n.events)),
+      body: body,
     );
   }
 }

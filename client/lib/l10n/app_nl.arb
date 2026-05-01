@@ -7946,5 +7946,6 @@
       }
     }
   },
-  "crimeCommitUnexpectedError": "Er is iets misgegaan. Probeer het opnieuw."
+  "crimeCommitUnexpectedError": "Er is iets misgegaan. Probeer het opnieuw.",
+  "gameScreenDash": "—"
 }

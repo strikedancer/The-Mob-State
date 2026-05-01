@@ -18924,6 +18924,12 @@ abstract class AppLocalizations {
   /// **'Unknown'**
   String get gameScreenUnknownPlayer;
 
+  /// No description provided for @gameScreenDash.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get gameScreenDash;
+
   /// No description provided for @gameCardActive.
   ///
   /// In en, this message translates to:

@@ -7946,5 +7946,6 @@
       }
     }
   },
-  "crimeCommitUnexpectedError": "Algo salió mal. Por favor inténtalo de nuevo."
+  "crimeCommitUnexpectedError": "Algo salió mal. Por favor inténtalo de nuevo.",
+  "gameScreenDash": "—"
 }

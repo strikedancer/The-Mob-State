@@ -61,7 +61,7 @@ String localizedGameEventShortDescription(
   if (en.isNotEmpty) {
     return en;
   }
-  return template['shortDescriptionNl']?.toString() ?? '';
+  return '';
 }
 
 String localizedGameEventLiveStatus(AppLocalizations l10n, String? raw) {
@@ -76,7 +76,7 @@ String localizedGameEventLiveStatus(AppLocalizations l10n, String? raw) {
       return l10n.gameEventStatusDraft;
     default:
       if (raw == null || raw.isEmpty) {
-        return '—';
+        return l10n.gameScreenDash;
       }
       return raw;
   }

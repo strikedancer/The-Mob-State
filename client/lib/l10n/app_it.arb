@@ -7946,5 +7946,6 @@
       }
     }
   },
-  "crimeCommitUnexpectedError": "Qualcosa è andato storto. Per favore riprova."
+  "crimeCommitUnexpectedError": "Qualcosa è andato storto. Per favore riprova.",
+  "gameScreenDash": "—"
 }

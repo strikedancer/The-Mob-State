@@ -7946,5 +7946,6 @@
       }
     }
   },
-  "crimeCommitUnexpectedError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
+  "crimeCommitUnexpectedError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.",
+  "gameScreenDash": "—"
 }

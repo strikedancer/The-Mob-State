@@ -1671,7 +1671,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.vault:
         return const VaultScreen(embedded: true);
       case _WebSection.events:
-        return const EventsScreen();
+        return const EventsScreen(embedded: true);
       case _WebSection.crimes:
         return const CrimeScreen();
       case _WebSection.jobs:
