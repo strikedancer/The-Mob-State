@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 
 import '../data/help_content.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/help_topic_localizations.dart';
 
 class HelpScreen extends StatefulWidget {
   final bool embedded;
@@ -19,30 +20,28 @@ class _HelpScreenState extends State<HelpScreen> {
   String? _selectedCategory;
   String? _selectedTopicId;
 
-  String _helpLanguageCode(BuildContext context) =>
-      Localizations.localeOf(context).languageCode;
-
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
 
-  List<HelpTopic> _filteredTopics(String lang) {
+  List<HelpTopic> _filteredTopics(AppLocalizations l10n) {
     final query = _query.trim().toLowerCase();
     return helpTopics.where((topic) {
       final categoryMatch =
           _selectedCategory == null ||
-          topic.category(lang) == _selectedCategory;
+          l10n.helpTopicCategoryStr(topic.id) == _selectedCategory;
       final queryMatch =
-          query.isEmpty || topic.searchableText(lang).contains(query);
+          query.isEmpty ||
+          l10n.helpTopicSearchLower(topic.id).contains(query);
       return categoryMatch && queryMatch;
     }).toList();
   }
 
-  List<String> _categories(String lang) {
+  List<String> _categories(AppLocalizations l10n) {
     final categories =
-        helpTopics.map((topic) => topic.category(lang)).toSet().toList()
+        helpTopics.map((t) => l10n.helpTopicCategoryStr(t.id)).toSet().toList()
           ..sort();
     return categories;
   }
@@ -62,8 +61,7 @@ class _HelpScreenState extends State<HelpScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final lang = _helpLanguageCode(context);
-    final topics = _filteredTopics(lang);
+    final topics = _filteredTopics(l10n);
     final selectedTopic = _resolveSelectedTopic(topics);
 
     if (selectedTopic != null && _selectedTopicId != selectedTopic.id) {
@@ -82,7 +80,7 @@ class _HelpScreenState extends State<HelpScreen> {
               const SizedBox(height: 16),
               _buildSearchBar(context, l10n),
               const SizedBox(height: 12),
-              _buildCategoryChips(l10n, lang),
+              _buildCategoryChips(l10n),
               const SizedBox(height: 16),
               if (topics.isEmpty)
                 _buildEmptyState(l10n)
@@ -104,7 +102,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       .map(
                         (topic) => DropdownMenuItem<String>(
                           value: topic.id,
-                          child: Text(topic.title(lang)),
+                          child: Text(l10n.helpTopicTitleStr(topic.id)),
                         ),
                       )
                       .toList(),
@@ -120,7 +118,6 @@ class _HelpScreenState extends State<HelpScreen> {
                     child: _buildCompactTopicDetail(
                       context,
                       l10n,
-                      lang,
                       selectedTopic!,
                     ),
                   ),
@@ -227,8 +224,8 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget _buildCategoryChips(AppLocalizations l10n, String lang) {
-    final categories = _categories(lang);
+  Widget _buildCategoryChips(AppLocalizations l10n) {
+    final categories = _categories(l10n);
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -257,7 +254,6 @@ class _HelpScreenState extends State<HelpScreen> {
   Widget _buildCompactTopicDetail(
     BuildContext context,
     AppLocalizations l10n,
-    String lang,
     HelpTopic topic,
   ) {
     return Column(
@@ -281,12 +277,12 @@ class _HelpScreenState extends State<HelpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    topic.title(lang),
+                    l10n.helpTopicTitleStr(topic.id),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    topic.category(lang),
+                    l10n.helpTopicCategoryStr(topic.id),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.amber.shade200,
@@ -294,7 +290,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    topic.summary(lang),
+                    l10n.helpTopicSummaryStr(topic.id),
                     style: const TextStyle(color: Colors.white70),
                   ),
                 ],
@@ -306,13 +302,13 @@ class _HelpScreenState extends State<HelpScreen> {
         _DetailCard(
           title: l10n.helpUiHowItWorks,
           icon: Icons.route,
-          bullets: topic.howItWorks(lang),
+          bullets: l10n.helpTopicHowBullets(topic.id),
         ),
         const SizedBox(height: 12),
         _DetailCard(
           title: l10n.helpUiTips,
           icon: Icons.lightbulb,
-          bullets: topic.tips(lang),
+          bullets: l10n.helpTopicTipsBullets(topic.id),
         ),
       ],
     );

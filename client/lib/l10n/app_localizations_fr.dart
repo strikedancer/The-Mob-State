@@ -13200,4 +13200,688 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get drugsApiFailedClaim =>
       'Échec de la réclamation des expéditions du dépôt';
+
+  @override
+  String get helpTopicDashboardCategory => 'Cœur';
+
+  @override
+  String get helpTopicDashboardTitle => 'Tableau de bord';
+
+  @override
+  String get helpTopicDashboardSummary =>
+      'Votre aperçu central avec toutes vos statistiques, temps de recharge actifs, événements en direct et raccourcis vers chaque partie du jeu.';
+
+  @override
+  String get helpTopicDashboardHow =>
+      'La barre supérieure affiche : Cash, Rank, Health (0-100 HP), Wanted Level (0-100) et FBI Heat (0-100). \nToutes les 5 minutes, un tick automatique se déclenche : la faim diminue de -2, la soif de -3, vous soignez passivement +5 HP (si HP > 0), des intérêts bancaires sont ajoutés (0,5%) et le niveau de recherche diminue légèrement lorsqu\'il est inférieur à 10. \nSi la faim ou la soif atteint 0, vous mourez et passez 3 heures en soins intensifs. Mangez et buvez à l\'heure ! \nLes blocs d\'action rapide sur la droite sont des raccourcis vers les crimes, le vol de voiture, le vol de bateau, le travail, le casino, la banque et l\'école. \nLes minuteurs de recharge par section indiquent combien de temps il faudra pour que votre prochaine action soit disponible. La minuterie s\'adapte pour afficher l\'unité la plus pertinente : minutes, heures ou jours. \nLa carte de statistiques utilise désormais de vrais compteurs en direct pour les évasions, les meurtres, les contrats sur liste noire, les voyages et les balles au lieu d\'espaces réservés zéro fixes. \nLe tableau de bord comporte désormais également une section économique étendue avec des espèces, des banques, des crypto-monnaies, la valeur du véhicule, la valeur de la propriété, la valeur nette et une tendance des flux de trésorerie sur 24 heures. \nLe bloc des opérations affiche désormais la production active, le temps de recharge le plus long, l\'état du véhicule (actif/répertorié/en transit) et les minuteries de production/événement suivant. \nLorsque les événements des joueurs sont en direct (par exemple, une compétition hebdomadaire), le même panneau de droite répertorie brièvement leurs titres et les liens vers la page Événements. Vous pouvez activer ou désactiver le push pour le début/la fin du tour sous Paramètres → Événements du joueur (en plus des autorisations de l\'appareil et d\'autres catégories de push). \nLes notifications et les risques incluent désormais les DM non lus, les tickets d\'assistance en attente de votre réponse, les événements des dernières 24 heures et un score de risque compact (recherché + FBI). \nLorsque votre équipage est impliqué dans Crew Wars, le tableau de bord affiche également un résumé de Crew Wars avec le statut, l\'adversaire, les points d\'équipage, le classement de la saison et le temps restant dans la phase en cours. \nLe tableau de bord comprend désormais également un aperçu des opérations des véhicules par voiture/moto/bateau avec des puces de temps de recharge en direct (Hotspot, Crew, Crew match, Chop, Contract et Counter), ainsi que la chaleur/réputation, le nombre de contrats et de réclamations et les points de saison. \nDes événements en direct apparaissent lorsque d\'autres joueurs effectuent des actions majeures, lorsque vous êtes attaqué ou lorsque des mouvements de marché mondiaux se produisent. \nLe badge de message affiche les messages système non lus et les messages personnels. \nLe menu de navigation de gauche donne accès à toutes les sections du jeu regroupées par catégorie : Actions, Monde, Social, Économie, Empire et Actifs.';
+
+  @override
+  String get helpTopicDashboardTips =>
+      'Ouvrez d\'abord le tableau de bord après chaque connexion pour voir ce qui a changé pendant votre absence. \nMaintenez le niveau de recherche en dessous de 10 pour que la désintégration automatique fonctionne et que les chances d\'arrestation restent faibles. \nVérifiez les messages non lus avant de lancer des actions risquées : les récompenses, les exécutions de commandes et les événements système apparaissent tous dans votre boîte de réception.';
+
+  @override
+  String get helpTopicCrimesCategory => 'Actes';
+
+  @override
+  String get helpTopicCrimesTitle => 'Crimes';
+
+  @override
+  String get helpTopicCrimesSummary =>
+      'Commettez des actions illégales pour de l\'argent et de l\'XP, mais chaque tentative risque d\'être endommagée, arrêtée ou d\'augmenter le niveau de recherche. Le crime d\'effacement du casier judiciaire en fin de partie supprime l\'intégralité de votre casier judiciaire en cas de succès, mais il nécessite des outils lourds et comporte un risque fédéral élevé.';
+
+  @override
+  String get helpTopicCrimesHow =>
+      'Les temps de recharge des crimes s\'adaptent désormais aux gains potentiels : les crimes à faible rendement restent rapides, tandis que les crimes à haut rendement ont des temps de recharge nettement plus longs. \nLigne directrice par niveau de récompense : jusqu\'à 500 € ≈ 1,5 min, jusqu\'à 2 000 € ≈ 5 min, jusqu\'à 10 000 € ≈ 15 min, jusqu\'à 30 000 € ≈ 30 min, au-delà ≈ 60 min. \nIl n’y a pas de plafond quotidien strict pour les crimes ; les joueurs actifs peuvent continuer à jouer tant qu’ils gèrent les temps de recharge, les risques et les ressources. \nLes crimes avec « arme requise » utilisent l\'arme du crime sélectionnée. Vous pouvez désormais le choisir directement en haut de l\'écran Crimes ou via l\'Inventaire. \nLes crimes nécessitant un véhicule utilisent le véhicule criminel que vous avez sélectionné dans Garage ou Marina. Seul un véhicule qui se trouve réellement dans votre pays actuel et qui n\'est pas en transit ou mis en vente compte. \nLes besoins en drogues dans les crimes sont indiqués en grammes et suivent les mêmes quantités que votre stock et votre stockage de drogues. \nSi un crime ne peut pas commencer en raison d\'un véhicule manquant, d\'une mauvaise arme ou de munitions manquantes, le message d\'erreur devrait désormais indiquer la cause réelle au lieu d\'une nouvelle tentative générique. \nÀ chaque tentative de crime : vous subissez 5 à 15 points de dégâts et le niveau de recherche augmente de 1 à 4 points en fonction du succès ou de l\'échec. \nLes chances d\'arrestation augmentent rapidement avec le niveau de recherche : Recherché 5 = 25 %, Recherché 10 = 50 %, Recherché 18+ = maximum 90 %. \nUne fois arrêté, vous allez en prison. Phrase = max (niveau recherché × 10, 5) minutes. Caution = niveau de recherche × 1 000 €. Même si un crime semble réussi au début mais que vous êtes arrêté juste après, le résultat final compte toujours comme une arrestation : les outils nécessaires sont confisqués, l\'arme du crime utilisée est perdue et les véhicules peuvent également être saisis. \nCertains crimes nécessitent un véhicule, un outil ou un grade minimum. Manquer ces éléments empêchera le crime de commencer. \nL\'XP gagné augmente votre rang, débloquant de meilleurs crimes et des récompenses plus élevées. \nFBI La chaleur augmente avec les crimes plus graves. Au-dessus de la température 50, le FBI devient actif avec des chances d\'arrestation encore plus élevées.';
+
+  @override
+  String get helpTopicCrimesTips =>
+      'Utilisez des crimes rapides pour débutants pour créer de l\'XP en attendant de gros temps de recharge. \nSautez toujours si votre niveau de recherche est élevé – rester en prison bloque toutes vos boucles. \nGardez HP au-dessus de 30 avant de commencer une course criminelle : chaque tentative coûte des HP et à 0 HP, vous passez 3 heures en soins intensifs.';
+
+  @override
+  String get helpTopicJobsCategory => 'Actes';
+
+  @override
+  String get helpTopicJobsTitle => 'Emplois';
+
+  @override
+  String get helpTopicJobsSummary =>
+      'Gagnez de l’argent légal sans risque Wanted Level. Les emplois sont plus sûrs que les délits, mais leurs rémunérations sont inférieures.';
+
+  @override
+  String get helpTopicJobsHow =>
+      'Les emplois disponibles évoluent en fonction du rang et de l\'éducation : les meilleurs emplois sont mieux rémunérés, mais ont également des temps de recharge plus longs. \nLes temps de recharge des tâches s\'adaptent au paiement maximum : tâches de niveau inférieur environ 3 à 5 minutes, tâches de niveau intermédiaire environ 8 à 12 minutes, tâches de niveau supérieur environ 17 à 22 minutes. \nLes emplois ont un taux de réussite élevé mais pas parfait ; en cas d\'échec, vous ne perdez pas d\'argent ni de HP, mais vous perdez de l\'XP. \nExigences par emploi : minimum 10 HP, faim > 20, soif > 20, ni en prison, ni en soins intensifs. \nIl n’y a pas de plafond quotidien strict pour l’emploi ; la progression est rythmée par le temps de recharge, la chance et le paiement au lieu d\'un verrouillage quotidien. \nLa rémunération varie selon le type d\'emploi et le rang. L\'éducation (école) peut débloquer des postes plus élevés. \nVous gagnez également de l\'XP par travail, mais moins que des crimes comparables. \nUtilisez les emplois comme base de trésorerie fiable, en particulier lorsque votre niveau de recherche est trop élevé pour des crimes sans danger.';
+
+  @override
+  String get helpTopicJobsTips =>
+      'Combinez travail et école : l’éducation ouvre la voie à de meilleurs emplois avec des rémunérations plus élevées. \nLorsque le niveau de recherche est supérieur à 8 ou que vous vous rétablissez des soins intensifs, utilisez des emplois plutôt que des crimes. \nEmpêchez la faim et la soif de tomber trop bas : un travail avec des statistiques inférieures à 20 ne démarrera tout simplement pas.';
+
+  @override
+  String get helpTopicTravelCategory => 'Monde';
+
+  @override
+  String get helpTopicTravelTitle => 'Voyage';
+
+  @override
+  String get helpTopicTravelSummary =>
+      'Déplacez-vous d’un pays à l’autre pour bénéficier de meilleurs prix du marché, d’opportunités uniques et d’un accès aux systèmes internationaux.';
+
+  @override
+  String get helpTopicTravelHow =>
+      'Pays disponibles : Pays-Bas (début), Belgique, Allemagne, France, Royaume-Uni, Espagne, Italie, Suisse, USA, Mexique, Colombie, Brésil. \nFrais de déplacement : pays voisin 500-2 000 €, Europe → Amériques 5 000-10 000 €, longue distance 10 000-20 000 €. \nConditions de voyage : pas en prison, pas en soins intensifs, minimum 20 HP, fonds de voyage disponibles. \nLes quantités de médicaments dans votre inventaire comptent en grammes réels pour le poids à transporter et les chèques de voyage ; 500 signifie 500 g et non 50 kg. \nChaque pays a des prix de marché différents (jusqu\'à 300 % de différence), des paiements de délits différents et des articles commerciaux uniques. \nRisque lié au transport : la police peut saisir des marchandises en fonction du niveau de recherche (chance = recherche × 2 %, max 80 %). Le FBI peut tout saisir à l’échelle internationale si la chaleur est forte. \nL\'inspection douanière a une chance de base de 10 %. Vous pouvez corrompre (1 000 à 5 000 €) ou vous faire prendre en train de perdre 50 % des marchandises. \nAprès l\'arrivée, toutes les actions sont immédiatement disponibles dans le nouveau pays. Les marchés et la vitesse de la criminalité varient selon le lieu.';
+
+  @override
+  String get helpTopicTravelTips =>
+      'Combinez toujours les voyages avec le commerce, la drogue ou la contrebande : les voyages à vide gaspillent de l’argent. \nRéduisez votre niveau de recherche avant le départ : un niveau de recherche élevé augmente considérablement le risque de confiscation en cours de route. \nPlanifiez votre voyage de retour à l\'avance afin de savoir déjà quoi rapporter à votre arrivée.';
+
+  @override
+  String get helpTopicCrewCategory => 'Sociale';
+
+  @override
+  String get helpTopicCrewTitle => 'Équipage';
+
+  @override
+  String get helpTopicCrewSummary =>
+      'Créez un équipage ou rejoignez des joueurs existants pour réaliser des braquages ​​ensemble, partager le stockage et devenir plus fort en tant qu\'unité.';
+
+  @override
+  String get helpTopicCrewHow =>
+      'Créer un équipage coûte 10 000 €. Le QG de l\'équipage détermine le nombre de membres que votre équipage peut contenir et peut atteindre 150 membres. Le leader peut inviter, lancer et lancer des braquages. \nAvantages de l\'équipage : accès aux grands braquages, stockage partagé, bonus de travail d\'équipe (+10 % de réussite par membre supplémentaire, max +30 %) et discussion de groupe. \nLes nouvelles équipes commencent désormais avec le QG d\'équipage niveau 1 et tous les bâtiments de stockage au niveau 1, y compris le stockage d\'argent liquide, de sorte que la banque d\'équipage et le stockage partagé fonctionnent immédiatement. \nLe stockage des voitures d\'équipage accepte désormais également les motos, de sorte que les véhicules terrestres peuvent être gérés ensemble à partir du même stockage partagé pour l\'équipage. \nLorsqu\'un membre de l\'équipage est arrêté, les membres de l\'équipage reçoivent désormais une notification push indiquant que le joueur est enfermé et attend de l\'aide. \nL\'écran de l\'équipage est désormais regroupé en Présentation, QG et mises à niveau, Stockage, Membres, Salle de guerre, Missions d\'équipage, Équipages et Chat afin que la direction soit plus calme et plus professionnelle. \nLes missions d\'équipage affichent des modèles de niveau, une carte d\'exécution active et des exécutions récentes. Les dirigeants/co-leaders peuvent commencer et résoudre ; la réclamation des récompenses et l\'accélération du temps de recharge sont gérées dans le même onglet. \nIl existe des missions d\'équipage supplémentaires avec des opérations sur le thème bancaire (dépôt de nuit, réseau écrémé, route blindée, coffre-fort subsidiaire, coffre-fort de réserve et chambre de compensation). Il n’y a pas de deuxième mission d’équipage de casino aux côtés de Casino Ledger Raid. \nLes récompenses des missions d\'équipage proviennent de l\'économie des missions côté serveur ; Les soldes bancaires des autres joueurs ne sont pas débités pour ces paiements. \nLorsque vous démarrez une mission, vous pouvez désormais attribuer un rôle à chaque membre d\'équipage (Planificateur, Enforcer, Logistique, Tech) pour les bonus d\'équipe. \nLes cartes de mission actives et récentes affichent désormais également les contributions de rôle par joueur avec le score et tout multiplicateur de paiement. \nLes membres de l\'équipage reçoivent désormais également des alertes push/in-app pour le début et le résultat de la mission et lorsqu\'un temps de recharge de mission redevient prêt. \nTant que le temps de recharge d\'une mission est actif, vous ne pouvez pas démarrer une nouvelle mission ; attendez d\'abord le temps de recharge restant ou accélérez-le avec des crédits. \nPour accélérer le temps de recharge, vous voyez d’abord le coût exact du crédit et les minutes restantes avant de confirmer. \nCrew Wars a son propre onglet War Room à l\'intérieur de l\'écran de l\'équipage. Seuls les chefs peuvent déclarer une guerre et au moins 3 membres d\'équipage doivent y participer. \nTypes de guerre : guerre meurtrière, guerre économique, guerre territoriale et guerre totale. Chaque guerre passe par la préparation, la phase active, le confinement et la résolution. \nPendant une guerre active, les participants peuvent effectuer des actions telles que des tueries, des attaques, des sabotages, des renseignements, des raids, des boucliers, des boosts et des revendications territoriales. Les actions ciblées vous permettent désormais de choisir directement parmi une liste de membres d\'équipage adverses au lieu de saisir manuellement l\'identifiant d\'un joueur. \nLes points de saison sont regroupés dans le classement Crew Wars. La War Room affiche également le classement, les actions récentes et les guerres récentes de votre équipage. \nDans Territory War et Total War, vous revendiquez désormais de véritables régions de territoire à partir du système de territoire au lieu de cibles génériques. \nCes régions de guerre montrent désormais également leur valeur stratégique dans la War Room : réclamez des bonus, des points et des tags tels que le port, la capitale ou la logistique. Cela montre immédiatement quelles régions valent plus qu’un simple échange de propriété. \nCrew Wars ne sélectionne plus les cibles de territoire uniquement en fonction du niveau de valeur, mais également en fonction des balises stratégiques et de la pression adjacente du territoire de l\'attaquant ou du défenseur. Cela fait que Territory War et Total War ressemblent plus à une véritable ligne de front qu\'à trois revendications aléatoires. \nBraquages : Petite banque (2 joueurs, 40 %, 10 000 € - 30 000 €, 30 min de recharge), Bijouterie (3 joueurs, 35 %, 20 000 € - 50 000 €, 45 min), Casino Heist (4 joueurs, 25 %, 50 000 € - 150 000 €, 2 heures), Réserve fédérale (5 joueurs, 15 %, 100 000 € - 500 000 €, 6 heures, +20 FBI Heat). \nPour un braquage, tous les membres doivent être en ligne au début. Si quelqu\'un est absent, le braquage échoue. \nBraquage raté : peine de prison pour tout le monde, niveau de recherche +5, aucune récompense. \nLa récompense du braquage est répartie également entre tous les membres participants. \nLe chat de l’équipage est disponible pour une coordination rapide. \nProgression du QG de l\'équipage : plus l\'équipage est long et actif, plus les améliorations et les buffs partagés sont débloqués.';
+
+  @override
+  String get helpTopicCrewTips =>
+      'Les nouveaux équipages peuvent déposer de l’argent et utiliser immédiatement le stockage partagé ; après cela, concentrez-vous sur les mises à niveau pour plus de capacité au lieu d’un achat de départ séparé. \nVérifiez d\'abord la War Room pour voir si votre équipage est toujours en temps de recharge avant d\'essayer de déclarer une nouvelle guerre. \nCoordonnez les appels des cibles dans le chat de l\'équipage afin de ne pas continuer à farmer le même adversaire et à faire trébucher le garde anti-ferme. \nCoordonnez les heures de début des braquages ​​dans le chat de l\'équipe afin que tout le monde soit en ligne et que personne ne soit en prison. \nChoisissez un équipage dans le même fuseau horaire ou modèle d’activité pour de meilleurs taux de réussite des braquages. \nUtilisez le stockage partagé de l’équipage pour séparer les marchandises à risque de votre inventaire personnel.';
+
+  @override
+  String get helpTopicFriendsCategory => 'Sociale';
+
+  @override
+  String get helpTopicFriendsTitle => 'Amies';
+
+  @override
+  String get helpTopicFriendsSummary =>
+      'Gérez votre liste d\'amis pour une coordination, une navigation dans les profils et des commentaires sociaux plus rapides.';
+
+  @override
+  String get helpTopicFriendsHow =>
+      'La page Amis affiche trois listes : amis actuels, demandes envoyées et demandes reçues. \nDepuis un ami, vous pouvez directement envoyer un message, consulter son profil ou démarrer une collaboration. \nVous pouvez voir quand vos amis sont actifs dans le jeu, ce qui facilite la planification de braquages ​​ou d\'échanges. \nLes demandes d\'amis n\'expirent pas automatiquement ; gardez la liste bien rangée afin que les demandes en attente ne vous distraient pas. \nLes amis extérieurs à votre équipe sont précieux pour les évasions de prison (un ami peut vous aider à vous évader) et le partage d\'informations. \nLorsqu\'un ami est arrêté, les amis acceptés reçoivent désormais également une notification push indiquant que le joueur attend de l\'aide en prison.';
+
+  @override
+  String get helpTopicFriendsTips =>
+      'Ajoutez des amis qui partagent votre style de jeu : partenaires de braquage, réseaux de commerçants ou soutien au crime. \nUn ami qui réussit une évasion de prison gagne entre 500 et 2 000 € de récompense. Organisez-le en cas d\'urgence.';
+
+  @override
+  String get helpTopicMessagesCategory => 'Sociale';
+
+  @override
+  String get helpTopicMessagesTitle => 'Messages';
+
+  @override
+  String get helpTopicMessagesSummary =>
+      'Votre boîte de réception avec les messages personnels des joueurs et les messages système concernant les récompenses, les commandes et les événements du jeu.';
+
+  @override
+  String get helpTopicMessagesHow =>
+      'Les messages sont divisés en conversations personnelles et en fil de discussion du système The Mob State. \nLes messages système sont envoyés automatiquement pour : les transactions cryptographiques, les exécutions de commandes, les paiements du classement, les résultats de braquage, les évasions de prison et les badges de réussite. \nVous pouvez envoyer des messages à d\'autres joueurs tant que leurs paramètres de confidentialité le permettent. \nLes messages non lus apparaissent sous forme de badge sur l\'icône de message et sont visibles depuis le tableau de bord. \nLes messages n\'expirent pas et sont conservés sous forme d\'historique des événements du compte. \nUtilisez le journal de la boîte de réception en cas de doute sur un paiement, une exécution de commande manquée ou un changement de solde inattendu.';
+
+  @override
+  String get helpTopicMessagesTips =>
+      'Vérifiez votre boîte de réception après de longues périodes hors ligne : les récompenses, les commandes exécutées et les événements y sont tous enregistrés. \nConfigurez les préférences de notification via Paramètres afin de recevoir uniquement des alertes push pour les événements vraiment importants.';
+
+  @override
+  String get helpTopicInventoryCategory => 'Gestion';
+
+  @override
+  String get helpTopicInventoryTitle => 'Inventaire';
+
+  @override
+  String get helpTopicInventorySummary =>
+      'Gérez tout ce que vous transportez, stockez et équipez : armes, outils, véhicules, drogues et marchandises commerciales.';
+
+  @override
+  String get helpTopicInventoryHow =>
+      'L\'inventaire est divisé en articles transportés (sur vous), articles stockés (entrepôt/stockage de l\'équipage) et chargements actifs. \nLe poids détermine votre capacité de charge. Certains délits ou blocage de voyage si vous êtes surchargé. \nLes médicaments sont stockés et indiqués dans l\'inventaire et le stockage en grammes ; 351 signifie 351g. \nL\'état de l\'article se dégrade avec l\'utilisation. Les armes en mauvais état fonctionnent moins bien et les outils peuvent se briser. \nEn haut de l\'inventaire, vous pouvez également choisir votre arme criminelle par défaut. Seules les armes portées et utilisables comptent pour cette sélection. \nLes équipements vous permettent de basculer rapidement entre un ensemble de crime (outil + arme) et un ensemble de voyage (objets de valeur légers et minimes). \nLors de son arrestation, la police peut confisquer des objets. Ne transportez pas d\'objets de valeur avec un niveau de recherche élevé. \nLes drogues en stock augmentent les risques d’intervention du FBI lors de voyages internationaux. \nLe stockage de l’équipage est un endroit sûr pour conserver les objets hors de votre risque personnel.';
+
+  @override
+  String get helpTopicInventoryTips =>
+      'Gardez votre charge légère lorsque vous voyagez ou participez à une vague de crimes à haut risque d\'arrestation. \nUtilisez les équipements afin de toujours disposer du bon équipement pour chaque scénario. \nVérifiez régulièrement l\'état des objets : les outils défectueux bloquent silencieusement les crimes sans message d\'erreur clair.';
+
+  @override
+  String get helpTopicPropertiesCategory => 'Économie';
+
+  @override
+  String get helpTopicPropertiesTitle => 'Propriétés';
+
+  @override
+  String get helpTopicPropertiesSummary =>
+      'Achetez des propriétés pour augmenter le stockage, la capacité d’hébergement et l’accès à certains systèmes comme la discothèque.';
+
+  @override
+  String get helpTopicPropertiesHow =>
+      'Chaque bien a son propre rôle : espace de stockage, capacité d\'accueil ou encore accès à un module de suivi comme la discothèque. \nLes mises à niveau de l\'entrepôt augmentent votre capacité de stockage pour les articles et autres stocks. \nLes maisons et les appartements augmentent la capacité d\'accueil ; Les joueurs VIP reçoivent en plus des emplacements supplémentaires. \nCertaines propriétés sont uniques ou verrouillées par pays : vous devez être dans le bon pays pour les acheter ou les gérer. \nLa vente rapporte 70% du prix d\'achat. Pas de temps de recharge pour la vente, c\'est instantané. \nUne discothèque achetée ouvre l\'écran de gestion de discothèque séparé ; ce module gère la gestion et les revenus, pas l\'aperçu des propriétés.';
+
+  @override
+  String get helpTopicPropertiesTips =>
+      'Investissez tôt dans un entrepôt si vous avez besoin de plus d’espace de stockage pour vos autres systèmes. \nChoisissez des maisons et des appartements lorsque vous souhaitez augmenter la capacité d\'hébergement pour les systèmes de jeu associés. \nNe vendez pas trop vite : 70 % représente une forte décote par rapport au prix d\'achat.';
+
+  @override
+  String get helpTopicBankCategory => 'Économie';
+
+  @override
+  String get helpTopicBankTitle => 'Banque';
+
+  @override
+  String get helpTopicBankSummary =>
+      'Déposez de l’argent pour gagner des intérêts et gardez l’argent liquide hors de portée des confiscations policières.';
+
+  @override
+  String get helpTopicBankHow =>
+      'Intérêts : 0,5 % de votre solde bancaire par tick (toutes les 5 minutes). Exemple : 10 000 € en banque = 50 € d\'intérêt par tick = 600 € par heure = 14 400 € par jour. \nLes dépôts et retraits sont à la fois gratuits et instantanés, sans limite minimale ou maximale. \nL\'argent en banque est protégé contre les confiscations policières. Seul l’argent liquide peut être perdu lors de l’arrestation. \nL\'historique des transactions montre tous les flux entrants et sortants avec l\'horodatage, le montant, la contrepartie du transfert et des descriptions facultatives. \nCrime de vol de banque : réussit à 30 % et vole 10 à 30 % du solde bancaire d\'un autre joueur au hasard. Risque de niveau de recherche élevé. \nTransférer de l\'argent à d\'autres joueurs est possible. Vous pouvez éventuellement ajouter une description, et le destinataire la verra également dans les transactions. Vérifiez à nouveau le montant et le destinataire avant de confirmer.';
+
+  @override
+  String get helpTopicBankTips =>
+      'Envoyez immédiatement des sommes importantes à la banque : l’argent disponible est menacé à chaque tentative de crime. \nAugmentez les rendements des intérêts en accumulant régulièrement de gros montants en banque. \nConservez un petit fonds de roulement en espèces pour les dépenses directes (caution, déplacement, outils).';
+
+  @override
+  String get helpTopicCasinoCategory => 'Économie';
+
+  @override
+  String get helpTopicCasinoTitle => 'Casino';
+
+  @override
+  String get helpTopicCasinoSummary =>
+      'Jouez avec de l\'argent sur les machines à sous, le blackjack, la roulette, les dés, le baccara et le vidéo poker. Variance élevée : vous pouvez gagner ou perdre rapidement de grosses sommes.';
+
+  @override
+  String get helpTopicCasinoHow =>
+      'Jeux disponibles : Machines à sous (faible mise, paiement aléatoire), Blackjack (questions de stratégie), Roulette (paris extérieurs/intérieurs avec propres cotes), Dés (variance élevée), Baccarat (joueur/banquier/égalité), Vidéo Poker (paiements à 5 cartes selon le classement manuel). \nChaque jeu a une mise minimale. Les taux de redistribution diffèrent selon le type de jeu (par exemple, pari extérieur à la roulette ~ 1,97x, numéro unique 35x). \nLe casino utilise uniquement de l\'argent liquide, pas votre solde bancaire. Assurez-vous d\'avoir de l\'argent liquide avant de jouer. \nIl n\'y a pas de temps de recharge entre les tours : vous pouvez jouer aussi vite que vous le souhaitez. \nDes gains importants au-dessus d\'un seuil peuvent déclencher un événement visible par les autres joueurs. \nLes paris perdus disparaissent définitivement ; il n\'y a ni assurance ni rachat.';
+
+  @override
+  String get helpTopicCasinoTips =>
+      'Fixez toujours une limite de budget de session : jamais plus de 10 % du total des liquidités par session. \nLe Blackjack offre les meilleures cotes pour un joueur expérimenté. Apprenez la stratégie de base avant de parier gros. \nConsidérez le casino comme un divertissement et non comme un revenu : l’avantage de la maison garantit une perte à long terme.';
+
+  @override
+  String get helpTopicTradeCategory => 'Économie';
+
+  @override
+  String get helpTopicTradeTitle => 'Marchandises commerciales';
+
+  @override
+  String get helpTopicTradeSummary =>
+      'Achetez des biens bon marché dans un pays et vendez-les cher dans un autre. Des différences de prix jusqu\'à 300% sont possibles.';
+
+  @override
+  String get helpTopicTradeHow =>
+      'Chaque pays possède des produits commerciaux uniques avec ses propres prix de base : diamants (Afrique du Sud), drogues (Colombie), armes (États-Unis), art (France), électronique (Japon), alcool (Écosse). \nLes prix du marché fluctuent à chaque tick (5 minutes) entre 0,5x et 2,0x le prix de base. Les prix peuvent baisser pendant votre voyage. \nL\'achat n\'est possible que dans le pays où le bien est disponible. La vente a plus de valeur dans un autre pays. \nRisque de transport : la police confisque à un niveau de recherche élevé (chance = recherché × 2 %, max 80 %) ; Le FBI effectue des raids internationaux sur la base de la valeur de la chaleur et des marchandises. \nLes douanes ont une chance de base de 10 % aux passages frontaliers. Payez un pot-de-vin de 1 000 à 5 000 € ou perdez 50 % de la cargaison. \nCombinez le commerce avec la contrebande pour obtenir des marges plus élevées, mais également un risque de saisie plus élevé. \nVous pouvez acheter des quantités illimitées tant que vous disposez de suffisamment d’argent et d’espace de stockage.';
+
+  @override
+  String get helpTopicTradeTips =>
+      'Vérifiez les prix du marché juste avant le départ, pas plus tôt : les prix changent toutes les 5 minutes. \nAbaisser le niveau de recherche avant chaque voyage commercial : la confiscation d\'une cargaison complète est une perte catastrophique. \nIncluez toujours les frais de déplacement, les risques douaniers et la perte de temps dans votre calcul de bénéfices.';
+
+  @override
+  String get helpTopicBlackMarketCategory => 'Économie';
+
+  @override
+  String get helpTopicBlackMarketTitle => 'Marché noir';
+
+  @override
+  String get helpTopicBlackMarketSummary =>
+      'Achetez et vendez des biens illégaux et rares : des armes, des munitions, des drogues et du matériel indisponibles ailleurs.';
+
+  @override
+  String get helpTopicBlackMarketHow =>
+      'Le marché noir est divisé en sous-marchés : Matériaux (matières premières), Armes (armes à feu et couteaux), Munitions (munitions par calibre), Véhicules (véhicules illégaux). \nLes prix et la disponibilité varient considérablement selon les pays et les périodes. Une annonce peut se vendre rapidement. \nLes transactions sur le marché noir ne laissent aucune trace officielle mais augmentent la chaleur du FBI pour les achats importants. \nLes armes achetées ici peuvent être utilisées dans les crimes, le PvP et la sécurité. De meilleures armes donnent des dégâts et des chances de réussite plus élevés. \nLes filtres par catégorie (type, pays, prix, disponibilité) vous aident à trouver rapidement la bonne annonce. \nVous pouvez publier vos propres annonces en tant que vendeur, y compris le prix et la quantité. D\'autres joueurs achètent chez vous. \nLes annonces expirent après un certain temps si elles ne sont pas vendues. Surveillez vos propres offres via votre profil.';
+
+  @override
+  String get helpTopicBlackMarketTips =>
+      'Vérifiez toujours si le prix du marché noir est inférieur à l’alternative de libre échange, voyage compris. \nAchetez des armes et des munitions en gros lorsque les prix sont bas : la disponibilité est temporaire. \nÉvitez les achats importants sur le marché noir lorsque le FBI Heat est déjà supérieur à 30.';
+
+  @override
+  String get helpTopicDrugsCategory => 'Empire';
+
+  @override
+  String get helpTopicDrugsTitle => 'Drogues';
+
+  @override
+  String get helpTopicDrugsSummary =>
+      'Construisez une opération pharmaceutique complète, des matières premières au produit fini. Gérez les chaînes de production, gérez le stockage et vendez avec des marges élevées mais avec des risques sérieux.';
+
+  @override
+  String get helpTopicDrugsHow =>
+      'Le système pharmaceutique comprend : un hub (aperçu et statistiques), des installations (amélioration de la capacité de production), une production (lignes de production actives avec minuterie) et un inventaire (produits finis et matières premières). \nAchetez des matières premières via le marché noir ou le commerce. Combinez-les dans une installation pour produire des médicaments. \nLes minuteries de production s\'exécutent lorsque vous êtes hors ligne. Aucun clic actif n\'est nécessaire : revenez lorsque le minuteur est terminé. \nLa production terminée reste visible dans Production et maintient cet emplacement d\'installation occupé jusqu\'à ce que vous le récupériez ; Les processus de collecte automatique VIP sont automatiquement sortis en arrière-plan. \nLa capacité de stockage est limitée par installation. Lorsque le stockage est plein, la production s’arrête automatiquement. \nUne vitrine darkweb ou une autre installation ne vend pas automatiquement les produits finis : la vente s\'effectue toujours manuellement via le flux de vente prévu. \nVendez des médicaments via le marché noir, en Colombie ou dans d’autres lieux de vente spéciaux pour obtenir la marge la plus élevée. \nFBI Heat augmente à chaque cycle de production et davantage lors de ventes importantes. Une chaleur élevée entraîne des événements de raid qui peuvent arrêter votre opération. \nLa mise à niveau des installations réduit le temps de production, augmente la production et augmente la capacité de stockage. \nLes joueurs VIP bénéficient d\'un bouton éclair sur les cartes de production : après une confirmation modale, vous pouvez acheter tous les matériaux du lot manquant en un clic. \nLes améliorations avancées des emplacements et des équipements sont liées au nouveau parcours éducatif sur les stupéfiants (spécialiste en hydroponie, spécialiste en électricité de processus, chimiste clandestin). Sans le niveau/certification requis, vous ne pouvez pas passer au niveau de mise à niveau suivant. \nLes drogues en stock augmentent le risque de confiscation lors des voyages et des contrôles de police.';
+
+  @override
+  String get helpTopicDrugsTips =>
+      'Améliorez le stockage avant la production : un stockage complet arrête la production et vous perdez ce temps de production. \nMaintenez le FBI Heat en dessous de 50 : au-dessus de ce seuil, vous êtes activement pourchassé avec de fortes chances de raid qui arrêtent tout. \nCombinez la vente de drogues avec la contrebande pour obtenir des marges plus élevées et une répartition des risques.';
+
+  @override
+  String get helpTopicNightclubCategory => 'Empire';
+
+  @override
+  String get helpTopicNightclubTitle => 'Discothèque';
+
+  @override
+  String get helpTopicNightclubSummary =>
+      'Gérez une discothèque dans le cadre de votre empire criminel. Gérez le personnel, la sécurité et l\'approvisionnement pour des revenus passifs et actifs avec un classement de saison dédié.';
+
+  @override
+  String get helpTopicNightclubHow =>
+      'En bas, vous utilisez désormais un centre de commande de gestion de discothèque avec des zones pour l\'équipage, le stockage de médicaments, la commande DJ, l\'unité de sécurité et le laboratoire d\'opérations ; toutes les zones fonctionnent dans un flux de pages continu sans défilement interne supplémentaire. \nL\'écran de la discothèque comprend désormais une section centrale de renseignement combinant une vue d\'ensemble, les tendances des revenus et les journaux de risques sans changer d\'onglet. \nOps Lab comprend désormais 11 systèmes : DJ résident, calendrier d\'événements dynamique, arbre de mise à niveau, réponse de la police en cas de chaleur/incident, contrats de fournisseurs, profils de promoteurs, clientèle VIP + caractéristiques du personnel, itinéraires de contrebande, gestion du bar et de la cuisine (boissons/nourriture) avec tarification, sabotage rival + contre-informations et un calendrier des opérations. \nLes routes de contrebande ont désormais un temps de recharge (Harbor 60 min, Airstrip 90 min, Borderline 120 min), ce qui oblige à planifier les risques et le timing au lieu d\'un spam infini. \nL\'arbre de mise à niveau est interactif : choisissez explicitement Sound Rig, VIP Lounge ou Surveillance et achetez directement le niveau suivant avec des coûts de mise à niveau visibles. \nLes revenus sont générés par tick en fonction de la qualité du DJ, de l\'occupation et de la disponibilité des approvisionnements. L’approvisionnement manquant réduit directement les revenus. \nLes contrats DJ se terminent automatiquement à l\'heure de fin configurée ; après cela, vous devez réserver à nouveau pour de nouveaux boosts. \nDes incidents (bagarres, vols) peuvent survenir lorsque la sécurité est insuffisante. Cela nuit au score et aux revenus des visiteurs. \nChaque saison a un classement. Les joueurs ayant les revenus totaux les plus élevés en Nightclub remportent des récompenses de saison. \nSynergie avec les médicaments : la propre production de médicaments peut servir d’approvisionnement, augmentant ainsi les marges. \nLe stockage des médicaments est basé sur les grammes : chaque sélection affiche les grammes disponibles avant de déplacer le stock vers l\'inventaire de la discothèque. \nLes actions rivales sont basées sur le nom : vous recherchez les clubs rivaux par nom de joueur avant de sélectionner une action (aucun identifiant de joueur n\'est requis). \nSynergie avec la prostitution : les événements combinés génèrent des visiteurs supplémentaires et des revenus plus élevés. \nLes mises à niveau améliorent la capacité, le stockage de fournitures et le nombre maximum de DJ et de gardes que vous pouvez déployer.';
+
+  @override
+  String get helpTopicNightclubTips =>
+      'Gardez toujours l\'approvisionnement en stock : un tick sans approvisionnement peut déclencher une baisse des visiteurs dont il est difficile de se remettre. \nRéservez le meilleur DJ que vous pouvez vous permettre : la qualité du DJ a le plus grand impact direct sur les revenus par tick. \nConsultez quotidiennement le classement de la saison et augmentez l\'offre et les DJ si vous souhaitez terminer dans le top 10.';
+
+  @override
+  String get helpTopicCryptoCategory => 'Économie';
+
+  @override
+  String get helpTopicCryptoTitle => 'Cryptomonnaie';
+
+  @override
+  String get helpTopicCryptoSummary =>
+      'Échangez 30 vraies crypto-monnaies. Achetez et vendez directement ou automatisez via des ordres limités, stop-loss et take-profit. Les prix suivent désormais les ancres du marché en direct avec des régimes et des actualités supplémentaires dans le jeu, et la fenêtre contextuelle des pièces utilise des champs séparés pour les transactions directes et les commandes ouvertes.';
+
+  @override
+  String get helpTopicCryptoHow =>
+      'La liste de crypto montre 30 pièces avec le prix actuel, le pourcentage sur 24 heures et votre détention actuelle par pièce. La base de prix suit les données du marché en direct, mais elle est toujours influencée par les régimes et les actualités du jeu. \nCliquez sur une pièce pour ouvrir la fenêtre contextuelle avec : graphique en direct (filtres temporels 1h, 4h, 8h, 24h, 7j, 30j, Tous), historique des achats, prix d\'achat moyen et formulaire d\'achat/vente. \nCommerce direct : saisissez la quantité et cliquez sur Acheter ou Vendre. Lors de la vente, vous pouvez appuyer sur « TOUS » pour pourvoir instantanément votre position complète. L\'exécution est immédiate au prix actuel du marché. \nOrdres ouverts : Limit (achat/vente à un prix cible exact), Stop-loss (vente automatique lorsque le prix descend jusqu\'à un seuil), Take-profit (vente automatique lorsque le prix monte jusqu\'à un objectif). Cette section possède désormais son propre champ de quantité et son propre champ de prix indicatif. \nLes ordres ouverts sont exécutés automatiquement par le backend dès que le prix du marché atteint l\'objectif. Vous n\'avez pas besoin d\'être en ligne. \nLes régimes de marché (haussier/ours/latéral) et les événements d\'actualité influencent les mouvements de prix. Vous recevez des notifications de régime par push lorsqu\'elles sont activées. \nClassement crypto hebdomadaire : le joueur avec le gain réalisé le plus élevé cette semaine-là remporte une récompense en espèces. \nLes missions quotidiennes et hebdomadaires (par exemple 3 transactions rentables, diversification sur 5 pièces) donnent des récompenses supplémentaires à la fin. \nL\'aperçu du portefeuille montre : la valeur totale, le montant investi, les profits/pertes latents et réalisés.';
+
+  @override
+  String get helpTopicCryptoTips =>
+      'Vérifiez votre historique d\'achat avant de passer un ordre de vente : la fenêtre contextuelle affiche votre prix d\'achat moyen afin que vous ne vendiez pas accidentellement à perte. \nUtilisez les ordres stop-loss sur chaque position que vous ne surveillez pas activement : ils vous protègent automatiquement lorsque vous êtes hors ligne. \nChangez les filtres de temps dans le graphique : 1h et 4h affichent la tendance à court terme, 7j et 30j affichent une vue d\'ensemble.';
+
+  @override
+  String get helpTopicSmugglingCategory => 'Empire';
+
+  @override
+  String get helpTopicSmugglingTitle => 'Contrebande';
+
+  @override
+  String get helpTopicSmugglingSummary =>
+      'Déplacez des marchandises et des véhicules illégaux entre les pays. Choisissez un canal commercial ou utilisez votre propre véhicule ou avion pour réduire les coûts et augmenter le risque de confiscation.';
+
+  @override
+  String get helpTopicSmugglingHow =>
+      'Choisissez une catégorie, l\'article spécifique, la destination, puis décidez entre un canal commercial ou votre propre transport. \nLes voitures, motos, bateaux et avions en propriété affichent désormais un devis en direct avec des emplacements de chargement, des coûts inférieurs et une réduction des risques. \nUn bateau peut transporter des voitures et des motos ; un avion ne peut pas transporter un bateau et renverra une erreur immédiate. \nLes chances de réussite dépendent du canal sélectionné ou du transport détenu, de votre niveau de recherche actuel et de la taille de l\'envoi. \nEn cas d\'échec, vous perdez la totalité de l\'envoi. Aucun remboursement. Les coûts de fret et de transport ont disparu. \nLorsque vous utilisez un moyen de transport détenu et que le trajet échoue, le bien de transport lui-même peut également être confisqué. \nLes expéditions actives sont suivies en direct dans un aperçu. Après son arrivée, la cargaison apparaît dans un dépôt prête à être récupérée. \nLe réseau d\'équipage reste disponible pour les expéditions commerciales d\'équipage, mais le transport en propriété est uniquement personnel.';
+
+  @override
+  String get helpTopicSmugglingTips =>
+      'N\'envoyez jamais l\'intégralité de votre stock en un seul envoi : répartissez-le en plusieurs chargements plus petits pour limiter les pertes catastrophiques. \nRéduisez le niveau de recherche et la chaleur du FBI au minimum avant de lancer une vaste opération de contrebande. \nUtilisez votre meilleur avion ou bateau pour des trajets coûteux : un coût inférieur est utile, mais les emplacements de chargement et les chances de confiscation déterminent toujours le risque. \nCollectez toujours les dépôts actifs le plus rapidement possible : le contenu des dépôts expirés est définitivement perdu.';
+
+  @override
+  String get helpTopicToolsCategory => 'Gestion';
+
+  @override
+  String get helpTopicToolsTitle => 'Outils';
+
+  @override
+  String get helpTopicToolsSummary =>
+      'Achetez et gérez les outils requis pour des crimes spécifiques. De bons outils augmentent vos chances de réussite, les outils usés les diminuent.';
+
+  @override
+  String get helpTopicToolsHow =>
+      'La boutique d\'outils affiche tous les articles disponibles avec leur prix, leur état et le type de crime pour lequel ils sont requis. \nChaque catégorie de crime a ses outils préférés : le cambriolage nécessite un pied de biche ou des pioches, le vol de voiture nécessite un kit hotwire, le vol nécessite une arme à feu. \nLes outils ont une note d\'état (0-100 %). Chaque crime réussi ou échoué diminue la condition de quelques pour cent. \nEn dessous de 20 % de la condition, le bonus de chance de réussite de l\'outil diminue considérablement. En dessous de 5%, l\'outil n\'a quasiment aucun effet. \nLes outils réparés en atelier coûtent une fraction du prix d’achat. Le remplacement est parfois moins cher que la réparation d’outils très usés. \nLes outils sont visibles dans votre onglet inventaire. Vous pouvez conserver plusieurs copies du même type comme sauvegarde.';
+
+  @override
+  String get helpTopicToolsTips =>
+      'Achetez des outils en gros alors qu\'ils sont bon marché sur le marché noir : vous économisez par rapport au magasin. \nFixez un seuil personnel : remplacez toujours les outils lorsque l\'état descend en dessous de 25 % pour maintenir les chances de réussite stables.';
+
+  @override
+  String get helpTopicCourtCategory => 'Risque';
+
+  @override
+  String get helpTopicCourtTitle => 'Tribunal';
+
+  @override
+  String get helpTopicCourtSummary =>
+      'Pendant votre peine, vous pouvez faire appel ou tenter de soudoyer le juge pour qu\'il soit libéré plus tôt.';
+
+  @override
+  String get helpTopicCourtHow =>
+      'Une fois emprisonné, l\'écran du tribunal affiche votre condamnation active avec le temps restant, le crime et le profil du juge. \nUn appel coûte de l’argent en fonction de la durée actuelle de votre peine. Si elle est accordée, votre peine est généralement réduite d\'environ 20 à 40 %. \nVous ne pouvez faire appel qu\'une seule fois par condamnation et un temps de recharge s\'applique aux tentatives rapides. \nLa corruption utilise un montant sélectionné par le joueur. Ce montant est toujours déduit, même en cas d\'échec de la tentative. \nUn montant de pot-de-vin plus élevé augmente les chances de réussite. En cas de succès, vous êtes immédiatement libéré. \nVotre casier judiciaire conserve les condamnations antérieures avec les dates et les détails de votre historique judiciaire, même lorsque vous n\'êtes plus emprisonné. \nUn pot-de-vin réussi par un juge supprime uniquement la condamnation actuelle de votre casier judiciaire. \nSi vous souhaitez effacer l\'intégralité de votre casier judiciaire, vous devez le faire en dehors du tribunal via le crime Wipe Criminal Record en fin de partie.';
+
+  @override
+  String get helpTopicCourtTips =>
+      'Utilisez d\'abord les recours contre les peines longues : le gain de temps attendu y est le plus élevé. \nN’utilisez la corruption qu’avec suffisamment de liquidités, car le paiement est toujours déduit.';
+
+  @override
+  String get helpTopicHitlistCategory => 'Risque';
+
+  @override
+  String get helpTopicHitlistTitle => 'Liste de résultats';
+
+  @override
+  String get helpTopicHitlistSummary =>
+      'Placez une prime sur un ennemi ou acceptez un contrat de frappe. Éliminez votre cible dans le même pays pour obtenir le paiement intégral.';
+
+  @override
+  String get helpTopicHitlistHow =>
+      'Via la liste de résultats, vous ajoutez un joueur en définissant une prime. La prime minimale est de 5 000 €. Le payeur perd cet argent immédiatement. \nSi une prime vous est attribuée, vous recevez immédiatement une notification push et un message de boîte de réception de Hitlist Bureau. \nLes coups actifs sont visibles par tous les joueurs. Plus la prime est élevée, plus le contrat attire l’attention. \nLes enquêtes de détective ne renvoient plus d\'informations instantanées : les rapports arrivent plus tard via un message du Detective Bureau (Rapide 1 heure 1 000 000 €, Standard 6 heures 500 000 €, Lent 24 heures 250 000 €). \nSi vous êtes tué via la liste noire, vous recevez un message du Hitlist Bureau avec un bouton pour lancer une enquête sur le tueur dans les 24 heures. \nSi vous demandez cette enquête rapidement après le meurtre, le rapport de détective arrive plus rapidement. Attendre plus longtemps signifie un délai de rapport plus long. \nPour exécuter une frappe, vous devez être dans le même pays que votre cible. Vous attaquez via le profil du joueur. \nLe combat est calculé automatiquement en fonction des armes, de l\'armure, des statistiques (force, réflexes), des bonus d\'équipage et du niveau d\'activité. \nEn cas d\'élimination réussie, vous recevez la totalité de la prime. Si l\'attaque échoue, vous perdez des PV et la cible survit. \nEn cas de succès, la cible reçoit une réinitialisation matérielle de la progression de son compte : les actifs et la progression sont réinitialisés à leur statut de base, tandis que le solde bancaire et le leadership de l\'équipage sont préservés. Vous recevez une part du butin disponible en plus de la prime. \nAprès un kill réussi, vous recevez immédiatement un message de Hitlist Bureau avec le détail de la prime et du butin (argent + objets). \nLes cibles avec un garde du corps actif ou une protection de sécurité sont plus difficiles à atteindre. \nVous pouvez supprimer votre propre nom de la liste de résultats en payant le placer ou en rachetant vous-même la prime.';
+
+  @override
+  String get helpTopicHitlistTips =>
+      'Consultez quotidiennement la liste des cibles : des primes élevées sur les joueurs faibles constituent un profit rapide si vous êtes dans le même pays. \nNe placez une prime sur un joueur que lorsque vous avez des raisons de croire qu\'il est hors ligne ou qu\'il a peu de HP.';
+
+  @override
+  String get helpTopicSecurityCategory => 'Risque';
+
+  @override
+  String get helpTopicSecurityTitle => 'Sécurité';
+
+  @override
+  String get helpTopicSecuritySummary =>
+      'Protégez votre personnage et votre empire avec des armures, des gardes du corps et une sécurité d\'installation. Une meilleure sécurité signifie moins de dégâts subis lors des attaques.';
+
+  @override
+  String get helpTopicSecurityHow =>
+      'Types d\'armure par ordre croissant de force : Armure légère → Armure lourde → Gilet pare-balles → Tenue tactique. \nVous ne pouvez porter qu’une seule armure à la fois ; si vous achetez un autre gilet, il remplace immédiatement votre armure actuelle. \nChaque classe d\'armure réduit les dégâts subis par attaque d\'un pourcentage fixe. Meilleure armure = plus de survie en PvP et en raids. \nL\'armure est endommagée après une attaque et perd de son efficacité. Plus la condition est basse, moins votre armure actuelle offre de protection. \nÀ 100 % de dégâts, votre armure est détruite et disparaît complètement ; vous devez acheter un nouvel ensemble pour retrouver la protection. \nLes gardes du corps donnent chacun +10 de défense, mais toutes les 24 heures, ils facturent un salaire journalier de 10 000 € par garde du corps. \nSi vous ne pouvez pas payer le salaire quotidien des gardes du corps, ils partent tous et vous perdez immédiatement leur protection. \nLa sécurité des installations (pour les discothèques, les centres de drogue, etc.) réduit les risques de raid et d\'incident à cet endroit spécifique. \nPlus votre niveau de recherche est élevé, plus vous êtes souvent attaqué ou attaqué. Une meilleure sécurité compense directement cela. \nLes membres de l\'équipage peuvent diviser les rôles de sécurité afin que plusieurs sites soient couverts simultanément.';
+
+  @override
+  String get helpTopicSecurityTips =>
+      'Emportez toujours au moins une armure légère lorsque le niveau de recherche est de 2 ou plus : les économies sur les factures d\'hôpital compensent rapidement le prix d\'achat. \nVérifiez l\'état de votre armure après chaque attaque : un gilet endommagé n\'assure qu\'une partie de sa protection d\'origine. \nGardez seulement autant de gardes du corps que vous pouvez encore vous le permettre demain ; les grandes équipes deviennent rapidement coûteuses en entretien quotidien.';
+
+  @override
+  String get helpTopicHospitalCategory => 'Récupération';
+
+  @override
+  String get helpTopicHospitalTitle => 'Hôpital';
+
+  @override
+  String get helpTopicHospitalSummary =>
+      'Récupérez des HP après des combats, des crimes ratés ou des raids. L\'hôpital propose des soins d\'urgence gratuits et des traitements payants pour une récupération plus rapide.';
+
+  @override
+  String get helpTopicHospitalHow =>
+      'Descendez en dessous de 10 HP et vous êtes automatiquement admis aux urgences (ER). C\'est gratuit mais prend plus de temps. \nLe traitement payant coûte 10 000 € par séance et restaure +30 HP. Temps de recharge : 60 minutes entre les traitements payants. \nLes soins intensifs (ICU) sont le traitement le plus lourd pour les dommages critiques. Temps de recharge : 180 minutes. Les coûts sont plus élevés mais le rétablissement est plus complet. \nAvec des HP plus élevés (50+), vous pouvez toujours effectuer des actions mais êtes plus vulnérable aux attaques. \nLes soins hospitaliers sont bloqués pendant que vous êtes en prison. Sortez d’abord, puis cherchez un traitement. \nLe certificat scolaire en médecine réduit les coûts hospitaliers et accélère les temps de récupération. \nLes médecins de l\'équipage ou les compétences médicales peuvent restaurer les HP en dehors de l\'hôpital en cas d\'urgence.';
+
+  @override
+  String get helpTopicHospitalTips =>
+      'Ne récupérez jamais à mi-chemin : attendez d\'avoir tous vos HP avant de vous lancer dans du PvP ou de commettre des crimes à haut risque. \nTraitements rémunérés en temps autour du temps de recharge : démarrez un traitement juste avant de vous déconnecter afin de revenir en ligne avec tous vos HP.';
+
+  @override
+  String get helpTopicPrisonCategory => 'Récupération';
+
+  @override
+  String get helpTopicPrisonTitle => 'Prison';
+
+  @override
+  String get helpTopicPrisonSummary =>
+      'Purgez votre peine de prison, payez votre caution ou tentez de vous évader. Plus votre niveau de recherche est élevé, plus votre peine est longue et coûteuse.';
+
+  @override
+  String get helpTopicPrisonHow =>
+      'Après l\'arrestation, un chronomètre démarre en fonction du niveau de recherche. Recherché niveau 1 = peine courte (minutes), Recherché niveau 5+ = heures de prison. \nLa caution évolue en fonction de votre peine restante et ne descend jamais en dessous du niveau de recherche × 1 000 €. Les peines plus longues coûtent donc plus cher à racheter immédiatement. \nÉvasion : vous pouvez tenter une évasion de prison mais les chances de réussite sont faibles. L’échec prolonge votre peine d’un montant fixe. \nDans la liste des prisons et dans la superposition des prisons, vous pouvez toujours payer votre propre caution et tenter votre propre évasion pendant que vous êtes encore en prison. \nLes membres de l\'équipage peuvent vous rendre visite et vous apporter de petits avantages (statistiques, moral) pendant que vous êtes enfermé. \nLors de votre arrestation, vos amis et membres d\'équipage reçoivent désormais une notification push indiquant que vous avez été arrêté et que vous attendez de l\'aide. \nLes armes et armures sont confisquées lors de votre arrestation si vous n\'avez aucune couverture légale pour elles. \nOption tribunal : s\'adresser au tribunal pour obtenir une réduction de peine via un avocat (voir Tribunal). \nPendant que les minuteries de production (médicaments, usine de munitions) continuent de fonctionner. Votre empire fonctionne sans vous. \nVous ne pouvez pas visiter l’hôpital en étant enfermé. La récupération HP attend que vous soyez libre.';
+
+  @override
+  String get helpTopicPrisonTips =>
+      'Vérifiez la caution immédiatement après votre arrestation : le bouton doit rester visible tant que vous êtes encore en prison, même si votre niveau de recherche a déjà baissé. \nDémarrez les chronomètres de production juste avant de commettre un crime à haut risque : si vous êtes pris, la production continue quand même.';
+
+  @override
+  String get helpTopicVaultCategory => 'Événements';
+
+  @override
+  String get helpTopicVaultTitle => 'Cassez le coffre-fort';
+
+  @override
+  String get helpTopicVaultSummary =>
+      'Saison de coffre-fort mensuelle : entrez un code à 4 chiffres et misez des crédits pour avoir une chance de remporter de gros prix.';
+
+  @override
+  String get helpTopicVaultHow =>
+      'Chaque mois une nouvelle saison commence le 1er et se termine le dernier jour du mois. \nChoisissez une mise (par exemple 1/3/5 crédits) et entrez un code à 4 chiffres. \nVous pouvez également saisir le code à l\'aide du clavier à l\'écran (boutons numériques). \nChaque tentative coûte des crédits. Si vous devinez correctement, vous gagnez un prix. \nDes enjeux plus élevés signifient des prix plus importants ; parfois, une récompense VIP peut tomber. \nSi vous êtes déjà VIP, une récompense VIP est convertie en crédits. \nVous pouvez consulter vos mauvais codes pour ce mois-ci. La liste se réinitialise automatiquement avec le nouveau mois.';
+
+  @override
+  String get helpTopicVaultTips =>
+      'Choisissez une mise qui correspond à votre solde créditeur : vous pouvez essayer un nombre illimité de fois, mais chaque tentative coûte des crédits. \nUtilisez la liste des codes erronés pour éviter de réessayer le même code.';
+
+  @override
+  String get helpTopicGarageCategory => 'Actifs';
+
+  @override
+  String get helpTopicGarageTitle => 'Garage';
+
+  @override
+  String get helpTopicGarageSummary =>
+      'Volez et gérez des voitures et des motos à des fins criminelles et de contrebande. Le garage gère la propriété, les réparations programmées, la vente et la mise au rebut ; le transport passe par Smuggling Hub.';
+
+  @override
+  String get helpTopicGarageHow =>
+      'Votre garage présente des voitures et des motos avec état (0-100%), carburant, valeur marchande, rareté et statut mondial. \nLe stockage des voitures et celui des motos sont désormais séparés : les voitures utilisent la capacité du garage, les motos utilisent la capacité du stockage des motos. \nLes améliorations du stockage des voitures et des motos sont indépendantes selon les pays : la mise à niveau des voitures n\'augmente pas la capacité des motos (et vice versa). Les mises à niveau sont fonction du classement ; lorsque votre rang est trop bas, vous voyez un verrou/une info-bulle. Au niveau 5, le bouton de mise à niveau est masqué. \nEn utilisant le bouton Catalogue, vous pouvez voir toutes les voitures et motos volables, y compris leur pays le plus courant et la liste complète des pays d\'apparition. \nLe vol est par véhicule avec des exigences de rang et des temps de recharge. Plus c’est cher et rare, plus vos chances de succès sont faibles. \nSi la capitalisation mondiale d\'une figurine est pleine, vous ne pouvez pas voler cette figurine temporairement. Lorsqu\'un exemplaire est vendu ou mis au rebut, 1 emplacement rouvre immédiatement. \nUn vol raté augmente le niveau de recherche et peut déclencher une arrestation. Si la police vous attrape pendant votre fuite, vous allez en prison et le véhicule qui vient d\'être volé est immédiatement confisqué. \nLes réparations sont chronométrées : vous payez d\'avance, le véhicule entre en réparation et ne revient qu\'une fois le chronomètre terminé. \nLes réparations simultanées sont limitées sur l\'ensemble des voitures, motos et bateaux : sans VIP max 1 actif, avec VIP max 2 actifs. \nLa mise au rebut est une alternative à la vente : vous recevez une valeur de récupération (35 % de la valeur de base), échelonnée en fonction de l\'état et un bonus d\'amélioration du garage. \nVehicle Ops Intelligence ajoute 6 options supplémentaires. En bref : \n1) Hotspot run : une action rapide pour de l\'argent direct, avec son propre temps de recharge et des risques supplémentaires. \n2) Marché des pièces : prix des pièces en direct par type (voiture/moto/bateau) pour le réglage ; les prix sont actualisés périodiquement. \n3) Crew op : une action coopérative avec votre équipage pour des gains/avantages supplémentaires (uniquement si vous êtes dans un équipage). \n4) Chaleur : par type (voiture/moto/bateau) un compteur « attention » ; une chaleur plus élevée rend les actions plus risquées et réduit les chances de réussite. La chaleur décroît lentement. \n5) Contrat Chop : remettez un véhicule éligible de votre inventaire pour un paiement de contrat fixe. \n6) Modèle de police : les modèles d’heure de la journée peuvent augmenter les contrôles ; cela affecte le risque (par exemple, grève du port/verrouillage des bateaux). \nDans Vehicle Heist, Voiture/Moto/Bateau utilisent désormais un seul niveau de commande : sélectionnez la catégorie via les trois cartes de voie en haut, sans deuxième rangée d\'onglets supplémentaire. \nChaque carte de voie comprend des actions rapides et directes pour le vol et les mises à niveau de stockage, vous n\'avez donc pas besoin de faire défiler d\'abord jusqu\'à des sous-boutons séparés. \nPendant qu\'un temps de recharge de vol est en cours, une icône en forme d\'éclair apparaît à côté du chronomètre : appuyez dessus pour dépenser des crédits et effacer le temps de recharge. Vous pouvez désactiver la boîte de dialogue de confirmation ; réactivez-le dans Paramètres sous le temps de recharge antivol (crédits). \nLes cartes de voie affichent désormais également directement la capacité par type (utilisé/total + niveau de mise à niveau). \nLes véhicules volés s\'affichent désormais sous forme de cartes réactives : le mobile en affiche une par ligne, la tablette/ordinateur de bureau affiche plusieurs cartes côte à côte. \nNouvelle couche d\'opérations : fenêtres d\'interception PvP pour les points chauds, bonus de rôle d\'équipage dans les opérations d\'équipage, déverrouillage de réputation par type de véhicule, événements de liste noire régionale et contrats d\'assurance de contrebande. \nNouvelles extensions d\'opérations de véhicules : missions de contre-interception, matchmaking d\'équipage avec échelle saisonnière, modificateurs de pays (inflation/corruption/grève du port) et un tableau des contrats avec des contrats légendaires hebdomadaires. \nOps affiche désormais les temps de recharge en direct par action. Les minuteries comptent à rebours visiblement et s\'actualisent automatiquement. \nLes actions d\'équipage (Crew Op et Crew Match) ne sont disponibles que lorsque vous faites partie d\'un équipage ; sans équipage, vous obtenez un indice de déverrouillage clair. \nLes actions opérationnelles réussies versent de l\'argent directement dans votre portefeuille. L\'aperçu des actions montre le type de paiement attendu par bouton. \nLes réclamations d\'assurance sont désormais examinées en premier ; l\'utilisation du litige de réclamation vous permet de contester un paiement supplémentaire avec un risque de rejet. \nUne chaleur de catégorie supérieure réduit les chances de réussite du vol et augmente le risque de hotspot. La chaleur diminue progressivement chaque heure. \nLes contrats Chop-Shop nécessitent un véhicule éligible de votre inventaire ; la réclamation consomme ce véhicule et paie l’argent du contrat. \nLe transport de véhicules n\'a plus lieu dans le garage ; utilisez le flux Smuggling Hub. \nLa revente et la mise au rebut libèrent la capacité des voitures ou des motos et peuvent rouvrir des emplacements de capitalisation mondiale pour ce modèle. \nLes véhicules réservés aux événements, tels que les intercepteurs de la police, restent verrouillés en dehors des fenêtres d\'événement.';
+
+  @override
+  String get helpTopicGarageTips =>
+      'Volez activement des véhicules lorsque le niveau de recherche est faible : recherche plus élevée = risque d\'échec plus élevé lors du vol. \nGardez toujours au moins un véhicule fiable en bon état pour la contrebande : un véhicule en panne réduit de moitié vos chances de succès. \nUtiliser la mise au rebut des véhicules fortement endommagés pour réinitialiser rapidement la capacité ; la vente est souvent meilleure en bon état.';
+
+  @override
+  String get helpTopicMarinaCategory => 'Actifs';
+
+  @override
+  String get helpTopicMarinaTitle => 'Marina';
+
+  @override
+  String get helpTopicMarinaSummary =>
+      'Gérez des bateaux avec des raretés, des casquettes mondiales et des minuteries de réparation pour les routes de contrebande maritime. Marina se concentre sur la propriété, l\'entretien, la vente et la mise au rebut ; le transport passe par Smuggling Hub.';
+
+  @override
+  String get helpTopicMarinaHow =>
+      'La marina affiche vos bateaux avec leur état, leur carburant, leur valeur marchande, leur rareté et leur statut mondial par modèle. \nEn utilisant le bouton Catalogue, vous pouvez voir tous les bateaux volables, y compris la liste complète des pays les plus courants et des pays d\'apparition. \nLe vol de bateau a ses propres portes de classement et ses propres temps de recharge. Les bateaux plus chers sont plus difficiles à voler mais peuvent être plus rentables. \nSi la capitalisation mondiale d\'une maquette de bateau est pleine, elle disparaît temporairement de la liste disponible. La vente/mise au rebut rouvre les créneaux. \nLes réparations sont chronométrées : vous payez d\'avance et le bateau est indisponible jusqu\'à la fin du chronomètre. \nLes réparations simultanées sont limitées sur l\'ensemble des voitures, motos et bateaux : sans VIP max 1 actif, avec VIP max 2 actifs. \nLa mise au rebut confère une valeur de récupération (35 % de la valeur de base), adaptée à l\'état et au bonus d\'amélioration de la marina. \nMarina gère uniquement la propriété et l\'entretien ; L’itinéraire de transport réel se déroule dans Smuggling Hub. \nLes bateaux de police réservés aux événements sont destinés aux événements temporaires et restent verrouillés en dehors des fenêtres d\'événements.';
+
+  @override
+  String get helpTopicMarinaTips =>
+      'Investissez dans la marina si vos itinéraires de contrebande passent régulièrement par la mer : un moindre intérêt de la police peut augmenter considérablement les chances de succès. \nGardez un hors-bord en bon état comme alternative rapide lorsque les voies d\'évacuation terrestres sont bloquées. \nMettez au rebut les bateaux fortement endommagés ayant une faible valeur de revente pour libérer plus rapidement des locaux et des capacités de marina au niveau mondial.';
+
+  @override
+  String get helpTopicTuneshopCategory => 'Actifs';
+
+  @override
+  String get helpTopicTuneshopTitle => 'Boutique de mélodies';
+
+  @override
+  String get helpTopicTuneshopSummary =>
+      'Utilisez des pièces récupérées pour améliorer les véhicules par catégorie. Améliorez la vitesse, la furtivité et l’armure grâce aux coûts de niveau et aux temps de recharge des catégories.';
+
+  @override
+  String get helpTopicTuneshopHow =>
+      'Vous gagnez des pièces en mettant à la casse des véhicules : pièces de voiture, pièces de moto et pièces de bateau. \nLes pièces sont mutualisées par catégorie : tout véhicule d’une même catégorie utilise le même stock de pièces. \nChaque mise à niveau coûte des pièces et de l\'argent. Les coûts monétaires sont basés sur la catégorie et augmentent selon le niveau de réglage. \nVous pouvez améliorer trois statistiques : vitesse, furtivité et armure. \nLe réglage s\'effectue par véhicule dans votre inventaire. Les nouveaux véhicules recommencent au niveau 0. \nAprès chaque mélodie, il y a un temps de recharge par véhicule : voiture 180 s, moto 120 s, bateau 240 s. \nLe réglage simultané est limité : sans VIP max, 1 véhicule actif en temps de recharge, avec VIP max 5. \nLes véhicules réglés génèrent une valeur de vente et de récupération plus élevée. \nLe réglage est bloqué pendant qu\'un véhicule est en réparation ou en transport.';
+
+  @override
+  String get helpTopicTuneshopTips =>
+      'Mettez d\'abord au rebut les véhicules fortement endommagés pour fabriquer rapidement des pièces. \nInvestissez tôt dans la furtivité pour réduire le risque de capture lors des courses à haut risque. \nUtilisez des améliorations de blindage sur les véhicules que vous déployez à plusieurs reprises dans des boucles dangereuses.';
+
+  @override
+  String get helpTopicShootingRangeCategory => 'Entraînement';
+
+  @override
+  String get helpTopicShootingRangeTitle => 'Champ de tir';
+
+  @override
+  String get helpTopicShootingRangeSummary =>
+      'Améliorez votre précision et vos compétences en arme grâce à des exercices de tir structurés. Des statistiques plus élevées augmentent les dégâts et les chances de toucher en PvP et dans les crimes.';
+
+  @override
+  String get helpTopicShootingRangeHow =>
+      'Le stand de tir propose de multiples disciplines : pistolet, carabine, fusil de chasse et tir automatique. Chacun entraîne une compétence d’arme distincte. \nChaque séance d\'entraînement a un temps de recharge de 30 minutes. Vous ne pouvez pas vous entraîner indéfiniment par jour. \nUne précision plus élevée augmente vos chances de toucher dans les combats PvP et réduit les chances d\'être touché vous-même. \nLa compétence des armes détermine également quelles armes vous pouvez utiliser efficacement : un fusil de sniper nécessite une certaine compétence avant d\'obtenir son bonus complet. \nLes résultats de l’entraînement s’empilent de manière cumulative. Il n’y a pas de réinitialisation à moins que vous ne receviez une lourde pénalité via le tribunal. \nLe certificat scolaire Formation Militaire donne un bonus permanent à chaque séance de tir.';
+
+  @override
+  String get helpTopicShootingRangeTips =>
+      'Entraînez-vous au stand de tir tous les jours : de petits bonus cumulatifs deviennent perceptibles dans les résultats PvP en une semaine. \nEntraînez-vous au type d\'arme que vous utilisez le plus dans les crimes et le PvP pour un retour sur investissement maximal.';
+
+  @override
+  String get helpTopicGymCategory => 'Entraînement';
+
+  @override
+  String get helpTopicGymTitle => 'Salle de sport';
+
+  @override
+  String get helpTopicGymSummary =>
+      'Entraînez votre force, votre vitesse et votre endurance pour obtenir de meilleures statistiques en PvP, en crimes et en HP. L’entraînement quotidien est la clé d’une croissance rapide des statistiques.';
+
+  @override
+  String get helpTopicGymHow =>
+      'La salle de sport propose trois catégories d\'entraînement : Force (plus de dégâts par attaque), Vitesse (réflexes plus élevés, moins de coups reçus), Endurance (HP max plus élevés). \nChaque entraînement a un temps de recharge d\'une heure. Maximum 6 à 8 séances par jour selon votre diplôme scolaire. \nLa force augmente les dégâts directs en PvP et dans certains types de crimes (vol, bagarre). \nLa vitesse augmente les chances d\'esquiver une attaque et réduit les chances d\'être pris en flagrant délit d\'échec. \nL\'endurance augmente votre pool de HP maximum. Plus de HP = survivre plus longtemps en PvP et plus de place pour les crimes à risque. \nLe certificat scolaire Entraînement Physique donne +15% de bonus à toutes les séances de gym.';
+
+  @override
+  String get helpTopicGymTips =>
+      'Donnez la priorité à l’entraînement d’endurance : un pool de HP plus élevé améliore tous vos autres systèmes car vous restez actif plus longtemps. \nCombinez salle de sport et stand de tir : Force + Précision est la combinaison PvP la plus puissante.';
+
+  @override
+  String get helpTopicAmmoFactoryCategory => 'Empire';
+
+  @override
+  String get helpTopicAmmoFactoryTitle => 'Usine de munitions';
+
+  @override
+  String get helpTopicAmmoFactorySummary =>
+      'Produisez des munitions pour votre usage personnel et gérez votre production depuis l\'usine. L\'achat et la vente de munitions passent par le marché noir et non directement depuis l\'écran de l\'usine.';
+
+  @override
+  String get helpTopicAmmoFactoryHow =>
+      'L\'usine de munitions a des niveaux de production (niveau 1 à 5). Niveau supérieur = plus de tours par réclamation et meilleure qualité. \nAu cours d\'une session active, vous réclamez la production toutes les 10 minutes environ (jusqu\'à 8 heures de retard au cours de cette session). \nLa production continue de s\'accumuler pendant que vous êtes hors ligne : lorsque vous revenez, vous pouvez réclamer plusieurs fois jusqu\'à ce que le retard soit rattrapé. \nLe simple fait de visiter l’usine de munitions ou de voyager et revenir ne doit pas changer de propriétaire ; une usine ne devrait pas passer à l\'état « à vendre » simplement parce que l\'écran a été ouvert. \nLes munitions produites sont utilisées personnellement dans des crimes et en PvP. Pour acheter et vendre des munitions, passez par le marché noir ; l\'écran d\'usine lui-même ne vend pas de balles directement. \nLes mises à niveau de sortie augmentent le nombre de tours par réclamation ; les améliorations de qualité améliorent la valeur marchande. \nLe prix du marché des munitions fluctue en fonction de la demande. Faites des réserves lorsque les prix sont bas et vendez lorsque les prix sont élevés. \nLors d\'un raid dans une usine, vous perdez une partie de la production stockée. La sécurité réduit ce risque.';
+
+  @override
+  String get helpTopicAmmoFactoryTips =>
+      'Améliorez votre usine au niveau 3 dès que possible : la production doublée par rapport au niveau 1 la rend autosuffisante en munitions. \nGardez toujours 2 à 3 cycles de production en réserve comme tampon afin de ne jamais manquer de munitions pendant le PvP.';
+
+  @override
+  String get helpTopicSchoolCategory => 'Entraînement';
+
+  @override
+  String get helpTopicSchoolTitle => 'École';
+
+  @override
+  String get helpTopicSchoolSummary =>
+      'Suivez les cours selon plusieurs pistes pour débloquer des bonus, réduire les coûts et ouvrir de nouveaux systèmes. L’école est un multiplicateur sur tout ce que vous faites.';
+
+  @override
+  String get helpTopicSchoolHow =>
+      'L\'école propose des pistes par domaine : Pénal (meilleures statistiques sur la criminalité), Économie (coûts commerciaux et bancaires inférieurs), Militaire (primes de combat), Médecine (coûts hospitaliers inférieurs), Droit (coûts d\'avocat inférieurs), Technique (meilleure production d\'usine et de médicaments). \nChaque leçon a une durée d\'étude de 15 à 60 minutes selon le niveau. Les niveaux plus élevés prennent plus de temps. \nAprès avoir terminé une leçon, vous recevez un certificat pour ce niveau de piste. Ce certificat est permanent et accorde le bonus immédiatement. \nVous ne pouvez suivre qu\'un seul cours à la fois. Planifiez soigneusement vos études lorsque vous avez un besoin urgent d\'un certificat spécifique. \nLes frais de scolarité augmentent par niveau. L\'enseignement supérieur nécessite de terminer les niveaux antérieurs de la même filière. \nCertaines fonctionnalités avancées du jeu sont verrouillées derrière un certificat scolaire : par ex. accès à certains emplois, niveaux d\'usine plus élevés, événements de discothèque VIP et niveaux de mise à niveau plus élevés des installations pharmaceutiques. \nLes certificats ne sont jamais réinitialisés à moins que votre compte ne reçoive une lourde pénalité.';
+
+  @override
+  String get helpTopicSchoolTips =>
+      'Commencez toujours par la filière Criminel : les bonus aux chances de réussite criminelle remboursent les frais d\'études en quelques séances. \nProgrammez des études longues (60 min+) avant de vous coucher : vous vous réveillez avec un nouveau certificat sans manquer de temps actif.';
+
+  @override
+  String get helpTopicTerritoryCategory => 'Empire';
+
+  @override
+  String get helpTopicTerritoryTitle => 'Territoire';
+
+  @override
+  String get helpTopicTerritorySummary =>
+      'Revendiquez et contrôlez des régions géographiques pour obtenir des revenus passifs, le prestige de l\'équipage et des bonus régionaux stratégiques. Territory combine le contrôle de la carte avec des concours et des récompenses saisonnières.';
+
+  @override
+  String get helpTopicTerritoryHow =>
+      'L\'aperçu du territoire affiche tous les pays et régions disponibles par pays. Cliquez sur un pays pour voir la carte interactive. \nTous les pays pris en charge sont désormais entièrement consultables via le même flux de cartes interactives que les Pays-Bas. \nAppuyez sur une région sur la carte interactive pour ouvrir un modal avec des informations sur le territoire et le bouton d\'attaque. Les cartes de région distinctes sous la carte ne sont plus nécessaires. \nLe visionnage est autorisé partout, mais les attaques, les jointures de défense et les actions de concours ne fonctionnent que dans le pays où se trouve actuellement votre personnage. \nSur mobile, vous pouvez désormais pincer l\'intérieur et l\'extérieur avec deux doigts et faire glisser directement la carte agrandie, ce qui rend les régions plus petites plus faciles à exploiter sans boutons supplémentaires sur la carte. \nLe territoire est basé sur l\'équipage : vous devez créer ou rejoindre un équipage avant que le bouton d\'attaque ne devienne disponible pour les régions neutres ou hostiles. \nChaque région peut être contrôlée par au plus un équipage à la fois. La propriété accorde un revenu passif par heure, mais le territoire cesse de cotiser à la banque de l\'équipage une fois que le plafond de stockage d\'argent est atteint. \nDémarrez un concours dans une région non réclamée en utilisant le bouton du concours. Le concours progresse automatiquement via la préparation (temps de préparation), l\'activité (actions) et le verrouillage (résolution). \nLors d\'un concours actif, le modal de la région indique désormais également quand les actions se débloquent, quand le concours se termine, quel est le temps de recharge par action et le montant en espèces réel que la région paie par paiement, par heure et par jour. \nLes régions ont désormais également des rôles stratégiques tels que port, industrie, capitale, région frontalière ou plateforme logistique. Ce rôle détermine quelles actions peuvent y rapporter des points supplémentaires. \nLes régions adjacentes appartenant déjà à votre équipage offrent désormais un soutien supplémentaire lors des actions de concours. Le modal de région montre quels bonus stratégiques sont actifs et quel est le niveau de soutien adjacent dont dispose votre équipage dans cette zone. \nLes bonus d\'action peuvent désormais également provenir de la progression de l\'équipage : niveau du QG, niveau de la mission de l\'équipage et bâtiments secondaires pertinents (arme/munitions/voiture/bateau/stockage de médicaments). Ces bonus n\'augmentent que les points du concours, pas l\'argent passif de la région. \nCertaines actions de concours avancées sont dépendantes du QG : si votre niveau de QG est trop bas, le bouton d\'action affiche immédiatement « nécessite le niveau de QG X ». \nLe territoire n\'utilise plus de plafond d\'action quotidien par défaut (limite d\'exécution 0 = désactivé). L\'équilibre reste contrôlé grâce aux temps de recharge, aux choix d\'action anti-ferme et stratégiques. \nGagner une guerre territoriale ou une guerre totale peut désormais laisser une pression de guerre temporaire sur les véritables régions territoriales autour de cette ligne de front. Le modal de région montre quel équipage maintient la pression, dans quelle mesure la stabilité effective est réduite et quand les conséquences expirent. \nLorsqu\'un concours vient de commencer ou qu\'il manquait encore des champs de chronométrage à un concours plus ancien, l\'écran remplit désormais immédiatement ces minuteries et actualise le modal au dernier état du concours sans que vous ayez à quitter au préalable. \nLes attaquants ne voient que les actions de l\'attaquant (renseignements, sabotage, raid) et les défenseurs ne voient que les actions du défenseur (patrouille, ravitaillement, défense), donc le modal n\'affiche plus de boutons mixtes déroutants. \nUne région affiche désormais également le rendement réel du territoire. Les chefs d\'équipe voient également combien de régions et de pays leur équipe contrôle sur le tableau de bord, combien l\'équipe gagne actuellement et combien le territoire a gagné au total jusqu\'à présent. \nLes concours donnent lieu à un transfert de propriété et à des récompenses (cash, XP, prestige). Les perdants obtiennent également une XP partielle pour leur participation. \nLes grandes régions (ports, capitales) donnent plus de revenus passifs mais déclenchent également plus d\'adversaires et de tentatives de raid. \nLes événements saisonniers offrent des récompenses bonus et des défis spéciaux par groupe de régions. \nÉvitez les impasses : votre équipage ne peut pas attaquer immédiatement le même adversaire après une défaite ; attendez le temps de recharge. \nLes contrôles anti-abus empêchent un équipage d’attaquer la même cible à plusieurs reprises dans des délais courts.';
+
+  @override
+  String get helpTopicTerritoryTips =>
+      'Commencer dans un pays équilibré avec des régions de taille moyenne : moins de concurrence que les grands pays mais des revenus passifs raisonnables. \nConcentrez-vous d\'abord sur un pays où votre équipage est fort : une meilleure connaissance conduit à une meilleure stratégie de compétition qu\'un contrôle superficiel dans de nombreux pays. \nUtilisez les saisons comme réinitialisations stratégiques : si vous perdez pendant une saison sèche, une meilleure saison suit toujours pour un retour.';
+
+  @override
+  String get helpTopicProstitutionCategory => 'Empire';
+
+  @override
+  String get helpTopicProstitutionTitle => 'Prostitution';
+
+  @override
+  String get helpTopicProstitutionSummary =>
+      'Construisez un réseau de prostitution avec des recrues, des événements et des clients VIP. Un réseau bien géré génère des revenus passifs mais nécessite une gestion active pour contrôler les rivalités et surveiller l’attention.';
+
+  @override
+  String get helpTopicProstitutionHow =>
+      'Vous gérez les recrues chacune avec leurs propres statistiques (expérience, popularité, disponibilité). Plus de recrues = revenu passif plus élevé. \nLes quarts de travail durent 8 heures par recrue : après un quart de travail, cette recrue a besoin de temps de repos avant de pouvoir recommencer. \nLa gestion des emplacements est flexible : vous pouvez déplacer les recrues entre la rue, le quartier rouge et la discothèque à l\'aide des boutons d\'action présents sur chaque carte. \nLes événements sont des boosters temporaires : des spectacles spéciaux, des soirées VIP et des fêtes augmentent les revenus par tick pendant la durée de l\'événement. \nRivalité : d\'autres joueurs ou PNJ concurrents peuvent débaucher vos recrues ou saboter des événements. Une sécurité plus élevée réduit ce risque. \nLes clients VIP paient beaucoup plus mais nécessitent des recrues très populaires (80+) et un emplacement sécurisé. \nL\'attention (la chaleur) de la police augmente avec les transactions et les perquisitions importantes. La forte chaleur entraîne une confiscation des revenus ou une fermeture temporaire. \nCombinaison avec une discothèque : une discothèque offre une couverture légale aux activités faisant monter plus lentement la chaleur. \nUtilisez le panneau d\'informations sur les revenus en haut pour comparer rapidement la production horaire pour la rue, le RLD et la discothèque. \nClassement : le chiffre d\'affaires total hebdomadaire le plus élevé remporte une récompense hebdomadaire en espèces et un badge.';
+
+  @override
+  String get helpTopicProstitutionTips =>
+      'Investissez tôt dans la sécurité : une attaque de rivalité qui détourne votre meilleure recrue coûte plus cher que l’investissement dans la sécurité. \nN\'organisez des événements VIP que lorsque les recrues dépassent 80 de popularité : en dessous de ce seuil, les clients VIP paient simplement le tarif standard.';
+
+  @override
+  String get helpTopicRedLightDistrictsCategory => 'Empire';
+
+  @override
+  String get helpTopicRedLightDistrictsTitle => 'Quartiers rouges';
+
+  @override
+  String get helpTopicRedLightDistrictsSummary =>
+      'Revendiquez et gérez les circonscriptions territoriales par pays. Posséder un district donne un revenu passif et un contrôle sur les activités de prostitution dans cette région.';
+
+  @override
+  String get helpTopicRedLightDistrictsHow =>
+      'Chaque pays possède un ou plusieurs quartiers rouges qui peuvent être revendiqués. Réclamez un quartier en payant un montant d’achat fixe. \nEn tant que propriétaire d\'un district, vous recevez un pourcentage de tous les revenus de la prostitution dans ce pays, y compris ceux des autres acteurs qui y opèrent. \nD\'autres joueurs peuvent attaquer votre quartier pour en prendre possession. Une sécurité plus élevée réduit les risques d’attaque. \nLes améliorations du quartier (sécurité, marketing, infrastructures) augmentent votre pourcentage de revenus et réduisent le risque de perdre la propriété. \nVous pouvez posséder jusqu\'à 3 quartiers simultanément. Le choix stratégique du pays est essentiel. \nLes pays les plus actifs (Colombie, Dubaï, Japon) offrent les revenus passifs les plus élevés mais sont aussi les plus contestés. \nLa perte d\'un quartier ne rembourse pas le prix d\'achat : il est définitivement perdu si un ennemi parvient à s\'en emparer.';
+
+  @override
+  String get helpTopicRedLightDistrictsTips =>
+      'Commencez par un pays moins populaire pour votre première circonscription : une pression d’attaque plus faible vous donne le temps d’améliorer la sécurité avant la vraie concurrence. \nAméliorez la sécurité de chaque quartier immédiatement après l\'achat : les premières 24 heures sont les plus vulnérables à une OPA.';
+
+  @override
+  String get helpTopicAchievementsCategory => 'Méta';
+
+  @override
+  String get helpTopicAchievementsTitle => 'Réalisations';
+
+  @override
+  String get helpTopicAchievementsSummary =>
+      'Gagnez des badges en atteignant des jalons sur tous les systèmes de jeu. Les réalisations donnent des récompenses, améliorent votre profil de statut et montrent vos progrès par catégorie.';
+
+  @override
+  String get helpTopicAchievementsHow =>
+      'Les succès sont regroupés en catégories : Crimes, Empire, PvP, Économie, Formation, Social et Meta. \nChaque réalisation comporte plusieurs niveaux (Bronze, Argent, Or, Platine). Chaque niveau donne une récompense plus élevée et un badge plus impressionnant. \nLes récompenses par réussite incluent : de l\'argent, de l\'XP, des objets spéciaux, des bonus permanents ou des titres uniques pour votre profil. \nLes progrès sont suivis automatiquement. Vous n’avez rien à activer : atteignez le seuil et le badge est attribué immédiatement. \nCertaines réalisations sont masquées jusqu\'à ce que vous les complétiez partiellement. Elles apparaissent alors avec leur vrai nom et leurs exigences. \nLes badges de réussite sont visibles sur votre profil public. Ils montrent aux autres joueurs vos spécialisations et votre expérience. \nSuccès en chaîne : certains badges sont liés dans une chaîne. L\'or nécessite que l\'argent soit déjà obtenu. Planifiez tôt pour les niveaux supérieurs.';
+
+  @override
+  String get helpTopicAchievementsTips =>
+      'Vérifiez quotidiennement vos réalisations presque terminées : un petit effort supplémentaire peut gagner un badge et une récompense en espèces qui autrement seraient retardés de plusieurs mois. \nConcentrez-vous dès le début sur les catégories Économie et Crime : celles-ci offrent le plus de récompenses en espèces et sont les plus faciles à combiner avec votre jeu normal.';
+
+  @override
+  String get helpTopicSupportTicketsCategory => 'Soutien';
+
+  @override
+  String get helpTopicSupportTicketsTitle => 'Rapports et billets';
+
+  @override
+  String get helpTopicSupportTicketsSummary =>
+      'Signalez des bugs, des questions ou des commentaires via le système de tickets. Le support et les administrateurs peuvent répondre, gérer le suivi interne et renvoyer des mises à jour via la conversation de support elle-même et les notifications push facultatives.';
+
+  @override
+  String get helpTopicSupportTicketsHow =>
+      'Ouvrez l\'élément de menu « Support » distinct pour examiner vos tickets ou en créer un nouveau. \nChoisissez une catégorie (bug, question, feedback ou autre), sélectionnez le module associé si nécessaire et décrivez votre problématique le plus précisément possible. \nVous pouvez éventuellement ajouter une référence telle qu\'un identifiant de commande, un nom d\'écran ou un bref contexte, ainsi qu\'une capture d\'écran si cela peut vous aider. \nAprès la soumission, vous recevez immédiatement un numéro de ticket et votre ticket apparaît dans votre aperçu de l\'assistance, où l\'assistance peut répondre et créer des tâches internes. \nLorsque l\'assistance répond ou que le statut du ticket change, vous le voyez directement dans la même conversation d\'assistance et pouvez éventuellement recevoir une notification push (si les notifications sont activées). \nL\'élément de menu Support affiche un badge dès qu\'un ticket reçoit une nouvelle réponse de support ou une mise à jour de statut depuis votre dernière visite à l\'aperçu du support. \nLe support utilise des statuts tels que nouveau, triage, en cours, en attente de joueur, bloqué et résolu pour suivre votre rapport en interne.';
+
+  @override
+  String get helpTopicSupportTicketsTips =>
+      'Incluez toujours votre pays, votre action et votre message d\'erreur exact ; cela accélère les correctifs pour les développeurs. \nUtilisez un ticket par type de problème afin que la liste de tâches et le suivi restent clairs.';
+
+  @override
+  String get helpTopicSettingsCategory => 'Cœur';
+
+  @override
+  String get helpTopicSettingsTitle => 'Paramètres';
+
+  @override
+  String get helpTopicSettingsSummary =>
+      'Gérez tous les paramètres du compte : langue, avatar, confidentialité, préférences de notification par système et options de sécurité. Les paramètres affectent directement votre expérience de jeu.';
+
+  @override
+  String get helpTopicSettingsHow =>
+      'Langue : basculez entre le néerlandais et l\'anglais. Tous les textes de l\'interface utilisateur, les messages système et les notifications sont mis à jour immédiatement. \nAvatar : téléchargez ou sélectionnez une image de profil visible par les autres joueurs sur votre profil public et dans les listes d\'équipage. \nConfidentialité : définissez qui peut voir votre statut en ligne, votre emplacement (pays actuel) et vos statistiques : uniquement vous, l\'équipage, vos amis ou tout le monde. \nNotifications push : basculer par système. Catégories : Crimes, Trading de crypto, Alertes de prix, Ordres, événements de joueurs en direct (compétition), Régime de marché, Braquage, Discothèque, messages généraux. \nSi le push était déjà autorisé, la version Web/PWA se reconnecte automatiquement au jeton de votre appareil actuel après une actualisation ou une mise à jour ; il vous suffit de le réactiver dans Paramètres lorsque le navigateur lui-même bloque les notifications. \nLes préférences de notification crypto restent enregistrées après avoir quitté les paramètres et les avoir rouvertes plus tard. \nNotifications dans l\'application : configurables séparément du push. L\'application affiche les alertes dans l\'application sans envoyer de notification système. \nSécurité : changez le mot de passe, configurez l\'authentification à deux facteurs et affichez les sessions actives. \nPréférence de notification par système : affinez afin de ne pas recevoir de tempête de notifications de la part de systèmes sur lesquels vous ne jouez pas activement.';
+
+  @override
+  String get helpTopicSettingsTips =>
+      'Activez les notifications push pour les commandes cryptographiques et les événements de braquage : ce sont des systèmes à temps critique où une réaction rapide est importante. \nRéglez la confidentialité sur l\'équipage uniquement pour l\'emplacement lorsque vous êtes actif sur la liste de succès : autrement, les autres joueurs peuvent vous localiser exactement.';
+
+  @override
+  String get helpTopicPremiumCategory => 'Cœur';
+
+  @override
+  String get helpTopicPremiumTitle => 'Primes et crédits';
+
+  @override
+  String get helpTopicPremiumSummary =>
+      'Achetez et gérez les packs Player VIP, Crew VIP et crédits ici. Cet aperçu montre également votre solde créditeur et tous les éléments de crédit disponibles que vous pouvez utiliser directement ou contextuellement.';
+
+  @override
+  String get helpTopicPremiumHow =>
+      'Ouvrez la page « Premium et crédits » séparée à partir du menu latéral pour afficher votre statut VIP, vos dates d\'expiration, votre solde créditeur et vos options d\'achat. \nSur chaque vignette d\'achat, appuyez/cliquez sur l\'icône « i » en haut à gauche pour obtenir tous les détails et avantages ; la vignette elle-même n\'affiche intentionnellement que de courtes informations de base et le bouton d\'achat. \nLe joueur VIP est personnel. Crew VIP s\'applique à votre équipage et n\'a de valeur que lorsque vous faites déjà partie d\'un équipage. \nLe joueur VIP offre des délais d\'action 10 % plus courts (la durée de prison reste inchangée), 100 crédits hebdomadaires, un bouton d\'achat VIP en un clic pour les matériaux manquants dans la production de médicaments (après confirmation des coûts) et une réinitialisation de mort plus douce : la banque/crypto/éducation/succès restent, tandis que les actifs, l\'inventaire et le stock de médicaments sont supprimés. \nLe paiement VIP ouvre la page de paiement, puis revient à la section « Premium et crédits » du jeu, afin que vous voyiez immédiatement si l\'achat a réussi et combien de temps votre VIP fonctionne. \nLes forfaits de crédits sont achetés avec de l’argent réel. Après un paiement réussi, les crédits apparaissent immédiatement dans l\'aperçu de votre portefeuille. \nL\'Event Pass (7 jours, argent réel) est répertorié dans la grille des offres uniques : +10 % de score sur les événements de joueurs en direct, plus un petit bonus de crédit après l\'achat. Il s’agit d’un aspect secondaire : pas d’un combat direct ou d’un boost PvP ; cela aide principalement les résultats du classement lors des événements en cours. \nLes articles de crédit utilisent des crédits de portefeuille au lieu d\'euros. Pensez à la protection contre les coups, aux réinitialisations du temps de recharge, aux boosts d\'événements ou aux lots d\'argent, en fonction de ce que l\'administrateur a actuellement activé en direct. \nSur les écrans de temporisation pris en charge (tels que les crimes, les emplois, le vol de véhicule/bateau et l\'école), vous disposez également d\'un bouton d\'accélération direct pour les temps de recharge actifs, vous n\'avez donc pas besoin de revenir d\'abord à Premium et aux crédits. \nCertains éléments de crédit fonctionnent directement à partir de cet écran. Les éléments liés au contexte, tels que certaines actions du véhicule, sont utilisés à la place depuis l\'écran du véhicule ou du garage approprié (les véhicules endommagés affichent un bouton de réparation instantanée directement sur la carte). \nPour les boutons contextuels tels que l\'accélération de la réparation, le coût actuel du crédit est affiché directement sur le bouton/l\'info-bulle. \nLes prix et les articles disponibles sont gérés en direct dans l\'administrateur. Cela signifie que les prix VIP, les coûts de crédit et l\'offre disponible peuvent changer sans mise à jour de l\'application.';
+
+  @override
+  String get helpTopicPremiumTips =>
+      'Vérifiez votre solde créditeur et votre date d\'expiration avant d\'acheter à nouveau ; étendre est souvent mieux que d’empiler aveuglément. \nUtilisez les crédits principalement pour les boosts ou les protections urgents, et non automatiquement pour chaque petit raccourci. \nSi vous ne faites pas encore partie d\'un équipage, commencez avec Player VIP ou un pack de crédits avant Crew VIP.';
 }

@@ -13005,4 +13005,688 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drugsApiFailedClaim => 'Failed to claim depot shipments';
+
+  @override
+  String get helpTopicDashboardCategory => 'Core';
+
+  @override
+  String get helpTopicDashboardTitle => 'Dashboard';
+
+  @override
+  String get helpTopicDashboardSummary =>
+      'Your central overview with all your stats, active cooldowns, live events and shortcuts to every part of the game.';
+
+  @override
+  String get helpTopicDashboardHow =>
+      'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nQuick Action blocks on the right are shortcuts to Crimes, Car Theft, Boat Theft, Work, Casino, Bank and School.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.';
+
+  @override
+  String get helpTopicDashboardTips =>
+      'Open the dashboard first after every login to see what changed while you were away.\nKeep wanted level below 10 so automatic decay works and arrest chances stay low.\nCheck unread messages before starting risky actions: rewards, order fills and system events all appear in your inbox.';
+
+  @override
+  String get helpTopicCrimesCategory => 'Actions';
+
+  @override
+  String get helpTopicCrimesTitle => 'Crimes';
+
+  @override
+  String get helpTopicCrimesSummary =>
+      'Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk.';
+
+  @override
+  String get helpTopicCrimesHow =>
+      'Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` use your selected crime weapon. You can now choose it directly at the top of the Crimes screen or through Inventory.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.';
+
+  @override
+  String get helpTopicCrimesTips =>
+      'Use fast beginner crimes to build XP while waiting for big cooldowns.\nAlways bail out if your Wanted Level is high — sitting in jail blocks all your loops.\nKeep HP above 30 before starting a crime run: every attempt costs HP and at 0 HP you spend 3 hours in ICU.';
+
+  @override
+  String get helpTopicJobsCategory => 'Actions';
+
+  @override
+  String get helpTopicJobsTitle => 'Jobs';
+
+  @override
+  String get helpTopicJobsSummary =>
+      'Earn legal money without Wanted Level risk. Jobs are safer than crimes but peak lower in payout.';
+
+  @override
+  String get helpTopicJobsHow =>
+      'Available jobs scale with rank and education: better jobs pay more, but also have longer cooldowns.\nJob cooldowns scale on max payout: low-tier jobs around 3-5 min, mid-tier around 8-12 min, top-tier around 17-22 min.\nJobs have a high but not perfect success rate; on failure you do not lose money or HP, but you do lose some XP.\nRequirements per job: minimum 10 HP, hunger > 20, thirst > 20, not in jail, not in ICU.\nThere is no hard daily cap on jobs; progression is paced by cooldown, chance and payout instead of a daily lock.\nJob pay varies per job type and rank. Education (School) can unlock higher positions.\nYou also earn XP per job, though less than comparable crimes.\nUse jobs as a reliable cash flow base, especially when your Wanted Level is too high for safe crimes.';
+
+  @override
+  String get helpTopicJobsTips =>
+      'Combine jobs and school: education unlocks better jobs with higher payouts.\nWhen Wanted Level is above 8 or you are recovering from ICU, use jobs instead of crimes.\nKeep hunger and thirst from dropping too low: a job with stats below 20 simply will not start.';
+
+  @override
+  String get helpTopicTravelCategory => 'World';
+
+  @override
+  String get helpTopicTravelTitle => 'Travel';
+
+  @override
+  String get helpTopicTravelSummary =>
+      'Move between countries for better market prices, unique opportunities and access to international systems.';
+
+  @override
+  String get helpTopicTravelHow =>
+      'Available countries: Netherlands (start), Belgium, Germany, France, United Kingdom, Spain, Italy, Switzerland, USA, Mexico, Colombia, Brazil.\nTravel costs: neighboring country €500-€2.000, Europe → Americas €5.000-€10.000, long distance €10.000-€20.000.\nTravel requirements: not in jail, not in ICU, minimum 20 HP, travel funds available.\nDrug quantities in your inventory count as real grams for carry weight and travel checks; 500 means 500g, not 50kg.\nEach country has different market prices (up to 300% price difference), different crime payouts and unique trade items.\nTransport risk: police can seize goods based on Wanted Level (chance = wanted × 2%, max 80%). FBI can seize everything internationally if heat is high.\nCustoms inspection has a 10% base chance. You can bribe (€1.000-€5.000) or get caught losing 50% of goods.\nAfter arrival all actions are immediately available in the new country. Markets and crime speed vary by location.';
+
+  @override
+  String get helpTopicTravelTips =>
+      'Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.';
+
+  @override
+  String get helpTopicCrewCategory => 'Social';
+
+  @override
+  String get helpTopicCrewTitle => 'Crew';
+
+  @override
+  String get helpTopicCrewSummary =>
+      'Start a crew or join existing players to pull off heists together, share storage and become stronger as a unit.';
+
+  @override
+  String get helpTopicCrewHow =>
+      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission; first wait for the remaining cooldown or speed it up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.';
+
+  @override
+  String get helpTopicCrewTips =>
+      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.';
+
+  @override
+  String get helpTopicFriendsCategory => 'Social';
+
+  @override
+  String get helpTopicFriendsTitle => 'Friends';
+
+  @override
+  String get helpTopicFriendsSummary =>
+      'Manage your friends list for faster coordination, profile browsing and social feedback.';
+
+  @override
+  String get helpTopicFriendsHow =>
+      'Friends page shows three lists: current friends, sent requests and received requests.\nFrom a friend you can directly send a message, view their profile or start a collaboration.\nYou can see when friends are active in the game, which helps planning heists or trades.\nFriend requests do not expire automatically; keep the list tidy so pending requests do not distract you.\nFriends outside your crew are valuable for jail escapes (a friend can help you break out) and information sharing.\nWhen a friend gets arrested, accepted friends now also receive a push notification that the player is waiting for help in prison.';
+
+  @override
+  String get helpTopicFriendsTips =>
+      'Add friends who share your play style: heist partners, trader networks or crime support.\nA friend who executes a jail escape earns €500-€2.000 reward on success. Arrange this for emergencies.';
+
+  @override
+  String get helpTopicMessagesCategory => 'Social';
+
+  @override
+  String get helpTopicMessagesTitle => 'Messages';
+
+  @override
+  String get helpTopicMessagesSummary =>
+      'Your inbox with personal player messages and system messages about rewards, orders and game events.';
+
+  @override
+  String get helpTopicMessagesHow =>
+      'Messages are split into personal conversations and The Mob State system thread.\nSystem messages are sent automatically for: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.';
+
+  @override
+  String get helpTopicMessagesTips =>
+      'Check your inbox after long offline periods: rewards, order fills and events are all recorded there.\nConfigure notification preferences via Settings so you only receive push alerts for truly important events.';
+
+  @override
+  String get helpTopicInventoryCategory => 'Management';
+
+  @override
+  String get helpTopicInventoryTitle => 'Inventory';
+
+  @override
+  String get helpTopicInventorySummary =>
+      'Manage everything you carry, store and equip: weapons, tools, vehicles, drugs and trade goods.';
+
+  @override
+  String get helpTopicInventoryHow =>
+      'Inventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.\nWeight determines your carrying capacity. Some crimes or travel block if you are overloaded.\nDrugs are stored and shown in inventory and storage as grams; 351 means 351g.\nItem condition degrades with use. Weapons in poor condition perform worse and tools can break.\nAt the top of Inventory you can also choose your default crime weapon. Only carried, usable weapons count for that selection.\nLoadouts let you switch quickly between a crime set (tool + weapon) and a travel set (light, minimal valuables).\nOn arrest police can confiscate items. Do not carry valuables with a high Wanted Level.\nDrugs in inventory increase the chance of FBI intervention during international travel.\nCrew storage is a safe place to keep items outside your personal carrying risk.';
+
+  @override
+  String get helpTopicInventoryTips =>
+      'Keep your carrying load light when traveling or running a high-arrest-risk crime spree.\nUse loadouts so you always have the right gear equipped for each scenario.\nCheck item condition regularly: broken tools silently block crimes without a clear error message.';
+
+  @override
+  String get helpTopicPropertiesCategory => 'Economy';
+
+  @override
+  String get helpTopicPropertiesTitle => 'Properties';
+
+  @override
+  String get helpTopicPropertiesSummary =>
+      'Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub.';
+
+  @override
+  String get helpTopicPropertiesHow =>
+      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.';
+
+  @override
+  String get helpTopicPropertiesTips =>
+      'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.';
+
+  @override
+  String get helpTopicBankCategory => 'Economy';
+
+  @override
+  String get helpTopicBankTitle => 'Bank';
+
+  @override
+  String get helpTopicBankSummary =>
+      'Deposit money to earn interest and keep cash beyond the reach of police confiscations.';
+
+  @override
+  String get helpTopicBankHow =>
+      'Interest: 0.5% of your bank balance per tick (every 5 minutes). Example: €10.000 in bank = €50 interest per tick = €600 per hour = €14.400 per day.\nDeposits and withdrawals are both free and instant with no minimum or maximum limit.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
+
+  @override
+  String get helpTopicBankTips =>
+      'Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.\nGrow interest returns by building large amounts steadily in the bank.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).';
+
+  @override
+  String get helpTopicCasinoCategory => 'Economy';
+
+  @override
+  String get helpTopicCasinoTitle => 'Casino';
+
+  @override
+  String get helpTopicCasinoSummary =>
+      'Gamble with cash on slots, blackjack, roulette, dice, baccarat and video poker. High variance: you can win or lose large amounts fast.';
+
+  @override
+  String get helpTopicCasinoHow =>
+      'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.';
+
+  @override
+  String get helpTopicCasinoTips =>
+      'Always set a session bankroll limit: never more than 10% of total cash per session.\nBlackjack has the best odds for a skilled player. Learn basic strategy before betting large.\nTreat casino as entertainment, not income: the house edge ensures long-term loss.';
+
+  @override
+  String get helpTopicTradeCategory => 'Economy';
+
+  @override
+  String get helpTopicTradeTitle => 'Trade Goods';
+
+  @override
+  String get helpTopicTradeSummary =>
+      'Buy goods cheap in one country and sell expensive in another. Price differences up to 300% are possible.';
+
+  @override
+  String get helpTopicTradeHow =>
+      'Each country has unique trade goods with own base prices: Diamonds (South Africa), Drugs (Colombia), Weapons (USA), Art (France), Electronics (Japan), Alcohol (Scotland).\nMarket prices fluctuate every tick (5 minutes) between 0.5x and 2.0x base price. Prices can drop while you are traveling.\nBuying is only possible in the country where the good is available. Selling is most valuable in a different country.\nTransport risk: police confiscate at high Wanted Level (chance = wanted × 2%, max 80%); FBI raids internationally based on heat + goods value.\nCustoms has a 10% base chance at border crossings. Pay €1.000-€5.000 bribe or lose 50% of cargo.\nCombine trade with smuggling for higher margins but also higher seizure risk.\nYou can buy unlimited quantities as long as you have enough cash and inventory space.';
+
+  @override
+  String get helpTopicTradeTips =>
+      'Check market prices right before departure, not earlier — prices move every 5 minutes.\nLower Wanted Level before every trade trip: confiscation of a full cargo is a catastrophic loss.\nAlways include travel costs, customs risk and time loss in your profit calculation.';
+
+  @override
+  String get helpTopicBlackMarketCategory => 'Economy';
+
+  @override
+  String get helpTopicBlackMarketTitle => 'Black Market';
+
+  @override
+  String get helpTopicBlackMarketSummary =>
+      'Buy and sell illegal and scarce goods: weapons, ammo, drugs and materials unavailable elsewhere.';
+
+  @override
+  String get helpTopicBlackMarketHow =>
+      'The black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.';
+
+  @override
+  String get helpTopicBlackMarketTips =>
+      'Always check whether the black market price is lower than the open trade alternative including travel.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.';
+
+  @override
+  String get helpTopicDrugsCategory => 'Empire';
+
+  @override
+  String get helpTopicDrugsTitle => 'Drugs';
+
+  @override
+  String get helpTopicDrugsSummary =>
+      'Build a complete drug operation from raw materials to finished product. Run production chains, manage storage and sell for high margins but serious risks.';
+
+  @override
+  String get helpTopicDrugsHow =>
+      'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.';
+
+  @override
+  String get helpTopicDrugsTips =>
+      'Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.';
+
+  @override
+  String get helpTopicNightclubCategory => 'Empire';
+
+  @override
+  String get helpTopicNightclubTitle => 'Nightclub';
+
+  @override
+  String get helpTopicNightclubSummary =>
+      'Run a nightclub as part of your criminal empire. Manage staff, security and supply for passive and active income with a dedicated season leaderboard.';
+
+  @override
+  String get helpTopicNightclubHow =>
+      'At the bottom you now use a Nightclub Management Command Center with zones for Crew, Drug Storage, DJ Command, Security Unit and Ops Lab; all zones run in one continuous page flow without extra inner-scroll.\nThe nightclub screen now includes one central Intelligence section combining overview, revenue trends and risk logs without tab switching.\nOps Lab now includes 11 systems: resident DJ, dynamic event calendar, upgrade tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drinks/food) with pricing, rival sabotage + counter-intel, and an operations timeline.\nSmuggling routes now have a run cooldown (Harbor 60 min, Airstrip 90 min, Borderline 120 min), forcing risk/timing planning instead of infinite spam.\nThe upgrade tree is interactive: explicitly choose Sound Rig, VIP Lounge or Surveillance and buy the next level directly with visible upgrade costs.\nRevenue is generated per tick based on DJ quality, occupancy and supply availability. Missing supply directly reduces income.\nDJ contracts end automatically at the configured end time; after that you must book again for new boosts.\nIncidents (fights, theft) can occur when security is insufficient. This damages visitor score and income.\nEach season has a leaderboard. Players with the highest total nightclub revenue win season rewards.\nSynergy with drugs: own drug production can serve as supply, raising margins.\nDrug storage is gram-based: each selection shows the available grams before you move stock into nightclub inventory.\nRival actions are name-based: you search rival clubs by player name before selecting an action (no player-id required).\nSynergy with prostitution: combined venue events give extra visitors and higher revenue.\nUpgrades improve capacity, supply storage and the maximum number of DJs and guards you can deploy.';
+
+  @override
+  String get helpTopicNightclubTips =>
+      'Always keep supply stocked: one tick without supply can trigger a visitor dip that is hard to recover from.\nBook the best DJ you can afford: DJ quality has the biggest direct impact on revenue per tick.\nCheck the season leaderboard daily and scale up supply and DJs if you want to finish in the top 10.';
+
+  @override
+  String get helpTopicCryptoCategory => 'Economy';
+
+  @override
+  String get helpTopicCryptoTitle => 'Crypto';
+
+  @override
+  String get helpTopicCryptoSummary =>
+      'Trade 30 real cryptocurrencies. Buy and sell directly or automate via limit, stop-loss and take-profit orders. Prices now follow live market anchors with extra in-game regimes and news, and the coin popup uses separate fields for direct trades and open orders.';
+
+  @override
+  String get helpTopicCryptoHow =>
+      'The crypto list shows 30 coins with current price, 24-hour percentage and your current holding per coin. The price base follows live market data, but it is still influenced by in-game regimes and news.\nClick a coin to open the popup with: live chart (time filters 1h, 4h, 8h, 24h, 7d, 30d, All), purchase history, average buy price and buy/sell form.\nDirect trade: enter quantity and click Buy or Sell. When selling you can press `ALL` to instantly fill your full position. Execution is immediate at the current market price.\nOpen orders: Limit (buy/sell at an exact target price), Stop-loss (auto sell when price drops to a threshold), Take-profit (auto sell when price rises to a target). This section now has its own quantity field and its own target price field.\nOpen orders are executed automatically by the backend as soon as the market price hits the target. You do not need to be online.\nMarket regimes (Bull/Bear/Sideways) and news events influence price movements. You receive regime notifications via push when enabled.\nWeekly crypto leaderboard: the player with the highest realized gain that week wins a cash reward.\nDaily and weekly missions (e.g. 3 profitable trades, diversify across 5 coins) give extra rewards on completion.\nPortfolio overview shows: total value, invested amount, unrealized and realized profit/loss.';
+
+  @override
+  String get helpTopicCryptoTips =>
+      'Check your purchase history before placing a sell order: the popup shows your average buy price so you do not accidentally sell at a loss.\nUse stop-loss orders on every position you are not actively watching: they protect you automatically when you are offline.\nSwitch time filters in the chart: 1h and 4h show short-term trend, 7d and 30d show the bigger picture.';
+
+  @override
+  String get helpTopicSmugglingCategory => 'Empire';
+
+  @override
+  String get helpTopicSmugglingTitle => 'Smuggling';
+
+  @override
+  String get helpTopicSmugglingSummary =>
+      'Move illegal goods and vehicles between countries. Choose a commercial channel or use your own vehicle or aircraft for lower cost and added confiscation risk.';
+
+  @override
+  String get helpTopicSmugglingHow =>
+      'Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.\nOwned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.\nA boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.\nSuccess chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.\nOn failure you lose the entire shipment. No refund. Cargo and transport costs are gone.\nWhen you use owned transport and the run fails, the transport asset itself can also be confiscated.\nActive shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.\nCrew network remains available for commercial crew shipments, but owned transport is personal only.';
+
+  @override
+  String get helpTopicSmugglingTips =>
+      'Never send your entire stock in one shipment: split across multiple smaller loads to limit catastrophic loss.\nLower Wanted Level and FBI Heat to a minimum before starting a large smuggling run.\nUse your best aircraft or boat for expensive runs: lower cost helps, but cargo slots and confiscation chance still decide the risk.\nAlways collect active depots as fast as possible: expired depot contents are permanently lost.';
+
+  @override
+  String get helpTopicToolsCategory => 'Management';
+
+  @override
+  String get helpTopicToolsTitle => 'Tools';
+
+  @override
+  String get helpTopicToolsSummary =>
+      'Buy and manage tools required for specific crimes. Good tools raise your success chance, worn tools lower it.';
+
+  @override
+  String get helpTopicToolsHow =>
+      'The tool shop shows all available items with price, condition rating and the crime type they are required for.\nEach crime category has preferred tools: burglary requires crowbar or picks, car theft requires a hotwire kit, robbery requires a firearm.\nTools have a condition rating (0-100%). Each successful or failed crime lowers condition by a few percent.\nBelow 20% condition the tool\'s success chance bonus drops drastically. Below 5% the tool has almost no effect.\nRepaired tools through the shop cost a fraction of the purchase price. Replacement is sometimes cheaper than repair for heavily worn tools.\nTools are visible in your inventory tab. You can keep multiple copies of the same type as backup.';
+
+  @override
+  String get helpTopicToolsTips =>
+      'Buy tools in bulk when they are cheap on the black market: you save compared to the shop.\nSet a personal threshold: always replace tools when condition drops below 25% to keep success chances stable.';
+
+  @override
+  String get helpTopicCourtCategory => 'Risk';
+
+  @override
+  String get helpTopicCourtTitle => 'Court';
+
+  @override
+  String get helpTopicCourtSummary =>
+      'During your sentence you can file an appeal or try to bribe the judge to get released sooner.';
+
+  @override
+  String get helpTopicCourtHow =>
+      'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.';
+
+  @override
+  String get helpTopicCourtTips =>
+      'Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.';
+
+  @override
+  String get helpTopicHitlistCategory => 'Risk';
+
+  @override
+  String get helpTopicHitlistTitle => 'Hitlist';
+
+  @override
+  String get helpTopicHitlistSummary =>
+      'Place a bounty on an enemy or accept a hit contract. Eliminate your target in the same country for the full payout.';
+
+  @override
+  String get helpTopicHitlistHow =>
+      'Via the hitlist you add a player by setting a bounty. Minimum bounty is €5,000. The payer loses this money immediately.\nIf a bounty is placed on you, you immediately receive a push notification and inbox message from Hitlist Bureau.\nActive hits are visible to all players. The higher the bounty, the more attention the contract attracts.\nDetective investigations no longer return instant intel: reports arrive later via a Detective Bureau message (Quick 1 hour €1,000,000, Standard 6 hours €500,000, Slow 24 hours €250,000).\nIf you are killed through the hitlist, you receive a Hitlist Bureau message with a button to start a killer investigation within 24 hours.\nIf you request this investigation quickly after the murder, the detective report arrives faster. Waiting longer means a longer report delay.\nTo execute a hit you must be in the same country as your target. You attack via the player profile.\nCombat is auto-calculated based on: weapons, armor, stats (strength, reflexes), crew bonuses and active level.\nOn successful elimination you receive the full bounty. If the attack fails you lose HP and the target survives.\nOn a successful hit, the target receives a hard account-progress reset: assets and progression are reset to baseline status, while bank balance and crew leadership are preserved. You receive a share of available loot in addition to the bounty.\nAfter a successful kill you immediately receive an inbox message from Hitlist Bureau with a breakdown of the bounty and loot (cash + items).\nTargets with an active bodyguard or security protection are harder to hit.\nYou can remove your own name from the hitlist by paying the placer or buying out the bounty yourself.';
+
+  @override
+  String get helpTopicHitlistTips =>
+      'Check the hitlist daily: high bounties on weak players are quick profit if you are in the same country.\nOnly place a bounty on a player when you have reason to believe they are offline or low on HP.';
+
+  @override
+  String get helpTopicSecurityCategory => 'Risk';
+
+  @override
+  String get helpTopicSecurityTitle => 'Security';
+
+  @override
+  String get helpTopicSecuritySummary =>
+      'Protect your character and empire with armor, bodyguards and installation security. Better security means less damage taken during attacks.';
+
+  @override
+  String get helpTopicSecurityHow =>
+      'Armor types in ascending strength: Light Armor → Heavy Armor → Bulletproof Vest → Tactical Outfit.\nYou can only wear 1 armor at a time; if you buy another vest it immediately replaces your current armor.\nEach armor class reduces incoming damage per attack by a fixed percentage. Better armor = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.';
+
+  @override
+  String get helpTopicSecurityTips =>
+      'Always carry at least Light Armor when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nCheck your armor condition after every attack: a damaged vest only provides part of its original protection.\nOnly keep as many bodyguards as you can still afford tomorrow; large teams become expensive in daily upkeep quickly.';
+
+  @override
+  String get helpTopicHospitalCategory => 'Recovery';
+
+  @override
+  String get helpTopicHospitalTitle => 'Hospital';
+
+  @override
+  String get helpTopicHospitalSummary =>
+      'Recover HP after fights, failed crimes or raids. The hospital offers free emergency care and paid treatments for faster recovery.';
+
+  @override
+  String get helpTopicHospitalHow =>
+      'Fall below 10 HP and you are automatically admitted to the Emergency Room (ER). This is free but takes longer.\nPaid treatment costs €10,000 per session and restores +30 HP. Cooldown: 60 minutes between paid treatments.\nICU (Intensive Care) is the heaviest treatment for critical damage. Cooldown: 180 minutes. Costs are higher but recovery is more complete.\nWith higher HP (50+) you can still perform actions but are more vulnerable to attacks.\nHospital treatments are blocked while you are in prison. Get out first, then seek treatment.\nSchool certificate in Medicine lowers hospital costs and speeds up recovery times.\nCrew medics or medic skills can restore HP outside the hospital as emergency recovery.';
+
+  @override
+  String get helpTopicHospitalTips =>
+      'Never recover halfway: wait for full HP before doing PvP or high-risk crimes.\nTime paid treatments around cooldown: start a treatment just before going offline so you come back online at full HP.';
+
+  @override
+  String get helpTopicPrisonCategory => 'Recovery';
+
+  @override
+  String get helpTopicPrisonTitle => 'Prison';
+
+  @override
+  String get helpTopicPrisonSummary =>
+      'Serve your prison sentence, pay bail or attempt to escape. The higher your Wanted Level the longer and more expensive your sentence.';
+
+  @override
+  String get helpTopicPrisonHow =>
+      'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.';
+
+  @override
+  String get helpTopicPrisonTips =>
+      'Check bail immediately after arrest: the button should remain visible as long as you are still jailed, even if your Wanted Level has already dropped.\nStart production timers just before doing a high-risk crime run: if you get caught production keeps running anyway.';
+
+  @override
+  String get helpTopicVaultCategory => 'Events';
+
+  @override
+  String get helpTopicVaultTitle => 'Crack the Vault';
+
+  @override
+  String get helpTopicVaultSummary =>
+      'Monthly vault season: enter a 4-digit code and stake credits for a chance at big prizes.';
+
+  @override
+  String get helpTopicVaultHow =>
+      'Each month a new season starts on the 1st and ends on the last day of the month.\nPick a stake (e.g. 1/3/5 credits) and enter a 4-digit code.\nYou can also enter the code using the on-screen keypad (digit buttons).\nEach attempt costs credits. If you guess correctly, you win a prize.\nHigher stakes mean bigger prizes; sometimes a VIP reward can drop.\nIf you are already VIP, a VIP reward is converted into credits.\nYou can view your wrong codes for this month. The list resets automatically with the new month.';
+
+  @override
+  String get helpTopicVaultTips =>
+      'Pick a stake that matches your credit balance: you can try unlimited times, but each attempt costs credits.\nUse the wrong-codes list to avoid retrying the same code.';
+
+  @override
+  String get helpTopicGarageCategory => 'Assets';
+
+  @override
+  String get helpTopicGarageTitle => 'Garage';
+
+  @override
+  String get helpTopicGarageSummary =>
+      'Steal and manage cars and motorcycles for crimes and smuggling. Garage handles ownership, timed repairs, selling and scrapping; transport runs through Smuggling Hub.';
+
+  @override
+  String get helpTopicGarageHow =>
+      'Your garage shows cars and motorcycles with condition (0-100%), fuel, market value, rarity and world-cap status.\nCar storage and motorcycle storage are now separated: cars use garage capacity, motorcycles use motorcycle storage capacity.\nCar and motorcycle storage upgrades are independent per country: upgrading cars does not increase motorcycle capacity (and vice versa). Upgrades are rank-gated; when your rank is too low you see a lock/tooltip. At level 5 the upgrade button is hidden.\nUsing the catalog button you can view all stealable cars and motorcycles, including their most common country and full spawn country list.\nTheft is per vehicle with rank requirements and cooldowns. The more expensive and rare, the lower your success chance.\nIf a model world-cap is full, you cannot steal that model temporarily. When a copy is sold or scrapped, 1 slot reopens immediately.\nFailed theft increases Wanted Level and can trigger arrest. If police catch you during the getaway, you go to jail and the just-stolen vehicle is confiscated immediately.\nRepairs are timed: you pay upfront, the vehicle enters repair and only returns after the timer finishes.\nConcurrent repairs are limited across car, motorcycle and boat together: without VIP max 1 active, with VIP max 2 active.\nScrapping is an alternative to selling: you receive salvage value (35% of base value), scaled by condition and garage upgrade bonus.\nVehicle Ops Intelligence adds 6 extra options. In short:\n1) Hotspot run: a quick action for direct cash, with its own cooldown and added risk.\n2) Parts market: live parts prices per type (car/motorcycle/boat) for tuning; prices refresh periodically.\n3) Crew op: a co-op action with your crew for extra gains/advantages (only if you are in a crew).\n4) Heat: per type (car/motorcycle/boat) an “attention” meter; higher heat makes actions riskier and lowers success chance. Heat decays slowly.\n5) Chop contract: hand in an eligible vehicle from your inventory for a fixed contract payout.\n6) Police pattern: time-of-day patterns can increase checks; this affects risk (e.g. harbor strike/lockdown for boats).\nIn Vehicle Heist, Car/Motorcycle/Boat now use one command layer: select category via the three lane cards at the top, without a second extra tab row.\nEach lane card includes direct quick actions for stealing and storage upgrades, so you do not need to scroll to separate sub-buttons first.\nWhile a steal cooldown is running, a lightning icon appears next to the timer: tap it to spend credits and clear the cooldown. You can turn off the confirmation dialog; turn it back on in Settings under theft cooldown (credits).\nLane cards now also show capacity per type directly (used/total + upgrade level).\nStolen vehicles now render as responsive cards: mobile shows one per row, tablet/desktop show multiple cards side by side.\nNew Ops layer: PvP interception windows for hotspots, crew-role bonuses in crew ops, reputation unlocks per vehicle type, regional blacklist events, and contraband insurance contracts.\nNew Vehicle Ops expansions: Counter-Intercept missions, Crew Matchmaking with seasonal ladder, Country Modifiers (inflation/corruption/harbor strike), and a contracts board with weekly legendary contracts.\nOps now shows live cooldowns per action. Timers count down visibly and refresh automatically.\nCrew actions (Crew Op and Crew Match) are only available when you are in a crew; without a crew you get a clear unlock hint.\nSuccessful ops actions pay cash directly to your wallet. The action overview shows the expected payout type per button.\nInsurance claims now enter review first; using claim dispute lets you contest for extra payout with rejection risk.\nHigher category heat lowers theft success chances and raises hotspot risk. Heat decays gradually each hour.\nChop-Shop Contracts require an eligible vehicle from your inventory; claiming consumes that vehicle and pays out contract cash.\nVehicle transport no longer happens in Garage; use the Smuggling Hub flow.\nResale and scrapping free either car or motorcycle capacity and may reopen world-cap slots for that model.\nEvent-only vehicles such as police interceptors stay locked outside event windows.';
+
+  @override
+  String get helpTopicGarageTips =>
+      'Steal vehicles actively when Wanted Level is low: higher Wanted = higher failure chance when stealing.\nAlways keep at least one reliable vehicle at high condition for smuggling: a broken vehicle halves your success chance.\nUse scrapping for heavily damaged vehicles as a fast capacity reset; selling is often better at high condition.';
+
+  @override
+  String get helpTopicMarinaCategory => 'Assets';
+
+  @override
+  String get helpTopicMarinaTitle => 'Marina';
+
+  @override
+  String get helpTopicMarinaSummary =>
+      'Manage boats with rarity, world caps and repair timers for maritime smuggling routes. Marina focuses on ownership, maintenance, selling and scrapping; transport runs through Smuggling Hub.';
+
+  @override
+  String get helpTopicMarinaHow =>
+      'The marina shows your boats with condition, fuel, market value, rarity and world-cap status per model.\nUsing the catalog button you can view all stealable boats, including most common country and full spawn country list.\nBoat theft has its own rank gates and cooldowns. More expensive boats are harder to steal but can be more profitable.\nIf a boat model world-cap is full, it temporarily disappears from the available list. Selling/scrapping reopens slots.\nRepairs are timed: you pay upfront and the boat is unavailable until the timer completes.\nConcurrent repairs are limited across car, motorcycle and boat together: without VIP max 1 active, with VIP max 2 active.\nScrapping grants salvage value (35% of base value), scaled with condition and marina upgrade bonus.\nMarina manages ownership and maintenance only; actual transport routing happens in Smuggling Hub.\nEvent-only police boats are for temporary events and remain locked outside event windows.';
+
+  @override
+  String get helpTopicMarinaTips =>
+      'Invest in the marina if your smuggling routes regularly go via water: lower police interest can significantly boost success chance.\nKeep a speedboat at high condition as a quick alternative when land escape routes are blocked.\nScrap heavily damaged boats with low resale value to free world-cap room and marina capacity faster.';
+
+  @override
+  String get helpTopicTuneshopCategory => 'Assets';
+
+  @override
+  String get helpTopicTuneshopTitle => 'Tune Shop';
+
+  @override
+  String get helpTopicTuneshopSummary =>
+      'Use salvaged parts to upgrade vehicles by category. Improve speed, stealth and armor with scaling level costs and category cooldowns.';
+
+  @override
+  String get helpTopicTuneshopHow =>
+      'You earn parts by scrapping vehicles: car parts, motorcycle parts and boat parts.\nParts are category pooled: any vehicle in the same category uses the same parts stock.\nEach upgrade costs parts and money. Money costs are category based and increase per tuning level.\nYou can upgrade three stats: speed, stealth and armor.\nTuning is per vehicle in your inventory. New vehicles start at level 0 again.\nAfter each tune there is a per-vehicle cooldown: car 180s, motorcycle 120s, boat 240s.\nConcurrent tuning is limited: without VIP max 1 active vehicle in tuning cooldown, with VIP max 5.\nTuned vehicles yield higher sell and salvage value.\nTuning is blocked while a vehicle is in repair or transport.';
+
+  @override
+  String get helpTopicTuneshopTips =>
+      'Scrap heavily damaged vehicles first to build parts quickly.\nInvest in stealth early for lower capture risk on high-risk runs.\nUse armor upgrades on vehicles you repeatedly deploy in dangerous loops.';
+
+  @override
+  String get helpTopicShootingRangeCategory => 'Training';
+
+  @override
+  String get helpTopicShootingRangeTitle => 'Shooting Range';
+
+  @override
+  String get helpTopicShootingRangeSummary =>
+      'Improve your accuracy and weapon skill through structured shooting drills. Higher stats increase damage and hit chance in PvP and crimes.';
+
+  @override
+  String get helpTopicShootingRangeHow =>
+      'The shooting range offers multiple disciplines: pistol, rifle, shotgun and automatic fire. Each trains a separate weapon skill.\nEach training session has a cooldown of 30 minutes. You cannot train endlessly per day.\nHigher accuracy increases your hit chance in PvP fights and lowers the chance of being hit yourself.\nWeapon skill also determines which weapons you can use effectively: a sniper rifle requires a certain skill before you get its full bonus.\nTraining results stack cumulatively. There is no reset unless you receive a heavy penalty via the court.\nSchool certificate Military Training gives a permanent bonus to each shooting range session.';
+
+  @override
+  String get helpTopicShootingRangeTips =>
+      'Train the shooting range every day: small cumulative bonuses become noticeable in PvP outcomes within a week.\nTrain the weapon type you use most in crimes and PvP for maximum return on investment.';
+
+  @override
+  String get helpTopicGymCategory => 'Training';
+
+  @override
+  String get helpTopicGymTitle => 'Gym';
+
+  @override
+  String get helpTopicGymSummary =>
+      'Train strength, speed and stamina for better stats in PvP, crimes and HP pool. Daily training is key to fast stat growth.';
+
+  @override
+  String get helpTopicGymHow =>
+      'The gym offers three training categories: Strength (more damage per attack), Speed (higher reflexes, less hits taken), Stamina (higher max HP).\nEach training has a 1 hour cooldown. Maximum 6-8 sessions per day depending on your school certificate.\nStrength increases direct damage in both PvP and certain crime types (robbery, brawl).\nSpeed increases the chance to dodge an attack and lowers the chance of being caught on crime failure.\nStamina increases your max HP pool. More HP = surviving longer in PvP and more room for risky crimes.\nSchool certificate Physical Training gives +15% bonus to all gym sessions.';
+
+  @override
+  String get helpTopicGymTips =>
+      'Prioritize Stamina training: a higher HP pool improves all your other systems because you stay active longer.\nCombine gym with shooting range: Strength + Accuracy is the strongest PvP combination.';
+
+  @override
+  String get helpTopicAmmoFactoryCategory => 'Empire';
+
+  @override
+  String get helpTopicAmmoFactoryTitle => 'Ammo Factory';
+
+  @override
+  String get helpTopicAmmoFactorySummary =>
+      'Produce ammunition for personal use and manage your output from the factory. Ammo buying and selling go through the Black Market, not directly from the factory screen.';
+
+  @override
+  String get helpTopicAmmoFactoryHow =>
+      'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 10 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.';
+
+  @override
+  String get helpTopicAmmoFactoryTips =>
+      'Upgrade your factory to Level 3 as soon as possible: the doubled output compared to Level 1 makes it self-sufficient for ammo.\nAlways keep 2-3 production rounds of output in reserve as a buffer so you never run out of ammo during PvP.';
+
+  @override
+  String get helpTopicSchoolCategory => 'Training';
+
+  @override
+  String get helpTopicSchoolTitle => 'School';
+
+  @override
+  String get helpTopicSchoolSummary =>
+      'Follow courses in multiple tracks to unlock bonuses, reduce costs and open new systems. School is a multiplier on everything you do.';
+
+  @override
+  String get helpTopicSchoolHow =>
+      'School offers tracks per domain: Criminal (better crime stats), Economy (lower trade and bank costs), Military (combat bonuses), Medicine (lower hospital costs), Law (lower lawyer costs), Technical (better factory and drug production).\nEach lesson has a study time of 15-60 minutes depending on level. Higher levels take longer.\nAfter completing a lesson you receive a certificate for that track level. This certificate is permanent and grants the bonus immediately.\nYou can only follow one lesson at a time. Plan your studies carefully when you urgently need a specific certificate.\nSchool costs increase per level. Higher education requires earlier levels in the same track to be completed.\nSome advanced game features are locked behind a school certificate: e.g. access to certain jobs, higher factory levels, VIP nightclub events and higher drug facility upgrade tiers.\nCertificates are never reset unless your account receives a heavy penalty.';
+
+  @override
+  String get helpTopicSchoolTips =>
+      'Always start with the Criminal track: bonuses to crime success chances pay back the study costs within a few sessions.\nSchedule long studies (60 min+) before going to sleep: you wake up with a new certificate without missing active time.';
+
+  @override
+  String get helpTopicTerritoryCategory => 'Empire';
+
+  @override
+  String get helpTopicTerritoryTitle => 'Territory';
+
+  @override
+  String get helpTopicTerritorySummary =>
+      'Claim and control geographical regions for passive income, crew prestige and strategic regional bonuses. Territory combines map control with contests and seasonal rewards.';
+
+  @override
+  String get helpTopicTerritoryHow =>
+      'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.';
+
+  @override
+  String get helpTopicTerritoryTips =>
+      'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.';
+
+  @override
+  String get helpTopicProstitutionCategory => 'Empire';
+
+  @override
+  String get helpTopicProstitutionTitle => 'Prostitution';
+
+  @override
+  String get helpTopicProstitutionSummary =>
+      'Build a prostitution network with recruits, events and VIP clients. A well-run network generates passive income but requires active management to control rivalry and police attention.';
+
+  @override
+  String get helpTopicProstitutionHow =>
+      'You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.';
+
+  @override
+  String get helpTopicProstitutionTips =>
+      'Invest early in security: a rivalry attack that poaches your best recruit costs more than the security investment.\nOnly organise VIP events when recruits are above 80 popularity: below that threshold VIP clients simply pay the standard rate.';
+
+  @override
+  String get helpTopicRedLightDistrictsCategory => 'Empire';
+
+  @override
+  String get helpTopicRedLightDistrictsTitle => 'Red Light Districts';
+
+  @override
+  String get helpTopicRedLightDistrictsSummary =>
+      'Claim and manage territorial districts per country. Owning a district gives passive income and control over prostitution activities in that region.';
+
+  @override
+  String get helpTopicRedLightDistrictsHow =>
+      'Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nDistrict upgrades (security, marketing, infrastructure) raise your income percentage and lower the chance of losing ownership.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.';
+
+  @override
+  String get helpTopicRedLightDistrictsTips =>
+      'Start with a less popular country for your first district: lower attack pressure gives you time to upgrade security before the real competition.\nUpgrade security of each district immediately after purchase: the first 24 hours are the most vulnerable to a takeover.';
+
+  @override
+  String get helpTopicAchievementsCategory => 'Meta';
+
+  @override
+  String get helpTopicAchievementsTitle => 'Achievements';
+
+  @override
+  String get helpTopicAchievementsSummary =>
+      'Earn badges by reaching milestones across all game systems. Achievements give rewards, raise your status profile and show your progress per category.';
+
+  @override
+  String get helpTopicAchievementsHow =>
+      'Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAchievement badges are visible on your public profile. They show other players your specializations and experience.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.';
+
+  @override
+  String get helpTopicAchievementsTips =>
+      'Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.';
+
+  @override
+  String get helpTopicSupportTicketsCategory => 'Support';
+
+  @override
+  String get helpTopicSupportTicketsTitle => 'Reports & Tickets';
+
+  @override
+  String get helpTopicSupportTicketsSummary =>
+      'Report bugs, questions or feedback via the ticket system. Support and admins can reply, manage internal follow-up and send updates back through the support conversation itself and optional push notifications.';
+
+  @override
+  String get helpTopicSupportTicketsHow =>
+      'Open the separate `Support` menu item to review your tickets or create a new one.\nChoose a category (bug, question, feedback or other), select the related module if needed, and describe your issue as specifically as possible.\nYou can optionally add a reference such as an order id, screen name or short context, plus a screenshot if that helps.\nAfter submission you immediately receive a ticket number and your ticket appears in your support overview, where support can reply and create internal todo tasks.\nWhen support replies or the ticket status changes, you see that directly inside the same support conversation and can optionally receive a push notification (if notifications are enabled).\nThe Support menu item shows a badge as soon as a ticket gets a new support reply or status update since your last visit to the support overview.\nSupport uses statuses such as new, triage, in progress, waiting for player, blocked and resolved to track your report internally.';
+
+  @override
+  String get helpTopicSupportTicketsTips =>
+      'Always include your country, action and exact error message; this speeds up fixes for developers.\nUse one ticket per issue type so the todo list and follow-up stay clear.';
+
+  @override
+  String get helpTopicSettingsCategory => 'Core';
+
+  @override
+  String get helpTopicSettingsTitle => 'Settings';
+
+  @override
+  String get helpTopicSettingsSummary =>
+      'Manage all account settings: language, avatar, privacy, notification preferences per system and security options. Settings directly affect your gameplay experience.';
+
+  @override
+  String get helpTopicSettingsHow =>
+      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar: upload or select a profile image visible to other players on your public profile and in crew lists.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.';
+
+  @override
+  String get helpTopicSettingsTips =>
+      'Enable push notifications for Crypto Orders and Heist Events: these are time-critical systems where quick reaction matters.\nSet privacy to crew-only for location when you are active on the hitlist: other players can otherwise pinpoint you exactly.';
+
+  @override
+  String get helpTopicPremiumCategory => 'Core';
+
+  @override
+  String get helpTopicPremiumTitle => 'Premium & Credits';
+
+  @override
+  String get helpTopicPremiumSummary =>
+      'Buy and manage Player VIP, Crew VIP and credit bundles here. This overview also shows your credit balance and all available credit items you can use directly or contextually.';
+
+  @override
+  String get helpTopicPremiumHow =>
+      'Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.\nOn each purchase tile, tap/click the `i` icon at the top-left for full details and benefits; the tile itself intentionally shows only short core info and the buy button.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew.\nPlayer VIP gives 10% shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production (after cost confirmation), and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are removed.\nVIP checkout opens the payment page and then returns to the in-game `Premium & Credits` section, so you immediately see whether the purchase succeeded and how long your VIP runs.\nCredit bundles are bought with real money. After a successful payment the credits appear in your wallet overview right away.\nEvent Pass (7 days, real money) is listed in the one-time offer grid: +10% score on live player events, plus a small credit bonus after purchase. It is a side-grade: not a direct combat or PvP boost; it mainly helps leaderboard results during running events.\nCredit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.\nOn supported timeout screens (such as crimes, jobs, vehicle/boat theft and school) you also get a direct speed-up button for active cooldowns, so you do not need to go back to Premium & Credits first.\nSome credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead (damaged vehicles show an instant-repair button directly on the card).\nFor contextual buttons such as repair speed-up, the current credit cost is shown directly on the button/tooltip.\nPrices and available items are managed live in admin. That means VIP prices, credit costs and the available offer can change without an app update.';
+
+  @override
+  String get helpTopicPremiumTips =>
+      'Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.\nUse credits mainly on time-critical boosts or protection, not automatically on every small shortcut.\nIf you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP.';
 }

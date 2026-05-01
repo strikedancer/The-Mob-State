@@ -13036,4 +13036,688 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get drugsApiFailedClaim => 'Depotzendingen claimen mislukt';
+
+  @override
+  String get helpTopicDashboardCategory => 'Basis';
+
+  @override
+  String get helpTopicDashboardTitle => 'Dashboard';
+
+  @override
+  String get helpTopicDashboardSummary =>
+      'Je centrale overzicht met al je stats, actieve cooldowns, live events en snelkoppelingen naar elk onderdeel van het spel.';
+
+  @override
+  String get helpTopicDashboardHow =>
+      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nDe Quick Actions blokken rechts zijn snelkoppelingen naar Misdaden, Auto Stelen, Boot Stelen, Werk, Casino, Bank en School.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.';
+
+  @override
+  String get helpTopicDashboardTips =>
+      'Open het dashboard als eerste na elke login om te zien wat er is veranderd terwijl je weg was.\nHoud je wanted level onder 10 om automatisch decay te laten werken en arrestatiekansen laag te houden.\nControleer unread berichten voor je risicoacties start: beloningen, order-fills en system events staan allemaal in je inbox.';
+
+  @override
+  String get helpTopicCrimesCategory => 'Acties';
+
+  @override
+  String get helpTopicCrimesTitle => 'Misdaden';
+
+  @override
+  String get helpTopicCrimesSummary =>
+      'Pleeg illegale acties voor cash en XP, maar elke poging brengt kans op schade, arrestatie of extra Wanted Level mee. De late-game crime Strafblad Wissen wist bij succes je volledige strafblad, maar vereist zware tools en heeft hoge federale risico\'s.';
+
+  @override
+  String get helpTopicCrimesHow =>
+      'Crime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.\nRichtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.\nEr is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.\nCrimes met `required weapon` gebruiken je geselecteerde crime-wapen. Dat kun je nu direct bovenaan het Crimes-scherm kiezen of via Inventaris.\nCrimes met voertuig-eis gebruiken je geselecteerde crime-voertuig uit Garage of Marina. Alleen een voertuig dat echt in je huidige land staat en niet onderweg of te koop is, telt mee.\nDrugs-eisen bij crimes worden weergegeven in gram en volgen dezelfde hoeveelheid als je drugsinventaris en opslag.\nAls een crime niet kan starten door ontbrekend voertuig, verkeerd wapen of missende ammo, hoort de foutmelding nu de echte oorzaak te tonen in plaats van een generieke retry.\nBij elke crime poging: je neemt 5-15 HP schade en je Wanted Level stijgt 1-4 punten afhankelijk van succes of falen.\nArrestatiekans stijgt snel met Wanted Level: bij Wanted 5 is het 25%, bij Wanted 10 al 50%, bij Wanted 18+ maximaal 90%.\nBij arrestatie beland je in de gevangenis. Gevangenisstraf duurt maximaal(wanted level × 10) minuten, minimaal 5 minuten. Borg kost wanted level × €1.000. Ook als een crime eerst lijkt te slagen maar je daarna alsnog wordt gepakt, telt de uitkomst als arrestatie: gebruikte tools worden geconfisqueerd, gebruikte crime-wapens raak je kwijt en voertuigen kunnen ook in beslag worden genomen.\nSommige crimes vereisen een voertuig, tool of minimale rang. Mis je dit dan start de crime niet.\nXP die je verdient gebruik je om rang te stijgen, waardoor betere crimes en hogere beloningen vrijkomen.\nFBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen.';
+
+  @override
+  String get helpTopicCrimesTips =>
+      'Gebruik snelle beginner crimes om XP op te bouwen terwijl je grote cooldowns afwacht.\nBorg jezelf altijd uit als je Wanted Level hoog staat — lang in de cel zitten blokkeert al je loops.\nHoud HP boven 30 voor je aan een reeks crimes begint: elke poging kost HP en bij 0 HP beland je 3 uur in de ICU.';
+
+  @override
+  String get helpTopicJobsCategory => 'Acties';
+
+  @override
+  String get helpTopicJobsTitle => 'Banen';
+
+  @override
+  String get helpTopicJobsSummary =>
+      'Verdien legaal geld zonder Wanted Level-risico. Jobs zijn veiliger dan crimes maar hebben lagere piek-opbrengsten.';
+
+  @override
+  String get helpTopicJobsHow =>
+      'Beschikbare jobs schalen met rang en opleiding: hogere jobs betalen meer, maar hebben ook een langere cooldown.\nJob-cooldowns schalen op max-uitbetaling: lage jobs rond 3-5 min, mid-tier jobs rond 8-12 min, top-jobs rond 17-22 min.\nJobs hebben een hoge maar niet perfecte slagingskans; bij falen verlies je geen geld of HP, wel een deel XP als straf.\nVereisten voor elke job: minimaal 10 HP, honger > 20, dorst > 20, niet in de cel, niet in de ICU.\nEr is geen harde dagcap op jobs; progressie wordt gestuurd via cooldown, kans en payout in plaats van een daily lock.\nJobbeloning varieert per job-type en rang. Opleiding (School) kan hogere functies ontgrendelen.\nJe verdient ook XP per uitgevoerde job, maar minder dan bij comparabele crimes.\nGebruik jobs als betrouwbare cashflow-basis, zeker als je Wanted Level te hoog is om veilig crimes te plegen.';
+
+  @override
+  String get helpTopicJobsTips =>
+      'Combineer jobs en school: opleiding ontgrendelt betere jobs met hogere uitbetalingen.\nAls je Wanted Level boven 8 staat of je bent herstellende van ICU, gebruik dan jobs in plaats van crimes.\nZorg dat honger en dorst niet te laag zakken: een job met stats < 20 begint gewoon niet.';
+
+  @override
+  String get helpTopicTravelCategory => 'Wereld';
+
+  @override
+  String get helpTopicTravelTitle => 'Reizen';
+
+  @override
+  String get helpTopicTravelSummary =>
+      'Verplaats je tussen landen voor betere marktprijzen, unieke kansen en toegang tot internationale systemen.';
+
+  @override
+  String get helpTopicTravelHow =>
+      'Beschikbare landen: Nederland (startland), België, Duitsland, Frankrijk, Verenigd Koninkrijk, Spanje, Italië, Zwitserland, USA, Mexico, Colombia, Brazilië.\nReiskosten: buurland €500-€2.000, Europa → Amerika €5.000-€10.000, lange afstand €10.000-€20.000.\nVereisten voor reizen: niet in de cel, niet in ICU, minimaal 20 HP, reiskosten beschikbaar.\nDrugshoeveelheden in je inventaris tellen hierbij als echte gram voor draaggewicht en reischecks; 500 betekent dus 500g en niet 50kg.\nElk land heeft andere marktprijzen voor handelsgoederen (tot 300% prijsverschil), andere crime-opbrengsten en unieke trade items.\nRisico tijdens transport: politie kan goederen confisqueren op basis van je Wanted Level (kans = wanted × 2%, max 80%). FBI kan internationaal alles in beslag nemen als heat hoog is.\nDouane-inspectie heeft 10% basiskans. Je kunt steekpenningen betalen (€1.000-€5.000) of gepakt worden voor 50% goederen-verlies.\nNa aankomst zijn al je acties direct beschikbaar in het nieuwe land. Markten en crimesnelheid variëren per locatie.';
+
+  @override
+  String get helpTopicTravelTips =>
+      'Plan reizen altijd samen met trade, drugs of smokkel — een lege reis is weggegooid geld.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie onderweg sterk.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.';
+
+  @override
+  String get helpTopicCrewCategory => 'Sociaal';
+
+  @override
+  String get helpTopicCrewTitle => 'Crew';
+
+  @override
+  String get helpTopicCrewSummary =>
+      'Richt een crew op of sluit je aan bij bestaande spelers om samen heists te plegen, opslag te delen en sterker te staan.';
+
+  @override
+  String get helpTopicCrewHow =>
+      'Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten.\nCrew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.\nNieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.\nAuto opslag in crew accepteert nu ook motoren, zodat landvoertuigen samen vanuit dezelfde gedeelde crew-opslag beheerd kunnen worden.\nAls een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.\nHet crew-scherm is nu gegroepeerd in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crew Missies, Crews en Chat zodat beheer rustiger en professioneler blijft.\nIn Crew Missies zie je templates per tier, een actieve run-kaart en recente runs. Leaders/co-leaders kunnen starten en resolven; rewards claimen en cooldown speedup gaan via dezelfde tab.\nEr zijn nu extra crew missies met onder andere bank-thema (night deposit, skim-netwerk, pantserroute, dochterbank, reservekluis en clearing house). Er is geen tweede casino-crew-missie naast Casino Ledger Raid.\nCrew mission-beloningen komen uit de missie-economy op de server: andere spelers hun banksaldo wordt daar niet voor aangesproken.\nBij starten van een missie kun je nu per crewlid een rol kiezen (Planner, Enforcer, Logistics, Tech) voor team-bonussen.\nActieve en recente missiekaarten tonen nu ook rolbijdragen per speler met score en eventuele payout-multiplier.\nCrewleden krijgen nu ook push/in-app meldingen bij missie-start, missie-resultaat en wanneer een missie-cooldown weer klaar is.\nTijdens een actieve missie-cooldown kun je geen nieuwe missie starten; je ziet eerst de resterende cooldown of kunt die versnellen met credits.\nBij cooldown speedup zie je eerst exact hoeveel credits het kost en hoeveel minuten resterend zijn voordat je bevestigt.\nCrew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.\nWar-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.\nTijdens een actieve war kunnen deelnemers acties uitvoeren zoals kills, mugs, sabotage, intel, raids, shields, boosts en territory claims. Doelgerichte acties kiezen nu direct uit een lijst met spelers van de tegencrew in plaats van handmatig om een speler-ID te vragen.\nSeizoenspunten worden per war opgeteld in het Crew Wars leaderboard. Je ziet in de War Room ook standings, recente acties en recente wars van je crew.\nBij Territory War en Total War claim je nu echte Territory-regio\'s uit het territory-systeem in plaats van generieke placeholder-doelen.\nDie war-regio\'s tonen nu ook hun strategische waarde in de War Room: claimbonus, tick-punten en tags zoals haven, hoofdstad of logistiek. Daardoor zie je direct welke regio\'s niet alleen van eigenaar wisselen, maar ook meer war-punten waard zijn.\nCrew Wars kiest Territory-targets nu niet meer alleen op waarde-tier, maar ook op strategische tags en aangrenzende druk van aanvaller of verdediger. Daardoor voelen Territory War en Total War meer als een echte frontlinie dan als drie willekeurige claims.\nWint jouw crew een Territory War of Total War, dan kunnen de betrokken Territory-regio\'s tijdelijk war pressure krijgen. In de Territory-modal zie je dan welke crew de druk heeft, hoeveel effectieve stabiliteit wegvalt en wanneer die nasleep afloopt.\nHeists: Small Bank Heist (2 spelers, 40% kans, €10.000-€30.000, cooldown 30 min), Sieradenzaak (3 spelers, 35%, €20.000-€50.000, 45 min), Casino Heist (4 spelers, 25%, €50.000-€150.000, 2 uur), Federal Reserve (5 spelers, 15%, €100.000-€500.000, 6 uur, +20 FBI Heat).\nBij een heist moeten alle leden online zijn bij de start. Is iemand afwezig dan mislukt de heist.\nBij mislukte heist: jail time voor alle leden, Wanted Level +5, geen beloning.\nDe reward bij een geslaagde heist wordt gelijk verdeeld over alle deelnemende leden.\nCrew-chat is beschikbaar voor snelle coördinatie zonder extra apps.\nCrew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen.';
+
+  @override
+  String get helpTopicCrewTips =>
+      'Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat zodat je niet steeds op dezelfde tegenstander focust en door de anti-farm guard wordt geblokkeerd.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.';
+
+  @override
+  String get helpTopicFriendsCategory => 'Sociaal';
+
+  @override
+  String get helpTopicFriendsTitle => 'Vrienden';
+
+  @override
+  String get helpTopicFriendsSummary =>
+      'Beheer je vriendenlijst voor snellere samenwerking, profieldoorzoeken en social feedback.';
+
+  @override
+  String get helpTopicFriendsHow =>
+      'Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.\nJe kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.\nVrienden zien elke keer als ze actief zijn in het spel. Dat helpt bij planning van gezamenlijke heists of trades.\nVriendverzoeken verlopen niet automatisch; houd de lijst actueel zodat ongewenste verzoeken je niet afleiden.\nVrienden buiten je crew zijn waardevol voor jail-escapes (een vriend kan je helpen ontsnappen) en voor informatie-uitwisseling.\nAls een vriend wordt opgepakt krijgen geaccepteerde vrienden nu ook een pushmelding dat die speler op hulp wacht in de gevangenis.';
+
+  @override
+  String get helpTopicFriendsTips =>
+      'Voeg vrienden toe die in dezelfde speelstijl zitten: heist-partners, trader-netwerk of crime-support.\nEen vriend die een jail-escape doet krijgt €500-€2.000 beloning als het lukt. Spreek dit af voor noodsituaties.';
+
+  @override
+  String get helpTopicMessagesCategory => 'Sociaal';
+
+  @override
+  String get helpTopicMessagesTitle => 'Berichten';
+
+  @override
+  String get helpTopicMessagesSummary =>
+      'Je inbox met persoonlijke berichten van andere spelers en systeemberichten over beloningen, orders en game-events.';
+
+  @override
+  String get helpTopicMessagesHow =>
+      'Berichten zijn onderverdeeld in persoonlijke gesprekken en The Mob State systeemberg.\nSysteemberichten worden automatisch gestuurd bij: crypto trades, order fills, leaderboard uitkeringen, heist-resultaten, jail-escapes en achievement-badges.\nJe kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.\nUnread berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.\nBerichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.\nGebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging.';
+
+  @override
+  String get helpTopicMessagesTips =>
+      'Check je inbox na lang offline zijn: beloningen, order-fills en events zijn er allemaal terug te vinden.\nStel notificatievoorkeuren in via Instellingen zodat je alleen bij echt belangrijke events een pushmelding krijgt.';
+
+  @override
+  String get helpTopicInventoryCategory => 'Beheer';
+
+  @override
+  String get helpTopicInventoryTitle => 'Inventaris';
+
+  @override
+  String get helpTopicInventorySummary =>
+      'Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.';
+
+  @override
+  String get helpTopicInventoryHow =>
+      'Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.\nGewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.\nDrugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.\nItem-conditie verslechtert bij gebruik. Wapens in slechte conditie presteren minder goed en tools kunnen kapotgaan.\nBovenaan Inventaris kun je ook je vaste crime-wapen kiezen. Alleen gedragen, bruikbare wapens tellen mee voor die selectie.\nLoadouts laten je snel wisselen tussen een \"crime set\" (tool + weapon) en een \"travel set\" (licht, waardevolle goederen min).\nBij arrestatie kan de politie items confisqueren. Draag geen waardevolle goederen als je een hoog Wanted Level hebt.\nDrugs in je inventaris verhogen de kans op FBI-interventie bij internationale reizen.\nCrew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico.';
+
+  @override
+  String get helpTopicInventoryTips =>
+      'Hou je carrying load licht als je gaat reizen of een hogere crime-serie plant met arrestatierisico.\nGebruik loadouts zodat je voor elk scenario snel de juiste gear aan hebt.\nCheck item-conditie regelmatig: kapotte tools blokkeren crimes stil, zonder duidelijke foutmelding.';
+
+  @override
+  String get helpTopicPropertiesCategory => 'Economie';
+
+  @override
+  String get helpTopicPropertiesTitle => 'Eigendommen';
+
+  @override
+  String get helpTopicPropertiesSummary =>
+      'Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden.';
+
+  @override
+  String get helpTopicPropertiesHow =>
+      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.';
+
+  @override
+  String get helpTopicPropertiesTips =>
+      'Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.\nKies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.\nVerkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.';
+
+  @override
+  String get helpTopicBankCategory => 'Economie';
+
+  @override
+  String get helpTopicBankTitle => 'Bank';
+
+  @override
+  String get helpTopicBankSummary =>
+      'Zet geld op je bankrekening om rente te verdienen en cash buiten bereik van politie-confiscaties te houden.';
+
+  @override
+  String get helpTopicBankHow =>
+      'Rente: 0.5% van je banksaldo per tick (elke 5 minuten). Voorbeeld: €10.000 op bank = €50 rente per tick = €600 per uur = €14.400 per dag.\nStorten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
+
+  @override
+  String get helpTopicBankTips =>
+      'Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.\nZet rente-inkomsten automatisch bij door grote bedragen spaarsgewijs op te bouwen op de bank.\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).';
+
+  @override
+  String get helpTopicCasinoCategory => 'Economie';
+
+  @override
+  String get helpTopicCasinoTitle => 'Casino';
+
+  @override
+  String get helpTopicCasinoSummary =>
+      'Gok met contant geld op slots, blackjack, roulette, dice, baccarat en video poker. Hoge variantie: je kunt snel veel winnen of verliezen.';
+
+  @override
+  String get helpTopicCasinoHow =>
+      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).\nElke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).\nCasino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.\nEr is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.\nGrote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.\nVerloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.';
+
+  @override
+  String get helpTopicCasinoTips =>
+      'Stel altijd een maximale sessie-bankroll in: nooit meer dan 10% van je totale cash per sessie.\nBlackjack heeft de beste kansen voor een vaardige speler. Leer basis-strategie voor je grote bedragen inzet.\nZie casino als entertainment, niet als inkomstenbron: de house edge zorgt op lange termijn voor verlies.';
+
+  @override
+  String get helpTopicTradeCategory => 'Economie';
+
+  @override
+  String get helpTopicTradeTitle => 'Handelswaar';
+
+  @override
+  String get helpTopicTradeSummary =>
+      'Koop goederen goedkoop in het ene land en verkoop duur in een ander. Prijsverschillen tot 300% zijn mogelijk.';
+
+  @override
+  String get helpTopicTradeHow =>
+      'Elk land heeft unieke handelsgoederen met eigen basisprijzen: Diamanten (Zuid-Afrika), Drugs (Colombia), Wapens (USA), Kunst (Frankrijk), Elektronica (Japan), Alcohol (Schotland).\nMarktprijzen fluctueren elke tick (5 minuten) tussen 0.5x en 2.0x de basisprijs. Prijzen kunnen dalen terwijl je onderweg bent.\nKopen kan alleen in het land waar het goed beschikbaar is. Verkopen is het meest waard in een ander land.\nRisico bij transport: politie confisqueert bij hoog Wanted Level (kans = wanted × 2%, max 80%); FBI raidt internationaal op basis van heat + goederenwaarde.\nDouane heeft 10% basiskans bij grensovergang. Betaal €1.000-€5.000 steekpenning of verlies 50% van de lading.\nCombineer trade met smokkelen voor hogere marges maar ook hoger risico op inbeslagname.\nJe kunt onbeperkte hoeveelheden kopen zolang je genoeg cash hebt en inventaristruimte beschikbaar is.';
+
+  @override
+  String get helpTopicTradeTips =>
+      'Monitor marktprijzen vlak voor vertrek en niet eerder — prijzen bewegen elke 5 minuten.\nVerlaag Wanted Level voor elke trade-reis: confiscatie van een volle lading is een catastrofaal verlies.\nKalkuleer altijd reiskosten, douane-risico en tijdverlies mee in je winstberekening.';
+
+  @override
+  String get helpTopicBlackMarketCategory => 'Economie';
+
+  @override
+  String get helpTopicBlackMarketTitle => 'Zwarte Markt';
+
+  @override
+  String get helpTopicBlackMarketSummary =>
+      'Koop en verkoop illegale en schaarse goederen: wapens, munitie, drugs en materials die nergens anders verkrijgbaar zijn.';
+
+  @override
+  String get helpTopicBlackMarketHow =>
+      'De zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.';
+
+  @override
+  String get helpTopicBlackMarketTips =>
+      'Controleer altijd of de zwarte marktprijs lager is dan het open trade alternatief inclusief reiskosten.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.';
+
+  @override
+  String get helpTopicDrugsCategory => 'Empire';
+
+  @override
+  String get helpTopicDrugsTitle => 'Drugs';
+
+  @override
+  String get helpTopicDrugsSummary =>
+      'Bouw een complete drugsoperatie van grondstoffen tot eindproduct. Draai productieketens, beheer opslag en verkoop voor hoge marges maar ook serieuze risico\'s.';
+
+  @override
+  String get helpTopicDrugsHow =>
+      'Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een bliksemknop: na een bevestigingsmodal koop je in één klik alle ontbrekende materialen voor die batch.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
+
+  @override
+  String get helpTopicDrugsTips =>
+      'Upgrade opslag voor productie: volle opslag stopt je productie en je verliest die productietime.\nHoud FBI Heat onder 50: boven dat niveau word je actief gestalkt met zware raid-kansen die alles stilleggen.\nCombineer drugsverkoop met smokkelen voor hogere marges en verspreide risico\'s.';
+
+  @override
+  String get helpTopicNightclubCategory => 'Empire';
+
+  @override
+  String get helpTopicNightclubTitle => 'Nachtclub';
+
+  @override
+  String get helpTopicNightclubSummary =>
+      'Run een nachtclub als onderdeel van je criminele empire. Beheer personeel, beveiliging en supply voor passief en actief inkomen met een eigen seizoensleaderboard.';
+
+  @override
+  String get helpTopicNightclubHow =>
+      'Onderaan gebruik je nu een Nightclub Management Command Center met zones voor Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab; alle zones draaien in één doorlopende paginaflow zonder extra inner-scroll.\nIn het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.\nIn Ops Lab gebruik je nu 11 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drank/food) met pricing, rival sabotage + counter-intel en operations timeline.\nSmuggling routes hebben nu een cooldown per run (Harbor 60 min, Airstrip 90 min, Borderline 120 min) zodat je risico en timing moet plannen in plaats van oneindig spammen.\nDe upgrade-tree is interactief: kies expliciet Sound Rig, VIP Lounge of Surveillance en koop direct het volgende level met zichtbare upgrade-kosten.\nRevenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.\nDJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.\nIncidenten (vechtpartijen, diefstal) kunnen optreden als je beveiliging tekortschiet. Dit schaadt bezoekers-score en inkomst.\nElk seizoen heeft een leaderboard. Spelers met de hoogste totale nachtclub-revenue winnen seizoensbeloningen.\nSynergie met drugs: eigen drugs-productie kan als supply dienen, wat margins verhoogt.\nDrugs-opslag werkt in gram: je ziet per selectie direct hoeveel gram beschikbaar is voordat je toevoegt aan je nightclub voorraad.\nRival acties werken op spelersnaam: je zoekt rival clubs op naam en kiest daarna pas je actie (geen player-id nodig).\nSynergie met prostitution: gecombineerde venue events geven extra bezoekers en hogere revenue.\nUpgrades verbeteren capaciteit, supply-opslag en het maximale aantal DJs en bewakers dat je kunt inzetten.';
+
+  @override
+  String get helpTopicNightclubTips =>
+      'Zorg altijd dat supply niet leeg raakt: één tick zonder supply kan een bezoekersdip veroorzaken die moeilijk te herstellen is.\nBoek de beste DJ die je je kunt veroorloven: DJ-kwaliteit heeft de grootste directe impact op revenue per tick.\nCheck het seizoensleaderboard elke dag en schaal supply en DJs op als je in top-10 wilt eindigen.';
+
+  @override
+  String get helpTopicCryptoCategory => 'Economie';
+
+  @override
+  String get helpTopicCryptoTitle => 'Crypto';
+
+  @override
+  String get helpTopicCryptoSummary =>
+      'Handel in 30 echte cryptocurrencies. Koop en verkoop direct, of automatiseer via limit-, stop-loss- en take-profit orders. Koersen volgen nu live marktankers met extra in-game regimes en nieuws, en de coin-popup gebruikt aparte velden voor directe trades en open orders.';
+
+  @override
+  String get helpTopicCryptoHow =>
+      'De cryptolijst toont 30 coins met actuele prijs, 24-uurs percentage en je huidige bezit per coin. De prijsbasis volgt live marktdata, maar blijft beïnvloed door in-game regimes en nieuws.\nKlik op een coin om de popup te openen met: live grafiek (tijdfilters 1u, 4u, 8u, 24u, 7d, 30d, Alles), koopgeschiedenis, gemiddelde aankoopprijs en koop/verkoop formulier.\nDirecte trade: kies hoeveelheid en klik Koop of Verkoop. Bij verkopen kun je met `ALL` direct je volledige positie invullen. Uitvoering is onmiddellijk tegen de actuele marktprijs.\nOpen orders: Limit (koop/verkoop op exacte doelprijs), Stop-loss (automatisch verkopen als koers daalt tot een grens), Take-profit (automatisch verkopen als koers stijgt tot een doel). Deze sectie heeft een eigen hoeveelheidveld en een eigen doelprijsveld.\nOpen orders worden automatisch uitgevoerd door de backend zodra de marktprijs de doelprijs bereikt. Je hoeft niet online te zijn.\nMarktregimes (Bull/Bear/Sideways) en nieuwsevents beïnvloeden prijsbewegingen. Regime-notificaties ontvang je via push als je dat hebt ingesteld.\nWeekelijks crypto-leaderboard: de speler met de hoogste gerealiseerde winst van die week wint een geldbedrag-beloning.\nDagelijkse en wekelijkse missies (bijv. 3 winstgevende trades, diversifieer over 5 coins) geven extra beloningen bij voltooiing.\nPortfolio overzicht toont: totale waarde, inleg, ongerealiseerde en gerealiseerde winst/verlies.';
+
+  @override
+  String get helpTopicCryptoTips =>
+      'Bekijk je koopgeschiedenis voor je een sell order plaatst: de popup toont je gemiddelde aankoopprijs, zodat je niet per ongeluk met verlies verkoopt.\nGebruik stop-loss orders op elke positie die je niet actief volgt: ze beschermen je automatisch als je offline bent.\nWissel tijdfilters in de grafiek: 1u en 4u tonen kortetermijntrend, 7d en 30d tonen groter plaatje.';
+
+  @override
+  String get helpTopicSmugglingCategory => 'Empire';
+
+  @override
+  String get helpTopicSmugglingTitle => 'Smokkelen';
+
+  @override
+  String get helpTopicSmugglingSummary =>
+      'Verplaats illegale goederen en voertuigen tussen landen. Kies een commercieel kanaal of gebruik je eigen voertuig of vliegtuig voor lagere kosten en extra risico op confiscatie.';
+
+  @override
+  String get helpTopicSmugglingHow =>
+      'Kies categorie, het specifieke item, de bestemming en daarna tussen een commercieel kanaal of eigen transport.\nEigen auto, motor, boot en vliegtuig geven een live quote met cargo-slots, lagere kosten en risicoreductie.\nEen boot kan auto\'s en motoren meenemen; een vliegtuig kan geen boot vervoeren en geeft dan direct een foutmelding.\nSlagingskans hangt af van: kanaal of gekozen eigen transport, je huidige Wanted Level en de grootte van de zending.\nBij mislukking verlies je de volledige lading. Je krijgt geen vergoeding. Lading en transportkosten zijn weg.\nGebruik je eigen transport en gaat de run fout, dan kan ook het gebruikte voertuig of vliegtuig in beslag genomen worden.\nActieve shipments worden live gevolgd in een overzicht. Na aankomst verschijnt de lading in een depot klaar voor ophalen.\nCrew-netwerk blijft beschikbaar voor commerciële crew-zendingen, maar eigen transport werkt alleen persoonlijk.';
+
+  @override
+  String get helpTopicSmugglingTips =>
+      'Stuur nooit je volledige voorraad in één shipment: verdeel over meerdere kleinere ladingen om catastrofaal verlies te beperken.\nVerlaag Wanted Level en FBI Heat tot een minimum voor je een grote smokkelrun start.\nGebruik je beste vliegtuig of boot voor dure runs: lagere kosten zijn prettig, maar cargo-slots en confiscatiekans blijven bepalend.\nHaal altijd actieve depots zo snel mogelijk op: verlopen depot-inhoud is definitief verloren.';
+
+  @override
+  String get helpTopicToolsCategory => 'Beheer';
+
+  @override
+  String get helpTopicToolsTitle => 'Gereedschap';
+
+  @override
+  String get helpTopicToolsSummary =>
+      'Koop en beheer gereedschappen die nodig zijn voor specifieke misdaden. Goede tools verhogen je slagingskans, versleten tools verlagen hem.';
+
+  @override
+  String get helpTopicToolsHow =>
+      'De tool-shop toont alle beschikbare items met prijs, conditie-rating en het type crime waarvoor ze vereist zijn.\nElke crimecategorie heeft voorkeur-tools: inbraak vereist breekijzer of picks, autodiefstal vereist hotwire-kit, beroving vereist vuurwapen.\nTools hebben een conditie (0-100%). Elke succesvolle of mislukte crime verlaagt conditie met een paar procent.\nOnder 20% conditie daalt de slagingskansbonus van de tool drastisch. Onder 5% heeft de tool nauwelijks meer effect.\nGerepareerde tools via de shop kosten een fractie van de aanschafprijs. Vervangen is soms goedkoper dan repareren bij zware slijtage.\nTools zijn zichtbaar in je inventaris-tab. Je kunt meerdere exemplaren van hetzelfde type bewaren als backup.';
+
+  @override
+  String get helpTopicToolsTips =>
+      'Koop tools in bulk als ze laag geprijsd zijn op de zwarte markt: je bespaart t.o.v. de shop.\nStel een persoonlijke drempel in: vervang tools altijd als conditie onder 25% daalt om slagingskans stabiel te houden.';
+
+  @override
+  String get helpTopicCourtCategory => 'Risico';
+
+  @override
+  String get helpTopicCourtTitle => 'Rechtbank';
+
+  @override
+  String get helpTopicCourtSummary =>
+      'Tijdens je straf kun je hoger beroep indienen of de rechter proberen om te kopen om sneller vrij te komen.';
+
+  @override
+  String get helpTopicCourtHow =>
+      'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nWil je je volledige strafblad wissen, dan moet je dat buiten de rechtbank via de late-game crime Strafblad Wissen doen.';
+
+  @override
+  String get helpTopicCourtTips =>
+      'Gebruik hoger beroep bij lange straffen: de verwachte tijdswinst is dan het grootst.\nGebruik omkoping alleen met voldoende buffer, omdat je in alle gevallen betaalt.';
+
+  @override
+  String get helpTopicHitlistCategory => 'Risico';
+
+  @override
+  String get helpTopicHitlistTitle => 'Hitlist';
+
+  @override
+  String get helpTopicHitlistSummary =>
+      'Zet een bounty op een vijand of neem een hitcontract aan. Elimineer je doelwit in hetzelfde land voor de volledige payout.';
+
+  @override
+  String get helpTopicHitlistHow =>
+      'Via de hitlist kun je een speler toevoegen door een bounty in te stellen. Minimumbounty is €5.000. De betaler verliest dit geld direct.\nAls er een bounty op jou wordt geplaatst, ontvang je direct een pushmelding en inboxbericht van Moordlijst Bureau.\nActieve hits zijn zichtbaar voor alle spelers. Hoe hoger de bounty, hoe meer aandacht het contract trekt.\nDetective-onderzoek levert geen directe uitslag meer op: rapporten komen later via een bericht van Detective Bureau (Snel 1 uur €1.000.000, Gemiddeld 6 uur €500.000, Langzaam 24 uur €250.000).\nWord je via de hitlist vermoord, dan ontvang je een Moordlijst Bureau-bericht met een knop om binnen 24 uur onderzoek naar de dader te starten.\nVraag je dit onderzoek snel na de moord aan, dan komt het detective-rapport sneller. Wacht je langer, dan duurt het rapport ook langer.\nOm een hit uit te voeren moet je in hetzelfde land zijn als je doelwit. Je valt aan via het spelersprofiel.\nGevecht wordt automatisch berekend op basis van: bewapening, armor, stats (kracht, reflexen), crew-bonussen en actief niveau.\nBij een succesvolle eliminatie ontvang je de volledige bounty. Mislukt de aanval dan verlies je HP en het doelwit blijft leven.\nBij een succesvolle moord krijgt het doelwit een harde reset van accountprogressie: bezittingen en voortgang worden teruggezet naar basisstatus, maar banktegoed en crew-leiderschap blijven behouden. Jij ontvangt naast de bounty een deel van de beschikbare buit.\nNa een succesvolle kill ontvang je direct een inboxbericht van Moordlijst Bureau met een overzicht van de bounty en buit (geld + items).\nDoelwitten met een actieve bodyguard of bewakingsbeveiliging zijn moeilijker te raken.\nJe kunt je eigen naam van de hitlist verwijderen door de plaatser te betalen of de bounty zelf over te nemen.';
+
+  @override
+  String get helpTopicHitlistTips =>
+      'Check de hitlist dagelijks: hoge bounties op zwakke spelers zijn snelle winst als je in hetzelfde land zit.\nLeg een bounty alleen op een speler als je aanwijzingen hebt dat ze offline zijn of laag in HP.';
+
+  @override
+  String get helpTopicSecurityCategory => 'Risico';
+
+  @override
+  String get helpTopicSecurityTitle => 'Beveiliging';
+
+  @override
+  String get helpTopicSecuritySummary =>
+      'Bescherm je karakter en empire met armor, bodyguards en installatiebeveiliging. Hoe beter je beveiliging, hoe minder schade je oploopt bij aanvallen.';
+
+  @override
+  String get helpTopicSecurityHow =>
+      'Armor-types in oplopende sterkte: Lichte Armor → Zware Armor → Kogelvrij Vest → Tactische Outfit.\nJe kunt maar 1 armor tegelijk dragen; koop je een ander vest, dan vervangt dat direct je huidige armor.\nElke armor-klasse verlaagt inkomende schade per aanval met een vast percentage. Betere armor = meer overleving bij PvP en raids.\nArmor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.\nBij 100% schade is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.\nLijfwachten geven elk +10 verdediging, maar kosten elke 24 uur €10.000 per lijfwacht aan systeemloon.\nKun je het dagloon van je lijfwachten niet meer betalen, dan lopen ze allemaal weg en verlies je die verdediging direct.\nInstallatiebeveiliging (voor nightclub, drugs-faciliteit, etc.) verlaagt kans op raids en incidenten bij die locatie.\nHoe hoger je Wanted Level hoe vaker je wordt aangevallen of geraided. Betere beveiliging compenseert dit direct.\nCrew-leden kunnen beveiligingsrollen verdelen zodat meerdere locaties gelijktijdig gedekt zijn.';
+
+  @override
+  String get helpTopicSecurityTips =>
+      'Draag altijd minimaal Lichte Armor als je Wanted Level 2 of hoger is: besparing op ziekenhuisrekeningen compenseert de aanschafprijs snel.\nControleer na elke aanval je armor-conditie: een beschadigd vest geeft nog maar een deel van de originele bescherming.\nNeem alleen zoveel lijfwachten als je ook morgen nog kunt betalen; hoge aantallen worden snel duur in dagelijks onderhoud.';
+
+  @override
+  String get helpTopicHospitalCategory => 'Recovery';
+
+  @override
+  String get helpTopicHospitalTitle => 'Ziekenhuis';
+
+  @override
+  String get helpTopicHospitalSummary =>
+      'Herstel HP na gevechten, mislukte crimes of raids. Het ziekenhuis biedt gratis spoedzorg en betaalde behandelingen voor sneller herstel.';
+
+  @override
+  String get helpTopicHospitalHow =>
+      'Val je onder 10 HP dan word je automatisch opgenomen op de Eerste Hulp (ER). Dit is gratis maar duurt langer.\nBetaalde behandeling kost €10.000 per sessie en herstelt +30 HP. Cooldown: 60 minuten tussen twee betaalde behandelingen.\nICU (Intensive Care) is de zwaarste behandeling voor kritieke schade. Cooldown: 180 minuten. Kosten zijn hoger maar herstel is completer.\nBij hogere HP (50+) kun je gewoon acties uitvoeren maar ben je kwetsbaarder bij aanvallen.\nHospital-behandelingen zijn geblokkeerd terwijl je in de gevangenis zit. Eerst vrijkomen, dan behandeling.\nSchool-certificaat Geneeskunde verlaagt ziekenhuiskosten en versnelt hersteltijden.\nCrew-medics of Medic-skills kunnen HP herstellen buiten het ziekenhuis om als extra noodherstel.';
+
+  @override
+  String get helpTopicHospitalTips =>
+      'Herstel nooit half: wacht tot je full HP bent voor je PvP of gevaarlijke crimes uitvoert.\nPlan betaalde behandelingen rond de cooldown: start een behandeling vlak voordat je offline gaat zodat je online komt met vol HP.';
+
+  @override
+  String get helpTopicPrisonCategory => 'Recovery';
+
+  @override
+  String get helpTopicPrisonTitle => 'Gevangenis';
+
+  @override
+  String get helpTopicPrisonSummary =>
+      'Zit je gevangenisstraf uit, betaal borgtocht of probeer te ontsnappen. Hoe hoger je Wanted Level, hoe langer en duurder je straf.';
+
+  @override
+  String get helpTopicPrisonHow =>
+      'Na arrestatie start een timer op basis van Wanted Level. Wanted Level 1 = korte straf (minuten), Wanted Level 5+ = uren gevangenisstraf.\nBorgtocht schaalt met je resterende celstraf en valt nooit lager uit dan Wanted Level × €1.000. Lange straffen worden dus duurder om direct af te kopen.\nOntsnappen: je kunt een ontsnappingspoging wagen maar de slagingskans is laag. Mislukking verlengt je straftijd met een vast bedrag.\nIn de Gevangenis-list en de jail overlay kun je altijd jezelf vrijkopen met borg en ook zelf een uitbraakpoging doen zolang je nog vastzit.\nCrewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.\nBij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.\nWapen- en armor-bezit wordt geconfisceerd bij arrest als je er geen legale dekking voor hebt.\nRechtbank-optie: ga naar de rechtbank voor strafvermindering via advocaat (zie Rechtbank).\nTerwijl je vastzit lopen productie-timers (drugs, ammo-factory) gewoon door. Je empire werkt zonder je.\nJe kunt het ziekenhuis niet bezoeken terwijl je vastzit. HP-herstel wacht tot je vrij bent.';
+
+  @override
+  String get helpTopicPrisonTips =>
+      'Controleer borg direct na arrestatie: de knop hoort altijd zichtbaar te blijven zolang je nog vastzit, ook als je Wanted Level al is teruggelopen.\nStart productie-timers vlak voordat je een gevaarlijke crimerun doet: als je gepakt wordt loopt de productie in ieder geval door.';
+
+  @override
+  String get helpTopicVaultCategory => 'Events';
+
+  @override
+  String get helpTopicVaultTitle => 'Kraak de Kluis';
+
+  @override
+  String get helpTopicVaultSummary =>
+      'Maandelijkse kluisronde: voer een 4-cijferige code in en zet credits in voor kans op grote prijzen.';
+
+  @override
+  String get helpTopicVaultHow =>
+      'Elke maand start een nieuwe ronde op de 1e en eindigt op de laatste dag van de maand.\nJe kiest een inzet (bijv. 1/3/5 credits) en voert een 4-cijferige code in.\nJe kunt de code ook invullen via het codepaneel (cijferknoppen) op het scherm.\nElke poging kost credits. Raad je de code goed, dan win je een prijs.\nBij hogere inzet zijn de prijzen hoger; soms kan er ook een VIP-prijs vallen.\nAls je al VIP bent, wordt een VIP-prijs omgezet naar credits.\nFoute codes van deze maand kun je terugzien in je lijst. Die lijst reset automatisch bij de nieuwe maand.';
+
+  @override
+  String get helpTopicVaultTips =>
+      'Kies een inzet die past bij je creditsaldo: je kunt onbeperkt proberen, maar elke poging kost credits.\nGebruik de foute-codes lijst om te voorkomen dat je dezelfde code opnieuw probeert.';
+
+  @override
+  String get helpTopicGarageCategory => 'Assets';
+
+  @override
+  String get helpTopicGarageTitle => 'Garage';
+
+  @override
+  String get helpTopicGarageSummary =>
+      'Steel en beheer auto\'s en motoren voor crimes en smokkelen. In Garage beheer je bezit, timed repairs, verkoop en sloop; transport loopt via Smuggling Hub.';
+
+  @override
+  String get helpTopicGarageHow =>
+      'Je garage toont auto\'s en motoren met conditie (0-100%), brandstof, marktwaarde, zeldzaamheid en world-cap status.\nAuto-opslag en motor-opslag zijn nu gescheiden: auto\'s gebruiken garagecapaciteit, motoren gebruiken motorstallingcapaciteit.\nOpslag-upgrades voor auto en motor zijn onafhankelijk per land: een autoupgrade telt niet mee voor motorcapaciteit (en omgekeerd). Upgrades zijn rank-gated; bij te lage rank zie je een lock/tooltip. Bij niveau 5 verdwijnt de upgrade-knop.\nVia de catalogus-knop zie je alle steelbare auto\'s en motoren, inclusief in welk land ze het meest voorkomen en in welke landen ze kunnen spawnen.\nDiefstal werkt per voertuig met rank-eisen en cooldown. Hoe duurder en zeldzamer, hoe lager de kans op succes.\nAls de world-cap van een model vol is, kun je dat model tijdelijk niet stelen. Bij verkoop of sloop van dat model komt er direct weer 1 slot vrij.\nMislukte diefstal verhoogt Wanted Level en kan arrestatie triggeren. Word je tijdens de ontsnapping alsnog gepakt, dan beland je in de cel en wordt het net gestolen voertuig direct in beslag genomen.\nReparatie is getimed: je betaalt direct, het voertuig gaat in reparatie en komt pas terug na de timer.\nGelijktijdige reparaties zijn beperkt over auto, motor en boot samen: zonder VIP max 1 actief, met VIP max 2 actief.\nSloop is een alternatief voor verkoop: je krijgt schrootwaarde (35% van basiswaarde), geschaald door conditie en garage-upgrade bonus.\nVehicle Ops Intelligence voegt 6 extra opties toe. Kort uitgelegd:\n1) Hotspot run: snelle actie voor directe cash, met eigen cooldown en extra risico.\n2) Parts market: live onderdelenprijzen per type (auto/motor/boot) voor tuning; prijzen verversen periodiek.\n3) Crew op: co-op actie met je crew voor extra opbrengst/voordeel (alleen als je in een crew zit).\n4) Heat: per type (auto/motor/boot) een “aandacht”-meter; hoge heat maakt acties riskanter en verlaagt je slagingskans. Heat daalt langzaam.\n5) Chop contract: lever een passend voertuig uit je inventory in voor een vaste contractuitbetaling.\n6) Politiepatroon: het moment van de dag kan extra controles geven; dat beïnvloedt je risico (bijv. havenstaking/havenblokkade bij boten).\nIn Voertuig Stelen zijn Auto/Motor/Boot nu één command-laag: je kiest categorie bovenin via de drie lane-cards, zonder extra tweede tab-rij.\nElke lane-card heeft directe quick actions voor stelen en opslag-upgrade, zodat je niet eerst naar losse subknoppen hoeft te scrollen.\nTijdens een stelen-cooldown staat naast de timer een bliksem-icoon: daarmee spendeer je credits om de cooldown te versnellen. Je kunt een bevestigingsscherm uitzetten; dat zet je weer aan via Instellingen → stelen-cooldown (credits).\nLane-cards tonen nu ook direct capaciteit per type (gebruikt/totaal + upgrade level).\nJe gestolen voertuigen renderen in responsieve kaarten: mobiel 1 per rij, tablet/desktop meerdere kaarten naast elkaar.\nNieuwe Ops-laag: PvP intercept windows op hotspots, crew-rolbonussen tijdens crew-ops, reputatie-unlocks per voertuigtype, regionale blacklist-events, en contraband insurance contracts.\nNieuwe Vehicle Ops uitbreidingen: Counter-Intercept missies, Crew Matchmaking met seizoensladder, Country Modifiers (inflatie/corruptie/havenstaking), en een contracts board met weekelijkse legendary contracts.\nOps toont live cooldowns per actie. Timers tellen zichtbaar af en verversen automatisch.\nCrew-acties (Crew-actie en Crew-duel) zijn alleen beschikbaar als je in een crew zit; zonder crew zie je een duidelijke unlock-melding.\nBij succesvolle ops-acties gaat de beloning direct naar je contant geld. Het actie-overzicht toont per knop welk type payout je kunt verwachten.\nInsurance claims komen nu eerst in review; via claim dispute kun je een claim contesten voor extra payout of risico op afwijzing.\nHogere categorie-Heat verlaagt je slagingskans op diefstal en verhoogt risico in hotspots. Heat daalt elk uur geleidelijk.\nChop-Shop Contracts vragen een geschikt voertuig uit je inventory; bij claim verdwijnt dat voertuig en ontvang je contractgeld.\nTransport van voertuigen gebeurt niet in Garage maar via Smuggling Hub.\nDoorverkoop en sloop maken ruimte vrij in je auto- of motorcapaciteit en openen mogelijk world-cap slots voor dat model.\nEvent-only voertuigen zoals politie-interceptor blijven normaal vergrendeld buiten eventvensters.';
+
+  @override
+  String get helpTopicGarageTips =>
+      'Steel voertuigen actief als je Wanted Level laag is: hogere Wanted = hogere mislukkingskans bij diefstal.\nHoud altijd minimaal één betrouwbaar voertuig op hoge conditie voor smokkelen: een kapot voertuig halveeert je slagingskans.\nGebruik sloop voor zwaar beschadigde voertuigen als snelle capaciteit-reset; verkoop is vaak beter bij hoge conditie.';
+
+  @override
+  String get helpTopicMarinaCategory => 'Assets';
+
+  @override
+  String get helpTopicMarinaTitle => 'Marina';
+
+  @override
+  String get helpTopicMarinaSummary =>
+      'Beheer boten met zeldzaamheid, world-cap en reparatietimers voor maritieme smokkelroutes. Marina richt zich op bezit, onderhoud, verkoop en sloop; transport loopt via Smuggling Hub.';
+
+  @override
+  String get helpTopicMarinaHow =>
+      'De marina toont je boten met conditie, brandstof, marktwaarde, zeldzaamheid en world-cap status per model.\nVia de catalogus-knop zie je alle steelbare boten, inclusief meest voorkomend land en volledige landenlijst.\nBootdiefstal heeft eigen rank-eisen en cooldowns. Duurdere boten zijn lastiger te stelen maar leveren meer op.\nAls de world-cap van een boottype vol is, verdwijnt dat type tijdelijk uit de beschikbare lijst. Verkoop/sloop opent weer slots.\nReparatie is getimed: je betaalt direct en de boot blijft onbruikbaar tot de timer voltooid is.\nGelijktijdige reparaties zijn beperkt over auto, motor en boot samen: zonder VIP max 1 actief, met VIP max 2 actief.\nSloop geeft schrootwaarde (35% van basiswaarde), geschaald met conditie en marina-upgrade bonus.\nMarina beheert alleen bezit en onderhoud; daadwerkelijke transportkeuzes gebeuren in Smuggling Hub.\nEvent-only politieboten zijn bedoeld voor tijdelijke events en blijven buiten events vergrendeld.';
+
+  @override
+  String get helpTopicMarinaTips =>
+      'Investeer in de marina als je smokkelroutes regelmatig via water lopen: lagere politie-interest kan de kans op succes significant verhogen.\nHoud een speedboot op hoge conditie als snel alternatief wanneer vluchtroutes over land geblokkeerd zijn.\nSloop vooral zwaar beschadigde boten met lage verkoopwaarde, zodat je sneller world-cap ruimte en havencapaciteit vrijmaakt.';
+
+  @override
+  String get helpTopicTuneshopCategory => 'Assets';
+
+  @override
+  String get helpTopicTuneshopTitle => 'TuneShop';
+
+  @override
+  String get helpTopicTuneshopSummary =>
+      'Gebruik onderdelen uit sloop om voertuigen per categorie te upgraden. Verbeter snelheid, stealth en pantser met oplopende levelkosten en category-cooldowns.';
+
+  @override
+  String get helpTopicTuneshopHow =>
+      'Je verdient onderdelen door voertuigen te slopen: auto-onderdelen, motor-onderdelen en boot-onderdelen.\nOnderdelen zijn category-pooled: elk voertuig in dezelfde categorie gebruikt dezelfde parts-voorraad.\nElke upgrade kost onderdelen én geld. Geldkosten zijn category-based en stijgen per tuninglevel.\nJe kunt drie stats upgraden: snelheid, stealth en pantser.\nTuning is per voertuig in je inventory. Nieuwe voertuigen starten weer op level 0.\nNa elke tune geldt een cooldown per voertuig: auto 180s, motor 120s, boot 240s.\nGelijktijdige tuning is beperkt: zonder VIP max 1 actief voertuig in tuning-cooldown, met VIP max 5.\nGetunede voertuigen leveren hogere verkoop- en schrootwaarde op.\nTunen is geblokkeerd als een voertuig in reparatie of transport staat.';
+
+  @override
+  String get helpTopicTuneshopTips =>
+      'Sloop zwaar beschadigde voertuigen eerst om snel onderdelen op te bouwen.\nInvesteer vroeg in stealth voor lagere pakkans tijdens risicovolle runs.\nGebruik pantser-upgrades op voertuigen die je vaak in gevaarlijke loops inzet.';
+
+  @override
+  String get helpTopicShootingRangeCategory => 'Training';
+
+  @override
+  String get helpTopicShootingRangeTitle => 'Schietschool';
+
+  @override
+  String get helpTopicShootingRangeSummary =>
+      'Verbeter je nauwkeurigheid en wapenvaardigheid via gestructureerde schietoefeningen. Hogere stats verhogen schade en trefkans in PvP en crimes.';
+
+  @override
+  String get helpTopicShootingRangeHow =>
+      'De schietschool biedt meerdere disciplines: pistool, geweer, shotgun en automatisch vuur. Elk traint een aparte wapenvaardigheid.\nElke trainingssessie heeft een cooldown van 30 minuten. Je kunt niet onbeperkt trainen per dag.\nHogere nauwkeurigheid verhoogt je trefkans in PvP gevechten en verlaagt de kans dat je zelf geraakt wordt.\nWapenvaardigheid bepaalt ook welke wapens je effectief kunt gebruiken: een sniper rifle vereist een bepaalde skill voordat je zijn volle bonus benut.\nTrainingsresultaten stapelen cumulatief op. Er is geen reset tenzij je een zware boete via de rechtbank krijgt.\nSchool-certificaat Militair Training geeft een permanente bonus op elke schietschool-sessie.';
+
+  @override
+  String get helpTopicShootingRangeTips =>
+      'Train de schietschool elke dag: kleine cumulatieve bonussen worden na een week al merkbaar in PvP-uitkomsten.\nTrain het wapen-type dat je het meest gebruikt in crimes en PvP voor maximale return on investment.';
+
+  @override
+  String get helpTopicGymCategory => 'Training';
+
+  @override
+  String get helpTopicGymTitle => 'Sportschool';
+
+  @override
+  String get helpTopicGymSummary =>
+      'Train kracht, snelheid en uithoudingsvermogen voor betere stats in PvP, crimes en HP-pool. Dagelijkse training is de sleutel tot snelle stat-groei.';
+
+  @override
+  String get helpTopicGymHow =>
+      'De sportschool biedt drie trainingscategorieën: Kracht (meer schade per aanval), Snelheid (hogere reflexen, minder geraakt worden), Uithoudingsvermogen (hogere max HP).\nElke training heeft een cooldown van 1 uur. Maximaal 6-8 sessies per dag afhankelijk van je school-certificaat.\nKracht verhoogt directe schade in zowel PvP als bepaalde crime-typen (beroving, vechtpartij).\nSnelheid verhoogt de kans om een aanval te ontwijken en verlaagt de kans dat je gevangen wordt bij crime-mislukking.\nUithoudingsvermogen verhoogt je max HP-pool. Meer HP = langer overleven in PvP en meer ruimte voor risicovolle crimes.\nSchool-certificaat Lichaamstraining geeft +15% bonus op alle gym-sessies.';
+
+  @override
+  String get helpTopicGymTips =>
+      'Train Uithoudingsvermogen als prioriteit: een hogere HP-pool verbetert al je andere systems because je langer actief blijft.\nCombineer gym met schietschool: Kracht + Nauwkeurigheid is de sterkste PvP-combinatie.';
+
+  @override
+  String get helpTopicAmmoFactoryCategory => 'Empire';
+
+  @override
+  String get helpTopicAmmoFactoryTitle => 'Ammo Factory';
+
+  @override
+  String get helpTopicAmmoFactorySummary =>
+      'Produceer munitie voor eigen gebruik en beheer je output vanuit de fabriek. Koop en verkoop munitie verlopen via de Zwarte Markt, niet direct vanuit het factory-scherm.';
+
+  @override
+  String get helpTopicAmmoFactoryHow =>
+      'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer patronen per claim en betere kwaliteit.\nTijdens een actieve sessie claim je productie ongeveer elke 10 minuten (tot 8 uur backlog binnen die sessie).\nProductie loopt door terwijl je offline bent: bij terugkomst kun je meerdere claims achter elkaar doen tot de backlog op is.\nAlleen kijken naar de munitiefabriek of heen en weer reizen mag eigendom niet veranderen; een fabriek springt dus niet zomaar naar `te koop` door het scherm te openen.\nJe gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.\nOutput-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.\nMarktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.\nBij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.';
+
+  @override
+  String get helpTopicAmmoFactoryTips =>
+      'Upgrade je factory zo snel mogelijk naar Level 3: de output-verdubbeling t.o.v. Level 1 maakt het zelfvoorzienend in ammo.\nHoud altijd 2-3 productieronden aan output in reserve als buffer zodat je nooit zonder ammo valt tijdens PvP.';
+
+  @override
+  String get helpTopicSchoolCategory => 'Training';
+
+  @override
+  String get helpTopicSchoolTitle => 'School';
+
+  @override
+  String get helpTopicSchoolSummary =>
+      'Volg opleidingen in meerdere tracks om bonussen te ontgrendelen, kosten te verlagen en nieuwe systemen te openen. School is een multiplier op alles wat je doet.';
+
+  @override
+  String get helpTopicSchoolHow =>
+      'School biedt tracks per domein: Crimineel (betere crime stats), Economie (lagere handels- en bankkosten), Militair (combat bonussen), Geneeskunde (lagere ziekenhuiskosten), Rechten (lagere advocaatkosten), Technisch (factory) en Narcotica (drugsfaciliteit-upgrades).\nElke les heeft een studietime van 15-60 minuten afhankelijk van het level. Hogere levels duren langer.\nNa het voltooien van een les ontvang je een certificaat voor dat track-level. Dit certificaat is permanent en geeft de bonus direct.\nJe kunt maar één les tegelijk volgen. Plan je studies zorgvuldig als je snel een specifiek certificaat nodig hebt.\nSchoolkosten stijgen per level. Hoger onderwijs vereist dat eerdere niveaus in hetzelfde track zijn voltooid.\nSommige geavanceerde game-features zijn vergrendeld achter een schoolcertificaat: bv. toegang tot bepaalde jobs, hogere factory levels, VIP nightclub events.\nCertifcaten worden nooit gereset tenzij je account een zware straf ontvangt.';
+
+  @override
+  String get helpTopicSchoolTips =>
+      'Start altijd met het Crimineel-track: de bonussen op crime-slagingskansen betalen de leerkosten binnen een paar sessies terug.\nPlan lange studies (60 min+) voor je gaat slapen: je wake-up met een nieuw certificaat zonder gemiste actietijd.';
+
+  @override
+  String get helpTopicTerritoryCategory => 'Empire';
+
+  @override
+  String get helpTopicTerritoryTitle => 'Territorium';
+
+  @override
+  String get helpTopicTerritorySummary =>
+      'Claim en controleer geografische regio\'s voor passief inkomen, crew-prestige en strategische regiovoordelen. Territory combineert kaartcontrol met contests en seizoenale beloningen.';
+
+  @override
+  String get helpTopicTerritoryHow =>
+      'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.\nAlle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.\nTik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.\nBekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.\nOp mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.\nTerritorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.\nElke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.\nStart een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.\nTijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.\nRegio\'s hebben nu ook strategische rollen zoals haven, industrie, hoofdstad, grensregio of logistiek knooppunt. Die rol bepaalt welke actions daar extra punten kunnen krijgen.\nAangrenzende regio\'s die al van jouw crew zijn leveren nu extra steun op bij contest-actions. De regio-modal laat zien welke strategische bonussen actief zijn en hoeveel buursteun jouw crew op dat gebied heeft.\nActiebonussen kunnen nu ook uit crew-progressie komen: HQ-level, crew missielevel en relevante bijgebouwen (wapen/munitie/auto/boot/drugs-opslag). Deze bonussen verhogen alleen contestpunten, niet de passieve cash van het gebied.\nSommige geavanceerde contest-acties zijn HQ-gated: als je HQ-level te laag is zie je direct `vereist HQ level X` op de actieknop.\nTerritory gebruikt standaard geen harde dagcap meer voor acties (runtime cap 0 = uit). Balans blijft via cooldown, anti-farm en strategische actiekeuze.\nAls een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.\nAanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.\nDe waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.\nContests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.\nGrote regio\'s (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.\nSeizoenale events geven bonus-beloningen en speciale challenges per regio\'s groep.\nPrevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.\nAnti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.';
+
+  @override
+  String get helpTopicTerritoryTips =>
+      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.';
+
+  @override
+  String get helpTopicProstitutionCategory => 'Empire';
+
+  @override
+  String get helpTopicProstitutionTitle => 'Prostitutie';
+
+  @override
+  String get helpTopicProstitutionSummary =>
+      'Bouw een prostitutie-netwerk met recruits, events en VIP-klanten. Een goed gerund netwerk genereert passief geld maar vereist actief management om rivaliteit en politie-aandacht te beheersen.';
+
+  @override
+  String get helpTopicProstitutionHow =>
+      'Je beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: je kunt recruits verplaatsen tussen straat, Red Light District en nightclub via de actieknoppen op de kaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.';
+
+  @override
+  String get helpTopicProstitutionTips =>
+      'Investeer vroeg in beveiliging: een rivaliteits-aanval die je beste recruit wegpakt kost je meer dan de beveiligingskosten.\nOrganiseer VIP-events alleen als je recruits boven 80 populariteit hebt: onder die drempel betalen VIP-klanten gewoon normaaltarief.';
+
+  @override
+  String get helpTopicRedLightDistrictsCategory => 'Empire';
+
+  @override
+  String get helpTopicRedLightDistrictsTitle => 'Red Light Districts';
+
+  @override
+  String get helpTopicRedLightDistrictsSummary =>
+      'Claim en beheer territoriale districten per land. Eigenaarschap van een district geeft passief inkomen en controle over prostitutie-activiteiten in die regio.';
+
+  @override
+  String get helpTopicRedLightDistrictsHow =>
+      'Elk land heeft één of meerdere Red Light Districts die geclaimd kunnen worden. Claim een district door een vastgesteld aankoopbedrag te betalen.\nAls eigenaar van een district ontvang je een percentage van alle prostitutie-inkomsten in dat land — ook van andere spelers die er opereren.\nAndere spelers kunnen jouw district aanvallen om de ownership over te nemen. Hogere beveiliging verlaagt de aanvalskans.\nDistrict-upgrades (beveiliging, marketing, infrastructuur) verhogen je inkomenspercentage en verlagen de kans op verlies van ownership.\nJe kunt maximaal 3 districten tegelijk bezitten. Strategische keuze per land is essentieel.\nDrukste landen (Colombia, Dubai, Japan) geven het hoogste passieve inkomen maar zijn ook het vaakst omstreden.\nVerlies van een district kost je het aankoopbedrag niet terug: het is definitief verloren als een vijand succesvol claimt.';
+
+  @override
+  String get helpTopicRedLightDistrictsTips =>
+      'Begin met een minder populair land voor je eerste district: lagere aanvalsdruk geeft je tijd om security te upgraden voor het echte werk.\nUpgrade beveiliging van elk district direct na aankoop: de eerste 24 uur zijn het kwetsbaarst voor een takeover.';
+
+  @override
+  String get helpTopicAchievementsCategory => 'Meta';
+
+  @override
+  String get helpTopicAchievementsTitle => 'Prestaties';
+
+  @override
+  String get helpTopicAchievementsSummary =>
+      'Verdien badges door mijlpalen te bereiken in alle spelsystemen. Achievements geven beloningen, verhogen je statusprofiel en tonen je voortgang per categorie.';
+
+  @override
+  String get helpTopicAchievementsHow =>
+      'Achievements zijn gegroepeerd in categorieën: Crimes, Empire, PvP, Economie, Training, Sociaal en Meta.\nElke achievement heeft meerdere tiers (Brons, Zilver, Goud, Platina). Elk tier geeft een hogere beloning en een meer indrukwekkende badge.\nBeloningen per achievement zijn: cash, XP, speciale items, permanente bonussen of unieke titels voor je profiel.\nProgress wordt automatisch bijgehouden. Je hoeft niets te activeren: bereik de drempel en de badge wordt direct uitgedeeld.\nSommige achievements zijn verborgen totdat je ze deels hebt voltooid — ze verschijnen dan met hun echte naam en eisen.\nAchievement-badges zijn zichtbaar op je openbare profiel. Ze tonen andere spelers je specialisaties en ervaring.\nChain-achievements: sommige badges zijn gekoppeld in een keten. Goud vereist dat Zilver al behaald is. Plan vroeg voor de hogere tiers.';
+
+  @override
+  String get helpTopicAchievementsTips =>
+      'Bekijk je bijna-voltooide achievements dagelijks: een kleine extra inspanning kan een badge en cash-beloning opleveren die anders maanden uitgesteld wordt.\nRicht je vroeg op de Economie- en Crime-categorieën: deze hebben de meeste cash-beloningen en zijn het makkelijkst te combineren met je normale gameplay.';
+
+  @override
+  String get helpTopicSupportTicketsCategory => 'Support';
+
+  @override
+  String get helpTopicSupportTicketsTitle => 'Meldingen & Tickets';
+
+  @override
+  String get helpTopicSupportTicketsSummary =>
+      'Meld bugs, vragen of feedback via het ticketsysteem. Support en admins kunnen antwoorden, interne opvolging doen en updates terugkoppelen via het supportgesprek zelf en optionele pushmeldingen.';
+
+  @override
+  String get helpTopicSupportTicketsHow =>
+      'Open het aparte menu-item `Support` om je tickets te bekijken of een nieuw ticket te maken.\nKies categorie (bug, vraag, feedback of overig), selecteer indien nodig het onderdeel en beschrijf je probleem zo concreet mogelijk.\nJe kunt optioneel een referentie toevoegen, zoals een order-id, schermnaam of korte context, plus een screenshot als dat helpt.\nNa verzending krijg je direct een ticketnummer en komt je ticket in je supportoverzicht te staan, waar support kan reageren en interne todo-items kan aanmaken.\nAls support antwoordt of de ticketstatus wijzigt, zie je dat direct terug in hetzelfde supportgesprek en kun je optioneel een pushmelding krijgen (indien notificaties actief zijn).\nHet menu-item Support toont een badge zodra er een nieuwe supportreactie of statusupdate op een ticket is sinds je laatste bezoek aan het supportoverzicht.\nSupport gebruikt statussen zoals nieuw, triage, in behandeling, wacht op speler, geblokkeerd en opgelost om je melding intern op te volgen.';
+
+  @override
+  String get helpTopicSupportTicketsTips =>
+      'Noem altijd je land, actie en exacte foutmelding; dat versnelt de oplossing voor devs.\nGebruik één ticket per probleemtype, zodat de todo-lijst en opvolging overzichtelijk blijven.';
+
+  @override
+  String get helpTopicSettingsCategory => 'Basis';
+
+  @override
+  String get helpTopicSettingsTitle => 'Instellingen';
+
+  @override
+  String get helpTopicSettingsSummary =>
+      'Beheer alle accountinstellingen: taal, avatar, privacy, notificatievoorkeuren per systeem en beveiligingsopties. Instellingen zijn direct van invloed op je spelervaring.';
+
+  @override
+  String get helpTopicSettingsHow =>
+      'Taal: schakel tussen Nederlands en Engels. Alle UI-teksten, systeemberichten en notificaties worden direct bijgewerkt.\nAvatar: upload of selecteer een profielafbeelding die zichtbaar is voor andere spelers op je openbare profiel en in crew-lijsten.\nPrivacy: stel in wie je online-status, locatie (huidig land) en statistieken kan zien — alleen jezelf, crew, vrienden of iedereen.\nPush-notificaties: schakel per systeem in/uit. Categorieën: Crimes, Crypto-handel, Prijsalerts, Orders, live spelerevents (competitie), Marktregime, Heist, Nightclub, algemene berichten.\nAls push al was toegestaan, koppelt de web/PWA-versie na refresh of update automatisch opnieuw aan je actuele apparaat-token; alleen als je browser meldingen blokkeert moet je dit opnieuw via Instellingen toestaan.\nCrypto-notificatievoorkeuren blijven bewaard nadat je Instellingen verlaat en later opnieuw opent.\nIn-app notificaties: apart instelbaar naast push. In-app toont meldingen in de app zonder een systeemnotificatie te sturen.\nBeveiliging: verander wachtwoord, stel twee-factor authenticatie in en bekijk actieve sessies.\nNotificatie-voorkeur per systeem: stel scherpte af zodat je geen meldingen-storm krijgt van systemen die je niet actief speelt.';
+
+  @override
+  String get helpTopicSettingsTips =>
+      'Schakel push-notificaties in voor Crypto Orders en Heist Events: dit zijn tijdkritische systemen waar je snel moet reageren.\nZet privacy op crew-only voor locatie als je actief bent op de hitlist: andere spelers kunnen je anders exact pinpointen.';
+
+  @override
+  String get helpTopicPremiumCategory => 'Basis';
+
+  @override
+  String get helpTopicPremiumTitle => 'Premium & Credits';
+
+  @override
+  String get helpTopicPremiumSummary =>
+      'Koop en beheer hier Player VIP, Crew VIP en creditbundels. Dit overzicht toont ook je creditsaldo en alle beschikbare credit-items die je direct of contextueel kunt gebruiken.';
+
+  @override
+  String get helpTopicPremiumHow =>
+      'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.\nOp elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.\nPlayer VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nVIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.\nCreditbundels koop je met echt geld. Na succesvolle betaling verschijnen de credits meteen in je wallet-overzicht.\nEvent Pass (7 dagen, echt geld) staat in hetzelfde eenmalige overzicht: +10% score op live spelerevents, plus een klein bonuscredits-pakket na betaling. Dit is side-grade: geen directe combat- of PvP-boost; het helpt vooral bij leaderboard-prestaties binnen lopende events.\nCredit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.\nBij actieve cooldowns zie je op ondersteunde timeout-schermen (zoals crimes, jobs, voertuig/boot diefstal en school) ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.\nSommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bij beschadigde voertuigen staat op de kaart direct een instant-repair knop).\nBij contextknoppen zoals reparatie-versnellen wordt de actuele credit-kost direct op de knop/tooltip getoond.\nPrijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.';
+
+  @override
+  String get helpTopicPremiumTips =>
+      'Controleer eerst je creditsaldo en vervaldatum voordat je opnieuw koopt; vaak is verlengen nuttiger dan blind stapelen.\nGebruik credits vooral op tijdkritische boosts of bescherming, niet automatisch op elke kleine versnelling.\nZit je nog niet in een crew, begin dan eerder met Player VIP of een creditbundel dan met Crew VIP.';
 }

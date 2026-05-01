@@ -13137,4 +13137,688 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get drugsApiFailedClaim =>
       'Nie udało się odebrać przesyłek z magazynu';
+
+  @override
+  String get helpTopicDashboardCategory => 'Rdzeń';
+
+  @override
+  String get helpTopicDashboardTitle => 'Panel';
+
+  @override
+  String get helpTopicDashboardSummary =>
+      'Twój centralny przegląd wszystkich statystyk, aktywnych czasów odnowienia, wydarzeń na żywo i skrótów do każdej części gry.';
+
+  @override
+  String get helpTopicDashboardHow =>
+      'Górny pasek pokazuje: Gotówkę, Rangę, Zdrowie (0-100 HP), Poziom poszukiwanego (0-100) i FBI Heat (0-100). \nCo 5 minut uruchamia się automatyczny kleszcz: głód spada o -2, pragnienie -3, leczysz pasywnie +5 HP (jeśli HP > 0), doliczane są odsetki bankowe (0,5%), a poziom poszukiwanego spada nieznacznie poniżej 10. \nJeśli głód lub pragnienie osiągną poziom 0, umierasz i spędzasz 3 godziny na oddziale intensywnej terapii. Jedz i pij na czas! \nBloki szybkiej akcji po prawej stronie to skróty do przestępstw, kradzieży samochodów, kradzieży łodzi, pracy, kasyna, banku i szkoły. \nLiczniki czasu odnowienia w każdej sekcji pokazują, ile czasu pozostało do następnej akcji. Timer dostosowuje się, aby pokazać najbardziej odpowiednią jednostkę: minuty, godziny lub dni. \nKarta statystyk wykorzystuje teraz rzeczywiste liczniki na żywo dla ucieczek, morderstw, kontraktów na listę hitów, podróży i kul, zamiast stałych zerowych symboli zastępczych. \nPulpit nawigacyjny ma teraz również rozszerzoną sekcję ekonomiczną z gotówką, bankami, kryptowalutami, wartością pojazdu, wartością nieruchomości, wartością netto i 24-godzinnym trendem przepływu środków pieniężnych. \nBlok operacji pokazuje teraz aktywną produkcję, najdłuższy czas odnowienia, status pojazdu (aktywny/wystawiony/przejazd) i liczniki czasu następnej produkcji/wydarzenia. \nGdy wydarzenia graczy są na żywo (np. cotygodniowe zawody), ten sam panel po prawej stronie zawiera krótką listę ich tytułów i linki do strony wydarzeń. Możesz włączyć lub wyłączyć funkcję push rozpoczęcia/zakończenia rundy w Ustawieniach → Wydarzenia gracza (oprócz uprawnień urządzenia i innych kategorii push). \nPowiadomienia i ryzyko obejmują teraz nieprzeczytane wiadomości prywatne, zgłoszenia do pomocy technicznej oczekujące na Twoją odpowiedź, zdarzenia z ostatnich 24 godzin oraz kompaktowy wynik ryzyka (poszukiwany + FBI). \nKiedy twoja Crew bierze udział w Crew Wars, na pulpicie nawigacyjnym wyświetlane jest także podsumowanie Crew Wars ze statusem, przeciwnikiem, punktami załogi, rangą sezonu i pozostałym czasem w bieżącej fazie. \nPanel kontrolny zawiera teraz także przegląd operacji pojazdu dla każdego samochodu/motocykla/łodzi z żetonami czasu odnowienia na żywo (Hotspot, Crew, Mecz załogi, Chop, Kontrakt i Licznik), a także ciepło/reputację, liczbę kontraktów i roszczeń oraz punkty sezonowe. \nWydarzenia na żywo pojawiają się, gdy inni gracze wykonują ważne akcje, gdy zostaniesz zaatakowany lub gdy nastąpią ruchy na globalnym rynku. \nPlakietka wiadomości pokazuje nieprzeczytane wiadomości systemowe i wiadomości osobiste. \nLewe menu nawigacyjne zapewnia dostęp do wszystkich sekcji gry pogrupowanych według kategorii: Akcje, Świat, Społeczność, Ekonomia, Imperium i Zasoby.';
+
+  @override
+  String get helpTopicDashboardTips =>
+      'Otwórz pulpit nawigacyjny po każdym logowaniu, aby zobaczyć, co zmieniło się podczas Twojej nieobecności. \nUtrzymuj poziom poszukiwanego poniżej 10, aby automatyczny zanik działał, a ryzyko aresztowania pozostało niskie. \nZanim podejmiesz ryzykowne działania, sprawdź nieprzeczytane wiadomości: nagrody, zrealizowane zamówienia i zdarzenia systemowe pojawią się w Twojej skrzynce odbiorczej.';
+
+  @override
+  String get helpTopicCrimesCategory => 'Działania';
+
+  @override
+  String get helpTopicCrimesTitle => 'Zbrodnie';
+
+  @override
+  String get helpTopicCrimesSummary =>
+      'Podejmuj nielegalne działania, aby zdobyć gotówkę i PD, ale każda próba wiąże się z ryzykiem obrażeń, aresztowania lub dodatkowego poziomu poszukiwanego. Przestępstwo Wipe Criminal Record w późnej fazie gry powoduje, że po sukcesie usuwasz całą przeszłość kryminalną, ale wymaga ciężkich narzędzi i wiąże się z wysokim ryzykiem federalnym.';
+
+  @override
+  String get helpTopicCrimesHow =>
+      'Czasy odnowienia przestępstw skalują się teraz wraz z potencjalną wypłatą: przestępstwa o niskim zysku pozostają szybkie, podczas gdy przestępstwa o wysokim zysku mają wyraźnie dłuższy czas odnowienia. \nWytyczne według poziomu nagrody: do 500 € ≈ 1,5 min, do 2000 € ≈ 5 min, do 10 000 € ≈ 15 min, do 30 000 € ≈ 30 min, powyżej tego ≈ 60 min. \nNie ma sztywnego dziennego limitu przestępstw; aktywni gracze mogą grać dalej, o ile zarządzają czasami odnowienia, ryzykiem i zasobami. \nPrzestępstwa z „wymaganą bronią” wykorzystują wybraną broń przestępczą. Możesz teraz wybrać go bezpośrednio u góry ekranu Zbrodni lub w Inwentarzu. \nW przypadku przestępstw wymagających pojazdu użyj wybranego pojazdu przestępczego z garażu lub przystani. Liczy się tylko pojazd, który faktycznie znajduje się w Twoim obecnym kraju i nie jest w transporcie ani nie jest wystawiony na sprzedaż. \nZapotrzebowanie na narkotyki w przestępstwach jest podawane w gramach i odpowiada takim samym ilościom, jak stan zapasów i przechowywania narkotyków. \nJeśli przestępstwo nie może się rozpocząć z powodu braku pojazdu, niewłaściwej broni lub brakującej amunicji, komunikat o błędzie powinien teraz pokazywać prawdziwą przyczynę, a nie zwykłą ponowną próbę. \nKażda próba przestępstwa: otrzymujesz 5-15 HP obrażeń, a Poziom Pościgu wzrasta o 1-4 punkty w zależności od sukcesu lub porażki. \nSzansa na aresztowanie szybko rośnie wraz z poziomem poszukiwanego: Poszukiwany 5 = 25%, Poszukiwany 10 = 50%, Poszukiwany 18+ = maksymalnie 90%. \nPo aresztowaniu idziesz do więzienia. Zdanie = max (pożądany poziom × 10, 5) minut. Kaucja = wysokość poszukiwanego × 1000 EUR. Nawet jeśli na początku przestępstwo wydaje się zakończone sukcesem, ale zaraz potem zostaniesz złapany, ostateczny wynik nadal liczy się jako aresztowanie: wymagane narzędzia zostaną skonfiskowane, użyte narzędzie zbrodni zaginie, a pojazdy będą mogły zostać skonfiskowane. \nNiektóre przestępstwa wymagają pojazdu, narzędzia lub minimalnej rangi. Ich brak zapobiegnie rozpoczęciu przestępstwa. \nZdobyte XP podnosi Twoją rangę, odblokowując lepsze przestępstwa i wyższe nagrody. \nFBI Heat rośnie wraz z cięższymi przestępstwami. Powyżej 50 stopni FBI staje się aktywne i stwarza jeszcze większe szanse na aresztowanie.';
+
+  @override
+  String get helpTopicCrimesTips =>
+      'Używaj szybkich przestępstw dla początkujących, aby zdobywać XP, czekając na duże czasy odnowienia. \nZawsze uciekaj, jeśli Twój poziom poszukiwanego jest wysoki – siedzenie w więzieniu blokuje wszystkie Twoje pętle. \nUtrzymuj HP powyżej 30 przed rozpoczęciem przestępstwa: każda próba kosztuje HP, a przy 0 HP spędzasz 3 godziny na oddziale intensywnej terapii.';
+
+  @override
+  String get helpTopicJobsCategory => 'Działania';
+
+  @override
+  String get helpTopicJobsTitle => 'Praca';
+
+  @override
+  String get helpTopicJobsSummary =>
+      'Zarabiaj legalne pieniądze bez ryzyka związanego z poziomem poszukiwanym. Praca jest bezpieczniejsza niż przestępstwa, ale zapewnia niższe wypłaty.';
+
+  @override
+  String get helpTopicJobsHow =>
+      'Dostępne zawody skalują się wraz z rangą i wykształceniem: lepsze zawody są droższe, ale mają też dłuższy czas odnowienia. \nCzasy odnowienia zadań skalują się w zależności od maksymalnej wypłaty: zadania niskiego poziomu około 3-5 minut, średniego poziomu około 8-12 minut, najwyższego poziomu około 17-22 minut. \nZawody mają wysoki, ale nie doskonały wskaźnik sukcesu; w przypadku niepowodzenia nie tracisz pieniędzy ani HP, ale tracisz część XP. \nWymagania na stanowisko: minimum 10 HP, głód > 20, pragnienie > 20, nie w więzieniu, nie na OIOM-ie. \nNie ma sztywnego dziennego limitu stanowisk; postęp jest sterowany przez czas odnowienia, szansę i wypłatę, a nie codzienną blokadę. \nPłaca różni się w zależności od rodzaju stanowiska i rangi. Edukacja (szkoła) może odblokować wyższe stanowiska. \nZarabiasz także XP za każde zadanie, choć mniej niż w przypadku porównywalnych przestępstw. \nWykorzystaj pracę jako niezawodną bazę przepływu środków pieniężnych, zwłaszcza gdy Twój poziom poszukiwanego jest zbyt wysoki, aby można było bezpiecznie popełnić przestępstwo.';
+
+  @override
+  String get helpTopicJobsTips =>
+      'Połącz pracę i szkołę: edukacja otwiera lepsze miejsca pracy i wyższe wypłaty. \nKiedy poziom poszukiwanego przekracza 8 lub wracasz do zdrowia po oddziale intensywnej terapii, używaj zawodów zamiast przestępstw. \nPilnuj, aby głód i pragnienie nie spadły zbyt nisko: praca ze statystykami poniżej 20 po prostu się nie rozpocznie.';
+
+  @override
+  String get helpTopicTravelCategory => 'Świat';
+
+  @override
+  String get helpTopicTravelTitle => 'Podróż';
+
+  @override
+  String get helpTopicTravelSummary =>
+      'Przemieszczaj się między krajami, aby uzyskać lepsze ceny rynkowe, wyjątkowe możliwości i dostęp do systemów międzynarodowych.';
+
+  @override
+  String get helpTopicTravelHow =>
+      'Dostępne kraje: Holandia (start), Belgia, Niemcy, Francja, Wielka Brytania, Hiszpania, Włochy, Szwajcaria, USA, Meksyk, Kolumbia, Brazylia. \nKoszty podróży: kraj sąsiadujący 500-2000 euro, Europa → Ameryka 5000-10 000 euro, podróż międzymiastowa 10 000-20 000 euro. \nWymagania dotyczące podróży: nie w więzieniu, nie na oddziale intensywnej terapii, minimum 20 HP, dostępne fundusze na podróż. \nIlości narkotyków znajdujące się w Twoim ekwipunku są liczone jako rzeczywiste gramy na potrzeby kontroli wagi i podróży; 500 oznacza 500g, a nie 50kg. \nKażdy kraj ma inne ceny rynkowe (różnica cenowa do 300%), różne wypłaty za przestępstwa i unikalne przedmioty handlowe. \nRyzyko w transporcie: policja może zająć towar na podstawie poziomu poszukiwanego (szansa = poszukiwany × 2%, maksymalnie 80%). FBI może przejąć wszystko na arenie międzynarodowej, jeśli panuje wysoka temperatura. \nInspekcja celna ma 10% szans bazowych. Możesz przekupić (1000-5000 €) lub zostać przyłapanym na utracie 50% towarów. \nPo przybyciu na miejsce wszystkie akcje są od razu dostępne w nowym kraju. Rynki i prędkość przestępczości różnią się w zależności od lokalizacji.';
+
+  @override
+  String get helpTopicTravelTips =>
+      'Zawsze łącz podróż z handlem, narkotykami lub przemytem – pusta podróż to strata pieniędzy. \nObniż poziom poszukiwanej osoby przed wyjazdem: wysoka kara znacznie zwiększa ryzyko konfiskaty na trasie. \nZaplanuj podróż powrotną z wyprzedzeniem, aby wiedzieć, co zabrać ze sobą po przyjeździe.';
+
+  @override
+  String get helpTopicCrewCategory => 'Społeczny';
+
+  @override
+  String get helpTopicCrewTitle => 'Załoga';
+
+  @override
+  String get helpTopicCrewSummary =>
+      'Załóż ekipę lub dołącz do istniejących graczy, aby wspólnie dokonywać napadów, dzielić się magazynem i stać się silniejszym jako jednostka.';
+
+  @override
+  String get helpTopicCrewHow =>
+      'Utworzenie załogi kosztuje 10 000 euro. Siedziba załogi określa, ilu członków może pomieścić Crew i skaluje się do 150 członków. Lider może zapraszać, kopać i rozpoczynać napady. \nKorzyści dla załogi: dostęp do dużych napadów, współdzielone miejsce do przechowywania, premia za pracę zespołową (+10% sukcesu na dodatkowego członka, maksymalnie +30%) i czat grupowy. \nNowe załogi zaczynają teraz od Kwatery Głównej załogi na poziomie 1 i wszystkich budynków magazynowych na poziomie 1, w tym magazynu gotówki, więc bank załogi i wspólny magazyn działają natychmiast. \nMagazyn samochodów załogi obsługuje teraz także motocykle, więc pojazdami lądowymi można zarządzać wspólnie z tego samego wspólnego magazynu załogi. \nKiedy członek załogi zostaje aresztowany, otrzymuje teraz powiadomienie push, że gracz jest zamknięty i czeka na pomoc. \nEkran załogi jest teraz pogrupowany w Przegląd, Kwatera główna i ulepszenia, Magazyn, Członkowie, Pokój wojenny, Misje załogi, Załogi i Czat, dzięki czemu zarządzanie jest spokojniejsze i bardziej profesjonalne. \nMisje załogi pokazują szablony poziomów, kartę aktywnego biegu i ostatnie rundy. Liderzy/współliderzy mogą rozpoczynać i rozwiązywać problemy; Odbieranie nagród i przyspieszanie czasu odnowienia odbywa się w tej samej zakładce. \nIstnieją dodatkowe misje załogi z operacjami o tematyce bankowej (nocny depozyt, sieć przeglądania, trasa pancerna, skarbiec pomocniczy, skarbiec rezerwowy i izba rozliczeniowa). Nie ma drugiej misji załogi kasyna obok Casino Ledger Raid. \nNagrody za misje załogi pochodzą z ekonomii misji po stronie serwera; Salda bankowe innych graczy nie są obciążane tymi wypłatami. \nRozpoczynając misję, możesz teraz przypisać rolę każdemu członkowi załogi (planista, egzekutor, logistyka, technik) w celu uzyskania premii zespołowych. \nKarty aktywnych i ostatnich misji pokazują teraz także wkład poszczególnych graczy wraz z wynikami i mnożnikiem wypłat. \nCzłonkowie załogi otrzymują teraz także powiadomienia push/w aplikacji dotyczące rozpoczęcia misji, wyniku misji oraz momentu, w którym czas odnowienia misji będzie ponownie gotowy. \nKiedy czas odnowienia misji jest aktywny, nie możesz rozpocząć nowej misji; najpierw poczekaj na pozostały czas odnowienia lub przyspiesz go kredytami. \nAby przyspieszyć czas odnowienia, najpierw zobaczysz dokładny koszt kredytu i pozostałe minuty, zanim potwierdzisz. \nWojny Załogów mają własną zakładkę Pokoju Wojennego na ekranie załogi. Tylko przywódcy mogą wypowiedzieć wojnę i wymagane jest uczestnictwo co najmniej 3 członków załogi. \nRodzaje wojen: Wojna zabijania, Wojna ekonomiczna, Wojna terytorialna i Wojna totalna. Każda wojna przechodzi przez etap przygotowania, fazę aktywną, zamknięcie i rozwiązanie. \nPodczas aktywnej wojny uczestnicy mogą wykonywać akcje, takie jak zabójstwa, napady, sabotaż, informacje wywiadowcze, najazdy, tarcze, wzmocnienia i przejmowanie terytoriów. Ukierunkowane akcje pozwalają teraz wybierać bezpośrednio z listy członków załogi przeciwnika, zamiast ręcznie wpisywać identyfikator gracza. \nPunkty sezonowe są sumowane w tabeli liderów Crew Wars. Pokój Wojenny pokazuje także rankingi, ostatnie akcje i ostatnie wojny Twojej załogi. \nW Territory War i Total War przejmujesz teraz prawdziwe regiony Terytoriów z systemu terytoriów, zamiast ogólnych celów zastępczych. \nTe regiony wojenne pokazują teraz także swoją wartość strategiczną w Pokoju Wojennym: bonusy za zdobycie, punkty kontrolne i znaczniki, takie jak port, stolica lub logistyka. Dzięki temu od razu staje się jasne, które regiony są warte więcej niż zwykła zamiana własności. \nCrew Wars nie wybiera już celów terytorialnych wyłącznie na podstawie poziomu wartości, ale także na podstawie znaczników strategicznych i sąsiadującego nacisku ze strony atakującego lub obrońcy. To sprawia, że ​​Wojna Terytorialna i Total War bardziej przypominają prawdziwą linię frontu niż trzy przypadkowe roszczenia. \nNapady: Mały bank (2 graczy, 40%, 10 000–30 000 euro, 30 min odnowienia), Jubiler (3 graczy, 35%, 20 000–50 000 euro, 45 min), Napad na kasyno (4 graczy, 25%, 50 000–150 000 euro, 2 godz.), Rezerwa Federalna (5 graczy, 15%, 100 000–500 000 euro, 6 godzin, +20 ciepła FBI). \nAby dokonać napadu, wszyscy członkowie muszą być online na początku. Jeśli ktoś jest nieobecny, napad kończy się niepowodzeniem. \nNieudany napad: kara więzienia dla wszystkich, poziom poszukiwanego +5, brak nagrody. \nNagroda za napad jest dzielona równo pomiędzy wszystkich uczestniczących członków. \nCzat załogi jest dostępny w celu szybkiej koordynacji. \nPostęp w sztabie załogi: im dłuższa i bardziej aktywna Crew, tym więcej wspólnych ulepszeń i wzmocnień zostaje odblokowanych.';
+
+  @override
+  String get helpTopicCrewTips =>
+      'Nowe załogi mogą od razu wpłacać pieniądze i korzystać ze wspólnego magazynu; następnie skup się na ulepszeniach zapewniających większą pojemność, zamiast na oddzielnym zakupie początkowym. \nNajpierw sprawdź Pokój Wojenny, aby zobaczyć, czy twoja Crew nadal znajduje się w fazie odnowienia, zanim spróbujesz wypowiedzieć nową wojnę. \nKoordynuj wezwania do celów na czacie załogi, aby nie farmić tego samego przeciwnika i nie potrącić strażnika przeciw farmie. \nKoordynuj godziny rozpoczęcia napadów na czacie załogi, aby wszyscy byli online i nikt nie był w więzieniu. \nWybierz załogę w tej samej strefie czasowej lub schemacie aktywności, aby zwiększyć skuteczność napadów. \nSkorzystaj ze wspólnego magazynu załogi, aby oddzielić ryzykowne towary od osobistego ekwipunku.';
+
+  @override
+  String get helpTopicFriendsCategory => 'Społeczny';
+
+  @override
+  String get helpTopicFriendsTitle => 'Przyjaciele';
+
+  @override
+  String get helpTopicFriendsSummary =>
+      'Zarządzaj listą znajomych, aby przyspieszyć koordynację, przeglądanie profili i opinie społecznościowe.';
+
+  @override
+  String get helpTopicFriendsHow =>
+      'Strona znajomych wyświetla trzy listy: aktualnych znajomych, wysłane prośby i otrzymane prośby. \nOd znajomego możesz bezpośrednio wysłać wiadomość, wyświetlić jego profil lub rozpocząć współpracę. \nMożesz zobaczyć, kiedy znajomi są aktywni w grze, co pomaga w planowaniu napadów lub transakcji. \nZaproszenia do znajomych nie wygasają automatycznie; utrzymuj listę w porządku, aby oczekujące prośby nie rozpraszały Cię. \nPrzyjaciele spoza twojej załogi są cenni w ucieczce z więzienia (znajomy może pomóc ci się wydostać) i dzieleniu się informacjami. \nKiedy znajomy zostanie aresztowany, zaakceptowani znajomi otrzymają teraz również powiadomienie push, że gracz czeka na pomoc w więzieniu.';
+
+  @override
+  String get helpTopicFriendsTips =>
+      'Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nPrzyjaciel, który ucieknie z więzienia, za sukces otrzyma nagrodę w wysokości 500–2000 euro. Zorganizuj to na wypadek sytuacji awaryjnych.';
+
+  @override
+  String get helpTopicMessagesCategory => 'Społeczny';
+
+  @override
+  String get helpTopicMessagesTitle => 'Wiadomości';
+
+  @override
+  String get helpTopicMessagesSummary =>
+      'Twoja skrzynka odbiorcza z osobistymi wiadomościami graczy i wiadomościami systemowymi dotyczącymi nagród, zamówień i wydarzeń w grze.';
+
+  @override
+  String get helpTopicMessagesHow =>
+      'Wiadomości są podzielone na rozmowy osobiste i wątek systemowy The Mob State. \nWiadomości systemowe są wysyłane automatycznie w przypadku: transakcji kryptowalutowych, realizacji zamówień, wypłat w rankingach, wyników napadów, ucieczek z więzienia i odznak za osiągnięcia. \nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności. \nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym. \nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie. \nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.';
+
+  @override
+  String get helpTopicMessagesTips =>
+      'Sprawdź swoją skrzynkę odbiorczą po długich okresach offline: nagrody, zrealizowane zamówienia i wydarzenia są tam rejestrowane. \nSkonfiguruj preferencje powiadomień w Ustawieniach, aby otrzymywać powiadomienia push tylko o naprawdę ważnych wydarzeniach.';
+
+  @override
+  String get helpTopicInventoryCategory => 'Kierownictwo';
+
+  @override
+  String get helpTopicInventoryTitle => 'Spis';
+
+  @override
+  String get helpTopicInventorySummary =>
+      'Zarządzaj wszystkim, co nosisz, przechowujesz i wyposażasz: bronią, narzędziami, pojazdami, narkotykami i towarami handlowymi.';
+
+  @override
+  String get helpTopicInventoryHow =>
+      'Zapasy są podzielone na przedmioty przenoszone (na tobie), przedmioty przechowywane (magazyn/przechowywanie załogi) i aktywne wyposażenie. \nWaga określa nośność. Niektóre przestępstwa lub blokady podróżne, jeśli jesteś przeciążony. \nNarkotyki są przechowywane i pokazywane w ekwipunku i magazynie w gramach; 351 oznacza 351g. \nStan przedmiotu pogarsza się wraz z użytkowaniem. Broń w złym stanie działa gorzej, a narzędzia mogą się zepsuć. \nNa górze Ekwipunku możesz także wybrać domyślną broń zbrodni. W przypadku tego wyboru liczy się tylko niesiona, użyteczna broń. \nZestawy wyposażenia pozwalają szybko przełączać się pomiędzy zestawem kryminalnym (narzędzie + broń) a zestawem podróżnym (lekkie, minimalne przedmioty wartościowe). \nPo aresztowaniu policja może skonfiskować przedmioty. Nie noś kosztowności z wysokim poziomem poszukiwanego. \nNarkotyki w inwentarzu zwiększają szansę na interwencję FBI podczas podróży międzynarodowych. \nMagazyn załogi to bezpieczne miejsce, w którym można przechowywać przedmioty, których nie ponosisz osobiście.';
+
+  @override
+  String get helpTopicInventoryTips =>
+      'Trzymaj lekki ładunek podczas podróży lub prowadzenia szału przestępczego obarczonego wysokim ryzykiem aresztowań. \nKorzystaj z zestawów wyposażenia, aby zawsze mieć odpowiedni sprzęt do każdego scenariusza. \nRegularnie sprawdzaj stan przedmiotu: zepsute narzędzia po cichu blokują przestępstwa bez wyraźnego komunikatu o błędzie.';
+
+  @override
+  String get helpTopicPropertiesCategory => 'Gospodarka';
+
+  @override
+  String get helpTopicPropertiesTitle => 'Właściwości';
+
+  @override
+  String get helpTopicPropertiesSummary =>
+      'Kupuj nieruchomości, aby zwiększyć pojemność magazynową, pojemność mieszkań i dostęp do niektórych systemów, takich jak Nightclub.';
+
+  @override
+  String get helpTopicPropertiesHow =>
+      'Każda nieruchomość ma swoją rolę: powierzchnię magazynową, pojemność mieszkaniową czy dostęp do modułu uzupełniającego, takiego jak Nightclub. \nUlepszenia magazynu zwiększają pojemność magazynu dla przedmiotów i innych zapasów. \nDomy i mieszkania zwiększają pojemność mieszkaniową; Oprócz tego gracze VIP otrzymują dodatkowe miejsca. \nNiektóre nieruchomości są unikalne lub mają blokadę krajową: aby je kupić lub zarządzać nimi, musisz znajdować się w odpowiednim kraju. \nSprzedaż daje 70% ceny zakupu. Sprzedaż nie wymaga czasu odnowienia, sprzedaż jest natychmiastowa. \nZakupiony Nightclub otwiera oddzielny ekran zarządzania klubem nocnym; moduł ten obsługuje zarządzanie i przychody, a nie przegląd właściwości.';
+
+  @override
+  String get helpTopicPropertiesTips =>
+      'Jeśli potrzebujesz więcej miejsca na inne systemy, zainwestuj w magazyn już wcześniej. \nWybierz domy i mieszkania, jeśli chcesz zbudować więcej mieszkań dla powiązanych systemów rozgrywki. \nNie sprzedawaj zbyt szybko: 70% oznacza poważną obniżkę ceny zakupu.';
+
+  @override
+  String get helpTopicBankCategory => 'Gospodarka';
+
+  @override
+  String get helpTopicBankTitle => 'Bank';
+
+  @override
+  String get helpTopicBankSummary =>
+      'Wpłacaj pieniądze, aby zarabiać odsetki i przechowuj gotówkę poza zasięgiem konfiskaty policyjnej.';
+
+  @override
+  String get helpTopicBankHow =>
+      'Odsetki: 0,5% salda Twojego rachunku bankowego za każdy tick (co 5 minut). Przykład: 10 000 EUR w banku = 50 EUR odsetek za kurs = 600 EUR na godzinę = 14 400 EUR dziennie. \nWpłaty i wypłaty są bezpłatne i natychmiastowe, bez minimalnego i maksymalnego limitu. \nPieniądze w banku są chronione przed konfiskatą policyjną. Podczas aresztowania można utracić jedynie gotówkę, którą mamy pod ręką. \nHistoria transakcji pokazuje wszystkie przepływy przychodzące i wychodzące ze znacznikiem czasu, kwotą, kontrahentem przelewu i opcjonalnymi opisami. \nPrzestępstwo związane z napadem na bank: udaje się przy 30% i kradnie 10-30% losowego salda bankowego innego gracza. Ryzyko wysokiego poziomu poszukiwanego. \nMożliwe jest przesyłanie pieniędzy innym graczom. Opcjonalnie możesz dodać opis, a odbiorca zobaczy go także w transakcjach. Przed potwierdzeniem dokładnie sprawdź kwotę i odbiorcę.';
+
+  @override
+  String get helpTopicBankTips =>
+      'Natychmiast wysyłaj duże kwoty do banku — gotówka pod ręką jest zagrożona przy każdej próbie popełnienia przestępstwa. \nZwiększaj zyski odsetkowe, budując stale duże kwoty w banku. \nZachowaj niewielki kapitał obrotowy w postaci gotówki na bezpośrednie wydatki (kaucja, podróże, narzędzia).';
+
+  @override
+  String get helpTopicCasinoCategory => 'Gospodarka';
+
+  @override
+  String get helpTopicCasinoTitle => 'Kasyno';
+
+  @override
+  String get helpTopicCasinoSummary =>
+      'Graj za gotówkę na automatach, blackjacku, ruletce, kościach, bakaracie i pokerze wideo. Wysoka wariancja: możesz szybko wygrać lub przegrać duże kwoty.';
+
+  @override
+  String get helpTopicCasinoHow =>
+      'Dostępne gry: Automaty (niska stawka, losowa wypłata), Blackjack (liczy się strategia), Ruletka (zakłady zewnętrzne/wewnętrzne z własnymi kursami), Kości (wysoka wariancja), Bakarat (gracz/bankier/remis), Video Poker (wypłaty 5-kartowe według kolejności rąk). \nKażda gra ma minimalny zakład. Współczynniki wypłat różnią się w zależności od rodzaju gry (np. ruletka poza zakładem ~1,97x, pojedynczy numer 35x). \nKasyno używa wyłącznie gotówki, a nie salda bankowego. Zanim zaczniesz grać, upewnij się, że masz gotówkę. \nPomiędzy rundami nie ma czasu odnowienia: możesz grać tak szybko, jak chcesz. \nDuże wygrane powyżej progu mogą wywołać wydarzenie widoczne dla innych graczy. \nPrzegrane zakłady znikają na zawsze; nie ma ubezpieczenia ani wykupu.';
+
+  @override
+  String get helpTopicCasinoTips =>
+      'Zawsze ustalaj limit bankrolla sesji: nigdy nie więcej niż 10% całkowitej gotówki na sesję. \nBlackjack ma najlepsze szanse dla doświadczonego gracza. Naucz się podstawowej strategii, zanim obstawisz duże zakłady. \nTraktuj kasyno jako rozrywkę, a nie dochód: przewaga kasyna zapewnia długoterminową stratę.';
+
+  @override
+  String get helpTopicTradeCategory => 'Gospodarka';
+
+  @override
+  String get helpTopicTradeTitle => 'Towary Handlowe';
+
+  @override
+  String get helpTopicTradeSummary =>
+      'Kupuj towary tanio w jednym kraju i sprzedawaj drogo w innym. Możliwe są różnice w cenie do 300%.';
+
+  @override
+  String get helpTopicTradeHow =>
+      'Każdy kraj ma unikalne towary handlowe z własnymi cenami bazowymi: Diamenty (RPA), Narkotyki (Kolumbia), Broń (USA), Sztuka (Francja), Elektronika (Japonia), Alkohol (Szkocja). \nCeny rynkowe wahają się co 5 minut od ceny bazowej od 0,5x do 2,0x. Ceny mogą spaść podczas podróży. \nZakup możliwy jest wyłącznie w kraju, w którym towar jest dostępny. Sprzedaż jest najbardziej wartościowa w innym kraju. \nRyzyko transportu: konfiskata policyjna w przypadku wysokiego poziomu poszukiwanego (szansa = osoba poszukiwana × 2%, maksymalnie 80%); FBI przeprowadza międzynarodowe naloty na podstawie ciepła i wartości towarów. \nSłużba celna ma 10% bazowej szansy na przekroczeniu granicy. Zapłać łapówkę w wysokości 1000–5000 euro lub strać 50% ładunku. \nPołącz handel z przemytem, ​​aby uzyskać wyższe marże, ale także większe ryzyko konfiskat. \nMożesz kupować nieograniczone ilości, o ile masz wystarczająco dużo gotówki i miejsca w ekwipunku.';
+
+  @override
+  String get helpTopicTradeTips =>
+      'Sprawdź ceny rynkowe tuż przed wylotem, a nie wcześniej — ceny zmieniają się co 5 minut. \nNiższy poziom poszukiwanego przed każdą podróżą handlową: konfiskata pełnego ładunku to katastrofalna strata. \nW kalkulacji zysku zawsze uwzględniaj koszty podróży, ryzyko celne i stratę czasu.';
+
+  @override
+  String get helpTopicBlackMarketCategory => 'Gospodarka';
+
+  @override
+  String get helpTopicBlackMarketTitle => 'Czarny rynek';
+
+  @override
+  String get helpTopicBlackMarketSummary =>
+      'Kupuj i sprzedawaj nielegalne i rzadkie towary: broń, amunicję, narkotyki i materiały niedostępne gdzie indziej.';
+
+  @override
+  String get helpTopicBlackMarketHow =>
+      'Czarny rynek dzieli się na podrynki: Materiały (surowce), Broń (broń palna i noże), Amunicja (amunicja według kalibru), Pojazdy (pojazdy nielegalne). \nCeny i dostępność różnią się znacznie w zależności od kraju i czasu. Oferta może szybko się wyprzedać. \nTransakcje na czarnym rynku nie pozostawiają oficjalnego śladu, ale zwiększają temperaturę FBI w przypadku dużych zakupów. \nBroń kupioną tutaj można wykorzystać w przestępstwach, PvP i bezpieczeństwie. Lepsza broń daje większe obrażenia i szansę na sukces. \nFiltry według kategorii (rodzaj, kraj, cena, dostępność) pomagają szybko znaleźć właściwą ofertę. \nJako sprzedający możesz publikować własne oferty, w tym cenę i ilość. Inni gracze kupują od Ciebie. \nAukcje wygasają po pewnym czasie, jeśli nie zostaną sprzedane. Monitoruj swoje oferty za pośrednictwem swojego profilu.';
+
+  @override
+  String get helpTopicBlackMarketTips =>
+      'Zawsze sprawdzaj, czy cena na czarnym rynku jest niższa niż alternatywa w ramach otwartego handlu, w tym koszty podróży. \nKupuj broń i amunicję hurtowo, gdy ceny są niskie: dostępność jest tymczasowa. \nUnikaj dużych zakupów na czarnym rynku, gdy FBI Heat ma już ponad 30 lat.';
+
+  @override
+  String get helpTopicDrugsCategory => 'Imperium';
+
+  @override
+  String get helpTopicDrugsTitle => 'Narkotyki';
+
+  @override
+  String get helpTopicDrugsSummary =>
+      'Zbuduj kompletną operację leku od surowców po gotowy produkt. Prowadź łańcuchy produkcyjne, zarządzaj magazynami i sprzedawaj z wysoką marżą, ale poważnym ryzykiem.';
+
+  @override
+  String get helpTopicDrugsHow =>
+      'System leków składa się z: Hubu (przegląd i statystyki), Obiektów (ulepszenie mocy produkcyjnych), Produkcji (aktywne linie produkcyjne z timerem) i Zapasów (gotowe produkty i surowce). \nKupuj surowce na czarnym rynku lub handluj. Połącz je w zakładzie produkującym leki. \nLiczniki produkcji działają, gdy jesteś offline. Nie ma potrzeby aktywnego klikania: sprawdź ponownie, gdy skończy się czas. \nUkończony produkt pozostaje widoczny w Produkcji i zajmuje miejsce w placówce, dopóki go nie odbierzesz; Funkcja automatycznego zbierania VIP przetwarza gotowe dane wyjściowe automatycznie w tle. \nPojemność magazynu jest ograniczona w zależności od obiektu. Kiedy magazyn jest pełny, produkcja zatrzymuje się automatycznie. \nSklep w ciemnej sieci lub inny obiekt nie sprzedaje automatycznie gotowych produktów: sprzedaż nadal odbywa się ręcznie, zgodnie z zamierzonym przepływem sprzedaży. \nSprzedawaj leki na czarnym rynku, w Kolumbii lub w innych specjalnych punktach sprzedaży, aby uzyskać najwyższą marżę. \nFBI Heat zwiększa każdy cykl produkcyjny i dodatkowo w przypadku dużej sprzedaży. Wysoka temperatura prowadzi do nalotów, które mogą przerwać Twoją działalność. \nModernizacje obiektów skracają czas produkcji, zwiększają wydajność i zwiększają pojemność magazynową. \nGracze VIP otrzymują przycisk błyskawicy na kartach produkcyjnych: po potwierdzeniu możesz kupić wszystkie brakujące materiały wsadowe jednym kliknięciem. \nZaawansowane ulepszenia slotów i wyposażenia są powiązane z nową ścieżką edukacyjną Narkotyki (Specjalista w dziedzinie hydroponiki, Specjalista w dziedzinie elektryki procesowej, Tajny chemik). Bez wymaganego poziomu/certyfikatu nie można przejść do następnego poziomu uaktualnienia. \nNarkotyki znajdujące się w zapasach zwiększają ryzyko konfiskaty podczas podróży i kontroli policyjnych.';
+
+  @override
+  String get helpTopicDrugsTips =>
+      'Zmodernizuj pamięć masową przed rozpoczęciem produkcji: zapełnienie pamięci masowej wstrzymuje produkcję, a Ty tracisz czas produkcji. \nUtrzymuj FBI Heat poniżej 50: powyżej tego progu jesteś aktywnie ścigany z dużymi szansami na naloty, które wszystko zamykają. \nPołącz sprzedaż leków z przemytem, ​​aby uzyskać wyższe marże i rozproszone ryzyko.';
+
+  @override
+  String get helpTopicNightclubCategory => 'Imperium';
+
+  @override
+  String get helpTopicNightclubTitle => 'Klub nocny';
+
+  @override
+  String get helpTopicNightclubSummary =>
+      'Prowadź Nightclub jako część swojego przestępczego imperium. Zarządzaj personelem, bezpieczeństwem i dostawami, aby uzyskać pasywny i aktywny dochód za pomocą dedykowanej tabeli liderów sezonu.';
+
+  @override
+  String get helpTopicNightclubHow =>
+      'Na dole znajduje się teraz Centrum Dowodzenia Zarządzaniem Klubem Nocnym ze strefami dla załogi, przechowywania leków, dowództwa DJ-a, jednostki ochrony i laboratorium operacyjnego; wszystkie strefy działają w ramach jednego, ciągłego przepływu stron, bez dodatkowego przewijania wewnętrznego. \nEkran klubu nocnego zawiera teraz jedną centralną sekcję Intelligence, łączącą przegląd, trendy przychodów i dzienniki ryzyka bez konieczności przełączania zakładek. \nOps Lab obejmuje teraz 11 systemów: DJ-ów-rezydentów, dynamiczny kalendarz wydarzeń, drzewo ulepszeń, policyjna reakcja na upały/incydenty, kontrakty z dostawcami, profile promotorów, klientela VIP + cechy personelu, trasy przemytu, zarządzanie barem i kuchnią (napoje/jedzenie) z cenami, sabotażem konkurencji + kontrwywiadem oraz harmonogramem operacji. \nTrasy przemytu mają teraz czas odnowienia (port 60 min, lądowisko 90 min, granica 120 min), wymuszając planowanie ryzyka/czasu zamiast nieskończonego spamu. \nDrzewo ulepszeń jest interaktywne: wybierz Sound Rig, VIP Lounge lub Surveillance i kup bezpośrednio następny poziom z widocznymi kosztami ulepszeń. \nPrzychód generowany jest na każdy tick w oparciu o jakość DJ-a, obłożenie i dostępność dostaw. Brakująca podaż bezpośrednio zmniejsza dochód. \nUmowy z DJ-ami kończą się automatycznie o skonfigurowanej godzinie zakończenia; po tym czasie musisz zarezerwować ponownie, aby uzyskać nowe wzmocnienia. \nW przypadku niewystarczającego bezpieczeństwa mogą wystąpić zdarzenia (bójki, kradzieże). To szkodzi punktacji i dochodom odwiedzających. \nKażdy sezon ma tabelę liderów. Gracze z najwyższymi łącznymi przychodami z klubu nocnego wygrywają nagrody sezonowe. \nSynergia z lekami: własna produkcja leków może służyć jako podaż, podnosząc marże. \nPrzechowywanie leków opiera się na gramach: przy każdym wyborze wyświetlana jest dostępna gramatura przed przeniesieniem zapasów do magazynu klubu nocnego. \nDziałania rywali opierają się na nazwie: przed wybraniem akcji wyszukujesz rywalizujące kluby według nazwy gracza (nie jest wymagany identyfikator gracza). \nSynergia z prostytucją: połączone wydarzenia zapewniają dodatkową odwiedzalność i wyższe przychody. \nUlepszenia zwiększają pojemność, miejsce do przechowywania zapasów oraz maksymalną liczbę DJ-ów i strażników, których możesz rozmieścić.';
+
+  @override
+  String get helpTopicNightclubTips =>
+      'Zawsze dbaj o zapasy: jeden znacznik braku podaży może spowodować spadek liczby odwiedzających, po którym trudno będzie się odbudować. \nZarezerwuj najlepszego DJ-a, na jakiego Cię stać: jakość DJ-a ma największy bezpośredni wpływ na przychody na tik. \nCodziennie sprawdzaj tabelę liderów sezonu i zwiększaj podaż oraz DJ-ów, jeśli chcesz znaleźć się w pierwszej dziesiątce.';
+
+  @override
+  String get helpTopicCryptoCategory => 'Gospodarka';
+
+  @override
+  String get helpTopicCryptoTitle => 'Krypto';
+
+  @override
+  String get helpTopicCryptoSummary =>
+      'Handluj 30 prawdziwymi kryptowalutami. Kupuj i sprzedawaj bezpośrednio lub automatyzuj za pomocą zleceń z limitem, stop-loss i take-profit. Ceny podążają teraz za kotwicami rynku na żywo z dodatkowymi systemami i wiadomościami w grze, a wyskakujące okienko monety wykorzystuje oddzielne pola dla transakcji bezpośrednich i otwartych zleceń.';
+
+  @override
+  String get helpTopicCryptoHow =>
+      'Lista kryptowalut pokazuje 30 monet z aktualną ceną, 24-godzinnym procentem i bieżącym stanem posiadania każdej monety. Baza cenowa opiera się na bieżących danych rynkowych, ale nadal mają na nią wpływ reżimy w grach i aktualności. \nKliknij monetę, aby otworzyć wyskakujące okienko z: wykresem na żywo (filtry czasowe 1h, 4h, 8h, 24h, 7d, 30d, All), historią zakupów, średnią ceną zakupu i formularzem kupna/sprzedaży. \nHandel bezpośredni: wprowadź ilość i kliknij Kup lub Sprzedaj. Podczas sprzedaży możesz nacisnąć „WSZYSTKO”, aby natychmiast wypełnić całą pozycję. Realizacja następuje natychmiast po aktualnej cenie rynkowej. \nZlecenia otwarte: Limit (kupno/sprzedaż po dokładnej cenie docelowej), Stop-loss (automatyczna sprzedaż, gdy cena spadnie do progu), Take-profit (automatyczna sprzedaż, gdy cena wzrośnie do docelowej). Ta sekcja ma teraz własne pole ilości i własne pole ceny docelowej. \nOtwarte zlecenia są realizowane automatycznie przez backend, gdy tylko cena rynkowa osiągnie cel. Nie musisz być online. \nReżimy rynkowe (byk/niedźwiedź/boki) i wydarzenia informacyjne wpływają na ruchy cen. Otrzymujesz powiadomienia systemowe za pośrednictwem push, gdy są włączone. \nCotygodniowa tabela liderów kryptowalut: gracz z najwyższym zrealizowanym zyskiem w tym tygodniu wygrywa nagrodę pieniężną. \nMisje dzienne i cotygodniowe (np. 3 dochodowe transakcje, dywersyfikacja w ramach 5 monet) dają dodatkowe nagrody po ukończeniu. \nPrzegląd portfela pokazuje: całkowitą wartość, zainwestowaną kwotę, niezrealizowany i zrealizowany zysk/stratę.';
+
+  @override
+  String get helpTopicCryptoTips =>
+      'Przed złożeniem zlecenia sprzedaży sprawdź swoją historię zakupów: wyskakujące okienko pokazuje średnią cenę zakupu, dzięki czemu przypadkowo nie sprzedasz ze stratą. \nUżywaj zleceń stop-loss na każdej pozycji, której aktywnie nie obserwujesz: chronią Cię automatycznie, gdy jesteś offline. \nPrzełącz filtry czasu na wykresie: 1h i 4h pokazują trend krótkoterminowy, 7d i 30d pokazują szerszy obraz.';
+
+  @override
+  String get helpTopicSmugglingCategory => 'Imperium';
+
+  @override
+  String get helpTopicSmugglingTitle => 'Przemyt';
+
+  @override
+  String get helpTopicSmugglingSummary =>
+      'Przemieszczaj nielegalne towary i pojazdy między krajami. Wybierz kanał komercyjny lub skorzystaj z własnego pojazdu lub samolotu, aby obniżyć koszty i zwiększyć ryzyko konfiskaty.';
+
+  @override
+  String get helpTopicSmugglingHow =>
+      'Wybierz kategorię, konkretny przedmiot, miejsce docelowe, a następnie zdecyduj pomiędzy kanałem komercyjnym lub własnym transportem. \nPosiadane samochody, motocykle, łodzie i samoloty wyświetlają teraz wycenę na żywo z miejscami na ładunek, niższymi kosztami i redukcją ryzyka. \nŁódź może przewozić samochody i motocykle; samolot nie może przewozić łodzi i natychmiast zwróci błąd. \nSzansa na sukces zależy od wybranego kanału lub posiadanego transportu, aktualnego Poziomu Poszukiwania i wielkości przesyłki. \nW przypadku niepowodzenia tracisz całą przesyłkę. Brak zwrotu pieniędzy. Zniknęły koszty ładunku i transportu. \nJeżeli korzystasz z własnego transportu, a przejazd się nie powiedzie, sam środek transportu również może zostać skonfiskowany. \nAktywne przesyłki są śledzone na żywo w formie przeglądu. Po przybyciu na miejsce ładunek pojawia się w magazynie gotowy do odbioru. \nSieć załogi pozostaje dostępna dla komercyjnych przesyłek załogi, ale posiadany transport jest wyłącznie osobisty.';
+
+  @override
+  String get helpTopicSmugglingTips =>
+      'Nigdy nie wysyłaj całego towaru w jednej przesyłce: podziel go na wiele mniejszych ładunków, aby ograniczyć katastrofalne straty. \nObniż poziom listu gończego i temperaturę FBI do minimum, zanim rozpoczniesz duży przemyt. \nDo kosztownych rejsów używaj najlepszego samolotu lub łodzi: niższy koszt pomaga, ale o ryzyku nadal decydują miejsca na ładunek i ryzyko konfiskaty. \nZawsze zbieraj aktywne magazyny tak szybko, jak to możliwe: zawartość przeterminowanych magazynów zostanie trwale utracona.';
+
+  @override
+  String get helpTopicToolsCategory => 'Kierownictwo';
+
+  @override
+  String get helpTopicToolsTitle => 'Narzędzia';
+
+  @override
+  String get helpTopicToolsSummary =>
+      'Kupuj narzędzia potrzebne do określonych przestępstw i zarządzaj nimi. Dobre narzędzia zwiększają szansę na sukces, zużyte narzędzia ją zmniejszają.';
+
+  @override
+  String get helpTopicToolsHow =>
+      'W narzędziowni wyświetlane są wszystkie dostępne przedmioty wraz z ceną, stanem i rodzajem przestępstwa, do jakiego są potrzebne. \nKażda kategoria przestępstw ma preferowane narzędzia: włamanie wymaga łomu lub kilofa, kradzież samochodu wymaga zestawu do podłączenia gorącego drutu, rabunek wymaga broni palnej. \nNarzędzia mają ocenę stanu (0-100%). Każde udane lub nieudane przestępstwo obniża stan o kilka procent. \nPoniżej 20% warunku premia za szansę powodzenia narzędzia drastycznie spada. Poniżej 5% narzędzie nie ma prawie żadnego efektu. \nNaprawione narzędzia w warsztacie kosztują ułamek ceny zakupu. Wymiana jest czasami tańsza niż naprawa mocno zużytych narzędzi. \nNarzędzia widoczne są w zakładce ekwipunku. Możesz zachować wiele kopii tego samego typu co kopia zapasowa.';
+
+  @override
+  String get helpTopicToolsTips =>
+      'Kupuj narzędzia hurtowo, gdy są tanie na czarnym rynku: oszczędzasz w porównaniu do sklepu. \nUstaw osobisty próg: zawsze wymieniaj narzędzia, gdy stan spadnie poniżej 25%, aby utrzymać stabilne szanse na sukces.';
+
+  @override
+  String get helpTopicCourtCategory => 'Ryzyko';
+
+  @override
+  String get helpTopicCourtTitle => 'Sąd';
+
+  @override
+  String get helpTopicCourtSummary =>
+      'W trakcie odbywania kary możesz złożyć apelację lub spróbować przekupić sędziego, aby mógł szybciej wyjść na wolność.';
+
+  @override
+  String get helpTopicCourtHow =>
+      'Kiedy przebywasz w więzieniu, ekran sądu pokazuje Twój aktywny wyrok skazujący wraz z pozostałym czasem, przestępstwem i profilem sędziego. \nApelacja kosztuje, biorąc pod uwagę aktualną długość wyroku. Jeśli zostanie przyznany, Twoja kara jest zwykle zmniejszana o około 20-40%. \nMożesz odwołać się tylko raz na dany wyrok, a w przypadku szybkich ponownych prób obowiązuje okres odnowienia. \nPrzekupstwo wykorzystuje kwotę wybraną przez gracza. Kwota ta jest zawsze odejmowana, nawet jeśli próba się nie powiedzie. \nWyższa kwota łapówki zwiększa szansę na sukces. W przypadku powodzenia zostajesz natychmiast zwolniony. \nW Twojej kartotece karnej znajdują się wcześniejsze wyroki skazujące wraz z datami i szczegółami historii sądowej, nawet jeśli nie przebywasz już w więzieniu. \nSkuteczna łapówka dla sędziego powoduje usunięcie z rejestru karnego tylko aktualnego wyroku skazującego. \nJeśli chcesz wymazać swój pełny rejestr karny, musisz to zrobić poza sądem, korzystając z przestępstwa Wyczyść rejestr karny w późnej fazie gry.';
+
+  @override
+  String get helpTopicCourtTips =>
+      'Odwołaj się najpierw w przypadku długich wyroków: tam oczekiwana oszczędność czasu jest najwyższa. \nUżywaj przekupstwa tylko przy wystarczającym buforze gotówkowym, ponieważ płatność jest zawsze potrącana.';
+
+  @override
+  String get helpTopicHitlistCategory => 'Ryzyko';
+
+  @override
+  String get helpTopicHitlistTitle => 'Lista hitów';
+
+  @override
+  String get helpTopicHitlistSummary =>
+      'Wyznacz nagrodę za wroga lub zaakceptuj kontrakt na trafienie. Wyeliminuj swój cel w tym samym kraju, aby uzyskać pełną wypłatę.';
+
+  @override
+  String get helpTopicHitlistHow =>
+      'Za pomocą listy trafień dodajesz gracza, ustalając nagrodę. Minimalna nagroda wynosi 5000 €. Płatnik natychmiast traci te pieniądze. \nJeśli wyznaczona zostanie nagroda, natychmiast otrzymasz powiadomienie push i wiadomość w skrzynce odbiorczej z Biura Hitlist. \nAktywne trafienia są widoczne dla wszystkich graczy. Im wyższa nagroda, tym większą uwagę przyciąga kontrakt. \nDochodzenia detektywistyczne nie zwracają już natychmiastowych informacji: raporty docierają później za pośrednictwem wiadomości z Biura Detektywistycznego (szybka 1 godzina 1 000 000 euro, standardowa 6 godzin 500 000 euro, powolna 24 godziny 250 000 euro). \nJeśli zginiesz przez listę trafień, otrzymasz wiadomość od Biura Hitlist z przyciskiem umożliwiającym rozpoczęcie śledztwa w sprawie zabójcy w ciągu 24 godzin. \nJeśli złożysz wniosek o dochodzenie szybko po morderstwie, raport detektywistyczny dotrze szybciej. Dłuższe oczekiwanie oznacza większe opóźnienie raportu. \nAby wykonać trafienie, musisz znajdować się w tym samym kraju, co cel. Atakujesz poprzez profil gracza. \nWalka jest obliczana automatycznie na podstawie: broni, pancerza, statystyk (siła, refleks), bonusów załogi i poziomu aktywności. \nPo pomyślnej eliminacji otrzymasz pełną nagrodę. Jeśli atak się nie powiedzie, tracisz HP, a cel przeżyje. \nPo udanym trafieniu cel otrzymuje twardy reset postępu konta: zasoby i postępy zostają zresetowane do stanu bazowego, podczas gdy saldo bankowe i przywództwo załogi zostają zachowane. Oprócz nagrody otrzymujesz część dostępnego łupu. \nPo udanym zabiciu natychmiast otrzymasz wiadomość od Biura Hitlist z wyszczególnieniem nagród i łupów (gotówka + przedmioty). \nCele z aktywnym ochroniarzem lub ochroną są trudniejsze do trafienia. \nMożesz usunąć swoje imię i nazwisko z listy trafień, płacąc umieszczającemu lub samodzielnie wykupując nagrodę.';
+
+  @override
+  String get helpTopicHitlistTips =>
+      'Codziennie sprawdzaj listę hitów: wysokie nagrody za słabych graczy to szybki zysk, jeśli jesteś w tym samym kraju. \nWyznaczaj nagrodę za gracza tylko wtedy, gdy masz powody sądzić, że jest on offline lub ma mało HP.';
+
+  @override
+  String get helpTopicSecurityCategory => 'Ryzyko';
+
+  @override
+  String get helpTopicSecurityTitle => 'Bezpieczeństwo';
+
+  @override
+  String get helpTopicSecuritySummary =>
+      'Chroń swoją postać i imperium za pomocą zbroi, ochroniarzy i zabezpieczeń instalacji. Lepsze bezpieczeństwo oznacza mniejsze obrażenia odniesione podczas ataków.';
+
+  @override
+  String get helpTopicSecurityHow =>
+      'Rodzaje zbroi o rosnącej sile: Lekki pancerz → Ciężki pancerz → Kamizelka kuloodporna → Strój taktyczny. \nMożesz nosić tylko 1 zbroję na raz; jeśli kupisz inną kamizelkę, natychmiast zastąpi ona twoją obecną zbroję. \nKażda klasa pancerza zmniejsza otrzymywane obrażenia przy ataku o ustalony procent. Lepszy pancerz = większe przeżycie w PvP i rajdach. \nPancerz ulega uszkodzeniu po ataku i traci skuteczność. Im niższy stan, tym mniejszą ochronę zapewnia twój obecny pancerz. \nPrzy 100% obrażeń twój pancerz ulega zniszczeniu i całkowicie znika; aby odzyskać ochronę, musisz kupić nowy zestaw. \nOchroniarze dają każdemu ochroniarzowi +10 do obrony, ale co 24 godziny pobierają 10 000 euro dziennej pensji za ochroniarza. \nJeśli nie jesteś w stanie zapłacić dziennej pensji ochroniarza, wszyscy oni odejdą, a ty natychmiast stracisz ich ochronę. \nBezpieczeństwo instalacji (Nightclub, apteka itp.) zmniejsza ryzyko nalotu i incydentu w tej konkretnej lokalizacji. \nIm wyższy poziom Poszukiwanego, tym częściej jesteś atakowany lub napadany. Lepsze bezpieczeństwo rekompensuje to bezpośrednio. \nCzłonkowie załogi mogą dzielić role zabezpieczeń, aby jednocześnie obsługiwać wiele lokalizacji.';
+
+  @override
+  String get helpTopicSecurityTips =>
+      'Zawsze noś co najmniej lekką zbroję, gdy poziom poszukiwania wynosi 2 lub więcej: oszczędności na rachunkach szpitalnych szybko rekompensują cenę zakupu. \nSprawdzaj stan swojego pancerza po każdym ataku: uszkodzona kamizelka zapewnia tylko część swojej pierwotnej ochrony. \nZatrzymaj tylko tylu ochroniarzy, na ilu cię jutro będzie stać; duże zespoły szybko stają się kosztowne w codziennym utrzymaniu.';
+
+  @override
+  String get helpTopicHospitalCategory => 'Powrót do zdrowia';
+
+  @override
+  String get helpTopicHospitalTitle => 'Szpital';
+
+  @override
+  String get helpTopicHospitalSummary =>
+      'Odzyskuj HP po walkach, nieudanych przestępstwach lub najazdach. Szpital oferuje bezpłatną opiekę w nagłych przypadkach i płatne zabiegi umożliwiające szybszy powrót do zdrowia.';
+
+  @override
+  String get helpTopicHospitalHow =>
+      'Jeśli spadniesz poniżej 10 HP, zostaniesz automatycznie przyjęty na pogotowie (ER). Jest to bezpłatne, ale trwa dłużej. \nPłatne leczenie kosztuje 10 000 € za sesję i przywraca +30 HP. Czas odnowienia: 60 minut pomiędzy płatnymi zabiegami. \nOIOM (Intensywna Terapia) to najcięższa metoda leczenia krytycznych uszkodzeń. Czas odnowienia: 180 minut. Koszty są wyższe, ale powrót do zdrowia jest pełniejszy. \nMając wyższe HP (50+) nadal możesz wykonywać akcje, ale jesteś bardziej podatny na ataki. \nPodczas Twojego pobytu w więzieniu leczenie szpitalne jest zablokowane. Najpierw wyjdź, a potem szukaj leczenia. \nŚwiadectwo ukończenia szkoły medycznej obniża koszty leczenia w szpitalu i przyspiesza czas rekonwalescencji. \nMedycy załogi lub umiejętności medyczne mogą przywrócić HP poza szpitalem w ramach awaryjnego odzyskiwania.';
+
+  @override
+  String get helpTopicHospitalTips =>
+      'Nigdy nie wracaj do zdrowia w połowie drogi: poczekaj na pełne HP, zanim podejmiesz PvP lub przestępstwa wysokiego ryzyka. \nZabiegi płatne czasowo w okresie odnowienia: rozpocznij leczenie tuż przed przejściem w tryb offline, aby wrócić do trybu online z pełnym HP.';
+
+  @override
+  String get helpTopicPrisonCategory => 'Powrót do zdrowia';
+
+  @override
+  String get helpTopicPrisonTitle => 'Więzienie';
+
+  @override
+  String get helpTopicPrisonSummary =>
+      'Odbądź karę pozbawienia wolności, zapłać kaucję lub spróbuj uciec. Im wyższy poziom Wanted, tym dłuższy i droższy wyrok.';
+
+  @override
+  String get helpTopicPrisonHow =>
+      'Po aresztowaniu rozpoczyna się odliczanie czasu w zależności od poziomu poszukiwanego. Poszukiwany stopień 1 = krótki wyrok (w minutach), Poszukiwany stopień 5+ = godziny więzienia. \nKaucja jest skalowana wraz z pozostałym wyrokiem i nigdy nie spada poniżej poziomu poszukiwanego × 1000 EUR. Dłuższe wyroki są zatem droższe w przypadku natychmiastowego wykupienia. \nUcieczka: możesz podjąć próbę ucieczki z więzienia, ale szansa na sukces jest niska. Niepowodzenie przedłuża karę o stałą kwotę. \nNa liście więzień i nakładce więzienia możesz zawsze zapłacić własną kaucję, a także podjąć próbę własnej ucieczki, będąc jeszcze w więzieniu. \nCzłonkowie załogi mogą cię odwiedzać i zapewniać drobne korzyści (statystyki, morale), gdy jesteś zamknięty. \nPo aresztowaniu Twoi przyjaciele i członkowie załogi otrzymają teraz powiadomienie push, że zostałeś złapany i czekasz na pomoc. \nBroń i zbroje są konfiskowane w momencie aresztowania, jeśli nie masz dla nich ochrony prawnej. \nOpcja sądowa: zwrócić się do sądu o zmniejszenie kary za pośrednictwem prawnika (patrz Sąd). \nPo zablokowaniu liczniki produkcji (leki, fabryka amunicji) działają. Twoje imperium działa bez ciebie. \nW zamknięciu nie można odwiedzać szpitala. Odzyskiwanie HP czeka, aż będziesz wolny.';
+
+  @override
+  String get helpTopicPrisonTips =>
+      'Sprawdź kaucję natychmiast po aresztowaniu: przycisk powinien pozostać widoczny tak długo, jak długo przebywasz w więzieniu, nawet jeśli Twój poziom ścigania już spadł. \nWłącz liczniki czasu produkcji tuż przed wykonaniem przestępstwa obarczonego wysokim ryzykiem: jeśli zostaniesz złapany, produkcja i tak będzie kontynuowana.';
+
+  @override
+  String get helpTopicVaultCategory => 'Wydarzenia';
+
+  @override
+  String get helpTopicVaultTitle => 'Złam skarbiec';
+
+  @override
+  String get helpTopicVaultSummary =>
+      'Miesięczny sezon skarbca: wprowadź 4-cyfrowy kod i przyznaj środki, aby zyskać szansę na duże nagrody.';
+
+  @override
+  String get helpTopicVaultHow =>
+      'Każdego miesiąca nowy sezon rozpoczyna się pierwszego i kończy ostatniego dnia miesiąca. \nWybierz stawkę (np. 1/3/5 kredytów) i wprowadź 4-cyfrowy kod. \nKod można również wprowadzić za pomocą klawiatury ekranowej (przyciski cyfrowe). \nKażda próba kosztuje kredyty. Jeśli odgadniesz poprawnie, wygrasz nagrodę. \nWyższe stawki oznaczają większe nagrody; czasami nagroda VIP może spaść. \nJeśli jesteś już VIPem, nagroda VIP zostanie zamieniona na kredyty. \nMożesz zobaczyć swoje błędne kody z tego miesiąca. Lista resetuje się automatycznie wraz z nowym miesiącem.';
+
+  @override
+  String get helpTopicVaultTips =>
+      'Wybierz stawkę odpowiadającą Twojemu saldu kredytowemu: możesz próbować nieograniczoną liczbę razy, ale każda próba kosztuje kredyty. \nUżyj listy błędnych kodów, aby uniknąć ponownego wypróbowania tego samego kodu.';
+
+  @override
+  String get helpTopicGarageCategory => 'Aktywa';
+
+  @override
+  String get helpTopicGarageTitle => 'Garaż';
+
+  @override
+  String get helpTopicGarageSummary =>
+      'Kradnij i zarządzaj samochodami i motocyklami w celach przestępczych i przemytu. Garaż zajmuje się własnością, naprawami terminowymi, sprzedażą i złomowaniem; transport przebiega przez Hub Przemytu.';
+
+  @override
+  String get helpTopicGarageHow =>
+      'Twój garaż pokazuje samochody i motocykle ze stanem (0-100%), paliwem, wartością rynkową, rzadkością i statusem światowej czołówki. \nPrzechowalnie samochodów i motocykli są teraz oddzielone: ​​samochody wykorzystują pojemność garażu, motocykle korzystają z przestrzeni przechowywania motocykli. \nUlepszenia miejsca do przechowywania samochodów i motocykli są niezależne w zależności od kraju: ulepszanie samochodów nie zwiększa pojemności motocykli (i odwrotnie). Ulepszenia są zależne od rangi; gdy twoja ranga jest zbyt niska, zobaczysz blokadę/podpowiedź. Na poziomie 5 przycisk aktualizacji jest ukryty. \nZa pomocą przycisku katalogu możesz wyświetlić wszystkie samochody i motocykle, które można ukraść, w tym ich najpopularniejsze kraje i pełną listę krajów odrodzenia. \nKradzież dotyczy pojazdu z wymaganiami dotyczącymi rangi i czasem odnowienia. Im droższe i rzadsze, tym mniejsza szansa na sukces. \nJeśli limit świata modelu jest pełny, nie możesz tymczasowo ukraść tego modelu. Kiedy kopia zostanie sprzedana lub zezłomowana, 1 miejsce zostaje natychmiast ponownie otwarte. \nNieudana kradzież zwiększa poziom poszukiwanego i może spowodować aresztowanie. Jeśli policja złapie Cię podczas ucieczki, trafisz do więzienia, a skradziony pojazd zostanie natychmiast skonfiskowany. \nNaprawa odbywa się w określonym czasie: płacisz z góry, pojazd zostaje przydzielony do naprawy i wraca dopiero po upływie określonego czasu. \nJednoczesne naprawy są ograniczone łącznie do samochodu, motocykla i łodzi: bez aktywnego VIP max 1, z aktywnym VIP max 2. \nZłomowanie jest alternatywą dla sprzedaży: otrzymujesz wartość z odzysku (35% wartości bazowej), skalowaną według stanu i premię za ulepszenie garażu. \nVehicle Ops Intelligence dodaje 6 dodatkowych opcji. W skrócie: \n1) Bieg w Hotspot: szybka akcja pozwalająca uzyskać bezpośrednią gotówkę, z własnym czasem odnowienia i dodatkowym ryzykiem. \n2) Rynek części: ceny części czynnych według typu (samochód/motocykl/łódź) do tuningu; ceny odświeżają się okresowo. \n3) Operacja załogi: akcja w trybie współpracy z załogą w celu uzyskania dodatkowych korzyści/przewag (tylko jeśli jesteś w załodze). \n4) Ciepło: według typu (samochód/motocykl/łódka) licznik „uwagi”; wyższa temperatura sprawia, że ​​działania są bardziej ryzykowne i zmniejszają szansę na sukces. Ciepło zanika powoli. \n5) Kontrakt Chop: oddaj kwalifikujący się pojazd ze swojego ekwipunku, aby otrzymać stałą wypłatę w ramach kontraktu. \n6) Schemat działania policji: pory dnia mogą zwiększyć liczbę kontroli; wpływa to na ryzyko (np. strajk w porcie/blokada statków). \nW napadzie na pojazd samochód/motocykl/łódka korzystają teraz z jednego poziomu poleceń: wybierz kategorię za pomocą trzech kart pasów u góry, bez drugiego dodatkowego rzędu zakładek. \nKażda karta linii zawiera bezpośrednie, szybkie akcje umożliwiające kradzież i ulepszenia magazynu, więc nie musisz najpierw przewijać do oddzielnych przycisków podrzędnych. \nGdy trwa czas odnowienia kradzieży, obok licznika czasu pojawia się ikona błyskawicy: dotknij jej, aby wydać kredyty i wyczyścić czas odnowienia. Możesz wyłączyć okno dialogowe potwierdzenia; włącz go ponownie w Ustawieniach w obszarze Czas odnowienia kradzieży (kredyty). \nKarty pasów pokazują teraz także bezpośrednio pojemność według typu (wykorzystana/całkowita + poziom ulepszenia). \nSkradzione pojazdy są teraz renderowane jako karty responsywne: telefon komórkowy wyświetla jedną w rzędzie, tablet/komputer stacjonarny wyświetla wiele kart obok siebie. \nNowa warstwa operacji: okna przechwytywania PvP dla hotspotów, premie za rolę załogi w operacjach załogi, odblokowanie reputacji według typu pojazdu, regionalne wydarzenia na czarnej liście i umowy ubezpieczenia kontrabandy. \nNowe rozszerzenia Operacji Pojazdowych: misje KontrPrzechwytywania, dobieranie członków załogi z sezonową drabinką, modyfikatory kraju (inflacja/korupcja/strajk w porcie) oraz tablica kontraktów z cotygodniowymi legendarnymi kontraktami. \nOps pokazuje teraz na żywo czas odnowienia każdej akcji. Timery odliczają w widoczny sposób i odświeżają się automatycznie. \nAkcje załogi (operacja załogi i mecz załogi) są dostępne tylko wtedy, gdy należysz do załogi; bez załogi otrzymasz wyraźną wskazówkę dotyczącą odblokowania. \nUdane akcje operacyjne wpłacają gotówkę bezpośrednio do Twojego portfela. Przegląd akcji pokazuje oczekiwany rodzaj wypłaty na przycisk. \nRoszczenia ubezpieczeniowe są teraz rozpatrywane w pierwszej kolejności; korzystanie ze sporu dotyczącego roszczeń umożliwia ubieganie się o dodatkową wypłatę z ryzykiem odrzucenia. \nCiepło wyższej kategorii zmniejsza szanse powodzenia kradzieży i zwiększa ryzyko hotspotu. Ciepło zanika stopniowo co godzinę. \nKontrakty Chop-Shop wymagają kwalifikującego się pojazdu z Twojego magazynu; składający wniosek zużywa ten pojazd i wypłaca gotówkę wynikającą z umowy. \nTransport pojazdów nie odbywa się już w garażu; skorzystaj z przepływu centrum przemytu. \nOdsprzedaż i złomowanie uwalnia pojemność samochodu lub motocykla i może ponownie otworzyć miejsca na świecie dla tego modelu. \nPojazdy przeznaczone wyłącznie na wydarzenie, takie jak policyjne przechwytywacze, pozostają zamknięte poza oknami wydarzenia.';
+
+  @override
+  String get helpTopicGarageTips =>
+      'Aktywnie kradnij pojazdy, gdy poziom Poszukiwania jest niski: wyższy Poszukiwany = większa szansa niepowodzenia podczas kradzieży. \nZawsze utrzymuj co najmniej jeden niezawodny pojazd w dobrym stanie na potrzeby przemytu: zepsuty pojazd zmniejsza o połowę Twoje szanse na sukces. \nUżyj złomowania mocno uszkodzonych pojazdów jako szybkiego resetu wydajności; sprzedaż jest często lepsza w dobrym stanie.';
+
+  @override
+  String get helpTopicMarinaCategory => 'Aktywa';
+
+  @override
+  String get helpTopicMarinaTitle => 'Marina';
+
+  @override
+  String get helpTopicMarinaSummary =>
+      'Zarządzaj łodziami o rzadkości, limitach światowych i licznikach czasu napraw dla morskich szlaków przemytniczych. Marina koncentruje się na własności, konserwacji, sprzedaży i złomowaniu; transport przebiega przez Hub Przemytu.';
+
+  @override
+  String get helpTopicMarinaHow =>
+      'Marina pokazuje Twoje łodzie ze stanem, paliwem, wartością rynkową, rzadkością i statusem światowej czołówki każdego modelu. \nZa pomocą przycisku katalogu możesz wyświetlić wszystkie łodzie, które można ukraść, w tym najpopularniejsze kraje i pełną listę krajów odrodzenia. \nKradzież łodzi ma swoje własne bramy rang i czasy odnowienia. Droższe łodzie są trudniejsze do kradzieży, ale mogą być bardziej opłacalne. \nJeśli limit świata modelu łodzi jest pełny, tymczasowo znika z dostępnej listy. Sprzedaż/złomowanie ponownie otwiera miejsca. \nNaprawa odbywa się w określonym czasie: płacisz z góry, a łódź jest niedostępna do czasu zakończenia odliczania czasu. \nJednoczesne naprawy są ograniczone łącznie do samochodu, motocykla i łodzi: bez aktywnego VIP max 1, z aktywnym VIP max 2. \nZłomowanie zapewnia wartość odzysku (35% wartości bazowej), skalowaną z premią za stan i ulepszenie mariny. \nMarina zarządza wyłącznie własnością i konserwacją; Rzeczywista trasa transportu odbywa się w Hubie Przemytu. \nŁodzie policyjne przeznaczone wyłącznie na imprezy są przeznaczone na imprezy tymczasowe i pozostają zamknięte poza oknami wydarzeń.';
+
+  @override
+  String get helpTopicMarinaTips =>
+      'Zainwestuj w marinę, jeśli Twoje szlaki przemytnicze regularnie prowadzą przez wodę: mniejsze zainteresowanie policji może znacznie zwiększyć szansę na sukces. \nUtrzymuj łódź motorową w dobrym stanie jako szybką alternatywę, gdy lądowe drogi ewakuacyjne są zablokowane. \nZłomuj mocno uszkodzone łodzie o niskiej wartości odsprzedaży, aby szybciej zwolnić miejsce na górze świata i pojemność mariny.';
+
+  @override
+  String get helpTopicTuneshopCategory => 'Aktywa';
+
+  @override
+  String get helpTopicTuneshopTitle => 'Sklep tuningowy';
+
+  @override
+  String get helpTopicTuneshopSummary =>
+      'Użyj odzyskanych części, aby ulepszyć pojazdy według kategorii. Popraw prędkość, niewidzialność i pancerz dzięki kosztom poziomów skalowania i czasom odnowienia kategorii.';
+
+  @override
+  String get helpTopicTuneshopHow =>
+      'Części zdobywasz poprzez złomowanie pojazdów: części samochodowe, części motocyklowe i części łodzi. \nCzęści są łączone w kategoriach: każdy pojazd w tej samej kategorii korzysta z tego samego zapasu części. \nKażde ulepszenie kosztuje części i pieniądze. Koszty pieniężne zależą od kategorii i rosną wraz z poziomem dostrojenia. \nMożesz ulepszyć trzy statystyki: prędkość, ukrywanie się i zbroję. \nStrojenie odbywa się dla każdego pojazdu w Twoim ekwipunku. Nowe pojazdy ponownie zaczynają od poziomu 0. \nPo każdej melodii następuje czas odnowienia dla każdego pojazdu: samochód 180 s, motocykl 120 s, łódź 240 s. \nJednoczesne strojenie jest ograniczone: bez VIP-a maksymalnie 1 aktywny pojazd w tuningu, z VIP-em maksymalnie 5. \nDostrojone pojazdy zapewniają wyższą wartość sprzedaży i odzysku. \nStrojenie jest zablokowane podczas naprawy lub transportu pojazdu.';
+
+  @override
+  String get helpTopicTuneshopTips =>
+      'Najpierw złomuj mocno uszkodzone pojazdy, aby szybko zbudować części. \nZainwestuj w stealth już na wczesnym etapie, aby zmniejszyć ryzyko przechwycenia podczas ryzykownych wypraw. \nUżywaj ulepszeń pancerza w pojazdach, które wielokrotnie rozmieszczasz w niebezpiecznych pętlach.';
+
+  @override
+  String get helpTopicShootingRangeCategory => 'Szkolenie';
+
+  @override
+  String get helpTopicShootingRangeTitle => 'Strzelnica';
+
+  @override
+  String get helpTopicShootingRangeSummary =>
+      'Popraw swoją celność i umiejętności posługiwania się bronią poprzez ustrukturyzowane ćwiczenia strzeleckie. Wyższe statystyki zwiększają obrażenia i szansę na trafienie w PvP i przestępstwach.';
+
+  @override
+  String get helpTopicShootingRangeHow =>
+      'Strzelnica oferuje wiele dyscyplin: pistolet, karabin, strzelbę i ogień automatyczny. Każdy trenuje odrębną umiejętność związaną z bronią. \nKażda sesja treningowa ma czas odnowienia wynoszący 30 minut. Nie da się trenować w nieskończoność dziennie. \nWyższa celność zwiększa szansę na trafienie w walkach PvP i zmniejsza ryzyko, że sam zostaniesz trafiony. \nUmiejętność broni określa również, jakiej broni możesz skutecznie używać: karabin snajperski wymaga pewnych umiejętności, zanim uzyskasz pełną premię. \nWyniki treningu kumulują się. Nie ma resetu, chyba że otrzymasz surową karę za pośrednictwem sądu. \nŚwiadectwo ukończenia szkoły wojskowej daje stały bonus do każdej sesji na strzelnicy.';
+
+  @override
+  String get helpTopicShootingRangeTips =>
+      'Trenuj strzelnicę codziennie: małe skumulowane premie stają się zauważalne w wynikach PvP w ciągu tygodnia. \nTrenuj typ broni, którego najczęściej używasz w przestępstwach i PvP, aby uzyskać maksymalny zwrot z inwestycji.';
+
+  @override
+  String get helpTopicGymCategory => 'Szkolenie';
+
+  @override
+  String get helpTopicGymTitle => 'Sala gimnastyczna';
+
+  @override
+  String get helpTopicGymSummary =>
+      'Trenuj siłę, szybkość i wytrzymałość, aby uzyskać lepsze statystyki w PvP, przestępstwach i puli HP. Codzienny trening jest kluczem do szybkiego wzrostu statystyk.';
+
+  @override
+  String get helpTopicGymHow =>
+      'Siłownia oferuje trzy kategorie treningu: Siła (więcej obrażeń na atak), Szybkość (wyższy refleks, mniej zadawanych trafień), Wytrzymałość (wyższe maksymalne HP). \nKażdy trening ma 1 godzinę czasu odnowienia. Maksymalnie 6-8 sesji dziennie, w zależności od świadectwa szkolnego. \nSiła zwiększa bezpośrednie obrażenia zarówno w PvP, jak i w niektórych typach przestępstw (napad, bójka). \nSzybkość zwiększa szansę na uniknięcie ataku i zmniejsza ryzyko złapania w przypadku niepowodzenia przestępstwa. \nWytrzymałość zwiększa maksymalną pulę HP. Więcej HP = dłuższe przeżycie w PvP i więcej miejsca na ryzykowne przestępstwa. \nŚwiadectwo ukończenia szkoły Trening fizyczny daje premię +15% do wszystkich sesji na siłowni.';
+
+  @override
+  String get helpTopicGymTips =>
+      'Nadaj priorytet treningowi wytrzymałości: wyższa pula HP poprawia wszystkie inne systemy, ponieważ dłużej pozostajesz aktywny. \nPołącz siłownię ze strzelnicą: Siła + Celność to najsilniejsza kombinacja PvP.';
+
+  @override
+  String get helpTopicAmmoFactoryCategory => 'Imperium';
+
+  @override
+  String get helpTopicAmmoFactoryTitle => 'Fabryka Amunicji';
+
+  @override
+  String get helpTopicAmmoFactorySummary =>
+      'Produkuj amunicję na własny użytek i zarządzaj produkcją z fabryki. Kupno i sprzedaż amunicji odbywa się na Czarnym Rynku, a nie bezpośrednio z ekranu fabryki.';
+
+  @override
+  String get helpTopicAmmoFactoryHow =>
+      'Fabryka amunicji ma poziomy produkcji (od poziomu 1 do 5). Wyższy poziom = więcej rund na roszczenie i lepsza jakość. \nPodczas aktywnej sesji przejmujesz produkcję mniej więcej co 10 minut (do 8 godzin zaległości w tej sesji). \nProdukcja stale rośnie, gdy jesteś offline: po powrocie możesz zgłaszać roszczenia wielokrotnie, aż do nadrobienia zaległości. \nSamo obejrzenie fabryki amunicji lub podróżowanie tam i z powrotem nie może zmienić właściciela; fabryka nie powinna przełączać się na komunikat „na sprzedaż” tylko dlatego, że ekran został otwarty. \nWyprodukowana amunicja jest wykorzystywana osobiście w przestępstwach i PvP. Aby kupować i sprzedawać amunicję, przejdź przez Czarny Rynek; sam ekran fabryczny nie sprzedaje bezpośrednio naboi. \nUlepszenia wyjściowe zwiększają liczbę rund na roszczenie; ulepszenia jakości zwiększają wartość rynkową. \nCena rynkowa amunicji zmienia się w zależności od popytu. Gromadź zapasy, gdy ceny są niskie i sprzedawaj, gdy ceny są wysokie. \nPodczas nalotu na fabrykę tracisz część zmagazynowanej produkcji. Bezpieczeństwo zmniejsza to ryzyko.';
+
+  @override
+  String get helpTopicAmmoFactoryTips =>
+      'Jak najszybciej ulepsz swoją fabrykę do poziomu 3: podwojona produkcja w porównaniu z poziomem 1 sprawia, że ​​jest ona samowystarczalna pod względem amunicji. \nZawsze trzymaj 2-3 rundy produkcyjne w rezerwie jako bufor, aby nigdy nie zabrakło Ci amunicji podczas PvP.';
+
+  @override
+  String get helpTopicSchoolCategory => 'Szkolenie';
+
+  @override
+  String get helpTopicSchoolTitle => 'Szkoła';
+
+  @override
+  String get helpTopicSchoolSummary =>
+      'Kontynuuj kursy na wielu ścieżkach, aby odblokować bonusy, obniżyć koszty i otworzyć nowe systemy. Szkoła wzmacnia wszystko, co robisz.';
+
+  @override
+  String get helpTopicSchoolHow =>
+      'Szkoła oferuje ścieżki w poszczególnych domenach: Kryminalny (lepsze statystyki przestępczości), Ekonomiczny (niższe koszty handlu i banku), Wojskowy (premie bojowe), Medycyna (niższe koszty szpitala), Prawo (niższe koszty prawnika), Techniczny (lepsza fabryka i produkcja leków). \nKażda lekcja trwa od 15 do 60 minut, w zależności od poziomu. Wyższe poziomy trwają dłużej. \nPo ukończeniu lekcji otrzymasz certyfikat na dany poziom ścieżki. Certyfikat ten jest trwały i przyznaje natychmiastową premię. \nMożesz uczestniczyć tylko w jednej lekcji na raz. Starannie zaplanuj studia, gdy pilnie potrzebujesz konkretnego certyfikatu. \nKoszty szkoły rosną z każdym poziomem. Szkolnictwo wyższe wymaga ukończenia wcześniejszych poziomów tej samej ścieżki. \nNiektóre zaawansowane funkcje gry są zablokowane za świadectwem szkolnym: np. dostęp do niektórych stanowisk pracy, wyższych poziomów fabrycznych, wydarzeń w klubach nocnych VIP i wyższych poziomów ulepszeń placówki farmaceutycznej. \nCertyfikaty nigdy nie są resetowane, chyba że na Twoje konto zostanie nałożona surowa kara.';
+
+  @override
+  String get helpTopicSchoolTips =>
+      'Zawsze zaczynaj od ścieżki kryminalnej: premie do szans na sukces w przestępstwie zwracają koszty nauki w ciągu kilku sesji. \nZaplanuj długie studia (60 min+) przed pójściem spać: budzisz się z nowym certyfikatem, nie tracąc aktywnego czasu.';
+
+  @override
+  String get helpTopicTerritoryCategory => 'Imperium';
+
+  @override
+  String get helpTopicTerritoryTitle => 'Terytorium';
+
+  @override
+  String get helpTopicTerritorySummary =>
+      'Zdobądź i kontroluj regiony geograficzne, aby uzyskać pasywny dochód, prestiż załogi i strategiczne premie regionalne. Terytorium łączy kontrolę nad mapą z konkursami i nagrodami sezonowymi.';
+
+  @override
+  String get helpTopicTerritoryHow =>
+      'Przegląd terytorium pokazuje wszystkie dostępne kraje i regiony według kraju. Kliknij kraj, aby wyświetlić interaktywną mapę. \nWszystkie obsługiwane kraje można teraz w pełni przeglądać za pomocą tych samych interaktywnych map, co w Holandii. \nKliknij region na interaktywnej mapie, aby otworzyć moduł z informacjami o terytorium i przyciskiem ataku. Oddzielne karty regionów pod mapą nie są już potrzebne. \nOglądanie jest dozwolone wszędzie, ale ataki, dołączenia do obrony i akcje konkursowe działają tylko w kraju, w którym aktualnie znajduje się Twoja postać. \nNa urządzeniach mobilnych możesz teraz przybliżać i oddalać dwa palce oraz bezpośrednio przeciągać powiększoną mapę, dzięki czemu łatwiej jest dotykać mniejszych regionów bez dodatkowych przycisków na mapie. \nTerytorium opiera się na załodze: musisz stworzyć załogę lub dołączyć do niej, zanim przycisk ataku stanie się dostępny dla regionów neutralnych lub wrogich. \nKażdy region może być kontrolowany przez maksymalnie jedną załogę na raz. Własność zapewnia pasywny dochód na godzinę, ale Terytorium przestaje wpłacać pieniądze do banku załogi po osiągnięciu limitu przechowywania gotówki. \nRozpocznij konkurs w nieodebranym regionie za pomocą przycisku konkursu. Konkurs automatycznie przechodzi przez etap przygotowania (czas przygotowania), etap aktywny (akcje) i zamknięcie (rozwiązanie). \nPodczas aktywnego konkursu moduł regionu pokazuje teraz także, kiedy akcje się odblokowują, kiedy kończy się konkurs, jaki jest czas odnowienia każdej akcji oraz rzeczywista kwota gotówki, którą region płaci za wypłatę, za godzinę i dzień. \nRegiony pełnią obecnie także strategiczne role, takie jak port, przemysł, stolica, region przygraniczny czy węzeł logistyczny. Rola ta określa, które akcje pozwolą Ci zdobyć dodatkowe punkty. \nSąsiednie regiony, które już należą do twojej załogi, zapewniają teraz dodatkowe wsparcie podczas akcji konkursowych. Modal regionu pokazuje, które bonusy strategiczne są aktywne i ile wsparcia ma Twoja Crew na tym obszarze. \nPremie do akcji mogą teraz pochodzić również z postępu załogi: poziomu sztabu, poziomu misji załogi i odpowiednich budynków bocznych (broń/amunicja/samochód/łódź/magazyn leków). Premie te zwiększają jedynie punkty konkursowe, a nie pasywną gotówkę regionu. \nNiektóre zaawansowane akcje konkursowe są kontrolowane przez centralę: jeśli poziom twojej centrali jest zbyt niski, na przycisku akcji pojawi się komunikat „wymaga natychmiastowego poziomu X”. \nTerytorium nie stosuje już domyślnie sztywnego dziennego limitu akcji (limit czasu działania 0 = wyłączony). Równowaga pozostaje pod kontrolą poprzez czasy odnowienia, wybory dotyczące działań przeciw farmom i działań strategicznych. \nWygrana w wojnie terytorialnej lub wojnie totalnej może teraz wywrzeć tymczasowy nacisk wojenny na rzeczywiste regiony terytoriów wokół tej linii frontu. Modal regionu pokazuje, która Crew utrzymuje presję, w jakim stopniu zmniejsza się efektywna stabilność i kiedy wygasają następstwa. \nKiedy konkurs właśnie się rozpoczął lub w starszym konkursie nadal brakowało pól czasu, ekran natychmiast wypełnia te liczniki i odświeża modal do najnowszego stanu konkursu, bez konieczności wcześniejszej nawigacji. \nAtakujący widzą tylko akcje atakującego (wywiad, sabotaż, najazd), a obrońcy widzą tylko akcje obrońcy (patrol, bieg zaopatrzenia, obrona), więc modal nie wyświetla już mylących, mieszanych przycisków. \nRegion pokazuje teraz także rzeczywisty dochód z terytorium. Liderzy załogi widzą także na pulpicie nawigacyjnym, ile regionów i krajów kontroluje ich Crew, ile obecnie zarabia Crew i ile łącznie zarobiło do tej pory Terytorium. \nKonkursy skutkują przeniesieniem własności i nagrodami (gotówką, XP, prestiżem). Przegrani otrzymają również częściowe PD za udział. \nDuże regiony (porty, stolice) dają więcej pasywnego dochodu, ale także powodują więcej przeciwników i prób najazdów. \nWydarzenia sezonowe zapewniają dodatkowe nagrody i specjalne wyzwania w każdej grupie regionów. \nZapobiegaj zastojom: Twoja Crew nie może od razu zaatakować tego samego przeciwnika po przegranej; poczekaj na ochłodzenie. \nKontrole zapobiegające nadużyciom zapobiegają wielokrotnemu atakowi jednej załogi na ten sam cel w krótkich oknach czasowych.';
+
+  @override
+  String get helpTopicTerritoryTips =>
+      'Zacznij od zrównoważonego kraju ze średnimi regionami: mniejsza konkurencja niż w dużych krajach, ale rozsądny dochód pasywny. \nSkoncentruj się najpierw na jednym kraju, w którym Twoja Crew jest silna: lepsza wiedza prowadzi do lepszej strategii zawodów niż płytka kontrola w wielu krajach. \nWykorzystaj pory roku jako strategiczne resety: jeśli przegrasz w porze suchej, zawsze nadejdzie lepszy sezon na powrót.';
+
+  @override
+  String get helpTopicProstitutionCategory => 'Imperium';
+
+  @override
+  String get helpTopicProstitutionTitle => 'Prostytucja';
+
+  @override
+  String get helpTopicProstitutionSummary =>
+      'Zbuduj sieć prostytucji z rekrutami, wydarzeniami i klientami VIP. Dobrze zarządzana sieć generuje pasywny dochód, ale wymaga aktywnego zarządzania, aby kontrolować rywalizację i uwagę policji.';
+
+  @override
+  String get helpTopicProstitutionHow =>
+      'Zarządzasz rekrutami, każdy za pomocą własnych statystyk (doświadczenie, popularność, dostępność). Więcej rekrutów = wyższy dochód pasywny. \nPraca zmianowa trwa 8 godzin na rekruta: po zmianie rekrut potrzebuje czasu na odpoczynek, zanim będzie mógł zacząć od nowa. \nZarządzanie lokalizacjami jest elastyczne: możesz przenosić rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym, korzystając z przycisków akcji na każdej karcie. \nWydarzenia to tymczasowe wzmocnienia: specjalne pokazy, noce VIP i imprezy zwiększają dochód za każdy tik przez cały czas trwania wydarzenia. \nRywalizacja: inni gracze lub konkurenci NPC mogą kłusować na twoich rekrutów lub sabotować wydarzenia. Wyższe bezpieczeństwo zmniejsza to ryzyko. \nKlienci VIP płacą znacznie więcej, ale wymagają rekrutów o dużej popularności (80+) i bezpiecznej lokalizacji. \nUwaga policji (gorąco) wzrasta w przypadku dużych transakcji i nalotów. Wysoka temperatura prowadzi do konfiskaty dochodów lub tymczasowego przestoju. \nPołączenie z klubem nocnym: Nightclub zapewnia prawną ochronę działań powodujących wolniejszy wzrost temperatury. \nSkorzystaj z panelu analizy zarobków u góry, aby szybko porównać godzinowe wyniki dla ulicy, RLD i klubu nocnego. \nTabela liderów: najwyższy łączny tygodniowy obrót zapewnia cotygodniową nagrodę pieniężną i odznakę.';
+
+  @override
+  String get helpTopicProstitutionTips =>
+      'Zainwestuj w bezpieczeństwo już na wczesnym etapie: atak rywalizacyjny, podczas którego kradniesz najlepszego rekruta, kosztuje więcej niż inwestycja w bezpieczeństwo. \nOrganizuj wydarzenia VIP tylko wtedy, gdy popularność rekrutów przekracza 80: poniżej tego progu klienci VIP płacą po prostu standardową stawkę.';
+
+  @override
+  String get helpTopicRedLightDistrictsCategory => 'Imperium';
+
+  @override
+  String get helpTopicRedLightDistrictsTitle => 'Dzielnice czerwonych latarni';
+
+  @override
+  String get helpTopicRedLightDistrictsSummary =>
+      'Zgłaszaj i zarządzaj okręgami terytorialnymi w każdym kraju. Posiadanie dzielnicy daje pasywny dochód i kontrolę nad działalnością prostytucyjną w tym regionie.';
+
+  @override
+  String get helpTopicRedLightDistrictsHow =>
+      'W każdym kraju istnieje jedna lub więcej dzielnic czerwonych latarni, do których można się zgłosić. Zdobądź dzielnicę, płacąc ustaloną kwotę zakupu. \nJako właściciel dzielnicy otrzymujesz procent wszystkich dochodów z prostytucji w tym kraju – w tym od innych graczy tam działających. \nInni gracze mogą zaatakować Twoją dzielnicę, aby przejąć ją na własność. Wyższe bezpieczeństwo zmniejsza szansę na atak. \nUlepszenia dzielnic (bezpieczeństwo, marketing, infrastruktura) zwiększają procent twoich dochodów i zmniejszają ryzyko utraty własności. \nMożesz posiadać maksymalnie 3 dzielnice jednocześnie. Niezbędny jest strategiczny wybór kraju. \nNajbardziej ruchliwe kraje (Kolumbia, Dubaj, Japonia) zapewniają najwyższy dochód pasywny, ale są też najbardziej sporne. \nUtrata dzielnicy nie zwraca ceny zakupu: zostaje ona trwale utracona, jeśli wróg pomyślnie ją przejmie.';
+
+  @override
+  String get helpTopicRedLightDistrictsTips =>
+      'Zacznij od mniej popularnego kraju w swojej pierwszej dzielnicy: mniejsza presja ataków daje czas na ulepszenie zabezpieczeń przed prawdziwą konkurencją. \nZwiększ bezpieczeństwo każdej dzielnicy natychmiast po zakupie: pierwsze 24 godziny są najbardziej podatne na przejęcie.';
+
+  @override
+  String get helpTopicAchievementsCategory => 'Meta';
+
+  @override
+  String get helpTopicAchievementsTitle => 'Osiągnięcia';
+
+  @override
+  String get helpTopicAchievementsSummary =>
+      'Zdobywaj odznaki, osiągając kamienie milowe we wszystkich systemach gier. Osiągnięcia zapewniają nagrody, podnoszą Twój profil statusu i pokazują postępy w poszczególnych kategoriach.';
+
+  @override
+  String get helpTopicAchievementsHow =>
+      'Osiągnięcia są pogrupowane w kategorie: Zbrodnie, Imperium, PvP, Ekonomia, Szkolenie, Społeczność i Meta. \nKażde osiągnięcie ma kilka poziomów (brązowy, srebrny, złoty, platynowy). Każdy poziom zapewnia wyższą nagrodę i bardziej imponującą odznakę. \nNagrody za osiągnięcie obejmują: gotówkę, XP, przedmioty specjalne, stałe bonusy lub unikalne tytuły dla Twojego profilu. \nPostęp jest śledzony automatycznie. Nie musisz niczego aktywować: osiągnij próg, a odznaka zostanie przyznana natychmiast. \nNiektóre osiągnięcia są ukryte, dopóki nie uda Ci się ich częściowo ukończyć — wtedy pojawiają się wraz z ich prawdziwą nazwą i wymaganiami. \nOdznaki za osiągnięcia są widoczne w Twoim profilu publicznym. Pokazują innym graczom Twoje specjalizacje i doświadczenie. \nOsiągnięcia łańcuchowe: niektóre odznaki są połączone w łańcuch. Złoto wymaga zdobycia Srebra. Planuj wcześniej, aby uzyskać wyższe poziomy.';
+
+  @override
+  String get helpTopicAchievementsTips =>
+      'Codziennie sprawdzaj swoje prawie ukończone osiągnięcia: niewielki dodatkowy wysiłek może zapewnić odznakę i nagrodę pieniężną, która w przeciwnym razie byłaby opóźniona o miesiące. \nSkoncentruj się już na kategoriach Ekonomia i Przestępczość: te zapewniają najwięcej nagród pieniężnych i najłatwiej je połączyć z normalną rozgrywką.';
+
+  @override
+  String get helpTopicSupportTicketsCategory => 'Wsparcie';
+
+  @override
+  String get helpTopicSupportTicketsTitle => 'Raporty i bilety';
+
+  @override
+  String get helpTopicSupportTicketsSummary =>
+      'Zgłaszaj błędy, pytania lub opinie za pośrednictwem systemu zgłoszeń. Wsparcie i administratorzy mogą odpowiadać, zarządzać wewnętrznymi działaniami następczymi i wysyłać aktualizacje za pośrednictwem samej rozmowy z pomocą techniczną i opcjonalnych powiadomień push.';
+
+  @override
+  String get helpTopicSupportTicketsHow =>
+      'Otwórz osobną pozycję menu „Wsparcie”, aby sprawdzić swoje zgłoszenia lub utworzyć nowe. \nWybierz kategorię (błąd, pytanie, opinia lub inna), w razie potrzeby wybierz powiązany moduł i opisz swój problem tak szczegółowo, jak to możliwe. \nOpcjonalnie możesz dodać odniesienie, takie jak identyfikator zamówienia, nazwa ekranowa lub krótki kontekst, a także zrzut ekranu, jeśli to pomoże. \nPo przesłaniu natychmiast otrzymasz numer zgłoszenia, a Twoje zgłoszenie pojawi się w przeglądzie wsparcia, gdzie zespół wsparcia może odpowiedzieć i utworzyć wewnętrzne zadania do wykonania. \nKiedy odpowiedzi na pomoc techniczną lub status zgłoszenia się zmienią, zobaczysz to bezpośrednio w tej samej rozmowie z pomocą techniczną i opcjonalnie możesz otrzymać powiadomienie push (jeśli powiadomienia są włączone). \nPozycja menu Wsparcie wyświetla plakietkę, gdy tylko zgłoszenie otrzyma nową odpowiedź pomocy technicznej lub aktualizację statusu od Twojej ostatniej wizyty w przeglądzie pomocy technicznej. \nWsparcie wykorzystuje statusy takie jak nowy, selekcja, w toku, oczekiwanie na gracza, zablokowany i rozwiązany, aby wewnętrznie śledzić Twoje zgłoszenie.';
+
+  @override
+  String get helpTopicSupportTicketsTips =>
+      'Zawsze podawaj swój kraj, działanie i dokładny komunikat o błędzie; przyspiesza to wprowadzanie poprawek dla programistów. \nUżyj jednego biletu na każdy rodzaj problemu, aby lista rzeczy do zrobienia i działania następcze pozostały przejrzyste.';
+
+  @override
+  String get helpTopicSettingsCategory => 'Rdzeń';
+
+  @override
+  String get helpTopicSettingsTitle => 'Ustawienia';
+
+  @override
+  String get helpTopicSettingsSummary =>
+      'Zarządzaj wszystkimi ustawieniami konta: językiem, awatarem, prywatnością, preferencjami powiadomień dla poszczególnych systemów i opcjami bezpieczeństwa. Ustawienia mają bezpośredni wpływ na wrażenia z gry.';
+
+  @override
+  String get helpTopicSettingsHow =>
+      'Język: przełączanie pomiędzy holenderskim i angielskim. Wszystkie teksty interfejsu użytkownika, komunikaty systemowe i powiadomienia są aktualizowane natychmiast. \nAwatar: prześlij lub wybierz zdjęcie profilowe widoczne dla innych graczy na Twoim profilu publicznym i na listach załogi. \nPrywatność: ustaw, kto może zobaczyć Twój status online, lokalizację (bieżący kraj) i statystyki — tylko Ty, Crew, przyjaciele lub wszyscy. \nPowiadomienia push: przełączanie w zależności od systemu. Kategorie: Przestępstwa, Handel kryptowalutami, Alerty cenowe, Zamówienia, wydarzenia dla graczy na żywo (konkurencja), Reżim rynkowy, Napad, Nightclub, wiadomości ogólne. \nJeśli funkcja push była już dozwolona, ​​wersja web/PWA automatycznie ponownie połączy się z bieżącym tokenem urządzenia po odświeżeniu lub aktualizacji; wystarczy ponownie włączyć ją w Ustawieniach, gdy sama przeglądarka blokuje powiadomienia. \nPreferencje powiadomień o kryptowalutach pozostają zapisane po opuszczeniu Ustawień i ponownym otwarciu ich później. \nPowiadomienia w aplikacji: konfigurowalne niezależnie od powiadomień push. W aplikacji wyświetla alerty w aplikacji bez wysyłania powiadomienia systemowego. \nBezpieczeństwo: zmień hasło, skonfiguruj uwierzytelnianie dwuskładnikowe i przeglądaj aktywne sesje. \nPreferencje dotyczące powiadomień dla poszczególnych systemów: dostosuj, aby nie otrzymywać burzy powiadomień z systemów, w których aktywnie nie grasz.';
+
+  @override
+  String get helpTopicSettingsTips =>
+      'Włącz powiadomienia push dla zamówień kryptograficznych i zdarzeń napadów: są to systemy, w których liczy się czas i szybkość reakcji. \nUstaw prywatność lokalizacji na tylko dla załogi, gdy jesteś aktywny na liście trafień: w przeciwnym razie inni gracze będą mogli Cię dokładnie wskazać.';
+
+  @override
+  String get helpTopicPremiumCategory => 'Rdzeń';
+
+  @override
+  String get helpTopicPremiumTitle => 'Premie i kredyty';
+
+  @override
+  String get helpTopicPremiumSummary =>
+      'Kupuj i zarządzaj tutaj VIP-ami Gracza, VIP-ami załogi i pakietami kredytów. Przegląd ten pokazuje również saldo kredytu i wszystkie dostępne pozycje kredytu, z których możesz skorzystać bezpośrednio lub kontekstowo.';
+
+  @override
+  String get helpTopicPremiumHow =>
+      'Otwórz oddzielną stronę „Premium i kredyty” w bocznym menu, aby wyświetlić swój status VIP, daty wygaśnięcia, saldo środków i opcje zakupu. \nNa każdym kafelku zakupu dotknij/kliknij ikonę „i” w lewym górnym rogu, aby uzyskać szczegółowe informacje i korzyści; sam kafelek celowo pokazuje tylko krótkie podstawowe informacje i przycisk zakupu. \nGracz VIP jest osobisty. VIP dla załogi dotyczy Twojej załogi i ma wartość tylko wtedy, gdy jesteś już w załodze. \nGracz VIP zapewnia o 10% krótsze czasy działania (czas więzienia pozostaje niezmieniony), 100 tygodniowych kredytów, przycisk VIP do zakupu jednym kliknięciem brakujących materiałów w produkcji narkotyków (po potwierdzeniu kosztów) oraz łagodniejszy reset po śmierci: bank/krypto/edukacja/osiągnięcia pozostają, podczas gdy aktywa, ekwipunek i zapasy leków są usuwane. \nKasa VIP otwiera stronę płatności, a następnie powraca do sekcji „Premium i kredyty” w grze, dzięki czemu od razu widzisz, czy zakup się powiódł i jak długo ważny jest Twój VIP. \nPakiety kredytów kupuje się za prawdziwe pieniądze. Po pomyślnej płatności środki natychmiast pojawią się w przeglądzie Twojego portfela. \nKarnet na wydarzenie (7 dni, prawdziwe pieniądze) jest wymieniony w siatce ofert jednorazowych: +10% wyniku w wydarzeniach dla graczy na żywo oraz niewielki bonus kredytowy po zakupie. Jest to poziom poboczny: nie jest to bezpośrednia walka ani wzmocnienie PvP; pomaga głównie w wynikach rankingów podczas wydarzeń biegowych. \nW przypadku pozycji kredytowych wykorzystywane są środki z portfela zamiast euro. Pomyśl o ochronie przed trafieniami, resetowaniu czasu odnowienia, wzmocnieniach wydarzeń lub pakietach pieniężnych, w zależności od tego, co administrator aktualnie włączył na żywo. \nNa obsługiwanych ekranach limitów czasu (takich jak przestępstwa, praca, kradzież pojazdu/łodzi i szkoła) dostępny jest także bezpośredni przycisk przyspieszenia dla aktywnych czasów odnowienia, dzięki czemu nie musisz najpierw wracać do konta premium i kredytów. \nNiektóre pozycje kredytowe działają bezpośrednio z tego ekranu. Zamiast tego elementy powiązane z kontekstem, takie jak określone akcje pojazdu, są używane na ekranie odpowiedniego pojazdu lub garażu (uszkodzone pojazdy mają przycisk natychmiastowej naprawy bezpośrednio na karcie). \nW przypadku przycisków kontekstowych, takich jak przyspieszenie naprawy, bieżący koszt kredytu jest wyświetlany bezpośrednio na przycisku/etykiecie narzędzia. \nCeny i dostępne produkty są zarządzane na żywo w panelu administracyjnym. Oznacza to, że ceny VIP, koszty kredytu i dostępna oferta mogą ulec zmianie bez aktualizacji aplikacji.';
+
+  @override
+  String get helpTopicPremiumTips =>
+      'Przed ponownym zakupem sprawdź saldo kredytu i datę jego wygaśnięcia; przedłużanie jest często lepsze niż układanie na ślepo. \nWykorzystuj kredyty głównie na krytyczne czasowo wzmocnienia lub ochronę, a nie automatycznie na każdym małym skrócie. \nJeśli nie jesteś jeszcze w załodze, zacznij od Gracza VIP lub pakietu kredytów przed Crew VIP.';
 }
