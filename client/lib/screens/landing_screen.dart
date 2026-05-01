@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -416,80 +415,41 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
-  static const String _logoAsset = 'assets/images/logo.png';
-
-  Widget _buildHeroLogo(BuildContext context, AppLocalizations l10n, double maxHeight) {
-    final maxW = math.min(560.0, MediaQuery.sizeOf(context).width - 32);
-    final networkPrimary = WebAssetHelper.toPublicUrl('assets/assets/images/logo.png');
-    final networkAlt = WebAssetHelper.toPublicUrl('images/logo.png');
-
-    Widget fallbackTitle() => Text(
-          l10n.landingHeroTitle,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 36,
-            fontWeight: FontWeight.w800,
-            shadows: [Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2))],
-          ),
-        );
-
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: maxHeight, maxWidth: maxW),
-        child: Image.asset(
-          _logoAsset,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return Image.network(
-              networkPrimary,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                return Image.network(
-                  networkAlt,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) => fallbackTitle(),
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-
   Widget _buildTopRightCtas(BuildContext context, AppLocalizations l10n, bool compact) {
     final pad = compact
-        ? const EdgeInsets.symmetric(horizontal: 14, vertical: 10)
-        : const EdgeInsets.symmetric(horizontal: 22, vertical: 12);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _landingGold,
-            foregroundColor: Colors.black,
-            padding: pad,
-            minimumSize: compact ? const Size(120, 40) : const Size(140, 44),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 10)
+        : const EdgeInsets.symmetric(horizontal: 20, vertical: 12);
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerRight,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _landingGold,
+              foregroundColor: Colors.black,
+              padding: pad,
+              minimumSize: compact ? const Size(0, 40) : const Size(0, 44),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () => Navigator.of(context).pushNamed('/login'),
+            child: Text(l10n.landingCtaLogin),
           ),
-          onPressed: () => Navigator.of(context).pushNamed('/login'),
-          child: Text(l10n.landingCtaLogin),
-        ),
-        SizedBox(height: compact ? 8 : 10),
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            foregroundColor: _landingGold,
-            side: const BorderSide(color: _landingGold, width: 1.5),
-            padding: pad,
-            minimumSize: compact ? const Size(120, 40) : const Size(140, 44),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          SizedBox(width: compact ? 8 : 12),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: _landingGold,
+              side: const BorderSide(color: _landingGold, width: 1.5),
+              padding: pad,
+              minimumSize: compact ? const Size(0, 40) : const Size(0, 44),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () => Navigator.of(context).pushNamed('/register'),
+            child: Text(l10n.landingCtaRegister),
           ),
-          onPressed: () => Navigator.of(context).pushNamed('/register'),
-          child: Text(l10n.landingCtaRegister),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -547,7 +507,6 @@ class _LandingScreenState extends State<LandingScreen> {
     final isPortrait = size.height > size.width;
     final isMobile = size.width < 600;
     final year = DateTime.now().year;
-    final logoMaxH = isMobile ? 100.0 : 140.0;
 
     return Scaffold(
       body: Stack(
@@ -579,8 +538,19 @@ class _LandingScreenState extends State<LandingScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            _buildHeroLogo(context, l10n, logoMaxH),
-                            const SizedBox(height: 16),
+                            Text(
+                              l10n.landingHeroTitle,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: isMobile ? 30 : 40,
+                                fontWeight: FontWeight.w800,
+                                shadows: const [
+                                  Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 14),
                             Text(
                               l10n.landingHeroSubtitle,
                               textAlign: TextAlign.center,
