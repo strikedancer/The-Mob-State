@@ -69,7 +69,9 @@ git pull origin main
 mkdir -p runtime/client-images/vault || true
 cp -f client/assets/images/vault/vault_banner.png runtime/client-images/vault/vault_banner.png || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps backend
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml build --no-deps backend
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm --no-deps backend npx prisma migrate deploy
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
 '@.Replace("REMOTE_PROJECT_DIR", $dirUnix)

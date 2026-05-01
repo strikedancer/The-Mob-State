@@ -260,7 +260,9 @@ cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M)
 cp .env.plesk .env.plesk.bak-$(date +%F-%H%M)
 git pull origin main
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps backend
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml build --no-deps backend
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm --no-deps backend npx prisma migrate deploy
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
 ```
 
