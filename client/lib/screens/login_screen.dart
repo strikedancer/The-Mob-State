@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,7 +13,10 @@ import '../services/notification_service.dart';
 import '../config/supported_languages.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.initialRegister = false});
+
+  /// When true, opens the registration tab first (e.g. from marketing landing).
+  final bool initialRegister;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -23,9 +27,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
-  bool _isLogin = true;
+  late bool _isLogin;
   bool _obscurePassword = true;
   String _selectedLanguage = 'nl'; // Default to Dutch
+
+  @override
+  void initState() {
+    super.initState();
+    _isLogin = !widget.initialRegister;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      if (!auth.isAuthenticated) {
+        Provider.of<LocaleProvider>(context, listen: false).initGuestLocale();
+      }
+    });
+  }
 
   @override
   void dispose() {

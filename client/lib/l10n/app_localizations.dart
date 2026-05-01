@@ -24011,6 +24011,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.\nUse credits mainly on time-critical boosts or protection, not automatically on every small shortcut.\nIf you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP.'**
   String get helpTopicPremiumTips;
+
+  /// No description provided for @landingHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The Mob State'**
+  String get landingHeroTitle;
+
+  /// No description provided for @landingHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A deep text-based crime strategy game in your browser. Build your empire, run crews, trade, fight for territory — and climb the ranks.'**
+  String get landingHeroSubtitle;
+
+  /// No description provided for @landingAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What awaits you'**
+  String get landingAboutTitle;
+
+  /// No description provided for @landingAboutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage businesses, execute jobs and heists, develop your character through school certificates, compete in live events, and coordinate with your crew on the world map. Fair competitive rules, long-term progression, and regular content updates.'**
+  String get landingAboutBody;
+
+  /// No description provided for @landingTopPlayersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top players'**
+  String get landingTopPlayersTitle;
+
+  /// No description provided for @landingTopCrewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top crews (territory)'**
+  String get landingTopCrewsTitle;
+
+  /// No description provided for @landingRankLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get landingRankLabel;
+
+  /// No description provided for @landingRegionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Regions'**
+  String get landingRegionsLabel;
+
+  /// No description provided for @landingLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load rankings right now.'**
+  String get landingLoadError;
+
+  /// No description provided for @landingEmptyLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet.'**
+  String get landingEmptyLeaderboard;
+
+  /// No description provided for @landingCtaLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get landingCtaLogin;
+
+  /// No description provided for @landingCtaRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get landingCtaRegister;
+
+  /// No description provided for @landingFooterPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get landingFooterPrivacy;
+
+  /// No description provided for @landingFooterDigitalGoods.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase of Digital Goods'**
+  String get landingFooterDigitalGoods;
+
+  /// No description provided for @landingFooterLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get landingFooterLanguage;
+
+  /// Footer copyright; year is injected from the app clock.
+  ///
+  /// In en, this message translates to:
+  /// **'© {year} The Mob State. All rights reserved.'**
+  String landingCopyright(int year);
+
+  /// No description provided for @legalPrivacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get legalPrivacyTitle;
+
+  /// No description provided for @legalPrivacyLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: May 2026'**
+  String get legalPrivacyLastUpdated;
+
+  /// No description provided for @legalPrivacyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'This Privacy Policy explains how The Mob State (\"we\", \"us\") handles personal data when you use our website, web game and related services. By playing or browsing you agree to this policy where applicable law allows.'**
+  String get legalPrivacyIntro;
+
+  /// No description provided for @legalPrivacySection01Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Who we are'**
+  String get legalPrivacySection01Title;
+
+  /// No description provided for @legalPrivacySection01Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The Mob State is an online game operated as a digital service. For privacy requests you can contact us through the in-game support ticket system after registration, or via the official website contact channels if published.'**
+  String get legalPrivacySection01Body;
+
+  /// No description provided for @legalPrivacySection02Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Data we collect'**
+  String get legalPrivacySection02Title;
+
+  /// No description provided for @legalPrivacySection02Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We may process account data (username, email if provided, hashed password), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.'**
+  String get legalPrivacySection02Body;
+
+  /// No description provided for @legalPrivacySection03Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Purposes'**
+  String get legalPrivacySection03Title;
+
+  /// No description provided for @legalPrivacySection03Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We use data to provide the game, secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.'**
+  String get legalPrivacySection03Body;
+
+  /// No description provided for @legalPrivacySection04Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal bases (EEA/UK)'**
+  String get legalPrivacySection04Title;
+
+  /// No description provided for @legalPrivacySection04Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Where GDPR applies we rely on performance of a contract (providing the game), legitimate interests (security, analytics, product improvement balanced against your rights), consent where required (e.g. certain marketing cookies or optional communications), and legal obligations.'**
+  String get legalPrivacySection04Body;
+
+  /// No description provided for @legalPrivacySection05Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Cookies and local storage'**
+  String get legalPrivacySection05Title;
+
+  /// No description provided for @legalPrivacySection05Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We use cookies and similar technologies to keep you signed in, remember preferences, measure basic usage, and deliver essential functionality. You can control many cookies through your browser settings.'**
+  String get legalPrivacySection05Body;
+
+  /// No description provided for @legalPrivacySection06Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Retention'**
+  String get legalPrivacySection06Title;
+
+  /// No description provided for @legalPrivacySection06Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We retain information as long as needed to operate the service and meet legal, tax, and accounting requirements. Some logs may be kept for a limited security window. When data is no longer needed we delete or anonymise it where feasible.'**
+  String get legalPrivacySection06Body;
+
+  /// No description provided for @legalPrivacySection07Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing'**
+  String get legalPrivacySection07Title;
+
+  /// No description provided for @legalPrivacySection07Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.'**
+  String get legalPrivacySection07Body;
+
+  /// No description provided for @legalPrivacySection08Title.
+  ///
+  /// In en, this message translates to:
+  /// **'International transfers'**
+  String get legalPrivacySection08Title;
+
+  /// No description provided for @legalPrivacySection08Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data may be processed in the European Economic Area and/or other regions where we or our providers operate. We use safeguards such as standard contractual clauses where required.'**
+  String get legalPrivacySection08Body;
+
+  /// No description provided for @legalPrivacySection09Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rights'**
+  String get legalPrivacySection09Title;
+
+  /// No description provided for @legalPrivacySection09Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. Contact us via support to exercise rights; we may need to verify your identity.'**
+  String get legalPrivacySection09Body;
+
+  /// No description provided for @legalPrivacySection10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Children'**
+  String get legalPrivacySection10Title;
+
+  /// No description provided for @legalPrivacySection10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The game is not directed to children under the age where parental consent is required for processing in your region. If you believe a child provided data improperly, contact us and we will take appropriate steps.'**
+  String get legalPrivacySection10Body;
+
+  /// No description provided for @legalDigitalGoodsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase of Digital Goods'**
+  String get legalDigitalGoodsTitle;
+
+  /// No description provided for @legalDigitalGoodsLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: May 2026'**
+  String get legalDigitalGoodsLastUpdated;
+
+  /// No description provided for @legalDigitalGoodsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'This policy describes purchases of digital content and services in The Mob State (for example premium credits, VIP time, or other virtual items). By completing a purchase you agree to these terms together with any checkout terms shown at payment.'**
+  String get legalDigitalGoodsIntro;
+
+  /// No description provided for @legalDigitalGoodsSection01Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nature of digital purchases'**
+  String get legalDigitalGoodsSection01Title;
+
+  /// No description provided for @legalDigitalGoodsSection01Body.
+  ///
+  /// In en, this message translates to:
+  /// **'All purchases are payments for access to additional online features and virtual items within The Mob State. They are delivered digitally in-game and have no physical form.'**
+  String get legalDigitalGoodsSection01Body;
+
+  /// No description provided for @legalDigitalGoodsSection02Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediate delivery and withdrawal (UK/EU)'**
+  String get legalDigitalGoodsSection02Title;
+
+  /// No description provided for @legalDigitalGoodsSection02Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Where the Consumer Contracts Regulations 2013 (UK) or equivalent EU rules apply, you acknowledge that digital content is supplied immediately after purchase and, where the law permits, you may lose the statutory 14-day right of withdrawal once delivery has begun with your prior express consent.'**
+  String get legalDigitalGoodsSection02Body;
+
+  /// No description provided for @legalDigitalGoodsSection03Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunds and chargebacks'**
+  String get legalDigitalGoodsSection03Title;
+
+  /// No description provided for @legalDigitalGoodsSection03Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital goods are generally non-refundable once delivered except where mandatory consumer law requires otherwise. Chargebacks or payment disputes after delivery may lead to suspension or termination of related accounts; please contact support first so we can help resolve billing issues.'**
+  String get legalDigitalGoodsSection03Body;
+
+  /// No description provided for @legalDigitalGoodsSection04Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission and age'**
+  String get legalDigitalGoodsSection04Title;
+
+  /// No description provided for @legalDigitalGoodsSection04Body.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be authorised to use the chosen payment method. If you are under 18, you need permission from a parent or guardian to make purchases or use paid services.'**
+  String get legalDigitalGoodsSection04Body;
+
+  /// No description provided for @legalDigitalGoodsSection05Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment channels and fees'**
+  String get legalDigitalGoodsSection05Title;
+
+  /// No description provided for @legalDigitalGoodsSection05Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices may be shown in euros or your provider currency. Mobile carriers or payment platforms may add their own fees; check with your provider before confirming carrier or wallet payments.'**
+  String get legalDigitalGoodsSection05Body;
+
+  /// No description provided for @legalDigitalGoodsSection06Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get legalDigitalGoodsSection06Title;
+
+  /// No description provided for @legalDigitalGoodsSection06Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid features are delivered virtually through our servers and may change over time. We may adjust, suspend or retire specific items, bundles, or pricing to balance the game or for technical reasons.'**
+  String get legalDigitalGoodsSection06Body;
+
+  /// No description provided for @legalDigitalGoodsSection07Title.
+  ///
+  /// In en, this message translates to:
+  /// **'No real-world cash value'**
+  String get legalDigitalGoodsSection07Title;
+
+  /// No description provided for @legalDigitalGoodsSection07Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Virtual items and currencies have no monetary value outside the game, are non-transferable for real money, and may be altered or removed as part of updates, account enforcement, or service discontinuation except where law requires compensation.'**
+  String get legalDigitalGoodsSection07Body;
+
+  /// No description provided for @legalDigitalGoodsSection08Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited commercial use'**
+  String get legalDigitalGoodsSection08Title;
+
+  /// No description provided for @legalDigitalGoodsSection08Body.
+  ///
+  /// In en, this message translates to:
+  /// **'You may not use The Mob State to operate unauthorised real-money trading, including buying or selling accounts, in-game currency, codes, or virtual assets for cash or external services outside our official payment flows.'**
+  String get legalDigitalGoodsSection08Body;
+
+  /// No description provided for @legalDigitalGoodsSection09Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Service changes'**
+  String get legalDigitalGoodsSection09Title;
+
+  /// No description provided for @legalDigitalGoodsSection09Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We may update this policy and in-game purchase descriptions. Continued use after changes constitutes acceptance of the revised terms where permitted by law.'**
+  String get legalDigitalGoodsSection09Body;
+
+  /// No description provided for @legalDigitalGoodsSection10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Governing law'**
+  String get legalDigitalGoodsSection10Title;
+
+  /// No description provided for @legalDigitalGoodsSection10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Unless mandatory local law provides otherwise, this policy is governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.'**
+  String get legalDigitalGoodsSection10Body;
 }
 
 class _AppLocalizationsDelegate

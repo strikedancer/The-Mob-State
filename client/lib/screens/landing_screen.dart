@@ -1,0 +1,541 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../config/app_config.dart';
+import '../config/supported_languages.dart';
+import '../l10n/app_localizations.dart';
+import '../providers/locale_provider.dart';
+import '../utils/web_asset_helper.dart';
+
+const Color _landingGold = Color(0xFFC0A060);
+
+int? _decodeInt(dynamic v) {
+  if (v is int) return v;
+  if (v is num) return v.round();
+  return null;
+}
+
+class _PublicPlayerRow {
+  _PublicPlayerRow({required this.rank, required this.username});
+
+  final int rank;
+  final String username;
+
+  static _PublicPlayerRow? tryParse(Map<String, dynamic> json) {
+    final rank = _decodeInt(json['rank']);
+    final username = json['username'];
+    if (rank == null || username is! String) return null;
+    return _PublicPlayerRow(rank: rank, username: username);
+  }
+}
+
+class _PublicCrewRow {
+  _PublicCrewRow({required this.rank, required this.crewName, required this.regionsOwned});
+
+  final int rank;
+  final String crewName;
+  final int regionsOwned;
+
+  static _PublicCrewRow? tryParse(Map<String, dynamic> json) {
+    final rank = _decodeInt(json['rank']);
+    final regionsOwned = _decodeInt(json['regionsOwned']);
+    final crewName = json['crewName'];
+    if (rank == null || crewName is! String || regionsOwned == null) return null;
+    return _PublicCrewRow(rank: rank, crewName: crewName, regionsOwned: regionsOwned);
+  }
+}
+
+/// Marketing home: hero, public rankings, legal links, guest language (no server).
+class LandingScreen extends StatefulWidget {
+  const LandingScreen({super.key});
+
+  @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
+  List<_PublicPlayerRow> _players = [];
+  List<_PublicCrewRow> _crews = [];
+  bool _loading = true;
+  bool _loadFailed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<LocaleProvider>().initGuestLocale();
+      _fetchPublicHome();
+    });
+  }
+
+  Future<void> _fetchPublicHome() async {
+    setState(() {
+      _loading = true;
+      _loadFailed = false;
+    });
+    try {
+      final uri = Uri.parse('${AppConfig.apiBaseUrl}/public/home');
+      final response = await http.get(uri).timeout(AppConfig.apiTimeout);
+      if (!mounted) return;
+      if (response.statusCode != 200) {
+        setState(() {
+          _loading = false;
+          _loadFailed = true;
+          _players = [];
+          _crews = [];
+        });
+        return;
+      }
+      final decoded = jsonDecode(response.body);
+      if (decoded is! Map<String, dynamic>) {
+        setState(() {
+          _loading = false;
+          _loadFailed = true;
+        });
+        return;
+      }
+      final data = decoded['data'];
+      if (data is! Map<String, dynamic>) {
+        setState(() {
+          _loading = false;
+          _loadFailed = true;
+        });
+        return;
+      }
+      final rawPlayers = data['topPlayers'];
+      final rawCrews = data['topCrews'];
+      final players = <_PublicPlayerRow>[];
+      final crews = <_PublicCrewRow>[];
+      if (rawPlayers is List) {
+        for (final e in rawPlayers) {
+          if (e is Map<String, dynamic>) {
+            final row = _PublicPlayerRow.tryParse(e);
+            if (row != null) players.add(row);
+          }
+        }
+      }
+      if (rawCrews is List) {
+        for (final e in rawCrews) {
+          if (e is Map<String, dynamic>) {
+            final row = _PublicCrewRow.tryParse(e);
+            if (row != null) crews.add(row);
+          }
+        }
+      }
+      setState(() {
+        _loading = false;
+        _loadFailed = false;
+        _players = players;
+        _crews = crews;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _loadFailed = true;
+        _players = [];
+        _crews = [];
+      });
+    }
+  }
+
+  Widget _buildBackgroundFallback() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.grey[900]!, Colors.black, Colors.grey[850]!],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackground(bool isPortrait) {
+    final preferredAsset = isPortrait
+        ? 'assets/images/backgrounds/login_background_mobile.png'
+        : 'assets/images/backgrounds/login_background.png';
+    final canonicalWebAsset = isPortrait
+        ? 'assets/assets/images/backgrounds/login_background_mobile.png'
+        : 'assets/assets/images/backgrounds/login_background.png';
+    final staticWebFallback = isPortrait
+        ? 'images/backgrounds/login_background_mobile.png'
+        : 'images/backgrounds/login_background.png';
+    final directPath = isPortrait
+        ? WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background_mobile.png')
+        : WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background.png');
+    final oppositeStaticFallback = isPortrait
+        ? 'images/backgrounds/login_background.png'
+        : 'images/backgrounds/login_background_mobile.png';
+
+    return Image.asset(
+      preferredAsset,
+      fit: BoxFit.cover,
+      alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+      errorBuilder: (context, error, stackTrace) {
+        return Image.network(
+          WebAssetHelper.toPublicUrl(canonicalWebAsset),
+          fit: BoxFit.cover,
+          alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.network(
+              WebAssetHelper.toPublicUrl(staticWebFallback),
+              fit: BoxFit.cover,
+              alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.network(
+                  directPath,
+                  fit: BoxFit.cover,
+                  alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.network(
+                      WebAssetHelper.toPublicUrl(oppositeStaticFallback),
+                      fit: BoxFit.cover,
+                      alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+                      errorBuilder: (context, error, stackTrace) {
+                        return _buildBackgroundFallback();
+                      },
+                    );
+                  },
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _showGuestLanguageDialog(AppLocalizations l10n) async {
+    final localeProvider = context.read<LocaleProvider>();
+    final current = localeProvider.locale.languageCode;
+
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1a1a2e),
+        title: Text(l10n.landingFooterLanguage, style: const TextStyle(color: Colors.white)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (final code in SupportedLanguages.codes)
+                ListTile(
+                  leading: Text(
+                    SupportedLanguages.flagFor(code) ?? '🌐',
+                    style: const TextStyle(fontSize: 24),
+                  ),
+                  title: Text(SupportedLanguages.labelFor(code), style: const TextStyle(color: Colors.white)),
+                  trailing: current == code ? const Icon(Icons.check, color: Colors.green) : null,
+                  onTap: () async {
+                    await localeProvider.persistGuestLocale(code);
+                    if (ctx.mounted) Navigator.of(ctx).pop();
+                  },
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.cancel, style: const TextStyle(color: Colors.white70)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _rankingsPanel(AppLocalizations l10n) {
+    if (_loading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 24),
+        child: Center(child: CircularProgressIndicator(color: _landingGold)),
+      );
+    }
+    if (_loadFailed) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Text(
+          l10n.landingLoadError,
+          style: const TextStyle(color: Colors.white70),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, c) {
+        final wide = c.maxWidth >= 720;
+        final playersCard = _leaderCard(
+          title: l10n.landingTopPlayersTitle,
+          child: _players.isEmpty
+              ? Text(l10n.landingEmptyLeaderboard, style: const TextStyle(color: Colors.white54))
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 44,
+                            child: Text(
+                              l10n.landingRankLabel,
+                              style: const TextStyle(color: Colors.white38, fontSize: 11),
+                            ),
+                          ),
+                          const Expanded(child: SizedBox.shrink()),
+                        ],
+                      ),
+                    ),
+                    for (final p in _players)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 44,
+                              child: Text(
+                                '#${p.rank}',
+                                style: const TextStyle(color: _landingGold, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                p.username,
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+        );
+        final crewsCard = _leaderCard(
+          title: l10n.landingTopCrewsTitle,
+          child: _crews.isEmpty
+              ? Text(l10n.landingEmptyLeaderboard, style: const TextStyle(color: Colors.white54))
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 44,
+                            child: Text(
+                              l10n.landingRankLabel,
+                              style: const TextStyle(color: Colors.white38, fontSize: 11),
+                            ),
+                          ),
+                          const Expanded(child: SizedBox.shrink()),
+                          Text(
+                            l10n.landingRegionsLabel,
+                            style: const TextStyle(color: Colors.white38, fontSize: 11),
+                          ),
+                        ],
+                      ),
+                    ),
+                    for (final c in _crews)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 44,
+                              child: Text(
+                                '#${c.rank}',
+                                style: const TextStyle(color: _landingGold, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                c.crewName,
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Text(
+                              '${c.regionsOwned}',
+                              style: const TextStyle(color: Colors.white70),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+        );
+
+        if (wide) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: playersCard),
+              const SizedBox(width: 16),
+              Expanded(child: crewsCard),
+            ],
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            playersCard,
+            const SizedBox(height: 16),
+            crewsCard,
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _leaderCard({required String title, required Widget child}) {
+    return Card(
+      color: Colors.black.withOpacity(0.45),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.amber.shade800.withOpacity(0.35)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(color: _landingGold, fontSize: 18, fontWeight: FontWeight.bold)),
+            const Divider(color: Colors.white24),
+            child,
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final size = MediaQuery.of(context).size;
+    final isPortrait = size.height > size.width;
+    final isMobile = size.width < 600;
+    final year = DateTime.now().year;
+
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (isMobile) Container(color: Colors.black),
+          Positioned.fill(child: _buildBackground(isPortrait)),
+          Container(color: Colors.black.withOpacity(isMobile ? 0.45 : 0.38)),
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 32, vertical: 20),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 960),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        l10n.landingHeroTitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: isMobile ? 32 : 42,
+                          fontWeight: FontWeight.w800,
+                          shadows: const [
+                            Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2)),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.landingHeroSubtitle,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white70, fontSize: 16, height: 1.4),
+                      ),
+                      const SizedBox(height: 28),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _landingGold,
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                            onPressed: () => Navigator.of(context).pushNamed('/login'),
+                            child: Text(l10n.landingCtaLogin),
+                          ),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: _landingGold,
+                              side: const BorderSide(color: _landingGold, width: 1.5),
+                              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                            onPressed: () => Navigator.of(context).pushNamed('/register'),
+                            child: Text(l10n.landingCtaRegister),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 36),
+                      Text(
+                        l10n.landingAboutTitle,
+                        style: const TextStyle(color: _landingGold, fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        l10n.landingAboutBody,
+                        style: const TextStyle(color: Colors.white70, height: 1.45, fontSize: 15),
+                      ),
+                      const SizedBox(height: 32),
+                      _rankingsPanel(l10n),
+                      const SizedBox(height: 40),
+                      const Divider(color: Colors.white24),
+                      const SizedBox(height: 16),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 8,
+                        runSpacing: 8,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pushNamed('/privacy'),
+                            child: Text(l10n.landingFooterPrivacy, style: const TextStyle(color: _landingGold)),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pushNamed('/digital-goods'),
+                            child: Text(l10n.landingFooterDigitalGoods, style: const TextStyle(color: _landingGold)),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => _showGuestLanguageDialog(l10n),
+                            icon: const Icon(Icons.language, color: _landingGold, size: 20),
+                            label: Text(l10n.landingFooterLanguage, style: const TextStyle(color: _landingGold)),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.landingCopyright(year),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white38, fontSize: 12),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

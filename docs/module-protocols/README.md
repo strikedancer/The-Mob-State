@@ -24,6 +24,7 @@ De master protocol zorgt ervoor dat je:
 ### Shared Cross-Cutting Protocols
 - [Balance & Economy](balance-economy.md) - Progression pacing, cooldown balancing, premium sinks en non-pay-to-win guardrails
 - [Frontend Platform](frontend-platform.md) - Flutter web/mobile/PWA shells, assets, embedded views en cachegedrag
+- [Marketing web](marketing-web.md) - Publieke landing, `GET /public/home`, gast-locale, juridische ARB-schermen, SPA-fallback
 - [Notifications & Push](notifications.md) - Push pipeline, FCM/service worker en cooldown-signalen
 - [Player Profile](player-profile.md) - Profielnavigatie, privacy en profielinteracties
 

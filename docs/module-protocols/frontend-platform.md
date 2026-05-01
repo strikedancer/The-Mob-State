@@ -5,11 +5,19 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 
 ## Primary Frontend Entry
 - client/lib/config/supported_languages.dart (centrale player-UI-taalcodes; synchroon met `backend/src/config/supportedLanguages.ts` en `client/lib/l10n/app_*.arb`)
+- client/lib/screens/landing_screen.dart (marketing home voor niet-ingelogde gebruikers; `GET /public/home`)
+- client/lib/screens/legal_privacy_screen.dart en `legal_digital_goods_screen.dart` (juridische teksten volledig uit ARB)
 - client/lib/screens/dashboard_screen.dart
 - client/lib/utils/web_asset_helper.dart
 - client/lib/widgets/overlay_image.dart
 - client/lib/screens/help_screen.dart
 - client/lib/screens/storage_tab.dart
+
+## Marketing web routes en taal (gast vs ingelogd)
+- **Paden (Flutter web):** `/` toont via `AuthWrapper` de `LandingScreen` zolang er geen sessie is; `/login` en `/register` (zelfde scherm met `initialRegister`) voor auth-flows; `/privacy` en `/digital-goods` voor juridische pagina’s (named routes + `_resolveHome` op basis van `Uri.base.path`).
+- **Gast-UI-taal:** eerste bezoek: opgeslagen `guest_ui_language_code`, anders browser-/platformtaal gemapt via `SupportedLanguages.resolveFromDeviceLanguage` (fallback `en`); zie `LocaleProvider.initGuestLocale`. Footer-taalwissel op de landing: `persistGuestLocale` (geen servercall).
+- **Ingelogde speler:** `LocaleProvider.loadLocale()` na auth (`GET /settings` → `preferredLanguage`); `MaterialApp`-locale volgt `LocaleProvider`.
+- Zie ook `marketing-web.md` voor API + SPA-fallback op de backend.
 
 ## i18n / meertaligheid (praktisch)
 - Player UI gebruikt `client/lib/l10n/app_*.arb` (key-pariteit afdwingen via `node scripts/verify_arb_parity.mjs`).

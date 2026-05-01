@@ -13817,4 +13817,217 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get helpTopicPremiumTips =>
       'Verifique seu saldo de crédito e prazo de validade antes de comprar novamente; estender geralmente é melhor do que empilhar às cegas. \nUse créditos principalmente em reforços ou proteção urgentes, não automaticamente em cada pequeno atalho. \nSe você ainda não faz parte de uma equipe, comece com Player VIP ou um pacote de créditos antes de Crew VIP.';
+
+  @override
+  String get landingHeroTitle => 'The Mob State';
+
+  @override
+  String get landingHeroSubtitle =>
+      'A deep text-based crime strategy game in your browser. Build your empire, run crews, trade, fight for territory — and climb the ranks.';
+
+  @override
+  String get landingAboutTitle => 'What awaits you';
+
+  @override
+  String get landingAboutBody =>
+      'Manage businesses, execute jobs and heists, develop your character through school certificates, compete in live events, and coordinate with your crew on the world map. Fair competitive rules, long-term progression, and regular content updates.';
+
+  @override
+  String get landingTopPlayersTitle => 'Top players';
+
+  @override
+  String get landingTopCrewsTitle => 'Top crews (territory)';
+
+  @override
+  String get landingRankLabel => 'Rank';
+
+  @override
+  String get landingRegionsLabel => 'Regions';
+
+  @override
+  String get landingLoadError => 'Could not load rankings right now.';
+
+  @override
+  String get landingEmptyLeaderboard => 'No entries yet.';
+
+  @override
+  String get landingCtaLogin => 'Log in';
+
+  @override
+  String get landingCtaRegister => 'Create account';
+
+  @override
+  String get landingFooterPrivacy => 'Privacy Policy';
+
+  @override
+  String get landingFooterDigitalGoods => 'Purchase of Digital Goods';
+
+  @override
+  String get landingFooterLanguage => 'Language';
+
+  @override
+  String landingCopyright(int year) {
+    return '© $year The Mob State. All rights reserved.';
+  }
+
+  @override
+  String get legalPrivacyTitle => 'Privacy Policy';
+
+  @override
+  String get legalPrivacyLastUpdated => 'Last updated: May 2026';
+
+  @override
+  String get legalPrivacyIntro =>
+      'This Privacy Policy explains how The Mob State (\"we\", \"us\") handles personal data when you use our website, web game and related services. By playing or browsing you agree to this policy where applicable law allows.';
+
+  @override
+  String get legalPrivacySection01Title => 'Who we are';
+
+  @override
+  String get legalPrivacySection01Body =>
+      'The Mob State is an online game operated as a digital service. For privacy requests you can contact us through the in-game support ticket system after registration, or via the official website contact channels if published.';
+
+  @override
+  String get legalPrivacySection02Title => 'Data we collect';
+
+  @override
+  String get legalPrivacySection02Body =>
+      'We may process account data (username, email if provided, hashed password), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
+
+  @override
+  String get legalPrivacySection03Title => 'Purposes';
+
+  @override
+  String get legalPrivacySection03Body =>
+      'We use data to provide the game, secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
+
+  @override
+  String get legalPrivacySection04Title => 'Legal bases (EEA/UK)';
+
+  @override
+  String get legalPrivacySection04Body =>
+      'Where GDPR applies we rely on performance of a contract (providing the game), legitimate interests (security, analytics, product improvement balanced against your rights), consent where required (e.g. certain marketing cookies or optional communications), and legal obligations.';
+
+  @override
+  String get legalPrivacySection05Title => 'Cookies and local storage';
+
+  @override
+  String get legalPrivacySection05Body =>
+      'We use cookies and similar technologies to keep you signed in, remember preferences, measure basic usage, and deliver essential functionality. You can control many cookies through your browser settings.';
+
+  @override
+  String get legalPrivacySection06Title => 'Retention';
+
+  @override
+  String get legalPrivacySection06Body =>
+      'We retain information as long as needed to operate the service and meet legal, tax, and accounting requirements. Some logs may be kept for a limited security window. When data is no longer needed we delete or anonymise it where feasible.';
+
+  @override
+  String get legalPrivacySection07Title => 'Sharing';
+
+  @override
+  String get legalPrivacySection07Body =>
+      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
+
+  @override
+  String get legalPrivacySection08Title => 'International transfers';
+
+  @override
+  String get legalPrivacySection08Body =>
+      'Your data may be processed in the European Economic Area and/or other regions where we or our providers operate. We use safeguards such as standard contractual clauses where required.';
+
+  @override
+  String get legalPrivacySection09Title => 'Your rights';
+
+  @override
+  String get legalPrivacySection09Body =>
+      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. Contact us via support to exercise rights; we may need to verify your identity.';
+
+  @override
+  String get legalPrivacySection10Title => 'Children';
+
+  @override
+  String get legalPrivacySection10Body =>
+      'The game is not directed to children under the age where parental consent is required for processing in your region. If you believe a child provided data improperly, contact us and we will take appropriate steps.';
+
+  @override
+  String get legalDigitalGoodsTitle => 'Purchase of Digital Goods';
+
+  @override
+  String get legalDigitalGoodsLastUpdated => 'Last updated: May 2026';
+
+  @override
+  String get legalDigitalGoodsIntro =>
+      'This policy describes purchases of digital content and services in The Mob State (for example premium credits, VIP time, or other virtual items). By completing a purchase you agree to these terms together with any checkout terms shown at payment.';
+
+  @override
+  String get legalDigitalGoodsSection01Title => 'Nature of digital purchases';
+
+  @override
+  String get legalDigitalGoodsSection01Body =>
+      'All purchases are payments for access to additional online features and virtual items within The Mob State. They are delivered digitally in-game and have no physical form.';
+
+  @override
+  String get legalDigitalGoodsSection02Title =>
+      'Immediate delivery and withdrawal (UK/EU)';
+
+  @override
+  String get legalDigitalGoodsSection02Body =>
+      'Where the Consumer Contracts Regulations 2013 (UK) or equivalent EU rules apply, you acknowledge that digital content is supplied immediately after purchase and, where the law permits, you may lose the statutory 14-day right of withdrawal once delivery has begun with your prior express consent.';
+
+  @override
+  String get legalDigitalGoodsSection03Title => 'Refunds and chargebacks';
+
+  @override
+  String get legalDigitalGoodsSection03Body =>
+      'Digital goods are generally non-refundable once delivered except where mandatory consumer law requires otherwise. Chargebacks or payment disputes after delivery may lead to suspension or termination of related accounts; please contact support first so we can help resolve billing issues.';
+
+  @override
+  String get legalDigitalGoodsSection04Title => 'Permission and age';
+
+  @override
+  String get legalDigitalGoodsSection04Body =>
+      'You must be authorised to use the chosen payment method. If you are under 18, you need permission from a parent or guardian to make purchases or use paid services.';
+
+  @override
+  String get legalDigitalGoodsSection05Title => 'Payment channels and fees';
+
+  @override
+  String get legalDigitalGoodsSection05Body =>
+      'Prices may be shown in euros or your provider currency. Mobile carriers or payment platforms may add their own fees; check with your provider before confirming carrier or wallet payments.';
+
+  @override
+  String get legalDigitalGoodsSection06Title => 'Availability';
+
+  @override
+  String get legalDigitalGoodsSection06Body =>
+      'Paid features are delivered virtually through our servers and may change over time. We may adjust, suspend or retire specific items, bundles, or pricing to balance the game or for technical reasons.';
+
+  @override
+  String get legalDigitalGoodsSection07Title => 'No real-world cash value';
+
+  @override
+  String get legalDigitalGoodsSection07Body =>
+      'Virtual items and currencies have no monetary value outside the game, are non-transferable for real money, and may be altered or removed as part of updates, account enforcement, or service discontinuation except where law requires compensation.';
+
+  @override
+  String get legalDigitalGoodsSection08Title => 'Prohibited commercial use';
+
+  @override
+  String get legalDigitalGoodsSection08Body =>
+      'You may not use The Mob State to operate unauthorised real-money trading, including buying or selling accounts, in-game currency, codes, or virtual assets for cash or external services outside our official payment flows.';
+
+  @override
+  String get legalDigitalGoodsSection09Title => 'Service changes';
+
+  @override
+  String get legalDigitalGoodsSection09Body =>
+      'We may update this policy and in-game purchase descriptions. Continued use after changes constitutes acceptance of the revised terms where permitted by law.';
+
+  @override
+  String get legalDigitalGoodsSection10Title => 'Governing law';
+
+  @override
+  String get legalDigitalGoodsSection10Body =>
+      'Unless mandatory local law provides otherwise, this policy is governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.';
 }

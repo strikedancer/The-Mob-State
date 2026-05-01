@@ -13720,4 +13720,218 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get helpTopicPremiumTips =>
       'Controleer eerst je creditsaldo en vervaldatum voordat je opnieuw koopt; vaak is verlengen nuttiger dan blind stapelen.\nGebruik credits vooral op tijdkritische boosts of bescherming, niet automatisch op elke kleine versnelling.\nZit je nog niet in een crew, begin dan eerder met Player VIP of een creditbundel dan met Crew VIP.';
+
+  @override
+  String get landingHeroTitle => 'The Mob State';
+
+  @override
+  String get landingHeroSubtitle =>
+      'Een diepe text-based misdaadstrategiespel in je browser. Bouw je imperium, run crews, handel, vecht om territorium — en klim in de ranglijsten.';
+
+  @override
+  String get landingAboutTitle => 'Wat je te wachten staat';
+
+  @override
+  String get landingAboutBody =>
+      'Beheer bedrijven, voer jobs en overvallen uit, ontwikkel je personage via schoolcertificaten, doe mee aan live events en coördineer met je crew op de wereldkaart. Eerlijke competitie, langetermijnprogressie en regelmatige updates.';
+
+  @override
+  String get landingTopPlayersTitle => 'Top spelers';
+
+  @override
+  String get landingTopCrewsTitle => 'Top crews (territorium)';
+
+  @override
+  String get landingRankLabel => 'Rang';
+
+  @override
+  String get landingRegionsLabel => 'Regio’s';
+
+  @override
+  String get landingLoadError => 'Ranglijsten konden nu niet worden geladen.';
+
+  @override
+  String get landingEmptyLeaderboard => 'Nog geen invoer.';
+
+  @override
+  String get landingCtaLogin => 'Inloggen';
+
+  @override
+  String get landingCtaRegister => 'Account aanmaken';
+
+  @override
+  String get landingFooterPrivacy => 'Privacybeleid';
+
+  @override
+  String get landingFooterDigitalGoods => 'Aankoop digitale goederen';
+
+  @override
+  String get landingFooterLanguage => 'Taal';
+
+  @override
+  String landingCopyright(int year) {
+    return '© $year The Mob State. Alle rechten voorbehouden.';
+  }
+
+  @override
+  String get legalPrivacyTitle => 'Privacybeleid';
+
+  @override
+  String get legalPrivacyLastUpdated => 'Laatst bijgewerkt: mei 2026';
+
+  @override
+  String get legalPrivacyIntro =>
+      'Dit privacybeleid legt uit hoe The Mob State (“wij”) persoonsgegevens verwerkt wanneer je onze website, webgame en gerelateerde diensten gebruikt. Door te spelen of te browsen ga je akkoord met dit beleid voor zover de wet dat toelaat.';
+
+  @override
+  String get legalPrivacySection01Title => 'Wie wij zijn';
+
+  @override
+  String get legalPrivacySection01Body =>
+      'The Mob State is een online game als digitale dienst. Voor privacyverzoeken kun je na registratie contact opnemen via het supportticketssysteem in het spel, of via officiële contactkanalen op de website indien gepubliceerd.';
+
+  @override
+  String get legalPrivacySection02Title => 'Gegevens die we verwerken';
+
+  @override
+  String get legalPrivacySection02Body =>
+      'We kunnen accountgegevens (gebruikersnaam, e-mail indien opgegeven, gehasht wachtwoord), gameplay- en voortgangsdaten, technische logs (IP-adres, apparaat/browsertype, tijdstempels), betalingsreferenties van betaalproviders (geen volledige kaartnummers) en door jou naar support gestuurde berichten verwerken.';
+
+  @override
+  String get legalPrivacySection03Title => 'Doeleinden';
+
+  @override
+  String get legalPrivacySection03Body =>
+      'We gebruiken gegevens om de game te leveren, accounts te beveiligen, misbruik en fraude te voorkomen, aankopen af te handelen, prestaties te verbeteren, servicemeldingen te sturen en aan wettelijke verplichtingen te voldoen.';
+
+  @override
+  String get legalPrivacySection04Title => 'Rechtsgronden (EER/VK)';
+
+  @override
+  String get legalPrivacySection04Body =>
+      'Waar de AVG geldt steunen we op uitvoering van een overeenkomst (de game leveren), gerechtvaardigde belangen (beveiliging, basis analytics, productverbetering afgewogen tegen jouw rechten), toestemming waar nodig, en wettelijke verplichtingen.';
+
+  @override
+  String get legalPrivacySection05Title => 'Cookies en lokale opslag';
+
+  @override
+  String get legalPrivacySection05Body =>
+      'We gebruiken cookies en vergelijkbare technieken om je ingelogd te houden, voorkeuren te onthouden, basisgebruik te meten en essentiële functionaliteit te leveren. Je kunt veel cookies via je browser beheren.';
+
+  @override
+  String get legalPrivacySection06Title => 'Bewaartermijnen';
+
+  @override
+  String get legalPrivacySection06Body =>
+      'We bewaren informatie zolang nodig is voor de dienst en voor fiscale/juridische eisen. Sommige logs worden beperkt bewaard voor beveiliging. Waar mogelijk wissen of anonimiseren we gegevens die niet meer nodig zijn.';
+
+  @override
+  String get legalPrivacySection07Title => 'Delen';
+
+  @override
+  String get legalPrivacySection07Body =>
+      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
+
+  @override
+  String get legalPrivacySection08Title => 'Internationale doorgifte';
+
+  @override
+  String get legalPrivacySection08Body =>
+      'Gegevens kunnen in de EER en/of andere regio’s worden verwerkt. Waar nodig gebruiken we waarborgen zoals standaardcontractbepalingen.';
+
+  @override
+  String get legalPrivacySection09Title => 'Jouw rechten';
+
+  @override
+  String get legalPrivacySection09Body =>
+      'Je kunt rechten hebben op inzage, correctie, verwijdering, beperking of bezwaar, en op gegevensoverdraagbaarheid. Je kunt een klacht indienen bij een toezichthouder. Neem via support contact op om rechten uit te oefenen; we kunnen je identiteit verifiëren.';
+
+  @override
+  String get legalPrivacySection10Title => 'Kinderen';
+
+  @override
+  String get legalPrivacySection10Body =>
+      'De game richt zich niet op kinderen onder de leeftijd waar ouderlijke toestemming vereist is. Neem contact op als je denkt dat een kind onterecht gegevens heeft verstrekt.';
+
+  @override
+  String get legalDigitalGoodsTitle => 'Aankoop van digitale goederen';
+
+  @override
+  String get legalDigitalGoodsLastUpdated => 'Laatst bijgewerkt: mei 2026';
+
+  @override
+  String get legalDigitalGoodsIntro =>
+      'Dit beleid beschrijft aankopen van digitale inhoud en diensten in The Mob State (zoals premium credits, VIP-tijd of andere virtuele items). Door te betalen ga je akkoord met deze voorwaarden en met eventuele checkoutteksten bij de betaling.';
+
+  @override
+  String get legalDigitalGoodsSection01Title => 'Aard van digitale aankopen';
+
+  @override
+  String get legalDigitalGoodsSection01Body =>
+      'Alle aankopen zijn betalingen voor extra online functies en virtuele items binnen The Mob State. Ze worden digitaal in-game geleverd en hebben geen fysieke vorm.';
+
+  @override
+  String get legalDigitalGoodsSection02Title =>
+      'Directe levering en herroeping (VK/EU)';
+
+  @override
+  String get legalDigitalGoodsSection02Body =>
+      'Waar de Consumer Contracts Regulations 2013 (VK) of vergelijkbare EU-regels gelden, erken je dat digitale inhoud direct na aankoop wordt geleverd en dat je wettelijke herroepingsrecht van 14 dagen kan vervallen zodra levering met jouw uitdrukkelijke voorafgaande toestemming is begonnen, voor zover de wet dat toestaat.';
+
+  @override
+  String get legalDigitalGoodsSection03Title =>
+      'Terugbetalingen en chargebacks';
+
+  @override
+  String get legalDigitalGoodsSection03Body =>
+      'Digitale goederen zijn in principe niet terugbetaalbaar na levering, behalve waar dwingend consumentenrecht anders voorschrijft. Chargebacks na levering kunnen leiden tot schorsing of beëindiging van gerelateerde accounts; neem eerst contact op met support.';
+
+  @override
+  String get legalDigitalGoodsSection04Title => 'Toestemming en leeftijd';
+
+  @override
+  String get legalDigitalGoodsSection04Body =>
+      'Je moet gemachtigd zijn om de gekozen betaalmethode te gebruiken. Ben je onder de 18, dan is toestemming van ouder/voogd nodig voor betalingen of betaalde diensten.';
+
+  @override
+  String get legalDigitalGoodsSection05Title => 'Betaalkanalen en kosten';
+
+  @override
+  String get legalDigitalGoodsSection05Body =>
+      'Prijzen kunnen in euro’s of de valuta van je provider worden getoond. Mobiele providers of platforms kunnen eigen kosten rekenen; controleer dit vóór bevestiging.';
+
+  @override
+  String get legalDigitalGoodsSection06Title => 'Beschikbaarheid';
+
+  @override
+  String get legalDigitalGoodsSection06Body =>
+      'Betaalde functies worden virtueel via onze servers geleverd en kunnen in de loop van de tijd veranderen. We kunnen items, bundels of prijzen aanpassen, opschorten of laten vervallen voor balans of technische redenen.';
+
+  @override
+  String get legalDigitalGoodsSection07Title => 'Geen contante waarde';
+
+  @override
+  String get legalDigitalGoodsSection07Body =>
+      'Virtuele items en valuta’s hebben geen geldwaarde buiten de game, zijn niet inwisselbaar voor echt geld en kunnen worden gewijzigd of verwijderd bij updates, handhaving of beëindiging van de dienst, behalve waar de wet compensatie vereist.';
+
+  @override
+  String get legalDigitalGoodsSection08Title => 'Verboden commercieel gebruik';
+
+  @override
+  String get legalDigitalGoodsSection08Body =>
+      'Je mag The Mob State niet gebruiken voor ongeautoriseerde handel met echt geld, waaronder verkoop van accounts, in-game valuta, codes of virtuele assets buiten onze officiële betaalstromen.';
+
+  @override
+  String get legalDigitalGoodsSection09Title => 'Wijzigingen van de dienst';
+
+  @override
+  String get legalDigitalGoodsSection09Body =>
+      'We kunnen dit beleid en in-game aankoopbeschrijvingen bijwerken. Voortgezet gebruik na wijzigingen betekent acceptatie voor zover de wet dat toelaat.';
+
+  @override
+  String get legalDigitalGoodsSection10Title => 'Toepasselijk recht';
+
+  @override
+  String get legalDigitalGoodsSection10Body =>
+      'Tenzij dwingend lokaal recht anders bepaalt, wordt dit beleid beheerst door het recht van Engeland en Wales en zijn geschillen onderworpen aan de exclusieve jurisdictie van de rechtbanken van Engeland en Wales.';
 }

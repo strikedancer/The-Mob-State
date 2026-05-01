@@ -65,6 +65,7 @@ import ticketsRouter from './routes/tickets';
 import territoryRouter from './routes/territory';
 import vaultRouter from './routes/vault';
 import dailyGoalsRouter from './routes/dailyGoals';
+import publicMarketingRouter from './routes/publicMarketing';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { globalRateLimiter } from './middleware/rateLimit';
 import { waitForPrisma } from './lib/prisma';
@@ -206,11 +207,24 @@ app.use('/crypto', cryptoRouter);
 app.use('/territory', territoryRouter);
 app.use('/vault', vaultRouter);
 app.use('/daily-goals', dailyGoalsRouter);
+app.use('/public', publicMarketingRouter);
 app.use('/admin/auth', adminAuthRouter);
 app.use('/admin', adminRouter);
 app.use('/admin-fix', adminFixRouter);
 app.use('/admin/npcs', adminNPCsRouter);
 app.use('/admin/game-events', adminGameEventsRouter);
+
+// Flutter web: deep links (e.g. /privacy) — serve index.html for GET when no API handler matched
+app.get('*', (req, res, next) => {
+  if (req.method !== 'GET') {
+    return next();
+  }
+  const indexPath = path.resolve(clientBuildPath, 'index.html');
+  if (!fs.existsSync(indexPath)) {
+    return next();
+  }
+  return res.sendFile(indexPath);
+});
 
 // 404 handler
 app.use(notFoundHandler);

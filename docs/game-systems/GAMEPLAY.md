@@ -20,6 +20,7 @@
 - [Hitlist & Moordslooptochten](#hitlist--moordslooptochten)
 - [Security & Bescherming](#security--bescherming)
 - [Premium & Credits](#premium--credits)
+- [Web entry (marketing)](#web-entry-marketing)
 
 ---
 
@@ -1112,6 +1113,14 @@ healing = 5 HP (if health > 0 && health < 100)
 - â³ Money laundering
 - â³ Stock market
 - â³ Real estate development
+
+---
+
+## Web entry (marketing)
+
+- Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren, en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
+- Juridische pagina’s: `/privacy` en `/digital-goods` (teksten volledig uit de client-ARB’s). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
+- Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`.
 
 ---
 

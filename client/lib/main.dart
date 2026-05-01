@@ -11,6 +11,9 @@ import 'providers/event_provider.dart';
 import 'providers/vehicle_provider.dart';
 import 'providers/locale_provider.dart';
 import 'screens/login_screen.dart';
+import 'screens/landing_screen.dart';
+import 'screens/legal_privacy_screen.dart';
+import 'screens/legal_digital_goods_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/reset_password_screen.dart';
 import 'screens/settings_screen.dart';
@@ -47,8 +50,17 @@ void main() async {
 class MafiaGameApp extends StatelessWidget {
   const MafiaGameApp({super.key});
 
+  static String _normalizeWebPath(String raw) {
+    var path = raw;
+    if (path.isEmpty) return '/';
+    if (path != '/' && path.endsWith('/')) {
+      path = path.substring(0, path.length - 1);
+    }
+    return path;
+  }
+
   Widget _resolveHome() {
-    final path = Uri.base.path;
+    final path = _normalizeWebPath(Uri.base.path);
 
     if (path == '/auth/reset-password') {
       return ResetPasswordScreen(initialToken: Uri.base.queryParameters['token']);
@@ -56,6 +68,22 @@ class MafiaGameApp extends StatelessWidget {
 
     if (path == '/premium') {
       return const PremiumScreen();
+    }
+
+    if (path == '/login') {
+      return const LoginScreen();
+    }
+
+    if (path == '/register') {
+      return const LoginScreen(initialRegister: true);
+    }
+
+    if (path == '/privacy') {
+      return const LegalPrivacyScreen();
+    }
+
+    if (path == '/digital-goods') {
+      return const LegalDigitalGoodsScreen();
     }
 
     return const AuthWrapper();
@@ -84,12 +112,12 @@ class MafiaGameApp extends StatelessWidget {
           supportedLocales: AppLocalizations.supportedLocales,
           locale: localeProvider.locale,
           localeResolutionCallback: (locale, supported) {
-            if (locale == null) return const Locale('nl');
+            if (locale == null) return const Locale('en');
             final primary = locale.languageCode.toLowerCase();
             for (final l in supported) {
               if (l.languageCode == primary) return l;
             }
-            return const Locale('nl');
+            return const Locale('en');
           },
 
           // Theme
@@ -104,7 +132,11 @@ class MafiaGameApp extends StatelessWidget {
           },
           home: _resolveHome(),
           routes: {
+            '/': (context) => const AuthWrapper(),
             '/login': (context) => const LoginScreen(),
+            '/register': (context) => const LoginScreen(initialRegister: true),
+            '/privacy': (context) => const LegalPrivacyScreen(),
+            '/digital-goods': (context) => const LegalDigitalGoodsScreen(),
             '/auth/reset-password': (context) => ResetPasswordScreen(initialToken: Uri.base.queryParameters['token']),
             '/dashboard': (context) => const DashboardScreen(),
             '/settings': (context) => const SettingsScreen(),
@@ -213,8 +245,8 @@ class _AuthWrapperState extends State<AuthWrapper> with WidgetsBindingObserver {
           return const DashboardScreen();
         }
 
-        print('[AuthWrapper-$timestamp] ❌ Showing LoginScreen');
-        return const LoginScreen();
+        print('[AuthWrapper-$timestamp] Showing LandingScreen (guest)');
+        return const LandingScreen();
       },
     );
   }

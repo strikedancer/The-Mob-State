@@ -13884,4 +13884,221 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpTopicPremiumTips =>
       'Vérifiez votre solde créditeur et votre date d\'expiration avant d\'acheter à nouveau ; étendre est souvent mieux que d’empiler aveuglément. \nUtilisez les crédits principalement pour les boosts ou les protections urgents, et non automatiquement pour chaque petit raccourci. \nSi vous ne faites pas encore partie d\'un équipage, commencez avec Player VIP ou un pack de crédits avant Crew VIP.';
+
+  @override
+  String get landingHeroTitle => 'L\'État de la foule';
+
+  @override
+  String get landingHeroSubtitle =>
+      'Un jeu de stratégie criminelle basé sur du texte dans votre navigateur. Construisez votre empire, dirigez des équipages, faites du commerce, combattez pour le territoire et gravissez les échelons.';
+
+  @override
+  String get landingAboutTitle => 'Ce qui t\'attend';
+
+  @override
+  String get landingAboutBody =>
+      'Gérez des entreprises, exécutez des tâches et des braquages, développez votre personnage grâce à des certificats scolaires, participez à des événements en direct et coordonnez-vous avec votre équipe sur la carte du monde. Des règles concurrentielles équitables, une progression à long terme et des mises à jour régulières du contenu.';
+
+  @override
+  String get landingTopPlayersTitle => 'Meilleurs joueurs';
+
+  @override
+  String get landingTopCrewsTitle => 'Meilleurs équipages (territoire)';
+
+  @override
+  String get landingRankLabel => 'Rang';
+
+  @override
+  String get landingRegionsLabel => 'Régions';
+
+  @override
+  String get landingLoadError =>
+      'Impossible de charger les classements pour le moment.';
+
+  @override
+  String get landingEmptyLeaderboard => 'Aucune entrée pour l\'instant.';
+
+  @override
+  String get landingCtaLogin => 'Se connecter';
+
+  @override
+  String get landingCtaRegister => 'Créer un compte';
+
+  @override
+  String get landingFooterPrivacy => 'politique de confidentialité';
+
+  @override
+  String get landingFooterDigitalGoods => 'Achat de biens numériques';
+
+  @override
+  String get landingFooterLanguage => 'Langue';
+
+  @override
+  String landingCopyright(int year) {
+    return '© $year L\'État de la mafia. Tous droits réservés.';
+  }
+
+  @override
+  String get legalPrivacyTitle => 'politique de confidentialité';
+
+  @override
+  String get legalPrivacyLastUpdated => 'Dernière mise à jour : mai 2026';
+
+  @override
+  String get legalPrivacyIntro =>
+      'Cette politique de confidentialité explique comment The Mob State (« nous », « notre ») traite les données personnelles lorsque vous utilisez notre site Web, notre jeu Web et les services associés. En jouant ou en naviguant, vous acceptez cette politique là où la loi applicable le permet.';
+
+  @override
+  String get legalPrivacySection01Title => 'Qui nous sommes';
+
+  @override
+  String get legalPrivacySection01Body =>
+      'The Mob State est un jeu en ligne exploité comme un service numérique. Pour les demandes de confidentialité, vous pouvez nous contacter via le système de ticket d\'assistance en jeu après l\'inscription, ou via les canaux de contact du site officiel s\'ils sont publiés.';
+
+  @override
+  String get legalPrivacySection02Title => 'Données que nous collectons';
+
+  @override
+  String get legalPrivacySection02Body =>
+      'Nous pouvons traiter les données de compte (nom d\'utilisateur, e-mail si fourni, mot de passe haché), les données de jeu et de progression, les journaux techniques (adresse IP, type d\'appareil/navigateur, horodatages), les références liées au paiement de nos fournisseurs de paiement (nous ne stockons pas les numéros de carte complets) et les communications que vous envoyez au support.';
+
+  @override
+  String get legalPrivacySection03Title => 'Objectifs';
+
+  @override
+  String get legalPrivacySection03Body =>
+      'Nous utilisons les données pour fournir le jeu, sécuriser les comptes, prévenir les abus et la fraude, traiter les achats, améliorer les performances, communiquer les messages de service et nous conformer aux obligations légales.';
+
+  @override
+  String get legalPrivacySection04Title => 'Bases juridiques (EEE/Royaume-Uni)';
+
+  @override
+  String get legalPrivacySection04Body =>
+      'Lorsque le RGPD s\'applique, nous nous appuyons sur l\'exécution d\'un contrat (fournissant le jeu), les intérêts légitimes (sécurité, analyses, amélioration du produit contre vos droits), le consentement lorsque cela est requis (par exemple, certains cookies marketing ou communications facultatives) et les obligations légales.';
+
+  @override
+  String get legalPrivacySection05Title => 'Cookies et stockage local';
+
+  @override
+  String get legalPrivacySection05Body =>
+      'Nous utilisons des cookies et des technologies similaires pour vous permettre de rester connecté, mémoriser vos préférences, mesurer l\'utilisation de base et fournir des fonctionnalités essentielles. Vous pouvez contrôler de nombreux cookies via les paramètres de votre navigateur.';
+
+  @override
+  String get legalPrivacySection06Title => 'Rétention';
+
+  @override
+  String get legalPrivacySection06Body =>
+      'Nous conservons les informations aussi longtemps que nécessaire pour exploiter le service et répondre aux exigences légales, fiscales et comptables. Certains journaux peuvent être conservés pendant une fenêtre de sécurité limitée. Lorsque les données ne sont plus nécessaires, nous les supprimons ou les anonymisons lorsque cela est possible.';
+
+  @override
+  String get legalPrivacySection07Title => 'Partage';
+
+  @override
+  String get legalPrivacySection07Body =>
+      'Nous partageons des données avec l\'infrastructure et les processeurs de paiement strictement dans la mesure nécessaire au fonctionnement du service, dans le cadre d\'accords appropriés. Nous ne vendons pas vos données personnelles. Nous pouvons divulguer des informations si la loi l\'exige ou pour protéger les droits et la sécurité.';
+
+  @override
+  String get legalPrivacySection08Title => 'Virements internationaux';
+
+  @override
+  String get legalPrivacySection08Body =>
+      'Vos données peuvent être traitées dans l\'Espace économique européen et/ou dans d\'autres régions où nous ou nos fournisseurs opérons. Nous utilisons des garanties telles que des clauses contractuelles standard lorsque cela est nécessaire.';
+
+  @override
+  String get legalPrivacySection09Title => 'Vos droits';
+
+  @override
+  String get legalPrivacySection09Body =>
+      'En fonction de votre localisation, vous pouvez disposer de droits d\'accès, de rectification, d\'effacement, de restriction ou d\'opposition à certains traitements, ainsi que de portabilité des données. Vous pouvez déposer une plainte auprès d\'une autorité de contrôle. Contactez-nous via le support pour exercer vos droits ; nous devrons peut-être vérifier votre identité.';
+
+  @override
+  String get legalPrivacySection10Title => 'Enfants';
+
+  @override
+  String get legalPrivacySection10Body =>
+      'Le jeu n\'est pas destiné aux enfants n\'ayant pas l\'âge pour lequel le consentement parental est requis pour le traitement dans votre région. Si vous pensez qu\'un enfant a fourni des données de manière inappropriée, contactez-nous et nous prendrons les mesures appropriées.';
+
+  @override
+  String get legalDigitalGoodsTitle => 'Achat de biens numériques';
+
+  @override
+  String get legalDigitalGoodsLastUpdated => 'Dernière mise à jour : mai 2026';
+
+  @override
+  String get legalDigitalGoodsIntro =>
+      'Cette politique décrit les achats de contenu et de services numériques dans The Mob State (par exemple des crédits premium, du temps VIP ou d\'autres objets virtuels). En effectuant un achat, vous acceptez ces conditions ainsi que toutes les conditions de paiement indiquées lors du paiement.';
+
+  @override
+  String get legalDigitalGoodsSection01Title => 'Nature des achats numériques';
+
+  @override
+  String get legalDigitalGoodsSection01Body =>
+      'Tous les achats sont des paiements pour accéder à des fonctionnalités en ligne supplémentaires et à des objets virtuels au sein de The Mob State. Ils sont livrés numériquement dans le jeu et n\'ont aucune forme physique.';
+
+  @override
+  String get legalDigitalGoodsSection02Title =>
+      'Livraison et retrait immédiats (UK/EU)';
+
+  @override
+  String get legalDigitalGoodsSection02Body =>
+      'Lorsque le Règlement sur les contrats de consommation de 2013 (Royaume-Uni) ou des règles équivalentes de l\'UE s\'appliquent, vous reconnaissez que le contenu numérique est fourni immédiatement après l\'achat et, lorsque la loi le permet, vous pouvez perdre le droit de rétractation légal de 14 jours une fois la livraison commencée avec votre consentement exprès préalable.';
+
+  @override
+  String get legalDigitalGoodsSection03Title =>
+      'Remboursements et rétrofacturations';
+
+  @override
+  String get legalDigitalGoodsSection03Body =>
+      'Les biens numériques ne sont généralement pas remboursables une fois livrés, sauf lorsque la loi impérative sur la consommation l\'exige autrement. Les rétrofacturations ou les litiges de paiement après la livraison peuvent entraîner la suspension ou la résiliation des comptes associés ; veuillez d\'abord contacter l\'assistance afin que nous puissions vous aider à résoudre les problèmes de facturation.';
+
+  @override
+  String get legalDigitalGoodsSection04Title => 'Autorisation et âge';
+
+  @override
+  String get legalDigitalGoodsSection04Body =>
+      'Vous devez être autorisé à utiliser le mode de paiement choisi. Si vous avez moins de 18 ans, vous avez besoin de l\'autorisation d\'un parent ou d\'un tuteur pour effectuer des achats ou utiliser des services payants.';
+
+  @override
+  String get legalDigitalGoodsSection05Title => 'Canaux de paiement et frais';
+
+  @override
+  String get legalDigitalGoodsSection05Body =>
+      'Les prix peuvent être affichés en euros ou dans la devise de votre fournisseur. Les opérateurs de téléphonie mobile ou les plateformes de paiement peuvent ajouter leurs propres frais ; vérifiez auprès de votre fournisseur avant de confirmer les paiements du transporteur ou du portefeuille.';
+
+  @override
+  String get legalDigitalGoodsSection06Title => 'Disponibilité';
+
+  @override
+  String get legalDigitalGoodsSection06Body =>
+      'Les fonctionnalités payantes sont fournies virtuellement via nos serveurs et peuvent changer au fil du temps. Nous pouvons ajuster, suspendre ou retirer des articles, des offres groupées ou des prix spécifiques pour équilibrer le jeu ou pour des raisons techniques.';
+
+  @override
+  String get legalDigitalGoodsSection07Title =>
+      'Aucune valeur monétaire réelle';
+
+  @override
+  String get legalDigitalGoodsSection07Body =>
+      'Les objets et monnaies virtuels n\'ont aucune valeur monétaire en dehors du jeu, ne sont pas transférables contre de l\'argent réel et peuvent être modifiés ou supprimés dans le cadre de mises à jour, de contrôle de compte ou d\'interruption de service, sauf lorsque la loi exige une compensation.';
+
+  @override
+  String get legalDigitalGoodsSection08Title =>
+      'Utilisation commerciale interdite';
+
+  @override
+  String get legalDigitalGoodsSection08Body =>
+      'Vous ne pouvez pas utiliser The Mob State pour effectuer des échanges non autorisés en argent réel, y compris acheter ou vendre des comptes, de la monnaie du jeu, des codes ou des actifs virtuels contre de l\'argent ou des services externes en dehors de nos flux de paiement officiels.';
+
+  @override
+  String get legalDigitalGoodsSection09Title => 'Modifications des services';
+
+  @override
+  String get legalDigitalGoodsSection09Body =>
+      'Nous pouvons mettre à jour cette politique et les descriptions d\'achat dans le jeu. L\'utilisation continue après des modifications constitue l\'acceptation des conditions révisées lorsque la loi le permet.';
+
+  @override
+  String get legalDigitalGoodsSection10Title => 'Loi applicable';
+
+  @override
+  String get legalDigitalGoodsSection10Body =>
+      'Sauf disposition contraire de la loi locale impérative, cette politique est régie par les lois d’Angleterre et du Pays de Galles et les litiges seront soumis à la juridiction exclusive des tribunaux d’Angleterre et du Pays de Galles.';
 }
