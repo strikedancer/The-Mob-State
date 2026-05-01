@@ -12,6 +12,7 @@ import '../utils/web_asset_helper.dart';
 import '../utils/avatar_helper.dart';
 import '../services/notification_service.dart';
 import '../config/supported_languages.dart';
+import '../widgets/guest_legal_footer.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, this.initialRegister = false});
@@ -101,17 +102,21 @@ class _LoginScreenState extends State<LoginScreen> {
         ? 'assets/images/backgrounds/login_background_mobile.png'
         : 'assets/images/backgrounds/login_background.png';
     final canonicalWebAsset = isPortrait
-      ? 'assets/assets/images/backgrounds/login_background_mobile.png'
-      : 'assets/assets/images/backgrounds/login_background.png';
+        ? 'assets/assets/images/backgrounds/login_background_mobile.png'
+        : 'assets/assets/images/backgrounds/login_background.png';
     final staticWebFallback = isPortrait
         ? 'images/backgrounds/login_background_mobile.png'
         : 'images/backgrounds/login_background.png';
     final directPath = isPortrait
-      ? WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background_mobile.png')
-      : WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background.png');
+        ? WebAssetHelper.toPublicUrl(
+            'assets/images/backgrounds/login_background_mobile.png',
+          )
+        : WebAssetHelper.toPublicUrl(
+            'assets/images/backgrounds/login_background.png',
+          );
     final oppositeStaticFallback = isPortrait
-      ? 'images/backgrounds/login_background.png'
-      : 'images/backgrounds/login_background_mobile.png';
+        ? 'images/backgrounds/login_background.png'
+        : 'images/backgrounds/login_background_mobile.png';
 
     return Image.asset(
       preferredAsset,
@@ -131,13 +136,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 return Image.network(
                   directPath,
                   fit: BoxFit.cover,
-                  alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+                  alignment: isPortrait
+                      ? Alignment.topCenter
+                      : Alignment.topLeft,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.network(
                       WebAssetHelper.toPublicUrl(oppositeStaticFallback),
                       fit: BoxFit.cover,
-                      alignment:
-                          isPortrait ? Alignment.topCenter : Alignment.topLeft,
+                      alignment: isPortrait
+                          ? Alignment.topCenter
+                          : Alignment.topLeft,
                       errorBuilder: (context, error, stackTrace) {
                         return _buildBackgroundFallback();
                       },
@@ -150,6 +158,15 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
     );
+  }
+
+  /// Wide landscape: shift the card toward the right so it clears the artwork on the left.
+  Alignment _loginFormAlignment(double screenWidth, bool isMobile) {
+    if (isMobile) return Alignment.center;
+    if (screenWidth >= 1200) return const Alignment(0.94, 0.0);
+    if (screenWidth >= 960) return const Alignment(0.88, 0.0);
+    if (screenWidth >= 720) return const Alignment(0.80, 0.0);
+    return Alignment.center;
   }
 
   Future<void> _showPushPermissionDialog() async {
@@ -176,7 +193,9 @@ class _LoginScreenState extends State<LoginScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFc0a060),
               foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             onPressed: () => Navigator.of(ctx).pop(true),
             child: const Text('Ja, zet aan'),
@@ -254,7 +273,8 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           await localeProvider.loadLocale();
 
-          showTopRightFromSnackBar(context,
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 _isLogin ? l10n.loginSuccessful : l10n.registrationSuccessful,
@@ -265,8 +285,10 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           // On web: ask for push permission if not yet granted
           if (kIsWeb && mounted) {
-            final settings = await NotificationService().getNotificationSettings();
-            if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+            final settings = await NotificationService()
+                .getNotificationSettings();
+            if (settings.authorizationStatus ==
+                AuthorizationStatus.notDetermined) {
               await _showPushPermissionDialog();
             }
           }
@@ -277,7 +299,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.of(context).pushReplacementNamed('/dashboard');
           }
         } else {
-          showTopRightFromSnackBar(context,
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 authProvider.error ??
@@ -293,9 +316,12 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } else {
         final errorMessage = _localizeAuthError(l10n, authProvider.error);
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
-            content: Text(errorMessage.isEmpty ? l10n.loginFailed : errorMessage),
+            content: Text(
+              errorMessage.isEmpty ? l10n.loginFailed : errorMessage,
+            ),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 3),
           ),
@@ -314,22 +340,28 @@ class _LoginScreenState extends State<LoginScreen> {
     final isMobile = screenWidth < 600;
 
     return Scaffold(
+      bottomNavigationBar: const SafeArea(
+        top: false,
+        child: GuestLegalFooter(),
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
           // Black background for mobile (behind image)
           if (isMobile) Container(color: Colors.black),
           // Background image - choose based on orientation
-          Positioned.fill(
-            child: _buildLoginBackground(isPortrait),
-          ),
+          Positioned.fill(child: _buildLoginBackground(isPortrait)),
           // Dark overlay for better text readability
           Container(color: Colors.black.withOpacity(isMobile ? 0.4 : 0.3)),
-          // Login form - centered on all screens
           Align(
-            alignment: Alignment.center,
+            alignment: _loginFormAlignment(screenWidth, isMobile),
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(isMobile ? 16 : 24),
+              padding: EdgeInsets.fromLTRB(
+                isMobile ? 16 : 24,
+                isMobile ? 16 : 24,
+                isMobile ? 16 : 36,
+                isMobile ? 16 : 20,
+              ),
               child: Container(
                 width: isMobile ? screenWidth * 0.9 : 420,
                 margin: null,
@@ -493,12 +525,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Expanded(
                                       child: _GenderPickCard(
                                         label: l10n.registerGenderMale,
-                                        assetPath:
-                                            AvatarHelper.getAvatarPath('default_1'),
+                                        assetPath: AvatarHelper.getAvatarPath(
+                                          'default_1',
+                                        ),
                                         selected: _selectedGender == 'male',
                                         onTap: () {
                                           _clearAuthError();
-                                          setState(() => _selectedGender = 'male');
+                                          setState(
+                                            () => _selectedGender = 'male',
+                                          );
                                         },
                                       ),
                                     ),
@@ -506,12 +541,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Expanded(
                                       child: _GenderPickCard(
                                         label: l10n.registerGenderFemale,
-                                        assetPath:
-                                            AvatarHelper.getAvatarPath('default_2'),
+                                        assetPath: AvatarHelper.getAvatarPath(
+                                          'default_2',
+                                        ),
                                         selected: _selectedGender == 'female',
                                         onTap: () {
                                           _clearAuthError();
-                                          setState(() => _selectedGender = 'female');
+                                          setState(
+                                            () => _selectedGender = 'female',
+                                          );
                                         },
                                       ),
                                     ),
@@ -622,7 +660,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 for (final code in SupportedLanguages.codes)
                                   DropdownMenuItem(
                                     value: code,
-                                    child: Text(SupportedLanguages.menuSubtitle(code)),
+                                    child: Text(
+                                      SupportedLanguages.menuSubtitle(code),
+                                    ),
                                   ),
                               ],
                               onChanged: (value) {
@@ -645,14 +685,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
 
                               return Padding(
-                                padding: EdgeInsets.only(top: isMobile ? 16 : 18),
+                                padding: EdgeInsets.only(
+                                  top: isMobile ? 16 : 18,
+                                ),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 14,
                                     vertical: 12,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF5C1D1D).withOpacity(0.88),
+                                    color: const Color(
+                                      0xFF5C1D1D,
+                                    ).withOpacity(0.88),
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
                                       color: const Color(0xFFE07A7A),
@@ -660,7 +704,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Padding(
                                         padding: EdgeInsets.only(top: 1),
@@ -864,7 +909,11 @@ class _GenderPickCard extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: Colors.black45,
                           alignment: Alignment.center,
-                          child: const Icon(Icons.person, color: Colors.white38, size: 40),
+                          child: const Icon(
+                            Icons.person,
+                            color: Colors.white38,
+                            size: 40,
+                          ),
                         ),
                       );
                     },

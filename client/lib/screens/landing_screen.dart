@@ -7,10 +7,10 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../config/app_config.dart';
-import '../config/supported_languages.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/locale_provider.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/guest_legal_footer.dart';
 
 const Color _landingGold = Color(0xFFC0A060);
 
@@ -35,7 +35,11 @@ class _PublicPlayerRow {
 }
 
 class _PublicCrewRow {
-  _PublicCrewRow({required this.rank, required this.crewName, required this.regionsOwned});
+  _PublicCrewRow({
+    required this.rank,
+    required this.crewName,
+    required this.regionsOwned,
+  });
 
   final int rank;
   final String crewName;
@@ -45,8 +49,13 @@ class _PublicCrewRow {
     final rank = _decodeInt(json['rank']);
     final regionsOwned = _decodeInt(json['regionsOwned']);
     final crewName = json['crewName'];
-    if (rank == null || crewName is! String || regionsOwned == null) return null;
-    return _PublicCrewRow(rank: rank, crewName: crewName, regionsOwned: regionsOwned);
+    if (rank == null || crewName is! String || regionsOwned == null)
+      return null;
+    return _PublicCrewRow(
+      rank: rank,
+      crewName: crewName,
+      regionsOwned: regionsOwned,
+    );
   }
 }
 
@@ -168,8 +177,12 @@ class _LandingScreenState extends State<LandingScreen> {
         ? 'images/backgrounds/login_background_mobile.png'
         : 'images/backgrounds/login_background.png';
     final directPath = isPortrait
-        ? WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background_mobile.png')
-        : WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background.png');
+        ? WebAssetHelper.toPublicUrl(
+            'assets/images/backgrounds/login_background_mobile.png',
+          )
+        : WebAssetHelper.toPublicUrl(
+            'assets/images/backgrounds/login_background.png',
+          );
     final oppositeStaticFallback = isPortrait
         ? 'images/backgrounds/login_background.png'
         : 'images/backgrounds/login_background_mobile.png';
@@ -192,12 +205,16 @@ class _LandingScreenState extends State<LandingScreen> {
                 return Image.network(
                   directPath,
                   fit: BoxFit.cover,
-                  alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+                  alignment: isPortrait
+                      ? Alignment.topCenter
+                      : Alignment.topLeft,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.network(
                       WebAssetHelper.toPublicUrl(oppositeStaticFallback),
                       fit: BoxFit.cover,
-                      alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+                      alignment: isPortrait
+                          ? Alignment.topCenter
+                          : Alignment.topLeft,
                       errorBuilder: (context, error, stackTrace) {
                         return _buildBackgroundFallback();
                       },
@@ -209,45 +226,6 @@ class _LandingScreenState extends State<LandingScreen> {
           },
         );
       },
-    );
-  }
-
-  Future<void> _showGuestLanguageDialog(AppLocalizations l10n) async {
-    final localeProvider = context.read<LocaleProvider>();
-    final current = localeProvider.locale.languageCode;
-
-    await showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1a1a2e),
-        title: Text(l10n.landingFooterLanguage, style: const TextStyle(color: Colors.white)),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final code in SupportedLanguages.codes)
-                ListTile(
-                  leading: Text(
-                    SupportedLanguages.flagFor(code) ?? '🌐',
-                    style: const TextStyle(fontSize: 24),
-                  ),
-                  title: Text(SupportedLanguages.labelFor(code), style: const TextStyle(color: Colors.white)),
-                  trailing: current == code ? const Icon(Icons.check, color: Colors.green) : null,
-                  onTap: () async {
-                    await localeProvider.persistGuestLocale(code);
-                    if (ctx.mounted) Navigator.of(ctx).pop();
-                  },
-                ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(l10n.cancel, style: const TextStyle(color: Colors.white70)),
-          ),
-        ],
-      ),
     );
   }
 
@@ -275,7 +253,10 @@ class _LandingScreenState extends State<LandingScreen> {
         final playersCard = _leaderCard(
           title: l10n.landingTopPlayersTitle,
           child: _players.isEmpty
-              ? Text(l10n.landingEmptyLeaderboard, style: const TextStyle(color: Colors.white54))
+              ? Text(
+                  l10n.landingEmptyLeaderboard,
+                  style: const TextStyle(color: Colors.white54),
+                )
               : Column(
                   children: [
                     Padding(
@@ -286,7 +267,10 @@ class _LandingScreenState extends State<LandingScreen> {
                             width: 44,
                             child: Text(
                               l10n.landingRankLabel,
-                              style: const TextStyle(color: Colors.white38, fontSize: 11),
+                              style: const TextStyle(
+                                color: Colors.white38,
+                                fontSize: 11,
+                              ),
                             ),
                           ),
                           const Expanded(child: SizedBox.shrink()),
@@ -302,13 +286,19 @@ class _LandingScreenState extends State<LandingScreen> {
                               width: 44,
                               child: Text(
                                 '#${p.rank}',
-                                style: const TextStyle(color: _landingGold, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  color: _landingGold,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             Expanded(
                               child: Text(
                                 p.username,
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -321,7 +311,10 @@ class _LandingScreenState extends State<LandingScreen> {
         final crewsCard = _leaderCard(
           title: l10n.landingTopCrewsTitle,
           child: _crews.isEmpty
-              ? Text(l10n.landingEmptyLeaderboard, style: const TextStyle(color: Colors.white54))
+              ? Text(
+                  l10n.landingEmptyLeaderboard,
+                  style: const TextStyle(color: Colors.white54),
+                )
               : Column(
                   children: [
                     Padding(
@@ -332,13 +325,19 @@ class _LandingScreenState extends State<LandingScreen> {
                             width: 44,
                             child: Text(
                               l10n.landingRankLabel,
-                              style: const TextStyle(color: Colors.white38, fontSize: 11),
+                              style: const TextStyle(
+                                color: Colors.white38,
+                                fontSize: 11,
+                              ),
                             ),
                           ),
                           const Expanded(child: SizedBox.shrink()),
                           Text(
                             l10n.landingRegionsLabel,
-                            style: const TextStyle(color: Colors.white38, fontSize: 11),
+                            style: const TextStyle(
+                              color: Colors.white38,
+                              fontSize: 11,
+                            ),
                           ),
                         ],
                       ),
@@ -352,13 +351,19 @@ class _LandingScreenState extends State<LandingScreen> {
                               width: 44,
                               child: Text(
                                 '#${c.rank}',
-                                style: const TextStyle(color: _landingGold, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  color: _landingGold,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             Expanded(
                               child: Text(
                                 c.crewName,
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -385,11 +390,7 @@ class _LandingScreenState extends State<LandingScreen> {
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            playersCard,
-            const SizedBox(height: 16),
-            crewsCard,
-          ],
+          children: [playersCard, const SizedBox(height: 16), crewsCard],
         );
       },
     );
@@ -407,7 +408,14 @@ class _LandingScreenState extends State<LandingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(color: _landingGold, fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              style: const TextStyle(
+                color: _landingGold,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const Divider(color: Colors.white24),
             child,
           ],
@@ -416,7 +424,11 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
-  Widget _buildTopRightCtas(BuildContext context, AppLocalizations l10n, bool compact) {
+  Widget _buildTopRightCtas(
+    BuildContext context,
+    AppLocalizations l10n,
+    bool compact,
+  ) {
     final pad = compact
         ? const EdgeInsets.symmetric(horizontal: 12, vertical: 10)
         : const EdgeInsets.symmetric(horizontal: 20, vertical: 12);
@@ -432,7 +444,9 @@ class _LandingScreenState extends State<LandingScreen> {
               foregroundColor: Colors.black,
               padding: pad,
               minimumSize: compact ? const Size(0, 40) : const Size(0, 44),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             onPressed: () => Navigator.of(context).pushNamed('/login'),
             child: Text(l10n.landingCtaLogin),
@@ -444,7 +458,9 @@ class _LandingScreenState extends State<LandingScreen> {
               side: const BorderSide(color: _landingGold, width: 1.5),
               padding: pad,
               minimumSize: compact ? const Size(0, 40) : const Size(0, 44),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             onPressed: () => Navigator.of(context).pushNamed('/register'),
             child: Text(l10n.landingCtaRegister),
@@ -462,60 +478,12 @@ class _LandingScreenState extends State<LandingScreen> {
     return 0;
   }
 
-  Widget _buildStickyFooter(BuildContext context, AppLocalizations l10n, int year) {
-    return Material(
-      color: Colors.black.withOpacity(0.88),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.amber.shade800.withOpacity(0.45))),
-        ),
-        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 4,
-              runSpacing: 4,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                TextButton(
-                  style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
-                  onPressed: () => Navigator.of(context).pushNamed('/privacy'),
-                  child: Text(l10n.landingFooterPrivacy, style: const TextStyle(color: _landingGold, fontSize: 13)),
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
-                  onPressed: () => Navigator.of(context).pushNamed('/digital-goods'),
-                  child: Text(l10n.landingFooterDigitalGoods, style: const TextStyle(color: _landingGold, fontSize: 13)),
-                ),
-                TextButton.icon(
-                  style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
-                  onPressed: () => _showGuestLanguageDialog(l10n),
-                  icon: const Icon(Icons.language, color: _landingGold, size: 18),
-                  label: Text(l10n.landingFooterLanguage, style: const TextStyle(color: _landingGold, fontSize: 13)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            Text(
-              l10n.landingCopyright(year),
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white38, fontSize: 11),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final isPortrait = size.height > size.width;
     final isMobile = size.width < 600;
-    final year = DateTime.now().year;
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -528,7 +496,12 @@ class _LandingScreenState extends State<LandingScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(isMobile ? 8 : 16, 4, isMobile ? 8 : 16, 0),
+                  padding: EdgeInsets.fromLTRB(
+                    isMobile ? 8 : 16,
+                    4,
+                    isMobile ? 8 : 16,
+                    0,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -543,7 +516,10 @@ class _LandingScreenState extends State<LandingScreen> {
                       final innerW = constraints.maxWidth;
                       final innerLead = _contentLeadingInset(innerW);
                       final innerMax = math
-                          .min(560.0, innerW - innerLead - (innerW < 600 ? 20 : 40))
+                          .min(
+                            560.0,
+                            innerW - innerLead - (innerW < 600 ? 20 : 40),
+                          )
                           .clamp(260.0, 560.0);
                       final panel = innerW < 640;
                       Widget copyColumn = Column(
@@ -557,7 +533,11 @@ class _LandingScreenState extends State<LandingScreen> {
                               fontSize: isMobile ? 30 : 40,
                               fontWeight: FontWeight.w800,
                               shadows: const [
-                                Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2)),
+                                Shadow(
+                                  blurRadius: 12,
+                                  color: Colors.black87,
+                                  offset: Offset(0, 2),
+                                ),
                               ],
                             ),
                           ),
@@ -569,20 +549,34 @@ class _LandingScreenState extends State<LandingScreen> {
                               color: Colors.white.withOpacity(0.88),
                               fontSize: isMobile ? 15 : 17,
                               height: 1.45,
-                              shadows: const [Shadow(blurRadius: 8, color: Colors.black87, offset: Offset(0, 1))],
+                              shadows: const [
+                                Shadow(
+                                  blurRadius: 8,
+                                  color: Colors.black87,
+                                  offset: Offset(0, 1),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 32),
                           Text(
                             l10n.landingAboutTitle,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: _landingGold, fontSize: 22, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              color: _landingGold,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 10),
                           Text(
                             l10n.landingAboutBody,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white70, height: 1.45, fontSize: 15),
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              height: 1.45,
+                              fontSize: 15,
+                            ),
                           ),
                           const SizedBox(height: 32),
                           _rankingsPanel(l10n),
@@ -593,16 +587,26 @@ class _LandingScreenState extends State<LandingScreen> {
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.58),
                             borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: Colors.amber.shade800.withOpacity(0.35)),
+                            border: Border.all(
+                              color: Colors.amber.shade800.withOpacity(0.35),
+                            ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 18,
+                            ),
                             child: copyColumn,
                           ),
                         );
                       }
                       return SingleChildScrollView(
-                        padding: EdgeInsets.fromLTRB(isMobile ? 12 : 24, 12, isMobile ? 12 : 24, 24),
+                        padding: EdgeInsets.fromLTRB(
+                          isMobile ? 12 : 24,
+                          12,
+                          isMobile ? 12 : 24,
+                          24,
+                        ),
                         child: Align(
                           alignment: Alignment.topCenter,
                           child: Padding(
@@ -617,10 +621,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     },
                   ),
                 ),
-                SafeArea(
-                  top: false,
-                  child: _buildStickyFooter(context, l10n, year),
-                ),
+                const SafeArea(top: false, child: GuestLegalFooter()),
               ],
             ),
           ),
