@@ -263,19 +263,16 @@ docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260415061500_expand_player_security" || true
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260426120000_add_push_game_events_preference" || true
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260426183000_garage_upgrade_track" || true
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260427094500_vault_monthly_season" || true
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260502120000_add_player_gender" || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate deploy
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
 ```
 
-**Prisma P3018 (migratie faalde, o.a. duplicate column `sourceModule` / `bodyguardUpkeepDueAt`):** de migraties `20260414223000_expand_support_workflow` en `20260415061500_expand_player_security` zijn **idempotent** (`ADD COLUMN IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`, `CREATE TABLE IF NOT EXISTS`). Op de VPS moet een eerder **mislukte** poging eerst uit de migratiegeschiedenis worden gehaald, anders blokkeert `migrate deploy` nieuwe migraties:
-
-```bash
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow"
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260415061500_expand_player_security"
-```
-
-Daarna opnieuw `migrate deploy` (of het volledige deploy-script). **Lokaal:** als je database een van deze migraties al met de **oude** SQL had toegepast en Prisma nu klaagt dat het migratiebestand is gewijzigd, werk dan de `checksum` in `_prisma_migrations` bij naar de SHA256 van het actuele `migration.sql` (of reset je dev-DB als dat mag).
+**Prisma P3018 (duplicate column / object bestaat al op productie):** migraties vanaf support-workflow t/m `add_player_gender` zijn **idempotent** (`ADD COLUMN IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`, `CREATE TABLE IF NOT EXISTS`, plus voor vault-FK’s een constraint-check in `information_schema`). Een eerder **mislukte** migratie moet uit de geschiedenis (`resolve --rolled-back`); het **commandoblok hierboven** roept dat voor de bekende namen aan vóór `migrate deploy` (`|| true` = geen fout als er geen failed migration is). Daarna opnieuw `migrate deploy` (of het volledige deploy-script). **Lokaal:** als Prisma meldt dat een migratiebestand is gewijzigd na apply, werk de `checksum` in `_prisma_migrations` bij naar de SHA256 van het actuele `migration.sql` (of reset je dev-DB als dat mag).
 
 Acceptatie-eis voor dit runbook:
 - Een PuTTY update-instructie is niet done zonder expliciete `--env-file .env.plesk` compose-commands.
