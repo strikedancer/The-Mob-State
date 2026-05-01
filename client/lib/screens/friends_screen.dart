@@ -23,6 +23,8 @@ class FriendsScreen extends StatefulWidget {
 
 class _FriendsScreenState extends State<FriendsScreen>
     with SingleTickerProviderStateMixin {
+  static bool _friendTimeagoLocalesRegistered = false;
+
   late TabController _tabController;
 
   List<Friend> _friends = [];
@@ -41,11 +43,31 @@ class _FriendsScreenState extends State<FriendsScreen>
   @override
   void initState() {
     super.initState();
+    _ensureFriendTimeagoLocales();
     _tabController = TabController(length: 4, vsync: this);
     _loadFriends();
     _loadPendingRequests();
     _loadUnreadCount();
     _listenToActivityEvents();
+  }
+
+  /// Registers timeago locales used on the activity tab (matches app supported languages).
+  void _ensureFriendTimeagoLocales() {
+    if (_friendTimeagoLocalesRegistered) return;
+    _friendTimeagoLocalesRegistered = true;
+    timeago.setLocaleMessages('nl', timeago.NlMessages());
+    timeago.setLocaleMessages('de', timeago.DeMessages());
+    timeago.setLocaleMessages('es', timeago.EsMessages());
+    timeago.setLocaleMessages('fr', timeago.FrMessages());
+    timeago.setLocaleMessages('it', timeago.ItMessages());
+    timeago.setLocaleMessages('pl', timeago.PlMessages());
+    timeago.setLocaleMessages('pt_br', timeago.PtBrMessages());
+  }
+
+  String _timeagoLocale(BuildContext context) {
+    final code = Localizations.localeOf(context).languageCode.toLowerCase();
+    if (code == 'pt') return 'pt_br';
+    return code;
   }
 
   void _listenToActivityEvents() {
@@ -185,13 +207,11 @@ class _FriendsScreenState extends State<FriendsScreen>
       if (response.statusCode == 200) {
         print('✅ [FriendsScreen] Friend request sent successfully');
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          final l10n = AppLocalizations.of(context)!;
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
-              content: Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Vriendschapsverzoek verstuurd'
-                    : 'Friend request sent',
-              ),
+              content: Text(l10n.friendsUiSnackRequestSent),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
             ),
@@ -206,8 +226,13 @@ class _FriendsScreenState extends State<FriendsScreen>
     } catch (e) {
       print('❌ [FriendsScreen] Error sending friend request: $e');
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.friendsUiSnackError(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -232,13 +257,11 @@ class _FriendsScreenState extends State<FriendsScreen>
       if (response.statusCode == 200) {
         print('✅ [FriendsScreen] Friend request accepted successfully');
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          final l10n = AppLocalizations.of(context)!;
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
-              content: Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Vriendschapsverzoek geaccepteerd'
-                    : 'Friend request accepted',
-              ),
+              content: Text(l10n.friendsUiSnackRequestAccepted),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
             ),
@@ -258,8 +281,13 @@ class _FriendsScreenState extends State<FriendsScreen>
     } catch (e) {
       print('❌ [FriendsScreen] Exception accepting friend request: $e');
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.friendsUiSnackError(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -275,13 +303,11 @@ class _FriendsScreenState extends State<FriendsScreen>
 
       if (response.statusCode == 200) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          final l10n = AppLocalizations.of(context)!;
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
-              content: Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Vriendschapsverzoek afgewezen'
-                    : 'Friend request rejected',
-              ),
+              content: Text(l10n.friendsUiSnackRequestRejected),
               backgroundColor: Colors.orange,
             ),
           );
@@ -290,8 +316,13 @@ class _FriendsScreenState extends State<FriendsScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.friendsUiSnackError(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -300,55 +331,40 @@ class _FriendsScreenState extends State<FriendsScreen>
   Future<void> _removeFriend(int friendshipId) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-        ),
-        content: ResponsiveDialogContent(
-          phoneMaxWidth: 320,
-          tabletMaxWidth: 380,
-          desktopMaxWidth: 440,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Vriend verwijderen'
-                    : 'Remove friend',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Weet je zeker dat je deze vriend wilt verwijderen?'
-                    : 'Are you sure you want to remove this friend?',
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Annuleren'
-                  : 'Cancel',
+      builder: (dialogContext) {
+        final dlgL10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(dlgL10n.propertiesConfirmPurchaseTitle),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 320,
+            tabletMaxWidth: 380,
+            desktopMaxWidth: 440,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  dlgL10n.friendsUiRemoveDialogTitle,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(dlgL10n.friendsUiRemoveDialogBody),
+              ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Verwijderen'
-                  : 'Remove',
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(dlgL10n.cancel),
             ),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text(dlgL10n.friendsUiRemoveConfirm),
+            ),
+          ],
+        );
+      },
     );
 
     if (confirmed == true) {
@@ -360,13 +376,11 @@ class _FriendsScreenState extends State<FriendsScreen>
         if (response.statusCode == 200) {
           print('✅ [FriendsScreen] Friend removed successfully');
           if (mounted) {
-            showTopRightFromSnackBar(context, 
+            final l10n = AppLocalizations.of(context)!;
+            showTopRightFromSnackBar(
+              context,
               SnackBar(
-                content: Text(
-                  Localizations.localeOf(context).languageCode == 'nl'
-                      ? 'Vriend verwijderd'
-                      : 'Friend removed',
-                ),
+                content: Text(l10n.friendsUiSnackFriendRemoved),
                 backgroundColor: Colors.orange,
                 duration: const Duration(seconds: 3),
               ),
@@ -385,9 +399,13 @@ class _FriendsScreenState extends State<FriendsScreen>
             '❌ [FriendsScreen] Delete failed with status ${response.statusCode}',
           );
           if (mounted) {
-            showTopRightFromSnackBar(context, 
+            final l10n = AppLocalizations.of(context)!;
+            showTopRightFromSnackBar(
+              context,
               SnackBar(
-                content: Text('Error: ${response.statusCode}'),
+                content: Text(
+                  l10n.friendsUiSnackError(response.statusCode.toString()),
+                ),
                 backgroundColor: Colors.red,
                 duration: const Duration(seconds: 3),
               ),
@@ -397,9 +415,11 @@ class _FriendsScreenState extends State<FriendsScreen>
       } catch (e) {
         print('❌ [FriendsScreen] Delete exception: $e');
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          final l10n = AppLocalizations.of(context)!;
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
-              content: Text('Error: $e'),
+              content: Text(l10n.friendsUiSnackError(e.toString())),
               backgroundColor: Colors.red,
               duration: const Duration(seconds: 3),
             ),
@@ -412,51 +432,40 @@ class _FriendsScreenState extends State<FriendsScreen>
   Future<void> _blockPlayer(int playerId, String username) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-        ),
-        content: ResponsiveDialogContent(
-          phoneMaxWidth: 320,
-          tabletMaxWidth: 380,
-          desktopMaxWidth: 460,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Speler blokkeren'
-                    : 'Block player',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Weet je zeker dat je $username wilt blokkeren? Je kunt geen berichten meer sturen of ontvangen.'
-                    : 'Are you sure you want to block $username? You won\'t be able to send or receive messages.',
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Annuleren'
-                  : 'Cancel',
+      builder: (dialogContext) {
+        final dlgL10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(dlgL10n.propertiesConfirmPurchaseTitle),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 320,
+            tabletMaxWidth: 380,
+            desktopMaxWidth: 460,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  dlgL10n.friendsUiBlockDialogTitle,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(dlgL10n.friendsUiBlockDialogBody(username)),
+              ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Block'),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(dlgL10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text(dlgL10n.friendsUiBlockButton),
+            ),
+          ],
+        );
+      },
     );
 
     if (confirmed == true) {
@@ -466,13 +475,11 @@ class _FriendsScreenState extends State<FriendsScreen>
 
         if (response.statusCode == 200) {
           if (mounted) {
-            showTopRightFromSnackBar(context, 
+            final l10n = AppLocalizations.of(context)!;
+            showTopRightFromSnackBar(
+              context,
               SnackBar(
-                content: Text(
-                  Localizations.localeOf(context).languageCode == 'nl'
-                      ? 'Speler geblokkeerd'
-                      : 'Player blocked',
-                ),
+                content: Text(l10n.friendsUiSnackPlayerBlocked),
                 backgroundColor: Colors.red,
               ),
             );
@@ -481,8 +488,13 @@ class _FriendsScreenState extends State<FriendsScreen>
         }
       } catch (e) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
-            SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          final l10n = AppLocalizations.of(context)!;
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(l10n.friendsUiSnackError(e.toString())),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }
@@ -491,12 +503,11 @@ class _FriendsScreenState extends State<FriendsScreen>
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context).languageCode;
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(locale == 'nl' ? 'Vrienden' : 'Friends'),
+        title: Text(l10n.friends),
         actions: [
           // Messages button with badge
           Stack(
@@ -543,10 +554,10 @@ class _FriendsScreenState extends State<FriendsScreen>
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: locale == 'nl' ? 'Vrienden' : 'Friends'),
-            Tab(text: locale == 'nl' ? 'Activiteit' : 'Activity'),
+            Tab(text: l10n.friends),
+            Tab(text: l10n.friendsUiTabActivity),
             Tab(
-              text: locale == 'nl' ? 'Verzoeken' : 'Requests',
+              text: l10n.friendsUiTabRequests,
               icon: _pendingRequests.isNotEmpty
                   ? Badge(
                       label: Text('${_pendingRequests.length}'),
@@ -554,7 +565,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                     )
                   : null,
             ),
-            Tab(text: locale == 'nl' ? 'Zoeken' : 'Search'),
+            Tab(text: l10n.friendsUiTabSearch),
           ],
         ),
       ),
@@ -562,16 +573,16 @@ class _FriendsScreenState extends State<FriendsScreen>
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          _buildFriendsTab(locale, l10n),
-          _buildActivityTab(locale, l10n),
-          _buildRequestsTab(locale, l10n),
-          _buildSearchTab(locale, l10n),
+          _buildFriendsTab(l10n),
+          _buildActivityTab(l10n),
+          _buildRequestsTab(l10n),
+          _buildSearchTab(l10n),
         ],
       ),
     );
   }
 
-  Widget _buildFriendsTab(String locale, AppLocalizations? l10n) {
+  Widget _buildFriendsTab(AppLocalizations l10n) {
     if (_loading && _friends.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -584,14 +595,12 @@ class _FriendsScreenState extends State<FriendsScreen>
             Icon(Icons.people_outline, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              locale == 'nl' ? 'Nog geen vrienden' : 'No friends yet',
+              l10n.friendsUiEmptyListTitle,
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
             const SizedBox(height: 8),
             Text(
-              locale == 'nl'
-                  ? 'Zoek spelers en voeg ze toe als vriend!'
-                  : 'Search for players and add them as friends!',
+              l10n.friendsUiEmptyListSubtitle,
               style: TextStyle(color: Colors.grey[500]),
             ),
           ],
@@ -632,12 +641,17 @@ class _FriendsScreenState extends State<FriendsScreen>
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${locale == 'nl' ? 'Rank' : 'Rank'}: ${friend.rank}'),
+                  Text(l10n.friendsUiLineRank('${friend.rank}')),
                   Text(
-                    '${locale == 'nl' ? 'Locatie' : 'Location'}: ${l10n != null ? CountryHelper.getLocalizedCountryName(friend.currentCountry, l10n) : friend.currentCountry}',
+                    l10n.friendsUiLineLocation(
+                      CountryHelper.getLocalizedCountryName(
+                        friend.currentCountry,
+                        l10n,
+                      ),
+                    ),
                   ),
                   Text(
-                    '${locale == 'nl' ? 'Gezondheid' : 'Health'}: ${friend.health}%',
+                    l10n.friendsUiLineHealth('${friend.health}'),
                     style: TextStyle(
                       color: friend.health >= 75
                           ? Colors.green
@@ -647,7 +661,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                     ),
                   ),
                   Text(
-                    '${locale == 'nl' ? 'Vrienden sinds' : 'Friends since'}: ${_formatDate(friendData.since)}',
+                    l10n.friendsUiLineFriendsSince(_formatDate(friendData.since)),
                     style: const TextStyle(
                       fontSize: 12,
                       fontStyle: FontStyle.italic,
@@ -696,7 +710,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                               size: 20,
                             ),
                             const SizedBox(width: 8),
-                            Text(locale == 'nl' ? 'Blokkeer' : 'Block'),
+                            Text(l10n.friendsUiMenuBlock),
                           ],
                         ),
                       ),
@@ -710,7 +724,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                               size: 20,
                             ),
                             const SizedBox(width: 8),
-                            Text(locale == 'nl' ? 'Verwijder' : 'Remove'),
+                            Text(l10n.friendsUiMenuRemove),
                           ],
                         ),
                       ),
@@ -725,7 +739,7 @@ class _FriendsScreenState extends State<FriendsScreen>
     );
   }
 
-  Widget _buildRequestsTab(String locale, AppLocalizations? l10n) {
+  Widget _buildRequestsTab(AppLocalizations l10n) {
     if (_pendingRequests.isEmpty) {
       return Center(
         child: Column(
@@ -734,7 +748,7 @@ class _FriendsScreenState extends State<FriendsScreen>
             Icon(Icons.inbox_outlined, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              locale == 'nl' ? 'Geen verzoeken' : 'No requests',
+              l10n.friendsUiNoRequests,
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
           ],
@@ -773,18 +787,24 @@ class _FriendsScreenState extends State<FriendsScreen>
                 ),
               ),
               subtitle: Text(
-                '${locale == 'nl' ? 'Rank' : 'Rank'}: ${requester.rank}',
+                l10n.friendsUiLineRank('${requester.rank}'),
               ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.check, color: Colors.green),
-                    onPressed: () => _acceptFriendRequest(request.friendshipId),
+                  Tooltip(
+                    message: l10n.friendsUiAccept,
+                    child: IconButton(
+                      icon: const Icon(Icons.check, color: Colors.green),
+                      onPressed: () => _acceptFriendRequest(request.friendshipId),
+                    ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.red),
-                    onPressed: () => _rejectFriendRequest(request.friendshipId),
+                  Tooltip(
+                    message: l10n.friendsUiReject,
+                    child: IconButton(
+                      icon: const Icon(Icons.close, color: Colors.red),
+                      onPressed: () => _rejectFriendRequest(request.friendshipId),
+                    ),
                   ),
                 ],
               ),
@@ -795,7 +815,7 @@ class _FriendsScreenState extends State<FriendsScreen>
     );
   }
 
-  Widget _buildSearchTab(String locale, AppLocalizations? l10n) {
+  Widget _buildSearchTab(AppLocalizations l10n) {
     return Column(
       children: [
         Padding(
@@ -803,10 +823,8 @@ class _FriendsScreenState extends State<FriendsScreen>
           child: TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              labelText: locale == 'nl' ? 'Zoek speler' : 'Search player',
-              hintText: locale == 'nl'
-                  ? 'Typ minimaal 2 karakters'
-                  : 'Type at least 2 characters',
+              labelText: l10n.friendsUiSearchLabel,
+              hintText: l10n.friendsUiSearchHint,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -837,9 +855,7 @@ class _FriendsScreenState extends State<FriendsScreen>
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              locale == 'nl'
-                  ? 'Typ minimaal 2 karakters om te zoeken'
-                  : 'Type at least 2 characters to search',
+              l10n.friendsUiSearchMinChars,
               style: TextStyle(color: Colors.grey[600]),
             ),
           ),
@@ -847,7 +863,7 @@ class _FriendsScreenState extends State<FriendsScreen>
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              locale == 'nl' ? 'Geen spelers gevonden' : 'No players found',
+              l10n.friendsUiNoPlayersFound,
               style: TextStyle(color: Colors.grey[600]),
             ),
           ),
@@ -883,19 +899,24 @@ class _FriendsScreenState extends State<FriendsScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${locale == 'nl' ? 'Rank' : 'Rank'}: ${result.rank}',
+                        l10n.friendsUiLineRank('${result.rank}'),
                       ),
                       if (result.currentCountry != null)
                         Text(
-                          '${locale == 'nl' ? 'Locatie' : 'Location'}: ${l10n != null ? CountryHelper.getLocalizedCountryName(result.currentCountry, l10n) : result.currentCountry}',
+                          l10n.friendsUiLineLocation(
+                            CountryHelper.getLocalizedCountryName(
+                              result.currentCountry,
+                              l10n,
+                            ),
+                          ),
                         ),
                       if (result.crewName != null)
                         Text(
-                          '${locale == 'nl' ? 'Crew' : 'Crew'}: ${result.crewName}',
+                          l10n.friendsUiLineCrew(result.crewName!),
                         ),
                     ],
                   ),
-                  trailing: _buildActionButton(result, locale),
+                  trailing: _buildActionButton(result, l10n),
                 ),
               );
             },
@@ -905,26 +926,26 @@ class _FriendsScreenState extends State<FriendsScreen>
     );
   }
 
-  Widget _buildActionButton(PlayerSearchResult result, String locale) {
+  Widget _buildActionButton(PlayerSearchResult result, AppLocalizations l10n) {
     if (result.isFriend) {
       return Chip(
-        label: Text(locale == 'nl' ? 'Vriend' : 'Friend'),
+        label: Text(l10n.friendsUiChipFriend),
         backgroundColor: Colors.green[100],
       );
     } else if (result.isPendingSent) {
       return Chip(
         label: Text(
-          locale == 'nl' ? 'Verzocht' : 'Pending',
+          l10n.friendsUiChipPending,
           style: TextStyle(color: Colors.grey[800]),
         ),
         backgroundColor: Colors.orange,
       );
     } else if (result.isPendingReceived) {
       return Tooltip(
-        message: locale == 'nl' ? 'Accepteren' : 'Accept',
+        message: l10n.friendsUiAccept,
         child: Chip(
           label: Text(
-            locale == 'nl' ? 'Accepteren' : 'Accept',
+            l10n.friendsUiAccept,
             style: const TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.green,
@@ -999,7 +1020,7 @@ class _FriendsScreenState extends State<FriendsScreen>
     }
   }
 
-  Widget _buildActivityTab(String locale, AppLocalizations? l10n) {
+  Widget _buildActivityTab(AppLocalizations l10n) {
     // Only trigger initial load if not initialized yet
     if (!_activitiesInitialized && !_activitiesLoading) {
       Future.microtask(() => _loadActivities());
@@ -1015,9 +1036,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                 Icon(Icons.people_outline, size: 80, color: Colors.grey[600]),
                 const SizedBox(height: 16),
                 Text(
-                  locale == 'nl'
-                      ? 'Nog geen vriend activiteit'
-                      : 'No friend activity yet',
+                  l10n.friendsUiActivityEmpty,
                   style: TextStyle(color: Colors.grey[400], fontSize: 18),
                 ),
               ],
@@ -1088,7 +1107,9 @@ class _FriendsScreenState extends State<FriendsScreen>
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
-                                      'Level ${player['rank']}',
+                                      l10n.friendsUiActivityLevel(
+                                        '${player['rank']}',
+                                      ),
                                       style: const TextStyle(
                                         color: Colors.white70,
                                         fontSize: 11,
@@ -1123,6 +1144,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                               Text(
                                 timeago.format(
                                   DateTime.parse(activity['createdAt']),
+                                  locale: _timeagoLocale(context),
                                 ),
                                 style: TextStyle(
                                   color: Colors.grey[600],

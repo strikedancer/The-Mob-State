@@ -7246,5 +7246,96 @@
   "inventoryStorageAccessibleHere": "Im aktuellen Land verfügbar",
   "inventoryStorageNotAccessibleHere": "In diesem Land nicht zugänglich",
   "loadoutEquipFailed": "Ausrüstung konnte nicht ausgerüstet werden",
-  "loadoutDeleteFailed": "Das Loadout konnte nicht gelöscht werden"
+  "loadoutDeleteFailed": "Das Loadout konnte nicht gelöscht werden",
+  "friendsUiTabActivity": "Aktivität",
+  "friendsUiTabRequests": "Anfragen",
+  "friendsUiTabSearch": "Suchen",
+  "friendsUiEmptyListTitle": "Noch keine Freunde",
+  "friendsUiEmptyListSubtitle": "Suchen Sie nach Spielern und fügen Sie sie als Freunde hinzu!",
+  "friendsUiNoRequests": "Keine Anfragen",
+  "friendsUiLineRank": "Rang: {rank}",
+  "@friendsUiLineRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineLocation": "Standort: {location}",
+  "@friendsUiLineLocation": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineHealth": "Gesundheit: {percent} %",
+  "@friendsUiLineHealth": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineFriendsSince": "Freunde seit: {date}",
+  "@friendsUiLineFriendsSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiRemoveDialogTitle": "Freund entfernen",
+  "friendsUiRemoveDialogBody": "Möchten Sie diesen Freund wirklich entfernen?",
+  "friendsUiRemoveConfirm": "Entfernen",
+  "friendsUiBlockDialogTitle": "Spieler blockieren",
+  "friendsUiBlockDialogBody": "Sind Sie sicher, dass Sie {username} blockieren möchten? Sie können keine Nachrichten senden oder empfangen.",
+  "@friendsUiBlockDialogBody": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiBlockButton": "Block",
+  "friendsUiSnackRequestSent": "Freundschaftsanfrage gesendet",
+  "friendsUiSnackRequestAccepted": "Freundschaftsanfrage angenommen",
+  "friendsUiSnackRequestRejected": "Freundschaftsanfrage abgelehnt",
+  "friendsUiSnackFriendRemoved": "Freund entfernt",
+  "friendsUiSnackPlayerBlocked": "Spieler blockiert",
+  "friendsUiSnackError": "Fehler: {details}",
+  "@friendsUiSnackError": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiSearchLabel": "Spieler suchen",
+  "friendsUiSearchHint": "Geben Sie mindestens 2 Zeichen ein",
+  "friendsUiSearchMinChars": "Geben Sie für die Suche mindestens 2 Zeichen ein",
+  "friendsUiNoPlayersFound": "Keine Spieler gefunden",
+  "friendsUiMenuBlock": "Block",
+  "friendsUiMenuRemove": "Entfernen",
+  "friendsUiChipFriend": "Freundin",
+  "friendsUiChipPending": "Ausstehend",
+  "friendsUiAccept": "Akzeptieren",
+  "friendsUiActivityEmpty": "Noch keine Freundesaktivität",
+  "friendsUiActivityLevel": "Level {level}",
+  "@friendsUiActivityLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineCrew": "Crew: {name}",
+  "@friendsUiLineCrew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiReject": "Ablehnen"
 }

@@ -2669,6 +2669,130 @@ class AppLocalizationsPt extends AppLocalizations {
   String get friendActivity => 'Atividade de amigo';
 
   @override
+  String get friendsUiTabActivity => 'Atividade';
+
+  @override
+  String get friendsUiTabRequests => 'Solicitações';
+
+  @override
+  String get friendsUiTabSearch => 'Procurar';
+
+  @override
+  String get friendsUiEmptyListTitle => 'Ainda não há amigos';
+
+  @override
+  String get friendsUiEmptyListSubtitle =>
+      'Procure jogadores e adicione-os como amigos!';
+
+  @override
+  String get friendsUiNoRequests => 'Nenhuma solicitação';
+
+  @override
+  String friendsUiLineRank(String rank) {
+    return 'Classificação: $rank';
+  }
+
+  @override
+  String friendsUiLineLocation(String location) {
+    return 'Localização: $location';
+  }
+
+  @override
+  String friendsUiLineHealth(String percent) {
+    return 'Saúde: $percent%';
+  }
+
+  @override
+  String friendsUiLineFriendsSince(String date) {
+    return 'Amigos desde: $date';
+  }
+
+  @override
+  String get friendsUiRemoveDialogTitle => 'Remover amigo';
+
+  @override
+  String get friendsUiRemoveDialogBody =>
+      'Tem certeza de que deseja remover este amigo?';
+
+  @override
+  String get friendsUiRemoveConfirm => 'Remover';
+
+  @override
+  String get friendsUiBlockDialogTitle => 'Bloquear jogador';
+
+  @override
+  String friendsUiBlockDialogBody(String username) {
+    return 'Tem certeza de que deseja bloquear $username? Você não poderá enviar ou receber mensagens.';
+  }
+
+  @override
+  String get friendsUiBlockButton => 'Bloquear';
+
+  @override
+  String get friendsUiSnackRequestSent => 'Pedido de amizade enviado';
+
+  @override
+  String get friendsUiSnackRequestAccepted => 'Pedido de amizade aceito';
+
+  @override
+  String get friendsUiSnackRequestRejected => 'Pedido de amizade rejeitado';
+
+  @override
+  String get friendsUiSnackFriendRemoved => 'Amigo removido';
+
+  @override
+  String get friendsUiSnackPlayerBlocked => 'Jogador bloqueado';
+
+  @override
+  String friendsUiSnackError(String details) {
+    return 'Erro: $details';
+  }
+
+  @override
+  String get friendsUiSearchLabel => 'Pesquisar jogador';
+
+  @override
+  String get friendsUiSearchHint => 'Digite pelo menos 2 caracteres';
+
+  @override
+  String get friendsUiSearchMinChars =>
+      'Digite pelo menos 2 caracteres para pesquisar';
+
+  @override
+  String get friendsUiNoPlayersFound => 'Nenhum jogador encontrado';
+
+  @override
+  String get friendsUiMenuBlock => 'Bloquear';
+
+  @override
+  String get friendsUiMenuRemove => 'Remover';
+
+  @override
+  String get friendsUiChipFriend => 'Amiga';
+
+  @override
+  String get friendsUiChipPending => 'Pendente';
+
+  @override
+  String get friendsUiAccept => 'Aceitar';
+
+  @override
+  String get friendsUiReject => 'Rejeitar';
+
+  @override
+  String get friendsUiActivityEmpty => 'Nenhuma atividade de amigo ainda';
+
+  @override
+  String friendsUiActivityLevel(String level) {
+    return 'Nível $level';
+  }
+
+  @override
+  String friendsUiLineCrew(String name) {
+    return 'Crew: $name';
+  }
+
+  @override
   String get propertiesAvailable => 'Disponível';
 
   @override

@@ -4803,6 +4803,216 @@ abstract class AppLocalizations {
   /// **'Friend Activity'**
   String get friendActivity;
 
+  /// No description provided for @friendsUiTabActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get friendsUiTabActivity;
+
+  /// No description provided for @friendsUiTabRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get friendsUiTabRequests;
+
+  /// No description provided for @friendsUiTabSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get friendsUiTabSearch;
+
+  /// No description provided for @friendsUiEmptyListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No friends yet'**
+  String get friendsUiEmptyListTitle;
+
+  /// No description provided for @friendsUiEmptyListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for players and add them as friends!'**
+  String get friendsUiEmptyListSubtitle;
+
+  /// No description provided for @friendsUiNoRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests'**
+  String get friendsUiNoRequests;
+
+  /// No description provided for @friendsUiLineRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank: {rank}'**
+  String friendsUiLineRank(String rank);
+
+  /// No description provided for @friendsUiLineLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location: {location}'**
+  String friendsUiLineLocation(String location);
+
+  /// No description provided for @friendsUiLineHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health: {percent}%'**
+  String friendsUiLineHealth(String percent);
+
+  /// No description provided for @friendsUiLineFriendsSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends since: {date}'**
+  String friendsUiLineFriendsSince(String date);
+
+  /// No description provided for @friendsUiRemoveDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove friend'**
+  String get friendsUiRemoveDialogTitle;
+
+  /// No description provided for @friendsUiRemoveDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove this friend?'**
+  String get friendsUiRemoveDialogBody;
+
+  /// No description provided for @friendsUiRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get friendsUiRemoveConfirm;
+
+  /// No description provided for @friendsUiBlockDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Block player'**
+  String get friendsUiBlockDialogTitle;
+
+  /// No description provided for @friendsUiBlockDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to block {username}? You won\'t be able to send or receive messages.'**
+  String friendsUiBlockDialogBody(String username);
+
+  /// No description provided for @friendsUiBlockButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get friendsUiBlockButton;
+
+  /// No description provided for @friendsUiSnackRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend request sent'**
+  String get friendsUiSnackRequestSent;
+
+  /// No description provided for @friendsUiSnackRequestAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend request accepted'**
+  String get friendsUiSnackRequestAccepted;
+
+  /// No description provided for @friendsUiSnackRequestRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend request rejected'**
+  String get friendsUiSnackRequestRejected;
+
+  /// No description provided for @friendsUiSnackFriendRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend removed'**
+  String get friendsUiSnackFriendRemoved;
+
+  /// No description provided for @friendsUiSnackPlayerBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Player blocked'**
+  String get friendsUiSnackPlayerBlocked;
+
+  /// No description provided for @friendsUiSnackError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {details}'**
+  String friendsUiSnackError(String details);
+
+  /// No description provided for @friendsUiSearchLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Search player'**
+  String get friendsUiSearchLabel;
+
+  /// No description provided for @friendsUiSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least 2 characters'**
+  String get friendsUiSearchHint;
+
+  /// No description provided for @friendsUiSearchMinChars.
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least 2 characters to search'**
+  String get friendsUiSearchMinChars;
+
+  /// No description provided for @friendsUiNoPlayersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No players found'**
+  String get friendsUiNoPlayersFound;
+
+  /// No description provided for @friendsUiMenuBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get friendsUiMenuBlock;
+
+  /// No description provided for @friendsUiMenuRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get friendsUiMenuRemove;
+
+  /// No description provided for @friendsUiChipFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend'**
+  String get friendsUiChipFriend;
+
+  /// No description provided for @friendsUiChipPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get friendsUiChipPending;
+
+  /// No description provided for @friendsUiAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get friendsUiAccept;
+
+  /// No description provided for @friendsUiReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get friendsUiReject;
+
+  /// No description provided for @friendsUiActivityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No friend activity yet'**
+  String get friendsUiActivityEmpty;
+
+  /// No description provided for @friendsUiActivityLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}'**
+  String friendsUiActivityLevel(String level);
+
+  /// No description provided for @friendsUiLineCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew: {name}'**
+  String friendsUiLineCrew(String name);
+
   /// No description provided for @propertiesAvailable.
   ///
   /// In en, this message translates to:

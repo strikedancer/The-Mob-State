@@ -1601,6 +1601,81 @@
   "foodInfo3": "• Buy food and drink to keep your stats up",
   "friends": "Friends",
   "friendActivity": "Friend Activity",
+  "friendsUiTabActivity": "Activity",
+  "friendsUiTabRequests": "Requests",
+  "friendsUiTabSearch": "Search",
+  "friendsUiEmptyListTitle": "No friends yet",
+  "friendsUiEmptyListSubtitle": "Search for players and add them as friends!",
+  "friendsUiNoRequests": "No requests",
+  "friendsUiLineRank": "Rank: {rank}",
+  "@friendsUiLineRank": {
+    "placeholders": {
+      "rank": {"type": "String"}
+    }
+  },
+  "friendsUiLineLocation": "Location: {location}",
+  "@friendsUiLineLocation": {
+    "placeholders": {
+      "location": {"type": "String"}
+    }
+  },
+  "friendsUiLineHealth": "Health: {percent}%",
+  "@friendsUiLineHealth": {
+    "placeholders": {
+      "percent": {"type": "String"}
+    }
+  },
+  "friendsUiLineFriendsSince": "Friends since: {date}",
+  "@friendsUiLineFriendsSince": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "friendsUiRemoveDialogTitle": "Remove friend",
+  "friendsUiRemoveDialogBody": "Are you sure you want to remove this friend?",
+  "friendsUiRemoveConfirm": "Remove",
+  "friendsUiBlockDialogTitle": "Block player",
+  "friendsUiBlockDialogBody": "Are you sure you want to block {username}? You won't be able to send or receive messages.",
+  "@friendsUiBlockDialogBody": {
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
+  "friendsUiBlockButton": "Block",
+  "friendsUiSnackRequestSent": "Friend request sent",
+  "friendsUiSnackRequestAccepted": "Friend request accepted",
+  "friendsUiSnackRequestRejected": "Friend request rejected",
+  "friendsUiSnackFriendRemoved": "Friend removed",
+  "friendsUiSnackPlayerBlocked": "Player blocked",
+  "friendsUiSnackError": "Error: {details}",
+  "@friendsUiSnackError": {
+    "placeholders": {
+      "details": {"type": "String"}
+    }
+  },
+  "friendsUiSearchLabel": "Search player",
+  "friendsUiSearchHint": "Type at least 2 characters",
+  "friendsUiSearchMinChars": "Type at least 2 characters to search",
+  "friendsUiNoPlayersFound": "No players found",
+  "friendsUiMenuBlock": "Block",
+  "friendsUiMenuRemove": "Remove",
+  "friendsUiChipFriend": "Friend",
+  "friendsUiChipPending": "Pending",
+  "friendsUiAccept": "Accept",
+  "friendsUiReject": "Reject",
+  "friendsUiActivityEmpty": "No friend activity yet",
+  "friendsUiActivityLevel": "Level {level}",
+  "@friendsUiActivityLevel": {
+    "placeholders": {
+      "level": {"type": "String"}
+    }
+  },
+  "friendsUiLineCrew": "Crew: {name}",
+  "@friendsUiLineCrew": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
   "propertiesAvailable": "Available",
   "myProperties": "My Properties",
   "errorLoadingMyProperties": "Error loading my properties",

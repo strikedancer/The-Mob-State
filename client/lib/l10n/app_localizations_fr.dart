@@ -2695,6 +2695,130 @@ class AppLocalizationsFr extends AppLocalizations {
   String get friendActivity => 'Activité d\'un ami';
 
   @override
+  String get friendsUiTabActivity => 'Activité';
+
+  @override
+  String get friendsUiTabRequests => 'Demandes';
+
+  @override
+  String get friendsUiTabSearch => 'Recherche';
+
+  @override
+  String get friendsUiEmptyListTitle => 'Pas encore d\'amis';
+
+  @override
+  String get friendsUiEmptyListSubtitle =>
+      'Recherchez des joueurs et ajoutez-les comme amis !';
+
+  @override
+  String get friendsUiNoRequests => 'Aucune demande';
+
+  @override
+  String friendsUiLineRank(String rank) {
+    return 'Rang : $rank';
+  }
+
+  @override
+  String friendsUiLineLocation(String location) {
+    return 'Localisation : $location';
+  }
+
+  @override
+  String friendsUiLineHealth(String percent) {
+    return 'Santé : $percent%';
+  }
+
+  @override
+  String friendsUiLineFriendsSince(String date) {
+    return 'Amis depuis : $date';
+  }
+
+  @override
+  String get friendsUiRemoveDialogTitle => 'Supprimer un ami';
+
+  @override
+  String get friendsUiRemoveDialogBody =>
+      'Etes-vous sûr de vouloir supprimer cet ami ?';
+
+  @override
+  String get friendsUiRemoveConfirm => 'Retirer';
+
+  @override
+  String get friendsUiBlockDialogTitle => 'Bloquer le joueur';
+
+  @override
+  String friendsUiBlockDialogBody(String username) {
+    return 'Êtes-vous sûr de vouloir bloquer $username ? Vous ne pourrez ni envoyer ni recevoir de messages.';
+  }
+
+  @override
+  String get friendsUiBlockButton => 'Bloc';
+
+  @override
+  String get friendsUiSnackRequestSent => 'Demande d\'ami envoyée';
+
+  @override
+  String get friendsUiSnackRequestAccepted => 'Demande d\'ami acceptée';
+
+  @override
+  String get friendsUiSnackRequestRejected => 'Demande d\'ami rejetée';
+
+  @override
+  String get friendsUiSnackFriendRemoved => 'Ami supprimé';
+
+  @override
+  String get friendsUiSnackPlayerBlocked => 'Joueur bloqué';
+
+  @override
+  String friendsUiSnackError(String details) {
+    return 'Erreur : $details';
+  }
+
+  @override
+  String get friendsUiSearchLabel => 'Rechercher un joueur';
+
+  @override
+  String get friendsUiSearchHint => 'Tapez au moins 2 caractères';
+
+  @override
+  String get friendsUiSearchMinChars =>
+      'Tapez au moins 2 caractères pour rechercher';
+
+  @override
+  String get friendsUiNoPlayersFound => 'Aucun joueur trouvé';
+
+  @override
+  String get friendsUiMenuBlock => 'Bloc';
+
+  @override
+  String get friendsUiMenuRemove => 'Retirer';
+
+  @override
+  String get friendsUiChipFriend => 'Amie';
+
+  @override
+  String get friendsUiChipPending => 'En attente';
+
+  @override
+  String get friendsUiAccept => 'Accepter';
+
+  @override
+  String get friendsUiReject => 'Rejeter';
+
+  @override
+  String get friendsUiActivityEmpty => 'Aucune activité d\'ami pour l\'instant';
+
+  @override
+  String friendsUiActivityLevel(String level) {
+    return 'Niveau $level';
+  }
+
+  @override
+  String friendsUiLineCrew(String name) {
+    return 'Équipage : $name';
+  }
+
+  @override
   String get propertiesAvailable => 'Disponible';
 
   @override

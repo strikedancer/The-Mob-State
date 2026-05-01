@@ -7246,5 +7246,96 @@
   "inventoryStorageAccessibleHere": "Toegankelijk in huidig land",
   "inventoryStorageNotAccessibleHere": "Niet toegankelijk in dit land",
   "loadoutEquipFailed": "Loadout activeren mislukt",
-  "loadoutDeleteFailed": "Loadout verwijderen mislukt"
+  "loadoutDeleteFailed": "Loadout verwijderen mislukt",
+  "friendsUiTabActivity": "Activiteit",
+  "friendsUiTabRequests": "Verzoeken",
+  "friendsUiTabSearch": "Zoeken",
+  "friendsUiEmptyListTitle": "Nog geen vrienden",
+  "friendsUiEmptyListSubtitle": "Zoek naar spelers en voeg ze toe als vrienden!",
+  "friendsUiNoRequests": "Geen verzoeken",
+  "friendsUiLineRank": "Rang: {rank}",
+  "@friendsUiLineRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineLocation": "Locatie: {location}",
+  "@friendsUiLineLocation": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineHealth": "Gezondheid: {percent}%",
+  "@friendsUiLineHealth": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineFriendsSince": "Vrienden sinds: {date}",
+  "@friendsUiLineFriendsSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiRemoveDialogTitle": "Vriend verwijderen",
+  "friendsUiRemoveDialogBody": "Weet je zeker dat je deze vriend wilt verwijderen?",
+  "friendsUiRemoveConfirm": "Verwijderen",
+  "friendsUiBlockDialogTitle": "Blok speler",
+  "friendsUiBlockDialogBody": "Weet u zeker dat u {username} wilt blokkeren? U kunt geen berichten verzenden of ontvangen.",
+  "@friendsUiBlockDialogBody": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiBlockButton": "Blokkeren",
+  "friendsUiSnackRequestSent": "Vriendschapsverzoek verzonden",
+  "friendsUiSnackRequestAccepted": "Vriendschapsverzoek geaccepteerd",
+  "friendsUiSnackRequestRejected": "Vriendschapsverzoek afgewezen",
+  "friendsUiSnackFriendRemoved": "Vriend verwijderd",
+  "friendsUiSnackPlayerBlocked": "Speler geblokkeerd",
+  "friendsUiSnackError": "Fout: {details}",
+  "@friendsUiSnackError": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiSearchLabel": "Zoek speler",
+  "friendsUiSearchHint": "Typ minimaal 2 tekens",
+  "friendsUiSearchMinChars": "Typ minimaal 2 tekens om te zoeken",
+  "friendsUiNoPlayersFound": "Geen spelers gevonden",
+  "friendsUiMenuBlock": "Blokkeren",
+  "friendsUiMenuRemove": "Verwijderen",
+  "friendsUiChipFriend": "Vriend",
+  "friendsUiChipPending": "In behandeling",
+  "friendsUiAccept": "Accepteren",
+  "friendsUiActivityEmpty": "Nog geen vriendenactiviteit",
+  "friendsUiActivityLevel": "Niveau {level}",
+  "@friendsUiActivityLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineCrew": "Crew: {name}",
+  "@friendsUiLineCrew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiReject": "Afwijzen"
 }

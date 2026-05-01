@@ -2646,6 +2646,129 @@ class AppLocalizationsEn extends AppLocalizations {
   String get friendActivity => 'Friend Activity';
 
   @override
+  String get friendsUiTabActivity => 'Activity';
+
+  @override
+  String get friendsUiTabRequests => 'Requests';
+
+  @override
+  String get friendsUiTabSearch => 'Search';
+
+  @override
+  String get friendsUiEmptyListTitle => 'No friends yet';
+
+  @override
+  String get friendsUiEmptyListSubtitle =>
+      'Search for players and add them as friends!';
+
+  @override
+  String get friendsUiNoRequests => 'No requests';
+
+  @override
+  String friendsUiLineRank(String rank) {
+    return 'Rank: $rank';
+  }
+
+  @override
+  String friendsUiLineLocation(String location) {
+    return 'Location: $location';
+  }
+
+  @override
+  String friendsUiLineHealth(String percent) {
+    return 'Health: $percent%';
+  }
+
+  @override
+  String friendsUiLineFriendsSince(String date) {
+    return 'Friends since: $date';
+  }
+
+  @override
+  String get friendsUiRemoveDialogTitle => 'Remove friend';
+
+  @override
+  String get friendsUiRemoveDialogBody =>
+      'Are you sure you want to remove this friend?';
+
+  @override
+  String get friendsUiRemoveConfirm => 'Remove';
+
+  @override
+  String get friendsUiBlockDialogTitle => 'Block player';
+
+  @override
+  String friendsUiBlockDialogBody(String username) {
+    return 'Are you sure you want to block $username? You won\'t be able to send or receive messages.';
+  }
+
+  @override
+  String get friendsUiBlockButton => 'Block';
+
+  @override
+  String get friendsUiSnackRequestSent => 'Friend request sent';
+
+  @override
+  String get friendsUiSnackRequestAccepted => 'Friend request accepted';
+
+  @override
+  String get friendsUiSnackRequestRejected => 'Friend request rejected';
+
+  @override
+  String get friendsUiSnackFriendRemoved => 'Friend removed';
+
+  @override
+  String get friendsUiSnackPlayerBlocked => 'Player blocked';
+
+  @override
+  String friendsUiSnackError(String details) {
+    return 'Error: $details';
+  }
+
+  @override
+  String get friendsUiSearchLabel => 'Search player';
+
+  @override
+  String get friendsUiSearchHint => 'Type at least 2 characters';
+
+  @override
+  String get friendsUiSearchMinChars => 'Type at least 2 characters to search';
+
+  @override
+  String get friendsUiNoPlayersFound => 'No players found';
+
+  @override
+  String get friendsUiMenuBlock => 'Block';
+
+  @override
+  String get friendsUiMenuRemove => 'Remove';
+
+  @override
+  String get friendsUiChipFriend => 'Friend';
+
+  @override
+  String get friendsUiChipPending => 'Pending';
+
+  @override
+  String get friendsUiAccept => 'Accept';
+
+  @override
+  String get friendsUiReject => 'Reject';
+
+  @override
+  String get friendsUiActivityEmpty => 'No friend activity yet';
+
+  @override
+  String friendsUiActivityLevel(String level) {
+    return 'Level $level';
+  }
+
+  @override
+  String friendsUiLineCrew(String name) {
+    return 'Crew: $name';
+  }
+
+  @override
   String get propertiesAvailable => 'Available';
 
   @override

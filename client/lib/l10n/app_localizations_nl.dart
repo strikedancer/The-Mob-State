@@ -2660,6 +2660,130 @@ class AppLocalizationsNl extends AppLocalizations {
   String get friendActivity => 'Vriend Activiteit';
 
   @override
+  String get friendsUiTabActivity => 'Activiteit';
+
+  @override
+  String get friendsUiTabRequests => 'Verzoeken';
+
+  @override
+  String get friendsUiTabSearch => 'Zoeken';
+
+  @override
+  String get friendsUiEmptyListTitle => 'Nog geen vrienden';
+
+  @override
+  String get friendsUiEmptyListSubtitle =>
+      'Zoek naar spelers en voeg ze toe als vrienden!';
+
+  @override
+  String get friendsUiNoRequests => 'Geen verzoeken';
+
+  @override
+  String friendsUiLineRank(String rank) {
+    return 'Rang: $rank';
+  }
+
+  @override
+  String friendsUiLineLocation(String location) {
+    return 'Locatie: $location';
+  }
+
+  @override
+  String friendsUiLineHealth(String percent) {
+    return 'Gezondheid: $percent%';
+  }
+
+  @override
+  String friendsUiLineFriendsSince(String date) {
+    return 'Vrienden sinds: $date';
+  }
+
+  @override
+  String get friendsUiRemoveDialogTitle => 'Vriend verwijderen';
+
+  @override
+  String get friendsUiRemoveDialogBody =>
+      'Weet je zeker dat je deze vriend wilt verwijderen?';
+
+  @override
+  String get friendsUiRemoveConfirm => 'Verwijderen';
+
+  @override
+  String get friendsUiBlockDialogTitle => 'Blok speler';
+
+  @override
+  String friendsUiBlockDialogBody(String username) {
+    return 'Weet u zeker dat u $username wilt blokkeren? U kunt geen berichten verzenden of ontvangen.';
+  }
+
+  @override
+  String get friendsUiBlockButton => 'Blokkeren';
+
+  @override
+  String get friendsUiSnackRequestSent => 'Vriendschapsverzoek verzonden';
+
+  @override
+  String get friendsUiSnackRequestAccepted =>
+      'Vriendschapsverzoek geaccepteerd';
+
+  @override
+  String get friendsUiSnackRequestRejected => 'Vriendschapsverzoek afgewezen';
+
+  @override
+  String get friendsUiSnackFriendRemoved => 'Vriend verwijderd';
+
+  @override
+  String get friendsUiSnackPlayerBlocked => 'Speler geblokkeerd';
+
+  @override
+  String friendsUiSnackError(String details) {
+    return 'Fout: $details';
+  }
+
+  @override
+  String get friendsUiSearchLabel => 'Zoek speler';
+
+  @override
+  String get friendsUiSearchHint => 'Typ minimaal 2 tekens';
+
+  @override
+  String get friendsUiSearchMinChars => 'Typ minimaal 2 tekens om te zoeken';
+
+  @override
+  String get friendsUiNoPlayersFound => 'Geen spelers gevonden';
+
+  @override
+  String get friendsUiMenuBlock => 'Blokkeren';
+
+  @override
+  String get friendsUiMenuRemove => 'Verwijderen';
+
+  @override
+  String get friendsUiChipFriend => 'Vriend';
+
+  @override
+  String get friendsUiChipPending => 'In behandeling';
+
+  @override
+  String get friendsUiAccept => 'Accepteren';
+
+  @override
+  String get friendsUiReject => 'Afwijzen';
+
+  @override
+  String get friendsUiActivityEmpty => 'Nog geen vriendenactiviteit';
+
+  @override
+  String friendsUiActivityLevel(String level) {
+    return 'Niveau $level';
+  }
+
+  @override
+  String friendsUiLineCrew(String name) {
+    return 'Crew: $name';
+  }
+
+  @override
   String get propertiesAvailable => 'Beschikbaar';
 
   @override

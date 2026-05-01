@@ -7246,5 +7246,96 @@
   "inventoryStorageAccessibleHere": "Accessible dans le pays actuel",
   "inventoryStorageNotAccessibleHere": "Non accessible dans ce pays",
   "loadoutEquipFailed": "Échec de l'équipement du chargement",
-  "loadoutDeleteFailed": "Échec de la suppression du chargement"
+  "loadoutDeleteFailed": "Échec de la suppression du chargement",
+  "friendsUiTabActivity": "Activité",
+  "friendsUiTabRequests": "Demandes",
+  "friendsUiTabSearch": "Recherche",
+  "friendsUiEmptyListTitle": "Pas encore d'amis",
+  "friendsUiEmptyListSubtitle": "Recherchez des joueurs et ajoutez-les comme amis !",
+  "friendsUiNoRequests": "Aucune demande",
+  "friendsUiLineRank": "Rang : {rank}",
+  "@friendsUiLineRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineLocation": "Localisation : {location}",
+  "@friendsUiLineLocation": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineHealth": "Santé : {percent}%",
+  "@friendsUiLineHealth": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineFriendsSince": "Amis depuis : {date}",
+  "@friendsUiLineFriendsSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiRemoveDialogTitle": "Supprimer un ami",
+  "friendsUiRemoveDialogBody": "Etes-vous sûr de vouloir supprimer cet ami ?",
+  "friendsUiRemoveConfirm": "Retirer",
+  "friendsUiBlockDialogTitle": "Bloquer le joueur",
+  "friendsUiBlockDialogBody": "Êtes-vous sûr de vouloir bloquer {username} ? Vous ne pourrez ni envoyer ni recevoir de messages.",
+  "@friendsUiBlockDialogBody": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiBlockButton": "Bloc",
+  "friendsUiSnackRequestSent": "Demande d'ami envoyée",
+  "friendsUiSnackRequestAccepted": "Demande d'ami acceptée",
+  "friendsUiSnackRequestRejected": "Demande d'ami rejetée",
+  "friendsUiSnackFriendRemoved": "Ami supprimé",
+  "friendsUiSnackPlayerBlocked": "Joueur bloqué",
+  "friendsUiSnackError": "Erreur : {details}",
+  "@friendsUiSnackError": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiSearchLabel": "Rechercher un joueur",
+  "friendsUiSearchHint": "Tapez au moins 2 caractères",
+  "friendsUiSearchMinChars": "Tapez au moins 2 caractères pour rechercher",
+  "friendsUiNoPlayersFound": "Aucun joueur trouvé",
+  "friendsUiMenuBlock": "Bloc",
+  "friendsUiMenuRemove": "Retirer",
+  "friendsUiChipFriend": "Amie",
+  "friendsUiChipPending": "En attente",
+  "friendsUiAccept": "Accepter",
+  "friendsUiActivityEmpty": "Aucune activité d'ami pour l'instant",
+  "friendsUiActivityLevel": "Niveau {level}",
+  "@friendsUiActivityLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineCrew": "Équipage : {name}",
+  "@friendsUiLineCrew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiReject": "Rejeter"
 }

@@ -7246,5 +7246,96 @@
   "inventoryStorageAccessibleHere": "Dostępne w bieżącym kraju",
   "inventoryStorageNotAccessibleHere": "Niedostępne w tym kraju",
   "loadoutEquipFailed": "Nie udało się wyposażyć wyposażenia",
-  "loadoutDeleteFailed": "Nie udało się usunąć wyposażenia"
+  "loadoutDeleteFailed": "Nie udało się usunąć wyposażenia",
+  "friendsUiTabActivity": "Działalność",
+  "friendsUiTabRequests": "Upraszanie",
+  "friendsUiTabSearch": "Szukaj",
+  "friendsUiEmptyListTitle": "Nie ma jeszcze żadnych przyjaciół",
+  "friendsUiEmptyListSubtitle": "Wyszukaj graczy i dodaj ich do znajomych!",
+  "friendsUiNoRequests": "Żadnych próśb",
+  "friendsUiLineRank": "Ranga: {rank}",
+  "@friendsUiLineRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineLocation": "Lokalizacja: {location}",
+  "@friendsUiLineLocation": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineHealth": "Zdrowie: {percent}%",
+  "@friendsUiLineHealth": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineFriendsSince": "Przyjaciele od: {date}",
+  "@friendsUiLineFriendsSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiRemoveDialogTitle": "Usuń znajomego",
+  "friendsUiRemoveDialogBody": "Czy na pewno chcesz usunąć tego znajomego?",
+  "friendsUiRemoveConfirm": "Usunąć",
+  "friendsUiBlockDialogTitle": "Zablokuj gracza",
+  "friendsUiBlockDialogBody": "Czy na pewno chcesz zablokować {username}? Nie będziesz mógł wysyłać ani odbierać wiadomości.",
+  "@friendsUiBlockDialogBody": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiBlockButton": "Blok",
+  "friendsUiSnackRequestSent": "Wysłano zaproszenie do grona znajomych",
+  "friendsUiSnackRequestAccepted": "Zaproszenie do grona znajomych zaakceptowane",
+  "friendsUiSnackRequestRejected": "Prośba o dodanie do znajomych odrzucona",
+  "friendsUiSnackFriendRemoved": "Przyjaciel usunięty",
+  "friendsUiSnackPlayerBlocked": "Gracz zablokowany",
+  "friendsUiSnackError": "Błąd: {details}",
+  "@friendsUiSnackError": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiSearchLabel": "Wyszukaj gracza",
+  "friendsUiSearchHint": "Wpisz co najmniej 2 znaki",
+  "friendsUiSearchMinChars": "Wpisz co najmniej 2 znaki, aby wyszukać",
+  "friendsUiNoPlayersFound": "Nie znaleziono graczy",
+  "friendsUiMenuBlock": "Blok",
+  "friendsUiMenuRemove": "Usunąć",
+  "friendsUiChipFriend": "Przyjaciel",
+  "friendsUiChipPending": "Aż do",
+  "friendsUiAccept": "Przyjąć",
+  "friendsUiActivityEmpty": "Brak aktywności znajomych",
+  "friendsUiActivityLevel": "Poziom {level}",
+  "@friendsUiActivityLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineCrew": "Crew: {name}",
+  "@friendsUiLineCrew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiReject": "Odrzucić"
 }

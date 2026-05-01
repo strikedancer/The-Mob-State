@@ -7246,5 +7246,96 @@
   "inventoryStorageAccessibleHere": "Accesible en el país actual",
   "inventoryStorageNotAccessibleHere": "No accesible en este país.",
   "loadoutEquipFailed": "No se pudo equipar el equipamiento",
-  "loadoutDeleteFailed": "No se pudo eliminar el equipamiento"
+  "loadoutDeleteFailed": "No se pudo eliminar el equipamiento",
+  "friendsUiTabActivity": "Actividad",
+  "friendsUiTabRequests": "Solicitudes",
+  "friendsUiTabSearch": "Buscar",
+  "friendsUiEmptyListTitle": "Aún no hay amigos",
+  "friendsUiEmptyListSubtitle": "¡Busca jugadores y agrégalos como amigos!",
+  "friendsUiNoRequests": "Sin solicitudes",
+  "friendsUiLineRank": "Rango: {rank}",
+  "@friendsUiLineRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineLocation": "Ubicación: {location}",
+  "@friendsUiLineLocation": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineHealth": "Salud: {percent}%",
+  "@friendsUiLineHealth": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineFriendsSince": "Amigas desde: {date}",
+  "@friendsUiLineFriendsSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiRemoveDialogTitle": "Eliminar amiga",
+  "friendsUiRemoveDialogBody": "¿Estás seguro de que quieres eliminar a este amigo?",
+  "friendsUiRemoveConfirm": "Eliminar",
+  "friendsUiBlockDialogTitle": "Jugadora de bloque",
+  "friendsUiBlockDialogBody": "¿Estás seguro de que quieres bloquear {username}? No podrás enviar ni recibir mensajes.",
+  "@friendsUiBlockDialogBody": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiBlockButton": "Bloquear",
+  "friendsUiSnackRequestSent": "Solicitud de amistad enviada",
+  "friendsUiSnackRequestAccepted": "Solicitud de amistad aceptada",
+  "friendsUiSnackRequestRejected": "Solicitud de amistad rechazada",
+  "friendsUiSnackFriendRemoved": "Amiga eliminada",
+  "friendsUiSnackPlayerBlocked": "Jugadora bloqueada",
+  "friendsUiSnackError": "Error: {details}",
+  "@friendsUiSnackError": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiSearchLabel": "Buscar reproductor",
+  "friendsUiSearchHint": "Escribe al menos 2 caracteres",
+  "friendsUiSearchMinChars": "Escribe al menos 2 caracteres para buscar",
+  "friendsUiNoPlayersFound": "No se encontraron jugadoras",
+  "friendsUiMenuBlock": "Bloquear",
+  "friendsUiMenuRemove": "Eliminar",
+  "friendsUiChipFriend": "Amiga",
+  "friendsUiChipPending": "Pendiente",
+  "friendsUiAccept": "Aceptar",
+  "friendsUiActivityEmpty": "Aún no hay actividad de amigos",
+  "friendsUiActivityLevel": "Nivel {level}",
+  "@friendsUiActivityLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineCrew": "Crew: {name}",
+  "@friendsUiLineCrew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiReject": "Rechazar"
 }

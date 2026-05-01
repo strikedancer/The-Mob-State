@@ -7246,5 +7246,96 @@
   "inventoryStorageAccessibleHere": "Accessibile nel paese attuale",
   "inventoryStorageNotAccessibleHere": "Non accessibile in questo paese",
   "loadoutEquipFailed": "Impossibile equipaggiare l'equipaggiamento",
-  "loadoutDeleteFailed": "Impossibile eliminare il caricamento"
+  "loadoutDeleteFailed": "Impossibile eliminare il caricamento",
+  "friendsUiTabActivity": "Attività",
+  "friendsUiTabRequests": "Richieste",
+  "friendsUiTabSearch": "Ricerca",
+  "friendsUiEmptyListTitle": "Nessun amico ancora",
+  "friendsUiEmptyListSubtitle": "Cerca giocatori e aggiungili come amici!",
+  "friendsUiNoRequests": "Nessuna richiesta",
+  "friendsUiLineRank": "Classifica: {rank}",
+  "@friendsUiLineRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineLocation": "Luogo: {location}",
+  "@friendsUiLineLocation": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineHealth": "Salute: {percent}%",
+  "@friendsUiLineHealth": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineFriendsSince": "Amici dal: {date}",
+  "@friendsUiLineFriendsSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiRemoveDialogTitle": "Rimuovi amico",
+  "friendsUiRemoveDialogBody": "Sei sicuro di voler rimuovere questo amico?",
+  "friendsUiRemoveConfirm": "Rimuovere",
+  "friendsUiBlockDialogTitle": "Blocca giocatore",
+  "friendsUiBlockDialogBody": "Sei sicuro di voler bloccare {username}? Non sarai in grado di inviare o ricevere messaggi.",
+  "@friendsUiBlockDialogBody": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiBlockButton": "Bloccare",
+  "friendsUiSnackRequestSent": "Richiesta di amicizia inviata",
+  "friendsUiSnackRequestAccepted": "Richiesta di amicizia accettata",
+  "friendsUiSnackRequestRejected": "Richiesta di amicizia respinta",
+  "friendsUiSnackFriendRemoved": "Amico rimosso",
+  "friendsUiSnackPlayerBlocked": "Giocatore bloccato",
+  "friendsUiSnackError": "Errore: {details}",
+  "@friendsUiSnackError": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiSearchLabel": "Cerca giocatore",
+  "friendsUiSearchHint": "Digita almeno 2 caratteri",
+  "friendsUiSearchMinChars": "Digita almeno 2 caratteri per la ricerca",
+  "friendsUiNoPlayersFound": "Nessun giocatore trovato",
+  "friendsUiMenuBlock": "Bloccare",
+  "friendsUiMenuRemove": "Rimuovere",
+  "friendsUiChipFriend": "Amica",
+  "friendsUiChipPending": "In attesa di",
+  "friendsUiAccept": "Accettare",
+  "friendsUiActivityEmpty": "Nessuna attività degli amici ancora",
+  "friendsUiActivityLevel": "Livello {level}",
+  "@friendsUiActivityLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiLineCrew": "Crew: {name}",
+  "@friendsUiLineCrew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsUiReject": "Rifiutare"
 }
