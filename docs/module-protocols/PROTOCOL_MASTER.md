@@ -258,6 +258,7 @@ Standaardcommandoblok voor backend-updates via PuTTY:
 cd /var/www/vhosts/themobstate.com/apps/mafia_game
 cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M)
 cp .env.plesk .env.plesk.bak-$(date +%F-%H%M)
+git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ 2>/dev/null || true
 git pull origin main
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
