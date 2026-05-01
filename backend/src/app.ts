@@ -91,8 +91,12 @@ app.use(
   }),
 );
 
-// CRITICAL: Wait for Prisma DB connection before processing any requests
+// Wait for Prisma before game routes. Skip /health so orchestration and probes still get JSON
+// when the DB is slow or down (otherwise every URL returns 503 and the process looks "dead").
 app.use(async (req, res, next) => {
+  if (req.method === 'GET' && (req.path === '/health' || req.path.startsWith('/health/'))) {
+    return next();
+  }
   try {
     await waitForPrisma();
     next();
