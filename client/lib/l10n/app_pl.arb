@@ -8305,5 +8305,7 @@
   },
   "settingsPortraitUsingCustom": "Aktywny portret niestandardowy",
   "settingsPresetAvatars": "Wstępnie ustawione awatary",
-  "settingsPortraitDeleteConfirm": "Usunąć ten portret ze swojej biblioteki?"
+  "settingsPortraitDeleteConfirm": "Usunąć ten portret ze swojej biblioteki?",
+  "settingsPortraitGenerating": "Creating your portrait… This may take a few minutes. Please wait.",
+  "settingsPortraitDeleteHint": "Tap a portrait to use it as your avatar. Tap the trash icon to remove it."
 }

@@ -32,6 +32,7 @@ import {
   CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
   CREW_MISSION_RUNTIME_SETTING_KEYS,
 } from '../services/crewMissionService';
+import { deletePortrait, listPortraits } from '../services/playerPortraitService';
 
 const router = express.Router();
 
@@ -4695,6 +4696,74 @@ router.patch(
       return res.status(400).json({
         error: error instanceof Error ? error.message : 'Failed to update crew war status',
       });
+    }
+  }
+);
+
+/**
+ * GET /admin/players/:playerId/portraits
+ * List custom (selfie) portraits for moderation.
+ */
+router.get('/players/:playerId/portraits', async (req: AdminRequest, res) => {
+  try {
+    const playerId = Number(req.params.playerId);
+    if (!Number.isFinite(playerId) || playerId <= 0) {
+      return res.status(400).json({ error: 'Invalid player id' });
+    }
+    if (!req.admin?.role) {
+      return res.status(403).json({ error: 'FORBIDDEN' });
+    }
+    const portraits = await listPortraits(playerId);
+    return res.json({ portraits });
+  } catch (error) {
+    console.error('Admin list player portraits error:', error);
+    return res.status(500).json({ error: 'Failed to list portraits' });
+  }
+});
+
+/**
+ * DELETE /admin/players/:playerId/portraits/:portraitId
+ * Remove a custom portrait (guidelines / moderation). Audit-logged.
+ */
+router.delete(
+  '/players/:playerId/portraits/:portraitId',
+  auditLog({ action: 'DELETE_PLAYER_PORTRAIT', targetType: 'Player' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const playerId = Number(req.params.playerId);
+      const portraitId = Number(req.params.portraitId);
+      if (
+        !Number.isFinite(playerId) ||
+        playerId <= 0 ||
+        !Number.isFinite(portraitId) ||
+        portraitId <= 0
+      ) {
+        return res.status(400).json({ error: 'Invalid ids' });
+      }
+      const adminRole = req.admin?.role;
+      if (!adminRole || adminRole === AdminRole.VIEWER) {
+        return res.status(403).json({
+          error: 'FORBIDDEN',
+          message: 'Viewers cannot delete player portraits',
+        });
+      }
+      const reasonRaw = req.query.reason;
+      const reason =
+        typeof reasonRaw === 'string' ? reasonRaw.trim().slice(0, 500) : '';
+      await deletePortrait(playerId, portraitId);
+      res.locals.auditLogDetails = {
+        playerId,
+        portraitId,
+        reason: reason || undefined,
+      };
+      return res.json({ success: true });
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === 'PORTRAIT_NOT_FOUND') {
+        return res.status(404).json({ error: 'Portrait not found' });
+      }
+      console.error('Admin delete player portrait error:', error);
+      return res.status(500).json({ error: 'Failed to delete portrait' });
     }
   }
 );

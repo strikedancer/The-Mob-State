@@ -2510,6 +2510,14 @@ class AppLocalizationsIt extends AppLocalizations {
       'Rimuovere questo ritratto dalla tua libreria?';
 
   @override
+  String get settingsPortraitGenerating =>
+      'Creating your portrait… This may take a few minutes. Please wait.';
+
+  @override
+  String get settingsPortraitDeleteHint =>
+      'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.';
+
+  @override
   String error(String error) {
     return 'Errore: $error';
   }

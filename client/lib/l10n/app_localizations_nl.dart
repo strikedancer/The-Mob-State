@@ -2500,6 +2500,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Dit portret uit je bibliotheek verwijderen?';
 
   @override
+  String get settingsPortraitGenerating =>
+      'Je portret wordt gemaakt… Dit kan enkele minuten duren. Even geduld.';
+
+  @override
+  String get settingsPortraitDeleteHint =>
+      'Tik op een portret om het als avatar te gebruiken. Tik op het prullenbak-icoon om te verwijderen.';
+
+  @override
   String error(String error) {
     return 'Fout: $error';
   }

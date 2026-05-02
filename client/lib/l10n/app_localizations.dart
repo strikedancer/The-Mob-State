@@ -4509,6 +4509,18 @@ abstract class AppLocalizations {
   /// **'Remove this portrait from your library?'**
   String get settingsPortraitDeleteConfirm;
 
+  /// No description provided for @settingsPortraitGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating your portrait… This may take a few minutes. Please wait.'**
+  String get settingsPortraitGenerating;
+
+  /// No description provided for @settingsPortraitDeleteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.'**
+  String get settingsPortraitDeleteHint;
+
   /// No description provided for @error.
   ///
   /// In en, this message translates to:

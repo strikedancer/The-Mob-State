@@ -30,6 +30,13 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 - Selfie exists only in memory during the request; not persisted after generation.
 - Player must accept consent checkbox before upload (ToS alignment).
 
+## Admin moderation (guideline violations)
+- Staff can list and delete stored custom portraits without the player’s session: `GET /admin/players/:playerId/portraits`, `DELETE /admin/players/:playerId/portraits/:portraitId` (moderator+; **VIEWER** cannot delete). Optional query `?reason=` is recorded with the audit entry (`DELETE_PLAYER_PORTRAIT`). Admin UI: player → **Manage** tab → **Custom portretten (selfie)** with thumbnails and delete per tile. Follows the same admin-auth and audit conventions as other moderation endpoints in `PROTOCOL_MASTER.md`.
+
+## Client UX
+- During selfie→portrait generation, show a **non-dismissible** wait dialog (spinner + message) so players know the request is still running.
+- In the avatar picker, each custom portrait tile has a **visible delete** control (not only long-press) plus a short hint: tap portrait to select, trash to remove (`DELETE /settings/portraits/:id`).
+
 ## QA
 1. Insufficient credits → `error.insufficient_credits`.
 2. Successful generation → new row, balance −100, new portrait selected active.

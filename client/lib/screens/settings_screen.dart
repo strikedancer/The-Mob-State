@@ -461,12 +461,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
     if (xfile == null || !mounted) return;
 
-    setState(() => _portraitSubmitting = true);
-    try {
-      const storage = FlutterSecureStorage();
-      final token = await storage.read(key: 'auth_token');
-      if (token == null) return;
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'auth_token');
+    if (token == null || !mounted) return;
 
+    setState(() => _portraitSubmitting = true);
+    if (!mounted) return;
+    showDialog<void>(
+      context: sheetContext,
+      barrierDismissible: false,
+      builder: (ctx) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Row(
+            children: [
+              const SizedBox(
+                width: 36,
+                height: 36,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+              const SizedBox(width: 16),
+              Expanded(child: Text(l10n.settingsPortraitGenerating)),
+            ],
+          ),
+        ),
+      ),
+    );
+    try {
       final bytes = await xfile.readAsBytes();
       final ct = xfile.mimeType != null
           ? MediaType.parse(xfile.mimeType!)
@@ -541,7 +562,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       }
     } finally {
-      if (mounted) setState(() => _portraitSubmitting = false);
+      if (mounted) {
+        Navigator.of(sheetContext).pop();
+        setState(() => _portraitSubmitting = false);
+      }
     }
   }
 
@@ -1032,6 +1056,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     label: Text(l10n.settingsPortraitFromSelfieTitle),
                   ),
                   if (_portraits.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.settingsPortraitDeleteHint,
+                      style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                    ),
                     const SizedBox(height: 14),
                     GridView.builder(
                       shrinkWrap: true,
@@ -1050,34 +1079,64 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         final isSel =
                             (_settings?['activePortraitId'] as num?)?.toInt() ==
                             id;
-                        return GestureDetector(
-                          onLongPress: () =>
-                              _confirmDeletePortrait(context, id),
-                          onTap: () => _selectPortrait(id),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: isSel ? Colors.blue : Colors.grey[800]!,
-                                width: isSel ? 3 : 1,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(7),
-                              child: Image.network(
-                                WebAssetHelper.toPublicUrl(
-                                  'assets/images/$path',
-                                ),
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) => ColoredBox(
-                                  color: Colors.grey[900]!,
-                                  child: const Icon(
-                                    Icons.broken_image_outlined,
+                        return Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Positioned.fill(
+                              child: GestureDetector(
+                                onTap: () => _selectPortrait(id),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: isSel
+                                          ? Colors.blue
+                                          : Colors.grey[800]!,
+                                      width: isSel ? 3 : 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.network(
+                                      WebAssetHelper.toPublicUrl(
+                                        'assets/images/$path',
+                                      ),
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              ColoredBox(
+                                        color: Colors.grey[900]!,
+                                        child: const Icon(
+                                          Icons.broken_image_outlined,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                            Positioned(
+                              top: 2,
+                              right: 2,
+                              child: Material(
+                                color: Colors.black54,
+                                shape: const CircleBorder(),
+                                child: InkWell(
+                                  customBorder: const CircleBorder(),
+                                  onTap: () =>
+                                      _confirmDeletePortrait(context, id),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(4),
+                                    child: Icon(
+                                      Icons.delete_outline,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),

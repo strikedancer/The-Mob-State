@@ -11,6 +11,28 @@ const resolveApiUrl = (): string => {
 
 const API_URL = resolveApiUrl();
 
+/** Game origin where `/images/*` is served (custom portraits). Override with `VITE_GAME_PUBLIC_ORIGIN` in admin `.env` if needed. */
+export function resolveGamePublicOrigin(): string {
+  const v = import.meta.env.VITE_GAME_PUBLIC_ORIGIN?.trim();
+  if (v) return v.replace(/\/$/, "");
+  if (typeof window !== "undefined") {
+    const { protocol, hostname } = window.location;
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:8080";
+    }
+    if (hostname.startsWith("admin.")) {
+      return `${protocol}//${hostname.replace(/^admin\./, "")}`;
+    }
+    return window.location.origin;
+  }
+  return "https://themobstate.com";
+}
+
+export function portraitPublicImageUrl(imagePath: string): string {
+  const path = imagePath.replace(/^\/+/, "");
+  return `${resolveGamePublicOrigin()}/images/${path}`;
+}
+
 const parseErrorMessage = async (
   response: Response,
   fallback: string,
@@ -2643,5 +2665,38 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to close territory season");
+  },
+
+  async getPlayerPortraits(playerId: number): Promise<{
+    portraits: Array<{ id: number; imagePath: string; createdAt: string }>;
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/portraits`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    await ensureOk(response, "Failed to list player portraits");
+    return response.json();
+  },
+
+  async deletePlayerPortrait(
+    playerId: number,
+    portraitId: number,
+    reason?: string,
+  ): Promise<void> {
+    const token = adminAuthService.getToken();
+    const q = reason
+      ? `?reason=${encodeURIComponent(reason.slice(0, 500))}`
+      : "";
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/portraits/${portraitId}${q}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    await ensureOk(response, "Failed to delete portrait");
   },
 };

@@ -3,6 +3,7 @@ import "./App.css";
 import {
   adminAuthService,
   adminService,
+  portraitPublicImageUrl,
   type PremiumOffer,
   type CreatePremiumOfferPayload,
   type CreditShopItem,
@@ -701,6 +702,14 @@ function App() {
       body: "Dit is een live admin test push. Als je dit ziet, werkt de push route.",
       dataType: "admin_test_push",
     });
+  const [playerCustomPortraits, setPlayerCustomPortraits] = useState<
+    Array<{ id: number; imagePath: string; createdAt: string }>
+  >([]);
+  const [playerCustomPortraitsLoading, setPlayerCustomPortraitsLoading] =
+    useState(false);
+  const [deletingPortraitId, setDeletingPortraitId] = useState<number | null>(
+    null,
+  );
 
   // Audit logs state
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
@@ -1296,6 +1305,34 @@ function App() {
     playerDetailTab,
     selectedPlayerId,
   ]);
+
+  useEffect(() => {
+    if (!selectedPlayerId || playerDetailTab !== "manage") {
+      setPlayerCustomPortraits([]);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      setPlayerCustomPortraitsLoading(true);
+      try {
+        const r = await adminService.getPlayerPortraits(selectedPlayerId);
+        if (!cancelled) {
+          setPlayerCustomPortraits(r.portraits);
+        }
+      } catch {
+        if (!cancelled) {
+          setPlayerCustomPortraits([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setPlayerCustomPortraitsLoading(false);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedPlayerId, playerDetailTab]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -3237,6 +3274,54 @@ function App() {
       );
     } finally {
       setPlayerDetailLoading(false);
+    }
+  };
+
+  const handleAdminDeletePlayerPortrait = async (portraitId: number) => {
+    if (!selectedPlayerId) return;
+    if (!canManagePlayers) {
+      alert(
+        l(
+          "Je hebt geen rechten om portretten te verwijderen.",
+          "You do not have permission to delete portraits.",
+        ),
+      );
+      return;
+    }
+    const ok = window.confirm(
+      l(
+        "Dit custom portret verwijderen? Bestand en database-record worden gewist (moderatie).",
+        "Delete this custom portrait? File and database row are removed (moderation).",
+      ),
+    );
+    if (!ok) return;
+    const reason =
+      window.prompt(
+        l(
+          "Optionele reden voor het audit log (max 500 tekens).",
+          "Optional reason for the audit log (max 500 chars).",
+        ),
+        "",
+      ) ?? "";
+    try {
+      setDeletingPortraitId(portraitId);
+      await adminService.deletePlayerPortrait(
+        selectedPlayerId,
+        portraitId,
+        reason.trim() || undefined,
+      );
+      const r = await adminService.getPlayerPortraits(selectedPlayerId);
+      setPlayerCustomPortraits(r.portraits);
+      const refreshed = await adminService.getPlayerOverview(selectedPlayerId);
+      setSelectedPlayerOverview(refreshed);
+    } catch (err) {
+      if (handleUnauthorized(err)) return;
+      const message = err instanceof Error ? err.message : t.unknownError;
+      alert(
+        `${l("Portret verwijderen mislukt", "Failed to delete portrait")}: ${message}`,
+      );
+    } finally {
+      setDeletingPortraitId(null);
     }
   };
 
@@ -7227,7 +7312,82 @@ function App() {
 
                           {/* ══ MANAGE TAB ══ */}
                           {(playerDetailTab as string) === "manage" && (
-                            <div className="card mb-3">
+                            <>
+                              <div className="card mb-3 border-warning">
+                                <div className="card-header">
+                                  <h5 className="mb-0">
+                                    <i className="ph-user-circle me-2" />
+                                    {l(
+                                      "Custom portretten (selfie)",
+                                      "Custom portraits (selfie)",
+                                    )}
+                                  </h5>
+                                </div>
+                                <div className="card-body">
+                                  <p className="text-muted small mb-3">
+                                    {l(
+                                      "Verwijder portretten die tegen de richtlijnen ingaan. Acties worden gelogd in het audit log.",
+                                      "Remove portraits that violate guidelines. Actions are written to the audit log.",
+                                    )}
+                                  </p>
+                                  {playerCustomPortraitsLoading ? (
+                                    <div className="text-center py-3">
+                                      <span className="spinner-border spinner-border-sm me-2" />
+                                      {l("Laden…", "Loading…")}
+                                    </div>
+                                  ) : playerCustomPortraits.length === 0 ? (
+                                    <p className="text-muted mb-0 small">
+                                      {l(
+                                        "Geen custom portretten voor deze speler.",
+                                        "No custom portraits for this player.",
+                                      )}
+                                    </p>
+                                  ) : (
+                                    <div className="d-flex flex-wrap gap-2">
+                                      {playerCustomPortraits.map((p) => (
+                                        <div
+                                          key={p.id}
+                                          className="position-relative border rounded overflow-hidden bg-dark"
+                                          style={{
+                                            width: 100,
+                                            height: 100,
+                                          }}
+                                        >
+                                          <img
+                                            src={portraitPublicImageUrl(
+                                              p.imagePath,
+                                            )}
+                                            alt=""
+                                            className="w-100 h-100"
+                                            style={{ objectFit: "cover" }}
+                                          />
+                                          <button
+                                            type="button"
+                                            className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 py-0 px-1"
+                                            title={l("Verwijderen", "Delete")}
+                                            disabled={
+                                              deletingPortraitId === p.id ||
+                                              !canManagePlayers
+                                            }
+                                            onClick={() =>
+                                              handleAdminDeletePlayerPortrait(
+                                                p.id,
+                                              )
+                                            }
+                                          >
+                                            {deletingPortraitId === p.id ? (
+                                              <span className="spinner-border spinner-border-sm" />
+                                            ) : (
+                                              <i className="ph-trash" />
+                                            )}
+                                          </button>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="card mb-3">
                               <div className="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                                 <h5 className="mb-0">
                                   <i className="ph-sliders-horizontal me-2" />
@@ -7723,6 +7883,7 @@ function App() {
                                 </div>
                               </div>
                             </div>
+                            </>
                           )}
 
                           {/* ══ FINANCIAL TAB ══ */}

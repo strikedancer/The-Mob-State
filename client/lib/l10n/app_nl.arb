@@ -8305,5 +8305,7 @@
   },
   "settingsPortraitUsingCustom": "Aangepast portret actief",
   "settingsPresetAvatars": "Standaard avatars",
-  "settingsPortraitDeleteConfirm": "Dit portret uit je bibliotheek verwijderen?"
+  "settingsPortraitDeleteConfirm": "Dit portret uit je bibliotheek verwijderen?",
+  "settingsPortraitGenerating": "Je portret wordt gemaakt… Dit kan enkele minuten duren. Even geduld.",
+  "settingsPortraitDeleteHint": "Tik op een portret om het als avatar te gebruiken. Tik op het prullenbak-icoon om te verwijderen."
 }
