@@ -13,7 +13,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/theft_cooldown_confirm_prefs.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/portrait_download.dart';
-import '../utils/fontawesome_icons.dart';
+import '../widgets/portrait_tile_action_glyphs.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import '../providers/auth_provider.dart';
@@ -446,10 +446,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  /// High-contrast circular action on portrait tiles. Uses bundled Font Awesome
-  /// (see [FontAwesomeIcons]) — Material icons often fail to paint on Flutter web.
+  /// High-contrast circular action on portrait tiles. Uses [CustomPaint] glyphs
+  /// (no icon fonts) so download/delete stay visible on Flutter web inside modals.
   Widget _portraitCornerAction({
-    required IconData icon,
+    required Widget glyph,
     required VoidCallback onPressed,
     required Color backgroundColor,
   }) {
@@ -465,21 +465,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: SizedBox(
           width: 34,
           height: 34,
-          child: Center(
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 16,
-              semanticLabel: '',
-              shadows: const [
-                Shadow(
-                  offset: Offset(0, 0.5),
-                  blurRadius: 2,
-                  color: Color(0xCC000000),
-                ),
-              ],
-            ),
-          ),
+          child: Center(child: glyph),
         ),
       ),
     );
@@ -1262,7 +1248,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               top: 4,
                               left: 4,
                               child: _portraitCornerAction(
-                                icon: FontAwesomeIcons.downloadSolid,
+                                glyph: const PortraitTileDownloadGlyph(
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
                                 backgroundColor: const Color(0xFF1565C0),
                                 onPressed: () => _downloadCustomPortrait(
                                   context,
@@ -1275,7 +1264,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               top: 4,
                               right: 4,
                               child: _portraitCornerAction(
-                                icon: FontAwesomeIcons.trashCanSolid,
+                                glyph: const PortraitTileTrashGlyph(
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
                                 backgroundColor: const Color(0xFFC62828),
                                 onPressed: () =>
                                     _confirmDeletePortrait(context, id),
