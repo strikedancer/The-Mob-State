@@ -2,6 +2,27 @@ import prisma from '../lib/prisma';
 import { emailService } from './emailService';
 import { notificationService } from './notificationService';
 import { type Language } from './translationService';
+import { activePortraitPathFromRow } from '../utils/avatarDisplay';
+
+function mapFriendPlayer(p: {
+  id: number;
+  username: string;
+  rank: number;
+  health?: number;
+  currentCountry?: string;
+  avatar: string | null;
+  activePortrait?: { imagePath: string } | null;
+}) {
+  return {
+    id: p.id,
+    username: p.username,
+    rank: p.rank,
+    ...(p.health !== undefined ? { health: p.health } : {}),
+    ...(p.currentCountry !== undefined ? { currentCountry: p.currentCountry } : {}),
+    avatar: p.avatar,
+    activePortraitPath: activePortraitPathFromRow(p.activePortrait?.imagePath ?? null),
+  };
+}
 
 export const friendService = {
   /**
@@ -244,6 +265,7 @@ export const friendService = {
             health: true,
             currentCountry: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           } 
         },
         addressee: { 
@@ -254,6 +276,7 @@ export const friendService = {
             health: true,
             currentCountry: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           } 
         },
       },
@@ -261,11 +284,14 @@ export const friendService = {
     });
 
     // Map to return the friend info (the other player)
-    return friendships.map(f => ({
-      friendshipId: f.id,
-      friend: f.requesterId === playerId ? f.addressee : f.requester,
-      since: f.createdAt,
-    }));
+    return friendships.map(f => {
+      const raw = f.requesterId === playerId ? f.addressee : f.requester;
+      return {
+        friendshipId: f.id,
+        friend: mapFriendPlayer(raw),
+        since: f.createdAt,
+      };
+    });
   },
 
   /**
@@ -284,6 +310,7 @@ export const friendService = {
             username: true, 
             rank: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           } 
         },
       },
@@ -292,7 +319,7 @@ export const friendService = {
 
     return requests.map(r => ({
       friendshipId: r.id,
-      requester: r.requester,
+      requester: mapFriendPlayer(r.requester),
       createdAt: r.createdAt,
     }));
   },
@@ -313,6 +340,7 @@ export const friendService = {
             username: true, 
             rank: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           } 
         },
       },
@@ -321,7 +349,7 @@ export const friendService = {
 
     return requests.map(r => ({
       friendshipId: r.id,
-      addressee: r.addressee,
+      addressee: mapFriendPlayer(r.addressee),
       createdAt: r.createdAt,
     }));
   },
@@ -346,6 +374,7 @@ export const friendService = {
       rank: number;
       currentCountry: string;
       avatar: string | null;
+      activePortraitPath: string | null;
       crewId: number | null;
       crewName: string | null;
     }>>`
@@ -355,9 +384,11 @@ export const friendService = {
         p.rank, 
         p.currentCountry,
         p.avatar,
+        pp_active.imagePath as activePortraitPath,
         cm.crewId,
         c.name as crewName
       FROM players p
+      LEFT JOIN player_portraits pp_active ON pp_active.id = p.activePortraitId
       LEFT JOIN crew_members cm ON p.id = cm.playerId
       LEFT JOIN crews c ON cm.crewId = c.id
       WHERE LOWER(p.username) LIKE ${searchPattern}
@@ -398,6 +429,7 @@ export const friendService = {
           rank: player.rank,
           currentCountry: player.currentCountry,
           avatar: player.avatar,
+          activePortraitPath: activePortraitPathFromRow(player.activePortraitPath),
           crewName: player.crewName,
           friendStatus,
           friendshipId,

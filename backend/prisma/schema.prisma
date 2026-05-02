@@ -33,6 +33,10 @@ model Player {
   hitCount                        Int                              @default(0)
   allowMessages                   Boolean                          @default(true)
   avatar                          String?                          @default("default_1") @db.VarChar(100)
+  /// When set, this generated portrait overrides the preset avatar in the UI.
+  activePortraitId                Int?                             @unique
+  activePortrait                  PlayerPortrait?                  @relation("ActivePortrait", fields: [activePortraitId], references: [id], onDelete: SetNull)
+  portraits                       PlayerPortrait[]                 @relation("OwnedPortraits")
   /// Registration: `male` | `female`. Legacy rows may be null.
   gender                          String?                          @db.VarChar(10)
   banReason                       String?                          @db.Text
@@ -139,6 +143,20 @@ model Player {
 
   @@index([username])
   @@map("players")
+}
+
+/// Selfie-generated gangster portraits; files live under runtime `client-images` → `/images/...`.
+model PlayerPortrait {
+  id              Int      @id @default(autoincrement())
+  playerId        Int
+  /// Relative public path after `/images/`, e.g. `player_avatars/12/uuid.png`
+  imagePath       String   @db.VarChar(255)
+  createdAt       DateTime @default(now())
+  player          Player   @relation("OwnedPortraits", fields: [playerId], references: [id], onDelete: Cascade)
+  activeForPlayer Player?  @relation("ActivePortrait")
+
+  @@index([playerId])
+  @@map("player_portraits")
 }
 
 model PlayerDailyGoalClaim {

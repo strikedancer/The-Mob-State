@@ -33,6 +33,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Alle economy-aanpassingen moeten traceerbaar zijn via telemetry en runtime settings.
 - Voor Territory geldt: gebruik `TERRITORY_ACTION_DAILY_CAP=0` als default om de cap uit te zetten; begrenzing loopt daar via cooldown + anti-farm.
 - Voor travel geldt 60 minuten cooldown per etappe als baseline en Premium `ACTION_COOLDOWN_RESET` voor `actionType=travel` moet beschikbaar zijn wanneer de cooldown actief is.
+- **Player portraits (selfie → gangster):** elke succesvol gegenereerd custom portret kost **100 premium credits** (`PORTRAIT_SELFIE_CREDIT_COST`); mislukte generatie kost niets. Wisselen tussen bestaande portretten of presets kost geen credits. Zie [player-portraits.md](player-portraits.md).
 - Garage **auto**- en **motor**-opslag: aparte upgrade-progressie per speler per land (eigen levels, eigen euro-kostencurve voor auto-track; motor-track gebruikt dezelfde prijsstappen als auto met +3 slots per motor-level t.o.v. basis motorplaatsen). Wijzigingen hieraan zijn economy-impact: check telemetry op storage-full en steal-fail door capaciteit.
 
 ## Runtime Keys (Leidend)

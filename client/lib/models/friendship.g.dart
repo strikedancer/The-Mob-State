@@ -13,6 +13,7 @@ PlayerSearchResult _$PlayerSearchResultFromJson(Map<String, dynamic> json) =>
       rank: (json['rank'] as num).toInt(),
       currentCountry: json['currentCountry'] as String?,
       avatar: json['avatar'] as String?,
+      activePortraitPath: json['activePortraitPath'] as String?,
       crewName: json['crewName'] as String?,
       friendStatus: json['friendStatus'] as String,
       friendshipId: (json['friendshipId'] as num?)?.toInt(),
@@ -25,6 +26,7 @@ Map<String, dynamic> _$PlayerSearchResultToJson(PlayerSearchResult instance) =>
       'rank': instance.rank,
       'currentCountry': instance.currentCountry,
       'avatar': instance.avatar,
+      'activePortraitPath': instance.activePortraitPath,
       'crewName': instance.crewName,
       'friendStatus': instance.friendStatus,
       'friendshipId': instance.friendshipId,
@@ -37,6 +39,7 @@ FriendInfo _$FriendInfoFromJson(Map<String, dynamic> json) => FriendInfo(
   health: (json['health'] as num).toInt(),
   currentCountry: json['currentCountry'] as String,
   avatar: json['avatar'] as String?,
+  activePortraitPath: json['activePortraitPath'] as String?,
 );
 
 Map<String, dynamic> _$FriendInfoToJson(FriendInfo instance) =>
@@ -47,6 +50,7 @@ Map<String, dynamic> _$FriendInfoToJson(FriendInfo instance) =>
       'health': instance.health,
       'currentCountry': instance.currentCountry,
       'avatar': instance.avatar,
+      'activePortraitPath': instance.activePortraitPath,
     };
 
 Friend _$FriendFromJson(Map<String, dynamic> json) => Friend(
@@ -83,6 +87,7 @@ RequesterInfo _$RequesterInfoFromJson(Map<String, dynamic> json) =>
       username: json['username'] as String,
       rank: (json['rank'] as num).toInt(),
       avatar: json['avatar'] as String?,
+      activePortraitPath: json['activePortraitPath'] as String?,
     );
 
 Map<String, dynamic> _$RequesterInfoToJson(RequesterInfo instance) =>
@@ -91,4 +96,5 @@ Map<String, dynamic> _$RequesterInfoToJson(RequesterInfo instance) =>
       'username': instance.username,
       'rank': instance.rank,
       'avatar': instance.avatar,
+      'activePortraitPath': instance.activePortraitPath,
     };

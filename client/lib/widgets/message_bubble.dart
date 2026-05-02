@@ -14,6 +14,7 @@ class MessageBubble extends StatelessWidget {
   final int? senderId;
   final int? senderRank;
   final String? senderAvatar;
+  final String? senderActivePortraitPath;
   final VoidCallback? onLongPress;
   final bool showSenderInfo;
   final bool? isRead;
@@ -27,6 +28,7 @@ class MessageBubble extends StatelessWidget {
     this.senderId,
     this.senderRank,
     this.senderAvatar,
+    this.senderActivePortraitPath,
     this.onLongPress,
     this.showSenderInfo = false,
     this.isRead,
@@ -37,6 +39,7 @@ class MessageBubble extends StatelessWidget {
     required DirectMessage message,
     required int currentUserId,
     String? friendAvatar,
+    String? friendActivePortraitPath,
     VoidCallback? onLongPress,
   }) {
     final isMe = message.senderId == currentUserId;
@@ -48,6 +51,9 @@ class MessageBubble extends StatelessWidget {
       senderId: message.senderInfo?.id,
       senderRank: message.senderInfo?.rank,
       senderAvatar: isMe ? null : (message.senderInfo?.avatar ?? friendAvatar),
+      senderActivePortraitPath: isMe
+          ? null
+          : (message.senderInfo?.activePortraitPath ?? friendActivePortraitPath),
       onLongPress: onLongPress,
       showSenderInfo: false,
       isRead: message.read,
@@ -112,7 +118,10 @@ class MessageBubble extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.grey[800],
                     image: DecorationImage(
-                      image: AvatarHelper.getAvatarImageProvider(senderAvatar),
+                      image: AvatarHelper.getAvatarImageProvider(
+                        senderAvatar,
+                        activePortraitPath: senderActivePortraitPath,
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),

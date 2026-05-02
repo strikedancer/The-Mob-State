@@ -9,6 +9,7 @@ class PlayerSearchResult {
   final int rank;
   final String? currentCountry;
   final String? avatar;
+  final String? activePortraitPath;
   final String? crewName;
   final String friendStatus; // 'none', 'pending_sent', 'pending_received', 'friends'
   final int? friendshipId;
@@ -19,6 +20,7 @@ class PlayerSearchResult {
     required this.rank,
     this.currentCountry,
     this.avatar,
+    this.activePortraitPath,
     this.crewName,
     required this.friendStatus,
     this.friendshipId,
@@ -42,6 +44,7 @@ class FriendInfo {
   final int health;
   final String currentCountry;
   final String? avatar;
+  final String? activePortraitPath;
 
   FriendInfo({
     required this.id,
@@ -50,6 +53,7 @@ class FriendInfo {
     required this.health,
     required this.currentCountry,
     this.avatar,
+    this.activePortraitPath,
   });
 
   factory FriendInfo.fromJson(Map<String, dynamic> json) =>
@@ -98,12 +102,14 @@ class RequesterInfo {
   final String username;
   final int rank;
   final String? avatar;
+  final String? activePortraitPath;
 
   RequesterInfo({
     required this.id,
     required this.username,
     required this.rank,
     this.avatar,
+    this.activePortraitPath,
   });
 
   factory RequesterInfo.fromJson(Map<String, dynamic> json) =>

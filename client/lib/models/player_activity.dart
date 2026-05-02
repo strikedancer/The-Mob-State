@@ -40,12 +40,14 @@ class ActivityPlayer {
   final String username;
   final int rank;
   final String? avatar;
+  final String? activePortraitPath;
 
   ActivityPlayer({
     required this.id,
     required this.username,
     required this.rank,
     this.avatar,
+    this.activePortraitPath,
   });
 
   factory ActivityPlayer.fromJson(Map<String, dynamic> json) {
@@ -54,6 +56,7 @@ class ActivityPlayer {
       username: json['username'] as String,
       rank: json['rank'] as int,
       avatar: json['avatar'] as String?,
+      activePortraitPath: json['activePortraitPath'] as String?,
     );
   }
 }

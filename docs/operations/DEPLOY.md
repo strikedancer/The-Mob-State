@@ -110,6 +110,7 @@ mkdir -p runtime/client-images
 Belangrijk:
 - Dit geldt voor **alle** afbeeldingen onder `client/assets/images/**`.
 - Je hoeft dus niet alleen `backgrounds/avatars/crimes` te gebruiken; de volledige subfolderstructuur wordt ondersteund.
+- **Speler-portretten (selfie→gangster):** de game-server schrijft PNG’s naar `runtime/client-images/player_avatars/<playerId>/` (publiek als `/images/player_avatars/...`). Zorg dat dezelfde `runtime/client-images`-mount actief blijft na deploy; geen aparte rsync uit `client/assets` nodig voor deze map.
 
 Controleer of `CLIENT_EXTERNAL_IMAGES_PATH` gewenst is in `.env` (optioneel):
 

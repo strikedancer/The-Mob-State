@@ -4425,6 +4425,90 @@ abstract class AppLocalizations {
   /// **'Failed to change avatar'**
   String get avatarChangeFailed;
 
+  /// No description provided for @settingsMyPortraits.
+  ///
+  /// In en, this message translates to:
+  /// **'My portraits'**
+  String get settingsMyPortraits;
+
+  /// No description provided for @settingsPortraitFromSelfieTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait from selfie'**
+  String get settingsPortraitFromSelfieTitle;
+
+  /// No description provided for @settingsPortraitFromSelfieSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn a selfie into a gangster-style portrait. {credits} credits each.'**
+  String settingsPortraitFromSelfieSubtitle(int credits);
+
+  /// No description provided for @settingsPortraitUploadConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This costs {credits} credits. Continue?'**
+  String settingsPortraitUploadConfirm(int credits);
+
+  /// No description provided for @settingsPortraitConsentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree my photo may be processed into a stylized in-game portrait (see Terms). I am not under 13.'**
+  String get settingsPortraitConsentLabel;
+
+  /// No description provided for @settingsPortraitInsufficientCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough credits (need {need}, you have {have}).'**
+  String settingsPortraitInsufficientCredits(int need, int have);
+
+  /// No description provided for @settingsPortraitCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait added to your library!'**
+  String get settingsPortraitCreated;
+
+  /// No description provided for @settingsPortraitGenerationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create portrait. Try another photo.'**
+  String get settingsPortraitGenerationFailed;
+
+  /// No description provided for @settingsPortraitSelectActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as avatar'**
+  String get settingsPortraitSelectActive;
+
+  /// No description provided for @settingsPortraitDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove portrait'**
+  String get settingsPortraitDelete;
+
+  /// No description provided for @settingsPortraitLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait limit reached ({max}).'**
+  String settingsPortraitLimitReached(int max);
+
+  /// No description provided for @settingsPortraitUsingCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom portrait active'**
+  String get settingsPortraitUsingCustom;
+
+  /// No description provided for @settingsPresetAvatars.
+  ///
+  /// In en, this message translates to:
+  /// **'Preset avatars'**
+  String get settingsPresetAvatars;
+
+  /// No description provided for @settingsPortraitDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this portrait from your library?'**
+  String get settingsPortraitDeleteConfirm;
+
   /// No description provided for @error.
   ///
   /// In en, this message translates to:

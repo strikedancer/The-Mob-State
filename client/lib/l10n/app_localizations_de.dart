@@ -2470,6 +2470,60 @@ class AppLocalizationsDe extends AppLocalizations {
   String get avatarChangeFailed => 'Avatar konnte nicht geändert werden';
 
   @override
+  String get settingsMyPortraits => 'My portraits';
+
+  @override
+  String get settingsPortraitFromSelfieTitle => 'Porträt vom Selfie';
+
+  @override
+  String settingsPortraitFromSelfieSubtitle(int credits) {
+    return 'Verwandeln Sie ein Selfie in ein Porträt im Gangster-Stil. Jeweils $credits Credits.';
+  }
+
+  @override
+  String settingsPortraitUploadConfirm(int credits) {
+    return 'Dies kostet $credits Credits. Weitermachen?';
+  }
+
+  @override
+  String get settingsPortraitConsentLabel =>
+      'Ich bin damit einverstanden, dass mein Foto zu einem stilisierten Porträt im Spiel verarbeitet wird (siehe Nutzungsbedingungen). Ich bin nicht unter 13.';
+
+  @override
+  String settingsPortraitInsufficientCredits(int need, int have) {
+    return 'Nicht genügend Credits (Sie benötigen $need, Sie haben $have).';
+  }
+
+  @override
+  String get settingsPortraitCreated =>
+      'Porträt zu Ihrer Bibliothek hinzugefügt!';
+
+  @override
+  String get settingsPortraitGenerationFailed =>
+      'Porträt konnte nicht erstellt werden. Versuchen Sie es mit einem anderen Foto.';
+
+  @override
+  String get settingsPortraitSelectActive => 'Als Avatar verwenden';
+
+  @override
+  String get settingsPortraitDelete => 'Porträt entfernen';
+
+  @override
+  String settingsPortraitLimitReached(int max) {
+    return 'Porträtlimit erreicht ($max).';
+  }
+
+  @override
+  String get settingsPortraitUsingCustom => 'Benutzerdefiniertes Porträt aktiv';
+
+  @override
+  String get settingsPresetAvatars => 'Voreingestellte Avatare';
+
+  @override
+  String get settingsPortraitDeleteConfirm =>
+      'Dieses Porträt aus Ihrer Bibliothek entfernen?';
+
+  @override
   String error(String error) {
     return 'Fehler: $error';
   }

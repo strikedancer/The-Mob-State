@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import { getWealthStatus, getWealthTitle, getWealthIcon } from '../utils/wealthSystem';
+import { serializePlayerAvatarFields } from './playerPortraitService';
 
 export const playerService = {
   /**
@@ -8,6 +9,9 @@ export const playerService = {
   async getPlayer(playerId: number) {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
+      include: {
+        activePortrait: { select: { imagePath: true } },
+      },
     });
 
     if (!player) {
@@ -16,61 +20,40 @@ export const playerService = {
 
     // Import rank calculation functions
     const { getRankFromXP } = await import('../config');
-    
+
     // Validate that rank matches XP - if not, recalculate and update
     const calculatedRank = getRankFromXP(player.xp);
+    let rank = player.rank;
     if (calculatedRank !== player.rank) {
       console.warn(
         `[PlayerService] Rank mismatch for player ${playerId}: stored rank ${player.rank} but XP ${player.xp} should be rank ${calculatedRank}. Correcting...`
       );
-      
-      // Update the rank in database
+
       await prisma.player.update({
         where: { id: playerId },
         data: { rank: calculatedRank },
       });
-      
-      // Return with corrected rank
-      const wealthStatus = getWealthStatus(player.money);
-      return {
-        id: player.id,
-        username: player.username,
-        money: player.money,
-        health: player.health,
-        rank: calculatedRank,
-        xp: player.xp,
-        wantedLevel: player.wantedLevel,
-        fbiHeat: player.fbiHeat,
-        currentCountry: player.currentCountry,
-        avatar: player.avatar,
-        gender: player.gender,
-        isVip: player.isVip,
-        vipExpiresAt: player.vipExpiresAt,
-        lastAvatarChange: player.lastAvatarChange,
-        lastUsernameChange: player.lastUsernameChange,
-        allowMessages: player.allowMessages,
-        reputation: player.reputation,
-        preferredLanguage: player.preferredLanguage,
-        createdAt: player.createdAt,
-        updatedAt: player.updatedAt,
-        lastTickAt: player.lastTickAt,
-        wealthStatus: wealthStatus.title,
-        wealthIcon: wealthStatus.icon,
-      };
+      rank = calculatedRank;
     }
 
     const wealthStatus = getWealthStatus(player.money);
+    const avatarFields = serializePlayerAvatarFields({
+      avatar: player.avatar,
+      activePortraitId: player.activePortraitId,
+      activePortrait: player.activePortrait,
+      premiumCredits: player.premiumCredits,
+    });
+
     return {
       id: player.id,
       username: player.username,
       money: player.money,
       health: player.health,
-      rank: player.rank,
+      rank,
       xp: player.xp,
       wantedLevel: player.wantedLevel,
       fbiHeat: player.fbiHeat,
       currentCountry: player.currentCountry,
-      avatar: player.avatar,
       gender: player.gender,
       isVip: player.isVip,
       vipExpiresAt: player.vipExpiresAt,
@@ -84,6 +67,7 @@ export const playerService = {
       lastTickAt: player.lastTickAt,
       wealthStatus: wealthStatus.title,
       wealthIcon: wealthStatus.icon,
+      ...avatarFields,
     };
   },
 

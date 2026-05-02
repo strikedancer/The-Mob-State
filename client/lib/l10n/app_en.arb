@@ -1523,6 +1523,51 @@
   "avatar": "Avatar",
   "avatarUpdated": "Avatar updated!",
   "avatarChangeFailed": "Failed to change avatar",
+  "settingsMyPortraits": "My portraits",
+  "settingsPortraitFromSelfieTitle": "Portrait from selfie",
+  "settingsPortraitFromSelfieSubtitle": "Turn a selfie into a gangster-style portrait. {credits} credits each.",
+  "@settingsPortraitFromSelfieSubtitle": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUploadConfirm": "This costs {credits} credits. Continue?",
+  "@settingsPortraitUploadConfirm": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitConsentLabel": "I agree my photo may be processed into a stylized in-game portrait (see Terms). I am not under 13.",
+  "settingsPortraitInsufficientCredits": "Not enough credits (need {need}, you have {have}).",
+  "@settingsPortraitInsufficientCredits": {
+    "placeholders": {
+      "need": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitCreated": "Portrait added to your library!",
+  "settingsPortraitGenerationFailed": "Could not create portrait. Try another photo.",
+  "settingsPortraitSelectActive": "Use as avatar",
+  "settingsPortraitDelete": "Remove portrait",
+  "settingsPortraitLimitReached": "Portrait limit reached ({max}).",
+  "@settingsPortraitLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUsingCustom": "Custom portrait active",
+  "settingsPresetAvatars": "Preset avatars",
+  "settingsPortraitDeleteConfirm": "Remove this portrait from your library?",
   "error": "Error: {error}",
   "@error": {
     "placeholders": {

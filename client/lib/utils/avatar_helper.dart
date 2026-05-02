@@ -17,7 +17,20 @@ class AvatarHelper {
     return WebAssetHelper.toPublicUrl(getAvatarPath(avatar));
   }
 
-  static ImageProvider<Object> getAvatarImageProvider(String? avatar) {
+  /// [activePortraitPath] is relative under `/images/` (e.g. `player_avatars/5/uuid.png`).
+  static ImageProvider<Object> getAvatarImageProvider(
+    String? avatar, {
+    String? activePortraitPath,
+  }) {
+    final custom = activePortraitPath?.trim();
+    if (custom != null && custom.isNotEmpty) {
+      if (custom.startsWith('http://') || custom.startsWith('https://')) {
+        return NetworkImage(custom);
+      }
+      final url = WebAssetHelper.toPublicUrl('assets/images/$custom');
+      return NetworkImage(url);
+    }
+
     if (avatar != null &&
         avatar.isNotEmpty &&
         (avatar.startsWith('http://') || avatar.startsWith('https://'))) {

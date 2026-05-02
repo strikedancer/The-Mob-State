@@ -27,6 +27,7 @@ De master protocol zorgt ervoor dat je:
 - [Marketing web](marketing-web.md) - Publieke landing, `GET /public/home`, gast-locale, juridische ARB-schermen, SPA-fallback
 - [Notifications & Push](notifications.md) - Push pipeline, FCM/service worker en cooldown-signalen
 - [Player Profile](player-profile.md) - Profielnavigatie, privacy en profielinteracties
+- [Player Portraits (selfie)](player-portraits.md) - Premium selfie→gangster portretten, bibliotheek, Leonardo, runtime images
 
 ### Core Systems
 - [Dashboard](dashboard.md) - UI voor alle stats/overview

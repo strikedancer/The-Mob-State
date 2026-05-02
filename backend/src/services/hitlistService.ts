@@ -16,6 +16,7 @@ import { NotificationService } from './notificationService';
 import { systemLogService } from './systemLogService';
 import fs from 'fs';
 import path from 'path';
+import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 
 const BODYGUARD_DAILY_UPKEEP = 10000;
 const BODYGUARD_DEFENSE = 10;
@@ -1132,6 +1133,7 @@ export async function getActiveHits(pageSize = 20, offset = 0): Promise<any[]> {
           rank: true,
           avatar: true,
           currentCountry: true,
+          activePortrait: { select: { imagePath: true } },
         },
       },
       placedBy: {
@@ -1140,20 +1142,42 @@ export async function getActiveHits(pageSize = 20, offset = 0): Promise<any[]> {
           username: true,
           rank: true,
           avatar: true,
+          activePortrait: { select: { imagePath: true } },
         },
       },
     },
   });
 
-  return hits.map((hit) => ({
-    ...hit,
-    target: hit.target
-      ? {
-          ...hit.target,
-          level: hit.target.rank,
-        }
-      : hit.target,
-  }));
+  return hits.map((hit) => {
+    const tgt = hit.target as typeof hit.target & {
+      activePortrait?: { imagePath: string } | null;
+    };
+    const placer = hit.placedBy as typeof hit.placedBy & {
+      activePortrait?: { imagePath: string } | null;
+    };
+    return {
+      ...hit,
+      target: tgt
+        ? (() => {
+            const { activePortrait: _ap, ...rest } = tgt;
+            return {
+              ...rest,
+              level: tgt.rank,
+              activePortraitPath: activePortraitPathFromRow(_ap?.imagePath ?? null),
+            };
+          })()
+        : tgt,
+      placedBy: placer
+        ? (() => {
+            const { activePortrait: _ap, ...rest } = placer;
+            return {
+              ...rest,
+              activePortraitPath: activePortraitPathFromRow(_ap?.imagePath ?? null),
+            };
+          })()
+        : placer,
+    };
+  });
 }
 
 export async function attemptHit(

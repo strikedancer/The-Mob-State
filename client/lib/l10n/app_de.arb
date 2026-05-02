@@ -8260,5 +8260,50 @@
   "registerGenderSubtitle": "Tap a portrait — this sets your starter look and is saved to your account.",
   "registerGenderMale": "Male gangster",
   "registerGenderFemale": "Female gangster",
-  "genderRequired": "Choose male or female to continue."
+  "genderRequired": "Choose male or female to continue.",
+  "settingsMyPortraits": "My portraits",
+  "settingsPortraitFromSelfieTitle": "Porträt vom Selfie",
+  "settingsPortraitFromSelfieSubtitle": "Verwandeln Sie ein Selfie in ein Porträt im Gangster-Stil. Jeweils {credits} Credits.",
+  "@settingsPortraitFromSelfieSubtitle": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUploadConfirm": "Dies kostet {credits} Credits. Weitermachen?",
+  "@settingsPortraitUploadConfirm": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitConsentLabel": "Ich bin damit einverstanden, dass mein Foto zu einem stilisierten Porträt im Spiel verarbeitet wird (siehe Nutzungsbedingungen). Ich bin nicht unter 13.",
+  "settingsPortraitInsufficientCredits": "Nicht genügend Credits (Sie benötigen {need}, Sie haben {have}).",
+  "@settingsPortraitInsufficientCredits": {
+    "placeholders": {
+      "need": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitCreated": "Porträt zu Ihrer Bibliothek hinzugefügt!",
+  "settingsPortraitGenerationFailed": "Porträt konnte nicht erstellt werden. Versuchen Sie es mit einem anderen Foto.",
+  "settingsPortraitSelectActive": "Als Avatar verwenden",
+  "settingsPortraitDelete": "Porträt entfernen",
+  "settingsPortraitLimitReached": "Porträtlimit erreicht ({max}).",
+  "@settingsPortraitLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUsingCustom": "Benutzerdefiniertes Porträt aktiv",
+  "settingsPresetAvatars": "Voreingestellte Avatare",
+  "settingsPortraitDeleteConfirm": "Dieses Porträt aus Ihrer Bibliothek entfernen?"
 }

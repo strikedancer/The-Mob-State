@@ -233,6 +233,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
         friendName: _openConversation!.username,
         friendRank: _openConversation!.rank,
         friendAvatar: _openConversation!.avatar,
+        friendActivePortraitPath: _openConversation!.activePortraitPath,
         onBack: _closeChat,
       );
     }

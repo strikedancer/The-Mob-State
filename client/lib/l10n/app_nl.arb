@@ -8260,5 +8260,50 @@
   "legalTermsSection09Title": "Toepasselijk recht",
   "legalTermsSection09Body": "Tenzij dwingend lokaal recht anders bepaalt, worden deze Voorwaarden beheerst door het recht van Engeland en Wales en zijn geschillen onderworpen aan de exclusieve jurisdictie van de rechtbanken van Engeland en Wales.",
   "legalTermsSection10Title": "Contact",
-  "legalTermsSection10Body": "Voor vragen over deze Voorwaarden kun je na registratie contact opnemen via het supportticketssysteem in het spel, of via officiële contactkanalen op de website indien gepubliceerd."
+  "legalTermsSection10Body": "Voor vragen over deze Voorwaarden kun je na registratie contact opnemen via het supportticketssysteem in het spel, of via officiële contactkanalen op de website indien gepubliceerd.",
+  "settingsMyPortraits": "Mijn portretten",
+  "settingsPortraitFromSelfieTitle": "Portret van selfie",
+  "settingsPortraitFromSelfieSubtitle": "Maak van een selfie een gangsterportret. {credits} credits per stuk.",
+  "@settingsPortraitFromSelfieSubtitle": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUploadConfirm": "Dit kost {credits} credits. Doorgaan?",
+  "@settingsPortraitUploadConfirm": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitConsentLabel": "Ik ga akkoord dat mijn foto wordt verwerkt tot een gestileerd gameportret (zie Voorwaarden). Ik ben geen kind onder de 13.",
+  "settingsPortraitInsufficientCredits": "Niet genoeg credits (nodig: {need}, jij hebt {have}).",
+  "@settingsPortraitInsufficientCredits": {
+    "placeholders": {
+      "need": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitCreated": "Portret toegevoegd aan je bibliotheek!",
+  "settingsPortraitGenerationFailed": "Portret maken mislukt. Probeer een andere foto.",
+  "settingsPortraitSelectActive": "Gebruik als avatar",
+  "settingsPortraitDelete": "Portret verwijderen",
+  "settingsPortraitLimitReached": "Maximaal aantal portretten bereikt ({max}).",
+  "@settingsPortraitLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUsingCustom": "Aangepast portret actief",
+  "settingsPresetAvatars": "Standaard avatars",
+  "settingsPortraitDeleteConfirm": "Dit portret uit je bibliotheek verwijderen?"
 }

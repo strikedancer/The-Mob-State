@@ -624,7 +624,10 @@ class _FriendsScreenState extends State<FriendsScreen>
                 child: CircleAvatar(
                   backgroundImage:
                       friend.avatar != null && friend.avatar!.isNotEmpty
-                        ? AvatarHelper.getAvatarImageProvider(friend.avatar)
+                        ? AvatarHelper.getAvatarImageProvider(
+                            friend.avatar,
+                            activePortraitPath: friend.activePortraitPath,
+                          )
                       : null,
                   child: friend.avatar == null || friend.avatar!.isEmpty
                       ? Text(friend.username[0].toUpperCase())
@@ -686,6 +689,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                             friendName: friend.username,
                             friendRank: friend.rank,
                             friendAvatar: friend.avatar,
+                            friendActivePortraitPath: friend.activePortraitPath,
                           ),
                         ),
                       ).then((_) => _loadUnreadCount());
@@ -772,7 +776,10 @@ class _FriendsScreenState extends State<FriendsScreen>
                 child: CircleAvatar(
                   backgroundImage:
                       requester.avatar != null && requester.avatar!.isNotEmpty
-                        ? AvatarHelper.getAvatarImageProvider(requester.avatar)
+                        ? AvatarHelper.getAvatarImageProvider(
+                            requester.avatar,
+                            activePortraitPath: requester.activePortraitPath,
+                          )
                       : null,
                   child: requester.avatar == null || requester.avatar!.isEmpty
                       ? Text(requester.username[0].toUpperCase())
@@ -881,7 +888,10 @@ class _FriendsScreenState extends State<FriendsScreen>
                     child: CircleAvatar(
                       backgroundImage:
                           result.avatar != null && result.avatar!.isNotEmpty
-                          ? AvatarHelper.getAvatarImageProvider(result.avatar)
+                          ? AvatarHelper.getAvatarImageProvider(
+                              result.avatar,
+                              activePortraitPath: result.activePortraitPath,
+                            )
                           : null,
                       child: result.avatar == null || result.avatar!.isEmpty
                           ? Text(result.username[0].toUpperCase())

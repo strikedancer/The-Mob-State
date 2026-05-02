@@ -424,6 +424,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         (_playerData?['avatar']?.toString().trim().isNotEmpty == true)
         ? _playerData!['avatar'].toString()
         : 'default_1';
+    final activePortraitPath =
+        _playerData?['activePortraitPath']?.toString().trim();
     final isVip = _playerData?['isVip'] == true;
 
     return Container(
@@ -448,7 +450,13 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
             children: [
               CircleAvatar(
                 radius: 34,
-                backgroundImage: AvatarHelper.getAvatarImageProvider(avatar),
+                backgroundImage: AvatarHelper.getAvatarImageProvider(
+                  avatar,
+                  activePortraitPath:
+                      (activePortraitPath != null && activePortraitPath.isNotEmpty)
+                      ? activePortraitPath
+                      : null,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(

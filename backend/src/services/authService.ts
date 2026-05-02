@@ -6,6 +6,7 @@ import { getRankFromXP } from '../config';
 import { emailService } from './emailService';
 import countries from '../../content/countries.json';
 import { normalizePlayerLanguage } from '../config/supportedLanguages';
+import { serializePlayerAvatarFields } from './playerPortraitService';
 
 const SALT_ROUNDS = 10;
 
@@ -167,8 +168,13 @@ export const authService = {
         xp: player.xp,
         currentCountry: player.currentCountry,
         preferredLanguage: player.preferredLanguage,
-        avatar: player.avatar,
         gender: player.gender,
+        ...serializePlayerAvatarFields({
+          avatar: player.avatar,
+          activePortraitId: null,
+          activePortrait: null,
+          premiumCredits: player.premiumCredits,
+        }),
       },
     };
   },
@@ -179,6 +185,9 @@ export const authService = {
     // Find player
     const player = await prisma.player.findUnique({
       where: { username },
+      include: {
+        activePortrait: { select: { imagePath: true } },
+      },
     });
 
     if (!player) {
@@ -248,8 +257,13 @@ export const authService = {
         xp: player.xp,
         currentCountry: player.currentCountry,
         preferredLanguage: player.preferredLanguage,
-        avatar: player.avatar,
         gender: player.gender,
+        ...serializePlayerAvatarFields({
+          avatar: player.avatar,
+          activePortraitId: player.activePortraitId,
+          activePortrait: player.activePortrait,
+          premiumCredits: player.premiumCredits,
+        }),
       },
     };
   },

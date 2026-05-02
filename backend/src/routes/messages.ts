@@ -1,6 +1,7 @@
 import { Router, Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { directMessageService } from '../services/directMessageService';
+import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 import { z } from 'zod';
 
 const router = Router();
@@ -150,15 +151,29 @@ router.get(
       );
 
       // Transform to match Flutter Conversation model
-      const transformedConversations = conversations.map((conv) => ({
-        friendId: conv.friend.id,
-        username: conv.friend.username,
-        rank: conv.friend.rank,
-        avatar: conv.friend.avatar,
-        lastMessage: conv.lastMessage?.message || null,
-        lastMessageTime: conv.lastMessage?.createdAt.toISOString() || null,
-        unreadCount: conv.unreadCount,
-      }));
+      const transformedConversations = conversations.map((conv) => {
+        const f = conv.friend as {
+          id: number;
+          username: string;
+          rank: number;
+          avatar: string | null;
+          activePortrait?: { imagePath: string } | null;
+          activePortraitPath?: string | null;
+        };
+        const pathFromJoin =
+          f.activePortraitPath ??
+          activePortraitPathFromRow(f.activePortrait?.imagePath ?? null);
+        return {
+          friendId: f.id,
+          username: f.username,
+          rank: f.rank,
+          avatar: f.avatar,
+          activePortraitPath: pathFromJoin,
+          lastMessage: conv.lastMessage?.message || null,
+          lastMessageTime: conv.lastMessage?.createdAt.toISOString() || null,
+          unreadCount: conv.unreadCount,
+        };
+      });
 
       return res.json({
         event: 'conversations.loaded',

@@ -315,6 +315,8 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     return res.status(200).json({
       username: player.username,
       avatar: player.avatar || 'default_1',
+      activePortraitId: player.activePortraitId ?? null,
+      activePortraitPath: player.activePortraitPath ?? null,
       level: player.rank,
       rank: player.rank,
       rankTitle: rankInfo.title,

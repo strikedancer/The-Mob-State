@@ -696,6 +696,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Image(
                             image: AvatarHelper.getAvatarImageProvider(
                               player.avatar,
+                              activePortraitPath: player.activePortraitPath,
                             ),
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) => Icon(
@@ -1852,6 +1853,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   child: Image(
                                     image: AvatarHelper.getAvatarImageProvider(
                                       player.avatar,
+                                      activePortraitPath: player.activePortraitPath,
                                     ),
                                     width: 64,
                                     height: 64,

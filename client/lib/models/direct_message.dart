@@ -75,12 +75,14 @@ class MessageSender {
   final String username;
   final int rank;
   final String? avatar;
+  final String? activePortraitPath;
 
   MessageSender({
     required this.id,
     required this.username,
     required this.rank,
     this.avatar,
+    this.activePortraitPath,
   });
 
   factory MessageSender.fromJson(Map<String, dynamic> json) =>
@@ -94,6 +96,7 @@ class Conversation {
   final String username;
   final int rank;
   final String? avatar;
+  final String? activePortraitPath;
   final String? lastMessage;
   final String? lastMessageTime;
   final int unreadCount;
@@ -103,6 +106,7 @@ class Conversation {
     required this.username,
     required this.rank,
     this.avatar,
+    this.activePortraitPath,
     this.lastMessage,
     this.lastMessageTime,
     required this.unreadCount,

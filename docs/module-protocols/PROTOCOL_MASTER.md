@@ -169,6 +169,7 @@ Implementatievoorkeur:
 - Voor cross-cutting Flutter/web/mobile/PWA shell-, asset- en embedded-view regels: zie `frontend-platform.md`.
 - Voor push-, inbox- en FCM/service-worker regels: zie `notifications.md`.
 - Voor profielprivacy, profielnavigatie en profielinteracties: zie `player-profile.md`.
+- Voor selfie→gangster portretten, premium credit-kosten, Leonardo en runtime image-paden: zie `player-portraits.md` (mount `runtime/client-images/player_avatars/`).
 - Bij wijzigingen aan web/PWA deploy, nginx caching, service workers of push bootstrap moet de QA expliciet beide service workers meenemen: `flutter_service_worker.js` én `firebase-messaging-sw.js`; een deploy is niet done als één van beide nog onder stale/immutable caching kan vallen.
 
 ## Minimale QA Checklist (Altijd Draaien)

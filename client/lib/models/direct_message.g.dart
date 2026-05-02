@@ -36,6 +36,7 @@ MessageSender _$MessageSenderFromJson(Map<String, dynamic> json) =>
       username: json['username'] as String,
       rank: (json['rank'] as num).toInt(),
       avatar: json['avatar'] as String?,
+      activePortraitPath: json['activePortraitPath'] as String?,
     );
 
 Map<String, dynamic> _$MessageSenderToJson(MessageSender instance) =>
@@ -44,6 +45,7 @@ Map<String, dynamic> _$MessageSenderToJson(MessageSender instance) =>
       'username': instance.username,
       'rank': instance.rank,
       'avatar': instance.avatar,
+      'activePortraitPath': instance.activePortraitPath,
     };
 
 Conversation _$ConversationFromJson(Map<String, dynamic> json) => Conversation(
@@ -51,6 +53,7 @@ Conversation _$ConversationFromJson(Map<String, dynamic> json) => Conversation(
   username: json['username'] as String,
   rank: (json['rank'] as num).toInt(),
   avatar: json['avatar'] as String?,
+  activePortraitPath: json['activePortraitPath'] as String?,
   lastMessage: json['lastMessage'] as String?,
   lastMessageTime: json['lastMessageTime'] as String?,
   unreadCount: (json['unreadCount'] as num).toInt(),
@@ -62,6 +65,7 @@ Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
       'username': instance.username,
       'rank': instance.rank,
       'avatar': instance.avatar,
+      'activePortraitPath': instance.activePortraitPath,
       'lastMessage': instance.lastMessage,
       'lastMessageTime': instance.lastMessageTime,
       'unreadCount': instance.unreadCount,

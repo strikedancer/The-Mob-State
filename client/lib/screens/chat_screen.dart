@@ -17,6 +17,7 @@ class ChatScreen extends StatefulWidget {
   final String friendName;
   final int friendRank;
   final String? friendAvatar;
+  final String? friendActivePortraitPath;
   final VoidCallback? onBack;
 
   const ChatScreen({
@@ -25,6 +26,7 @@ class ChatScreen extends StatefulWidget {
     required this.friendName,
     required this.friendRank,
     this.friendAvatar,
+    this.friendActivePortraitPath,
     this.onBack,
   });
 
@@ -473,7 +475,10 @@ class _ChatScreenState extends State<ChatScreen> {
           shape: BoxShape.circle,
           color: Colors.grey[800],
           image: DecorationImage(
-            image: AvatarHelper.getAvatarImageProvider(widget.friendAvatar),
+            image: AvatarHelper.getAvatarImageProvider(
+              widget.friendAvatar,
+              activePortraitPath: widget.friendActivePortraitPath,
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -606,6 +611,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 message: message,
                                 currentUserId: _currentUserId ?? 0,
                                 friendAvatar: widget.friendAvatar,
+                                friendActivePortraitPath:
+                                    widget.friendActivePortraitPath,
                                 onLongPress: () => _deleteMessage(message),
                               ),
                               if (canShowAction)

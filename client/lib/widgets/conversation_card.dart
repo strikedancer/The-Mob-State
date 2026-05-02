@@ -227,7 +227,10 @@ class ConversationCard extends StatelessWidget {
               shape: BoxShape.circle,
               color: Colors.grey[800],
               image: DecorationImage(
-                image: AvatarHelper.getAvatarImageProvider(conversation.avatar),
+                image: AvatarHelper.getAvatarImageProvider(
+                  conversation.avatar,
+                  activePortraitPath: conversation.activePortraitPath,
+                ),
                 fit: BoxFit.cover,
               ),
             ),

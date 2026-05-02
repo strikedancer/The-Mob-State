@@ -14,6 +14,11 @@ class Player {
   final int? fbiHeat;
   final String? currentCountry;
   final String? avatar;
+  /// Active custom portrait row id when using a generated portrait as display.
+  final int? activePortraitId;
+  /// Relative path under `/images/` (e.g. `player_avatars/12/uuid.png`).
+  final String? activePortraitPath;
+  final int? premiumCredits;
   /// `male` | `female` from server; null for legacy accounts.
   final String? gender;
   final bool? isVip;
@@ -35,6 +40,9 @@ class Player {
     this.fbiHeat,
     this.currentCountry,
     this.avatar,
+    this.activePortraitId,
+    this.activePortraitPath,
+    this.premiumCredits,
     this.gender,
     this.isVip,
     this.preferredLanguage,

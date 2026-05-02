@@ -12,6 +12,9 @@ import '../services/notification_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/theft_cooldown_confirm_prefs.dart';
 import '../utils/web_asset_helper.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import '../providers/auth_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool embedded;
@@ -28,6 +31,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Map<String, dynamic>? _settings;
   List<String> _freeAvatars = [];
   List<String> _vipAvatars = [];
+  List<Map<String, dynamic>> _portraits = [];
+  bool _portraitSubmitting = false;
   bool _allowMessages = true;
   bool _pushCryptoTrade = true;
   bool _pushCryptoPriceAlert = true;
@@ -173,6 +178,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _vipAvatars = List<String>.from(data['vip'] ?? []);
       }
 
+      final portraitsResponse = await http.get(
+        Uri.parse('${AppConfig.apiBaseUrl}/settings/portraits'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (portraitsResponse.statusCode == 200) {
+        final pdata = jsonDecode(portraitsResponse.body);
+        final params = pdata['params'] as Map<String, dynamic>?;
+        final raw = params?['portraits'];
+        if (raw is List) {
+          _portraits = raw
+              .map((e) => Map<String, dynamic>.from(e as Map))
+              .toList();
+        }
+      }
+
       setState(() {
         _isLoading = false;
       });
@@ -240,6 +260,288 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         );
       }
+    }
+  }
+
+  int get _portraitCreditCost =>
+      (_settings?['portraitSelfieCreditCost'] as num?)?.toInt() ?? 100;
+
+  Future<void> _selectPortrait(int portraitId) async {
+    try {
+      const storage = FlutterSecureStorage();
+      final token = await storage.read(key: 'auth_token');
+      if (token == null) return;
+
+      final response = await http.post(
+        Uri.parse('${AppConfig.apiBaseUrl}/settings/portraits/select'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'portraitId': portraitId}),
+      );
+
+      if (response.statusCode == 200 && mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.avatarUpdated),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadSettings();
+        if (mounted) {
+          await context.read<AuthProvider>().refreshPlayer();
+        }
+      } else if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.avatarChangeFailed),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.error(e.toString())),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _confirmDeletePortrait(BuildContext context, int portraitId) async {
+    final l10n = AppLocalizations.of(context)!;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.settingsPortraitDelete),
+        content: Text(l10n.settingsPortraitDeleteConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !mounted) return;
+
+    try {
+      const storage = FlutterSecureStorage();
+      final token = await storage.read(key: 'auth_token');
+      if (token == null) return;
+
+      final response = await http.delete(
+        Uri.parse(
+          '${AppConfig.apiBaseUrl}/settings/portraits/$portraitId',
+        ),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200 && mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.avatarUpdated),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadSettings();
+        if (mounted) {
+          await context.read<AuthProvider>().refreshPlayer();
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.error(e.toString())),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _pickSelfieAndGenerate(BuildContext sheetContext) async {
+    final l10n = AppLocalizations.of(sheetContext)!;
+    final balance = (_settings?['premiumCredits'] as num?)?.toInt() ?? 0;
+    final cost = _portraitCreditCost;
+
+    if (balance < cost) {
+      showTopRightFromSnackBar(
+        sheetContext,
+        SnackBar(
+          content: Text(
+            l10n.settingsPortraitInsufficientCredits(cost, balance),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final maxP = (_settings?['maxPlayerPortraits'] as num?)?.toInt() ?? 20;
+    if (_portraits.length >= maxP) {
+      showTopRightFromSnackBar(
+        sheetContext,
+        SnackBar(
+          content: Text(l10n.settingsPortraitLimitReached(maxP)),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final confirmCost = await showDialog<bool>(
+      context: sheetContext,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.settingsPortraitFromSelfieTitle),
+        content: Text(l10n.settingsPortraitUploadConfirm(_portraitCreditCost)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.change),
+          ),
+        ],
+      ),
+    );
+    if (confirmCost != true || !mounted) return;
+
+    bool consent = false;
+    final consentOk = await showDialog<bool>(
+      context: sheetContext,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setSt) => AlertDialog(
+          title: Text(l10n.settingsPortraitFromSelfieTitle),
+          content: CheckboxListTile(
+            value: consent,
+            onChanged: (v) => setSt(() => consent = v ?? false),
+            controlAffinity: ListTileControlAffinity.leading,
+            title: Text(l10n.settingsPortraitConsentLabel),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: consent ? () => Navigator.pop(ctx, true) : null,
+              child: Text(l10n.change),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (consentOk != true || !mounted) return;
+
+    final picker = ImagePicker();
+    final xfile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 2048,
+      maxHeight: 2048,
+      imageQuality: 92,
+    );
+    if (xfile == null || !mounted) return;
+
+    setState(() => _portraitSubmitting = true);
+    try {
+      const storage = FlutterSecureStorage();
+      final token = await storage.read(key: 'auth_token');
+      if (token == null) return;
+
+      final bytes = await xfile.readAsBytes();
+      final ct = xfile.mimeType != null
+          ? MediaType.parse(xfile.mimeType!)
+          : MediaType('image', 'jpeg');
+
+      final req = http.MultipartRequest(
+        'POST',
+        Uri.parse('${AppConfig.apiBaseUrl}/settings/portraits/from-selfie'),
+      );
+      req.headers['Authorization'] = 'Bearer $token';
+      req.fields['consent'] = 'true';
+      req.files.add(
+        http.MultipartFile.fromBytes(
+          'selfie',
+          bytes,
+          filename: xfile.name.isNotEmpty ? xfile.name : 'selfie.jpg',
+          contentType: ct,
+        ),
+      );
+
+      final streamed = await req.send();
+      final resp = await http.Response.fromStream(streamed);
+      final data = resp.body.isNotEmpty ? jsonDecode(resp.body) : <String, dynamic>{};
+
+      if (resp.statusCode == 200 && mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.settingsPortraitCreated),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadSettings();
+        if (mounted) {
+          await context.read<AuthProvider>().refreshPlayer();
+        }
+        if (mounted) Navigator.of(sheetContext).pop();
+      } else if (mounted) {
+        final ev = data['event'] as String?;
+        if (ev == 'error.insufficient_credits') {
+          final p = data['params'] as Map<String, dynamic>? ?? {};
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(
+                l10n.settingsPortraitInsufficientCredits(
+                  (p['required'] as num?)?.toInt() ?? cost,
+                  (p['available'] as num?)?.toInt() ?? 0,
+                ),
+              ),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        } else {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(l10n.settingsPortraitGenerationFailed),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.settingsPortraitGenerationFailed),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _portraitSubmitting = false);
     }
   }
 
@@ -704,10 +1006,96 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.all(16),
                 children: [
                   Text(
-                    l10n.freeAvatars,
+                    l10n.settingsMyPortraits,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.settingsPortraitFromSelfieSubtitle(_portraitCreditCost),
+                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton.icon(
+                    onPressed: _portraitSubmitting
+                        ? null
+                        : () => _pickSelfieAndGenerate(context),
+                    icon: _portraitSubmitting
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.add_a_photo_outlined),
+                    label: Text(l10n.settingsPortraitFromSelfieTitle),
+                  ),
+                  if (_portraits.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemCount: _portraits.length,
+                      itemBuilder: (context, index) {
+                        final p = _portraits[index];
+                        final id = (p['id'] as num).toInt();
+                        final path = p['imagePath'] as String? ?? '';
+                        final isSel =
+                            (_settings?['activePortraitId'] as num?)?.toInt() ==
+                            id;
+                        return GestureDetector(
+                          onLongPress: () =>
+                              _confirmDeletePortrait(context, id),
+                          onTap: () => _selectPortrait(id),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: isSel ? Colors.blue : Colors.grey[800]!,
+                                width: isSel ? 3 : 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(7),
+                              child: Image.network(
+                                WebAssetHelper.toPublicUrl(
+                                  'assets/images/$path',
+                                ),
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) => ColoredBox(
+                                  color: Colors.grey[900]!,
+                                  child: const Icon(
+                                    Icons.broken_image_outlined,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                  const SizedBox(height: 24),
+                  Text(
+                    l10n.settingsPresetAvatars,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.freeAvatars,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -782,7 +1170,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildAvatarTile(String avatar, bool isVip) {
-    final isSelected = avatar == _settings?['avatar'];
+    final isSelected = (_settings?['activePortraitId'] == null) &&
+        avatar == _settings?['avatar'];
     final isLocked = isVip && !(_settings?['isVip'] ?? false);
 
     return GestureDetector(
@@ -871,7 +1260,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: ListTile(
                   leading: const Icon(Icons.face, color: Colors.blue),
                   title: Text(l10n.avatar),
-                  subtitle: Text(_settings?['avatar'] ?? 'default_1'),
+                  subtitle: Text(
+                    _settings?['activePortraitId'] != null
+                        ? l10n.settingsPortraitUsingCustom
+                        : (_settings?['avatar'] ?? 'default_1'),
+                  ),
                   trailing: Icon(
                     _settings?['canChangeAvatar'] ?? true
                         ? Icons.chevron_right

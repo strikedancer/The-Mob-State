@@ -2,13 +2,32 @@ import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
 import { NotificationService } from './notificationService';
 import { translationService } from './translationService';
+import { activePortraitPathFromRow } from '../utils/avatarDisplay';
+
 const SYSTEM_THREAD_ID = 0;
 const SYSTEM_SENDER = {
   id: SYSTEM_THREAD_ID,
   username: 'The Mob State',
   rank: 0,
   avatar: null,
+  activePortraitPath: null as string | null,
 };
+
+function mapMessageSender(s: {
+  id: number;
+  username: string;
+  rank: number;
+  avatar: string | null;
+  activePortrait?: { imagePath: string } | null;
+}) {
+  return {
+    id: s.id,
+    username: s.username,
+    rank: s.rank,
+    avatar: s.avatar,
+    activePortraitPath: activePortraitPathFromRow(s.activePortrait?.imagePath ?? null),
+  };
+}
 
 export const directMessageService = {
   formatSystemMessage(directMessage: {
@@ -166,6 +185,7 @@ export const directMessageService = {
             username: true,
             rank: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           },
         },
         receiver: {
@@ -177,6 +197,8 @@ export const directMessageService = {
       },
     });
 
+    const senderPayload = mapMessageSender(directMessage.sender);
+
     // Send SSE event to receiver for real-time notification
     await worldEventService.createEvent(
       'direct_message.received',
@@ -184,7 +206,7 @@ export const directMessageService = {
         messageId: directMessage.id,
         senderId: directMessage.senderId,
         receiverId: directMessage.receiverId,
-        sender: directMessage.sender,
+        sender: senderPayload,
         message: directMessage.message,
         read: directMessage.read,
         createdAt: directMessage.createdAt,
@@ -199,7 +221,7 @@ export const directMessageService = {
         messageId: directMessage.id,
         senderId: directMessage.senderId,
         receiverId: directMessage.receiverId,
-        sender: directMessage.sender,
+        sender: senderPayload,
         message: directMessage.message,
         read: directMessage.read,
         createdAt: directMessage.createdAt,
@@ -226,7 +248,10 @@ export const directMessageService = {
       // Don't throw - notification failures should not block message sending
     }
 
-    return directMessage;
+    return {
+      ...directMessage,
+      sender: senderPayload,
+    };
   },
 
   /**
@@ -287,6 +312,7 @@ export const directMessageService = {
             username: true,
             rank: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           },
         },
       },
@@ -307,7 +333,10 @@ export const directMessageService = {
     });
 
     // Return in ascending order (oldest first)
-    return messages.reverse();
+    return messages.reverse().map((m) => ({
+      ...m,
+      sender: mapMessageSender(m.sender),
+    }));
   },
 
   /**
@@ -329,6 +358,7 @@ export const directMessageService = {
             username: true,
             rank: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           },
         },
         addressee: {
@@ -337,6 +367,7 @@ export const directMessageService = {
             username: true,
             rank: true,
             avatar: true,
+            activePortrait: { select: { imagePath: true } },
           },
         },
       },

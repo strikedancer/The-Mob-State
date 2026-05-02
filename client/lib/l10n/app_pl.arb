@@ -8260,5 +8260,50 @@
   "registerGenderSubtitle": "Tap a portrait — this sets your starter look and is saved to your account.",
   "registerGenderMale": "Male gangster",
   "registerGenderFemale": "Female gangster",
-  "genderRequired": "Choose male or female to continue."
+  "genderRequired": "Choose male or female to continue.",
+  "settingsMyPortraits": "My portraits",
+  "settingsPortraitFromSelfieTitle": "Portret z selfie",
+  "settingsPortraitFromSelfieSubtitle": "Zamień selfie w portret w stylu gangsterskim. {credits} kredytów każdy.",
+  "@settingsPortraitFromSelfieSubtitle": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUploadConfirm": "Kosztuje to {credits} kredytów. Kontynuować?",
+  "@settingsPortraitUploadConfirm": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitConsentLabel": "Zgadzam się, że moje zdjęcie może zostać przetworzone w stylizowany portret w grze (patrz Regulamin). Nie mam mniej niż 13 lat.",
+  "settingsPortraitInsufficientCredits": "Za mało kredytów (potrzebujesz {need}, masz {have}).",
+  "@settingsPortraitInsufficientCredits": {
+    "placeholders": {
+      "need": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitCreated": "Portret dodany do Twojej biblioteki!",
+  "settingsPortraitGenerationFailed": "Nie można utworzyć portretu. Spróbuj innego zdjęcia.",
+  "settingsPortraitSelectActive": "Użyj jako awatara",
+  "settingsPortraitDelete": "Usuń portret",
+  "settingsPortraitLimitReached": "Osiągnięto limit portretów ({max}).",
+  "@settingsPortraitLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsPortraitUsingCustom": "Aktywny portret niestandardowy",
+  "settingsPresetAvatars": "Wstępnie ustawione awatary",
+  "settingsPortraitDeleteConfirm": "Usunąć ten portret ze swojej biblioteki?"
 }

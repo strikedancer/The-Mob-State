@@ -100,6 +100,8 @@ class HitCard extends StatelessWidget {
                             radius: 14,
                             backgroundImage: AvatarHelper.getAvatarImageProvider(
                               target?['avatar']?.toString(),
+                              activePortraitPath:
+                                  target?['activePortraitPath']?.toString(),
                             ),
                             child:
                                 (target?['avatar'] == null ||
@@ -204,6 +206,8 @@ class HitCard extends StatelessWidget {
                   playerId: placer?['id'] as int?,
                   username: placer?['username']?.toString(),
                   avatar: placer?['avatar']?.toString(),
+                  activePortraitPath:
+                      placer?['activePortraitPath']?.toString(),
                   icon: Icons.person_add,
                   context: context,
                 ),
@@ -334,6 +338,7 @@ class HitCard extends StatelessWidget {
     required int? playerId,
     required String? username,
     required String? avatar,
+    String? activePortraitPath,
     required IconData icon,
     required BuildContext context,
   }) {
@@ -348,7 +353,10 @@ class HitCard extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 11,
-          backgroundImage: AvatarHelper.getAvatarImageProvider(avatar),
+          backgroundImage: AvatarHelper.getAvatarImageProvider(
+            avatar,
+            activePortraitPath: activePortraitPath,
+          ),
           child: (avatar == null || avatar.isEmpty)
               ? Text(
                   displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
