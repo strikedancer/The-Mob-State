@@ -88,10 +88,11 @@ class WebAssetHelper {
     }
 
     final suffix = _stripAssetsImagesPrefix(assetPath);
+    // Prefer nginx `/images/` (runtime mount); then bundled-style paths. See PROTOCOL_MASTER / client/docker/nginx.conf.
     return [
       _resolveRelative('images/$suffix'),
-      _resolveRelative('assets/assets/images/$suffix'),
       _resolveRelative('assets/images/$suffix'),
+      _resolveRelative('assets/assets/images/$suffix'),
     ];
   }
 
@@ -124,6 +125,58 @@ class WebAssetHelper {
 
   static ImageProvider<Object> provider(String assetPath) {
     return AssetImage(assetPath);
+  }
+
+  /// Web: load via HTTP only (`/images/…` first). Skips [Image.asset], so the Flutter web engine does not request `assets/assets/images/…` (avoids 404 noise; nginx serves avatars from the external mount).
+  static Widget imageHttpFirst(
+    String assetPath, {
+    Key? key,
+    double? width,
+    double? height,
+    BoxFit fit = BoxFit.cover,
+    Alignment alignment = Alignment.center,
+    Widget Function(BuildContext, Object, StackTrace?)? errorBuilder,
+  }) {
+    if (!kIsWeb) {
+      return image(
+        assetPath,
+        key: key,
+        width: width,
+        height: height,
+        fit: fit,
+        alignment: alignment,
+        errorBuilder: errorBuilder,
+      );
+    }
+
+    final normalizedPath = normalizeAssetPath(assetPath);
+    final candidates = _webImageUrlCandidates(normalizedPath);
+
+    Widget chain(BuildContext context, int index) {
+      if (index >= candidates.length) {
+        if (errorBuilder != null) {
+          return errorBuilder(
+            context,
+            StateError('web image candidates exhausted'),
+            StackTrace.current,
+          );
+        }
+        return const SizedBox.shrink();
+      }
+      return Image.network(
+        candidates[index],
+        key: key,
+        width: width,
+        height: height,
+        fit: fit,
+        alignment: alignment,
+        errorBuilder: (ctx, err, st) => chain(ctx, index + 1),
+      );
+    }
+
+    return Builder(
+      builder: (context) => chain(context, 0),
+    );
   }
 
   static Widget image(

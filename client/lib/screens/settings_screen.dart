@@ -798,11 +798,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Avatar image (web: WebAssetHelper falls back to /images/avatars via nginx)
+            // Avatar image: web = HTTP-only (/images/avatars via nginx mount), no Image.asset (avoids assets/assets 404 spam)
             Positioned.fill(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(7),
-                child: WebAssetHelper.image(
+                child: WebAssetHelper.imageHttpFirst(
                   'assets/images/avatars/$avatar.png',
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
