@@ -169,7 +169,7 @@ Implementatievoorkeur:
 - Voor cross-cutting Flutter/web/mobile/PWA shell-, asset- en embedded-view regels: zie `frontend-platform.md`.
 - Voor push-, inbox- en FCM/service-worker regels: zie `notifications.md`.
 - Voor profielprivacy, profielnavigatie en profielinteracties: zie `player-profile.md`.
-- Voor selfie→gangster portretten, premium credit-kosten, Leonardo (o.a. **Character Reference `strengthType` High**, **photoReal uit** voor minder smooth/drift t.o.v. selfie), runtime image-paden, **geslacht (account) + stijlkeuze** in prompts, client wachtstatus/verwijder-flow (download/verwijder-UI: **CustomPaint**-glyphs i.p.v. icon fonts op Flutter web), en admin-moderatie van overtredende portretten: zie `player-portraits.md` (mount `runtime/client-images/player_avatars/`).
+- Voor selfie→gangster portretten, premium credit-kosten, Leonardo (o.a. **Character Reference `strengthType` High**, **photoReal uit** voor minder smooth/drift t.o.v. selfie), runtime image-paden, **geslacht (account) + stijlkeuze** in prompts, client wachtstatus/verwijder-flow (download/verwijder: **CustomPaint**-glyphs + **ARB-tooltips** `settingsPortraitDownloadTooltip` / `settingsPortraitDeleteTooltip`), en admin-moderatie van overtredende portretten: zie `player-portraits.md` (mount `runtime/client-images/player_avatars/`).
 - Bij wijzigingen aan web/PWA deploy, nginx caching, service workers of push bootstrap moet de QA expliciet beide service workers meenemen: `flutter_service_worker.js` én `firebase-messaging-sw.js`; een deploy is niet done als één van beide nog onder stale/immutable caching kan vallen.
 
 ## Minimale QA Checklist (Altijd Draaien)

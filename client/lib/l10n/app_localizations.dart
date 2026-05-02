@@ -4527,6 +4527,18 @@ abstract class AppLocalizations {
   /// **'Could not download the portrait. Check your connection and try again.'**
   String get settingsPortraitDownloadFailed;
 
+  /// No description provided for @settingsPortraitDownloadTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Download this portrait as a PNG'**
+  String get settingsPortraitDownloadTooltip;
+
+  /// No description provided for @settingsPortraitDeleteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this portrait from your library'**
+  String get settingsPortraitDeleteTooltip;
+
   /// No description provided for @settingsPortraitStyleSection.
   ///
   /// In en, this message translates to:

@@ -38,6 +38,7 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 - During selfie→portrait generation, show a **non-dismissible** wait dialog (spinner + message) so players know the request is still running.
 - In the avatar picker, each custom portrait tile has **high-contrast circular actions**: **download** (left, saves the PNG via browser download on web or the OS share sheet on mobile/desktop) and **remove** (right, `DELETE /settings/portraits/:id`). The glyphs are drawn with **`CustomPaint`** (`portrait_tile_action_glyphs.dart`) — **no icon fonts** — because Flutter web often paints empty circles inside modals when using `Icon` / Font Awesome / Material icons (browser console may show Noto font fallback warnings). Hint text explains both.
 - Before upload, the player picks a **portrait look** (chips). `GET /settings` includes `portraitStyleIds` for the client allowlist; the multipart field `portraitStyle` selects the preset. **Velvet / evening glamour** stays **classy and PG-appropriate** (extra negative-prompt guards); all styles follow general game and ToS expectations in `PROTOCOL_MASTER.md`.
+- Download and remove buttons use **localized tooltips** (`settingsPortraitDownloadTooltip`, `settingsPortraitDeleteTooltip` in `app_*.arb`; NL/EN curated, other locales via merge + optional machine/human follow-up per `PROTOCOL_MASTER.md` i18n rules).
 
 ## QA
 1. Insufficient credits → `error.insufficient_credits`.

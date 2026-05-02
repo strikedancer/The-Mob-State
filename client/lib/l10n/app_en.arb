@@ -1571,6 +1571,8 @@
   "settingsPortraitGenerating": "Creating your portrait… This may take a few minutes. Please wait.",
   "settingsPortraitDeleteHint": "Tap a portrait to select it. Use the download button (left) to save your PNG, or the remove button (right) to delete it from the game.",
   "settingsPortraitDownloadFailed": "Could not download the portrait. Check your connection and try again.",
+  "settingsPortraitDownloadTooltip": "Download this portrait as a PNG",
+  "settingsPortraitDeleteTooltip": "Remove this portrait from your library",
   "settingsPortraitStyleSection": "Portrait look",
   "settingsPortraitStyleHint": "Generation uses your account gender from registration. All styles stay appropriate for the game.",
   "settingsPortraitStyleClassicNoir": "Classic noir",

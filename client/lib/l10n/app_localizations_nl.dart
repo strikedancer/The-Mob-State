@@ -2512,6 +2512,13 @@ class AppLocalizationsNl extends AppLocalizations {
       'Portret kon niet worden gedownload. Controleer je verbinding en probeer opnieuw.';
 
   @override
+  String get settingsPortraitDownloadTooltip => 'Download dit portret als PNG';
+
+  @override
+  String get settingsPortraitDeleteTooltip =>
+      'Verwijder dit portret uit je bibliotheek';
+
+  @override
   String get settingsPortraitStyleSection => 'Portretstijl';
 
   @override

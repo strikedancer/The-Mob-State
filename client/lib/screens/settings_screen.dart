@@ -452,20 +452,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required Widget glyph,
     required VoidCallback onPressed,
     required Color backgroundColor,
+    required String tooltip,
   }) {
-    return Material(
-      color: backgroundColor,
-      shape: const CircleBorder(),
-      elevation: 2,
-      shadowColor: Colors.black54,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onPressed,
-        customBorder: const CircleBorder(),
-        child: SizedBox(
-          width: 34,
-          height: 34,
-          child: Center(child: glyph),
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: backgroundColor,
+        shape: const CircleBorder(),
+        elevation: 2,
+        shadowColor: Colors.black54,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onPressed,
+          customBorder: const CircleBorder(),
+          child: SizedBox(
+            width: 34,
+            height: 34,
+            child: Center(child: glyph),
+          ),
         ),
       ),
     );
@@ -1248,6 +1252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               top: 4,
                               left: 4,
                               child: _portraitCornerAction(
+                                tooltip: l10n.settingsPortraitDownloadTooltip,
                                 glyph: const PortraitTileDownloadGlyph(
                                   color: Colors.white,
                                   size: 17,
@@ -1264,6 +1269,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               top: 4,
                               right: 4,
                               child: _portraitCornerAction(
+                                tooltip: l10n.settingsPortraitDeleteTooltip,
                                 glyph: const PortraitTileTrashGlyph(
                                   color: Colors.white,
                                   size: 17,

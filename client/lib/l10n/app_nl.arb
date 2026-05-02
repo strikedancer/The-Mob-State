@@ -8309,6 +8309,8 @@
   "settingsPortraitGenerating": "Je portret wordt gemaakt… Dit kan enkele minuten duren. Even geduld.",
   "settingsPortraitDeleteHint": "Tik op een portret om het te kiezen. Download (links) slaat je PNG op; verwijderen (rechts) haalt het uit de game.",
   "settingsPortraitDownloadFailed": "Portret kon niet worden gedownload. Controleer je verbinding en probeer opnieuw.",
+  "settingsPortraitDownloadTooltip": "Download dit portret als PNG",
+  "settingsPortraitDeleteTooltip": "Verwijder dit portret uit je bibliotheek",
   "settingsPortraitStyleSection": "Portretstijl",
   "settingsPortraitStyleHint": "Generatie gebruikt je geslacht van je account (registratie). Alle stijlen blijven geschikt voor de game.",
   "settingsPortraitStyleClassicNoir": "Klassiek noir",

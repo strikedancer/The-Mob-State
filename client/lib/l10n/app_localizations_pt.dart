@@ -2515,6 +2515,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'Could not download the portrait. Check your connection and try again.';
 
   @override
+  String get settingsPortraitDownloadTooltip => 'Baixe este retrato como PNG';
+
+  @override
+  String get settingsPortraitDeleteTooltip =>
+      'Remova este retrato da sua biblioteca';
+
+  @override
   String get settingsPortraitStyleSection => 'Portrait look';
 
   @override
