@@ -6,6 +6,7 @@ import {
   MAX_PLAYER_PORTRAITS,
   PORTRAIT_SELFIE_CREDIT_COST,
   SELFIE_MAX_BYTES,
+  type PortraitStyleId,
 } from '../constants/playerPortrait';
 import { generateGangsterPortraitFromSelfie } from './playerPortraitLeonardo';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
@@ -33,14 +34,15 @@ export async function listPortraits(playerId: number) {
   return prisma.playerPortrait.findMany({
     where: { playerId },
     orderBy: { createdAt: 'desc' },
-    select: { id: true, imagePath: true, createdAt: true },
+    select: { id: true, imagePath: true, styleKey: true, createdAt: true },
   });
 }
 
 export async function createPortraitFromSelfie(
   playerId: number,
   selfieBuffer: Buffer,
-  mimeType: string
+  mimeType: string,
+  styleId: PortraitStyleId
 ): Promise<{
   portrait: { id: number; imagePath: string; createdAt: Date };
   premiumCredits: number;
@@ -61,7 +63,7 @@ export async function createPortraitFromSelfie(
 
   const player = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { premiumCredits: true },
+    select: { premiumCredits: true, gender: true },
   });
   if (!player) {
     throw new Error('PLAYER_NOT_FOUND');
@@ -78,7 +80,10 @@ export async function createPortraitFromSelfie(
     throw err;
   }
 
-  const pngBuffer = await generateGangsterPortraitFromSelfie(selfieBuffer, mimeType);
+  const pngBuffer = await generateGangsterPortraitFromSelfie(selfieBuffer, mimeType, {
+    gender: player.gender,
+    style: styleId,
+  });
 
   const fileId = randomUUID();
   const relativePath = `player_avatars/${playerId}/${fileId}.png`;
@@ -93,6 +98,7 @@ export async function createPortraitFromSelfie(
         data: {
           playerId,
           imagePath: relativePath,
+          styleKey: styleId,
         },
       });
 

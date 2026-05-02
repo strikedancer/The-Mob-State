@@ -4521,6 +4521,42 @@ abstract class AppLocalizations {
   /// **'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.'**
   String get settingsPortraitDeleteHint;
 
+  /// No description provided for @settingsPortraitStyleSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait look'**
+  String get settingsPortraitStyleSection;
+
+  /// No description provided for @settingsPortraitStyleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Generation uses your account gender from registration. All styles stay appropriate for the game.'**
+  String get settingsPortraitStyleHint;
+
+  /// No description provided for @settingsPortraitStyleClassicNoir.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic noir'**
+  String get settingsPortraitStyleClassicNoir;
+
+  /// No description provided for @settingsPortraitStyleStreetCasual.
+  ///
+  /// In en, this message translates to:
+  /// **'Street casual'**
+  String get settingsPortraitStyleStreetCasual;
+
+  /// No description provided for @settingsPortraitStyleSharpSuit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharp suit'**
+  String get settingsPortraitStyleSharpSuit;
+
+  /// No description provided for @settingsPortraitStyleVelvetCharm.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening glamour'**
+  String get settingsPortraitStyleVelvetCharm;
+
   /// No description provided for @error.
   ///
   /// In en, this message translates to:

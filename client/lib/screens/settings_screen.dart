@@ -33,6 +33,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<String> _vipAvatars = [];
   List<Map<String, dynamic>> _portraits = [];
   bool _portraitSubmitting = false;
+  /// Must match `PORTRAIT_STYLE_IDS` on the server.
+  static const List<String> _kPortraitStyleIds = [
+    'classic_noir',
+    'street_casual',
+    'sharp_suit',
+    'velvet_charm',
+  ];
+  String _selectedPortraitStyleId = 'classic_noir';
   bool _allowMessages = true;
   bool _pushCryptoTrade = true;
   bool _pushCryptoPriceAlert = true;
@@ -54,6 +62,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _askTheftCooldownCreditConfirm = true;
 
   bool get _isDutch => Localizations.localeOf(context).languageCode == 'nl';
+
+  List<String> _portraitStyleIdsResolved() {
+    final raw = _settings?['portraitStyleIds'];
+    if (raw is List && raw.isNotEmpty) {
+      final out = <String>[];
+      for (final e in raw) {
+        final s = e.toString();
+        if (_kPortraitStyleIds.contains(s)) out.add(s);
+      }
+      if (out.isNotEmpty) return out;
+    }
+    return _kPortraitStyleIds;
+  }
+
+  String _portraitStyleLabel(AppLocalizations l10n, String id) {
+    switch (id) {
+      case 'classic_noir':
+        return l10n.settingsPortraitStyleClassicNoir;
+      case 'street_casual':
+        return l10n.settingsPortraitStyleStreetCasual;
+      case 'sharp_suit':
+        return l10n.settingsPortraitStyleSharpSuit;
+      case 'velvet_charm':
+        return l10n.settingsPortraitStyleVelvetCharm;
+      default:
+        return l10n.settingsPortraitStyleClassicNoir;
+    }
+  }
 
   @override
   void initState() {
@@ -110,6 +146,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _settings = jsonDecode(settingsResponse.body);
         _allowMessages = _settings?['allowMessages'] ?? true;
         _selectedLanguage = _settings?['preferredLanguage'] ?? 'nl';
+        final pIds = _settings?['portraitStyleIds'];
+        if (pIds is List && pIds.isNotEmpty) {
+          final allowed = pIds.map((e) => e.toString()).toSet();
+          if (!allowed.contains(_selectedPortraitStyleId)) {
+            _selectedPortraitStyleId = allowed.first;
+          }
+        }
 
         final notificationPreferences =
             (_settings?['notificationPreferences'] as Map<String, dynamic>?) ??
@@ -499,6 +542,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
       req.headers['Authorization'] = 'Bearer $token';
       req.fields['consent'] = 'true';
+      req.fields['portraitStyle'] = _selectedPortraitStyleId;
       req.files.add(
         http.MultipartFile.fromBytes(
           'selfie',
@@ -1040,6 +1084,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Text(
                     l10n.settingsPortraitFromSelfieSubtitle(_portraitCreditCost),
                     style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    l10n.settingsPortraitStyleSection,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.settingsPortraitStyleHint,
+                    style: TextStyle(color: Colors.grey[500], fontSize: 11),
+                  ),
+                  const SizedBox(height: 8),
+                  StatefulBuilder(
+                    builder: (context, setModalState) {
+                      return Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          for (final id in _portraitStyleIdsResolved())
+                            ChoiceChip(
+                              label: Text(_portraitStyleLabel(l10n, id)),
+                              selected: _selectedPortraitStyleId == id,
+                              onSelected: (_) {
+                                setState(() => _selectedPortraitStyleId = id);
+                                setModalState(() {});
+                              },
+                            ),
+                        ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 8),
                   OutlinedButton.icon(

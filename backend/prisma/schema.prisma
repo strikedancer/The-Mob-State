@@ -151,6 +151,8 @@ model PlayerPortrait {
   playerId        Int
   /// Relative public path after `/images/`, e.g. `player_avatars/12/uuid.png`
   imagePath       String   @db.VarChar(255)
+  /// Leonardo prompt style id at generation time, e.g. `classic_noir`, `street_casual`
+  styleKey        String?  @db.VarChar(32)
   createdAt       DateTime @default(now())
   player          Player   @relation("OwnedPortraits", fields: [playerId], references: [id], onDelete: Cascade)
   activeForPlayer Player?  @relation("ActivePortrait")

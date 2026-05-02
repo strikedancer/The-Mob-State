@@ -2668,7 +2668,12 @@ export const adminService = {
   },
 
   async getPlayerPortraits(playerId: number): Promise<{
-    portraits: Array<{ id: number; imagePath: string; createdAt: string }>;
+    portraits: Array<{
+      id: number;
+      imagePath: string;
+      styleKey?: string | null;
+      createdAt: string;
+    }>;
   }> {
     const token = adminAuthService.getToken();
     const response = await fetch(

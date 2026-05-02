@@ -2525,6 +2525,25 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.';
 
   @override
+  String get settingsPortraitStyleSection => 'Portrait look';
+
+  @override
+  String get settingsPortraitStyleHint =>
+      'Generation uses your account gender from registration. All styles stay appropriate for the game.';
+
+  @override
+  String get settingsPortraitStyleClassicNoir => 'Classic noir';
+
+  @override
+  String get settingsPortraitStyleStreetCasual => 'Street casual';
+
+  @override
+  String get settingsPortraitStyleSharpSuit => 'Sharp suit';
+
+  @override
+  String get settingsPortraitStyleVelvetCharm => 'Evening glamour';
+
+  @override
   String error(String error) {
     return 'Error: $error';
   }

@@ -8307,5 +8307,11 @@
   "settingsPresetAvatars": "Standaard avatars",
   "settingsPortraitDeleteConfirm": "Dit portret uit je bibliotheek verwijderen?",
   "settingsPortraitGenerating": "Je portret wordt gemaakt… Dit kan enkele minuten duren. Even geduld.",
-  "settingsPortraitDeleteHint": "Tik op een portret om het als avatar te gebruiken. Tik op het prullenbak-icoon om te verwijderen."
+  "settingsPortraitDeleteHint": "Tik op een portret om het als avatar te gebruiken. Tik op het prullenbak-icoon om te verwijderen.",
+  "settingsPortraitStyleSection": "Portretstijl",
+  "settingsPortraitStyleHint": "Generatie gebruikt je geslacht van je account (registratie). Alle stijlen blijven geschikt voor de game.",
+  "settingsPortraitStyleClassicNoir": "Klassiek noir",
+  "settingsPortraitStyleStreetCasual": "Street casual",
+  "settingsPortraitStyleSharpSuit": "Strak pak",
+  "settingsPortraitStyleVelvetCharm": "Avondglamour"
 }

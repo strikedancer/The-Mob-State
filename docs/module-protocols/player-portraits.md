@@ -4,7 +4,7 @@
 Premium-credit sink: players upload a selfie; the backend generates a film-noir gangster-style portrait via Leonardo (Character Reference), stores PNGs under the runtime client-images mount, and exposes a per-player library with active selection.
 
 ## Primary Backend
-- `backend/src/constants/playerPortrait.ts` — credit cost (`100`), max portraits, Leonardo model constants.
+- `backend/src/constants/playerPortrait.ts` — credit cost (`100`), max portraits, Leonardo model constants, **portrait style ids** (`classic_noir`, `street_casual`, `sharp_suit`, `velvet_charm`), and `buildGangsterPortraitPrompts(gender, style)` so Leonardo prompts respect **account gender** (`Player.gender`, from registration) and the player’s chosen look. Invalid or missing `portraitStyle` in multipart defaults to `classic_noir`.
 - `backend/src/services/playerPortraitLeonardo.ts` — init-image upload + v1 generation + polling.
 - `backend/src/services/playerPortraitService.ts` — filesystem paths, Prisma transactions (deduct credits only after successful save).
 - `backend/src/routes/settings.ts` — `GET/POST/DELETE /settings/portraits*`, multipart `POST .../portraits/from-selfie`.
@@ -14,7 +14,7 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 - `client/lib/utils/avatar_helper.dart` — `activePortraitPath` resolves to `/images/...` via `WebAssetHelper`.
 
 ## Data Model
-- `PlayerPortrait` (`player_portraits`): `imagePath` relative to `/images/` (e.g. `player_avatars/<playerId>/<uuid>.png`).
+- `PlayerPortrait` (`player_portraits`): `imagePath` relative to `/images/` (e.g. `player_avatars/<playerId>/<uuid>.png`); optional `styleKey` stores the style id used at generation (moderation / support).
 - `Player.activePortraitId` — when set, UI shows custom portrait; preset `avatar` remains the fallback preset key when custom is cleared.
 
 ## Economy
@@ -36,6 +36,7 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 ## Client UX
 - During selfie→portrait generation, show a **non-dismissible** wait dialog (spinner + message) so players know the request is still running.
 - In the avatar picker, each custom portrait tile has a **visible delete** control (not only long-press) plus a short hint: tap portrait to select, trash to remove (`DELETE /settings/portraits/:id`).
+- Before upload, the player picks a **portrait look** (chips). `GET /settings` includes `portraitStyleIds` for the client allowlist; the multipart field `portraitStyle` selects the preset. **Velvet / evening glamour** stays **classy and PG-appropriate** (extra negative-prompt guards); all styles follow general game and ToS expectations in `PROTOCOL_MASTER.md`.
 
 ## QA
 1. Insufficient credits → `error.insufficient_credits`.

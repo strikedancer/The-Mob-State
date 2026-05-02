@@ -8307,5 +8307,11 @@
   "settingsPresetAvatars": "Avatar preimpostati",
   "settingsPortraitDeleteConfirm": "Rimuovere questo ritratto dalla tua libreria?",
   "settingsPortraitGenerating": "Creating your portrait… This may take a few minutes. Please wait.",
-  "settingsPortraitDeleteHint": "Tap a portrait to use it as your avatar. Tap the trash icon to remove it."
+  "settingsPortraitDeleteHint": "Tap a portrait to use it as your avatar. Tap the trash icon to remove it.",
+  "settingsPortraitStyleSection": "Portrait look",
+  "settingsPortraitStyleHint": "Generation uses your account gender from registration. All styles stay appropriate for the game.",
+  "settingsPortraitStyleClassicNoir": "Classic noir",
+  "settingsPortraitStyleStreetCasual": "Street casual",
+  "settingsPortraitStyleSharpSuit": "Sharp suit",
+  "settingsPortraitStyleVelvetCharm": "Evening glamour"
 }

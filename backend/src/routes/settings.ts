@@ -7,7 +7,9 @@ import prisma from '../lib/prisma';
 import {
   MAX_PLAYER_PORTRAITS,
   PORTRAIT_SELFIE_CREDIT_COST,
+  PORTRAIT_STYLE_IDS,
   SELFIE_MAX_BYTES,
+  parsePortraitStyleId,
 } from '../constants/playerPortrait';
 import {
   createPortraitFromSelfie,
@@ -53,6 +55,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
       premiumCredits: player.premiumCredits,
       portraitSelfieCreditCost: PORTRAIT_SELFIE_CREDIT_COST,
       maxPlayerPortraits: MAX_PLAYER_PORTRAITS,
+      portraitStyleIds: [...PORTRAIT_STYLE_IDS],
       gender: player.gender,
       allowMessages: player.allowMessages,
       preferredLanguage: player.preferredLanguage,
@@ -283,7 +286,13 @@ router.post(
       }
 
       const playerId = req.player!.id;
-      const result = await createPortraitFromSelfie(playerId, file.buffer, file.mimetype);
+      const styleId = parsePortraitStyleId(req.body?.portraitStyle);
+      const result = await createPortraitFromSelfie(
+        playerId,
+        file.buffer,
+        file.mimetype,
+        styleId
+      );
 
       return res.status(200).json({
         event: 'settings.portrait.created',

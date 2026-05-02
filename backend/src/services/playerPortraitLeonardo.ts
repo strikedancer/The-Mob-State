@@ -3,8 +3,8 @@ import FormData from 'form-data';
 import {
   LEONARDO_MODEL_ID_KINO_XL,
   LEONARDO_PREPROCESSOR_CHARACTER_REF,
-  PORTRAIT_NEGATIVE_PROMPT,
-  PORTRAIT_POSITIVE_PROMPT,
+  type PortraitStyleId,
+  buildGangsterPortraitPrompts,
 } from '../constants/playerPortrait';
 
 const INIT_IMAGE_URL = 'https://cloud.leonardo.ai/api/rest/v1/init-image';
@@ -150,12 +150,18 @@ async function waitForGenerationImage(generationId: string, timeoutMs = 300_000)
   throw new Error('LEONARDO_GENERATION_TIMEOUT');
 }
 
+export type GeneratePortraitOptions = {
+  gender: string | null | undefined;
+  style: PortraitStyleId;
+};
+
 /**
  * Upload selfie buffer → Leonardo Character Reference → PNG bytes.
  */
 export async function generateGangsterPortraitFromSelfie(
   imageBuffer: Buffer,
-  mime: string
+  mime: string,
+  options: GeneratePortraitOptions
 ): Promise<Buffer> {
   let ext: 'png' | 'jpg' | 'jpeg' | 'webp' = 'jpg';
   if (mime.includes('png')) ext = 'png';
@@ -164,14 +170,19 @@ export async function generateGangsterPortraitFromSelfie(
 
   const initImageId = await uploadInitImageToLeonardo(imageBuffer, ext);
 
+  const { prompt, negative_prompt } = buildGangsterPortraitPrompts(
+    options.gender,
+    options.style
+  );
+
   // With alchemy + photoReal, preset must be one of ANIME, CREATIVE, DYNAMIC, ENVIRONMENT,
   // GENERAL, ILLUSTRATION, PHOTOGRAPHY, … — not CINEMATIC (OpenAPI / guide), or Leonardo returns 400.
   const body = {
     height: 1024,
     width: 1024,
     modelId: LEONARDO_MODEL_ID_KINO_XL,
-    prompt: PORTRAIT_POSITIVE_PROMPT,
-    negative_prompt: PORTRAIT_NEGATIVE_PROMPT,
+    prompt,
+    negative_prompt,
     num_images: 1,
     alchemy: true,
     presetStyle: 'PHOTOGRAPHY',

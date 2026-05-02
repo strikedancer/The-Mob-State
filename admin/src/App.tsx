@@ -703,7 +703,12 @@ function App() {
       dataType: "admin_test_push",
     });
   const [playerCustomPortraits, setPlayerCustomPortraits] = useState<
-    Array<{ id: number; imagePath: string; createdAt: string }>
+    Array<{
+      id: number;
+      imagePath: string;
+      styleKey?: string | null;
+      createdAt: string;
+    }>
   >([]);
   const [playerCustomPortraitsLoading, setPlayerCustomPortraitsLoading] =
     useState(false);
@@ -7361,6 +7366,15 @@ function App() {
                                             className="w-100 h-100"
                                             style={{ objectFit: "cover" }}
                                           />
+                                          <div
+                                            className="position-absolute bottom-0 start-0 end-0 px-1 py-0 bg-dark bg-opacity-75"
+                                            style={{ fontSize: 9, lineHeight: 1.2 }}
+                                            title={p.styleKey ?? ""}
+                                          >
+                                            <span className="text-white-50 text-truncate d-block">
+                                              {p.styleKey ?? "—"}
+                                            </span>
+                                          </div>
                                           <button
                                             type="button"
                                             className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 py-0 px-1"

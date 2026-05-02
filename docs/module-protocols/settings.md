@@ -1,7 +1,7 @@
 ﻿# Settings Protocol
 
 ## Scope
-Language, privacy, avatar and notification preference management.
+Language, privacy, avatar and notification preference management. Custom selfie→gangster portraits: style chips + gender-aware generation (see `player-portraits.md`); help copy should not promise outcomes Leonardo cannot guarantee.
 
 ## Primary Frontend Entry
 - client/lib/screens/settings_screen.dart

@@ -2508,6 +2508,25 @@ class AppLocalizationsNl extends AppLocalizations {
       'Tik op een portret om het als avatar te gebruiken. Tik op het prullenbak-icoon om te verwijderen.';
 
   @override
+  String get settingsPortraitStyleSection => 'Portretstijl';
+
+  @override
+  String get settingsPortraitStyleHint =>
+      'Generatie gebruikt je geslacht van je account (registratie). Alle stijlen blijven geschikt voor de game.';
+
+  @override
+  String get settingsPortraitStyleClassicNoir => 'Klassiek noir';
+
+  @override
+  String get settingsPortraitStyleStreetCasual => 'Street casual';
+
+  @override
+  String get settingsPortraitStyleSharpSuit => 'Strak pak';
+
+  @override
+  String get settingsPortraitStyleVelvetCharm => 'Avondglamour';
+
+  @override
   String error(String error) {
     return 'Fout: $error';
   }
