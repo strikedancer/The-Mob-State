@@ -70,8 +70,8 @@ git pull origin main
 # Keep external image library in sync (nginx /images/* → runtime/client-images).
 mkdir -p runtime/client-images/vault runtime/client-images/avatars || true
 cp -f client/assets/images/vault/vault_banner.png runtime/client-images/vault/vault_banner.png || true
-cp -f client/assets/images/avatars/default_1.png runtime/client-images/avatars/default_1.png || true
-cp -f client/assets/images/avatars/default_2.png runtime/client-images/avatars/default_2.png || true
+# All avatar PNGs for /images/avatars/* (settings grid + nginx external mount); keep in sync with client/assets/images/avatars/
+cp -f client/assets/images/avatars/*.png runtime/client-images/avatars/ 2>/dev/null || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
 # If a prior deploy left 20260414223000_expand_support_workflow in failed state (P3018), clear it so idempotent SQL can re-apply. No-op when not failed.
