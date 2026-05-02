@@ -955,30 +955,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: isMobile ? 16 : 20),
 
-                // Register and Forgot Password links
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        _clearAuthError();
-                        setState(() {
-                          _isLogin = !_isLogin;
-                          _selectedGender = null;
-                          if (!_isLogin) {
+                // Login only: link naar registratie + wachtwoord vergeten (geen "Inloggen"-knop op registratieformulier)
+                if (_isLogin)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          _clearAuthError();
+                          setState(() {
+                            _isLogin = false;
+                            _selectedGender = null;
                             _acceptedTerms = false;
-                          }
-                        });
-                      },
-                      child: Text(
-                        _isLogin ? l10n.register : l10n.login,
-                        style: TextStyle(
-                          color: Color(0xFFD4A574),
-                          fontSize: isMobile ? 13 : 14,
+                          });
+                        },
+                        child: Text(
+                          l10n.register,
+                          style: TextStyle(
+                            color: Color(0xFFD4A574),
+                            fontSize: isMobile ? 13 : 14,
+                          ),
                         ),
                       ),
-                    ),
-                    if (_isLogin)
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).push(
@@ -996,8 +994,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                  ],
-                ),
+                    ],
+                  ),
               ],
             ),
           ),
