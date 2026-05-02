@@ -22,7 +22,7 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 
 ## Ops / Deploy
 - Generated files live under `runtime/client-images/` (same pattern as other external images). Nginx serves `/images/*` from that mount (`docs/operations/DEPLOY.md`).
-- Requires `LEONARDO_API_KEY` in backend environment (`PROTOCOL_MASTER.md` — never commit keys).
+- Requires `LEONARDO_API_KEY` in backend environment (`PROTOCOL_MASTER.md` — never commit keys). If that key is missing, wrong, or revoked, Leonardo responds with **401/403** on their API: the backend maps that to `error.portrait_generation_unavailable` (503) — this is **not** the player’s session JWT failing.
 
 ## Privacy
 - Selfie exists only in memory during the request; not persisted after generation.

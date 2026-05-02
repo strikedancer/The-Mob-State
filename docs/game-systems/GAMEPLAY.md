@@ -1135,6 +1135,8 @@ healing = 5 HP (if health > 0 && health < 100)
 
 De Flutter-client hoort `flutter analyze` in `client/` **zonder** warnings of info-afsluiting te laten eindigen; richtlijnen staan in `docs/module-protocols/PROTOCOL_MASTER.md` onder *Analyzer zonder issues*.
 
+Selfie→portretgeneratie op de API hangt af van een geldige `LEONARDO_API_KEY` op de backend (zie `docs/module-protocols/player-portraits.md`); een foutieve key geeft bij Leonardo HTTP **401**, niet een mislukte spelersessie.
+
 ## Support & Community
 
 Voor vragen, bugs, of suggesties:

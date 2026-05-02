@@ -1,4 +1,5 @@
 import { Router, Response } from 'express';
+import axios from 'axios';
 import multer from 'multer';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { playerService } from '../services/playerService';
@@ -320,6 +321,21 @@ router.post(
           event: 'error.portrait_generation_unavailable',
           params: {},
         });
+      }
+      // Leonardo REST calls use axios; 401/403 = invalid/expired LEONARDO_API_KEY (not player JWT).
+      if (axios.isAxiosError(e)) {
+        const st = e.response?.status;
+        if (st === 401 || st === 403) {
+          console.warn(
+            '[settings/portraits/from-selfie] Leonardo API returned',
+            st,
+            '(check LEONARDO_API_KEY on the server)'
+          );
+          return res.status(503).json({
+            event: 'error.portrait_generation_unavailable',
+            params: {},
+          });
+        }
       }
       console.error('[settings/portraits/from-selfie]', e);
       return res.status(500).json({
