@@ -4,11 +4,13 @@ import 'package:provider/provider.dart';
 import '../config/supported_languages.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/locale_provider.dart';
+import 'guest_legal_document_modal.dart';
 
 const Color _guestFooterGold = Color(0xFFC0A060);
 
-/// Sticky legal footer (privacy, digital goods, guest language, copyright) for
-/// marketing and auth shells — same copy as [LandingScreen] had inline.
+/// Sticky legal footer (privacy, terms, digital goods, guest language, copyright) for
+/// marketing and auth shells. The three policy links open [showGuestLegalDocumentModal]
+/// instead of full-page routes.
 class GuestLegalFooter extends StatelessWidget {
   const GuestLegalFooter({super.key});
 
@@ -41,7 +43,10 @@ class GuestLegalFooter extends StatelessWidget {
                       vertical: 4,
                     ),
                   ),
-                  onPressed: () => Navigator.of(context).pushNamed('/privacy'),
+                  onPressed: () => showGuestLegalDocumentModal(
+                        context,
+                        GuestLegalDocument.privacy,
+                      ),
                   child: Text(
                     l10n.landingFooterPrivacy,
                     style: const TextStyle(
@@ -57,7 +62,10 @@ class GuestLegalFooter extends StatelessWidget {
                       vertical: 4,
                     ),
                   ),
-                  onPressed: () => Navigator.of(context).pushNamed('/terms'),
+                  onPressed: () => showGuestLegalDocumentModal(
+                        context,
+                        GuestLegalDocument.terms,
+                      ),
                   child: Text(
                     l10n.landingFooterTerms,
                     style: const TextStyle(
@@ -73,8 +81,10 @@ class GuestLegalFooter extends StatelessWidget {
                       vertical: 4,
                     ),
                   ),
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/digital-goods'),
+                  onPressed: () => showGuestLegalDocumentModal(
+                        context,
+                        GuestLegalDocument.digitalGoods,
+                      ),
                   child: Text(
                     l10n.landingFooterDigitalGoods,
                     style: const TextStyle(

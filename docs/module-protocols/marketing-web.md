@@ -18,6 +18,6 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 - Na nieuwe keys: `node scripts/merge_arb_missing_all_from_en.mjs`, eventueel `node scripts/translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=landing,legalPrivacy,legalTerms,registerTerms,legalDigitalGoods`, daarna `flutter gen-l10n` en `node scripts/verify_arb_parity.mjs`.
 
 ## QA (kort)
-- Deep links `/privacy` en `/terms` laden juridische schermen; gasttaal wisselt mee.
+- Footer-links privacy / terms / digital goods openen een **modal** (zelfde ARB-tekst als de routes). Deep links `/privacy`, `/terms`, `/digital-goods` laden nog steeds **volledige** juridische schermen; gasttaal wisselt mee.
 - Zonder token: `/public/home` retourneert JSON; geen e-mail of andere PII in het payload.
 - Cross-origin van `themobstate.com` → `api.themobstate.com`: backend **CORS** (shell-origins + `.env` union in `config/index.ts`; `cors` vóór Prisma in `app.ts` zodat 503’s nog leesbare CORS-headers hebben).

@@ -13,6 +13,7 @@ import '../utils/avatar_helper.dart';
 import '../services/notification_service.dart';
 import '../config/supported_languages.dart';
 import '../widgets/guest_legal_footer.dart';
+import '../widgets/guest_legal_document_modal.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -804,7 +805,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed('/terms');
+                                  showGuestLegalDocumentModal(
+                                    context,
+                                    GuestLegalDocument.terms,
+                                  );
                                 },
                                 child: Text(
                                   l10n.registerTermsLink,
