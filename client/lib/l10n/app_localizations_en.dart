@@ -2492,7 +2492,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPortraitDeleteHint =>
-      'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.';
+      'Tap a portrait to select it. Use the download button (left) to save your PNG, or the remove button (right) to delete it from the game.';
+
+  @override
+  String get settingsPortraitDownloadFailed =>
+      'Could not download the portrait. Check your connection and try again.';
 
   @override
   String get settingsPortraitStyleSection => 'Portrait look';

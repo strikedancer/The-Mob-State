@@ -2505,7 +2505,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get settingsPortraitDeleteHint =>
-      'Tik op een portret om het als avatar te gebruiken. Tik op het prullenbak-icoon om te verwijderen.';
+      'Tik op een portret om het te kiezen. Download (links) slaat je PNG op; verwijderen (rechts) haalt het uit de game.';
+
+  @override
+  String get settingsPortraitDownloadFailed =>
+      'Portret kon niet worden gedownload. Controleer je verbinding en probeer opnieuw.';
 
   @override
   String get settingsPortraitStyleSection => 'Portretstijl';

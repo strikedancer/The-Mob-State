@@ -51,6 +51,9 @@ dependencies:
   
   # Open external URLs (Stripe checkout, etc.)
   url_launcher: ^6.3.0
+
+  # Share / save generated portrait PNG (mobile/desktop)
+  share_plus: ^10.1.4
   
   # Time ago formatting
   timeago: ^3.7.0

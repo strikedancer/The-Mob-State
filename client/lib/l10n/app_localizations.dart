@@ -4518,8 +4518,14 @@ abstract class AppLocalizations {
   /// No description provided for @settingsPortraitDeleteHint.
   ///
   /// In en, this message translates to:
-  /// **'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.'**
+  /// **'Tap a portrait to select it. Use the download button (left) to save your PNG, or the remove button (right) to delete it from the game.'**
   String get settingsPortraitDeleteHint;
+
+  /// No description provided for @settingsPortraitDownloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not download the portrait. Check your connection and try again.'**
+  String get settingsPortraitDownloadFailed;
 
   /// No description provided for @settingsPortraitStyleSection.
   ///

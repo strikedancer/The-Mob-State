@@ -8313,5 +8313,6 @@
   "settingsPortraitStyleClassicNoir": "Classic noir",
   "settingsPortraitStyleStreetCasual": "Street casual",
   "settingsPortraitStyleSharpSuit": "Sharp suit",
-  "settingsPortraitStyleVelvetCharm": "Evening glamour"
+  "settingsPortraitStyleVelvetCharm": "Evening glamour",
+  "settingsPortraitDownloadFailed": "Could not download the portrait. Check your connection and try again."
 }

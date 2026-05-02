@@ -2525,6 +2525,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.';
 
   @override
+  String get settingsPortraitDownloadFailed =>
+      'Could not download the portrait. Check your connection and try again.';
+
+  @override
   String get settingsPortraitStyleSection => 'Portrait look';
 
   @override

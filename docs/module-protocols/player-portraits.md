@@ -35,7 +35,7 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 
 ## Client UX
 - During selfie→portrait generation, show a **non-dismissible** wait dialog (spinner + message) so players know the request is still running.
-- In the avatar picker, each custom portrait tile has a **visible delete** control (not only long-press) plus a short hint: tap portrait to select, trash to remove (`DELETE /settings/portraits/:id`).
+- In the avatar picker, each custom portrait tile has **high-contrast circular actions**: **download** (left, saves the PNG via browser download on web or the OS share sheet on mobile/desktop) and **remove** (right, `DELETE /settings/portraits/:id`). Hint text explains both.
 - Before upload, the player picks a **portrait look** (chips). `GET /settings` includes `portraitStyleIds` for the client allowlist; the multipart field `portraitStyle` selects the preset. **Velvet / evening glamour** stays **classy and PG-appropriate** (extra negative-prompt guards); all styles follow general game and ToS expectations in `PROTOCOL_MASTER.md`.
 
 ## QA

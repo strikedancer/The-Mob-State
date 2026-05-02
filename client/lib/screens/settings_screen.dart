@@ -12,6 +12,7 @@ import '../services/notification_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/theft_cooldown_confirm_prefs.dart';
 import '../utils/web_asset_helper.dart';
+import '../utils/portrait_download.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import '../providers/auth_provider.dart';
@@ -417,6 +418,68 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       }
     }
+  }
+
+  Future<void> _downloadCustomPortrait(
+    BuildContext context,
+    String imagePath,
+    int portraitId,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final url = WebAssetHelper.toPublicUrl('assets/images/$imagePath');
+    try {
+      await fetchAndSavePortraitPng(
+        url,
+        'mob_state_portrait_$portraitId.png',
+      );
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.settingsPortraitDownloadFailed),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  /// High-contrast circular action on top of portrait tiles (web + mobile).
+  Widget _portraitCornerAction({
+    required IconData icon,
+    required VoidCallback onPressed,
+    required Color backgroundColor,
+  }) {
+    return Material(
+      color: backgroundColor,
+      shape: const CircleBorder(),
+      elevation: 2,
+      shadowColor: Colors.black54,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onPressed,
+        customBorder: const CircleBorder(),
+        child: SizedBox(
+          width: 32,
+          height: 32,
+          child: Center(
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: 19,
+              shadows: const [
+                Shadow(
+                  offset: Offset(0, 0.5),
+                  blurRadius: 2,
+                  color: Color(0xCC000000),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _pickSelfieAndGenerate(BuildContext sheetContext) async {
@@ -1193,24 +1256,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             Positioned(
-                              top: 2,
-                              right: 2,
-                              child: Material(
-                                color: Colors.black54,
-                                shape: const CircleBorder(),
-                                child: InkWell(
-                                  customBorder: const CircleBorder(),
-                                  onTap: () =>
-                                      _confirmDeletePortrait(context, id),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(4),
-                                    child: Icon(
-                                      Icons.delete_outline,
-                                      color: Colors.white,
-                                      size: 18,
-                                    ),
-                                  ),
+                              top: 4,
+                              left: 4,
+                              child: _portraitCornerAction(
+                                icon: Icons.download_rounded,
+                                backgroundColor: const Color(0xFF1565C0),
+                                onPressed: () => _downloadCustomPortrait(
+                                  context,
+                                  path,
+                                  id,
                                 ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 4,
+                              right: 4,
+                              child: _portraitCornerAction(
+                                icon: Icons.delete_rounded,
+                                backgroundColor: const Color(0xFFC62828),
+                                onPressed: () =>
+                                    _confirmDeletePortrait(context, id),
                               ),
                             ),
                           ],
