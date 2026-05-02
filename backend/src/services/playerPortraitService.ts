@@ -10,8 +10,17 @@ import {
 import { generateGangsterPortraitFromSelfie } from './playerPortraitLeonardo';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 
-/** Project-root `runtime/client-images` (served as `/images/...` on nginx). */
+/**
+ * Same physical directory nginx serves as `/images/*` (external mount).
+ * In Docker, `IMAGE_LIBRARY_ROOT_PATH=/client/images` (see `docker-compose.plesk.yml`);
+ * writing to `__dirname/../../../runtime/...` landed under `/app/runtime/...` inside the
+ * container — not the volume — so generated PNGs never reached the client mount (empty tiles).
+ */
 export function getRuntimeClientImagesRoot(): string {
+  const fromEnv = (process.env.IMAGE_LIBRARY_ROOT_PATH || '').trim();
+  if (fromEnv) {
+    return fromEnv;
+  }
   return path.join(__dirname, '../../../runtime/client-images');
 }
 

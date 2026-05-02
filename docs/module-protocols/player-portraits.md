@@ -21,7 +21,8 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 - **100 premium credits** charged only when the portrait row and PNG are committed (failed Leonardo run = no charge). See [balance-economy.md](balance-economy.md).
 
 ## Ops / Deploy
-- Generated files live under `runtime/client-images/` (same pattern as other external images). Nginx serves `/images/*` from that mount (`docs/operations/DEPLOY.md`).
+- Generated files live under `runtime/client-images/` on the host, mounted in Docker as **`/client/images`** on the **backend** container (`IMAGE_LIBRARY_ROOT_PATH`). The portrait service **must** write via that env path (`playerPortraitService.ts`); do not rely on a repo-relative `runtime/` path inside the container or files will not appear under `/images/` for the Flutter client.
+- Nginx serves `/images/*` from that mount (`docs/operations/DEPLOY.md`).
 - Requires `LEONARDO_API_KEY` in backend environment (`PROTOCOL_MASTER.md` — never commit keys). If that key is missing, wrong, or revoked, Leonardo responds with **401/403** on their API: the backend maps that to `error.portrait_generation_unavailable` (503) — this is **not** the player’s session JWT failing.
 - Leonardo **REST v1** `/generations` expects **`negative_prompt`** (snake_case). With **alchemy + photoReal**, **`presetStyle: CINEMATIC`** is not in the allowed style list (use e.g. **`PHOTOGRAPHY`**) — otherwise Leonardo often returns **400**.
 

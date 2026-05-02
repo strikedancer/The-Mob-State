@@ -238,6 +238,8 @@ Verplicht:
 
 **Avatars (alle keuze-PNG’s):** nieuwe of gewijzigde portretten horen in **`client/assets/images/avatars/`** (optioneel Leonardo: `backend/scripts/generate_default_avatars_leonardo.py` voor `default_1` / `default_2`). **Productie (Flutter web):** `/images/avatars/*` komt van de **externe mount** (`runtime/client-images/`). Het deploy-script kopieert **`client/assets/images/avatars/*.png`** naar **`runtime/client-images/avatars/`** (niet alleen defaults), zodat de instellingen-avatargrid overal laadt. Lokaal: zelfde map vullen vóór commit als je runtime in git wilt houden, of vertrouw op `git pull` + server-side `cp` na pull.
 
+**Selfie→custom portretten (`player_avatars/`):** de backend schrijft PNG’s alleen naar **`IMAGE_LIBRARY_ROOT_PATH`** (Docker: **`/client/images`** = dezelfde host-map als nginx `/images/`). Nooit een aparte container-interne `runtime/`-pad gebruiken voor writes — dan blijven UI-tegels leeg. Zie `docs/module-protocols/player-portraits.md`.
+
 One-shot runbook (volgende keer in 1 keer uitvoeren):
 1. `git pull origin main`
 2. Verifieer key aanwezigheid: `docker compose config | Select-String LEONARDO_API_KEY`
