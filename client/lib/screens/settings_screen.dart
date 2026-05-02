@@ -11,6 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../services/notification_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/theft_cooldown_confirm_prefs.dart';
+import '../utils/web_asset_helper.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool embedded;
@@ -797,25 +798,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Avatar image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(7),
-              child: Image.asset(
-                'assets/images/avatars/$avatar.png',
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  // Fallback to letter if image not found
-                  return Center(
-                    child: Text(
-                      avatar[0].toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: isLocked ? Colors.grey[600] : Colors.white,
+            // Avatar image (web: WebAssetHelper falls back to /images/avatars via nginx)
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: WebAssetHelper.image(
+                  'assets/images/avatars/$avatar.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return ColoredBox(
+                      color: Colors.grey[900]!,
+                      child: Icon(
+                        Icons.broken_image_outlined,
+                        size: 28,
+                        color: isLocked ? Colors.grey[700] : Colors.grey[600],
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
             if (isLocked)

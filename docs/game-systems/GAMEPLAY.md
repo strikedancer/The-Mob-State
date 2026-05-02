@@ -36,7 +36,7 @@
 - Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie, status en quick actions.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
 - Dashboard-baseline bevat economy-overzicht (cash/bank/crypto/assets/net worth), 24u cashflowtrend, 7d activiteit, operations-timers en notificatie/risico-indicatoren.
-- In **Instellingen** kun je de **spelertaal** wijzigen (o.a. NL, EN en extra Europese UI-talen); zie `docs/l10n-migration.md` voor uitbreiding en vertaalfallbacks.
+- In **Instellingen** kun je de **spelertaal** wijzigen (o.a. NL, EN en extra Europese UI-talen); zie `docs/l10n-migration.md` voor uitbreiding en vertaalfallbacks. **Avatar wijzigen:** de kies-grid laadt portret-PNG’s via hetzelfde web-assetpad als elders (`/images/avatars/…`), zodat alle beschikbare avatars zichtbaar zijn in de browser.
 - Het dashboard kan daarnaast **Dagdoelen** tonen (claimable beloning in cash + XP) om dagelijkse terugkeer te stimuleren; op desktop staan deze onderaan de linker kolom.
 - Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie; op desktop staat deze onderaan de linker kolom.
 - Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
