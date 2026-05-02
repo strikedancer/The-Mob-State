@@ -577,7 +577,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     tooltip: l10n.quickActions,
                   ),
                 PopupMenuButton<String>(
-                  tooltip: l10n.account,
+                  tooltip: l10n.userAccountMenuTooltip,
                   onSelected: (value) async {
                     switch (value) {
                       case 'messages':

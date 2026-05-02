@@ -126,6 +126,7 @@ Implementatievoorkeur:
 ## i18n en UX Basisregels
 
 - Multilanguage is een harde eis voor alles wat nieuw wordt gemaakt of aangepast en tekst of UX-signalen bevat (minimaal NL + EN).
+- **Hoofdbalk-avatar (user menu):** de tooltip gebruikt ARB-key **`userAccountMenuTooltip`** (`dashboard_screen.dart`). Het korte label **`account`** leest in o.a. NL als **bank/zakelijke “rekening”** en is daarvoor ongeschikt als hint voor het profiel-/instellingenmenu.
 - Daarnaast ondersteunt de **player client** een uitbreidbare set **Europese UI-talen** (codes en allowlist staan centraal in `client/lib/config/supported_languages.dart` + `backend/src/config/supportedLanguages.ts`). Nieuwe talen: ARB-key-pariteit met `app_en.arb`, `flutter gen-l10n`, allowlist uitbreiden, en (totdat er echte vertaling is) mogen stringwaarden tijdelijk gelijk zijn aan EN. Zie hieronder: **ARB vs. allowlist** (dit is géén dubbele check — backend en instellingen volgen de allowlist niet vanzelf uit de ARB-map).
 - Transactionele **HTML-e-mail** (o.a. verificatie, wachtwoord-reset, vriendschap, crew, casino-waarschuwing) volgt `player.preferredLanguage` / registertaal: **alle allowlist-talen** via `translationService.getTranslations` — NL/EN in `translationService.ts`, de overige in `backend/src/i18n/playerEmailBundlesExtra.ts` (zie `docs/l10n-migration.md`). Nieuwe mailtypes of copy: **alle** relevante taalblokken in één wijziging bijwerken.
 

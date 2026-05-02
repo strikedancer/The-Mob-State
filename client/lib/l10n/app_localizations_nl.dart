@@ -756,6 +756,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get account => 'Rekening';
 
   @override
+  String get userAccountMenuTooltip => 'Accountmenu';
+
+  @override
   String get messages => 'Berichten';
 
   @override

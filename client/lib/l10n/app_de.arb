@@ -8316,5 +8316,9 @@
   "settingsPortraitStyleVelvetCharm": "Evening glamour",
   "settingsPortraitDownloadFailed": "Could not download the portrait. Check your connection and try again.",
   "settingsPortraitDownloadTooltip": "Laden Sie dieses Porträt als PNG herunter",
-  "settingsPortraitDeleteTooltip": "Entfernen Sie dieses Porträt aus Ihrer Bibliothek"
+  "settingsPortraitDeleteTooltip": "Entfernen Sie dieses Porträt aus Ihrer Bibliothek",
+  "userAccountMenuTooltip": "Kontomenü",
+  "@userAccountMenuTooltip": {
+    "description": "Tooltip for the top-bar avatar button that opens messages, help, settings, and logout."
+  }
 }

@@ -405,6 +405,10 @@
   "logOut": "Log out",
   "menu": "Menu",
   "account": "Account",
+  "userAccountMenuTooltip": "Account menu",
+  "@userAccountMenuTooltip": {
+    "description": "Tooltip for the top-bar avatar button that opens messages, help, settings, and logout."
+  },
   "messages": "Messages",
   "noDirectMessagesYet": "No messages yet",
   "sendMessageToFriendsHint": "Send a message to your friends!",

@@ -1490,6 +1490,12 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get account;
 
+  /// Tooltip for the top-bar avatar button that opens messages, help, settings, and logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Account menu'**
+  String get userAccountMenuTooltip;
+
   /// No description provided for @messages.
   ///
   /// In en, this message translates to:

@@ -756,6 +756,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get account => 'Conta';
 
   @override
+  String get userAccountMenuTooltip => 'Menu da conta';
+
+  @override
   String get messages => 'Mensagens';
 
   @override

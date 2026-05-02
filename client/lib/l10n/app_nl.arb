@@ -8316,5 +8316,9 @@
   "settingsPortraitStyleClassicNoir": "Klassiek noir",
   "settingsPortraitStyleStreetCasual": "Street casual",
   "settingsPortraitStyleSharpSuit": "Strak pak",
-  "settingsPortraitStyleVelvetCharm": "Avondglamour"
+  "settingsPortraitStyleVelvetCharm": "Avondglamour",
+  "userAccountMenuTooltip": "Accountmenu",
+  "@userAccountMenuTooltip": {
+    "description": "Tooltip for the top-bar avatar button that opens messages, help, settings, and logout."
+  }
 }
