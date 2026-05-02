@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import FormData from 'form-data';
 import {
   LEONARDO_MODEL_ID_KINO_XL,
@@ -44,6 +44,19 @@ function extractGenerationId(payload: unknown): string | null {
   return null;
 }
 
+/** Leonardo REST v1 uses snake_case (see OpenAPI); camelCase `negativePrompt` can yield 400. */
+function logLeonardoAxiosError(context: string, e: unknown): void {
+  if (!axios.isAxiosError(e)) return;
+  const ax = e as AxiosError<{ error?: string; message?: string }>;
+  const status = ax.response?.status;
+  const data = ax.response?.data;
+  const detail =
+    typeof data === 'object' && data !== null
+      ? JSON.stringify(data).slice(0, 800)
+      : String(data ?? '').slice(0, 400);
+  console.warn(`[Leonardo] ${context} HTTP ${status}:`, detail || ax.message);
+}
+
 function extractImageUrl(payload: unknown): string | null {
   if (Array.isArray(payload)) {
     payload = payload[0] ?? {};
@@ -74,11 +87,17 @@ async function uploadInitImageToLeonardo(
   buffer: Buffer,
   extension: 'png' | 'jpg' | 'jpeg' | 'webp'
 ): Promise<string> {
-  const res = await axios.post(
-    INIT_IMAGE_URL,
-    { extension: extension === 'jpeg' ? 'jpg' : extension },
-    { headers: headersJson(), timeout: 120_000 }
-  );
+  let res;
+  try {
+    res = await axios.post(
+      INIT_IMAGE_URL,
+      { extension: extension === 'jpeg' ? 'jpg' : extension },
+      { headers: headersJson(), timeout: 120_000 }
+    );
+  } catch (e) {
+    logLeonardoAxiosError('init-image (presign)', e);
+    throw e;
+  }
   const ui = res.data?.uploadInitImage as
     | { id?: string; url?: string; fields?: string }
     | undefined;
@@ -99,12 +118,17 @@ async function uploadInitImageToLeonardo(
         : 'image/jpeg';
   form.append('file', buffer, { filename: `upload.${extension === 'jpeg' ? 'jpg' : extension}`, contentType: mime });
 
-  await axios.post(ui.url, form, {
-    headers: form.getHeaders(),
-    maxBodyLength: Infinity,
-    maxContentLength: Infinity,
-    timeout: 120_000,
-  });
+  try {
+    await axios.post(ui.url, form, {
+      headers: form.getHeaders(),
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity,
+      timeout: 120_000,
+    });
+  } catch (e) {
+    logLeonardoAxiosError('init-image (S3 upload)', e);
+    throw e;
+  }
 
   return ui.id;
 }
@@ -140,15 +164,17 @@ export async function generateGangsterPortraitFromSelfie(
 
   const initImageId = await uploadInitImageToLeonardo(imageBuffer, ext);
 
+  // With alchemy + photoReal, preset must be one of ANIME, CREATIVE, DYNAMIC, ENVIRONMENT,
+  // GENERAL, ILLUSTRATION, PHOTOGRAPHY, … — not CINEMATIC (OpenAPI / guide), or Leonardo returns 400.
   const body = {
     height: 1024,
     width: 1024,
     modelId: LEONARDO_MODEL_ID_KINO_XL,
     prompt: PORTRAIT_POSITIVE_PROMPT,
-    negativePrompt: PORTRAIT_NEGATIVE_PROMPT,
+    negative_prompt: PORTRAIT_NEGATIVE_PROMPT,
     num_images: 1,
     alchemy: true,
-    presetStyle: 'CINEMATIC',
+    presetStyle: 'PHOTOGRAPHY',
     photoReal: true,
     photoRealVersion: 'v2',
     controlnets: [
@@ -156,15 +182,21 @@ export async function generateGangsterPortraitFromSelfie(
         initImageId,
         initImageType: 'UPLOADED',
         preprocessorId: LEONARDO_PREPROCESSOR_CHARACTER_REF,
-        strengthType: 'High',
+        strengthType: 'Mid',
       },
     ],
   };
 
-  const genRes = await axios.post(GENERATIONS_URL, body, {
-    headers: headersJson(),
-    timeout: 120_000,
-  });
+  let genRes;
+  try {
+    genRes = await axios.post(GENERATIONS_URL, body, {
+      headers: headersJson(),
+      timeout: 120_000,
+    });
+  } catch (e) {
+    logLeonardoAxiosError('generations (create)', e);
+    throw e;
+  }
 
   const genId = extractGenerationId(genRes.data);
   if (!genId) {
