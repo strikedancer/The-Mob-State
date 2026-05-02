@@ -13,6 +13,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/theft_cooldown_confirm_prefs.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/portrait_download.dart';
+import '../utils/fontawesome_icons.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import '../providers/auth_provider.dart';
@@ -445,7 +446,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  /// High-contrast circular action on top of portrait tiles (web + mobile).
+  /// High-contrast circular action on portrait tiles. Uses bundled Font Awesome
+  /// (see [FontAwesomeIcons]) — Material icons often fail to paint on Flutter web.
   Widget _portraitCornerAction({
     required IconData icon,
     required VoidCallback onPressed,
@@ -461,13 +463,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onTap: onPressed,
         customBorder: const CircleBorder(),
         child: SizedBox(
-          width: 32,
-          height: 32,
+          width: 34,
+          height: 34,
           child: Center(
             child: Icon(
               icon,
               color: Colors.white,
-              size: 19,
+              size: 16,
+              semanticLabel: '',
               shadows: const [
                 Shadow(
                   offset: Offset(0, 0.5),
@@ -1259,7 +1262,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               top: 4,
                               left: 4,
                               child: _portraitCornerAction(
-                                icon: Icons.download_rounded,
+                                icon: FontAwesomeIcons.downloadSolid,
                                 backgroundColor: const Color(0xFF1565C0),
                                 onPressed: () => _downloadCustomPortrait(
                                   context,
@@ -1272,7 +1275,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               top: 4,
                               right: 4,
                               child: _portraitCornerAction(
-                                icon: Icons.delete_rounded,
+                                icon: FontAwesomeIcons.trashCanSolid,
                                 backgroundColor: const Color(0xFFC62828),
                                 onPressed: () =>
                                     _confirmDeletePortrait(context, id),

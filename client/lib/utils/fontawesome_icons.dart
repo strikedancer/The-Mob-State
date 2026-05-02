@@ -151,5 +151,19 @@ class FontAwesomeIcons {
     fontFamily: 'FontAwesomeSolid',
     fontPackage: null,
   );
+
+  /// Settings → custom portrait tile: save PNG (Font Awesome 6 solid).
+  static const IconData downloadSolid = IconData(
+    0xf019,
+    fontFamily: 'FontAwesomeSolid',
+    fontPackage: null,
+  );
+
+  /// Settings → custom portrait tile: remove from library.
+  static const IconData trashCanSolid = IconData(
+    0xf2ed,
+    fontFamily: 'FontAwesomeSolid',
+    fontPackage: null,
+  );
 }
 
