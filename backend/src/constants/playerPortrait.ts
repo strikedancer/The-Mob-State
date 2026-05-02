@@ -13,6 +13,12 @@ export const LEONARDO_MODEL_ID_KINO_XL = 'aa77f04e-3eec-4034-9c07-d0f619684628';
 /** Character Reference preprocessor (face likeness). */
 export const LEONARDO_PREPROCESSOR_CHARACTER_REF = 133;
 
+/**
+ * Leonardo maps Low/Mid/High to control weight buckets; `High` = strongest face match (1.32–2).
+ * @see https://docs.leonardo.ai/docs/generate-images-using-image-to-image-guidance
+ */
+export const LEONARDO_CHARACTER_REF_STRENGTH_TYPE = 'High' as const;
+
 /** Allowed selfie→portrait look presets (client sends `portraitStyle` multipart field). */
 export const PORTRAIT_STYLE_IDS = [
   'classic_noir',
@@ -32,7 +38,9 @@ export function parsePortraitStyleId(raw: unknown): PortraitStyleId {
 }
 
 export const PORTRAIT_NEGATIVE_PROMPT =
-  'text, logo, watermark, letters, numbers, UI labels, blurry, low detail, ' +
+  'text, logo, watermark, letters, numbers, UI labels, blurry, low detail, soft focus face, ' +
+  'different person, wrong face, generic face, face morph, unrecognizable subject, ' +
+  'waxy skin, plastic doll face, over-smoothed skin, identity drift, ' +
   'anime, oversaturated neon, frame, border, collage, gore, extra faces';
 
 /**
@@ -46,10 +54,15 @@ export function buildGangsterPortraitPrompts(
   const g = (gender ?? '').toLowerCase();
   const genderPhrase =
     g === 'female'
-      ? 'woman, female gangster, preserve feminine facial likeness from the reference face'
+      ? 'woman, female gangster'
       : g === 'male'
-        ? 'man, male gangster, preserve masculine facial likeness from the reference face'
-        : 'person, gangster, preserve facial likeness and gender presentation from the reference face';
+        ? 'man, male gangster'
+        : 'person, gangster';
+
+  const identityLead =
+    'Photorealistic cinematic bust portrait of the SAME person as in the reference image: ' +
+    'match their exact face shape, eyes, nose, mouth, jawline, skin tone, age, and expression; ' +
+    'sharp focus on facial features, high detail, no face drift. ';
 
   const styleParts: Record<
     PortraitStyleId,
@@ -87,12 +100,11 @@ export function buildGangsterPortraitPrompts(
       : PORTRAIT_NEGATIVE_PROMPT;
 
   const prompt =
-    'Film noir bust portrait of the same person as a gangster. ' +
+    identityLead +
     genderPhrase +
-    '. ' +
+    '. Film noir gangster styling: ' +
     part.visual +
-    ', semi-realistic game avatar style, transparent or simple dark gradient background, ' +
-    'no text, no watermark';
+    '. Transparent or simple dark gradient background, no text, no watermark';
 
   return { prompt, negative_prompt: negative };
 }

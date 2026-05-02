@@ -24,7 +24,8 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 - Generated files live under `runtime/client-images/` on the host, mounted in Docker as **`/client/images`** on the **backend** container (`IMAGE_LIBRARY_ROOT_PATH`). The portrait service **must** write via that env path (`playerPortraitService.ts`); do not rely on a repo-relative `runtime/` path inside the container or files will not appear under `/images/` for the Flutter client.
 - Nginx serves `/images/*` from that mount (`docs/operations/DEPLOY.md`).
 - Requires `LEONARDO_API_KEY` in backend environment (`PROTOCOL_MASTER.md` — never commit keys). If that key is missing, wrong, or revoked, Leonardo responds with **401/403** on their API: the backend maps that to `error.portrait_generation_unavailable` (503) — this is **not** the player’s session JWT failing.
-- Leonardo **REST v1** `/generations` expects **`negative_prompt`** (snake_case). With **alchemy + photoReal**, **`presetStyle: CINEMATIC`** is not in the allowed style list (use e.g. **`PHOTOGRAPHY`**) — otherwise Leonardo often returns **400**.
+- Leonardo **REST v1** `/generations` expects **`negative_prompt`** (snake_case). With **alchemy**, **`presetStyle: CINEMATIC`** is not in the allowed style list (use e.g. **`PHOTOGRAPHY`**) — otherwise Leonardo often returns **400**.
+- **Likeness vs blur:** Character Reference uses **`strengthType: High`** (strongest face-weight bucket vs `Mid`). **`photoReal` stays off** for this flow: PhotoReal v2 can beautify/smooth skin and drift from the selfie. Prompts lead with same-person / sharp facial identity; negative prompts discourage soft focus, wrong face, and over-smoothed skin. Re-tune only with Leonardo changelog + QA stills (see `PROTOCOL_MASTER.md` AI keys section).
 
 ## Privacy
 - Selfie exists only in memory during the request; not persisted after generation.

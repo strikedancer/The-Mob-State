@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import FormData from 'form-data';
 import {
+  LEONARDO_CHARACTER_REF_STRENGTH_TYPE,
   LEONARDO_MODEL_ID_KINO_XL,
   LEONARDO_PREPROCESSOR_CHARACTER_REF,
   type PortraitStyleId,
@@ -175,8 +176,10 @@ export async function generateGangsterPortraitFromSelfie(
     options.style
   );
 
-  // With alchemy + photoReal, preset must be one of ANIME, CREATIVE, DYNAMIC, ENVIRONMENT,
+  // With alchemy, preset must be one of ANIME, CREATIVE, DYNAMIC, ENVIRONMENT,
   // GENERAL, ILLUSTRATION, PHOTOGRAPHY, … — not CINEMATIC (OpenAPI / guide), or Leonardo returns 400.
+  // Character Reference strength `High` = strongest face match vs `Mid` (Leonardo weight bucket 1.32–2).
+  // photoReal v2 tends to beautify/smooth skin and can drift from the selfie; keep off for identity fidelity.
   const body = {
     height: 1024,
     width: 1024,
@@ -186,14 +189,13 @@ export async function generateGangsterPortraitFromSelfie(
     num_images: 1,
     alchemy: true,
     presetStyle: 'PHOTOGRAPHY',
-    photoReal: true,
-    photoRealVersion: 'v2',
+    photoReal: false,
     controlnets: [
       {
         initImageId,
         initImageType: 'UPLOADED',
         preprocessorId: LEONARDO_PREPROCESSOR_CHARACTER_REF,
-        strengthType: 'Mid',
+        strengthType: LEONARDO_CHARACTER_REF_STRENGTH_TYPE,
       },
     ],
   };
