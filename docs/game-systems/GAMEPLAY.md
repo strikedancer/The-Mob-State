@@ -572,7 +572,7 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 
 ### Client / talen
 - Trade-scherm, zwarte markt (o.a. rugzak-tab), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven.
-- Login en registratie delen dezelfde **onderste juridische footer** (privacy, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie.
+- Login en registratie delen dezelfde **onderste juridische footer** (privacy, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee.
 
 ### Munitiefabriek (ammo)
 - Productie wordt **server-side** getakt (claim-interval en output per tick); bij te hoge pacing kan dit worden verlaagd zonder client-wijziging. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.

@@ -31,9 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   late bool _isLogin;
   bool _obscurePassword = true;
-  String _selectedLanguage = 'nl'; // Default to Dutch
   /// `male` | `female` during registration.
   String? _selectedGender;
+
+  String _registerLanguageCode(LocaleProvider localeProvider) {
+    final code = localeProvider.locale.languageCode;
+    return SupportedLanguages.isSupportedCode(code) ? code : 'nl';
+  }
 
   @override
   void initState() {
@@ -245,12 +249,13 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_isLogin) {
       success = await authProvider.login(username, password);
     } else {
+      final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
       success = await authProvider.register(
         username,
         password,
         gender: _selectedGender!,
         email: email,
-        language: _selectedLanguage,
+        language: _registerLanguageCode(localeProvider),
       );
     }
 
@@ -332,6 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final l10n = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final screenWidth = size.width;
@@ -620,11 +626,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
                           if (!_isLogin)
                             DropdownButtonFormField<String>(
-                              initialValue: _selectedLanguage,
+                              value: _registerLanguageCode(localeProvider),
                               dropdownColor: Color(0xFF1a1a1a),
                               style: const TextStyle(color: Color(0xFFD4A574)),
                               decoration: InputDecoration(
-                                hintText: 'Language / Taal',
+                                hintText: l10n.changeLanguage,
                                 hintStyle: TextStyle(color: Color(0xFFD4A574)),
                                 prefixIcon: const Icon(
                                   Icons.language,
@@ -665,13 +671,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                               ],
-                              onChanged: (value) {
-                                if (value != null) {
-                                  _clearAuthError();
-                                  setState(() {
-                                    _selectedLanguage = value;
-                                  });
-                                }
+                              onChanged: (value) async {
+                                if (value == null) return;
+                                _clearAuthError();
+                                await context.read<LocaleProvider>().persistGuestLocale(value);
                               },
                             ),
                           Consumer<AuthProvider>(
