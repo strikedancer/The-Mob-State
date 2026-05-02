@@ -71,8 +71,9 @@ class _PublicCrewRow {
     final rank = _decodeInt(json['rank']);
     final regionsOwned = _decodeInt(json['regionsOwned']);
     final crewName = json['crewName'];
-    if (rank == null || crewName is! String || regionsOwned == null)
+    if (rank == null || crewName is! String || regionsOwned == null) {
       return null;
+    }
     return _PublicCrewRow(
       rank: rank,
       crewName: crewName,

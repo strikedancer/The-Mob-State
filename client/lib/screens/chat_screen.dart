@@ -439,10 +439,11 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       );
     } finally {
-      if (!mounted) return;
-      setState(() {
-        _investigationPendingCaseIds.remove(meta.caseId);
-      });
+      if (mounted) {
+        setState(() {
+          _investigationPendingCaseIds.remove(meta.caseId);
+        });
+      }
     }
   }
 

@@ -1293,16 +1293,6 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
-  String _formatCooldownSeconds(int seconds) {
-    final safe = seconds < 0 ? 0 : seconds;
-    final minutes = safe ~/ 60;
-    final secs = safe % 60;
-    if (minutes > 0) {
-      return '${minutes}m ${secs}s';
-    }
-    return '${secs}s';
-  }
-
   void clearError() {
     _error = null;
     notifyListeners();

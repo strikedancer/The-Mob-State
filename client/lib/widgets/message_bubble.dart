@@ -327,12 +327,12 @@ class MessageBubble extends StatelessWidget {
         width: 64,
         height: 70,
         fit: BoxFit.contain,
-        errorBuilder: (_, __, ___) => Image.asset(
+        errorBuilder: (_, _, _) => Image.asset(
           legacyAssetPath,
           width: 64,
           height: 70,
           fit: BoxFit.contain,
-          errorBuilder: (_, __, ___) => const Icon(
+          errorBuilder: (_, _, _) => const Icon(
             Icons.emoji_events,
             color: Color(0xFFFFD700),
             size: 34,

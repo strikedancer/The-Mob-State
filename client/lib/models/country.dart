@@ -4,10 +4,15 @@ part 'country.g.dart';
 
 @JsonSerializable()
 class RouteInfo {
+  @JsonKey(defaultValue: <String>[])
   final List<String> path;
+  @JsonKey(defaultValue: 0)
   final int stops;
+  @JsonKey(defaultValue: true)
   final bool isDirect;
+  @JsonKey(defaultValue: 1.0)
   final double costMultiplier;
+  @JsonKey(defaultValue: 0)
   final int timeDelay;
 
   RouteInfo({
@@ -18,15 +23,8 @@ class RouteInfo {
     required this.timeDelay,
   });
 
-  factory RouteInfo.fromJson(Map<String, dynamic> json) {
-    return RouteInfo(
-      path: (json['path'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
-      stops: json['stops'] as int? ?? 0,
-      isDirect: json['isDirect'] as bool? ?? true,
-      costMultiplier: (json['costMultiplier'] as num?)?.toDouble() ?? 1.0,
-      timeDelay: json['timeDelay'] as int? ?? 0,
-    );
-  }
+  factory RouteInfo.fromJson(Map<String, dynamic> json) =>
+      _$RouteInfoFromJson(json);
 
   Map<String, dynamic> toJson() => _$RouteInfoToJson(this);
 }
@@ -35,6 +33,7 @@ class RouteInfo {
 class Country {
   final String id;
   final String name;
+  @JsonKey(name: 'travelCost')
   final int flightCost;
   final String? description;
   final Map<String, dynamic>? tradeBonuses;
@@ -53,18 +52,8 @@ class Country {
     this.totalTime,
   });
 
-  factory Country.fromJson(Map<String, dynamic> json) {
-    return Country(
-      id: json['id'] as String? ?? '',
-      name: json['name'] as String? ?? 'Unknown',
-      flightCost: json['travelCost'] as int? ?? 0,
-      description: json['description'] as String?,
-      tradeBonuses: json['tradeBonuses'] as Map<String, dynamic>?,
-      route: json['route'] != null ? RouteInfo.fromJson(json['route'] as Map<String, dynamic>) : null,
-      totalCost: json['totalCost'] as int?,
-      totalTime: json['totalTime'] as int?,
-    );
-  }
+  factory Country.fromJson(Map<String, dynamic> json) =>
+      _$CountryFromJson(json);
 
   Map<String, dynamic> toJson() => _$CountryToJson(this);
 }

@@ -1131,6 +1131,10 @@ healing = 5 HP (if health > 0 && health < 100)
 
 ---
 
+## Client analyzer (maintainers)
+
+De Flutter-client hoort `flutter analyze` in `client/` **zonder** warnings of info-afsluiting te laten eindigen; richtlijnen staan in `docs/module-protocols/PROTOCOL_MASTER.md` onder *Analyzer zonder issues*.
+
 ## Support & Community
 
 Voor vragen, bugs, of suggesties:

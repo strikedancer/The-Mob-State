@@ -45,13 +45,13 @@ class AchievementNotifier {
       height: size,
       fit: BoxFit.contain,
       filterQuality: FilterQuality.high,
-      errorBuilder: (_, __, ___) => Image.asset(
+      errorBuilder: (_, _, _) => Image.asset(
         legacyPath,
         width: size,
         height: size,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high,
-        errorBuilder: (_, __, ___) => Text(
+        errorBuilder: (_, _, _) => Text(
           achievement.icon,
           style: TextStyle(fontSize: size * 0.85),
         ),

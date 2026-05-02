@@ -799,7 +799,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                 ),
               ),
               const Spacer(),
-              if (trailing != null) trailing,
+              ?trailing,
             ],
           ),
           const SizedBox(height: 10),

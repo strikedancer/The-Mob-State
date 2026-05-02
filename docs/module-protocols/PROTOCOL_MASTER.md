@@ -174,7 +174,7 @@ Implementatievoorkeur:
 
 ## Minimale QA Checklist (Altijd Draaien)
 
-1. Happy flow van de wijziging (succespad).
+1. Happy flow van de wijziging (succespad). Flutter-clientwijzigingen: `flutter analyze` in `client/` zonder issues (zie *Analyzer zonder issues* hierboven).
 2. Minimaal 1 foutpad of locked state.
 3. Refresh/navigatie terug en check of state correct blijft.
 4. Controle op mobile en desktop layout.
@@ -199,6 +199,11 @@ Als `flutter analyze` of `dart analyze` blijft hangen zonder output:
 
 Doel:
 - Voorkom dat één vastgelopen analyzer-run QA blokkeert.
+
+### Analyzer zonder issues (client)
+
+- In `client/`: **`flutter analyze`** moet **0 issues** opleveren voordat Flutter-wijzigingen als af gelden (geen `warning`- of `info`-regels achterlaten; oplosbaar met kleine refactors: ongebruikte helpers verwijderen, `finally` zonder `return`, null-checks die altijd hetzelfde zijn, `dart:typed_data` weglaten als `foundation` volstaat, `prefer_is_empty` / string-interpolatie, en wildcard-parameters `(_, _, _)` i.p.v. `__`/`___`).
+- Bij handmatige aanpassingen aan `*.g.dart` (als `build_runner` even niet lukt): desnoods opnieuw genereren zodra de toolchain het weer doet, zodat drift met `json_serializable` beperkt blijft.
 
 ## Bronnen
 

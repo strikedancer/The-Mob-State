@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -572,7 +571,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     final l10n = AppLocalizations.of(context)!;
     final ticketId = _selectedTicketId;
     final message = _replyController.text.trim();
-    if (ticketId == null || message.length < 1) return;
+    if (ticketId == null || message.isEmpty) return;
 
     setState(() => _isSendingReply = true);
     try {
@@ -828,7 +827,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   _attachmentUrl(attachment),
                   headers: _attachmentHeaders,
                   fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => Padding(
+                  errorBuilder: (_, _, _) => Padding(
                     padding: const EdgeInsets.all(24),
                     child: Text(
                       dl10n.supportImageLoadFailed,
@@ -896,7 +895,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _tickets.length,
-                separatorBuilder: (_, __) => const Divider(height: 1),
+                separatorBuilder: (_, _) => const Divider(height: 1),
                 itemBuilder: (context, index) {
                   final ticket = _tickets[index];
                   final selected = ticket.id == _selectedTicketId;
@@ -1037,8 +1036,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                 .isNotEmpty) ...[
                               const SizedBox(height: 6),
                               Text(
-                                l10n.supportReferenceLabel +
-                                    ': ${_selectedTicketDetail!.ticket.referenceCode}',
+                                '${l10n.supportReferenceLabel}: ${_selectedTicketDetail!.ticket.referenceCode}',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ],
@@ -1075,7 +1073,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _selectedTicketDetail!.messages.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      separatorBuilder: (_, _) => const SizedBox(height: 8),
                       itemBuilder: (context, index) {
                         final message = _selectedTicketDetail!.messages[index];
                         final fromAdmin = message.senderType == 'admin';
@@ -1176,7 +1174,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                     width: 112,
                                     height: 112,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Container(
+                                    errorBuilder: (_, _, _) => Container(
                                       width: 112,
                                       height: 112,
                                       color: Colors.grey.shade200,

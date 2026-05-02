@@ -582,7 +582,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (bonusPoints <= 0) continue;
       final sourceLabel = _bonusApiLabel(rawBonus);
       final sourceType = (rawBonus['source'] as String?)?.trim().toLowerCase();
-      if (sourceLabel == null || sourceLabel.isEmpty) continue;
+      if (sourceLabel.isEmpty) continue;
 
       pointsByAction.update(
         actionType,
