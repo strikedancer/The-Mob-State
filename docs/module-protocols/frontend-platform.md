@@ -7,7 +7,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - client/lib/config/app_config.dart (`apiBaseUrl`: web gebruikt `WEB_API_BASE_URL` uit dart-define wanneer gezet; zonder override mappen apex `themobstate.com` / `www.themobstate.com` → `https://api.themobstate.com`, anders `${scheme}://${host}:3000` voor lokale dev)
 - client/lib/config/supported_languages.dart (centrale player-UI-taalcodes; synchroon met `backend/src/config/supportedLanguages.ts` en `client/lib/l10n/app_*.arb`)
 - client/lib/screens/landing_screen.dart (marketing home voor niet-ingelogde gebruikers; `GET /public/home`)
-- client/lib/screens/legal_privacy_screen.dart en `legal_digital_goods_screen.dart` (juridische teksten volledig uit ARB)
+- client/lib/screens/legal_privacy_screen.dart, `legal_terms_screen.dart` en `legal_digital_goods_screen.dart` (juridische teksten volledig uit ARB)
 - client/lib/screens/dashboard_screen.dart
 - client/lib/utils/web_asset_helper.dart
 - client/lib/widgets/overlay_image.dart
@@ -15,7 +15,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - client/lib/screens/storage_tab.dart
 
 ## Marketing web routes en taal (gast vs ingelogd)
-- **Paden (Flutter web):** `/` toont via `AuthWrapper` de `LandingScreen` zolang er geen sessie is; `/login` en `/register` (zelfde scherm met `initialRegister`) voor auth-flows; `/privacy` en `/digital-goods` voor juridische pagina’s (named routes + `_resolveHome` op basis van `Uri.base.path`).
+- **Paden (Flutter web):** `/` toont via `AuthWrapper` de `LandingScreen` zolang er geen sessie is; `/login` en `/register` (zelfde scherm met `initialRegister`) blijven beschikbaar voor deep links; op de **landing** openen **Inloggen / Account** een **dialog** met `LoginScreen` (`embeddedModal: true`) i.p.v. alleen te navigeren. Juridisch: `/privacy`, `/terms`, `/digital-goods` (named routes + `_resolveHome` op basis van `Uri.base.path`).
 - **Gast-UI-taal:** eerste bezoek: opgeslagen `guest_ui_language_code`, anders browser-/platformtaal gemapt via `SupportedLanguages.resolveFromDeviceLanguage` (fallback `en`); zie `LocaleProvider.initGuestLocale`. Footer-taalwissel op de landing: `persistGuestLocale` (geen servercall).
 - **Ingelogde speler:** `LocaleProvider.loadLocale()` na auth (`GET /settings` → `preferredLanguage`); `MaterialApp`-locale volgt `LocaleProvider`.
 - Zie ook `marketing-web.md` voor API + SPA-fallback op de backend.
@@ -30,7 +30,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Bij `showDialog(builder: (ctx) => ...)` hoort l10n uit `ctx` te komen (dus `AppLocalizations.of(ctx)`), anders kan de build breken.
 - Ook de **dashboard center cards** (stats/economy/ops/notifications panels) moeten volledig via ARB keys; vermijd NL/EN literals zoals “Statistieken”, “Ops Overview”, “Gross income”, enz.
 - **Trade / zwarte markt / rugzak-shop / munitiefabriek:** zichtbare tablabels, foutteksten (bijv. niet-ingelogd + token-opslaghint) en shop-UI moeten via ARB lopen (`trade_screen.dart`, `black_market_screen.dart`, `backpack_shop_screen.dart`, `ammo_factory_screen.dart`).
-- **Login / registratie (`login_screen.dart`):** op brede schermen staat het formulier **rechts** uitgelijnd (`Alignment` ~0.80–0.94) zodat het niet op de linker artwork valt; de **sticky legal footer** (privacy, digitale goederen, gasttaal, copyright) is dezelfde als op de landing via `GuestLegalFooter` in `Scaffold.bottomNavigationBar`. De **taal-dropdown bij registratie** moet `LocaleProvider.persistGuestLocale` aanroepen zodat `MaterialApp.locale` en alle ARB-teksten (inclusief formulier) **direct** meeschakelen — geen aparte lokale `_selectedLanguage`-status naast de provider.
+- **Login / registratie (`login_screen.dart`):** op brede schermen staat het formulier **rechts** uitgelijnd (`Alignment` ~0.80–0.94) zodat het niet op de linker artwork valt; de **sticky legal footer** (privacy, **algemene voorwaarden**, digitale goederen, gasttaal, copyright) is dezelfde als op de landing via `GuestLegalFooter` in `Scaffold.bottomNavigationBar`. **Registratie** vereist een **vinkje** akkoord met de voorwaarden (`registerTerms*`-ARB); link opent `/terms`. **Modalmodus** (`embeddedModal`): compacte kaart met sluitknop; na succes roept `onEmbeddedAuthSuccess` de host aan (landing: dialog sluiten + `pushReplacementNamed('/dashboard')`). De **taal-dropdown bij registratie** moet `LocaleProvider.persistGuestLocale` aanroepen zodat `MaterialApp.locale` en alle ARB-teksten (inclusief formulier) **direct** meeschakelen — geen aparte lokale `_selectedLanguage`-status naast de provider.
 - Voor dynamische templates (zoals `daily-goals` uit backend): geef voorkeur aan **client-side mapping op goal keys** (`crime_3`, `weekly_job_10`, …) naar ARB-strings, zodat alle EU-locales consistente vertalingen krijgen zonder server-side `titleNl/titleEn` leakage.
 - Vehicle Ops labels/chips (Heat/Rep/Hotspot/Crew/Blacklist etc.) horen ook via ARB keys zodat dashboard geen Engels lekt in EU-locales.
 - Instellingen (`settings_screen.dart`) bevat veel platform/permission tekst (push status, crypto push/in-app toggles). Ook die moet via ARB keys om EU-locales volledig te ondersteunen.

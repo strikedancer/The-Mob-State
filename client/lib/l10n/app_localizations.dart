@@ -24120,6 +24120,12 @@ abstract class AppLocalizations {
   /// **'Privacy Policy'**
   String get landingFooterPrivacy;
 
+  /// No description provided for @landingFooterTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get landingFooterTerms;
+
   /// No description provided for @landingFooterDigitalGoods.
   ///
   /// In en, this message translates to:
@@ -24413,6 +24419,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unless mandatory local law provides otherwise, this policy is governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.'**
   String get legalDigitalGoodsSection10Body;
+
+  /// No description provided for @registerTermsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept the Terms of Service to register.'**
+  String get registerTermsRequired;
+
+  /// No description provided for @registerTermsPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the '**
+  String get registerTermsPrefix;
+
+  /// No description provided for @registerTermsLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get registerTermsLink;
+
+  /// No description provided for @registerTermsSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get registerTermsSuffix;
+
+  /// No description provided for @legalTermsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get legalTermsTitle;
+
+  /// No description provided for @legalTermsLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: May 2026'**
+  String get legalTermsLastUpdated;
+
+  /// No description provided for @legalTermsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'These Terms of Service (\"Terms\") govern your access to and use of The Mob State website, web game and related services (\"Service\"). By creating an account or using the Service you agree to these Terms together with our Privacy Policy and, where applicable, our digital goods purchase policy.'**
+  String get legalTermsIntro;
+
+  /// No description provided for @legalTermsSection01Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eligibility and account'**
+  String get legalTermsSection01Title;
+
+  /// No description provided for @legalTermsSection01Body.
+  ///
+  /// In en, this message translates to:
+  /// **'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You are responsible for activity under your account unless you notify us promptly via support if you suspect unauthorised access.'**
+  String get legalTermsSection01Body;
+
+  /// No description provided for @legalTermsSection02Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Licence to use the Service'**
+  String get legalTermsSection02Title;
+
+  /// No description provided for @legalTermsSection02Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We grant you a personal, non-exclusive, non-transferable, revocable licence to access and use the Service for entertainment in line with these Terms. All rights not expressly granted are reserved.'**
+  String get legalTermsSection02Body;
+
+  /// No description provided for @legalTermsSection03Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptable use'**
+  String get legalTermsSection03Title;
+
+  /// No description provided for @legalTermsSection03Body.
+  ///
+  /// In en, this message translates to:
+  /// **'You agree not to cheat, exploit bugs for unfair advantage, harass others, distribute malware, scrape or overload our systems without permission, impersonate staff, or use the Service for unlawful purposes. We may investigate reports and apply sanctions including warnings, suspensions or termination.'**
+  String get legalTermsSection03Body;
+
+  /// No description provided for @legalTermsSection04Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Virtual items and payments'**
+  String get legalTermsSection04Title;
+
+  /// No description provided for @legalTermsSection04Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional purchases may be available for virtual goods or features. Such purchases are subject to our Purchase of Digital Goods policy and checkout terms. Virtual items have no real-world cash value outside the Service except where mandatory law says otherwise.'**
+  String get legalTermsSection04Body;
+
+  /// No description provided for @legalTermsSection05Title.
+  ///
+  /// In en, this message translates to:
+  /// **'User content'**
+  String get legalTermsSection05Title;
+
+  /// No description provided for @legalTermsSection05Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Where the Service allows you to submit text, images or other material, you retain ownership you already hold but grant us a licence to host, display and moderate that content as needed to operate the Service. You must have rights to anything you submit and must not upload unlawful or infringing material.'**
+  String get legalTermsSection05Body;
+
+  /// No description provided for @legalTermsSection06Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability and changes'**
+  String get legalTermsSection06Title;
+
+  /// No description provided for @legalTermsSection06Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We strive to keep the Service available but do not guarantee uninterrupted access. We may modify, suspend or discontinue features for maintenance, balance, legal or security reasons. We may update these Terms; continued use after notice where permitted by law constitutes acceptance of material changes.'**
+  String get legalTermsSection06Body;
+
+  /// No description provided for @legalTermsSection07Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Disclaimer and liability'**
+  String get legalTermsSection07Title;
+
+  /// No description provided for @legalTermsSection07Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The Service is provided \"as is\" to the fullest extent permitted by law. We exclude liability for indirect or consequential loss where allowed. Nothing in these Terms limits liability that cannot be limited under applicable mandatory consumer law.'**
+  String get legalTermsSection07Body;
+
+  /// No description provided for @legalTermsSection08Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Termination'**
+  String get legalTermsSection08Title;
+
+  /// No description provided for @legalTermsSection08Body.
+  ///
+  /// In en, this message translates to:
+  /// **'You may stop using the Service at any time. We may suspend or terminate access if you breach these Terms, if required by law, or to protect the Service or other users. Provisions that by nature should survive will survive termination.'**
+  String get legalTermsSection08Body;
+
+  /// No description provided for @legalTermsSection09Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Governing law'**
+  String get legalTermsSection09Title;
+
+  /// No description provided for @legalTermsSection09Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Unless mandatory local law provides otherwise, these Terms are governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.'**
+  String get legalTermsSection09Body;
+
+  /// No description provided for @legalTermsSection10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get legalTermsSection10Title;
+
+  /// No description provided for @legalTermsSection10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.'**
+  String get legalTermsSection10Body;
 }
 
 class _AppLocalizationsDelegate

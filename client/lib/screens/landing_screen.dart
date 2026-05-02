@@ -11,8 +11,30 @@ import '../l10n/app_localizations.dart';
 import '../providers/locale_provider.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/guest_legal_footer.dart';
+import 'login_screen.dart';
 
 const Color _landingGold = Color(0xFFC0A060);
+
+void showLandingAuthDialog(BuildContext context, {required bool register}) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    builder: (dialogContext) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: LoginScreen(
+          embeddedModal: true,
+          initialRegister: register,
+          onEmbeddedAuthSuccess: () {
+            Navigator.of(dialogContext).pop();
+            Navigator.of(context).pushReplacementNamed('/dashboard');
+          },
+        ),
+      );
+    },
+  );
+}
 
 int? _decodeInt(dynamic v) {
   if (v is int) return v;
@@ -448,7 +470,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            onPressed: () => Navigator.of(context).pushNamed('/login'),
+            onPressed: () => showLandingAuthDialog(context, register: false),
             child: Text(l10n.landingCtaLogin),
           ),
           SizedBox(width: compact ? 8 : 12),
@@ -462,7 +484,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            onPressed: () => Navigator.of(context).pushNamed('/register'),
+            onPressed: () => showLandingAuthDialog(context, register: true),
             child: Text(l10n.landingCtaRegister),
           ),
         ],

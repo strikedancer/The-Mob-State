@@ -13,6 +13,7 @@ import 'providers/locale_provider.dart';
 import 'screens/login_screen.dart';
 import 'screens/landing_screen.dart';
 import 'screens/legal_privacy_screen.dart';
+import 'screens/legal_terms_screen.dart';
 import 'screens/legal_digital_goods_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/reset_password_screen.dart';
@@ -136,6 +137,7 @@ class MafiaGameApp extends StatelessWidget {
             '/login': (context) => const LoginScreen(),
             '/register': (context) => const LoginScreen(initialRegister: true),
             '/privacy': (context) => const LegalPrivacyScreen(),
+            '/terms': (context) => const LegalTermsScreen(),
             '/digital-goods': (context) => const LegalDigitalGoodsScreen(),
             '/auth/reset-password': (context) => ResetPasswordScreen(initialToken: Uri.base.queryParameters['token']),
             '/dashboard': (context) => const DashboardScreen(),

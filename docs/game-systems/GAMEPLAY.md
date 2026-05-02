@@ -572,7 +572,7 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 
 ### Client / talen
 - Trade-scherm, zwarte markt (o.a. rugzak-tab), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven.
-- Login en registratie delen dezelfde **onderste juridische footer** (privacy, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee.
+- Login en registratie delen dezelfde **onderste juridische footer** (privacy, algemene voorwaarden, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie en vereist **akkoord met de voorwaarden** vóór verzenden. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee.
 
 ### Munitiefabriek (ammo)
 - Productie wordt **server-side** getakt (claim-interval en output per tick); bij te hoge pacing kan dit worden verlaagd zonder client-wijziging. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
@@ -1122,9 +1122,9 @@ healing = 5 HP (if health > 0 && health < 100)
 
 ## Web entry (marketing)
 
-- Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren, en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
-- **Registreren (`/register`):** kies **mannelijk of vrouwelijk** via twee portretkaarten; de server slaat `gender` op en zet de start-avatar op `default_1` (man) of `default_2` (vrouw). Bestaande accounts kunnen `gender` nog leeg hebben. Custom portretkunst: `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API).
-- Juridische pagina’s: `/privacy` en `/digital-goods` (teksten volledig uit de client-ARB’s). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
+- Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren (openen een **modal** met hetzelfde formulier als `/login` en `/register`), en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
+- **Registreren (`/register` of modal):** kies **mannelijk of vrouwelijk** via twee portretkaarten; je moet **akkoord gaan met de algemene voorwaarden** (vinkje + link naar `/terms`). De server slaat `gender` op en zet de start-avatar op `default_1` (man) of `default_2` (vrouw). Bestaande accounts kunnen `gender` nog leeg hebben. Custom portretkunst: `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API).
+- Juridische pagina’s: `/privacy`, `/terms` en `/digital-goods` (teksten volledig uit de client-ARB’s). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
 - Layout: hero-titel + pitch in een leesbare kolom (op desktop visueel meer naar het midden-rechts t.o.v. de achtergrond-titel), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan**. Ranglijsten: `GET /public/home` via dezelfde API-basis als de rest van de client (`AppConfig.apiBaseUrl`).
 - **CORS:** de API moet origins van de Flutter-web-shell (`https://themobstate.com`, `www`, `admin`) toestaan wanneer de client op een ander subdomein (`api.…`) aanroept; in productie worden die origins altijd met `ALLOWED_ORIGINS` geünioneerd (`config/index.ts`). Express zet `cors` vóór de Prisma-wachtmiddleware (`app.ts`) zodat ook fout- en 503-responses CORS-headers dragen.
 - Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`. SPA-fallback in `app.ts`: `app.use` met GET-check (geen `app.get('*')` — Express 5 / path-to-regexp v8).

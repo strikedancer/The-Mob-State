@@ -13945,6 +13945,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get landingFooterPrivacy => 'Datenschutzrichtlinie';
 
   @override
+  String get landingFooterTerms => 'Nutzungsbedingungen';
+
+  @override
   String get landingFooterDigitalGoods => 'Kauf digitaler Waren';
 
   @override
@@ -14117,4 +14120,97 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get legalDigitalGoodsSection10Body =>
       'Sofern nicht zwingendes lokales Recht etwas anderes vorsieht, unterliegt diese Richtlinie den Gesetzen von England und Wales und Streitigkeiten unterliegen der ausschließlichen Zuständigkeit der Gerichte von England und Wales.';
+
+  @override
+  String get registerTermsRequired =>
+      'You must accept the Terms of Service to register.';
+
+  @override
+  String get registerTermsPrefix => 'I agree to the ';
+
+  @override
+  String get registerTermsLink => 'Terms of Service';
+
+  @override
+  String get registerTermsSuffix => '.';
+
+  @override
+  String get legalTermsTitle => 'Terms of Service';
+
+  @override
+  String get legalTermsLastUpdated => 'Last updated: May 2026';
+
+  @override
+  String get legalTermsIntro =>
+      'These Terms of Service (\"Terms\") govern your access to and use of The Mob State website, web game and related services (\"Service\"). By creating an account or using the Service you agree to these Terms together with our Privacy Policy and, where applicable, our digital goods purchase policy.';
+
+  @override
+  String get legalTermsSection01Title => 'Eligibility and account';
+
+  @override
+  String get legalTermsSection01Body =>
+      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You are responsible for activity under your account unless you notify us promptly via support if you suspect unauthorised access.';
+
+  @override
+  String get legalTermsSection02Title => 'Licence to use the Service';
+
+  @override
+  String get legalTermsSection02Body =>
+      'We grant you a personal, non-exclusive, non-transferable, revocable licence to access and use the Service for entertainment in line with these Terms. All rights not expressly granted are reserved.';
+
+  @override
+  String get legalTermsSection03Title => 'Acceptable use';
+
+  @override
+  String get legalTermsSection03Body =>
+      'You agree not to cheat, exploit bugs for unfair advantage, harass others, distribute malware, scrape or overload our systems without permission, impersonate staff, or use the Service for unlawful purposes. We may investigate reports and apply sanctions including warnings, suspensions or termination.';
+
+  @override
+  String get legalTermsSection04Title => 'Virtual items and payments';
+
+  @override
+  String get legalTermsSection04Body =>
+      'Optional purchases may be available for virtual goods or features. Such purchases are subject to our Purchase of Digital Goods policy and checkout terms. Virtual items have no real-world cash value outside the Service except where mandatory law says otherwise.';
+
+  @override
+  String get legalTermsSection05Title => 'User content';
+
+  @override
+  String get legalTermsSection05Body =>
+      'Where the Service allows you to submit text, images or other material, you retain ownership you already hold but grant us a licence to host, display and moderate that content as needed to operate the Service. You must have rights to anything you submit and must not upload unlawful or infringing material.';
+
+  @override
+  String get legalTermsSection06Title => 'Availability and changes';
+
+  @override
+  String get legalTermsSection06Body =>
+      'We strive to keep the Service available but do not guarantee uninterrupted access. We may modify, suspend or discontinue features for maintenance, balance, legal or security reasons. We may update these Terms; continued use after notice where permitted by law constitutes acceptance of material changes.';
+
+  @override
+  String get legalTermsSection07Title => 'Disclaimer and liability';
+
+  @override
+  String get legalTermsSection07Body =>
+      'The Service is provided \"as is\" to the fullest extent permitted by law. We exclude liability for indirect or consequential loss where allowed. Nothing in these Terms limits liability that cannot be limited under applicable mandatory consumer law.';
+
+  @override
+  String get legalTermsSection08Title => 'Termination';
+
+  @override
+  String get legalTermsSection08Body =>
+      'You may stop using the Service at any time. We may suspend or terminate access if you breach these Terms, if required by law, or to protect the Service or other users. Provisions that by nature should survive will survive termination.';
+
+  @override
+  String get legalTermsSection09Title => 'Governing law';
+
+  @override
+  String get legalTermsSection09Body =>
+      'Unless mandatory local law provides otherwise, these Terms are governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.';
+
+  @override
+  String get legalTermsSection10Title => 'Contact';
+
+  @override
+  String get legalTermsSection10Body =>
+      'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
 }

@@ -57,6 +57,22 @@ class GuestLegalFooter extends StatelessWidget {
                       vertical: 4,
                     ),
                   ),
+                  onPressed: () => Navigator.of(context).pushNamed('/terms'),
+                  child: Text(
+                    l10n.landingFooterTerms,
+                    style: const TextStyle(
+                      color: _guestFooterGold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                  ),
                   onPressed: () =>
                       Navigator.of(context).pushNamed('/digital-goods'),
                   child: Text(

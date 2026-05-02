@@ -13780,6 +13780,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get landingFooterPrivacy => 'Privacybeleid';
 
   @override
+  String get landingFooterTerms => 'Algemene voorwaarden';
+
+  @override
   String get landingFooterDigitalGoods => 'Aankoop digitale goederen';
 
   @override
@@ -13951,4 +13954,97 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get legalDigitalGoodsSection10Body =>
       'Tenzij dwingend lokaal recht anders bepaalt, wordt dit beleid beheerst door het recht van Engeland en Wales en zijn geschillen onderworpen aan de exclusieve jurisdictie van de rechtbanken van Engeland en Wales.';
+
+  @override
+  String get registerTermsRequired =>
+      'Je moet akkoord gaan met de algemene voorwaarden om te registreren.';
+
+  @override
+  String get registerTermsPrefix => 'Ik ga akkoord met de ';
+
+  @override
+  String get registerTermsLink => 'algemene voorwaarden';
+
+  @override
+  String get registerTermsSuffix => '.';
+
+  @override
+  String get legalTermsTitle => 'Algemene voorwaarden';
+
+  @override
+  String get legalTermsLastUpdated => 'Laatst bijgewerkt: mei 2026';
+
+  @override
+  String get legalTermsIntro =>
+      'Deze algemene voorwaarden (\"Voorwaarden\") regelen je toegang tot en gebruik van de website, webgame en gerelateerde diensten van The Mob State (\"Dienst\"). Door een account aan te maken of de Dienst te gebruiken, ga je akkoord met deze Voorwaarden, ons privacybeleid en, waar van toepassing, ons beleid voor aankoop van digitale goederen.';
+
+  @override
+  String get legalTermsSection01Title => 'Toepasselijkheid en account';
+
+  @override
+  String get legalTermsSection01Body =>
+      'Je moet voldoen aan de minimumleeftijd die bij registratie voor jouw regio wordt getoond. Je bent verantwoordelijk voor juiste registratiegegevens en het geheim houden van je inloggegevens. Je bent verantwoordelijk voor activiteit onder je account, tenzij je ons via support onverwijld informeert bij vermoeden van ongeautoriseerde toegang.';
+
+  @override
+  String get legalTermsSection02Title => 'Licentie voor gebruik';
+
+  @override
+  String get legalTermsSection02Body =>
+      'We verlenen je een persoonlijke, niet-exclusieve, niet-overdraagbare en herroepbare licentie om de Dienst voor amusement te gebruiken in overeenstemming met deze Voorwaarden. Alle niet uitdrukkelijk verleende rechten blijven voorbehouden.';
+
+  @override
+  String get legalTermsSection03Title => 'Aanvaardbaar gebruik';
+
+  @override
+  String get legalTermsSection03Body =>
+      'Je stemt ermee in niet vals te spelen, bugs uit te buiten voor oneerlijk voordeel, anderen lastig te vallen, malware te verspreiden, onze systemen zonder toestemming te scrapen of te overbelasten, staff na te bootsen of de Dienst voor onwettige doeleinden te gebruiken. We kunnen meldingen onderzoeken en sancties opleggen, waaronder waarschuwingen, schorsingen of beëindiging.';
+
+  @override
+  String get legalTermsSection04Title => 'Virtuele items en betalingen';
+
+  @override
+  String get legalTermsSection04Body =>
+      'Optionele aankopen kunnen beschikbaar zijn voor virtuele goederen of functies. Zulke aankopen vallen onder ons beleid Aankoop van digitale goederen en checkoutvoorwaarden. Virtuele items hebben geen contante waarde buiten de Dienst, behalve waar dwingend recht anders voorschrijft.';
+
+  @override
+  String get legalTermsSection05Title => 'Gebruikersinhoud';
+
+  @override
+  String get legalTermsSection05Body =>
+      'Waar de Dienst tekst, afbeeldingen of ander materiaal laat indienen, behoud jij eigendom dat je al had maar verleen je ons een licentie om die inhoud te hosten, tonen en modereren zoals nodig is om de Dienst te exploiteren. Je moet rechten hebben op wat je indient en geen onrechtmatig of inbreukmakend materiaal uploaden.';
+
+  @override
+  String get legalTermsSection06Title => 'Beschikbaarheid en wijzigingen';
+
+  @override
+  String get legalTermsSection06Body =>
+      'We streven naar beschikbaarheid van de Dienst maar garanderen geen ononderbroken toegang. We kunnen functies wijzigen, opschorten of beëindigen voor onderhoud, balans, juridische of beveiligingsredenen. We kunnen deze Voorwaarden bijwerken; voortgezet gebruik na kennisgeving kan onder voorbehoud van de wet instemming met belangrijke wijzigingen betekenen.';
+
+  @override
+  String get legalTermsSection07Title => 'Disclaimer en aansprakelijkheid';
+
+  @override
+  String get legalTermsSection07Body =>
+      'De Dienst wordt geleverd \"zoals ze is\" voor zover de wet dat toelaat. Wij sluiten aansprakelijkheid voor indirecte of gevolgschade uit voor zover toegestaan. Niets in deze Voorwaarden beperkt aansprakelijkheid die krachtens dwingend consumentenrecht niet mag worden beperkt.';
+
+  @override
+  String get legalTermsSection08Title => 'Beëindiging';
+
+  @override
+  String get legalTermsSection08Body =>
+      'Je kunt de Dienst op elk moment stoppen met gebruiken. We kunnen toegang schorsen of beëindigen bij schending van deze Voorwaarden, wanneer de wet dat vereist, of om de Dienst of andere gebruikers te beschermen. Bepalingen die naar hun aard voortduren, blijven van kracht na beëindiging.';
+
+  @override
+  String get legalTermsSection09Title => 'Toepasselijk recht';
+
+  @override
+  String get legalTermsSection09Body =>
+      'Tenzij dwingend lokaal recht anders bepaalt, worden deze Voorwaarden beheerst door het recht van Engeland en Wales en zijn geschillen onderworpen aan de exclusieve jurisdictie van de rechtbanken van Engeland en Wales.';
+
+  @override
+  String get legalTermsSection10Title => 'Contact';
+
+  @override
+  String get legalTermsSection10Body =>
+      'Voor vragen over deze Voorwaarden kun je na registratie contact opnemen via het supportticketssysteem in het spel, of via officiële contactkanalen op de website indien gepubliceerd.';
 }

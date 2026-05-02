@@ -15,10 +15,21 @@ import '../config/supported_languages.dart';
 import '../widgets/guest_legal_footer.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, this.initialRegister = false});
+  const LoginScreen({
+    super.key,
+    this.initialRegister = false,
+    this.embeddedModal = false,
+    this.onEmbeddedAuthSuccess,
+  });
 
   /// When true, opens the registration tab first (e.g. from marketing landing).
   final bool initialRegister;
+
+  /// Compact card inside a dialog on the landing page (no full-screen background).
+  final bool embeddedModal;
+
+  /// When [embeddedModal] is true, called after successful login/register instead of pushing `/dashboard`.
+  final VoidCallback? onEmbeddedAuthSuccess;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -31,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   late bool _isLogin;
   bool _obscurePassword = true;
+  bool _acceptedTerms = false;
   /// `male` | `female` during registration.
   String? _selectedGender;
 
@@ -245,6 +257,18 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+    if (!_isLogin && !_acceptedTerms) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.registerTermsRequired),
+          backgroundColor: Colors.orange.shade900,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
     bool success;
     if (_isLogin) {
       success = await authProvider.login(username, password);
@@ -300,7 +324,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
           // Explicitly navigate to dashboard instead of relying on AuthWrapper rebuild
           await Future.delayed(const Duration(milliseconds: 100));
-          if (mounted) {
+          if (!mounted) return;
+          if (widget.onEmbeddedAuthSuccess != null) {
+            widget.onEmbeddedAuthSuccess!();
+          } else {
             Navigator.of(context).pushReplacementNamed('/dashboard');
           }
         } else {
@@ -345,6 +372,54 @@ class _LoginScreenState extends State<LoginScreen> {
     final isPortrait = screenHeight > screenWidth; // Portrait or Landscape?
     final isMobile = screenWidth < 600;
 
+    if (widget.embeddedModal) {
+      final maxH = screenHeight * 0.92;
+      return Material(
+        color: Colors.transparent,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: isMobile ? screenWidth * 0.94 : 460,
+            maxHeight: maxH,
+          ),
+          child: Material(
+            color: const Color(0xFF121212),
+            elevation: 12,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(color: Colors.amber.shade800.withOpacity(0.4)),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 4, top: 4),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: IconButton(
+                      tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                      icon: const Icon(Icons.close, color: Color(0xFFD4A574)),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.fromLTRB(
+                      isMobile ? 12 : 16,
+                      0,
+                      isMobile ? 12 : 16,
+                      isMobile ? 16 : 20,
+                    ),
+                    child: _buildAuthFormCard(context, l10n, localeProvider, isMobile, screenWidth),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       bottomNavigationBar: const SafeArea(
         top: false,
@@ -368,492 +443,569 @@ class _LoginScreenState extends State<LoginScreen> {
                 isMobile ? 16 : 36,
                 isMobile ? 16 : 20,
               ),
-              child: Container(
-                width: isMobile ? screenWidth * 0.9 : 420,
-                margin: null,
-                child: Card(
-                  elevation: 8,
-                  color: Colors.black.withOpacity(isMobile ? 0.50 : 0.35),
-                  child: Padding(
-                    padding: EdgeInsets.all(isMobile ? 20 : 28),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Username field
-                          TextFormField(
-                            controller: _usernameController,
-                            onChanged: (_) => _clearAuthError(),
-                            textInputAction: TextInputAction.next,
-                            style: const TextStyle(color: Color(0xFFD4A574)),
-                            decoration: InputDecoration(
-                              hintText: l10n.usernamePlaceholder,
-                              hintStyle: TextStyle(color: Color(0xFFD4A574)),
-                              prefixIcon: const Icon(
-                                Icons.person,
-                                color: Color(0xFFD4A574),
-                                size: 20,
-                              ),
-                              filled: true,
-                              fillColor: Colors.black.withOpacity(0.3),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide.none,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: Colors.white10,
-                                  width: 1,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: Colors.amber[700]!,
-                                  width: 1,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 14,
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.usernameRequired;
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: isMobile ? 16 : 20),
-
-                          // Password field
-                          TextFormField(
-                            controller: _passwordController,
-                            onChanged: (_) => _clearAuthError(),
-                            textInputAction: _isLogin
-                                ? TextInputAction.done
-                                : TextInputAction.next,
-                            onFieldSubmitted: (_) {
-                              if (_isLogin) {
-                                _submit();
-                              }
-                            },
-                            style: const TextStyle(color: Color(0xFFD4A574)),
-                            decoration: InputDecoration(
-                              hintText: l10n.passwordPlaceholder,
-                              hintStyle: TextStyle(color: Color(0xFFD4A574)),
-                              prefixIcon: const Icon(
-                                Icons.lock,
-                                color: Color(0xFFD4A574),
-                                size: 20,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Color(0xFFD4A574),
-                                  size: 20,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscurePassword = !_obscurePassword;
-                                  });
-                                },
-                              ),
-                              filled: true,
-                              fillColor: Colors.black.withOpacity(0.3),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide.none,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: Colors.white10,
-                                  width: 1,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: Colors.amber[700]!,
-                                  width: 1,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 14,
-                              ),
-                            ),
-                            obscureText: _obscurePassword,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.passwordRequired;
-                              }
-                              if (value.length < 6) {
-                                return l10n.passwordTooShort;
-                              }
-                              return null;
-                            },
-                          ),
-
-                          // Gender + starter portrait (registration only)
-                          if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
-                          if (!_isLogin)
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  l10n.registerGenderTitle,
-                                  style: TextStyle(
-                                    color: Color(0xFFD4A574),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: isMobile ? 14 : 15,
-                                  ),
-                                ),
-                                SizedBox(height: isMobile ? 6 : 8),
-                                Text(
-                                  l10n.registerGenderSubtitle,
-                                  style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: isMobile ? 12 : 13,
-                                    height: 1.35,
-                                  ),
-                                ),
-                                SizedBox(height: isMobile ? 12 : 14),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _GenderPickCard(
-                                        label: l10n.registerGenderMale,
-                                        assetPath: AvatarHelper.getAvatarPath(
-                                          'default_1',
-                                        ),
-                                        selected: _selectedGender == 'male',
-                                        onTap: () {
-                                          _clearAuthError();
-                                          setState(
-                                            () => _selectedGender = 'male',
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(width: isMobile ? 12 : 16),
-                                    Expanded(
-                                      child: _GenderPickCard(
-                                        label: l10n.registerGenderFemale,
-                                        assetPath: AvatarHelper.getAvatarPath(
-                                          'default_2',
-                                        ),
-                                        selected: _selectedGender == 'female',
-                                        onTap: () {
-                                          _clearAuthError();
-                                          setState(
-                                            () => _selectedGender = 'female',
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-                          // Email field (only for registration)
-                          if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
-                          if (!_isLogin)
-                            TextFormField(
-                              controller: _emailController,
-                              onChanged: (_) => _clearAuthError(),
-                              textInputAction: TextInputAction.done,
-                              onFieldSubmitted: (_) => _submit(),
-                              style: const TextStyle(color: Color(0xFFD4A574)),
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                hintText: l10n.emailPlaceholder,
-                                hintStyle: TextStyle(color: Color(0xFFD4A574)),
-                                prefixIcon: const Icon(
-                                  Icons.email,
-                                  color: Color(0xFFD4A574),
-                                  size: 20,
-                                ),
-                                filled: true,
-                                fillColor: Colors.black.withOpacity(0.3),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: BorderSide.none,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: BorderSide(
-                                    color: Colors.white10,
-                                    width: 1,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: BorderSide(
-                                    color: Colors.amber[700]!,
-                                    width: 1,
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 14,
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return l10n.emailRequired;
-                                }
-                                // Basic email validation
-                                final emailRegex = RegExp(
-                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                                );
-                                if (!emailRegex.hasMatch(value)) {
-                                  return l10n.emailInvalid;
-                                }
-                                return null;
-                              },
-                            ),
-
-                          // Language dropdown (only for registration)
-                          if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
-                          if (!_isLogin)
-                            DropdownButtonFormField<String>(
-                              value: _registerLanguageCode(localeProvider),
-                              dropdownColor: Color(0xFF1a1a1a),
-                              style: const TextStyle(color: Color(0xFFD4A574)),
-                              decoration: InputDecoration(
-                                hintText: l10n.changeLanguage,
-                                hintStyle: TextStyle(color: Color(0xFFD4A574)),
-                                prefixIcon: const Icon(
-                                  Icons.language,
-                                  color: Color(0xFFD4A574),
-                                  size: 20,
-                                ),
-                                filled: true,
-                                fillColor: Colors.black.withOpacity(0.3),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: BorderSide.none,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: BorderSide(
-                                    color: Colors.white10,
-                                    width: 1,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: BorderSide(
-                                    color: Colors.amber[700]!,
-                                    width: 1,
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 14,
-                                ),
-                              ),
-                              items: [
-                                for (final code in SupportedLanguages.codes)
-                                  DropdownMenuItem(
-                                    value: code,
-                                    child: Text(
-                                      SupportedLanguages.menuSubtitle(code),
-                                    ),
-                                  ),
-                              ],
-                              onChanged: (value) async {
-                                if (value == null) return;
-                                _clearAuthError();
-                                await context.read<LocaleProvider>().persistGuestLocale(value);
-                              },
-                            ),
-                          Consumer<AuthProvider>(
-                            builder: (context, authProvider, _) {
-                              final errorMessage = _localizeAuthError(
-                                l10n,
-                                authProvider.error,
-                              );
-                              if (errorMessage.isEmpty) {
-                                return const SizedBox.shrink();
-                              }
-
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  top: isMobile ? 16 : 18,
-                                ),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(
-                                      0xFF5C1D1D,
-                                    ).withOpacity(0.88),
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(
-                                      color: const Color(0xFFE07A7A),
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(top: 1),
-                                        child: Icon(
-                                          Icons.error_outline,
-                                          color: Color(0xFFFFB4B4),
-                                          size: 18,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Text(
-                                          errorMessage,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 13,
-                                            height: 1.3,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: isMobile ? 24 : 28),
-
-                          // Submit button with gradient
-                          Consumer<AuthProvider>(
-                            builder: (context, authProvider, _) {
-                              return Container(
-                                height: isMobile ? 48 : 52,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xFFD4A574),
-                                      Color(0xFFB8945E),
-                                      Color(0xFFD4A574),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.amber.withOpacity(0.3),
-                                      blurRadius: 8,
-                                      offset: Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: ElevatedButton(
-                                  onPressed: authProvider.isLoading
-                                      ? null
-                                      : _submit,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.transparent,
-                                    shadowColor: Colors.transparent,
-                                    foregroundColor: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ),
-                                  child: authProvider.isLoading
-                                      ? const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                  Colors.black,
-                                                ),
-                                          ),
-                                        )
-                                      : Text(
-                                          _isLogin
-                                              ? l10n.loginButton
-                                              : l10n.registerButton,
-                                          style: TextStyle(
-                                            fontSize: isMobile ? 15 : 16,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 2,
-                                          ),
-                                        ),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: isMobile ? 16 : 20),
-
-                          // Register and Forgot Password links
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  _clearAuthError();
-                                  setState(() {
-                                    _isLogin = !_isLogin;
-                                    _selectedGender = null;
-                                  });
-                                },
-                                child: Text(
-                                  _isLogin ? l10n.register : l10n.login,
-                                  style: TextStyle(
-                                    color: Color(0xFFD4A574),
-                                    fontSize: isMobile ? 13 : 14,
-                                  ),
-                                ),
-                              ),
-                              if (_isLogin)
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ForgotPasswordScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                    l10n.forgotPassword,
-                                    style: TextStyle(
-                                      color: Color(0xFFD4A574),
-                                      fontSize: isMobile ? 13 : 14,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              child: _buildAuthFormCard(context, l10n, localeProvider, isMobile, screenWidth),
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildAuthFormCard(
+    BuildContext context,
+    AppLocalizations l10n,
+    LocaleProvider localeProvider,
+    bool isMobile,
+    double screenWidth,
+  ) {
+    return Container(
+      width: isMobile ? screenWidth * 0.9 : 420,
+      margin: null,
+      child: Card(
+        elevation: 8,
+        color: Colors.black.withOpacity(isMobile ? 0.50 : 0.35),
+        child: Padding(
+          padding: EdgeInsets.all(isMobile ? 20 : 28),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Username field
+                TextFormField(
+                  controller: _usernameController,
+                  onChanged: (_) => _clearAuthError(),
+                  textInputAction: TextInputAction.next,
+                  style: const TextStyle(color: Color(0xFFD4A574)),
+                  decoration: InputDecoration(
+                    hintText: l10n.usernamePlaceholder,
+                    hintStyle: TextStyle(color: Color(0xFFD4A574)),
+                    prefixIcon: const Icon(
+                      Icons.person,
+                      color: Color(0xFFD4A574),
+                      size: 20,
+                    ),
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.3),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(
+                        color: Colors.white10,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(
+                        color: Colors.amber[700]!,
+                        width: 1,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return l10n.usernameRequired;
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: isMobile ? 16 : 20),
+
+                // Password field
+                TextFormField(
+                  controller: _passwordController,
+                  onChanged: (_) => _clearAuthError(),
+                  textInputAction: _isLogin
+                      ? TextInputAction.done
+                      : TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    if (_isLogin) {
+                      _submit();
+                    }
+                  },
+                  style: const TextStyle(color: Color(0xFFD4A574)),
+                  decoration: InputDecoration(
+                    hintText: l10n.passwordPlaceholder,
+                    hintStyle: TextStyle(color: Color(0xFFD4A574)),
+                    prefixIcon: const Icon(
+                      Icons.lock,
+                      color: Color(0xFFD4A574),
+                      size: 20,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Color(0xFFD4A574),
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.3),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(
+                        color: Colors.white10,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(
+                        color: Colors.amber[700]!,
+                        width: 1,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                  ),
+                  obscureText: _obscurePassword,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return l10n.passwordRequired;
+                    }
+                    if (value.length < 6) {
+                      return l10n.passwordTooShort;
+                    }
+                    return null;
+                  },
+                ),
+
+                // Gender + starter portrait (registration only)
+                if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
+                if (!_isLogin)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.registerGenderTitle,
+                        style: TextStyle(
+                          color: Color(0xFFD4A574),
+                          fontWeight: FontWeight.bold,
+                          fontSize: isMobile ? 14 : 15,
+                        ),
+                      ),
+                      SizedBox(height: isMobile ? 6 : 8),
+                      Text(
+                        l10n.registerGenderSubtitle,
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: isMobile ? 12 : 13,
+                          height: 1.35,
+                        ),
+                      ),
+                      SizedBox(height: isMobile ? 12 : 14),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _GenderPickCard(
+                              label: l10n.registerGenderMale,
+                              assetPath: AvatarHelper.getAvatarPath(
+                                'default_1',
+                              ),
+                              selected: _selectedGender == 'male',
+                              onTap: () {
+                                _clearAuthError();
+                                setState(
+                                  () => _selectedGender = 'male',
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(width: isMobile ? 12 : 16),
+                          Expanded(
+                            child: _GenderPickCard(
+                              label: l10n.registerGenderFemale,
+                              assetPath: AvatarHelper.getAvatarPath(
+                                'default_2',
+                              ),
+                              selected: _selectedGender == 'female',
+                              onTap: () {
+                                _clearAuthError();
+                                setState(
+                                  () => _selectedGender = 'female',
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                // Email field (only for registration)
+                if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
+                if (!_isLogin)
+                  TextFormField(
+                    controller: _emailController,
+                    onChanged: (_) => _clearAuthError(),
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) => _submit(),
+                    style: const TextStyle(color: Color(0xFFD4A574)),
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: l10n.emailPlaceholder,
+                      hintStyle: TextStyle(color: Color(0xFFD4A574)),
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Color(0xFFD4A574),
+                        size: 20,
+                      ),
+                      filled: true,
+                      fillColor: Colors.black.withOpacity(0.3),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide(
+                          color: Colors.white10,
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide(
+                          color: Colors.amber[700]!,
+                          width: 1,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return l10n.emailRequired;
+                      }
+                      // Basic email validation
+                      final emailRegex = RegExp(
+                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                      );
+                      if (!emailRegex.hasMatch(value)) {
+                        return l10n.emailInvalid;
+                      }
+                      return null;
+                    },
+                  ),
+
+                // Language dropdown (only for registration)
+                if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
+                if (!_isLogin)
+                  DropdownButtonFormField<String>(
+                    value: _registerLanguageCode(localeProvider),
+                    dropdownColor: Color(0xFF1a1a1a),
+                    style: const TextStyle(color: Color(0xFFD4A574)),
+                    decoration: InputDecoration(
+                      hintText: l10n.changeLanguage,
+                      hintStyle: TextStyle(color: Color(0xFFD4A574)),
+                      prefixIcon: const Icon(
+                        Icons.language,
+                        color: Color(0xFFD4A574),
+                        size: 20,
+                      ),
+                      filled: true,
+                      fillColor: Colors.black.withOpacity(0.3),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide(
+                          color: Colors.white10,
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        borderSide: BorderSide(
+                          color: Colors.amber[700]!,
+                          width: 1,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                    ),
+                    items: [
+                      for (final code in SupportedLanguages.codes)
+                        DropdownMenuItem(
+                          value: code,
+                          child: Text(
+                            SupportedLanguages.menuSubtitle(code),
+                          ),
+                        ),
+                    ],
+                    onChanged: (value) async {
+                      if (value == null) return;
+                      _clearAuthError();
+                      await context.read<LocaleProvider>().persistGuestLocale(value);
+                    },
+                  ),
+                if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
+                if (!_isLogin)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        value: _acceptedTerms,
+                        onChanged: (v) {
+                          setState(() => _acceptedTerms = v ?? false);
+                        },
+                        activeColor: const Color(0xFFD4A574),
+                        side: const BorderSide(color: Color(0xFFD4A574)),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 4,
+                            runSpacing: 4,
+                            children: [
+                              Text(
+                                l10n.registerTermsPrefix,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                  height: 1.35,
+                                ),
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  minimumSize: Size.zero,
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('/terms');
+                                },
+                                child: Text(
+                                  l10n.registerTermsLink,
+                                  style: const TextStyle(
+                                    color: Color(0xFFD4A574),
+                                    fontSize: 13,
+                                    height: 1.35,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                l10n.registerTermsSuffix,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                  height: 1.35,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, _) {
+                    final errorMessage = _localizeAuthError(
+                      l10n,
+                      authProvider.error,
+                    );
+                    if (errorMessage.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        top: isMobile ? 16 : 18,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(
+                            0xFF5C1D1D,
+                          ).withOpacity(0.88),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: const Color(0xFFE07A7A),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 1),
+                              child: Icon(
+                                Icons.error_outline,
+                                color: Color(0xFFFFB4B4),
+                                size: 18,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                errorMessage,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  height: 1.3,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: isMobile ? 24 : 28),
+
+                // Submit button with gradient
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, _) {
+                    return Container(
+                      height: isMobile ? 48 : 52,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFD4A574),
+                            Color(0xFFB8945E),
+                            Color(0xFFD4A574),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.amber.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: authProvider.isLoading
+                            ? null
+                            : _submit,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: authProvider.isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor:
+                                      AlwaysStoppedAnimation<Color>(
+                                        Colors.black,
+                                      ),
+                                ),
+                              )
+                            : Text(
+                                _isLogin
+                                    ? l10n.loginButton
+                                    : l10n.registerButton,
+                                style: TextStyle(
+                                  fontSize: isMobile ? 15 : 16,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                ),
+                              ),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: isMobile ? 16 : 20),
+
+                // Register and Forgot Password links
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        _clearAuthError();
+                        setState(() {
+                          _isLogin = !_isLogin;
+                          _selectedGender = null;
+                          if (!_isLogin) {
+                            _acceptedTerms = false;
+                          }
+                        });
+                      },
+                      child: Text(
+                        _isLogin ? l10n.register : l10n.login,
+                        style: TextStyle(
+                          color: Color(0xFFD4A574),
+                          fontSize: isMobile ? 13 : 14,
+                        ),
+                      ),
+                    ),
+                    if (_isLogin)
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ForgotPasswordScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          l10n.forgotPassword,
+                          style: TextStyle(
+                            color: Color(0xFFD4A574),
+                            fontSize: isMobile ? 13 : 14,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 }
 
 class _GenderPickCard extends StatelessWidget {
