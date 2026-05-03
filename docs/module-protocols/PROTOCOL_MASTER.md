@@ -271,9 +271,10 @@ cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M)
 cp .env.plesk .env.plesk.bak-$(date +%F-%H%M)
 git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ runtime/client-images/avatars/ 2>/dev/null || true
 git pull origin main
-mkdir -p runtime/client-images/vault runtime/client-images/avatars || true
+mkdir -p runtime/client-images/vault runtime/client-images/avatars runtime/client-images/trade_goods/cards || true
 cp -f client/assets/images/vault/vault_banner.png runtime/client-images/vault/vault_banner.png || true
 cp -f client/assets/images/avatars/*.png runtime/client-images/avatars/ 2>/dev/null || true
+cp -f client/assets/images/trade_goods/cards/*.png runtime/client-images/trade_goods/cards/ 2>/dev/null || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
