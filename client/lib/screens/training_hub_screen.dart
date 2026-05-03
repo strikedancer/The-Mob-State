@@ -341,7 +341,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                       ),
                     ),
                     Icon(
-                      Icons.adjust,
+                      Icons.gps_fixed,
                       size: 28,
                       color: Colors.deepOrange.shade300,
                     ),
