@@ -8,6 +8,7 @@ Market prices, buy or sell flow, inventory linkage and country-aware trade logic
 - Default output: `runtime/client-images/trade_goods/cards/<good_id>.png` (same host tree as nginx `/images/` / backend `/client/images`).
 - The client loads thumbnails via `WebAssetHelper.image('assets/images/trade_goods/cards/<good_id>.png')` with gradient+emoji fallback if the file is missing.
 - Use `--mirror-client-assets` after generation if you want bundled copies under `client/assets/images/trade_goods/cards/` for local builds without the external mount.
+- **Production / VPS:** from repo root (Pageant + PuTTY session per PROTOCOL_MASTER): `.\scripts\upload_trade_goods_images_to_vps.ps1 -PuttySession "server vps"` — copies local `runtime/client-images/trade_goods/cards/*.png` to `CLIENT_EXTERNAL_IMAGES_PATH` on the server (`trade_goods/cards/`).
 
 ## Resilience & copy
 - Market data is loaded in segments (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Partial failures show a banner; a fatal empty state only occurs when all three fail.

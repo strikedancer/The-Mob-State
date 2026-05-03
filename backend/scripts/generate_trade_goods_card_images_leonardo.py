@@ -270,14 +270,14 @@ def main() -> None:
     cards_dir = root / "cards"
     jobs = [{"id": item["id"], "out": cards_dir / f"{item['id']}.png", "prompt": item["prompt"]} for item in _good_prompts()]
 
-    print(f"Planned: {len(jobs)} images → {cards_dir}")
+    print(f"Planned: {len(jobs)} images -> {cards_dir}")
     done: List[Path] = []
     for job in jobs:
         out = job["out"]
         if out.exists() and not args.force:
             print(f"skip exists: {out.name}")
             continue
-        print(f"generate: {job['id']} …")
+        print(f"generate: {job['id']} ...")
         url = _generate_one(job["prompt"], args.model)
         _save_image(url, out)
         done.append(out)

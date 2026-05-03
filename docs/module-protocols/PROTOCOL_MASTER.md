@@ -328,6 +328,16 @@ Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitl
 
 **Trade goods card thumbnails:** optionele Leonardo-batch `backend/scripts/generate_trade_goods_card_images_leonardo.py` schrijft `runtime/client-images/trade_goods/cards/<good_id>.png` (zelfde mount als `/images/`). De client gebruikt `WebAssetHelper` met fallback (gradient + emoji) als het bestand ontbreekt. Zie `docs/module-protocols/trade.md`.
 
+```powershell
+# Lokaal genereren (LEONARDO_API_KEY in backend/.env.local), daarna naar VPS external tree:
+python backend/scripts/generate_trade_goods_card_images_leonardo.py
+.\scripts\upload_trade_goods_images_to_vps.ps1 -PuttySession "server vps"
+```
+
+Optioneel lokaal ook bundelen: `python backend/scripts/generate_trade_goods_card_images_leonardo.py --mirror-client-assets`.
+
+**Upload-omgeving:** `plink`/`pscp` moeten kunnen praten met Pageant; bij **„Cannot answer interactive prompts in batch mode”** of hang: één keer dezelfde PuTTY-sessie **interactief** openen (host key / proxy), daarna upload opnieuw in een **normaal PowerShell-venster**. Optioneel `-PscpBatch` op het upload-script zet **-batch** op plink én pscp (alleen als er geen prompts meer zijn).
+
 **Agent / Cursor**
 
 - Zelfde PowerShell-aanroep kan vanuit de agent **als** Pageant op die machine draait en netwerk/proxy het toelaten.
