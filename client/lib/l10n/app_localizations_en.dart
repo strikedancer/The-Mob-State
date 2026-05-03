@@ -7222,6 +7222,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trainingHubSectionShooting => 'Shooting range';
 
   @override
+  String get trainingHubRefreshStatus => 'Refresh';
+
+  @override
+  String get trainingHubRefreshTooltip => 'Reload status from the server';
+
+  @override
+  String get trainingHubOpenCrimes => 'Open crimes';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'Active bonuses show on the Crimes screen.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'More info & options';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Same UTC calendar day: complete at least one gym session and one range session for a small extra crime success bonus (+0.5%).';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'Gym and range each keep their own 1-hour cooldown and 100-session cap.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'Shooting range progress also feeds hitlist calculations on the server.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Combo active: +$pct% on crimes';
+  }
+
+  @override
   String get gym => 'Gym';
 
   @override

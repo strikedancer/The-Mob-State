@@ -9,13 +9,18 @@ import '../utils/top_right_notification.dart';
 
 /// Combined gym + shooting range (single entry from dashboard).
 class TrainingHubScreen extends StatefulWidget {
-  const TrainingHubScreen({super.key});
+  const TrainingHubScreen({super.key, this.onOpenCrimes});
+
+  /// When set (e.g. embedded web dashboard), switches to the crimes section.
+  final VoidCallback? onOpenCrimes;
 
   @override
   State<TrainingHubScreen> createState() => _TrainingHubScreenState();
 }
 
 class _TrainingHubScreenState extends State<TrainingHubScreen> {
+  static const Color _hubGold = Color(0xFFD4AF37);
+
   final ApiClient _apiClient = ApiClient();
 
   bool _isLoading = true;
@@ -24,6 +29,8 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
 
   Map<String, dynamic>? _gymStatus;
   Map<String, dynamic>? _shootingStatus;
+  bool _comboActive = false;
+  double _comboBonusFraction = 0;
 
   @override
   void initState() {
@@ -31,16 +38,24 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     _loadAll();
   }
 
-  Future<void> _loadAll() async {
-    setState(() => _isLoading = true);
+  Future<void> _loadAll({bool showFullPageLoader = true}) async {
+    if (showFullPageLoader) {
+      setState(() => _isLoading = true);
+    }
     try {
       final combined = await _apiClient.get('/training/status');
       if (combined.statusCode == 200) {
         final data = jsonDecode(combined.body) as Map<String, dynamic>?;
         if (!mounted) return;
+        final combo = data?['trainingComboReadiness'] as Map<String, dynamic>?;
+        final comboFrac =
+            (combo?['bonusFraction'] as num?)?.toDouble() ?? 0.0;
+        final comboOn = combo?['active'] == true && comboFrac > 0;
         setState(() {
           _gymStatus = data?['gym'] as Map<String, dynamic>?;
           _shootingStatus = data?['shootingRange'] as Map<String, dynamic>?;
+          _comboActive = comboOn;
+          _comboBonusFraction = comboFrac;
           _isLoading = false;
         });
         return;
@@ -59,6 +74,8 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
       setState(() {
         _gymStatus = gymData?['status'] as Map<String, dynamic>?;
         _shootingStatus = shootData?['status'] as Map<String, dynamic>?;
+        _comboActive = false;
+        _comboBonusFraction = 0;
         _isLoading = false;
       });
     } catch (_) {
@@ -203,7 +220,25 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     final wide = MediaQuery.sizeOf(context).width >= 960;
 
     if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF1A0A0A),
+                Color(0xFF120808),
+              ],
+            ),
+          ),
+          child: Center(
+            child: CircularProgressIndicator(
+              color: _hubGold,
+            ),
+          ),
+        ),
+      );
     }
 
     return Scaffold(
@@ -249,66 +284,209 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
   }
 
   Widget _buildHubHeader(BuildContext context, AppLocalizations? l10n) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFB347).withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.fitness_center,
-                    size: 30,
-                    color: Colors.red.shade600,
+    final comboPct = (_comboBonusFraction * 100).toStringAsFixed(1);
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF4A2814).withValues(alpha: 0.98),
+            const Color(0xFF1A0A06),
+          ],
+        ),
+        border: Border.all(
+          color: _hubGold.withValues(alpha: 0.55),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.5),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: _hubGold.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _hubGold.withValues(alpha: 0.35),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Icon(
-                      Icons.add,
-                      size: 16,
-                      color: Colors.grey.shade600,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.fitness_center,
+                      size: 30,
+                      color: Colors.red.shade400,
                     ),
-                  ),
-                  Icon(
-                    Icons.adjust,
-                    size: 28,
-                    color: Colors.deepOrange.shade700,
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Icon(
+                        Icons.add,
+                        size: 16,
+                        color: Colors.white54,
+                      ),
+                    ),
+                    Icon(
+                      Icons.adjust,
+                      size: 28,
+                      color: Colors.deepOrange.shade300,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n?.trainingHubTitle ?? 'Training hub',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n?.trainingHubTitle ?? 'Training hub',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n?.trainingHubSubtitle ??
+                          'Strength at the gym and accuracy at the range both raise your crime success chance.',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.white70,
+                            height: 1.35,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (_comboActive) ...[
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Chip(
+                avatar: Icon(
+                  Icons.bolt,
+                  size: 18,
+                  color: Colors.amber.shade300,
+                ),
+                label: Text(
+                  l10n?.trainingHubComboChip(comboPct) ??
+                      'Combo active: +$comboPct% on crimes',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    l10n?.trainingHubSubtitle ??
-                        'Strength at the gym and accuracy at the range both raise your crime success chance.',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[700],
-                        ),
-                  ),
-                ],
+                ),
+                backgroundColor: Colors.amber.withValues(alpha: 0.18),
+                side: BorderSide(
+                  color: Colors.amber.withValues(alpha: 0.45),
+                ),
               ),
             ),
           ],
-        ),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              if (widget.onOpenCrimes != null)
+                FilledButton.tonalIcon(
+                  onPressed: widget.onOpenCrimes,
+                  icon: const Icon(Icons.warning_amber_rounded, size: 20),
+                  label: Text(l10n?.trainingHubOpenCrimes ?? 'Open crimes'),
+                  style: FilledButton.styleFrom(
+                    foregroundColor: Colors.orange.shade50,
+                    backgroundColor: Colors.red.shade900.withValues(alpha: 0.55),
+                  ),
+                ),
+              Tooltip(
+                message:
+                    l10n?.trainingHubRefreshTooltip ?? 'Reload status from the server',
+                child: OutlinedButton.icon(
+                  onPressed: _isLoading ? null : () => _loadAll(showFullPageLoader: false),
+                  icon: const Icon(Icons.refresh, size: 20),
+                  label: Text(l10n?.trainingHubRefreshStatus ?? 'Refresh'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    side: const BorderSide(color: _hubGold),
+                  ),
+                ),
+              ),
+              if (widget.onOpenCrimes != null)
+                Text(
+                  l10n?.trainingHubOpenCrimesHint ??
+                      'Bonuses apply on the Crimes screen.',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.white60,
+                      ),
+                ),
+            ],
+          ),
+          Theme(
+            data: Theme.of(context).copyWith(
+              dividerColor: Colors.white24,
+              splashColor: _hubGold.withValues(alpha: 0.12),
+              highlightColor: _hubGold.withValues(alpha: 0.08),
+            ),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.only(bottom: 8),
+              iconColor: _hubGold,
+              collapsedIconColor: _hubGold,
+              title: Text(
+                l10n?.trainingHubMoreInfoTitle ?? 'More options',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              children: [
+                ListTile(
+                  leading: Icon(Icons.bolt, color: Colors.amber.shade300),
+                  title: Text(
+                    l10n?.trainingHubMoreInfoCombo ??
+                        'Same UTC day: train both tracks for a small extra crime bonus.',
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                  dense: true,
+                ),
+                ListTile(
+                  leading: Icon(Icons.schedule, color: Colors.orange.shade200),
+                  title: Text(
+                    l10n?.trainingHubMoreInfoSeparate ??
+                        'Each track has its own cooldown and session cap.',
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                  dense: true,
+                ),
+                ListTile(
+                  leading: Icon(Icons.gps_fixed, color: Colors.orange.shade200),
+                  title: Text(
+                    l10n?.trainingHubMoreInfoHitlist ??
+                        'Shooting range progress also feeds hitlist calculations on the server.',
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                  dense: true,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -493,6 +671,13 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: accent.withOpacity(0.35), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: 0.12),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
         image: DecorationImage(
           image: AssetImage(bgAsset),
           fit: BoxFit.cover,

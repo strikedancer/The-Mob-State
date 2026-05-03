@@ -7278,6 +7278,39 @@ class AppLocalizationsPt extends AppLocalizations {
   String get trainingHubSectionShooting => 'Campo de tiro';
 
   @override
+  String get trainingHubRefreshStatus => 'Atualizar';
+
+  @override
+  String get trainingHubRefreshTooltip => 'Recarregar status do servidor';
+
+  @override
+  String get trainingHubOpenCrimes => 'Crimes abertos';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'Os bônus ativos são exibidos na tela Crimes.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'Mais informações e opções';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Mesmo dia UTC: complete pelo menos uma sessão de ginástica e uma sessão de treino para obter um pequeno bônus extra de sucesso no crime (+0,5%).';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'A academia e o alcance mantêm seu próprio tempo de espera de 1 hora e limite de 100 sessões.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'O progresso do campo de tiro também alimenta os cálculos da lista de acertos no servidor.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Combo ativo: +$pct% em crimes';
+  }
+
+  @override
   String get gym => 'Academia';
 
   @override

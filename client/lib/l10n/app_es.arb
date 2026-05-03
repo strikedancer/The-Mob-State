@@ -8349,5 +8349,21 @@
         "type": "String"
       }
     }
+  },
+  "trainingHubRefreshStatus": "Actualizar",
+  "trainingHubRefreshTooltip": "Volver a cargar el estado desde el servidor",
+  "trainingHubOpenCrimes": "Abrir delitos",
+  "trainingHubOpenCrimesHint": "Los bonos activos se muestran en la pantalla de Delitos.",
+  "trainingHubMoreInfoTitle": "Más información y opciones",
+  "trainingHubMoreInfoCombo": "Mismo día UTC: completa al menos una sesión de gimnasio y una de campo de tiro para un pequeño extra de éxito en delitos (+0,5%).",
+  "trainingHubMoreInfoSeparate": "Gimnasio y campo de tiro tienen cada uno su propia espera de 1 hora y tope de 100 sesiones.",
+  "trainingHubMoreInfoHitlist": "El progreso en el campo de tiro también entra en los cálculos de la lista negra en el servidor.",
+  "trainingHubComboChip": "Combo activo: +{pct}% en delitos",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   }
 }

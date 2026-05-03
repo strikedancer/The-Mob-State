@@ -12918,6 +12918,60 @@ abstract class AppLocalizations {
   /// **'Shooting range'**
   String get trainingHubSectionShooting;
 
+  /// No description provided for @trainingHubRefreshStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get trainingHubRefreshStatus;
+
+  /// No description provided for @trainingHubRefreshTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload status from the server'**
+  String get trainingHubRefreshTooltip;
+
+  /// No description provided for @trainingHubOpenCrimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Open crimes'**
+  String get trainingHubOpenCrimes;
+
+  /// No description provided for @trainingHubOpenCrimesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Active bonuses show on the Crimes screen.'**
+  String get trainingHubOpenCrimesHint;
+
+  /// No description provided for @trainingHubMoreInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'More info & options'**
+  String get trainingHubMoreInfoTitle;
+
+  /// No description provided for @trainingHubMoreInfoCombo.
+  ///
+  /// In en, this message translates to:
+  /// **'Same UTC calendar day: complete at least one gym session and one range session for a small extra crime success bonus (+0.5%).'**
+  String get trainingHubMoreInfoCombo;
+
+  /// No description provided for @trainingHubMoreInfoSeparate.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym and range each keep their own 1-hour cooldown and 100-session cap.'**
+  String get trainingHubMoreInfoSeparate;
+
+  /// No description provided for @trainingHubMoreInfoHitlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Shooting range progress also feeds hitlist calculations on the server.'**
+  String get trainingHubMoreInfoHitlist;
+
+  /// No description provided for @trainingHubComboChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo active: +{pct}% on crimes'**
+  String trainingHubComboChip(String pct);
+
   /// No description provided for @gym.
   ///
   /// In en, this message translates to:

@@ -8349,5 +8349,21 @@
         "type": "String"
       }
     }
+  },
+  "trainingHubRefreshStatus": "Aggiorna",
+  "trainingHubRefreshTooltip": "Ricarica lo stato dal server",
+  "trainingHubOpenCrimes": "Crimini aperti",
+  "trainingHubOpenCrimesHint": "I bonus attivi vengono visualizzati nella schermata Crimini.",
+  "trainingHubMoreInfoTitle": "Maggiori informazioni e opzioni",
+  "trainingHubMoreInfoCombo": "Stesso giorno di calendario UTC: completa almeno una sessione di palestra e una sessione di poligono per un piccolo bonus extra per il successo del crimine (+0,5%).",
+  "trainingHubMoreInfoSeparate": "La palestra e il poligono mantengono ciascuno il proprio tempo di recupero di 1 ora e il limite di 100 sessioni.",
+  "trainingHubMoreInfoHitlist": "I progressi del poligono di tiro alimentano anche i calcoli della lista dei risultati sul server.",
+  "trainingHubComboChip": "Combo attiva: +{pct}% sui crimini",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   }
 }

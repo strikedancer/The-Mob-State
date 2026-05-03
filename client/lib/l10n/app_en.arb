@@ -4325,6 +4325,22 @@
   "trainingHubSubtitle": "Build strength at the gym and accuracy at the range. Each track stacks up to 100 sessions with a 1-hour cooldown and adds to your crime success chance.",
   "trainingHubSectionGym": "Gym",
   "trainingHubSectionShooting": "Shooting range",
+  "trainingHubRefreshStatus": "Refresh",
+  "trainingHubRefreshTooltip": "Reload status from the server",
+  "trainingHubOpenCrimes": "Open crimes",
+  "trainingHubOpenCrimesHint": "Active bonuses show on the Crimes screen.",
+  "trainingHubMoreInfoTitle": "More info & options",
+  "trainingHubMoreInfoCombo": "Same UTC calendar day: complete at least one gym session and one range session for a small extra crime success bonus (+0.5%).",
+  "trainingHubMoreInfoSeparate": "Gym and range each keep their own 1-hour cooldown and 100-session cap.",
+  "trainingHubMoreInfoHitlist": "Shooting range progress also feeds hitlist calculations on the server.",
+  "trainingHubComboChip": "Combo active: +{pct}% on crimes",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
   "gym": "Gym",
   "gymIntro": "Train your strength and increase your crime success rate",
   "gymTrainSuccess": "Training complete",

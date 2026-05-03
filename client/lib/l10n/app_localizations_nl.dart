@@ -7259,6 +7259,39 @@ class AppLocalizationsNl extends AppLocalizations {
   String get trainingHubSectionShooting => 'Schietschool';
 
   @override
+  String get trainingHubRefreshStatus => 'Vernieuwen';
+
+  @override
+  String get trainingHubRefreshTooltip => 'Status opnieuw van de server laden';
+
+  @override
+  String get trainingHubOpenCrimes => 'Open misdaden';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'Actieve bonussen zie je op het Misdaden-scherm.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'Meer info & opties';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Zelfde UTC-dag: minstens één sportschool- én schietbaansessie voor een kleine extra slagingskans op crimes (+0,5%).';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'Sportschool en schietbaan hebben elk een eigen cooldown van 1 uur en maximaal 100 sessies.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'Schietbaan-voortgang wordt door de server ook meegenomen in hitlist-berekeningen.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Combo actief: +$pct% op crimes';
+  }
+
+  @override
   String get gym => 'Sportschool';
 
   @override

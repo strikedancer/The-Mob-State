@@ -7329,6 +7329,39 @@ class AppLocalizationsDe extends AppLocalizations {
   String get trainingHubSectionShooting => 'Schießstand';
 
   @override
+  String get trainingHubRefreshStatus => 'Aktualisieren';
+
+  @override
+  String get trainingHubRefreshTooltip => 'Status vom Server neu laden';
+
+  @override
+  String get trainingHubOpenCrimes => 'Offene Verbrechen';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'Aktive Boni werden auf dem Bildschirm „Verbrechen“ angezeigt.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'Weitere Informationen und Optionen';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Gleicher UTC-Kalendertag: Absolvieren Sie mindestens eine Trainingseinheit im Fitnessstudio und eine Trainingseinheit auf dem Schießstand, um einen kleinen zusätzlichen Kriminalitätserfolgsbonus (+0,5 %) zu erhalten.';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'Fitnessstudio und Schießstand behalten jeweils ihre eigene Abklingzeit von 1 Stunde und die Obergrenze von 100 Sitzungen.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'Der Fortschritt des Schießstandes fließt auch in die Trefferlistenberechnungen auf dem Server ein.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Combo aktiv: +$pct % auf Verbrechen';
+  }
+
+  @override
   String get gym => 'Fitnessstudio';
 
   @override

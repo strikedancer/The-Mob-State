@@ -7304,6 +7304,40 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trainingHubSectionShooting => 'Campo de tiro';
 
   @override
+  String get trainingHubRefreshStatus => 'Actualizar';
+
+  @override
+  String get trainingHubRefreshTooltip =>
+      'Volver a cargar el estado desde el servidor';
+
+  @override
+  String get trainingHubOpenCrimes => 'Abrir delitos';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'Los bonos activos se muestran en la pantalla de Delitos.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'Más información y opciones';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Mismo día UTC: completa al menos una sesión de gimnasio y una de campo de tiro para un pequeño extra de éxito en delitos (+0,5%).';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'Gimnasio y campo de tiro tienen cada uno su propia espera de 1 hora y tope de 100 sesiones.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'El progreso en el campo de tiro también entra en los cálculos de la lista negra en el servidor.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Combo activo: +$pct% en delitos';
+  }
+
+  @override
   String get gym => 'Gimnasia';
 
   @override

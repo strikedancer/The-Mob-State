@@ -1737,7 +1737,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.marina:
         return const VehicleHeistScreen(embedded: true, initialTabIndex: 2);
       case _WebSection.trainingHub:
-        return const TrainingHubScreen();
+        return TrainingHubScreen(
+          onOpenCrimes: () => _selectWebSection(_WebSection.crimes),
+        );
       case _WebSection.ammoFactory:
         return const AmmoFactoryScreen();
       case _WebSection.school:

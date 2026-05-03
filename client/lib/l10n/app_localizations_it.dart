@@ -7308,6 +7308,39 @@ class AppLocalizationsIt extends AppLocalizations {
   String get trainingHubSectionShooting => 'Poligono di tiro';
 
   @override
+  String get trainingHubRefreshStatus => 'Aggiorna';
+
+  @override
+  String get trainingHubRefreshTooltip => 'Ricarica lo stato dal server';
+
+  @override
+  String get trainingHubOpenCrimes => 'Crimini aperti';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'I bonus attivi vengono visualizzati nella schermata Crimini.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'Maggiori informazioni e opzioni';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Stesso giorno di calendario UTC: completa almeno una sessione di palestra e una sessione di poligono per un piccolo bonus extra per il successo del crimine (+0,5%).';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'La palestra e il poligono mantengono ciascuno il proprio tempo di recupero di 1 ora e il limite di 100 sessioni.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'I progressi del poligono di tiro alimentano anche i calcoli della lista dei risultati sul server.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Combo attiva: +$pct% sui crimini';
+  }
+
+  @override
   String get gym => 'Palestra';
 
   @override

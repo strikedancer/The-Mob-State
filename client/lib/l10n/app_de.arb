@@ -8349,5 +8349,21 @@
         "type": "String"
       }
     }
+  },
+  "trainingHubRefreshStatus": "Aktualisieren",
+  "trainingHubRefreshTooltip": "Status vom Server neu laden",
+  "trainingHubOpenCrimes": "Offene Verbrechen",
+  "trainingHubOpenCrimesHint": "Aktive Boni werden auf dem Bildschirm „Verbrechen“ angezeigt.",
+  "trainingHubMoreInfoTitle": "Weitere Informationen und Optionen",
+  "trainingHubMoreInfoCombo": "Gleicher UTC-Kalendertag: Absolvieren Sie mindestens eine Trainingseinheit im Fitnessstudio und eine Trainingseinheit auf dem Schießstand, um einen kleinen zusätzlichen Kriminalitätserfolgsbonus (+0,5 %) zu erhalten.",
+  "trainingHubMoreInfoSeparate": "Fitnessstudio und Schießstand behalten jeweils ihre eigene Abklingzeit von 1 Stunde und die Obergrenze von 100 Sitzungen.",
+  "trainingHubMoreInfoHitlist": "Der Fortschritt des Schießstandes fließt auch in die Trefferlistenberechnungen auf dem Server ein.",
+  "trainingHubComboChip": "Combo aktiv: +{pct} % auf Verbrechen",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   }
 }

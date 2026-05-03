@@ -7335,6 +7335,40 @@ class AppLocalizationsFr extends AppLocalizations {
   String get trainingHubSectionShooting => 'Champ de tir';
 
   @override
+  String get trainingHubRefreshStatus => 'Rafraîchir';
+
+  @override
+  String get trainingHubRefreshTooltip =>
+      'Statut de rechargement depuis le serveur';
+
+  @override
+  String get trainingHubOpenCrimes => 'Crimes ouverts';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'Les bonus actifs s\'affichent sur l\'écran Crimes.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'Plus d\'informations et d\'options';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Même jour calendaire UTC : terminez au moins une séance de gym et une séance de range pour un petit bonus supplémentaire de réussite en crime (+0,5 %).';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'La salle de sport et le stand de tir conservent chacun leur propre temps de recharge d\'une heure et leur propre plafond de 100 séances.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'La progression du stand de tir alimente également les calculs des listes de réussite sur le serveur.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Combo actif : +$pct% sur les crimes';
+  }
+
+  @override
   String get gym => 'Salle de sport';
 
   @override

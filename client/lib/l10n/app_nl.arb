@@ -8349,5 +8349,21 @@
         "type": "String"
       }
     }
+  },
+  "trainingHubRefreshStatus": "Vernieuwen",
+  "trainingHubRefreshTooltip": "Status opnieuw van de server laden",
+  "trainingHubOpenCrimes": "Open misdaden",
+  "trainingHubOpenCrimesHint": "Actieve bonussen zie je op het Misdaden-scherm.",
+  "trainingHubMoreInfoTitle": "Meer info & opties",
+  "trainingHubMoreInfoCombo": "Zelfde UTC-dag: minstens één sportschool- én schietbaansessie voor een kleine extra slagingskans op crimes (+0,5%).",
+  "trainingHubMoreInfoSeparate": "Sportschool en schietbaan hebben elk een eigen cooldown van 1 uur en maximaal 100 sessies.",
+  "trainingHubMoreInfoHitlist": "Schietbaan-voortgang wordt door de server ook meegenomen in hitlist-berekeningen.",
+  "trainingHubComboChip": "Combo actief: +{pct}% op crimes",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   }
 }

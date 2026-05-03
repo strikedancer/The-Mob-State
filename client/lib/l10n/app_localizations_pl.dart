@@ -7285,6 +7285,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String get trainingHubSectionShooting => 'Strzelnica';
 
   @override
+  String get trainingHubRefreshStatus => 'Odświeżać';
+
+  @override
+  String get trainingHubRefreshTooltip => 'Załaduj ponownie status z serwera';
+
+  @override
+  String get trainingHubOpenCrimes => 'Otwarte zbrodnie';
+
+  @override
+  String get trainingHubOpenCrimesHint =>
+      'Aktywne bonusy pojawiają się na ekranie Zbrodni.';
+
+  @override
+  String get trainingHubMoreInfoTitle => 'Więcej informacji i opcji';
+
+  @override
+  String get trainingHubMoreInfoCombo =>
+      'Ten sam dzień kalendarzowy UTC: ukończ co najmniej jedną sesję na siłowni i jedną sesję na strzelnicy, aby uzyskać niewielką dodatkową premię za sukces w przestępstwie (+0,5%).';
+
+  @override
+  String get trainingHubMoreInfoSeparate =>
+      'Siłownia i strzelnica mają własny 1-godzinny czas odnowienia i limit 100 sesji.';
+
+  @override
+  String get trainingHubMoreInfoHitlist =>
+      'Postęp strzelnicy zasila również obliczenia listy trafień na serwerze.';
+
+  @override
+  String trainingHubComboChip(String pct) {
+    return 'Kombinacja aktywna: +$pct% do przestępstw';
+  }
+
+  @override
   String get gym => 'Sala gimnastyczna';
 
   @override

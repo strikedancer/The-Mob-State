@@ -8349,5 +8349,21 @@
         "type": "String"
       }
     }
+  },
+  "trainingHubRefreshStatus": "Atualizar",
+  "trainingHubRefreshTooltip": "Recarregar status do servidor",
+  "trainingHubOpenCrimes": "Crimes abertos",
+  "trainingHubOpenCrimesHint": "Os bônus ativos são exibidos na tela Crimes.",
+  "trainingHubMoreInfoTitle": "Mais informações e opções",
+  "trainingHubMoreInfoCombo": "Mesmo dia UTC: complete pelo menos uma sessão de ginástica e uma sessão de treino para obter um pequeno bônus extra de sucesso no crime (+0,5%).",
+  "trainingHubMoreInfoSeparate": "A academia e o alcance mantêm seu próprio tempo de espera de 1 hora e limite de 100 sessões.",
+  "trainingHubMoreInfoHitlist": "O progresso do campo de tiro também alimenta os cálculos da lista de acertos no servidor.",
+  "trainingHubComboChip": "Combo ativo: +{pct}% em crimes",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   }
 }

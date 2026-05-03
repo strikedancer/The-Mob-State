@@ -8349,5 +8349,21 @@
         "type": "String"
       }
     }
+  },
+  "trainingHubRefreshStatus": "Odświeżać",
+  "trainingHubRefreshTooltip": "Załaduj ponownie status z serwera",
+  "trainingHubOpenCrimes": "Otwarte zbrodnie",
+  "trainingHubOpenCrimesHint": "Aktywne bonusy pojawiają się na ekranie Zbrodni.",
+  "trainingHubMoreInfoTitle": "Więcej informacji i opcji",
+  "trainingHubMoreInfoCombo": "Ten sam dzień kalendarzowy UTC: ukończ co najmniej jedną sesję na siłowni i jedną sesję na strzelnicy, aby uzyskać niewielką dodatkową premię za sukces w przestępstwie (+0,5%).",
+  "trainingHubMoreInfoSeparate": "Siłownia i strzelnica mają własny 1-godzinny czas odnowienia i limit 100 sesji.",
+  "trainingHubMoreInfoHitlist": "Postęp strzelnicy zasila również obliczenia listy trafień na serwerze.",
+  "trainingHubComboChip": "Kombinacja aktywna: +{pct}% do przestępstw",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   }
 }

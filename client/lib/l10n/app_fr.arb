@@ -8349,5 +8349,21 @@
         "type": "String"
       }
     }
+  },
+  "trainingHubRefreshStatus": "Rafraîchir",
+  "trainingHubRefreshTooltip": "Statut de rechargement depuis le serveur",
+  "trainingHubOpenCrimes": "Crimes ouverts",
+  "trainingHubOpenCrimesHint": "Les bonus actifs s'affichent sur l'écran Crimes.",
+  "trainingHubMoreInfoTitle": "Plus d'informations et d'options",
+  "trainingHubMoreInfoCombo": "Même jour calendaire UTC : terminez au moins une séance de gym et une séance de range pour un petit bonus supplémentaire de réussite en crime (+0,5 %).",
+  "trainingHubMoreInfoSeparate": "La salle de sport et le stand de tir conservent chacun leur propre temps de recharge d'une heure et leur propre plafond de 100 séances.",
+  "trainingHubMoreInfoHitlist": "La progression du stand de tir alimente également les calculs des listes de réussite sur le serveur.",
+  "trainingHubComboChip": "Combo actif : +{pct}% sur les crimes",
+  "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   }
 }
