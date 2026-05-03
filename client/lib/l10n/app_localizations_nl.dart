@@ -738,7 +738,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get countrySwitzerland => 'Zwitserland';
 
   @override
-  String get crew => 'Bemanning';
+  String get crew => 'Crew';
 
   @override
   String get profile => 'Profiel';
@@ -882,7 +882,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get liveEvents => 'Live events';
 
   @override
-  String get support => 'Steun';
+  String get support => 'Support';
 
   @override
   String get events => 'Evenementen';
@@ -897,10 +897,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bank => 'Bank';
 
   @override
-  String get tradeGoods => 'Zwarte markt';
+  String get tradeGoods => 'Handelswaren';
 
   @override
-  String get drugs => 'Geneesmiddelen';
+  String get drugs => 'Drugs';
 
   @override
   String get nightclub => 'Nachtclub';
@@ -7853,7 +7853,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionMyProstitutes => 'Mijn Prostituees';
 
   @override
-  String get prostitutionRedLightDistricts => 'Rosse buurten';
+  String get prostitutionRedLightDistricts => 'Red Light Districts';
 
   @override
   String get prostitutionNoProstitutes => 'Nog geen prostituees geworven';
@@ -10476,7 +10476,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportTimeJustNow => 'zojuist';
 
   @override
-  String get supportSenderSupport => 'Steun';
+  String get supportSenderSupport => 'Support';
 
   @override
   String get supportSenderYou => 'Jij';
