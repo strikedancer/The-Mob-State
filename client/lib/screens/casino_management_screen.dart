@@ -10,10 +10,14 @@ class CasinoManagementScreen extends StatefulWidget {
   final String countryId;
   final Map<String, dynamic> initialStats;
 
+  /// When true (opened from casino hub dialog), uses an inline header + close instead of a full [Scaffold] route.
+  final bool embeddedInDialog;
+
   const CasinoManagementScreen({
     super.key,
     required this.countryId,
     required this.initialStats,
+    this.embeddedInDialog = false,
   });
 
   @override
@@ -36,8 +40,10 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Refresh stats whenever returning to this screen
-    _refreshStats();
+    // Full-route only: avoid double-fetch when shown inside a dialog (initState already refreshes).
+    if (!widget.embeddedInDialog) {
+      _refreshStats();
+    }
   }
 
   Future<void> _refreshStats() async {
@@ -246,9 +252,7 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+  Widget _buildManagementBody(AppLocalizations l10n) {
     final bankroll = _stats?['bankroll'] ?? 0;
     final totalReceived = _stats?['totalReceived'] ?? 0;
     final totalPaidOut = _stats?['totalPaidOut'] ?? 0;
@@ -256,25 +260,13 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
     final profitMargin = _stats?['profitMargin'] ?? '0.00';
     final isBankrupt = _stats?['isBankrupt'] ?? false;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.casinoManagementTitle),
-        backgroundColor: Colors.purple[900],
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: _refreshStats,
-          ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
                   if (isBankrupt)
                     Container(
                       padding: EdgeInsets.all(16),
@@ -449,7 +441,72 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
                   ),
                 ],
               ),
+            );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (widget.embeddedInDialog) {
+      return Material(
+        color: Theme.of(context).colorScheme.surface,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Material(
+              color: Colors.purple[900],
+              child: SafeArea(
+                bottom: false,
+                child: SizedBox(
+                  height: kToolbarHeight,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      Expanded(
+                        child: Text(
+                          l10n.casinoManagementTitle,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.refresh, color: Colors.white),
+                        tooltip: MaterialLocalizations.of(context).refreshIndicatorSemanticLabel,
+                        onPressed: _isLoading ? null : _refreshStats,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
+            Expanded(child: _buildManagementBody(l10n)),
+          ],
+        ),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.casinoManagementTitle),
+        backgroundColor: Colors.purple[900],
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshStats,
+          ),
+        ],
+      ),
+      body: _buildManagementBody(l10n),
     );
   }
 

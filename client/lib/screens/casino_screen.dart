@@ -432,6 +432,39 @@ class _CasinoScreenState extends State<CasinoScreen> {
     });
   }
 
+  Future<void> _openCasinoManagement() async {
+    final countryId =
+        Provider.of<AuthProvider>(context, listen: false).currentPlayer?.currentCountry ??
+        'netherlands';
+    final stats = _casinoStats;
+    if (stats == null) return;
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        final mq = MediaQuery.of(dialogContext);
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 560,
+              maxHeight: mq.size.height * 0.9,
+            ),
+            child: CasinoManagementScreen(
+              countryId: countryId,
+              initialStats: stats,
+              embeddedInDialog: true,
+            ),
+          ),
+        );
+      },
+    );
+    if (mounted) await _loadCasinoStats();
+  }
+
   Widget _buildEmbeddedCasinoNavigator() {
     return Navigator(
       key: _gameNavigatorKey,
@@ -462,22 +495,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
       floatingActionButton:
           _isOwner && _casinoStats != null && !_gameRouteActive
           ? FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CasinoManagementScreen(
-                      countryId:
-                          Provider.of<AuthProvider>(
-                            context,
-                            listen: false,
-                          ).currentPlayer?.currentCountry ??
-                          'netherlands',
-                      initialStats: _casinoStats!,
-                    ),
-                  ),
-                ).then((_) => _loadCasinoStats());
-              },
+              onPressed: _openCasinoManagement,
               icon: Icon(Icons.settings),
               label: Text(l10n.manageCasino),
               backgroundColor: Colors.orange,

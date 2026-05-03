@@ -5,6 +5,7 @@ Casino hub, minigames, betting flow and casino ownership or management data.
 
 ## Primary Frontend Entry
 - client/lib/screens/casino_screen.dart
+- client/lib/screens/casino_management_screen.dart (`embeddedInDialog: true` when opened from the casino hub — modal dialog, not a pushed full-route)
 - client/lib/screens/games/baccarat_screen.dart
 - client/lib/screens/games/video_poker_screen.dart
 - client/assets/images/casino/baccarat.png

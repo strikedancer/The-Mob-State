@@ -663,7 +663,7 @@ Elk land heeft unieke goods:
 
 ## Casino
 
-- Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout.
+- Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout. **Casino beheer** (eigenaar) opent als **modal** boven het casino-hubblad (`showDialog` + `CasinoManagementScreen` met `embeddedInDialog`), geen tweede fullpage-route meer.
 - Casino hub en closed state moeten mobiel/tablet/desktop een robuuste verticale scrollflow houden.
 - Casino minigames moeten mobiel/tablet/desktop in Ã©Ã©n viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
 
