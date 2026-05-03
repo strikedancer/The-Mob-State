@@ -19808,6 +19808,12 @@ abstract class AppLocalizations {
   /// **'Weapon-based crimes use the selected crime weapon above.'**
   String get crimeWeaponFooterNote;
 
+  /// No description provided for @crimeTrainingBonusStrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Training bonuses on success chance: +{strengthPct}% strength, +{accuracyPct}% accuracy.'**
+  String crimeTrainingBonusStrip(String strengthPct, String accuracyPct);
+
   /// No description provided for @crimeCriminalRecordWipeDesc.
   ///
   /// In en, this message translates to:

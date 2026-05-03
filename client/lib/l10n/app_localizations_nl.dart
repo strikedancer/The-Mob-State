@@ -11260,6 +11260,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.';
 
   @override
+  String crimeTrainingBonusStrip(String strengthPct, String accuracyPct) {
+    return 'Trainingsbonus op slagingskans: +$strengthPct% kracht, +$accuracyPct% precisie.';
+  }
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
 

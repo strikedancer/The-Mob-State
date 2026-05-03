@@ -8330,5 +8330,16 @@
   "helpTopicTrainingHubTitle": "Centro de formación",
   "helpTopicTrainingHubSummary": "Gimnasio (fuerza) y campo de tiro (precisión) en un solo lugar. Ambos bonos aumentan tus posibilidades de éxito en el crimen; La precisión de los disparos también se utiliza en las acciones de la lista de objetivos. Cada pista tiene su propio tiempo de reutilización y un límite de 100 sesiones.",
   "helpTopicTrainingHubHow": "Gimnasio: cada sesión aumenta tu bonificación de fuerza permanente hasta un +8% total (100 sesiones). El tiempo de recuperación entre sesiones es de 1 hora (VIP puede acortarlo).\nRango de tiro: cada sesión aumenta tu bonificación de precisión permanente hasta +10% en total (100 sesiones). El tiempo de recuperación entre sesiones es de 1 hora (VIP puede acortarlo).\nEl servidor suma ambas bonificaciones a los cálculos de éxito del crimen.\nEntrenas cada pista por separado: dos cronómetros y dos botones de tren, una pantalla.\nEl progreso no se reinicia a menos que el personal aplique una fuerte penalización.",
-  "helpTopicTrainingHubTips": "Programe ambas pistas diariamente: los pequeños pasos se acumulan para lograr una ventaja clara sobre los delitos.\nRevise los delitos en los que más falla: la fuerza y ​​la precisión se complementan; no son la misma estadística."
+  "helpTopicTrainingHubTips": "Programe ambas pistas diariamente: los pequeños pasos se acumulan para lograr una ventaja clara sobre los delitos.\nRevise los delitos en los que más falla: la fuerza y ​​la precisión se complementan; no son la misma estadística.",
+  "crimeTrainingBonusStrip": "Bonos de entrenamiento en la probabilidad de éxito: +{strengthPct}% fuerza, +{accuracyPct}% precisión.",
+  "@crimeTrainingBonusStrip": {
+    "placeholders": {
+      "strengthPct": {
+        "type": "String"
+      },
+      "accuracyPct": {
+        "type": "String"
+      }
+    }
+  }
 }

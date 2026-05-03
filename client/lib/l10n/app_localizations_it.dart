@@ -11376,6 +11376,11 @@ class AppLocalizationsIt extends AppLocalizations {
       'I crimini basati sulle armi utilizzano l\'arma del crimine selezionata sopra.';
 
   @override
+  String crimeTrainingBonusStrip(String strengthPct, String accuracyPct) {
+    return 'Training bonuses on success chance: +$strengthPct% strength, +$accuracyPct% accuracy.';
+  }
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Falsifica atti giudiziari e cancella tutti i tuoi precedenti penali se l\'operazione ha successo.';
 

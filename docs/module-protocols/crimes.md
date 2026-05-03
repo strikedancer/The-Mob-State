@@ -6,6 +6,9 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 ## Primary Frontend Entry
 - client/lib/screens/crime_screen.dart
 
+## Related APIs
+- Crime success math uses gym strength and shooting-range accuracy bonuses from the server. The crime UI may call **`GET /training/status`** to show the same active bonus percentages the player has while committing crimes (transparent summary, not a second rules engine).
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
@@ -53,6 +56,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Verify weapon-required crimes clearly show which weapon is selected, block cleanly when no weapon is selected, and stay synced with Inventory after refresh/navigation.
 - Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit or market-listed.
 - Verify an arrest during a weapon-based crime confiscates the used weapon, clears the saved selection when no copy remains, and tells the player about the confiscation in the crime result feedback.
+- After pull-to-refresh, the training bonus strip (if shown) matches hub training progress for strength and accuracy.
 - Verify a crime that initially succeeds but ends in a police/FBI arrest no longer shows a success state, actually puts the player in jail, and applies the matching confiscation consequences.
 - Verify a failed start caused by missing vehicle, unsuitable weapon or missing ammo does not consume ammunition.
 - If a crime has a court-side effect, verify the linked court record updates after cooldown refresh and only the intended convictions are affected.

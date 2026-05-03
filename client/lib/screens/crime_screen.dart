@@ -45,14 +45,40 @@ class _CrimeScreenState extends State<CrimeScreen> {
   bool _showCrimeResult = false;
   int _crimeReward = 0;
   int _crimeXpGained = 0;
+  bool _trainingBonusesLoaded = false;
+  double _trainingStrengthBonus = 0;
+  double _trainingAccuracyBonus = 0;
 
   @override
   void initState() {
     super.initState();
     _checkJailStatusAndLoadCrimes();
+    _loadTrainingBonuses();
     _loadTools();
     _loadSelectedCrimeVehicle();
     _loadCrimeWeaponSelection();
+  }
+
+  Future<void> _loadTrainingBonuses() async {
+    try {
+      final response = await _apiClient.get('/training/status');
+      if (response.statusCode != 200 || !mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>?;
+      final gym = data?['gym'] as Map<String, dynamic>?;
+      final shooting = data?['shootingRange'] as Map<String, dynamic>?;
+      final strength =
+          (gym?['strengthBonus'] as num?)?.toDouble() ?? 0.0;
+      final accuracy =
+          (shooting?['accuracyBonus'] as num?)?.toDouble() ?? 0.0;
+      if (!mounted) return;
+      setState(() {
+        _trainingStrengthBonus = strength;
+        _trainingAccuracyBonus = accuracy;
+        _trainingBonusesLoaded = true;
+      });
+    } catch (e) {
+      print('[CrimeScreen] Error loading training bonuses: $e');
+    }
   }
 
   Future<void> _loadTools() async {
@@ -162,6 +188,37 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
   bool get _hasWeaponCrime =>
       _crimes.any((crime) => crime.requiredWeapon == true);
+
+  Widget _buildTrainingBonusBanner(AppLocalizations l10n) {
+    final strengthPct = (_trainingStrengthBonus * 100).toStringAsFixed(1);
+    final accuracyPct = (_trainingAccuracyBonus * 100).toStringAsFixed(1);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.45),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: const Color(0xFFD4AF37).withValues(alpha: 0.45),
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.trending_up, color: Color(0xFFD4AF37), size: 20),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                l10n.crimeTrainingBonusStrip(strengthPct, accuracyPct),
+                style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildCrimeWeaponSelector(AppLocalizations l10n) {
     final selectedWeapon = _weaponInventory
@@ -717,6 +774,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                 });
                 // Reload vehicle after crime to get updated stats
                 _loadSelectedCrimeVehicle();
+                _loadTrainingBonuses();
               },
             )
           : _jailTime != null && _jailTime! > 0
@@ -764,6 +822,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                         ? null
                         : () async {
                             await _checkJailStatusAndLoadCrimes();
+                            await _loadTrainingBonuses();
                             await _loadCrimeWeaponSelection(
                               showLoading: false,
                             );
@@ -776,6 +835,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
           : RefreshIndicator(
               onRefresh: () async {
                 await _checkJailStatusAndLoadCrimes();
+                await _loadTrainingBonuses();
                 await _loadCrimeWeaponSelection(showLoading: false);
               },
               child: Container(
@@ -797,6 +857,10 @@ class _CrimeScreenState extends State<CrimeScreen> {
                         child: _buildCrimeWeaponSelector(l10n),
                       ),
                     ),
+                    if (_trainingBonusesLoaded)
+                      SliverToBoxAdapter(
+                        child: _buildTrainingBonusBanner(l10n),
+                      ),
                     if (_hasWeaponCrime)
                       SliverToBoxAdapter(
                         child: Padding(

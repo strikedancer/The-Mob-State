@@ -13,10 +13,11 @@ Legacy wrappers (same UI):
 - `client/lib/screens/gym_screen.dart`
 - `client/lib/screens/shooting_range_screen.dart`
 
-## Backend (unchanged in MVP)
+## Backend
 
-- `backend/src/routes/gym.ts`, `backend/src/services/gymService.ts`
-- `backend/src/routes/shootingRange.ts`, `backend/src/services/shootingRange.ts`
+- `backend/src/routes/gym.ts`, `backend/src/services/gymService.ts` — train + status (unchanged contract).
+- `backend/src/routes/shootingRange.ts`, `backend/src/services/shootingRangeService.ts` — train + status (unchanged contract).
+- **`GET /training/status`** — `backend/src/routes/training.ts`: one authenticated round-trip returning `{ success, gym, shootingRange }` with the same objects as each module’s status endpoint (no nested `status` key). Used by `TrainingHubScreen` and the crimes screen bonus strip.
 - Player cooldown payload still exposes `cooldowns.gym` and `cooldowns.shooting_range` separately.
 
 ## Change rules

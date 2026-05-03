@@ -11392,6 +11392,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les crimes commis à l\'aide d\'armes utilisent l\'arme criminelle sélectionnée ci-dessus.';
 
   @override
+  String crimeTrainingBonusStrip(String strengthPct, String accuracyPct) {
+    return 'Training bonuses on success chance: +$strengthPct% strength, +$accuracyPct% accuracy.';
+  }
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Forgez des dossiers judiciaires et effacez l’intégralité de votre casier judiciaire si l’opération réussit.';
 

@@ -11398,6 +11398,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Bei waffenbasierten Straftaten wird die oben ausgewählte Straftatwaffe verwendet.';
 
   @override
+  String crimeTrainingBonusStrip(String strengthPct, String accuracyPct) {
+    return 'Training bonuses on success chance: +$strengthPct% strength, +$accuracyPct% accuracy.';
+  }
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Fälschen Sie Gerichtsakten und löschen Sie Ihr gesamtes Strafregister, wenn die Operation erfolgreich ist.';
 

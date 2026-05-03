@@ -34,6 +34,21 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
   Future<void> _loadAll() async {
     setState(() => _isLoading = true);
     try {
+      final combined = await _apiClient.get('/training/status');
+      if (combined.statusCode == 200) {
+        final data = jsonDecode(combined.body) as Map<String, dynamic>?;
+        if (!mounted) return;
+        setState(() {
+          _gymStatus = data?['gym'] as Map<String, dynamic>?;
+          _shootingStatus = data?['shootingRange'] as Map<String, dynamic>?;
+          _isLoading = false;
+        });
+        return;
+      }
+    } catch (_) {
+      // Fall through to legacy dual fetch (older servers).
+    }
+    try {
       final results = await Future.wait([
         _apiClient.get('/gym/status'),
         _apiClient.get('/shooting-range/status'),
