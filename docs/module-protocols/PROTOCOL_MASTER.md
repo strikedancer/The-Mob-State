@@ -326,6 +326,8 @@ Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitl
 
 **Crew mission kaarten (zelfde afbeelding bug):** ontbrekende `images/crew_missions/cards/<key>.png` op de externe mount laat de client op de **default** fallback in `_crewMissionFallbackImagePath` vallen — daardoor zagen meerdere nieuwe missies dezelfde plaat. Oplossing: (1) PNG’s genereren met `backend/scripts/generate_crew_missions_images_leonardo.py` (`LEONARDO_API_KEY`), (2) uploaden met `scripts/upload_crew_mission_images_to_vps.ps1`, (3) per nieuwe `missionKey` een eigen fallback in `crew_screen.dart` tot de assets live staan (zie `crew-missions.md` Image Pipeline).
 
+**Trade goods card thumbnails:** optionele Leonardo-batch `backend/scripts/generate_trade_goods_card_images_leonardo.py` schrijft `runtime/client-images/trade_goods/cards/<good_id>.png` (zelfde mount als `/images/`). De client gebruikt `WebAssetHelper` met fallback (gradient + emoji) als het bestand ontbreekt. Zie `docs/module-protocols/trade.md`.
+
 **Agent / Cursor**
 
 - Zelfde PowerShell-aanroep kan vanuit de agent **als** Pageant op die machine draait en netwerk/proxy het toelaten.

@@ -511,32 +511,26 @@
     "summaryNl": "Koop goederen goedkoop in het ene land en verkoop duur in een ander. Prijsverschillen tot 300% zijn mogelijk.",
     "summaryEn": "Buy goods cheap in one country and sell expensive in another. Price differences up to 300% are possible.",
     "howNl": [
-      "Elk land heeft unieke handelsgoederen met eigen basisprijzen: Diamanten (Zuid-Afrika), Drugs (Colombia), Wapens (USA), Kunst (Frankrijk), Elektronica (Japan), Alcohol (Schotland).",
-      "Marktprijzen fluctueren elke tick (5 minuten) tussen 0.5x en 2.0x de basisprijs. Prijzen kunnen dalen terwijl je onderweg bent.",
-      "Kopen kan alleen in het land waar het goed beschikbaar is. Verkopen is het meest waard in een ander land.",
-      "Risico bij transport: politie confisqueert bij hoog Wanted Level (kans = wanted × 2%, max 80%); FBI raidt internationaal op basis van heat + goederenwaarde.",
-      "Douane heeft 10% basiskans bij grensovergang. Betaal €1.000-€5.000 steekpenning of verlies 50% van de lading.",
-      "Combineer trade met smokkelen voor hogere marges maar ook hoger risico op inbeslagname.",
-      "Je kunt onbeperkte hoeveelheden kopen zolang je genoeg cash hebt en inventaristruimte beschikbaar is."
+      "In deze build smokkel je vijf soorten handelswaar: bloemen, elektronica, diamanten, wapens en farmaceutica — elk met eigen basisprijs, inventarislimiet en reis-/marktrisico's (zie de chips op het Handel-scherm: bederfvenster, prijsvolatiliteit, tripschade, inbeslagnemingskans).",
+      "Koopkansen variëren met landmultipliers en volatility per goed waar van toepassing. Verkoop volgt de actuele verkoopprijs; bij elektronica verlaagt de conditie de doorverkoop.",
+      "Bloemen bederven na het geconfigureerde aantal uren na aankoop. Wapens en medicijnen kunnen deels worden ingenomen tijdens reizen; combineer met smokkel voor hogere risico's.",
+      "Je hebt voldoende cash, inventarisruimte en het juiste landrondje nodig voor winst."
     ],
     "howEn": [
-      "Each country has unique trade goods with own base prices: Diamonds (South Africa), Drugs (Colombia), Weapons (USA), Art (France), Electronics (Japan), Alcohol (Scotland).",
-      "Market prices fluctuate every tick (5 minutes) between 0.5x and 2.0x base price. Prices can drop while you are traveling.",
-      "Buying is only possible in the country where the good is available. Selling is most valuable in a different country.",
-      "Transport risk: police confiscate at high Wanted Level (chance = wanted × 2%, max 80%); FBI raids internationally based on heat + goods value.",
-      "Customs has a 10% base chance at border crossings. Pay €1.000-€5.000 bribe or lose 50% of cargo.",
-      "Combine trade with smuggling for higher margins but also higher seizure risk.",
-      "You can buy unlimited quantities as long as you have enough cash and inventory space."
+      "Contraband trade goods in this build: flowers, electronics, diamonds, weapons and pharmaceuticals — each with its own base price, inventory cap and travel/market risks (see the Trade screen chips: spoilage window, price volatility, trip damage, seizure chance).",
+      "Buy prices vary by country multiplier and per-good volatility where configured. Selling uses the live sell price; electronics resale is reduced by current condition.",
+      "Flowers spoil after the configured hours from purchase. Weapons and pharmaceuticals can be partially seized on travel; combine with smuggling for higher stakes.",
+      "You still need enough cash, inventory space and to be in the right country loop for profitable runs."
     ],
     "tipsNl": [
-      "Monitor marktprijzen vlak voor vertrek en niet eerder — prijzen bewegen elke 5 minuten.",
-      "Verlaag Wanted Level voor elke trade-reis: confiscatie van een volle lading is een catastrofaal verlies.",
-      "Kalkuleer altijd reiskosten, douane-risico en tijdverlies mee in je winstberekening."
+      "Als één deel van de markt niet laadt, trek om te verversen — je kunt soms nog handelen als prijzen of inventaris wél geladen zijn.",
+      "Let op de risicochips per goed: bloemen bederven, diamanten zwaaien in prijs, elektronica verliest conditie per trip, wapens en medicijnen kunnen worden ingenomen.",
+      "Houd Wanted laag voor risicovolle ritten. Reken reiskosten en tijd mee in je marge."
     ],
     "tipsEn": [
-      "Check market prices right before departure, not earlier — prices move every 5 minutes.",
-      "Lower Wanted Level before every trade trip: confiscation of a full cargo is a catastrophic loss.",
-      "Always include travel costs, customs risk and time loss in your profit calculation."
+      "If one part of the market fails to load, pull to retry — you can still trade when prices or inventory loaded.",
+      "Watch the risk chips per good: flowers spoil, diamonds swing in price, electronics lose condition on trips, weapons and pharmaceuticals can be seized.",
+      "Lower Wanted before risky runs. Include travel cost and time in your margin."
     ],
     "protocolPath": "docs/module-protocols/trade.md"
   },

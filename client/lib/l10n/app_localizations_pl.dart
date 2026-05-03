@@ -5253,6 +5253,58 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get tradeLoadGoodsFailed => 'Nie można załadować katalogu towarów';
+
+  @override
+  String get tradeLoadPricesFailed => 'Nie udało się wczytać aktualnych cen';
+
+  @override
+  String get tradeLoadInventoryFailed =>
+      'Nie można załadować Twojego ekwipunku handlowego';
+
+  @override
+  String get tradePartialDataBanner =>
+      'Nie udało się odświeżyć niektórych danych rynkowych. Pociągnij w dół, aby spróbować ponownie.';
+
+  @override
+  String get tradeMarketLoadAllFailed =>
+      'Nie udało się załadować rynku. Pociągnij w dół, aby spróbować ponownie.';
+
+  @override
+  String get tradeNoGoodsLoaded => 'W tej chwili nie ma żadnych towarów.';
+
+  @override
+  String get tradeRiskPanelTitle => 'Ryzyko związane z podróżami i rynkiem';
+
+  @override
+  String get tradeRiskPanelSubtitle =>
+      'Każdy towar wykazuje oznaki zepsucia, wahań cen, szkód spowodowanych podróżą lub konfiskaty, jeśli ma to zastosowanie.';
+
+  @override
+  String get tradeRiskInsightBody =>
+      'KWIATY: zepsuć po upływie czasu od zakupu — sprzedać w terminie. \nDIAMENTY: ceny kupna wahają się w zależności od zmienności; zaplanuj, gdzie będziesz sprzedawać za granicą. \nELEKTRONIKA: może stracić stan przy każdej podróży, co obniża wartość odsprzedaży. \nBROŃ i FARMACEUTYKI: podczas podróży może nastąpić częściowe zatrzymanie — trzymaj niski poziom poszukiwanego i zapoznaj się z przepisami dotyczącymi przemytu. \nCeny na tym ekranie zawierają już mnożnik Twojego aktualnego kraju.';
+
+  @override
+  String tradeRiskSpoilageHours(String hours) {
+    return '${hours}h okno zepsucia';
+  }
+
+  @override
+  String tradeRiskVolatilityPct(String pct) {
+    return '±$pct% wahań cen';
+  }
+
+  @override
+  String tradeRiskConfiscationPct(String pct) {
+    return '$pct% ryzyka napadów na podróż';
+  }
+
+  @override
+  String tradeRiskDamageTripPct(String pct) {
+    return '$pct% szans na obrażenia na podróż';
+  }
+
+  @override
   String get appeal => 'Odwołanie';
 
   @override
@@ -13518,11 +13570,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicTradeHow =>
-      'Każdy kraj ma unikalne towary handlowe z własnymi cenami bazowymi: Diamenty (RPA), Narkotyki (Kolumbia), Broń (USA), Sztuka (Francja), Elektronika (Japonia), Alkohol (Szkocja). \nCeny rynkowe wahają się co 5 minut od ceny bazowej od 0,5x do 2,0x. Ceny mogą spaść podczas podróży. \nZakup możliwy jest wyłącznie w kraju, w którym towar jest dostępny. Sprzedaż jest najbardziej wartościowa w innym kraju. \nRyzyko transportu: konfiskata policyjna w przypadku wysokiego poziomu poszukiwanego (szansa = osoba poszukiwana × 2%, maksymalnie 80%); FBI przeprowadza międzynarodowe naloty na podstawie ciepła i wartości towarów. \nSłużba celna ma 10% bazowej szansy na przekroczeniu granicy. Zapłać łapówkę w wysokości 1000–5000 euro lub strać 50% ładunku. \nPołącz handel z przemytem, ​​aby uzyskać wyższe marże, ale także większe ryzyko konfiskat. \nMożesz kupować nieograniczone ilości, o ile masz wystarczająco dużo gotówki i miejsca w ekwipunku.';
+      'Kontrabanda w tej wersji: kwiaty, elektronika, diamenty, broń i farmaceutyki – każdy z własną ceną bazową, limitem zapasów i ryzykiem związanym z podróżą/rynkiem (patrz żetony na ekranie handlu: okno zepsucia, zmienność cen, obrażenia spowodowane podróżą, szansa na zajęcie). \nCeny kupna różnią się w zależności od mnożnika kraju i zmienności poszczególnych towarów, jeśli są skonfigurowane. Do sprzedaży wykorzystuje się aktualną cenę sprzedaży; odsprzedaż elektroniki jest pomniejszana o aktualny stan. \nKwiaty psują się po skonfigurowanych godzinach od zakupu. Broń i farmaceutyki mogą zostać częściowo skonfiskowane podczas podróży; połączyć z przemytem, ​​aby uzyskać wyższą stawkę. \nNadal potrzebujesz wystarczającej ilości gotówki, miejsca w ekwipunku i znalezienia się w odpowiedniej pętli kraju, aby zapewnić zyskowne biegi.';
 
   @override
   String get helpTopicTradeTips =>
-      'Sprawdź ceny rynkowe tuż przed wylotem, a nie wcześniej — ceny zmieniają się co 5 minut. \nNiższy poziom poszukiwanego przed każdą podróżą handlową: konfiskata pełnego ładunku to katastrofalna strata. \nW kalkulacji zysku zawsze uwzględniaj koszty podróży, ryzyko celne i stratę czasu.';
+      'Jeśli załadowanie jednej części rynku nie powiedzie się, pociągnij, aby spróbować ponownie — nadal możesz handlować, gdy załadowane zostaną ceny lub zapasy. \nZwróć uwagę na ryzyko związane z towarem: psują się kwiaty, ceny diamentów wahają się, elektronika traci stan podczas podróży, można skonfiskować broń i farmaceutyki. \nNiższy Poszukiwany przed ryzykownymi biegami. Uwzględnij w marży koszt i czas podróży.';
 
   @override
   String get helpTopicBlackMarketCategory => 'Gospodarka';

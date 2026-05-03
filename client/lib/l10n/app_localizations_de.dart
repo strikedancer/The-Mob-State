@@ -5278,6 +5278,60 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get tradeLoadGoodsFailed =>
+      'Der Warenkatalog konnte nicht geladen werden';
+
+  @override
+  String get tradeLoadPricesFailed =>
+      'Aktuelle Preise konnten nicht geladen werden';
+
+  @override
+  String get tradeLoadInventoryFailed =>
+      'Ihr Handelsinventar konnte nicht geladen werden';
+
+  @override
+  String get tradePartialDataBanner =>
+      'Einige Marktdaten konnten nicht aktualisiert werden. Zum erneuten Versuch nach unten ziehen.';
+
+  @override
+  String get tradeMarketLoadAllFailed =>
+      'Der Markt konnte nicht geladen werden. Zum erneuten Versuch nach unten ziehen.';
+
+  @override
+  String get tradeNoGoodsLoaded => 'Im Moment sind keine Waren verfügbar.';
+
+  @override
+  String get tradeRiskPanelTitle => 'Reise- und Marktrisiken';
+
+  @override
+  String get tradeRiskPanelSubtitle =>
+      'Jede Ware weist gegebenenfalls Verderb, Preisschwankungen, Reiseschäden oder Beschlagnahmungen auf.';
+
+  @override
+  String get tradeRiskInsightBody =>
+      'BLUMEN: Verderben nach Ablauf der Kaufzeit – rechtzeitig verkaufen. \nDIAMANTEN: Kaufpreise schwanken mit der Volatilität; Planen Sie, wo Sie im Ausland verkaufen. \nELEKTRONIK: kann bei jeder Fahrt ihren Zustand verlieren, was den Wiederverkaufswert senkt. \nWAFFEN und PHARMAZEUTIKA: Auf Reisen kann es zu teilweiser Beschlagnahmung kommen – halten Sie die Fahndung niedrig und lesen Sie die Schmuggelregeln. \nDie Preise auf diesem Bildschirm beinhalten bereits Ihren aktuellen Ländermultiplikator.';
+
+  @override
+  String tradeRiskSpoilageHours(String hours) {
+    return '${hours}h Verderbfenster';
+  }
+
+  @override
+  String tradeRiskVolatilityPct(String pct) {
+    return '±$pct% Preisschwankung';
+  }
+
+  @override
+  String tradeRiskConfiscationPct(String pct) {
+    return '$pct % Anfallsrisiko pro Fahrt';
+  }
+
+  @override
+  String tradeRiskDamageTripPct(String pct) {
+    return '$pct % Schadenschance pro Fahrt';
+  }
+
+  @override
   String get appeal => 'Appellieren';
 
   @override
@@ -13583,11 +13637,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicTradeHow =>
-      'Jedes Land verfügt über einzigartige Handelsgüter mit eigenen Grundpreisen: Diamanten (Südafrika), Drogen (Kolumbien), Waffen (USA), Kunst (Frankreich), Elektronik (Japan), Alkohol (Schottland). \nDie Marktpreise schwanken bei jedem Tick (5 Minuten) zwischen dem 0,5-fachen und dem 2,0-fachen Basispreis. Während der Reise können die Preise sinken. \nDer Kauf ist nur in dem Land möglich, in dem die Ware erhältlich ist. Der Verkauf ist in einem anderen Land am wertvollsten. \nTransportrisiko: Polizei beschlagnahmt bei hoher Fahndungsstufe (Chance = Fahndung × 2 %, max. 80 %); Das FBI führt international Razzien durch, basierend auf Wärme- und Warenwert. \nDer Zoll hat bei Grenzübergängen eine Grundchance von 10 %. Zahlen Sie 1.000 bis 5.000 € Bestechungsgeld oder verlieren Sie 50 % der Ladung. \nKombinieren Sie Handel mit Schmuggel, um höhere Margen, aber auch ein höheres Beschlagnahmungsrisiko zu erzielen. \nSie können unbegrenzte Mengen kaufen, solange Sie über genügend Bargeld und Lagerplatz verfügen.';
+      'Schmuggelware für den Handel in diesem Build: Blumen, Elektronik, Diamanten, Waffen und Arzneimittel – jeweils mit eigenem Grundpreis, Inventarobergrenze und Reise-/Marktrisiken (siehe Chips auf dem Handelsbildschirm: Verderbfenster, Preisvolatilität, Reiseschaden, Beschlagnahmungswahrscheinlichkeit). \nDie Kaufpreise variieren je nach Ländermultiplikator und Volatilität pro Ware, sofern konfiguriert. Beim Verkauf wird der Live-Verkaufspreis verwendet. Der Wiederverkauf von Elektronikartikeln wird um den aktuellen Zustand reduziert. \nBlumen verderben nach den angegebenen Stunden ab Kauf. Waffen und Arzneimittel können auf Reisen teilweise beschlagnahmt werden; kombiniert mit Schmuggel für höhere Einsätze. \nFür profitable Läufe benötigen Sie immer noch genügend Bargeld, Lagerfläche und die richtige Landschleife.';
 
   @override
   String get helpTopicTradeTips =>
-      'Überprüfen Sie die Marktpreise direkt vor Abflug, nicht früher – die Preise ändern sich alle 5 Minuten. \nNiedrigeres Fahndungsniveau vor jeder Handelsreise: Die Beschlagnahmung einer vollen Ladung ist ein katastrophaler Verlust. \nBerücksichtigen Sie stets Reisekosten, Zollrisiko und Zeitverlust in Ihrer Gewinnkalkulation.';
+      'Wenn ein Teil des Marktes nicht geladen werden kann, versuchen Sie es erneut. Sie können weiterhin handeln, wenn die Preise oder der Lagerbestand geladen sind. \nBeobachten Sie die Risiken pro Ware: Blumen verderben, Diamanten schwanken im Preis, elektronische Geräte verlieren auf Reisen ihren Zustand, Waffen und Medikamente können beschlagnahmt werden. \nNiedriger Gesucht vor riskanten Läufen. Berücksichtigen Sie Reisekosten und Zeit in Ihrer Marge.';
 
   @override
   String get helpTopicBlackMarketCategory => 'Wirtschaft';

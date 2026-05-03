@@ -5235,6 +5235,58 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get tradeLoadGoodsFailed => 'Kan goederencatalogus niet laden';
+
+  @override
+  String get tradeLoadPricesFailed => 'Kan huidige prijzen niet laden';
+
+  @override
+  String get tradeLoadInventoryFailed => 'Kan uw handelsinventaris niet laden';
+
+  @override
+  String get tradePartialDataBanner =>
+      'Sommige marktgegevens konden niet worden vernieuwd. Trek omlaag om het opnieuw te proberen.';
+
+  @override
+  String get tradeMarketLoadAllFailed =>
+      'De markt kon niet worden geladen. Trek omlaag om het opnieuw te proberen.';
+
+  @override
+  String get tradeNoGoodsLoaded =>
+      'Er zijn momenteel geen goederen beschikbaar.';
+
+  @override
+  String get tradeRiskPanelTitle => 'Reis- en marktrisico\'s';
+
+  @override
+  String get tradeRiskPanelSubtitle =>
+      'Elk goed vertoont waar van toepassing bederf, prijsschommelingen, reisschade of inbeslagname.';
+
+  @override
+  String get tradeRiskInsightBody =>
+      'BLOEMEN: bederven na de timer vanaf aankoop — verkoop op tijd.\nDIAMANTEN: koopprijzen schommelen met volatiliteit; plan waar je in het buitenland verkoopt.\nELEKTRONICA: kan per rit conditie verliezen, waardoor de verkoopwaarde daalt.\nWAPENS en FARMACEUTICA: gedeeltelijke inbeslagneming kan tijdens reizen — houd Wanted laag en lees de smokkelregels.\nPrijzen op dit scherm tonen al je huidige landmultiplier.';
+
+  @override
+  String tradeRiskSpoilageHours(String hours) {
+    return '${hours}h bederfvenster';
+  }
+
+  @override
+  String tradeRiskVolatilityPct(String pct) {
+    return '±$pct% prijsschommeling';
+  }
+
+  @override
+  String tradeRiskConfiscationPct(String pct) {
+    return '$pct% inbeslagnemingsrisico per rit';
+  }
+
+  @override
+  String tradeRiskDamageTripPct(String pct) {
+    return '$pct% schadekans per rit';
+  }
+
+  @override
   String get appeal => 'Hoger Beroep';
 
   @override
@@ -13418,11 +13470,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTradeHow =>
-      'Elk land heeft unieke handelsgoederen met eigen basisprijzen: Diamanten (Zuid-Afrika), Drugs (Colombia), Wapens (USA), Kunst (Frankrijk), Elektronica (Japan), Alcohol (Schotland).\nMarktprijzen fluctueren elke tick (5 minuten) tussen 0.5x en 2.0x de basisprijs. Prijzen kunnen dalen terwijl je onderweg bent.\nKopen kan alleen in het land waar het goed beschikbaar is. Verkopen is het meest waard in een ander land.\nRisico bij transport: politie confisqueert bij hoog Wanted Level (kans = wanted × 2%, max 80%); FBI raidt internationaal op basis van heat + goederenwaarde.\nDouane heeft 10% basiskans bij grensovergang. Betaal €1.000-€5.000 steekpenning of verlies 50% van de lading.\nCombineer trade met smokkelen voor hogere marges maar ook hoger risico op inbeslagname.\nJe kunt onbeperkte hoeveelheden kopen zolang je genoeg cash hebt en inventaristruimte beschikbaar is.';
+      'In deze build smokkel je vijf soorten handelswaar: bloemen, elektronica, diamanten, wapens en farmaceutica — elk met eigen basisprijs, inventarislimiet en reis-/marktrisico\'s (zie de chips op het Handel-scherm: bederfvenster, prijsvolatiliteit, tripschade, inbeslagnemingskans).\nKoopkansen variëren met landmultipliers en volatility per goed waar van toepassing. Verkoop volgt de actuele verkoopprijs; bij elektronica verlaagt de conditie de doorverkoop.\nBloemen bederven na het geconfigureerde aantal uren na aankoop. Wapens en medicijnen kunnen deels worden ingenomen tijdens reizen; combineer met smokkel voor hogere risico\'s.\nJe hebt voldoende cash, inventarisruimte en het juiste landrondje nodig voor winst.';
 
   @override
   String get helpTopicTradeTips =>
-      'Monitor marktprijzen vlak voor vertrek en niet eerder — prijzen bewegen elke 5 minuten.\nVerlaag Wanted Level voor elke trade-reis: confiscatie van een volle lading is een catastrofaal verlies.\nKalkuleer altijd reiskosten, douane-risico en tijdverlies mee in je winstberekening.';
+      'Als één deel van de markt niet laadt, trek om te verversen — je kunt soms nog handelen als prijzen of inventaris wél geladen zijn.\nLet op de risicochips per goed: bloemen bederven, diamanten zwaaien in prijs, elektronica verliest conditie per trip, wapens en medicijnen kunnen worden ingenomen.\nHoud Wanted laag voor risicovolle ritten. Reken reiskosten en tijd mee in je marge.';
 
   @override
   String get helpTopicBlackMarketCategory => 'Economie';

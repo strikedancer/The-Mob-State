@@ -58,7 +58,6 @@
     "tradeBonuses": {
       "contraband_flowers": 0.8,
       "contraband_electronics": 1.0,
-      "contraband_diamonds": 1.1,
       "contraband_diamonds": 1.2,
       "contraband_weapons": 1.3,
       "contraband_pharmaceuticals": 0.9

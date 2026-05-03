@@ -5246,6 +5246,60 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get tradeLoadGoodsFailed =>
+      'Não foi possível carregar o catálogo de mercadorias';
+
+  @override
+  String get tradeLoadPricesFailed =>
+      'Não foi possível carregar os preços atuais';
+
+  @override
+  String get tradeLoadInventoryFailed =>
+      'Não foi possível carregar seu inventário comercial';
+
+  @override
+  String get tradePartialDataBanner =>
+      'Alguns dados de mercado não puderam ser atualizados. Puxe para baixo para tentar novamente.';
+
+  @override
+  String get tradeMarketLoadAllFailed =>
+      'O mercado não pôde ser carregado. Puxe para baixo para tentar novamente.';
+
+  @override
+  String get tradeNoGoodsLoaded => 'Nenhum produto está disponível no momento.';
+
+  @override
+  String get tradeRiskPanelTitle => 'Riscos de viagens e de mercado';
+
+  @override
+  String get tradeRiskPanelSubtitle =>
+      'Cada bem apresenta deterioração, oscilações de preços, danos causados ​​por viagem ou confisco quando aplicável.';
+
+  @override
+  String get tradeRiskInsightBody =>
+      'FLORES: estragam após o tempo de compra - vendem a tempo. \nDIAMANTES: os preços de compra oscilam com a volatilidade; planeje onde você vende no exterior. \nELETRÔNICOS: podem perder o estado a cada viagem, o que diminui o valor de revenda. \nARMAS e PRODUTOS FARMACÊUTICOS: a apreensão parcial pode acontecer durante viagens – mantenha o número de procurados baixo e leia as regras de contrabando. \nOs preços nesta tela já incluem o multiplicador atual do seu país.';
+
+  @override
+  String tradeRiskSpoilageHours(String hours) {
+    return '${hours}h janela de estragar';
+  }
+
+  @override
+  String tradeRiskVolatilityPct(String pct) {
+    return '±$pct% oscilação de preço';
+  }
+
+  @override
+  String tradeRiskConfiscationPct(String pct) {
+    return '$pct% de risco de convulsão por viagem';
+  }
+
+  @override
+  String tradeRiskDamageTripPct(String pct) {
+    return '$pct% de chance de dano por viagem';
+  }
+
+  @override
   String get appeal => 'Apelo';
 
   @override
@@ -13513,11 +13567,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicTradeHow =>
-      'Cada país tem bens comerciais únicos com preços base próprios: Diamantes (África do Sul), Drogas (Colômbia), Armas (EUA), Arte (França), Eletrônicos (Japão), Álcool (Escócia). \nOs preços de mercado flutuam a cada tick (5 minutos) entre 0,5x e 2,0x o preço base. Os preços podem cair durante a viagem. \nA compra só é possível no país onde o bem está disponível. Vender é mais valioso em um país diferente. \nRisco de transporte: a polícia confisca num nível de procurado elevado (probabilidade = procurado × 2%, máximo 80%); Ataques do FBI internacionalmente com base no valor do calor + dos bens. \nA alfândega tem uma chance básica de 10% nas passagens de fronteira. Pague suborno de 1.000 a 5.000 euros ou perca 50% da carga. \nCombine o comércio com o contrabando para obter margens mais elevadas, mas também para aumentar o risco de apreensão. \nVocê pode comprar quantidades ilimitadas, desde que tenha dinheiro e espaço de estoque suficientes.';
+      'Mercadorias de contrabando nesta compilação: flores, eletrônicos, diamantes, armas e produtos farmacêuticos — cada um com seu próprio preço base, limite de estoque e riscos de viagem/mercado (veja os chips da tela de comércio: janela de deterioração, volatilidade de preços, danos de viagem, chance de apreensão). \nOs preços de compra variam de acordo com o multiplicador do país e a volatilidade por bem, quando configurada. A venda usa o preço de venda ao vivo; a revenda de eletrônicos é reduzida pelas condições atuais. \nAs flores estragam após o horário configurado desde a compra. Armas e produtos farmacêuticos podem ser parcialmente apreendidos em viagens; combine com o contrabando para apostas mais altas. \nVocê ainda precisa de dinheiro suficiente, espaço em estoque e estar no circuito certo do país para corridas lucrativas.';
 
   @override
   String get helpTopicTradeTips =>
-      'Verifique os preços de mercado antes da partida, não antes – os preços mudam a cada 5 minutos. \nDiminuir o nível de procurado antes de cada viagem comercial: o confisco de uma carga completa é uma perda catastrófica. \nSempre inclua custos de viagem, riscos alfandegários e perda de tempo no cálculo do lucro.';
+      'Se uma parte do mercado não carregar, puxe para tentar novamente – você ainda poderá negociar quando os preços ou o estoque estiverem carregados. \nObserve o risco de fichas por bem: flores estragam, diamantes oscilam de preço, eletrônicos perdem condição em viagens, armas e produtos farmacêuticos podem ser apreendidos. \nLower Wanted antes de corridas arriscadas. Inclua o custo e o tempo de viagem em sua margem.';
 
   @override
   String get helpTopicBlackMarketCategory => 'Economia';

@@ -581,41 +581,27 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 ### Munitiefabriek (ammo)
 - Productie wordt **server-side** getakt (claim-interval en output per tick); bij te hoge pacing kan dit worden verlaagd zonder client-wijziging. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
 
-### Tradable Goods
-Elk land heeft unieke goods:
-- **Diamonds** (Zuid-Afrika)
-- **Drugs** (Colombia)
-- **Weapons** (USA)
-- **Art** (Frankrijk)
-- **Electronics** (Japan)
-- **Alcohol** (Schotland)
+### Tradable Goods (huidige build)
+Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
+- **Flowers**, **electronics**, **diamonds**, **weapons**, **pharmaceuticals**
+- Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via het trade-scherm en gekoppelde inventory.
 
-### Trade Mechanics
+### Client UX (trade_screen)
+- Marktdata wordt in **drie segmenten** geladen (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Faalt één segment, dan volgt een **banner** en blijft de rest bruikbaar; alleen als **alles** faalt, zie je de fatale leegtoestand.
+- Per goed tonen **chips** server-gestuurde risico’s waar aanwezig: bederfvenster (bloemen), prijsvolatiliteit (diamonds), tripschade (electronics), inbeslagnemingskans (wapens/farmaceutica). Het paneel “Travel and market risks” vat het gedrag tekstueel samen.
+- **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/…` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).
 
-#### Buying
-- **Price**: Base price Ã— market fluctuation
-- **Quantity**: Onbeperkt (als je geld hebt)
-- **Inventory**: Opgeslagen in je inventory
-- **Location locked**: Kan alleen kopen in specifiek land
+### Trade Mechanics (samenvatting)
+- **Kopen/verkopen**: live prijzen en inventory; elektronica-verkoop hangt af van **conditie**.
+- **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
-#### Selling
-- **Price**: Base price Ã— market fluctuation
-- **Location**: Verkopen in ander land dan kopen
-- **Profit margins**: 20-300% mogelijk
-- **Inventory**: Direct verkocht
-
-### Market Fluctuation
-- **Range**: 0.5x tot 2.0x base price
-- **Changes**: Elke tick (5 minuten)
-- **Risk**: Prijzen kunnen dalen tijdens reis
-
-### Trade Risk Factors
+### Trade Risk Factors (legacy / algemeen)
+Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s; details per goed staan op het trade-scherm en in `docs/module-protocols/trade.md` / `TRADE_RISK_MECHANICS` waar van toepassing.
 
 #### Police Seizure
 - **Chance**: Based on wanted level
 - **Formula**: `min(wantedLevel * 2, 80)%`
-- **Loss**: Alle goods geconfisceerd
-- **Jail time**: +30 minuten
+- **Loss**: Kan (gedeeltelijke) confiscatie van lading betekenen — zie ook trade-chips voor wapens/farmaceutica.
 
 #### FBI Raid (International Trade)
 - **Chance**: Based on FBI heat + goods value

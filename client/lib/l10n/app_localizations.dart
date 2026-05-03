@@ -9433,6 +9433,84 @@ abstract class AppLocalizations {
   /// **'Error loading market data: {error}'**
   String errorLoadingMarketData(String error);
 
+  /// No description provided for @tradeLoadGoodsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load goods catalog'**
+  String get tradeLoadGoodsFailed;
+
+  /// No description provided for @tradeLoadPricesFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load current prices'**
+  String get tradeLoadPricesFailed;
+
+  /// No description provided for @tradeLoadInventoryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your trade inventory'**
+  String get tradeLoadInventoryFailed;
+
+  /// No description provided for @tradePartialDataBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Some market data could not be refreshed. Pull down to retry.'**
+  String get tradePartialDataBanner;
+
+  /// No description provided for @tradeMarketLoadAllFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The market could not be loaded. Pull down to retry.'**
+  String get tradeMarketLoadAllFailed;
+
+  /// No description provided for @tradeNoGoodsLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'No goods are available right now.'**
+  String get tradeNoGoodsLoaded;
+
+  /// No description provided for @tradeRiskPanelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel and market risks'**
+  String get tradeRiskPanelTitle;
+
+  /// No description provided for @tradeRiskPanelSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Each good shows spoilage, price swings, trip damage or confiscation where it applies.'**
+  String get tradeRiskPanelSubtitle;
+
+  /// No description provided for @tradeRiskInsightBody.
+  ///
+  /// In en, this message translates to:
+  /// **'FLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS: buy prices swing with volatility; plan where you sell abroad.\nELECTRONICS: can lose condition each trip, which lowers resale value.\nWEAPONS and PHARMACEUTICALS: partial seizure can happen on travel — keep Wanted low and read smuggling rules.\nPrices on this screen already include your current country multiplier.'**
+  String get tradeRiskInsightBody;
+
+  /// No description provided for @tradeRiskSpoilageHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h spoil window'**
+  String tradeRiskSpoilageHours(String hours);
+
+  /// No description provided for @tradeRiskVolatilityPct.
+  ///
+  /// In en, this message translates to:
+  /// **'±{pct}% price swing'**
+  String tradeRiskVolatilityPct(String pct);
+
+  /// No description provided for @tradeRiskConfiscationPct.
+  ///
+  /// In en, this message translates to:
+  /// **'{pct}% seizure risk per trip'**
+  String tradeRiskConfiscationPct(String pct);
+
+  /// No description provided for @tradeRiskDamageTripPct.
+  ///
+  /// In en, this message translates to:
+  /// **'{pct}% damage chance per trip'**
+  String tradeRiskDamageTripPct(String pct);
+
   /// No description provided for @appeal.
   ///
   /// In en, this message translates to:
@@ -23505,13 +23583,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTradeHow.
   ///
   /// In en, this message translates to:
-  /// **'Each country has unique trade goods with own base prices: Diamonds (South Africa), Drugs (Colombia), Weapons (USA), Art (France), Electronics (Japan), Alcohol (Scotland).\nMarket prices fluctuate every tick (5 minutes) between 0.5x and 2.0x base price. Prices can drop while you are traveling.\nBuying is only possible in the country where the good is available. Selling is most valuable in a different country.\nTransport risk: police confiscate at high Wanted Level (chance = wanted × 2%, max 80%); FBI raids internationally based on heat + goods value.\nCustoms has a 10% base chance at border crossings. Pay €1.000-€5.000 bribe or lose 50% of cargo.\nCombine trade with smuggling for higher margins but also higher seizure risk.\nYou can buy unlimited quantities as long as you have enough cash and inventory space.'**
+  /// **'Contraband trade goods in this build: flowers, electronics, diamonds, weapons and pharmaceuticals — each with its own base price, inventory cap and travel/market risks (see the Trade screen chips: spoilage window, price volatility, trip damage, seizure chance).\nBuy prices vary by country multiplier and per-good volatility where configured. Selling uses the live sell price; electronics resale is reduced by current condition.\nFlowers spoil after the configured hours from purchase. Weapons and pharmaceuticals can be partially seized on travel; combine with smuggling for higher stakes.\nYou still need enough cash, inventory space and to be in the right country loop for profitable runs.'**
   String get helpTopicTradeHow;
 
   /// No description provided for @helpTopicTradeTips.
   ///
   /// In en, this message translates to:
-  /// **'Check market prices right before departure, not earlier — prices move every 5 minutes.\nLower Wanted Level before every trade trip: confiscation of a full cargo is a catastrophic loss.\nAlways include travel costs, customs risk and time loss in your profit calculation.'**
+  /// **'If one part of the market fails to load, pull to retry — you can still trade when prices or inventory loaded.\nWatch the risk chips per good: flowers spoil, diamonds swing in price, electronics lose condition on trips, weapons and pharmaceuticals can be seized.\nLower Wanted before risky runs. Include travel cost and time in your margin.'**
   String get helpTopicTradeTips;
 
   /// No description provided for @helpTopicBlackMarketCategory.

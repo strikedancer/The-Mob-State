@@ -8026,8 +8026,8 @@
   "helpTopicTradeCategory": "Gospodarka",
   "helpTopicTradeTitle": "Towary Handlowe",
   "helpTopicTradeSummary": "Kupuj towary tanio w jednym kraju i sprzedawaj drogo w innym. Możliwe są różnice w cenie do 300%.",
-  "helpTopicTradeHow": "Każdy kraj ma unikalne towary handlowe z własnymi cenami bazowymi: Diamenty (RPA), Narkotyki (Kolumbia), Broń (USA), Sztuka (Francja), Elektronika (Japonia), Alkohol (Szkocja). \nCeny rynkowe wahają się co 5 minut od ceny bazowej od 0,5x do 2,0x. Ceny mogą spaść podczas podróży. \nZakup możliwy jest wyłącznie w kraju, w którym towar jest dostępny. Sprzedaż jest najbardziej wartościowa w innym kraju. \nRyzyko transportu: konfiskata policyjna w przypadku wysokiego poziomu poszukiwanego (szansa = osoba poszukiwana × 2%, maksymalnie 80%); FBI przeprowadza międzynarodowe naloty na podstawie ciepła i wartości towarów. \nSłużba celna ma 10% bazowej szansy na przekroczeniu granicy. Zapłać łapówkę w wysokości 1000–5000 euro lub strać 50% ładunku. \nPołącz handel z przemytem, ​​aby uzyskać wyższe marże, ale także większe ryzyko konfiskat. \nMożesz kupować nieograniczone ilości, o ile masz wystarczająco dużo gotówki i miejsca w ekwipunku.",
-  "helpTopicTradeTips": "Sprawdź ceny rynkowe tuż przed wylotem, a nie wcześniej — ceny zmieniają się co 5 minut. \nNiższy poziom poszukiwanego przed każdą podróżą handlową: konfiskata pełnego ładunku to katastrofalna strata. \nW kalkulacji zysku zawsze uwzględniaj koszty podróży, ryzyko celne i stratę czasu.",
+  "helpTopicTradeHow": "Kontrabanda w tej wersji: kwiaty, elektronika, diamenty, broń i farmaceutyki – każdy z własną ceną bazową, limitem zapasów i ryzykiem związanym z podróżą/rynkiem (patrz żetony na ekranie handlu: okno zepsucia, zmienność cen, obrażenia spowodowane podróżą, szansa na zajęcie). \nCeny kupna różnią się w zależności od mnożnika kraju i zmienności poszczególnych towarów, jeśli są skonfigurowane. Do sprzedaży wykorzystuje się aktualną cenę sprzedaży; odsprzedaż elektroniki jest pomniejszana o aktualny stan. \nKwiaty psują się po skonfigurowanych godzinach od zakupu. Broń i farmaceutyki mogą zostać częściowo skonfiskowane podczas podróży; połączyć z przemytem, ​​aby uzyskać wyższą stawkę. \nNadal potrzebujesz wystarczającej ilości gotówki, miejsca w ekwipunku i znalezienia się w odpowiedniej pętli kraju, aby zapewnić zyskowne biegi.",
+  "helpTopicTradeTips": "Jeśli załadowanie jednej części rynku nie powiedzie się, pociągnij, aby spróbować ponownie — nadal możesz handlować, gdy załadowane zostaną ceny lub zapasy. \nZwróć uwagę na ryzyko związane z towarem: psują się kwiaty, ceny diamentów wahają się, elektronika traci stan podczas podróży, można skonfiskować broń i farmaceutyki. \nNiższy Poszukiwany przed ryzykownymi biegami. Uwzględnij w marży koszt i czas podróży.",
   "helpTopicBlackMarketCategory": "Gospodarka",
   "helpTopicBlackMarketTitle": "Czarny rynek",
   "helpTopicBlackMarketSummary": "Kupuj i sprzedawaj nielegalne i rzadkie towary: broń, amunicję, narkotyki i materiały niedostępne gdzie indziej.",
@@ -8360,6 +8360,47 @@
   "trainingHubMoreInfoHitlist": "Postęp strzelnicy zasila również obliczenia listy trafień na serwerze.",
   "trainingHubComboChip": "Kombinacja aktywna: +{pct}% do przestępstw",
   "@trainingHubComboChip": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeLoadGoodsFailed": "Nie można załadować katalogu towarów",
+  "tradeLoadPricesFailed": "Nie udało się wczytać aktualnych cen",
+  "tradeLoadInventoryFailed": "Nie można załadować Twojego ekwipunku handlowego",
+  "tradePartialDataBanner": "Nie udało się odświeżyć niektórych danych rynkowych. Pociągnij w dół, aby spróbować ponownie.",
+  "tradeMarketLoadAllFailed": "Nie udało się załadować rynku. Pociągnij w dół, aby spróbować ponownie.",
+  "tradeNoGoodsLoaded": "W tej chwili nie ma żadnych towarów.",
+  "tradeRiskPanelTitle": "Ryzyko związane z podróżami i rynkiem",
+  "tradeRiskPanelSubtitle": "Każdy towar wykazuje oznaki zepsucia, wahań cen, szkód spowodowanych podróżą lub konfiskaty, jeśli ma to zastosowanie.",
+  "tradeRiskInsightBody": "KWIATY: zepsuć po upływie czasu od zakupu — sprzedać w terminie. \nDIAMENTY: ceny kupna wahają się w zależności od zmienności; zaplanuj, gdzie będziesz sprzedawać za granicą. \nELEKTRONIKA: może stracić stan przy każdej podróży, co obniża wartość odsprzedaży. \nBROŃ i FARMACEUTYKI: podczas podróży może nastąpić częściowe zatrzymanie — trzymaj niski poziom poszukiwanego i zapoznaj się z przepisami dotyczącymi przemytu. \nCeny na tym ekranie zawierają już mnożnik Twojego aktualnego kraju.",
+  "tradeRiskSpoilageHours": "{hours}h okno zepsucia",
+  "@tradeRiskSpoilageHours": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeRiskVolatilityPct": "±{pct}% wahań cen",
+  "@tradeRiskVolatilityPct": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeRiskConfiscationPct": "{pct}% ryzyka napadów na podróż",
+  "@tradeRiskConfiscationPct": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeRiskDamageTripPct": "{pct}% szans na obrażenia na podróż",
+  "@tradeRiskDamageTripPct": {
     "placeholders": {
       "pct": {
         "type": "String"

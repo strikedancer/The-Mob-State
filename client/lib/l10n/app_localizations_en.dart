@@ -5204,6 +5204,57 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tradeLoadGoodsFailed => 'Could not load goods catalog';
+
+  @override
+  String get tradeLoadPricesFailed => 'Could not load current prices';
+
+  @override
+  String get tradeLoadInventoryFailed => 'Could not load your trade inventory';
+
+  @override
+  String get tradePartialDataBanner =>
+      'Some market data could not be refreshed. Pull down to retry.';
+
+  @override
+  String get tradeMarketLoadAllFailed =>
+      'The market could not be loaded. Pull down to retry.';
+
+  @override
+  String get tradeNoGoodsLoaded => 'No goods are available right now.';
+
+  @override
+  String get tradeRiskPanelTitle => 'Travel and market risks';
+
+  @override
+  String get tradeRiskPanelSubtitle =>
+      'Each good shows spoilage, price swings, trip damage or confiscation where it applies.';
+
+  @override
+  String get tradeRiskInsightBody =>
+      'FLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS: buy prices swing with volatility; plan where you sell abroad.\nELECTRONICS: can lose condition each trip, which lowers resale value.\nWEAPONS and PHARMACEUTICALS: partial seizure can happen on travel — keep Wanted low and read smuggling rules.\nPrices on this screen already include your current country multiplier.';
+
+  @override
+  String tradeRiskSpoilageHours(String hours) {
+    return '${hours}h spoil window';
+  }
+
+  @override
+  String tradeRiskVolatilityPct(String pct) {
+    return '±$pct% price swing';
+  }
+
+  @override
+  String tradeRiskConfiscationPct(String pct) {
+    return '$pct% seizure risk per trip';
+  }
+
+  @override
+  String tradeRiskDamageTripPct(String pct) {
+    return '$pct% damage chance per trip';
+  }
+
+  @override
   String get appeal => 'Appeal';
 
   @override
@@ -13386,11 +13437,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicTradeHow =>
-      'Each country has unique trade goods with own base prices: Diamonds (South Africa), Drugs (Colombia), Weapons (USA), Art (France), Electronics (Japan), Alcohol (Scotland).\nMarket prices fluctuate every tick (5 minutes) between 0.5x and 2.0x base price. Prices can drop while you are traveling.\nBuying is only possible in the country where the good is available. Selling is most valuable in a different country.\nTransport risk: police confiscate at high Wanted Level (chance = wanted × 2%, max 80%); FBI raids internationally based on heat + goods value.\nCustoms has a 10% base chance at border crossings. Pay €1.000-€5.000 bribe or lose 50% of cargo.\nCombine trade with smuggling for higher margins but also higher seizure risk.\nYou can buy unlimited quantities as long as you have enough cash and inventory space.';
+      'Contraband trade goods in this build: flowers, electronics, diamonds, weapons and pharmaceuticals — each with its own base price, inventory cap and travel/market risks (see the Trade screen chips: spoilage window, price volatility, trip damage, seizure chance).\nBuy prices vary by country multiplier and per-good volatility where configured. Selling uses the live sell price; electronics resale is reduced by current condition.\nFlowers spoil after the configured hours from purchase. Weapons and pharmaceuticals can be partially seized on travel; combine with smuggling for higher stakes.\nYou still need enough cash, inventory space and to be in the right country loop for profitable runs.';
 
   @override
   String get helpTopicTradeTips =>
-      'Check market prices right before departure, not earlier — prices move every 5 minutes.\nLower Wanted Level before every trade trip: confiscation of a full cargo is a catastrophic loss.\nAlways include travel costs, customs risk and time loss in your profit calculation.';
+      'If one part of the market fails to load, pull to retry — you can still trade when prices or inventory loaded.\nWatch the risk chips per good: flowers spoil, diamonds swing in price, electronics lose condition on trips, weapons and pharmaceuticals can be seized.\nLower Wanted before risky runs. Include travel cost and time in your margin.';
 
   @override
   String get helpTopicBlackMarketCategory => 'Economy';

@@ -12,6 +12,7 @@ import '../config/app_config.dart';
 import 'player_profile_screen.dart';
 import 'backpack_shop_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 class TradeScreen extends StatefulWidget {
   const TradeScreen({super.key});
@@ -27,6 +28,9 @@ class _TradeScreenState extends State<TradeScreen>
   List<GoodPrice> _prices = [];
   List<InventoryItem> _inventory = [];
   String? _errorMessage;
+  String? _goodsLoadError;
+  String? _pricesLoadError;
+  String? _inventoryLoadError;
   late TabController _tabController;
   final Map<String, int> _buyQuantities = {};
   final Map<String, int> _sellQuantities = {};
@@ -61,86 +65,121 @@ class _TradeScreenState extends State<TradeScreen>
   }
 
   Future<void> _loadMarketData() async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoading = true;
       _errorMessage = null;
+      _goodsLoadError = null;
+      _pricesLoadError = null;
+      _inventoryLoadError = null;
     });
 
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (!authProvider.isAuthenticated) {
+      setState(() {
+        _errorMessage = l10n.notLoggedIn;
+        _isLoading = false;
+      });
+      return;
+    }
+
+    final token = await _apiClient.getToken();
+    if (token == null) {
+      setState(() {
+        _errorMessage =
+            '${l10n.notLoggedIn} ${l10n.notLoggedInTokenStorageHint}';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    List<TradableGood> nextGoods = _goods;
+    List<GoodPrice> nextPrices = _prices;
+    List<InventoryItem> nextInventory = _inventory;
+    String? goodsErr;
+    String? pricesErr;
+    String? invErr;
+
     try {
-      // Check if user is authenticated via AuthProvider
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      if (!authProvider.isAuthenticated) {
-        final l10n = AppLocalizations.of(context)!;
-        setState(() {
-          _errorMessage = l10n.notLoggedIn;
-          _isLoading = false;
-        });
-        return;
-      }
-
-      // Get token from ApiClient (which has proper caching for web)
-      final token = await _apiClient.getToken();
-      if (token == null) {
-        print(
-          '[TradeScreen] Token is null but user is authenticated - attempting retry',
-        );
-        final l10n = AppLocalizations.of(context)!;
-        setState(() {
-          _errorMessage =
-              '${l10n.notLoggedIn} ${l10n.notLoggedInTokenStorageHint}';
-          _isLoading = false;
-        });
-        return;
-      }
-
-      // Load goods
       final goodsResponse = await http.get(
         Uri.parse('${AppConfig.apiBaseUrl}/trade/goods'),
       );
-
       if (goodsResponse.statusCode == 200) {
-        final goodsData = jsonDecode(goodsResponse.body);
-        _goods = (goodsData['goods'] as List)
-            .map((g) => TradableGood.fromJson(g))
+        final goodsData = jsonDecode(goodsResponse.body) as Map<String, dynamic>;
+        nextGoods = (goodsData['goods'] as List)
+            .map((g) => TradableGood.fromJson(g as Map<String, dynamic>))
             .toList();
+      } else {
+        goodsErr = l10n.tradeLoadGoodsFailed;
       }
+    } catch (_) {
+      goodsErr = l10n.tradeLoadGoodsFailed;
+    }
 
-      // Load current prices
+    try {
       final pricesResponse = await http.get(
         Uri.parse('${AppConfig.apiBaseUrl}/trade/prices'),
         headers: {'Authorization': 'Bearer $token'},
       );
-
       if (pricesResponse.statusCode == 200) {
-        final pricesData = jsonDecode(pricesResponse.body);
-        _prices = (pricesData['prices'] as List)
-            .map((p) => GoodPrice.fromJson(p))
+        final pricesData = jsonDecode(pricesResponse.body) as Map<String, dynamic>;
+        nextPrices = (pricesData['prices'] as List)
+            .map((p) => GoodPrice.fromJson(p as Map<String, dynamic>))
             .toList();
+      } else {
+        pricesErr = l10n.tradeLoadPricesFailed;
       }
+    } catch (_) {
+      pricesErr = l10n.tradeLoadPricesFailed;
+    }
 
-      // Load inventory
+    try {
       final inventoryResponse = await http.get(
         Uri.parse('${AppConfig.apiBaseUrl}/trade/inventory'),
         headers: {'Authorization': 'Bearer $token'},
       );
-
       if (inventoryResponse.statusCode == 200) {
-        final inventoryData = jsonDecode(inventoryResponse.body);
-        _inventory = (inventoryData['inventory'] as List)
-            .map((i) => InventoryItem.fromJson(i))
+        final inventoryData =
+            jsonDecode(inventoryResponse.body) as Map<String, dynamic>;
+        nextInventory = (inventoryData['inventory'] as List)
+            .map((i) => InventoryItem.fromJson(i as Map<String, dynamic>))
             .toList();
+      } else {
+        invErr = l10n.tradeLoadInventoryFailed;
       }
-
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (e) {
-      final l10n = AppLocalizations.of(context)!;
-      setState(() {
-        _errorMessage = l10n.errorLoadingMarketData(e.toString());
-        _isLoading = false;
-      });
+    } catch (_) {
+      invErr = l10n.tradeLoadInventoryFailed;
     }
+
+    if (!mounted) return;
+
+    final fatal =
+        goodsErr != null && pricesErr != null && invErr != null;
+
+    setState(() {
+      _goods = nextGoods;
+      _prices = nextPrices;
+      _inventory = nextInventory;
+      _goodsLoadError = goodsErr;
+      _pricesLoadError = pricesErr;
+      _inventoryLoadError = invErr;
+      _isLoading = false;
+      _errorMessage = fatal ? l10n.tradeMarketLoadAllFailed : null;
+    });
+  }
+
+  TradableGood _resolveGood(String goodType) {
+    for (final g in _goods) {
+      if (g.id == goodType) return g;
+    }
+    return TradableGood(
+      id: goodType,
+      name: goodType,
+      description: '',
+      basePrice: 0,
+      maxInventory: 9999,
+      weight: 1,
+    );
   }
 
   Future<void> _buyGood(String goodType, int quantity) async {
@@ -248,7 +287,7 @@ class _TradeScreenState extends State<TradeScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('🔫 ${AppLocalizations.of(context)!.blackMarket}'),
+        title: Text(AppLocalizations.of(context)!.tradeGoods),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
@@ -544,13 +583,74 @@ class _TradeScreenState extends State<TradeScreen>
   }
 
   Widget _buildMarketTab() {
+    final l10n = AppLocalizations.of(context)!;
+    final itemCount = _goods.isEmpty ? 1 : _goods.length + 1;
     return RefreshIndicator(
       onRefresh: _loadMarketData,
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: _goods.length,
+        itemCount: itemCount,
         itemBuilder: (context, index) {
-          final good = _goods[index];
+          if (index == 0) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (_goodsLoadError != null ||
+                    _pricesLoadError != null ||
+                    _inventoryLoadError != null)
+                  Card(
+                    color: Colors.orange.shade50,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.warning_amber_rounded,
+                                  color: Colors.orange.shade800),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n.tradePartialDataBanner,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.orange.shade900,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (_goodsLoadError != null)
+                            Text('• $_goodsLoadError',
+                                style: TextStyle(color: Colors.orange.shade900)),
+                          if (_pricesLoadError != null)
+                            Text('• $_pricesLoadError',
+                                style: TextStyle(color: Colors.orange.shade900)),
+                          if (_inventoryLoadError != null)
+                            Text('• $_inventoryLoadError',
+                                style: TextStyle(color: Colors.orange.shade900)),
+                        ],
+                      ),
+                    ),
+                  ),
+                _buildTradeRiskGuide(l10n),
+                if (_goods.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Center(
+                      child: Text(
+                        _goodsLoadError ?? l10n.tradeNoGoodsLoaded,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 8),
+              ],
+            );
+          }
+          final good = _goods[index - 1];
           final price = _prices.firstWhere(
             (p) => p.goodType == good.id,
             orElse: () => GoodPrice(
@@ -563,6 +663,135 @@ class _TradeScreenState extends State<TradeScreen>
 
           return _buildGoodCard(good, price, true);
         },
+      ),
+    );
+  }
+
+  Widget _buildTradeRiskGuide(AppLocalizations l10n) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          title: Text(
+            l10n.tradeRiskPanelTitle,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          subtitle: Text(
+            l10n.tradeRiskPanelSubtitle,
+            style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              child: Text(
+                l10n.tradeRiskInsightBody,
+                style: TextStyle(fontSize: 13, height: 1.35, color: Colors.grey[800]),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _riskChipsForGood(TradableGood good, AppLocalizations l10n) {
+    final chips = <Widget>[];
+    if (good.spoilageHours != null && good.spoilageHours! > 0) {
+      chips.add(
+        Chip(
+          avatar: Icon(Icons.timer, size: 16, color: Colors.orange.shade800),
+          label: Text(
+            l10n.tradeRiskSpoilageHours(good.spoilageHours!.round().toString()),
+            style: const TextStyle(fontSize: 11),
+          ),
+          visualDensity: VisualDensity.compact,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      );
+    }
+    if (good.priceVolatility != null && good.priceVolatility! > 0) {
+      final pct = (good.priceVolatility! * 100).round();
+      chips.add(
+        Chip(
+          avatar: Icon(Icons.show_chart, size: 16, color: Colors.purple.shade800),
+          label: Text(
+            l10n.tradeRiskVolatilityPct(pct.toString()),
+            style: const TextStyle(fontSize: 11),
+          ),
+          visualDensity: VisualDensity.compact,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      );
+    }
+    if (good.confiscationChance != null && good.confiscationChance! > 0) {
+      final pct = (good.confiscationChance! * 100).round();
+      chips.add(
+        Chip(
+          avatar: Icon(Icons.gavel, size: 16, color: Colors.red.shade800),
+          label: Text(
+            l10n.tradeRiskConfiscationPct(pct.toString()),
+            style: const TextStyle(fontSize: 11),
+          ),
+          visualDensity: VisualDensity.compact,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      );
+    }
+    if (good.damageChancePerTrip != null && good.damageChancePerTrip! > 0) {
+      final pct = (good.damageChancePerTrip! * 100).round();
+      chips.add(
+        Chip(
+          avatar: Icon(Icons.build_circle_outlined, size: 16, color: Colors.brown.shade800),
+          label: Text(
+            l10n.tradeRiskDamageTripPct(pct.toString()),
+            style: const TextStyle(fontSize: 11),
+          ),
+          visualDensity: VisualDensity.compact,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      );
+    }
+    return chips;
+  }
+
+  Widget _goodHeaderArt(TradableGood good) {
+    final colors = switch (good.id) {
+      'contraband_flowers' => [Colors.pink.shade100, Colors.orange.shade200],
+      'contraband_electronics' => [Colors.blue.shade100, Colors.indigo.shade200],
+      'contraband_diamonds' => [Colors.cyan.shade100, Colors.teal.shade200],
+      'contraband_weapons' => [Colors.red.shade200, Colors.grey.shade800],
+      'contraband_pharmaceuticals' => [Colors.green.shade100, Colors.lightGreen.shade200],
+      _ => [Colors.grey.shade300, Colors.grey.shade500],
+    };
+    final assetPath = 'assets/images/trade_goods/cards/${good.id}.png';
+
+    Widget emojiFallback() => Container(
+          width: 52,
+          height: 52,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            gradient: LinearGradient(
+              colors: colors,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(good.icon, style: const TextStyle(fontSize: 26)),
+        );
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: SizedBox(
+        width: 52,
+        height: 52,
+        child: WebAssetHelper.image(
+          assetPath,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => emojiFallback(),
+        ),
       ),
     );
   }
@@ -601,7 +830,7 @@ class _TradeScreenState extends State<TradeScreen>
         itemCount: _inventory.length,
         itemBuilder: (context, index) {
           final item = _inventory[index];
-          final good = _goods.firstWhere((g) => g.id == item.goodType);
+          final good = _resolveGood(item.goodType);
           final price = _prices.firstWhere(
             (p) => p.goodType == item.goodType,
             orElse: () => GoodPrice(
@@ -658,6 +887,7 @@ class _TradeScreenState extends State<TradeScreen>
     final totalCost = price.currentPrice * quantity;
     final localizedName = _localizedGoodName(good, l10n);
     final localizedDescription = _localizedGoodDescription(good, l10n);
+    final riskChips = _riskChipsForGood(good, l10n);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -668,7 +898,7 @@ class _TradeScreenState extends State<TradeScreen>
           children: [
             Row(
               children: [
-                Text(good.icon, style: const TextStyle(fontSize: 32)),
+                _goodHeaderArt(good),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -690,6 +920,14 @@ class _TradeScreenState extends State<TradeScreen>
                 ),
               ],
             ),
+            if (riskChips.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 6,
+                runSpacing: 4,
+                children: riskChips,
+              ),
+            ],
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -801,6 +1039,7 @@ class _TradeScreenState extends State<TradeScreen>
 
     // Check if spoiled
     bool isSpoiled = item.spoiled;
+    final riskChips = _riskChipsForGood(good, l10n);
 
     // Calculate time since purchase for flowers
     String? timeWarning;
@@ -808,7 +1047,8 @@ class _TradeScreenState extends State<TradeScreen>
       try {
         final purchasedTime = DateTime.parse(item.purchasedAt!);
         final hoursSince = DateTime.now().difference(purchasedTime).inHours;
-        final hoursRemaining = 48 - hoursSince;
+        final spoilH = (good.spoilageHours ?? 48).round();
+        final hoursRemaining = spoilH - hoursSince;
         if (hoursRemaining > 0 && hoursRemaining <= 12) {
           timeWarning = l10n.spoilsInHours(hoursRemaining.toString());
         }
@@ -827,12 +1067,9 @@ class _TradeScreenState extends State<TradeScreen>
           children: [
             Row(
               children: [
-                Text(
-                  good.icon,
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: isSpoiled ? Colors.grey : null,
-                  ),
+                Opacity(
+                  opacity: isSpoiled ? 0.45 : 1,
+                  child: _goodHeaderArt(good),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -887,6 +1124,10 @@ class _TradeScreenState extends State<TradeScreen>
                 ),
               ],
             ),
+            if (!isSpoiled && riskChips.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Wrap(spacing: 8, runSpacing: 8, children: riskChips),
+            ],
             if (!isSpoiled) ...[
               const SizedBox(height: 12),
               Row(

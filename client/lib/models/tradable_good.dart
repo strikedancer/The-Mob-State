@@ -5,6 +5,11 @@ class TradableGood {
   final int basePrice;
   final int maxInventory;
   final int weight;
+  /// Hours until spoilage (e.g. flowers); server-driven from `tradableGoods.json`.
+  final double? spoilageHours;
+  final double? damageChancePerTrip;
+  final double? confiscationChance;
+  final double? priceVolatility;
 
   TradableGood({
     required this.id,
@@ -13,9 +18,20 @@ class TradableGood {
     required this.basePrice,
     required this.maxInventory,
     required this.weight,
+    this.spoilageHours,
+    this.damageChancePerTrip,
+    this.confiscationChance,
+    this.priceVolatility,
   });
 
   factory TradableGood.fromJson(Map<String, dynamic> json) {
+    double? d(String k) {
+      final v = json[k];
+      if (v == null) return null;
+      if (v is num) return v.toDouble();
+      return double.tryParse(v.toString());
+    }
+
     return TradableGood(
       id: json['id'] as String? ?? '',
       name: json['name'] as String? ?? '',
@@ -23,6 +39,10 @@ class TradableGood {
       basePrice: (json['basePrice'] as num?)?.toInt() ?? 0,
       maxInventory: (json['maxInventory'] as num?)?.toInt() ?? 100,
       weight: (json['weight'] as num?)?.toInt() ?? 1,
+      spoilageHours: d('spoilageHours'),
+      damageChancePerTrip: d('damageChancePerTrip'),
+      confiscationChance: d('confiscationChance'),
+      priceVolatility: d('priceVolatility'),
     );
   }
 
@@ -34,6 +54,10 @@ class TradableGood {
       'basePrice': basePrice,
       'maxInventory': maxInventory,
       'weight': weight,
+      if (spoilageHours != null) 'spoilageHours': spoilageHours,
+      if (damageChancePerTrip != null) 'damageChancePerTrip': damageChancePerTrip,
+      if (confiscationChance != null) 'confiscationChance': confiscationChance,
+      if (priceVolatility != null) 'priceVolatility': priceVolatility,
     };
   }
 
