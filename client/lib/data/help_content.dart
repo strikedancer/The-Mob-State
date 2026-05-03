@@ -150,7 +150,7 @@ const List<HelpTopic> helpTopics = [
   ),
   HelpTopic(
     id: 'training-hub',
-    icon: Icons.sports_martial_arts,
+    icon: Icons.fitness_center,
     protocolPath: 'docs/module-protocols/training-hub.md',
   ),
   HelpTopic(

@@ -40,6 +40,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - client/web/firebase-messaging-sw.js
 
 ## Change Rules
+- **Material icons on Flutter web:** some `Icons.*` codepoints are not included in the default MaterialIcons font subset used by `flutter build web`; they can appear as empty boxes. Prefer long-supported icons for navigation and headers, or ship an explicit icon font / asset.
 - Houd web, mobiel, tablet en embedded dashboard-shells functioneel gelijk tenzij een verschil expliciet bedoeld is.
 - Gebruik gedeelde helpers voor assets, image fallbacks en embedded scrollgedrag; vermijd losse one-off workarounds per scherm.
 - Platform-specifieke cache-, service-worker- en asset-routes mogen bestaande deployments niet breken.

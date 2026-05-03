@@ -22,6 +22,7 @@ Legacy wrappers (same UI):
 
 ## Change rules
 
+- **Flutter web icons:** dashboard sidebar, mobile menu and the hub header must use Material icons whose glyphs ship in the default bundled web font (e.g. `Icons.fitness_center` / `Icons.adjust`). Avoid newer icons that render as empty squares on web (e.g. `Icons.sports_martial_arts` in some builds).
 - Preserve separate cooldowns and caps per track; do not merge timers without an explicit design pass.
 - Keep Dutch and English copy in sync for any user-visible change; follow `PROTOCOL_MASTER.md` for ARB merge / parity / push-inbox split.
 - Update `scripts/_help_topics_extracted.json` and run `node scripts/apply_help_topics_l10n.mjs` when help text for this topic changes.

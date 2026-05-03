@@ -1033,7 +1033,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
-            icon: Icons.sports_martial_arts,
+            // fitness_center: reliably bundled on Flutter Web (sports_martial_arts can render empty).
+            icon: Icons.fitness_center,
             label: l10n.trainingHubMenuLabel,
             section: _WebSection.trainingHub,
             badge: 0,
@@ -2262,7 +2263,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
-                                  icon: Icons.sports_martial_arts,
+                                  icon: Icons.fitness_center,
                                   label: l10n.trainingHubMenuLabel,
                                   onTap: () => Navigator.push(
                                     context,
