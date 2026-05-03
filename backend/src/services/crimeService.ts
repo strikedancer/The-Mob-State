@@ -20,6 +20,10 @@ import * as judgeService from './judgeService';
 import { notificationService } from './notificationService';
 import { economyBalanceService } from './economyBalanceService';
 import { getActiveEventBoostEffects } from './premiumCreditsService';
+import {
+  isTrainingComboReadinessActive,
+  TRAINING_COMBO_READINESS_BONUS,
+} from '../lib/trainingComboReadiness';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 
@@ -1175,24 +1179,36 @@ export const crimeService = {
       successChance += vehicleBonus;
     }
 
-    // 6️⃣ SHOOTING RANGE TRAINING: Accuracy bonus from training
-    // Max +10% from 100 sessions (0.1% per session)
-    const shootingStats = await prisma.shootingRangeStats.findUnique({
-      where: { playerId },
-      select: { accuracyBonus: true },
-    });
+    // 6️⃣–7️⃣ SHOOTING + GYM (parallel fetch; include lastTrainedAt for combo-readiness)
+    const [shootingStats, gymStats] = await Promise.all([
+      prisma.shootingRangeStats.findUnique({
+        where: { playerId },
+        select: { accuracyBonus: true, lastTrainedAt: true },
+      }),
+      prisma.gymStats.findUnique({
+        where: { playerId },
+        select: { strengthBonus: true, lastTrainedAt: true },
+      }),
+    ]);
+
+    // Max +10% from 100 sessions (0.1% per session) — shooting
     if (shootingStats?.accuracyBonus) {
       successChance += shootingStats.accuracyBonus;
     }
 
-    // 7️⃣ GYM TRAINING: Strength bonus from training
-    // Max +8% from 100 sessions (0.08% per session)
-    const gymStats = await prisma.gymStats.findUnique({
-      where: { playerId },
-      select: { strengthBonus: true },
-    });
+    // Max +8% from 100 sessions (0.08% per session) — gym
     if (gymStats?.strengthBonus) {
       successChance += gymStats.strengthBonus;
+    }
+
+    // 8️⃣ Same-UTC-day combo: both tracks trained today → small extra (see trainingComboReadiness.ts)
+    if (
+      isTrainingComboReadinessActive(
+        gymStats?.lastTrainedAt ?? null,
+        shootingStats?.lastTrainedAt ?? null,
+      )
+    ) {
+      successChance += TRAINING_COMBO_READINESS_BONUS;
     }
 
     // Keep realistic bounds: at least 5%, at most 95%

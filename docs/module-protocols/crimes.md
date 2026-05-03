@@ -8,6 +8,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 
 ## Related APIs
 - Crime success math uses gym strength and shooting-range accuracy bonuses from the server. The crime UI may call **`GET /training/status`** to show the same active bonus percentages the player has while committing crimes (transparent summary, not a second rules engine).
+- **Combo-readiness:** same UTC calendar day with at least one gym session and one shooting-range session adds a small extra success chance (`trainingComboReadiness` in `/training/status`; constant in `backend/src/lib/trainingComboReadiness.ts`).
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -58,6 +59,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit or market-listed.
 - Verify an arrest during a weapon-based crime confiscates the used weapon, clears the saved selection when no copy remains, and tells the player about the confiscation in the crime result feedback.
 - After pull-to-refresh, the training bonus strip (if shown) matches hub training progress for strength and accuracy.
+- When both gym and range were trained the same UTC day, the combo line appears and matches `trainingComboReadiness` from `/training/status`; crime success % from the server includes the small combo bonus.
 - Verify a crime that initially succeeds but ends in a police/FBI arrest no longer shows a success state, actually puts the player in jail, and applies the matching confiscation consequences.
 - Verify a failed start caused by missing vehicle, unsuitable weapon or missing ammo does not consume ammunition.
 - If a crime has a court-side effect, verify the linked court record updates after cooldown refresh and only the intended convictions are affected.

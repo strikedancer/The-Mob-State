@@ -10,6 +10,9 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - premium credits, redemptions, event boosts en in-app power-effecten
 - anti-abuse/diminishing gedrag en economy telemetry
 
+## Documented static modifiers (training → crimes)
+- **Combo-readiness:** when the player has **at least one gym train and one shooting-range train** on the **same UTC calendar day** (`lastTrainedAt` on both stats), `crimeService` adds **`TRAINING_COMBO_READINESS_BONUS`** (**+0.5%** success chance as a fraction, see `backend/src/lib/trainingComboReadiness.ts`) on top of existing strength/accuracy training bonuses. Still clamped with all other modifiers to **5–95%** final success chance. Exposed for UI as `trainingComboReadiness` on **`GET /training/status`**.
+
 ## Primary Systems
 - `backend/src/services/economyBalanceService.ts`
 - `backend/src/services/cooldownService.ts`
