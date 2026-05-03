@@ -45,6 +45,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
+- Help topic **crimes** (`helpTopicCrimesHow` in `app_*.arb`): keep the training-bonus transparency line translated in **every** active player locale (not only EN/NL), aligned with hub terminology (`trainingHub*` strings).
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
