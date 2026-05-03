@@ -40,8 +40,7 @@ import 'direct_messages_screen.dart';
 import 'tools_screen.dart';
 import 'hitlist_screen.dart';
 import 'security_screen.dart';
-import 'shooting_range_screen.dart';
-import 'gym_screen.dart';
+import 'training_hub_screen.dart';
 import 'ammo_factory_screen.dart';
 import 'school_screen.dart';
 import 'prostitution_screen.dart';
@@ -97,8 +96,7 @@ enum _WebSection {
   tuneShop,
   garage,
   marina,
-  shootingRange,
-  gym,
+  trainingHub,
   ammoFactory,
   school,
   territory,
@@ -1035,15 +1033,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
-            icon: Icons.gps_fixed,
-            label: l10n.shootingRange,
-            section: _WebSection.shootingRange,
-            badge: 0,
-          ),
-          (
-            icon: Icons.fitness_center,
-            label: l10n.gym,
-            section: _WebSection.gym,
+            icon: Icons.sports_martial_arts,
+            label: l10n.trainingHubMenuLabel,
+            section: _WebSection.trainingHub,
             badge: 0,
           ),
           (
@@ -1743,10 +1735,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const VehicleHeistScreen(embedded: true, initialTabIndex: 0);
       case _WebSection.marina:
         return const VehicleHeistScreen(embedded: true, initialTabIndex: 2);
-      case _WebSection.shootingRange:
-        return ShootingRangeScreen();
-      case _WebSection.gym:
-        return GymScreen();
+      case _WebSection.trainingHub:
+        return const TrainingHubScreen();
       case _WebSection.ammoFactory:
         return const AmmoFactoryScreen();
       case _WebSection.school:
@@ -2272,23 +2262,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
-                                  icon: Icons.gps_fixed,
-                                  label: l10n.shootingRange,
+                                  icon: Icons.sports_martial_arts,
+                                  label: l10n.trainingHubMenuLabel,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => ShootingRangeScreen(),
-                                    ),
-                                  ),
-                                ),
-                                _buildMenuTile(
-                                  context,
-                                  icon: Icons.fitness_center,
-                                  label: l10n.gym,
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => GymScreen(),
+                                      builder: (_) => const TrainingHubScreen(),
                                     ),
                                   ),
                                 ),

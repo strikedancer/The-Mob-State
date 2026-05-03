@@ -7313,6 +7313,22 @@ class AppLocalizationsDe extends AppLocalizations {
   String get shootingTrain => 'Trainieren';
 
   @override
+  String get trainingHubMenuLabel => 'Ausbildung';
+
+  @override
+  String get trainingHubTitle => 'Schulungszentrum';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Trainieren Sie Kraft im Fitnessstudio und Genauigkeit am Schießstand. Jeder Track stapelt bis zu 100 Sitzungen mit einer Abklingzeit von 1 Stunde und erhöht Ihre Erfolgsaussichten bei einem Verbrechen.';
+
+  @override
+  String get trainingHubSectionGym => 'Fitnessstudio';
+
+  @override
+  String get trainingHubSectionShooting => 'Schießstand';
+
+  @override
   String get gym => 'Fitnessstudio';
 
   @override
@@ -14309,4 +14325,22 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Ausbildung';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Schulungszentrum';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Fitnessstudio (Kraft) und Schießstand (Präzision) an einem Ort. Beide Boni erhöhen Ihre Erfolgschance bei einem Verbrechen. Die Schussgenauigkeit wird auch bei Trefferlistenaktionen verwendet. Jeder Track hat seine eigene Abklingzeit und eine Obergrenze von 100 Sitzungen.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Fitnessstudio: Jede Sitzung erhöht Ihren permanenten Kraftbonus auf insgesamt bis zu +8 % (100 Sitzungen). Die Abklingzeit zwischen den Sitzungen beträgt 1 Stunde (VIP kann sie verkürzen).\nSchießstand: Jede Sitzung erhöht Ihren permanenten Genauigkeitsbonus auf insgesamt bis zu +10 % (100 Sitzungen). Die Abklingzeit zwischen den Sitzungen beträgt 1 Stunde (VIP kann sie verkürzen).\nBeide Boni werden vom Server in die Berechnung des Verbrechenserfolgs einbezogen.\nSie trainieren jede Strecke separat: zwei Timer und zwei Zugtasten – ein Bildschirm.\nDer Fortschritt wird nicht zurückgesetzt, es sei denn, das Personal verhängt eine schwere Strafe.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Planen Sie beide Tracks täglich: Kleine Schritte sorgen für einen klaren Vorsprung bei Verbrechen.\nÜberprüfen Sie Verbrechen, bei denen Sie am meisten scheitern: Stärke und Genauigkeit ergänzen sich – sie sind nicht derselbe Wert.';
 }

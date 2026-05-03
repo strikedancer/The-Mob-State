@@ -7243,6 +7243,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get shootingTrain => 'Trainen';
 
   @override
+  String get trainingHubMenuLabel => 'Trainingscircuit';
+
+  @override
+  String get trainingHubTitle => 'Trainingscircuit';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Bouw kracht in de sportschool en nauwkeurigheid op de schietschool. Elke lijn loopt tot 100 sessies met 1 uur cooldown en telt mee op je slagingskans bij misdaden.';
+
+  @override
+  String get trainingHubSectionGym => 'Sportschool';
+
+  @override
+  String get trainingHubSectionShooting => 'Schietschool';
+
+  @override
   String get gym => 'Sportschool';
 
   @override
@@ -14142,4 +14158,22 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'Voor vragen over deze Voorwaarden kun je na registratie contact opnemen via het supportticketssysteem in het spel, of via officiële contactkanalen op de website indien gepubliceerd.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Training';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Trainingscircuit';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Sportschool (kracht) en schietschool (nauwkeurigheid) op één plek. Beide bonussen tellen mee op je slagingskans bij misdaden; de schietschool telt ook mee bij hitlist-acties. Elke lijn heeft eigen cooldown en maximaal 100 sessies.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Sportschool: per sessie stijgt je vaste krachtbonus tot maximaal +8% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).\nSchietschool: per sessie stijgt je nauwkeurigheidsbonus tot maximaal +10% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).\nBeide bonussen worden door de server opgeteld bij de succesberekening van misdaden.\nJe traint elke lijn afzonderlijk: twee timers, twee knoppen — maar één scherm.\nEr is geen reset van voortgang, tenzij staff een zware correctie toepast.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Plan beide lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.\nCheck misdaden waar je het meest faalt: kracht en nauwkeurigheid zijn complementair, niet hetzelfde.';
 }

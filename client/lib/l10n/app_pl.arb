@@ -8320,5 +8320,15 @@
   "userAccountMenuTooltip": "Menu konta",
   "@userAccountMenuTooltip": {
     "description": "Tooltip for the top-bar avatar button that opens messages, help, settings, and logout."
-  }
+  },
+  "trainingHubMenuLabel": "Szkolenie",
+  "trainingHubTitle": "Centrum szkoleniowe",
+  "trainingHubSubtitle": "Buduj siłę na siłowni i dokładność na strzelnicy. Każda ścieżka składa się z maksymalnie 100 sesji z 1-godzinnym czasem odnowienia i zwiększa szansę na powodzenie przestępstwa.",
+  "trainingHubSectionGym": "Sala gimnastyczna",
+  "trainingHubSectionShooting": "Strzelnica",
+  "helpTopicTrainingHubCategory": "Szkolenie",
+  "helpTopicTrainingHubTitle": "Centrum szkoleniowe",
+  "helpTopicTrainingHubSummary": "Siłownia (siła) i strzelnica (celność) w jednym miejscu. Obydwa bonusy zwiększają Twoją szansę na powodzenie w przestępstwie; dokładność strzelania jest również wykorzystywana w akcjach na listach trafień. Każdy utwór ma swój własny czas odnowienia i limit 100 sesji.",
+  "helpTopicTrainingHubHow": "Siłownia: każda sesja zwiększa twoją stałą premię do siły łącznie do +8% (100 sesji). Czas odnowienia pomiędzy sesjami wynosi 1 godzinę (VIP może go skrócić).\nZasięg strzelania: każda sesja zwiększa stałą premię do celności łącznie do +10% (100 sesji). Czas odnowienia pomiędzy sesjami wynosi 1 godzinę (VIP może go skrócić).\nObydwa bonusy są dodawane przez serwer do obliczeń sukcesu przestępstwa.\nTrenujesz każdy tor osobno: dwa liczniki czasu i dwa przyciski pociągu — jeden ekran.\nPostęp nie zostanie zresetowany, chyba że personel zastosuje surową karę.",
+  "helpTopicTrainingHubTips": "Zaplanuj codziennie obie ścieżki: małe kroki łączą się w wyraźną przewagę nad przestępczością.\nPrzejrzyj przestępstwa, w których zawodzisz najbardziej: siła i celność uzupełniają się – to nie ta sama statystyka."
 }

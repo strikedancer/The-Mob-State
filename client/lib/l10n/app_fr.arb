@@ -8320,5 +8320,15 @@
   "userAccountMenuTooltip": "Menu du compte",
   "@userAccountMenuTooltip": {
     "description": "Tooltip for the top-bar avatar button that opens messages, help, settings, and logout."
-  }
+  },
+  "trainingHubMenuLabel": "Entraînement",
+  "trainingHubTitle": "Pôle de formation",
+  "trainingHubSubtitle": "Développez votre force au gymnase et votre précision au stand. Chaque piste empile jusqu'à 100 sessions avec un temps de recharge d'une heure et ajoute à vos chances de réussite en matière de crime.",
+  "trainingHubSectionGym": "Salle de sport",
+  "trainingHubSectionShooting": "Champ de tir",
+  "helpTopicTrainingHubCategory": "Entraînement",
+  "helpTopicTrainingHubTitle": "Pôle de formation",
+  "helpTopicTrainingHubSummary": "Gym (force) et stand de tir (précision) en un seul endroit. Les deux bonus s’ajoutent à vos chances de réussite criminelle ; la précision du tir est également utilisée dans les actions de liste de résultats. Chaque piste a son propre temps de recharge et une limite de 100 sessions.",
+  "helpTopicTrainingHubHow": "Gym : chaque séance augmente votre bonus de force permanent jusqu'à +8% au total (100 séances). Le temps de recharge entre les sessions est de 1 heure (VIP peut le raccourcir).\nStand de tir : chaque séance augmente votre bonus de précision permanent jusqu'à +10% au total (100 séances). Le temps de recharge entre les sessions est de 1 heure (VIP peut le raccourcir).\nLes deux bonus sont ajoutés par le serveur dans les calculs de réussite du crime.\nVous entraînez chaque piste séparément : deux minuteries et deux boutons de train – un écran.\nLa progression n’est pas réinitialisée à moins que le personnel n’applique une lourde pénalité.",
+  "helpTopicTrainingHubTips": "Programmez les deux pistes quotidiennement : de petites étapes s'empilent pour donner une avance nette sur les crimes.\nExaminez les crimes là où vous échouez le plus : la force et la précision se complètent – ​​ce ne sont pas les mêmes statistiques."
 }

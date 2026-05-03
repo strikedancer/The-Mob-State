@@ -149,14 +149,9 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/tuneshop.md',
   ),
   HelpTopic(
-    id: 'shooting-range',
-    icon: Icons.gps_fixed,
-    protocolPath: 'docs/module-protocols/shooting-range.md',
-  ),
-  HelpTopic(
-    id: 'gym',
-    icon: Icons.fitness_center,
-    protocolPath: 'docs/module-protocols/gym.md',
+    id: 'training-hub',
+    icon: Icons.sports_martial_arts,
+    protocolPath: 'docs/module-protocols/training-hub.md',
   ),
   HelpTopic(
     id: 'ammo-factory',

@@ -7206,6 +7206,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shootingTrain => 'Train';
 
   @override
+  String get trainingHubMenuLabel => 'Training';
+
+  @override
+  String get trainingHubTitle => 'Training hub';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Build strength at the gym and accuracy at the range. Each track stacks up to 100 sessions with a 1-hour cooldown and adds to your crime success chance.';
+
+  @override
+  String get trainingHubSectionGym => 'Gym';
+
+  @override
+  String get trainingHubSectionShooting => 'Shooting range';
+
+  @override
   String get gym => 'Gym';
 
   @override
@@ -14109,4 +14125,22 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Training';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Training hub';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Gym (strength) and shooting range (accuracy) in one place. Both bonuses add to your crime success chance; shooting accuracy is also used in hitlist actions. Each track has its own cooldown and a cap of 100 sessions.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Gym: each session increases your permanent strength bonus up to +8% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).\nShooting range: each session increases your permanent accuracy bonus up to +10% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).\nBoth bonuses are added by the server into crime success calculations.\nYou train each track separately: two timers and two train buttons — one screen.\nProgress does not reset unless staff applies a heavy penalty.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Schedule both tracks daily: small steps stack into a clear edge on crimes.\nReview crimes where you fail most: strength and accuracy complement each other — they are not the same stat.';
 }

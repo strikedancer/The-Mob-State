@@ -7288,6 +7288,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get shootingTrain => 'Entrenar';
 
   @override
+  String get trainingHubMenuLabel => 'Capacitación';
+
+  @override
+  String get trainingHubTitle => 'Centro de formación';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Desarrolla fuerza en el gimnasio y precisión en el campo. Cada pista acumula hasta 100 sesiones con un tiempo de reutilización de 1 hora y aumenta tus posibilidades de éxito en el crimen.';
+
+  @override
+  String get trainingHubSectionGym => 'Gimnasia';
+
+  @override
+  String get trainingHubSectionShooting => 'Campo de tiro';
+
+  @override
   String get gym => 'Gimnasia';
 
   @override
@@ -14261,4 +14277,22 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Capacitación';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Centro de formación';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Gimnasio (fuerza) y campo de tiro (precisión) en un solo lugar. Ambos bonos aumentan tus posibilidades de éxito en el crimen; La precisión de los disparos también se utiliza en las acciones de la lista de objetivos. Cada pista tiene su propio tiempo de reutilización y un límite de 100 sesiones.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Gimnasio: cada sesión aumenta tu bonificación de fuerza permanente hasta un +8% total (100 sesiones). El tiempo de recuperación entre sesiones es de 1 hora (VIP puede acortarlo).\nRango de tiro: cada sesión aumenta tu bonificación de precisión permanente hasta +10% en total (100 sesiones). El tiempo de recuperación entre sesiones es de 1 hora (VIP puede acortarlo).\nEl servidor suma ambas bonificaciones a los cálculos de éxito del crimen.\nEntrenas cada pista por separado: dos cronómetros y dos botones de tren, una pantalla.\nEl progreso no se reinicia a menos que el personal aplique una fuerte penalización.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Programe ambas pistas diariamente: los pequeños pasos se acumulan para lograr una ventaja clara sobre los delitos.\nRevise los delitos en los que más falla: la fuerza y ​​la precisión se complementan; no son la misma estadística.';
 }

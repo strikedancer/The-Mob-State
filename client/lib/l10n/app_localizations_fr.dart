@@ -7319,6 +7319,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shootingTrain => 'Former';
 
   @override
+  String get trainingHubMenuLabel => 'Entraînement';
+
+  @override
+  String get trainingHubTitle => 'Pôle de formation';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Développez votre force au gymnase et votre précision au stand. Chaque piste empile jusqu\'à 100 sessions avec un temps de recharge d\'une heure et ajoute à vos chances de réussite en matière de crime.';
+
+  @override
+  String get trainingHubSectionGym => 'Salle de sport';
+
+  @override
+  String get trainingHubSectionShooting => 'Champ de tir';
+
+  @override
   String get gym => 'Salle de sport';
 
   @override
@@ -14309,4 +14325,22 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Entraînement';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Pôle de formation';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Gym (force) et stand de tir (précision) en un seul endroit. Les deux bonus s’ajoutent à vos chances de réussite criminelle ; la précision du tir est également utilisée dans les actions de liste de résultats. Chaque piste a son propre temps de recharge et une limite de 100 sessions.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Gym : chaque séance augmente votre bonus de force permanent jusqu\'à +8% au total (100 séances). Le temps de recharge entre les sessions est de 1 heure (VIP peut le raccourcir).\nStand de tir : chaque séance augmente votre bonus de précision permanent jusqu\'à +10% au total (100 séances). Le temps de recharge entre les sessions est de 1 heure (VIP peut le raccourcir).\nLes deux bonus sont ajoutés par le serveur dans les calculs de réussite du crime.\nVous entraînez chaque piste séparément : deux minuteries et deux boutons de train – un écran.\nLa progression n’est pas réinitialisée à moins que le personnel n’applique une lourde pénalité.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Programmez les deux pistes quotidiennement : de petites étapes s\'empilent pour donner une avance nette sur les crimes.\nExaminez les crimes là où vous échouez le plus : la force et la précision se complètent – ​​ce ne sont pas les mêmes statistiques.';
 }

@@ -7292,6 +7292,22 @@ class AppLocalizationsIt extends AppLocalizations {
   String get shootingTrain => 'Allenati';
 
   @override
+  String get trainingHubMenuLabel => 'Formazione';
+
+  @override
+  String get trainingHubTitle => 'Centro di formazione';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Sviluppa forza in palestra e precisione sul poligono. Ogni traccia accumula fino a 100 sessioni con un tempo di recupero di 1 ora e aumenta le tue possibilità di successo nel crimine.';
+
+  @override
+  String get trainingHubSectionGym => 'Palestra';
+
+  @override
+  String get trainingHubSectionShooting => 'Poligono di tiro';
+
+  @override
   String get gym => 'Palestra';
 
   @override
@@ -14287,4 +14303,22 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Formazione';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Centro di formazione';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Palestra (forza) e poligono di tiro (precisione) in un unico posto. Entrambi i bonus aumentano le tue possibilità di successo nel crimine; la precisione di tiro viene utilizzata anche nelle azioni della hitlist. Ogni traccia ha il proprio tempo di recupero e un limite di 100 sessioni.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Palestra: ogni sessione aumenta il tuo bonus forza permanente fino al +8% totale (100 sessioni). Il tempo di recupero tra le sessioni è di 1 ora (VIP può accorciarlo).\nPoligono di tiro: ogni sessione aumenta il tuo bonus permanente di precisione fino al +10% totale (100 sessioni). Il tempo di recupero tra le sessioni è di 1 ora (VIP può accorciarlo).\nEntrambi i bonus vengono aggiunti dal server nei calcoli del successo del crimine.\nAlleni ogni traccia separatamente: due timer e due pulsanti di allenamento: uno schermo.\nI progressi non si ripristinano a meno che il personale non applichi una pesante penalità.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Pianifica entrambe le tracce quotidianamente: piccoli passi si accumulano in un netto vantaggio sui crimini.\nEsamina i crimini in cui fallisci di più: forza e precisione si completano a vicenda: non sono la stessa statistica.';
 }

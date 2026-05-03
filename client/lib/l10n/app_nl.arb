@@ -8320,5 +8320,15 @@
   "userAccountMenuTooltip": "Accountmenu",
   "@userAccountMenuTooltip": {
     "description": "Tooltip for the top-bar avatar button that opens messages, help, settings, and logout."
-  }
+  },
+  "helpTopicTrainingHubCategory": "Training",
+  "helpTopicTrainingHubTitle": "Trainingscircuit",
+  "helpTopicTrainingHubSummary": "Sportschool (kracht) en schietschool (nauwkeurigheid) op één plek. Beide bonussen tellen mee op je slagingskans bij misdaden; de schietschool telt ook mee bij hitlist-acties. Elke lijn heeft eigen cooldown en maximaal 100 sessies.",
+  "helpTopicTrainingHubHow": "Sportschool: per sessie stijgt je vaste krachtbonus tot maximaal +8% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).\nSchietschool: per sessie stijgt je nauwkeurigheidsbonus tot maximaal +10% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).\nBeide bonussen worden door de server opgeteld bij de succesberekening van misdaden.\nJe traint elke lijn afzonderlijk: twee timers, twee knoppen — maar één scherm.\nEr is geen reset van voortgang, tenzij staff een zware correctie toepast.",
+  "helpTopicTrainingHubTips": "Plan beide lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.\nCheck misdaden waar je het meest faalt: kracht en nauwkeurigheid zijn complementair, niet hetzelfde.",
+  "trainingHubMenuLabel": "Trainingscircuit",
+  "trainingHubTitle": "Trainingscircuit",
+  "trainingHubSubtitle": "Bouw kracht in de sportschool en nauwkeurigheid op de schietschool. Elke lijn loopt tot 100 sessies met 1 uur cooldown en telt mee op je slagingskans bij misdaden.",
+  "trainingHubSectionGym": "Sportschool",
+  "trainingHubSectionShooting": "Schietschool"
 }

@@ -1,10 +1,12 @@
 ﻿# Gym Protocol
 
+> **Player UI:** Gym and shooting range are combined in the **training hub** (`client/lib/screens/training_hub_screen.dart`). See [training-hub.md](training-hub.md).
+
 ## Scope
 Physical stat training, gym status, training cooldown and long-term combat growth.
 
 ## Primary Frontend Entry
-- client/lib/screens/gym_screen.dart
+- `client/lib/screens/training_hub_screen.dart` (gym section; API `/gym`)
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

@@ -1,10 +1,12 @@
 ﻿# Shooting Range Protocol
 
+> **Player UI:** Gym and shooting range are combined in the **training hub** (`client/lib/screens/training_hub_screen.dart`). See [training-hub.md](training-hub.md).
+
 ## Scope
 Combat training loop, training status, payout or xp and cooldown pacing.
 
 ## Primary Frontend Entry
-- client/lib/screens/shooting_range_screen.dart
+- `client/lib/screens/training_hub_screen.dart` (shooting section; API `/shooting-range`)
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

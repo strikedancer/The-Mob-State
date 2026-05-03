@@ -7269,6 +7269,22 @@ class AppLocalizationsPl extends AppLocalizations {
   String get shootingTrain => 'Trenuj';
 
   @override
+  String get trainingHubMenuLabel => 'Szkolenie';
+
+  @override
+  String get trainingHubTitle => 'Centrum szkoleniowe';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Buduj siłę na siłowni i dokładność na strzelnicy. Każda ścieżka składa się z maksymalnie 100 sesji z 1-godzinnym czasem odnowienia i zwiększa szansę na powodzenie przestępstwa.';
+
+  @override
+  String get trainingHubSectionGym => 'Sala gimnastyczna';
+
+  @override
+  String get trainingHubSectionShooting => 'Strzelnica';
+
+  @override
   String get gym => 'Sala gimnastyczna';
 
   @override
@@ -14246,4 +14262,22 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Szkolenie';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Centrum szkoleniowe';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Siłownia (siła) i strzelnica (celność) w jednym miejscu. Obydwa bonusy zwiększają Twoją szansę na powodzenie w przestępstwie; dokładność strzelania jest również wykorzystywana w akcjach na listach trafień. Każdy utwór ma swój własny czas odnowienia i limit 100 sesji.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Siłownia: każda sesja zwiększa twoją stałą premię do siły łącznie do +8% (100 sesji). Czas odnowienia pomiędzy sesjami wynosi 1 godzinę (VIP może go skrócić).\nZasięg strzelania: każda sesja zwiększa stałą premię do celności łącznie do +10% (100 sesji). Czas odnowienia pomiędzy sesjami wynosi 1 godzinę (VIP może go skrócić).\nObydwa bonusy są dodawane przez serwer do obliczeń sukcesu przestępstwa.\nTrenujesz każdy tor osobno: dwa liczniki czasu i dwa przyciski pociągu — jeden ekran.\nPostęp nie zostanie zresetowany, chyba że personel zastosuje surową karę.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Zaplanuj codziennie obie ścieżki: małe kroki łączą się w wyraźną przewagę nad przestępczością.\nPrzejrzyj przestępstwa, w których zawodzisz najbardziej: siła i celność uzupełniają się – to nie ta sama statystyka.';
 }

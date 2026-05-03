@@ -7262,6 +7262,22 @@ class AppLocalizationsPt extends AppLocalizations {
   String get shootingTrain => 'Treinar';
 
   @override
+  String get trainingHubMenuLabel => 'Treinamento';
+
+  @override
+  String get trainingHubTitle => 'Centro de treinamento';
+
+  @override
+  String get trainingHubSubtitle =>
+      'Aumente a força na academia e a precisão no alcance. Cada faixa acumula até 100 sessões com um tempo de espera de 1 hora e aumenta sua chance de sucesso no crime.';
+
+  @override
+  String get trainingHubSectionGym => 'Academia';
+
+  @override
+  String get trainingHubSectionShooting => 'Campo de tiro';
+
+  @override
   String get gym => 'Academia';
 
   @override
@@ -14238,4 +14254,22 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get legalTermsSection10Body =>
       'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+
+  @override
+  String get helpTopicTrainingHubCategory => 'Treinamento';
+
+  @override
+  String get helpTopicTrainingHubTitle => 'Centro de treinamento';
+
+  @override
+  String get helpTopicTrainingHubSummary =>
+      'Ginásio (força) e campo de tiro (precisão) em um só lugar. Ambos os bônus aumentam sua chance de sucesso no crime; a precisão do tiro também é usada em ações de lista de acertos. Cada faixa tem seu próprio tempo de espera e um limite de 100 sessões.';
+
+  @override
+  String get helpTopicTrainingHubHow =>
+      'Ginásio: cada sessão aumenta seu bônus permanente de força em até +8% do total (100 sessões). O tempo de espera entre as sessões é de 1 hora (o VIP pode encurtá-lo).\nCampo de tiro: cada sessão aumenta seu bônus permanente de precisão em até +10% do total (100 sessões). O tempo de espera entre as sessões é de 1 hora (o VIP pode encurtá-lo).\nAmbos os bônus são adicionados pelo servidor aos cálculos de sucesso do crime.\nVocê treina cada faixa separadamente: dois temporizadores e dois botões de trem – uma tela.\nO progresso não é reiniciado a menos que a equipe aplique uma penalidade pesada.';
+
+  @override
+  String get helpTopicTrainingHubTips =>
+      'Programe ambas as trilhas diariamente: pequenos passos se acumulam em uma vantagem clara nos crimes.\nRevise os crimes onde você mais falha: força e precisão se complementam – eles não são a mesma estatística.';
 }

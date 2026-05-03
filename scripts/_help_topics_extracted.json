@@ -1226,74 +1226,37 @@
     "protocolPath": "docs/module-protocols/tuneshop.md"
   },
   {
-    "id": "shooting-range",
-    "icon": "Icons.gps_fixed",
+    "id": "training-hub",
+    "icon": "Icons.sports_martial_arts",
     "categoryNl": "Training",
     "categoryEn": "Training",
-    "titleNl": "Schietschool",
-    "titleEn": "Shooting Range",
-    "summaryNl": "Verbeter je nauwkeurigheid en wapenvaardigheid via gestructureerde schietoefeningen. Hogere stats verhogen schade en trefkans in PvP en crimes.",
-    "summaryEn": "Improve your accuracy and weapon skill through structured shooting drills. Higher stats increase damage and hit chance in PvP and crimes.",
+    "titleNl": "Trainingscircuit",
+    "titleEn": "Training hub",
+    "summaryNl": "Sportschool (kracht) en schietschool (nauwkeurigheid) op één plek. Beide bonussen tellen mee op je slagingskans bij misdaden; de schietschool telt ook mee bij hitlist-acties. Elke lijn heeft eigen cooldown en maximaal 100 sessies.",
+    "summaryEn": "Gym (strength) and shooting range (accuracy) in one place. Both bonuses add to your crime success chance; shooting accuracy is also used in hitlist actions. Each track has its own cooldown and a cap of 100 sessions.",
     "howNl": [
-      "De schietschool biedt meerdere disciplines: pistool, geweer, shotgun en automatisch vuur. Elk traint een aparte wapenvaardigheid.",
-      "Elke trainingssessie heeft een cooldown van 30 minuten. Je kunt niet onbeperkt trainen per dag.",
-      "Hogere nauwkeurigheid verhoogt je trefkans in PvP gevechten en verlaagt de kans dat je zelf geraakt wordt.",
-      "Wapenvaardigheid bepaalt ook welke wapens je effectief kunt gebruiken: een sniper rifle vereist een bepaalde skill voordat je zijn volle bonus benut.",
-      "Trainingsresultaten stapelen cumulatief op. Er is geen reset tenzij je een zware boete via de rechtbank krijgt.",
-      "School-certificaat Militair Training geeft een permanente bonus op elke schietschool-sessie."
+      "Sportschool: per sessie stijgt je vaste krachtbonus tot maximaal +8% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).",
+      "Schietschool: per sessie stijgt je nauwkeurigheidsbonus tot maximaal +10% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).",
+      "Beide bonussen worden door de server opgeteld bij de succesberekening van misdaden.",
+      "Je traint elke lijn afzonderlijk: twee timers, twee knoppen — maar één scherm.",
+      "Er is geen reset van voortgang, tenzij staff een zware correctie toepast."
     ],
     "howEn": [
-      "The shooting range offers multiple disciplines: pistol, rifle, shotgun and automatic fire. Each trains a separate weapon skill.",
-      "Each training session has a cooldown of 30 minutes. You cannot train endlessly per day.",
-      "Higher accuracy increases your hit chance in PvP fights and lowers the chance of being hit yourself.",
-      "Weapon skill also determines which weapons you can use effectively: a sniper rifle requires a certain skill before you get its full bonus.",
-      "Training results stack cumulatively. There is no reset unless you receive a heavy penalty via the court.",
-      "School certificate Military Training gives a permanent bonus to each shooting range session."
+      "Gym: each session increases your permanent strength bonus up to +8% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).",
+      "Shooting range: each session increases your permanent accuracy bonus up to +10% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).",
+      "Both bonuses are added by the server into crime success calculations.",
+      "You train each track separately: two timers and two train buttons — one screen.",
+      "Progress does not reset unless staff applies a heavy penalty."
     ],
     "tipsNl": [
-      "Train de schietschool elke dag: kleine cumulatieve bonussen worden na een week al merkbaar in PvP-uitkomsten.",
-      "Train het wapen-type dat je het meest gebruikt in crimes en PvP voor maximale return on investment."
+      "Plan beide lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.",
+      "Check misdaden waar je het meest faalt: kracht en nauwkeurigheid zijn complementair, niet hetzelfde."
     ],
     "tipsEn": [
-      "Train the shooting range every day: small cumulative bonuses become noticeable in PvP outcomes within a week.",
-      "Train the weapon type you use most in crimes and PvP for maximum return on investment."
+      "Schedule both tracks daily: small steps stack into a clear edge on crimes.",
+      "Review crimes where you fail most: strength and accuracy complement each other — they are not the same stat."
     ],
-    "protocolPath": "docs/module-protocols/shooting-range.md"
-  },
-  {
-    "id": "gym",
-    "icon": "Icons.fitness_center",
-    "categoryNl": "Training",
-    "categoryEn": "Training",
-    "titleNl": "Sportschool",
-    "titleEn": "Gym",
-    "summaryNl": "Train kracht, snelheid en uithoudingsvermogen voor betere stats in PvP, crimes en HP-pool. Dagelijkse training is de sleutel tot snelle stat-groei.",
-    "summaryEn": "Train strength, speed and stamina for better stats in PvP, crimes and HP pool. Daily training is key to fast stat growth.",
-    "howNl": [
-      "De sportschool biedt drie trainingscategorieën: Kracht (meer schade per aanval), Snelheid (hogere reflexen, minder geraakt worden), Uithoudingsvermogen (hogere max HP).",
-      "Elke training heeft een cooldown van 1 uur. Maximaal 6-8 sessies per dag afhankelijk van je school-certificaat.",
-      "Kracht verhoogt directe schade in zowel PvP als bepaalde crime-typen (beroving, vechtpartij).",
-      "Snelheid verhoogt de kans om een aanval te ontwijken en verlaagt de kans dat je gevangen wordt bij crime-mislukking.",
-      "Uithoudingsvermogen verhoogt je max HP-pool. Meer HP = langer overleven in PvP en meer ruimte voor risicovolle crimes.",
-      "School-certificaat Lichaamstraining geeft +15% bonus op alle gym-sessies."
-    ],
-    "howEn": [
-      "The gym offers three training categories: Strength (more damage per attack), Speed (higher reflexes, less hits taken), Stamina (higher max HP).",
-      "Each training has a 1 hour cooldown. Maximum 6-8 sessions per day depending on your school certificate.",
-      "Strength increases direct damage in both PvP and certain crime types (robbery, brawl).",
-      "Speed increases the chance to dodge an attack and lowers the chance of being caught on crime failure.",
-      "Stamina increases your max HP pool. More HP = surviving longer in PvP and more room for risky crimes.",
-      "School certificate Physical Training gives +15% bonus to all gym sessions."
-    ],
-    "tipsNl": [
-      "Train Uithoudingsvermogen als prioriteit: een hogere HP-pool verbetert al je andere systems because je langer actief blijft.",
-      "Combineer gym met schietschool: Kracht + Nauwkeurigheid is de sterkste PvP-combinatie."
-    ],
-    "tipsEn": [
-      "Prioritize Stamina training: a higher HP pool improves all your other systems because you stay active longer.",
-      "Combine gym with shooting range: Strength + Accuracy is the strongest PvP combination."
-    ],
-    "protocolPath": "docs/module-protocols/gym.md"
+    "protocolPath": "docs/module-protocols/training-hub.md"
   },
   {
     "id": "ammo-factory",
