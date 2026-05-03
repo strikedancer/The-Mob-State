@@ -428,7 +428,7 @@
   "helpAndGuide": "Ajuda e Guia",
   "quickActions": "Ações rápidas",
   "liveEvents": "Eventos ao vivo",
-  "support": "Apoiar",
+  "support": "Suporte",
   "events": "Eventos",
   "aviation": "Aviação",
   "premiumAndCredits": "Prêmio e Créditos",
@@ -2931,7 +2931,7 @@
     }
   },
   "supportTimeJustNow": "agora mesmo",
-  "supportSenderSupport": "Apoiar",
+  "supportSenderSupport": "Suporte",
   "supportSenderYou": "Você",
   "supportImageLoadFailed": "Falha ao carregar a imagem.",
   "supportMyTickets": "Meus ingressos",

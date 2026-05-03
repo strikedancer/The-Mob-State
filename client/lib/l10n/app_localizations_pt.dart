@@ -883,7 +883,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get liveEvents => 'Eventos ao vivo';
 
   @override
-  String get support => 'Apoiar';
+  String get support => 'Suporte';
 
   @override
   String get events => 'Eventos';
@@ -10546,7 +10546,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get supportTimeJustNow => 'agora mesmo';
 
   @override
-  String get supportSenderSupport => 'Apoiar';
+  String get supportSenderSupport => 'Suporte';
 
   @override
   String get supportSenderYou => 'Você';

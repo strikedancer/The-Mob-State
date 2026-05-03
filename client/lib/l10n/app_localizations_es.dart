@@ -746,7 +746,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get countrySwitzerland => 'Suiza';
 
   @override
-  String get crew => 'Multitud';
+  String get crew => 'Crew';
 
   @override
   String get profile => 'Perfil';
@@ -891,7 +891,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get liveEvents => 'Eventos en vivo';
 
   @override
-  String get support => 'Apoyo';
+  String get support => 'Soporte';
 
   @override
   String get events => 'Eventos';
@@ -906,7 +906,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bank => 'Banco';
 
   @override
-  String get tradeGoods => 'bienes comerciales';
+  String get tradeGoods => 'Bienes comerciales';
 
   @override
   String get drugs => 'Drogas';
