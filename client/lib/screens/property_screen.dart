@@ -9,8 +9,6 @@ import './nightclub_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
-import '../widgets/adaptive_tab_selector.dart';
-
 class PropertyScreen extends StatefulWidget {
   const PropertyScreen({super.key});
 
@@ -324,7 +322,7 @@ class PropertyScreenState extends State<PropertyScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.properties),
-        bottom: AdaptiveTabBar(
+        bottom: TabBar(
           controller: _tabController,
           tabs: [
             Tab(text: l10n.propertiesAvailable, icon: const Icon(Icons.store)),

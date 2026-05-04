@@ -11,8 +11,6 @@ import '../widgets/shop_tool_card.dart';
 import '../widgets/inventory_tool_card.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/tool_display_name.dart';
-import '../widgets/adaptive_tab_selector.dart';
-
 String _toolsPurchaseErrorMessage(
   ToolPurchaseResult result,
   AppLocalizations l10n,
@@ -275,7 +273,7 @@ class _ToolsScreenState extends State<ToolsScreen>
               ),
           ],
         ),
-        bottom: AdaptiveTabBar(
+        bottom: TabBar(
           controller: _tabController,
           tabs: [
             Tab(icon: const Icon(Icons.shopping_cart), text: l10n.toolsTabBuy),

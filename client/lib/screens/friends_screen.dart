@@ -13,8 +13,6 @@ import 'player_profile_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
-import '../widgets/adaptive_tab_selector.dart';
-
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
 
@@ -552,7 +550,7 @@ class _FriendsScreenState extends State<FriendsScreen>
             ],
           ),
         ],
-        bottom: AdaptiveTabBar(
+        bottom: TabBar(
           controller: _tabController,
           tabs: [
             Tab(text: l10n.friends),

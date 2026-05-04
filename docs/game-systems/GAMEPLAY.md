@@ -35,7 +35,6 @@
 
 - Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie, status en quick actions.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
-- Schermen met **meerdere secties via tabs** (o.a. zwarte markt, inventory, vrienden, territory, crew, prostitutie, wapen-/munitiemarkt): onder **smalle breedte** (standaard onder 720px) toont de client een **dropdown** met de actieve sectienaam zodat alle titels bereikbaar blijven; op bredere vensters blijft de horizontale **TabBar**. Widget: `client/lib/widgets/adaptive_tab_selector.dart` (`AdaptiveTabBar`).
 - Dashboard-baseline bevat economy-overzicht (cash/bank/crypto/assets/net worth), 24u cashflowtrend, 7d activiteit, operations-timers en notificatie/risico-indicatoren.
 - In **Instellingen** kun je de **spelertaal** wijzigen (o.a. NL, EN en extra Europese UI-talen); zie `docs/l10n-migration.md` voor uitbreiding en vertaalfallbacks. **Avatar wijzigen:** op web laadt de kies-grid portretten **via HTTP** naar `/images/avatars/…` (nginx, externe image-mount), niet via ingebouwde `Image.asset`, zodat dezelfde bestanden als op de server zichtbaar zijn zonder dubbel `assets/`-pad in de console.
 - De **profiel-/avatar-knop** in de header (popup: berichten, hulp, instellingen, uitloggen) toont een tooltip uit ARB-key **`userAccountMenuTooltip`** — bewust niet het generieke woord *account*, zodat NL geen “Rekening” (bank) als label krijgt.

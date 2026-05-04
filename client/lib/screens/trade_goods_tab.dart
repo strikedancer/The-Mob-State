@@ -9,8 +9,6 @@ import '../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
-import '../widgets/adaptive_tab_selector.dart';
-
 /// Contraband handelswaren (market + inventory) embedded in [BlackMarketScreen].
 class TradeGoodsTab extends StatefulWidget {
   const TradeGoodsTab({super.key});
@@ -274,7 +272,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab>
       children: [
         Material(
           color: Theme.of(context).colorScheme.surface,
-          child: AdaptiveTabBar(
+          child: TabBar(
             controller: _tabController,
             isScrollable: true,
             tabs: [

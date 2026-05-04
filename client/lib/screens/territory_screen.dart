@@ -19,8 +19,6 @@ import '../services/territory_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
-import '../widgets/adaptive_tab_selector.dart';
-
 // ---------------------------------------------------------------------------
 // TerritoryScreen â€” Responsive crew territory map (NL-first)
 // Layout: desktop = split (map | side panel), tablet = stacked collapsible,
@@ -1463,7 +1461,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(t.territory),
-        bottom: AdaptiveTabBar(
+        bottom: TabBar(
           controller: _tabController,
           tabs: [
             Tab(text: t.territoryTabMap),

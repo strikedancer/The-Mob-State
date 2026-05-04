@@ -12,8 +12,6 @@ import 'trade_goods_tab.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/responsive_modal.dart';
-import '../widgets/adaptive_tab_selector.dart';
-
 class BlackMarketScreen extends StatefulWidget {
   final int initialTabIndex;
 
@@ -91,7 +89,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.blackMarket),
-        bottom: AdaptiveTabBar(
+        bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
           tabs: [
