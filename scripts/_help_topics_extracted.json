@@ -511,7 +511,7 @@
     "summaryNl": "Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna voertuigen, listings, rugzakken, grondstoffen, wapenmarkt en munitie.",
     "summaryEn": "One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then vehicles, listings, backpacks, materials, weapons market and ammo.",
     "howNl": [
-      "Tab Handelswaren: vijf smokkelgoederen met eigen prijs, inventarislimiet en risicochips (bederf, volatiliteit, tripschade, inbeslagneming). Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.",
+      "Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.",
       "De zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).",
       "Prijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.",
       "Zwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.",
@@ -521,7 +521,7 @@
       "Listings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel."
     ],
     "howEn": [
-      "Trade goods tab: five contraband lines with pricing, inventory caps and risk chips (spoilage, volatility, trip damage, seizure). Buy/sell uses the /trade API; partial load failures show a warning banner.",
+      "Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.",
       "The black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).",
       "Prices and availability vary heavily by country and time. A listing can sell out fast.",
       "Black market transactions leave no official trail but increase FBI Heat for large purchases.",

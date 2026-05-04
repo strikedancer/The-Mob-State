@@ -588,6 +588,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via de **handelswaren-tab** op de zwarte markt en gekoppelde inventory.
 
 ### Client UX (zwarte markt → handelswaren-tab)
+- Markt en **contraband-inventaris** staan in **één doorlopende scroll** (geen aparte sub-tabs „Goederen” / „Inventaris” meer); onderaan de lijst staat een duidelijke **Inventaris**-kop met verkoopkaarten of een lege staat.
 - Marktdata wordt in **drie segmenten** geladen (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Faalt één segment, dan volgt een **banner** en blijft de rest bruikbaar; alleen als **alles** faalt, zie je de fatale leegtoestand.
 - Per goed tonen **chips** server-gestuurde risico’s waar aanwezig: bederfvenster (bloemen), prijsvolatiliteit (diamonds), tripschade (electronics), inbeslagnemingskans (wapens/farmaceutica). Het paneel “Travel and market risks” vat het gedrag tekstueel samen.
 - **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/…` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).

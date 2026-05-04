@@ -9,6 +9,7 @@ import '../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+
 /// Contraband handelswaren (market + inventory) embedded in [BlackMarketScreen].
 class TradeGoodsTab extends StatefulWidget {
   const TradeGoodsTab({super.key});
@@ -17,8 +18,7 @@ class TradeGoodsTab extends StatefulWidget {
   State<TradeGoodsTab> createState() => _TradeGoodsTabState();
 }
 
-class _TradeGoodsTabState extends State<TradeGoodsTab>
-    with SingleTickerProviderStateMixin {
+class _TradeGoodsTabState extends State<TradeGoodsTab> {
   bool _isLoading = true;
   List<TradableGood> _goods = [];
   List<GoodPrice> _prices = [];
@@ -27,7 +27,6 @@ class _TradeGoodsTabState extends State<TradeGoodsTab>
   String? _goodsLoadError;
   String? _pricesLoadError;
   String? _inventoryLoadError;
-  late TabController _tabController;
   final Map<String, int> _buyQuantities = {};
   final Map<String, int> _sellQuantities = {};
   late final ApiClient _apiClient;
@@ -36,14 +35,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab>
   void initState() {
     super.initState();
     _apiClient = ApiClient();
-    _tabController = TabController(length: 2, vsync: this);
     _loadMarketData();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadMarketData() async {
@@ -267,142 +259,171 @@ class _TradeGoodsTabState extends State<TradeGoodsTab>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Material(
-          color: Theme.of(context).colorScheme.surface,
-          child: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            tabs: [
-              Tab(
-                text: l10n.goods,
-                icon: const Icon(Icons.shopping_bag),
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              _errorMessage!,
+              style: const TextStyle(color: Colors.red),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadMarketData,
+              child: Text(l10n.retryAgain),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadMarketData,
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          ..._buildMarketHeaderChildren(l10n),
+          for (final good in _goods)
+            _buildGoodCard(
+              good,
+              _prices.firstWhere(
+                (p) => p.goodType == good.id,
+                orElse: () => GoodPrice(
+                  goodType: good.id,
+                  currentPrice: good.basePrice,
+                  sellPrice: (good.basePrice * 0.9).floor(),
+                  multiplier: 1.0,
+                ),
               ),
-              Tab(
-                text: l10n.inventory,
-                icon: const Icon(Icons.inventory_2_outlined),
+              true,
+            ),
+          const SizedBox(height: 24),
+          Divider(color: Theme.of(context).colorScheme.outlineVariant),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(
+                Icons.inventory_2_outlined,
+                size: 22,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                l10n.inventory,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ],
           ),
-        ),
-        Expanded(
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _errorMessage != null
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            _errorMessage!,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: _loadMarketData,
-                            child: Text(l10n.retryAgain),
-                          ),
-                        ],
-                      ),
-                    )
-                  : TabBarView(
-                      controller: _tabController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        _buildMarketTab(),
-                        _buildInventoryTab(),
-                      ],
+          const SizedBox(height: 12),
+          if (_inventory.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.inventory_2_outlined,
+                    size: 48,
+                    color: Colors.grey.shade400,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.noItemsInInventory,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey.shade700,
                     ),
-        ),
-      ],
+                  ),
+                ],
+              ),
+            )
+          else
+            for (final item in _inventory)
+              _buildInventoryCard(
+                _resolveGood(item.goodType),
+                _prices.firstWhere(
+                  (p) => p.goodType == item.goodType,
+                  orElse: () {
+                    final g = _resolveGood(item.goodType);
+                    return GoodPrice(
+                      goodType: item.goodType,
+                      currentPrice: g.basePrice,
+                      sellPrice: (g.basePrice * 0.9).floor(),
+                      multiplier: 1.0,
+                    );
+                  },
+                ),
+                item,
+              ),
+        ],
+      ),
     );
   }
 
-  Widget _buildMarketTab() {
-    final l10n = AppLocalizations.of(context)!;
-    final itemCount = _goods.isEmpty ? 1 : _goods.length + 1;
-    return RefreshIndicator(
-      onRefresh: _loadMarketData,
-      child: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: itemCount,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+  /// Banners, risk panel, empty-goods message (same as former "Goederen" tab top).
+  List<Widget> _buildMarketHeaderChildren(AppLocalizations l10n) {
+    return [
+      if (_goodsLoadError != null ||
+          _pricesLoadError != null ||
+          _inventoryLoadError != null)
+        Card(
+          color: Colors.orange.shade50,
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (_goodsLoadError != null ||
-                    _pricesLoadError != null ||
-                    _inventoryLoadError != null)
-                  Card(
-                    color: Colors.orange.shade50,
-                    margin: const EdgeInsets.only(bottom: 12),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.warning_amber_rounded,
-                                  color: Colors.orange.shade800),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  l10n.tradePartialDataBanner,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.orange.shade900,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          if (_goodsLoadError != null)
-                            Text('• $_goodsLoadError',
-                                style: TextStyle(color: Colors.orange.shade900)),
-                          if (_pricesLoadError != null)
-                            Text('• $_pricesLoadError',
-                                style: TextStyle(color: Colors.orange.shade900)),
-                          if (_inventoryLoadError != null)
-                            Text('• $_inventoryLoadError',
-                                style: TextStyle(color: Colors.orange.shade900)),
-                        ],
-                      ),
-                    ),
-                  ),
-                _buildTradeRiskGuide(l10n),
-                if (_goods.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Center(
+                Row(
+                  children: [
+                    Icon(Icons.warning_amber_rounded,
+                        color: Colors.orange.shade800),
+                    const SizedBox(width: 8),
+                    Expanded(
                       child: Text(
-                        _goodsLoadError ?? l10n.tradeNoGoodsLoaded,
-                        textAlign: TextAlign.center,
+                        l10n.tradePartialDataBanner,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.orange.shade900,
+                        ),
                       ),
                     ),
-                  ),
-                const SizedBox(height: 8),
+                  ],
+                ),
+                if (_goodsLoadError != null)
+                  Text('• $_goodsLoadError',
+                      style: TextStyle(color: Colors.orange.shade900)),
+                if (_pricesLoadError != null)
+                  Text('• $_pricesLoadError',
+                      style: TextStyle(color: Colors.orange.shade900)),
+                if (_inventoryLoadError != null)
+                  Text('• $_inventoryLoadError',
+                      style: TextStyle(color: Colors.orange.shade900)),
               ],
-            );
-          }
-          final good = _goods[index - 1];
-          final price = _prices.firstWhere(
-            (p) => p.goodType == good.id,
-            orElse: () => GoodPrice(
-              goodType: good.id,
-              currentPrice: good.basePrice,
-              sellPrice: (good.basePrice * 0.9).floor(),
-              multiplier: 1.0,
             ),
-          );
-
-          return _buildGoodCard(good, price, true);
-        },
-      ),
-    );
+          ),
+        ),
+      _buildTradeRiskGuide(l10n),
+      if (_goods.isEmpty)
+        Padding(
+          padding: const EdgeInsets.only(top: 16, bottom: 8),
+          child: Center(
+            child: Text(
+              _goodsLoadError ?? l10n.tradeNoGoodsLoaded,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        )
+      else
+        const SizedBox(height: 8),
+    ];
   }
 
   Widget _buildTradeRiskGuide(AppLocalizations l10n) {
@@ -530,57 +551,6 @@ class _TradeGoodsTabState extends State<TradeGoodsTab>
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => emojiFallback(),
         ),
-      ),
-    );
-  }
-
-  Widget _buildInventoryTab() {
-    final l10n = AppLocalizations.of(context)!;
-    if (_inventory.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.inventory_2_outlined,
-              size: 64,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noItemsInInventory,
-              style: const TextStyle(fontSize: 18, color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.buyItemsInBuyTab,
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: _loadMarketData,
-      child: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: _inventory.length,
-        itemBuilder: (context, index) {
-          final item = _inventory[index];
-          final good = _resolveGood(item.goodType);
-          final price = _prices.firstWhere(
-            (p) => p.goodType == item.goodType,
-            orElse: () => GoodPrice(
-              goodType: item.goodType,
-              currentPrice: good.basePrice,
-              sellPrice: (good.basePrice * 0.9).floor(),
-              multiplier: 1.0,
-            ),
-          );
-
-          return _buildInventoryCard(good, price, item);
-        },
       ),
     );
   }
