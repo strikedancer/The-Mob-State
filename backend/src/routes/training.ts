@@ -18,7 +18,8 @@ router.get('/status', authenticate, async (req: AuthRequest, res) => {
     shootingRangeService.getStatus(playerId),
   ]);
   const trainingComboReadiness = getTrainingComboReadinessPayload(
-    gym.lastTrainedAt as Date | null | undefined,
+    (gym as { gymLastTrainedAt?: Date | null }).gymLastTrainedAt ??
+      (gym.lastTrainedAt as Date | null | undefined),
     shootingRange.lastTrainedAt as Date | null | undefined,
   );
   return res.status(200).json({

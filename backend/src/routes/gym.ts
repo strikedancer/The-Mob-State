@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
-import { gymService } from '../services/gymService';
+import { gymService, type GymTrainTrack } from '../services/gymService';
 
 const router = Router();
 
@@ -21,7 +21,11 @@ router.get('/status', authenticate, async (req: AuthRequest, res) => {
  * Train at the gym (1 hour cooldown)
  */
 router.post('/train', authenticate, async (req: AuthRequest, res) => {
-  const result = await gymService.train(req.player!.id);
+  const raw = (req.body as { track?: string } | undefined)?.track;
+  const track: GymTrainTrack =
+    raw === 'speed' || raw === 'stamina' || raw === 'strength' ? raw : 'strength';
+
+  const result = await gymService.train(req.player!.id, track);
 
   if (!result.success) {
     if (result.error === 'MAX_SESSIONS') {

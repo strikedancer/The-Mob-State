@@ -1279,14 +1279,18 @@ model ShootingRangeStats {
 }
 
 model GymStats {
-  id                Int       @id @default(autoincrement())
-  playerId          Int       @unique
-  sessionsCompleted Int       @default(0)
-  strengthBonus     Float     @default(0)
-  lastTrainedAt     DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  player            Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  id                       Int       @id @default(autoincrement())
+  playerId                 Int       @unique
+  sessionsCompleted        Int       @default(0) // strength track
+  speedSessionsCompleted   Int       @default(0)
+  staminaSessionsCompleted Int       @default(0)
+  strengthBonus            Float     @default(0) // aggregate crime bonus (all tracks)
+  lastTrainedAt            DateTime? // strength track
+  speedLastTrainedAt       DateTime?
+  staminaLastTrainedAt     DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+  player                   Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
   @@index([playerId])
   @@map("gym_stats")

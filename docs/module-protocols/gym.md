@@ -5,6 +5,12 @@
 ## Scope
 Physical stat training, gym status, training cooldown and long-term combat growth.
 
+## Three tracks (server)
+- **Strength / speed / stamina:** separate session counters (`sessionsCompleted`, `speedSessionsCompleted`, `staminaSessionsCompleted`), last-train timestamps and **1h** cooldowns per track (VIP reduction unchanged). Each track caps at **100** sessions.
+- **Crime bonus:** `gymService.computeAggregateGymBonus` — at full progress **+4% + 2% + 2% = +8%** success chance from gym alone; stored aggregate on `gym_stats.strengthBonus` for `crimeService`.
+- **Train:** `POST /gym/train` body `{ "track": "strength" | "speed" | "stamina" }` (omit or invalid → strength). Legacy clients that post without `track` still train strength only.
+- **Migration `20260503140000_gym_three_tracks`:** copies legacy `sessionsCompleted` into speed and stamina counters and recomputes `strengthBonus` so totals match the old single-track formula until the player diverges.
+
 ## Primary Frontend Entry
 - `client/lib/screens/training_hub_screen.dart` (gym section; API `/gym`)
 

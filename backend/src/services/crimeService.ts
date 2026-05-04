@@ -24,6 +24,7 @@ import {
   isTrainingComboReadinessActive,
   TRAINING_COMBO_READINESS_BONUS,
 } from '../lib/trainingComboReadiness';
+import { latestGymTrainAt } from './gymService';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 
@@ -1187,7 +1188,12 @@ export const crimeService = {
       }),
       prisma.gymStats.findUnique({
         where: { playerId },
-        select: { strengthBonus: true, lastTrainedAt: true },
+        select: {
+          strengthBonus: true,
+          lastTrainedAt: true,
+          speedLastTrainedAt: true,
+          staminaLastTrainedAt: true,
+        },
       }),
     ]);
 
@@ -1196,15 +1202,23 @@ export const crimeService = {
       successChance += shootingStats.accuracyBonus;
     }
 
-    // Max +8% from 100 sessions (0.08% per session) — gym
+    // Max +8% aggregate gym bonus (strength/speed/stamina tracks; see gymService.computeAggregateGymBonus)
     if (gymStats?.strengthBonus) {
       successChance += gymStats.strengthBonus;
     }
 
     // 8️⃣ Same-UTC-day combo: both tracks trained today → small extra (see trainingComboReadiness.ts)
+    const gymLastUtc = gymStats
+      ? latestGymTrainAt({
+          lastTrainedAt: gymStats.lastTrainedAt ?? null,
+          speedLastTrainedAt: gymStats.speedLastTrainedAt ?? null,
+          staminaLastTrainedAt: gymStats.staminaLastTrainedAt ?? null,
+        })
+      : null;
+
     if (
       isTrainingComboReadinessActive(
-        gymStats?.lastTrainedAt ?? null,
+        gymLastUtc,
         shootingStats?.lastTrainedAt ?? null,
       )
     ) {

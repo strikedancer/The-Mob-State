@@ -856,7 +856,14 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       }),
       prisma.gymStats.findUnique({
         where: { playerId },
-        select: { lastTrainedAt: true },
+        select: {
+          lastTrainedAt: true,
+          speedLastTrainedAt: true,
+          staminaLastTrainedAt: true,
+          sessionsCompleted: true,
+          speedSessionsCompleted: true,
+          staminaSessionsCompleted: true,
+        },
       }),
       prisma.drugInventory.aggregate({
         where: { playerId },
@@ -1192,11 +1199,33 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         : null
     );
 
-    cooldowns.gym = toRemainingSeconds(
-      gymStats?.lastTrainedAt
-        ? new Date(gymStats.lastTrainedAt.getTime() + trainingCooldownMs)
-        : null
-    );
+    const gymTrackRemaining = (
+      sessions: number,
+      lastAt: Date | null | undefined,
+    ): number => {
+      if (sessions >= 100) return 0;
+      if (!lastAt) return 0;
+      return toRemainingSeconds(new Date(lastAt.getTime() + trainingCooldownMs));
+    };
+
+    const gStr = gymStats?.sessionsCompleted ?? 0;
+    const gSpd = gymStats?.speedSessionsCompleted ?? 0;
+    const gSta = gymStats?.staminaSessionsCompleted ?? 0;
+    const rStr = gymTrackRemaining(gStr, gymStats?.lastTrainedAt);
+    const rSpd = gymTrackRemaining(gSpd, gymStats?.speedLastTrainedAt);
+    const rSta = gymTrackRemaining(gSta, gymStats?.staminaLastTrainedAt);
+
+    cooldowns.gym_strength = rStr;
+    cooldowns.gym_speed = rSpd;
+    cooldowns.gym_stamina = rSta;
+    const gymParts = [
+      gStr >= 100 ? Number.POSITIVE_INFINITY : rStr,
+      gSpd >= 100 ? Number.POSITIVE_INFINITY : rSpd,
+      gSta >= 100 ? Number.POSITIVE_INFINITY : rSta,
+    ];
+    cooldowns.gym = gymParts.every((x) => !Number.isFinite(x))
+      ? 0
+      : Math.min(...gymParts);
 
     cooldowns.prostitute_recruit = toRemainingSeconds(
       cooldownPlayer?.lastProstituteRecruitment

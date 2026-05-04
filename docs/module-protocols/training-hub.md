@@ -2,7 +2,7 @@
 
 ## Scope
 
-Single Flutter entry that combines **gym** (strength bonus, `/gym`) and **shooting range** (accuracy bonus, `/shooting-range`). Player-facing help topic id: `training-hub`.
+Single Flutter entry that combines **gym** (three tracks: strength / speed / stamina, aggregate crime bonus up to +8%, `/gym`) and **shooting range** (accuracy bonus, `/shooting-range`). Player-facing help topic id: `training-hub`.
 
 ## Primary frontend entry
 
@@ -23,7 +23,7 @@ Legacy wrappers (same UI):
 
 ## Backend
 
-- `backend/src/routes/gym.ts`, `backend/src/services/gymService.ts` — train + status (unchanged contract).
+- `backend/src/routes/gym.ts`, `backend/src/services/gymService.ts` — train + status; gym status exposes per-track sessions, bonuses, cooldown gates and `gymLastTrainedAt` (max timestamp across tracks for combo-readiness).
 - `backend/src/routes/shootingRange.ts`, `backend/src/services/shootingRangeService.ts` — train + status (unchanged contract).
 - **`GET /training/status`** — `backend/src/routes/training.ts`: one authenticated round-trip returning `{ success, gym, shootingRange, trainingComboReadiness }` with the same gym/shooting objects as each module’s status endpoint (no nested `status` key). `trainingComboReadiness` is `{ active, bonusFraction }` for same-UTC-day gym+range combo (see `trainingComboReadiness.ts` + `balance-economy.md`). Used by `TrainingHubScreen` and the crimes screen bonus strip.
 - Player cooldown payload still exposes `cooldowns.gym` and `cooldowns.shooting_range` separately.
