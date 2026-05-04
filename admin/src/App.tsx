@@ -87,7 +87,8 @@ type TabType =
   | "tickets"
   | "todos"
   | "crew-wars"
-  | "territory";
+  | "territory"
+  | "okx-bot";
 type PlayerDetailTab = "overview" | "manage" | "financial";
 type DateRangeFilter = "24h" | "7d" | "30d" | "all";
 type SystemLogDateRange = "1h" | "24h" | "7d" | "30d" | "all";
@@ -4354,6 +4355,11 @@ function App() {
     { id: "images", label: t.navImages, icon: "bi-images" },
     { id: "premium-offers", label: t.navPremium, icon: "bi-gem" },
     { id: "config", label: t.navConfig, icon: "bi-sliders" },
+    {
+      id: "okx-bot",
+      label: l("OKX bot", "OKX bot"),
+      icon: "bi-currency-bitcoin",
+    },
   ];
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -12394,6 +12400,41 @@ function App() {
                         </tbody>
                       </table>
                     )}
+                  </div>
+                </>
+              )}
+
+              {activeTab === "okx-bot" && (
+                <>
+                  <h1>{l("OKX handelsbot", "OKX trading bot")}</h1>
+                  <p className="text-muted mb-3">
+                    {l(
+                      "Losstaande paper-bot (OKX API). Zet bij admin-build ",
+                      "Standalone paper bot (OKX API). Set at admin build time ",
+                    )}
+                    <code>VITE_OKX_BOT_URL</code>
+                    {l(
+                      " naar het dashboard (bv. https://jouw-host:3847/dashboard).",
+                      " to the dashboard URL (e.g. https://your-host:3847/dashboard).",
+                    )}
+                  </p>
+                  <div
+                    className="rounded border border-secondary overflow-hidden"
+                    style={{ height: "min(82vh, 920px)", minHeight: 420 }}
+                  >
+                    <iframe
+                      title={l("OKX bot dashboard", "OKX bot dashboard")}
+                      src={
+                        import.meta.env.VITE_OKX_BOT_URL ??
+                        "http://127.0.0.1:3847/dashboard"
+                      }
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        border: 0,
+                        display: "block",
+                      }}
+                    />
                   </div>
                 </>
               )}

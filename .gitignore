@@ -21,6 +21,8 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Build outputs
+services/okx-trading-bot/dist/
+services/okx-trading-bot/.data/
 admin/dist/
 client/build/
 client/.dart_tool/
