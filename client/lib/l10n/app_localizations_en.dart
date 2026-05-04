@@ -6344,7 +6344,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bmHubEmptyMyListingsHint =>
-      'Go to Garage or Marina to list vehicles';
+      'List vehicles from Garage or Marina, or sell carried tools with Sell item';
 
   @override
   String get bmHubSellerLabel => 'Seller';
@@ -6445,6 +6445,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bmHubLocationUnknown => 'UNKNOWN';
+
+  @override
+  String get bmHubNoMarketListingsTitle => 'No listings';
+
+  @override
+  String get bmHubNoMarketListingsBody =>
+      'No vehicles or items match your filters. You can list carried tools with the Sell item button.';
+
+  @override
+  String get bmHubSellCarriedItem => 'Sell item';
+
+  @override
+  String bmHubToolQtyDurability(int qty, int pct) {
+    return 'Qty $qty • $pct% condition';
+  }
+
+  @override
+  String bmHubToolBaseValue(int price) {
+    return 'Guide €$price';
+  }
+
+  @override
+  String get bmHubBuyToolTitle => 'Buy item';
+
+  @override
+  String bmHubBuyToolConfirm(String name, String price) {
+    return 'Buy $name for $price?';
+  }
+
+  @override
+  String get bmHubToolPurchased => 'Item purchased';
+
+  @override
+  String get bmHubToolPurchaseFailed => 'Could not buy item';
+
+  @override
+  String get bmHubDelistToolTitle => 'Remove listing';
+
+  @override
+  String bmHubDelistToolConfirm(String name) {
+    return 'Remove $name from the market?';
+  }
+
+  @override
+  String get bmHubToolDelisted => 'Listing removed';
+
+  @override
+  String get bmHubListToolTitle => 'List item on marketplace';
+
+  @override
+  String get bmHubListToolSelectLabel => 'Carried item';
+
+  @override
+  String get bmHubListToolSubmit => 'List';
+
+  @override
+  String get bmHubToolListedMessage => 'Item is now listed';
+
+  @override
+  String get bmHubListToolFailed => 'Could not list item';
+
+  @override
+  String get bmHubLoadCarriedToolsFailed => 'Could not load carried items';
+
+  @override
+  String get bmHubNoCarriedToolsToSell =>
+      'No carried items to sell (or already listed)';
+
+  @override
+  String get bmHubInvalidToolPrice => 'Enter a valid price';
 
   @override
   String get arrested => 'Arrested!';

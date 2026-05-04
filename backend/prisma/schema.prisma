@@ -121,6 +121,8 @@ model Player {
   security                        PlayerSecurity?
   selectedVehicle                 PlayerSelectedVehicle?
   playerTools                     PlayerTools[]
+  playerMarketListingsAsSeller    PlayerMarketListing[]            @relation("PlayerMarketListingSeller")
+  playerMarketListingsAsBuyer     PlayerMarketListing[]            @relation("PlayerMarketListingBuyer")
   profileLikesGiven               ProfileLike[]                    @relation("ProfileLikesGiven")
   profileLikesReceived            ProfileLike[]                    @relation("ProfileLikesReceived")
   productionMaterials             ProductionMaterial[]
@@ -1509,6 +1511,29 @@ model PlayerTools {
   @@index([playerId, location])
   @@index([toolId], map: "player_tools_toolId_fkey")
   @@map("player_tools")
+}
+
+/// Player-to-player sales on the Zwarte Markt “Marktplaats” (vehicles stay on VehicleInventory).
+/// kind: `player_tool` (v1). Future: drug_lot, trade_good_lot, crypto_lot — see player-marketplace.md
+model PlayerMarketListing {
+  id          Int       @id @default(autoincrement())
+  sellerId    Int
+  kind        String    @db.VarChar(32)
+  refId       Int
+  price       Int
+  status      String    @default("active") @db.VarChar(16)
+  countryCode String?   @db.VarChar(50)
+  buyerId     Int?
+  soldAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  seller Player  @relation("PlayerMarketListingSeller", fields: [sellerId], references: [id], onDelete: Cascade)
+  buyer  Player? @relation("PlayerMarketListingBuyer", fields: [buyerId], references: [id], onDelete: SetNull)
+
+  @@index([status, countryCode])
+  @@index([sellerId, status])
+  @@index([kind, refId, status])
+  @@map("player_market_listings")
 }
 
 model NPCPlayer {

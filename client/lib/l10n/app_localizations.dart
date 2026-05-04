@@ -11363,7 +11363,7 @@ abstract class AppLocalizations {
   /// No description provided for @bmHubEmptyMyListingsHint.
   ///
   /// In en, this message translates to:
-  /// **'Go to Garage or Marina to list vehicles'**
+  /// **'List vehicles from Garage or Marina, or sell carried tools with Sell item'**
   String get bmHubEmptyMyListingsHint;
 
   /// No description provided for @bmHubSellerLabel.
@@ -11557,6 +11557,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'UNKNOWN'**
   String get bmHubLocationUnknown;
+
+  /// No description provided for @bmHubNoMarketListingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No listings'**
+  String get bmHubNoMarketListingsTitle;
+
+  /// No description provided for @bmHubNoMarketListingsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicles or items match your filters. You can list carried tools with the Sell item button.'**
+  String get bmHubNoMarketListingsBody;
+
+  /// No description provided for @bmHubSellCarriedItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell item'**
+  String get bmHubSellCarriedItem;
+
+  /// No description provided for @bmHubToolQtyDurability.
+  ///
+  /// In en, this message translates to:
+  /// **'Qty {qty} • {pct}% condition'**
+  String bmHubToolQtyDurability(int qty, int pct);
+
+  /// No description provided for @bmHubToolBaseValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide €{price}'**
+  String bmHubToolBaseValue(int price);
+
+  /// No description provided for @bmHubBuyToolTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy item'**
+  String get bmHubBuyToolTitle;
+
+  /// No description provided for @bmHubBuyToolConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {name} for {price}?'**
+  String bmHubBuyToolConfirm(String name, String price);
+
+  /// No description provided for @bmHubToolPurchased.
+  ///
+  /// In en, this message translates to:
+  /// **'Item purchased'**
+  String get bmHubToolPurchased;
+
+  /// No description provided for @bmHubToolPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not buy item'**
+  String get bmHubToolPurchaseFailed;
+
+  /// No description provided for @bmHubDelistToolTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove listing'**
+  String get bmHubDelistToolTitle;
+
+  /// No description provided for @bmHubDelistToolConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the market?'**
+  String bmHubDelistToolConfirm(String name);
+
+  /// No description provided for @bmHubToolDelisted.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing removed'**
+  String get bmHubToolDelisted;
+
+  /// No description provided for @bmHubListToolTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List item on marketplace'**
+  String get bmHubListToolTitle;
+
+  /// No description provided for @bmHubListToolSelectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Carried item'**
+  String get bmHubListToolSelectLabel;
+
+  /// No description provided for @bmHubListToolSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get bmHubListToolSubmit;
+
+  /// No description provided for @bmHubToolListedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Item is now listed'**
+  String get bmHubToolListedMessage;
+
+  /// No description provided for @bmHubListToolFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not list item'**
+  String get bmHubListToolFailed;
+
+  /// No description provided for @bmHubLoadCarriedToolsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load carried items'**
+  String get bmHubLoadCarriedToolsFailed;
+
+  /// No description provided for @bmHubNoCarriedToolsToSell.
+  ///
+  /// In en, this message translates to:
+  /// **'No carried items to sell (or already listed)'**
+  String get bmHubNoCarriedToolsToSell;
+
+  /// No description provided for @bmHubInvalidToolPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid price'**
+  String get bmHubInvalidToolPrice;
 
   /// No description provided for @arrested.
   ///

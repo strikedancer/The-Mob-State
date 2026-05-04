@@ -8,6 +8,9 @@ Unified **illegal / grey economy hub**: contraband **handelswaren** (first tab),
 - `client/lib/screens/trade_goods_tab.dart` — eerste zwarte-markt-tab: contrabandmarkt + inventaris in **één scroll** (`/trade/*` APIs; geen aparte sub-tabs meer)
 - Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`
 
+## Marktplaats (P2P)
+Speler-tegen-speler verkoop op de **Marktplaats**-tab: **voertuigen** (bestaand) plus **niet-voertuig**-advertenties via `PlayerMarketListing`. Technisch contract en API: **`player-marketplace.md`**. De client haalt gecombineerde feeds via **`GET /market/unified`** (voertuigen + `itemListings`).
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.

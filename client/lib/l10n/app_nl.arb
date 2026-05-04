@@ -6736,7 +6736,7 @@
   "notLoggedInTokenStorageHint": "(opslagprobleem — probeer opnieuw in te loggen)",
   "blackMarketTabBackpacks": "Rugzakken",
   "bmHubAdjustFiltersHint": "Try adjusting your filters",
-  "bmHubEmptyMyListingsHint": "Go to Garage or Marina to list vehicles",
+  "bmHubEmptyMyListingsHint": "Voertuigen via Garage of Jachthaven te koop zetten, of gedragen gereedschap via Verkoop item",
   "bmHubSellerLabel": "Seller",
   "bmHubAskingPriceLabel": "Asking price",
   "bmHubMarketValueShort": "Market value",
@@ -6786,6 +6786,60 @@
   "bmHubVehicleDelisted": "Vehicle delisted successfully!",
   "bmHubDelistFailed": "Failed to delist vehicle",
   "bmHubLocationUnknown": "UNKNOWN",
+  "bmHubNoMarketListingsTitle": "Geen advertenties",
+  "bmHubNoMarketListingsBody": "Geen voertuigen of items die aan je filters voldoen. Je kunt gedragen gereedschap verkopen via Verkoop item.",
+  "bmHubSellCarriedItem": "Verkoop item",
+  "bmHubToolQtyDurability": "Aantal {qty} • {pct}% conditie",
+  "@bmHubToolQtyDurability": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      },
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubToolBaseValue": "Richtprijs €{price}",
+  "@bmHubToolBaseValue": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubBuyToolTitle": "Item kopen",
+  "bmHubBuyToolConfirm": "{name} kopen voor {price}?",
+  "@bmHubBuyToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolPurchased": "Item gekocht",
+  "bmHubToolPurchaseFailed": "Kon item niet kopen",
+  "bmHubDelistToolTitle": "Advertentie verwijderen",
+  "bmHubDelistToolConfirm": "{name} van de markt halen?",
+  "@bmHubDelistToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolDelisted": "Advertentie verwijderd",
+  "bmHubListToolTitle": "Item op de marktplaats zetten",
+  "bmHubListToolSelectLabel": "Gedragen item",
+  "bmHubListToolSubmit": "Plaatsen",
+  "bmHubToolListedMessage": "Item staat nu te koop",
+  "bmHubListToolFailed": "Kon item niet plaatsen",
+  "bmHubLoadCarriedToolsFailed": "Kon inventaris niet laden",
+  "bmHubNoCarriedToolsToSell": "Geen gedragen items om te verkopen (of al geplaatst)",
+  "bmHubInvalidToolPrice": "Voer een geldige prijs in",
   "casinoHubChooseGameHint": "Kies een spel en plaats je inzet",
   "casinoPlayButton": "Spelen",
   "casinoGameBaccaratName": "Baccarat",

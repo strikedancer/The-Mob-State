@@ -6731,7 +6731,7 @@
   "notLoggedInTokenStorageHint": "(Speicherproblem – versuchen Sie erneut, sich anzumelden)",
   "blackMarketTabBackpacks": "Rucksäcke",
   "bmHubAdjustFiltersHint": "Versuchen Sie, Ihre Filter anzupassen",
-  "bmHubEmptyMyListingsHint": "Gehen Sie zu Garage oder Marina, um Fahrzeuge aufzulisten",
+  "bmHubEmptyMyListingsHint": "Fahrzeuge über Garage/Marina listen oder getragene Werkzeuge über „Item verkaufen“",
   "bmHubSellerLabel": "Verkäuferin",
   "bmHubAskingPriceLabel": "Preisvorstellung",
   "bmHubMarketValueShort": "Marktwert",
@@ -6781,6 +6781,60 @@
   "bmHubVehicleDelisted": "Fahrzeug erfolgreich dekotiert!",
   "bmHubDelistFailed": "Fahrzeug konnte nicht aus dem Angebot genommen werden",
   "bmHubLocationUnknown": "UNBEKANNT",
+  "bmHubNoMarketListingsTitle": "Keine Inserate",
+  "bmHubNoMarketListingsBody": "Keine passenden Fahrzeuge oder Items. Du kannst getragene Werkzeuge über „Item verkaufen“ listen.",
+  "bmHubSellCarriedItem": "Item verkaufen",
+  "bmHubToolQtyDurability": "Menge {qty} • {pct}% Zustand",
+  "@bmHubToolQtyDurability": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      },
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubToolBaseValue": "Richtpreis €{price}",
+  "@bmHubToolBaseValue": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubBuyToolTitle": "Item kaufen",
+  "bmHubBuyToolConfirm": "{name} für {price} kaufen?",
+  "@bmHubBuyToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolPurchased": "Item gekauft",
+  "bmHubToolPurchaseFailed": "Kauf fehlgeschlagen",
+  "bmHubDelistToolTitle": "Inserat entfernen",
+  "bmHubDelistToolConfirm": "{name} vom Markt nehmen?",
+  "@bmHubDelistToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolDelisted": "Inserat entfernt",
+  "bmHubListToolTitle": "Item auf dem Markt listen",
+  "bmHubListToolSelectLabel": "Getragenes Item",
+  "bmHubListToolSubmit": "Listen",
+  "bmHubToolListedMessage": "Item ist jetzt gelistet",
+  "bmHubListToolFailed": "Listen fehlgeschlagen",
+  "bmHubLoadCarriedToolsFailed": "Inventar konnte nicht geladen werden",
+  "bmHubNoCarriedToolsToSell": "Keine getragenen Items (oder bereits gelistet)",
+  "bmHubInvalidToolPrice": "Gib einen gültigen Preis ein",
   "casinoHubChooseGameHint": "Wählen Sie ein Spiel und platzieren Sie Ihre Wette",
   "casinoPlayButton": "Spielen",
   "casinoGameBaccaratName": "Baccarat",

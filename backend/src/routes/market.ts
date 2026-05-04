@@ -6,8 +6,37 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { blackMarketService } from '../services/blackMarketService';
+import { playerMarketplaceService } from '../services/playerMarketplaceService';
 
 const router = Router();
+
+/**
+ * GET /market/unified
+ * Vehicles plus player-item listings (tools, etc.) for the Marktplaats tab.
+ */
+router.get('/unified', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { country } = req.query;
+    const countryStr = typeof country === 'string' ? country : undefined;
+    const [listings, itemListings] = await Promise.all([
+      blackMarketService.getMarketListings(countryStr),
+      playerMarketplaceService.getActiveToolListings(countryStr),
+    ]);
+
+    return res.status(200).json({
+      event: 'market.unified_listings',
+      params: { country: countryStr || 'all' },
+      listings,
+      itemListings,
+    });
+  } catch (error) {
+    console.error('Get unified market listings error:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
 
 /**
  * GET /market/vehicles
@@ -40,15 +69,191 @@ router.get('/vehicles', authenticate, async (req: AuthRequest, res: Response) =>
  */
 router.get('/my-listings', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const listings = await blackMarketService.getPlayerListings(req.player!.id);
+    const playerId = req.player!.id;
+    const [listings, itemListings] = await Promise.all([
+      blackMarketService.getPlayerListings(playerId),
+      playerMarketplaceService.getSellerActiveListings(playerId),
+    ]);
 
     return res.status(200).json({
       event: 'market.my_listings',
       params: {},
       listings,
+      itemListings,
     });
   } catch (error) {
     console.error('Get player listings error:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * POST /market/list-tool
+ * Body: { playerToolId: number, price: number }
+ */
+router.post('/list-tool', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerToolId = parseInt(String(req.body?.playerToolId ?? ''), 10);
+    const price = req.body?.price;
+
+    if (!Number.isFinite(playerToolId) || playerToolId <= 0) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_PLAYER_TOOL_ID' },
+      });
+    }
+
+    if (typeof price !== 'number' || !Number.isFinite(price) || price <= 0) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_PRICE' },
+      });
+    }
+
+    const result = await playerMarketplaceService.listPlayerTool(
+      req.player!.id,
+      playerToolId,
+      Math.floor(price),
+    );
+
+    if (!result.success) {
+      return res.status(400).json({
+        event: 'market.list_failed',
+        params: { message: result.message },
+      });
+    }
+
+    return res.status(200).json({
+      event: 'market.tool_listed',
+      params: { playerToolId, price: Math.floor(price) },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      const map: Record<string, string> = {
+        TOOL_NOT_FOUND: 'TOOL_NOT_FOUND',
+        TOOL_NOT_CARRIED: 'TOOL_NOT_CARRIED',
+        TOOL_BROKEN: 'TOOL_BROKEN',
+        ALREADY_LISTED: 'ALREADY_LISTED',
+        INVALID_TOOL: 'INVALID_TOOL',
+      };
+      const reason = map[error.message];
+      if (reason) {
+        return res.status(400).json({
+          event: 'market.error',
+          params: { reason },
+        });
+      }
+    }
+    console.error('List tool error:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * POST /market/delist-item/:listingId
+ * Cancels a player market listing (non-vehicle).
+ */
+router.post('/delist-item/:listingId', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const listingId = parseInt(req.params.listingId as string, 10);
+    if (!Number.isFinite(listingId)) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_LISTING_ID' },
+      });
+    }
+
+    await playerMarketplaceService.delist(req.player!.id, listingId);
+
+    return res.status(200).json({
+      event: 'market.item_delisted',
+      params: { listingId },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'LISTING_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'market.error',
+          params: { reason: 'LISTING_NOT_FOUND' },
+        });
+      }
+      if (error.message === 'NOT_OWNER') {
+        return res.status(403).json({
+          event: 'market.error',
+          params: { reason: 'NOT_OWNER' },
+        });
+      }
+      if (error.message === 'NOT_ACTIVE') {
+        return res.status(400).json({
+          event: 'market.error',
+          params: { reason: 'NOT_ACTIVE' },
+        });
+      }
+    }
+    console.error('Delist item error:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * POST /market/buy-item/:listingId
+ * Purchase a non-vehicle listing (e.g. carried tool).
+ */
+router.post('/buy-item/:listingId', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const listingId = parseInt(req.params.listingId as string, 10);
+    if (!Number.isFinite(listingId)) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_LISTING_ID' },
+      });
+    }
+
+    const result = await playerMarketplaceService.buyListing(req.player!.id, listingId);
+
+    return res.status(200).json({
+      event: 'market.item_purchased',
+      params: {
+        listingId,
+        purchasePrice: result.purchasePrice,
+      },
+      player: {
+        money: result.newMoney,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      const msg = error.message;
+      const bad400: Record<string, string> = {
+        NOT_FOR_SALE: 'NOT_FOR_SALE',
+        CANNOT_BUY_OWN: 'CANNOT_BUY_OWN',
+        INSUFFICIENT_FUNDS: 'INSUFFICIENT_FUNDS',
+        INVENTORY_FULL: 'INVENTORY_FULL',
+        LISTING_STALE: 'LISTING_STALE',
+      };
+      if (bad400[msg]) {
+        return res.status(400).json({
+          event: 'market.error',
+          params: { reason: bad400[msg] },
+        });
+      }
+      if (msg === 'PLAYER_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'market.error',
+          params: { reason: 'PLAYER_NOT_FOUND' },
+        });
+      }
+    }
+    console.error('Buy item error:', error);
     return res.status(500).json({
       event: 'error.internal',
       params: {},

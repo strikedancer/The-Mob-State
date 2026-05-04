@@ -6731,7 +6731,7 @@
   "notLoggedInTokenStorageHint": "(problem z pamięcią — spróbuj zalogować się ponownie)",
   "blackMarketTabBackpacks": "Plecaki",
   "bmHubAdjustFiltersHint": "Spróbuj dostosować filtry",
-  "bmHubEmptyMyListingsHint": "Przejdź do garażu lub przystani, aby wyświetlić listę pojazdów",
+  "bmHubEmptyMyListingsHint": "Pojazdy przez garaż/przystań, lub narzędzia przy sobie przez Sprzedaj przedmiot",
   "bmHubSellerLabel": "Sprzedający",
   "bmHubAskingPriceLabel": "Cena wywoławcza",
   "bmHubMarketValueShort": "Wartość rynkowa",
@@ -6781,6 +6781,60 @@
   "bmHubVehicleDelisted": "Pojazd został usunięty z listy!",
   "bmHubDelistFailed": "Nie udało się usunąć pojazdu z listy",
   "bmHubLocationUnknown": "NIEZNANY",
+  "bmHubNoMarketListingsTitle": "Brak ogłoszeń",
+  "bmHubNoMarketListingsBody": "Nic nie pasuje do filtrów. Możesz wystawić narzędzia przy sobie przez Sprzedaj przedmiot.",
+  "bmHubSellCarriedItem": "Sprzedaj przedmiot",
+  "bmHubToolQtyDurability": "Szt. {qty} • {pct}% stan",
+  "@bmHubToolQtyDurability": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      },
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubToolBaseValue": "Orientacja €{price}",
+  "@bmHubToolBaseValue": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubBuyToolTitle": "Kup przedmiot",
+  "bmHubBuyToolConfirm": "Kupić {name} za {price}?",
+  "@bmHubBuyToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolPurchased": "Przedmiot kupiony",
+  "bmHubToolPurchaseFailed": "Nie udało się kupić",
+  "bmHubDelistToolTitle": "Usuń ogłoszenie",
+  "bmHubDelistToolConfirm": "Usunąć {name} z rynku?",
+  "@bmHubDelistToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolDelisted": "Ogłoszenie usunięte",
+  "bmHubListToolTitle": "Wystaw przedmiot na rynek",
+  "bmHubListToolSelectLabel": "Przedmiot przy sobie",
+  "bmHubListToolSubmit": "Wystaw",
+  "bmHubToolListedMessage": "Przedmiot wystawiony",
+  "bmHubListToolFailed": "Nie udało się wystawić",
+  "bmHubLoadCarriedToolsFailed": "Nie udało się wczytać ekwipunku",
+  "bmHubNoCarriedToolsToSell": "Brak przedmiotów (lub już wystawione)",
+  "bmHubInvalidToolPrice": "Podaj poprawną cenę",
   "casinoHubChooseGameHint": "Wybierz grę i postaw zakład",
   "casinoPlayButton": "Grać",
   "casinoGameBaccaratName": "Bakarat",

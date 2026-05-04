@@ -12,6 +12,9 @@ import 'trade_goods_tab.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/responsive_modal.dart';
+import '../models/player_tool_market_listing.dart';
+import '../models/carried_tool.dart';
+import '../services/inventory_service.dart';
 class BlackMarketScreen extends StatefulWidget {
   final int initialTabIndex;
 
@@ -55,6 +58,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     final currentCountry = authProvider.currentPlayer?.currentCountry;
 
     await vehicleProvider.fetchMarketListings(country: currentCountry);
+    await vehicleProvider.fetchMyToolMarketListings();
   }
 
   List<MarketListing> _getFilteredListings(List<MarketListing> listings) {
@@ -77,6 +81,22 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         return false;
       }
 
+      return true;
+    }).toList();
+  }
+
+  List<PlayerToolMarketListing> _getFilteredToolListings(
+    List<PlayerToolMarketListing> listings,
+  ) {
+    return listings.where((listing) {
+      if (_filterCountry != null &&
+          listing.countryCode != _filterCountry) {
+        return false;
+      }
+      final price = listing.price.toDouble();
+      if (price < _minPrice || price > _maxPrice) {
+        return false;
+      }
       return true;
     }).toList();
   }
@@ -155,9 +175,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       );
     }
 
-    final filteredListings = _getFilteredListings(provider.marketListings);
+    final filteredVehicles =
+        _getFilteredListings(provider.marketListings);
+    final filteredTools =
+        _getFilteredToolListings(provider.toolMarketListings);
 
-    if (filteredListings.isEmpty) {
+    if (filteredVehicles.isEmpty && filteredTools.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -165,8 +188,14 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             Icon(Icons.storefront, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
-              l10n.noVehiclesAvailable,
+              l10n.bmHubNoMarketListingsTitle,
               style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.bmHubNoMarketListingsBody,
+              style: Theme.of(context).textTheme.bodySmall,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
@@ -178,26 +207,39 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadData,
-      child: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: filteredListings.length,
-        itemBuilder: (context, index) {
-          final listing = filteredListings[index];
-          return _buildMarketListingCard(listing);
-        },
-      ),
+    return Stack(
+      children: [
+        RefreshIndicator(
+          onRefresh: _loadData,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
+            children: [
+              ...filteredVehicles.map(_buildMarketListingCard),
+              ...filteredTools.map(_buildToolMarketListingCard),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton.extended(
+            onPressed: () => _showListCarriedToolDialog(provider),
+            icon: const Icon(Icons.sell_outlined),
+            label: Text(l10n.bmHubSellCarriedItem),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildMyListings(VehicleProvider provider) {
     final l10n = AppLocalizations.of(context)!;
-    final myListings = provider.inventory
+    final myVehicles = provider.inventory
         .where((vehicle) => vehicle.marketListing)
         .toList();
+    final myTools = provider.myToolMarketListings;
 
-    if (myListings.isEmpty) {
+    if (myVehicles.isEmpty && myTools.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -212,19 +254,19 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             Text(
               l10n.bmHubEmptyMyListingsHint,
               style: Theme.of(context).textTheme.bodySmall,
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       );
     }
 
-    return ListView.builder(
+    return ListView(
       padding: const EdgeInsets.all(16),
-      itemCount: myListings.length,
-      itemBuilder: (context, index) {
-        final vehicle = myListings[index];
-        return _buildMyListingCard(vehicle);
-      },
+      children: [
+        ...myVehicles.map(_buildMyListingCard),
+        ...myTools.map(_buildMyToolMarketListingCard),
+      ],
     );
   }
 
@@ -407,6 +449,502 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         ),
       ),
     );
+  }
+
+  Widget _buildToolMarketListingCard(PlayerToolMarketListing listing) {
+    final l10n = AppLocalizations.of(context)!;
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    final isSelf = auth.currentPlayer?.id == listing.sellerId;
+    final name = listing.displayName;
+    final maxD = listing.toolDefinition?.maxDurability ?? 1;
+    final pct = maxD > 0
+        ? ((listing.playerTool.durability / maxD) * 100).round()
+        : 0;
+    final imageAsset =
+        'assets/images/tools/${listing.playerTool.toolId}_tool.png';
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 120,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[800],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: WebAssetHelper.image(
+                    imageAsset,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Icon(Icons.build_circle_outlined, size: 40),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${l10n.bmHubSellerLabel}: ${listing.sellerUsername}',
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(Icons.location_on, size: 14, color: Colors.grey),
+                          const SizedBox(width: 4),
+                          Text(
+                            (listing.countryCode ?? l10n.bmHubLocationUnknown)
+                                .toUpperCase(),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            l10n.bmHubToolQtyDurability(
+                              listing.playerTool.quantity,
+                              pct,
+                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.bmHubAskingPriceLabel,
+                      style: Theme.of(context).textTheme.bodySmall
+                          ?.copyWith(color: Colors.grey),
+                    ),
+                    Text(
+                      '€${listing.price.toString()}',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                    ),
+                  ],
+                ),
+                if (listing.toolDefinition != null)
+                  Text(
+                    l10n.bmHubToolBaseValue(
+                      listing.toolDefinition!.basePrice,
+                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            if (!isSelf)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => _buyToolListing(listing),
+                  icon: const Icon(Icons.shopping_cart),
+                  label: Text(l10n.bmHubBuyNow),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMyToolMarketListingCard(PlayerToolMarketListing listing) {
+    final l10n = AppLocalizations.of(context)!;
+    final name = listing.displayName;
+    final imageAsset =
+        'assets/images/tools/${listing.playerTool.toolId}_tool.png';
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 100,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[800],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: WebAssetHelper.image(
+                    imageAsset,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Icon(Icons.build_circle_outlined, size: 32),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: Theme.of(context).textTheme.titleSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${l10n.bmHubListedFor}: €${listing.price}',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => _delistToolListing(listing),
+                icon: const Icon(Icons.remove_circle, size: 18),
+                label: Text(l10n.bmHubDelist),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _buyToolListing(PlayerToolMarketListing listing) async {
+    final l10n = AppLocalizations.of(context)!;
+    final vehicleProvider = Provider.of<VehicleProvider>(
+      context,
+      listen: false,
+    );
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final playerMoney = authProvider.currentPlayer?.money ?? 0;
+    if (playerMoney < listing.price) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.tuneShopErrorInsufficientFunds),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    final name = listing.displayName;
+    final priceStr = '€${listing.price}';
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.confirmAction),
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 420,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.bmHubBuyToolTitle,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(l10n.bmHubBuyToolConfirm(name, priceStr)),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: Text(l10n.buy),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !mounted) return;
+
+    final newMoney =
+        await vehicleProvider.buyPlayerToolListing(listing.listingId);
+
+    if (!mounted) return;
+
+    if (newMoney != null) {
+      authProvider.updatePlayerStats(money: newMoney);
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.bmHubToolPurchased),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            vehicleProvider.error ?? l10n.bmHubToolPurchaseFailed,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _delistToolListing(PlayerToolMarketListing listing) async {
+    final l10n = AppLocalizations.of(context)!;
+    final name = listing.displayName;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.confirmAction),
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 420,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.bmHubDelistToolTitle,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(l10n.bmHubDelistToolConfirm(name)),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: Text(l10n.bmHubDelist),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !mounted) return;
+
+    final vehicleProvider = Provider.of<VehicleProvider>(
+      context,
+      listen: false,
+    );
+    final ok =
+        await vehicleProvider.delistPlayerToolListing(listing.listingId);
+
+    if (!mounted) return;
+
+    if (ok) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.bmHubToolDelisted),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            vehicleProvider.error ?? l10n.bmHubDelistFailed,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _showListCarriedToolDialog(VehicleProvider vehicleProvider) async {
+    final l10n = AppLocalizations.of(context)!;
+    final inv = InventoryService();
+    final carried = await inv.getCarriedTools();
+    if (!mounted) return;
+    if (carried['success'] != true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.bmHubLoadCarriedToolsFailed),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    final tools = (carried['tools'] as List)
+        .map((e) => e is CarriedTool ? e : CarriedTool.fromJson(e as Map<String, dynamic>))
+        .toList();
+    final listedIds = vehicleProvider.myToolMarketListings
+        .map((e) => e.playerTool.id)
+        .toSet();
+
+    final eligible = tools
+        .where((t) => !t.isBroken && !listedIds.contains(t.id))
+        .toList();
+
+    if (eligible.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.bmHubNoCarriedToolsToSell)),
+      );
+      return;
+    }
+
+    final priceController = TextEditingController();
+    final selectedRef = <CarriedTool>[eligible.first];
+
+    final submitted = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(l10n.bmHubListToolTitle),
+              content: ResponsiveDialogContent(
+                phoneMaxWidth: 320,
+                tabletMaxWidth: 400,
+                desktopMaxWidth: 440,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DropdownButtonFormField<CarriedTool>(
+                      decoration: InputDecoration(
+                        labelText: l10n.bmHubListToolSelectLabel,
+                      ),
+                      value: selectedRef[0],
+                      items: eligible
+                          .map(
+                            (t) => DropdownMenuItem(
+                              value: t,
+                              child: Text(t.name),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (v) {
+                        if (v != null) {
+                          setState(() => selectedRef[0] = v);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: priceController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: l10n.bmHubNewPriceEuro,
+                        hintText: l10n.bmHubEnterNewPriceHint,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext, false),
+                  child: Text(l10n.cancel),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(dialogContext, true),
+                  child: Text(l10n.bmHubListToolSubmit),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (submitted != true || !mounted) return;
+
+    final playerToolId = selectedRef[0].id;
+    final price = int.tryParse(priceController.text.trim());
+    if (price == null || price <= 0) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.bmHubInvalidToolPrice)),
+      );
+      return;
+    }
+
+    final ok = await vehicleProvider.listPlayerToolOnMarket(playerToolId, price);
+    if (!mounted) return;
+
+    if (ok) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.bmHubToolListedMessage),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            vehicleProvider.error ?? l10n.bmHubListToolFailed,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Widget _buildMyListingCard(VehicleInventoryItem vehicle) {

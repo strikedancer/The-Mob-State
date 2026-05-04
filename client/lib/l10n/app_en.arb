@@ -3836,7 +3836,7 @@
   "notLoggedInTokenStorageHint": "(storage issue — try signing in again)",
   "blackMarketTabBackpacks": "Backpacks",
   "bmHubAdjustFiltersHint": "Try adjusting your filters",
-  "bmHubEmptyMyListingsHint": "Go to Garage or Marina to list vehicles",
+  "bmHubEmptyMyListingsHint": "List vehicles from Garage or Marina, or sell carried tools with Sell item",
   "bmHubSellerLabel": "Seller",
   "bmHubAskingPriceLabel": "Asking price",
   "bmHubMarketValueShort": "Market value",
@@ -3886,6 +3886,60 @@
   "bmHubVehicleDelisted": "Vehicle delisted successfully!",
   "bmHubDelistFailed": "Failed to delist vehicle",
   "bmHubLocationUnknown": "UNKNOWN",
+  "bmHubNoMarketListingsTitle": "No listings",
+  "bmHubNoMarketListingsBody": "No vehicles or items match your filters. You can list carried tools with the Sell item button.",
+  "bmHubSellCarriedItem": "Sell item",
+  "bmHubToolQtyDurability": "Qty {qty} • {pct}% condition",
+  "@bmHubToolQtyDurability": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      },
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubToolBaseValue": "Guide €{price}",
+  "@bmHubToolBaseValue": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubBuyToolTitle": "Buy item",
+  "bmHubBuyToolConfirm": "Buy {name} for {price}?",
+  "@bmHubBuyToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolPurchased": "Item purchased",
+  "bmHubToolPurchaseFailed": "Could not buy item",
+  "bmHubDelistToolTitle": "Remove listing",
+  "bmHubDelistToolConfirm": "Remove {name} from the market?",
+  "@bmHubDelistToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolDelisted": "Listing removed",
+  "bmHubListToolTitle": "List item on marketplace",
+  "bmHubListToolSelectLabel": "Carried item",
+  "bmHubListToolSubmit": "List",
+  "bmHubToolListedMessage": "Item is now listed",
+  "bmHubListToolFailed": "Could not list item",
+  "bmHubLoadCarriedToolsFailed": "Could not load carried items",
+  "bmHubNoCarriedToolsToSell": "No carried items to sell (or already listed)",
+  "bmHubInvalidToolPrice": "Enter a valid price",
   "arrested": "Arrested!",
   "jailMessage": "You were arrested during your journey and all goods were confiscated!",
   "confirmAction": "Are you sure?",

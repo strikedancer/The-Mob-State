@@ -6449,7 +6449,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bmHubEmptyMyListingsHint =>
-      'Allez dans Garage ou Marina pour lister les véhicules';
+      'Véhicules via Garage/Marina, ou outils portés via Vendre un objet';
 
   @override
   String get bmHubSellerLabel => 'Vendeuse';
@@ -6550,6 +6550,77 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bmHubLocationUnknown => 'INCONNUE';
+
+  @override
+  String get bmHubNoMarketListingsTitle => 'Aucune annonce';
+
+  @override
+  String get bmHubNoMarketListingsBody =>
+      'Rien ne correspond à vos filtres. Listez des outils portés avec Vendre un objet.';
+
+  @override
+  String get bmHubSellCarriedItem => 'Vendre un objet';
+
+  @override
+  String bmHubToolQtyDurability(int qty, int pct) {
+    return 'Qté $qty • $pct% état';
+  }
+
+  @override
+  String bmHubToolBaseValue(int price) {
+    return 'Guide €$price';
+  }
+
+  @override
+  String get bmHubBuyToolTitle => 'Acheter l’objet';
+
+  @override
+  String bmHubBuyToolConfirm(String name, String price) {
+    return 'Acheter $name pour $price ?';
+  }
+
+  @override
+  String get bmHubToolPurchased => 'Objet acheté';
+
+  @override
+  String get bmHubToolPurchaseFailed => 'Achat impossible';
+
+  @override
+  String get bmHubDelistToolTitle => 'Retirer l’annonce';
+
+  @override
+  String bmHubDelistToolConfirm(String name) {
+    return 'Retirer $name du marché ?';
+  }
+
+  @override
+  String get bmHubToolDelisted => 'Annonce retirée';
+
+  @override
+  String get bmHubListToolTitle => 'Mettre un objet en vente';
+
+  @override
+  String get bmHubListToolSelectLabel => 'Objet porté';
+
+  @override
+  String get bmHubListToolSubmit => 'Publier';
+
+  @override
+  String get bmHubToolListedMessage => 'Objet mis en vente';
+
+  @override
+  String get bmHubListToolFailed => 'Publication impossible';
+
+  @override
+  String get bmHubLoadCarriedToolsFailed =>
+      'Impossible de charger l’inventaire';
+
+  @override
+  String get bmHubNoCarriedToolsToSell =>
+      'Aucun objet à vendre (ou déjà listé)';
+
+  @override
+  String get bmHubInvalidToolPrice => 'Entrez un prix valide';
 
   @override
   String get arrested => 'Arrêté!';

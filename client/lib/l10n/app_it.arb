@@ -6731,7 +6731,7 @@
   "notLoggedInTokenStorageHint": "(problema di archiviazione: prova ad accedere di nuovo)",
   "blackMarketTabBackpacks": "Zaini",
   "bmHubAdjustFiltersHint": "Prova a modificare i filtri",
-  "bmHubEmptyMyListingsHint": "Vai al Garage o alla Marina per elencare i veicoli",
+  "bmHubEmptyMyListingsHint": "Veicoli da Garage/Marina, o strumenti trasportati con Vendi oggetto",
   "bmHubSellerLabel": "Venditrice",
   "bmHubAskingPriceLabel": "Prezzo richiesto",
   "bmHubMarketValueShort": "Valore di mercato",
@@ -6781,6 +6781,60 @@
   "bmHubVehicleDelisted": "Veicolo cancellato con successo!",
   "bmHubDelistFailed": "Impossibile rimuovere il veicolo dalla lista",
   "bmHubLocationUnknown": "SCONOSCIUTA",
+  "bmHubNoMarketListingsTitle": "Nessun annuncio",
+  "bmHubNoMarketListingsBody": "Nessun veicolo o oggetto corrisponde ai filtri. Puoi mettere in vendita strumenti trasportati con Vendi oggetto.",
+  "bmHubSellCarriedItem": "Vendi oggetto",
+  "bmHubToolQtyDurability": "Qtà {qty} • {pct}% condizione",
+  "@bmHubToolQtyDurability": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      },
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubToolBaseValue": "Guida €{price}",
+  "@bmHubToolBaseValue": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "bmHubBuyToolTitle": "Acquista oggetto",
+  "bmHubBuyToolConfirm": "Acquistare {name} per {price}?",
+  "@bmHubBuyToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolPurchased": "Oggetto acquistato",
+  "bmHubToolPurchaseFailed": "Acquisto non riuscito",
+  "bmHubDelistToolTitle": "Rimuovi annuncio",
+  "bmHubDelistToolConfirm": "Rimuovere {name} dal mercato?",
+  "@bmHubDelistToolConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubToolDelisted": "Annuncio rimosso",
+  "bmHubListToolTitle": "Metti in vendita",
+  "bmHubListToolSelectLabel": "Oggetto trasportato",
+  "bmHubListToolSubmit": "Pubblica",
+  "bmHubToolListedMessage": "Oggetto pubblicato",
+  "bmHubListToolFailed": "Impossibile pubblicare",
+  "bmHubLoadCarriedToolsFailed": "Impossibile caricare l’inventario",
+  "bmHubNoCarriedToolsToSell": "Nessun oggetto da vendere (o già in vendita)",
+  "bmHubInvalidToolPrice": "Inserisci un prezzo valido",
   "casinoHubChooseGameHint": "Scegli un gioco e piazza la tua scommessa",
   "casinoPlayButton": "Giocare",
   "casinoGameBaccaratName": "Baccarat",

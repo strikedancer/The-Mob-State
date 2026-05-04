@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 import '../models/vehicle.dart';
+import '../models/player_tool_market_listing.dart';
 import '../services/auth_service.dart';
 import '../config/app_config.dart';
 
@@ -15,6 +16,8 @@ class VehicleProvider with ChangeNotifier {
   MarinaStatus? _marinaStatus;
   List<VehicleDefinition> _availableVehicles = [];
   List<MarketListing> _marketListings = [];
+  List<PlayerToolMarketListing> _toolMarketListings = [];
+  List<PlayerToolMarketListing> _myToolMarketListings = [];
   VehicleInventoryItem? _lastStolenVehicle;
   int _lastStealCooldownRemainingSeconds = 0;
   String? _lastStealAttemptVehicleType;
@@ -41,6 +44,9 @@ class VehicleProvider with ChangeNotifier {
   MarinaStatus? get marinaStatus => _marinaStatus;
   List<VehicleDefinition> get availableVehicles => _availableVehicles;
   List<MarketListing> get marketListings => _marketListings;
+  List<PlayerToolMarketListing> get toolMarketListings => _toolMarketListings;
+  List<PlayerToolMarketListing> get myToolMarketListings =>
+      _myToolMarketListings;
   VehicleInventoryItem? get lastStolenVehicle => _lastStolenVehicle;
   int get lastStealCooldownRemainingSeconds =>
       _lastStealCooldownRemainingSeconds;
@@ -1091,32 +1097,175 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
-  /// Fetch market listings
+  /// Fetch market listings (vehicles + player tool listings).
   Future<void> fetchMarketListings({String? country}) async {
     try {
       final headers = await _getHeaders();
       final url = country != null
-          ? '$baseUrl/market/vehicles?country=$country'
-          : '$baseUrl/market/vehicles';
+          ? '$baseUrl/market/unified?country=$country'
+          : '$baseUrl/market/unified';
 
       final response = await http.get(Uri.parse(url), headers: headers);
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+        final data = json.decode(response.body) as Map<String, dynamic>;
         final List<dynamic> listingsData = data['listings'] ?? [];
         _marketListings = listingsData.map((item) {
+          final m = item as Map<String, dynamic>;
+          final pid = m['player'] as Map<String, dynamic>?;
           return MarketListing(
-            id: item['id'],
-            vehicle: VehicleInventoryItem.fromJson(item),
-            sellerUsername: item['player']['username'],
-            sellerId: item['player']['id'],
+            id: (m['id'] as num).toInt(),
+            vehicle: VehicleInventoryItem.fromJson(m),
+            sellerUsername: pid?['username'] as String? ?? '',
+            sellerId: (pid?['id'] as num?)?.toInt() ?? 0,
           );
         }).toList();
+
+        final List<dynamic> toolRows = data['itemListings'] ?? [];
+        _toolMarketListings = toolRows
+            .whereType<Map<String, dynamic>>()
+            .map(PlayerToolMarketListing.fromJson)
+            .toList();
+        _error = null;
         notifyListeners();
+        return;
       }
+
+      if (response.statusCode == 404) {
+        final fallbackUrl = country != null
+            ? '$baseUrl/market/vehicles?country=$country'
+            : '$baseUrl/market/vehicles';
+        final r2 = await http.get(Uri.parse(fallbackUrl), headers: headers);
+        if (r2.statusCode == 200) {
+          final data = json.decode(r2.body) as Map<String, dynamic>;
+          final List<dynamic> listingsData = data['listings'] ?? [];
+          _marketListings = listingsData.map((item) {
+            final m = item as Map<String, dynamic>;
+            final pid = m['player'] as Map<String, dynamic>?;
+            return MarketListing(
+              id: (m['id'] as num).toInt(),
+              vehicle: VehicleInventoryItem.fromJson(m),
+              sellerUsername: pid?['username'] as String? ?? '',
+              sellerId: (pid?['id'] as num?)?.toInt() ?? 0,
+            );
+          }).toList();
+          _toolMarketListings = [];
+          _error = null;
+          notifyListeners();
+          return;
+        }
+      }
+
+      _error = 'Er is een fout opgetreden';
+      _toolMarketListings = [];
+      notifyListeners();
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+      _toolMarketListings = [];
+      notifyListeners();
+    }
+  }
+
+  /// Active tool (and future item) listings this player is selling.
+  Future<void> fetchMyToolMarketListings() async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.get(
+        Uri.parse('$baseUrl/market/my-listings'),
+        headers: headers,
+      );
+      if (response.statusCode != 200) {
+        return;
+      }
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final List<dynamic> toolRows = data['itemListings'] ?? [];
+      _myToolMarketListings = toolRows
+          .whereType<Map<String, dynamic>>()
+          .map(PlayerToolMarketListing.fromJson)
+          .toList();
+      notifyListeners();
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  Future<bool> listPlayerToolOnMarket(int playerToolId, int price) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/market/list-tool'),
+        headers: headers,
+        body: json.encode({'playerToolId': playerToolId, 'price': price}),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 && data['event'] == 'market.tool_listed') {
+        await fetchMyToolMarketListings();
+        await fetchMarketListings();
+        return true;
+      }
+      final msg = data['params']?['message']?.toString();
+      if (msg != null && msg.isNotEmpty) {
+        _error = msg;
+      } else {
+        _error = _getErrorMessage(data['params']?['reason']?.toString());
+      }
+      notifyListeners();
+      return false;
     } catch (e) {
       _error = 'Er is een fout opgetreden';
       notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> delistPlayerToolListing(int listingId) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/market/delist-item/$listingId'),
+        headers: headers,
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 &&
+          data['event'] == 'market.item_delisted') {
+        await fetchMyToolMarketListings();
+        await fetchMarketListings();
+        return true;
+      }
+      _error = _getErrorMessage(data['params']?['reason']?.toString());
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Returns updated cash on success (from API), or null on failure.
+  Future<int?> buyPlayerToolListing(int listingId) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/market/buy-item/$listingId'),
+        headers: headers,
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 &&
+          data['event'] == 'market.item_purchased') {
+        final player = data['player'] as Map<String, dynamic>?;
+        final m = player?['money'];
+        final newMoney = m is int ? m : (m as num?)?.toInt();
+        await fetchMarketListings();
+        return newMoney;
+      }
+      _error = _getErrorMessage(data['params']?['reason']?.toString());
+      notifyListeners();
+      return null;
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+      notifyListeners();
+      return null;
     }
   }
 
@@ -1262,6 +1411,34 @@ class VehicleProvider with ChangeNotifier {
     switch (reason) {
       case 'VEHICLE_NOT_FOUND':
         return 'Voertuig niet gevonden';
+      case 'LISTING_NOT_FOUND':
+        return 'Advertentie niet gevonden';
+      case 'NOT_FOR_SALE':
+        return 'Niet te koop';
+      case 'CANNOT_BUY_OWN':
+        return 'Je kunt je eigen advertentie niet kopen';
+      case 'INVENTORY_FULL':
+        return 'Inventaris vol';
+      case 'LISTING_STALE':
+        return 'Advertentie is niet meer geldig';
+      case 'TOOL_NOT_FOUND':
+        return 'Item niet gevonden';
+      case 'TOOL_NOT_CARRIED':
+        return 'Haal het item eerst naar je inventaris (dragen)';
+      case 'TOOL_BROKEN':
+        return 'Item is kapot';
+      case 'NOT_OWNER':
+        return 'Geen eigenaar';
+      case 'NOT_ACTIVE':
+        return 'Advertentie is niet actief';
+      case 'INVALID_PRICE':
+      case 'INVALID_PLAYER_TOOL_ID':
+      case 'INVALID_LISTING_ID':
+        return 'Ongeldige invoer';
+      case 'ALREADY_LISTED':
+        return 'Staat al te koop';
+      case 'INVALID_TOOL':
+        return 'Ongeldig item';
       case 'INSUFFICIENT_FUNDS':
         return 'Niet genoeg geld';
       case 'FUEL_TANK_FULL':

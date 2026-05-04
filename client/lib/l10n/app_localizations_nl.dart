@@ -6381,7 +6381,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bmHubEmptyMyListingsHint =>
-      'Go to Garage or Marina to list vehicles';
+      'Voertuigen via Garage of Jachthaven te koop zetten, of gedragen gereedschap via Verkoop item';
 
   @override
   String get bmHubSellerLabel => 'Seller';
@@ -6482,6 +6482,76 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bmHubLocationUnknown => 'UNKNOWN';
+
+  @override
+  String get bmHubNoMarketListingsTitle => 'Geen advertenties';
+
+  @override
+  String get bmHubNoMarketListingsBody =>
+      'Geen voertuigen of items die aan je filters voldoen. Je kunt gedragen gereedschap verkopen via Verkoop item.';
+
+  @override
+  String get bmHubSellCarriedItem => 'Verkoop item';
+
+  @override
+  String bmHubToolQtyDurability(int qty, int pct) {
+    return 'Aantal $qty • $pct% conditie';
+  }
+
+  @override
+  String bmHubToolBaseValue(int price) {
+    return 'Richtprijs €$price';
+  }
+
+  @override
+  String get bmHubBuyToolTitle => 'Item kopen';
+
+  @override
+  String bmHubBuyToolConfirm(String name, String price) {
+    return '$name kopen voor $price?';
+  }
+
+  @override
+  String get bmHubToolPurchased => 'Item gekocht';
+
+  @override
+  String get bmHubToolPurchaseFailed => 'Kon item niet kopen';
+
+  @override
+  String get bmHubDelistToolTitle => 'Advertentie verwijderen';
+
+  @override
+  String bmHubDelistToolConfirm(String name) {
+    return '$name van de markt halen?';
+  }
+
+  @override
+  String get bmHubToolDelisted => 'Advertentie verwijderd';
+
+  @override
+  String get bmHubListToolTitle => 'Item op de marktplaats zetten';
+
+  @override
+  String get bmHubListToolSelectLabel => 'Gedragen item';
+
+  @override
+  String get bmHubListToolSubmit => 'Plaatsen';
+
+  @override
+  String get bmHubToolListedMessage => 'Item staat nu te koop';
+
+  @override
+  String get bmHubListToolFailed => 'Kon item niet plaatsen';
+
+  @override
+  String get bmHubLoadCarriedToolsFailed => 'Kon inventaris niet laden';
+
+  @override
+  String get bmHubNoCarriedToolsToSell =>
+      'Geen gedragen items om te verkopen (of al geplaatst)';
+
+  @override
+  String get bmHubInvalidToolPrice => 'Voer een geldige prijs in';
 
   @override
   String get arrested => 'Gearresteerd!';
