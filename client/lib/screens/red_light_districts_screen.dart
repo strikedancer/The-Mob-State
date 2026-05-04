@@ -9,6 +9,7 @@ import 'player_profile_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
+import '../widgets/adaptive_tab_selector.dart';
 
 class RedLightDistrictsScreen extends StatefulWidget {
   final bool embedded;
@@ -188,7 +189,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
           )
         : Column(
             children: [
-              TabBar(
+              AdaptiveTabBar(
                 controller: _tabController,
                 labelColor: Theme.of(context).colorScheme.primary,
                 unselectedLabelColor: Colors.grey,

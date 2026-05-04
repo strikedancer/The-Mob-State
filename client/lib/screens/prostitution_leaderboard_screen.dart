@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/adaptive_tab_selector.dart';
 import '../models/prostitute.dart';
 import '../services/prostitution_service.dart';
 import '../utils/top_right_notification.dart';
@@ -111,7 +112,7 @@ class _ProstitutionLeaderboardScreenState
     return Column(
       children: [
         if (_myWeeklyRank != null) _buildMyRankCard(),
-        TabBar(
+        AdaptiveTabBar(
           controller: _tabController,
           tabs: [
             Tab(text: l10n.prostitutionLeaderboardWeekly),

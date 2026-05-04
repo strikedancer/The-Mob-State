@@ -7,6 +7,7 @@ import 'carried_inventory_tab.dart';
 import 'storage_tab.dart';
 import 'loadouts_tab.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/adaptive_tab_selector.dart';
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
@@ -96,7 +97,7 @@ class _InventoryScreenState extends State<InventoryScreen>
       appBar: AppBar(
         title: Text(l10n.inventory),
         backgroundColor: Colors.grey[900],
-        bottom: TabBar(
+        bottom: AdaptiveTabBar(
           controller: _tabController,
           indicatorColor: Colors.amber,
           tabs: [

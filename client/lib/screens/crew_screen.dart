@@ -13,6 +13,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/adaptive_tab_selector.dart';
 
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
@@ -3823,7 +3824,7 @@ class _CrewScreenState extends State<CrewScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(_t(l10n, 'app.crews')),
-        bottom: TabBar(
+        bottom: AdaptiveTabBar(
           controller: _tabController,
           isScrollable: true,
           tabs: [

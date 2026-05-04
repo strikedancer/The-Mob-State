@@ -12,6 +12,7 @@ import 'prostitution_leaderboard_screen.dart';
 import 'prostitution_rivalry_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
+import '../widgets/adaptive_tab_selector.dart';
 
 class ProstitutionScreen extends StatefulWidget {
   final int initialTabIndex;
@@ -821,7 +822,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: TabBar(
+                    child: AdaptiveTabBar(
                       controller: _tabController,
                       labelColor: theme.colorScheme.primary,
                       unselectedLabelColor: Colors.grey,

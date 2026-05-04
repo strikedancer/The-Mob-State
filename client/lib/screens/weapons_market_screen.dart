@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/adaptive_tab_selector.dart';
 
 class WeaponsMarketScreen extends StatefulWidget {
   const WeaponsMarketScreen({super.key});
@@ -131,7 +132,7 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
       ),
       child: Column(
         children: [
-          TabBar(
+          AdaptiveTabBar(
             controller: _tabController,
             tabs: [
               Tab(text: l10n?.weaponShop ?? 'Shop'),

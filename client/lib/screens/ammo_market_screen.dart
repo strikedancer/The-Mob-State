@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/adaptive_tab_selector.dart';
 
 class AmmoMarketScreen extends StatefulWidget {
   const AmmoMarketScreen({super.key});
@@ -323,7 +324,7 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
       ),
       child: Column(
         children: [
-          TabBar(
+          AdaptiveTabBar(
             controller: _tabController,
             tabs: [
               Tab(text: l10n?.ammoShop ?? 'Market'),
