@@ -317,6 +317,7 @@ cd C:\xampp\htdocs\mafia_game
 - Standaard projectpad op de VPS: `/var/www/vhosts/themobstate.com/apps/mafia_game` (aanpasbaar met `-ProjectDir`).
 - Als `HostName` niet uit de PuTTY-registry te lezen is: `-SshHost "jouw.host.of.ip"`.
 - Script gebruikt **geen** `plink -batch`, zodat **HTTP-proxy- of andere PuTTY-prompts** beantwoord kunnen worden.
+- **Alleen backend-gameplay** (bijv. stal-balans in `vehicleService`, geen client-release nodig): zelfde commando; gedrag en modules staan in **`steel_voertuig.md`** (en verwante economy-docs).
 
 **Crew-mission / externe images** naar dezelfde mount als compose (`CLIENT_EXTERNAL_IMAGES_PATH` → `runtime/client-images` op de server):
 
