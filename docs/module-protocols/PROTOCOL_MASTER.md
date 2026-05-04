@@ -475,7 +475,6 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     ├── docs/operations/ (deployment & operational)
     │   ├── DEPLOY.md → Production deployment
     │   ├── FIREBASE_SETUP.md → Firebase configuration
-    │   ├── OKX_TRADING_BOT.md → Standalone OKX paper bot (`services/okx-trading-bot`, admin tab)
     │   └── RELEASE_CHECKLIST.md → Pre-release QA
     │
     └── Root Level (project-wide standards)
