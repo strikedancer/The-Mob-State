@@ -8,6 +8,7 @@ import 'backpack_shop_screen.dart';
 import 'materials_shop_screen.dart';
 import 'weapons_market_screen.dart';
 import 'ammo_market_screen.dart';
+import 'trade_goods_tab.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/responsive_modal.dart';
@@ -33,9 +34,9 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 6,
+      length: 7,
       vsync: this,
-      initialIndex: widget.initialTabIndex.clamp(0, 5),
+      initialIndex: widget.initialTabIndex.clamp(0, 6),
     );
     _loadData();
   }
@@ -93,6 +94,10 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
           controller: _tabController,
           isScrollable: true,
           tabs: [
+            Tab(
+              icon: const Icon(Icons.shopping_bag),
+              text: l10n.tradeGoods,
+            ),
             Tab(icon: const Icon(Icons.directions_car), text: l10n.vehicles),
             Tab(
               icon: const Icon(Icons.directions_car_outlined),
@@ -116,6 +121,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
+          const TradeGoodsTab(),
           _buildMarketListings(vehicleProvider),
           _buildMyListings(vehicleProvider),
           const BackpackShopScreen(),

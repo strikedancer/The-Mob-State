@@ -13600,24 +13600,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Imposta sempre un limite di bankroll per la sessione: mai più del 10% del denaro totale per sessione. \nIl Blackjack ha le migliori probabilità per un giocatore esperto. Impara la strategia di base prima di scommettere in grande. \nTratta il casinò come intrattenimento, non come reddito: il margine del banco garantisce una perdita a lungo termine.';
 
   @override
-  String get helpTopicTradeCategory => 'Economia';
-
-  @override
-  String get helpTopicTradeTitle => 'Beni commerciali';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Acquista beni a buon mercato in un paese e vendi a caro prezzo in un altro. Sono possibili differenze di prezzo fino al 300%.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'Beni commerciali di contrabbando in questa build: fiori, dispositivi elettronici, diamanti, armi e prodotti farmaceutici, ciascuno con il proprio prezzo base, limite di inventario e rischi di viaggio/mercato (vedi i chip della schermata Commercio: finestra di deterioramento, volatilità dei prezzi, danni da viaggio, possibilità di sequestro). \nI prezzi di acquisto variano in base al moltiplicatore del paese e alla volatilità per bene, ove configurato. La vendita utilizza il prezzo di vendita in tempo reale; la rivendita di dispositivi elettronici è ridotta dalle condizioni attuali. \nI fiori si rovinano dopo le ore configurate dall\'acquisto. Armi e prodotti farmaceutici possono essere parzialmente sequestrati durante i viaggi; combinarsi con il contrabbando per una posta in gioco più alta. \nHai ancora bisogno di denaro sufficiente, di spazio di inventario e di essere nel circuito del paese giusto per corse redditizie.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'Se una parte del mercato non riesce a caricarsi, prova a riprovare: puoi comunque fare trading quando i prezzi o l\'inventario vengono caricati. \nAttenzione al rischio dei gettoni per bene: i fiori si rovinano, i diamanti oscillano nel prezzo, i dispositivi elettronici si deteriorano durante i viaggi, le armi e i prodotti farmaceutici possono essere sequestrati. \nAbbassare il livello di ricerca prima delle corse rischiose. Includi il costo e il tempo del viaggio nel tuo margine.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Economia';
 
   @override

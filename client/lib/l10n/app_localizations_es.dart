@@ -13579,24 +13579,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Establezca siempre un límite de fondos para la sesión: nunca más del 10% del efectivo total por sesión. \nEl blackjack tiene las mejores probabilidades para un jugador experto. Aprenda la estrategia básica antes de apostar en grande. \nTrate el casino como entretenimiento, no como ingreso: la ventaja de la casa garantiza pérdidas a largo plazo.';
 
   @override
-  String get helpTopicTradeCategory => 'Economía';
-
-  @override
-  String get helpTopicTradeTitle => 'Bienes comerciales';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Compre productos baratos en un país y véndalos caros en otro. Son posibles diferencias de precio de hasta el 300%.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'Bienes comerciales de contrabando en esta configuración: flores, productos electrónicos, diamantes, armas y productos farmacéuticos, cada uno con su propio precio base, límite de inventario y riesgos de viaje/mercado (consulte la pantalla Comercio de chips: ventana de deterioro, volatilidad de precios, daños en el viaje, posibilidades de incautación). \nLos precios de compra varían según el multiplicador del país y la volatilidad por bien, cuando esté configurado. La venta utiliza el precio de venta en vivo; La reventa de productos electrónicos se reduce según la condición actual. \nLas flores se estropean pasadas las horas configuradas desde la compra. Las armas y los productos farmacéuticos pueden incautarse parcialmente durante los viajes; se combinan con el contrabando para obtener riesgos más elevados. \nAún necesita suficiente efectivo, espacio de inventario y estar en el circuito del país correcto para realizar operaciones rentables.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'Si una parte del mercado no se carga, vuelva a intentarlo; aún puede operar cuando los precios o el inventario se carguen. \nEsté atento a las fichas de riesgo por bien: las flores se echan a perder, los diamantes cambian de precio, los productos electrónicos pierden su condición durante los viajes, las armas y los productos farmacéuticos pueden ser confiscados. \nSe busca bajar ante carreras de riesgo. Incluya el costo del viaje y el tiempo en su margen.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Economía';
 
   @override

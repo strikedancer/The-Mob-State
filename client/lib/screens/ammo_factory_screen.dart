@@ -514,7 +514,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
   void _openBlackMarketAmmo() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => const BlackMarketScreen(initialTabIndex: 5),
+        builder: (_) => const BlackMarketScreen(initialTabIndex: 6),
       ),
     );
   }

@@ -69,11 +69,6 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/casino.md',
   ),
   HelpTopic(
-    id: 'trade',
-    icon: Icons.shopping_bag,
-    protocolPath: 'docs/module-protocols/trade.md',
-  ),
-  HelpTopic(
     id: 'black-market',
     icon: Icons.store,
     protocolPath: 'docs/module-protocols/black-market.md',

@@ -13559,24 +13559,6 @@ class AppLocalizationsPl extends AppLocalizations {
       'Zawsze ustalaj limit bankrolla sesji: nigdy nie więcej niż 10% całkowitej gotówki na sesję. \nBlackjack ma najlepsze szanse dla doświadczonego gracza. Naucz się podstawowej strategii, zanim obstawisz duże zakłady. \nTraktuj kasyno jako rozrywkę, a nie dochód: przewaga kasyna zapewnia długoterminową stratę.';
 
   @override
-  String get helpTopicTradeCategory => 'Gospodarka';
-
-  @override
-  String get helpTopicTradeTitle => 'Towary Handlowe';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Kupuj towary tanio w jednym kraju i sprzedawaj drogo w innym. Możliwe są różnice w cenie do 300%.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'Kontrabanda w tej wersji: kwiaty, elektronika, diamenty, broń i farmaceutyki – każdy z własną ceną bazową, limitem zapasów i ryzykiem związanym z podróżą/rynkiem (patrz żetony na ekranie handlu: okno zepsucia, zmienność cen, obrażenia spowodowane podróżą, szansa na zajęcie). \nCeny kupna różnią się w zależności od mnożnika kraju i zmienności poszczególnych towarów, jeśli są skonfigurowane. Do sprzedaży wykorzystuje się aktualną cenę sprzedaży; odsprzedaż elektroniki jest pomniejszana o aktualny stan. \nKwiaty psują się po skonfigurowanych godzinach od zakupu. Broń i farmaceutyki mogą zostać częściowo skonfiskowane podczas podróży; połączyć z przemytem, ​​aby uzyskać wyższą stawkę. \nNadal potrzebujesz wystarczającej ilości gotówki, miejsca w ekwipunku i znalezienia się w odpowiedniej pętli kraju, aby zapewnić zyskowne biegi.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'Jeśli załadowanie jednej części rynku nie powiedzie się, pociągnij, aby spróbować ponownie — nadal możesz handlować, gdy załadowane zostaną ceny lub zapasy. \nZwróć uwagę na ryzyko związane z towarem: psują się kwiaty, ceny diamentów wahają się, elektronika traci stan podczas podróży, można skonfiskować broń i farmaceutyki. \nNiższy Poszukiwany przed ryzykownymi biegami. Uwzględnij w marży koszt i czas podróży.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Gospodarka';
 
   @override

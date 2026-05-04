@@ -13459,24 +13459,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'Stel altijd een maximale sessie-bankroll in: nooit meer dan 10% van je totale cash per sessie.\nBlackjack heeft de beste kansen voor een vaardige speler. Leer basis-strategie voor je grote bedragen inzet.\nZie casino als entertainment, niet als inkomstenbron: de house edge zorgt op lange termijn voor verlies.';
 
   @override
-  String get helpTopicTradeCategory => 'Economie';
-
-  @override
-  String get helpTopicTradeTitle => 'Handelswaar';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Koop goederen goedkoop in het ene land en verkoop duur in een ander. Prijsverschillen tot 300% zijn mogelijk.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'In deze build smokkel je vijf soorten handelswaar: bloemen, elektronica, diamanten, wapens en farmaceutica — elk met eigen basisprijs, inventarislimiet en reis-/marktrisico\'s (zie de chips op het Handel-scherm: bederfvenster, prijsvolatiliteit, tripschade, inbeslagnemingskans).\nKoopkansen variëren met landmultipliers en volatility per goed waar van toepassing. Verkoop volgt de actuele verkoopprijs; bij elektronica verlaagt de conditie de doorverkoop.\nBloemen bederven na het geconfigureerde aantal uren na aankoop. Wapens en medicijnen kunnen deels worden ingenomen tijdens reizen; combineer met smokkel voor hogere risico\'s.\nJe hebt voldoende cash, inventarisruimte en het juiste landrondje nodig voor winst.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'Als één deel van de markt niet laadt, trek om te verversen — je kunt soms nog handelen als prijzen of inventaris wél geladen zijn.\nLet op de risicochips per goed: bloemen bederven, diamanten zwaaien in prijs, elektronica verliest conditie per trip, wapens en medicijnen kunnen worden ingenomen.\nHoud Wanted laag voor risicovolle ritten. Reken reiskosten en tijd mee in je marge.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Economie';
 
   @override
@@ -13484,15 +13466,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Koop en verkoop illegale en schaarse goederen: wapens, munitie, drugs en materials die nergens anders verkrijgbaar zijn.';
+      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna voertuigen, listings, rugzakken, grondstoffen, wapenmarkt en munitie.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'De zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.';
+      'Tab Handelswaren: vijf smokkelgoederen met eigen prijs, inventarislimiet en risicochips (bederf, volatiliteit, tripschade, inbeslagneming). Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Controleer altijd of de zwarte marktprijs lager is dan het open trade alternatief inclusief reiskosten.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.';
+      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';

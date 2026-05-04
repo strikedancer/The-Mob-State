@@ -2122,7 +2122,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
 - 🚬 Sigaretten: €200 base
 
 **Files Expected:**
-- `client/lib/screens/trade_screen.dart` - market UI
+- `client/lib/screens/trade_goods_tab.dart` - contraband market UI (tab in zwarte markt)
 - `client/lib/models/tradable_good.dart` - Good model
 - `client/assets/images/goods/` - cartoon images (gun, pills, diamond, etc.)
 

@@ -575,7 +575,7 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 ## Trade Market
 
 ### Client / talen
-- Trade-scherm, zwarte markt (o.a. rugzak-tab), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven.
+- **Zwarte markt** (incl. eerste tab handelswaren/contraband), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven.
 - Login en registratie delen dezelfde **onderste juridische footer** (privacy, algemene voorwaarden, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie en vereist **akkoord met de voorwaarden** vóór verzenden. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee.
 
 ### Munitiefabriek (ammo)
@@ -584,9 +584,9 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 ### Tradable Goods (huidige build)
 Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Flowers**, **electronics**, **diamonds**, **weapons**, **pharmaceuticals**
-- Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via het trade-scherm en gekoppelde inventory.
+- Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via de **handelswaren-tab** op de zwarte markt en gekoppelde inventory.
 
-### Client UX (trade_screen)
+### Client UX (zwarte markt → handelswaren-tab)
 - Marktdata wordt in **drie segmenten** geladen (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Faalt één segment, dan volgt een **banner** en blijft de rest bruikbaar; alleen als **alles** faalt, zie je de fatale leegtoestand.
 - Per goed tonen **chips** server-gestuurde risico’s waar aanwezig: bederfvenster (bloemen), prijsvolatiliteit (diamonds), tripschade (electronics), inbeslagnemingskans (wapens/farmaceutica). Het paneel “Travel and market risks” vat het gedrag tekstueel samen.
 - **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/…` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).
@@ -596,7 +596,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
 ### Trade Risk Factors (legacy / algemeen)
-Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s; details per goed staan op het trade-scherm en in `docs/module-protocols/trade.md` / `TRADE_RISK_MECHANICS` waar van toepassing.
+Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s; details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md` / `TRADE_RISK_MECHANICS` waar van toepassing.
 
 #### Police Seizure
 - **Chance**: Based on wanted level

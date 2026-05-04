@@ -13556,24 +13556,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Sempre estabeleça um limite de banca para a sessão: nunca mais do que 10% do dinheiro total por sessão. \nO Blackjack tem as melhores probabilidades para um jogador habilidoso. Aprenda a estratégia básica antes de apostar alto. \nTrate o cassino como entretenimento, não como receita: a vantagem da casa garante perdas a longo prazo.';
 
   @override
-  String get helpTopicTradeCategory => 'Economia';
-
-  @override
-  String get helpTopicTradeTitle => 'Bens comerciais';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Compre produtos baratos em um país e venda caro em outro. São possíveis diferenças de preço de até 300%.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'Mercadorias de contrabando nesta compilação: flores, eletrônicos, diamantes, armas e produtos farmacêuticos — cada um com seu próprio preço base, limite de estoque e riscos de viagem/mercado (veja os chips da tela de comércio: janela de deterioração, volatilidade de preços, danos de viagem, chance de apreensão). \nOs preços de compra variam de acordo com o multiplicador do país e a volatilidade por bem, quando configurada. A venda usa o preço de venda ao vivo; a revenda de eletrônicos é reduzida pelas condições atuais. \nAs flores estragam após o horário configurado desde a compra. Armas e produtos farmacêuticos podem ser parcialmente apreendidos em viagens; combine com o contrabando para apostas mais altas. \nVocê ainda precisa de dinheiro suficiente, espaço em estoque e estar no circuito certo do país para corridas lucrativas.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'Se uma parte do mercado não carregar, puxe para tentar novamente – você ainda poderá negociar quando os preços ou o estoque estiverem carregados. \nObserve o risco de fichas por bem: flores estragam, diamantes oscilam de preço, eletrônicos perdem condição em viagens, armas e produtos farmacêuticos podem ser apreendidos. \nLower Wanted antes de corridas arriscadas. Inclua o custo e o tempo de viagem em sua margem.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Economia';
 
   @override

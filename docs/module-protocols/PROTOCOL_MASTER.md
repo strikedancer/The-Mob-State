@@ -127,7 +127,7 @@ Implementatievoorkeur:
 
 - Multilanguage is een harde eis voor alles wat nieuw wordt gemaakt of aangepast en tekst of UX-signalen bevat (minimaal NL + EN).
 - **Hoofdbalk-avatar (user menu):** de tooltip gebruikt ARB-key **`userAccountMenuTooltip`** (`dashboard_screen.dart`). Het korte label **`account`** leest in o.a. NL als **bank/zakelijke “rekening”** en is daarvoor ongeschikt als hint voor het profiel-/instellingenmenu.
-- **Dashboard-zijmenu (ARB):** in **NL** (`app_nl.arb`) geldt **spel-/genreterminologie** waar een letterlijke vertaling misleidt (o.a. `support`, `crew`, `tradeGoods`, `drugs`, `prostitutionRedLightDistricts`). Controleer **alle actieve player-ARB’s** op dezelfde keys: kennelijke fouten (bijv. ES `crew` = “multitud”, PT `support` = infinitief “apoiar”) rechtstreeks in die locale herstellen; goede bestaande vertalingen (DE/FR/IT/PL) niet zomaar overschrijven.
+- **Dashboard-zijmenu (ARB):** in **NL** (`app_nl.arb`) geldt **spel-/genreterminologie** waar een letterlijke vertaling misleidt (o.a. `support`, `crew`, `tradeGoods` — nu als **label op de eerste zwarte-markt-tab**, niet als apart menu-item — `drugs`, `prostitutionRedLightDistricts`). Controleer **alle actieve player-ARB’s** op dezelfde keys: kennelijke fouten (bijv. ES `crew` = “multitud”, PT `support` = infinitief “apoiar”) rechtstreeks in die locale herstellen; goede bestaande vertalingen (DE/FR/IT/PL) niet zomaar overschrijven.
 - **Training hub (gym + schietschool):** één Flutter-scherm (`training_hub_screen.dart`), labels o.a. `trainingHub*` en op crimes **`crimeTrainingBonusStrip`** / **`crimeTrainingComboStrip`** in ARB; help-topics **`training-hub`** en **`crimes`** via `scripts/_help_topics_extracted.json` + `apply_help_topics_l10n.mjs`. Backend: **`GET /training/status`** (`/training`) combineert status + `trainingComboReadiness`; **combo-readiness** (+0,5% crime success same UTC-dag beide tracks) staat in `trainingComboReadiness.ts` en `balance-economy.md`. Push/inbox: alleen bij **nieuwe** server-notificaties uitbreiden (`translationService` + `playerNotificationBundlesExtra`); bestaande `cooldowns.gym` / `cooldowns.shooting_range` mogen parallel blijven.
 - Daarnaast ondersteunt de **player client** een uitbreidbare set **Europese UI-talen** (codes en allowlist staan centraal in `client/lib/config/supported_languages.dart` + `backend/src/config/supportedLanguages.ts`). Nieuwe talen: ARB-key-pariteit met `app_en.arb`, `flutter gen-l10n`, allowlist uitbreiden, en (totdat er echte vertaling is) mogen stringwaarden tijdelijk gelijk zijn aan EN. Zie hieronder: **ARB vs. allowlist** (dit is géén dubbele check — backend en instellingen volgen de allowlist niet vanzelf uit de ARB-map).
 - Transactionele **HTML-e-mail** (o.a. verificatie, wachtwoord-reset, vriendschap, crew, casino-waarschuwing) volgt `player.preferredLanguage` / registertaal: **alle allowlist-talen** via `translationService.getTranslations` — NL/EN in `translationService.ts`, de overige in `backend/src/i18n/playerEmailBundlesExtra.ts` (zie `docs/l10n-migration.md`). Nieuwe mailtypes of copy: **alle** relevante taalblokken in één wijziging bijwerken.
@@ -327,7 +327,7 @@ Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitl
 
 **Crew mission kaarten (zelfde afbeelding bug):** ontbrekende `images/crew_missions/cards/<key>.png` op de externe mount laat de client op de **default** fallback in `_crewMissionFallbackImagePath` vallen — daardoor zagen meerdere nieuwe missies dezelfde plaat. Oplossing: (1) PNG’s genereren met `backend/scripts/generate_crew_missions_images_leonardo.py` (`LEONARDO_API_KEY`), (2) uploaden met `scripts/upload_crew_mission_images_to_vps.ps1`, (3) per nieuwe `missionKey` een eigen fallback in `crew_screen.dart` tot de assets live staan (zie `crew-missions.md` Image Pipeline).
 
-**Trade goods card thumbnails:** optionele Leonardo-batch `backend/scripts/generate_trade_goods_card_images_leonardo.py` schrijft `runtime/client-images/trade_goods/cards/<good_id>.png` (zelfde mount als `/images/`). De client gebruikt `WebAssetHelper` met fallback (gradient + emoji) als het bestand ontbreekt. Zie `docs/module-protocols/trade.md`.
+**Trade goods card thumbnails:** optionele Leonardo-batch `backend/scripts/generate_trade_goods_card_images_leonardo.py` schrijft `runtime/client-images/trade_goods/cards/<good_id>.png` (zelfde mount als `/images/`). UI staat op de **eerste tab van de Zwarte markt** (`trade_goods_tab.dart`); `WebAssetHelper` + fallback (gradient + emoji) als het bestand ontbreekt. Zie `docs/module-protocols/trade.md` (technisch) en `black-market.md` (hub).
 
 ```powershell
 # Lokaal genereren (LEONARDO_API_KEY in backend/.env.local), daarna naar VPS external tree:
@@ -455,7 +455,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     ├── docs/module-protocols/ (gameplay rules & data contracts)
     │   ├── drugs.md → Game-system: docs/game-systems/GAMEPLAY.md
     │   ├── nightclub.md → Game-systems: NIGHTCLUB_SYSTEM.md + TRADE_RISK_MECHANICS.md
-    │   ├── trade.md → Game-system: TRADE_RISK_MECHANICS.md
+    │   ├── black-market.md (UI hub incl. contraband) → trade.md (API) → TRADE_RISK_MECHANICS.md
     │   ├── prostitution.md → Game-system: NIGHTCLUB_SYSTEM.md + VIP_MANAGEMENT.md
     │   ├── crew.md → Game-system: VIP_LEVELS_SYSTEM.md + HQ_PROGRESSION_GUIDE.md
     │   └── [andere modules...]
@@ -502,7 +502,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
 | VIP_MANAGEMENT.md | prostitution.md | VIP staff recruitment & salaries |
 | VIP_LEVELS_SYSTEM.md | crew.md, properties.md | Building upgrades level 10-14 |
 | HQ_PROGRESSION_GUIDE.md | properties.md, crew.md | Property ownership, HQ strategy |
-| TRADE_RISK_MECHANICS.md | trade.md, travel.md | Goods volatility, spoilage, confiscation |
+| TRADE_RISK_MECHANICS.md | black-market.md, trade.md, travel.md | Contraband hub + API; volatility, spoilage, confiscation |
 | HITLIST_SYSTEM.md | hitlist.md, crimes.md, security.md, crew.md | Bounties, murders, detective, protection |
 
 **Verplicht controleren bij aanpassingen:**

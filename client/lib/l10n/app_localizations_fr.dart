@@ -13626,24 +13626,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Fixez toujours une limite de budget de session : jamais plus de 10 % du total des liquidités par session. \nLe Blackjack offre les meilleures cotes pour un joueur expérimenté. Apprenez la stratégie de base avant de parier gros. \nConsidérez le casino comme un divertissement et non comme un revenu : l’avantage de la maison garantit une perte à long terme.';
 
   @override
-  String get helpTopicTradeCategory => 'Économie';
-
-  @override
-  String get helpTopicTradeTitle => 'Marchandises commerciales';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Achetez des biens bon marché dans un pays et vendez-les cher dans un autre. Des différences de prix jusqu\'à 300% sont possibles.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'Marchandises de contrebande dans cette version : fleurs, appareils électroniques, diamants, armes et produits pharmaceutiques - chacune avec son propre prix de base, son plafond de stock et ses risques de voyage/marché (voir les puces d\'écran du commerce : fenêtre de détérioration, volatilité des prix, dommages causés par le voyage, risque de saisie). \nLes prix d\'achat varient selon le multiplicateur du pays et la volatilité par bien, le cas échéant. La vente utilise le prix de vente en direct ; la revente de produits électroniques est réduite par l’état actuel. \nLes fleurs se gâtent après les heures configurées après l\'achat. Les armes et les produits pharmaceutiques peuvent être partiellement saisis lors des voyages ; combiner avec la contrebande pour des enjeux plus élevés. \nVous avez toujours besoin de suffisamment de liquidités, d’espace de stockage et d’être dans le bon pays pour des courses rentables.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'Si une partie du marché ne parvient pas à se charger, tirez pour réessayer : vous pouvez toujours négocier lorsque les prix ou l\'inventaire sont chargés. \nSurveillez les risques liés aux biens : les fleurs se gâtent, le prix des diamants fluctue, les appareils électroniques se perdent en voyage, les armes et les produits pharmaceutiques peuvent être saisis. \nLower Wanted avant les courses risquées. Incluez les frais et le temps de déplacement dans votre marge.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Économie';
 
   @override

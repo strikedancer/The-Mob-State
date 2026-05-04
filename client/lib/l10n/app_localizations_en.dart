@@ -13426,24 +13426,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Always set a session bankroll limit: never more than 10% of total cash per session.\nBlackjack has the best odds for a skilled player. Learn basic strategy before betting large.\nTreat casino as entertainment, not income: the house edge ensures long-term loss.';
 
   @override
-  String get helpTopicTradeCategory => 'Economy';
-
-  @override
-  String get helpTopicTradeTitle => 'Trade Goods';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Buy goods cheap in one country and sell expensive in another. Price differences up to 300% are possible.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'Contraband trade goods in this build: flowers, electronics, diamonds, weapons and pharmaceuticals — each with its own base price, inventory cap and travel/market risks (see the Trade screen chips: spoilage window, price volatility, trip damage, seizure chance).\nBuy prices vary by country multiplier and per-good volatility where configured. Selling uses the live sell price; electronics resale is reduced by current condition.\nFlowers spoil after the configured hours from purchase. Weapons and pharmaceuticals can be partially seized on travel; combine with smuggling for higher stakes.\nYou still need enough cash, inventory space and to be in the right country loop for profitable runs.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'If one part of the market fails to load, pull to retry — you can still trade when prices or inventory loaded.\nWatch the risk chips per good: flowers spoil, diamonds swing in price, electronics lose condition on trips, weapons and pharmaceuticals can be seized.\nLower Wanted before risky runs. Include travel cost and time in your margin.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Economy';
 
   @override
@@ -13451,15 +13433,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Buy and sell illegal and scarce goods: weapons, ammo, drugs and materials unavailable elsewhere.';
+      'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then vehicles, listings, backpacks, materials, weapons market and ammo.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'The black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.';
+      'Trade goods tab: five contraband lines with pricing, inventory caps and risk chips (spoilage, volatility, trip damage, seizure). Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Always check whether the black market price is lower than the open trade alternative including travel.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.';
+      'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';

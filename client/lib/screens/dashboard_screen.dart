@@ -31,7 +31,6 @@ import 'inventory_screen.dart';
 import 'property_screen.dart';
 import 'casino_screen.dart';
 import 'black_market_screen.dart';
-import 'trade_screen.dart';
 import 'court_screen.dart';
 import 'hospital_screen.dart';
 import 'vehicle_heist_screen.dart';
@@ -80,7 +79,6 @@ enum _WebSection {
   properties,
   bank,
   casino,
-  trade,
   blackMarket,
   drugs,
   nightclub,
@@ -949,12 +947,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
-            icon: Icons.work,
-            label: l10n.tradeGoods,
-            section: _WebSection.trade,
-            badge: 0,
-          ),
-          (
             icon: Icons.store,
             label: l10n.blackMarket,
             section: _WebSection.blackMarket,
@@ -1700,8 +1692,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const BankScreen();
       case _WebSection.casino:
         return const CasinoScreen();
-      case _WebSection.trade:
-        return const TradeScreen();
       case _WebSection.blackMarket:
         return const BlackMarketScreen();
       case _WebSection.drugs:
@@ -2106,17 +2096,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const BankScreen(),
-                                    ),
-                                  ),
-                                ),
-                                _buildMenuTile(
-                                  context,
-                                  icon: Icons.shopping_bag,
-                                  label: l10n.tradeGoods,
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const TradeScreen(),
                                     ),
                                   ),
                                 ),

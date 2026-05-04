@@ -42,7 +42,7 @@ De master protocol zorgt ervoor dat je:
 
 ### Economy & Trading
 - [Drug Production & Sales](drugs.md) - Productie facilities (part of GAMEPLAY.md)
-- [Trade Goods](trade.md) - Zwarte markt + volatility (TRADE_RISK_MECHANICS.md)
+- [Black Market](black-market.md) - Hub incl. handelswaren-tab; zie ook [Trade (API)](trade.md) en TRADE_RISK_MECHANICS.md
 - [Bank](bank.md) - Geld beheer
 - [Casino](casino.md) - Gokken & winsten
 - [Black Market](black-market.md) - Illegals trading

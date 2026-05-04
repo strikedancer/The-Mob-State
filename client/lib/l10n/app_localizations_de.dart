@@ -13626,24 +13626,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Legen Sie immer ein Sitzungs-Bankroll-Limit fest: niemals mehr als 10 % des gesamten Bargelds pro Sitzung. \nBlackjack hat die besten Chancen für einen erfahrenen Spieler. Erlernen Sie die grundlegende Strategie, bevor Sie große Einsätze tätigen. \nBehandeln Sie das Casino als Unterhaltung, nicht als Einkommen: Der Hausvorteil sorgt für langfristige Verluste.';
 
   @override
-  String get helpTopicTradeCategory => 'Wirtschaft';
-
-  @override
-  String get helpTopicTradeTitle => 'Handelswaren';
-
-  @override
-  String get helpTopicTradeSummary =>
-      'Kaufen Sie Waren in einem Land billig und verkaufen Sie sie in einem anderen teuer. Preisunterschiede bis zu 300 % sind möglich.';
-
-  @override
-  String get helpTopicTradeHow =>
-      'Schmuggelware für den Handel in diesem Build: Blumen, Elektronik, Diamanten, Waffen und Arzneimittel – jeweils mit eigenem Grundpreis, Inventarobergrenze und Reise-/Marktrisiken (siehe Chips auf dem Handelsbildschirm: Verderbfenster, Preisvolatilität, Reiseschaden, Beschlagnahmungswahrscheinlichkeit). \nDie Kaufpreise variieren je nach Ländermultiplikator und Volatilität pro Ware, sofern konfiguriert. Beim Verkauf wird der Live-Verkaufspreis verwendet. Der Wiederverkauf von Elektronikartikeln wird um den aktuellen Zustand reduziert. \nBlumen verderben nach den angegebenen Stunden ab Kauf. Waffen und Arzneimittel können auf Reisen teilweise beschlagnahmt werden; kombiniert mit Schmuggel für höhere Einsätze. \nFür profitable Läufe benötigen Sie immer noch genügend Bargeld, Lagerfläche und die richtige Landschleife.';
-
-  @override
-  String get helpTopicTradeTips =>
-      'Wenn ein Teil des Marktes nicht geladen werden kann, versuchen Sie es erneut. Sie können weiterhin handeln, wenn die Preise oder der Lagerbestand geladen sind. \nBeobachten Sie die Risiken pro Ware: Blumen verderben, Diamanten schwanken im Preis, elektronische Geräte verlieren auf Reisen ihren Zustand, Waffen und Medikamente können beschlagnahmt werden. \nNiedriger Gesucht vor riskanten Läufen. Berücksichtigen Sie Reisekosten und Zeit in Ihrer Marge.';
-
-  @override
   String get helpTopicBlackMarketCategory => 'Wirtschaft';
 
   @override

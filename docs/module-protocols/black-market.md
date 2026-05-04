@@ -1,10 +1,12 @@
 ﻿# Black Market Protocol
 
 ## Scope
-Illegal market tabs for weapons, ammo, materials and specialty listings.
+Unified **illegal / grey economy hub**: contraband **handelswaren** (first tab), vehicle marketplace, my listings, backpacks, raw materials, weapons market and ammo.
 
 ## Primary Frontend Entry
-- client/lib/screens/black_market_screen.dart
+- `client/lib/screens/black_market_screen.dart` — outer `TabBar` / `TabBarView`
+- `client/lib/screens/trade_goods_tab.dart` — tab 0: contraband market + inventory (`/trade/*` APIs)
+- Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
