@@ -477,6 +477,23 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       await _refreshLaneCapacities();
 
       if (!mounted) return;
+
+      // Embedded dashboard: JailOverlay lives on this screen (garage/marina use
+      // suppressJailOverlay). Refresh immediately after steal; polling alone can
+      // leave players jailed with no overlay for up to ~30s.
+      if (widget.embedded) {
+        await _refreshEmbeddedJailStatus();
+        if (mounted &&
+            stealArrested &&
+            stealJail > 0 &&
+            (_embeddedJailSeconds == null || _embeddedJailSeconds! <= 0)) {
+          setState(() {
+            _embeddedJailSeconds = stealJail * 60;
+          });
+        }
+      }
+
+      if (!mounted) return;
       if (success) {
         final gained =
             provider.lastStolenVehicle?.definition?.name ??

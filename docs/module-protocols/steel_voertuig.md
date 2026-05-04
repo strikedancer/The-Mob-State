@@ -15,6 +15,11 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Motor: ondersteund door Motor-flow
 - Boot: ondersteund door Marina-flow
 
+## Jail overlay (embedded dashboard)
+
+- In **embedded** mode (`VehicleHeistScreen` op het dashboard) staat `JailOverlay` op de **shell**, niet in de geneste garage/marina (die gebruiken `suppressJailOverlay`), omdat de overlay anders onder slivers/headers blijft hangen.
+- Na **stelen via de lane/ops-kaart** (`_runTileSteal`) moet de client **direct** `GET /player/jail-status` volgen (en bij arrest + lege response desnoods `jailTime` uit de steal-response in seconden mappen), zodat de overlay **onmiddellijk** verschijnt. Alleen periodiek pollen is onvoldoende.
+
 ## Boot-diefstal (balans)
 
 - **Content:** alle boten in `vehicles.json` hebben relatief hoge `baseValue` (bv. goedkoopste vaak €35k+), waardoor dezelfde succes-tier-tabel als auto’s boten structureel **moeilijker** maakte dan een goedkope auto.
