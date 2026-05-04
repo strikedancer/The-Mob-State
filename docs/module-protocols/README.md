@@ -43,9 +43,9 @@ De master protocol zorgt ervoor dat je:
 ### Economy & Trading
 - [Drug Production & Sales](drugs.md) - Productie facilities (part of GAMEPLAY.md)
 - [Black Market](black-market.md) - Hub incl. handelswaren-tab; zie ook [Trade (API)](trade.md) en TRADE_RISK_MECHANICS.md
+- [Player marketplace](player-marketplace.md) - Zwarte Markt **Marktplaats**: P2P voertuigen + spelersitems (`/market/unified`, tools v1)
 - [Bank](bank.md) - Geld beheer
 - [Casino](casino.md) - Gokken & winsten
-- [Black Market](black-market.md) - Illegals trading
 - [Payments & Premium](payments.md) - Mollie checkout, VIP, credits en premium catalogus
 - [Live game events (player)](events.md) - Preset terugkerende events, beloningen, Event Pass, admin toggles
 - [Balance & Economy](balance-economy.md) - Cross-loop balancing, runtime tuning en telemetry

@@ -508,8 +508,8 @@
     "categoryEn": "Economy",
     "titleNl": "Zwarte Markt",
     "titleEn": "Black Market",
-    "summaryNl": "Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna voertuigen, listings, rugzakken, grondstoffen, wapenmarkt en munitie.",
-    "summaryEn": "One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then vehicles, listings, backpacks, materials, weapons market and ammo.",
+    "summaryNl": "Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen en gedragen gereedschap, plus rugzakken, grondstoffen, wapenmarkt en munitie.",
+    "summaryEn": "One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles and carried tools, plus backpacks, materials, weapons market and ammo.",
     "howNl": [
       "Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.",
       "De zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).",
@@ -518,7 +518,8 @@
       "Wapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.",
       "Filters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.",
       "Je kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.",
-      "Listings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel."
+      "Listings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.",
+      "Tab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in."
     ],
     "howEn": [
       "Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.",
@@ -528,17 +529,20 @@
       "Weapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.",
       "Filters by category (type, country, price, availability) help you quickly find the right listing.",
       "You can post your own listings as a seller, including price and quantity. Other players buy from you.",
-      "Listings expire after a certain time if unsold. Monitor your own offers via your profile."
+      "Listings expire after a certain time if unsold. Monitor your own offers via your profile.",
+      "Marketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet."
     ],
     "tipsNl": [
       "Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.",
       "Koop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.",
-      "Vermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit."
+      "Vermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.",
+      "Marktplaats: ververs na plaatsen; alleen gereedschap dat je bij je draagt kun je te koop zetten."
     ],
     "tipsEn": [
       "Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.",
       "Buy weapons and ammo in bulk when prices are low: availability is temporary.",
-      "Avoid large black market purchases when FBI Heat is already above 30."
+      "Avoid large black market purchases when FBI Heat is already above 30.",
+      "Marketplace: refresh after listing; only tools in your carried inventory can be placed for sale."
     ],
     "protocolPath": "docs/module-protocols/black-market.md"
   },

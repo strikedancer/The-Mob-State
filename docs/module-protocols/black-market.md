@@ -9,7 +9,7 @@ Unified **illegal / grey economy hub**: contraband **handelswaren** (first tab),
 - Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`
 
 ## Marktplaats (P2P)
-Speler-tegen-speler verkoop op de **Marktplaats**-tab: **voertuigen** (bestaand) plus **niet-voertuig**-advertenties via `PlayerMarketListing`. Technisch contract en API: **`player-marketplace.md`**. De client haalt gecombineerde feeds via **`GET /market/unified`** (voertuigen + `itemListings`).
+Speler-tegen-speler verkoop op de **Marktplaats**-tab: **voertuigen** (auto/motor/boot als voertuigtype, bestaande `VehicleInventory`-flow) plus **niet-voertuig**-advertenties via `PlayerMarketListing`. Volledige API-contract, foutcodes, migratie/deploy-checklist en roadmap (drugs/crypto/event-items): **`player-marketplace.md`**. De client gebruikt **`GET /market/unified`** (`listings` + `itemListings`); legacy **`GET /market/vehicles`** blijft alleen voertuigen leveren.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
