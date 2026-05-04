@@ -4,7 +4,7 @@
 Unified **illegal / grey economy hub**: contraband **handelswaren** (first tab), vehicle marketplace, my listings, backpacks, raw materials, weapons market and ammo.
 
 ## Primary Frontend Entry
-- `client/lib/screens/black_market_screen.dart` — outer `TabBar` / `TabBarView`
+- `client/lib/screens/black_market_screen.dart` — outer `TabBar` / `TabBarView` (voertuigen-aanbod: tabtekst `AppLocalizations.marketplace`, o.a. NL *Marktplaats*)
 - `client/lib/screens/trade_goods_tab.dart` — tab 0: contraband market + inventory (`/trade/*` APIs)
 - Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`
 

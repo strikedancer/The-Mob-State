@@ -98,7 +98,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
               icon: const Icon(Icons.shopping_bag),
               text: l10n.tradeGoods,
             ),
-            Tab(icon: const Icon(Icons.directions_car), text: l10n.vehicles),
+            Tab(icon: const Icon(Icons.directions_car), text: l10n.marketplace),
             Tab(
               icon: const Icon(Icons.directions_car_outlined),
               text: l10n.myListings,
