@@ -13563,15 +13563,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Compre e venda bens ilegais e escassos: armas, munições, drogas e materiais não disponíveis em outros lugares.';
+      'Um centro: primeiro o comércio de contrabando (flores, eletrônicos, diamantes, armas, produtos farmacêuticos), depois veículos, listagens, mochilas, materiais, mercado de armas e munições.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'O mercado negro é dividido em submercados: Materiais (matérias-primas), Armas (armas de fogo e facas), Munições (munições por calibre), Veículos (veículos ilegais). \nOs preços e a disponibilidade variam muito de acordo com o país e o horário. Uma listagem pode esgotar rapidamente. \nAs transações no mercado negro não deixam rastros oficiais, mas aumentam o FBI Heat para grandes compras. \nAs armas compradas aqui podem ser usadas em crimes, PvP e segurança. Armas melhores proporcionam maiores danos e chances de sucesso. \nFiltros por categoria (tipo, país, preço, disponibilidade) ajudam você a encontrar rapidamente a listagem certa. \nVocê pode postar suas próprias listagens como vendedor, incluindo preço e quantidade. Outros jogadores compram de você. \nAs listagens expiram após um certo tempo se não forem vendidas. Monitore suas próprias ofertas através do seu perfil.';
+      'Guia Mercadorias comerciais: cinco linhas de contrabando com preços, limites de estoque e fichas de risco (deterioração, volatilidade, danos por viagem, apreensão). Compra/venda usa a API /trade; falhas de carga parcial mostram um banner de aviso.\nO mercado negro é dividido em submercados: Materiais (matérias-primas), Armas (armas de fogo e facas), Munições (munições por calibre), Veículos (veículos ilegais).\nOs preços e a disponibilidade variam muito de acordo com o país e o horário. Uma listagem pode esgotar rapidamente.\nAs transações no mercado negro não deixam rastros oficiais, mas aumentam o FBI Heat para grandes compras.\nAs armas compradas aqui podem ser usadas em crimes, PvP e segurança. Armas melhores proporcionam maiores danos e chances de sucesso.\nFiltros por categoria (tipo, país, preço, disponibilidade) ajudam você a encontrar rapidamente a listagem certa.\nVocê pode postar suas próprias listagens como vendedor, incluindo preço e quantidade. Outros jogadores compram de você.\nAs listagens expiram após um certo tempo se não forem vendidas. Monitore suas próprias ofertas através do seu perfil.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Verifique sempre se o preço do mercado negro é inferior à alternativa de comércio aberto, incluindo viagens. \nCompre armas e munições a granel quando os preços estiverem baixos: a disponibilidade é temporária. \nEvite grandes compras no mercado negro quando o FBI Heat já estiver acima de 30.';
+      'Guia Trade: puxe para atualizar se um segmento falhar; observe fichas de risco e Procurado antes de contrabando arriscado.\nCompre armas e munições a granel quando os preços estiverem baixos: a disponibilidade é temporária.\nEvite grandes compras no mercado negro quando o FBI Heat já estiver acima de 30.';
 
   @override
   String get helpTopicDrugsCategory => 'Império';

@@ -13566,15 +13566,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Kupuj i sprzedawaj nielegalne i rzadkie towary: broń, amunicję, narkotyki i materiały niedostępne gdzie indziej.';
+      'Jedno centrum: najpierw przemyt towarów (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie pojazdy, oferty, plecaki, materiały, rynek broni i amunicji.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Czarny rynek dzieli się na podrynki: Materiały (surowce), Broń (broń palna i noże), Amunicja (amunicja według kalibru), Pojazdy (pojazdy nielegalne). \nCeny i dostępność różnią się znacznie w zależności od kraju i czasu. Oferta może szybko się wyprzedać. \nTransakcje na czarnym rynku nie pozostawiają oficjalnego śladu, ale zwiększają temperaturę FBI w przypadku dużych zakupów. \nBroń kupioną tutaj można wykorzystać w przestępstwach, PvP i bezpieczeństwie. Lepsza broń daje większe obrażenia i szansę na sukces. \nFiltry według kategorii (rodzaj, kraj, cena, dostępność) pomagają szybko znaleźć właściwą ofertę. \nJako sprzedający możesz publikować własne oferty, w tym cenę i ilość. Inni gracze kupują od Ciebie. \nAukcje wygasają po pewnym czasie, jeśli nie zostaną sprzedane. Monitoruj swoje oferty za pośrednictwem swojego profilu.';
+      'Zakładka Towary handlowe: pięć linii kontrabandy z cenami, limitami zapasów i chipami ryzyka (zepsucie, zmienność, uszkodzenia w transporcie, konfiskata). Kup/sprzedaj używa interfejsu API /trade; awarie częściowego obciążenia wyświetlają baner ostrzegawczy.\nCzarny rynek dzieli się na podrynki: Materiały (surowce), Broń (broń palna i noże), Amunicja (amunicja według kalibru), Pojazdy (pojazdy nielegalne).\nCeny i dostępność różnią się znacznie w zależności od kraju i czasu. Oferta może szybko się wyprzedać.\nTransakcje na czarnym rynku nie pozostawiają oficjalnego śladu, ale zwiększają temperaturę FBI w przypadku dużych zakupów.\nBroń kupioną tutaj można wykorzystać w przestępstwach, PvP i bezpieczeństwie. Lepsza broń daje większe obrażenia i szansę na sukces.\nFiltry według kategorii (rodzaj, kraj, cena, dostępność) pomagają szybko znaleźć właściwą ofertę.\nJako sprzedający możesz publikować własne oferty, w tym cenę i ilość. Inni gracze kupują od Ciebie.\nAukcje wygasają po pewnym czasie, jeśli nie zostaną sprzedane. Monitoruj swoje oferty za pośrednictwem swojego profilu.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Zawsze sprawdzaj, czy cena na czarnym rynku jest niższa niż alternatywa w ramach otwartego handlu, w tym koszty podróży. \nKupuj broń i amunicję hurtowo, gdy ceny są niskie: dostępność jest tymczasowa. \nUnikaj dużych zakupów na czarnym rynku, gdy FBI Heat ma już ponad 30 lat.';
+      'Zakładka Handel: pociągnij, aby odświeżyć, jeśli segment się nie powiedzie; uważaj na żetony ryzyka i status Poszukiwany przed ryzykownym przemytem.\nKupuj broń i amunicję hurtowo, gdy ceny są niskie: dostępność jest tymczasowa.\nUnikaj dużych zakupów na czarnym rynku, gdy FBI Heat przekracza już 30.';
 
   @override
   String get helpTopicDrugsCategory => 'Imperium';

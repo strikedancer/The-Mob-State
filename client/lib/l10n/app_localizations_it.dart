@@ -13607,15 +13607,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Acquista e vendi beni illegali e scarsi: armi, munizioni, farmaci e materiali non disponibili altrove.';
+      'Un unico hub: prima il contrabbando di beni commerciali (fiori, elettronica, diamanti, armi, prodotti farmaceutici), poi veicoli, elenchi, zaini, materiali, mercato di armi e munizioni.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Il mercato nero è suddiviso in sottomercati: Materiali (materie prime), Armi (armi da fuoco e coltelli), Munizioni (munizioni per calibro), Veicoli (veicoli illegali). \nI prezzi e la disponibilità variano notevolmente in base al paese e al periodo. Un annuncio può esaurirsi rapidamente. \nLe transazioni del mercato nero non lasciano tracce ufficiali ma aumentano la pressione dell\'FBI per i grandi acquisti. \nLe armi acquistate qui possono essere utilizzate in crimini, PvP e sicurezza. Armi migliori danno maggiori danni e possibilità di successo. \nI filtri per categoria (tipologia, paese, prezzo, disponibilità) ti aiutano a trovare rapidamente l\'annuncio giusto. \nPuoi pubblicare le tue inserzioni come venditore, inclusi prezzo e quantità. Gli altri giocatori acquistano da te. \nLe inserzioni scadono dopo un certo tempo se invendute. Monitora le tue offerte tramite il tuo profilo.';
+      'Scheda Beni commerciali: cinque linee di contrabbando con prezzi, limiti di inventario e chip di rischio (deterioramento, volatilità, danni da viaggio, sequestro). Acquista/vendi utilizza l\'API /trade; i guasti al carico parziale mostrano un banner di avviso.\nIl mercato nero è suddiviso in sottomercati: Materiali (materie prime), Armi (armi da fuoco e coltelli), Munizioni (munizioni per calibro), Veicoli (veicoli illegali).\nI prezzi e la disponibilità variano notevolmente in base al paese e al periodo. Un annuncio può esaurirsi rapidamente.\nLe transazioni del mercato nero non lasciano tracce ufficiali ma aumentano la pressione dell\'FBI per i grandi acquisti.\nLe armi acquistate qui possono essere utilizzate in crimini, PvP e sicurezza. Armi migliori danno maggiori danni e possibilità di successo.\nI filtri per categoria (tipologia, paese, prezzo, disponibilità) ti aiutano a trovare rapidamente l\'annuncio giusto.\nPuoi pubblicare le tue inserzioni come venditore, inclusi prezzo e quantità. Gli altri giocatori acquistano da te.\nLe inserzioni scadono dopo un certo tempo se invendute. Monitora le tue offerte tramite il tuo profilo.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Controlla sempre se il prezzo del mercato nero è inferiore all\'alternativa del commercio aperto, compresi i viaggi. \nAcquista armi e munizioni in grandi quantità quando i prezzi sono bassi: la disponibilità è temporanea. \nEvita grandi acquisti sul mercato nero quando FBI Heat ha già superato i 30.';
+      'Scheda Commercio: trascina per aggiornare se un segmento fallisce; guarda i chip rischiosi e i ricercati prima di correre rischi di contrabbando.\nAcquista armi e munizioni in grandi quantità quando i prezzi sono bassi: la disponibilità è temporanea.\nEvita grandi acquisti sul mercato nero quando FBI Heat ha già superato i 30.';
 
   @override
   String get helpTopicDrugsCategory => 'Impero';

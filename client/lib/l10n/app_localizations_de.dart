@@ -13633,15 +13633,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Kaufen und verkaufen Sie illegale und seltene Güter: Waffen, Munition, Drogen und Materialien, die anderswo nicht erhältlich sind.';
+      'Ein Knotenpunkt: Zuerst Schmuggelware (Blumen, Elektronik, Diamanten, Waffen, Arzneimittel), dann Fahrzeuge, Angebote, Rucksäcke, Materialien, Waffenmarkt und Munition.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Der Schwarzmarkt ist in Teilmärkte unterteilt: Materialien (Rohstoffe), Waffen (Schusswaffen und Messer), Munition (Munition pro Kaliber), Fahrzeuge (illegale Fahrzeuge). \nPreise und Verfügbarkeit variieren stark je nach Land und Zeit. Ein Angebot kann schnell ausverkauft sein. \nSchwarzmarkttransaktionen hinterlassen keine offiziellen Spuren, erhöhen aber den Druck des FBI auf große Einkäufe. \nHier gekaufte Waffen können für Verbrechen, PvP und Sicherheit verwendet werden. Bessere Waffen erhöhen den Schaden und die Erfolgschance. \nFilter nach Kategorie (Typ, Land, Preis, Verfügbarkeit) helfen Ihnen, schnell das richtige Angebot zu finden. \nSie können als Verkäufer Ihre eigenen Angebote veröffentlichen, einschließlich Preis und Menge. Andere Spieler kaufen bei Ihnen. \nAngebote verfallen nach einer bestimmten Zeit, wenn sie nicht verkauft werden. Überwachen Sie Ihre eigenen Angebote über Ihr Profil.';
+      'Registerkarte „Handelswaren“: fünf Schmuggellinien mit Preisen, Bestandsobergrenzen und Risikochips (Verderb, Volatilität, Reiseschaden, Beschlagnahme). Kaufen/Verkaufen verwendet die /trade-API; Bei Teillastausfällen wird ein Warnbanner angezeigt.\nDer Schwarzmarkt ist in Teilmärkte unterteilt: Materialien (Rohstoffe), Waffen (Schusswaffen und Messer), Munition (Munition pro Kaliber), Fahrzeuge (illegale Fahrzeuge).\nPreise und Verfügbarkeit variieren stark je nach Land und Zeit. Ein Angebot kann schnell ausverkauft sein.\nSchwarzmarkttransaktionen hinterlassen keine offiziellen Spuren, erhöhen aber den Druck des FBI auf große Einkäufe.\nHier gekaufte Waffen können für Verbrechen, PvP und Sicherheit verwendet werden. Bessere Waffen erhöhen den Schaden und die Erfolgschance.\nFilter nach Kategorie (Typ, Land, Preis, Verfügbarkeit) helfen Ihnen, schnell das richtige Angebot zu finden.\nSie können als Verkäufer Ihre eigenen Angebote veröffentlichen, einschließlich Preis und Menge. Andere Spieler kaufen bei Ihnen.\nAngebote verfallen nach einer bestimmten Zeit, wenn sie nicht verkauft werden. Überwachen Sie Ihre eigenen Angebote über Ihr Profil.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Prüfen Sie immer, ob der Schwarzmarktpreis niedriger ist als die offene Handelsalternative inklusive Reisen. \nKaufen Sie Waffen und Munition in großen Mengen, wenn die Preise niedrig sind: Die Verfügbarkeit ist nur vorübergehend. \nVermeiden Sie große Schwarzmarktkäufe, wenn der FBI Heat bereits über 30 liegt.';
+      'Registerkarte „Handel“: Zum Aktualisieren ziehen, wenn ein Segment ausfällt; Achten Sie auf Risikochips und Fahndung vor riskanten Schmuggelfahrten.\nKaufen Sie Waffen und Munition in großen Mengen, wenn die Preise niedrig sind: Die Verfügbarkeit ist nur vorübergehend.\nVermeiden Sie große Schwarzmarktkäufe, wenn der FBI Heat bereits über 30 liegt.';
 
   @override
   String get helpTopicDrugsCategory => 'Reich';

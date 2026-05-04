@@ -576,6 +576,7 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 
 ### Client / talen
 - **Zwarte markt** (incl. eerste tab handelswaren/contraband), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven.
+- **Help & Uitleg** (zwarte markt): de `helpTopicBlackMarket*`-strings in de ARB’s; wanneer de **Engelse** helptekst wijzigt, worden o.a. **de, fr, es, it, pl, pt** opnieuw ingevuld met `node scripts/translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=helpTopicBlackMarket --force` (NL blijft handmatig/apply-flow). Zie `docs/module-protocols/PROTOCOL_MASTER.md` (i18n-paragraaf).
 - Login en registratie delen dezelfde **onderste juridische footer** (privacy, algemene voorwaarden, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie en vereist **akkoord met de voorwaarden** vóór verzenden. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee.
 
 ### Munitiefabriek (ammo)

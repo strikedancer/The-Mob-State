@@ -17,6 +17,11 @@
  *     (komma's = meerdere prefixes; key matcht als hij met één ervan begint)
  *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=ammoFactory
  *     (Munitiefabriek-scherm: black market infotekst + API-foutcodes)
+ *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=helpTopicBlackMarket --force
+ *     (Help & Uitleg: herschrijf een key-cluster vanaf actuele EN, ook als de locale nog een oude vertaling had)
+ *
+ * `--force` vereist `--prefix=...` (één of meerdere komma-gescheiden prefixes). Zonder force blijven keys
+ * waar target ≠ EN ongemoeid (handmatige of verouderde vertaling).
  *
  * Zie ook: translate_app_arb_from_en.mjs (volledige ARB overschrijven) en verify_arb_parity.mjs.
  */
@@ -55,6 +60,12 @@ const KEY_PREFIXES = prefixArg
       .map((p) => p.trim())
       .filter(Boolean)
   : null;
+
+const FORCE = args.includes('--force');
+if (FORCE && (!KEY_PREFIXES || KEY_PREFIXES.length === 0)) {
+  console.error('translate_arb_english_fallback: --force requires --prefix=... (comma-separated allowed).');
+  process.exit(1);
+}
 
 function keyMatchesPrefixes(key) {
   if (!KEY_PREFIXES || KEY_PREFIXES.length === 0) return true;
@@ -136,13 +147,13 @@ function isIcuSelectOrPlural(s) {
   return /,\s*plural\s*,/.test(s) || /,\s*select\s*,/.test(s);
 }
 
-function fallbackKeys(en, target) {
+function keysForTranslation(en, target) {
   const keys = [];
   for (const k of stringKeys(en)) {
     if (!keyMatchesPrefixes(k)) continue;
     if (target[k] === undefined) continue;
-    if (target[k] !== en[k]) continue;
     if (isIcuSelectOrPlural(en[k])) continue;
+    if (!FORCE && target[k] !== en[k]) continue;
     keys.push(k);
   }
   return keys;
@@ -162,7 +173,7 @@ async function main() {
 
     const p = path.join(l10nDir, f);
     const target = JSON.parse(fs.readFileSync(p, 'utf8'));
-    const keys = fallbackKeys(en, target);
+    const keys = keysForTranslation(en, target);
 
     if (REPORT) {
       totalReport += keys.length;
