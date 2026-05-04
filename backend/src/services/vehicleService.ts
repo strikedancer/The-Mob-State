@@ -345,7 +345,8 @@ const getDynamicPolicePatternForTime = (
       code: 'port_lockdown',
       nameNl: 'Haven Lockdown',
       nameEn: 'Port Lockdown',
-      riskMultiplierByType: { car: 1.03, motorcycle: 1.02, boat: 1.18 },
+      // Boats: keep a modest bump only — 1.18 made cheap boats feel nearly unstealable with heat.
+      riskMultiplierByType: { car: 1.03, motorcycle: 1.02, boat: 1.1 },
       summaryNl: 'Vroege uren hebben strikte havencontroles voor boten.',
       summaryEn: 'Early hours have strict port checks for boats.',
     };
@@ -3637,6 +3638,12 @@ export const vehicleService = {
       (policePattern.riskMultiplierByType[vehicleType] - 1) * 0.18
     );
     successChance = Math.max(0.01, successChance - heatPenalty - patternPenalty + theftRepBonus);
+
+    // Boats use euro baseValues that start much higher than starter cars, so the same tier table
+    // unfairly pushes every boat into mid/high difficulty. Small flat bonus after all penalties.
+    if (vehicleType === 'boat') {
+      successChance = Math.min(0.95, successChance + 0.06);
+    }
 
     const success = Math.random() < successChance;
 

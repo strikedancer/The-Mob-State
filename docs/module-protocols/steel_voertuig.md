@@ -15,6 +15,12 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Motor: ondersteund door Motor-flow
 - Boot: ondersteund door Marina-flow
 
+## Boot-diefstal (balans)
+
+- **Content:** alle boten in `vehicles.json` hebben relatief hoge `baseValue` (bv. goedkoopste vaak €35k+), waardoor dezelfde succes-tier-tabel als auto’s boten structureel **moeilijker** maakte dan een goedkope auto.
+- **Server (`vehicleService.stealVehicle`):** na heat/patroon/rep wordt voor `vehicleType === 'boat'` een **+6%** succesbonus toegepast (cap 95%). **Haven lockdown** (UTC 04:00–09:00, dynamisch patroon `port_lockdown`) gebruikt voor boten multiplier **1.10** i.p.v. een zwaardere waarde, zodat vroege havencontroles merkbaar blijven maar niet frusterend.
+- **Arrest na poging:** bij mislukte stal stijgt wanted; `checkArrest` (`policeService`) kan daarna alsnog gevangenis geven — dat is **los** van de “gesnapt”-mislukking en schaalt met wanted × `POLICE_RATIO`.
+
 ## Core Rules
 
 - Behoud één consistente spelersloop over alle tabs: stelen -> beheren -> repareren/verkoop/sloop.

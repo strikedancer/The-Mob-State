@@ -458,6 +458,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   ├── nightclub.md → Game-systems: NIGHTCLUB_SYSTEM.md + TRADE_RISK_MECHANICS.md
     │   ├── black-market.md (UI hub incl. contraband) → trade.md (API) → TRADE_RISK_MECHANICS.md
     │   ├── player-marketplace.md (Marktplaats P2P: voertuigen + spelersitems; `market` routes)
+    │   ├── steel_voertuig.md (Vehicle Heist auto/motor/boot; boot-balans o.a. `vehicleService.stealVehicle` + `balance-economy.md`)
     │   ├── prostitution.md → Game-system: NIGHTCLUB_SYSTEM.md + VIP_MANAGEMENT.md
     │   ├── crew.md → Game-system: VIP_LEVELS_SYSTEM.md + HQ_PROGRESSION_GUIDE.md
     │   └── [andere modules...]
