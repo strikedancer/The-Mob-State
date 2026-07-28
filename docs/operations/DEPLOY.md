@@ -27,6 +27,38 @@ Doel:
 - `git pull` overschrijft geen noodpatches meer in `docker-compose.plesk.yml`;
 - Firebase/Mollie/Leonardo blijven actief na volgende deploys.
 
+## Plesk SSL / Let's Encrypt (themobstate)
+
+Apache reverse-proxyt de game-sites naar Docker (`8080` client, `3000` API, `8081` admin). **Zonder uitzondering** worden ACME HTTP-01 challenges meegestuurd naar Docker, waardoor Plesk Let's Encrypt faalt (en certificaten verlopen).
+
+In **Apache Additional directives** per domain (`vhost.conf` én `vhost_ssl.conf` onder `/var/www/vhosts/system/<domain>/conf/`) moet dit staan **vóór** de catch-all `ProxyPass`:
+
+```apache
+ProxyPreserveHost On
+<Location "/.well-known/acme-challenge">
+    ProxyPass "!"
+</Location>
+ProxyPass "/" "http://127.0.0.1:PORT/"
+ProxyPassReverse "/" "http://127.0.0.1:PORT/"
+RequestHeader set X-Forwarded-Proto "https"
+RequestHeader set X-Forwarded-Port "443"
+```
+
+Poorten: apex/`www` → `8080`, `api.themobstate.com` → `3000`, `admin.themobstate.com` → `8081`.
+
+Na wijziging: `apachectl configtest && systemctl reload apache2`.
+
+Handmatig vernieuwen (als Plesk-UI hangt op oude pending orders: eerst JSON onder `/usr/local/psa/var/modules/letsencrypt/orders/` voor die hosts wissen):
+
+```bash
+plesk bin extension --exec letsencrypt cli.php -d themobstate.com -d www.themobstate.com -m info@themobstate.com
+plesk bin extension --exec letsencrypt cli.php -d api.themobstate.com -m info@themobstate.com
+plesk bin extension --exec letsencrypt cli.php -d admin.themobstate.com -m info@themobstate.com
+plesk bin domain -u themobstate.com -ssl true -certificate-name "Lets Encrypt themobstate.com" -ssl-redirect true
+plesk bin domain -u api.themobstate.com -ssl true -certificate-name "Lets Encrypt api.themobstate.com" -ssl-redirect true
+plesk bin domain -u admin.themobstate.com -ssl true -certificate-name "Lets Encrypt admin.themobstate.com" -ssl-redirect true
+```
+
 ## PuTTY Update Flow (Standard)
 
 Als je mij later vraagt om een PuTTY update-command, dan is dit de vaste veilige volgorde voor productie:

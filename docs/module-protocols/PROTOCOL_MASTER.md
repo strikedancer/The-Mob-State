@@ -473,7 +473,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   └── HQ_PROGRESSION_GUIDE.md → Property ownership & progression
     │
     ├── docs/operations/ (deployment & operational)
-    │   ├── DEPLOY.md → Production deployment
+    │   ├── DEPLOY.md → Production deployment (incl. Plesk Let's Encrypt + ProxyPass ACME-uitzondering)
     │   ├── FIREBASE_SETUP.md → Firebase configuration
     │   └── RELEASE_CHECKLIST.md → Pre-release QA
     │
