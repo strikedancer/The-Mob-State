@@ -18,6 +18,7 @@ import '../widgets/jail_screen.dart';
 import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/theft_cooldown_steal_control.dart';
 import '../widgets/overlay_image.dart';
+import '../widgets/stolen_vehicle_dialog.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
 
@@ -458,6 +459,8 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       final stealCooldown = provider.lastStealCooldownRemainingSeconds;
       final stealArrested = provider.lastStealArrested;
       final stealJail = provider.lastStealJailMinutes;
+      final stolenVehicle = provider.lastStolenVehicle;
+      final stealXpGained = provider.lastStealXpGained;
       final lock = provider.regionalBlacklistForType(vehicleType);
       final lockActive = lock?['active'] == true;
       final lockReasonNl = lock?['reasonNl']?.toString();
@@ -495,13 +498,21 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
       if (!mounted) return;
       if (success) {
-        final gained =
-            provider.lastStolenVehicle?.definition?.name ??
-            l10n.vehicleHeistGenericVehicle;
-        _showTopMessage(
-          l10n.vehicleHeistSuccessStolen(gained),
-          success: true,
-        );
+        if (stolenVehicle != null) {
+          await showStolenVehicleDialog(
+            context,
+            stolenVehicle,
+            xpGained: stealXpGained,
+          );
+        } else {
+          final gained =
+              provider.lastStolenVehicle?.definition?.name ??
+              l10n.vehicleHeistGenericVehicle;
+          _showTopMessage(
+            l10n.vehicleHeistSuccessStolen(gained),
+            success: true,
+          );
+        }
       } else if (stealCooldown > 0) {
         _showTopMessage(
           stealError ??
