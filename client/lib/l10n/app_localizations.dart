@@ -15751,13 +15751,13 @@ abstract class AppLocalizations {
   /// No description provided for @rivalryChallengeHint.
   ///
   /// In en, this message translates to:
-  /// **'Enter a player ID to start a rivalry.'**
+  /// **'Enter a player name (or ID) to start a rivalry.'**
   String get rivalryChallengeHint;
 
   /// No description provided for @rivalryPlayerIdHint.
   ///
   /// In en, this message translates to:
-  /// **'Player ID'**
+  /// **'Player name or ID'**
   String get rivalryPlayerIdHint;
 
   /// No description provided for @rivalryStartButton.

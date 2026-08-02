@@ -161,7 +161,46 @@ export const rivalryService = {
     };
   },
 
-  async startRivalry(playerId: number, rivalPlayerId: number) {
+  async startRivalry(
+    playerId: number,
+    target: { rivalPlayerId?: number; rivalUsername?: string }
+  ) {
+    const username = target.rivalUsername?.trim() ?? '';
+    const rawId = target.rivalPlayerId;
+
+    let rivalPlayerId: number | null =
+      typeof rawId === 'number' && Number.isFinite(rawId) && rawId > 0
+        ? Math.floor(rawId)
+        : null;
+
+    if (rivalPlayerId == null && username) {
+      // Pure numeric input still works as player ID when sent as username by mistake.
+      if (/^\d+$/.test(username)) {
+        rivalPlayerId = Number(username);
+      } else {
+        const byName = await prisma.player.findUnique({
+          where: { username },
+          select: { id: true },
+        });
+        if (byName) {
+          rivalPlayerId = byName.id;
+        } else {
+          // Case-insensitive fallback (collation-safe).
+          const rows = await prisma.$queryRaw<Array<{ id: number }>>`
+            SELECT id FROM Player WHERE LOWER(username) = LOWER(${username}) LIMIT 1
+          `;
+          rivalPlayerId = rows[0]?.id ?? null;
+        }
+      }
+    }
+
+    if (rivalPlayerId == null) {
+      return {
+        success: false,
+        message: 'Enter a player name or ID to start a rivalry',
+      };
+    }
+
     if (playerId === rivalPlayerId) {
       return { success: false, message: 'You cannot challenge yourself' };
     }

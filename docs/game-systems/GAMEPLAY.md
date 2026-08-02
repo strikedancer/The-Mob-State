@@ -583,6 +583,9 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 ### Munitiefabriek (ammo)
 - Productie wordt **server-side** getakt: claim-interval **20 minuten**, basis **3 patronen per ammo-type per tick** (level 1; schaalt met output-level). Sessievenster blijft 8 uur backlog. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
 
+### Prostitutie-rivaliteit
+- Rivaliteit starten: vul **spelersnaam** in (numeriek ID blijft ook werken). Server: `POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`. Zie `docs/module-protocols/prostitution.md`.
+
 ### Tradable Goods (huidige build)
 Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Flowers**, **electronics**, **diamonds**, **weapons**, **pharmaceuticals**

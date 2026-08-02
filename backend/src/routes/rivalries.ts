@@ -18,13 +18,32 @@ router.get('/active', authenticate, async (req: AuthRequest, res) => {
 router.post('/start', authenticate, async (req: AuthRequest, res) => {
   try {
     const playerId = req.player!.id;
-    const rivalPlayerId = Number(req.body.rivalPlayerId);
+    const body = req.body ?? {};
+    const rivalUsername =
+      typeof body.rivalUsername === 'string' ? body.rivalUsername.trim() : '';
+    const rivalPlayerIdRaw = body.rivalPlayerId;
+    const rivalPlayerId =
+      rivalPlayerIdRaw === undefined || rivalPlayerIdRaw === null || rivalPlayerIdRaw === ''
+        ? undefined
+        : Number(rivalPlayerIdRaw);
 
-    if (!rivalPlayerId) {
-      return res.status(400).json({ success: false, message: 'rivalPlayerId is required' });
+    if (
+      !rivalUsername &&
+      (rivalPlayerId === undefined || !Number.isFinite(rivalPlayerId) || rivalPlayerId <= 0)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'rivalUsername or rivalPlayerId is required',
+      });
     }
 
-    const result = await rivalryService.startRivalry(playerId, rivalPlayerId);
+    const result = await rivalryService.startRivalry(playerId, {
+      rivalPlayerId:
+        rivalPlayerId !== undefined && Number.isFinite(rivalPlayerId) && rivalPlayerId > 0
+          ? rivalPlayerId
+          : undefined,
+      rivalUsername: rivalUsername || undefined,
+    });
     return res.status(result.success ? 200 : 400).json(result);
   } catch (error) {
     console.error('[Rivalries] Error starting rivalry:', error);

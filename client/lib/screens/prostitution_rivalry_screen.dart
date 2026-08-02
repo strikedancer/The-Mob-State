@@ -122,13 +122,26 @@ class _ProstitutionRivalryScreenState extends State<ProstitutionRivalryScreen> {
 
   Future<void> _startRivalry() async {
     final l10n = AppLocalizations.of(context)!;
-    final rivalId = int.tryParse(_challengeController.text.trim());
-    if (rivalId == null) return;
+    final raw = _challengeController.text.trim();
+    if (raw.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.rivalryChallengeHint),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
 
-    final result = await _service.startRivalry(rivalId);
+    final asId = int.tryParse(raw);
+    final result = asId != null
+        ? await _service.startRivalry(rivalPlayerId: asId)
+        : await _service.startRivalry(rivalUsername: raw);
     if (!mounted) return;
 
-    showTopRightFromSnackBar(context, 
+    showTopRightFromSnackBar(
+      context,
       SnackBar(
         content: Text(
           result['message']?.toString() ?? l10n.rivalryUpdateMessage,
@@ -286,7 +299,8 @@ class _ProstitutionRivalryScreenState extends State<ProstitutionRivalryScreen> {
                 Expanded(
                   child: TextField(
                     controller: _challengeController,
-                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (_) => _startRivalry(),
                     decoration: InputDecoration(
                       hintText: l10n.rivalryPlayerIdHint,
                       border: const OutlineInputBorder(),

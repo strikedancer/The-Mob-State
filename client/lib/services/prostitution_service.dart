@@ -663,11 +663,20 @@ class ProstitutionService {
     }
   }
 
-  Future<Map<String, dynamic>> startRivalry(int rivalPlayerId) async {
+  Future<Map<String, dynamic>> startRivalry({
+    int? rivalPlayerId,
+    String? rivalUsername,
+  }) async {
     try {
-      final response = await _apiClient.post('/rivalries/start', {
-        'rivalPlayerId': rivalPlayerId,
-      });
+      final body = <String, dynamic>{};
+      if (rivalPlayerId != null) {
+        body['rivalPlayerId'] = rivalPlayerId;
+      }
+      final name = rivalUsername?.trim();
+      if (name != null && name.isNotEmpty) {
+        body['rivalUsername'] = name;
+      }
+      final response = await _apiClient.post('/rivalries/start', body);
       return json.decode(response.body);
     } catch (e) {
       print('Error starting rivalry: $e');

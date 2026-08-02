@@ -8918,10 +8918,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get rivalryChallengeHint =>
-      'Inserisci un ID giocatore per iniziare una rivalità.';
+      'Inserisci un nome giocatore (o ID) per iniziare una rivalità.';
 
   @override
-  String get rivalryPlayerIdHint => 'ID del giocatore';
+  String get rivalryPlayerIdHint => 'Nome o ID del giocatore';
 
   @override
   String get rivalryStartButton => 'Inizio';

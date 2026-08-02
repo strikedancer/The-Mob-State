@@ -32,11 +32,13 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Weekly housing rent weergave moet overeenkomen met backend-config (standaard/VIP dagtarief x 7).
+- Rivaliteit starten accepteert **spelersnaam of numeriek ID** (`POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`); het challenge-veld mag geen puur-numeriek toetsenbord forceren.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
+- Rivalry challenge copy (`rivalryChallengeHint`, `rivalryPlayerIdHint`) must mention name (and optional ID), not ID-only.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
