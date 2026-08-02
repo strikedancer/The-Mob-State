@@ -88,6 +88,7 @@ docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backen
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate deploy
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps admin
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
 '@.Replace("REMOTE_PROJECT_DIR", $dirUnix)
 

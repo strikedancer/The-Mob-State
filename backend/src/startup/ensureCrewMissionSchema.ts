@@ -123,4 +123,13 @@ export async function ensureCrewMissionSchema(): Promise<void> {
   `);
 
   console.log('[StartupSchema] Crew mission schema check complete');
+
+  // Keep template catalog in sync on boot (new keys must not wait for first overview hit).
+  try {
+    const { seedCrewMissionTemplatesIfNeeded } = await import('../services/crewMissionService');
+    await seedCrewMissionTemplatesIfNeeded();
+    console.log('[StartupSchema] Crew mission templates seeded');
+  } catch (error) {
+    console.warn('[StartupSchema] Crew mission template seed skipped:', error);
+  }
 }

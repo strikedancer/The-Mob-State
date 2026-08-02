@@ -1015,6 +1015,11 @@ async function ensureSeededTemplates(): Promise<void> {
   }
 }
 
+/** Boot / ops: sync MISSION_SEEDS into DB without requiring a player overview hit. */
+export async function seedCrewMissionTemplatesIfNeeded(): Promise<void> {
+  await ensureSeededTemplates();
+}
+
 export const crewMissionService = {
   async getOverview(playerId: number) {
     await ensureSeededTemplates();

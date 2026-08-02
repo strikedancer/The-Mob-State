@@ -39,6 +39,8 @@ Admin endpoints:
 - `GET /admin/crew-missions/runtime-config`
 - `PUT /admin/crew-missions/runtime-config`
 
+Template seed: `MISSION_SEEDS` in `crewMissionService` syncs via `seedCrewMissionTemplatesIfNeeded()` on backend boot (`ensureCrewMissionSchema`) and again on overview/start. New templates (Blackout Push, Courier Intercept, City Vault Prep) must appear in DB without waiting for a player hit.
+
 ## Client UI Status (Phase 3 Basis)
 
 Geactiveerd in:
