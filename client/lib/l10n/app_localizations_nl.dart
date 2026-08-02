@@ -14461,6 +14461,16 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String territoryCapsRegionsChip(int owned, int max) {
+    return 'Regio\'s $owned/$max';
+  }
+
+  @override
+  String territoryCapsContestsChip(int active, int max) {
+    return 'Contests $active/$max';
+  }
+
+  @override
   String get territoryDetailProject => 'Regioproject';
 
   @override

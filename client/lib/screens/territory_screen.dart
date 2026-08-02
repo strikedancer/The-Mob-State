@@ -1548,29 +1548,142 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
-          if (viewerCaps != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-              child: Text(
-                _l10n.territoryCapsLine(
-                  (viewerCaps['ownedRegions'] as num?)?.toInt() ?? 0,
-                  (viewerCaps['effectiveMaxRegions'] as num?)?.toInt() ?? 0,
-                  (viewerCaps['activeContests'] as num?)?.toInt() ?? 0,
-                  (viewerCaps['effectiveMaxContests'] as num?)?.toInt() ?? 0,
-                ),
-                style: TextStyle(
-                  color: Colors.grey[800],
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+          if (viewerCaps != null) _buildViewerCapsChips(viewerCaps),
           _buildSvgMapOverview(regions),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
             child: Text(
               _l10n.territoryMapHintTapMain,
               style: TextStyle(color: Colors.grey[700], fontSize: 12),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildViewerCapsChips(Map<String, dynamic> viewerCaps) {
+    final owned = (viewerCaps['ownedRegions'] as num?)?.toInt() ?? 0;
+    final maxRegions =
+        (viewerCaps['effectiveMaxRegions'] as num?)?.toInt() ?? 0;
+    final active = (viewerCaps['activeContests'] as num?)?.toInt() ?? 0;
+    final maxContests =
+        (viewerCaps['effectiveMaxContests'] as num?)?.toInt() ?? 0;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      child: Semantics(
+        label: _l10n.territoryCapsLine(owned, maxRegions, active, maxContests),
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _buildCapChip(
+              icon: Icons.map_outlined,
+              label: _l10n.territoryCapsRegionsChip(owned, maxRegions),
+              used: owned,
+              max: maxRegions,
+            ),
+            _buildCapChip(
+              icon: Icons.gavel_outlined,
+              label: _l10n.territoryCapsContestsChip(active, maxContests),
+              used: active,
+              max: maxContests,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCapChip({
+    required IconData icon,
+    required String label,
+    required int used,
+    required int max,
+  }) {
+    final atCap = max > 0 && used >= max;
+    final nearCap = max > 0 && !atCap && used >= (max * 0.8).ceil();
+    final accent = atCap
+        ? Colors.red.shade700
+        : nearCap
+            ? Colors.amber.shade800
+            : const Color(0xFFB8860B);
+    final bg = atCap
+        ? Colors.red.shade50
+        : nearCap
+            ? Colors.amber.shade50
+            : const Color(0xFFFFF8E7);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: accent.withValues(alpha: 0.55)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 15, color: accent),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12.5,
+              fontWeight: FontWeight.w700,
+              color: accent,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProjectMeter({
+    required String label,
+    required int value,
+    required int max,
+    required Color color,
+    bool asPercent = false,
+  }) {
+    final safeMax = max <= 0 ? 1 : max;
+    final ratio = (value / safeMax).clamp(0.0, 1.0);
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.grey.shade700,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Text(
+                asPercent ? '$value%' : '$value / $max',
+                style: TextStyle(
+                  color: Colors.grey.shade800,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: ratio,
+              minHeight: 8,
+              backgroundColor: Colors.grey.shade300,
+              color: color,
             ),
           ),
         ],
@@ -1994,9 +2107,22 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           '${projectIncomeBonusPercent > 0 ? ' · ${t.territoryProjectIncomeBonusPct(projectIncomeBonusPercent)}' : ''}',
         ),
         if (projectStatus == 'building')
-          _detailRow(t.territoryProjectProgress, '$projectProgress%'),
+          _buildProjectMeter(
+            label: t.territoryProjectProgress,
+            value: projectProgress.clamp(0, 100),
+            max: 100,
+            color: Colors.amber.shade700,
+            asPercent: true,
+          ),
         if (projectStatus == 'active' || projectStatus == 'damaged')
-          _detailRow(t.territoryProjectHp, '$projectHp / $projectMaxHp'),
+          _buildProjectMeter(
+            label: t.territoryProjectHp,
+            value: projectHp.clamp(0, projectMaxHp),
+            max: projectMaxHp,
+            color: projectStatus == 'damaged'
+                ? Colors.orange.shade700
+                : Colors.teal.shade700,
+          ),
       ],
       if (regionEvent != null)
         _detailRow(

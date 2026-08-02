@@ -25265,6 +25265,18 @@ abstract class AppLocalizations {
     int maxContests,
   );
 
+  /// No description provided for @territoryCapsRegionsChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Regions {owned}/{max}'**
+  String territoryCapsRegionsChip(int owned, int max);
+
+  /// No description provided for @territoryCapsContestsChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Contests {active}/{max}'**
+  String territoryCapsContestsChip(int active, int max);
+
   /// No description provided for @territoryDetailProject.
   ///
   /// In en, this message translates to:

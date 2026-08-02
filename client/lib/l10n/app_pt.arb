@@ -8566,6 +8566,28 @@
       }
     }
   },
+  "territoryCapsRegionsChip": "Regions {owned}/{max}",
+  "@territoryCapsRegionsChip": {
+    "placeholders": {
+      "owned": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryCapsContestsChip": "Contests {active}/{max}",
+  "@territoryCapsContestsChip": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
   "territoryDetailProject": "Region project",
   "territoryProjectSafehouse": "Safehouse network",
   "territoryProjectStatusBuilding": "Building",

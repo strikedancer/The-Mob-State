@@ -295,8 +295,8 @@ Admin moderation:
 10. Multi-country browse: alle enabled landen renderen interactieve regio's; action endpoints blokkeren correct buiten de huidige Travel-locatie.
 11. HQ-locked actions tonen expliciet `vereist HQ level X` in NL/EN en server-side rejects blijven consistent met dezelfde locklogica.
 12. Admin telemetry toont valide 24u waarden voor reward/min, winrate per HQ-band, growth per crew-size en bonus usage per HQ/building tier.
-13. Map toont `viewerCaps` (owned/effective regions + contests) voor de eigen crew.
-14. Owned regio: start/contribute safehouse-project (HQ-gated); actief project verhoogt getoonde en uitgekeerde passieve income.
+13. Map toont `viewerCaps` als chips (owned/effective regions + contests; near/at-cap kleuren) voor de eigen crew.
+14. Owned regio: start/contribute safehouse-project (HQ-gated); actief project verhoogt getoonde en uitgekeerde passieve income; building/active/damaged tonen progress- of HP-balken.
 15. Contest sabotage verlaagt project-HP / kan vernietigen; defender supply_run herstelt of bouwt voortgang.
 16. Admin (of auto op `endsAt`) close season deelt awards exact-once en toont payout-samenvatting.
 17. Region events roteren via runtime_config en zijn zichtbaar op map/overview/dashboard/public home.

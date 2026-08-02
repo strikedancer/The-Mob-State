@@ -1111,7 +1111,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Court & Judge (appeal / bribe while jailed)
 - âœ… Crew Wars (War Room, seasons, territory targets)
 - âœ… Drug production facilities
-- âœ… Territory Fase C (HQ caps zichtbaar, regioproject safehouse_network, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
+- ✅ Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
 - ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / territory.md
 - ✅ Money laundering (cash→bank wash: fee, delay, FBI-heat seize risk) — see `money-laundering.md`
 - ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
