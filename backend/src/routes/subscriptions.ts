@@ -1464,6 +1464,10 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
             prestigeTier: getVipPrestigeTier(crewLifetimeDays),
           }
         : null,
+      giftPrices: {
+        playerVipEur: pricing.playerVipPriceEur,
+        crewVipEur: pricing.crewVipPriceEur,
+      },
       credits: {
         balance: player?.premiumCredits ?? 0,
         hitProtectionExpiresAt: player?.hitProtectionExpiresAt ?? null,

@@ -1117,7 +1117,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
 - ✅ Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) — see `properties.md`
 
-- ✅ VIP polish: cancel auto-renew, gift Player VIP, gift Crew VIP, display-only prestige tiers — see `payments.md` / `VIP_LEVELS_SYSTEM.md` (Help topic `premium`)
+- ✅ VIP polish: cancel auto-renew, gift Player/Crew VIP (price in dialog), display-only prestige path to next tier — see `payments.md` / `VIP_LEVELS_SYSTEM.md` (Help topic `premium`)
 
 ### Planned Features
 - (none in current backlog)

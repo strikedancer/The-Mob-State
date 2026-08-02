@@ -8831,6 +8831,14 @@
   "premiumUiCancelRenewalFailed": "Could not cancel auto-renewal.",
   "premiumUiGiftVip": "Gift VIP",
   "premiumUiGiftVipHint": "Buy 30 days of Player VIP for another player.",
+  "premiumUiGiftVipPrice": "One-time price: {price} (30 days, no auto-renew).",
+  "@premiumUiGiftVipPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "premiumUiGiftVipUsername": "Recipient username",
   "premiumUiGiftVipConfirm": "Continue to checkout",
   "premiumUiGiftVipFailed": "Could not start VIP gift checkout.",
@@ -8847,6 +8855,18 @@
       }
     }
   },
+  "premiumUiPrestigeNext": "{days} days to {tier}",
+  "@premiumUiPrestigeNext": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiPrestigeMax": "Max prestige reached",
   "premiumUiGiftCrewVip": "Gift Crew VIP",
   "premiumUiGiftCrewVipHint": "Buy 30 days of Crew VIP for any crew by name. One-time gift — no auto-renew for that crew.",
   "premiumUiGiftCrewVipName": "Crew name",

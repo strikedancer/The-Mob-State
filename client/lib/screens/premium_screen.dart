@@ -219,6 +219,33 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
+  /// Display-only path: bronze 30 / silver 180 / gold 365 lifetime days.
+  String _prestigeProgressLine(AppLocalizations l10n, int lifetimeDays) {
+    const bronze = 30;
+    const silver = 180;
+    const gold = 365;
+    final days = lifetimeDays < 0 ? 0 : lifetimeDays;
+    if (days < bronze) {
+      return l10n.premiumUiPrestigeNext(
+        bronze - days,
+        l10n.premiumUiPrestigeBronze,
+      );
+    }
+    if (days < silver) {
+      return l10n.premiumUiPrestigeNext(
+        silver - days,
+        l10n.premiumUiPrestigeSilver,
+      );
+    }
+    if (days < gold) {
+      return l10n.premiumUiPrestigeNext(
+        gold - days,
+        l10n.premiumUiPrestigeGold,
+      );
+    }
+    return l10n.premiumUiPrestigeMax;
+  }
+
   Future<void> _cancelVipRenewal(String target) async {
     final l10n = AppLocalizations.of(context)!;
     final vipMap = target == 'crew'
@@ -271,6 +298,13 @@ class _PremiumScreenState extends State<PremiumScreen> {
   Future<void> _giftPlayerVip() async {
     final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
+    final giftPrices =
+        (_status?['giftPrices'] as Map?)?.cast<String, dynamic>() ?? const {};
+    final playerVip =
+        (_status?['playerVip'] as Map?)?.cast<String, dynamic>() ?? const {};
+    final price = _oneTimePriceLabel(
+      giftPrices['playerVipEur'] ?? playerVip['monthlyPriceEur'],
+    );
     final username = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -280,6 +314,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(l10n.premiumUiGiftVipHint),
+            const SizedBox(height: 8),
+            Text(
+              l10n.premiumUiGiftVipPrice(price),
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.amber.shade800,
+              ),
+            ),
             const SizedBox(height: 12),
             TextField(
               controller: controller,
@@ -331,6 +373,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
   Future<void> _giftCrewVip() async {
     final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
+    final giftPrices =
+        (_status?['giftPrices'] as Map?)?.cast<String, dynamic>() ?? const {};
+    final crewVip = (_status?['crewVip'] as Map?)?.cast<String, dynamic>();
+    final price = _oneTimePriceLabel(
+      giftPrices['crewVipEur'] ?? crewVip?['monthlyPriceEur'],
+    );
     final crewName = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -340,6 +388,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(l10n.premiumUiGiftCrewVipHint),
+            const SizedBox(height: 8),
+            Text(
+              l10n.premiumUiGiftVipPrice(price),
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.amber.shade800,
+              ),
+            ),
             const SizedBox(height: 12),
             TextField(
               controller: controller,
@@ -1054,7 +1110,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
         ),
         _buildKpiCard(
           l10n.premiumUiPrestigeLabel,
-          '${_prestigeLabel(l10n, playerVip['prestigeTier']?.toString())} · ${l10n.premiumUiPrestigeDays(lifetimeDays)}',
+          '${_prestigeLabel(l10n, playerVip['prestigeTier']?.toString())} · ${l10n.premiumUiPrestigeDays(lifetimeDays)}\n${_prestigeProgressLine(l10n, lifetimeDays)}',
           Icons.military_tech,
           accent: Colors.deepOrange.shade600,
         ),
@@ -1092,6 +1148,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 const SizedBox(height: 4),
                 Text(
                   value,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: accent,

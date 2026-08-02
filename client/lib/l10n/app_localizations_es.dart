@@ -14951,6 +14951,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Buy 30 days of Player VIP for another player.';
 
   @override
+  String premiumUiGiftVipPrice(String price) {
+    return 'One-time price: $price (30 days, no auto-renew).';
+  }
+
+  @override
   String get premiumUiGiftVipUsername => 'Recipient username';
 
   @override
@@ -14978,6 +14983,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String premiumUiPrestigeDays(int days) {
     return '$days lifetime days';
   }
+
+  @override
+  String premiumUiPrestigeNext(int days, String tier) {
+    return '$days days to $tier';
+  }
+
+  @override
+  String get premiumUiPrestigeMax => 'Max prestige reached';
 
   @override
   String get premiumUiGiftCrewVip => 'Gift Crew VIP';

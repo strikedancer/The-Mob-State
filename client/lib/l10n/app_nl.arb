@@ -8831,6 +8831,14 @@
   "premiumUiCancelRenewalFailed": "Verlenging stoppen mislukt.",
   "premiumUiGiftVip": "VIP cadeau",
   "premiumUiGiftVipHint": "Koop 30 dagen Speler VIP voor een andere speler.",
+  "premiumUiGiftVipPrice": "Eenmalige prijs: {price} (30 dagen, geen auto-renew).",
+  "@premiumUiGiftVipPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "premiumUiGiftVipUsername": "Gebruikersnaam ontvanger",
   "premiumUiGiftVipConfirm": "Door naar betalen",
   "premiumUiGiftVipFailed": "VIP-cadeau checkout starten mislukt.",
@@ -8847,6 +8855,18 @@
       }
     }
   },
+  "premiumUiPrestigeNext": "Nog {days} dagen tot {tier}",
+  "@premiumUiPrestigeNext": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiPrestigeMax": "Max prestige bereikt",
   "premiumUiGiftCrewVip": "Crew VIP cadeau",
   "premiumUiGiftCrewVipHint": "Koop 30 dagen Crew VIP voor een crew via de crewnaam. Eenmalig cadeau — geen auto-renew voor die crew.",
   "premiumUiGiftCrewVipName": "Crewnaam",

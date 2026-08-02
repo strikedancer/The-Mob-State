@@ -14828,6 +14828,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Koop 30 dagen Speler VIP voor een andere speler.';
 
   @override
+  String premiumUiGiftVipPrice(String price) {
+    return 'Eenmalige prijs: $price (30 dagen, geen auto-renew).';
+  }
+
+  @override
   String get premiumUiGiftVipUsername => 'Gebruikersnaam ontvanger';
 
   @override
@@ -14855,6 +14860,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String premiumUiPrestigeDays(int days) {
     return '$days lifetime dagen';
   }
+
+  @override
+  String premiumUiPrestigeNext(int days, String tier) {
+    return 'Nog $days dagen tot $tier';
+  }
+
+  @override
+  String get premiumUiPrestigeMax => 'Max prestige bereikt';
 
   @override
   String get premiumUiGiftCrewVip => 'Crew VIP cadeau';

@@ -8850,5 +8850,25 @@
   "propertyDevelopErrorMaxLevel": "This property is already at max development.",
   "propertyDevelopErrorDisabled": "Property development is disabled.",
   "propertyDevelopInsufficientBalance": "Not enough bank balance.",
-  "propertyDevelopErrorUnknown": "Could not develop this property."
+  "propertyDevelopErrorUnknown": "Could not develop this property.",
+  "premiumUiGiftVipPrice": "One-time price: {price} (30 days, no auto-renew).",
+  "@premiumUiGiftVipPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiPrestigeNext": "{days} days to {tier}",
+  "@premiumUiPrestigeNext": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiPrestigeMax": "Max prestige reached"
 }

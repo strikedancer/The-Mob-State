@@ -25889,6 +25889,12 @@ abstract class AppLocalizations {
   /// **'Buy 30 days of Player VIP for another player.'**
   String get premiumUiGiftVipHint;
 
+  /// No description provided for @premiumUiGiftVipPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time price: {price} (30 days, no auto-renew).'**
+  String premiumUiGiftVipPrice(String price);
+
   /// No description provided for @premiumUiGiftVipUsername.
   ///
   /// In en, this message translates to:
@@ -25942,6 +25948,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{days} lifetime days'**
   String premiumUiPrestigeDays(int days);
+
+  /// No description provided for @premiumUiPrestigeNext.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days to {tier}'**
+  String premiumUiPrestigeNext(int days, String tier);
+
+  /// No description provided for @premiumUiPrestigeMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max prestige reached'**
+  String get premiumUiPrestigeMax;
 
   /// No description provided for @premiumUiGiftCrewVip.
   ///

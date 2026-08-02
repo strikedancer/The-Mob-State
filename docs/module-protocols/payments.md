@@ -16,8 +16,9 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 
 ## VIP polish (P6)
 - **Auto-renew:** Mollie subscription id op speler/crew; `GET /subscriptions/status` exposeert `autoRenewActive`; `POST /subscriptions/vip/cancel` stopt toekomstige charges maar behoudt `vipExpiresAt`.
-- **Gift Player VIP:** `POST /subscriptions/checkout/gift-player-vip` met `recipientUsername`; webhook type `player_vip_gift` verlengt VIP van ontvanger (geen auto-renew).
-- **Gift Crew VIP:** `POST /subscriptions/checkout/gift-crew-vip` met `recipientCrewName`; webhook type `crew_vip_gift` verlengt crew VIP 30 dagen (geen auto-renew). Iedere speler mag cadeau doen (niet alleen leaders).
+- **Gift Player VIP:** `POST /subscriptions/checkout/gift-player-vip` met `recipientUsername`; webhook type `player_vip_gift` verlengt VIP van ontvanger (geen auto-renew). Premium UI toont eenmalige prijs uit `giftPrices.playerVipEur`.
+- **Gift Crew VIP:** `POST /subscriptions/checkout/gift-crew-vip` met `recipientCrewName`; webhook type `crew_vip_gift` verlengt crew VIP 30 dagen (geen auto-renew). Iedere speler mag cadeau doen (niet alleen leaders). UI toont `giftPrices.crewVipEur`.
+- Prestige KPI toont lifetime days + dagen tot volgende tier (bronze 30 / silver 180 / gold 365; display-only).
 - **Prestige (display-only):** lifetime VIP-dagen → tiers bronze/silver/gold (30/180/365); geen gameplay power.
 - Cron `vipExpirySweep` zet verlopen `isVip` uit (crew buildings downgraden).
 - Help-topic `premium` (Help & Uitleg) dekt cancel/gift/prestige; sync via `scripts/_help_topics_extracted.json`.
