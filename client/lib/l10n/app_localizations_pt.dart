@@ -8780,7 +8780,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get educationTrackNameEngineering => 'Engenharia';
 
   @override
-  String get educationTrackNameIt => 'ISTO';
+  String get educationTrackNameIt => 'IT';
 
   @override
   String get educationTrackNameNarcotics => 'Engenharia de Narcóticos';

@@ -8750,7 +8750,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get educationTrackNameEngineering => 'Techniek';
 
   @override
-  String get educationTrackNameIt => 'HET';
+  String get educationTrackNameIt => 'IT';
 
   @override
   String get educationTrackNameNarcotics => 'Narcoticatechnologie';

@@ -8834,7 +8834,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get educationTrackNameEngineering => 'Maschinenbau';
 
   @override
-  String get educationTrackNameIt => 'ES';
+  String get educationTrackNameIt => 'IT';
 
   @override
   String get educationTrackNameNarcotics => 'Betäubungsmitteltechnik';

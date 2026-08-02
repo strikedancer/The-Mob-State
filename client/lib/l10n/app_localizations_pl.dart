@@ -8784,7 +8784,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get educationTrackNameEngineering => 'Inżynieria';
 
   @override
-  String get educationTrackNameIt => 'TO';
+  String get educationTrackNameIt => 'IT';
 
   @override
   String get educationTrackNameNarcotics => 'Inżynieria Narkotyków';

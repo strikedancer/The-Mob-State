@@ -8812,7 +8812,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get educationTrackNameEngineering => 'Ingegneria';
 
   @override
-  String get educationTrackNameIt => 'ESSA';
+  String get educationTrackNameIt => 'IT';
 
   @override
   String get educationTrackNameNarcotics => 'Ingegneria dei narcotici';

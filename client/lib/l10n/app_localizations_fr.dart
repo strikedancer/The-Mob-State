@@ -8843,7 +8843,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get educationTrackNameEngineering => 'Ingénierie';
 
   @override
-  String get educationTrackNameIt => 'IL';
+  String get educationTrackNameIt => 'IT';
 
   @override
   String get educationTrackNameNarcotics => 'Ingénierie des stupéfiants';
