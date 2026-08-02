@@ -1141,10 +1141,12 @@ Selfie→portretgeneratie op de API hangt af van een geldige `LEONARDO_API_KEY` 
 
 ## Support & Community
 
+In-game **Support**-tickets: categorie-labels komen uit ARB (`supportCategoryBug` e.d.). **Bug** blijft de softwareterm (niet vertalen als insect: NL *Beestje*, DE *Insekt*, IT *Insetto*).
+
 Voor vragen, bugs, of suggesties:
 - GitHub Issues: [Link]
 - Discord: [Link]
 - Wiki: [Link]
 
-**Laatst bijgewerkt**: 30 januari 2026
+**Laatst bijgewerkt**: 2 augustus 2026
 

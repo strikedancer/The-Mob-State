@@ -3063,7 +3063,7 @@
   "supportStatusResolved": "Opgelost",
   "supportStatusClosed": "Gesloten",
   "supportStatusArchived": "Gearchiveerd",
-  "supportCategoryBug": "Beestje",
+  "supportCategoryBug": "Bug",
   "supportCategoryQuestion": "Vraag",
   "supportCategoryFeedback": "Feedback",
   "supportCategoryOther": "Overig",

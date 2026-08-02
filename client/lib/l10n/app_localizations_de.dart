@@ -10775,7 +10775,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get supportStatusArchived => 'Archiviert';
 
   @override
-  String get supportCategoryBug => 'Insekt';
+  String get supportCategoryBug => 'Bug';
 
   @override
   String get supportCategoryQuestion => 'Frage';

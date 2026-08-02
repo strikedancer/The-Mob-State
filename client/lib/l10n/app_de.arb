@@ -2898,7 +2898,7 @@
   "supportStatusResolved": "Gelöst",
   "supportStatusClosed": "Geschlossen",
   "supportStatusArchived": "Archiviert",
-  "supportCategoryBug": "Insekt",
+  "supportCategoryBug": "Bug",
   "supportCategoryQuestion": "Frage",
   "supportCategoryFeedback": "Rückmeldung",
   "supportCategoryOther": "Andere",

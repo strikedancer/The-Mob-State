@@ -2898,7 +2898,7 @@
   "supportStatusResolved": "Risolta",
   "supportStatusClosed": "Chiusa",
   "supportStatusArchived": "Archiviata",
-  "supportCategoryBug": "Insetto",
+  "supportCategoryBug": "Bug",
   "supportCategoryQuestion": "Domanda",
   "supportCategoryFeedback": "Feedback",
   "supportCategoryOther": "Altra",

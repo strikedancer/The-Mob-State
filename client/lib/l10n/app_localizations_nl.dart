@@ -10644,7 +10644,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportStatusArchived => 'Gearchiveerd';
 
   @override
-  String get supportCategoryBug => 'Beestje';
+  String get supportCategoryBug => 'Bug';
 
   @override
   String get supportCategoryQuestion => 'Vraag';
