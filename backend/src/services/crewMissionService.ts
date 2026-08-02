@@ -85,6 +85,8 @@ type RuntimeCrewMissionConfig = {
   crewLevelStepXp: number;
   crewLevelCashBonusPerLevelPct: number;
   crewLevelCashBonusCapPct: number;
+  /** 0 = disabled. When >0, clearing_house_vault_run also requires this crew mission level. */
+  clearingHouseMinMissionLevel: number;
 };
 
 type MissionSeed = {
@@ -121,6 +123,9 @@ const CREW_MISSION_RUNTIME_SETTING_DEFAULTS = {
     process.env.CREW_MISSION_CREW_LEVEL_CASH_BONUS_PER_LEVEL_PCT || '1.0',
   CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT:
     process.env.CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT || '15.0',
+  // Default 0: Phase-2 gate off until T2/T3 + Blackout telemetry justifies enabling (set to 3).
+  CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL:
+    process.env.CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL || '0',
 } as const;
 
 export const CREW_MISSION_RUNTIME_SETTING_KEYS = Object.keys(CREW_MISSION_RUNTIME_SETTING_DEFAULTS);
@@ -502,6 +507,11 @@ async function getRuntimeConfig(): Promise<RuntimeCrewMissionConfig> {
       0,
       100
     ),
+    clearingHouseMinMissionLevel: clamp(
+      toInt(defaults.CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL, 0),
+      0,
+      50
+    ),
   };
 }
 
@@ -654,6 +664,29 @@ function getTierUnlockReason(tier: CrewMissionTier): string {
   if (tier === 2) return 'TIER2_REQUIRES_HQ5_AND_2_MEMBERS';
   if (tier === 3) return 'TIER3_REQUIRES_HQ9_AND_3_MEMBERS';
   return 'TIER1_REQUIRES_HQ1';
+}
+
+/** Tier gates + optional per-mission Phase-2 gates (Clearing House mission level). */
+function getMissionUnlockState(
+  template: Pick<CrewMissionTemplate, 'missionKey' | 'tier'>,
+  crewContext: { hqGlobalLevel: number; memberCount: number; crewProgress: CrewMissionProgress },
+  cfg: RuntimeCrewMissionConfig
+): { unlocked: boolean; lockedReason: string | null } {
+  if (!missionTierUnlocked(template.tier, crewContext.hqGlobalLevel, crewContext.memberCount)) {
+    return { unlocked: false, lockedReason: getTierUnlockReason(template.tier) };
+  }
+
+  if (template.missionKey === 'clearing_house_vault_run') {
+    const minLevel = cfg.clearingHouseMinMissionLevel;
+    if (minLevel > 0 && crewContext.crewProgress.level < minLevel) {
+      return {
+        unlocked: false,
+        lockedReason: `CLEARING_HOUSE_REQUIRES_MISSION_LEVEL_${minLevel}`,
+      };
+    }
+  }
+
+  return { unlocked: true, lockedReason: null };
 }
 
 async function getCrewMemberIds(crewId: number): Promise<number[]> {
@@ -1062,15 +1095,11 @@ export const crewMissionService = {
       memberCount: crewContext.memberCount,
       crewProgress: crewContext.crewProgress,
       templates: templates.map((template) => {
-        const unlocked = missionTierUnlocked(
-          template.tier,
-          crewContext.hqGlobalLevel,
-          crewContext.memberCount
-        );
+        const unlock = getMissionUnlockState(template, crewContext, runtimeConfig);
         return {
           ...template,
-          unlocked,
-          lockedReason: unlocked ? null : getTierUnlockReason(template.tier),
+          unlocked: unlock.unlocked,
+          lockedReason: unlock.lockedReason,
         };
       }),
       activeRun: activeRun
@@ -1119,7 +1148,11 @@ export const crewMissionService = {
       throw new Error('MISSION_TEMPLATE_NOT_FOUND');
     }
 
-    if (!missionTierUnlocked(template.tier, crewContext.hqGlobalLevel, crewContext.memberCount)) {
+    const unlock = getMissionUnlockState(template, crewContext, runtimeConfig);
+    if (!unlock.unlocked) {
+      if (unlock.lockedReason?.startsWith('CLEARING_HOUSE_REQUIRES_MISSION_LEVEL_')) {
+        throw new Error('MISSION_CLEARING_HOUSE_LOCKED');
+      }
       throw new Error('MISSION_TIER_LOCKED');
     }
 
@@ -1538,7 +1571,8 @@ export const crewMissionService = {
   },
 
   async getTelemetry(hours: number) {
-    const safeHours = clamp(toInt(hours, 24), 1, 168);
+    // Allow up to 90 days so admin can review sparse mission activity without raw SQL.
+    const safeHours = clamp(toInt(hours, 24), 1, 2160);
     const from = new Date(Date.now() - safeHours * 60 * 60 * 1000);
 
     const [
@@ -1849,6 +1883,12 @@ export const crewMissionService = {
       if (
         key === 'CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT' &&
         (asNumber < 0 || asNumber > 100)
+      ) {
+        throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+      }
+      if (
+        key === 'CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL' &&
+        (asNumber < 0 || asNumber > 50)
       ) {
         throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
       }

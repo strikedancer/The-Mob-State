@@ -139,6 +139,20 @@ Regels:
 - Premium mag alleen utility geven (bijv. extra reroll of planning slot), nooit exclusieve top reward power.
 - Crew mission XP is functioneel en bouwt een crew mission level op; levelprogressie en bonus moeten zichtbaar zijn in de Crew Missions UI.
 - Crew mission level mag alleen utility/efficiency voordelen geven (bijv. lichte cash-bonus op crew mission claims), geen directe pay-to-win success- of combatboost.
+- **Clearing House Phase-2 gate:** runtime key `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` (default **`0` = uit**). Zet op `3` pas na voldoende T2/T3 + Blackout telemetry. Zie baseline hieronder.
+
+### Telemetry baseline (prod, 2026-08-02)
+
+| Metric | Waarde |
+|--------|--------|
+| All-time runs | 6 (alleen Tier 1: `street_intel_sweep`×4, `safehouse_supply_run`×2) |
+| Success / fail / partial | 5 / 0 / 0 |
+| Speedups (`crew_mission_cooldown_reset`) | 0 |
+| Runs op Blackout / Courier / City Vault / Clearing House | **0** |
+| Top crew `missionLevel` | 1 (62 XP) |
+| Admin windows 24h / 7d / 30d | allen leeg (recente activiteit = 0) |
+
+**Besluit P2:** Phase-2 `missionLevel >= 3` gate voor Clearing House **niet aanzetten**. Code-pad staat klaar (runtime key); aanzetten vereist nieuwe admin-beslissing na ≥ enkele T2/T3 + Blackout runs zonder exploit-signalen.
 
 ## Reward Model (Balance-First)
 

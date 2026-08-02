@@ -50,6 +50,13 @@ function mapMissionErrorToResponse(error: unknown, res: any): boolean {
     res.status(400).json({ event: 'error.mission_tier_locked', params: {} });
     return true;
   }
+  if (message === 'MISSION_CLEARING_HOUSE_LOCKED') {
+    res.status(400).json({
+      event: 'error.mission_clearing_house_locked',
+      params: { reason: 'CLEARING_HOUSE_REQUIRES_MISSION_LEVEL' },
+    });
+    return true;
+  }
   if (message === 'MISSION_START_FAILED') {
     res.status(500).json({ event: 'error.mission_start_failed', params: {} });
     return true;

@@ -16,7 +16,7 @@
 
 - Past na **Casino Ledger Raid** en **Federal Convoy Break** in moeilijkheid en beloning.
 - Zelfde **tier-3 unlocks** als bestaande Tier 3 (`crew HQ global level >= 9`, minimaal **3 online crewleden**) — zie Phase 1 doc.
-- **Optionele stricter gate (Phase 2):** `crew mission level >= 3` vereist **code change** in `crewMissionService.ts` (nu alleen tier-based unlock per `missionTierUnlocked`). Tot die tijd: alleen narrative “apex” via sortOrder en balans.
+- **Optionele stricter gate (Phase 2):** runtime `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` (default **0** = uit). Op `3` zetten vereist telemetry-go; zie §10.
 
 ## 3. Missieblok (implementeerbaar naast Phase 1)
 
@@ -111,11 +111,14 @@ Deploy-paden:
 5. **`docs/module-protocols/crew-missions.md`:** onder *Tier 3 - High-Stakes* een bullet met mission key + één zin lore (optioneel).
 6. **QA (PROTOCOL_MASTER checklist):** happy path + fail + partial + cooldown + mobile layout + push/inbox indien van toepassing.
 
-## 10. Optionele Phase 2 (niet in v1)
+## 10. Phase 2 gate (runtime, default off)
 
-- **Per-mission unlock:** bv. `crew.missionLevel >= 3` of HQ global >= 11 — vereist schema of runtime check in `listTemplates` / `start`.
-- **Seizoens “institutional crisis”:** globale cosmetische modifier met eigen runtime keys en aankondiging — aparte spec + balance-economy review.
+- **Per-mission unlock:** `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` in runtime config.
+  - **`0` (default):** alleen bestaande Tier-3 HQ/leden-gates.
+  - **`3`:** ook `crew.missionLevel >= 3` vereist voor `clearing_house_vault_run` (overview `lockedReason` + start reject).
+- **Prod-besluit 2026-08-02:** houdt default **0** — all-time telemetry heeft 0 T2/T3/Blackout runs; gates aanzetten zou blind zijn. Zie `crew-missions.md` telemetry baseline.
+- **Seizoens “institutional crisis”:** globale cosmetische modifier met eigen runtime keys — aparte spec + balance-economy review (nog niet gebouwd).
 
 ---
 
-**Samenvatting:** één nieuwe **Tier 3 apex** crew mission met wereldbank-**thema**, strikt **PvE / server-mint rewards**, geen **cross-player bank drain**, volledig in lijn met `crew-missions.md`, `balance-economy.md`, `bank.md` en de workflow uit `PROTOCOL_MASTER.md`.
+**Samenvatting:** één **Tier 3 apex** crew mission met wereldbank-**thema**, strikt **PvE / server-mint rewards**, geen **cross-player bank drain**. Phase-2 mission-level gate is **geïmplementeerd maar uit** tot telemetry dat rechtvaardigt.
