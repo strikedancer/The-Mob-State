@@ -6,6 +6,9 @@ Deposits, withdrawals, transfers, transaction history and money safety.
 ## Interest
 Bank interest is **intentionally disabled** (`bankService.applyInterest` / `applyInterestToAll` return 0). Player help and GAMEPLAY copy must not promise passive tick interest until it is re-enabled.
 
+## Related: Money Laundering
+Covert cash→bank wash (fee + delay + heat seize risk) leeft in [money-laundering.md](money-laundering.md) en UI op het bankscherm. Directe storting blijft gratis/instant; laundering is de riskante covert path.
+
 ## Primary Frontend Entry
 - client/lib/screens/bank_screen.dart
 

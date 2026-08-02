@@ -13468,7 +13468,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je wanted level daalt licht als het onder 10 staat (bankrente staat momenteel uit).\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nDe Quick Actions blokken rechts zijn snelkoppelingen naar Misdaden, Auto Stelen, Boot Stelen, Werk, Casino, Bank en School.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.';
+      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nDe Quick Actions blokken rechts zijn snelkoppelingen naar Misdaden, Auto Stelen, Boot Stelen, Werk, Casino, Bank en School.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13608,15 +13608,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesSummary =>
-      'Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden.';
+      'Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.';
 
   @override
   String get helpTopicPropertiesHow =>
-      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.';
+      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
 
   @override
   String get helpTopicPropertiesTips =>
-      'Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.\nKies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.\nVerkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.';
+      'Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.\nKies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.\nVerkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.\nOntwikkel eerst eigendommen met hoog basisinkomen — de procentuele boost telt harder daar.';
 
   @override
   String get helpTopicBankCategory => 'Economie';
@@ -13626,15 +13626,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Zet geld op je bankrekening om cash buiten bereik van politie-confiscaties te houden. Bankrente staat momenteel uit.';
+      'Stort en beheer bankgeld veilig. Optioneel kun je cash witwassen met fee, wachttijd en FBI-heat risico.';
 
   @override
   String get helpTopicBankHow =>
-      'Bankrente staat momenteel uit (geen passieve rente per tick).\nStorten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
+      'Storten en opnemen zijn gratis en direct. Passieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
 
   @override
   String get helpTopicBankTips =>
-      'Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.\nGebruik de bank als veilige opslag tegen confiscatie, niet als rentefarm (rente staat uit).\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).';
+      'Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.\nWitwas alleen als je de fee en seize-kans accepteert; bij lage heat is dat veiliger.\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).';
 
   @override
   String get helpTopicCasinoCategory => 'Economie';
@@ -13662,15 +13662,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen, gereedschap, drugs-lots, crypto-lots, handelswaren-stacks en overdraagbare event items, plus rugzakken, grondstoffen, wapenmarkt en munitie.';
+      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen en gedragen gereedschap, plus rugzakken, grondstoffen, wapenmarkt en munitie.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen van jou.\nListings verlopen na een bepaalde tijd als ze niet verkocht zijn. Houd je eigen aanbiedingen in de gaten via je profiel.\nTab Marktplaats: peer-to-peer cash. Eén feed toont voertuigen plus spelerlistings voor gedragen gereedschap, drugs-stacks (gram + kwaliteit), crypto-holdings en handelswaren. Via Verkopen kies je een soort, hoeveelheid en prijs. Mijn listings toont je actieve ads. Je kunt je eigen ad niet kopen. Escrow haalt voorraad weg tot koop of delist.';
+      'Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats: ververs na plaatsen; zet alleen te koop wat je bezit — gereedschap moet gedragen zijn, drugs/crypto/handelswaren komen uit inventaris/holdings. Delist boekt escrow terug.';
+      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats: ververs na plaatsen; alleen gereedschap dat je bij je draagt kun je te koop zetten.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';
@@ -13972,7 +13972,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer patronen per claim en betere kwaliteit.\nTijdens een actieve sessie claim je productie ongeveer elke 20 minuten (tot 8 uur backlog binnen die sessie).\nProductie loopt door terwijl je offline bent: bij terugkomst kun je meerdere claims achter elkaar doen tot de backlog op is.\nAlleen kijken naar de munitiefabriek of heen en weer reizen mag eigendom niet veranderen; een fabriek springt dus niet zomaar naar `te koop` door het scherm te openen.\nJe gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.\nOutput-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.\nMarktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.\nBij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.';
+      'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer patronen per claim en betere kwaliteit.\nTijdens een actieve sessie claim je productie ongeveer elke 10 minuten (tot 8 uur backlog binnen die sessie).\nProductie loopt door terwijl je offline bent: bij terugkomst kun je meerdere claims achter elkaar doen tot de backlog op is.\nAlleen kijken naar de munitiefabriek of heen en weer reizen mag eigendom niet veranderen; een fabriek springt dus niet zomaar naar `te koop` door het scherm te openen.\nJe gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.\nOutput-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.\nMarktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.\nBij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.';
 
   @override
   String get helpTopicAmmoFactoryTips =>
@@ -14568,4 +14568,125 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get territoryEventBlackoutRumor => 'Blackout-gerucht';
+
+  @override
+  String get launderSectionTitle => 'Witwassen';
+
+  @override
+  String launderSectionHint(int feePercent, int durationMinutes) {
+    return 'Was cash naar je bank met $feePercent% fee. Duurt ongeveer $durationMinutes minuten. Hogere FBI-heat betekent meer kans op inbeslagname.';
+  }
+
+  @override
+  String launderSeizeChance(String chance) {
+    return 'Geschatte inbeslagnamekans: $chance%';
+  }
+
+  @override
+  String launderActiveJob(String amount) {
+    return 'Witwas bezig. Bankuitbetaling bij succes: €$amount';
+  }
+
+  @override
+  String get launderAmountLabel => 'Bedrag om te wassen';
+
+  @override
+  String get launderStartButton => 'Start witwas';
+
+  @override
+  String get launderStartedSuccess => 'Witwas gestart.';
+
+  @override
+  String get launderErrorCooldown => 'Witwassen staat op cooldown.';
+
+  @override
+  String get launderErrorActive => 'Er loopt al een witwasjob.';
+
+  @override
+  String get launderErrorTooLow => 'Bedrag is onder het minimum.';
+
+  @override
+  String get launderErrorTooHigh => 'Bedrag is boven het maximum.';
+
+  @override
+  String get launderErrorInsufficientCash => 'Niet genoeg cash op zak.';
+
+  @override
+  String get launderErrorDisabled => 'Witwassen is uitgeschakeld.';
+
+  @override
+  String get launderErrorUnknown => 'Witwassen starten mislukt.';
+
+  @override
+  String get stockMarketTitle => 'Aandelenmarkt';
+
+  @override
+  String get stockMarketHint =>
+      'Handel met bankgeld. Prijzen bewegen rustig — los van crypto.';
+
+  @override
+  String get stockBankBalance => 'Banksaldo';
+
+  @override
+  String get stockPortfolioValue => 'Portefeuillewaarde';
+
+  @override
+  String get stockQuantity => 'Aantal';
+
+  @override
+  String get stockPrice => 'Prijs';
+
+  @override
+  String get stockHolding => 'Positie';
+
+  @override
+  String get stockValue => 'Waarde';
+
+  @override
+  String get stockBuy => 'Koop';
+
+  @override
+  String get stockSell => 'Verkoop';
+
+  @override
+  String get stockTradeSuccess => 'Trade voltooid.';
+
+  @override
+  String get stockErrorInsufficientBalance => 'Niet genoeg banksaldo.';
+
+  @override
+  String get stockErrorInsufficientShares => 'Niet genoeg aandelen.';
+
+  @override
+  String get stockErrorPositionLimit => 'Positielimiet bereikt.';
+
+  @override
+  String get stockErrorDisabled => 'Aandelenmarkt is uitgeschakeld.';
+
+  @override
+  String get stockErrorUnknown => 'Trade mislukt.';
+
+  @override
+  String get propertyDevelopAction => 'Ontwikkel';
+
+  @override
+  String get propertyDevelopedSuccess => 'Vastgoedontwikkeling voltooid.';
+
+  @override
+  String get helpTopicStockMarketCategory => 'Economie';
+
+  @override
+  String get helpTopicStockMarketTitle => 'Aandelenmarkt';
+
+  @override
+  String get helpTopicStockMarketSummary =>
+      'Handel langzaam bewegende aandelen met bankgeld. Los systeem van crypto.';
+
+  @override
+  String get helpTopicStockMarketHow =>
+      'Open Aandelenmarkt vanuit het dashboard. Je ziet tickers, actuele prijs, je posities en banksaldo.\nKoop en verkoop gebeurt direct tegen de serverprijs en wordt van/naar je bank geboekt — niet van cash.\nPrijzen tikken langzaam (ongeveer elke minuut) met lichte random drift en mean-reversion; er is geen externe live feed.\nEr geldt een maximum aantal open posities. Crypto-orders, regimes en leaderboards horen niet bij deze module.';
+
+  @override
+  String get helpTopicStockMarketTips =>
+      'Houd bankreserve voor crimes/travel — aandelen zijn geen noodkas.\nSpreid niet blind over alle tickers: de positielimiet is beperkt.';
 }

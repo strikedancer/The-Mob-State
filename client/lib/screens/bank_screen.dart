@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
+import '../services/launder_service.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 
@@ -18,6 +19,7 @@ class BankScreen extends StatefulWidget {
 
 class _BankScreenState extends State<BankScreen> {
   final ApiClient _apiClient = ApiClient();
+  final LaunderService _launderService = LaunderService();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _amountDescriptionController =
       TextEditingController();
@@ -27,10 +29,14 @@ class _BankScreenState extends State<BankScreen> {
       TextEditingController();
   final TextEditingController _transferDescriptionController =
       TextEditingController();
+  final TextEditingController _launderAmountController =
+      TextEditingController();
   Timer? _searchDebounce;
 
   bool _isLoading = true;
   bool _isSubmitting = false;
+  bool _isLaundering = false;
+  Map<String, dynamic> _launderStatus = {};
   bool _isLoadingTransactions = false;
   bool _isSearchingUsers = false;
   int _balance = 0;
@@ -62,6 +68,7 @@ class _BankScreenState extends State<BankScreen> {
     _transferUsernameController.dispose();
     _transferAmountController.dispose();
     _transferDescriptionController.dispose();
+    _launderAmountController.dispose();
     super.dispose();
   }
 
@@ -77,7 +84,69 @@ class _BankScreenState extends State<BankScreen> {
       _loadBankAccount(),
       _loadTransactions(page: page),
       _loadRecentRecipients(),
+      _loadLaunderStatus(),
     ]);
+  }
+
+  Future<void> _loadLaunderStatus() async {
+    try {
+      final status = await _launderService.getStatus();
+      if (!mounted) return;
+      if (status['success'] == true) {
+        setState(() => _launderStatus = status);
+      }
+    } catch (_) {
+      // Keep bank usable if launder endpoint is unavailable.
+    }
+  }
+
+  Future<void> _startLaunder() async {
+    final l10n = AppLocalizations.of(context)!;
+    final amount = int.tryParse(_launderAmountController.text.trim()) ?? 0;
+    if (amount <= 0) return;
+    setState(() => _isLaundering = true);
+    final result = await _launderService.start(amount);
+    if (!mounted) return;
+    setState(() => _isLaundering = false);
+    if (result['success'] == true) {
+      setState(() => _launderStatus = result);
+      _launderAmountController.clear();
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.launderStartedSuccess),
+          backgroundColor: Colors.teal,
+        ),
+      );
+      await _refreshAll();
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_launderError(result['event']?.toString(), l10n)),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  String _launderError(String? event, AppLocalizations l10n) {
+    switch (event) {
+      case 'launder.cooldown':
+        return l10n.launderErrorCooldown;
+      case 'launder.already_active':
+        return l10n.launderErrorActive;
+      case 'launder.amount_too_low':
+        return l10n.launderErrorTooLow;
+      case 'launder.amount_too_high':
+        return l10n.launderErrorTooHigh;
+      case 'error.insufficient_cash':
+        return l10n.launderErrorInsufficientCash;
+      case 'launder.disabled':
+        return l10n.launderErrorDisabled;
+      default:
+        return event?.isNotEmpty == true ? event! : l10n.launderErrorUnknown;
+    }
   }
 
   Future<void> _loadRecentRecipients() async {
@@ -675,6 +744,103 @@ class _BankScreenState extends State<BankScreen> {
               ],
             ),
             const SizedBox(height: 14),
+            if (_launderStatus['enabled'] == true) ...[
+              Card(
+                color: Colors.grey.shade900,
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.launderSectionTitle,
+                        style: const TextStyle(
+                          color: Color(0xFFD4AF37),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.launderSectionHint(
+                          (((_launderStatus['config'] as Map?)?['feePercent'])
+                                      as num?)
+                                  ?.toInt() ??
+                              12,
+                          (((_launderStatus['config']
+                                          as Map?)?['durationMinutes'])
+                                      as num?)
+                                  ?.toInt() ??
+                              30,
+                        ),
+                        style: TextStyle(color: Colors.grey.shade400, fontSize: 12.5),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        l10n.launderSeizeChance(
+                          ((_launderStatus['estimatedSeizeChancePercent']
+                                      as num?)
+                                  ?.toStringAsFixed(1) ??
+                              '0'),
+                        ),
+                        style: TextStyle(color: Colors.orange.shade200, fontSize: 12.5),
+                      ),
+                      if (_launderStatus['activeJob'] is Map) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.launderActiveJob(
+                            ((_launderStatus['activeJob']
+                                        as Map)['amountOut'] as num?)
+                                    ?.toInt()
+                                    .toString() ??
+                                '0',
+                          ),
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      ],
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _launderAmountController,
+                        keyboardType: TextInputType.number,
+                        enabled: _launderStatus['activeJob'] == null &&
+                            ((_launderStatus['cooldownSecondsRemaining']
+                                        as num?)
+                                    ?.toInt() ??
+                                0) <=
+                                0,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: l10n.launderAmountLabel,
+                          labelStyle: TextStyle(color: Colors.grey.shade300),
+                          filled: true,
+                          fillColor: Colors.black54,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: (_isLaundering ||
+                                  _launderStatus['activeJob'] != null ||
+                                  ((_launderStatus['cooldownSecondsRemaining']
+                                              as num?)
+                                          ?.toInt() ??
+                                      0) >
+                                      0)
+                              ? null
+                              : _startLaunder,
+                          icon: const Icon(Icons.local_laundry_service),
+                          label: Text(l10n.launderStartButton),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 14),
+            ],
             Card(
               color: Colors.grey.shade900,
               child: Padding(

@@ -12,6 +12,8 @@ import { processPendingCooldownExpiryNotifications } from './cooldownService';
 import { processPendingCrewMissionCooldownReadyNotifications } from './crewMissionService';
 import { processPendingTerritoryContests } from './territoryService';
 import { processDueVehicleRepairCompletions } from './vehicleService';
+import { processDueLaunderJobs } from './launderService';
+import { tickStockPrices } from './stockMarketService';
 
 const prisma = new PrismaClient();
 
@@ -71,7 +73,6 @@ export async function checkExpiredEvents(): Promise<void> {
             completedAt: now,
           },
         });
-          territoryContestProcessor: 'Every minute',
 
         console.log(
           `[CRON] Expired event ${event.id} (${event.title}) - ended ${event.participations.length} participations`
@@ -117,9 +118,6 @@ export async function updateLeaderboards(): Promise<void> {
 
     // Update stats for all three periods
     const periods: ('weekly' | 'monthly' | 'all_time')[] = ['weekly', 'monthly', 'all_time'];
-      cron.schedule('* * * * *', async () => {
-        await runTerritoryContestProcessor();
-      });
 
     for (const period of periods) {
       const periodStart = getPeriodStart(period);
@@ -459,25 +457,6 @@ export async function runTerritoryContestProcessor(): Promise<void> {
   }
 }
 
-export async function processPendingCooldownNotifications(): Promise<void> {
-  const now = new Date();
-
-  try {
-    const [sentCount, missionSentCount] = await Promise.all([
-      processPendingCooldownExpiryNotifications(),
-      processPendingCrewMissionCooldownReadyNotifications(),
-    ]);
-    if (sentCount > 0 || missionSentCount > 0) {
-      console.log(
-        `[CRON JOB] cooldownNotifications sentGeneric=${sentCount} sentCrewMissions=${missionSentCount}`,
-      );
-    }
-    lastJobExecutions['cooldownNotifications'] = now;
-  } catch (error) {
-    console.error('[CRON ERROR] processPendingCooldownNotifications:', error);
-  }
-}
-
 export function getCronStatus() {
   return {
     lastExecutions: lastJobExecutions,
@@ -491,6 +470,8 @@ export function getCronStatus() {
       hitlistInvestigationProcessor: 'Every minute',
       vehicleRepairCompletionProcessor: 'Every minute',
       territoryContestProcessor: 'Every minute',
+      launderProcessor: 'Every minute',
+      stockMarketTick: 'Every minute',
       cryptoOrderProcessor: 'Every 30 seconds',
       eventScheduler: 'Every 5 minutes',
     },
@@ -540,6 +521,27 @@ export function initializeCronJobs(): void {
     await runTerritoryContestProcessor();
   });
 
+  cron.schedule('* * * * *', async () => {
+    try {
+      const processed = await processDueLaunderJobs(80);
+      if (processed > 0) {
+        console.log(`[CRON JOB] launderProcessor processed=${processed}`);
+      }
+      lastJobExecutions['launderProcessor'] = new Date();
+    } catch (error) {
+      console.error('[CRON ERROR] launderProcessor:', error);
+    }
+  });
+
+  cron.schedule('* * * * *', async () => {
+    try {
+      await tickStockPrices();
+      lastJobExecutions['stockMarketTick'] = new Date();
+    } catch (error) {
+      console.error('[CRON ERROR] stockMarketTick:', error);
+    }
+  });
+
   cron.schedule('*/30 * * * * *', async () => {
     try {
       const result = await processOpenOrdersInBackground();
@@ -570,6 +572,8 @@ export function initializeCronJobs(): void {
   console.log('  - Hitlist Investigation Processor: Every minute');
   console.log('  - Vehicle Repair Completion Processor: Every minute');
   console.log('  - Territory Contest Processor: Every minute');
+  console.log('  - Launder Processor: Every minute');
+  console.log('  - Stock Market Tick: Every minute');
   console.log('  - Crypto Order Processor: Every 30 seconds');
   console.log('  - Game Event Scheduler: Every 5 minutes');
 }

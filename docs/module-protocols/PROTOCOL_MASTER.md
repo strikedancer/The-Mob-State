@@ -52,7 +52,9 @@ Acceptatie-eis:
 ## Cross-Module Dependency Map (Minimaal)
 
 - Drugs -> Facilities, Production, Inventory, Dashboard, Admin
-- Properties -> Drugs, Dashboard, Admin
+- Properties -> Drugs, Dashboard, Admin, Balance & Economy
+- Money Laundering -> Bank, Security/FBI heat, Dashboard, Balance & Economy
+- Stock Market -> Bank, Dashboard, Balance & Economy (gescheiden van Crypto)
 - Nightclub -> Drugs, Prostitution, Dashboard, Admin
 - Territory -> Crew, Crew Wars, Dashboard, Notifications, Travel, Admin
 - Crimes/Vehicle Theft -> Garage, Inventory, Prison, Security, Court, Crew, Friends, Notifications, Admin

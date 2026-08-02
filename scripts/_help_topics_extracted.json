@@ -397,15 +397,16 @@
     "categoryEn": "Economy",
     "titleNl": "Eigendommen",
     "titleEn": "Properties",
-    "summaryNl": "Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden.",
-    "summaryEn": "Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub.",
+    "summaryNl": "Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.",
+    "summaryEn": "Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost.",
     "howNl": [
       "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.",
       "Warehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.",
       "Huizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.",
       "Sommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.",
       "Verkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.",
-      "Een gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht."
+      "Een gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.",
+      "Ontwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server)."
     ],
     "howEn": [
       "Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.",
@@ -413,17 +414,20 @@
       "Houses and apartments increase housing capacity; VIP players receive extra slots on top of that.",
       "Some properties are unique or country locked: you must be in the correct country to buy or manage them.",
       "Selling yields 70% of purchase price. No cooldown on selling, it is instant.",
-      "A purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview."
+      "A purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.",
+      "Develop spends bank money: each level permanently raises that property's passive income (max level and cooldown are server-tuned)."
     ],
     "tipsNl": [
       "Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.",
       "Kies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.",
-      "Verkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs."
+      "Verkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.",
+      "Ontwikkel eerst eigendommen met hoog basisinkomen — de procentuele boost telt harder daar."
     ],
     "tipsEn": [
       "Invest in a Warehouse early if you need more storage space for your other systems.",
       "Choose houses and apartments when you want to build more housing capacity for related gameplay systems.",
-      "Do not sell too quickly: 70% represents a serious markdown from purchase price."
+      "Do not sell too quickly: 70% represents a serious markdown from purchase price.",
+      "Develop high base-income properties first — the percentage boost matters more there."
     ],
     "protocolPath": "docs/module-protocols/properties.md"
   },
@@ -434,32 +438,32 @@
     "categoryEn": "Economy",
     "titleNl": "Bank",
     "titleEn": "Bank",
-    "summaryNl": "Zet geld op je bankrekening om rente te verdienen en cash buiten bereik van politie-confiscaties te houden.",
-    "summaryEn": "Deposit money to earn interest and keep cash beyond the reach of police confiscations.",
+    "summaryNl": "Stort en beheer bankgeld veilig. Optioneel kun je cash witwassen met fee, wachttijd en FBI-heat risico.",
+    "summaryEn": "Deposit and manage bank money safely. Optionally launder cash with a fee, delay and FBI-heat seize risk.",
     "howNl": [
-      "Rente: 0.5% van je banksaldo per tick (elke 5 minuten). Voorbeeld: €10.000 op bank = €50 rente per tick = €600 per uur = €14.400 per dag.",
-      "Storten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.",
+      "Storten en opnemen zijn gratis en direct. Passieve bankrente staat momenteel uit.",
       "Geld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.",
       "Transactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.",
+      "Witwassen: was cash naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.",
       "Bank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.",
       "Geld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt."
     ],
     "howEn": [
-      "Interest: 0.5% of your bank balance per tick (every 5 minutes). Example: €10.000 in bank = €50 interest per tick = €600 per hour = €14.400 per day.",
-      "Deposits and withdrawals are both free and instant with no minimum or maximum limit.",
+      "Deposits and withdrawals are free and instant. Passive bank interest is currently disabled.",
       "Money in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.",
       "Transaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.",
+      "Money laundering: wash cash into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.",
       "Bank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.",
       "Transferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming."
     ],
     "tipsNl": [
       "Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.",
-      "Zet rente-inkomsten automatisch bij door grote bedragen spaarsgewijs op te bouwen op de bank.",
+      "Witwas alleen als je de fee en seize-kans accepteert; bij lage heat is dat veiliger.",
       "Houd altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools)."
     ],
     "tipsEn": [
       "Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.",
-      "Grow interest returns by building large amounts steadily in the bank.",
+      "Only launder when you accept the fee and seize risk; lower heat is safer.",
       "Keep a small working capital as cash for direct expenses (bail, travel, tools)."
     ],
     "protocolPath": "docs/module-protocols/bank.md"
@@ -690,6 +694,37 @@
       "Switch time filters in the chart: 1h and 4h show short-term trend, 7d and 30d show the bigger picture."
     ],
     "protocolPath": "docs/module-protocols/crypto.md"
+  },
+  {
+    "id": "stock-market",
+    "icon": "Icons.show_chart",
+    "categoryNl": "Economie",
+    "categoryEn": "Economy",
+    "titleNl": "Aandelenmarkt",
+    "titleEn": "Stock market",
+    "summaryNl": "Handel langzaam bewegende aandelen met bankgeld. Los systeem van crypto.",
+    "summaryEn": "Trade slow-moving stocks with bank money. Separate system from crypto.",
+    "howNl": [
+      "Open Aandelenmarkt vanuit het dashboard. Je ziet tickers, actuele prijs, je posities en banksaldo.",
+      "Koop en verkoop gebeurt direct tegen de serverprijs en wordt van/naar je bank geboekt — niet van cash.",
+      "Prijzen tikken langzaam (ongeveer elke minuut) met lichte random drift en mean-reversion; er is geen externe live feed.",
+      "Er geldt een maximum aantal open posities. Crypto-orders, regimes en leaderboards horen niet bij deze module."
+    ],
+    "howEn": [
+      "Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.",
+      "Buy and sell execute immediately at the server price and debit/credit your bank — not cash.",
+      "Prices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.",
+      "There is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module."
+    ],
+    "tipsNl": [
+      "Houd bankreserve voor crimes/travel — aandelen zijn geen noodkas.",
+      "Spreid niet blind over alle tickers: de positielimiet is beperkt."
+    ],
+    "tipsEn": [
+      "Keep bank reserve for crimes/travel — stocks are not emergency cash.",
+      "Do not diversify blindly across every ticker: the position limit is tight."
+    ],
+    "protocolPath": "docs/module-protocols/stock-market.md"
   },
   {
     "id": "smuggling",

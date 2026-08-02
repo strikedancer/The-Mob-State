@@ -450,11 +450,13 @@ model Property {
   playerId        Int?
   propertyType    String                @db.VarChar(50)
   purchasePrice   Int
-  upgradeLevel    Int                   @default(1)
-  lastIncomeAt    DateTime              @default(now())
-  purchasedAt     DateTime              @default(now())
-  countryId       String                @db.VarChar(50)
-  propertyId      String                @unique @db.VarChar(100)
+  upgradeLevel      Int                   @default(1)
+  developmentLevel  Int                   @default(0)
+  lastDevelopAt     DateTime?
+  lastIncomeAt      DateTime              @default(now())
+  purchasedAt       DateTime              @default(now())
+  countryId         String                @db.VarChar(50)
+  propertyId        String                @unique @db.VarChar(100)
   drugProductions DrugProduction[]
   nightclub       NightclubVenue?
   player          Player?               @relation(fields: [playerId], references: [id], onDelete: Cascade)

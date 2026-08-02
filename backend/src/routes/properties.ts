@@ -509,4 +509,46 @@ router.post('/:id/upgrade', authenticate, async (req: AuthRequest, res: Response
   }
 });
 
+/**
+ * POST /properties/:id/develop
+ * Spend bank cash to permanently boost property income (development level).
+ */
+router.post('/:id/develop', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.id), 10);
+    if (isNaN(propertyId)) {
+      return res.status(400).json({ event: 'error.invalid_property_id', params: {} });
+    }
+
+    const result = await propertyService.developProperty(req.player!.id, propertyId);
+    if (!result.success) {
+      const map: Record<string, [number, string]> = {
+        PROPERTY_NOT_FOUND: [404, 'property.not_found'],
+        NOT_PROPERTY_OWNER: [403, 'property.not_owner'],
+        PROPERTY_DEVELOP_DISABLED: [403, 'property.develop_disabled'],
+        PROPERTY_DEVELOP_MAX_LEVEL: [400, 'property.develop_max_level'],
+        PROPERTY_DEVELOP_COOLDOWN: [429, 'property.develop_cooldown'],
+        INSUFFICIENT_BALANCE: [400, 'error.insufficient_balance'],
+      };
+      const entry = map[result.error ?? ''] ?? [400, 'property.develop_failed'];
+      return res.status(entry[0]).json({ event: entry[1], params: {} });
+    }
+
+    return res.status(200).json({
+      event: 'property.developed',
+      params: {
+        developmentLevel: result.developmentLevel,
+        cost: result.cost,
+        bankBalance: result.bankBalance,
+      },
+    });
+  } catch (error: any) {
+    console.error('Error developing property:', error);
+    return res.status(500).json({
+      event: 'error.server',
+      params: { message: error.message },
+    });
+  }
+});
+
 export default router;

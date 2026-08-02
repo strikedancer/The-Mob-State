@@ -8,6 +8,7 @@ class PropertyCard extends StatelessWidget {
   final Property? ownedProperty;
   final VoidCallback? onBuy;
   final VoidCallback? onUpgrade;
+  final VoidCallback? onDevelop;
   final VoidCallback? onManage;
   final bool isLoading;
   final bool playerIsVip;
@@ -19,6 +20,7 @@ class PropertyCard extends StatelessWidget {
     this.ownedProperty,
     this.onBuy,
     this.onUpgrade,
+    this.onDevelop,
     this.onManage,
     this.isLoading = false,
     this.playerIsVip = false,
@@ -437,6 +439,19 @@ class PropertyCard extends StatelessWidget {
           ),
         ),
       ),
+      if (ownedProperty?.nextDevelopCost != null) ...[
+        SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: onDevelop,
+            icon: const Icon(Icons.construction),
+            label: Text(
+              '${l10n.propertyDevelopAction} · €${formatCompactNumber(ownedProperty!.nextDevelopCost!)} (L${ownedProperty!.developmentLevel})',
+            ),
+          ),
+        ),
+      ],
       if (ownedProperty?.propertyId == 'nightclub') ...[
         SizedBox(height: 8),
         SizedBox(

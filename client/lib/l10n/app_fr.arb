@@ -8612,5 +8612,66 @@
   "territoryDetailRegionEvent": "Region event",
   "territoryEventPoliceOffensive": "Police offensive",
   "territoryEventHarborStrike": "Harbor strike",
-  "territoryEventBlackoutRumor": "Blackout rumor"
+  "territoryEventBlackoutRumor": "Blackout rumor",
+  "launderSectionTitle": "Money laundering",
+  "launderSectionHint": "Wash cash into your bank with a {feePercent}% fee. Takes about {durationMinutes} minutes. Higher FBI heat means higher seize risk.",
+  "@launderSectionHint": {
+    "placeholders": {
+      "feePercent": {
+        "type": "int"
+      },
+      "durationMinutes": {
+        "type": "int"
+      }
+    }
+  },
+  "launderSeizeChance": "Estimated seize chance: {chance}%",
+  "@launderSeizeChance": {
+    "placeholders": {
+      "chance": {
+        "type": "String"
+      }
+    }
+  },
+  "launderActiveJob": "Wash in progress. Bank payout if successful: €{amount}",
+  "@launderActiveJob": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "launderAmountLabel": "Amount to wash",
+  "launderStartButton": "Start wash",
+  "launderStartedSuccess": "Laundering started.",
+  "launderErrorCooldown": "Laundering is on cooldown.",
+  "launderErrorActive": "A wash job is already running.",
+  "launderErrorTooLow": "Amount is below the minimum.",
+  "launderErrorTooHigh": "Amount is above the maximum.",
+  "launderErrorInsufficientCash": "Not enough cash on hand.",
+  "launderErrorDisabled": "Money laundering is disabled.",
+  "launderErrorUnknown": "Could not start laundering.",
+  "stockMarketTitle": "Stock market",
+  "stockMarketHint": "Trade with bank money. Prices move slowly — separate from crypto.",
+  "stockBankBalance": "Bank balance",
+  "stockPortfolioValue": "Portfolio value",
+  "stockQuantity": "Quantity",
+  "stockPrice": "Price",
+  "stockHolding": "Holding",
+  "stockValue": "Value",
+  "stockBuy": "Buy",
+  "stockSell": "Sell",
+  "stockTradeSuccess": "Trade completed.",
+  "stockErrorInsufficientBalance": "Not enough bank balance.",
+  "stockErrorInsufficientShares": "Not enough shares.",
+  "stockErrorPositionLimit": "Position limit reached.",
+  "stockErrorDisabled": "Stock market is disabled.",
+  "stockErrorUnknown": "Trade failed.",
+  "propertyDevelopAction": "Develop",
+  "propertyDevelopedSuccess": "Property development complete.",
+  "helpTopicStockMarketCategory": "Economy",
+  "helpTopicStockMarketTitle": "Stock market",
+  "helpTopicStockMarketSummary": "Trade slow-moving stocks with bank money. Separate system from crypto.",
+  "helpTopicStockMarketHow": "Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.\nBuy and sell execute immediately at the server price and debit/credit your bank — not cash.\nPrices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.\nThere is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module.",
+  "helpTopicStockMarketTips": "Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight."
 }

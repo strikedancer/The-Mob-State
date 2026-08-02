@@ -13436,7 +13436,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), wanted level drops slightly when below 10 (bank interest is currently disabled).\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nQuick Action blocks on the right are shortcuts to Crimes, Car Theft, Boat Theft, Work, Casino, Bank and School.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.';
+      'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nQuick Action blocks on the right are shortcuts to Crimes, Car Theft, Boat Theft, Work, Casino, Bank and School.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13576,15 +13576,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesSummary =>
-      'Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub.';
+      'Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost.';
 
   @override
   String get helpTopicPropertiesHow =>
-      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.';
+      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).';
 
   @override
   String get helpTopicPropertiesTips =>
-      'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.';
+      'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nDevelop high base-income properties first — the percentage boost matters more there.';
 
   @override
   String get helpTopicBankCategory => 'Economy';
@@ -13594,15 +13594,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Deposit money to keep cash beyond the reach of police confiscations. Bank interest is currently disabled.';
+      'Deposit and manage bank money safely. Optionally launder cash with a fee, delay and FBI-heat seize risk.';
 
   @override
   String get helpTopicBankHow =>
-      'Bank interest is currently disabled (no passive interest per tick).\nDeposits and withdrawals are both free and instant with no minimum or maximum limit.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
+      'Deposits and withdrawals are free and instant. Passive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
 
   @override
   String get helpTopicBankTips =>
-      'Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.\nUse the bank as safe storage against confiscation, not as an interest farm (interest is disabled).\nKeep a small working capital as cash for direct expenses (bail, travel, tools).';
+      'Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.\nOnly launder when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).';
 
   @override
   String get helpTopicCasinoCategory => 'Economy';
@@ -13630,15 +13630,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles, carried tools, drug lots, crypto lots, trade-good stacks and transferable event items, plus backpacks, materials, weapons market and ammo.';
+      'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles and carried tools, plus backpacks, materials, weapons market and ammo.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-player cash trades. One feed shows vehicles plus player listings for carried tools, drug stacks (grams + quality), crypto holdings, and trade-good inventory. Use Sell to pick a kind, set quantity and price. My listings covers your active ads. You cannot buy your own ad. Escrow removes stock until buy or delist.';
+      'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; list only what you own — tools must be carried, drugs/crypto/trade goods come from your inventory/holdings. Delist restores escrow.';
+      'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; only tools in your carried inventory can be placed for sale.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';
@@ -13940,7 +13940,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 20 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.';
+      'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 10 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.';
 
   @override
   String get helpTopicAmmoFactoryTips =>
@@ -14535,4 +14535,125 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get territoryEventBlackoutRumor => 'Blackout rumor';
+
+  @override
+  String get launderSectionTitle => 'Money laundering';
+
+  @override
+  String launderSectionHint(int feePercent, int durationMinutes) {
+    return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
+  }
+
+  @override
+  String launderSeizeChance(String chance) {
+    return 'Estimated seize chance: $chance%';
+  }
+
+  @override
+  String launderActiveJob(String amount) {
+    return 'Wash in progress. Bank payout if successful: €$amount';
+  }
+
+  @override
+  String get launderAmountLabel => 'Amount to wash';
+
+  @override
+  String get launderStartButton => 'Start wash';
+
+  @override
+  String get launderStartedSuccess => 'Laundering started.';
+
+  @override
+  String get launderErrorCooldown => 'Laundering is on cooldown.';
+
+  @override
+  String get launderErrorActive => 'A wash job is already running.';
+
+  @override
+  String get launderErrorTooLow => 'Amount is below the minimum.';
+
+  @override
+  String get launderErrorTooHigh => 'Amount is above the maximum.';
+
+  @override
+  String get launderErrorInsufficientCash => 'Not enough cash on hand.';
+
+  @override
+  String get launderErrorDisabled => 'Money laundering is disabled.';
+
+  @override
+  String get launderErrorUnknown => 'Could not start laundering.';
+
+  @override
+  String get stockMarketTitle => 'Stock market';
+
+  @override
+  String get stockMarketHint =>
+      'Trade with bank money. Prices move slowly — separate from crypto.';
+
+  @override
+  String get stockBankBalance => 'Bank balance';
+
+  @override
+  String get stockPortfolioValue => 'Portfolio value';
+
+  @override
+  String get stockQuantity => 'Quantity';
+
+  @override
+  String get stockPrice => 'Price';
+
+  @override
+  String get stockHolding => 'Holding';
+
+  @override
+  String get stockValue => 'Value';
+
+  @override
+  String get stockBuy => 'Buy';
+
+  @override
+  String get stockSell => 'Sell';
+
+  @override
+  String get stockTradeSuccess => 'Trade completed.';
+
+  @override
+  String get stockErrorInsufficientBalance => 'Not enough bank balance.';
+
+  @override
+  String get stockErrorInsufficientShares => 'Not enough shares.';
+
+  @override
+  String get stockErrorPositionLimit => 'Position limit reached.';
+
+  @override
+  String get stockErrorDisabled => 'Stock market is disabled.';
+
+  @override
+  String get stockErrorUnknown => 'Trade failed.';
+
+  @override
+  String get propertyDevelopAction => 'Develop';
+
+  @override
+  String get propertyDevelopedSuccess => 'Property development complete.';
+
+  @override
+  String get helpTopicStockMarketCategory => 'Economy';
+
+  @override
+  String get helpTopicStockMarketTitle => 'Stock market';
+
+  @override
+  String get helpTopicStockMarketSummary =>
+      'Trade slow-moving stocks with bank money. Separate system from crypto.';
+
+  @override
+  String get helpTopicStockMarketHow =>
+      'Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.\nBuy and sell execute immediately at the server price and debit/credit your bank — not cash.\nPrices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.\nThere is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module.';
+
+  @override
+  String get helpTopicStockMarketTips =>
+      'Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.';
 }

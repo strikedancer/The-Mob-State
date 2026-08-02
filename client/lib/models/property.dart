@@ -81,6 +81,8 @@ class Property {
   final int? incomeInterval;
   final List<String>? overlayKeys;
   final int? nextUpgradeCost;
+  final int developmentLevel;
+  final int? nextDevelopCost;
 
   Property({
     required this.id,
@@ -97,6 +99,8 @@ class Property {
     this.incomeInterval,
     this.overlayKeys,
     this.nextUpgradeCost,
+    this.developmentLevel = 0,
+    this.nextDevelopCost,
   });
 
   factory Property.fromJson(Map<String, dynamic> json) {
@@ -121,6 +125,8 @@ class Property {
           ? List<String>.from(json['overlayKeys'])
           : null,
       nextUpgradeCost: json['nextUpgradeCost'] as int?,
+      developmentLevel: (json['developmentLevel'] as num?)?.toInt() ?? 0,
+      nextDevelopCost: (json['nextDevelopCost'] as num?)?.toInt(),
     );
   }
 

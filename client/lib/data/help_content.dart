@@ -89,6 +89,11 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/crypto.md',
   ),
   HelpTopic(
+    id: 'stock-market',
+    icon: Icons.show_chart,
+    protocolPath: 'docs/module-protocols/stock-market.md',
+  ),
+  HelpTopic(
     id: 'smuggling',
     icon: Icons.local_shipping,
     protocolPath: 'docs/module-protocols/smuggling.md',

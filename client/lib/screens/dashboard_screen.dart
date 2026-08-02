@@ -52,6 +52,7 @@ import 'drug_environment_screen.dart';
 import 'smuggling_screen.dart';
 import 'nightclub_screen.dart';
 import 'crypto_screen.dart';
+import 'stock_market_screen.dart';
 import 'events_screen.dart';
 import 'help_screen.dart';
 import 'territory_screen.dart';
@@ -83,6 +84,7 @@ enum _WebSection {
   drugs,
   nightclub,
   crypto,
+  stockMarket,
   smuggling,
   tools,
   court,
@@ -971,6 +973,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
+            icon: Icons.show_chart,
+            label: l10n.stockMarketTitle,
+            section: _WebSection.stockMarket,
+            badge: 0,
+          ),
+          (
             icon: Icons.local_shipping,
             label: l10n.smuggling,
             section: _WebSection.smuggling,
@@ -1700,6 +1708,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const NightclubScreen();
       case _WebSection.crypto:
         return const CryptoScreen();
+      case _WebSection.stockMarket:
+        return const StockMarketScreen();
       case _WebSection.smuggling:
         return const SmugglingScreen();
       case _WebSection.tools:

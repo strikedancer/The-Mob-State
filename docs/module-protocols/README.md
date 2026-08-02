@@ -45,6 +45,8 @@ De master protocol zorgt ervoor dat je:
 - [Black Market](black-market.md) - Hub incl. handelswaren-tab; zie ook [Trade (API)](trade.md) en TRADE_RISK_MECHANICS.md
 - [Player marketplace](player-marketplace.md) - Zwarte Markt **Marktplaats**: P2P voertuigen + spelersitems (`/market/unified`, tools v1)
 - [Bank](bank.md) - Geld beheer
+- [Money Laundering](money-laundering.md) - Covert cash→bank wash (fee, delay, heat seize)
+- [Stock Market](stock-market.md) - Bank-funded aandelen (los van crypto)
 - [Casino](casino.md) - Gokken & winsten
 - [Payments & Premium](payments.md) - Mollie checkout, VIP, credits en premium catalogus
 - [Live game events (player)](events.md) - Preset terugkerende events, beloningen, Event Pass, admin toggles

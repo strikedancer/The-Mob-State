@@ -4,6 +4,7 @@ import { join } from 'path';
 import { worldEventService } from './worldEventService';
 import { timeProvider } from '../utils/timeProvider';
 import { activityService } from './activityService';
+import { getOrCreateBankAccount } from './bankService';
 
 interface PropertyDefinition {
   id: string;
@@ -409,6 +410,7 @@ class PropertyService {
    * Get player's owned properties
    */
   async getOwnedProperties(playerId: number) {
+    const developCfg = await this.getDevelopmentConfig();
     const properties = await prisma.property.findMany({
       where: { playerId },
       orderBy: { purchasedAt: 'desc' },
@@ -449,7 +451,20 @@ class PropertyService {
           }
         }
       }
-      
+      const developmentLevel = Math.max(
+        0,
+        Number((prop as { developmentLevel?: number | null }).developmentLevel ?? 0),
+      );
+      const developedIncome = Math.floor(
+        totalIncome * (1 + (developmentLevel * developCfg.incomeBonusPercentPerLevel / 100)),
+      );
+      const nextDevelopCost = developmentLevel >= developCfg.maxLevel
+        ? null
+        : Math.max(
+            1000,
+            Math.floor(prop.purchasePrice * (developCfg.costPercent / 100) * (developmentLevel + 1)),
+          );
+
       // Find next upgrade cost
       let nextUpgradeCost = null;
       if (definition && definition.upgradeOptions) {
@@ -469,11 +484,15 @@ class PropertyService {
         ...prop,
         name: definition?.name || 'Unknown',
         description: definition?.description || '',
-        baseIncome: totalIncome, // Now includes upgrade bonuses
+        baseIncome: developedIncome,
         incomeInterval: definition?.incomeInterval || 60,
         imagePath: definition?.image || null,
         overlayKeys,
         nextUpgradeCost,
+        developmentLevel,
+        nextDevelopCost,
+        developMaxLevel: developCfg.maxLevel,
+        developIncomeBonusPercentPerLevel: developCfg.incomeBonusPercentPerLevel,
       };
       });
   }
@@ -656,7 +675,13 @@ class PropertyService {
 
     // Calculate how many income intervals have passed
     const intervalsElapsed = Math.floor(timeElapsedMinutes / definition.incomeInterval);
-    const income = totalIncome * intervalsElapsed;
+    const developmentLevel = Math.max(
+      0,
+      Number((property as { developmentLevel?: number | null }).developmentLevel ?? 0),
+    );
+    const developBonusPercent = await this.getDevelopmentIncomeBonusPercent();
+    const developMultiplier = 1 + (developmentLevel * developBonusPercent / 100);
+    const income = Math.floor(totalIncome * intervalsElapsed * developMultiplier);
 
     // Update player money and property lastIncomeAt in transaction
     const result = await prisma.$transaction(async (tx: any) => {
@@ -891,6 +916,117 @@ class PropertyService {
     }
 
     return 0;
+  }
+
+  private async getDevelopmentConfig() {
+    const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+      `SELECT configKey, configValue FROM runtime_config
+       WHERE configKey IN (
+         'PROPERTY_DEVELOP_ENABLED',
+         'PROPERTY_DEVELOP_MAX_LEVEL',
+         'PROPERTY_DEVELOP_COST_PERCENT_OF_PURCHASE',
+         'PROPERTY_DEVELOP_INCOME_BONUS_PERCENT_PER_LEVEL',
+         'PROPERTY_DEVELOP_COOLDOWN_SECONDS'
+       )`,
+    );
+    const cfg = rows.reduce<Record<string, string>>((acc, row) => {
+      acc[row.configKey] = row.configValue;
+      return acc;
+    }, {});
+    return {
+      enabled: Number(cfg.PROPERTY_DEVELOP_ENABLED ?? 1) === 1,
+      maxLevel: Math.max(1, Math.floor(Number(cfg.PROPERTY_DEVELOP_MAX_LEVEL ?? 5))),
+      costPercent: Math.max(1, Number(cfg.PROPERTY_DEVELOP_COST_PERCENT_OF_PURCHASE ?? 25)),
+      incomeBonusPercentPerLevel: Math.max(0, Number(cfg.PROPERTY_DEVELOP_INCOME_BONUS_PERCENT_PER_LEVEL ?? 8)),
+      cooldownSeconds: Math.max(0, Math.floor(Number(cfg.PROPERTY_DEVELOP_COOLDOWN_SECONDS ?? 3600))),
+    };
+  }
+
+  private async getDevelopmentIncomeBonusPercent(): Promise<number> {
+    const cfg = await this.getDevelopmentConfig();
+    return cfg.incomeBonusPercentPerLevel;
+  }
+
+  async developProperty(
+    playerId: number,
+    propertyDatabaseId: number,
+  ): Promise<{
+    success: boolean;
+    developmentLevel?: number;
+    cost?: number;
+    bankBalance?: number;
+    error?: string;
+  }> {
+    const cfg = await this.getDevelopmentConfig();
+    if (!cfg.enabled) {
+      return { success: false, error: 'PROPERTY_DEVELOP_DISABLED' };
+    }
+
+    const property = await prisma.property.findUnique({
+      where: { id: propertyDatabaseId },
+    });
+    if (!property) return { success: false, error: 'PROPERTY_NOT_FOUND' };
+    if (property.playerId !== playerId) return { success: false, error: 'NOT_PROPERTY_OWNER' };
+
+    const developmentLevel = Math.max(
+      0,
+      Number((property as { developmentLevel?: number | null }).developmentLevel ?? 0),
+    );
+    if (developmentLevel >= cfg.maxLevel) {
+      return { success: false, error: 'PROPERTY_DEVELOP_MAX_LEVEL' };
+    }
+
+    const lastDevelopAt = (property as { lastDevelopAt?: Date | null }).lastDevelopAt ?? null;
+    if (lastDevelopAt && cfg.cooldownSeconds > 0) {
+      const elapsed = Math.floor((Date.now() - new Date(lastDevelopAt).getTime()) / 1000);
+      if (elapsed < cfg.cooldownSeconds) {
+        return { success: false, error: 'PROPERTY_DEVELOP_COOLDOWN' };
+      }
+    }
+
+    const cost = Math.max(
+      1000,
+      Math.floor(property.purchasePrice * (cfg.costPercent / 100) * (developmentLevel + 1)),
+    );
+    const account = await getOrCreateBankAccount(playerId);
+    if (account.balance < cost) {
+      return { success: false, error: 'INSUFFICIENT_BALANCE' };
+    }
+
+    const nextLevel = developmentLevel + 1;
+    const updatedAccount = await prisma.$transaction(async (tx) => {
+      const bankUpdate = await tx.bankAccount.updateMany({
+        where: { id: account.id, balance: { gte: cost } },
+        data: { balance: { decrement: cost } },
+      });
+      if (bankUpdate.count !== 1) {
+        throw new Error('INSUFFICIENT_BALANCE');
+      }
+      await tx.$executeRawUnsafe(
+        `UPDATE properties
+         SET developmentLevel = ?, lastDevelopAt = NOW()
+         WHERE id = ? AND playerId = ?`,
+        nextLevel,
+        propertyDatabaseId,
+        playerId,
+      );
+      return tx.bankAccount.findUnique({ where: { id: account.id }, select: { balance: true } });
+    });
+
+    await activityService.logActivity(
+      playerId,
+      'property.developed',
+      'Property development completed',
+      { propertyId: propertyDatabaseId, developmentLevel: nextLevel, cost },
+      false,
+    ).catch(() => {});
+
+    return {
+      success: true,
+      developmentLevel: nextLevel,
+      cost,
+      bankBalance: updatedAccount?.balance ?? account.balance - cost,
+    };
   }
 }
 

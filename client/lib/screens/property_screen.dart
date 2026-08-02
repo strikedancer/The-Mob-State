@@ -257,6 +257,44 @@ class PropertyScreenState extends State<PropertyScreen>
     }
   }
 
+  Future<void> _developProperty(Property property) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/${property.id}/develop',
+        {},
+      );
+      final data = jsonDecode(response.body);
+      final l10n = AppLocalizations.of(context)!;
+      if (data['event'] == 'property.developed') {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.propertyDevelopedSuccess),
+            backgroundColor: Colors.teal,
+          ),
+        );
+        _loadMyProperties();
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(data['event']?.toString() ?? l10n.errorUpgrading),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      final l10n = AppLocalizations.of(context)!;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.networkError(e.toString())),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Future<void> _upgradeProperty(Property property) async {
     try {
       final response = await _apiClient.post(
@@ -453,6 +491,9 @@ class PropertyScreenState extends State<PropertyScreen>
             playerIsVip: _playerIsVip,
             vipBonusPerProperty: _vipHousingBonusPerProperty,
             onUpgrade: () => _upgradeProperty(property),
+            onDevelop: property.nextDevelopCost != null
+                ? () => _developProperty(property)
+                : null,
             onManage: propertyType == 'nightclub'
                 ? () => _openNightclub(property)
                 : null,

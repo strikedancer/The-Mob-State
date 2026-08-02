@@ -14738,4 +14738,125 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get territoryEventBlackoutRumor => 'Blackout rumor';
+
+  @override
+  String get launderSectionTitle => 'Money laundering';
+
+  @override
+  String launderSectionHint(int feePercent, int durationMinutes) {
+    return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
+  }
+
+  @override
+  String launderSeizeChance(String chance) {
+    return 'Estimated seize chance: $chance%';
+  }
+
+  @override
+  String launderActiveJob(String amount) {
+    return 'Wash in progress. Bank payout if successful: €$amount';
+  }
+
+  @override
+  String get launderAmountLabel => 'Amount to wash';
+
+  @override
+  String get launderStartButton => 'Start wash';
+
+  @override
+  String get launderStartedSuccess => 'Laundering started.';
+
+  @override
+  String get launderErrorCooldown => 'Laundering is on cooldown.';
+
+  @override
+  String get launderErrorActive => 'A wash job is already running.';
+
+  @override
+  String get launderErrorTooLow => 'Amount is below the minimum.';
+
+  @override
+  String get launderErrorTooHigh => 'Amount is above the maximum.';
+
+  @override
+  String get launderErrorInsufficientCash => 'Not enough cash on hand.';
+
+  @override
+  String get launderErrorDisabled => 'Money laundering is disabled.';
+
+  @override
+  String get launderErrorUnknown => 'Could not start laundering.';
+
+  @override
+  String get stockMarketTitle => 'Stock market';
+
+  @override
+  String get stockMarketHint =>
+      'Trade with bank money. Prices move slowly — separate from crypto.';
+
+  @override
+  String get stockBankBalance => 'Bank balance';
+
+  @override
+  String get stockPortfolioValue => 'Portfolio value';
+
+  @override
+  String get stockQuantity => 'Quantity';
+
+  @override
+  String get stockPrice => 'Price';
+
+  @override
+  String get stockHolding => 'Holding';
+
+  @override
+  String get stockValue => 'Value';
+
+  @override
+  String get stockBuy => 'Buy';
+
+  @override
+  String get stockSell => 'Sell';
+
+  @override
+  String get stockTradeSuccess => 'Trade completed.';
+
+  @override
+  String get stockErrorInsufficientBalance => 'Not enough bank balance.';
+
+  @override
+  String get stockErrorInsufficientShares => 'Not enough shares.';
+
+  @override
+  String get stockErrorPositionLimit => 'Position limit reached.';
+
+  @override
+  String get stockErrorDisabled => 'Stock market is disabled.';
+
+  @override
+  String get stockErrorUnknown => 'Trade failed.';
+
+  @override
+  String get propertyDevelopAction => 'Develop';
+
+  @override
+  String get propertyDevelopedSuccess => 'Property development complete.';
+
+  @override
+  String get helpTopicStockMarketCategory => 'Economy';
+
+  @override
+  String get helpTopicStockMarketTitle => 'Stock market';
+
+  @override
+  String get helpTopicStockMarketSummary =>
+      'Trade slow-moving stocks with bank money. Separate system from crypto.';
+
+  @override
+  String get helpTopicStockMarketHow =>
+      'Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.\nBuy and sell execute immediately at the server price and debit/credit your bank — not cash.\nPrices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.\nThere is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module.';
+
+  @override
+  String get helpTopicStockMarketTips =>
+      'Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.';
 }
