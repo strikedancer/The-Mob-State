@@ -3663,6 +3663,18 @@ abstract class AppLocalizations {
   /// **'Recruit prostitute'**
   String get dashboardRecruitProstitute;
 
+  /// No description provided for @dashboardWarTheater.
+  ///
+  /// In en, this message translates to:
+  /// **'War theater'**
+  String get dashboardWarTheater;
+
+  /// No description provided for @dashboardHotRegions.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot regions'**
+  String get dashboardHotRegions;
+
   /// No description provided for @dashboardCrewWars.
   ///
   /// In en, this message translates to:
@@ -11635,6 +11647,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No vehicles or items match your filters. You can list carried tools with the Sell item button.'**
   String get bmHubNoMarketListingsBody;
+
+  /// No description provided for @bmHubSellKindTool.
+  ///
+  /// In en, this message translates to:
+  /// **'Tool'**
+  String get bmHubSellKindTool;
+
+  /// No description provided for @bmHubSellKindDrug.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get bmHubSellKindDrug;
+
+  /// No description provided for @bmHubSellKindCrypto.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto'**
+  String get bmHubSellKindCrypto;
+
+  /// No description provided for @bmHubSellKindTrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade goods'**
+  String get bmHubSellKindTrade;
+
+  /// No description provided for @bmHubNoDrugsToSell.
+  ///
+  /// In en, this message translates to:
+  /// **'No drugs to sell'**
+  String get bmHubNoDrugsToSell;
+
+  /// No description provided for @bmHubNoCryptoToSell.
+  ///
+  /// In en, this message translates to:
+  /// **'No crypto to sell'**
+  String get bmHubNoCryptoToSell;
+
+  /// No description provided for @bmHubNoTradeGoodsToSell.
+  ///
+  /// In en, this message translates to:
+  /// **'No trade goods to sell'**
+  String get bmHubNoTradeGoodsToSell;
+
+  /// No description provided for @bmHubListDrugTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List drugs'**
+  String get bmHubListDrugTitle;
+
+  /// No description provided for @bmHubListDrugSelectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug stack'**
+  String get bmHubListDrugSelectLabel;
+
+  /// No description provided for @bmHubListCryptoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List crypto'**
+  String get bmHubListCryptoTitle;
+
+  /// No description provided for @bmHubListCryptoSelectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset'**
+  String get bmHubListCryptoSelectLabel;
+
+  /// No description provided for @bmHubListTradeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List trade goods'**
+  String get bmHubListTradeTitle;
+
+  /// No description provided for @bmHubListTradeSelectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get bmHubListTradeSelectLabel;
+
+  /// No description provided for @bmHubQuantityGrams.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity (g)'**
+  String get bmHubQuantityGrams;
+
+  /// No description provided for @bmHubQuantityCrypto.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get bmHubQuantityCrypto;
+
+  /// No description provided for @bmHubQuantityUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get bmHubQuantityUnits;
 
   /// No description provided for @bmHubSellCarriedItem.
   ///
@@ -23787,19 +23895,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBlackMarketSummary.
   ///
   /// In en, this message translates to:
-  /// **'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles and carried tools, plus backpacks, materials, weapons market and ammo.'**
+  /// **'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles, carried tools, drug lots, crypto lots and trade-good stacks, plus backpacks, materials, weapons market and ammo.'**
   String get helpTopicBlackMarketSummary;
 
   /// No description provided for @helpTopicBlackMarketHow.
   ///
   /// In en, this message translates to:
-  /// **'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.'**
+  /// **'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-player cash trades. One feed shows vehicles plus player listings for carried tools, drug stacks (grams + quality), crypto holdings, and trade-good inventory. Use Sell to pick a kind, set quantity and price. My listings covers your active ads. You cannot buy your own ad. Escrow removes stock until buy or delist.'**
   String get helpTopicBlackMarketHow;
 
   /// No description provided for @helpTopicBlackMarketTips.
   ///
   /// In en, this message translates to:
-  /// **'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; only tools in your carried inventory can be placed for sale.'**
+  /// **'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; list only what you own — tools must be carried, drugs/crypto/trade goods come from your inventory/holdings. Delist restores escrow.'**
   String get helpTopicBlackMarketTips;
 
   /// No description provided for @helpTopicDrugsCategory.

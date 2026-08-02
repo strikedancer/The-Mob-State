@@ -14,6 +14,8 @@ class CrewWarDashboardSummary {
   final int? seasonRank;
   final int availableTargetsCount;
   final int phaseEndsInSeconds;
+  final String? theaterRegionKey;
+  final List<String> hotRegionKeys;
 
   CrewWarDashboardSummary({
     required this.hasActiveWar,
@@ -26,9 +28,12 @@ class CrewWarDashboardSummary {
     this.seasonRank,
     required this.availableTargetsCount,
     required this.phaseEndsInSeconds,
+    this.theaterRegionKey,
+    this.hotRegionKeys = const [],
   });
 
   factory CrewWarDashboardSummary.fromJson(Map<String, dynamic> json) {
+    final hot = json['hotRegionKeys'];
     return CrewWarDashboardSummary(
       hasActiveWar: json['hasActiveWar'] as bool? ?? false,
       canDeclare: json['canDeclare'] as bool? ?? false,
@@ -40,6 +45,10 @@ class CrewWarDashboardSummary {
       seasonRank: json['seasonRank'] as int?,
       availableTargetsCount: json['availableTargetsCount'] as int? ?? 0,
       phaseEndsInSeconds: json['phaseEndsInSeconds'] as int? ?? 0,
+      theaterRegionKey: json['theaterRegionKey'] as String?,
+      hotRegionKeys: hot is List
+          ? hot.map((e) => e.toString()).where((e) => e.isNotEmpty).toList()
+          : const [],
     );
   }
 
@@ -55,6 +64,8 @@ class CrewWarDashboardSummary {
       seasonRank: seasonRank,
       availableTargetsCount: availableTargetsCount,
       phaseEndsInSeconds: phaseEndsInSeconds ?? this.phaseEndsInSeconds,
+      theaterRegionKey: theaterRegionKey,
+      hotRegionKeys: hotRegionKeys,
     );
   }
 }

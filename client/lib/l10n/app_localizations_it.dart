@@ -2033,6 +2033,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Recluta una prostituta';
 
   @override
+  String get dashboardWarTheater => 'War theater';
+
+  @override
+  String get dashboardHotRegions => 'Hot regions';
+
+  @override
   String get dashboardCrewWars => 'Guerre tra crew';
 
   @override
@@ -6569,6 +6575,54 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get bmHubNoMarketListingsBody =>
       'Nessun veicolo o oggetto corrisponde ai filtri. Puoi mettere in vendita strumenti trasportati con Vendi oggetto.';
+
+  @override
+  String get bmHubSellKindTool => 'Tool';
+
+  @override
+  String get bmHubSellKindDrug => 'Drugs';
+
+  @override
+  String get bmHubSellKindCrypto => 'Crypto';
+
+  @override
+  String get bmHubSellKindTrade => 'Trade goods';
+
+  @override
+  String get bmHubNoDrugsToSell => 'No drugs to sell';
+
+  @override
+  String get bmHubNoCryptoToSell => 'No crypto to sell';
+
+  @override
+  String get bmHubNoTradeGoodsToSell => 'No trade goods to sell';
+
+  @override
+  String get bmHubListDrugTitle => 'List drugs';
+
+  @override
+  String get bmHubListDrugSelectLabel => 'Drug stack';
+
+  @override
+  String get bmHubListCryptoTitle => 'List crypto';
+
+  @override
+  String get bmHubListCryptoSelectLabel => 'Asset';
+
+  @override
+  String get bmHubListTradeTitle => 'List trade goods';
+
+  @override
+  String get bmHubListTradeSelectLabel => 'Good';
+
+  @override
+  String get bmHubQuantityGrams => 'Quantity (g)';
+
+  @override
+  String get bmHubQuantityCrypto => 'Quantity';
+
+  @override
+  String get bmHubQuantityUnits => 'Quantity';
 
   @override
   String get bmHubSellCarriedItem => 'Vendi oggetto';
@@ -13741,15 +13795,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Un hub: prima le merci di contrabbando (fiori, dispositivi elettronici, diamanti, armi, prodotti farmaceutici), poi la scheda Mercato per i veicoli da giocatore a giocatore e gli strumenti trasportati, oltre a zaini, materiali, mercato di armi e munizioni.';
+      'Un hub: prima il contrabbando di beni commerciali (fiori, elettronica, diamanti, armi, prodotti farmaceutici), poi la scheda Mercato per i veicoli da giocatore a giocatore, strumenti trasportati, lotti di droga, lotti di criptovalute e pile di beni di scambio, oltre a zaini, materiali, mercato di armi e munizioni.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Scheda Beni commerciali: uno scorrimento continuo: prima le cinque linee di contrabbando (prezzi, limiti, chip di rischio: deterioramento, volatilità, danno da viaggio, sequestro), quindi l\'inventario da cui vendere. Acquista/vendi utilizza l\'API /trade; i guasti al carico parziale mostrano un banner di avviso. \nIl mercato nero è suddiviso in sottomercati: Materiali (materie prime), Armi (armi da fuoco e coltelli), Munizioni (munizioni per calibro), Veicoli (veicoli illegali). \nI prezzi e la disponibilità variano notevolmente in base al paese e al periodo. Un annuncio può esaurirsi rapidamente. \nLe transazioni del mercato nero non lasciano tracce ufficiali ma aumentano la pressione dell\'FBI per i grandi acquisti. \nLe armi acquistate qui possono essere utilizzate in crimini, PvP e sicurezza. Armi migliori danno maggiori danni e possibilità di successo. \nI filtri per categoria (tipologia, paese, prezzo, disponibilità) ti aiutano a trovare rapidamente l\'annuncio giusto. \nPuoi pubblicare le tue inserzioni come venditore, inclusi prezzo e quantità. Gli altri giocatori acquistano da te. \nLe inserzioni scadono dopo un certo tempo se invendute. Monitora le tue offerte tramite il tuo profilo. \nScheda Mercato: operazioni in contanti peer-to-peer. Vedrai i veicoli degli altri giocatori in vendita e gli strumenti trasportati in un unico feed (paese + filtri prezzo). Tocca Vendi oggetto per elencare uno strumento che stai trasportando; Le mie inserzioni mostrano i tuoi annunci di veicoli e strumenti attivi. Non puoi acquistare il tuo annuncio. La vendita di farmaci, criptovalute o premi per eventi speciali da giocatore a giocatore qui non è ancora disponibile.';
+      'Scheda Beni commerciali: uno scorrimento continuo: prima le cinque linee di contrabbando (prezzi, limiti, chip di rischio: deterioramento, volatilità, danno da viaggio, sequestro), quindi l\'inventario da cui vendere. Acquista/vendi utilizza l\'API /trade; i guasti al carico parziale mostrano un banner di avviso. \nIl mercato nero è suddiviso in sottomercati: Materiali (materie prime), Armi (armi da fuoco e coltelli), Munizioni (munizioni per calibro), Veicoli (veicoli illegali). \nI prezzi e la disponibilità variano notevolmente in base al paese e al periodo. Un annuncio può esaurirsi rapidamente. \nLe transazioni del mercato nero non lasciano tracce ufficiali ma aumentano la pressione dell\'FBI per i grandi acquisti. \nLe armi acquistate qui possono essere utilizzate in crimini, PvP e sicurezza. Armi migliori danno maggiori danni e possibilità di successo. \nI filtri per categoria (tipologia, paese, prezzo, disponibilità) ti aiutano a trovare rapidamente l\'annuncio giusto. \nPuoi pubblicare le tue inserzioni come venditore, inclusi prezzo e quantità. Gli altri giocatori acquistano da te. \nLe inserzioni scadono dopo un certo tempo se invendute. Monitora le tue offerte tramite il tuo profilo. \nScheda Marketplace: transazioni in contanti peer-to-player. Un feed mostra i veicoli più gli elenchi dei giocatori per gli strumenti trasportati, le pile di farmaci (grammi + qualità), le partecipazioni in criptovalute e l\'inventario dei beni commerciali. Utilizza Vendi per scegliere un tipo, impostare quantità e prezzo. Le mie inserzioni coprono i tuoi annunci attivi. Non puoi acquistare il tuo annuncio. L\'impegno rimuove le azioni fino all\'acquisto o alla rimozione dalla quotazione.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Scheda Commercio: trascina per aggiornare se un segmento fallisce; guarda i chip rischiosi e i ricercati prima di correre rischi di contrabbando. \nAcquista armi e munizioni in grandi quantità quando i prezzi sono bassi: la disponibilità è temporanea. \nEvita grandi acquisti sul mercato nero quando FBI Heat ha già superato i 30. \nMarketplace: aggiorna dopo l\'inserimento nell\'elenco; solo gli strumenti nel tuo inventario trasportato possono essere messi in vendita.';
+      'Scheda Commercio: trascina per aggiornare se un segmento fallisce; guarda i chip rischiosi e i ricercati prima di correre rischi di contrabbando. \nAcquista armi e munizioni in grandi quantità quando i prezzi sono bassi: la disponibilità è temporanea. \nEvita grandi acquisti sul mercato nero quando FBI Heat ha già superato i 30. \nMarketplace: aggiorna dopo l\'inserimento nell\'elenco; elenca solo ciò che possiedi: gli strumenti devono essere trasportati, i farmaci/criptovalute/beni commerciali provengono dal tuo inventario/detenzioni. La rimozione dall\'elenco ripristina il deposito a garanzia.';
 
   @override
   String get helpTopicDrugsCategory => 'Impero';

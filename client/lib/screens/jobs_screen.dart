@@ -13,6 +13,7 @@ import '../widgets/job_card.dart';
 import '../widgets/education_requirements_dialog.dart';
 import '../utils/job_localization.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/action_result_toast.dart';
 import '../utils/web_asset_helper.dart';
 
 class JobsScreen extends StatefulWidget {
@@ -362,25 +363,16 @@ class _JobsScreenState extends State<JobsScreen> {
 
         // Keep cooldown UI embedded in this screen (no full-page route)
         if (cooldownSeconds != null && cooldownSeconds > 0) {
-          showTopRightFromSnackBar(
+          showActionResultToast(
             context,
-            SnackBar(
-              content: Text(message),
-              backgroundColor: eventKey.contains('completed')
-                  ? Colors.green
-                  : Colors.red,
-            ),
+            title: message,
+            success: eventKey.contains('completed') || eventKey.contains('success'),
           );
         } else {
-          // No cooldown, just show snackbar
-          showTopRightFromSnackBar(
+          showActionResultToast(
             context,
-            SnackBar(
-              content: Text(message),
-              backgroundColor: eventKey.contains('success')
-                  ? Colors.green
-                  : Colors.red,
-            ),
+            title: message,
+            success: eventKey.contains('success') || eventKey.contains('completed'),
           );
         }
       }

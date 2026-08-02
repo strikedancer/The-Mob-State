@@ -2013,6 +2013,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Recruit prostitute';
 
   @override
+  String get dashboardWarTheater => 'War theater';
+
+  @override
+  String get dashboardHotRegions => 'Hot regions';
+
+  @override
   String get dashboardCrewWars => 'Crew Wars';
 
   @override
@@ -6491,6 +6497,54 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get bmHubNoMarketListingsBody =>
       'No vehicles or items match your filters. You can list carried tools with the Sell item button.';
+
+  @override
+  String get bmHubSellKindTool => 'Tool';
+
+  @override
+  String get bmHubSellKindDrug => 'Drugs';
+
+  @override
+  String get bmHubSellKindCrypto => 'Crypto';
+
+  @override
+  String get bmHubSellKindTrade => 'Trade goods';
+
+  @override
+  String get bmHubNoDrugsToSell => 'No drugs to sell';
+
+  @override
+  String get bmHubNoCryptoToSell => 'No crypto to sell';
+
+  @override
+  String get bmHubNoTradeGoodsToSell => 'No trade goods to sell';
+
+  @override
+  String get bmHubListDrugTitle => 'List drugs';
+
+  @override
+  String get bmHubListDrugSelectLabel => 'Drug stack';
+
+  @override
+  String get bmHubListCryptoTitle => 'List crypto';
+
+  @override
+  String get bmHubListCryptoSelectLabel => 'Asset';
+
+  @override
+  String get bmHubListTradeTitle => 'List trade goods';
+
+  @override
+  String get bmHubListTradeSelectLabel => 'Good';
+
+  @override
+  String get bmHubQuantityGrams => 'Quantity (g)';
+
+  @override
+  String get bmHubQuantityCrypto => 'Quantity';
+
+  @override
+  String get bmHubQuantityUnits => 'Quantity';
 
   @override
   String get bmHubSellCarriedItem => 'Sell item';
@@ -13564,15 +13618,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles and carried tools, plus backpacks, materials, weapons market and ammo.';
+      'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles, carried tools, drug lots, crypto lots and trade-good stacks, plus backpacks, materials, weapons market and ammo.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.';
+      'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-player cash trades. One feed shows vehicles plus player listings for carried tools, drug stacks (grams + quality), crypto holdings, and trade-good inventory. Use Sell to pick a kind, set quantity and price. My listings covers your active ads. You cannot buy your own ad. Escrow removes stock until buy or delist.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; only tools in your carried inventory can be placed for sale.';
+      'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; list only what you own — tools must be carried, drugs/crypto/trade goods come from your inventory/holdings. Delist restores escrow.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';

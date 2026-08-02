@@ -153,6 +153,9 @@ Scope-afbakening:
 - Querys op region ownership moeten consistent zijn tussen map endpoint en leaderboard endpoint.
 - Als `strategicTagsJson` of `neighborsJson` gebruikt worden voor scoring of action previews, moeten map endpoint, action response en modalinfo dezelfde bronwaarden gebruiken zodat UI-preview en server-authoritative punttoekenning niet uit elkaar lopen.
 - Tijdelijke war-aftermath effecten mogen geen permanente mutatie op `territory_control.stability` zijn zolang stability geen autonome recovery-flow heeft; tijdelijke druk hoort in een aparte effectlaag met `startsAt`/`endsAt` te leven.
+- Adjacency bonuses: **pocket** (1 owned neighbor) = dunne supply-line; **cluster** (2+ owned neighbors) = sterkere patrol/raid/defense/supply. Labels moeten `source: adjacency` blijven.
+- Frontline pressure: bij war-aftermath naar de verliezende crew én bij contest start op een regio met actieve aftermath — type `territory_frontline_pressure` (naast bestaande contest/war-ended pings).
+- Dashboard toont `theaterRegionKey` + hot region keys uit crew-war metadata; Crew Wars mag geen permanente ownership-skip via wars.
 
 ## Runtime Settings (Admin-Only, Database)
 Gebruik `runtime_config` (via admin config API) voor alle territory tuning.

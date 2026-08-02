@@ -504,11 +504,21 @@ function buildStrategicActionBonuses(
     pushBonus('supply_run', 2, 'Logistiek knooppunt', 'Logistics hub');
     pushBonus('raid', 1, 'Logistiek knooppunt', 'Logistics hub');
   }
-  if (adjacentOwnedRegions > 0) {
-    const adjacencyPoints = Math.min(2, adjacentOwnedRegions);
-    pushBonus('patrol', adjacencyPoints, 'Steun uit aangrenzende regio\'s', 'Support from adjacent regions', 'adjacency');
-    pushBonus('raid', adjacencyPoints, 'Steun uit aangrenzende regio\'s', 'Support from adjacent regions', 'adjacency');
-    pushBonus('defense', adjacencyPoints, 'Steun uit aangrenzende regio\'s', 'Support from adjacent regions', 'adjacency');
+  if (strategicTags.includes('airhub')) {
+    pushBonus('intel_scan', 1, 'Luchthub', 'Air hub');
+    pushBonus('supply_run', 1, 'Luchthub', 'Air hub');
+  }
+  if (adjacentOwnedRegions === 1) {
+    // Pocket: thin supply line — modest support only.
+    pushBonus('patrol', 1, 'Dunne supply-line (pocket)', 'Thin supply line (pocket)', 'adjacency');
+    pushBonus('defense', 1, 'Dunne supply-line (pocket)', 'Thin supply line (pocket)', 'adjacency');
+  } else if (adjacentOwnedRegions >= 2) {
+    // Cluster: contiguous ownership — stronger patrol/raid/defense.
+    const clusterPoints = Math.min(3, adjacentOwnedRegions);
+    pushBonus('patrol', clusterPoints, 'Cluster supply-line', 'Cluster supply line', 'adjacency');
+    pushBonus('raid', clusterPoints - 1, 'Cluster supply-line', 'Cluster supply line', 'adjacency');
+    pushBonus('defense', clusterPoints, 'Cluster supply-line', 'Cluster supply line', 'adjacency');
+    pushBonus('supply_run', 1, 'Cluster supply-line', 'Cluster supply line', 'adjacency');
   }
 
   return bonuses;
@@ -2080,17 +2090,41 @@ async function _recalcContestControl(contestId: number, regionKey: string, actor
   );
 }
 
+async function _regionHasActiveWarAftermath(regionKey: string, affectedCrewId: number): Promise<boolean> {
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+    `SELECT id FROM territory_region_effects
+     WHERE regionKey = ?
+       AND effectType = 'crew_war_aftermath'
+       AND affectedCrewId = ?
+       AND resolvedAt IS NULL
+       AND endsAt > NOW()
+     LIMIT 1`,
+    regionKey,
+    affectedCrewId,
+  );
+  return rows.length > 0;
+}
+
 async function _notifyCrewContestStarted(crewId: number, regionKey: string, contestId: number): Promise<void> {
   const players = await _getCrewPlayers(crewId);
   const contestIdStr = String(contestId);
+  const frontline = await _regionHasActiveWarAftermath(regionKey, crewId);
   for (const p of players) {
     const lang = await _getPlayerLanguage(p.id);
     const n = translationService.getTranslations(lang).notification;
+    if (frontline) {
+      await notificationService.sendTerritoryFrontlinePressureNotification(
+        p.id,
+        regionKey,
+        { contestId, reason: 'contest_under_aftermath' },
+        lang,
+      ).catch(() => {});
+    }
     await notificationService.sendToPlayer(
       p.id,
       n.territoryContestStarted.title,
       n.territoryContestStarted.pushBody(regionKey, contestIdStr),
-      { type: 'territory_contest_started', regionKey, contestId: contestIdStr },
+      { type: 'territory_contest_started', regionKey, contestId: contestIdStr, frontlinePressure: frontline ? '1' : '0' },
     ).catch(() => {});
     await _sendTerritoryInboxMessage(
       p.id,

@@ -2029,6 +2029,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Rekrutuj prostytutkę';
 
   @override
+  String get dashboardWarTheater => 'War theater';
+
+  @override
+  String get dashboardHotRegions => 'Hot regions';
+
+  @override
   String get dashboardCrewWars => 'Wojny crew';
 
   @override
@@ -6550,6 +6556,54 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get bmHubNoMarketListingsBody =>
       'Nic nie pasuje do filtrów. Możesz wystawić narzędzia przy sobie przez Sprzedaj przedmiot.';
+
+  @override
+  String get bmHubSellKindTool => 'Tool';
+
+  @override
+  String get bmHubSellKindDrug => 'Drugs';
+
+  @override
+  String get bmHubSellKindCrypto => 'Crypto';
+
+  @override
+  String get bmHubSellKindTrade => 'Trade goods';
+
+  @override
+  String get bmHubNoDrugsToSell => 'No drugs to sell';
+
+  @override
+  String get bmHubNoCryptoToSell => 'No crypto to sell';
+
+  @override
+  String get bmHubNoTradeGoodsToSell => 'No trade goods to sell';
+
+  @override
+  String get bmHubListDrugTitle => 'List drugs';
+
+  @override
+  String get bmHubListDrugSelectLabel => 'Drug stack';
+
+  @override
+  String get bmHubListCryptoTitle => 'List crypto';
+
+  @override
+  String get bmHubListCryptoSelectLabel => 'Asset';
+
+  @override
+  String get bmHubListTradeTitle => 'List trade goods';
+
+  @override
+  String get bmHubListTradeSelectLabel => 'Good';
+
+  @override
+  String get bmHubQuantityGrams => 'Quantity (g)';
+
+  @override
+  String get bmHubQuantityCrypto => 'Quantity';
+
+  @override
+  String get bmHubQuantityUnits => 'Quantity';
 
   @override
   String get bmHubSellCarriedItem => 'Sprzedaj przedmiot';
@@ -13698,15 +13752,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Jedno centrum: najpierw przemyt towarów (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie zakładka Rynek z pojazdami między graczami i przewożonymi narzędziami, a także plecakami, materiałami, rynkiem broni i amunicją.';
+      'Jedno centrum: najpierw towary przemytnicze (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie zakładka Rynek z pojazdami między graczami, przewożonymi narzędziami, partiami narkotyków, partiami kryptowalut i stosami towarów handlowych, a także plecakami, materiałami, rynkiem broni i amunicją.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Zakładka Towary handlowe: jedno ciągłe przewijanie — najpierw pięć linii kontrabandy (ceny, limity, żetony ryzyka: psucie się, zmienność, obrażenia spowodowane potknięciem, zajęcie), a następnie zapasy, z których można sprzedać. Kup/sprzedaj używa interfejsu API /trade; awarie częściowego obciążenia wyświetlają baner ostrzegawczy. \nCzarny rynek dzieli się na podrynki: Materiały (surowce), Broń (broń palna i noże), Amunicja (amunicja według kalibru), Pojazdy (pojazdy nielegalne). \nCeny i dostępność różnią się znacznie w zależności od kraju i czasu. Oferta może szybko się wyprzedać. \nTransakcje na czarnym rynku nie pozostawiają oficjalnego śladu, ale zwiększają temperaturę FBI w przypadku dużych zakupów. \nBroń kupioną tutaj można wykorzystać w przestępstwach, PvP i bezpieczeństwie. Lepsza broń daje większe obrażenia i szansę na sukces. \nFiltry według kategorii (rodzaj, kraj, cena, dostępność) pomagają szybko znaleźć właściwą ofertę. \nJako sprzedający możesz publikować własne oferty, w tym cenę i ilość. Inni gracze kupują od Ciebie. \nAukcje wygasają po pewnym czasie, jeśli nie zostaną sprzedane. Monitoruj swoje oferty za pośrednictwem swojego profilu. \nKarta Rynek: transakcje gotówkowe typu peer-to-peer. Zobaczysz pojazdy innych graczy na sprzedaż i przewożone narzędzia w jednym kanale (kraj + filtry cenowe). Stuknij Sprzedaj przedmiot, aby wystawić narzędzie, które nosisz; Moje aukcje wyświetlają Twoje aktywne ogłoszenia o pojazdach i narzędziach. Nie możesz kupić własnej reklamy. Sprzedaż narkotyków, kryptowalut lub nagród za wydarzenia specjalne pomiędzy graczami nie jest jeszcze dostępna.';
+      'Zakładka Towary handlowe: jedno ciągłe przewijanie — najpierw pięć linii kontrabandy (ceny, limity, żetony ryzyka: psucie się, zmienność, obrażenia spowodowane potknięciem, zajęcie), a następnie zapasy, z których można sprzedać. Kup/sprzedaj używa interfejsu API /trade; awarie częściowego obciążenia wyświetlają baner ostrzegawczy. \nCzarny rynek dzieli się na podrynki: Materiały (surowce), Broń (broń palna i noże), Amunicja (amunicja według kalibru), Pojazdy (pojazdy nielegalne). \nCeny i dostępność różnią się znacznie w zależności od kraju i czasu. Oferta może szybko się wyprzedać. \nTransakcje na czarnym rynku nie pozostawiają oficjalnego śladu, ale zwiększają temperaturę FBI w przypadku dużych zakupów. \nBroń kupioną tutaj można wykorzystać w przestępstwach, PvP i bezpieczeństwie. Lepsza broń daje większe obrażenia i szansę na sukces. \nFiltry według kategorii (rodzaj, kraj, cena, dostępność) pomagają szybko znaleźć właściwą ofertę. \nJako sprzedający możesz publikować własne oferty, w tym cenę i ilość. Inni gracze kupują od Ciebie. \nAukcje wygasają po pewnym czasie, jeśli nie zostaną sprzedane. Monitoruj swoje oferty za pośrednictwem swojego profilu. \nKarta Rynek: transakcje gotówkowe typu peer-to-player. Jeden kanał pokazuje pojazdy oraz listy graczy dotyczące przewożonych narzędzi, stosów narkotyków (gramy + jakość), zasobów kryptowalut i zapasów towarów handlowych. Użyj opcji Sprzedaj, aby wybrać rodzaj, ustawić ilość i cenę. Moje aukcje obejmują Twoje aktywne ogłoszenia. Nie możesz kupić własnej reklamy. Escrow usuwa zapasy do czasu zakupu lub wycofania z listy.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Zakładka Handel: pociągnij, aby odświeżyć, jeśli segment się nie powiedzie; oglądaj ryzykowne żetony i Poszukiwany przed ryzykownym przemytem. \nKupuj broń i amunicję hurtowo, gdy ceny są niskie: dostępność jest tymczasowa. \nUnikaj dużych zakupów na czarnym rynku, gdy FBI Heat ma już powyżej 30 lat. \nRynek: odśwież po wystawieniu aukcji; na sprzedaż można wystawiać tylko narzędzia znajdujące się w Twoim ekwipunku.';
+      'Zakładka Handel: pociągnij, aby odświeżyć, jeśli segment się nie powiedzie; oglądaj ryzykowne żetony i Poszukiwany przed ryzykownym przemytem. \nKupuj broń i amunicję hurtowo, gdy ceny są niskie: dostępność jest tymczasowa. \nUnikaj dużych zakupów na czarnym rynku, gdy FBI Heat ma już powyżej 30 lat. \nRynek: odśwież po wystawieniu aukcji; wymień tylko to, co posiadasz — narzędzia muszą być przyniesione, narkotyki/krypto/towary handlowe pochodzą z Twojego ekwipunku/zasobów. Delist przywraca depozyt.';
 
   @override
   String get helpTopicDrugsCategory => 'Imperium';

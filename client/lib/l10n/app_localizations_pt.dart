@@ -2027,6 +2027,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Recrutar prostituta';
 
   @override
+  String get dashboardWarTheater => 'War theater';
+
+  @override
+  String get dashboardHotRegions => 'Hot regions';
+
+  @override
   String get dashboardCrewWars => 'Guerras de Crew';
 
   @override
@@ -6542,6 +6548,54 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get bmHubNoMarketListingsBody =>
       'Nada corresponde aos filtros. Liste ferramentas carregadas com Vender item.';
+
+  @override
+  String get bmHubSellKindTool => 'Tool';
+
+  @override
+  String get bmHubSellKindDrug => 'Drugs';
+
+  @override
+  String get bmHubSellKindCrypto => 'Crypto';
+
+  @override
+  String get bmHubSellKindTrade => 'Trade goods';
+
+  @override
+  String get bmHubNoDrugsToSell => 'No drugs to sell';
+
+  @override
+  String get bmHubNoCryptoToSell => 'No crypto to sell';
+
+  @override
+  String get bmHubNoTradeGoodsToSell => 'No trade goods to sell';
+
+  @override
+  String get bmHubListDrugTitle => 'List drugs';
+
+  @override
+  String get bmHubListDrugSelectLabel => 'Drug stack';
+
+  @override
+  String get bmHubListCryptoTitle => 'List crypto';
+
+  @override
+  String get bmHubListCryptoSelectLabel => 'Asset';
+
+  @override
+  String get bmHubListTradeTitle => 'List trade goods';
+
+  @override
+  String get bmHubListTradeSelectLabel => 'Good';
+
+  @override
+  String get bmHubQuantityGrams => 'Quantity (g)';
+
+  @override
+  String get bmHubQuantityCrypto => 'Quantity';
+
+  @override
+  String get bmHubQuantityUnits => 'Quantity';
 
   @override
   String get bmHubSellCarriedItem => 'Vender item';
@@ -13695,15 +13749,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Um centro: primeiro os produtos de contrabando (flores, eletrônicos, diamantes, armas, produtos farmacêuticos), depois a guia Mercado para veículos e ferramentas transportadas entre jogadores, além de mochilas, materiais, mercado de armas e munições.';
+      'Um centro: primeiro mercadorias contrabandeadas (flores, eletrônicos, diamantes, armas, produtos farmacêuticos), depois a guia Mercado para veículos de jogador para jogador, ferramentas transportadas, lotes de drogas, lotes de criptomoedas e pilhas de mercadorias comerciais, além de mochilas, materiais, mercado de armas e munições.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Guia Mercadorias comerciais: uma rolagem contínua – primeiro as cinco linhas de contrabando (preços, limites, fichas de risco: deterioração, volatilidade, danos de viagem, apreensão) e, em seguida, seu estoque para vender. Compra/venda usa a API /trade; falhas de carga parcial mostram um banner de aviso. \nO mercado negro é dividido em submercados: Materiais (matérias-primas), Armas (armas de fogo e facas), Munições (munições por calibre), Veículos (veículos ilegais). \nOs preços e a disponibilidade variam muito de acordo com o país e o horário. Uma listagem pode esgotar rapidamente. \nAs transações no mercado negro não deixam rastros oficiais, mas aumentam o FBI Heat para grandes compras. \nAs armas compradas aqui podem ser usadas em crimes, PvP e segurança. Armas melhores proporcionam maiores danos e chances de sucesso. \nFiltros por categoria (tipo, país, preço, disponibilidade) ajudam você a encontrar rapidamente a listagem certa. \nVocê pode postar suas próprias listagens como vendedor, incluindo preço e quantidade. Outros jogadores compram de você. \nAs listagens expiram após um certo tempo se não forem vendidas. Monitore suas próprias ofertas através do seu perfil. \nGuia Marketplace: negociações em dinheiro peer-to-peer. Você verá os veículos de outros jogadores à venda e as ferramentas transportadas em um único feed (país + filtros de preço). Toque em Vender item para listar uma ferramenta que você está carregando; Minhas listagens mostram seus anúncios ativos de veículos e ferramentas. Você não pode comprar seu próprio anúncio. A venda de drogas, criptografia ou recompensas de eventos especiais de jogador para jogador aqui ainda não está disponível.';
+      'Guia de mercadorias comerciais: uma rolagem contínua – primeiro as cinco linhas de contrabando (preços, limites, fichas de risco: deterioração, volatilidade, danos de viagem, apreensão) e, em seguida, seu estoque para vender. Compra/venda usa a API /trade; falhas de carga parcial mostram um banner de aviso. \nO mercado negro é dividido em submercados: Materiais (matérias-primas), Armas (armas de fogo e facas), Munições (munições por calibre), Veículos (veículos ilegais). \nOs preços e a disponibilidade variam muito de acordo com o país e o horário. Uma listagem pode esgotar rapidamente. \nAs transações no mercado negro não deixam rastros oficiais, mas aumentam o FBI Heat para grandes compras. \nAs armas compradas aqui podem ser usadas em crimes, PvP e segurança. Armas melhores proporcionam maiores danos e chances de sucesso. \nFiltros por categoria (tipo, país, preço, disponibilidade) ajudam você a encontrar rapidamente a listagem certa. \nVocê pode postar suas próprias listagens como vendedor, incluindo preço e quantidade. Outros jogadores compram de você. \nAs listagens expiram após um certo tempo se não forem vendidas. Monitore suas próprias ofertas através do seu perfil. \nGuia Marketplace: negociações em dinheiro peer-to-player. Um feed mostra veículos e listagens de jogadores para ferramentas transportadas, pilhas de drogas (gramas + qualidade), ativos criptográficos e estoque de mercadorias comerciais. Use Vender para escolher um tipo, definir quantidade e preço. Minhas listagens cobrem seus anúncios ativos. Você não pode comprar seu próprio anúncio. O compromisso remove o estoque até comprar ou excluir.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Guia Trade: puxe para atualizar se um segmento falhar; observe fichas de risco e Procurado antes de contrabando arriscado. \nCompre armas e munições a granel quando os preços estiverem baixos: a disponibilidade é temporária. \nEvite grandes compras no mercado negro quando o FBI Heat já estiver acima de 30. \nMarketplace: atualização após listagem; apenas as ferramentas em seu inventário podem ser colocadas à venda.';
+      'Guia Trade: puxe para atualizar se um segmento falhar; observe fichas de risco e Procurado antes de contrabando arriscado. \nCompre armas e munições a granel quando os preços estiverem baixos: a disponibilidade é temporária. \nEvite grandes compras no mercado negro quando o FBI Heat já estiver acima de 30. \nMarketplace: atualização após listagem; liste apenas o que você possui – as ferramentas devem ser transportadas, drogas/criptomoedas/mercadorias comerciais vêm de seu inventário/arquivos. Excluir restaura o depósito.';
 
   @override
   String get helpTopicDrugsCategory => 'Império';

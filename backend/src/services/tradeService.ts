@@ -127,8 +127,10 @@ export async function getFullInventory(playerId: number) {
     }
 
     return {
+      id: item.id,
       goodType: item.goodType,
       goodName: good?.name || item.goodType,
+      name: good?.name || item.goodType,
       quantity,
       purchasePrice: item.purchasePrice || 0,
       basePrice: good?.basePrice || 0,

@@ -2590,6 +2590,31 @@ export const adminService = {
     return payload.params;
   },
 
+  async getNightclubOverview(): Promise<{
+    venues: Array<{
+      venueId: number
+      playerId: number
+      ownerUsername: string
+      country: string
+      isOpen: boolean
+      crowdSize: number
+      crowdVibe: string
+      sales24hCount: number
+      sales24hRevenue: number
+      thefts24hCount: number
+      thefts24hLoss: number
+      activeEvents: number
+    }>
+    generatedAt?: string
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/nightclubs/overview`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to fetch nightclub overview");
+    return response.json();
+  },
+
   async territoryAssignRegion(
     regionKey: string,
     crewId: number | null,

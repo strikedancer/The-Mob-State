@@ -2046,6 +2046,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Prostituierte rekrutieren';
 
   @override
+  String get dashboardWarTheater => 'War theater';
+
+  @override
+  String get dashboardHotRegions => 'Hot regions';
+
+  @override
   String get dashboardCrewWars => 'Crew-Kriege';
 
   @override
@@ -6585,6 +6591,54 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get bmHubNoMarketListingsBody =>
       'Keine passenden Fahrzeuge oder Items. Du kannst getragene Werkzeuge über „Item verkaufen“ listen.';
+
+  @override
+  String get bmHubSellKindTool => 'Tool';
+
+  @override
+  String get bmHubSellKindDrug => 'Drugs';
+
+  @override
+  String get bmHubSellKindCrypto => 'Crypto';
+
+  @override
+  String get bmHubSellKindTrade => 'Trade goods';
+
+  @override
+  String get bmHubNoDrugsToSell => 'No drugs to sell';
+
+  @override
+  String get bmHubNoCryptoToSell => 'No crypto to sell';
+
+  @override
+  String get bmHubNoTradeGoodsToSell => 'No trade goods to sell';
+
+  @override
+  String get bmHubListDrugTitle => 'List drugs';
+
+  @override
+  String get bmHubListDrugSelectLabel => 'Drug stack';
+
+  @override
+  String get bmHubListCryptoTitle => 'List crypto';
+
+  @override
+  String get bmHubListCryptoSelectLabel => 'Asset';
+
+  @override
+  String get bmHubListTradeTitle => 'List trade goods';
+
+  @override
+  String get bmHubListTradeSelectLabel => 'Good';
+
+  @override
+  String get bmHubQuantityGrams => 'Quantity (g)';
+
+  @override
+  String get bmHubQuantityCrypto => 'Quantity';
+
+  @override
+  String get bmHubQuantityUnits => 'Quantity';
 
   @override
   String get bmHubSellCarriedItem => 'Item verkaufen';
@@ -13764,15 +13818,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Ein Hub: Zuerst Schmuggelware (Blumen, Elektronik, Diamanten, Waffen, Arzneimittel), dann die Registerkarte „Marktplatz“ für Spieler-zu-Spieler-Fahrzeuge und mitgeführte Werkzeuge sowie Rucksäcke, Materialien, Waffenmarkt und Munition.';
+      'Ein Hub: Zuerst Schmuggelware (Blumen, Elektronik, Diamanten, Waffen, Pharmazeutika), dann die Registerkarte „Marktplatz“ für Spieler-zu-Spieler-Fahrzeuge, mitgeführte Werkzeuge, Drogenposten, Kryptoposten und Handelswarenstapel sowie Rucksäcke, Materialien, Waffenmarkt und Munition.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Registerkarte „Handelswaren“: eine fortlaufende Schriftrolle – zuerst die fünf Schmuggellinien (Preise, Obergrenzen, Risikochips: Verderb, Volatilität, Reiseschaden, Beschlagnahme), dann Ihr Inventar, von dem aus verkauft werden soll. Kaufen/Verkaufen verwendet die /trade-API; Bei Teillastausfällen wird ein Warnbanner angezeigt. \nDer Schwarzmarkt ist in Teilmärkte unterteilt: Materialien (Rohstoffe), Waffen (Schusswaffen und Messer), Munition (Munition pro Kaliber), Fahrzeuge (illegale Fahrzeuge). \nPreise und Verfügbarkeit variieren stark je nach Land und Zeit. Ein Angebot kann schnell ausverkauft sein. \nSchwarzmarkttransaktionen hinterlassen keine offiziellen Spuren, erhöhen aber den Druck des FBI auf große Einkäufe. \nHier gekaufte Waffen können für Verbrechen, PvP und Sicherheit verwendet werden. Bessere Waffen erhöhen den Schaden und die Erfolgschance. \nFilter nach Kategorie (Typ, Land, Preis, Verfügbarkeit) helfen Ihnen, schnell das richtige Angebot zu finden. \nSie können als Verkäufer Ihre eigenen Angebote veröffentlichen, einschließlich Preis und Menge. Andere Spieler kaufen bei Ihnen. \nAngebote verfallen nach einer bestimmten Zeit, wenn sie nicht verkauft werden. Überwachen Sie Ihre eigenen Angebote über Ihr Profil. \nRegisterkarte „Marktplatz“: Peer-to-Peer-Cash-Trades. Sie sehen die zum Verkauf stehenden Fahrzeuge und mitgeführten Werkzeuge anderer Spieler in einem Feed (Land + Preisfilter). Tippen Sie auf Artikel verkaufen, um ein Werkzeug aufzulisten, das Sie bei sich tragen. In „Meine Einträge“ werden Ihre aktiven Fahrzeug- und Werkzeuganzeigen angezeigt. Sie können keine eigene Anzeige kaufen. Der Verkauf von Drogen, Kryptowährungen oder besonderen Event-Belohnungen von Spieler zu Spieler ist hier noch nicht möglich.';
+      'Registerkarte „Handelswaren“: eine fortlaufende Schriftrolle – zuerst die fünf Schmuggellinien (Preise, Obergrenzen, Risikochips: Verderb, Volatilität, Reiseschaden, Beschlagnahme), dann Ihr Inventar, von dem aus verkauft werden soll. Kaufen/Verkaufen verwendet die /trade-API; Bei Teillastausfällen wird ein Warnbanner angezeigt. \nDer Schwarzmarkt ist in Teilmärkte unterteilt: Materialien (Rohstoffe), Waffen (Schusswaffen und Messer), Munition (Munition pro Kaliber), Fahrzeuge (illegale Fahrzeuge). \nPreise und Verfügbarkeit variieren stark je nach Land und Zeit. Ein Angebot kann schnell ausverkauft sein. \nSchwarzmarkttransaktionen hinterlassen keine offiziellen Spuren, erhöhen aber den Druck des FBI auf große Einkäufe. \nHier gekaufte Waffen können für Verbrechen, PvP und Sicherheit verwendet werden. Bessere Waffen erhöhen den Schaden und die Erfolgschance. \nFilter nach Kategorie (Typ, Land, Preis, Verfügbarkeit) helfen Ihnen, schnell das richtige Angebot zu finden. \nSie können als Verkäufer Ihre eigenen Angebote veröffentlichen, einschließlich Preis und Menge. Andere Spieler kaufen bei Ihnen. \nAngebote verfallen nach einer bestimmten Zeit, wenn sie nicht verkauft werden. Überwachen Sie Ihre eigenen Angebote über Ihr Profil. \nRegisterkarte „Marktplatz“: Peer-to-Player-Cash-Trades. Ein Feed zeigt Fahrzeuge und Spielerlisten für mitgeführte Werkzeuge, Medikamentenstapel (Gramm + Qualität), Kryptobestände und Handelswarenbestand. Verwenden Sie „Verkaufen“, um eine Sorte auszuwählen, die Menge und den Preis festzulegen. Meine Einträge umfassen Ihre aktiven Anzeigen. Sie können keine eigene Anzeige kaufen. Treuhandkonto entfernt Lagerbestände bis zum Kauf oder Delisting.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Registerkarte „Handel“: Zum Aktualisieren ziehen, wenn ein Segment ausfällt; Achten Sie auf Risikochips und Fahndung vor riskanten Schmuggelfahrten. \nKaufen Sie Waffen und Munition in großen Mengen, wenn die Preise niedrig sind: Die Verfügbarkeit ist nur vorübergehend. \nVermeiden Sie große Schwarzmarktkäufe, wenn der FBI Heat bereits über 30 liegt. \nMarktplatz: Nach Listung aktualisieren; Nur Werkzeuge in Ihrem Lagerbestand können zum Verkauf angeboten werden.';
+      'Registerkarte „Handel“: Zum Aktualisieren ziehen, wenn ein Segment ausfällt; Achten Sie auf Risikochips und Fahndung vor riskanten Schmuggelfahrten. \nKaufen Sie Waffen und Munition in großen Mengen, wenn die Preise niedrig sind: Die Verfügbarkeit ist nur vorübergehend. \nVermeiden Sie große Schwarzmarktkäufe, wenn der FBI Heat bereits über 30 liegt. \nMarktplatz: Nach Listung aktualisieren; Listen Sie nur auf, was Sie besitzen – Werkzeuge müssen mitgeführt werden, Medikamente/Kryptowährungen/Handelswaren stammen aus Ihrem Inventar/Beständen. Delist stellt Treuhandkonto wieder her.';
 
   @override
   String get helpTopicDrugsCategory => 'Reich';

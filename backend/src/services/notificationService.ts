@@ -788,6 +788,48 @@ export class NotificationService {
     });
   }
 
+  public async sendTerritoryFrontlinePressureNotification(
+    playerId: number,
+    regionKey: string,
+    details?: {
+      contestId?: number | null;
+      reason?: 'war_aftermath' | 'contest_under_aftermath';
+      endsAt?: Date | string | null;
+      affectedRegionCount?: number;
+    } | null,
+    language?: Language,
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const reason = details?.reason ?? 'war_aftermath';
+    const rawEndsAt = details?.endsAt;
+    const endsAt = rawEndsAt instanceof Date
+      ? rawEndsAt
+      : (typeof rawEndsAt === 'string' ? new Date(rawEndsAt) : null);
+    const endsText = endsAt && !Number.isNaN(endsAt.getTime())
+      ? endsAt.toLocaleString(resolvedLanguage === 'nl' ? 'nl-NL' : 'en-GB', { hour12: false })
+      : '';
+    const affectedCount = details?.affectedRegionCount ?? 1;
+    const title = resolvedLanguage === 'nl' ? 'Frontline-druk' : 'Frontline pressure';
+    let body: string;
+    if (reason === 'contest_under_aftermath') {
+      body = resolvedLanguage === 'nl'
+        ? `Regio ${regionKey} staat onder aanval terwijl oorlogs-aftermath actief is${details?.contestId ? ` (contest #${details.contestId})` : ''}.`
+        : `Region ${regionKey} is under attack while war aftermath is active${details?.contestId ? ` (contest #${details.contestId})` : ''}.`;
+    } else {
+      body = resolvedLanguage === 'nl'
+        ? `Tijdelijke frontline-druk op ${affectedCount} Territory-regio${affectedCount === 1 ? '' : '\'s'}${endsText ? ` tot ${endsText}` : ''}. Theater/doel: ${regionKey}.`
+        : `Temporary frontline pressure on ${affectedCount} Territory region${affectedCount === 1 ? '' : 's'}${endsText ? ` until ${endsText}` : ''}. Theater/target: ${regionKey}.`;
+    }
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'territory_frontline_pressure',
+      regionKey,
+      reason,
+      contestId: details?.contestId != null ? String(details.contestId) : '',
+      endsAt: endsAt && !Number.isNaN(endsAt.getTime()) ? endsAt.toISOString() : '',
+      affectedRegionCount: String(affectedCount),
+    });
+  }
+
   public async sendCrewWarEndedNotification(
     playerId: number,
     warId: number,

@@ -3,54 +3,162 @@ class PlayerToolMarketListing {
   final int listingId;
   final String kind;
   final int price;
+  final int quantity;
   final String? countryCode;
   final DateTime createdAt;
   final int sellerId;
   final String sellerUsername;
-  final PlayerToolMarketPlayerTool playerTool;
+  final PlayerToolMarketPlayerTool? playerTool;
   final PlayerToolMarketToolDefinition? toolDefinition;
+  final DrugLotInfo? drugLot;
+  final CryptoLotInfo? cryptoLot;
+  final TradeGoodLotInfo? tradeGoodLot;
 
   PlayerToolMarketListing({
     required this.listingId,
     required this.kind,
     required this.price,
+    required this.quantity,
     required this.countryCode,
     required this.createdAt,
     required this.sellerId,
     required this.sellerUsername,
-    required this.playerTool,
-    required this.toolDefinition,
+    this.playerTool,
+    this.toolDefinition,
+    this.drugLot,
+    this.cryptoLot,
+    this.tradeGoodLot,
   });
 
   factory PlayerToolMarketListing.fromJson(Map<String, dynamic> json) {
     final seller = json['seller'] as Map<String, dynamic>?;
     final pt = json['playerTool'] as Map<String, dynamic>?;
     final td = json['toolDefinition'] as Map<String, dynamic>?;
+    final drug = json['drugLot'] as Map<String, dynamic>?;
+    final crypto = json['cryptoLot'] as Map<String, dynamic>?;
+    final trade = json['tradeGoodLot'] as Map<String, dynamic>?;
     return PlayerToolMarketListing(
       listingId: (json['listingId'] as num).toInt(),
       kind: json['kind'] as String? ?? 'player_tool',
       price: (json['price'] as num).toInt(),
+      quantity: (json['quantity'] as num?)?.toInt() ?? 1,
       countryCode: json['countryCode'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       sellerId: (seller?['id'] as num?)?.toInt() ?? 0,
       sellerUsername: seller?['username'] as String? ?? '',
-      playerTool: pt != null
-          ? PlayerToolMarketPlayerTool.fromJson(pt)
-          : PlayerToolMarketPlayerTool(
-              id: 0,
-              toolId: '',
-              durability: 0,
-              location: '',
-              quantity: 0,
-            ),
-      toolDefinition: td != null
-          ? PlayerToolMarketToolDefinition.fromJson(td)
-          : null,
+      playerTool: pt != null ? PlayerToolMarketPlayerTool.fromJson(pt) : null,
+      toolDefinition:
+          td != null ? PlayerToolMarketToolDefinition.fromJson(td) : null,
+      drugLot: drug != null ? DrugLotInfo.fromJson(drug) : null,
+      cryptoLot: crypto != null ? CryptoLotInfo.fromJson(crypto) : null,
+      tradeGoodLot: trade != null ? TradeGoodLotInfo.fromJson(trade) : null,
     );
   }
 
-  String get displayName =>
-      toolDefinition?.name ?? playerTool.toolId;
+  String get displayName {
+    switch (kind) {
+      case 'drug_lot':
+        return drugLot != null
+            ? '${drugLot!.drugName} (${drugLot!.qualityLabel})'
+            : 'Drug lot';
+      case 'crypto_lot':
+        return cryptoLot?.assetSymbol ?? 'Crypto';
+      case 'trade_good_lot':
+        return tradeGoodLot?.goodName ?? 'Trade good';
+      default:
+        return toolDefinition?.name ?? playerTool?.toolId ?? 'Item';
+    }
+  }
+
+  String get subtitle {
+    switch (kind) {
+      case 'drug_lot':
+        return '${drugLot?.quantity ?? quantity}g';
+      case 'crypto_lot':
+        return cryptoLot?.quantity ?? '';
+      case 'trade_good_lot':
+        return 'x${tradeGoodLot?.quantity ?? quantity}';
+      default:
+        final pt = playerTool;
+        if (pt == null) return '';
+        return 'Qty ${pt.quantity} • ${pt.durability}%';
+    }
+  }
+}
+
+class DrugLotInfo {
+  final String drugType;
+  final String drugName;
+  final String quality;
+  final String qualityLabel;
+  final int unitPrice;
+  final int quantity;
+
+  DrugLotInfo({
+    required this.drugType,
+    required this.drugName,
+    required this.quality,
+    required this.qualityLabel,
+    required this.unitPrice,
+    required this.quantity,
+  });
+
+  factory DrugLotInfo.fromJson(Map<String, dynamic> json) {
+    return DrugLotInfo(
+      drugType: json['drugType']?.toString() ?? '',
+      drugName: json['drugName']?.toString() ?? '',
+      quality: json['quality']?.toString() ?? 'C',
+      qualityLabel: json['qualityLabel']?.toString() ?? 'C',
+      unitPrice: (json['unitPrice'] as num?)?.toInt() ?? 0,
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+
+class CryptoLotInfo {
+  final String assetSymbol;
+  final String quantity;
+  final String avgBuyPrice;
+
+  CryptoLotInfo({
+    required this.assetSymbol,
+    required this.quantity,
+    required this.avgBuyPrice,
+  });
+
+  factory CryptoLotInfo.fromJson(Map<String, dynamic> json) {
+    return CryptoLotInfo(
+      assetSymbol: json['assetSymbol']?.toString() ?? '',
+      quantity: json['quantity']?.toString() ?? '0',
+      avgBuyPrice: json['avgBuyPrice']?.toString() ?? '0',
+    );
+  }
+}
+
+class TradeGoodLotInfo {
+  final String goodType;
+  final String goodName;
+  final int condition;
+  final int quantity;
+  final int unitBasePrice;
+
+  TradeGoodLotInfo({
+    required this.goodType,
+    required this.goodName,
+    required this.condition,
+    required this.quantity,
+    required this.unitBasePrice,
+  });
+
+  factory TradeGoodLotInfo.fromJson(Map<String, dynamic> json) {
+    return TradeGoodLotInfo(
+      goodType: json['goodType']?.toString() ?? '',
+      goodName: json['goodName']?.toString() ?? '',
+      condition: (json['condition'] as num?)?.toInt() ?? 100,
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+      unitBasePrice: (json['unitBasePrice'] as num?)?.toInt() ?? 0,
+    );
+  }
 }
 
 class PlayerToolMarketPlayerTool {

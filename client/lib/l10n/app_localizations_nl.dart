@@ -2026,6 +2026,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Rekruteer prostituee';
 
   @override
+  String get dashboardWarTheater => 'War theater';
+
+  @override
+  String get dashboardHotRegions => 'Hot regions';
+
+  @override
   String get dashboardCrewWars => 'Crew-oorlogen';
 
   @override
@@ -6528,6 +6534,54 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get bmHubNoMarketListingsBody =>
       'Geen voertuigen of items die aan je filters voldoen. Je kunt gedragen gereedschap verkopen via Verkoop item.';
+
+  @override
+  String get bmHubSellKindTool => 'Gereedschap';
+
+  @override
+  String get bmHubSellKindDrug => 'Drugs';
+
+  @override
+  String get bmHubSellKindCrypto => 'Crypto';
+
+  @override
+  String get bmHubSellKindTrade => 'Handelswaren';
+
+  @override
+  String get bmHubNoDrugsToSell => 'Geen drugs om te verkopen';
+
+  @override
+  String get bmHubNoCryptoToSell => 'Geen crypto om te verkopen';
+
+  @override
+  String get bmHubNoTradeGoodsToSell => 'Geen handelswaren om te verkopen';
+
+  @override
+  String get bmHubListDrugTitle => 'Drugs te koop zetten';
+
+  @override
+  String get bmHubListDrugSelectLabel => 'Drug-stack';
+
+  @override
+  String get bmHubListCryptoTitle => 'Crypto te koop zetten';
+
+  @override
+  String get bmHubListCryptoSelectLabel => 'Asset';
+
+  @override
+  String get bmHubListTradeTitle => 'Handelswaren te koop zetten';
+
+  @override
+  String get bmHubListTradeSelectLabel => 'Handelswaar';
+
+  @override
+  String get bmHubQuantityGrams => 'Hoeveelheid (g)';
+
+  @override
+  String get bmHubQuantityCrypto => 'Hoeveelheid';
+
+  @override
+  String get bmHubQuantityUnits => 'Hoeveelheid';
 
   @override
   String get bmHubSellCarriedItem => 'Verkoop item';
@@ -13596,15 +13650,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen en gedragen gereedschap, plus rugzakken, grondstoffen, wapenmarkt en munitie.';
+      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen, gereedschap, drugs-lots, crypto-lots en handelswaren-stacks, plus rugzakken, grondstoffen, wapenmarkt en munitie.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.';
+      'Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen van jou.\nListings verlopen na een bepaalde tijd als ze niet verkocht zijn. Houd je eigen aanbiedingen in de gaten via je profiel.\nTab Marktplaats: peer-to-peer cash. Eén feed toont voertuigen plus spelerlistings voor gedragen gereedschap, drugs-stacks (gram + kwaliteit), crypto-holdings en handelswaren. Via Verkopen kies je een soort, hoeveelheid en prijs. Mijn listings toont je actieve ads. Je kunt je eigen ad niet kopen. Escrow haalt voorraad weg tot koop of delist.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats: ververs na plaatsen; alleen gereedschap dat je bij je draagt kun je te koop zetten.';
+      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats: ververs na plaatsen; zet alleen te koop wat je bezit — gereedschap moet gedragen zijn, drugs/crypto/handelswaren komen uit inventaris/holdings. Delist boekt escrow terug.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';

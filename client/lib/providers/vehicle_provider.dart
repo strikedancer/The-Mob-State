@@ -1218,6 +1218,113 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> listDrugLotOnMarket(
+    int drugInventoryId,
+    int quantity,
+    int price,
+  ) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/market/list-drug'),
+        headers: headers,
+        body: json.encode({
+          'drugInventoryId': drugInventoryId,
+          'quantity': quantity,
+          'price': price,
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 && data['event'] == 'market.drug_listed') {
+        await fetchMyToolMarketListings();
+        await fetchMarketListings();
+        return true;
+      }
+      final msg = data['params']?['message']?.toString();
+      _error = (msg != null && msg.isNotEmpty)
+          ? msg
+          : _getErrorMessage(data['params']?['reason']?.toString());
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> listCryptoLotOnMarket(
+    String assetSymbol,
+    double quantity,
+    int price,
+  ) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/market/list-crypto'),
+        headers: headers,
+        body: json.encode({
+          'assetSymbol': assetSymbol,
+          'quantity': quantity,
+          'price': price,
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 &&
+          data['event'] == 'market.crypto_listed') {
+        await fetchMyToolMarketListings();
+        await fetchMarketListings();
+        return true;
+      }
+      final msg = data['params']?['message']?.toString();
+      _error = (msg != null && msg.isNotEmpty)
+          ? msg
+          : _getErrorMessage(data['params']?['reason']?.toString());
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> listTradeGoodLotOnMarket(
+    int inventoryId,
+    int quantity,
+    int price,
+  ) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/market/list-trade-good'),
+        headers: headers,
+        body: json.encode({
+          'inventoryId': inventoryId,
+          'quantity': quantity,
+          'price': price,
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 &&
+          data['event'] == 'market.trade_good_listed') {
+        await fetchMyToolMarketListings();
+        await fetchMarketListings();
+        return true;
+      }
+      final msg = data['params']?['message']?.toString();
+      _error = (msg != null && msg.isNotEmpty)
+          ? msg
+          : _getErrorMessage(data['params']?['reason']?.toString());
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> delistPlayerToolListing(int listingId) async {
     try {
       final headers = await _getHeaders();

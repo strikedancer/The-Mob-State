@@ -56,7 +56,7 @@ const TERMINOLOGY_RULES = {
   pt: [
     { from: /\b(tripulação)\b/gi, to: 'Crew' },
     { from: /\bApoiar\b/g, to: 'Suporte' },
+    { from: /\bEquipe\b/g, to: 'Crew' },
     { from: /\bclube noturno\b/gi, to: 'Nightclub' },
   ],
 };
-

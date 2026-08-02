@@ -2045,6 +2045,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Recruter une prostituée';
 
   @override
+  String get dashboardWarTheater => 'War theater';
+
+  @override
+  String get dashboardHotRegions => 'Hot regions';
+
+  @override
   String get dashboardCrewWars => 'Guerres de crew';
 
   @override
@@ -6599,6 +6605,54 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get bmHubNoMarketListingsBody =>
       'Rien ne correspond à vos filtres. Listez des outils portés avec Vendre un objet.';
+
+  @override
+  String get bmHubSellKindTool => 'Tool';
+
+  @override
+  String get bmHubSellKindDrug => 'Drugs';
+
+  @override
+  String get bmHubSellKindCrypto => 'Crypto';
+
+  @override
+  String get bmHubSellKindTrade => 'Trade goods';
+
+  @override
+  String get bmHubNoDrugsToSell => 'No drugs to sell';
+
+  @override
+  String get bmHubNoCryptoToSell => 'No crypto to sell';
+
+  @override
+  String get bmHubNoTradeGoodsToSell => 'No trade goods to sell';
+
+  @override
+  String get bmHubListDrugTitle => 'List drugs';
+
+  @override
+  String get bmHubListDrugSelectLabel => 'Drug stack';
+
+  @override
+  String get bmHubListCryptoTitle => 'List crypto';
+
+  @override
+  String get bmHubListCryptoSelectLabel => 'Asset';
+
+  @override
+  String get bmHubListTradeTitle => 'List trade goods';
+
+  @override
+  String get bmHubListTradeSelectLabel => 'Good';
+
+  @override
+  String get bmHubQuantityGrams => 'Quantity (g)';
+
+  @override
+  String get bmHubQuantityCrypto => 'Quantity';
+
+  @override
+  String get bmHubQuantityUnits => 'Quantity';
 
   @override
   String get bmHubSellCarriedItem => 'Vendre un objet';
@@ -13767,15 +13821,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Un seul hub : les produits de contrebande d\'abord (fleurs, appareils électroniques, diamants, armes, produits pharmaceutiques), puis l\'onglet Marché pour les véhicules et les outils transportés de joueur à joueur, ainsi que les sacs à dos, les matériaux, le marché des armes et des munitions.';
+      'Un seul hub : les produits de contrebande d\'abord (fleurs, appareils électroniques, diamants, armes, produits pharmaceutiques), puis l\'onglet Marché pour les véhicules de joueur à joueur, les outils transportés, les lots de drogues, les lots de crypto et les piles de marchandises commerciales, ainsi que les sacs à dos, les matériaux, le marché des armes et des munitions.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Onglet Marchandises commerciales : un défilement continu – d\'abord les cinq lignes de contrebande (prix, plafonds, jetons de risque : détérioration, volatilité, dommages causés par le voyage, saisie), puis votre inventaire à partir duquel vendre. L\'achat/vente utilise l\'API /trade ; les échecs de chargement partiel affichent une bannière d\'avertissement. \nLe marché noir est divisé en sous-marchés : Matériaux (matières premières), Armes (armes à feu et couteaux), Munitions (munitions par calibre), Véhicules (véhicules illégaux). \nLes prix et la disponibilité varient considérablement selon les pays et les périodes. Une annonce peut se vendre rapidement. \nLes transactions sur le marché noir ne laissent aucune trace officielle mais augmentent la chaleur du FBI pour les achats importants. \nLes armes achetées ici peuvent être utilisées dans les crimes, le PvP et la sécurité. De meilleures armes donnent des dégâts et des chances de réussite plus élevés. \nLes filtres par catégorie (type, pays, prix, disponibilité) vous aident à trouver rapidement la bonne annonce. \nVous pouvez publier vos propres annonces en tant que vendeur, y compris le prix et la quantité. D\'autres joueurs achètent chez vous. \nLes annonces expirent après un certain temps si elles ne sont pas vendues. Surveillez vos propres offres via votre profil. \nOnglet Marketplace : transactions au comptant peer-to-peer. Vous verrez les véhicules des autres joueurs à vendre et les outils transportés dans un seul flux (filtres pays + prix). Appuyez sur Vendre un article pour répertorier un outil que vous transportez ; Mes annonces affichent vos annonces actives de véhicules et d\'outils. Vous ne pouvez pas acheter votre propre annonce. La vente de drogues, de crypto ou de récompenses d\'événements spéciaux de joueur à joueur n\'est pas encore disponible ici.';
+      'Onglet Marchandises commerciales : un défilement continu – d\'abord les cinq lignes de contrebande (prix, plafonds, jetons de risque : détérioration, volatilité, dommages causés par le voyage, saisie), puis votre inventaire à partir duquel vendre. L\'achat/vente utilise l\'API /trade ; les échecs de chargement partiel affichent une bannière d\'avertissement. \nLe marché noir est divisé en sous-marchés : Matériaux (matières premières), Armes (armes à feu et couteaux), Munitions (munitions par calibre), Véhicules (véhicules illégaux). \nLes prix et la disponibilité varient considérablement selon les pays et les périodes. Une annonce peut se vendre rapidement. \nLes transactions sur le marché noir ne laissent aucune trace officielle mais augmentent la chaleur du FBI pour les achats importants. \nLes armes achetées ici peuvent être utilisées dans les crimes, le PvP et la sécurité. De meilleures armes donnent des dégâts et des chances de réussite plus élevés. \nLes filtres par catégorie (type, pays, prix, disponibilité) vous aident à trouver rapidement la bonne annonce. \nVous pouvez publier vos propres annonces en tant que vendeur, y compris le prix et la quantité. D\'autres joueurs achètent chez vous. \nLes annonces expirent après un certain temps si elles ne sont pas vendues. Surveillez vos propres offres via votre profil. \nOnglet Marketplace : transactions en espèces entre joueurs. Un flux affiche les véhicules ainsi que les listes de joueurs pour les outils transportés, les piles de médicaments (grammes + qualité), les avoirs cryptographiques et l\'inventaire des marchandises commerciales. Utilisez Vendre pour choisir un type, définir la quantité et le prix. Mes annonces couvrent vos annonces actives. Vous ne pouvez pas acheter votre propre annonce. Escrow supprime les actions jusqu\'à l\'achat ou la radiation.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Onglet Commerce : tirez pour actualiser si un segment échoue ; surveillez les puces à risque et Wanted avant les courses de contrebande risquées. \nAchetez des armes et des munitions en gros lorsque les prix sont bas : la disponibilité est temporaire. \nÉvitez les achats importants sur le marché noir lorsque le FBI Heat est déjà supérieur à 30. \nMarketplace : actualisation après la cotation ; seuls les outils de votre inventaire transporté peuvent être mis en vente.';
+      'Onglet Commerce : tirez pour actualiser si un segment échoue ; surveillez les puces à risque et Wanted avant les courses de contrebande risquées. \nAchetez des armes et des munitions en gros lorsque les prix sont bas : la disponibilité est temporaire. \nÉvitez les achats importants sur le marché noir lorsque le FBI Heat est déjà supérieur à 30. \nMarketplace : actualisation après la cotation ; indiquez uniquement ce que vous possédez – les outils doivent être transportés, les médicaments/crypto/biens commerciaux proviennent de votre inventaire/avoirs. La suppression de la liste restaure le séquestre.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';

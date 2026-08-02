@@ -1116,8 +1116,8 @@ healing = 5 HP (if health > 0 && health < 100)
 - â³ Money laundering
 - â³ Stock market
 - â³ Real estate development
-- â³ Deeper territory end-state (HQ power, war aftermath, regional projects) — see `TERRITORY_VISION.md`
-- â³ Player marketplace expansion beyond vehicles/tools (`drug_lot`, `crypto_lot`, `trade_good_lot`)
+- â³ Territory Fase C/D (HQ↔territory caps/projects, sabotage, season awards / region events) — see `TERRITORY_VISION.md` (Fase A/B live: tags, theater, aftermath, adjacency cluster/pocket, frontline notifications)
+- â³ Player marketplace `event_item` P2P (vehicles/tools/`drug_lot`/`crypto_lot`/`trade_good_lot` are live)
 
 ---
 

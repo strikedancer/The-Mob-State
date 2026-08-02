@@ -48,7 +48,8 @@ Scope-afbakening:
 - UI moet live spanning geven zonder kritieke acties of statusinfo op mobiel te verbergen.
 - Territory War en Total War moeten hun claimbare gebieden tonen met echte Territory-regio-identiteit (regionKey + NL/EN naam), niet met abstracte labels zoals `docks` of `harbor`.
 - Territory-targets moeten, zodra strategische Territory-metadata beschikbaar is, dezelfde bronwaarden meenemen voor `strategicTags`, claimbonus, tick-waarde en adjacency-context in zowel war-selectie, war scoring als War Room UI; Crew Wars mag geen los tweede waarderingsmodel naast Territory introduceren.
-- Een gewonnen `territory_war` of `total_war` mag tijdelijke druk terugschrijven naar echte Territory-regio's, maar die nasleep moet time-boxed zijn en via een aparte Territory effectlaag lopen in plaats van via permanente damage op ownership of stability.
+- War metadata bevat `theaterRegionKey` (theater-doel) + territory targets; dashboard exposeert theater + hot regions. Wars geven **geen** permanente ownership-skip — ownership blijft via Territory contests/resolve.
+- Een gewonnen `territory_war` of `total_war` mag tijdelijke druk terugschrijven naar echte Territory-regio's, maar die nasleep moet time-boxed zijn en via een aparte Territory effectlaag lopen in plaats van via permanente damage op ownership of stability. Verliezende crew krijgt `territory_frontline_pressure` notificatie.
 - Metadata parsing voor war hubs en territory targets moet op standaard JavaScript array-methodes gebaseerd zijn en tolerant blijven voor legacy of lege metadata; een parsefout in war metadata mag gekoppelde dashboard/player responses niet 500 laten gaan.
 
 ## War Lifecycle Guardrails

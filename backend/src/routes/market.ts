@@ -10,9 +10,52 @@ import { playerMarketplaceService } from '../services/playerMarketplaceService';
 
 const router = Router();
 
+/** Failures a player can cause while creating a listing, echoed back as-is. */
+const LIST_ERROR_REASONS = new Set([
+  'TOOL_NOT_FOUND',
+  'TOOL_NOT_CARRIED',
+  'TOOL_BROKEN',
+  'ALREADY_LISTED',
+  'INVALID_TOOL',
+  'INVALID_QUANTITY',
+  'INSUFFICIENT_QTY',
+  'DRUG_NOT_FOUND',
+  'CRYPTO_NOT_ENOUGH',
+  'CRYPTO_ASSET_NOT_FOUND',
+  'TRADE_GOOD_NOT_FOUND',
+  'INVALID_GOOD',
+  'UNSUPPORTED_KIND',
+]);
+
+function handleListError(res: Response, error: unknown, logLabel: string): Response {
+  if (error instanceof Error && LIST_ERROR_REASONS.has(error.message)) {
+    return res.status(400).json({
+      event: 'market.error',
+      params: { reason: error.message },
+    });
+  }
+  console.error(`${logLabel}:`, error);
+  return res.status(500).json({
+    event: 'error.internal',
+    params: {},
+  });
+}
+
+function parsePositiveInt(value: unknown): number | null {
+  const parsed = parseInt(String(value ?? ''), 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+}
+
+function parsePrice(value: unknown): number | null {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) {
+    return null;
+  }
+  return Math.floor(value);
+}
+
 /**
  * GET /market/unified
- * Vehicles plus player-item listings (tools, etc.) for the Marktplaats tab.
+ * Vehicles plus all player-item listings (tools, drug lots, crypto lots, trade goods).
  */
 router.get('/unified', authenticate, async (req: AuthRequest, res: Response) => {
   try {
@@ -20,7 +63,7 @@ router.get('/unified', authenticate, async (req: AuthRequest, res: Response) => 
     const countryStr = typeof country === 'string' ? country : undefined;
     const [listings, itemListings] = await Promise.all([
       blackMarketService.getMarketListings(countryStr),
-      playerMarketplaceService.getActiveToolListings(countryStr),
+      playerMarketplaceService.getActiveItemListings(countryStr),
     ]);
 
     return res.status(200).json({
@@ -96,17 +139,17 @@ router.get('/my-listings', authenticate, async (req: AuthRequest, res: Response)
  */
 router.post('/list-tool', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const playerToolId = parseInt(String(req.body?.playerToolId ?? ''), 10);
-    const price = req.body?.price;
+    const playerToolId = parsePositiveInt(req.body?.playerToolId);
+    const price = parsePrice(req.body?.price);
 
-    if (!Number.isFinite(playerToolId) || playerToolId <= 0) {
+    if (playerToolId === null) {
       return res.status(400).json({
         event: 'market.error',
         params: { reason: 'INVALID_PLAYER_TOOL_ID' },
       });
     }
 
-    if (typeof price !== 'number' || !Number.isFinite(price) || price <= 0) {
+    if (price === null) {
       return res.status(400).json({
         event: 'market.error',
         params: { reason: 'INVALID_PRICE' },
@@ -116,7 +159,7 @@ router.post('/list-tool', authenticate, async (req: AuthRequest, res: Response) 
     const result = await playerMarketplaceService.listPlayerTool(
       req.player!.id,
       playerToolId,
-      Math.floor(price),
+      price,
     );
 
     if (!result.success) {
@@ -128,36 +171,181 @@ router.post('/list-tool', authenticate, async (req: AuthRequest, res: Response) 
 
     return res.status(200).json({
       event: 'market.tool_listed',
-      params: { playerToolId, price: Math.floor(price) },
+      params: { playerToolId, price, listingId: result.listingId },
     });
   } catch (error) {
-    if (error instanceof Error) {
-      const map: Record<string, string> = {
-        TOOL_NOT_FOUND: 'TOOL_NOT_FOUND',
-        TOOL_NOT_CARRIED: 'TOOL_NOT_CARRIED',
-        TOOL_BROKEN: 'TOOL_BROKEN',
-        ALREADY_LISTED: 'ALREADY_LISTED',
-        INVALID_TOOL: 'INVALID_TOOL',
-      };
-      const reason = map[error.message];
-      if (reason) {
-        return res.status(400).json({
-          event: 'market.error',
-          params: { reason },
-        });
-      }
+    return handleListError(res, error, 'List tool error');
+  }
+});
+
+/**
+ * POST /market/list-drug
+ * Body: { drugInventoryId: number, quantity: number, price: number }
+ * Escrows grams out of the seller's drug inventory until sold or delisted.
+ */
+router.post('/list-drug', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const drugInventoryId = parsePositiveInt(req.body?.drugInventoryId);
+    const quantity = parsePositiveInt(req.body?.quantity);
+    const price = parsePrice(req.body?.price);
+
+    if (drugInventoryId === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_DRUG_INVENTORY_ID' },
+      });
     }
-    console.error('List tool error:', error);
-    return res.status(500).json({
-      event: 'error.internal',
-      params: {},
+
+    if (quantity === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_QUANTITY' },
+      });
+    }
+
+    if (price === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_PRICE' },
+      });
+    }
+
+    const result = await playerMarketplaceService.listDrugLot(
+      req.player!.id,
+      drugInventoryId,
+      quantity,
+      price,
+    );
+
+    if (!result.success) {
+      return res.status(400).json({
+        event: 'market.list_failed',
+        params: { message: result.message },
+      });
+    }
+
+    return res.status(200).json({
+      event: 'market.drug_listed',
+      params: { drugInventoryId, quantity, price, listingId: result.listingId },
     });
+  } catch (error) {
+    return handleListError(res, error, 'List drug lot error');
+  }
+});
+
+/**
+ * POST /market/list-crypto
+ * Body: { assetSymbol: string, quantity: number|string, price: number }
+ * Escrows a decimal amount out of the seller's holdings until sold or delisted.
+ */
+router.post('/list-crypto', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const assetSymbol = String(req.body?.assetSymbol ?? '').trim().toUpperCase();
+    const quantity = Number(req.body?.quantity);
+    const price = parsePrice(req.body?.price);
+
+    if (!assetSymbol) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_ASSET_SYMBOL' },
+      });
+    }
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_QUANTITY' },
+      });
+    }
+
+    if (price === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_PRICE' },
+      });
+    }
+
+    const result = await playerMarketplaceService.listCryptoLot(
+      req.player!.id,
+      assetSymbol,
+      quantity,
+      price,
+    );
+
+    if (!result.success) {
+      return res.status(400).json({
+        event: 'market.list_failed',
+        params: { message: result.message },
+      });
+    }
+
+    return res.status(200).json({
+      event: 'market.crypto_listed',
+      params: { assetSymbol, quantity, price, listingId: result.listingId },
+    });
+  } catch (error) {
+    return handleListError(res, error, 'List crypto lot error');
+  }
+});
+
+/**
+ * POST /market/list-trade-good
+ * Body: { inventoryId: number, quantity: number, price: number }
+ * Escrows units out of the seller's trade inventory until sold or delisted.
+ */
+router.post('/list-trade-good', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const inventoryId = parsePositiveInt(req.body?.inventoryId);
+    const quantity = parsePositiveInt(req.body?.quantity);
+    const price = parsePrice(req.body?.price);
+
+    if (inventoryId === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_INVENTORY_ID' },
+      });
+    }
+
+    if (quantity === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_QUANTITY' },
+      });
+    }
+
+    if (price === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_PRICE' },
+      });
+    }
+
+    const result = await playerMarketplaceService.listTradeGoodLot(
+      req.player!.id,
+      inventoryId,
+      quantity,
+      price,
+    );
+
+    if (!result.success) {
+      return res.status(400).json({
+        event: 'market.list_failed',
+        params: { message: result.message },
+      });
+    }
+
+    return res.status(200).json({
+      event: 'market.trade_good_listed',
+      params: { inventoryId, quantity, price, listingId: result.listingId },
+    });
+  } catch (error) {
+    return handleListError(res, error, 'List trade good lot error');
   }
 });
 
 /**
  * POST /market/delist-item/:listingId
- * Cancels a player market listing (non-vehicle).
+ * Cancels a player market listing (non-vehicle) and returns any escrow.
  */
 router.post('/delist-item/:listingId', authenticate, async (req: AuthRequest, res: Response) => {
   try {
@@ -189,10 +377,15 @@ router.post('/delist-item/:listingId', authenticate, async (req: AuthRequest, re
           params: { reason: 'NOT_OWNER' },
         });
       }
-      if (error.message === 'NOT_ACTIVE') {
+      const bad400: Record<string, string> = {
+        NOT_ACTIVE: 'NOT_ACTIVE',
+        UNSUPPORTED_KIND: 'UNSUPPORTED_KIND',
+        INVALID_GOOD: 'INVALID_GOOD',
+      };
+      if (bad400[error.message]) {
         return res.status(400).json({
           event: 'market.error',
-          params: { reason: 'NOT_ACTIVE' },
+          params: { reason: bad400[error.message] },
         });
       }
     }
@@ -206,7 +399,7 @@ router.post('/delist-item/:listingId', authenticate, async (req: AuthRequest, re
 
 /**
  * POST /market/buy-item/:listingId
- * Purchase a non-vehicle listing (e.g. carried tool).
+ * Purchase a non-vehicle listing (tool, drug lot, crypto lot or trade good lot).
  */
 router.post('/buy-item/:listingId', authenticate, async (req: AuthRequest, res: Response) => {
   try {
@@ -239,6 +432,12 @@ router.post('/buy-item/:listingId', authenticate, async (req: AuthRequest, res: 
         INSUFFICIENT_FUNDS: 'INSUFFICIENT_FUNDS',
         INVENTORY_FULL: 'INVENTORY_FULL',
         LISTING_STALE: 'LISTING_STALE',
+        TRADE_CAPACITY: 'TRADE_CAPACITY',
+        INSUFFICIENT_QTY: 'INSUFFICIENT_QTY',
+        CRYPTO_NOT_ENOUGH: 'CRYPTO_NOT_ENOUGH',
+        INVALID_GOOD: 'INVALID_GOOD',
+        INVALID_QUANTITY: 'INVALID_QUANTITY',
+        UNSUPPORTED_KIND: 'UNSUPPORTED_KIND',
       };
       if (bad400[msg]) {
         return res.status(400).json({

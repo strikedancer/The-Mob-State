@@ -1514,12 +1514,16 @@ model PlayerTools {
 }
 
 /// Player-to-player sales on the Zwarte Markt “Marktplaats” (vehicles stay on VehicleInventory).
-/// kind: `player_tool` (v1). Future: drug_lot, trade_good_lot, crypto_lot — see player-marketplace.md
+/// kind: player_tool | drug_lot | crypto_lot | trade_good_lot — see player-marketplace.md
 model PlayerMarketListing {
   id          Int       @id @default(autoincrement())
   sellerId    Int
   kind        String    @db.VarChar(32)
   refId       Int
+  /// Stack size for drug/trade lots; tools ignore (1). Crypto uses quantityScaled in meta.
+  quantity    Int       @default(1)
+  /// Escrow payload JSON (drugType/quality, assetSymbol+decimal qty, goodType/condition, …).
+  meta        String?   @db.LongText
   price       Int
   status      String    @default("active") @db.VarChar(16)
   countryCode String?   @db.VarChar(50)

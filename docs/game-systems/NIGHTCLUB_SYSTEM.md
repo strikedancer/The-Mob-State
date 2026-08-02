@@ -446,7 +446,8 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 - Cron job setup for background processing
 - Police raid mechanics
 - Rival nightclub system
-- Admin management interface
+
+✅ **Admin telemetry (read-only):** `GET /admin/nightclubs/overview` + admin panel tab — crowd, 24h sales/thefts, active events. Not a full Ops Lab duplicate.
 
 ---
 

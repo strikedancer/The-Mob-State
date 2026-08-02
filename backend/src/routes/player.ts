@@ -1558,6 +1558,24 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             ? crewWarHub.availableTargets.length
             : 0,
           phaseEndsInSeconds: crewWarPhaseEndsInSeconds,
+          theaterRegionKey:
+            (currentCrewWar as { metadata?: { theaterRegionKey?: string } } | null)?.metadata
+              ?.theaterRegionKey ??
+            (crewWarHub.currentWar as { metadata?: { theaterRegionKey?: string } } | null)?.metadata
+              ?.theaterRegionKey ??
+            null,
+          hotRegionKeys: Array.isArray(
+            (crewWarHub.currentWar as { metadata?: { territoryTargets?: Array<{ regionKey?: string }> } } | null)
+              ?.metadata?.territoryTargets,
+          )
+            ? (
+                (crewWarHub.currentWar as { metadata?: { territoryTargets?: Array<{ regionKey?: string }> } })
+                  .metadata!.territoryTargets!
+              )
+                .map((t) => t.regionKey)
+                .filter((k): k is string => Boolean(k))
+                .slice(0, 5)
+            : [],
         },
         territoryLeaderStats,
         vehicleOps: {

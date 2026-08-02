@@ -54,6 +54,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Op grote schermen moet de embedded kaartlay-out kunnen opschalen tot 4 kolommen wanneer ruimte dit toelaat.
 - Gebruik een dynamische kolomberekening op basis van minimale kaartbreedte in plaats van alleen harde viewport-breakpoints, zodat 4 kolommen ook op veel laptop-layouts haalbaar zijn.
 - In Vehicle Heist embedded mode hoort de losse capaciteitsbalk boven de voertuigen verborgen te blijven; capaciteit wordt daar in de lane cards getoond.
+- **Layout-regressiechecklist** (bij elke shell/embedded layout-wijziging): (1) jail overlay op shell niet onder slivers; (2) embedded garage/marina zonder dubbele categorie-tabs; (3) gestolen-lijst responsive kolommen (1→4); (4) kaart-hoogte natuurlijk; (5) capaciteit in lane cards, niet als losse balk in embedded; (6) steal-result via gedeelde `showStolenVehicleDialog`. Geen herbouw tenzij bug.
 - Gebruik timed repairs; geen instant click-pay-complete gedrag.
 - World-cap rotatie moet correct blijven: verkoop of sloop opent opnieuw beschikbaarheid voor die voertuigsoort.
 - Transport hoort niet meer in deze module; cross-country verplaatsing loopt via Smuggling Hub.

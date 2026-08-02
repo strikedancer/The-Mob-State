@@ -19,6 +19,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 ## Documented static modifiers (ammo factory)
 - **Claim interval:** `PRODUCTION_INTERVAL_MINUTES = 20` in `ammoFactoryService.ts` (was 10 after Apr 2026; originally 5).
 - **Base output:** `BASE_ROUNDS_PER_TICK = 3` rounds per ammo type at level 1 (was 5). Level curve unchanged (`1 + (level-1)*2.46`). Session backlog still 8 hours. UI copy + `ammo_factory_screen.dart` estimate constants must match. See `ammo-factory.md`.
+- **Pacing rule:** wijzig claim-interval of base output **alleen** na economy telemetry (`GET /api/admin/economy/balance-telemetry`); geen curve-tweaks “op gevoel”.
 
 ## Primary Systems
 - `backend/src/services/economyBalanceService.ts`

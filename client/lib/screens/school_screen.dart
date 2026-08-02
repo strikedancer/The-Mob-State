@@ -10,6 +10,7 @@ import '../services/api_client.dart';
 import '../config/app_config.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/action_result_toast.dart';
 import '../widgets/cooldown_overlay.dart';
 
 class SchoolScreen extends StatefulWidget {
@@ -203,20 +204,13 @@ class _SchoolScreenState extends State<SchoolScreen> {
           _setGlobalCooldown(cooldownSeconds);
         }
 
-        showTopRightFromSnackBar(
+        showActionResultToast(
           context,
-          SnackBar(
-            content: Text(
-              l10n.schoolTrainSuccessToast(
-                trackName,
-                xpGain,
-                suffix,
-                l10n.cooldown,
-                _formatCooldownSeconds(cooldownSeconds),
-              ),
-            ),
-            backgroundColor: Colors.green,
-          ),
+          title: trackName,
+          xpDelta: '+$xpGain XP$suffix',
+          cooldownLine:
+              '${l10n.cooldown} ${_formatCooldownSeconds(cooldownSeconds)}',
+          success: true,
         );
 
         await _loadSchoolData();

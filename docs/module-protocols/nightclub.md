@@ -6,6 +6,9 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 ## Primary Frontend Entry
 - client/lib/screens/nightclub_screen.dart
 
+## Admin
+- Read-only telemetry: `GET /admin/nightclubs/overview` + admin tab `NightclubAdminPanel` (crowd, 24h sales/thefts, active events). Not a full Ops Lab duplicate.
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.

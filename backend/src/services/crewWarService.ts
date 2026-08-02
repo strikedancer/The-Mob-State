@@ -697,6 +697,29 @@ async function finalizeWar(war: NonNullable<CrewWarRecord>) {
     }
   }
 
+  // Dedicated frontline-pressure ping for the losing crew when aftermath lands.
+  if (
+    territoryAftermath &&
+    territoryAftermath.affectedCrewId &&
+    Array.isArray(territoryAftermath.affectedRegionKeys) &&
+    territoryAftermath.affectedRegionKeys.length > 0
+  ) {
+    const theaterKey =
+      territoryAftermath.theaterRegionKey ?? territoryAftermath.affectedRegionKeys[0];
+    for (const member of memberRows) {
+      if (member.crewId !== territoryAftermath.affectedCrewId) continue;
+      await notificationService.sendTerritoryFrontlinePressureNotification(
+        member.player.id,
+        theaterKey,
+        {
+          reason: 'war_aftermath',
+          endsAt: territoryAftermath.endsAt,
+          affectedRegionCount: territoryAftermath.affectedRegionKeys.length,
+        },
+      );
+    }
+  }
+
   if (topParticipantReward) {
     await activityService.logActivity(
       topParticipantReward.playerId,

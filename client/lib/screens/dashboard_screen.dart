@@ -3990,6 +3990,18 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         _formatCooldown(_stats!.crewWar!.phaseEndsInSeconds),
                         Colors.orange.shade300,
                       ),
+                    if ((_stats?.crewWar?.theaterRegionKey ?? '').isNotEmpty)
+                      _buildInfoRow(
+                        l10n.dashboardWarTheater,
+                        _stats!.crewWar!.theaterRegionKey!,
+                        Colors.white,
+                      ),
+                    if ((_stats?.crewWar?.hotRegionKeys.isNotEmpty ?? false))
+                      _buildInfoRow(
+                        l10n.dashboardHotRegions,
+                        _stats!.crewWar!.hotRegionKeys.take(3).join(', '),
+                        Colors.orange.shade200,
+                      ),
                     if (_stats?.territoryLeaderStats != null) ...[
                       const SizedBox(height: 12),
                       const Divider(color: Colors.grey),

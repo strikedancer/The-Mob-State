@@ -4768,4 +4768,65 @@ router.delete(
   }
 );
 
+router.get('/nightclubs/overview', async (_req: AdminRequest, res) => {
+  try {
+    const venues = await prisma.nightclubVenue.findMany({
+      take: 100,
+      orderBy: { id: 'desc' },
+      include: {
+        player: { select: { id: true, username: true } },
+      },
+    });
+
+    const rows = await Promise.all(
+      venues.map(async (venue) => {
+        const [sales24h, thefts24h, activeEvents] = await Promise.all([
+          prisma.nightclubSale.aggregate({
+            where: {
+              venueId: venue.id,
+              saleTime: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+            },
+            _sum: { totalRevenue: true },
+            _count: { _all: true },
+          }),
+          prisma.nightclubTheft.aggregate({
+            where: {
+              venueId: venue.id,
+              occurredAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+            },
+            _sum: { valueLost: true },
+            _count: { _all: true },
+          }),
+          prisma.nightclubEvent.count({
+            where: {
+              venueId: venue.id,
+              endsAt: { gt: new Date() },
+            },
+          }),
+        ]);
+
+        return {
+          venueId: venue.id,
+          playerId: venue.playerId,
+          ownerUsername: venue.player.username,
+          country: venue.country,
+          isOpen: venue.isOpen === true,
+          crowdSize: venue.crowdSize ?? 0,
+          crowdVibe: venue.crowdVibe ?? 'chill',
+          sales24hCount: sales24h._count._all,
+          sales24hRevenue: sales24h._sum.totalRevenue ?? 0,
+          thefts24hCount: thefts24h._count._all,
+          thefts24hLoss: thefts24h._sum.valueLost ?? 0,
+          activeEvents,
+        };
+      }),
+    );
+
+    res.json({ venues: rows, generatedAt: new Date().toISOString() });
+  } catch (error) {
+    console.error('Admin nightclub overview error:', error);
+    res.status(500).json({ error: 'Failed to fetch nightclub overview' });
+  }
+});
+
 export default router;

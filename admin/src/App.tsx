@@ -36,6 +36,7 @@ import {
 } from "./services/adminService";
 import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
+import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
 import {
   translations,
   type AdminLanguage,
@@ -87,7 +88,8 @@ type TabType =
   | "tickets"
   | "todos"
   | "crew-wars"
-  | "territory";
+  | "territory"
+  | "nightclubs";
 type PlayerDetailTab = "overview" | "manage" | "financial";
 type DateRangeFilter = "24h" | "7d" | "30d" | "all";
 type SystemLogDateRange = "1h" | "24h" | "7d" | "30d" | "all";
@@ -4337,6 +4339,11 @@ function App() {
       icon: "bi-crosshair2",
     },
     { id: "territory", label: "Territory", icon: "bi-globe-europe-africa" },
+    {
+      id: "nightclubs",
+      label: l("Nightclubs", "Nightclubs"),
+      icon: "bi-music-note-beamed",
+    },
     {
       id: "tickets",
       label: l("Tickets", "Tickets"),
@@ -10506,6 +10513,13 @@ function App() {
 
               {activeTab === "territory" && (
                 <TerritoryAdminPanel locale={language} />
+              )}
+
+              {activeTab === "nightclubs" && (
+                <>
+                  <h1>{l("Nightclubs", "Nightclubs")}</h1>
+                  <NightclubAdminPanel locale={language} />
+                </>
               )}
 
               {activeTab === "audit-logs" && (
