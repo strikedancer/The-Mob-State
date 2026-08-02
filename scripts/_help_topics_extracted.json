@@ -1612,14 +1612,17 @@
     "categoryEn": "Core",
     "titleNl": "Premium & Credits",
     "titleEn": "Premium & Credits",
-    "summaryNl": "Koop en beheer hier Player VIP, Crew VIP en creditbundels. Dit overzicht toont ook je creditsaldo en alle beschikbare credit-items die je direct of contextueel kunt gebruiken.",
-    "summaryEn": "Buy and manage Player VIP, Crew VIP and credit bundles here. This overview also shows your credit balance and all available credit items you can use directly or contextually.",
+    "summaryNl": "Koop en beheer hier Player VIP, Crew VIP en creditbundels. Je ziet auto-renew, kunt VIP cadeau doen, en VIP-prestige (alleen display) opbouwen.",
+    "summaryEn": "Buy and manage Player VIP, Crew VIP and credit bundles here. See auto-renew, gift VIP, and build VIP prestige (display only).",
     "howNl": [
       "Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.",
       "Op elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.",
       "Player VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.",
       "Player VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.",
       "VIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.",
+      "Als auto-renew actief is, kun je verlenging stopzetten; je huidige VIP blijft tot de vervaldatum geldig.",
+      "Met VIP cadeau koop je 30 dagen Player VIP voor een andere speler via gebruikersnaam (eenmalig, zonder auto-renew voor de ontvanger).",
+      "VIP prestige (brons/zilver/goud) is puur zichtbaar op basis van lifetime VIP-dagen en geeft geen gameplay-power.",
       "Creditbundels koop je met echt geld. Na succesvolle betaling verschijnen de credits meteen in je wallet-overzicht.",
       "Event Pass (7 dagen, echt geld) staat in hetzelfde eenmalige overzicht: +10% score op live spelerevents, plus een klein bonuscredits-pakket na betaling. Dit is side-grade: geen directe combat- of PvP-boost; het helpt vooral bij leaderboard-prestaties binnen lopende events.",
       "Credit-items gebruiken wallet-credits in plaats van euro's. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.",
@@ -1634,6 +1637,9 @@
       "Player VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew.",
       "Player VIP gives 10% shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production (after cost confirmation), and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are removed.",
       "VIP checkout opens the payment page and then returns to the in-game `Premium & Credits` section, so you immediately see whether the purchase succeeded and how long your VIP runs.",
+      "When auto-renew is active you can cancel renewal; your current VIP stays valid until the expiry date.",
+      "Gift VIP buys 30 days of Player VIP for another player by username (one-time; recipient does not get auto-renew).",
+      "VIP prestige (bronze/silver/gold) is display-only from lifetime VIP days and grants no gameplay power.",
       "Credit bundles are bought with real money. After a successful payment the credits appear in your wallet overview right away.",
       "Event Pass (7 days, real money) is listed in the one-time offer grid: +10% score on live player events, plus a small credit bonus after purchase. It is a side-grade: not a direct combat or PvP boost; it mainly helps leaderboard results during running events.",
       "Credit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.",
@@ -1644,11 +1650,13 @@
     ],
     "tipsNl": [
       "Controleer eerst je creditsaldo en vervaldatum voordat je opnieuw koopt; vaak is verlengen nuttiger dan blind stapelen.",
+      "Stop auto-renew op tijd als je niet wilt doorbetalen; je betaalde periode blijft gewoon lopen.",
       "Gebruik credits vooral op tijdkritische boosts of bescherming, niet automatisch op elke kleine versnelling.",
       "Zit je nog niet in een crew, begin dan eerder met Player VIP of een creditbundel dan met Crew VIP."
     ],
     "tipsEn": [
       "Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.",
+      "Cancel auto-renew in time if you do not want ongoing charges; your paid-through period still runs.",
       "Use credits mainly on time-critical boosts or protection, not automatically on every small shortcut.",
       "If you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP."
     ],

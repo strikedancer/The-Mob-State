@@ -19,6 +19,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - **Gift Player VIP:** `POST /subscriptions/checkout/gift-player-vip` met `recipientUsername`; webhook type `player_vip_gift` verlengt VIP van ontvanger (geen auto-renew).
 - **Prestige (display-only):** lifetime VIP-dagen → tiers bronze/silver/gold (30/180/365); geen gameplay power.
 - Cron `vipExpirySweep` zet verlopen `isVip` uit (crew buildings downgraden).
+- Help-topic `premium` (Help & Uitleg) dekt cancel/gift/prestige; sync via `scripts/_help_topics_extracted.json`.
 
 ## Change Rules
 - Gebruik provider-idempotentie: webhook-verwerking mag rewards nooit dubbel uitkeren.
