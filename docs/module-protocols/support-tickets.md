@@ -43,6 +43,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and push
 - All player-facing copy in ticket create/reply flow must be NL + EN.
 - Support push notification wording must be language-aware by player preference.
 - Keep status labels clear and consistent across player and admin UI.
+- Category label `supportCategoryBug` must stay the software term **Bug** (do not machine-translate as insect: NL Beestje / DE Insekt / IT Insetto).
 
 ## Push + Inbox Rules
 - Public admin reply should never create an inbox/direct-message entry for the player.
