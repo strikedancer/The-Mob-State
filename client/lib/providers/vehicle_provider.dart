@@ -1325,6 +1325,42 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> listEventItemOnMarket(
+    int eventItemId,
+    int quantity,
+    int price,
+  ) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/market/list-event-item'),
+        headers: headers,
+        body: json.encode({
+          'eventItemId': eventItemId,
+          'quantity': quantity,
+          'price': price,
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 &&
+          data['event'] == 'market.event_item_listed') {
+        await fetchMyToolMarketListings();
+        await fetchMarketListings();
+        return true;
+      }
+      final msg = data['params']?['message']?.toString();
+      _error = (msg != null && msg.isNotEmpty)
+          ? msg
+          : _getErrorMessage(data['params']?['reason']?.toString());
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> delistPlayerToolListing(int listingId) async {
     try {
       final headers = await _getHeaders();

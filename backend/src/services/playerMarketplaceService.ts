@@ -7,6 +7,7 @@
  *   drug_lot       — grams debited from DrugInventory and held in the listing
  *   crypto_lot     — decimal amount debited from crypto_holdings and held in the listing
  *   trade_good_lot — units debited from Inventory and held in the listing
+ *   event_item     — units debited from player_event_items and held in the listing
  *
  * The three lot kinds are escrowed: the source row is debited when listing, credited back
  * when delisting, and credited to the buyer on purchase. Their payload lives in `meta`
@@ -19,11 +20,17 @@ import drugService from './drugService';
 import { drugFacilityService } from './drugFacilityService';
 import type { DrugQuality } from './drugFacilityService';
 import { getGoodById } from './tradeService';
+import {
+  creditEventItem,
+  debitEventItem,
+  getEventItemDefinition,
+} from './eventItemService';
 
 export const MARKET_LISTING_KIND_PLAYER_TOOL = 'player_tool';
 export const MARKET_LISTING_KIND_DRUG_LOT = 'drug_lot';
 export const MARKET_LISTING_KIND_CRYPTO_LOT = 'crypto_lot';
 export const MARKET_LISTING_KIND_TRADE_GOOD_LOT = 'trade_good_lot';
+export const MARKET_LISTING_KIND_EVENT_ITEM = 'event_item';
 
 /** Crypto amounts are decimal; the integer `quantity` column stores a scaled copy for sorting. */
 const CRYPTO_QUANTITY_SCALE = 10_000;
@@ -65,6 +72,13 @@ interface TradeGoodLotMeta {
   condition: number;
   unitPurchasePrice: number;
   purchasedAt: string | null;
+}
+
+interface EventItemLotMeta {
+  itemKey: string;
+  unitPrice: number;
+  nameEn: string;
+  nameNl: string;
 }
 
 interface ListResult {
@@ -373,6 +387,29 @@ function serializeTradeGoodLotListing(row: ListingRow) {
   };
 }
 
+function serializeEventItemListing(row: ListingRow) {
+  const meta = parseMeta<EventItemLotMeta>(row.meta);
+  if (!meta) return null;
+  const def = getEventItemDefinition(meta.itemKey);
+  return {
+    listingId: row.id,
+    kind: row.kind,
+    price: row.price,
+    quantity: row.quantity,
+    countryCode: row.countryCode,
+    createdAt: row.createdAt,
+    seller: row.seller,
+    eventItemLot: {
+      itemKey: meta.itemKey,
+      nameEn: meta.nameEn || def?.nameEn || meta.itemKey,
+      nameNl: meta.nameNl || def?.nameNl || meta.itemKey,
+      unitPrice: meta.unitPrice,
+      quantity: row.quantity,
+      bound: false,
+    },
+  };
+}
+
 /**
  * Serializes any listing kind. Tool listings whose backing row vanished are cancelled
  * (their "escrow" is the row itself); lot kinds always hold their own payload.
@@ -396,6 +433,8 @@ async function serializeListing(row: ListingRow): Promise<unknown | null> {
       return serializeCryptoLotListing(row);
     case MARKET_LISTING_KIND_TRADE_GOOD_LOT:
       return serializeTradeGoodLotListing(row);
+    case MARKET_LISTING_KIND_EVENT_ITEM:
+      return serializeEventItemListing(row);
     default:
       return null;
   }
@@ -703,6 +742,60 @@ export const playerMarketplaceService = {
     return { success: true, message: 'Listed', listingId: listing.id };
   },
 
+  /** Escrows transferable event collectables into a new listing. */
+  async listEventItem(
+    playerId: number,
+    eventItemId: number,
+    quantityInput: number,
+    price: number,
+  ): Promise<ListResult> {
+    const quantity = requirePositiveInt(quantityInput);
+
+    const row = await prisma.playerEventItem.findUnique({ where: { id: eventItemId } });
+    if (!row || row.playerId !== playerId) {
+      throw new Error('EVENT_ITEM_NOT_FOUND');
+    }
+    const def = getEventItemDefinition(row.itemKey);
+    if (!def) {
+      throw new Error('EVENT_ITEM_UNKNOWN');
+    }
+    if (def.bound) {
+      throw new Error('EVENT_ITEM_BOUND');
+    }
+    if (row.quantity < quantity) {
+      throw new Error('INSUFFICIENT_QTY');
+    }
+
+    const rejected = outOfBounds(price, def.referenceUnitPrice * quantity);
+    if (rejected) return rejected;
+
+    const countryCode = await getSellerCountry(playerId);
+    const meta: EventItemLotMeta = {
+      itemKey: row.itemKey,
+      unitPrice: def.referenceUnitPrice,
+      nameEn: def.nameEn,
+      nameNl: def.nameNl,
+    };
+
+    const listing = await prisma.$transaction(async (tx) => {
+      await debitEventItem(tx, playerId, row.itemKey, quantity);
+      return tx.playerMarketListing.create({
+        data: {
+          sellerId: playerId,
+          kind: MARKET_LISTING_KIND_EVENT_ITEM,
+          refId: eventItemId,
+          quantity,
+          meta: JSON.stringify(meta),
+          price,
+          status: 'active',
+          countryCode,
+        },
+      });
+    });
+
+    return { success: true, message: 'Listed', listingId: listing.id };
+  },
+
   /** Cancels a listing and returns any escrowed goods to the seller. */
   async delist(playerId: number, listingId: number) {
     const row = await prisma.playerMarketListing.findUnique({ where: { id: listingId } });
@@ -756,6 +849,8 @@ export const playerMarketplaceService = {
         return this._buyCryptoLotListing(buyerId, listing);
       case MARKET_LISTING_KIND_TRADE_GOOD_LOT:
         return this._buyTradeGoodLotListing(buyerId, listing);
+      case MARKET_LISTING_KIND_EVENT_ITEM:
+        return this._buyEventItemListing(buyerId, listing);
       default:
         throw new Error('UNSUPPORTED_KIND');
     }
@@ -944,9 +1039,28 @@ export const playerMarketplaceService = {
       return { newMoney, purchasePrice: listing.price };
     });
   },
-};
 
-/** Returns escrowed goods for the three lot kinds; tools hold no escrow. */
+  async _buyEventItemListing(
+    buyerId: number,
+    listing: ListingRow,
+  ): Promise<{ newMoney: number; purchasePrice: number }> {
+    const meta = parseMeta<EventItemLotMeta>(listing.meta);
+    if (!meta) {
+      throw new Error('LISTING_STALE');
+    }
+    const def = getEventItemDefinition(meta.itemKey);
+    if (!def || def.bound) {
+      throw new Error('EVENT_ITEM_BOUND');
+    }
+
+    return prisma.$transaction(async (tx) => {
+      await claimListing(tx, listing.id, buyerId);
+      const newMoney = await settlePayment(tx, buyerId, listing.sellerId, listing.price);
+      await creditEventItem(tx, buyerId, meta.itemKey, listing.quantity, null);
+      return { newMoney, purchasePrice: listing.price };
+    });
+  },
+};
 async function restoreEscrow(tx: TransactionClient, listing: ListingRow): Promise<void> {
   switch (listing.kind) {
     case MARKET_LISTING_KIND_DRUG_LOT: {
@@ -1012,6 +1126,12 @@ async function restoreEscrow(tx: TransactionClient, listing: ListingRow): Promis
           },
         });
       }
+      return;
+    }
+    case MARKET_LISTING_KIND_EVENT_ITEM: {
+      const meta = parseMeta<EventItemLotMeta>(listing.meta);
+      if (!meta) return;
+      await creditEventItem(tx, listing.sellerId, meta.itemKey, listing.quantity, null);
       return;
     }
     default:

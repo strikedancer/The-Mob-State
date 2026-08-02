@@ -24,6 +24,9 @@ const LIST_ERROR_REASONS = new Set([
   'CRYPTO_ASSET_NOT_FOUND',
   'TRADE_GOOD_NOT_FOUND',
   'INVALID_GOOD',
+  'EVENT_ITEM_NOT_FOUND',
+  'EVENT_ITEM_UNKNOWN',
+  'EVENT_ITEM_BOUND',
   'UNSUPPORTED_KIND',
 ]);
 
@@ -344,6 +347,61 @@ router.post('/list-trade-good', authenticate, async (req: AuthRequest, res: Resp
 });
 
 /**
+ * POST /market/list-event-item
+ * Body: { eventItemId: number, quantity: number, price: number }
+ * Escrows transferable event collectables until sold or delisted.
+ */
+router.post('/list-event-item', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const eventItemId = parsePositiveInt(req.body?.eventItemId);
+    const quantity = parsePositiveInt(req.body?.quantity);
+    const price = parsePrice(req.body?.price);
+
+    if (eventItemId === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_EVENT_ITEM_ID' },
+      });
+    }
+
+    if (quantity === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_QUANTITY' },
+      });
+    }
+
+    if (price === null) {
+      return res.status(400).json({
+        event: 'market.error',
+        params: { reason: 'INVALID_PRICE' },
+      });
+    }
+
+    const result = await playerMarketplaceService.listEventItem(
+      req.player!.id,
+      eventItemId,
+      quantity,
+      price,
+    );
+
+    if (!result.success) {
+      return res.status(400).json({
+        event: 'market.list_failed',
+        params: { message: result.message },
+      });
+    }
+
+    return res.status(200).json({
+      event: 'market.event_item_listed',
+      params: { eventItemId, quantity, price, listingId: result.listingId },
+    });
+  } catch (error) {
+    return handleListError(res, error, 'List event item error');
+  }
+});
+
+/**
  * POST /market/delist-item/:listingId
  * Cancels a player market listing (non-vehicle) and returns any escrow.
  */
@@ -437,6 +495,8 @@ router.post('/buy-item/:listingId', authenticate, async (req: AuthRequest, res: 
         CRYPTO_NOT_ENOUGH: 'CRYPTO_NOT_ENOUGH',
         INVALID_GOOD: 'INVALID_GOOD',
         INVALID_QUANTITY: 'INVALID_QUANTITY',
+        EVENT_ITEM_BOUND: 'EVENT_ITEM_BOUND',
+        EVENT_ITEM_UNKNOWN: 'EVENT_ITEM_UNKNOWN',
         UNSUPPORTED_KIND: 'UNSUPPORTED_KIND',
       };
       if (bad400[msg]) {

@@ -13,6 +13,7 @@ class PlayerToolMarketListing {
   final DrugLotInfo? drugLot;
   final CryptoLotInfo? cryptoLot;
   final TradeGoodLotInfo? tradeGoodLot;
+  final EventItemLotInfo? eventItemLot;
 
   PlayerToolMarketListing({
     required this.listingId,
@@ -28,6 +29,7 @@ class PlayerToolMarketListing {
     this.drugLot,
     this.cryptoLot,
     this.tradeGoodLot,
+    this.eventItemLot,
   });
 
   factory PlayerToolMarketListing.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class PlayerToolMarketListing {
     final drug = json['drugLot'] as Map<String, dynamic>?;
     final crypto = json['cryptoLot'] as Map<String, dynamic>?;
     final trade = json['tradeGoodLot'] as Map<String, dynamic>?;
+    final eventItem = json['eventItemLot'] as Map<String, dynamic>?;
     return PlayerToolMarketListing(
       listingId: (json['listingId'] as num).toInt(),
       kind: json['kind'] as String? ?? 'player_tool',
@@ -52,6 +55,8 @@ class PlayerToolMarketListing {
       drugLot: drug != null ? DrugLotInfo.fromJson(drug) : null,
       cryptoLot: crypto != null ? CryptoLotInfo.fromJson(crypto) : null,
       tradeGoodLot: trade != null ? TradeGoodLotInfo.fromJson(trade) : null,
+      eventItemLot:
+          eventItem != null ? EventItemLotInfo.fromJson(eventItem) : null,
     );
   }
 
@@ -65,6 +70,8 @@ class PlayerToolMarketListing {
         return cryptoLot?.assetSymbol ?? 'Crypto';
       case 'trade_good_lot':
         return tradeGoodLot?.goodName ?? 'Trade good';
+      case 'event_item':
+        return eventItemLot?.nameEn ?? 'Event item';
       default:
         return toolDefinition?.name ?? playerTool?.toolId ?? 'Item';
     }
@@ -78,6 +85,8 @@ class PlayerToolMarketListing {
         return cryptoLot?.quantity ?? '';
       case 'trade_good_lot':
         return 'x${tradeGoodLot?.quantity ?? quantity}';
+      case 'event_item':
+        return 'x${eventItemLot?.quantity ?? quantity}';
       default:
         final pt = playerTool;
         if (pt == null) return '';
@@ -157,6 +166,32 @@ class TradeGoodLotInfo {
       condition: (json['condition'] as num?)?.toInt() ?? 100,
       quantity: (json['quantity'] as num?)?.toInt() ?? 0,
       unitBasePrice: (json['unitBasePrice'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+
+class EventItemLotInfo {
+  final String itemKey;
+  final String nameEn;
+  final String nameNl;
+  final int unitPrice;
+  final int quantity;
+
+  EventItemLotInfo({
+    required this.itemKey,
+    required this.nameEn,
+    required this.nameNl,
+    required this.unitPrice,
+    required this.quantity,
+  });
+
+  factory EventItemLotInfo.fromJson(Map<String, dynamic> json) {
+    return EventItemLotInfo(
+      itemKey: json['itemKey']?.toString() ?? '',
+      nameEn: json['nameEn']?.toString() ?? '',
+      nameNl: json['nameNl']?.toString() ?? '',
+      unitPrice: (json['unitPrice'] as num?)?.toInt() ?? 0,
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
     );
   }
 }

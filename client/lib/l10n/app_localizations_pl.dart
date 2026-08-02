@@ -6570,6 +6570,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get bmHubSellKindTrade => 'Trade goods';
 
   @override
+  String get bmHubQuantityEvent => 'Quantity';
+
+  @override
+  String get bmHubListEventItemTitle => 'Sell event item';
+
+  @override
+  String get bmHubNoEventItemsToSell => 'No event items to sell';
+
+  @override
+  String get bmHubSellKindEvent => 'Event items';
+
+  @override
   String get bmHubNoDrugsToSell => 'No drugs to sell';
 
   @override

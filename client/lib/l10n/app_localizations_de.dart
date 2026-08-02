@@ -6605,6 +6605,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bmHubSellKindTrade => 'Trade goods';
 
   @override
+  String get bmHubQuantityEvent => 'Quantity';
+
+  @override
+  String get bmHubListEventItemTitle => 'Sell event item';
+
+  @override
+  String get bmHubNoEventItemsToSell => 'No event items to sell';
+
+  @override
+  String get bmHubSellKindEvent => 'Event items';
+
+  @override
   String get bmHubNoDrugsToSell => 'No drugs to sell';
 
   @override
@@ -13818,7 +13830,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Ein Hub: Zuerst Schmuggelware (Blumen, Elektronik, Diamanten, Waffen, Pharmazeutika), dann die Registerkarte „Marktplatz“ für Spieler-zu-Spieler-Fahrzeuge, mitgeführte Werkzeuge, Drogenposten, Kryptoposten und Handelswarenstapel sowie Rucksäcke, Materialien, Waffenmarkt und Munition.';
+      'Ein Hub: Zuerst Schmuggelwaren (Blumen, Elektronik, Diamanten, Waffen, Arzneimittel), dann die Registerkarte „Marktplatz“ für Spieler-zu-Spieler-Fahrzeuge, mitgeführte Werkzeuge, Drogenposten, Krypto-Lots, Handelswarenstapel und übertragbare Eventgegenstände sowie Rucksäcke, Materialien, Waffenmarkt und Munition.';
 
   @override
   String get helpTopicBlackMarketHow =>

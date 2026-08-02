@@ -121,6 +121,7 @@ model Player {
   security                        PlayerSecurity?
   selectedVehicle                 PlayerSelectedVehicle?
   playerTools                     PlayerTools[]
+  playerEventItems                PlayerEventItem[]
   playerMarketListingsAsSeller    PlayerMarketListing[]            @relation("PlayerMarketListingSeller")
   playerMarketListingsAsBuyer     PlayerMarketListing[]            @relation("PlayerMarketListingBuyer")
   profileLikesGiven               ProfileLike[]                    @relation("ProfileLikesGiven")
@@ -1513,8 +1514,25 @@ model PlayerTools {
   @@map("player_tools")
 }
 
+/// Holdable event collectables (chips/badges). Escrow source for marketplace `event_item`.
+model PlayerEventItem {
+  id                 Int      @id @default(autoincrement())
+  playerId           Int
+  itemKey            String   @db.VarChar(64)
+  quantity           Int      @default(0)
+  sourceLiveEventId  Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, itemKey])
+  @@index([playerId])
+  @@map("player_event_items")
+}
+
 /// Player-to-player sales on the Zwarte Markt “Marktplaats” (vehicles stay on VehicleInventory).
-/// kind: player_tool | drug_lot | crypto_lot | trade_good_lot — see player-marketplace.md
+/// kind: player_tool | drug_lot | crypto_lot | trade_good_lot | event_item — see player-marketplace.md
 model PlayerMarketListing {
   id          Int       @id @default(autoincrement())
   sellerId    Int

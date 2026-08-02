@@ -6592,6 +6592,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bmHubSellKindTrade => 'Trade goods';
 
   @override
+  String get bmHubQuantityEvent => 'Quantity';
+
+  @override
+  String get bmHubListEventItemTitle => 'Sell event item';
+
+  @override
+  String get bmHubNoEventItemsToSell => 'No event items to sell';
+
+  @override
+  String get bmHubSellKindEvent => 'Event items';
+
+  @override
   String get bmHubNoDrugsToSell => 'No drugs to sell';
 
   @override
@@ -13771,7 +13783,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Un centro: primero bienes comerciales de contrabando (flores, productos electrónicos, diamantes, armas, productos farmacéuticos), luego la pestaña Mercado para vehículos de jugador a jugador, herramientas transportadas, lotes de drogas, lotes de criptomonedas y pilas de bienes comerciales, además de mochilas, materiales, mercado de armas y municiones.';
+      'Un centro: primero bienes comerciales de contrabando (flores, productos electrónicos, diamantes, armas, productos farmacéuticos), luego la pestaña Mercado para vehículos de jugador a jugador, herramientas transportadas, lotes de drogas, lotes de criptomonedas, pilas de bienes comerciales y artículos de eventos transferibles, además de mochilas, materiales, mercado de armas y municiones.';
 
   @override
   String get helpTopicBlackMarketHow =>

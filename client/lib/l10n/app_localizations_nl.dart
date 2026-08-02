@@ -6548,6 +6548,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bmHubSellKindTrade => 'Handelswaren';
 
   @override
+  String get bmHubQuantityEvent => 'Aantal';
+
+  @override
+  String get bmHubListEventItemTitle => 'Event item verkopen';
+
+  @override
+  String get bmHubNoEventItemsToSell => 'Geen event items te verkopen';
+
+  @override
+  String get bmHubSellKindEvent => 'Event items';
+
+  @override
   String get bmHubNoDrugsToSell => 'Geen drugs om te verkopen';
 
   @override
@@ -13650,7 +13662,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen, gereedschap, drugs-lots, crypto-lots en handelswaren-stacks, plus rugzakken, grondstoffen, wapenmarkt en munitie.';
+      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen, gereedschap, drugs-lots, crypto-lots, handelswaren-stacks en overdraagbare event items, plus rugzakken, grondstoffen, wapenmarkt en munitie.';
 
   @override
   String get helpTopicBlackMarketHow =>

@@ -2,6 +2,7 @@
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
 import { getActiveEventBoostEffects, grantPurchasedCredits } from './premiumCreditsService';
+import { creditEventItem, parseEventItemGrants } from './eventItemService';
 import { gameEventNotificationService } from './gameEventNotificationService';
 import type { GameEventTemplate, GameLiveEvent } from '@prisma/client';
 
@@ -614,8 +615,9 @@ class GameEventService {
         const cash = toFiniteInt(granted.cash, 0);
         const xp = toFiniteInt(granted.xp, 0);
         const premiumCredits = toFiniteInt(granted.premiumCredits, 0);
+        const itemGrants = parseEventItemGrants(granted);
 
-        if (cash <= 0 && xp <= 0 && premiumCredits <= 0) {
+        if (cash <= 0 && xp <= 0 && premiumCredits <= 0 && itemGrants.length === 0) {
           await prisma.gameEventRewardClaim.update({
             where: { id: claim.id },
             data: { deliveryStatus: 'completed', claimedAt: new Date() },
@@ -642,6 +644,15 @@ class GameEventService {
               claim.playerId,
               premiumCredits,
               `event_reward_${claim.liveEventId}`
+            );
+          }
+          for (const grant of itemGrants) {
+            await creditEventItem(
+              tx,
+              claim.playerId,
+              grant.itemKey,
+              grant.quantity,
+              claim.liveEventId,
             );
           }
           await tx.gameEventRewardClaim.update({

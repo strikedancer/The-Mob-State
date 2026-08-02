@@ -513,7 +513,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
 | VIP_LEVELS_SYSTEM.md | crew.md, properties.md | Building upgrades level 10-14 |
 | HQ_PROGRESSION_GUIDE.md | properties.md, crew.md | Property ownership, HQ strategy |
 | TRADE_RISK_MECHANICS.md | black-market.md, trade.md, travel.md | Contraband hub + API; volatility, spoilage, confiscation |
-| GAMEPLAY.md (economy / P2P-verkoop) | black-market.md, **player-marketplace.md**, trade.md (contraband vs. P2P) | Marktplaats-tab: voertuigen + tools/drugs/crypto/trade lots; `event_item` later |
+| GAMEPLAY.md (economy / P2P-verkoop) | black-market.md, **player-marketplace.md**, trade.md (contraband vs. P2P) | Marktplaats-tab: voertuigen + tools/drugs/crypto/trade/event lots |
 | HITLIST_SYSTEM.md | hitlist.md, crimes.md, security.md, crew.md | Bounties, murders, detective, protection |
 
 **Verplicht controleren bij aanpassingen:**

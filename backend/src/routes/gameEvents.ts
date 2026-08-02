@@ -1,8 +1,26 @@
 import { Router } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { gameEventService } from '../services/gameEventService';
+import { getPlayerEventInventory } from '../services/eventItemService';
 
 const router = Router();
+
+router.get('/my-items', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const items = await getPlayerEventInventory(req.player!.id);
+    return res.status(200).json({
+      event: 'game_events.my_items',
+      params: {},
+      items,
+    });
+  } catch (error) {
+    console.error('[Game Events] Failed to fetch event items', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
 
 router.get('/overview', authenticate, async (req: AuthRequest, res) => {
   try {

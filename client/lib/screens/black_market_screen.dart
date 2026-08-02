@@ -490,6 +490,10 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         return Center(
           child: Icon(Icons.inventory_2_outlined, size: iconSize),
         );
+      case 'event_item':
+        return Center(
+          child: Icon(Icons.emoji_events_outlined, size: iconSize),
+        );
       default:
         final toolId = listing.playerTool?.toolId;
         if (toolId != null) {
@@ -938,6 +942,11 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                 title: Text(_bmL10n(l10n, 'bmHubSellKindTrade', 'Trade goods')),
                 onTap: () => Navigator.pop(dialogContext, 'trade'),
               ),
+              ListTile(
+                leading: const Icon(Icons.emoji_events_outlined),
+                title: Text(_bmL10n(l10n, 'bmHubSellKindEvent', 'Event items')),
+                onTap: () => Navigator.pop(dialogContext, 'event'),
+              ),
             ],
           ),
         ),
@@ -961,6 +970,8 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         await _showListCryptoLotDialog(vehicleProvider);
       case 'trade':
         await _showListTradeGoodDialog(vehicleProvider);
+      case 'event':
+        await _showListEventItemDialog(vehicleProvider);
     }
   }
 
@@ -1444,6 +1455,191 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
 
       final ok = await vehicleProvider.listTradeGoodLotOnMarket(
         inventoryId,
+        quantity,
+        price,
+      );
+      if (!mounted) return;
+
+      if (ok) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.bmHubToolListedMessage),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              vehicleProvider.error ?? l10n.bmHubListToolFailed,
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.bmHubListToolFailed),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _showListEventItemDialog(VehicleProvider vehicleProvider) async {
+    final l10n = AppLocalizations.of(context)!;
+    final apiClient = ApiClient();
+
+    try {
+      final response = await apiClient.get('/game-events/my-items');
+      if (!mounted) return;
+
+      if (response.statusCode != 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.bmHubListToolFailed),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final items = ((data['items'] as List?) ?? const [])
+          .whereType<Map>()
+          .map((e) => Map<String, dynamic>.from(e))
+          .where(
+            (e) =>
+                e['transferable'] == true &&
+                ((e['quantity'] as num?)?.toInt() ?? 0) > 0,
+          )
+          .toList();
+
+      if (items.isEmpty) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _bmL10n(l10n, 'bmHubNoEventItemsToSell', 'No event items to sell'),
+            ),
+          ),
+        );
+        return;
+      }
+
+      final selectedRef = <Map<String, dynamic>>[items.first];
+      final qtyController = TextEditingController(
+        text: '${(items.first['quantity'] as num?)?.toInt() ?? 1}',
+      );
+      final priceController = TextEditingController();
+
+      final submitted = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Text(
+                  _bmL10n(l10n, 'bmHubListEventItemTitle', 'Sell event item'),
+                ),
+                content: ResponsiveDialogContent(
+                  phoneMaxWidth: 360,
+                  tabletMaxWidth: 420,
+                  desktopMaxWidth: 460,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      DropdownButtonFormField<Map<String, dynamic>>(
+                        initialValue: selectedRef[0],
+                        items: items
+                            .map(
+                              (row) => DropdownMenuItem(
+                                value: row,
+                                child: Text(
+                                  '${row['nameEn'] ?? row['itemKey']} • ${row['quantity']}',
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (v) {
+                          if (v != null) {
+                            setState(() {
+                              selectedRef[0] = v;
+                              qtyController.text =
+                                  '${(v['quantity'] as num?)?.toInt() ?? 1}';
+                            });
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: qtyController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: _bmL10n(
+                            l10n,
+                            'bmHubQuantityEvent',
+                            'Quantity',
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: priceController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: l10n.bmHubNewPriceEuro,
+                          hintText: l10n.bmHubEnterNewPriceHint,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(dialogContext, false),
+                    child: Text(l10n.cancel),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(dialogContext, true),
+                    child: Text(l10n.bmHubListToolSubmit),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+
+      if (submitted != true || !mounted) return;
+
+      final eventItemId = (selectedRef[0]['id'] as num).toInt();
+      final quantity = int.tryParse(qtyController.text.trim());
+      final maxQty = (selectedRef[0]['quantity'] as num?)?.toInt() ?? 0;
+      final price = int.tryParse(priceController.text.trim());
+      if (quantity == null || quantity <= 0 || quantity > maxQty) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.bmHubInvalidToolPrice)),
+        );
+        return;
+      }
+      if (price == null || price <= 0) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.bmHubInvalidToolPrice)),
+        );
+        return;
+      }
+
+      final ok = await vehicleProvider.listEventItemOnMarket(
+        eventItemId,
         quantity,
         price,
       );

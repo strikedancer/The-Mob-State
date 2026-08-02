@@ -573,7 +573,7 @@ interest = 0
 
 ### Client / talen
 - **Zwarte markt** (incl. eerste tab handelswaren/contraband), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven. Het voertuigenaanbod-tabblad gebruikt de ARB-key **`marketplace`** (NL: *Marktplaats*), hetzelfde label als vroeger op het aparte handels-scherm.
-- **Marktplaats (P2P)**: naast **voertuigen** (inclusief motoren en boten als voertuig-inventory) kunnen spelers **gedragen gereedschap**, **drugs-lots**, **crypto-lots** en **handelswaren-stacks** aan elkaar verkopen op dezelfde tab; **`GET /market/unified`** combineert voertuigen met `itemListings`. Verkopen gebeurt met contant geld + escrow; eigen advertentie kopen is geblokkeerd. **`event_item` P2P** staat nog op de roadmap in `docs/module-protocols/player-marketplace.md`.
+- **Marktplaats (P2P)**: naast **voertuigen** (inclusief motoren en boten als voertuig-inventory) kunnen spelers **gedragen gereedschap**, **drugs-lots**, **crypto-lots**, **handelswaren-stacks** en **event items** (transferable chips) aan elkaar verkopen op dezelfde tab; **`GET /market/unified`** combineert voertuigen met `itemListings`. Verkopen gebeurt met contant geld + escrow; eigen advertentie kopen is geblokkeerd. Bound event badges zijn niet listbaar.
 - **Help & Uitleg** (zwarte markt): de `helpTopicBlackMarket*`-strings in de ARB’s; wanneer de **Engelse** helptekst wijzigt, worden o.a. **de, fr, es, it, pl, pt** opnieuw ingevuld met `node scripts/translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=helpTopicBlackMarket --force` (NL blijft handmatig/apply-flow). Zie `docs/module-protocols/PROTOCOL_MASTER.md` (i18n-paragraaf).
 - Login en registratie delen dezelfde **onderste juridische footer** (privacy, algemene voorwaarden, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie en vereist **akkoord met de voorwaarden** vóór verzenden. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee.
 
@@ -1117,7 +1117,6 @@ healing = 5 HP (if health > 0 && health < 100)
 - â³ Stock market
 - â³ Real estate development
 - â³ Territory Fase C/D (HQ↔territory caps/projects, sabotage, season awards / region events) — see `TERRITORY_VISION.md` (Fase A/B live: tags, theater, aftermath, adjacency cluster/pocket, frontline notifications)
-- â³ Player marketplace `event_item` P2P (vehicles/tools/`drug_lot`/`crypto_lot`/`trade_good_lot` are live)
 
 ---
 

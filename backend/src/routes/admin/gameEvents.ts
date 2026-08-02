@@ -3,6 +3,7 @@ import { AdminRole } from '@prisma/client';
 import { z } from 'zod';
 import { adminAuthMiddleware, requireAdminRole, type AdminRequest } from '../../middleware/adminAuth';
 import { gameEventService } from '../../services/gameEventService';
+import prisma from '../../lib/prisma';
 
 const router = Router();
 
@@ -207,6 +208,34 @@ router.patch('/live/:id', async (req, res) => {
     }
     console.error('[Admin Game Events] Failed to update live event', error);
     return res.status(500).json({ error: 'INTERNAL_ERROR', message: 'Failed to update live event' });
+  }
+});
+
+const grantEventItemSchema = z.object({
+  playerId: z.number().int().positive(),
+  itemKey: z.string().trim().min(2).max(64),
+  quantity: z.number().int().positive().max(1000),
+});
+
+/** Ops/QA: grant catalogue event collectables into player inventory. */
+router.post('/event-items/grant', requireAdminRole(AdminRole.SUPER_ADMIN), async (req: AdminRequest, res) => {
+  try {
+    const payload = grantEventItemSchema.parse(req.body);
+    const { creditEventItem, getEventItemDefinition, getPlayerEventInventory } = await import(
+      '../../services/eventItemService'
+    );
+    if (!getEventItemDefinition(payload.itemKey)) {
+      return res.status(400).json({ error: 'EVENT_ITEM_UNKNOWN' });
+    }
+    await creditEventItem(prisma, payload.playerId, payload.itemKey, payload.quantity, null);
+    const items = await getPlayerEventInventory(payload.playerId);
+    return res.status(200).json({ ok: true, items });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'VALIDATION_ERROR', issues: error.issues });
+    }
+    console.error('[Admin Game Events] Failed to grant event item', error);
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 });
 

@@ -11672,6 +11672,30 @@ abstract class AppLocalizations {
   /// **'Trade goods'**
   String get bmHubSellKindTrade;
 
+  /// No description provided for @bmHubQuantityEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get bmHubQuantityEvent;
+
+  /// No description provided for @bmHubListEventItemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell event item'**
+  String get bmHubListEventItemTitle;
+
+  /// No description provided for @bmHubNoEventItemsToSell.
+  ///
+  /// In en, this message translates to:
+  /// **'No event items to sell'**
+  String get bmHubNoEventItemsToSell;
+
+  /// No description provided for @bmHubSellKindEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Event items'**
+  String get bmHubSellKindEvent;
+
   /// No description provided for @bmHubNoDrugsToSell.
   ///
   /// In en, this message translates to:
@@ -23895,7 +23919,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBlackMarketSummary.
   ///
   /// In en, this message translates to:
-  /// **'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles, carried tools, drug lots, crypto lots and trade-good stacks, plus backpacks, materials, weapons market and ammo.'**
+  /// **'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles, carried tools, drug lots, crypto lots, trade-good stacks and transferable event items, plus backpacks, materials, weapons market and ammo.'**
   String get helpTopicBlackMarketSummary;
 
   /// No description provided for @helpTopicBlackMarketHow.

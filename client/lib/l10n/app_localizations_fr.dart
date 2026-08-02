@@ -6619,6 +6619,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bmHubSellKindTrade => 'Trade goods';
 
   @override
+  String get bmHubQuantityEvent => 'Quantity';
+
+  @override
+  String get bmHubListEventItemTitle => 'Sell event item';
+
+  @override
+  String get bmHubNoEventItemsToSell => 'No event items to sell';
+
+  @override
+  String get bmHubSellKindEvent => 'Event items';
+
+  @override
   String get bmHubNoDrugsToSell => 'No drugs to sell';
 
   @override
@@ -13821,7 +13833,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Un seul hub : les produits de contrebande d\'abord (fleurs, appareils électroniques, diamants, armes, produits pharmaceutiques), puis l\'onglet Marché pour les véhicules de joueur à joueur, les outils transportés, les lots de drogues, les lots de crypto et les piles de marchandises commerciales, ainsi que les sacs à dos, les matériaux, le marché des armes et des munitions.';
+      'Un seul hub : les marchandises de contrebande d\'abord (fleurs, appareils électroniques, diamants, armes, produits pharmaceutiques), puis l\'onglet Marché pour les véhicules de joueur à joueur, les outils transportés, les lots de drogues, les lots de cryptomonnaies, les piles de marchandises commerciales et les objets d\'événement transférables, ainsi que les sacs à dos, les matériaux, le marché des armes et les munitions.';
 
   @override
   String get helpTopicBlackMarketHow =>
