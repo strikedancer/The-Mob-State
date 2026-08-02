@@ -76,6 +76,7 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     PROJECT_DESTROYED:              [409, 'territory.project_destroyed'],
     PROJECT_ALREADY_ACTIVE:         [409, 'territory.project_already_active'],
     PROJECT_CONTRIBUTE_COOLDOWN:    [429, 'territory.project_contribute_cooldown'],
+    SEASON_NOT_FOUND:               [404, 'territory.season_not_found'],
   };
 
   const entry = map[error.message];
@@ -391,13 +392,13 @@ router.post('/admin/season/start', adminAuthMiddleware, async (req: AdminRequest
 router.post('/admin/season/close', adminAuthMiddleware, async (req: AdminRequest, res: Response, next: NextFunction) => {
   try {
     const body = adminCloseSeasonSchema.parse(req.body);
-    await territoryService.adminCloseSeason(body.seasonKey);
-    return res.json({ event: 'territory.admin.season_closed', params: {} });
+    const result = await territoryService.adminCloseSeason(body.seasonKey);
+    return res.json({ event: 'territory.admin.season_closed', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
     }
-    return next(error);
+    return mapTerritoryError(error, res, next);
   }
 });
 

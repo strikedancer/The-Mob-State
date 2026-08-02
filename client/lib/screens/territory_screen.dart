@@ -1870,6 +1870,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         activeWarPressure?['favoredCrewId']?.toString();
     final regionProject =
         (region['regionProject'] as Map?)?.cast<String, dynamic>();
+    final regionEvent =
+        (region['regionEvent'] as Map?)?.cast<String, dynamic>();
     final projectIncomeBonusPercent =
         (region['projectIncomeBonusPercent'] as num?)?.toInt() ??
         (regionProject?['incomeBonusPercent'] as num?)?.toInt() ??
@@ -1996,6 +1998,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         if (projectStatus == 'active' || projectStatus == 'damaged')
           _detailRow(t.territoryProjectHp, '$projectHp / $projectMaxHp'),
       ],
+      if (regionEvent != null)
+        _detailRow(
+          t.territoryDetailRegionEvent,
+          _regionEventLabel(regionEvent),
+        ),
       if (_myCrewName != null)
         _detailRow(t.territoryDetailYourCrew, _myCrewName!),
       if (contestStatus != null)
@@ -2504,7 +2511,17 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   Widget _buildSeasonTab() {
     final season = _overview['activeSeason'] as Map<String, dynamic>?;
-    if (season == null) {
+    final drama = (_overview['drama'] as Map?)?.cast<String, dynamic>();
+    final events =
+        (drama?['activeRegionEvents'] as List<dynamic>?) ??
+        (_overview['activeRegionEvents'] as List<dynamic>?) ??
+        const [];
+    final hottest =
+        (drama?['hottestContests'] as List<dynamic>?) ?? const [];
+    final captures =
+        (drama?['recentCaptures'] as List<dynamic>?) ?? const [];
+
+    if (season == null && hottest.isEmpty && events.isEmpty) {
       return Center(
         child: Text(
           _l10n.territorySeasonNone,
@@ -2512,16 +2529,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       );
     }
 
-    final key = season['seasonKey'] as String? ?? '';
-    final status = season['status'] as String? ?? '';
-    final startsAt = season['startsAt'] as String? ?? '';
-    final endsAt = season['endsAt'] as String? ?? '';
+    final key = season?['seasonKey'] as String? ?? '-';
+    final status = season?['status'] as String? ?? '-';
+    final startsAt = season?['startsAt'] as String? ?? '-';
+    final endsAt = season?['endsAt'] as String? ?? '-';
 
-    return Padding(
+    return ListView(
       padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      children: [
+        if (season != null) ...[
           Text(
             _l10n.territorySeasonCurrent,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -2531,8 +2547,55 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           _detailRow(_l10n.territorySeasonStatus, status),
           _detailRow(_l10n.territorySeasonStart, startsAt),
           _detailRow(_l10n.territorySeasonEnd, endsAt),
+          const SizedBox(height: 20),
         ],
-      ),
+        Text(
+          _l10n.territoryDramaTitle,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 12),
+        if (hottest.isNotEmpty)
+          _detailRow(
+            _l10n.territoryDramaHotContests,
+            hottest
+                .whereType<Map>()
+                .map((c) => c['regionKey']?.toString() ?? '')
+                .where((v) => v.isNotEmpty)
+                .take(3)
+                .join(' · '),
+          ),
+        if (captures.isNotEmpty)
+          _detailRow(
+            _l10n.territoryDramaRecentCaptures,
+            captures
+                .whereType<Map>()
+                .map((c) {
+                  final winner = c['winnerCrewName']?.toString() ?? '-';
+                  final region = c['regionKey']?.toString() ?? '-';
+                  return '$winner → $region';
+                })
+                .take(3)
+                .join(' · '),
+          ),
+        if (events.isNotEmpty)
+          _detailRow(
+            _l10n.territoryDramaRegionEvents,
+            events
+                .whereType<Map>()
+                .map((e) {
+                  final region = e['regionKey']?.toString() ?? '-';
+                  final keyName = e['eventKey']?.toString() ?? 'event';
+                  return '$region ($keyName)';
+                })
+                .take(3)
+                .join(' · '),
+          ),
+        if (hottest.isEmpty && captures.isEmpty && events.isEmpty)
+          Text(
+            _l10n.territoryDramaEmpty,
+            style: TextStyle(color: Colors.grey[700], fontSize: 13),
+          ),
+      ],
     );
   }
 
@@ -2722,6 +2785,22 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       default:
         return status ?? '-';
     }
+  }
+
+  String _regionEventLabel(Map<String, dynamic> event) {
+    final key = (event['eventKey'] as String?) ?? 'event';
+    final attack = (event['attackBonusPoints'] as num?)?.toInt() ?? 0;
+    final penalty = (event['incomePenaltyPercent'] as num?)?.toInt() ?? 0;
+    final keyLabel = switch (key) {
+      'police_offensive' => _l10n.territoryEventPoliceOffensive,
+      'harbor_strike' => _l10n.territoryEventHarborStrike,
+      'blackout_rumor' => _l10n.territoryEventBlackoutRumor,
+      _ => key,
+    };
+    final parts = <String>[keyLabel];
+    if (attack > 0) parts.add('+$attack pt');
+    if (penalty > 0) parts.add('-$penalty%');
+    return parts.join(' · ');
   }
 
   Future<void> _joinDefense(int? contestId) async {

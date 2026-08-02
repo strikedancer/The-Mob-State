@@ -4,6 +4,8 @@ import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
 import { translationService, type Language } from './translationService';
 import * as territoryProjectService from './territoryProjectService';
+import * as territoryMetaService from './territoryMetaService';
+import { ensureCurrentTerritorySeason } from '../startup/ensureTerritorySchema';
 
 // ---------------------------------------------------------------------------
 // Territory Service
@@ -81,6 +83,11 @@ async function getTerritoryConfig() {
     'TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE',
     'TERRITORY_PROJECT_SUPPLY_REPAIR_HP',
     'TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS',
+    'TERRITORY_REGION_EVENT_ENABLED',
+    'TERRITORY_REGION_EVENT_ROTATION_HOURS',
+    'TERRITORY_REGION_EVENT_ACTIVE_COUNT',
+    'TERRITORY_REGION_EVENT_ATTACK_BONUS_POINTS',
+    'TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT',
   ];
   const cfg = await getRuntimeConfig(keys);
   const actionUnlockHqLevels = {
@@ -147,6 +154,11 @@ async function getTerritoryConfig() {
     projectSabotageHpDamage: Number(cfg['TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE'] ?? 20),
     projectSupplyRepairHp: Number(cfg['TERRITORY_PROJECT_SUPPLY_REPAIR_HP'] ?? 15),
     projectSupplyBuildProgress: Number(cfg['TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS'] ?? 15),
+    regionEventEnabled: Number(cfg['TERRITORY_REGION_EVENT_ENABLED'] ?? 1) === 1,
+    regionEventRotationHours: Number(cfg['TERRITORY_REGION_EVENT_ROTATION_HOURS'] ?? 12),
+    regionEventActiveCount: Number(cfg['TERRITORY_REGION_EVENT_ACTIVE_COUNT'] ?? 2),
+    regionEventAttackBonusPoints: Number(cfg['TERRITORY_REGION_EVENT_ATTACK_BONUS_POINTS'] ?? 2),
+    regionEventIncomePenaltyPercent: Number(cfg['TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT'] ?? 15),
   };
 }
 
@@ -442,7 +454,7 @@ function buildPassiveIncomeSnapshot(
 type StrategicActionBonus = {
   actionType: string;
   bonusPoints: number;
-  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building';
+  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building' | 'region-event';
   labelNl: string;
   labelEn: string;
 };
@@ -557,6 +569,17 @@ function buildWarPressureActionBonuses(effect: ActiveWarPressureEffect | null): 
     source: 'war-aftermath' as const,
     labelNl: 'Nasleep crew war',
     labelEn: 'Crew war aftermath',
+  }));
+}
+
+function buildRegionEventActionBonuses(event: territoryMetaService.ActiveRegionEvent | null): StrategicActionBonus[] {
+  if (!event || event.attackBonusPoints <= 0) return [];
+  return ['intel_scan', 'sabotage', 'raid', 'patrol', 'defense', 'supply_run'].map((actionType) => ({
+    actionType,
+    bonusPoints: event.attackBonusPoints,
+    source: 'region-event' as const,
+    labelNl: 'Regio-event',
+    labelEn: 'Region event',
   }));
 }
 
@@ -838,6 +861,10 @@ async function processPassiveTerritoryIncome(
     rows.map((row) => row.regionKey),
     projectConfig.safehouseIncomeBonusPercent,
   );
+  const incomePenaltyByRegion = await territoryMetaService.getActiveRegionEventIncomePenaltyByRegion(
+    rows.map((row) => row.regionKey),
+    now,
+  );
 
   for (const row of rows) {
     const lastIncomeAt = row.lastIncomeAt ?? now;
@@ -847,10 +874,14 @@ async function processPassiveTerritoryIncome(
       continue;
     }
 
-    const amountPerCycle = applyIncomeBonus(
+    const boosted = applyIncomeBonus(
       getPassiveIncomeCashForTier(toNumeric(row.valueTier), cfg),
       incomeBonusByRegion[row.regionKey] ?? 0,
     );
+    const penaltyPercent = incomePenaltyByRegion[row.regionKey] ?? 0;
+    const amountPerCycle = penaltyPercent > 0
+      ? Math.max(0, Math.round(boosted * (1 - (penaltyPercent / 100))))
+      : boosted;
     const payoutAmount = payoutCycles * amountPerCycle;
     const newLastIncomeAt = new Date(lastIncomeAt.getTime() + (payoutCycles * intervalMs));
 
@@ -1020,6 +1051,29 @@ async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
   }
 
   await processPassiveTerritoryIncome(now, cfg);
+  await territoryMetaService.rotateRegionEvents(now, {
+    enabled: cfg.regionEventEnabled,
+    rotationHours: Math.max(1, Math.floor(cfg.regionEventRotationHours)),
+    activeCount: Math.max(0, Math.floor(cfg.regionEventActiveCount)),
+    attackBonusPoints: Math.max(0, Math.floor(cfg.regionEventAttackBonusPoints)),
+    incomePenaltyPercent: Math.max(0, Math.floor(cfg.regionEventIncomePenaltyPercent)),
+  });
+
+  const expiredSeasons = await prisma.$queryRawUnsafe<Array<{ seasonKey: string }>>(
+    `SELECT seasonKey FROM territory_seasons
+     WHERE status = 'active' AND endsAt IS NOT NULL AND endsAt <= ?`,
+    now,
+  );
+  for (const season of expiredSeasons) {
+    try {
+      await adminCloseSeason(season.seasonKey);
+    } catch (error) {
+      if (!(error instanceof Error) || error.message !== 'SEASON_NOT_FOUND') {
+        console.error('[Territory] auto season close failed', season.seasonKey, error);
+      }
+    }
+  }
+  await ensureCurrentTerritorySeason().catch(() => {});
 }
 
 export async function processPendingTerritoryContests(now: Date = new Date()): Promise<void> {
@@ -1065,6 +1119,7 @@ export async function getMapData(
     passiveIncomeCashDaily: number;
     projectIncomeBonusPercent: number;
     regionProject: territoryProjectService.TerritoryRegionProject | null;
+    regionEvent: territoryMetaService.ActiveRegionEvent | null;
     strategicTags: string[];
     neighbors: string[];
     adjacentOwnedRegions: number;
@@ -1165,6 +1220,20 @@ export async function getMapData(
     regions.map((region) => region.regionKey),
     projectConfig.safehouseIncomeBonusPercent,
   );
+  const regionEvents = await territoryMetaService.getActiveRegionEvents(
+    regions.map((region) => region.regionKey),
+    now,
+  );
+  const regionEventByKey = regionEvents.reduce<Record<string, territoryMetaService.ActiveRegionEvent>>((acc, event) => {
+    acc[event.regionKey] = event;
+    return acc;
+  }, {});
+  const incomePenaltyByRegion = regionEvents.reduce<Record<string, number>>((acc, event) => {
+    if (event.incomePenaltyPercent > 0) {
+      acc[event.regionKey] = Math.max(acc[event.regionKey] ?? 0, event.incomePenaltyPercent);
+    }
+    return acc;
+  }, {});
 
   let viewerCooldownByContestId: Record<number, { nextActionAt: Date; secondsRemaining: number }> = {};
   if (viewer?.viewerPlayerId && contests.length > 0) {
@@ -1207,11 +1276,22 @@ export async function getMapData(
     })() : 0;
     const incomeSnapshot = buildPassiveIncomeSnapshot(r.valueTier, cfg);
     const projectIncomeBonusPercent = incomeBonusByRegion[r.regionKey] ?? 0;
+    const regionEvent = regionEventByKey[r.regionKey] ?? null;
+    const eventPenaltyPercent = incomePenaltyByRegion[r.regionKey] ?? 0;
+    let amountPerInterval = applyIncomeBonus(incomeSnapshot.amountPerInterval, projectIncomeBonusPercent);
+    let amountPerHour = applyIncomeBonus(incomeSnapshot.amountPerHour, projectIncomeBonusPercent);
+    let amountPerDay = applyIncomeBonus(incomeSnapshot.amountPerDay, projectIncomeBonusPercent);
+    if (eventPenaltyPercent > 0) {
+      const factor = 1 - (eventPenaltyPercent / 100);
+      amountPerInterval = Math.max(0, Math.round(amountPerInterval * factor));
+      amountPerHour = Math.max(0, Math.round(amountPerHour * factor));
+      amountPerDay = Math.max(0, Math.round(amountPerDay * factor));
+    }
     const boostedIncome = {
-      amountPerInterval: applyIncomeBonus(incomeSnapshot.amountPerInterval, projectIncomeBonusPercent),
+      amountPerInterval,
       intervalMinutes: incomeSnapshot.intervalMinutes,
-      amountPerHour: applyIncomeBonus(incomeSnapshot.amountPerHour, projectIncomeBonusPercent),
-      amountPerDay: applyIncomeBonus(incomeSnapshot.amountPerDay, projectIncomeBonusPercent),
+      amountPerHour,
+      amountPerDay,
     };
     const strategicTags = parseStringArray(r.strategicTagsJson);
     const neighbors = parseStringArray(r.neighborsJson);
@@ -1235,6 +1315,7 @@ export async function getMapData(
       ...(viewer?.viewerCrewId != null && activeWarPressure?.favoredCrewId === viewer.viewerCrewId
         ? buildWarPressureActionBonuses(activeWarPressure)
         : []),
+      ...buildRegionEventActionBonuses(regionEvent),
     ];
     const effectiveStability = Math.max(0, (ctrl?.stability ?? 100) - (activeWarPressure?.stabilityPenalty ?? 0));
     return {
@@ -1263,6 +1344,7 @@ export async function getMapData(
       passiveIncomeCashDaily: boostedIncome.amountPerDay,
       projectIncomeBonusPercent,
       regionProject: projectsByRegion[r.regionKey] ?? null,
+      regionEvent,
       strategicTags,
       neighbors,
       adjacentOwnedRegions,
@@ -1280,10 +1362,12 @@ export async function getOverview(): Promise<{
   config: Awaited<ReturnType<typeof getTerritoryConfig>>;
   activeSeason: SeasonRow | null;
   leaderboard: Array<{ crewId: number; crewName: string; regionsOwned: number; totalControl: number }>;
+  drama: territoryMetaService.TerritoryDramaSnapshot;
+  activeRegionEvents: territoryMetaService.ActiveRegionEvent[];
 }> {
   await syncContestLifecycle();
 
-  const [cfg, seasons, leaderboard] = await Promise.all([
+  const [cfg, seasons, leaderboard, drama] = await Promise.all([
     getTerritoryConfig(),
     prisma.$queryRawUnsafe<SeasonRow[]>(
       `SELECT * FROM territory_seasons WHERE status = 'active' ORDER BY startsAt DESC LIMIT 1`
@@ -1297,6 +1381,7 @@ export async function getOverview(): Promise<{
        ORDER BY regionsOwned DESC
        LIMIT 10`
     ),
+    territoryMetaService.getTerritoryDramaSnapshot(),
   ]);
   return {
     config: cfg,
@@ -1307,6 +1392,8 @@ export async function getOverview(): Promise<{
       regionsOwned: toNumeric(entry.regionsOwned),
       totalControl: toNumeric(entry.totalControl),
     })),
+    drama,
+    activeRegionEvents: drama.activeRegionEvents,
   };
 }
 
@@ -1948,8 +2035,10 @@ export async function doAction(
     && attackerActions.has(actionType)
     && contest.defenderCrewId === activeWarPressure.affectedCrewId;
   const warPressureBonuses = warPressureApplies ? buildWarPressureActionBonuses(activeWarPressure) : [];
+  const regionEvents = await territoryMetaService.getActiveRegionEvents([contest.regionKey], new Date());
+  const regionEventBonuses = buildRegionEventActionBonuses(regionEvents[0] ?? null);
   const progressionBonuses = buildProgressionActionBonuses(crewProgression, cfg);
-  const allActionBonuses = [...strategicActionBonuses, ...progressionBonuses, ...warPressureBonuses];
+  const allActionBonuses = [...strategicActionBonuses, ...progressionBonuses, ...warPressureBonuses, ...regionEventBonuses];
   const actionBonusPoints = getActionBonusForType(allActionBonuses, actionType);
   const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
   const stabilityDelta = actionType === 'sabotage' ? -5 : (actionType === 'supply_run' ? 3 : 0);
@@ -2224,18 +2313,61 @@ export async function adminResetRegion(regionKey: string): Promise<void> {
 
 export async function adminStartSeason(seasonKey: string, startsAt: Date, endsAt: Date): Promise<void> {
   await prisma.$executeRawUnsafe(
-    `INSERT INTO territory_seasons (seasonKey, status, startsAt, endsAt)
-     VALUES (?, 'active', ?, ?)
-     ON DUPLICATE KEY UPDATE status = 'active', startsAt = ?, endsAt = ?`,
-    seasonKey, startsAt, endsAt, startsAt, endsAt,
+    `INSERT INTO territory_seasons (seasonKey, status, startsAt, endsAt, rewardConfigJson)
+     VALUES (?, 'active', ?, ?, ?)
+     ON DUPLICATE KEY UPDATE status = 'active', startsAt = ?, endsAt = ?,
+       rewardConfigJson = COALESCE(rewardConfigJson, VALUES(rewardConfigJson)),
+       rewardsDistributedAt = NULL`,
+    seasonKey,
+    startsAt,
+    endsAt,
+    territoryMetaService.defaultSeasonRewardConfigJson(),
+    startsAt,
+    endsAt,
   );
 }
 
-export async function adminCloseSeason(seasonKey: string): Promise<void> {
-  await prisma.$executeRawUnsafe(
-    `UPDATE territory_seasons SET status = 'closed' WHERE seasonKey = ?`,
+export async function adminCloseSeason(seasonKey: string): Promise<territoryMetaService.SeasonCloseResult> {
+  const cfg = await getTerritoryConfig();
+  const result = await territoryMetaService.closeSeasonAndDistributeAwards({
     seasonKey,
-  );
+    rewardCashMultiplierPercent: cfg.rewardCashMultiplierPercent,
+  });
+  await _notifySeasonAwards(result).catch(() => {});
+  return result;
+}
+
+export async function getTerritoryDramaSnapshot(): Promise<territoryMetaService.TerritoryDramaSnapshot> {
+  await syncContestLifecycle();
+  return territoryMetaService.getTerritoryDramaSnapshot();
+}
+
+async function _notifySeasonAwards(result: territoryMetaService.SeasonCloseResult): Promise<void> {
+  if (result.alreadyDistributed || result.awards.length === 0) return;
+  const byCrew = new Map<number, territoryMetaService.SeasonAwardPayout[]>();
+  for (const award of result.awards) {
+    const list = byCrew.get(award.crewId) ?? [];
+    list.push(award);
+    byCrew.set(award.crewId, list);
+  }
+  for (const [crewId, awards] of byCrew.entries()) {
+    const players = await _getCrewPlayers(crewId);
+    for (const p of players) {
+      const lang = await _getPlayerLanguage(p.id);
+      const lines = awards.map((award) => {
+        const label = award.rewardType === 'season_expansion'
+          ? (lang === 'nl' ? 'expansie' : 'expansion')
+          : award.rewardType === 'season_defense'
+            ? (lang === 'nl' ? 'verdediging' : 'defense')
+            : (lang === 'nl' ? 'oorlogsfront' : 'war frontline');
+        return `#${award.rank} ${label}: €${award.cashAmount.toLocaleString('en-US')}`;
+      });
+      const message = lang === 'nl'
+        ? `Territory seizoen ${result.seasonKey} afgesloten. Jullie crew ontving:\n${lines.join('\n')}`
+        : `Territory season ${result.seasonKey} closed. Your crew received:\n${lines.join('\n')}`;
+      await _sendTerritoryInboxMessage(p.id, lang, message).catch(() => {});
+    }
+  }
 }
 
 // ── Internal Helpers ────────────────────────────────────────────────────────

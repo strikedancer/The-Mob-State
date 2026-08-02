@@ -25396,6 +25396,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Project supply is on cooldown.'**
   String get territoryErrorProjectCooldown;
+
+  /// No description provided for @territoryDramaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory drama'**
+  String get territoryDramaTitle;
+
+  /// No description provided for @territoryDramaHotContests.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot contests'**
+  String get territoryDramaHotContests;
+
+  /// No description provided for @territoryDramaRecentCaptures.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent captures'**
+  String get territoryDramaRecentCaptures;
+
+  /// No description provided for @territoryDramaRisingCrews.
+  ///
+  /// In en, this message translates to:
+  /// **'Rising crews'**
+  String get territoryDramaRisingCrews;
+
+  /// No description provided for @territoryDramaWarTheaters.
+  ///
+  /// In en, this message translates to:
+  /// **'War theaters'**
+  String get territoryDramaWarTheaters;
+
+  /// No description provided for @territoryDramaRegionEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Region events'**
+  String get territoryDramaRegionEvents;
+
+  /// No description provided for @territoryDramaEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No live territory drama right now.'**
+  String get territoryDramaEmpty;
+
+  /// No description provided for @territoryDetailRegionEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Region event'**
+  String get territoryDetailRegionEvent;
+
+  /// No description provided for @territoryEventPoliceOffensive.
+  ///
+  /// In en, this message translates to:
+  /// **'Police offensive'**
+  String get territoryEventPoliceOffensive;
+
+  /// No description provided for @territoryEventHarborStrike.
+  ///
+  /// In en, this message translates to:
+  /// **'Harbor strike'**
+  String get territoryEventHarborStrike;
+
+  /// No description provided for @territoryEventBlackoutRumor.
+  ///
+  /// In en, this message translates to:
+  /// **'Blackout rumor'**
+  String get territoryEventBlackoutRumor;
 }
 
 class _AppLocalizationsDelegate

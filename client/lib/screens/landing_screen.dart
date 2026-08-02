@@ -93,6 +93,7 @@ class LandingScreen extends StatefulWidget {
 class _LandingScreenState extends State<LandingScreen> {
   List<_PublicPlayerRow> _players = [];
   List<_PublicCrewRow> _crews = [];
+  List<String> _dramaLines = [];
   bool _loading = true;
   bool _loadFailed = false;
 
@@ -121,6 +122,7 @@ class _LandingScreenState extends State<LandingScreen> {
           _loadFailed = true;
           _players = [];
           _crews = [];
+          _dramaLines = [];
         });
         return;
       }
@@ -142,8 +144,10 @@ class _LandingScreenState extends State<LandingScreen> {
       }
       final rawPlayers = data['topPlayers'];
       final rawCrews = data['topCrews'];
+      final rawDrama = data['territoryDrama'];
       final players = <_PublicPlayerRow>[];
       final crews = <_PublicCrewRow>[];
+      final dramaLines = <String>[];
       if (rawPlayers is List) {
         for (final e in rawPlayers) {
           if (e is Map<String, dynamic>) {
@@ -160,11 +164,35 @@ class _LandingScreenState extends State<LandingScreen> {
           }
         }
       }
+      if (rawDrama is Map<String, dynamic>) {
+        final contests = rawDrama['hottestContests'];
+        if (contests is List) {
+          for (final e in contests.take(2)) {
+            if (e is Map) {
+              final region = e['regionKey']?.toString() ?? '';
+              if (region.isNotEmpty) dramaLines.add(region);
+            }
+          }
+        }
+        final captures = rawDrama['recentCaptures'];
+        if (captures is List) {
+          for (final e in captures.take(2)) {
+            if (e is Map) {
+              final winner = e['winnerCrewName']?.toString() ?? '';
+              final region = e['regionKey']?.toString() ?? '';
+              if (winner.isNotEmpty && region.isNotEmpty) {
+                dramaLines.add('$winner → $region');
+              }
+            }
+          }
+        }
+      }
       setState(() {
         _loading = false;
         _loadFailed = false;
         _players = players;
         _crews = crews;
+        _dramaLines = dramaLines;
       });
     } catch (_) {
       if (!mounted) return;
@@ -173,6 +201,7 @@ class _LandingScreenState extends State<LandingScreen> {
         _loadFailed = true;
         _players = [];
         _crews = [];
+        _dramaLines = [];
       });
     }
   }
@@ -402,18 +431,65 @@ class _LandingScreenState extends State<LandingScreen> {
         );
 
         if (wide) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(child: playersCard),
-              const SizedBox(width: 16),
-              Expanded(child: crewsCard),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: playersCard),
+                  const SizedBox(width: 16),
+                  Expanded(child: crewsCard),
+                ],
+              ),
+              if (_dramaLines.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                _leaderCard(
+                  title: l10n.territoryDramaTitle,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final line in _dramaLines)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 6),
+                          child: Text(
+                            line,
+                            style: const TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ],
           );
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [playersCard, const SizedBox(height: 16), crewsCard],
+          children: [
+            playersCard,
+            const SizedBox(height: 16),
+            crewsCard,
+            if (_dramaLines.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              _leaderCard(
+                title: l10n.territoryDramaTitle,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (final line in _dramaLines)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Text(
+                          line,
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ],
         );
       },
     );

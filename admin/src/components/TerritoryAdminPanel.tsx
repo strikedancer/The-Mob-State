@@ -228,7 +228,19 @@ export function TerritoryAdminPanel({ locale }: Props) {
 
     try {
       setSubmitting(true)
-      await adminService.territoryCloseSeason(resolvedSeasonKey)
+      const result = await adminService.territoryCloseSeason(resolvedSeasonKey)
+      const awards = Array.isArray(result?.awards) ? result.awards : []
+      const total = Number(result?.totalCashPaid ?? 0)
+      const already = result?.alreadyDistributed === true
+      window.alert(
+        already
+          ? tr(locale, 'Seizoen was al afgesloten/uitbetaald.', 'Season was already closed/paid out.')
+          : tr(
+              locale,
+              `Seizoen gesloten. ${awards.length} awards, €${total.toLocaleString('nl-NL')} uitbetaald.`,
+              `Season closed. ${awards.length} awards, €${total.toLocaleString('en-US')} paid.`,
+            ),
+      )
       await loadOverview()
     } catch (error) {
       window.alert(`${tr(locale, 'Seizoen sluiten mislukt', 'Failed to close season')}: ${(error as Error).message}`)

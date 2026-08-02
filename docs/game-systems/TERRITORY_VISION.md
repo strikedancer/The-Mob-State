@@ -283,9 +283,9 @@ Waarschijnlijke metadata-uitbreidingen:
 
 ### Fase D: Seizoen/meta-laag
 
-1. gecombineerde territory + war seasonal awards
-2. region event rotatie
-3. public drama widgets op dashboard/home
+1. gecombineerde territory + war seasonal awards — ✅ live (admin/auto close)
+2. region event rotatie — ✅ live (`region_event` thin slice)
+3. public drama widgets op dashboard/home — ✅ live
 
 ## Aanbevolen Eerste Build
 

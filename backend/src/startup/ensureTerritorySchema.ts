@@ -84,6 +84,11 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE: '20',
   TERRITORY_PROJECT_SUPPLY_REPAIR_HP: '15',
   TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS: '15',
+  TERRITORY_REGION_EVENT_ENABLED: '1',
+  TERRITORY_REGION_EVENT_ROTATION_HOURS: '12',
+  TERRITORY_REGION_EVENT_ACTIVE_COUNT: '2',
+  TERRITORY_REGION_EVENT_ATTACK_BONUS_POINTS: '2',
+  TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT: '15',
 };
 
 type TerritorySeedRegion = {
@@ -537,13 +542,20 @@ export async function ensureCurrentTerritorySeason(): Promise<void> {
   const startsAt = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
   const endsAt = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
   const seasonKey = `${startsAt.getUTCFullYear()}-${String(startsAt.getUTCMonth() + 1).padStart(2, '0')}`;
+  const rewardConfigJson = JSON.stringify({
+    expansionTopCash: [500000, 250000, 100000],
+    defenseTopCash: [400000, 200000, 100000],
+    warFrontlineTopCash: [300000, 150000, 75000],
+  });
 
   await prisma.$executeRawUnsafe(
-    `INSERT INTO territory_seasons (seasonKey, status, startsAt, endsAt)
-     VALUES (?, 'active', ?, ?)
-     ON DUPLICATE KEY UPDATE seasonKey = seasonKey`,
+    `INSERT INTO territory_seasons (seasonKey, status, startsAt, endsAt, rewardConfigJson)
+     VALUES (?, 'active', ?, ?, ?)
+     ON DUPLICATE KEY UPDATE
+       rewardConfigJson = COALESCE(rewardConfigJson, VALUES(rewardConfigJson))`,
     seasonKey,
     startsAt,
     endsAt,
+    rewardConfigJson,
   );
 }

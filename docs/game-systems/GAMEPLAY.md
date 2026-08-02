@@ -1112,12 +1112,12 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Crew Wars (War Room, seasons, territory targets)
 - âœ… Drug production facilities
 - âœ… Territory Fase C (HQ caps zichtbaar, regioproject safehouse_network, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
+- ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / 	erritory.md
 
 ### Planned Features
 - â³ Money laundering
 - â³ Stock market
 - â³ Real estate development
-- â³ Territory Fase D (season awards / region events) — see `TERRITORY_VISION.md`
 
 ---
 

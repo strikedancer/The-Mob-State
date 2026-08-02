@@ -2671,6 +2671,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   : 0,
             ),
             territoryLeaderStats: _stats!.territoryLeaderStats,
+            territoryDrama: _stats!.territoryDrama,
             vehicleOps: _tickVehicleOps(_stats!.vehicleOps),
             cooldowns: Map.fromEntries(
               _stats!.cooldowns.entries.map(
@@ -4060,6 +4061,50 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         ),
                         Colors.white,
                       ),
+                    ],
+                    if (_stats?.territoryDrama?.hasContent == true) ...[
+                      const SizedBox(height: 12),
+                      const Divider(color: Colors.grey),
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.territoryDramaTitle,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      if (_stats!.territoryDrama!.hottestContestLines.isNotEmpty)
+                        _buildInfoRow(
+                          l10n.territoryDramaHotContests,
+                          _stats!.territoryDrama!.hottestContestLines.join(' · '),
+                          Colors.orange.shade200,
+                        ),
+                      if (_stats!.territoryDrama!.recentCaptureLines.isNotEmpty)
+                        _buildInfoRow(
+                          l10n.territoryDramaRecentCaptures,
+                          _stats!.territoryDrama!.recentCaptureLines.join(' · '),
+                          Colors.lightGreen.shade200,
+                        ),
+                      if (_stats!.territoryDrama!.risingCrewLines.isNotEmpty)
+                        _buildInfoRow(
+                          l10n.territoryDramaRisingCrews,
+                          _stats!.territoryDrama!.risingCrewLines.join(' · '),
+                          Colors.cyan.shade200,
+                        ),
+                      if (_stats!.territoryDrama!.warTheaterLines.isNotEmpty)
+                        _buildInfoRow(
+                          l10n.territoryDramaWarTheaters,
+                          _stats!.territoryDrama!.warTheaterLines.join(' · '),
+                          Colors.red.shade200,
+                        ),
+                      if (_stats!.territoryDrama!.regionEventLines.isNotEmpty)
+                        _buildInfoRow(
+                          l10n.territoryDramaRegionEvents,
+                          _stats!.territoryDrama!.regionEventLines.join(' · '),
+                          Colors.purple.shade200,
+                        ),
                     ],
                   ],
                 ),

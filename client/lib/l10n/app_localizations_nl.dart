@@ -14535,4 +14535,37 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get territoryErrorProjectCooldown =>
       'Projectbevoorrading staat op cooldown.';
+
+  @override
+  String get territoryDramaTitle => 'Territory-drama';
+
+  @override
+  String get territoryDramaHotContests => 'Hete contests';
+
+  @override
+  String get territoryDramaRecentCaptures => 'Recente veroveringen';
+
+  @override
+  String get territoryDramaRisingCrews => 'Stijgende crews';
+
+  @override
+  String get territoryDramaWarTheaters => 'Oorlogstheaters';
+
+  @override
+  String get territoryDramaRegionEvents => 'Regio-events';
+
+  @override
+  String get territoryDramaEmpty => 'Geen live territory-drama op dit moment.';
+
+  @override
+  String get territoryDetailRegionEvent => 'Regio-event';
+
+  @override
+  String get territoryEventPoliceOffensive => 'Politie-offensief';
+
+  @override
+  String get territoryEventHarborStrike => 'Havenstaking';
+
+  @override
+  String get territoryEventBlackoutRumor => 'Blackout-gerucht';
 }

@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { createRateLimiter } from '../middleware/rateLimit';
 import { leaderboardService } from '../services/leaderboardService';
 import { getLeaderboard as getTerritoryCrewLeaderboard } from '../services/territoryService';
+import { getTerritoryDramaSnapshot } from '../services/territoryMetaService';
 
 const router = Router();
 
@@ -24,9 +25,10 @@ router.get('/home', publicHomeLimiter, async (_req: Request, res: Response) => {
     const playerLimit = 10;
     const crewLimit = 10;
 
-    const [rawPlayers, rawCrews] = await Promise.all([
+    const [rawPlayers, rawCrews, drama] = await Promise.all([
       leaderboardService.getLeaderboard('all_time', playerLimit, undefined),
       getTerritoryCrewLeaderboard(),
+      getTerritoryDramaSnapshot().catch(() => null),
     ]);
 
     const topPlayers = rawPlayers.map((p) => ({
@@ -40,11 +42,39 @@ router.get('/home', publicHomeLimiter, async (_req: Request, res: Response) => {
       regionsOwned: c.regionsOwned,
     }));
 
+    const territoryDrama = drama
+      ? {
+          hottestContests: drama.hottestContests.map((c) => ({
+            regionKey: c.regionKey,
+            status: c.status,
+            attackerCrewName: c.attackerCrewName,
+            defenderCrewName: c.defenderCrewName,
+          })),
+          recentCaptures: drama.recentCaptures.map((c) => ({
+            regionKey: c.regionKey,
+            winnerCrewName: c.winnerCrewName,
+          })),
+          risingCrews: drama.risingCrews,
+          activeWarTheaters: drama.activeWarTheaters,
+          activeRegionEvents: drama.activeRegionEvents.map((e) => ({
+            regionKey: e.regionKey,
+            eventKey: e.eventKey,
+          })),
+        }
+      : {
+          hottestContests: [],
+          recentCaptures: [],
+          risingCrews: [],
+          activeWarTheaters: [],
+          activeRegionEvents: [],
+        };
+
     return res.json({
       success: true,
       data: {
         topPlayers,
         topCrews,
+        territoryDrama,
       },
     });
   } catch (error) {

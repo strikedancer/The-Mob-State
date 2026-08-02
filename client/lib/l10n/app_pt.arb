@@ -8601,5 +8601,16 @@
   "territoryErrorProjectNotFound": "No project found for this region.",
   "territoryErrorProjectDestroyed": "Project destroyed - start a new one.",
   "territoryErrorProjectActive": "Project is already active.",
-  "territoryErrorProjectCooldown": "Project supply is on cooldown."
+  "territoryErrorProjectCooldown": "Project supply is on cooldown.",
+  "territoryDramaTitle": "Territory drama",
+  "territoryDramaHotContests": "Hot contests",
+  "territoryDramaRecentCaptures": "Recent captures",
+  "territoryDramaRisingCrews": "Rising crews",
+  "territoryDramaWarTheaters": "War theaters",
+  "territoryDramaRegionEvents": "Region events",
+  "territoryDramaEmpty": "No live territory drama right now.",
+  "territoryDetailRegionEvent": "Region event",
+  "territoryEventPoliceOffensive": "Police offensive",
+  "territoryEventHarborStrike": "Harbor strike",
+  "territoryEventBlackoutRumor": "Blackout rumor"
 }

@@ -1097,6 +1097,11 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           })
         : null;
 
+    const territoryDrama = await territoryService.getTerritoryDramaSnapshot().catch((error) => {
+      console.error('[Dashboard] Territory drama snapshot failed:', { playerId, error });
+      return null;
+    });
+
     const vehicleOpsEntries = await Promise.all(
       (['car', 'motorcycle', 'boat'] as const).map(async (vehicleType) => {
         try {
@@ -1578,6 +1583,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             : [],
         },
         territoryLeaderStats,
+        territoryDrama,
         vehicleOps: {
           hasCrew: Boolean(crewMembership),
           crewRole: crewMembership?.role ?? null,

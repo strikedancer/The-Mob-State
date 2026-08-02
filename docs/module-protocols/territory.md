@@ -56,6 +56,7 @@
   - Territory admin telemetry: admin-overzicht bevat nu 24u economy/progression metrics voor reward per minuut, contest winrate per HQ-band, region growth per crew-size en bonus usage per HQ/building tier.
   - Territory pacing update: `TERRITORY_ACTION_DAILY_CAP` ondersteunt nu expliciet `0` als "geen harde dagcap", zodat actieve crews oneindig kunnen doorspelen binnen cooldown/anti-farm guardrails
   - Territory Fase C (diepe progression): map/overview exposeert `viewerCaps` (owned/effective region- + contest-caps via HQ), regioprojecten `safehouse_network` in `territory_region_projects` (HQ-gated start + contribute), actief project geeft passief-inkomenbonus, contest `sabotage`/`supply_run` beschadigt/herstelt project-HP/voortgang, en `stabilityDelta` wordt nu ook op `territory_control` toegepast
+  - Territory Fase D (seizoen/meta): seizoen-close deelt exact-once awards (expansie/defense/war-frontline) via `territory_reward_log` + crew-bank (cash multiplier), rotating `region_event` effects met actiebonus + income-penalty, en drama-snapshot op dashboard + `/public/home` + Territory season-tab
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -215,6 +216,11 @@ Verplichte keys:
 - `TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE`
 - `TERRITORY_PROJECT_SUPPLY_REPAIR_HP`
 - `TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS`
+- `TERRITORY_REGION_EVENT_ENABLED`
+- `TERRITORY_REGION_EVENT_ROTATION_HOURS`
+- `TERRITORY_REGION_EVENT_ACTIVE_COUNT`
+- `TERRITORY_REGION_EVENT_ATTACK_BONUS_POINTS`
+- `TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT`
 
 Harde regel:
 - Nieuwe territory setting keys worden eerst in admin runtime config toegevoegd en gevalideerd, nooit als hardcoded JSON settings file.
@@ -292,6 +298,9 @@ Admin moderation:
 13. Map toont `viewerCaps` (owned/effective regions + contests) voor de eigen crew.
 14. Owned regio: start/contribute safehouse-project (HQ-gated); actief project verhoogt getoonde en uitgekeerde passieve income.
 15. Contest sabotage verlaagt project-HP / kan vernietigen; defender supply_run herstelt of bouwt voortgang.
+16. Admin (of auto op `endsAt`) close season deelt awards exact-once en toont payout-samenvatting.
+17. Region events roteren via runtime_config en zijn zichtbaar op map/overview/dashboard/public home.
+18. Drama-widget toont hot contests / recente captures / rising crews / war theaters zonder PII.
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.

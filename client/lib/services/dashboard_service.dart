@@ -105,6 +105,90 @@ class TerritoryLeaderDashboardSummary {
   }
 }
 
+class TerritoryDramaDashboardSummary {
+  final List<String> hottestContestLines;
+  final List<String> recentCaptureLines;
+  final List<String> risingCrewLines;
+  final List<String> warTheaterLines;
+  final List<String> regionEventLines;
+
+  TerritoryDramaDashboardSummary({
+    this.hottestContestLines = const [],
+    this.recentCaptureLines = const [],
+    this.risingCrewLines = const [],
+    this.warTheaterLines = const [],
+    this.regionEventLines = const [],
+  });
+
+  bool get hasContent =>
+      hottestContestLines.isNotEmpty ||
+      recentCaptureLines.isNotEmpty ||
+      risingCrewLines.isNotEmpty ||
+      warTheaterLines.isNotEmpty ||
+      regionEventLines.isNotEmpty;
+
+  factory TerritoryDramaDashboardSummary.fromJson(Map<String, dynamic> json) {
+    String contestLine(Map<String, dynamic> c) {
+      final region = c['regionKey']?.toString() ?? '-';
+      final status = c['status']?.toString() ?? '';
+      final attacker = c['attackerCrewName']?.toString();
+      final defender = c['defenderCrewName']?.toString();
+      final vs = [
+        if (attacker != null && attacker.isNotEmpty) attacker,
+        if (defender != null && defender.isNotEmpty) defender,
+      ].join(' vs ');
+      return vs.isEmpty ? '$region ($status)' : '$region · $vs';
+    }
+
+    String captureLine(Map<String, dynamic> c) {
+      final region = c['regionKey']?.toString() ?? '-';
+      final winner = c['winnerCrewName']?.toString() ?? '-';
+      return '$winner → $region';
+    }
+
+    String risingLine(Map<String, dynamic> c) {
+      final name = c['crewName']?.toString() ?? '-';
+      final captures = c['captures'] ?? 0;
+      return '$name ($captures)';
+    }
+
+    String theaterLine(Map<String, dynamic> c) {
+      final region = c['theaterRegionKey']?.toString() ?? '-';
+      final attacker = c['attackerCrewName']?.toString();
+      final defender = c['defenderCrewName']?.toString();
+      final vs = [
+        if (attacker != null && attacker.isNotEmpty) attacker,
+        if (defender != null && defender.isNotEmpty) defender,
+      ].join(' vs ');
+      return vs.isEmpty ? region : '$region · $vs';
+    }
+
+    String eventLine(Map<String, dynamic> c) {
+      final region = c['regionKey']?.toString() ?? '-';
+      final key = c['eventKey']?.toString() ?? 'event';
+      return '$region · $key';
+    }
+
+    List<String> mapList(dynamic raw, String Function(Map<String, dynamic>) mapFn) {
+      if (raw is! List) return const [];
+      return raw
+          .whereType<Map>()
+          .map((e) => mapFn(e.cast<String, dynamic>()))
+          .where((e) => e.trim().isNotEmpty)
+          .take(3)
+          .toList(growable: false);
+    }
+
+    return TerritoryDramaDashboardSummary(
+      hottestContestLines: mapList(json['hottestContests'], contestLine),
+      recentCaptureLines: mapList(json['recentCaptures'], captureLine),
+      risingCrewLines: mapList(json['risingCrews'], risingLine),
+      warTheaterLines: mapList(json['activeWarTheaters'], theaterLine),
+      regionEventLines: mapList(json['activeRegionEvents'], eventLine),
+    );
+  }
+}
+
 class VehicleOpsCategoryDashboardSummary {
   final int heatCurrent;
   final String heatLevel;
@@ -426,6 +510,7 @@ class DashboardStats {
   final DashboardRiskSummary? risk;
   final CrewWarDashboardSummary? crewWar;
   final TerritoryLeaderDashboardSummary? territoryLeaderStats;
+  final TerritoryDramaDashboardSummary? territoryDrama;
   final VehicleOpsDashboardSummary? vehicleOps;
   final Map<String, int> cooldowns;
 
@@ -459,6 +544,7 @@ class DashboardStats {
     this.risk,
     this.crewWar,
     this.territoryLeaderStats,
+    this.territoryDrama,
     this.vehicleOps,
     required this.cooldowns,
   });
@@ -526,6 +612,11 @@ class DashboardStats {
       territoryLeaderStats: json['territoryLeaderStats'] != null
           ? TerritoryLeaderDashboardSummary.fromJson(
               json['territoryLeaderStats'] as Map<String, dynamic>,
+            )
+          : null,
+      territoryDrama: json['territoryDrama'] != null
+          ? TerritoryDramaDashboardSummary.fromJson(
+              json['territoryDrama'] as Map<String, dynamic>,
             )
           : null,
       vehicleOps: json['vehicleOps'] != null

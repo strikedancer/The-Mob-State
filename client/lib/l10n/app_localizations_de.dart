@@ -14705,4 +14705,37 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get territoryErrorProjectCooldown => 'Project supply is on cooldown.';
+
+  @override
+  String get territoryDramaTitle => 'Territory drama';
+
+  @override
+  String get territoryDramaHotContests => 'Hot contests';
+
+  @override
+  String get territoryDramaRecentCaptures => 'Recent captures';
+
+  @override
+  String get territoryDramaRisingCrews => 'Rising crews';
+
+  @override
+  String get territoryDramaWarTheaters => 'War theaters';
+
+  @override
+  String get territoryDramaRegionEvents => 'Region events';
+
+  @override
+  String get territoryDramaEmpty => 'No live territory drama right now.';
+
+  @override
+  String get territoryDetailRegionEvent => 'Region event';
+
+  @override
+  String get territoryEventPoliceOffensive => 'Police offensive';
+
+  @override
+  String get territoryEventHarborStrike => 'Harbor strike';
+
+  @override
+  String get territoryEventBlackoutRumor => 'Blackout rumor';
 }

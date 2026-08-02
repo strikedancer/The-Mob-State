@@ -8601,5 +8601,16 @@
   "territoryErrorProjectNotFound": "Geen project gevonden voor deze regio.",
   "territoryErrorProjectDestroyed": "Project vernietigd - start een nieuw project.",
   "territoryErrorProjectActive": "Project is al actief.",
-  "territoryErrorProjectCooldown": "Projectbevoorrading staat op cooldown."
+  "territoryErrorProjectCooldown": "Projectbevoorrading staat op cooldown.",
+  "territoryDramaTitle": "Territory-drama",
+  "territoryDramaHotContests": "Hete contests",
+  "territoryDramaRecentCaptures": "Recente veroveringen",
+  "territoryDramaRisingCrews": "Stijgende crews",
+  "territoryDramaWarTheaters": "Oorlogstheaters",
+  "territoryDramaRegionEvents": "Regio-events",
+  "territoryDramaEmpty": "Geen live territory-drama op dit moment.",
+  "territoryDetailRegionEvent": "Regio-event",
+  "territoryEventPoliceOffensive": "Politie-offensief",
+  "territoryEventHarborStrike": "Havenstaking",
+  "territoryEventBlackoutRumor": "Blackout-gerucht"
 }

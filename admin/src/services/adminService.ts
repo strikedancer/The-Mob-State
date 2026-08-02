@@ -2678,7 +2678,12 @@ export const adminService = {
     await ensureOk(response, "Failed to start territory season");
   },
 
-  async territoryCloseSeason(seasonKey: string): Promise<void> {
+  async territoryCloseSeason(seasonKey: string): Promise<{
+    seasonKey?: string;
+    alreadyDistributed?: boolean;
+    awards?: Array<Record<string, unknown>>;
+    totalCashPaid?: number;
+  }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/territory/admin/season/close`, {
       method: "POST",
@@ -2690,6 +2695,13 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to close territory season");
+    const payload = await response.json().catch(() => ({}));
+    return (payload?.params ?? {}) as {
+      seasonKey?: string;
+      alreadyDistributed?: boolean;
+      awards?: Array<Record<string, unknown>>;
+      totalCashPaid?: number;
+    };
   },
 
   async getPlayerPortraits(playerId: number): Promise<{
