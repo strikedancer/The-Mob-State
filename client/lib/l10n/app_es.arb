@@ -8641,6 +8641,41 @@
       }
     }
   },
+  "launderJobCountdown": "Completes in {time}",
+  "@launderJobCountdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "launderCooldownCountdown": "Available again in {time}",
+  "@launderCooldownCountdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "launderPreviewFee": "Fee ({feePercent}%): €{fee}",
+  "@launderPreviewFee": {
+    "placeholders": {
+      "feePercent": {
+        "type": "int"
+      },
+      "fee": {
+        "type": "String"
+      }
+    }
+  },
+  "launderPreviewPayout": "Bank payout if successful: €{payout}",
+  "@launderPreviewPayout": {
+    "placeholders": {
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
   "launderAmountLabel": "Amount to wash",
   "launderStartButton": "Start wash",
   "launderStartedSuccess": "Laundering started.",

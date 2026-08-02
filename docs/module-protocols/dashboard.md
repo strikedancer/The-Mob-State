@@ -26,7 +26,8 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Consistent formatting for money, timers, percentages and labels.
 - Dashboard shell en hoofdpanelen moeten visueel aansluiten op de game-identiteit (noir/gold), met nadruk op leesbaar contrast, subtiele gradients en duidelijke scheiding tussen navigatie, content en quick actions in plaats van vlakke donkere blokken.
 - Dashboard statistiekblokken mogen geen hardcoded nul-placeholders tonen wanneer er al echte backendtellers of bestaande spelerstats beschikbaar zijn.
-- Dashboard moet een complete baseline blijven tonen voor: economy (cash/bank/portfolio/net worth), cooldown-operaties, risicosignalen, notificaties en 24u/7d trendstatistieken; nieuwe modules die deze domeinen raken moeten hierop inhaken.
+- Dashboard moet een complete baseline blijven tonen voor: economy (cash/bank/crypto/stocks/property/vehicle portfolio/net worth), cooldown-operaties, risicosignalen, notificaties en 24u/7d trendstatistieken; nieuwe modules die deze domeinen raken moeten hierop inhaken.
+- Stock Market en Crypto horen bereikbaar te zijn via mobile menu-grid én actions drawer / web quick actions (niet alleen via legacy tile fallback).
 - “Wat nu?” is optioneel; als we het tonen moet het compact blijven en mag het nooit primaire statistiekpanelen blokkeren of verstoppen. Als we het niet tonen, moeten doelen/recap nog steeds logisch vindbaar blijven.
 - Voor reward-gevoel en transparantie mag het dashboard een compacte **sessie recap** tonen (laatste events in deze sessie) zodat spelers direct zien wat acties opleverden. Dit mag de primaire loop niet onderbreken en moet optioneel/openklapbaar blijven.
 - Plaats **Dagdoelen/Weekdoelen** bij voorkeur **onderaan de linker kolom** (onder het speler/economie paneel) zodat de kerninformatie eerst scanbaar blijft; op compact scherm mag dit direct onder de eerste kaart of onder de laatste hoofdkaart als extra sectie.

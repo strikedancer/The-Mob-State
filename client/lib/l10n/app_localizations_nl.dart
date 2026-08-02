@@ -14588,6 +14588,26 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String launderJobCountdown(String time) {
+    return 'Klaar over $time';
+  }
+
+  @override
+  String launderCooldownCountdown(String time) {
+    return 'Weer beschikbaar over $time';
+  }
+
+  @override
+  String launderPreviewFee(int feePercent, String fee) {
+    return 'Fee ($feePercent%): €$fee';
+  }
+
+  @override
+  String launderPreviewPayout(String payout) {
+    return 'Bankuitbetaling bij succes: €$payout';
+  }
+
+  @override
   String get launderAmountLabel => 'Bedrag om te wassen';
 
   @override

@@ -1390,6 +1390,23 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       const price = cryptoPriceMap.get(holding.asset_symbol) ?? 0;
       return sum + qty * price;
     }, 0);
+    let stockPortfolioValue = 0;
+    try {
+      const stockRows = await prisma.$queryRawUnsafe<
+        Array<{ quantity: number | string; currentPrice: number | string }>
+      >(
+        `SELECT h.quantity, a.currentPrice
+         FROM stock_holdings h
+         INNER JOIN stock_assets a ON a.symbol = h.symbol
+         WHERE h.playerId = ? AND a.enabled = 1`,
+        playerId,
+      );
+      stockPortfolioValue = stockRows.reduce((sum, row) => {
+        return sum + parseFloatNumber(row.quantity) * parseFloatNumber(row.currentPrice);
+      }, 0);
+    } catch (error) {
+      console.error('[Dashboard] Stock portfolio value failed:', { playerId, error });
+    }
     const propertyPortfolioValue = Number(propertiesOwnedAgg._sum.purchasePrice ?? 0);
 
     // Get player weapons
@@ -1467,7 +1484,12 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       Math.max(0, Math.round(wantedLevel * 0.6 + fbiHeat * 0.4 + activeCooldownCount * 1.5))
     );
     const netWorth =
-      cashBalance + bankBalance + propertyPortfolioValue + vehiclePortfolio.estimatedValue + cryptoPortfolioValue;
+      cashBalance +
+      bankBalance +
+      propertyPortfolioValue +
+      vehiclePortfolio.estimatedValue +
+      cryptoPortfolioValue +
+      stockPortfolioValue;
 
     return res.status(200).json({
       event: 'dashboard.stats',
@@ -1515,6 +1537,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           cashBalance,
           bankBalance,
           cryptoPortfolioValue: Math.round(cryptoPortfolioValue),
+          stockPortfolioValue: Math.round(stockPortfolioValue),
           propertyPortfolioValue,
           vehiclePortfolioValue: vehiclePortfolio.estimatedValue,
           netWorth: Math.round(netWorth),

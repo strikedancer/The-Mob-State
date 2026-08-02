@@ -27,9 +27,12 @@ Niet in scope:
 
 ## Cross-Module Dependencies
 - Stock Market -> Bank (funding)
-- Stock Market -> Dashboard (nav + net worth context)
+- Stock Market -> Dashboard (nav + economy strip `stockPortfolioValue` + quick actions / mobile menu)
 - Stock Market -> Balance & Economy (sink/source pacing)
 - Stock Market -> Crypto (expliciet gescheiden; geen gedeelde orders)
+
+## Dashboard Contract
+- `/player/dashboard-stats` `economy.stockPortfolioValue` = som `stock_holdings.quantity * stock_assets.currentPrice` (enabled assets); telt mee in `netWorth`.
 
 ## Must Preserve
 - Buy faalt bij te weinig banksaldo.

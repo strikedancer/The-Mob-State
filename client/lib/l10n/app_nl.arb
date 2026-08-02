@@ -8641,6 +8641,41 @@
       }
     }
   },
+  "launderJobCountdown": "Klaar over {time}",
+  "@launderJobCountdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "launderCooldownCountdown": "Weer beschikbaar over {time}",
+  "@launderCooldownCountdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "launderPreviewFee": "Fee ({feePercent}%): €{fee}",
+  "@launderPreviewFee": {
+    "placeholders": {
+      "feePercent": {
+        "type": "int"
+      },
+      "fee": {
+        "type": "String"
+      }
+    }
+  },
+  "launderPreviewPayout": "Bankuitbetaling bij succes: €{payout}",
+  "@launderPreviewPayout": {
+    "placeholders": {
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
   "launderAmountLabel": "Bedrag om te wassen",
   "launderStartButton": "Start witwas",
   "launderStartedSuccess": "Witwas gestart.",

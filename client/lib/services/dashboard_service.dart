@@ -319,6 +319,7 @@ class DashboardEconomySummary {
   final int cashBalance;
   final int bankBalance;
   final int cryptoPortfolioValue;
+  final int stockPortfolioValue;
   final int propertyPortfolioValue;
   final int vehiclePortfolioValue;
   final int netWorth;
@@ -327,6 +328,7 @@ class DashboardEconomySummary {
     required this.cashBalance,
     required this.bankBalance,
     required this.cryptoPortfolioValue,
+    required this.stockPortfolioValue,
     required this.propertyPortfolioValue,
     required this.vehiclePortfolioValue,
     required this.netWorth,
@@ -337,6 +339,7 @@ class DashboardEconomySummary {
       cashBalance: json['cashBalance'] as int? ?? 0,
       bankBalance: json['bankBalance'] as int? ?? 0,
       cryptoPortfolioValue: json['cryptoPortfolioValue'] as int? ?? 0,
+      stockPortfolioValue: json['stockPortfolioValue'] as int? ?? 0,
       propertyPortfolioValue: json['propertyPortfolioValue'] as int? ?? 0,
       vehiclePortfolioValue: json['vehiclePortfolioValue'] as int? ?? 0,
       netWorth: json['netWorth'] as int? ?? 0,

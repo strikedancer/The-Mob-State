@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/launder_service.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 
@@ -32,11 +33,14 @@ class _BankScreenState extends State<BankScreen> {
   final TextEditingController _launderAmountController =
       TextEditingController();
   Timer? _searchDebounce;
+  Timer? _launderTick;
 
   bool _isLoading = true;
   bool _isSubmitting = false;
   bool _isLaundering = false;
   Map<String, dynamic> _launderStatus = {};
+  int _launderCooldownSeconds = 0;
+  DateTime? _launderJobCompletesAt;
   bool _isLoadingTransactions = false;
   bool _isSearchingUsers = false;
   int _balance = 0;
@@ -57,12 +61,18 @@ class _BankScreenState extends State<BankScreen> {
   @override
   void initState() {
     super.initState();
+    _launderAmountController.addListener(_onLaunderAmountChanged);
+    _launderTick = Timer.periodic(const Duration(seconds: 1), (_) {
+      _onLaunderTick();
+    });
     _refreshAll();
   }
 
   @override
   void dispose() {
     _searchDebounce?.cancel();
+    _launderTick?.cancel();
+    _launderAmountController.removeListener(_onLaunderAmountChanged);
     _amountController.dispose();
     _amountDescriptionController.dispose();
     _transferUsernameController.dispose();
@@ -70,6 +80,65 @@ class _BankScreenState extends State<BankScreen> {
     _transferDescriptionController.dispose();
     _launderAmountController.dispose();
     super.dispose();
+  }
+
+  void _onLaunderAmountChanged() {
+    if (!mounted) return;
+    setState(() {});
+  }
+
+  void _applyLaunderStatus(Map<String, dynamic> status) {
+    _launderStatus = status;
+    _launderCooldownSeconds =
+        (status['cooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
+    final job = status['activeJob'];
+    if (job is Map && job['completesAt'] != null) {
+      _launderJobCompletesAt =
+          DateTime.tryParse(job['completesAt'].toString())?.toLocal();
+    } else {
+      _launderJobCompletesAt = null;
+    }
+  }
+
+  void _onLaunderTick() {
+    if (!mounted) return;
+    var shouldReload = false;
+    setState(() {
+      if (_launderCooldownSeconds > 0) {
+        _launderCooldownSeconds -= 1;
+        if (_launderCooldownSeconds <= 0) {
+          shouldReload = true;
+        }
+      }
+      if (_launderJobCompletesAt != null &&
+          !DateTime.now().isBefore(_launderJobCompletesAt!)) {
+        shouldReload = true;
+      }
+    });
+    if (shouldReload) {
+      _loadLaunderStatus();
+    }
+  }
+
+  int get _launderFeePercent =>
+      (((_launderStatus['config'] as Map?)?['feePercent'] as num?)?.toInt() ??
+          12);
+
+  ({int fee, int payout})? _launderPreview() {
+    final amount = int.tryParse(_launderAmountController.text.trim()) ?? 0;
+    if (amount <= 0) return null;
+    final fee = (amount * (_launderFeePercent / 100)).floor();
+    final feeAmount = fee < 1 ? 1 : fee;
+    final payout = amount - feeAmount;
+    if (payout <= 0) return null;
+    return (fee: feeAmount, payout: payout);
+  }
+
+  Duration? _launderJobRemaining() {
+    final completesAt = _launderJobCompletesAt;
+    if (completesAt == null) return null;
+    final remaining = completesAt.difference(DateTime.now());
+    return remaining.isNegative ? Duration.zero : remaining;
   }
 
   void _onTransferUsernameChanged(String query) {
@@ -93,7 +162,7 @@ class _BankScreenState extends State<BankScreen> {
       final status = await _launderService.getStatus();
       if (!mounted) return;
       if (status['success'] == true) {
-        setState(() => _launderStatus = status);
+        setState(() => _applyLaunderStatus(status));
       }
     } catch (_) {
       // Keep bank usable if launder endpoint is unavailable.
@@ -109,7 +178,7 @@ class _BankScreenState extends State<BankScreen> {
     if (!mounted) return;
     setState(() => _isLaundering = false);
     if (result['success'] == true) {
-      setState(() => _launderStatus = result);
+      setState(() => _applyLaunderStatus(result));
       _launderAmountController.clear();
       showTopRightFromSnackBar(
         context,
@@ -796,17 +865,40 @@ class _BankScreenState extends State<BankScreen> {
                           ),
                           style: const TextStyle(color: Colors.white70),
                         ),
+                        if (_launderJobRemaining() != null) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.launderJobCountdown(
+                              formatDuration(_launderJobRemaining()!),
+                            ),
+                            style: TextStyle(
+                              color: Colors.amber.shade200,
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ] else if (_launderCooldownSeconds > 0) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.launderCooldownCountdown(
+                            formatDuration(
+                              Duration(seconds: _launderCooldownSeconds),
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.amber.shade200,
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ],
                       const SizedBox(height: 10),
                       TextField(
                         controller: _launderAmountController,
                         keyboardType: TextInputType.number,
                         enabled: _launderStatus['activeJob'] == null &&
-                            ((_launderStatus['cooldownSecondsRemaining']
-                                        as num?)
-                                    ?.toInt() ??
-                                0) <=
-                                0,
+                            _launderCooldownSeconds <= 0,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: l10n.launderAmountLabel,
@@ -818,17 +910,51 @@ class _BankScreenState extends State<BankScreen> {
                           ),
                         ),
                       ),
+                      Builder(
+                        builder: (context) {
+                          final preview = _launderStatus['activeJob'] == null &&
+                                  _launderCooldownSeconds <= 0
+                              ? _launderPreview()
+                              : null;
+                          if (preview == null) {
+                            return const SizedBox.shrink();
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 8),
+                              Text(
+                                l10n.launderPreviewFee(
+                                  _launderFeePercent,
+                                  preview.fee.toString(),
+                                ),
+                                style: TextStyle(
+                                  color: Colors.grey.shade300,
+                                  fontSize: 12.5,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                l10n.launderPreviewPayout(
+                                  preview.payout.toString(),
+                                ),
+                                style: TextStyle(
+                                  color: Colors.green.shade300,
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: (_isLaundering ||
                                   _launderStatus['activeJob'] != null ||
-                                  ((_launderStatus['cooldownSecondsRemaining']
-                                              as num?)
-                                          ?.toInt() ??
-                                      0) >
-                                      0)
+                                  _launderCooldownSeconds > 0)
                               ? null
                               : _startLaunder,
                           icon: const Icon(Icons.local_laundry_service),

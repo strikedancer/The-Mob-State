@@ -1235,6 +1235,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(height: 12),
               _buildActionCard(
                 context,
+                icon: Icons.show_chart,
+                title: l10n.stockMarketTitle,
+                subtitle: l10n.stockMarketHint,
+                color: Colors.teal.shade700,
+                onTap: () => setState(
+                  () => _selectedWebSection = _WebSection.stockMarket,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildActionCard(
+                context,
                 icon: Icons.school,
                 title: l10n.schoolMenuLabel,
                 subtitle: l10n.schoolMenuSubtitle,
@@ -1445,6 +1456,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Navigator.of(context).pop();
                             setState(
                               () => _selectedWebSection = _WebSection.bank,
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.currency_bitcoin,
+                            color: Colors.cyan.shade700,
+                          ),
+                          title: Text(l10n.crypto),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            setState(
+                              () => _selectedWebSection = _WebSection.crypto,
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.show_chart,
+                            color: Colors.teal.shade700,
+                          ),
+                          title: Text(l10n.stockMarketTitle),
+                          subtitle: Text(l10n.stockMarketHint),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            setState(
+                              () =>
+                                  _selectedWebSection = _WebSection.stockMarket,
                             );
                           },
                         ),
@@ -2106,6 +2145,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const BankScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.currency_bitcoin,
+                                  label: l10n.crypto,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const CryptoScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.show_chart,
+                                  label: l10n.stockMarketTitle,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const StockMarketScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.local_shipping,
+                                  label: l10n.smuggling,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const SmugglingScreen(),
                                     ),
                                   ),
                                 ),
@@ -3489,6 +3561,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       l10n.crypto,
                       formatCurrency(_stats?.economy?.cryptoPortfolioValue ?? 0),
                       Colors.cyan.shade300,
+                    ),
+                    _buildInfoRow(
+                      l10n.stockMarketTitle,
+                      formatCurrency(_stats?.economy?.stockPortfolioValue ?? 0),
+                      Colors.teal.shade200,
                     ),
                     _buildInfoRow(
                       l10n.properties,

@@ -14737,6 +14737,26 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String launderJobCountdown(String time) {
+    return 'Completes in $time';
+  }
+
+  @override
+  String launderCooldownCountdown(String time) {
+    return 'Available again in $time';
+  }
+
+  @override
+  String launderPreviewFee(int feePercent, String fee) {
+    return 'Fee ($feePercent%): €$fee';
+  }
+
+  @override
+  String launderPreviewPayout(String payout) {
+    return 'Bank payout if successful: €$payout';
+  }
+
+  @override
   String get launderAmountLabel => 'Amount to wash';
 
   @override

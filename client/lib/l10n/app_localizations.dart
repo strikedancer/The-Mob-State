@@ -25487,6 +25487,30 @@ abstract class AppLocalizations {
   /// **'Wash in progress. Bank payout if successful: €{amount}'**
   String launderActiveJob(String amount);
 
+  /// No description provided for @launderJobCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Completes in {time}'**
+  String launderJobCountdown(String time);
+
+  /// No description provided for @launderCooldownCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Available again in {time}'**
+  String launderCooldownCountdown(String time);
+
+  /// No description provided for @launderPreviewFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee ({feePercent}%): €{fee}'**
+  String launderPreviewFee(int feePercent, String fee);
+
+  /// No description provided for @launderPreviewPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank payout if successful: €{payout}'**
+  String launderPreviewPayout(String payout);
+
   /// No description provided for @launderAmountLabel.
   ///
   /// In en, this message translates to:
