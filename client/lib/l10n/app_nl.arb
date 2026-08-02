@@ -8548,5 +8548,58 @@
     }
   },
   "aviationUiLicensePurchaseFailed": "Licentieaankoop mislukt.",
-  "aviationUiLicensePurchasedSuccess": "Luchtvaartlicentie aangeschaft."
+  "aviationUiLicensePurchasedSuccess": "Luchtvaartlicentie aangeschaft.",
+  "territoryCapsLine": "Regio's {owned}/{maxRegions} · Contests {active}/{maxContests}",
+  "@territoryCapsLine": {
+    "placeholders": {
+      "owned": {
+        "type": "int"
+      },
+      "maxRegions": {
+        "type": "int"
+      },
+      "active": {
+        "type": "int"
+      },
+      "maxContests": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryDetailProject": "Regioproject",
+  "territoryProjectSafehouse": "Safehouse-netwerk",
+  "territoryProjectStatusBuilding": "In aanbouw",
+  "territoryProjectStatusActive": "Actief",
+  "territoryProjectStatusDamaged": "Beschadigd",
+  "territoryProjectStatusDestroyed": "Vernietigd",
+  "territoryProjectProgress": "Voortgang",
+  "territoryProjectHp": "Integriteit",
+  "territoryProjectIncomeBonusPct": "+{percent}% passief inkomen",
+  "@territoryProjectIncomeBonusPct": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryProjectStart": "Start safehouse-project",
+  "territoryProjectContribute": "Bevoorraad project",
+  "territoryProjectHqRequired": "Vereist HQ level {level}",
+  "@territoryProjectHqRequired": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryProjectHint": "Een safehouse-netwerk verhoogt passief inkomen. Sabotage beschadigt het in contests; supply runs repareren of bouwen het verder.",
+  "territorySnackProjectStarted": "Safehouse-project gestart.",
+  "territorySnackProjectContributed": "Project bijgewerkt.",
+  "territoryErrorProjectHq": "Hoger HQ-level vereist om dit project te starten.",
+  "territoryErrorProjectNotOwner": "Alleen de controlerende crew kan dit project beheren.",
+  "territoryErrorProjectExists": "Deze regio heeft al een project.",
+  "territoryErrorProjectNotFound": "Geen project gevonden voor deze regio.",
+  "territoryErrorProjectDestroyed": "Project vernietigd - start een nieuw project.",
+  "territoryErrorProjectActive": "Project is al actief.",
+  "territoryErrorProjectCooldown": "Projectbevoorrading staat op cooldown."
 }

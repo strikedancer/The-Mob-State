@@ -277,9 +277,9 @@ Waarschijnlijke metadata-uitbreidingen:
 
 ### Fase C: Diepe progression-koppeling
 
-1. Crew HQ upgrades koppelen aan Territory caps/modifiers
-2. territory projects per regio
-3. sabotage en denial loops op projecten
+1. Crew HQ upgrades koppelen aan Territory caps/modifiers — ✅ live (server caps + player-facing `viewerCaps`)
+2. territory projects per regio — ✅ live (`safehouse_network` thin slice)
+3. sabotage en denial loops op projecten — ✅ live (contest sabotage HP / supply repair+build)
 
 ### Fase D: Seizoen/meta-laag
 

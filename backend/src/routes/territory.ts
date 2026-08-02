@@ -69,6 +69,13 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     INVALID_ACTION_TYPE:            [400, 'territory.invalid_action_type'],
     NOT_IN_CREW:                    [400, 'error.not_in_crew'],
     CONTEST_NOT_FOUND_OR_ALREADY_RESOLVED: [409, 'territory.contest_already_resolved'],
+    PROJECT_HQ_LEVEL_REQUIRED:      [403, 'territory.project_hq_level_required'],
+    PROJECT_NOT_OWNER:              [403, 'territory.project_not_owner'],
+    PROJECT_ALREADY_EXISTS:         [409, 'territory.project_already_exists'],
+    PROJECT_NOT_FOUND:              [404, 'territory.project_not_found'],
+    PROJECT_DESTROYED:              [409, 'territory.project_destroyed'],
+    PROJECT_ALREADY_ACTIVE:         [409, 'territory.project_already_active'],
+    PROJECT_CONTRIBUTE_COOLDOWN:    [429, 'territory.project_contribute_cooldown'],
   };
 
   const entry = map[error.message];
@@ -212,6 +219,58 @@ router.post('/contest/defend', authenticate, async (req: AuthRequest, res: Respo
       req.player?.currentCountry,
     );
     return res.json({ event: 'territory.defend_joined', params: {} });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+const regionProjectSchema = z.object({
+  regionKey: z.string().min(2).max(60),
+});
+
+/**
+ * POST /territory/projects/start
+ * Start a safehouse network project on an owned region (HQ-gated).
+ */
+router.post('/projects/start', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = regionProjectSchema.parse(req.body);
+    const project = await territoryService.startRegionProject(
+      req.player!.id,
+      crewId,
+      body.regionKey,
+      req.player?.currentCountry,
+    );
+    return res.json({ event: 'territory.project_started', params: { project } });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/projects/contribute
+ * Advance/repair a region project outside an active contest.
+ */
+router.post('/projects/contribute', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = regionProjectSchema.parse(req.body);
+    const project = await territoryService.contributeRegionProject(
+      req.player!.id,
+      crewId,
+      body.regionKey,
+      req.player?.currentCountry,
+    );
+    return res.json({ event: 'territory.project_contributed', params: { project } });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });

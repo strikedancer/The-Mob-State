@@ -77,6 +77,13 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN: '2',
   TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID: '8',
   TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE: '4',
+  TERRITORY_PROJECT_SAFEHOUSE_MIN_HQ_LEVEL: '4',
+  TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT: '10',
+  TERRITORY_PROJECT_CONTRIBUTE_PROGRESS: '20',
+  TERRITORY_PROJECT_CONTRIBUTE_COOLDOWN_SECONDS: '900',
+  TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE: '20',
+  TERRITORY_PROJECT_SUPPLY_REPAIR_HP: '15',
+  TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS: '15',
 };
 
 type TerritorySeedRegion = {
@@ -343,6 +350,28 @@ export async function ensureTerritorySchema(): Promise<void> {
       INDEX idx_territory_reward_season (seasonKey),
       INDEX idx_territory_reward_crew (crewId),
       INDEX idx_territory_reward_player (playerId)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  // ── Region projects (Fase C) ─────────────────────────────────────────────
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_region_projects (
+      id INT NOT NULL AUTO_INCREMENT,
+      regionKey VARCHAR(60) NOT NULL,
+      ownerCrewId INT NOT NULL,
+      projectType VARCHAR(40) NOT NULL DEFAULT 'safehouse_network',
+      status VARCHAR(20) NOT NULL DEFAULT 'building',
+      progress INT NOT NULL DEFAULT 0,
+      hp INT NOT NULL DEFAULT 100,
+      maxHp INT NOT NULL DEFAULT 100,
+      lastContributeAt DATETIME NULL,
+      metadataJson LONGTEXT NULL,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uq_territory_region_project (regionKey),
+      INDEX idx_territory_projects_owner (ownerCrewId),
+      INDEX idx_territory_projects_status (status)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 

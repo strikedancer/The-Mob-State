@@ -685,6 +685,20 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorDailyCap;
       case 'territory.action_outside_current_country':
         return t.territoryErrorWrongCountry;
+      case 'territory.project_hq_level_required':
+        return t.territoryErrorProjectHq;
+      case 'territory.project_not_owner':
+        return t.territoryErrorProjectNotOwner;
+      case 'territory.project_already_exists':
+        return t.territoryErrorProjectExists;
+      case 'territory.project_not_found':
+        return t.territoryErrorProjectNotFound;
+      case 'territory.project_destroyed':
+        return t.territoryErrorProjectDestroyed;
+      case 'territory.project_already_active':
+        return t.territoryErrorProjectActive;
+      case 'territory.project_contribute_cooldown':
+        return t.territoryErrorProjectCooldown;
       default:
         return event.isEmpty ? t.territoryErrorUnknown : event;
     }
@@ -1527,12 +1541,30 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   Widget _buildMapTab() {
     final regions = (_mapData['regions'] as List<dynamic>?) ?? [];
+    final viewerCaps = (_mapData['viewerCaps'] as Map?)?.cast<String, dynamic>();
 
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
+          if (viewerCaps != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+              child: Text(
+                _l10n.territoryCapsLine(
+                  (viewerCaps['ownedRegions'] as num?)?.toInt() ?? 0,
+                  (viewerCaps['effectiveMaxRegions'] as num?)?.toInt() ?? 0,
+                  (viewerCaps['activeContests'] as num?)?.toInt() ?? 0,
+                  (viewerCaps['effectiveMaxContests'] as num?)?.toInt() ?? 0,
+                ),
+                style: TextStyle(
+                  color: Colors.grey[800],
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           _buildSvgMapOverview(regions),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
@@ -1836,6 +1868,32 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final warPressureCrewName =
         (activeWarPressure?['favoredCrewName'] as String?) ??
         activeWarPressure?['favoredCrewId']?.toString();
+    final regionProject =
+        (region['regionProject'] as Map?)?.cast<String, dynamic>();
+    final projectIncomeBonusPercent =
+        (region['projectIncomeBonusPercent'] as num?)?.toInt() ??
+        (regionProject?['incomeBonusPercent'] as num?)?.toInt() ??
+        0;
+    final projectStatus = regionProject?['status'] as String?;
+    final projectProgress = (regionProject?['progress'] as num?)?.toInt() ?? 0;
+    final projectHp = (regionProject?['hp'] as num?)?.toInt() ?? 0;
+    final projectMaxHp = (regionProject?['maxHp'] as num?)?.toInt() ?? 100;
+    final viewerCaps =
+        (_mapData['viewerCaps'] as Map?)?.cast<String, dynamic>();
+    final projectMinHq =
+        (viewerCaps?['projectSafehouseMinHqLevel'] as num?)?.toInt() ?? 4;
+    final canManageProject =
+        isMyCrewRegion && _hasCrew && canActInSelectedCountry && !_isActing;
+    final canStartProject =
+        canManageProject &&
+        contestStatus == null &&
+        (regionProject == null || projectStatus == 'destroyed') &&
+        viewerHqGlobalLevel >= projectMinHq;
+    final canContributeProject =
+        canManageProject &&
+        contestStatus == null &&
+        regionProject != null &&
+        (projectStatus == 'building' || projectStatus == 'damaged');
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -1927,6 +1985,17 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         t.territoryDetailIncomeDay,
         formatCurrency(passiveIncomeCashDaily),
       ),
+      if (regionProject != null) ...[
+        _detailRow(
+          t.territoryDetailProject,
+          '${t.territoryProjectSafehouse} · ${_projectStatusLabel(projectStatus)}'
+          '${projectIncomeBonusPercent > 0 ? ' · ${t.territoryProjectIncomeBonusPct(projectIncomeBonusPercent)}' : ''}',
+        ),
+        if (projectStatus == 'building')
+          _detailRow(t.territoryProjectProgress, '$projectProgress%'),
+        if (projectStatus == 'active' || projectStatus == 'damaged')
+          _detailRow(t.territoryProjectHp, '$projectHp / $projectMaxHp'),
+      ],
       if (_myCrewName != null)
         _detailRow(t.territoryDetailYourCrew, _myCrewName!),
       if (contestStatus != null)
@@ -2003,6 +2072,41 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           backgroundColor: Colors.green.withValues(alpha: 0.1),
           icon: Icons.verified,
         ),
+      if (isMyCrewRegion && contestStatus == null) ...[
+        const SizedBox(height: 8),
+        _buildInfoNotice(
+          t.territoryProjectHint,
+          borderColor: Colors.teal.shade700,
+          backgroundColor: Colors.teal.withValues(alpha: 0.08),
+          icon: Icons.home_work_outlined,
+        ),
+        if (canStartProject) ...[
+          const SizedBox(height: 12),
+          _buildActionButton(
+            label: t.territoryProjectStart,
+            icon: Icons.construction,
+            color: Colors.teal[700]!,
+            onTap: () => _startProject(region['regionKey'] as String),
+          ),
+        ] else if (canManageProject &&
+            (regionProject == null || projectStatus == 'destroyed') &&
+            viewerHqGlobalLevel < projectMinHq) ...[
+          const SizedBox(height: 8),
+          Text(
+            t.territoryProjectHqRequired(projectMinHq),
+            style: TextStyle(color: Colors.grey[700], fontSize: 12),
+          ),
+        ],
+        if (canContributeProject) ...[
+          const SizedBox(height: 12),
+          _buildActionButton(
+            label: t.territoryProjectContribute,
+            icon: Icons.local_shipping_outlined,
+            color: Colors.teal[700]!,
+            onTap: () => _contributeProject(region['regionKey'] as String),
+          ),
+        ],
+      ],
       if (contestStatus == 'preparing' &&
           isDefender &&
           canActInSelectedCountry) ...[
@@ -2544,6 +2648,79 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (_shouldReloadAfterTerritoryError(rawEvent)) {
         await _loadData();
       }
+    }
+  }
+
+  Future<void> _startProject(String regionKey) async {
+    setState(() => _isActing = true);
+    final result = await _service.startProject(regionKey);
+    if (!mounted) return;
+    setState(() => _isActing = false);
+
+    if (result['success'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_l10n.territorySnackProjectStarted),
+          backgroundColor: Colors.teal,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      await _loadData();
+    } else {
+      final rawEvent = result['event'] ?? result['message'];
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(rawEvent)),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
+  }
+
+  Future<void> _contributeProject(String regionKey) async {
+    setState(() => _isActing = true);
+    final result = await _service.contributeProject(regionKey);
+    if (!mounted) return;
+    setState(() => _isActing = false);
+
+    if (result['success'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_l10n.territorySnackProjectContributed),
+          backgroundColor: Colors.teal,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      await _loadData();
+    } else {
+      final rawEvent = result['event'] ?? result['message'];
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(rawEvent)),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
+  }
+
+  String _projectStatusLabel(String? status) {
+    switch (status) {
+      case 'building':
+        return _l10n.territoryProjectStatusBuilding;
+      case 'active':
+        return _l10n.territoryProjectStatusActive;
+      case 'damaged':
+        return _l10n.territoryProjectStatusDamaged;
+      case 'destroyed':
+        return _l10n.territoryProjectStatusDestroyed;
+      default:
+        return status ?? '-';
     }
   }
 

@@ -55,6 +55,7 @@
   - Territory HQ action-gates: geavanceerde contest-acties kunnen nu per actietype een minimaal HQ global level vereisen (runtime keys), met server-side enforcement en expliciete NL/EN lock-tekst in de regio-modal.
   - Territory admin telemetry: admin-overzicht bevat nu 24u economy/progression metrics voor reward per minuut, contest winrate per HQ-band, region growth per crew-size en bonus usage per HQ/building tier.
   - Territory pacing update: `TERRITORY_ACTION_DAILY_CAP` ondersteunt nu expliciet `0` als "geen harde dagcap", zodat actieve crews oneindig kunnen doorspelen binnen cooldown/anti-farm guardrails
+  - Territory Fase C (diepe progression): map/overview exposeert `viewerCaps` (owned/effective region- + contest-caps via HQ), regioprojecten `safehouse_network` in `territory_region_projects` (HQ-gated start + contribute), actief project geeft passief-inkomenbonus, contest `sabotage`/`supply_run` beschadigt/herstelt project-HP/voortgang, en `stabilityDelta` wordt nu ook op `territory_control` toegepast
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -207,6 +208,13 @@ Verplichte keys:
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN`
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID`
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE`
+- `TERRITORY_PROJECT_SAFEHOUSE_MIN_HQ_LEVEL`
+- `TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT`
+- `TERRITORY_PROJECT_CONTRIBUTE_PROGRESS`
+- `TERRITORY_PROJECT_CONTRIBUTE_COOLDOWN_SECONDS`
+- `TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE`
+- `TERRITORY_PROJECT_SUPPLY_REPAIR_HP`
+- `TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS`
 
 Harde regel:
 - Nieuwe territory setting keys worden eerst in admin runtime config toegevoegd en gevalideerd, nooit als hardcoded JSON settings file.
@@ -219,6 +227,8 @@ Harde regel:
 - `POST /territory/contest/start`
 - `POST /territory/action`
 - `POST /territory/contest/defend`
+- `POST /territory/projects/start`
+- `POST /territory/projects/contribute`
 - `GET /territory/crew/:crewId`
 - `GET /territory/leaderboard`
 - `GET /player/dashboard-stats` bevat voor crewleaders ook territory economy samenvattingen uit gecontroleerde regio's en `territory_reward_log`
@@ -279,6 +289,9 @@ Admin moderation:
 10. Multi-country browse: alle enabled landen renderen interactieve regio's; action endpoints blokkeren correct buiten de huidige Travel-locatie.
 11. HQ-locked actions tonen expliciet `vereist HQ level X` in NL/EN en server-side rejects blijven consistent met dezelfde locklogica.
 12. Admin telemetry toont valide 24u waarden voor reward/min, winrate per HQ-band, growth per crew-size en bonus usage per HQ/building tier.
+13. Map toont `viewerCaps` (owned/effective regions + contests) voor de eigen crew.
+14. Owned regio: start/contribute safehouse-project (HQ-gated); actief project verhoogt getoonde en uitgekeerde passieve income.
+15. Contest sabotage verlaagt project-HP / kan vernietigen; defender supply_run herstelt of bouwt voortgang.
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.

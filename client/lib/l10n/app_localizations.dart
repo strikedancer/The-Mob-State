@@ -25253,6 +25253,149 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Schedule both tracks daily: small steps stack into a clear edge on crimes.\nReview crimes where you fail most: strength and accuracy complement each other — they are not the same stat.'**
   String get helpTopicTrainingHubTips;
+
+  /// No description provided for @territoryCapsLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Regions {owned}/{maxRegions} · Contests {active}/{maxContests}'**
+  String territoryCapsLine(
+    int owned,
+    int maxRegions,
+    int active,
+    int maxContests,
+  );
+
+  /// No description provided for @territoryDetailProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Region project'**
+  String get territoryDetailProject;
+
+  /// No description provided for @territoryProjectSafehouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Safehouse network'**
+  String get territoryProjectSafehouse;
+
+  /// No description provided for @territoryProjectStatusBuilding.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get territoryProjectStatusBuilding;
+
+  /// No description provided for @territoryProjectStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get territoryProjectStatusActive;
+
+  /// No description provided for @territoryProjectStatusDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Damaged'**
+  String get territoryProjectStatusDamaged;
+
+  /// No description provided for @territoryProjectStatusDestroyed.
+  ///
+  /// In en, this message translates to:
+  /// **'Destroyed'**
+  String get territoryProjectStatusDestroyed;
+
+  /// No description provided for @territoryProjectProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get territoryProjectProgress;
+
+  /// No description provided for @territoryProjectHp.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrity'**
+  String get territoryProjectHp;
+
+  /// No description provided for @territoryProjectIncomeBonusPct.
+  ///
+  /// In en, this message translates to:
+  /// **'+{percent}% passive income'**
+  String territoryProjectIncomeBonusPct(int percent);
+
+  /// No description provided for @territoryProjectStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start safehouse project'**
+  String get territoryProjectStart;
+
+  /// No description provided for @territoryProjectContribute.
+  ///
+  /// In en, this message translates to:
+  /// **'Supply project'**
+  String get territoryProjectContribute;
+
+  /// No description provided for @territoryProjectHqRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires HQ level {level}'**
+  String territoryProjectHqRequired(int level);
+
+  /// No description provided for @territoryProjectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A safehouse network boosts passive income. Sabotage damages it in contests; supply runs repair or advance it.'**
+  String get territoryProjectHint;
+
+  /// No description provided for @territorySnackProjectStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Safehouse project started.'**
+  String get territorySnackProjectStarted;
+
+  /// No description provided for @territorySnackProjectContributed.
+  ///
+  /// In en, this message translates to:
+  /// **'Project updated.'**
+  String get territorySnackProjectContributed;
+
+  /// No description provided for @territoryErrorProjectHq.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher HQ level required to start this project.'**
+  String get territoryErrorProjectHq;
+
+  /// No description provided for @territoryErrorProjectNotOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the controlling crew can manage this project.'**
+  String get territoryErrorProjectNotOwner;
+
+  /// No description provided for @territoryErrorProjectExists.
+  ///
+  /// In en, this message translates to:
+  /// **'This region already has a project.'**
+  String get territoryErrorProjectExists;
+
+  /// No description provided for @territoryErrorProjectNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No project found for this region.'**
+  String get territoryErrorProjectNotFound;
+
+  /// No description provided for @territoryErrorProjectDestroyed.
+  ///
+  /// In en, this message translates to:
+  /// **'Project destroyed - start a new one.'**
+  String get territoryErrorProjectDestroyed;
+
+  /// No description provided for @territoryErrorProjectActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Project is already active.'**
+  String get territoryErrorProjectActive;
+
+  /// No description provided for @territoryErrorProjectCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Project supply is on cooldown.'**
+  String get territoryErrorProjectCooldown;
 }
 
 class _AppLocalizationsDelegate

@@ -1,0 +1,21 @@
+---
+description: When to enable Clearing House Phase-2 mission-level gate
+alwaysApply: true
+---
+
+# Clearing House Phase-2 gate
+
+Runtime key: `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` (default **`0` = uit**).
+
+## Do not enable yet when
+
+- Prod has little/no Tier 2–3 or Blackout (`territory_blackout_push`) run telemetry
+- Top crews are still around `missionLevel` 1
+- User has not explicitly asked to turn the gate on
+
+## Enable (set to `3`) only when
+
+- User asks to enable Phase-2 / Clearing House mission-level gate, **or**
+- There is solid T2/T3 + Blackout telemetry (multiple runs, no speedup/exploit red flags) **and** the user confirms
+
+Never flip the default in code from `0` to `3` without that confirmation. Docs: `docs/module-protocols/crew-missions.md`, `docs/game-systems/CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md`.

@@ -14623,4 +14623,90 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpTopicTrainingHubTips =>
       'Programmez les deux pistes quotidiennement : de petites étapes s\'empilent pour donner une avance nette sur les crimes.\nExaminez les crimes là où vous échouez le plus : la force et la précision se complètent – ​​ce ne sont pas les mêmes statistiques.';
+
+  @override
+  String territoryCapsLine(
+    int owned,
+    int maxRegions,
+    int active,
+    int maxContests,
+  ) {
+    return 'Regions $owned/$maxRegions · Contests $active/$maxContests';
+  }
+
+  @override
+  String get territoryDetailProject => 'Region project';
+
+  @override
+  String get territoryProjectSafehouse => 'Safehouse network';
+
+  @override
+  String get territoryProjectStatusBuilding => 'Building';
+
+  @override
+  String get territoryProjectStatusActive => 'Active';
+
+  @override
+  String get territoryProjectStatusDamaged => 'Damaged';
+
+  @override
+  String get territoryProjectStatusDestroyed => 'Destroyed';
+
+  @override
+  String get territoryProjectProgress => 'Progress';
+
+  @override
+  String get territoryProjectHp => 'Integrity';
+
+  @override
+  String territoryProjectIncomeBonusPct(int percent) {
+    return '+$percent% passive income';
+  }
+
+  @override
+  String get territoryProjectStart => 'Start safehouse project';
+
+  @override
+  String get territoryProjectContribute => 'Supply project';
+
+  @override
+  String territoryProjectHqRequired(int level) {
+    return 'Requires HQ level $level';
+  }
+
+  @override
+  String get territoryProjectHint =>
+      'A safehouse network boosts passive income. Sabotage damages it in contests; supply runs repair or advance it.';
+
+  @override
+  String get territorySnackProjectStarted => 'Safehouse project started.';
+
+  @override
+  String get territorySnackProjectContributed => 'Project updated.';
+
+  @override
+  String get territoryErrorProjectHq =>
+      'Higher HQ level required to start this project.';
+
+  @override
+  String get territoryErrorProjectNotOwner =>
+      'Only the controlling crew can manage this project.';
+
+  @override
+  String get territoryErrorProjectExists =>
+      'This region already has a project.';
+
+  @override
+  String get territoryErrorProjectNotFound =>
+      'No project found for this region.';
+
+  @override
+  String get territoryErrorProjectDestroyed =>
+      'Project destroyed - start a new one.';
+
+  @override
+  String get territoryErrorProjectActive => 'Project is already active.';
+
+  @override
+  String get territoryErrorProjectCooldown => 'Project supply is on cooldown.';
 }

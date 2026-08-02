@@ -14449,4 +14449,90 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get helpTopicTrainingHubTips =>
       'Plan beide lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.\nCheck misdaden waar je het meest faalt: kracht en nauwkeurigheid zijn complementair, niet hetzelfde.';
+
+  @override
+  String territoryCapsLine(
+    int owned,
+    int maxRegions,
+    int active,
+    int maxContests,
+  ) {
+    return 'Regio\'s $owned/$maxRegions · Contests $active/$maxContests';
+  }
+
+  @override
+  String get territoryDetailProject => 'Regioproject';
+
+  @override
+  String get territoryProjectSafehouse => 'Safehouse-netwerk';
+
+  @override
+  String get territoryProjectStatusBuilding => 'In aanbouw';
+
+  @override
+  String get territoryProjectStatusActive => 'Actief';
+
+  @override
+  String get territoryProjectStatusDamaged => 'Beschadigd';
+
+  @override
+  String get territoryProjectStatusDestroyed => 'Vernietigd';
+
+  @override
+  String get territoryProjectProgress => 'Voortgang';
+
+  @override
+  String get territoryProjectHp => 'Integriteit';
+
+  @override
+  String territoryProjectIncomeBonusPct(int percent) {
+    return '+$percent% passief inkomen';
+  }
+
+  @override
+  String get territoryProjectStart => 'Start safehouse-project';
+
+  @override
+  String get territoryProjectContribute => 'Bevoorraad project';
+
+  @override
+  String territoryProjectHqRequired(int level) {
+    return 'Vereist HQ level $level';
+  }
+
+  @override
+  String get territoryProjectHint =>
+      'Een safehouse-netwerk verhoogt passief inkomen. Sabotage beschadigt het in contests; supply runs repareren of bouwen het verder.';
+
+  @override
+  String get territorySnackProjectStarted => 'Safehouse-project gestart.';
+
+  @override
+  String get territorySnackProjectContributed => 'Project bijgewerkt.';
+
+  @override
+  String get territoryErrorProjectHq =>
+      'Hoger HQ-level vereist om dit project te starten.';
+
+  @override
+  String get territoryErrorProjectNotOwner =>
+      'Alleen de controlerende crew kan dit project beheren.';
+
+  @override
+  String get territoryErrorProjectExists => 'Deze regio heeft al een project.';
+
+  @override
+  String get territoryErrorProjectNotFound =>
+      'Geen project gevonden voor deze regio.';
+
+  @override
+  String get territoryErrorProjectDestroyed =>
+      'Project vernietigd - start een nieuw project.';
+
+  @override
+  String get territoryErrorProjectActive => 'Project is al actief.';
+
+  @override
+  String get territoryErrorProjectCooldown =>
+      'Projectbevoorrading staat op cooldown.';
 }

@@ -8548,5 +8548,58 @@
     }
   },
   "aviationUiLicensePurchaseFailed": "Der Lizenzkauf ist fehlgeschlagen.",
-  "aviationUiLicensePurchasedSuccess": "Fluglizenz erworben."
+  "aviationUiLicensePurchasedSuccess": "Fluglizenz erworben.",
+  "territoryCapsLine": "Regions {owned}/{maxRegions} · Contests {active}/{maxContests}",
+  "@territoryCapsLine": {
+    "placeholders": {
+      "owned": {
+        "type": "int"
+      },
+      "maxRegions": {
+        "type": "int"
+      },
+      "active": {
+        "type": "int"
+      },
+      "maxContests": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryDetailProject": "Region project",
+  "territoryProjectSafehouse": "Safehouse network",
+  "territoryProjectStatusBuilding": "Building",
+  "territoryProjectStatusActive": "Active",
+  "territoryProjectStatusDamaged": "Damaged",
+  "territoryProjectStatusDestroyed": "Destroyed",
+  "territoryProjectProgress": "Progress",
+  "territoryProjectHp": "Integrity",
+  "territoryProjectIncomeBonusPct": "+{percent}% passive income",
+  "@territoryProjectIncomeBonusPct": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryProjectStart": "Start safehouse project",
+  "territoryProjectContribute": "Supply project",
+  "territoryProjectHqRequired": "Requires HQ level {level}",
+  "@territoryProjectHqRequired": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryProjectHint": "A safehouse network boosts passive income. Sabotage damages it in contests; supply runs repair or advance it.",
+  "territorySnackProjectStarted": "Safehouse project started.",
+  "territorySnackProjectContributed": "Project updated.",
+  "territoryErrorProjectHq": "Higher HQ level required to start this project.",
+  "territoryErrorProjectNotOwner": "Only the controlling crew can manage this project.",
+  "territoryErrorProjectExists": "This region already has a project.",
+  "territoryErrorProjectNotFound": "No project found for this region.",
+  "territoryErrorProjectDestroyed": "Project destroyed - start a new one.",
+  "territoryErrorProjectActive": "Project is already active.",
+  "territoryErrorProjectCooldown": "Project supply is on cooldown."
 }

@@ -1,4 +1,4 @@
-﻿# Mafia Game - Gameplay Handleiding
+# Mafia Game - Gameplay Handleiding
 
 ## ðŸ“‹ Inhoudsopgave
 - [Basis Mechanics](#basis-mechanics)
@@ -1111,12 +1111,13 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Court & Judge (appeal / bribe while jailed)
 - âœ… Crew Wars (War Room, seasons, territory targets)
 - âœ… Drug production facilities
+- âœ… Territory Fase C (HQ caps zichtbaar, regioproject safehouse_network, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
 
 ### Planned Features
 - â³ Money laundering
 - â³ Stock market
 - â³ Real estate development
-- â³ Territory Fase C/D (HQ↔territory caps/projects, sabotage, season awards / region events) — see `TERRITORY_VISION.md` (Fase A/B live: tags, theater, aftermath, adjacency cluster/pocket, frontline notifications)
+- â³ Territory Fase D (season awards / region events) — see `TERRITORY_VISION.md`
 
 ---
 

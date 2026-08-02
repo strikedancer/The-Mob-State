@@ -3,6 +3,7 @@ import { getCrewStorageCapacity } from './crewBuildingService';
 import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
 import { translationService, type Language } from './translationService';
+import * as territoryProjectService from './territoryProjectService';
 
 // ---------------------------------------------------------------------------
 // Territory Service
@@ -73,6 +74,13 @@ async function getTerritoryConfig() {
     'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN',
     'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID',
     'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE',
+    'TERRITORY_PROJECT_SAFEHOUSE_MIN_HQ_LEVEL',
+    'TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT',
+    'TERRITORY_PROJECT_CONTRIBUTE_PROGRESS',
+    'TERRITORY_PROJECT_CONTRIBUTE_COOLDOWN_SECONDS',
+    'TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE',
+    'TERRITORY_PROJECT_SUPPLY_REPAIR_HP',
+    'TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS',
   ];
   const cfg = await getRuntimeConfig(keys);
   const actionUnlockHqLevels = {
@@ -132,6 +140,90 @@ async function getTerritoryConfig() {
     actionUnlockHqLevelSupplyRun: actionUnlockHqLevels.supply_run,
     actionUnlockHqLevelRaid: actionUnlockHqLevels.raid,
     actionUnlockHqLevelDefense: actionUnlockHqLevels.defense,
+    projectSafehouseMinHqLevel: Number(cfg['TERRITORY_PROJECT_SAFEHOUSE_MIN_HQ_LEVEL'] ?? 4),
+    projectSafehouseIncomeBonusPercent: Number(cfg['TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT'] ?? 10),
+    projectContributeProgress: Number(cfg['TERRITORY_PROJECT_CONTRIBUTE_PROGRESS'] ?? 20),
+    projectContributeCooldownSeconds: Number(cfg['TERRITORY_PROJECT_CONTRIBUTE_COOLDOWN_SECONDS'] ?? 900),
+    projectSabotageHpDamage: Number(cfg['TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE'] ?? 20),
+    projectSupplyRepairHp: Number(cfg['TERRITORY_PROJECT_SUPPLY_REPAIR_HP'] ?? 15),
+    projectSupplyBuildProgress: Number(cfg['TERRITORY_PROJECT_SUPPLY_BUILD_PROGRESS'] ?? 15),
+  };
+}
+
+export type ViewerTerritoryCaps = {
+  hqGlobalLevel: number;
+  ownedRegions: number;
+  activeContests: number;
+  baseMaxRegions: number;
+  effectiveMaxRegions: number;
+  baseMaxContests: number;
+  effectiveMaxContests: number;
+  hqRegionBonus: number;
+  hqContestBonus: number;
+  projectSafehouseMinHqLevel: number;
+};
+
+function getProjectConfig(
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): territoryProjectService.TerritoryProjectConfig {
+  return {
+    safehouseMinHqLevel: Math.max(0, Math.floor(cfg.projectSafehouseMinHqLevel)),
+    safehouseIncomeBonusPercent: Math.max(0, Math.floor(cfg.projectSafehouseIncomeBonusPercent)),
+    contributeProgress: Math.max(1, Math.floor(cfg.projectContributeProgress)),
+    contributeCooldownSeconds: Math.max(0, Math.floor(cfg.projectContributeCooldownSeconds)),
+    sabotageHpDamage: Math.max(1, Math.floor(cfg.projectSabotageHpDamage)),
+    supplyRepairHp: Math.max(1, Math.floor(cfg.projectSupplyRepairHp)),
+    supplyBuildProgress: Math.max(1, Math.floor(cfg.projectSupplyBuildProgress)),
+  };
+}
+
+function applyIncomeBonus(amount: number, bonusPercent: number): number {
+  if (bonusPercent <= 0) return amount;
+  return Math.round(amount * (1 + (bonusPercent / 100)));
+}
+
+async function buildViewerTerritoryCaps(
+  crewId: number,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+  progression?: CrewTerritoryProgression | null,
+): Promise<ViewerTerritoryCaps> {
+  const crewProgression = progression ?? await getCrewTerritoryProgression(crewId);
+  const hqRegionBonus = getScaledBonus(
+    crewProgression.hqGlobalLevel,
+    cfg.hqRegionCapPerLevel,
+    cfg.hqRegionCapBonusCap,
+  );
+  const hqContestBonus = getScaledBonus(
+    crewProgression.hqGlobalLevel,
+    cfg.hqContestCapPerLevel,
+    cfg.hqContestCapBonusCap,
+  );
+  const [ownedCount, contestCount] = await Promise.all([
+    prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+      `SELECT COUNT(*) AS cnt FROM territory_control WHERE ownerCrewId = ?`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+      `SELECT COUNT(*) AS cnt FROM territory_contests
+       WHERE attackerCrewId = ? AND status NOT IN ('resolved', 'cancelled')`,
+      crewId,
+    ),
+  ]);
+
+  return {
+    hqGlobalLevel: crewProgression.hqGlobalLevel,
+    ownedRegions: toNumeric(ownedCount[0]?.cnt ?? 0),
+    activeContests: toNumeric(contestCount[0]?.cnt ?? 0),
+    baseMaxRegions: cfg.maxRegionsPerCrew,
+    effectiveMaxRegions: Math.max(cfg.maxRegionsPerCrew, cfg.maxRegionsPerCrew + hqRegionBonus),
+    baseMaxContests: cfg.maxConcurrentContestsPerCrew,
+    effectiveMaxContests: Math.max(
+      cfg.maxConcurrentContestsPerCrew,
+      cfg.maxConcurrentContestsPerCrew + hqContestBonus,
+    ),
+    hqRegionBonus,
+    hqContestBonus,
+    projectSafehouseMinHqLevel: Math.max(0, Math.floor(cfg.projectSafehouseMinHqLevel)),
   };
 }
 
@@ -741,6 +833,11 @@ async function processPassiveTerritoryIncome(
   );
 
   const payoutsByCrew = new Map<number, { totalPayoutAmount: number; rows: PassiveIncomePayoutRow[] }>();
+  const projectConfig = getProjectConfig(cfg);
+  const incomeBonusByRegion = await territoryProjectService.getActiveIncomeBonusByRegionKeys(
+    rows.map((row) => row.regionKey),
+    projectConfig.safehouseIncomeBonusPercent,
+  );
 
   for (const row of rows) {
     const lastIncomeAt = row.lastIncomeAt ?? now;
@@ -750,7 +847,10 @@ async function processPassiveTerritoryIncome(
       continue;
     }
 
-    const amountPerCycle = getPassiveIncomeCashForTier(toNumeric(row.valueTier), cfg);
+    const amountPerCycle = applyIncomeBonus(
+      getPassiveIncomeCashForTier(toNumeric(row.valueTier), cfg),
+      incomeBonusByRegion[row.regionKey] ?? 0,
+    );
     const payoutAmount = payoutCycles * amountPerCycle;
     const newLastIncomeAt = new Date(lastIncomeAt.getTime() + (payoutCycles * intervalMs));
 
@@ -940,6 +1040,7 @@ export async function getMapData(
   viewer?: { viewerPlayerId?: number | null; viewerCrewId?: number | null },
 ): Promise<{
   country: TerritoryRow;
+  viewerCaps: ViewerTerritoryCaps | null;
   regions: Array<RegionRow & {
     ownerCrewId: number | null;
     ownerCrewName: string | null;
@@ -962,6 +1063,8 @@ export async function getMapData(
     passiveIncomeCash: number;
     passiveIncomeCashHourly: number;
     passiveIncomeCashDaily: number;
+    projectIncomeBonusPercent: number;
+    regionProject: territoryProjectService.TerritoryRegionProject | null;
     strategicTags: string[];
     neighbors: string[];
     adjacentOwnedRegions: number;
@@ -992,8 +1095,12 @@ export async function getMapData(
 
   const cfg = await getTerritoryConfig();
   const now = new Date();
+  const projectConfig = getProjectConfig(cfg);
   const viewerCrewProgression = viewer?.viewerCrewId
     ? await getCrewTerritoryProgression(viewer.viewerCrewId)
+    : null;
+  const viewerCaps = viewer?.viewerCrewId
+    ? await buildViewerTerritoryCaps(viewer.viewerCrewId, cfg, viewerCrewProgression)
     : null;
 
   const [countries, regions, controls, contests] = await Promise.all([
@@ -1050,6 +1157,14 @@ export async function getMapData(
     acc[contest.regionKey] = contest;
     return acc;
   }, {});
+  const projectsByRegion = await territoryProjectService.getProjectsByRegionKeys(
+    regions.map((region) => region.regionKey),
+    projectConfig.safehouseIncomeBonusPercent,
+  );
+  const incomeBonusByRegion = await territoryProjectService.getActiveIncomeBonusByRegionKeys(
+    regions.map((region) => region.regionKey),
+    projectConfig.safehouseIncomeBonusPercent,
+  );
 
   let viewerCooldownByContestId: Record<number, { nextActionAt: Date; secondsRemaining: number }> = {};
   if (viewer?.viewerPlayerId && contests.length > 0) {
@@ -1091,6 +1206,13 @@ export async function getMapData(
       return Number(cpJson[String(ctrl.ownerCrewId)] ?? 0);
     })() : 0;
     const incomeSnapshot = buildPassiveIncomeSnapshot(r.valueTier, cfg);
+    const projectIncomeBonusPercent = incomeBonusByRegion[r.regionKey] ?? 0;
+    const boostedIncome = {
+      amountPerInterval: applyIncomeBonus(incomeSnapshot.amountPerInterval, projectIncomeBonusPercent),
+      intervalMinutes: incomeSnapshot.intervalMinutes,
+      amountPerHour: applyIncomeBonus(incomeSnapshot.amountPerHour, projectIncomeBonusPercent),
+      amountPerDay: applyIncomeBonus(incomeSnapshot.amountPerDay, projectIncomeBonusPercent),
+    };
     const strategicTags = parseStringArray(r.strategicTagsJson);
     const neighbors = parseStringArray(r.neighborsJson);
     const adjacentOwnedRegions = viewer?.viewerCrewId == null
@@ -1135,10 +1257,12 @@ export async function getMapData(
       viewerContestRole,
       viewerNextActionAt: viewerCooldown?.nextActionAt ?? null,
       viewerCooldownSecondsRemaining: viewerCooldown?.secondsRemaining ?? 0,
-      passiveIncomeIntervalMinutes: incomeSnapshot.intervalMinutes,
-      passiveIncomeCash: incomeSnapshot.amountPerInterval,
-      passiveIncomeCashHourly: incomeSnapshot.amountPerHour,
-      passiveIncomeCashDaily: incomeSnapshot.amountPerDay,
+      passiveIncomeIntervalMinutes: boostedIncome.intervalMinutes,
+      passiveIncomeCash: boostedIncome.amountPerInterval,
+      passiveIncomeCashHourly: boostedIncome.amountPerHour,
+      passiveIncomeCashDaily: boostedIncome.amountPerDay,
+      projectIncomeBonusPercent,
+      regionProject: projectsByRegion[r.regionKey] ?? null,
       strategicTags,
       neighbors,
       adjacentOwnedRegions,
@@ -1149,7 +1273,7 @@ export async function getMapData(
     };
   });
 
-  return { country, regions: enrichedRegions };
+  return { country, viewerCaps, regions: enrichedRegions };
 }
 
 export async function getOverview(): Promise<{
@@ -1633,14 +1757,9 @@ export async function startContest(
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
   const crewProgression = await getCrewTerritoryProgression(crewId);
-  const effectiveMaxRegionsPerCrew = Math.max(
-    cfg.maxRegionsPerCrew,
-    cfg.maxRegionsPerCrew + getScaledBonus(crewProgression.hqGlobalLevel, cfg.hqRegionCapPerLevel, cfg.hqRegionCapBonusCap),
-  );
-  const effectiveMaxContestsPerCrew = Math.max(
-    cfg.maxConcurrentContestsPerCrew,
-    cfg.maxConcurrentContestsPerCrew + getScaledBonus(crewProgression.hqGlobalLevel, cfg.hqContestCapPerLevel, cfg.hqContestCapBonusCap),
-  );
+  const caps = await buildViewerTerritoryCaps(crewId, cfg, crewProgression);
+  const effectiveMaxRegionsPerCrew = caps.effectiveMaxRegions;
+  const effectiveMaxContestsPerCrew = caps.effectiveMaxContests;
 
   // Validate region exists and is enabled
   const regions = await prisma.$queryRawUnsafe<RegionRow[]>(
@@ -1737,6 +1856,8 @@ export async function doAction(
     labelNl: string;
     labelEn: string;
   }>;
+  stabilityDelta: number;
+  projectEffect: territoryProjectService.ContestProjectEffect | null;
   message: string;
 }> {
   await syncContestLifecycle();
@@ -1744,6 +1865,7 @@ export async function doAction(
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
   const crewProgression = await getCrewTerritoryProgression(crewId);
+  const projectConfig = getProjectConfig(cfg);
 
   const validActions = ['patrol', 'intel_scan', 'sabotage', 'supply_run', 'raid', 'defense'];
   if (!validActions.includes(actionType)) throw new Error('INVALID_ACTION_TYPE');
@@ -1785,7 +1907,6 @@ export async function doAction(
   }
 
   // Cooldown check
-  const cooldownMs = cfg.actionCooldownSeconds * 1000;
   const recentActions = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
     `SELECT COUNT(*) AS cnt FROM territory_actions
      WHERE actorId = ? AND contestId = ? AND createdAt > DATE_SUB(NOW(), INTERVAL ? SECOND)`,
@@ -1839,6 +1960,26 @@ export async function doAction(
     contestId, playerId, crewId, contest.regionKey, actionType, pointsDelta, stabilityDelta, abuseFlagged,
   );
 
+  if (stabilityDelta !== 0) {
+    await prisma.$executeRawUnsafe(
+      `UPDATE territory_control
+       SET stability = GREATEST(0, LEAST(100, stability + ?)), updatedAt = NOW()
+       WHERE regionKey = ?`,
+      stabilityDelta,
+      contest.regionKey,
+    );
+  }
+
+  const projectEffect = abuseFlagged
+    ? null
+    : await territoryProjectService.applyContestActionToProject({
+      regionKey: contest.regionKey,
+      actionType,
+      actorCrewId: crewId,
+      defenderCrewId: contest.defenderCrewId == null ? null : toNumeric(contest.defenderCrewId),
+      config: projectConfig,
+    });
+
   // Update control percentages
   await _recalcContestControl(contestId, contest.regionKey, crewId, pointsDelta);
 
@@ -1854,8 +1995,48 @@ export async function doAction(
         labelNl: bonus.labelNl,
         labelEn: bonus.labelEn,
       })),
+    stabilityDelta,
+    projectEffect,
     message: abuseFlagged ? 'ANTI_FARM_LIMITED' : 'ACTION_OK',
   };
+}
+
+export async function startRegionProject(
+  playerId: number,
+  crewId: number,
+  regionKey: string,
+  currentCountry: string | null | undefined,
+): Promise<territoryProjectService.TerritoryRegionProject> {
+  void playerId;
+  const cfg = await getTerritoryConfig();
+  if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
+  const progression = await getCrewTerritoryProgression(crewId);
+  return territoryProjectService.startSafehouseProject({
+    crewId,
+    regionKey,
+    hqGlobalLevel: progression.hqGlobalLevel,
+    config: getProjectConfig(cfg),
+    currentCountry,
+    assertInCountry: assertPlayerInTerritoryCountry,
+  });
+}
+
+export async function contributeRegionProject(
+  playerId: number,
+  crewId: number,
+  regionKey: string,
+  currentCountry: string | null | undefined,
+): Promise<territoryProjectService.TerritoryRegionProject> {
+  void playerId;
+  const cfg = await getTerritoryConfig();
+  if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
+  return territoryProjectService.contributeSafehouseProject({
+    crewId,
+    regionKey,
+    config: getProjectConfig(cfg),
+    currentCountry,
+    assertInCountry: assertPlayerInTerritoryCountry,
+  });
 }
 
 export async function defendContest(
