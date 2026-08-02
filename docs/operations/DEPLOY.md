@@ -2,6 +2,11 @@
 
 This guide covers deploying the Mafia Game to a Linux VPS (Strato) using Docker.
 
+## Admin panel login
+
+- Productie-UI: `https://admin.themobstate.com` (API via `https://api.themobstate.com`).
+- Standaard SUPER_ADMIN username is vaak `admin`. Bij vergeten wachtwoord: reset de `passwordHash` in de DB via de backend-container (bcrypt), nooit plaintext wachtwoorden in logs laten staan (`admin-auth` login route).
+
 ## Plesk Secrets (Required)
 
 Gebruik voor `docker-compose.plesk.yml` een server-side `.env.plesk` bestand dat niet in git staat.

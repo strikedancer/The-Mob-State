@@ -18,14 +18,12 @@ const adminLoginSchema = z.object({
  */
 router.post('/login', async (req, res) => {
   try {
-    console.log('[Admin Login] Request received:', req.body);
     const { username, password } = adminLoginSchema.parse(req.body);
+    console.log('[Admin Login] Request received:', { username });
 
     const admin = await prisma.admin.findUnique({
       where: { username },
     });
-
-    console.log('[Admin Login] Admin found:', admin ? 'Yes' : 'No');
 
     if (!admin || !admin.isActive) {
       console.log('[Admin Login] Invalid credentials - admin not found or inactive');
@@ -33,9 +31,8 @@ router.post('/login', async (req, res) => {
     }
 
     const isValidPassword = await bcrypt.compare(password, admin.passwordHash);
-    console.log('[Admin Login] Password valid:', isValidPassword);
-    
     if (!isValidPassword) {
+      console.log('[Admin Login] Invalid credentials - bad password');
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
