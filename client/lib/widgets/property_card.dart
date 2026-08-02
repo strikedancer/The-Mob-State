@@ -335,6 +335,28 @@ class PropertyCard extends StatelessWidget {
         l10n.level,
         '${ownedProperty!.level} / ${definition?.maxLevel ?? ownedProperty!.level}',
       ),
+      SizedBox(height: 8),
+      _buildStatRow(
+        l10n.propertyDevelopLevel,
+        '${ownedProperty!.developmentLevel} / ${ownedProperty!.developMaxLevel}',
+      ),
+      if (ownedProperty!.developIncomeBonusPercentPerLevel > 0) ...[
+        SizedBox(height: 8),
+        _buildStatRow(
+          l10n.propertyDevelopIncomeBonusLabel,
+          l10n.propertyDevelopIncomeBonus(
+            ownedProperty!.developmentLevel *
+                ownedProperty!.developIncomeBonusPercentPerLevel,
+          ),
+        ),
+      ],
+      if (ownedProperty!.baseIncome != null) ...[
+        SizedBox(height: 8),
+        _buildStatRow(
+          l10n.propertyDevelopIncomeLabel,
+          formatCurrency(ownedProperty!.baseIncome!),
+        ),
+      ],
       if (playerIsVip && isResidential) ...[
         SizedBox(height: 4),
         Container(
@@ -444,10 +466,22 @@ class PropertyCard extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
-            onPressed: onDevelop,
+            onPressed: ownedProperty!.canDevelopNow ? onDevelop : null,
             icon: const Icon(Icons.construction),
             label: Text(
-              '${l10n.propertyDevelopAction} · €${formatCompactNumber(ownedProperty!.nextDevelopCost!)} (L${ownedProperty!.developmentLevel})',
+              ownedProperty!.developCooldownRemainingSeconds > 0
+                  ? l10n.propertyDevelopCooldown(
+                      formatDuration(
+                        Duration(
+                          seconds:
+                              ownedProperty!.developCooldownRemainingSeconds,
+                        ),
+                      ),
+                    )
+                  : l10n.propertyDevelopActionCost(
+                      formatCompactNumber(ownedProperty!.nextDevelopCost!),
+                      ownedProperty!.developmentLevel + 1,
+                    ),
             ),
           ),
         ),

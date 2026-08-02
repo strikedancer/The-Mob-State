@@ -14722,6 +14722,66 @@ class AppLocalizationsNl extends AppLocalizations {
   String get propertyDevelopedSuccess => 'Vastgoedontwikkeling voltooid.';
 
   @override
+  String propertyDevelopedSuccessLevel(int level) {
+    return 'Ontwikkeling voltooid — level $level.';
+  }
+
+  @override
+  String get propertyDevelopConfirmTitle => 'Vastgoed ontwikkelen?';
+
+  @override
+  String propertyDevelopConfirmBody(String cost, int level, int bonusPercent) {
+    return 'Betaal €$cost van je bank om ontwikkeling naar level $level te brengen. Elk level geeft +$bonusPercent% passief inkomen.';
+  }
+
+  @override
+  String get propertyDevelopLevel => 'Ontwikkeling';
+
+  @override
+  String get propertyDevelopIncomeBonusLabel => 'Dev-inkomensbonus';
+
+  @override
+  String propertyDevelopIncomeBonus(int percent) {
+    return '+$percent%';
+  }
+
+  @override
+  String get propertyDevelopIncomeLabel => 'Passief inkomen';
+
+  @override
+  String propertyDevelopActionCost(String cost, int level) {
+    return 'Ontwikkel · €$cost → L$level';
+  }
+
+  @override
+  String propertyDevelopCooldown(String duration) {
+    return 'Ontwikkelen beschikbaar over $duration';
+  }
+
+  @override
+  String propertyDevelopErrorCooldown(String duration) {
+    return 'Ontwikkel-cooldown: $duration';
+  }
+
+  @override
+  String get propertyDevelopErrorCooldownGeneric =>
+      'Ontwikkelen staat op cooldown.';
+
+  @override
+  String get propertyDevelopErrorMaxLevel =>
+      'Dit vastgoed zit al op max ontwikkeling.';
+
+  @override
+  String get propertyDevelopErrorDisabled =>
+      'Vastgoedontwikkeling is uitgeschakeld.';
+
+  @override
+  String get propertyDevelopInsufficientBalance => 'Niet genoeg banksaldo.';
+
+  @override
+  String get propertyDevelopErrorUnknown => 'Vastgoed ontwikkelen mislukt.';
+
+  @override
   String get helpTopicStockMarketCategory => 'Economie';
 
   @override

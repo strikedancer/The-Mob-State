@@ -7,6 +7,7 @@ import '../services/api_client.dart';
 import '../widgets/property_card.dart';
 import './nightclub_screen.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
 class PropertyScreen extends StatefulWidget {
@@ -258,18 +259,59 @@ class PropertyScreenState extends State<PropertyScreen>
   }
 
   Future<void> _developProperty(Property property) async {
+    final cost = property.nextDevelopCost;
+    if (cost == null || !property.canDevelopNow) return;
+
+    final nextLevel = property.developmentLevel + 1;
+    final bonusPerLevel = property.developIncomeBonusPercentPerLevel;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(l10n.propertyDevelopConfirmTitle),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 320,
+            tabletMaxWidth: 380,
+            desktopMaxWidth: 440,
+            child: Text(
+              l10n.propertyDevelopConfirmBody(
+                cost.toString(),
+                nextLevel,
+                bonusPerLevel,
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(l10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+              child: Text(l10n.propertyDevelopAction),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed != true) return;
+
     try {
       final response = await _apiClient.post(
         '/properties/${property.id}/develop',
         {},
       );
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       final l10n = AppLocalizations.of(context)!;
       if (data['event'] == 'property.developed') {
+        final params = data['params'] as Map<String, dynamic>? ?? const {};
+        final level = (params['developmentLevel'] as num?)?.toInt() ?? nextLevel;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(l10n.propertyDevelopedSuccess),
+            content: Text(l10n.propertyDevelopedSuccessLevel(level)),
             backgroundColor: Colors.teal,
           ),
         );
@@ -278,10 +320,19 @@ class PropertyScreenState extends State<PropertyScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(data['event']?.toString() ?? l10n.errorUpgrading),
+            content: Text(
+              _developErrorMessage(
+                data['event']?.toString(),
+                data['params'] as Map<String, dynamic>?,
+                l10n,
+              ),
+            ),
             backgroundColor: Colors.red,
           ),
         );
+        if (data['event'] == 'property.develop_cooldown') {
+          _loadMyProperties();
+        }
       }
     } catch (e) {
       final l10n = AppLocalizations.of(context)!;
@@ -292,6 +343,34 @@ class PropertyScreenState extends State<PropertyScreen>
           backgroundColor: Colors.red,
         ),
       );
+    }
+  }
+
+  String _developErrorMessage(
+    String? event,
+    Map<String, dynamic>? params,
+    AppLocalizations l10n,
+  ) {
+    switch (event) {
+      case 'property.develop_cooldown':
+        final seconds =
+            (params?['cooldownRemainingSeconds'] as num?)?.toInt() ?? 0;
+        if (seconds > 0) {
+          return l10n.propertyDevelopErrorCooldown(
+            formatDuration(Duration(seconds: seconds)),
+          );
+        }
+        return l10n.propertyDevelopErrorCooldownGeneric;
+      case 'property.develop_max_level':
+        return l10n.propertyDevelopErrorMaxLevel;
+      case 'property.develop_disabled':
+        return l10n.propertyDevelopErrorDisabled;
+      case 'error.insufficient_balance':
+        return l10n.propertyDevelopInsufficientBalance;
+      default:
+        return event?.isNotEmpty == true
+            ? event!
+            : l10n.propertyDevelopErrorUnknown;
     }
   }
 

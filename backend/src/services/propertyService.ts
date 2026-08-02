@@ -464,6 +464,18 @@ class PropertyService {
             1000,
             Math.floor(prop.purchasePrice * (developCfg.costPercent / 100) * (developmentLevel + 1)),
           );
+      const lastDevelopAt =
+        (prop as { lastDevelopAt?: Date | null }).lastDevelopAt ?? null;
+      let developCooldownRemainingSeconds = 0;
+      if (lastDevelopAt && developCfg.cooldownSeconds > 0) {
+        const elapsed = Math.floor(
+          (Date.now() - new Date(lastDevelopAt).getTime()) / 1000,
+        );
+        developCooldownRemainingSeconds = Math.max(
+          0,
+          developCfg.cooldownSeconds - elapsed,
+        );
+      }
 
       // Find next upgrade cost
       let nextUpgradeCost = null;
@@ -493,6 +505,8 @@ class PropertyService {
         nextDevelopCost,
         developMaxLevel: developCfg.maxLevel,
         developIncomeBonusPercentPerLevel: developCfg.incomeBonusPercentPerLevel,
+        developCooldownSeconds: developCfg.cooldownSeconds,
+        developCooldownRemainingSeconds,
       };
       });
   }
@@ -956,6 +970,7 @@ class PropertyService {
     cost?: number;
     bankBalance?: number;
     error?: string;
+    cooldownRemainingSeconds?: number;
   }> {
     const cfg = await this.getDevelopmentConfig();
     if (!cfg.enabled) {
@@ -980,7 +995,11 @@ class PropertyService {
     if (lastDevelopAt && cfg.cooldownSeconds > 0) {
       const elapsed = Math.floor((Date.now() - new Date(lastDevelopAt).getTime()) / 1000);
       if (elapsed < cfg.cooldownSeconds) {
-        return { success: false, error: 'PROPERTY_DEVELOP_COOLDOWN' };
+        return {
+          success: false,
+          error: 'PROPERTY_DEVELOP_COOLDOWN',
+          cooldownRemainingSeconds: cfg.cooldownSeconds - elapsed,
+        };
       }
     }
 

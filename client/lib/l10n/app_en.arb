@@ -8745,6 +8745,72 @@
   },
   "propertyDevelopAction": "Develop",
   "propertyDevelopedSuccess": "Property development complete.",
+  "propertyDevelopedSuccessLevel": "Development complete — level {level}.",
+  "@propertyDevelopedSuccessLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopConfirmTitle": "Develop property?",
+  "propertyDevelopConfirmBody": "Spend €{cost} from your bank to raise development to level {level}. Each level adds +{bonusPercent}% passive income.",
+  "@propertyDevelopConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      },
+      "bonusPercent": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopLevel": "Development",
+  "propertyDevelopIncomeBonusLabel": "Dev income bonus",
+  "propertyDevelopIncomeBonus": "+{percent}%",
+  "@propertyDevelopIncomeBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopIncomeLabel": "Passive income",
+  "propertyDevelopActionCost": "Develop · €{cost} → L{level}",
+  "@propertyDevelopActionCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopCooldown": "Develop available in {duration}",
+  "@propertyDevelopCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyDevelopErrorCooldown": "Development cooldown: {duration}",
+  "@propertyDevelopErrorCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyDevelopErrorCooldownGeneric": "Development is on cooldown.",
+  "propertyDevelopErrorMaxLevel": "This property is already at max development.",
+  "propertyDevelopErrorDisabled": "Property development is disabled.",
+  "propertyDevelopInsufficientBalance": "Not enough bank balance.",
+  "propertyDevelopErrorUnknown": "Could not develop this property.",
   "helpTopicStockMarketCategory": "Economy",
   "helpTopicStockMarketTitle": "Stock market",
   "helpTopicStockMarketSummary": "Trade slow-moving stocks with bank money. Separate system from crypto.",

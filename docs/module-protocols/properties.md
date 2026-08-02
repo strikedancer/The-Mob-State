@@ -32,6 +32,7 @@ Scope-afbakening:
 - Responsive usability without pushing critical actions off-screen.
 - Backend en frontend moeten dezelfde zichtbaarheid hanteren voor property types (geen verborgen type dat toch via API claimbaar blijft).
 - Property development: bank-only cost, max level + cooldown via runtime keys, income multiplier applies consistently in passive income calc.
+- Develop UI: confirm dialog, mapped errors, cooldown remaining on `/properties/mine` + 429 params, and card stats for level/bonus/income.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

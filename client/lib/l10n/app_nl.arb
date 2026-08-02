@@ -8745,6 +8745,72 @@
   },
   "propertyDevelopAction": "Ontwikkel",
   "propertyDevelopedSuccess": "Vastgoedontwikkeling voltooid.",
+  "propertyDevelopedSuccessLevel": "Ontwikkeling voltooid — level {level}.",
+  "@propertyDevelopedSuccessLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopConfirmTitle": "Vastgoed ontwikkelen?",
+  "propertyDevelopConfirmBody": "Betaal €{cost} van je bank om ontwikkeling naar level {level} te brengen. Elk level geeft +{bonusPercent}% passief inkomen.",
+  "@propertyDevelopConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      },
+      "bonusPercent": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopLevel": "Ontwikkeling",
+  "propertyDevelopIncomeBonusLabel": "Dev-inkomensbonus",
+  "propertyDevelopIncomeBonus": "+{percent}%",
+  "@propertyDevelopIncomeBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopIncomeLabel": "Passief inkomen",
+  "propertyDevelopActionCost": "Ontwikkel · €{cost} → L{level}",
+  "@propertyDevelopActionCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyDevelopCooldown": "Ontwikkelen beschikbaar over {duration}",
+  "@propertyDevelopCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyDevelopErrorCooldown": "Ontwikkel-cooldown: {duration}",
+  "@propertyDevelopErrorCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyDevelopErrorCooldownGeneric": "Ontwikkelen staat op cooldown.",
+  "propertyDevelopErrorMaxLevel": "Dit vastgoed zit al op max ontwikkeling.",
+  "propertyDevelopErrorDisabled": "Vastgoedontwikkeling is uitgeschakeld.",
+  "propertyDevelopInsufficientBalance": "Niet genoeg banksaldo.",
+  "propertyDevelopErrorUnknown": "Vastgoed ontwikkelen mislukt.",
   "helpTopicStockMarketCategory": "Economie",
   "helpTopicStockMarketTitle": "Aandelenmarkt",
   "helpTopicStockMarketSummary": "Handel langzaam bewegende aandelen met bankgeld. Los systeem van crypto.",

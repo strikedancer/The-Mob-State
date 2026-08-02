@@ -25721,6 +25721,96 @@ abstract class AppLocalizations {
   /// **'Property development complete.'**
   String get propertyDevelopedSuccess;
 
+  /// No description provided for @propertyDevelopedSuccessLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Development complete — level {level}.'**
+  String propertyDevelopedSuccessLevel(int level);
+
+  /// No description provided for @propertyDevelopConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Develop property?'**
+  String get propertyDevelopConfirmTitle;
+
+  /// No description provided for @propertyDevelopConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend €{cost} from your bank to raise development to level {level}. Each level adds +{bonusPercent}% passive income.'**
+  String propertyDevelopConfirmBody(String cost, int level, int bonusPercent);
+
+  /// No description provided for @propertyDevelopLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Development'**
+  String get propertyDevelopLevel;
+
+  /// No description provided for @propertyDevelopIncomeBonusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dev income bonus'**
+  String get propertyDevelopIncomeBonusLabel;
+
+  /// No description provided for @propertyDevelopIncomeBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'+{percent}%'**
+  String propertyDevelopIncomeBonus(int percent);
+
+  /// No description provided for @propertyDevelopIncomeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Passive income'**
+  String get propertyDevelopIncomeLabel;
+
+  /// No description provided for @propertyDevelopActionCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Develop · €{cost} → L{level}'**
+  String propertyDevelopActionCost(String cost, int level);
+
+  /// No description provided for @propertyDevelopCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Develop available in {duration}'**
+  String propertyDevelopCooldown(String duration);
+
+  /// No description provided for @propertyDevelopErrorCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Development cooldown: {duration}'**
+  String propertyDevelopErrorCooldown(String duration);
+
+  /// No description provided for @propertyDevelopErrorCooldownGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Development is on cooldown.'**
+  String get propertyDevelopErrorCooldownGeneric;
+
+  /// No description provided for @propertyDevelopErrorMaxLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'This property is already at max development.'**
+  String get propertyDevelopErrorMaxLevel;
+
+  /// No description provided for @propertyDevelopErrorDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Property development is disabled.'**
+  String get propertyDevelopErrorDisabled;
+
+  /// No description provided for @propertyDevelopInsufficientBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough bank balance.'**
+  String get propertyDevelopInsufficientBalance;
+
+  /// No description provided for @propertyDevelopErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not develop this property.'**
+  String get propertyDevelopErrorUnknown;
+
   /// No description provided for @helpTopicStockMarketCategory.
   ///
   /// In en, this message translates to:

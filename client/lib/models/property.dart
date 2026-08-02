@@ -83,6 +83,9 @@ class Property {
   final int? nextUpgradeCost;
   final int developmentLevel;
   final int? nextDevelopCost;
+  final int developMaxLevel;
+  final int developIncomeBonusPercentPerLevel;
+  final int developCooldownRemainingSeconds;
 
   Property({
     required this.id,
@@ -101,7 +104,13 @@ class Property {
     this.nextUpgradeCost,
     this.developmentLevel = 0,
     this.nextDevelopCost,
+    this.developMaxLevel = 5,
+    this.developIncomeBonusPercentPerLevel = 0,
+    this.developCooldownRemainingSeconds = 0,
   });
+
+  bool get canDevelopNow =>
+      nextDevelopCost != null && developCooldownRemainingSeconds <= 0;
 
   factory Property.fromJson(Map<String, dynamic> json) {
     return Property(
@@ -127,6 +136,11 @@ class Property {
       nextUpgradeCost: json['nextUpgradeCost'] as int?,
       developmentLevel: (json['developmentLevel'] as num?)?.toInt() ?? 0,
       nextDevelopCost: (json['nextDevelopCost'] as num?)?.toInt(),
+      developMaxLevel: (json['developMaxLevel'] as num?)?.toInt() ?? 5,
+      developIncomeBonusPercentPerLevel:
+          (json['developIncomeBonusPercentPerLevel'] as num?)?.toInt() ?? 0,
+      developCooldownRemainingSeconds:
+          (json['developCooldownRemainingSeconds'] as num?)?.toInt() ?? 0,
     );
   }
 

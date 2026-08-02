@@ -14689,6 +14689,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get propertyDevelopedSuccess => 'Property development complete.';
 
   @override
+  String propertyDevelopedSuccessLevel(int level) {
+    return 'Development complete — level $level.';
+  }
+
+  @override
+  String get propertyDevelopConfirmTitle => 'Develop property?';
+
+  @override
+  String propertyDevelopConfirmBody(String cost, int level, int bonusPercent) {
+    return 'Spend €$cost from your bank to raise development to level $level. Each level adds +$bonusPercent% passive income.';
+  }
+
+  @override
+  String get propertyDevelopLevel => 'Development';
+
+  @override
+  String get propertyDevelopIncomeBonusLabel => 'Dev income bonus';
+
+  @override
+  String propertyDevelopIncomeBonus(int percent) {
+    return '+$percent%';
+  }
+
+  @override
+  String get propertyDevelopIncomeLabel => 'Passive income';
+
+  @override
+  String propertyDevelopActionCost(String cost, int level) {
+    return 'Develop · €$cost → L$level';
+  }
+
+  @override
+  String propertyDevelopCooldown(String duration) {
+    return 'Develop available in $duration';
+  }
+
+  @override
+  String propertyDevelopErrorCooldown(String duration) {
+    return 'Development cooldown: $duration';
+  }
+
+  @override
+  String get propertyDevelopErrorCooldownGeneric =>
+      'Development is on cooldown.';
+
+  @override
+  String get propertyDevelopErrorMaxLevel =>
+      'This property is already at max development.';
+
+  @override
+  String get propertyDevelopErrorDisabled =>
+      'Property development is disabled.';
+
+  @override
+  String get propertyDevelopInsufficientBalance => 'Not enough bank balance.';
+
+  @override
+  String get propertyDevelopErrorUnknown => 'Could not develop this property.';
+
+  @override
   String get helpTopicStockMarketCategory => 'Economy';
 
   @override

@@ -531,7 +531,14 @@ router.post('/:id/develop', authenticate, async (req: AuthRequest, res: Response
         INSUFFICIENT_BALANCE: [400, 'error.insufficient_balance'],
       };
       const entry = map[result.error ?? ''] ?? [400, 'property.develop_failed'];
-      return res.status(entry[0]).json({ event: entry[1], params: {} });
+      const params: Record<string, unknown> = {};
+      if (
+        result.error === 'PROPERTY_DEVELOP_COOLDOWN' &&
+        typeof result.cooldownRemainingSeconds === 'number'
+      ) {
+        params.cooldownRemainingSeconds = result.cooldownRemainingSeconds;
+      }
+      return res.status(entry[0]).json({ event: entry[1], params });
     }
 
     return res.status(200).json({
