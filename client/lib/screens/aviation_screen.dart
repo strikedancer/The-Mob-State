@@ -24,9 +24,17 @@ class _AviationScreenState extends State<AviationScreen> {
   bool _isBuying = false;
   String? _error;
   bool _hasLicense = false;
+  String? _licenseType;
+  List<Map<String, dynamic>> _licenseOffers = const [];
 
   List<Map<String, dynamic>> _aircraft = const [];
   List<Map<String, dynamic>> _owned = const [];
+
+  static const _licenseTier = <String, int>{
+    'basic': 1,
+    'commercial': 2,
+    'cargo': 3,
+  };
 
   @override
   void initState() {
@@ -45,13 +53,16 @@ class _AviationScreenState extends State<AviationScreen> {
         _apiClient.get('/aviation/aircraft'),
         _apiClient.get('/aviation/my-aircraft'),
         _apiClient.get('/aviation/my-license'),
+        _apiClient.get('/aviation/licenses'),
       ]);
 
       final aircraftData =
           jsonDecode(responses[0].body) as Map<String, dynamic>;
       final ownedData = jsonDecode(responses[1].body) as Map<String, dynamic>;
       final licenseData = jsonDecode(responses[2].body) as Map<String, dynamic>;
+      final offersData = jsonDecode(responses[3].body) as Map<String, dynamic>;
 
+      final license = licenseData['license'];
       setState(() {
         _aircraft = ((aircraftData['aircraft'] as List?) ?? const [])
             .whereType<Map>()
@@ -62,6 +73,13 @@ class _AviationScreenState extends State<AviationScreen> {
             .map((entry) => entry.cast<String, dynamic>())
             .toList(growable: false);
         _hasLicense = (licenseData['hasLicense'] as bool?) ?? false;
+        _licenseType = license is Map
+            ? license['licenseType']?.toString()
+            : null;
+        _licenseOffers = ((offersData['licenses'] as List?) ?? const [])
+            .whereType<Map>()
+            .map((entry) => entry.cast<String, dynamic>())
+            .toList(growable: false);
         _isLoading = false;
       });
     } catch (e) {
@@ -111,6 +129,112 @@ class _AviationScreenState extends State<AviationScreen> {
             ?.toString() ??
         item['aircraftType']?.toString() ??
         l10n.aviationUiDefaultAircraftName;
+  }
+
+  String _licenseLabel(String type, AppLocalizations l10n) {
+    switch (type) {
+      case 'commercial':
+        return l10n.aviationUiLicenseCommercial;
+      case 'cargo':
+        return l10n.aviationUiLicenseCargo;
+      case 'basic':
+      default:
+        return l10n.aviationUiLicenseBasic;
+    }
+  }
+
+  bool _canBuyOrUpgradeLicense(String type) {
+    final next = _licenseTier[type] ?? 0;
+    if (!_hasLicense) return next > 0;
+    final current = _licenseTier[_licenseType ?? ''] ?? 0;
+    return next > current;
+  }
+
+  Future<void> _buyLicense(Map<String, dynamic> offer) async {
+    if (_isBuying) return;
+    final l10n = AppLocalizations.of(context)!;
+    final licenseType = offer['licenseType']?.toString() ?? '';
+    final price = (offer['price'] as num?)?.toInt() ?? 0;
+    if (licenseType.isEmpty || !_canBuyOrUpgradeLicense(licenseType)) return;
+
+    final label = _licenseLabel(licenseType, l10n);
+    final isUpgrade = _hasLicense;
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.aviationUiLicenseBuyConfirmTitle),
+        content: Text(
+          l10n.aviationUiLicenseBuyConfirmBody(
+            label,
+            formatCurrency(price),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              isUpgrade ? l10n.aviationUiUpgradeLicense : l10n.aviationUiBuyLicense,
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirm != true) return;
+
+    setState(() => _isBuying = true);
+    try {
+      final response = await _apiClient.post('/aviation/buy-license', {
+        'licenseType': licenseType,
+      });
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode >= 400 || data['success'] == false) {
+        final message =
+            data['message']?.toString() ?? l10n.aviationUiLicensePurchaseFailed;
+        if (!mounted) return;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(backgroundColor: Colors.red, content: Text(message)),
+        );
+        return;
+      }
+
+      final remainingMoney = (data['remainingMoney'] as num?)?.toInt();
+      if (remainingMoney != null && mounted) {
+        Provider.of<AuthProvider>(
+          context,
+          listen: false,
+        ).updatePlayerStats(money: remainingMoney);
+      }
+
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              data['message']?.toString() ??
+                  l10n.aviationUiLicensePurchasedSuccess,
+            ),
+          ),
+        );
+      }
+      await _loadData();
+    } catch (e) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(l10n.error(e.toString())),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isBuying = false);
+    }
   }
 
   Future<void> _buyAircraft(Map<String, dynamic> item) async {
@@ -250,13 +374,48 @@ class _AviationScreenState extends State<AviationScreen> {
                 const SizedBox(height: 8),
                 Text(
                   _hasLicense
-                      ? l10n.aviationUiLicenseActiveBlurb
+                      ? l10n.aviationUiLicenseActiveBlurb(
+                          _licenseType ?? 'basic',
+                        )
                       : l10n.aviationUiLicenseMissingBlurb,
                 ),
               ],
             ),
           ),
         ),
+        const SizedBox(height: 12),
+        Text(
+          l10n.aviationUiLicensesTitle,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        ..._licenseOffers.map((offer) {
+          final type = offer['licenseType']?.toString() ?? '';
+          final price = (offer['price'] as num?)?.toInt() ?? 0;
+          final minRank = (offer['minRank'] as num?)?.toInt() ?? 0;
+          final canBuy = _canBuyOrUpgradeLicense(type);
+          final ownedThis = _hasLicense && _licenseType == type;
+          return Card(
+            child: ListTile(
+              title: Text(_licenseLabel(type, l10n)),
+              subtitle: Text(
+                '${l10n.aviationUiPriceLabel(formatCurrency(price))} · ${l10n.aviationUiLicenseMinRank(minRank)}',
+              ),
+              trailing: ownedThis
+                  ? const Icon(Icons.check_circle, color: Colors.green)
+                  : ElevatedButton(
+                      onPressed: (!canBuy || _isBuying)
+                          ? null
+                          : () => _buyLicense(offer),
+                      child: Text(
+                        _hasLicense
+                            ? l10n.aviationUiUpgradeLicense
+                            : l10n.aviationUiBuyLicense,
+                      ),
+                    ),
+            ),
+          );
+        }),
         const SizedBox(height: 12),
         Text(
           l10n.aviationUiYourAircraft,

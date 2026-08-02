@@ -79,6 +79,30 @@ const LICENSE_MIN_RANKS = {
   cargo: 40,
 };
 
+const LICENSE_TIER: Record<string, number> = {
+  basic: 1,
+  commercial: 2,
+  cargo: 3,
+};
+
+/** Minimum license tier required per aircraft.type from aircraft.json */
+const AIRCRAFT_TYPE_LICENSE: Record<string, keyof typeof LICENSE_PRICES> = {
+  light_aircraft: 'basic',
+  turboprop: 'basic',
+  business_jet: 'commercial',
+  luxury_jet: 'commercial',
+  cargo_jet: 'cargo',
+  super_heavy_cargo: 'cargo',
+};
+
+function requiredLicenseForAircraft(aircraftTypeField: string): keyof typeof LICENSE_PRICES {
+  return AIRCRAFT_TYPE_LICENSE[aircraftTypeField] ?? 'basic';
+}
+
+function licenseMeetsRequirement(owned: string, required: string): boolean {
+  return (LICENSE_TIER[owned] ?? 0) >= (LICENSE_TIER[required] ?? 1);
+}
+
 /**
  * Get all available aircraft
  */
@@ -124,10 +148,16 @@ export async function purchaseLicense(
     throw new Error('INVALID_LICENSE_TYPE');
   }
 
-  // Check if player already has a license
-  const existingLicense = await hasLicense(playerId);
-  if (existingLicense) {
-    throw new Error('ALREADY_HAS_LICENSE');
+  // School aviation track must be fully completed before buying/upgrading a license.
+  await assertPilotTrainingCompleted(playerId);
+
+  const existing = await getLicense(playerId);
+  if (existing) {
+    const currentTier = LICENSE_TIER[existing.licenseType] ?? 0;
+    const nextTier = LICENSE_TIER[licenseType] ?? 0;
+    if (nextTier <= currentTier) {
+      throw new Error('ALREADY_HAS_LICENSE');
+    }
   }
 
   const cost = LICENSE_PRICES[licenseType as keyof typeof LICENSE_PRICES];
@@ -152,21 +182,27 @@ export async function purchaseLicense(
     throw new Error('INSUFFICIENT_MONEY');
   }
 
-  // Execute transaction
+  // Execute transaction (create or upgrade)
   const [updatedPlayer] = await prisma.$transaction([
-    // Deduct money
     prisma.player.update({
       where: { id: playerId },
       data: { money: player.money - cost },
     }),
-    // Create license
-    prisma.aviationLicense.create({
-      data: {
-        playerId,
-        licenseType,
-        purchasePrice: cost,
-      },
-    }),
+    existing
+      ? prisma.aviationLicense.update({
+          where: { playerId },
+          data: {
+            licenseType,
+            purchasePrice: cost,
+          },
+        })
+      : prisma.aviationLicense.create({
+          data: {
+            playerId,
+            licenseType,
+            purchasePrice: cost,
+          },
+        }),
   ]);
 
   // Create world event
@@ -176,6 +212,7 @@ export async function purchaseLicense(
       playerId,
       licenseType,
       cost,
+      upgradedFrom: existing?.licenseType ?? null,
     },
     playerId
   );
@@ -204,10 +241,14 @@ export async function purchaseAircraft(
   // Hard gate: player must complete all pilot training before buying any aircraft.
   await assertPilotTrainingCompleted(playerId);
 
-  // Check if player has license
+  // Check if player has license of sufficient tier for this aircraft type
   const license = await getLicense(playerId);
   if (!license) {
     throw new Error('NO_LICENSE');
+  }
+  const requiredLicense = requiredLicenseForAircraft(aircraftDef.type);
+  if (!licenseMeetsRequirement(license.licenseType, requiredLicense)) {
+    throw new Error(`LICENSE_TIER_TOO_LOW:${requiredLicense}`);
   }
 
   // Get player

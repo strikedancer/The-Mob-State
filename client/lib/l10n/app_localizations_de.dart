@@ -3484,12 +3484,51 @@ class AppLocalizationsDe extends AppLocalizations {
   String get aviationUiPurchasedSuccess => 'Flugzeug gekauft.';
 
   @override
-  String get aviationUiLicenseActiveBlurb =>
-      'Lizenz aktiv. Der Kauf eines Flugzeugs erfordert jetzt eine vollständige Pilotenausbildung (Aviation Level 5 + alle Zertifizierungen).';
+  String aviationUiLicenseActiveBlurb(String type) {
+    return 'Lizenz aktiv ($type). Bei Bedarf Upgrade für schwerere Flugzeuge. Eine vollständige Pilotenausbildung (Aviation 5 + Zertifikate) ist ebenfalls erforderlich.';
+  }
 
   @override
   String get aviationUiLicenseMissingBlurb =>
-      'Sie besitzen noch keine Fluglizenz. Erwerben Sie eine Lizenz für dieses Modul, bevor Sie ein Flugzeug kaufen.';
+      'School Aviation 5/5 allein reicht nicht aus: Kaufen Sie hier eine kostenpflichtige Fluglizenz, bevor Sie Flugzeuge kaufen können.';
+
+  @override
+  String get aviationUiLicensesTitle => 'Luftfahrtlizenzen';
+
+  @override
+  String get aviationUiLicenseBasic => 'Basic (leicht / Turboprop)';
+
+  @override
+  String get aviationUiLicenseCommercial => 'Kommerziell (Business-/Luxusjets)';
+
+  @override
+  String get aviationUiLicenseCargo => 'Fracht (Fracht und schwere Frachter)';
+
+  @override
+  String aviationUiLicenseMinRank(int rank) {
+    return 'Min. Rang $rank';
+  }
+
+  @override
+  String get aviationUiBuyLicense => 'Lizenz kaufen';
+
+  @override
+  String get aviationUiUpgradeLicense => 'Upgrade-Lizenz';
+
+  @override
+  String get aviationUiLicenseBuyConfirmTitle => 'Fluglizenz kaufen?';
+
+  @override
+  String aviationUiLicenseBuyConfirmBody(String name, String price) {
+    return '$name für $price kaufen? Erfordert eine abgeschlossene Flugschule (Stufe 5 + Zertifizierungen).';
+  }
+
+  @override
+  String get aviationUiLicensePurchaseFailed =>
+      'Der Lizenzkauf ist fehlgeschlagen.';
+
+  @override
+  String get aviationUiLicensePurchasedSuccess => 'Fluglizenz erworben.';
 
   @override
   String get aviationUiYourAircraft => 'Ihr Flugzeug';

@@ -3460,12 +3460,52 @@ class AppLocalizationsPt extends AppLocalizations {
   String get aviationUiPurchasedSuccess => 'Aeronave comprada.';
 
   @override
-  String get aviationUiLicenseActiveBlurb =>
-      'Licença ativa. A compra de aeronaves agora requer treinamento completo de piloto (Aviação nível 5 + todas as certificações).';
+  String aviationUiLicenseActiveBlurb(String type) {
+    return 'Licença ativa ($type). Atualize para aeronaves mais pesadas, se necessário. Também é necessário treinamento completo de piloto (certificados de Aviação 5 +).';
+  }
 
   @override
   String get aviationUiLicenseMissingBlurb =>
-      'Você ainda não tem uma licença de aviação. Compre uma licença neste módulo antes de comprar aeronaves.';
+      'A Aviação Escolar 5/5 por si só não é suficiente: compre uma licença de aviação paga aqui antes de comprar uma aeronave.';
+
+  @override
+  String get aviationUiLicensesTitle => 'Licenças de aviação';
+
+  @override
+  String get aviationUiLicenseBasic => 'Básico (leve/turboélice)';
+
+  @override
+  String get aviationUiLicenseCommercial =>
+      'Comercial (jatos executivos/de luxo)';
+
+  @override
+  String get aviationUiLicenseCargo => 'Carga (carga e cargueiros pesados)';
+
+  @override
+  String aviationUiLicenseMinRank(int rank) {
+    return 'Classificação mínima $rank';
+  }
+
+  @override
+  String get aviationUiBuyLicense => 'Comprar licença';
+
+  @override
+  String get aviationUiUpgradeLicense => 'Licença de atualização';
+
+  @override
+  String get aviationUiLicenseBuyConfirmTitle => 'Comprar licença de aviação?';
+
+  @override
+  String aviationUiLicenseBuyConfirmBody(String name, String price) {
+    return 'Comprar $name por $price? Requer escola de Aviação concluída (nível 5 + certificações).';
+  }
+
+  @override
+  String get aviationUiLicensePurchaseFailed => 'Falha na compra da licença.';
+
+  @override
+  String get aviationUiLicensePurchasedSuccess =>
+      'Licença de aviação adquirida.';
 
   @override
   String get aviationUiYourAircraft => 'Sua aeronave';

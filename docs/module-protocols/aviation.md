@@ -30,14 +30,28 @@ Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoersty
 
 ## Pilot Education Gate (Aviation Track)
 
-De bestaande school `aviation` track (maxLevel 5) is een **harde server-side voorwaarde** voor elke vliegtuigkoop.
+De bestaande school `aviation` track (maxLevel 5) is een **harde server-side voorwaarde** voor licentie- én vliegtuigkoop.
 
 Regel:
-- Vliegtuigkoop is pas toegestaan als de speler **alle pilot-opleidingen** heeft afgerond:
+- Licentie kopen/upgraden én vliegtuigkoop zijn pas toegestaan als de speler **alle pilot-opleidingen** heeft afgerond:
   - `aviation` level = `maxLevel` (momenteel 5)
   - alle aviation-certificeringen behaald (`flight_basic` + `flight_commercial`)
 
-Deze check draait in backend tijdens `purchaseAircraft` en mag nooit alleen client-side afgedwongen worden.
+## Paid Aviation License (aparte aankoop)
+
+School 5/5 alleen is **niet** genoeg. Op het Aviation-scherm moet de speler een **betaalde vlieglicentie** kopen (`POST /aviation/buy-license`) vóór een vliegtuig:
+
+| licenseType | Prijs | Min rank | Ontgrendelt aircraft.type |
+|-------------|-------|----------|---------------------------|
+| basic | €100.000 | 20 | `light_aircraft`, `turboprop` |
+| commercial | €500.000 | 30 | + `business_jet`, `luxury_jet` |
+| cargo | €1.000.000 | 40 | + `cargo_jet`, `super_heavy_cargo` |
+
+- Hogere tier mag lagere vliegtuigen kopen.
+- Upgrade naar hogere tier is toegestaan (volledige prijs van de nieuwe tier); downgrade/same → `ALREADY_HAS_LICENSE`.
+- UI: licentie-aanbod + koop/upgrade-knoppen bovenaan `aviation_screen.dart` (niet alleen een tekstregel).
+
+Deze checks draaien in backend tijdens `purchaseLicense` / `purchaseAircraft` en mogen nooit alleen client-side afgedwongen worden.
 
 ## Cargo Slot Systeem
 

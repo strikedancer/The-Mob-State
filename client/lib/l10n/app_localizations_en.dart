@@ -3431,12 +3431,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aviationUiPurchasedSuccess => 'Aircraft purchased.';
 
   @override
-  String get aviationUiLicenseActiveBlurb =>
-      'License active. Aircraft purchase now requires full pilot training (Aviation level 5 + all certifications).';
+  String aviationUiLicenseActiveBlurb(String type) {
+    return 'License active ($type). Upgrade for heavier aircraft if needed. Full pilot training (Aviation 5 + certs) is also required.';
+  }
 
   @override
   String get aviationUiLicenseMissingBlurb =>
-      'You do not have an aviation license yet. Buy a license in this module before purchasing aircraft.';
+      'School Aviation 5/5 alone is not enough: buy a paid aviation license here before you can purchase aircraft.';
+
+  @override
+  String get aviationUiLicensesTitle => 'Aviation licenses';
+
+  @override
+  String get aviationUiLicenseBasic => 'Basic (light / turboprop)';
+
+  @override
+  String get aviationUiLicenseCommercial =>
+      'Commercial (business / luxury jets)';
+
+  @override
+  String get aviationUiLicenseCargo => 'Cargo (cargo & heavy freighters)';
+
+  @override
+  String aviationUiLicenseMinRank(int rank) {
+    return 'Min rank $rank';
+  }
+
+  @override
+  String get aviationUiBuyLicense => 'Buy license';
+
+  @override
+  String get aviationUiUpgradeLicense => 'Upgrade license';
+
+  @override
+  String get aviationUiLicenseBuyConfirmTitle => 'Buy aviation license?';
+
+  @override
+  String aviationUiLicenseBuyConfirmBody(String name, String price) {
+    return 'Buy $name for $price? Requires completed Aviation school (level 5 + certifications).';
+  }
+
+  @override
+  String get aviationUiLicensePurchaseFailed => 'License purchase failed.';
+
+  @override
+  String get aviationUiLicensePurchasedSuccess => 'Aviation license purchased.';
 
   @override
   String get aviationUiYourAircraft => 'Your aircraft';

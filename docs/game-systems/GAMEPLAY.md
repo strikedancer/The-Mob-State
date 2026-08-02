@@ -621,23 +621,28 @@ Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-
 
 ## Aviation
 
+### Gates (school + licentie)
+- **School:** Aviation-track level 5 + alle certificaten (`flight_basic`, `flight_commercial`) is verplicht vóór licentie- of vliegtuigkoop.
+- **Licentie:** aparte betaalde aankoop op het Aviation-scherm (`basic` €100k / `commercial` €500k / `cargo` €1M). Zonder licentie kun je geen vliegtuig kopen, ook niet met school 5/5.
+- Hogere licentie-tier ontgrendelt zwaardere `aircraft.type`-groepen; upgrade is mogelijk.
+
 ### Aircraft Types
 
 #### Small Plane
-- **Cost**: â‚¬100,000
+- **Cost**: €100,000
 - **Capacity**: 2 passengers
 - **Range**: 1,000 km
 - **Speed**: Fast travel (instant)
 
 #### Private Jet
-- **Cost**: â‚¬500,000
+- **Cost**: €500,000
 - **Capacity**: 8 passengers
 - **Range**: 5,000 km
 - **Speed**: Very fast (instant)
 - **Luxury bonus**: +10% trade profits
 
 #### Cargo Plane
-- **Cost**: â‚¬1,000,000
+- **Cost**: €1,000,000
 - **Capacity**: 50 passengers
 - **Range**: 10,000 km
 - **Trade bonus**: 2x inventory capacity

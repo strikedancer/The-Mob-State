@@ -7905,8 +7905,8 @@
   },
   "aviationUiPurchaseFailed": "Der Kauf ist fehlgeschlagen.",
   "aviationUiPurchasedSuccess": "Flugzeug gekauft.",
-  "aviationUiLicenseActiveBlurb": "Lizenz aktiv. Der Kauf eines Flugzeugs erfordert jetzt eine vollständige Pilotenausbildung (Aviation Level 5 + alle Zertifizierungen).",
-  "aviationUiLicenseMissingBlurb": "Sie besitzen noch keine Fluglizenz. Erwerben Sie eine Lizenz für dieses Modul, bevor Sie ein Flugzeug kaufen.",
+  "aviationUiLicenseActiveBlurb": "Lizenz aktiv ({type}). Bei Bedarf Upgrade für schwerere Flugzeuge. Eine vollständige Pilotenausbildung (Aviation 5 + Zertifikate) ist ebenfalls erforderlich.",
+  "aviationUiLicenseMissingBlurb": "School Aviation 5/5 allein reicht nicht aus: Kaufen Sie hier eine kostenpflichtige Fluglizenz, bevor Sie Flugzeuge kaufen können.",
   "aviationUiYourAircraft": "Ihr Flugzeug",
   "aviationUiNoOwnedAircraft": "Sie besitzen noch kein Flugzeug.",
   "aviationUiAvailableAircraft": "Verfügbare Flugzeuge",
@@ -8455,5 +8455,40 @@
         "type": "String"
       }
     }
-  }
+  },
+  "@aviationUiLicenseActiveBlurb": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiLicensesTitle": "Luftfahrtlizenzen",
+  "aviationUiLicenseBasic": "Basic (leicht / Turboprop)",
+  "aviationUiLicenseCommercial": "Kommerziell (Business-/Luxusjets)",
+  "aviationUiLicenseCargo": "Fracht (Fracht und schwere Frachter)",
+  "aviationUiLicenseMinRank": "Min. Rang {rank}",
+  "@aviationUiLicenseMinRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiBuyLicense": "Lizenz kaufen",
+  "aviationUiUpgradeLicense": "Upgrade-Lizenz",
+  "aviationUiLicenseBuyConfirmTitle": "Fluglizenz kaufen?",
+  "aviationUiLicenseBuyConfirmBody": "{name} für {price} kaufen? Erfordert eine abgeschlossene Flugschule (Stufe 5 + Zertifizierungen).",
+  "@aviationUiLicenseBuyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiLicensePurchaseFailed": "Der Lizenzkauf ist fehlgeschlagen.",
+  "aviationUiLicensePurchasedSuccess": "Fluglizenz erworben."
 }

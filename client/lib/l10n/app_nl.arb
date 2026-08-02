@@ -7910,8 +7910,8 @@
   },
   "aviationUiPurchaseFailed": "Aankoop mislukt.",
   "aviationUiPurchasedSuccess": "Vliegtuig gekocht.",
-  "aviationUiLicenseActiveBlurb": "Licentie actief. Voor de aankoop van vliegtuigen is nu een volledige pilotenopleiding vereist (luchtvaartniveau 5 + alle certificeringen).",
-  "aviationUiLicenseMissingBlurb": "U heeft nog geen vliegbrevet. Koop een licentie in deze module voordat u vliegtuigen aanschaft.",
+  "aviationUiLicenseActiveBlurb": "Licentie actief ({type}). Upgrade voor zwaardere vliegtuigen indien nodig. Volledige pilot-opleiding (luchtvaart 5 + certificaten) blijft verplicht.",
+  "aviationUiLicenseMissingBlurb": "Alleen school Luchtvaart 5/5 is niet genoeg: koop hier eerst een betaalde vlieglicentie voordat je een vliegtuig kunt kopen.",
   "aviationUiYourAircraft": "Jouw vliegtuig",
   "aviationUiNoOwnedAircraft": "Je bezit nog geen vliegtuig.",
   "aviationUiAvailableAircraft": "Beschikbare vliegtuigen",
@@ -8455,5 +8455,40 @@
         "type": "String"
       }
     }
-  }
+  },
+  "@aviationUiLicenseActiveBlurb": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiLicensesTitle": "Luchtvaartvergunningen",
+  "aviationUiLicenseBasic": "Basis (licht / turboprop)",
+  "aviationUiLicenseCommercial": "Commercieel (zaken-/luxejets)",
+  "aviationUiLicenseCargo": "Vracht (vracht en zware vrachtschepen)",
+  "aviationUiLicenseMinRank": "Min. rang {rank}",
+  "@aviationUiLicenseMinRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiBuyLicense": "Koop licentie",
+  "aviationUiUpgradeLicense": "Licentie upgraden",
+  "aviationUiLicenseBuyConfirmTitle": "Luchtvaartlicentie kopen?",
+  "aviationUiLicenseBuyConfirmBody": "{name} kopen voor {price}? Vereist een voltooide luchtvaartschool (niveau 5 + certificeringen).",
+  "@aviationUiLicenseBuyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiLicensePurchaseFailed": "Licentieaankoop mislukt.",
+  "aviationUiLicensePurchasedSuccess": "Luchtvaartlicentie aangeschaft."
 }

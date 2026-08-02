@@ -3493,12 +3493,54 @@ class AppLocalizationsFr extends AppLocalizations {
   String get aviationUiPurchasedSuccess => 'Avion acheté.';
 
   @override
-  String get aviationUiLicenseActiveBlurb =>
-      'Licence active. L\'achat d\'un avion nécessite désormais une formation complète de pilote (Aviation niveau 5 + toutes les certifications).';
+  String aviationUiLicenseActiveBlurb(String type) {
+    return 'Licence active ($type). Mise à niveau pour des avions plus lourds si nécessaire. Une formation complète de pilote (Aviation 5 + certificats) est également requise.';
+  }
 
   @override
   String get aviationUiLicenseMissingBlurb =>
-      'Vous n\'avez pas encore de licence aéronautique. Achetez une licence dans ce module avant d\'acheter un avion.';
+      'School Aviation 5/5 ne suffit pas à lui seul : achetez ici une licence d\'aviation payante avant de pouvoir acheter un avion.';
+
+  @override
+  String get aviationUiLicensesTitle => 'Licences aéronautiques';
+
+  @override
+  String get aviationUiLicenseBasic => 'Basique (léger / turbopropulseur)';
+
+  @override
+  String get aviationUiLicenseCommercial =>
+      'Commercial (jets d’affaires/de luxe)';
+
+  @override
+  String get aviationUiLicenseCargo => 'Cargo (cargo et cargos lourds)';
+
+  @override
+  String aviationUiLicenseMinRank(int rank) {
+    return 'Rang minimum $rank';
+  }
+
+  @override
+  String get aviationUiBuyLicense => 'Acheter une licence';
+
+  @override
+  String get aviationUiUpgradeLicense => 'Licence de mise à niveau';
+
+  @override
+  String get aviationUiLicenseBuyConfirmTitle =>
+      'Acheter une licence aéronautique ?';
+
+  @override
+  String aviationUiLicenseBuyConfirmBody(String name, String price) {
+    return 'Acheter $name pour $price ? Nécessite une école d\'aviation complétée (niveau 5 + certifications).';
+  }
+
+  @override
+  String get aviationUiLicensePurchaseFailed =>
+      'L\'achat de la licence a échoué.';
+
+  @override
+  String get aviationUiLicensePurchasedSuccess =>
+      'Licence aéronautique achetée.';
 
   @override
   String get aviationUiYourAircraft => 'Votre avion';

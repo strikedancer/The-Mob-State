@@ -162,6 +162,15 @@ router.post(
         });
       }
 
+      if (error.message === 'PILOT_TRAINING_INCOMPLETE') {
+        return res.status(400).json({
+          success: false,
+          error: 'PILOT_TRAINING_INCOMPLETE',
+          message:
+            'Je moet eerst de school Aviation-track afronden (level 5 + alle certificaten) voordat je een vlieglicentie kunt kopen.',
+        });
+      }
+
       return next(error);
     }
   }
@@ -211,7 +220,17 @@ router.post(
         return res.status(400).json({
           success: false,
           error: 'NO_LICENSE',
-          message: 'Je hebt een vlieglicentie nodig om een vliegtuig te kopen.',
+          message:
+            'Je hebt een vlieglicentie nodig. Koop die eerst bovenaan dit Aviation-scherm (na school Aviation 5/5).',
+        });
+      }
+
+      if (typeof error.message === 'string' && error.message.startsWith('LICENSE_TIER_TOO_LOW:')) {
+        const required = error.message.split(':')[1] || 'commercial';
+        return res.status(400).json({
+          success: false,
+          error: 'LICENSE_TIER_TOO_LOW',
+          message: `Je licentie is te laag voor dit vliegtuig. Vereist: ${required}.`,
         });
       }
 

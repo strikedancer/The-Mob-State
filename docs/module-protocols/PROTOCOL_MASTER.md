@@ -461,6 +461,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   ├── black-market.md (UI hub incl. contraband) → trade.md (API) → TRADE_RISK_MECHANICS.md
     │   ├── player-marketplace.md (Marktplaats P2P: voertuigen + spelersitems; `market` routes)
     │   ├── steel_voertuig.md (Vehicle Heist auto/motor/boot; boot-balans + embedded jail-overlay na stal via `vehicle_heist_screen`; server o.a. `vehicleService.stealVehicle` + `balance-economy.md`)
+    │   ├── aviation.md (school Aviation 5/5 + betaalde vlieglicentie vóór vliegtuigkoop; tiers basic/commercial/cargo)
     │   ├── prostitution.md → Game-system: NIGHTCLUB_SYSTEM.md + VIP_MANAGEMENT.md
     │   ├── crew.md → Game-system: VIP_LEVELS_SYSTEM.md + HQ_PROGRESSION_GUIDE.md
     │   └── [andere modules...]

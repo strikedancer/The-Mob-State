@@ -2010,8 +2010,35 @@
   },
   "aviationUiPurchaseFailed": "Purchase failed.",
   "aviationUiPurchasedSuccess": "Aircraft purchased.",
-  "aviationUiLicenseActiveBlurb": "License active. Aircraft purchase now requires full pilot training (Aviation level 5 + all certifications).",
-  "aviationUiLicenseMissingBlurb": "You do not have an aviation license yet. Buy a license in this module before purchasing aircraft.",
+  "aviationUiLicenseActiveBlurb": "License active ({type}). Upgrade for heavier aircraft if needed. Full pilot training (Aviation 5 + certs) is also required.",
+  "@aviationUiLicenseActiveBlurb": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "aviationUiLicenseMissingBlurb": "School Aviation 5/5 alone is not enough: buy a paid aviation license here before you can purchase aircraft.",
+  "aviationUiLicensesTitle": "Aviation licenses",
+  "aviationUiLicenseBasic": "Basic (light / turboprop)",
+  "aviationUiLicenseCommercial": "Commercial (business / luxury jets)",
+  "aviationUiLicenseCargo": "Cargo (cargo & heavy freighters)",
+  "aviationUiLicenseMinRank": "Min rank {rank}",
+  "@aviationUiLicenseMinRank": {
+    "placeholders": {
+      "rank": { "type": "int" }
+    }
+  },
+  "aviationUiBuyLicense": "Buy license",
+  "aviationUiUpgradeLicense": "Upgrade license",
+  "aviationUiLicenseBuyConfirmTitle": "Buy aviation license?",
+  "aviationUiLicenseBuyConfirmBody": "Buy {name} for {price}? Requires completed Aviation school (level 5 + certifications).",
+  "@aviationUiLicenseBuyConfirmBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "aviationUiLicensePurchaseFailed": "License purchase failed.",
+  "aviationUiLicensePurchasedSuccess": "Aviation license purchased.",
   "aviationUiYourAircraft": "Your aircraft",
   "aviationUiNoOwnedAircraft": "You do not own any aircraft yet.",
   "aviationUiAvailableAircraft": "Available aircraft",

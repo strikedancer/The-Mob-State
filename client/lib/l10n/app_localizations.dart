@@ -6234,14 +6234,80 @@ abstract class AppLocalizations {
   /// No description provided for @aviationUiLicenseActiveBlurb.
   ///
   /// In en, this message translates to:
-  /// **'License active. Aircraft purchase now requires full pilot training (Aviation level 5 + all certifications).'**
-  String get aviationUiLicenseActiveBlurb;
+  /// **'License active ({type}). Upgrade for heavier aircraft if needed. Full pilot training (Aviation 5 + certs) is also required.'**
+  String aviationUiLicenseActiveBlurb(String type);
 
   /// No description provided for @aviationUiLicenseMissingBlurb.
   ///
   /// In en, this message translates to:
-  /// **'You do not have an aviation license yet. Buy a license in this module before purchasing aircraft.'**
+  /// **'School Aviation 5/5 alone is not enough: buy a paid aviation license here before you can purchase aircraft.'**
   String get aviationUiLicenseMissingBlurb;
+
+  /// No description provided for @aviationUiLicensesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Aviation licenses'**
+  String get aviationUiLicensesTitle;
+
+  /// No description provided for @aviationUiLicenseBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic (light / turboprop)'**
+  String get aviationUiLicenseBasic;
+
+  /// No description provided for @aviationUiLicenseCommercial.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial (business / luxury jets)'**
+  String get aviationUiLicenseCommercial;
+
+  /// No description provided for @aviationUiLicenseCargo.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo (cargo & heavy freighters)'**
+  String get aviationUiLicenseCargo;
+
+  /// No description provided for @aviationUiLicenseMinRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Min rank {rank}'**
+  String aviationUiLicenseMinRank(int rank);
+
+  /// No description provided for @aviationUiBuyLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy license'**
+  String get aviationUiBuyLicense;
+
+  /// No description provided for @aviationUiUpgradeLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade license'**
+  String get aviationUiUpgradeLicense;
+
+  /// No description provided for @aviationUiLicenseBuyConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy aviation license?'**
+  String get aviationUiLicenseBuyConfirmTitle;
+
+  /// No description provided for @aviationUiLicenseBuyConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {name} for {price}? Requires completed Aviation school (level 5 + certifications).'**
+  String aviationUiLicenseBuyConfirmBody(String name, String price);
+
+  /// No description provided for @aviationUiLicensePurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'License purchase failed.'**
+  String get aviationUiLicensePurchaseFailed;
+
+  /// No description provided for @aviationUiLicensePurchasedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Aviation license purchased.'**
+  String get aviationUiLicensePurchasedSuccess;
 
   /// No description provided for @aviationUiYourAircraft.
   ///
