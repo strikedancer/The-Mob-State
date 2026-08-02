@@ -8604,6 +8604,27 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String schoolTrainBonusLevels(int count) {
+    return '+$count Lv';
+  }
+
+  @override
+  String schoolTrainBonusCerts(int count) {
+    return '+$count cert';
+  }
+
+  @override
+  String schoolTrainSuccessToast(
+    String trackName,
+    int xpGain,
+    String bonusSuffix,
+    String cooldownLabel,
+    String cooldown,
+  ) {
+    return '$trackName: +$xpGain XP$bonusSuffix · $cooldownLabel $cooldown';
+  }
+
+  @override
   String schoolCertificationRequiredLevel(String name, int level) {
     return '$name (Lv $level)';
   }
@@ -10850,7 +10871,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportMod_prostitution => 'Prostitutie';
 
   @override
-  String get supportMod_crew => 'Bemanning';
+  String get supportMod_crew => 'Crew';
 
   @override
   String get supportMod_friends => 'Vrienden / spelers';
@@ -13381,7 +13402,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nDe Quick Actions blokken rechts zijn snelkoppelingen naar Misdaden, Auto Stelen, Boot Stelen, Werk, Casino, Bank en School.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.';
+      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je wanted level daalt licht als het onder 10 staat (bankrente staat momenteel uit).\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nDe Quick Actions blokken rechts zijn snelkoppelingen naar Misdaden, Auto Stelen, Boot Stelen, Werk, Casino, Bank en School.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13539,15 +13560,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Zet geld op je bankrekening om rente te verdienen en cash buiten bereik van politie-confiscaties te houden.';
+      'Zet geld op je bankrekening om cash buiten bereik van politie-confiscaties te houden. Bankrente staat momenteel uit.';
 
   @override
   String get helpTopicBankHow =>
-      'Rente: 0.5% van je banksaldo per tick (elke 5 minuten). Voorbeeld: €10.000 op bank = €50 rente per tick = €600 per uur = €14.400 per dag.\nStorten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
+      'Bankrente staat momenteel uit (geen passieve rente per tick).\nStorten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
 
   @override
   String get helpTopicBankTips =>
-      'Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.\nZet rente-inkomsten automatisch bij door grote bedragen spaarsgewijs op te bouwen op de bank.\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).';
+      'Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.\nGebruik de bank als veilige opslag tegen confiscatie, niet als rentefarm (rente staat uit).\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).';
 
   @override
   String get helpTopicCasinoCategory => 'Economie';

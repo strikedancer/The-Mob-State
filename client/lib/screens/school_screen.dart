@@ -187,10 +187,10 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
         final bonusParts = <String>[];
         if (levelUps > 0) {
-          bonusParts.add('+$levelUps Lv');
+          bonusParts.add(l10n.schoolTrainBonusLevels(levelUps));
         }
         if (certificationsEarned > 0) {
-          bonusParts.add('+$certificationsEarned cert');
+          bonusParts.add(l10n.schoolTrainBonusCerts(certificationsEarned));
         }
 
         final suffix = bonusParts.isNotEmpty
@@ -207,7 +207,13 @@ class _SchoolScreenState extends State<SchoolScreen> {
           context,
           SnackBar(
             content: Text(
-              '$trackName: +$xpGain XP$suffix · ${l10n.cooldown} ${_formatCooldownSeconds(cooldownSeconds)}',
+              l10n.schoolTrainSuccessToast(
+                trackName,
+                xpGain,
+                suffix,
+                l10n.cooldown,
+                _formatCooldownSeconds(cooldownSeconds),
+              ),
             ),
             backgroundColor: Colors.green,
           ),

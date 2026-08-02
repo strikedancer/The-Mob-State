@@ -3,6 +3,9 @@
 ## Scope
 Deposits, withdrawals, transfers, transaction history and money safety.
 
+## Interest
+Bank interest is **intentionally disabled** (`bankService.applyInterest` / `applyInterestToAll` return 0). Player help and GAMEPLAY copy must not promise passive tick interest until it is re-enabled.
+
 ## Primary Frontend Entry
 - client/lib/screens/bank_screen.dart
 

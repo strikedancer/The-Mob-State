@@ -75,8 +75,6 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
     final destinations = (catalog['destinations'] as List<dynamic>?) ?? [];
     final ownedTransports = (catalog['ownedTransports'] as List<dynamic>?) ?? [];
-    final defaultItems =
-        (categories[_selectedCategory] as List<dynamic>?) ?? [];
 
     setState(() {
       _categories = {
@@ -101,6 +99,9 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       }
       if (_selectedNetworkScope == 'crew') {
         _selectedTransportMode = 'commercial';
+        if (_selectedCategory == 'trade') {
+          _selectedCategory = 'drug';
+        }
       }
       if (!_channels.contains(_selectedChannel)) {
         _selectedChannel = 'courier';
@@ -119,8 +120,10 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       _shipments = (overview['shipments'] as List<dynamic>?) ?? [];
       _depots = (overview['depots'] as List<dynamic>?) ?? [];
 
-      _selectedItemKey = defaultItems.isNotEmpty
-          ? defaultItems.first['itemKey']?.toString()
+      final itemsForCategory =
+          (_categories[_selectedCategory] as List<dynamic>?) ?? [];
+      _selectedItemKey = itemsForCategory.isNotEmpty
+          ? itemsForCategory.first['itemKey']?.toString()
           : null;
       _selectedDestination = destinations.isNotEmpty
           ? destinations.first['id']?.toString()
@@ -742,24 +745,35 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             runSpacing: 8,
             children: ['drug', 'trade', 'vehicle', 'weapon', 'ammo'].map((c) {
               final selectedChip = c == _selectedCategory;
+              final tradeBlockedForCrew =
+                  c == 'trade' && _selectedNetworkScope == 'crew';
               return ChoiceChip(
                 selected: selectedChip,
                 label: Text(_categoryLabel(l10n, c)),
                 avatar: Icon(_categoryIcon(c), size: 18),
-                onSelected: (_) {
-                  setState(() {
-                    _selectedCategory = c;
-                    final list = _currentItems;
-                    _selectedItemKey = list.isNotEmpty
-                        ? list.first['itemKey']?.toString()
-                        : null;
-                    _quantityController.text = '1';
-                  });
-                  _loadQuote();
-                },
+                onSelected: tradeBlockedForCrew
+                    ? null
+                    : (_) {
+                        setState(() {
+                          _selectedCategory = c;
+                          final list = _currentItems;
+                          _selectedItemKey = list.isNotEmpty
+                              ? list.first['itemKey']?.toString()
+                              : null;
+                          _quantityController.text = '1';
+                        });
+                        _loadQuote();
+                      },
               );
             }).toList(),
           ),
+          if (_selectedNetworkScope == 'crew') ...[
+            const SizedBox(height: 8),
+            Text(
+              l10n.smugglingCrewTradeNotAvailable,
+              style: const TextStyle(color: Colors.orangeAccent, fontSize: 12),
+            ),
+          ],
           const SizedBox(height: 10),
           if (_currentItems.isEmpty)
             Text(
@@ -933,7 +947,17 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                     label: Text(l10n.smugglingCrew),
                     onSelected: (_) async {
                       if (_selectedNetworkScope == 'crew') return;
-                      setState(() => _selectedNetworkScope = 'crew');
+                      setState(() {
+                        _selectedNetworkScope = 'crew';
+                        // Crew + trade goods is not implemented yet.
+                        if (_selectedCategory == 'trade') {
+                          _selectedCategory = 'drug';
+                          _quantityController.text = '1';
+                        }
+                        if (_selectedTransportMode == 'owned') {
+                          _selectedTransportMode = 'commercial';
+                        }
+                      });
                       await _loadData();
                     },
                   ),

@@ -2357,7 +2357,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehicleOpsHotspot => 'Punto de acceso';
 
   @override
-  String get vehicleOpsCrew => 'Multitud';
+  String get vehicleOpsCrew => 'Crew';
 
   @override
   String get vehicleOpsCrewMatch => 'partido de Crew';
@@ -8662,6 +8662,27 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String schoolTrainBonusLevels(int count) {
+    return '+$count niv.';
+  }
+
+  @override
+  String schoolTrainBonusCerts(int count) {
+    return '+$count cert.';
+  }
+
+  @override
+  String schoolTrainSuccessToast(
+    String trackName,
+    int xpGain,
+    String bonusSuffix,
+    String cooldownLabel,
+    String cooldown,
+  ) {
+    return '$trackName: +$xpGain XP$bonusSuffix · $cooldownLabel $cooldown';
+  }
+
+  @override
   String schoolCertificationRequiredLevel(String name, int level) {
     return '$name (Nivel $level)';
   }
@@ -9804,7 +9825,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get achievementDescription_nightclub_staffing_boss =>
-      'Dirige a 3 miembros activos de la tripulación del club nocturno al mismo tiempo.';
+      'Dirige a 3 miembros activos de la Crew del Nightclub al mismo tiempo.';
 
   @override
   String get achievementTitle_nightclub_vip_room => 'Sala VIP';
@@ -9990,8 +10011,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get nightclubSelectCrewMember =>
-      'Seleccionar miembro de la tripulación';
+  String get nightclubSelectCrewMember => 'Seleccionar miembro de la Crew';
 
   @override
   String get nightclubAssignShift => 'Asignar turno de discoteca';
@@ -10003,7 +10023,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubTabHistory => 'Historia';
 
   @override
-  String get nightclubNoCrewAssigned => 'Aún no hay tripulación asignada';
+  String get nightclubNoCrewAssigned => 'Aún no hay Crew asignada';
 
   @override
   String get nightclubCrewBoostDescription =>
@@ -10067,11 +10087,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubHireSecuritySuccess => 'Seguridad contratada';
 
   @override
-  String get nightclubAssignCrewSuccess => 'Miembro de la tripulación asignado';
+  String get nightclubAssignCrewSuccess => 'Miembro de la Crew asignado';
 
   @override
-  String get nightclubRemoveCrewSuccess =>
-      'Miembro de la tripulación eliminado';
+  String get nightclubRemoveCrewSuccess => 'Miembro de la Crew eliminado';
 
   @override
   String get nightclubStoreDrugsSuccess => 'Drogas almacenadas';
@@ -10581,7 +10600,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Elija una zona de gestión y controle todo sin desplazamiento interno anidado.';
 
   @override
-  String get nightclubChipCrew => 'Multitud';
+  String get nightclubChipCrew => 'Crew';
 
   @override
   String get nightclubChipStorage => 'Almacenamiento';
@@ -10950,7 +10969,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportMod_prostitution => 'Prostitución';
 
   @override
-  String get supportMod_crew => 'Multitud';
+  String get supportMod_crew => 'Crew';
 
   @override
   String get supportMod_friends => 'Amigos / jugadores';
@@ -12222,7 +12241,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get smugglingPersonal => 'Personal';
 
   @override
-  String get smugglingCrew => 'Multitud';
+  String get smugglingCrew => 'Crew';
 
   @override
   String get smugglingChannelField => 'canal de contrabando';
@@ -13504,7 +13523,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'La barra superior muestra: efectivo, rango, salud (0-100 HP), nivel de búsqueda (0-100) y FBI Heat (0-100). \nCada 5 minutos se activa un tic automático: el hambre cae -2, la sed -3, te curas pasivamente +5 HP (si HP > 0), se agrega interés bancario (0,5%) y el nivel de búsqueda cae ligeramente cuando es inferior a 10. \nSi el hambre o la sed llega a 0, mueres y pasas 3 horas en la UCI. ¡Come y bebe a tiempo! \nLos bloques de acción rápida a la derecha son accesos directos a delitos, robo de automóviles, robo de embarcaciones, trabajo, casino, banco y escuela. \nLos temporizadores de recuperación por sección muestran cuánto tiempo falta para que tu próxima acción esté disponible. El cronómetro se adapta para mostrar la unidad más relevante: minutos, horas o días. \nLa tarjeta de estadísticas ahora utiliza contadores reales para fugas, asesinatos, contratos de listas de éxito, viajes y balas en lugar de marcadores de posición fijos de cero. \nEl panel ahora también tiene una sección económica ampliada con efectivo, banco, criptografía, valor del vehículo, valor de la propiedad, patrimonio neto y una tendencia del flujo de caja de 24 horas. \nEl bloque de operaciones ahora muestra la producción activa, el tiempo de reutilización más largo, el estado del vehículo (activo/listado/en tránsito) y los temporizadores de próxima producción/evento. \nCuando los eventos de los jugadores están en vivo (por ejemplo, competencia semanal), el mismo panel de la derecha enumera brevemente sus títulos y enlaces a la página de Eventos. Puede activar o desactivar la opción push para el inicio/finalización de la ronda en Configuración → Eventos del jugador (además de los permisos del dispositivo y otras categorías push). \nNotificaciones y riesgo ahora incluye mensajes directos no leídos, tickets de soporte en espera de respuesta, eventos de las últimas 24 horas y una puntuación de riesgo compacta (se busca + FBI). \nCuando tu Crew participa en Crew Wars, el panel también muestra un resumen de Crew Wars con estado, oponente, puntos de Crew, rango de temporada y el tiempo restante en la fase actual. \nEl tablero ahora también incluye una descripción general de las operaciones del vehículo por auto/moto/barco con chips de enfriamiento en vivo (punto de acceso, Crew, partida de Crew, corte, contrato y contador), además de calor/reputación, conteos de contratos y reclamos, y puntos de temporada. \nLos eventos en vivo aparecen cuando otros jugadores realizan acciones importantes, cuando eres atacado o cuando ocurren movimientos en el mercado global. \nLa insignia de mensaje muestra mensajes del sistema no leídos y mensajes personales. \nEl menú de navegación izquierdo otorga acceso a todas las secciones del juego agrupadas por categoría: Acciones, Mundo, Social, Economía, Imperio y Activos.';
+      'La barra superior muestra: efectivo, rango, salud (0-100 HP), nivel de búsqueda (0-100) y FBI Heat (0-100). \nCada 5 minutos se activa un tic automático: el hambre cae -2, la sed -3, te curas pasivamente +5 HP (si HP > 0), el nivel de búsqueda cae ligeramente cuando es inferior a 10 (el interés bancario está desactivado actualmente). \nSi el hambre o la sed llega a 0, mueres y pasas 3 horas en la UCI. ¡Come y bebe a tiempo! \nLos bloques de acción rápida a la derecha son accesos directos a delitos, robo de automóviles, robo de embarcaciones, trabajo, casino, banco y escuela. \nLos temporizadores de recuperación por sección muestran cuánto tiempo falta para que tu próxima acción esté disponible. El cronómetro se adapta para mostrar la unidad más relevante: minutos, horas o días. \nLa tarjeta de estadísticas ahora utiliza contadores reales para fugas, asesinatos, contratos de listas de éxito, viajes y balas en lugar de marcadores de posición fijos de cero. \nEl panel ahora también tiene una sección económica ampliada con efectivo, banco, criptografía, valor del vehículo, valor de la propiedad, patrimonio neto y una tendencia del flujo de caja de 24 horas. \nEl bloque de operaciones ahora muestra la producción activa, el tiempo de reutilización más largo, el estado del vehículo (activo/listado/en tránsito) y los temporizadores de próxima producción/evento. \nCuando los eventos de los jugadores están en vivo (por ejemplo, competencia semanal), el mismo panel de la derecha enumera brevemente sus títulos y enlaces a la página de Eventos. Puede activar o desactivar la opción push para el inicio/finalización de la ronda en Configuración → Eventos del jugador (además de los permisos del dispositivo y otras categorías push). \nNotificaciones y riesgo ahora incluye mensajes directos no leídos, tickets de soporte en espera de respuesta, eventos de las últimas 24 horas y una puntuación de riesgo compacta (se busca + FBI). \nCuando tu Crew participa en Crew Wars, el panel también muestra un resumen de Crew Wars con estado, oponente, puntos de Crew, rango de temporada y el tiempo restante en la fase actual. \nEl tablero ahora también incluye una descripción general de las operaciones del vehículo por auto/moto/barco con chips de enfriamiento en vivo (punto de acceso, Crew, partida de Crew, corte, contrato y contador), además de calor/reputación, conteos de contratos y reclamos, y puntos de temporada. \nLos eventos en vivo aparecen cuando otros jugadores realizan acciones importantes, cuando eres atacado o cuando ocurren movimientos en el mercado global. \nLa insignia de mensaje muestra mensajes del sistema no leídos y mensajes personales. \nEl menú de navegación izquierdo otorga acceso a todas las secciones del juego agrupadas por categoría: Acciones, Mundo, Social, Economía, Imperio y Activos.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13568,7 +13587,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get helpTopicCrewCategory => 'Social';
 
   @override
-  String get helpTopicCrewTitle => 'Multitud';
+  String get helpTopicCrewTitle => 'Crew';
 
   @override
   String get helpTopicCrewSummary =>
@@ -13662,15 +13681,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Deposite dinero para ganar intereses y mantenga el efectivo fuera del alcance de las confiscaciones policiales.';
+      'Deposita dinero para mantener el efectivo fuera del alcance de las confiscaciones policiales. El interés bancario está desactivado actualmente.';
 
   @override
   String get helpTopicBankHow =>
-      'Interés: 0,5% de tu saldo bancario por tick (cada 5 minutos). Ejemplo: 10.000€ en el banco = 50€ de interés por tick = 600€ por hora = 14.400€ por día. \nLos depósitos y retiros son gratuitos e instantáneos, sin límite mínimo ni máximo. \nEl dinero en el banco está protegido de confiscaciones policiales. Sólo el efectivo disponible se puede perder en el momento del arresto. \nEl historial de transacciones muestra todos los flujos entrantes y salientes con marca de tiempo, monto, contraparte de la transferencia y descripciones opcionales. \nCrimen de robo a un banco: tiene éxito en un 30% y roba entre un 10 y un 30% del saldo bancario de otro jugador al azar. Riesgo de alto nivel de búsqueda. \nEs posible transferir dinero a otros jugadores. Opcionalmente, puedes agregar una descripción y el destinatario también la verá en las transacciones. Verifique nuevamente tanto el monto como el destinatario antes de confirmar.';
+      'El interés bancario está desactivado actualmente (sin interés pasivo por tick).\nLos depósitos y retiros son gratuitos e instantáneos, sin mínimo ni máximo.\nEl dinero en el banco está protegido frente a confiscaciones policiales. Solo el efectivo en mano se puede perder al ser arrestado.\nEl historial de transacciones muestra todos los flujos con marca de tiempo, importe, contraparte y descripción opcional.\nCrimen Atraco al banco: 30% de éxito y roba el 10–30% del saldo bancario de otro jugador al azar. Alto riesgo de Wanted Level.\nPuedes transferir dinero a otros jugadores. Descripción opcional visible también para el receptor. Comprueba importe y destinatario antes de confirmar.';
 
   @override
   String get helpTopicBankTips =>
-      'Envíe grandes cantidades al banco de inmediato: el efectivo disponible está en riesgo con cada intento de delito. \nAumente la rentabilidad de los intereses acumulando grandes cantidades de manera constante en el banco. \nMantenga un pequeño capital de trabajo como efectivo para gastos directos (fianza, viajes, herramientas).';
+      'Envía grandes cantidades al banco de inmediato: el efectivo en mano está en riesgo en cada intento de crimen.\nUsa el banco como almacenamiento seguro contra confiscaciones, no como granja de intereses (interés desactivado).\nMantén un pequeño capital de trabajo en efectivo para gastos directos (fianza, viaje, herramientas).';
 
   @override
   String get helpTopicCasinoCategory => 'Economía';
@@ -14105,7 +14124,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Verifique diariamente sus logros casi completados: un pequeño esfuerzo adicional puede ganar una insignia y una recompensa en efectivo que de otro modo se retrasaría durante meses. \nConcéntrate desde el principio en las categorías de Economía y Crimen: tienen la mayor cantidad de recompensas en efectivo y son más fáciles de combinar con tu juego normal.';
 
   @override
-  String get helpTopicSupportTicketsCategory => 'Apoyo';
+  String get helpTopicSupportTicketsCategory => 'Soporte';
 
   @override
   String get helpTopicSupportTicketsTitle => 'Informes y entradas';

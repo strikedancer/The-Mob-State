@@ -631,7 +631,7 @@
   "crewRoleCoLeader": "Co-líder",
   "crewRoleMember": "Miembro",
   "vehicleOpsHotspot": "Punto de acceso",
-  "vehicleOpsCrew": "Multitud",
+  "vehicleOpsCrew": "Crew",
   "vehicleOpsCrewMatch": "partido de Crew",
   "vehicleOpsChop": "Cortar",
   "vehicleOpsContract": "Contrato",
@@ -2156,6 +2156,42 @@
       }
     }
   },
+  "schoolTrainBonusLevels": "+{count} niv.",
+  "@schoolTrainBonusLevels": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolTrainBonusCerts": "+{count} cert.",
+  "@schoolTrainBonusCerts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolTrainSuccessToast": "{trackName}: +{xpGain} XP{bonusSuffix} · {cooldownLabel} {cooldown}",
+  "@schoolTrainSuccessToast": {
+    "placeholders": {
+      "trackName": {
+        "type": "String"
+      },
+      "xpGain": {
+        "type": "int"
+      },
+      "bonusSuffix": {
+        "type": "String"
+      },
+      "cooldownLabel": {
+        "type": "String"
+      },
+      "cooldown": {
+        "type": "String"
+      }
+    }
+  },
   "schoolCertificationRequiredLevel": "{name} (Nivel {level})",
   "@schoolCertificationRequiredLevel": {
     "placeholders": {
@@ -2541,7 +2577,7 @@
   "achievementTitle_nightclub_empire": "Imperio de la vida nocturna",
   "achievementDescription_nightclub_empire": "Gana 1.000.000€ de ingresos totales en discotecas",
   "achievementTitle_nightclub_staffing_boss": "Jefa de personal",
-  "achievementDescription_nightclub_staffing_boss": "Dirige a 3 miembros activos de la tripulación del club nocturno al mismo tiempo.",
+  "achievementDescription_nightclub_staffing_boss": "Dirige a 3 miembros activos de la Crew del Nightclub al mismo tiempo.",
   "achievementTitle_nightclub_vip_room": "Sala VIP",
   "achievementDescription_nightclub_vip_room": "Asigna 2 miembros del equipo VIP a tu club nocturno",
   "achievementTitle_nightclub_head_of_security": "Jefa de Seguridad",
@@ -2635,11 +2671,11 @@
       }
     }
   },
-  "nightclubSelectCrewMember": "Seleccionar miembro de la tripulación",
+  "nightclubSelectCrewMember": "Seleccionar miembro de la Crew",
   "nightclubAssignShift": "Asignar turno de discoteca",
   "nightclubTabActive": "Activa",
   "nightclubTabHistory": "Historia",
-  "nightclubNoCrewAssigned": "Aún no hay tripulación asignada",
+  "nightclubNoCrewAssigned": "Aún no hay Crew asignada",
   "nightclubCrewBoostDescription": "Aumenta la demanda y el margen en tu club",
   "nightclubRemove": "Eliminar",
   "nightclubNoStaffHistory": "Aún no hay historial de personal",
@@ -2660,8 +2696,8 @@
   "nightclubStoreButton": "Tienda en discoteca",
   "nightclubHireDjSuccess": "DJ contratada",
   "nightclubHireSecuritySuccess": "Seguridad contratada",
-  "nightclubAssignCrewSuccess": "Miembro de la tripulación asignado",
-  "nightclubRemoveCrewSuccess": "Miembro de la tripulación eliminado",
+  "nightclubAssignCrewSuccess": "Miembro de la Crew asignado",
+  "nightclubRemoveCrewSuccess": "Miembro de la Crew eliminado",
   "nightclubStoreDrugsSuccess": "Drogas almacenadas",
   "nightclubSeasonPayoutDialogTitle": "Pago de temporada recibido",
   "nightclubSeasonPayoutDialogBody": "Tu club nocturno terminó en el puesto #{rank} esta semana.",
@@ -2900,7 +2936,7 @@
   "supportMod_drugs": "Drogas",
   "supportMod_nightclub": "Club nocturno",
   "supportMod_prostitution": "Prostitución",
-  "supportMod_crew": "Multitud",
+  "supportMod_crew": "Crew",
   "supportMod_friends": "Amigos / jugadores",
   "supportMod_hitlist": "Lista negra",
   "supportMod_security": "Seguridad / FBI",
@@ -5507,7 +5543,7 @@
   },
   "smugglingNetwork": "Red",
   "smugglingPersonal": "Personal",
-  "smugglingCrew": "Multitud",
+  "smugglingCrew": "Crew",
   "smugglingChannelField": "canal de contrabando",
   "smugglingQuantity": "Cantidad",
   "smugglingVehiclesOneByOne": "Los vehículos se envían uno por uno.",
@@ -6224,7 +6260,7 @@
   "nightclubMgmtOpsLabSubtitleDefault": "11 sistemas para eventos, mejoras, rutas y rivales.",
   "nightclubManagementPanelTitle": "Gestión de discotecas",
   "nightclubChooseZoneHint": "Elija una zona de gestión y controle todo sin desplazamiento interno anidado.",
-  "nightclubChipCrew": "Multitud",
+  "nightclubChipCrew": "Crew",
   "nightclubChipStorage": "Almacenamiento",
   "nightclubChipDjShift": "turno de DJ",
   "nightclubChipSecurity": "Seguridad",
@@ -8025,7 +8061,7 @@
   "helpTopicDashboardCategory": "Centro",
   "helpTopicDashboardTitle": "Panel",
   "helpTopicDashboardSummary": "Tu descripción general central con todas tus estadísticas, tiempos de reutilización activos, eventos en vivo y accesos directos a cada parte del juego.",
-  "helpTopicDashboardHow": "La barra superior muestra: efectivo, rango, salud (0-100 HP), nivel de búsqueda (0-100) y FBI Heat (0-100). \nCada 5 minutos se activa un tic automático: el hambre cae -2, la sed -3, te curas pasivamente +5 HP (si HP > 0), se agrega interés bancario (0,5%) y el nivel de búsqueda cae ligeramente cuando es inferior a 10. \nSi el hambre o la sed llega a 0, mueres y pasas 3 horas en la UCI. ¡Come y bebe a tiempo! \nLos bloques de acción rápida a la derecha son accesos directos a delitos, robo de automóviles, robo de embarcaciones, trabajo, casino, banco y escuela. \nLos temporizadores de recuperación por sección muestran cuánto tiempo falta para que tu próxima acción esté disponible. El cronómetro se adapta para mostrar la unidad más relevante: minutos, horas o días. \nLa tarjeta de estadísticas ahora utiliza contadores reales para fugas, asesinatos, contratos de listas de éxito, viajes y balas en lugar de marcadores de posición fijos de cero. \nEl panel ahora también tiene una sección económica ampliada con efectivo, banco, criptografía, valor del vehículo, valor de la propiedad, patrimonio neto y una tendencia del flujo de caja de 24 horas. \nEl bloque de operaciones ahora muestra la producción activa, el tiempo de reutilización más largo, el estado del vehículo (activo/listado/en tránsito) y los temporizadores de próxima producción/evento. \nCuando los eventos de los jugadores están en vivo (por ejemplo, competencia semanal), el mismo panel de la derecha enumera brevemente sus títulos y enlaces a la página de Eventos. Puede activar o desactivar la opción push para el inicio/finalización de la ronda en Configuración → Eventos del jugador (además de los permisos del dispositivo y otras categorías push). \nNotificaciones y riesgo ahora incluye mensajes directos no leídos, tickets de soporte en espera de respuesta, eventos de las últimas 24 horas y una puntuación de riesgo compacta (se busca + FBI). \nCuando tu Crew participa en Crew Wars, el panel también muestra un resumen de Crew Wars con estado, oponente, puntos de Crew, rango de temporada y el tiempo restante en la fase actual. \nEl tablero ahora también incluye una descripción general de las operaciones del vehículo por auto/moto/barco con chips de enfriamiento en vivo (punto de acceso, Crew, partida de Crew, corte, contrato y contador), además de calor/reputación, conteos de contratos y reclamos, y puntos de temporada. \nLos eventos en vivo aparecen cuando otros jugadores realizan acciones importantes, cuando eres atacado o cuando ocurren movimientos en el mercado global. \nLa insignia de mensaje muestra mensajes del sistema no leídos y mensajes personales. \nEl menú de navegación izquierdo otorga acceso a todas las secciones del juego agrupadas por categoría: Acciones, Mundo, Social, Economía, Imperio y Activos.",
+  "helpTopicDashboardHow": "La barra superior muestra: efectivo, rango, salud (0-100 HP), nivel de búsqueda (0-100) y FBI Heat (0-100). \nCada 5 minutos se activa un tic automático: el hambre cae -2, la sed -3, te curas pasivamente +5 HP (si HP > 0), el nivel de búsqueda cae ligeramente cuando es inferior a 10 (el interés bancario está desactivado actualmente). \nSi el hambre o la sed llega a 0, mueres y pasas 3 horas en la UCI. ¡Come y bebe a tiempo! \nLos bloques de acción rápida a la derecha son accesos directos a delitos, robo de automóviles, robo de embarcaciones, trabajo, casino, banco y escuela. \nLos temporizadores de recuperación por sección muestran cuánto tiempo falta para que tu próxima acción esté disponible. El cronómetro se adapta para mostrar la unidad más relevante: minutos, horas o días. \nLa tarjeta de estadísticas ahora utiliza contadores reales para fugas, asesinatos, contratos de listas de éxito, viajes y balas en lugar de marcadores de posición fijos de cero. \nEl panel ahora también tiene una sección económica ampliada con efectivo, banco, criptografía, valor del vehículo, valor de la propiedad, patrimonio neto y una tendencia del flujo de caja de 24 horas. \nEl bloque de operaciones ahora muestra la producción activa, el tiempo de reutilización más largo, el estado del vehículo (activo/listado/en tránsito) y los temporizadores de próxima producción/evento. \nCuando los eventos de los jugadores están en vivo (por ejemplo, competencia semanal), el mismo panel de la derecha enumera brevemente sus títulos y enlaces a la página de Eventos. Puede activar o desactivar la opción push para el inicio/finalización de la ronda en Configuración → Eventos del jugador (además de los permisos del dispositivo y otras categorías push). \nNotificaciones y riesgo ahora incluye mensajes directos no leídos, tickets de soporte en espera de respuesta, eventos de las últimas 24 horas y una puntuación de riesgo compacta (se busca + FBI). \nCuando tu Crew participa en Crew Wars, el panel también muestra un resumen de Crew Wars con estado, oponente, puntos de Crew, rango de temporada y el tiempo restante en la fase actual. \nEl tablero ahora también incluye una descripción general de las operaciones del vehículo por auto/moto/barco con chips de enfriamiento en vivo (punto de acceso, Crew, partida de Crew, corte, contrato y contador), además de calor/reputación, conteos de contratos y reclamos, y puntos de temporada. \nLos eventos en vivo aparecen cuando otros jugadores realizan acciones importantes, cuando eres atacado o cuando ocurren movimientos en el mercado global. \nLa insignia de mensaje muestra mensajes del sistema no leídos y mensajes personales. \nEl menú de navegación izquierdo otorga acceso a todas las secciones del juego agrupadas por categoría: Acciones, Mundo, Social, Economía, Imperio y Activos.",
   "helpTopicDashboardTips": "Abra el panel primero después de cada inicio de sesión para ver qué cambió mientras estuvo ausente. \nMantenga el nivel de búsqueda por debajo de 10 para que la decadencia automática funcione y las posibilidades de arresto se mantengan bajas. \nVerifique los mensajes no leídos antes de iniciar acciones riesgosas: las recompensas, los pedidos completados y los eventos del sistema aparecen en su bandeja de entrada.",
   "helpTopicCrimesCategory": "Comportamiento",
   "helpTopicCrimesTitle": "Crímenes",
@@ -8043,7 +8079,7 @@
   "helpTopicTravelHow": "Países disponibles: Países Bajos (inicio), Bélgica, Alemania, Francia, Reino Unido, España, Italia, Suiza, Estados Unidos, México, Colombia, Brasil. \nGastos de viaje: país vecino 500-2000 €, Europa → América 5000-10 000 €, larga distancia 10 000-20 000 €. \nRequisitos de viaje: no en la cárcel, no en la UCI, mínimo 20 HP, fondos de viaje disponibles. \nLas cantidades de medicamentos en su inventario cuentan como gramos reales para los controles de peso de transporte y de viaje; 500 significa 500 g, no 50 kg. \nCada país tiene diferentes precios de mercado (hasta un 300% de diferencia de precio), diferentes pagos por delitos y artículos comerciales únicos. \nRiesgo de transporte: la policía puede confiscar mercancías según el nivel de búsqueda (posibilidad = buscada × 2%, máximo 80%). El FBI puede confiscar todo a nivel internacional si la presión es alta. \nLa inspección aduanera tiene una probabilidad base del 10%. Puedes sobornar (1.000€-5.000€) o quedar atrapado perdiendo el 50% de los bienes. \nDespués de su llegada, todas las acciones estarán disponibles inmediatamente en el nuevo país. Los mercados y la velocidad del crimen varían según la ubicación.",
   "helpTopicTravelTips": "Combine siempre los viajes con el comercio, las drogas o el contrabando: los viajes vacíos desperdician dinero. \nReduzca su nivel de búsqueda antes de la salida: un nivel alto de búsqueda aumenta considerablemente el riesgo de confiscación en el camino. \nPlanifique su viaje de regreso con anticipación para saber qué traer a su llegada.",
   "helpTopicCrewCategory": "Social",
-  "helpTopicCrewTitle": "Multitud",
+  "helpTopicCrewTitle": "Crew",
   "helpTopicCrewSummary": "Forma un equipo o únete a jugadores existentes para realizar atracos juntos, compartir almacenamiento y fortalecerte como unidad.",
   "helpTopicCrewHow": "Crear una Crew cuesta 10.000 €. El cuartel general de la Crew determina cuántos miembros puede albergar tu Crew y aumenta hasta 150 miembros. El líder puede invitar, patear e iniciar atracos. \nBeneficios de la Crew: acceso a grandes atracos, almacenamiento compartido, bonificación de trabajo en equipo (+10% de éxito por miembro adicional, máximo +30%) y chat grupal. \nLas nuevas tripulaciones ahora comienzan con el nivel 1 del cuartel general de la Crew y todos los edificios de almacenamiento en el nivel 1, incluido el almacenamiento de efectivo, por lo que el banco de Crew y el almacenamiento compartido funcionan de inmediato. \nEl almacenamiento de vehículos de la Crew ahora también acepta motocicletas, por lo que los vehículos terrestres se pueden administrar juntos desde el mismo almacenamiento compartido de la Crew. \nCuando un miembro de la Crew es arrestado, los miembros de la Crew ahora reciben una notificación automática de que el jugador está encerrado y esperando ayuda. \nLa pantalla de la Crew ahora está agrupada en Descripción general, Sede y mejoras, Almacenamiento, Miembros, Sala de guerra, Misiones de la Crew, Tripulaciones y Chat para que la administración se sienta más tranquila y profesional. \nCrew Missions muestra plantillas de niveles, una tarjeta de carrera activa y carreras recientes. Los líderes/colíderes pueden comenzar y resolver; La reclamación de recompensas y la aceleración del tiempo de reutilización se manejan en la misma pestaña. \nHay misiones de Crew adicionales con operaciones con temática bancaria (depósito nocturno, red de desnatado, ruta blindada, bóveda subsidiaria, bóveda de reserva y cámara de compensación). No hay una segunda misión para el equipo del casino además de Casino Ledger Raid. \nLas recompensas de las misiones de la Crew provienen de la economía de las misiones del lado del servidor; Los saldos bancarios de otros jugadores no se cargan para estos pagos. \nAl comenzar una misión, ahora puedes asignar un rol por miembro de la Crew (planificador, ejecutor, logística, técnico) para obtener bonificaciones de equipo. \nLas tarjetas de misión activas y recientes ahora también muestran contribuciones de rol por jugador con puntuación y cualquier multiplicador de pago. \nLos miembros de la Crew ahora también reciben alertas push/en la aplicación sobre el inicio de la misión, el resultado de la misión y cuando el tiempo de reutilización de la misión vuelve a estar listo. \nMientras el tiempo de reutilización de una misión esté activo, no podrás iniciar una nueva misión; Primero espera el tiempo de reutilización restante o acelera con créditos. \nPara acelerar el tiempo de recuperación, primero verá el costo exacto del crédito y los minutos restantes antes de confirmar. \nCrew Wars tiene su propia pestaña War Room dentro de la pantalla de la Crew. Solo los líderes pueden declarar una guerra y se requiere que participen al menos 3 miembros de la Crew. \nTipos de guerra: Kill War, Economy War, Territory War y Total War. Cada guerra pasa por la preparación, la fase activa, el bloqueo y la resolución. \nDurante una guerra activa, los participantes pueden realizar acciones como asesinatos, asaltos, sabotaje, información, incursiones, escudos, mejoras y reclamos de territorio. Las acciones dirigidas ahora te permiten elegir directamente de una lista de miembros de la Crew oponente en lugar de escribir una identificación de jugador a mano. \nLos puntos de temporada se agregan a la tabla de clasificación de Crew Wars. La Sala de Guerra también muestra clasificaciones, acciones recientes y guerras recientes de tu Crew. \nEn Territory War y Total War, ahora reclamas regiones territoriales reales del sistema de territorios en lugar de objetivos de marcador de posición genéricos. \nEsas regiones de guerra ahora también muestran su valor estratégico en la Sala de Guerra: bonificación de reclamo, puntos de marca y etiquetas como puerto, capital o logística. Esto deja inmediatamente claro qué regiones valen más que un simple intercambio de propiedad. \nCrew Wars ya no elige objetivos territoriales solo según el nivel de valor, sino también según las etiquetas estratégicas y la presión adyacente del territorio atacante o defensor. Eso hace que Territory War y Total War se sientan más como una línea de frente real que como tres reclamos aleatorios. \nAtracos: Banco pequeño (2 jugadores, 40%, 10.000 €-30.000 €, 30 min de tiempo de reutilización), Joyería (3 jugadores, 35%, 20.000 €-50.000 €, 45 min), Atraco al casino (4 jugadores, 25%, 50.000 €-150.000 €, 2 horas), Reserva Federal (5 jugadores, 15%, 100.000-500.000€, 6 h, +20 FBI Heat). \nPara un atraco, todos los miembros deben estar en línea al inicio. Si alguien está ausente, el atraco fracasa. \nAtraco fallido: cárcel para todos, nivel de búsqueda +5, sin recompensa. \nLa recompensa del atraco se divide en partes iguales entre todos los miembros participantes. \nEl chat de la Crew está disponible para una rápida coordinación. \nProgresión del cuartel general de la Crew: cuanto más larga y activa sea la Crew, más mejoras y beneficios compartidos se desbloquearán.",
   "helpTopicCrewTips": "Los nuevos equipos pueden depositar dinero y utilizar el almacenamiento compartido de inmediato; después de eso, concéntrese en actualizaciones para obtener más capacidad en lugar de realizar una compra inicial por separado. \nPrimero revisa la Sala de Guerra para ver si tu Crew todavía está en tiempo de reutilización antes de intentar declarar una nueva guerra. \nCoordina las llamadas de objetivos en el chat de la Crew para no seguir cultivando al mismo oponente y hacer tropezar al guardia anti-granja. \nCoordine las horas de inicio del atraco en el chat del equipo para que todos estén en línea y nadie esté en la cárcel. \nElija un equipo en la misma zona horaria o patrón de actividad para obtener mejores tasas de éxito en los atracos. \nUtilice el almacenamiento compartido de la Crew para separar los bienes riesgosos de su inventario personal.",
@@ -8069,9 +8105,9 @@
   "helpTopicPropertiesTips": "Invierta en un almacén con anticipación si necesita más espacio de almacenamiento para sus otros sistemas. \nElija casas y apartamentos cuando desee construir más capacidad de vivienda para sistemas de juego relacionados. \nNo venda demasiado rápido: el 70% representa una importante rebaja sobre el precio de compra.",
   "helpTopicBankCategory": "Economía",
   "helpTopicBankTitle": "Banco",
-  "helpTopicBankSummary": "Deposite dinero para ganar intereses y mantenga el efectivo fuera del alcance de las confiscaciones policiales.",
-  "helpTopicBankHow": "Interés: 0,5% de tu saldo bancario por tick (cada 5 minutos). Ejemplo: 10.000€ en el banco = 50€ de interés por tick = 600€ por hora = 14.400€ por día. \nLos depósitos y retiros son gratuitos e instantáneos, sin límite mínimo ni máximo. \nEl dinero en el banco está protegido de confiscaciones policiales. Sólo el efectivo disponible se puede perder en el momento del arresto. \nEl historial de transacciones muestra todos los flujos entrantes y salientes con marca de tiempo, monto, contraparte de la transferencia y descripciones opcionales. \nCrimen de robo a un banco: tiene éxito en un 30% y roba entre un 10 y un 30% del saldo bancario de otro jugador al azar. Riesgo de alto nivel de búsqueda. \nEs posible transferir dinero a otros jugadores. Opcionalmente, puedes agregar una descripción y el destinatario también la verá en las transacciones. Verifique nuevamente tanto el monto como el destinatario antes de confirmar.",
-  "helpTopicBankTips": "Envíe grandes cantidades al banco de inmediato: el efectivo disponible está en riesgo con cada intento de delito. \nAumente la rentabilidad de los intereses acumulando grandes cantidades de manera constante en el banco. \nMantenga un pequeño capital de trabajo como efectivo para gastos directos (fianza, viajes, herramientas).",
+  "helpTopicBankSummary": "Deposita dinero para mantener el efectivo fuera del alcance de las confiscaciones policiales. El interés bancario está desactivado actualmente.",
+  "helpTopicBankHow": "El interés bancario está desactivado actualmente (sin interés pasivo por tick).\nLos depósitos y retiros son gratuitos e instantáneos, sin mínimo ni máximo.\nEl dinero en el banco está protegido frente a confiscaciones policiales. Solo el efectivo en mano se puede perder al ser arrestado.\nEl historial de transacciones muestra todos los flujos con marca de tiempo, importe, contraparte y descripción opcional.\nCrimen Atraco al banco: 30% de éxito y roba el 10–30% del saldo bancario de otro jugador al azar. Alto riesgo de Wanted Level.\nPuedes transferir dinero a otros jugadores. Descripción opcional visible también para el receptor. Comprueba importe y destinatario antes de confirmar.",
+  "helpTopicBankTips": "Envía grandes cantidades al banco de inmediato: el efectivo en mano está en riesgo en cada intento de crimen.\nUsa el banco como almacenamiento seguro contra confiscaciones, no como granja de intereses (interés desactivado).\nMantén un pequeño capital de trabajo en efectivo para gastos directos (fianza, viaje, herramientas).",
   "helpTopicCasinoCategory": "Economía",
   "helpTopicCasinoTitle": "Casino",
   "helpTopicCasinoSummary": "Apueste con dinero en efectivo en tragamonedas, blackjack, ruleta, dados, baccarat y video póquer. Variación alta: puedes ganar o perder grandes cantidades rápidamente.",
@@ -8192,7 +8228,7 @@
   "helpTopicAchievementsSummary": "Gana insignias al alcanzar hitos en todos los sistemas de juego. Los logros otorgan recompensas, mejoran su perfil de estado y muestran su progreso por categoría.",
   "helpTopicAchievementsHow": "Los logros se agrupan en categorías: Crímenes, Imperio, PvP, Economía, Entrenamiento, Social y Meta. \nCada logro tiene varios niveles (Bronce, Plata, Oro, Platino). Cada nivel ofrece una recompensa mayor y una insignia más impresionante. \nLas recompensas por logro incluyen: dinero en efectivo, XP, artículos especiales, bonos permanentes o títulos únicos para tu perfil. \nEl progreso se rastrea automáticamente. No es necesario activar nada: alcanza el umbral y la insignia se otorga inmediatamente. \nAlgunos logros están ocultos hasta que los completas parcialmente; luego aparecen con su nombre real y sus requisitos. \nLas insignias de logros son visibles en su perfil público. Muestran a otros jugadores tus especializaciones y experiencia. \nLogros en cadena: algunas insignias están unidas en una cadena. El oro requiere que ya se haya obtenido la plata. Planifique con anticipación para niveles más altos.",
   "helpTopicAchievementsTips": "Verifique diariamente sus logros casi completados: un pequeño esfuerzo adicional puede ganar una insignia y una recompensa en efectivo que de otro modo se retrasaría durante meses. \nConcéntrate desde el principio en las categorías de Economía y Crimen: tienen la mayor cantidad de recompensas en efectivo y son más fáciles de combinar con tu juego normal.",
-  "helpTopicSupportTicketsCategory": "Apoyo",
+  "helpTopicSupportTicketsCategory": "Soporte",
   "helpTopicSupportTicketsTitle": "Informes y entradas",
   "helpTopicSupportTicketsSummary": "Informe errores, preguntas o comentarios a través del sistema de tickets. El soporte y los administradores pueden responder, gestionar el seguimiento interno y enviar actualizaciones a través de la propia conversación de soporte y notificaciones automáticas opcionales.",
   "helpTopicSupportTicketsHow": "Abra el elemento de menú separado \"Soporte\" para revisar sus tickets o crear uno nuevo. \nElija una categoría (error, pregunta, comentario u otro), seleccione el módulo relacionado si es necesario y describa su problema lo más específicamente posible. \nOpcionalmente, puede agregar una referencia, como una identificación de pedido, un nombre de pantalla o un contexto breve, además de una captura de pantalla si eso ayuda. \nDespués del envío, recibirá inmediatamente un número de ticket y su ticket aparecerá en su descripción general de soporte, donde el soporte puede responder y crear tareas pendientes internas. \nCuando el soporte responde o el estado del ticket cambia, lo verá directamente dentro de la misma conversación de soporte y, opcionalmente, puede recibir una notificación automática (si las notificaciones están habilitadas). \nEl elemento del menú Soporte muestra una insignia tan pronto como un ticket recibe una nueva respuesta de soporte o una actualización de estado desde su última visita a la descripción general de soporte. \nEl soporte utiliza estados como nuevo, clasificación, en progreso, en espera de jugador, bloqueado y resuelto para realizar un seguimiento interno de su informe.",

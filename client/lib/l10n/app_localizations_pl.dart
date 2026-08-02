@@ -8638,6 +8638,27 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String schoolTrainBonusLevels(int count) {
+    return '+$count poz.';
+  }
+
+  @override
+  String schoolTrainBonusCerts(int count) {
+    return '+$count cert.';
+  }
+
+  @override
+  String schoolTrainSuccessToast(
+    String trackName,
+    int xpGain,
+    String bonusSuffix,
+    String cooldownLabel,
+    String cooldown,
+  ) {
+    return '$trackName: +$xpGain XP$bonusSuffix · $cooldownLabel $cooldown';
+  }
+
+  @override
   String schoolCertificationRequiredLevel(String name, int level) {
     return '$name (Poz. $level)';
   }
@@ -13483,7 +13504,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Górny pasek pokazuje: Gotówkę, Rangę, Zdrowie (0-100 HP), Poziom poszukiwanego (0-100) i FBI Heat (0-100). \nCo 5 minut uruchamia się automatyczny kleszcz: głód spada o -2, pragnienie -3, leczysz pasywnie +5 HP (jeśli HP > 0), doliczane są odsetki bankowe (0,5%), a poziom poszukiwanego spada nieznacznie poniżej 10. \nJeśli głód lub pragnienie osiągną poziom 0, umierasz i spędzasz 3 godziny na oddziale intensywnej terapii. Jedz i pij na czas! \nBloki szybkiej akcji po prawej stronie to skróty do przestępstw, kradzieży samochodów, kradzieży łodzi, pracy, kasyna, banku i szkoły. \nLiczniki czasu odnowienia w każdej sekcji pokazują, ile czasu pozostało do następnej akcji. Timer dostosowuje się, aby pokazać najbardziej odpowiednią jednostkę: minuty, godziny lub dni. \nKarta statystyk wykorzystuje teraz rzeczywiste liczniki na żywo dla ucieczek, morderstw, kontraktów na listę hitów, podróży i kul, zamiast stałych zerowych symboli zastępczych. \nPulpit nawigacyjny ma teraz również rozszerzoną sekcję ekonomiczną z gotówką, bankami, kryptowalutami, wartością pojazdu, wartością nieruchomości, wartością netto i 24-godzinnym trendem przepływu środków pieniężnych. \nBlok operacji pokazuje teraz aktywną produkcję, najdłuższy czas odnowienia, status pojazdu (aktywny/wystawiony/przejazd) i liczniki czasu następnej produkcji/wydarzenia. \nGdy wydarzenia graczy są na żywo (np. cotygodniowe zawody), ten sam panel po prawej stronie zawiera krótką listę ich tytułów i linki do strony wydarzeń. Możesz włączyć lub wyłączyć funkcję push rozpoczęcia/zakończenia rundy w Ustawieniach → Wydarzenia gracza (oprócz uprawnień urządzenia i innych kategorii push). \nPowiadomienia i ryzyko obejmują teraz nieprzeczytane wiadomości prywatne, zgłoszenia do pomocy technicznej oczekujące na Twoją odpowiedź, zdarzenia z ostatnich 24 godzin oraz kompaktowy wynik ryzyka (poszukiwany + FBI). \nKiedy twoja Crew bierze udział w Crew Wars, na pulpicie nawigacyjnym wyświetlane jest także podsumowanie Crew Wars ze statusem, przeciwnikiem, punktami załogi, rangą sezonu i pozostałym czasem w bieżącej fazie. \nPanel kontrolny zawiera teraz także przegląd operacji pojazdu dla każdego samochodu/motocykla/łodzi z żetonami czasu odnowienia na żywo (Hotspot, Crew, Mecz załogi, Chop, Kontrakt i Licznik), a także ciepło/reputację, liczbę kontraktów i roszczeń oraz punkty sezonowe. \nWydarzenia na żywo pojawiają się, gdy inni gracze wykonują ważne akcje, gdy zostaniesz zaatakowany lub gdy nastąpią ruchy na globalnym rynku. \nPlakietka wiadomości pokazuje nieprzeczytane wiadomości systemowe i wiadomości osobiste. \nLewe menu nawigacyjne zapewnia dostęp do wszystkich sekcji gry pogrupowanych według kategorii: Akcje, Świat, Społeczność, Ekonomia, Imperium i Zasoby.';
+      'Górny pasek pokazuje: Gotówkę, Rangę, Zdrowie (0-100 HP), Poziom poszukiwanego (0-100) i FBI Heat (0-100). \nCo 5 minut uruchamia się automatyczny kleszcz: głód spada o -2, pragnienie -3, leczysz pasywnie +5 HP (jeśli HP > 0), poziom poszukiwanego spada nieznacznie poniżej 10 (odsetki bankowe są obecnie wyłączone). \nJeśli głód lub pragnienie osiągną poziom 0, umierasz i spędzasz 3 godziny na oddziale intensywnej terapii. Jedz i pij na czas! \nBloki szybkiej akcji po prawej stronie to skróty do przestępstw, kradzieży samochodów, kradzieży łodzi, pracy, kasyna, banku i szkoły. \nLiczniki czasu odnowienia w każdej sekcji pokazują, ile czasu pozostało do następnej akcji. Timer dostosowuje się, aby pokazać najbardziej odpowiednią jednostkę: minuty, godziny lub dni. \nKarta statystyk wykorzystuje teraz rzeczywiste liczniki na żywo dla ucieczek, morderstw, kontraktów na listę hitów, podróży i kul, zamiast stałych zerowych symboli zastępczych. \nPulpit nawigacyjny ma teraz również rozszerzoną sekcję ekonomiczną z gotówką, bankami, kryptowalutami, wartością pojazdu, wartością nieruchomości, wartością netto i 24-godzinnym trendem przepływu środków pieniężnych. \nBlok operacji pokazuje teraz aktywną produkcję, najdłuższy czas odnowienia, status pojazdu (aktywny/wystawiony/przejazd) i liczniki czasu następnej produkcji/wydarzenia. \nGdy wydarzenia graczy są na żywo (np. cotygodniowe zawody), ten sam panel po prawej stronie zawiera krótką listę ich tytułów i linki do strony wydarzeń. Możesz włączyć lub wyłączyć funkcję push rozpoczęcia/zakończenia rundy w Ustawieniach → Wydarzenia gracza (oprócz uprawnień urządzenia i innych kategorii push). \nPowiadomienia i ryzyko obejmują teraz nieprzeczytane wiadomości prywatne, zgłoszenia do pomocy technicznej oczekujące na Twoją odpowiedź, zdarzenia z ostatnich 24 godzin oraz kompaktowy wynik ryzyka (poszukiwany + FBI). \nKiedy twoja Crew bierze udział w Crew Wars, na pulpicie nawigacyjnym wyświetlane jest także podsumowanie Crew Wars ze statusem, przeciwnikiem, punktami załogi, rangą sezonu i pozostałym czasem w bieżącej fazie. \nPanel kontrolny zawiera teraz także przegląd operacji pojazdu dla każdego samochodu/motocykla/łodzi z żetonami czasu odnowienia na żywo (Hotspot, Crew, Mecz załogi, Chop, Kontrakt i Licznik), a także ciepło/reputację, liczbę kontraktów i roszczeń oraz punkty sezonowe. \nWydarzenia na żywo pojawiają się, gdy inni gracze wykonują ważne akcje, gdy zostaniesz zaatakowany lub gdy nastąpią ruchy na globalnym rynku. \nPlakietka wiadomości pokazuje nieprzeczytane wiadomości systemowe i wiadomości osobiste. \nLewe menu nawigacyjne zapewnia dostęp do wszystkich sekcji gry pogrupowanych według kategorii: Akcje, Świat, Społeczność, Ekonomia, Imperium i Zasoby.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13641,15 +13662,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Wpłacaj pieniądze, aby zarabiać odsetki i przechowuj gotówkę poza zasięgiem konfiskaty policyjnej.';
+      'Wpłacaj pieniądze, aby chronić gotówkę przed konfiskatą policyjną. Odsetki bankowe są obecnie wyłączone.';
 
   @override
   String get helpTopicBankHow =>
-      'Odsetki: 0,5% salda Twojego rachunku bankowego za każdy tick (co 5 minut). Przykład: 10 000 EUR w banku = 50 EUR odsetek za kurs = 600 EUR na godzinę = 14 400 EUR dziennie. \nWpłaty i wypłaty są bezpłatne i natychmiastowe, bez minimalnego i maksymalnego limitu. \nPieniądze w banku są chronione przed konfiskatą policyjną. Podczas aresztowania można utracić jedynie gotówkę, którą mamy pod ręką. \nHistoria transakcji pokazuje wszystkie przepływy przychodzące i wychodzące ze znacznikiem czasu, kwotą, kontrahentem przelewu i opcjonalnymi opisami. \nPrzestępstwo związane z napadem na bank: udaje się przy 30% i kradnie 10-30% losowego salda bankowego innego gracza. Ryzyko wysokiego poziomu poszukiwanego. \nMożliwe jest przesyłanie pieniędzy innym graczom. Opcjonalnie możesz dodać opis, a odbiorca zobaczy go także w transakcjach. Przed potwierdzeniem dokładnie sprawdź kwotę i odbiorcę.';
+      'Odsetki bankowe są obecnie wyłączone (brak biernych odsetek na tick).\nWpłaty i wypłaty są darmowe i natychmiastowe, bez minimum ani maksimum.\nPieniądze w banku są chronione przed konfiskatą policyjną. Tylko gotówka w ręku może zostać utracona przy aresztowaniu.\nHistoria transakcji pokazuje wszystkie przepływy ze znacznikiem czasu, kwotą, kontrahentem i opcjonalnym opisem.\nPrzestępstwo Napad na bank: 30% szansy i kradnie 10–30% salda bankowego losowego innego gracza. Wysokie ryzyko Wanted Level.\nPrzelewy do innych graczy są możliwe. Opcjonalny opis widoczny także dla odbiorcy. Sprawdź kwotę i odbiorcę przed potwierdzeniem.';
 
   @override
   String get helpTopicBankTips =>
-      'Natychmiast wysyłaj duże kwoty do banku — gotówka pod ręką jest zagrożona przy każdej próbie popełnienia przestępstwa. \nZwiększaj zyski odsetkowe, budując stale duże kwoty w banku. \nZachowaj niewielki kapitał obrotowy w postaci gotówki na bezpośrednie wydatki (kaucja, podróże, narzędzia).';
+      'Natychmiast przelewaj duże kwoty do banku — gotówka w ręku jest zagrożona przy każdej próbie przestępstwa.\nUżywaj banku jako bezpiecznego składowania przed konfiskatą, nie jako farmy odsetek (odsetki wyłączone).\nTrzymaj mały kapitał obrotowy w gotówce na bieżące wydatki (kaucja, podróż, narzędzia).';
 
   @override
   String get helpTopicCasinoCategory => 'Gospodarka';

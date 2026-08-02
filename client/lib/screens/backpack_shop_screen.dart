@@ -351,7 +351,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
 
     final canAfford = player != null && player.money >= backpack.price;
     final meetsRank = player != null && player.rank >= backpack.requiredRank;
-    final isVip = false; // VIP not implemented yet
+    final isVip = player?.isVip == true;
     final canPurchase = canAfford && meetsRank && (!backpack.vipOnly || isVip);
 
     return Card(

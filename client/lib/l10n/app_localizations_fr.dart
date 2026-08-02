@@ -8697,6 +8697,27 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String schoolTrainBonusLevels(int count) {
+    return '+$count niv.';
+  }
+
+  @override
+  String schoolTrainBonusCerts(int count) {
+    return '+$count cert.';
+  }
+
+  @override
+  String schoolTrainSuccessToast(
+    String trackName,
+    int xpGain,
+    String bonusSuffix,
+    String cooldownLabel,
+    String cooldown,
+  ) {
+    return '$trackName: +$xpGain XP$bonusSuffix · $cooldownLabel $cooldown';
+  }
+
+  @override
   String schoolCertificationRequiredLevel(String name, int level) {
     return '$name (Niv $level)';
   }
@@ -13552,7 +13573,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'La barre supérieure affiche : Cash, Rank, Health (0-100 HP), Wanted Level (0-100) et FBI Heat (0-100). \nToutes les 5 minutes, un tick automatique se déclenche : la faim diminue de -2, la soif de -3, vous soignez passivement +5 HP (si HP > 0), des intérêts bancaires sont ajoutés (0,5%) et le niveau de recherche diminue légèrement lorsqu\'il est inférieur à 10. \nSi la faim ou la soif atteint 0, vous mourez et passez 3 heures en soins intensifs. Mangez et buvez à l\'heure ! \nLes blocs d\'action rapide sur la droite sont des raccourcis vers les crimes, le vol de voiture, le vol de bateau, le travail, le casino, la banque et l\'école. \nLes minuteurs de recharge par section indiquent combien de temps il faudra pour que votre prochaine action soit disponible. La minuterie s\'adapte pour afficher l\'unité la plus pertinente : minutes, heures ou jours. \nLa carte de statistiques utilise désormais de vrais compteurs en direct pour les évasions, les meurtres, les contrats sur liste noire, les voyages et les balles au lieu d\'espaces réservés zéro fixes. \nLe tableau de bord comporte désormais également une section économique étendue avec des espèces, des banques, des crypto-monnaies, la valeur du véhicule, la valeur de la propriété, la valeur nette et une tendance des flux de trésorerie sur 24 heures. \nLe bloc des opérations affiche désormais la production active, le temps de recharge le plus long, l\'état du véhicule (actif/répertorié/en transit) et les minuteries de production/événement suivant. \nLorsque les événements des joueurs sont en direct (par exemple, une compétition hebdomadaire), le même panneau de droite répertorie brièvement leurs titres et les liens vers la page Événements. Vous pouvez activer ou désactiver le push pour le début/la fin du tour sous Paramètres → Événements du joueur (en plus des autorisations de l\'appareil et d\'autres catégories de push). \nLes notifications et les risques incluent désormais les DM non lus, les tickets d\'assistance en attente de votre réponse, les événements des dernières 24 heures et un score de risque compact (recherché + FBI). \nLorsque votre équipage est impliqué dans Crew Wars, le tableau de bord affiche également un résumé de Crew Wars avec le statut, l\'adversaire, les points d\'équipage, le classement de la saison et le temps restant dans la phase en cours. \nLe tableau de bord comprend désormais également un aperçu des opérations des véhicules par voiture/moto/bateau avec des puces de temps de recharge en direct (Hotspot, Crew, Crew match, Chop, Contract et Counter), ainsi que la chaleur/réputation, le nombre de contrats et de réclamations et les points de saison. \nDes événements en direct apparaissent lorsque d\'autres joueurs effectuent des actions majeures, lorsque vous êtes attaqué ou lorsque des mouvements de marché mondiaux se produisent. \nLe badge de message affiche les messages système non lus et les messages personnels. \nLe menu de navigation de gauche donne accès à toutes les sections du jeu regroupées par catégorie : Actions, Monde, Social, Économie, Empire et Actifs.';
+      'La barre supérieure affiche : Cash, Rank, Health (0-100 HP), Wanted Level (0-100) et FBI Heat (0-100). \nToutes les 5 minutes, un tick automatique se déclenche : la faim diminue de -2, la soif de -3, vous soignez passivement +5 HP (si HP > 0), le niveau de recherche diminue légèrement lorsqu\'il est inférieur à 10 (intérêts bancaires actuellement désactivés). \nSi la faim ou la soif atteint 0, vous mourez et passez 3 heures en soins intensifs. Mangez et buvez à l\'heure ! \nLes blocs d\'action rapide sur la droite sont des raccourcis vers les crimes, le vol de voiture, le vol de bateau, le travail, le casino, la banque et l\'école. \nLes minuteurs de recharge par section indiquent combien de temps il faudra pour que votre prochaine action soit disponible. La minuterie s\'adapte pour afficher l\'unité la plus pertinente : minutes, heures ou jours. \nLa carte de statistiques utilise désormais de vrais compteurs en direct pour les évasions, les meurtres, les contrats sur liste noire, les voyages et les balles au lieu d\'espaces réservés zéro fixes. \nLe tableau de bord comporte désormais également une section économique étendue avec des espèces, des banques, des crypto-monnaies, la valeur du véhicule, la valeur de la propriété, la valeur nette et une tendance des flux de trésorerie sur 24 heures. \nLe bloc des opérations affiche désormais la production active, le temps de recharge le plus long, l\'état du véhicule (actif/répertorié/en transit) et les minuteries de production/événement suivant. \nLorsque les événements des joueurs sont en direct (par exemple, une compétition hebdomadaire), le même panneau de droite répertorie brièvement leurs titres et les liens vers la page Événements. Vous pouvez activer ou désactiver le push pour le début/la fin du tour sous Paramètres → Événements du joueur (en plus des autorisations de l\'appareil et d\'autres catégories de push). \nLes notifications et les risques incluent désormais les DM non lus, les tickets d\'assistance en attente de votre réponse, les événements des dernières 24 heures et un score de risque compact (recherché + FBI). \nLorsque votre équipage est impliqué dans Crew Wars, le tableau de bord affiche également un résumé de Crew Wars avec le statut, l\'adversaire, les points d\'équipage, le classement de la saison et le temps restant dans la phase en cours. \nLe tableau de bord comprend désormais également un aperçu des opérations des véhicules par voiture/moto/bateau avec des puces de temps de recharge en direct (Hotspot, Crew, Crew match, Chop, Contract et Counter), ainsi que la chaleur/réputation, le nombre de contrats et de réclamations et les points de saison. \nDes événements en direct apparaissent lorsque d\'autres joueurs effectuent des actions majeures, lorsque vous êtes attaqué ou lorsque des mouvements de marché mondiaux se produisent. \nLe badge de message affiche les messages système non lus et les messages personnels. \nLe menu de navigation de gauche donne accès à toutes les sections du jeu regroupées par catégorie : Actions, Monde, Social, Économie, Empire et Actifs.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13710,15 +13731,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Déposez de l’argent pour gagner des intérêts et gardez l’argent liquide hors de portée des confiscations policières.';
+      'Déposez de l’argent pour garder les liquidités hors de portée des confiscations policières. Les intérêts bancaires sont actuellement désactivés.';
 
   @override
   String get helpTopicBankHow =>
-      'Intérêts : 0,5 % de votre solde bancaire par tick (toutes les 5 minutes). Exemple : 10 000 € en banque = 50 € d\'intérêt par tick = 600 € par heure = 14 400 € par jour. \nLes dépôts et retraits sont à la fois gratuits et instantanés, sans limite minimale ou maximale. \nL\'argent en banque est protégé contre les confiscations policières. Seul l’argent liquide peut être perdu lors de l’arrestation. \nL\'historique des transactions montre tous les flux entrants et sortants avec l\'horodatage, le montant, la contrepartie du transfert et des descriptions facultatives. \nCrime de vol de banque : réussit à 30 % et vole 10 à 30 % du solde bancaire d\'un autre joueur au hasard. Risque de niveau de recherche élevé. \nTransférer de l\'argent à d\'autres joueurs est possible. Vous pouvez éventuellement ajouter une description, et le destinataire la verra également dans les transactions. Vérifiez à nouveau le montant et le destinataire avant de confirmer.';
+      'Les intérêts bancaires sont actuellement désactivés (pas d’intérêts passifs par tick).\nLes dépôts et retraits sont gratuits et instantanés, sans minimum ni maximum.\nL’argent en banque est protégé des confiscations policières. Seul l’argent liquide peut être perdu lors d’une arrestation.\nL’historique des transactions montre tous les flux avec horodatage, montant, contrepartie et description optionnelle.\nCrime Braquage de banque : 30% de réussite et vole 10–30% du solde bancaire d’un autre joueur au hasard. Fort risque de Wanted Level.\nLes virements vers d’autres joueurs sont possibles. Description optionnelle visible aussi pour le destinataire. Vérifiez montant et destinataire avant de confirmer.';
 
   @override
   String get helpTopicBankTips =>
-      'Envoyez immédiatement des sommes importantes à la banque : l’argent disponible est menacé à chaque tentative de crime. \nAugmentez les rendements des intérêts en accumulant régulièrement de gros montants en banque. \nConservez un petit fonds de roulement en espèces pour les dépenses directes (caution, déplacement, outils).';
+      'Envoyez immédiatement les gros montants à la banque — l’argent liquide est à risque à chaque tentative de crime.\nUtilisez la banque comme coffre-fort anti-confiscation, pas comme ferme à intérêts (intérêts désactivés).\nGardez un petit fonds de roulement en liquide pour les dépenses immédiates (caution, voyage, outils).';
 
   @override
   String get helpTopicCasinoCategory => 'Économie';

@@ -8665,6 +8665,27 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String schoolTrainBonusLevels(int count) {
+    return '+$count liv.';
+  }
+
+  @override
+  String schoolTrainBonusCerts(int count) {
+    return '+$count cert.';
+  }
+
+  @override
+  String schoolTrainSuccessToast(
+    String trackName,
+    int xpGain,
+    String bonusSuffix,
+    String cooldownLabel,
+    String cooldown,
+  ) {
+    return '$trackName: +$xpGain XP$bonusSuffix · $cooldownLabel $cooldown';
+  }
+
+  @override
   String schoolCertificationRequiredLevel(String name, int level) {
     return '$name (Lv $level)';
   }
@@ -13526,7 +13547,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'La barra superiore mostra: Contanti, Grado, Salute (0-100 HP), Livello ricercato (0-100) e Calore FBI (0-100). \nOgni 5 minuti si attiva un tick automatico: la fame scende -2, la sete -3, guarisci passivamente +5 HP (se HP > 0), vengono aggiunti gli interessi bancari (0,5%) e il livello di ricercato scende leggermente quando è inferiore a 10. \nSe la fame o la sete raggiungono lo 0 muori e trascorri 3 ore in terapia intensiva. Mangia e bevi in ​​tempo! \nI blocchi di azione rapida sulla destra sono scorciatoie per Crimini, Furto d\'auto, Furto di barca, Lavoro, Casinò, Banca e Scuola. \nI timer di recupero per sezione mostrano quanto tempo manca alla disponibilità dell\'azione successiva. Il timer si adatta per mostrare l\'unità più rilevante: minuti, ore o giorni. \nLa scheda delle statistiche ora utilizza veri contatori live per evasioni, omicidi, contratti di hitlist, viaggi e proiettili invece di segnaposto fissi a zero. \nLa dashboard ora ha anche una sezione economica ampliata con contanti, banca, criptovalute, valore del veicolo, valore della proprietà, patrimonio netto e tendenza del flusso di cassa di 24 ore. \nIl blocco delle operazioni ora mostra la produzione attiva, il tempo di recupero più lungo, lo stato del veicolo (attivo/elencato/in transito) e i timer della produzione/evento successivo. \nQuando gli eventi dei giocatori sono in diretta (ad esempio, competizioni settimanali), lo stesso pannello di destra elenca brevemente i loro titoli e i collegamenti alla pagina Eventi. Puoi attivare o disattivare il push per l\'inizio/fine del round in Impostazioni → Eventi giocatore (oltre alle autorizzazioni del dispositivo e ad altre categorie push). \nNotifiche e rischi ora includono messaggi diretti non letti, ticket di supporto in attesa di risposta, eventi delle ultime 24 ore e un punteggio di rischio compatto (ricercato + FBI). \nQuando la tua squadra è coinvolta in Crew Wars, la dashboard mostra anche un riepilogo di Crew Wars con lo stato, l\'avversario, i punti della squadra, il grado della stagione e il tempo rimanente nella fase corrente. \nIl dashboard ora include anche una panoramica delle operazioni del veicolo per auto/moto/barca con chip di ricarica in tempo reale (hotspot, Crew, partita dell\'Crew, taglio, contratto e contatore), oltre a calore/reputazione, conteggi di contratti e reclami e punti stagionali. \nGli eventi dal vivo appaiono quando altri giocatori eseguono azioni importanti, quando vieni attaccato o quando si verificano movimenti del mercato globale. \nIl badge dei messaggi mostra i messaggi di sistema e i messaggi personali non letti. \nIl menu di navigazione a sinistra garantisce l\'accesso a tutte le sezioni del gioco raggruppate per categoria: Azioni, Mondo, Sociale, Economia, Impero e Risorse.';
+      'La barra superiore mostra: Contanti, Grado, Salute (0-100 HP), Livello ricercato (0-100) e Calore FBI (0-100). \nOgni 5 minuti si attiva un tick automatico: la fame scende -2, la sete -3, guarisci passivamente +5 HP (se HP > 0), il livello di ricercato scende leggermente quando è inferiore a 10 (interessi bancari attualmente disattivati). \nSe la fame o la sete raggiungono lo 0 muori e trascorri 3 ore in terapia intensiva. Mangia e bevi in ​​tempo! \nI blocchi di azione rapida sulla destra sono scorciatoie per Crimini, Furto d\'auto, Furto di barca, Lavoro, Casinò, Banca e Scuola. \nI timer di recupero per sezione mostrano quanto tempo manca alla disponibilità dell\'azione successiva. Il timer si adatta per mostrare l\'unità più rilevante: minuti, ore o giorni. \nLa scheda delle statistiche ora utilizza veri contatori live per evasioni, omicidi, contratti di hitlist, viaggi e proiettili invece di segnaposto fissi a zero. \nLa dashboard ora ha anche una sezione economica ampliata con contanti, banca, criptovalute, valore del veicolo, valore della proprietà, patrimonio netto e tendenza del flusso di cassa di 24 ore. \nIl blocco delle operazioni ora mostra la produzione attiva, il tempo di recupero più lungo, lo stato del veicolo (attivo/elencato/in transito) e i timer della produzione/evento successivo. \nQuando gli eventi dei giocatori sono in diretta (ad esempio, competizioni settimanali), lo stesso pannello di destra elenca brevemente i loro titoli e i collegamenti alla pagina Eventi. Puoi attivare o disattivare il push per l\'inizio/fine del round in Impostazioni → Eventi giocatore (oltre alle autorizzazioni del dispositivo e ad altre categorie push). \nNotifiche e rischi ora includono messaggi diretti non letti, ticket di supporto in attesa di risposta, eventi delle ultime 24 ore e un punteggio di rischio compatto (ricercato + FBI). \nQuando la tua squadra è coinvolta in Crew Wars, la dashboard mostra anche un riepilogo di Crew Wars con lo stato, l\'avversario, i punti della squadra, il grado della stagione e il tempo rimanente nella fase corrente. \nIl dashboard ora include anche una panoramica delle operazioni del veicolo per auto/moto/barca con chip di ricarica in tempo reale (hotspot, Crew, partita dell\'Crew, taglio, contratto e contatore), oltre a calore/reputazione, conteggi di contratti e reclami e punti stagionali. \nGli eventi dal vivo appaiono quando altri giocatori eseguono azioni importanti, quando vieni attaccato o quando si verificano movimenti del mercato globale. \nIl badge dei messaggi mostra i messaggi di sistema e i messaggi personali non letti. \nIl menu di navigazione a sinistra garantisce l\'accesso a tutte le sezioni del gioco raggruppate per categoria: Azioni, Mondo, Sociale, Economia, Impero e Risorse.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13684,15 +13705,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Depositare denaro per guadagnare interessi e tenere i contanti fuori dalla portata delle confische della polizia.';
+      'Deposita denaro per tenere i contanti fuori dalla portata delle confische della polizia. Gli interessi bancari sono attualmente disattivati.';
 
   @override
   String get helpTopicBankHow =>
-      'Interesse: 0,5% del tuo saldo bancario per tick (ogni 5 minuti). Esempio: 10.000 € in banca = 50 € di interessi per tick = 600 € all\'ora = 14.400 € al giorno. \nDepositi e prelievi sono gratuiti e istantanei senza limiti minimi o massimi. \nIl denaro in banca è protetto dalle confische della polizia. Al momento dell\'arresto può essere perso solo il denaro contante. \nLo storico delle transazioni mostra tutti i flussi in entrata e in uscita con timestamp, importo, controparte del bonifico e descrizioni facoltative. \nCrimine di rapina in banca: riesce al 30% e ruba il 10-30% del saldo bancario di un altro giocatore a caso. Rischio di livello ricercato elevato. \nÈ possibile trasferire denaro ad altri giocatori. Facoltativamente puoi aggiungere una descrizione e anche il destinatario la vedrà nelle transazioni. Ricontrolla sia l\'importo che il destinatario prima di confermare.';
+      'Gli interessi bancari sono attualmente disattivati (nessun interesse passivo per tick).\nDepositi e prelievi sono gratuiti e istantanei, senza minimo o massimo.\nIl denaro in banca è protetto dalle confische della polizia. Solo i contanti in mano possono essere persi in caso di arresto.\nLa cronologia delle transazioni mostra tutti i flussi con timestamp, importo, controparte e descrizione opzionale.\nCrimine Rapina in banca: 30% di successo e ruba il 10–30% del saldo bancario di un altro giocatore a caso. Alto rischio Wanted Level.\nI trasferimenti ad altri giocatori sono possibili. Descrizione opzionale visibile anche al destinatario. Controlla importo e destinatario prima di confermare.';
 
   @override
   String get helpTopicBankTips =>
-      'Invia immediatamente ingenti importi alla banca: il contante in cassa è a rischio ad ogni tentativo di crimine. \nAumentare i rendimenti degli interessi accumulando costantemente grandi importi in banca. \nConservare un piccolo capitale circolante in contanti per le spese dirette (cauzione, viaggio, attrezzi).';
+      'Invia subito grandi somme in banca: i contanti in mano sono a rischio a ogni tentativo di crimine.\nUsa la banca come deposito sicuro contro le confische, non come farm di interessi (interessi disattivati).\nTieni un piccolo capitale operativo in contanti per spese immediate (cauzione, viaggio, strumenti).';
 
   @override
   String get helpTopicCasinoCategory => 'Economia';

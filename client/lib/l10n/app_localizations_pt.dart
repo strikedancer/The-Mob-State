@@ -738,7 +738,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get countrySwitzerland => 'Suíça';
 
   @override
-  String get crew => 'Equipe';
+  String get crew => 'Crew';
 
   @override
   String get profile => 'Perfil';
@@ -1897,7 +1897,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get free => 'LIVRE';
 
   @override
-  String get crewWars => 'Guerras de tripulação';
+  String get crewWars => 'Guerras de Crew';
 
   @override
   String get status => 'Status';
@@ -2027,7 +2027,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Recrutar prostituta';
 
   @override
-  String get dashboardCrewWars => 'Guerras de tripulação';
+  String get dashboardCrewWars => 'Guerras de Crew';
 
   @override
   String get dashboardStatusLabel => 'Status';
@@ -2343,7 +2343,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vehicleOpsHotspot => 'Ponto de acesso';
 
   @override
-  String get vehicleOpsCrew => 'Equipe';
+  String get vehicleOpsCrew => 'Crew';
 
   @override
   String get vehicleOpsCrewMatch => 'Partida de Crew';
@@ -8633,6 +8633,27 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String schoolTrainBonusLevels(int count) {
+    return '+$count niv.';
+  }
+
+  @override
+  String schoolTrainBonusCerts(int count) {
+    return '+$count cert.';
+  }
+
+  @override
+  String schoolTrainSuccessToast(
+    String trackName,
+    int xpGain,
+    String bonusSuffix,
+    String cooldownLabel,
+    String cooldown,
+  ) {
+    return '$trackName: +$xpGain XP$bonusSuffix · $cooldownLabel $cooldown';
+  }
+
+  @override
   String schoolCertificationRequiredLevel(String name, int level) {
     return '$name (Nível $level)';
   }
@@ -9966,7 +9987,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get nightclubSelectCrewMember => 'Selecione o membro da tripulação';
+  String get nightclubSelectCrewMember => 'Selecionar membro da Crew';
 
   @override
   String get nightclubAssignShift => 'Atribuir ao turno da boate';
@@ -9978,7 +9999,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nightclubTabHistory => 'História';
 
   @override
-  String get nightclubNoCrewAssigned => 'Nenhuma tripulação designada ainda';
+  String get nightclubNoCrewAssigned => 'Ainda sem Crew atribuída';
 
   @override
   String get nightclubCrewBoostDescription =>
@@ -10042,10 +10063,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nightclubHireSecuritySuccess => 'Segurança contratada';
 
   @override
-  String get nightclubAssignCrewSuccess => 'Membro da tripulação designado';
+  String get nightclubAssignCrewSuccess => 'Membro da Crew atribuído';
 
   @override
-  String get nightclubRemoveCrewSuccess => 'Membro da tripulação removido';
+  String get nightclubRemoveCrewSuccess => 'Membro da Crew removido';
 
   @override
   String get nightclubStoreDrugsSuccess => 'Drogas armazenadas';
@@ -10556,7 +10577,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Escolha uma zona de gerenciamento e controle tudo sem rolagem interna aninhada.';
 
   @override
-  String get nightclubChipCrew => 'Equipe';
+  String get nightclubChipCrew => 'Crew';
 
   @override
   String get nightclubChipStorage => 'Armazenar';
@@ -10924,7 +10945,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get supportMod_prostitution => 'Prostituição';
 
   @override
-  String get supportMod_crew => 'Equipe';
+  String get supportMod_crew => 'Crew';
 
   @override
   String get supportMod_friends => 'Amigos/jogadores';
@@ -12133,7 +12154,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get smugglingClaimPersonal => 'Reivindicar pessoal';
 
   @override
-  String get smugglingClaimCrew => 'Equipe de reivindicação';
+  String get smugglingClaimCrew => 'Reivindicar Crew';
 
   @override
   String get smugglingNewShipment => 'Nova remessa';
@@ -12200,7 +12221,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get smugglingPersonal => 'Pessoal';
 
   @override
-  String get smugglingCrew => 'Equipe';
+  String get smugglingCrew => 'Crew';
 
   @override
   String get smugglingChannelField => 'Canal de contrabando';
@@ -13480,7 +13501,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'A barra superior mostra: Dinheiro, Classificação, Saúde (0-100 HP), Nível de Procurado (0-100) e FBI Heat (0-100). \nA cada 5 minutos um tick automático é acionado: a fome cai -2, a sede -3, você cura passivamente +5 HP (se HP > 0), juros bancários são adicionados (0,5%) e o nível de procurado cai ligeiramente quando abaixo de 10. \nSe a fome ou a sede chegar a 0 você morre e fica 3 horas na UTI. Coma e beba na hora certa! \nOs blocos de ação rápida à direita são atalhos para crimes, roubo de carro, roubo de barco, trabalho, cassino, banco e escola. \nOs temporizadores de resfriamento por seção mostram quanto tempo até que sua próxima ação esteja disponível. O cronômetro se adapta para mostrar a unidade mais relevante: minutos, horas ou dias. \nO cartão de estatísticas agora usa contadores reais ao vivo para fugas, assassinatos, contratos de lista de alvos, viagens e balas, em vez de marcadores de zero fixos. \nO painel agora também tem uma seção de economia expandida com dinheiro, banco, criptografia, valor do veículo, valor da propriedade, patrimônio líquido e tendência de fluxo de caixa de 24 horas. \nO bloco de operações agora mostra a produção ativa, o tempo de espera mais longo, o status do veículo (ativo/listado/em trânsito) e os temporizadores da próxima produção/evento. \nQuando os eventos dos jogadores são ao vivo (por exemplo, competições semanais), o mesmo painel direito lista brevemente seus títulos e links para a página Eventos. Você pode ativar ou desativar o push para início/fim da rodada em Configurações → Eventos do jogador (além de permissões do dispositivo e outras categorias de push). \nNotificações e riscos agora incluem mensagens diretas não lidas, tickets de suporte aguardando sua resposta, eventos das últimas 24 horas e uma pontuação de risco compacta (procurado + FBI). \nQuando sua Crew está envolvida em Crew Wars, o painel também mostra um resumo do Crew Wars com status, oponente, pontos de Crew, classificação da temporada e o tempo restante na fase atual. \nO painel agora também inclui uma visão geral das operações de veículos por carro/motocicleta/barco com chips de resfriamento ao vivo (ponto de acesso, Crew, partida de Crew, corte, contrato e contador), além de calor/reputação, contagem de contratos e reivindicações e pontos de temporada. \nOs eventos ao vivo aparecem quando outros jogadores realizam ações importantes, quando você é atacado ou quando ocorrem movimentos no mercado global. \nO selo de mensagem mostra mensagens não lidas do sistema e mensagens pessoais. \nO menu de navegação à esquerda dá acesso a todas as seções do jogo agrupadas por categoria: Ações, Mundo, Social, Economia, Império e Ativos.';
+      'A barra superior mostra: Dinheiro, Classificação, Saúde (0-100 HP), Nível de Procurado (0-100) e FBI Heat (0-100). \nA cada 5 minutos um tick automático é acionado: a fome cai -2, a sede -3, você cura passivamente +5 HP (se HP > 0), o nível de procurado cai ligeiramente quando abaixo de 10 (juros bancários estão atualmente desativados). \nSe a fome ou a sede chegar a 0 você morre e fica 3 horas na UTI. Coma e beba na hora certa! \nOs blocos de ação rápida à direita são atalhos para crimes, roubo de carro, roubo de barco, trabalho, cassino, banco e escola. \nOs temporizadores de resfriamento por seção mostram quanto tempo até que sua próxima ação esteja disponível. O cronômetro se adapta para mostrar a unidade mais relevante: minutos, horas ou dias. \nO cartão de estatísticas agora usa contadores reais ao vivo para fugas, assassinatos, contratos de lista de alvos, viagens e balas, em vez de marcadores de zero fixos. \nO painel agora também tem uma seção de economia expandida com dinheiro, banco, criptografia, valor do veículo, valor da propriedade, patrimônio líquido e tendência de fluxo de caixa de 24 horas. \nO bloco de operações agora mostra a produção ativa, o tempo de espera mais longo, o status do veículo (ativo/listado/em trânsito) e os temporizadores da próxima produção/evento. \nQuando os eventos dos jogadores são ao vivo (por exemplo, competições semanais), o mesmo painel direito lista brevemente seus títulos e links para a página Eventos. Você pode ativar ou desativar o push para início/fim da rodada em Configurações → Eventos do jogador (além de permissões do dispositivo e outras categorias de push). \nNotificações e riscos agora incluem mensagens diretas não lidas, tickets de suporte aguardando sua resposta, eventos das últimas 24 horas e uma pontuação de risco compacta (procurado + FBI). \nQuando sua Crew está envolvida em Crew Wars, o painel também mostra um resumo do Crew Wars com status, oponente, pontos de Crew, classificação da temporada e o tempo restante na fase atual. \nO painel agora também inclui uma visão geral das operações de veículos por carro/motocicleta/barco com chips de resfriamento ao vivo (ponto de acesso, Crew, partida de Crew, corte, contrato e contador), além de calor/reputação, contagem de contratos e reivindicações e pontos de temporada. \nOs eventos ao vivo aparecem quando outros jogadores realizam ações importantes, quando você é atacado ou quando ocorrem movimentos no mercado global. \nO selo de mensagem mostra mensagens não lidas do sistema e mensagens pessoais. \nO menu de navegação à esquerda dá acesso a todas as seções do jogo agrupadas por categoria: Ações, Mundo, Social, Economia, Império e Ativos.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13544,7 +13565,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get helpTopicCrewCategory => 'Social';
 
   @override
-  String get helpTopicCrewTitle => 'Equipe';
+  String get helpTopicCrewTitle => 'Crew';
 
   @override
   String get helpTopicCrewSummary =>
@@ -13638,15 +13659,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Deposite dinheiro para ganhar juros e mantenha o dinheiro fora do alcance dos confiscos policiais.';
+      'Deposite dinheiro para manter o numerário fora do alcance dos confiscos policiais. Os juros bancários estão atualmente desativados.';
 
   @override
   String get helpTopicBankHow =>
-      'Juros: 0,5% do seu saldo bancário por tick (a cada 5 minutos). Exemplo: 10.000€ no banco = 50€ de juros por tick = 600€ por hora = 14.400€ por dia. \nOs depósitos e saques são gratuitos e instantâneos, sem limite mínimo ou máximo. \nO dinheiro no banco está protegido contra confiscos policiais. Apenas o dinheiro em mãos pode ser perdido na prisão. \nO histórico de transações mostra todos os fluxos de entrada e saída com carimbo de data/hora, valor, contraparte de transferência e descrições opcionais. \nCrime de assalto a banco: consegue 30% e rouba 10-30% do saldo bancário aleatório de outro jogador. Alto risco de nível de procurado. \nÉ possível transferir dinheiro para outros jogadores. Opcionalmente, você pode adicionar uma descrição e o destinatário também a verá nas transações. Verifique novamente o valor e o destinatário antes de confirmar.';
+      'Os juros bancários estão atualmente desativados (sem juros passivos por tick).\nDepósitos e levantamentos são grátis e instantâneos, sem mínimo nem máximo.\nDinheiro no banco está protegido contra confiscos policiais. Só o dinheiro em mão pode ser perdido numa prisão.\nO histórico de transações mostra todos os fluxos com carimbo de data/hora, montante, contraparte e descrição opcional.\nCrime Assalto ao banco: 30% de sucesso e rouba 10–30% do saldo bancário de outro jogador aleatório. Alto risco de Wanted Level.\nTransferências para outros jogadores são possíveis. Descrição opcional também visível para o destinatário. Confirme montante e destinatário antes de enviar.';
 
   @override
   String get helpTopicBankTips =>
-      'Envie grandes quantias para o banco imediatamente – o dinheiro disponível corre risco a cada tentativa de crime. \nAumente os retornos de juros acumulando grandes quantias de forma constante no banco. \nMantenha um pequeno capital de giro como dinheiro para despesas diretas (fiança, viagens, ferramentas).';
+      'Envie grandes montantes para o banco de imediato — o dinheiro em mão está em risco em cada tentativa de crime.\nUse o banco como armazenamento seguro contra confisco, não como quinta de juros (juros desativados).\nMantenha um pequeno capital de trabalho em dinheiro para despesas diretas (caução, viagem, ferramentas).';
 
   @override
   String get helpTopicCasinoCategory => 'Economia';
@@ -14081,7 +14102,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Verifique diariamente suas conquistas quase concluídas: um pequeno esforço extra pode ganhar um distintivo e uma recompensa em dinheiro que, de outra forma, seria adiada por meses. \nConcentre-se desde o início nas categorias Economia e Crime: elas oferecem mais recompensas em dinheiro e são mais fáceis de combinar com o jogo normal.';
 
   @override
-  String get helpTopicSupportTicketsCategory => 'Apoiar';
+  String get helpTopicSupportTicketsCategory => 'Suporte';
 
   @override
   String get helpTopicSupportTicketsTitle => 'Relatórios e tickets';

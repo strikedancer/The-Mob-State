@@ -97,7 +97,7 @@ Elke **5 minuten** gebeurt er automatisch:
 - **Passive Healing**: +5 HP (alleen als HP > 0 en < 100)
 - **Death**: Als hunger of thirst 0 bereikt, ga je dood
 - **FBI Heat Decay**: -1 punt per tick (alleen als FBI Heat < 10)
-- **Bank Interest**: Rente wordt toegevoegd aan je bank account
+- **Bank Interest**: Momenteel uitgeschakeld (geen passieve rente per tick)
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
@@ -503,8 +503,8 @@ Voorbeelden:
 ### Bank Account
 - **Opening**: Gratis, automatisch beschikbaar
 - **Maximum balance**: Onbeperkt
-- **Interest rate**: 0.5% per tick (5 minuten)
-- **Compounding**: Elke tick wordt rente toegevoegd
+- **Interest rate**: Uitgeschakeld (was historisch 0.5% per tick; `applyInterest` retourneert 0)
+- **Compounding**: Geen — bank is veilige opslag tegen confiscatie, geen rentefarm
 
 ### Transacties
 
@@ -522,11 +522,8 @@ Voorbeelden:
 
 ### Interest Berekening
 ```
-interest = balance * 0.005 (0.5%)
-
-Per tick: â‚¬10,000 â†’ â‚¬50 rente
-Per uur (12 ticks): â‚¬10,000 â†’ â‚¬600 rente
-Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
+// Disabled in bankService.applyInterest / applyInterestToAll
+interest = 0
 ```
 
 ### Bank Robbery (Crime)
@@ -926,7 +923,7 @@ Bob: â‚¬300K counter-hit
 
 ### Mid-Game Strategy
 1. **Properties**: Investeer in meerdere properties
-2. **Bank account**: Stort geld voor rente
+2. **Bank account**: Stort geld om cash te beschermen tegen confiscatie
 3. **Higher crimes**: Car theft, burglary
 4. **Join crew**: Doe heists voor grote rewards
 5. **Trade**: Koop cheap goods, verkoop duur
@@ -939,7 +936,7 @@ Bob: â‚¬300K counter-hit
 5. **Risk management**: Balance crimes vs jail time
 
 ### Avoid Deze Fouten
-1. âŒ **Alle geld cash houden**: Bank rente is gratis geld
+1. âŒ **Alle geld cash houden**: Contant cash is kwetsbaar bij arrestatie; gebruik de bank als veilige opslag
 2. âŒ **Health negeren**: ICU kost 3 uur lockout
 3. âŒ **Te hoog wanted level**: 90% arrest chance bij 18+
 4. âŒ **Geen cooldowns checken**: Verspilde clicks
@@ -1042,11 +1039,8 @@ bail = fbiHeat * â‚¬5,000
 
 ### Bank Interest
 ```javascript
-// Per tick (5 min)
-interest = balance * 0.005
-
-// Annual rate (equivalent)
-annual_rate â‰ˆ 500% (compounding every 5 min)
+// Disabled: bankService.applyInterest always returns 0
+interest = 0
 ```
 
 ### Crime Success
@@ -1076,7 +1070,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - **Low crimes**: â‚¬3,000-â‚¬10,000/uur (medium risk)
 - **High crimes**: â‚¬20,000-â‚¬100,000/uur (high risk)
 - **Properties**: â‚¬500-â‚¬50,000/uur (passive)
-- **Bank interest**: Variabel (compound growth)
+- **Bank interest**: Uitgeschakeld (0)
 - **Heists**: â‚¬50,000-â‚¬500,000 (high risk, cooldown)
 - **Trade**: â‚¬10,000-â‚¬200,000 (moderate risk)
 
@@ -1107,21 +1101,23 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Jobs system
 - âœ… Properties & passive income
 - âœ… Crews & heists
-- âœ… Bank accounts with interest
+- âœ… Bank accounts (safe storage; interest currently disabled)
 - âœ… International travel
 - âœ… Trade market with risks
 - âœ… Aviation system
 - âœ… Casino (blackjack, slots, roulette)
 - âœ… Weapons & ammo system
 - âœ… VIP quick-buy in Drug Production (one-click missing materials with cost confirmation modal)
+- âœ… Court & Judge (appeal / bribe while jailed)
+- âœ… Crew Wars (War Room, seasons, territory targets)
+- âœ… Drug production facilities
 
 ### Planned Features
-- â³ Court & Judge system
-- â³ Gang wars
-- â³ Drug production facilities
 - â³ Money laundering
 - â³ Stock market
 - â³ Real estate development
+- â³ Deeper territory end-state (HQ power, war aftermath, regional projects) — see `TERRITORY_VISION.md`
+- â³ Player marketplace expansion beyond vehicles/tools (`drug_lot`, `crypto_lot`, `trade_good_lot`)
 
 ---
 

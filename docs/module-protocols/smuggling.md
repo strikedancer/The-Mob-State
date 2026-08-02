@@ -12,6 +12,10 @@ Vehicle movement between countries also belongs here when cars or boats are relo
 
 `DrugInventory` is unique on **`playerId + drugType + quality`** (geen landkolom). Smokkel (`smugglingService` / `drugSmugglingService`) mag **niet** de oude Prisma-key `playerId_country_drugType_quality` gebruiken — dat veroorzaakt 500 `Server error` bij quote/send van drugs.
 
+## Crew + trade goods
+
+Crew-netwerk + handelswaren (`trade`) is **nog niet geïmplementeerd** (backend weigert; UI toont `smugglingCrewTradeNotAvailable`). In de hub is de trade-categorie uitgeschakeld zolang netwerk = crew; bij switch naar crew wordt trade automatisch teruggezet naar drugs.
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
