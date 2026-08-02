@@ -13764,7 +13764,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Jedno centrum: najpierw towary przemytnicze (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie zakładka Rynek z pojazdami między graczami, przewożonymi narzędziami, partiami narkotyków, partiami kryptowalut i stosami towarów handlowych, a także plecakami, materiałami, rynkiem broni i amunicją.';
+      'Jedno centrum: najpierw towary przemytnicze (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie zakładka Rynek z pojazdami między graczami, przewożonymi narzędziami, partiami narkotyków, partiami kryptowalut, stosami towarów handlowych i zbywalnymi przedmiotami wydarzeń, a także plecakami, materiałami, rynkiem broni i amunicją.';
 
   @override
   String get helpTopicBlackMarketHow =>

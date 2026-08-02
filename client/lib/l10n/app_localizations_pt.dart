@@ -13761,7 +13761,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Um centro: primeiro mercadorias contrabandeadas (flores, eletrônicos, diamantes, armas, produtos farmacêuticos), depois a guia Mercado para veículos de jogador para jogador, ferramentas transportadas, lotes de drogas, lotes de criptomoedas e pilhas de mercadorias comerciais, além de mochilas, materiais, mercado de armas e munições.';
+      'Um centro: primeiro mercadorias contrabandeadas (flores, eletrônicos, diamantes, armas, produtos farmacêuticos), depois a guia Mercado para veículos de jogador para jogador, ferramentas transportadas, lotes de drogas, lotes de criptomoedas, pilhas de mercadorias comerciais e itens de eventos transferíveis, além de mochilas, materiais, mercado de armas e munições.';
 
   @override
   String get helpTopicBlackMarketHow =>
