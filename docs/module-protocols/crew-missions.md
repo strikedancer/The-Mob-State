@@ -140,6 +140,7 @@ Regels:
 - Crew mission XP is functioneel en bouwt een crew mission level op; levelprogressie en bonus moeten zichtbaar zijn in de Crew Missions UI.
 - Crew mission level mag alleen utility/efficiency voordelen geven (bijv. lichte cash-bonus op crew mission claims), geen directe pay-to-win success- of combatboost.
 - **Clearing House Phase-2 gate:** runtime key `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` (default **`0` = uit**). Zet op `3` pas na voldoende T2/T3 + Blackout telemetry. Zie baseline hieronder.
+- **Admin UI:** tab **Crew Missions** (`CrewMissionsAdminPanel`) — toggle Clearing House gate + pacing runtime keys via `GET/PUT /admin/crew-missions/runtime-config`. Geen deploy nodig; live na opslaan.
 
 ### Telemetry baseline (prod, 2026-08-02)
 

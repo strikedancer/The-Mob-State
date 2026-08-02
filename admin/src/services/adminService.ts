@@ -639,6 +639,12 @@ export interface CrewMissionTelemetry {
   serverTime: string;
 }
 
+export interface CrewMissionRuntimeConfigView {
+  defaults: Record<string, string>;
+  values: Record<string, string | number>;
+  keys: string[];
+}
+
 export interface VehicleOpsTelemetry {
   windowHours: number;
   from: string;
@@ -1124,6 +1130,35 @@ export const adminService = {
     );
 
     await ensureOk(response, "Failed to fetch crew mission telemetry");
+    return response.json();
+  },
+
+  async getCrewMissionRuntimeConfig(): Promise<CrewMissionRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/crew-missions/runtime-config`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, "Failed to fetch crew mission runtime config");
+    return response.json();
+  },
+
+  async updateCrewMissionRuntimeConfig(
+    updates: Record<string, string | number>,
+  ): Promise<CrewMissionRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/crew-missions/runtime-config`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updates }),
+    });
+
+    await ensureOk(response, "Failed to update crew mission runtime config");
     return response.json();
   },
 

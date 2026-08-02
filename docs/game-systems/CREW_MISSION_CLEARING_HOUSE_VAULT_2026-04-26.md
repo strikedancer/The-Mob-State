@@ -116,6 +116,7 @@ Deploy-paden:
 - **Per-mission unlock:** `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` in runtime config.
   - **`0` (default):** alleen bestaande Tier-3 HQ/leden-gates.
   - **`3`:** ook `crew.missionLevel >= 3` vereist voor `clearing_house_vault_run` (overview `lockedReason` + start reject).
+- **Admin:** tab **Crew Missions** → Clearing House Phase-2 gate aan/uit (+ optioneel custom min level). API: `PUT /admin/crew-missions/runtime-config`.
 - **Prod-besluit 2026-08-02:** houdt default **0** — all-time telemetry heeft 0 T2/T3/Blackout runs; gates aanzetten zou blind zijn. Zie `crew-missions.md` telemetry baseline.
 - **Seizoens “institutional crisis”:** globale cosmetische modifier met eigen runtime keys — aparte spec + balance-economy review (nog niet gebouwd).
 

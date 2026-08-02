@@ -35,6 +35,7 @@ import {
   type VehicleOpsTelemetry,
 } from "./services/adminService";
 import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
+import { CrewMissionsAdminPanel } from "./components/CrewMissionsAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
 import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
 import {
@@ -88,6 +89,7 @@ type TabType =
   | "tickets"
   | "todos"
   | "crew-wars"
+  | "crew-missions"
   | "territory"
   | "nightclubs";
 type PlayerDetailTab = "overview" | "manage" | "financial";
@@ -4337,6 +4339,11 @@ function App() {
       id: "crew-wars",
       label: l("Crew Wars", "Crew Wars"),
       icon: "bi-crosshair2",
+    },
+    {
+      id: "crew-missions",
+      label: l("Crew Missions", "Crew Missions"),
+      icon: "bi-diagram-3-fill",
     },
     { id: "territory", label: "Territory", icon: "bi-globe-europe-africa" },
     {
@@ -10509,6 +10516,10 @@ function App() {
                   </div>
                   <CrewWarsAdminPanel locale={language} />
                 </>
+              )}
+
+              {activeTab === "crew-missions" && (
+                <CrewMissionsAdminPanel locale={language} />
               )}
 
               {activeTab === "territory" && (
