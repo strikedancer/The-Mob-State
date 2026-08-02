@@ -84,6 +84,7 @@ docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backen
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260426183000_garage_upgrade_track" || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260427094500_vault_monthly_season" || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260502120000_add_player_gender" || true
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260802140000_player_market_stack_lots" || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate deploy
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client
