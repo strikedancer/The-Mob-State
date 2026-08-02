@@ -581,7 +581,7 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 - Login en registratie delen dezelfde **onderste juridische footer** (privacy, algemene voorwaarden, digitale goederen, taal, copyright) als de publieke landingspagina; registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie en vereist **akkoord met de voorwaarden** vóór verzenden. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee.
 
 ### Munitiefabriek (ammo)
-- Productie wordt **server-side** getakt (claim-interval en output per tick); bij te hoge pacing kan dit worden verlaagd zonder client-wijziging. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
+- Productie wordt **server-side** getakt: claim-interval **20 minuten**, basis **3 patronen per ammo-type per tick** (level 1; schaalt met output-level). Sessievenster blijft 8 uur backlog. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
 
 ### Tradable Goods (huidige build)
 Contraband-handelsgoederen met eigen caps en risico’s (server + UI):

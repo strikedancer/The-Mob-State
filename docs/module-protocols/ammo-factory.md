@@ -20,6 +20,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 
 ## Balance / pacing
 - Production throughput is driven by `PRODUCTION_INTERVAL_MINUTES` and per-tick output multipliers in `backend/src/services/ammoFactoryService.ts`. Player-facing copy (NL/EN) must stay aligned with the server interval when it changes (Help & Uitleg, factory screen, ARB fallbacks).
+- **Aug 2026 pacing:** claim interval **20 minutes** (`PRODUCTION_INTERVAL_MINUTES`), `BASE_ROUNDS_PER_TICK=3` (was 10 min / 5 rounds). Combined ~70% lower market fill vs prior values. Client estimate constants in `ammo_factory_screen.dart` must match.
 - Cross-cutting economy rules: `docs/module-protocols/balance-economy.md` (small steps, avoid multiple curve shifts at once).
 
 ## Must Preserve

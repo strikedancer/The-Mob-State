@@ -16,6 +16,10 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 ## Documented static modifiers (training → crimes)
 - **Combo-readiness:** when the player has **at least one gym train (any track; `gymLastTrainedAt` = latest of strength/speed/stamina `lastTrainedAt`) and one shooting-range train** on the **same UTC calendar day**, `crimeService` adds **`TRAINING_COMBO_READINESS_BONUS`** (**+0.5%** success chance as a fraction, see `backend/src/lib/trainingComboReadiness.ts`) on top of existing gym aggregate + shooting-range training bonuses. Still clamped with all other modifiers to **5–95%** final success chance. Exposed for UI as `trainingComboReadiness` on **`GET /training/status`**.
 
+## Documented static modifiers (ammo factory)
+- **Claim interval:** `PRODUCTION_INTERVAL_MINUTES = 20` in `ammoFactoryService.ts` (was 10 after Apr 2026; originally 5).
+- **Base output:** `BASE_ROUNDS_PER_TICK = 3` rounds per ammo type at level 1 (was 5). Level curve unchanged (`1 + (level-1)*2.46`). Session backlog still 8 hours. UI copy + `ammo_factory_screen.dart` estimate constants must match. See `ammo-factory.md`.
+
 ## Primary Systems
 - `backend/src/services/economyBalanceService.ts`
 - `backend/src/services/cooldownService.ts`

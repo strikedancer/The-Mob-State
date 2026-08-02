@@ -7194,14 +7194,14 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Inizio produzione: attivo per 8 ore, reclamo ogni 10 minuti';
+      'Inizio produzione: attivo per 8 ore, reclamo ogni 20 minuti';
 
   @override
   String get ammoFactoryTitle => 'Fabbrica di munizioni';
 
   @override
   String get ammoFactoryIntro =>
-      'Produce in lotti; richiedi ogni 10 minuti (fino a 8 ore di arretrato per sessione).';
+      'Produce in lotti; richiedi ogni 20 minuti (fino a 8 ore di arretrato per sessione).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Cosa puoi fare:';
@@ -7212,7 +7212,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Produzione di richieste (intervallo: 10 minuti, backlog massimo: 8 ore per sessione)';
+      'Produzione di richieste (intervallo: 20 minuti, backlog massimo: 8 ore per sessione)';
 
   @override
   String get ammoFactoryActionOutput =>
@@ -7322,7 +7322,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Finestra di produzione: attiva (intervallo di 10 minuti)';
+      'Finestra di produzione: attiva (intervallo di 20 minuti)';
 
   @override
   String get factorySessionStopped =>
@@ -14030,7 +14030,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'La fabbrica di munizioni ha livelli di produzione (da livello 1 a 5). Livello più alto = più colpi per reclamo e migliore qualità. \nDurante una sessione attiva richiedi la produzione circa ogni 10 minuti (fino a 8 ore di arretrato all\'interno di quella sessione). \nLa produzione continua ad aumentare mentre sei offline: quando ritorni puoi richiedere più volte fino a quando non viene recuperato l\'arretrato. \nLa semplice visita della fabbrica di munizioni o il viaggio di andata e ritorno non devono cambiare proprietà; una fabbrica non dovrebbe passare allo stato \"in vendita\" solo perché lo schermo è stato aperto. \nLe munizioni prodotte vengono utilizzate personalmente nei crimini e nel PvP. Per acquistare e vendere munizioni, attraversa il mercato nero; lo schermo di fabbrica stesso non vende direttamente i proiettili. \nGli aggiornamenti dell\'output aumentano i giri per reclamo; gli aggiornamenti di qualità migliorano il valore di mercato. \nIl prezzo di mercato delle munizioni varia in base alla domanda. Fai scorta quando i prezzi sono bassi e vendi quando i prezzi sono alti. \nDurante un raid in fabbrica perdi parte della produzione immagazzinata. La sicurezza riduce questo rischio.';
+      'La fabbrica di munizioni ha livelli di produzione (da livello 1 a 5). Livello più alto = più colpi per reclamo e migliore qualità. \nDurante una sessione attiva richiedi la produzione circa ogni 20 minuti (fino a 8 ore di arretrato all\'interno di quella sessione). \nLa produzione continua ad aumentare mentre sei offline: quando ritorni puoi richiedere più volte fino a quando non viene recuperato l\'arretrato. \nLa semplice visita della fabbrica di munizioni o il viaggio di andata e ritorno non devono cambiare proprietà; una fabbrica non dovrebbe passare allo stato \"in vendita\" solo perché lo schermo è stato aperto. \nLe munizioni prodotte vengono utilizzate personalmente nei crimini e nel PvP. Per acquistare e vendere munizioni, attraversa il mercato nero; lo schermo di fabbrica stesso non vende direttamente i proiettili. \nGli aggiornamenti dell\'output aumentano i giri per reclamo; gli aggiornamenti di qualità migliorano il valore di mercato. \nIl prezzo di mercato delle munizioni varia in base alla domanda. Fai scorta quando i prezzi sono bassi e vendi quando i prezzi sono alti. \nDurante un raid in fabbrica perdi parte della produzione immagazzinata. La sicurezza riduce questo rischio.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

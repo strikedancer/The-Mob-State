@@ -7212,14 +7212,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Produktion gestartet: 8 Stunden aktiv, Anspruch alle 10 Minuten';
+      'Produktion gestartet: 8 Stunden aktiv, Anspruch alle 20 Minuten';
 
   @override
   String get ammoFactoryTitle => 'Munitionsfabrik';
 
   @override
   String get ammoFactoryIntro =>
-      'Produziert in Chargen; Sie beanspruchen alle 10 Minuten (bis zu 8 Stunden Rückstand pro Sitzung).';
+      'Produziert in Chargen; Sie beanspruchen alle 20 Minuten (bis zu 8 Stunden Rückstand pro Sitzung).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Was Sie tun können:';
@@ -7230,7 +7230,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Anspruchserstellung (Intervall: 10 Minuten, maximaler Rückstand: 8 Stunden pro Sitzung)';
+      'Anspruchserstellung (Intervall: 20 Minuten, maximaler Rückstand: 8 Stunden pro Sitzung)';
 
   @override
   String get ammoFactoryActionOutput =>
@@ -7341,7 +7341,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Produktionsfenster: aktiv (10-Minuten-Intervall)';
+      'Produktionsfenster: aktiv (20-Minuten-Intervall)';
 
   @override
   String get factorySessionStopped =>
@@ -14053,7 +14053,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'Die Munitionsfabrik verfügt über Produktionsstufen (Stufe 1 bis 5). Höheres Level = mehr Runden pro Anspruch und bessere Qualität. \nWährend einer aktiven Sitzung beanspruchen Sie etwa alle 10 Minuten eine Produktion (bis zu 8 Stunden Rückstand innerhalb dieser Sitzung). \nAuch wenn Sie offline sind, steigt die Produktion weiter an: Wenn Sie zurückkommen, können Sie mehrere Ansprüche geltend machen, bis der Rückstand aufgeholt ist. \nEine bloße Besichtigung der Munitionsfabrik oder Hin- und Rückfahrt darf nicht den Besitzer wechseln; Eine Fabrik sollte nicht auf „zu verkaufen“ wechseln, nur weil der Bildschirm geöffnet wurde. \nProduzierte Munition wird persönlich für Verbrechen und PvP verwendet. Um Munition zu kaufen und zu verkaufen, gehen Sie über den Schwarzmarkt; Der Fabrikbildschirm selbst verkauft keine Kugeln direkt. \nLeistungsverbesserungen erhöhen die Anzahl der Runden pro Anspruch; Qualitätsverbesserungen steigern den Marktwert. \nDer Marktpreis für Munition schwankt je nach Nachfrage. Füllen Sie Vorräte auf, wenn die Preise niedrig sind, und verkaufen Sie, wenn die Preise hoch sind. \nBei einem Fabriküberfall verlierst du einen Teil der gespeicherten Produktion. Sicherheit senkt dieses Risiko.';
+      'Die Munitionsfabrik verfügt über Produktionsstufen (Stufe 1 bis 5). Höheres Level = mehr Runden pro Anspruch und bessere Qualität. \nWährend einer aktiven Sitzung beanspruchen Sie etwa alle 20 Minuten eine Produktion (bis zu 8 Stunden Rückstand innerhalb dieser Sitzung). \nAuch wenn Sie offline sind, steigt die Produktion weiter an: Wenn Sie zurückkommen, können Sie mehrere Ansprüche geltend machen, bis der Rückstand aufgeholt ist. \nEine bloße Besichtigung der Munitionsfabrik oder Hin- und Rückfahrt darf nicht den Besitzer wechseln; Eine Fabrik sollte nicht auf „zu verkaufen“ wechseln, nur weil der Bildschirm geöffnet wurde. \nProduzierte Munition wird persönlich für Verbrechen und PvP verwendet. Um Munition zu kaufen und zu verkaufen, gehen Sie über den Schwarzmarkt; Der Fabrikbildschirm selbst verkauft keine Kugeln direkt. \nLeistungsverbesserungen erhöhen die Anzahl der Runden pro Anspruch; Qualitätsverbesserungen steigern den Marktwert. \nDer Marktpreis für Munition schwankt je nach Nachfrage. Füllen Sie Vorräte auf, wenn die Preise niedrig sind, und verkaufen Sie, wenn die Preise hoch sind. \nBei einem Fabriküberfall verlierst du einen Teil der gespeicherten Produktion. Sicherheit senkt dieses Risiko.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

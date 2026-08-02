@@ -7164,14 +7164,14 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Produção iniciada: ativa por 8 horas, reivindicação a cada 10 minutos';
+      'Produção iniciada: ativa por 8 horas, reivindicação a cada 20 minutos';
 
   @override
   String get ammoFactoryTitle => 'Fábrica de munição';
 
   @override
   String get ammoFactoryIntro =>
-      'Produz em lotes; você reivindica a cada 10 minutos (até 8 horas de pendências por sessão).';
+      'Produz em lotes; você reivindica a cada 20 minutos (até 8 horas de pendências por sessão).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'O que você pode fazer:';
@@ -7181,7 +7181,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Produção de reclamações (intervalo: 10 minutos, backlog máximo: 8 horas por sessão)';
+      'Produção de reclamações (intervalo: 20 minutos, backlog máximo: 8 horas por sessão)';
 
   @override
   String get ammoFactoryActionOutput =>
@@ -7291,7 +7291,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Janela de produção: ativa (intervalo de 10 minutos)';
+      'Janela de produção: ativa (intervalo de 20 minutos)';
 
   @override
   String get factorySessionStopped =>
@@ -13984,7 +13984,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'A fábrica de munição possui níveis de produção (Nível 1 a 5). Nível mais alto = mais rodadas por reclamação e melhor qualidade. \nDurante uma sessão ativa, você reivindica produção a cada 10 minutos (até 8 horas de backlog nessa sessão). \nA produção continua aumentando enquanto você está off-line: quando você retornar, poderá reivindicar várias vezes até que o backlog seja recuperado. \nSimplesmente ver a fábrica de munição ou viajar de ida e volta não deve mudar de propriedade; uma fábrica não deve mudar para “à venda” só porque a tela foi aberta. \nA munição produzida é usada pessoalmente em crimes e PvP. Para comprar e vender munição, passe pelo Mercado Negro; a própria tela de fábrica não vende balas diretamente. \nAs atualizações de produção aumentam as rodadas por reivindicação; atualizações de qualidade melhoram o valor de mercado. \nO preço de mercado da munição flutua com a demanda. Estocar quando os preços estiverem baixos e vender quando os preços estiverem altos. \nDurante uma invasão à fábrica, você perde parte da produção armazenada. A segurança reduz esse risco.';
+      'A fábrica de munição possui níveis de produção (Nível 1 a 5). Nível mais alto = mais rodadas por reclamação e melhor qualidade. \nDurante uma sessão ativa, você reivindica produção a cada 20 minutos (até 8 horas de backlog nessa sessão). \nA produção continua aumentando enquanto você está off-line: quando você retornar, poderá reivindicar várias vezes até que o backlog seja recuperado. \nSimplesmente ver a fábrica de munição ou viajar de ida e volta não deve mudar de propriedade; uma fábrica não deve mudar para “à venda” só porque a tela foi aberta. \nA munição produzida é usada pessoalmente em crimes e PvP. Para comprar e vender munição, passe pelo Mercado Negro; a própria tela de fábrica não vende balas diretamente. \nAs atualizações de produção aumentam as rodadas por reivindicação; atualizações de qualidade melhoram o valor de mercado. \nO preço de mercado da munição flutua com a demanda. Estocar quando os preços estiverem baixos e vender quando os preços estiverem altos. \nDurante uma invasão à fábrica, você perde parte da produção armazenada. A segurança reduz esse risco.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

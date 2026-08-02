@@ -7171,14 +7171,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Rozpoczęto produkcję: aktywna przez 8 godzin, odbiór co 10 minut';
+      'Rozpoczęto produkcję: aktywna przez 8 godzin, odbiór co 20 minut';
 
   @override
   String get ammoFactoryTitle => 'Fabryka Amunicji';
 
   @override
   String get ammoFactoryIntro =>
-      'Produkuje partiami; odbierasz co 10 minut (do 8 godzin zaległości na sesję).';
+      'Produkuje partiami; odbierasz co 20 minut (do 8 godzin zaległości na sesję).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Co możesz zrobić:';
@@ -7188,7 +7188,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Produkcja roszczeń (interwał: 10 minut, maksymalne zaległości: 8 godzin na sesję)';
+      'Produkcja roszczeń (interwał: 20 minut, maksymalne zaległości: 8 godzin na sesję)';
 
   @override
   String get ammoFactoryActionOutput =>
@@ -7297,7 +7297,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Okno produkcyjne: aktywne (przerwa 10 min)';
+      'Okno produkcyjne: aktywne (przerwa 20 min)';
 
   @override
   String get factorySessionStopped =>
@@ -13987,7 +13987,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'Fabryka amunicji ma poziomy produkcji (od poziomu 1 do 5). Wyższy poziom = więcej rund na roszczenie i lepsza jakość. \nPodczas aktywnej sesji przejmujesz produkcję mniej więcej co 10 minut (do 8 godzin zaległości w tej sesji). \nProdukcja stale rośnie, gdy jesteś offline: po powrocie możesz zgłaszać roszczenia wielokrotnie, aż do nadrobienia zaległości. \nSamo obejrzenie fabryki amunicji lub podróżowanie tam i z powrotem nie może zmienić właściciela; fabryka nie powinna przełączać się na komunikat „na sprzedaż” tylko dlatego, że ekran został otwarty. \nWyprodukowana amunicja jest wykorzystywana osobiście w przestępstwach i PvP. Aby kupować i sprzedawać amunicję, przejdź przez Czarny Rynek; sam ekran fabryczny nie sprzedaje bezpośrednio naboi. \nUlepszenia wyjściowe zwiększają liczbę rund na roszczenie; ulepszenia jakości zwiększają wartość rynkową. \nCena rynkowa amunicji zmienia się w zależności od popytu. Gromadź zapasy, gdy ceny są niskie i sprzedawaj, gdy ceny są wysokie. \nPodczas nalotu na fabrykę tracisz część zmagazynowanej produkcji. Bezpieczeństwo zmniejsza to ryzyko.';
+      'Fabryka amunicji ma poziomy produkcji (od poziomu 1 do 5). Wyższy poziom = więcej rund na roszczenie i lepsza jakość. \nPodczas aktywnej sesji przejmujesz produkcję mniej więcej co 20 minut (do 8 godzin zaległości w tej sesji). \nProdukcja stale rośnie, gdy jesteś offline: po powrocie możesz zgłaszać roszczenia wielokrotnie, aż do nadrobienia zaległości. \nSamo obejrzenie fabryki amunicji lub podróżowanie tam i z powrotem nie może zmienić właściciela; fabryka nie powinna przełączać się na komunikat „na sprzedaż” tylko dlatego, że ekran został otwarty. \nWyprodukowana amunicja jest wykorzystywana osobiście w przestępstwach i PvP. Aby kupować i sprzedawać amunicję, przejdź przez Czarny Rynek; sam ekran fabryczny nie sprzedaje bezpośrednio naboi. \nUlepszenia wyjściowe zwiększają liczbę rund na roszczenie; ulepszenia jakości zwiększają wartość rynkową. \nCena rynkowa amunicji zmienia się w zależności od popytu. Gromadź zapasy, gdy ceny są niskie i sprzedawaj, gdy ceny są wysokie. \nPodczas nalotu na fabrykę tracisz część zmagazynowanej produkcji. Bezpieczeństwo zmniejsza to ryzyko.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

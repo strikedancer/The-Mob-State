@@ -30,12 +30,12 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
   // Constants from backend
   static const int maxLevel = 5;
   static const int baseRoundsPerTickPerType =
-      5; // per ammo type, per production tick, at level 1 (matches backend BASE_ROUNDS_PER_TICK)
+      3; // per ammo type, per production tick, at level 1 (matches backend BASE_ROUNDS_PER_TICK)
   static const int numAmmoTypes = 6;
-  static const int productionIntervalMinutes = 10;
+  static const int productionIntervalMinutes = 20;
   static const int productionSessionHours = 8;
-  static const int ticksPerHour = 6; // 60 min / 10 min
-  static const int ticksPerSession = 48; // 8h × 6 ticks
+  static const int ticksPerHour = 3; // 60 min / 20 min
+  static const int ticksPerSession = 24; // 8h × 3 ticks
 
   @override
   void initState() {
@@ -344,7 +344,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
               content: Text(
                 sessionStarted
                     ? (l10n?.factorySessionStarted ??
-                          'Production started: active for 8 hours, claim every 10 minutes')
+                          'Production started: active for 8 hours, claim every 20 minutes')
                     : (l10n?.factoryProduced ?? 'Production updated'),
               ),
               backgroundColor: Colors.green,
@@ -588,7 +588,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n?.ammoFactoryIntro ??
-                        'Produces in batches; claim every 10 minutes (up to 8 hours of backlog per session).',
+                        'Produces in batches; claim every 20 minutes (up to 8 hours of backlog per session).',
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -600,7 +600,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                     '• ${l10n?.ammoFactoryActionBuy ?? 'Buy a factory in your current country'}',
                   ),
                   Text(
-                    '• ${l10n?.ammoFactoryActionProduce ?? 'Claim production (interval: 10 minutes, max backlog: 8 hours per session)'}',
+                    '• ${l10n?.ammoFactoryActionProduce ?? 'Claim production (interval: 20 minutes, max backlog: 8 hours per session)'}',
                   ),
                   Text(
                     '• ${l10n?.ammoFactoryActionOutput ?? 'Upgrade output to level 5 for more rounds per claim'}',
@@ -717,7 +717,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                           Text(
                             isSessionActive
                                 ? (l10n?.factorySessionActive ??
-                                      'Production window: active (10 min interval)')
+                                      'Production window: active (20 min interval)')
                                 : (l10n?.factorySessionStopped ??
                                       'Production window: stopped (click Produce to start a new 8-hour window)'),
                             style: TextStyle(

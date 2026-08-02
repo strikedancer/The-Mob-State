@@ -7223,14 +7223,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Production démarrée : actif pendant 8 heures, réclamation toutes les 10 minutes';
+      'Production démarrée : actif pendant 8 heures, réclamation toutes les 20 minutes';
 
   @override
   String get ammoFactoryTitle => 'Usine de munitions';
 
   @override
   String get ammoFactoryIntro =>
-      'Produit par lots ; vous réclamez toutes les 10 minutes (jusqu\'à 8 heures de retard par session).';
+      'Produit par lots ; vous réclamez toutes les 20 minutes (jusqu\'à 8 heures de retard par session).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Ce que vous pouvez faire :';
@@ -7240,7 +7240,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Production des réclamations (intervalle : 10 minutes, backlog max : 8 heures par session)';
+      'Production des réclamations (intervalle : 20 minutes, backlog max : 8 heures par session)';
 
   @override
   String get ammoFactoryActionOutput =>
@@ -7349,7 +7349,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Fenêtre de production : active (intervalle de 10 min)';
+      'Fenêtre de production : active (intervalle de 20 min)';
 
   @override
   String get factorySessionStopped =>
@@ -14056,7 +14056,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'L\'usine de munitions a des niveaux de production (niveau 1 à 5). Niveau supérieur = plus de tours par réclamation et meilleure qualité. \nAu cours d\'une session active, vous réclamez la production toutes les 10 minutes environ (jusqu\'à 8 heures de retard au cours de cette session). \nLa production continue de s\'accumuler pendant que vous êtes hors ligne : lorsque vous revenez, vous pouvez réclamer plusieurs fois jusqu\'à ce que le retard soit rattrapé. \nLe simple fait de visiter l’usine de munitions ou de voyager et revenir ne doit pas changer de propriétaire ; une usine ne devrait pas passer à l\'état « à vendre » simplement parce que l\'écran a été ouvert. \nLes munitions produites sont utilisées personnellement dans des crimes et en PvP. Pour acheter et vendre des munitions, passez par le marché noir ; l\'écran d\'usine lui-même ne vend pas de balles directement. \nLes mises à niveau de sortie augmentent le nombre de tours par réclamation ; les améliorations de qualité améliorent la valeur marchande. \nLe prix du marché des munitions fluctue en fonction de la demande. Faites des réserves lorsque les prix sont bas et vendez lorsque les prix sont élevés. \nLors d\'un raid dans une usine, vous perdez une partie de la production stockée. La sécurité réduit ce risque.';
+      'L\'usine de munitions a des niveaux de production (niveau 1 à 5). Niveau supérieur = plus de tours par réclamation et meilleure qualité. \nAu cours d\'une session active, vous réclamez la production toutes les 20 minutes environ (jusqu\'à 8 heures de retard au cours de cette session). \nLa production continue de s\'accumuler pendant que vous êtes hors ligne : lorsque vous revenez, vous pouvez réclamer plusieurs fois jusqu\'à ce que le retard soit rattrapé. \nLe simple fait de visiter l’usine de munitions ou de voyager et revenir ne doit pas changer de propriétaire ; une usine ne devrait pas passer à l\'état « à vendre » simplement parce que l\'écran a été ouvert. \nLes munitions produites sont utilisées personnellement dans des crimes et en PvP. Pour acheter et vendre des munitions, passez par le marché noir ; l\'écran d\'usine lui-même ne vend pas de balles directement. \nLes mises à niveau de sortie augmentent le nombre de tours par réclamation ; les améliorations de qualité améliorent la valeur marchande. \nLe prix du marché des munitions fluctue en fonction de la demande. Faites des réserves lorsque les prix sont bas et vendez lorsque les prix sont élevés. \nLors d\'un raid dans une usine, vous perdez une partie de la production stockée. La sécurité réduit ce risque.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

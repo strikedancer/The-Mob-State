@@ -7146,14 +7146,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Productie gestart: 8 uur actief, claim elke 10 minuten';
+      'Productie gestart: 8 uur actief, claim elke 20 minuten';
 
   @override
   String get ammoFactoryTitle => 'Munitiefabriek';
 
   @override
   String get ammoFactoryIntro =>
-      'Werkt in batches; je kunt elke 10 minuten productie innen (tot 8 uur backlog per sessie).';
+      'Werkt in batches; je kunt elke 20 minuten productie innen (tot 8 uur backlog per sessie).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Wat je kunt doen:';
@@ -7163,7 +7163,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Incasseer productie (interval: 10 minuten, max backlog: 8 uur per sessie)';
+      'Incasseer productie (interval: 20 minuten, max backlog: 8 uur per sessie)';
 
   @override
   String get ammoFactoryActionOutput =>
@@ -7270,7 +7270,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Productie venster: actief (10 min interval)';
+      'Productie venster: actief (20 min interval)';
 
   @override
   String get factorySessionStopped =>
@@ -13885,7 +13885,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer patronen per claim en betere kwaliteit.\nTijdens een actieve sessie claim je productie ongeveer elke 10 minuten (tot 8 uur backlog binnen die sessie).\nProductie loopt door terwijl je offline bent: bij terugkomst kun je meerdere claims achter elkaar doen tot de backlog op is.\nAlleen kijken naar de munitiefabriek of heen en weer reizen mag eigendom niet veranderen; een fabriek springt dus niet zomaar naar `te koop` door het scherm te openen.\nJe gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.\nOutput-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.\nMarktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.\nBij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.';
+      'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer patronen per claim en betere kwaliteit.\nTijdens een actieve sessie claim je productie ongeveer elke 20 minuten (tot 8 uur backlog binnen die sessie).\nProductie loopt door terwijl je offline bent: bij terugkomst kun je meerdere claims achter elkaar doen tot de backlog op is.\nAlleen kijken naar de munitiefabriek of heen en weer reizen mag eigendom niet veranderen; een fabriek springt dus niet zomaar naar `te koop` door het scherm te openen.\nJe gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.\nOutput-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.\nMarktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.\nBij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

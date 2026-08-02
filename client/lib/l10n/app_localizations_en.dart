@@ -7110,14 +7110,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Production started: active for 8 hours, claim every 10 minutes';
+      'Production started: active for 8 hours, claim every 20 minutes';
 
   @override
   String get ammoFactoryTitle => 'Ammo Factory';
 
   @override
   String get ammoFactoryIntro =>
-      'Produces in batches; you claim every 10 minutes (up to 8 hours of backlog per session).';
+      'Produces in batches; you claim every 20 minutes (up to 8 hours of backlog per session).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'What you can do:';
@@ -7127,7 +7127,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Claim production (interval: 10 minutes, max backlog: 8 hours per session)';
+      'Claim production (interval: 20 minutes, max backlog: 8 hours per session)';
 
   @override
   String get ammoFactoryActionOutput =>
@@ -7233,7 +7233,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Production window: active (10 min interval)';
+      'Production window: active (20 min interval)';
 
   @override
   String get factorySessionStopped =>
@@ -13852,7 +13852,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 10 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.';
+      'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 20 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

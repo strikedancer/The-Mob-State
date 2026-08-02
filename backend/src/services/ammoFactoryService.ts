@@ -15,14 +15,14 @@ interface AmmoDef {
   pricePerRound: number;
 }
 
-/** Wall-clock spacing between production ticks when claiming (balance: player feedback April 2026 — was 5). */
-const PRODUCTION_INTERVAL_MINUTES = 10;
+/** Wall-clock spacing between production ticks when claiming (Aug 2026: 10 → 20; was 5 before Apr 2026). */
+const PRODUCTION_INTERVAL_MINUTES = 20;
 const PRODUCTION_BACKLOG_HOURS = 8;
 const INACTIVITY_HOURS = 48;
 const MAX_LEVEL = 5;
-// Minimum rounds produced per ammo type per 5-min tick at level 1.
-// Scales with outputMultiplier: level 5 → ~54 per type per tick.
-const BASE_ROUNDS_PER_TICK = 5;
+// Minimum rounds produced per ammo type per tick at level 1 (Aug 2026: 5 → 3).
+// Scales with outputMultiplier: level 5 → ~32 per type per tick.
+const BASE_ROUNDS_PER_TICK = 3;
 
 class AmmoFactoryService {
   private countries: CountryDef[] = [];
@@ -63,7 +63,7 @@ class AmmoFactoryService {
 
   private outputMultiplier(level: number) {
     // Scales from 1.0 (level 1) to ~10.84 (level 5); rounds per tick per ammo type.
-    // With 10-minute ticks, max-level throughput is ~half the old 5-minute pacing.
+    // With 20-minute ticks and BASE_ROUNDS_PER_TICK=3, max-level throughput is ~30% of the prior 10-min/5-round pacing.
     return 1 + (level - 1) * 2.46;
   }
 
