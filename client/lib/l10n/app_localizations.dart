@@ -25786,6 +25786,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{days} lifetime days'**
   String premiumUiPrestigeDays(int days);
+
+  /// No description provided for @premiumUiGiftCrewVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Crew VIP'**
+  String get premiumUiGiftCrewVip;
+
+  /// No description provided for @premiumUiGiftCrewVipHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy 30 days of Crew VIP for any crew by name. One-time gift — no auto-renew for that crew.'**
+  String get premiumUiGiftCrewVipHint;
+
+  /// No description provided for @premiumUiGiftCrewVipName.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew name'**
+  String get premiumUiGiftCrewVipName;
+
+  /// No description provided for @premiumUiGiftCrewVipFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start Crew VIP gift checkout.'**
+  String get premiumUiGiftCrewVipFailed;
 }
 
 class _AppLocalizationsDelegate

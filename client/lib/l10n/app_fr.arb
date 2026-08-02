@@ -8704,5 +8704,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "premiumUiGiftCrewVip": "Gift Crew VIP",
+  "premiumUiGiftCrewVipHint": "Buy 30 days of Crew VIP for any crew by name. One-time gift — no auto-renew for that crew.",
+  "premiumUiGiftCrewVipName": "Crew name",
+  "premiumUiGiftCrewVipFailed": "Could not start Crew VIP gift checkout."
 }

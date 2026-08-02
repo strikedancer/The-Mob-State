@@ -328,6 +328,66 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
+  Future<void> _giftCrewVip() async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController();
+    final crewName = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.premiumUiGiftCrewVip),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.premiumUiGiftCrewVipHint),
+            const SizedBox(height: 12),
+            TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: InputDecoration(
+                labelText: l10n.premiumUiGiftCrewVipName,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: Text(l10n.premiumUiGiftVipConfirm),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    if (crewName == null || crewName.isEmpty || !mounted) return;
+
+    setState(() => _processingCheckout = true);
+    try {
+      final response = await AuthService().apiClient.post(
+        '/subscriptions/checkout/gift-crew-vip',
+        {'recipientCrewName': crewName},
+      );
+      if (response.statusCode != 200) {
+        throw Exception('gift_crew_failed');
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final checkoutUrl = data['url'] as String?;
+      if (checkoutUrl == null || checkoutUrl.isEmpty) {
+        throw Exception('checkout_missing_url');
+      }
+      await _openCheckoutUrl(checkoutUrl);
+    } catch (_) {
+      if (!mounted) return;
+      _showTopRightMessage(l10n.premiumUiGiftCrewVipFailed, Colors.red);
+    } finally {
+      if (mounted) setState(() => _processingCheckout = false);
+    }
+  }
+
   Future<void> _redeemCreditItem(Map<String, dynamic> item) async {
     final effectType = (item['effectType'] ?? '').toString();
     if (effectType == 'VEHICLE_REPAIR_FINISH' ||
@@ -1156,6 +1216,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
               onPressed: _processingCheckout ? null : _giftPlayerVip,
               icon: const Icon(Icons.card_giftcard, size: 18),
               label: Text(l10n.premiumUiGiftVip),
+            ),
+            OutlinedButton.icon(
+              onPressed: _processingCheckout ? null : _giftCrewVip,
+              icon: const Icon(Icons.card_giftcard, size: 18),
+              label: Text(l10n.premiumUiGiftCrewVip),
             ),
             if (playerAutoRenew)
               OutlinedButton.icon(

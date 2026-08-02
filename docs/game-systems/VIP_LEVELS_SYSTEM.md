@@ -216,12 +216,13 @@ Per VIP level avg: 1.18B (steep but achievable)
 ## Shipped polish (P6)
 - [x] Player/crew auto-renew visibility + cancel (`POST /subscriptions/vip/cancel`; paid-through period remains)
 - [x] Gift Player VIP by username (`POST /subscriptions/checkout/gift-player-vip`; one-time 30d, no auto-renew)
+- [x] Gift Crew VIP by crew name (`POST /subscriptions/checkout/gift-crew-vip`; one-time 30d, no auto-renew)
 - [x] Display-only prestige from `vipLifetimeDays` (bronze 30 / silver 180 / gold 365)
 
 ## Future Enhancements
 
 ### Potential Features
-- [ ] VIP gifting between crews
+- [x] VIP gifting between crews (via Gift Crew VIP — any player can gift a named crew)
 - [ ] Limited-time VIP sales/discounts
 - [ ] VIP-exclusive buildings (beyond just levels)
 - [ ] Prestige gameplay bonuses (explicitly out of scope for P6 display-only)

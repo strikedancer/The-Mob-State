@@ -14894,4 +14894,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String premiumUiPrestigeDays(int days) {
     return '$days lifetime days';
   }
+
+  @override
+  String get premiumUiGiftCrewVip => 'Gift Crew VIP';
+
+  @override
+  String get premiumUiGiftCrewVipHint =>
+      'Buy 30 days of Crew VIP for any crew by name. One-time gift — no auto-renew for that crew.';
+
+  @override
+  String get premiumUiGiftCrewVipName => 'Crew name';
+
+  @override
+  String get premiumUiGiftCrewVipFailed =>
+      'Could not start Crew VIP gift checkout.';
 }
