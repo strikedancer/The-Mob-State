@@ -14787,6 +14787,25 @@ class AppLocalizationsPt extends AppLocalizations {
   String get stockErrorUnknown => 'Trade failed.';
 
   @override
+  String get stockMarketLoadError => 'Could not load the stock market.';
+
+  @override
+  String get stockMarketEmpty => 'No tickers available right now.';
+
+  @override
+  String get stockMarketRetry => 'Retry';
+
+  @override
+  String stockPositionsOpen(int count) {
+    return 'Open positions: $count';
+  }
+
+  @override
+  String stockCashAvailable(String amount) {
+    return 'Available to invest: €$amount';
+  }
+
+  @override
   String get propertyDevelopAction => 'Develop';
 
   @override

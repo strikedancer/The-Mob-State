@@ -1114,7 +1114,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Territory Fase C (HQ caps zichtbaar, regioproject safehouse_network, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
 - ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / territory.md
 - ✅ Money laundering (cash→bank wash: fee, delay, FBI-heat seize risk) — see `money-laundering.md`
-- ✅ Stock market (bank-funded slow tickers, separate from crypto) — see `stock-market.md`
+- ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
 - ✅ Real estate development (bank-funded permanent income levels on owned properties) — see `properties.md`
 
 - ✅ VIP polish: cancel auto-renew, gift Player VIP, gift Crew VIP, display-only prestige tiers — see `payments.md` / `VIP_LEVELS_SYSTEM.md` (Help topic `premium`)

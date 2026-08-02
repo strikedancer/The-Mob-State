@@ -25667,6 +25667,36 @@ abstract class AppLocalizations {
   /// **'Trade failed.'**
   String get stockErrorUnknown;
 
+  /// No description provided for @stockMarketLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the stock market.'**
+  String get stockMarketLoadError;
+
+  /// No description provided for @stockMarketEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No tickers available right now.'**
+  String get stockMarketEmpty;
+
+  /// No description provided for @stockMarketRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get stockMarketRetry;
+
+  /// No description provided for @stockPositionsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open positions: {count}'**
+  String stockPositionsOpen(int count);
+
+  /// No description provided for @stockCashAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available to invest: €{amount}'**
+  String stockCashAvailable(String amount);
+
   /// No description provided for @propertyDevelopAction.
   ///
   /// In en, this message translates to:

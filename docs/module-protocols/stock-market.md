@@ -54,6 +54,7 @@ TMS, NRD, GLC, HBR, VIP — seeded in `ensureDeepEconomySchema`.
 3. Sell verhoogt bank, verlaagt holding.
 4. Position-limit en disabled foutpaden.
 5. Help-topic stock-market aanwezig; crypto-help claimt geen aandelen.
+6. Load-fout toont retry; lege tickerlijst toont empty-state; summary toont bank/portfolio/open posities.
 
 ## When To Update This File
 Update bij nieuwe order types, externe price feeds, shorting of shared portfolio met crypto.

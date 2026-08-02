@@ -14687,6 +14687,25 @@ class AppLocalizationsNl extends AppLocalizations {
   String get stockErrorUnknown => 'Trade mislukt.';
 
   @override
+  String get stockMarketLoadError => 'Aandelenmarkt laden mislukt.';
+
+  @override
+  String get stockMarketEmpty => 'Geen tickers beschikbaar op dit moment.';
+
+  @override
+  String get stockMarketRetry => 'Opnieuw';
+
+  @override
+  String stockPositionsOpen(int count) {
+    return 'Open posities: $count';
+  }
+
+  @override
+  String stockCashAvailable(String amount) {
+    return 'Beschikbaar om te investeren: €$amount';
+  }
+
+  @override
   String get propertyDevelopAction => 'Ontwikkel';
 
   @override

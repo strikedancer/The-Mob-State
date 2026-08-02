@@ -8702,6 +8702,25 @@
   "stockErrorPositionLimit": "Positielimiet bereikt.",
   "stockErrorDisabled": "Aandelenmarkt is uitgeschakeld.",
   "stockErrorUnknown": "Trade mislukt.",
+  "stockMarketLoadError": "Aandelenmarkt laden mislukt.",
+  "stockMarketEmpty": "Geen tickers beschikbaar op dit moment.",
+  "stockMarketRetry": "Opnieuw",
+  "stockPositionsOpen": "Open posities: {count}",
+  "@stockPositionsOpen": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockCashAvailable": "Beschikbaar om te investeren: €{amount}",
+  "@stockCashAvailable": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "propertyDevelopAction": "Ontwikkel",
   "propertyDevelopedSuccess": "Vastgoedontwikkeling voltooid.",
   "helpTopicStockMarketCategory": "Economie",

@@ -8702,6 +8702,25 @@
   "stockErrorPositionLimit": "Position limit reached.",
   "stockErrorDisabled": "Stock market is disabled.",
   "stockErrorUnknown": "Trade failed.",
+  "stockMarketLoadError": "Could not load the stock market.",
+  "stockMarketEmpty": "No tickers available right now.",
+  "stockMarketRetry": "Retry",
+  "stockPositionsOpen": "Open positions: {count}",
+  "@stockPositionsOpen": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockCashAvailable": "Available to invest: €{amount}",
+  "@stockCashAvailable": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "propertyDevelopAction": "Develop",
   "propertyDevelopedSuccess": "Property development complete.",
   "helpTopicStockMarketCategory": "Economy",
