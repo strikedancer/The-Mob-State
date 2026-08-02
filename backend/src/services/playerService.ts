@@ -57,6 +57,7 @@ export const playerService = {
       gender: player.gender,
       isVip: player.isVip,
       vipExpiresAt: player.vipExpiresAt,
+      vipLifetimeDays: (player as { vipLifetimeDays?: number }).vipLifetimeDays ?? 0,
       lastAvatarChange: player.lastAvatarChange,
       lastUsernameChange: player.lastUsernameChange,
       allowMessages: player.allowMessages,

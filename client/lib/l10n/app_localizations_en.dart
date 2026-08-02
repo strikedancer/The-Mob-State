@@ -14656,4 +14656,60 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get helpTopicStockMarketTips =>
       'Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.';
+
+  @override
+  String get premiumUiAutoRenewActive => 'Auto-renews monthly';
+
+  @override
+  String get premiumUiAutoRenewOff => 'No auto-renewal';
+
+  @override
+  String get premiumUiCancelRenewal => 'Cancel renewal';
+
+  @override
+  String premiumUiCancelRenewalConfirm(String date) {
+    return 'Stop future VIP charges? Your current VIP stays active until $date.';
+  }
+
+  @override
+  String get premiumUiCancelRenewalSuccess => 'Auto-renewal cancelled.';
+
+  @override
+  String get premiumUiCancelRenewalFailed => 'Could not cancel auto-renewal.';
+
+  @override
+  String get premiumUiGiftVip => 'Gift VIP';
+
+  @override
+  String get premiumUiGiftVipHint =>
+      'Buy 30 days of Player VIP for another player.';
+
+  @override
+  String get premiumUiGiftVipUsername => 'Recipient username';
+
+  @override
+  String get premiumUiGiftVipConfirm => 'Continue to checkout';
+
+  @override
+  String get premiumUiGiftVipFailed => 'Could not start VIP gift checkout.';
+
+  @override
+  String get premiumUiPrestigeLabel => 'VIP prestige';
+
+  @override
+  String get premiumUiPrestigeNone => 'None';
+
+  @override
+  String get premiumUiPrestigeBronze => 'Bronze';
+
+  @override
+  String get premiumUiPrestigeSilver => 'Silver';
+
+  @override
+  String get premiumUiPrestigeGold => 'Gold';
+
+  @override
+  String premiumUiPrestigeDays(int days) {
+    return '$days lifetime days';
+  }
 }

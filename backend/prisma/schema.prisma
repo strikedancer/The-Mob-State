@@ -69,6 +69,8 @@ model Player {
   verificationToken               String?                          @db.VarChar(255)
   verificationTokenExpiry         DateTime?
   vipExpiresAt                    DateTime?
+  /// Cumulative VIP days granted (purchases, gifts, admin, vault). Display prestige only.
+  vipLifetimeDays                  Int                              @default(0)
   lastProstituteRecruitment       DateTime?
   drugHeat                        Int                              @default(0)
   autoCollectDrugs                Boolean                          @default(false)
@@ -493,6 +495,8 @@ model Crew {
   createdAt             DateTime                   @default(now())
   isVip                 Boolean                    @default(false)
   vipExpiresAt          DateTime?
+  /// Cumulative crew VIP days granted. Display prestige only.
+  vipLifetimeDays        Int                        @default(0)
   ammoInventory         CrewAmmoInventory[]
   ammoStorageBuilding   CrewAmmoStorageBuilding?
   boatInventory         CrewBoatInventory[]

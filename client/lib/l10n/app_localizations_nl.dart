@@ -14689,4 +14689,61 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get helpTopicStockMarketTips =>
       'Houd bankreserve voor crimes/travel — aandelen zijn geen noodkas.\nSpreid niet blind over alle tickers: de positielimiet is beperkt.';
+
+  @override
+  String get premiumUiAutoRenewActive => 'Verlengt maandelijks automatisch';
+
+  @override
+  String get premiumUiAutoRenewOff => 'Geen automatische verlenging';
+
+  @override
+  String get premiumUiCancelRenewal => 'Stop verlenging';
+
+  @override
+  String premiumUiCancelRenewalConfirm(String date) {
+    return 'Toekomstige VIP-afschrijvingen stoppen? Je huidige VIP blijft actief tot $date.';
+  }
+
+  @override
+  String get premiumUiCancelRenewalSuccess =>
+      'Automatische verlenging gestopt.';
+
+  @override
+  String get premiumUiCancelRenewalFailed => 'Verlenging stoppen mislukt.';
+
+  @override
+  String get premiumUiGiftVip => 'VIP cadeau';
+
+  @override
+  String get premiumUiGiftVipHint =>
+      'Koop 30 dagen Speler VIP voor een andere speler.';
+
+  @override
+  String get premiumUiGiftVipUsername => 'Gebruikersnaam ontvanger';
+
+  @override
+  String get premiumUiGiftVipConfirm => 'Door naar betalen';
+
+  @override
+  String get premiumUiGiftVipFailed => 'VIP-cadeau checkout starten mislukt.';
+
+  @override
+  String get premiumUiPrestigeLabel => 'VIP prestige';
+
+  @override
+  String get premiumUiPrestigeNone => 'Geen';
+
+  @override
+  String get premiumUiPrestigeBronze => 'Brons';
+
+  @override
+  String get premiumUiPrestigeSilver => 'Zilver';
+
+  @override
+  String get premiumUiPrestigeGold => 'Goud';
+
+  @override
+  String premiumUiPrestigeDays(int days) {
+    return '$days lifetime dagen';
+  }
 }

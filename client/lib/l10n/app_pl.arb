@@ -8673,5 +8673,36 @@
   "helpTopicStockMarketTitle": "Stock market",
   "helpTopicStockMarketSummary": "Trade slow-moving stocks with bank money. Separate system from crypto.",
   "helpTopicStockMarketHow": "Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.\nBuy and sell execute immediately at the server price and debit/credit your bank — not cash.\nPrices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.\nThere is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module.",
-  "helpTopicStockMarketTips": "Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight."
+  "helpTopicStockMarketTips": "Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.",
+  "premiumUiAutoRenewActive": "Auto-renews monthly",
+  "premiumUiAutoRenewOff": "No auto-renewal",
+  "premiumUiCancelRenewal": "Cancel renewal",
+  "premiumUiCancelRenewalConfirm": "Stop future VIP charges? Your current VIP stays active until {date}.",
+  "@premiumUiCancelRenewalConfirm": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiCancelRenewalSuccess": "Auto-renewal cancelled.",
+  "premiumUiCancelRenewalFailed": "Could not cancel auto-renewal.",
+  "premiumUiGiftVip": "Gift VIP",
+  "premiumUiGiftVipHint": "Buy 30 days of Player VIP for another player.",
+  "premiumUiGiftVipUsername": "Recipient username",
+  "premiumUiGiftVipConfirm": "Continue to checkout",
+  "premiumUiGiftVipFailed": "Could not start VIP gift checkout.",
+  "premiumUiPrestigeLabel": "VIP prestige",
+  "premiumUiPrestigeNone": "None",
+  "premiumUiPrestigeBronze": "Bronze",
+  "premiumUiPrestigeSilver": "Silver",
+  "premiumUiPrestigeGold": "Gold",
+  "premiumUiPrestigeDays": "{days} lifetime days",
+  "@premiumUiPrestigeDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  }
 }

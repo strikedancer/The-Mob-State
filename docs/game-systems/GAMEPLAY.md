@@ -1117,8 +1117,10 @@ healing = 5 HP (if health > 0 && health < 100)
 - ✅ Stock market (bank-funded slow tickers, separate from crypto) — see `stock-market.md`
 - ✅ Real estate development (bank-funded permanent income levels on owned properties) — see `properties.md`
 
+- ✅ VIP polish: cancel auto-renew, gift Player VIP, display-only prestige tiers — see `payments.md` / `VIP_LEVELS_SYSTEM.md`
+
 ### Planned Features
-- (none in deep-economy track; next polish: VIP auto-renew / gifting / prestige)
+- (none in current backlog)
 
 ---
 

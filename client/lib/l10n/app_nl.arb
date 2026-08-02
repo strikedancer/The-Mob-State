@@ -8673,5 +8673,36 @@
   "helpTopicStockMarketTitle": "Aandelenmarkt",
   "helpTopicStockMarketSummary": "Handel langzaam bewegende aandelen met bankgeld. Los systeem van crypto.",
   "helpTopicStockMarketHow": "Open Aandelenmarkt vanuit het dashboard. Je ziet tickers, actuele prijs, je posities en banksaldo.\nKoop en verkoop gebeurt direct tegen de serverprijs en wordt van/naar je bank geboekt — niet van cash.\nPrijzen tikken langzaam (ongeveer elke minuut) met lichte random drift en mean-reversion; er is geen externe live feed.\nEr geldt een maximum aantal open posities. Crypto-orders, regimes en leaderboards horen niet bij deze module.",
-  "helpTopicStockMarketTips": "Houd bankreserve voor crimes/travel — aandelen zijn geen noodkas.\nSpreid niet blind over alle tickers: de positielimiet is beperkt."
+  "helpTopicStockMarketTips": "Houd bankreserve voor crimes/travel — aandelen zijn geen noodkas.\nSpreid niet blind over alle tickers: de positielimiet is beperkt.",
+  "premiumUiAutoRenewActive": "Verlengt maandelijks automatisch",
+  "premiumUiAutoRenewOff": "Geen automatische verlenging",
+  "premiumUiCancelRenewal": "Stop verlenging",
+  "premiumUiCancelRenewalConfirm": "Toekomstige VIP-afschrijvingen stoppen? Je huidige VIP blijft actief tot {date}.",
+  "@premiumUiCancelRenewalConfirm": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiCancelRenewalSuccess": "Automatische verlenging gestopt.",
+  "premiumUiCancelRenewalFailed": "Verlenging stoppen mislukt.",
+  "premiumUiGiftVip": "VIP cadeau",
+  "premiumUiGiftVipHint": "Koop 30 dagen Speler VIP voor een andere speler.",
+  "premiumUiGiftVipUsername": "Gebruikersnaam ontvanger",
+  "premiumUiGiftVipConfirm": "Door naar betalen",
+  "premiumUiGiftVipFailed": "VIP-cadeau checkout starten mislukt.",
+  "premiumUiPrestigeLabel": "VIP prestige",
+  "premiumUiPrestigeNone": "Geen",
+  "premiumUiPrestigeBronze": "Brons",
+  "premiumUiPrestigeSilver": "Zilver",
+  "premiumUiPrestigeGold": "Goud",
+  "premiumUiPrestigeDays": "{days} lifetime dagen",
+  "@premiumUiPrestigeDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  }
 }

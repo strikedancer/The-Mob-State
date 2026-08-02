@@ -478,36 +478,54 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                   ],
                 ),
               ),
-              if (isVip)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.amber.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: Colors.amber.withOpacity(0.35)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.workspace_premium,
-                        size: 16,
-                        color: Colors.amber,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        _tr('VIP', 'VIP'),
-                        style: const TextStyle(
+              Builder(
+                builder: (context) {
+                  final tier = (_playerData?['vipPrestigeTier'] ?? 'none')
+                      .toString()
+                      .toLowerCase();
+                  final tierLabel = switch (tier) {
+                    'bronze' => _tr('Brons', 'Bronze'),
+                    'silver' => _tr('Zilver', 'Silver'),
+                    'gold' => _tr('Goud', 'Gold'),
+                    _ => '',
+                  };
+                  if (!isVip && tierLabel.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  final badgeText = isVip && tierLabel.isNotEmpty
+                      ? 'VIP · $tierLabel'
+                      : (isVip ? _tr('VIP', 'VIP') : 'VIP · $tierLabel');
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(color: Colors.amber.withOpacity(0.35)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.workspace_premium,
+                          size: 16,
                           color: Colors.amber,
-                          fontWeight: FontWeight.bold,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                        const SizedBox(width: 4),
+                        Text(
+                          badgeText,
+                          style: const TextStyle(
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ],
           ),
           const SizedBox(height: 14),

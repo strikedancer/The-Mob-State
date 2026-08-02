@@ -25684,6 +25684,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.'**
   String get helpTopicStockMarketTips;
+
+  /// No description provided for @premiumUiAutoRenewActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-renews monthly'**
+  String get premiumUiAutoRenewActive;
+
+  /// No description provided for @premiumUiAutoRenewOff.
+  ///
+  /// In en, this message translates to:
+  /// **'No auto-renewal'**
+  String get premiumUiAutoRenewOff;
+
+  /// No description provided for @premiumUiCancelRenewal.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel renewal'**
+  String get premiumUiCancelRenewal;
+
+  /// No description provided for @premiumUiCancelRenewalConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop future VIP charges? Your current VIP stays active until {date}.'**
+  String premiumUiCancelRenewalConfirm(String date);
+
+  /// No description provided for @premiumUiCancelRenewalSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-renewal cancelled.'**
+  String get premiumUiCancelRenewalSuccess;
+
+  /// No description provided for @premiumUiCancelRenewalFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not cancel auto-renewal.'**
+  String get premiumUiCancelRenewalFailed;
+
+  /// No description provided for @premiumUiGiftVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift VIP'**
+  String get premiumUiGiftVip;
+
+  /// No description provided for @premiumUiGiftVipHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy 30 days of Player VIP for another player.'**
+  String get premiumUiGiftVipHint;
+
+  /// No description provided for @premiumUiGiftVipUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient username'**
+  String get premiumUiGiftVipUsername;
+
+  /// No description provided for @premiumUiGiftVipConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to checkout'**
+  String get premiumUiGiftVipConfirm;
+
+  /// No description provided for @premiumUiGiftVipFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start VIP gift checkout.'**
+  String get premiumUiGiftVipFailed;
+
+  /// No description provided for @premiumUiPrestigeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP prestige'**
+  String get premiumUiPrestigeLabel;
+
+  /// No description provided for @premiumUiPrestigeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get premiumUiPrestigeNone;
+
+  /// No description provided for @premiumUiPrestigeBronze.
+  ///
+  /// In en, this message translates to:
+  /// **'Bronze'**
+  String get premiumUiPrestigeBronze;
+
+  /// No description provided for @premiumUiPrestigeSilver.
+  ///
+  /// In en, this message translates to:
+  /// **'Silver'**
+  String get premiumUiPrestigeSilver;
+
+  /// No description provided for @premiumUiPrestigeGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold'**
+  String get premiumUiPrestigeGold;
+
+  /// No description provided for @premiumUiPrestigeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} lifetime days'**
+  String premiumUiPrestigeDays(int days);
 }
 
 class _AppLocalizationsDelegate

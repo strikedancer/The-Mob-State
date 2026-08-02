@@ -206,6 +206,128 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
+  String _prestigeLabel(AppLocalizations l10n, String? tier) {
+    switch ((tier ?? 'none').toLowerCase()) {
+      case 'bronze':
+        return l10n.premiumUiPrestigeBronze;
+      case 'silver':
+        return l10n.premiumUiPrestigeSilver;
+      case 'gold':
+        return l10n.premiumUiPrestigeGold;
+      default:
+        return l10n.premiumUiPrestigeNone;
+    }
+  }
+
+  Future<void> _cancelVipRenewal(String target) async {
+    final l10n = AppLocalizations.of(context)!;
+    final vipMap = target == 'crew'
+        ? (_status?['crewVip'] as Map?)?.cast<String, dynamic>()
+        : (_status?['playerVip'] as Map?)?.cast<String, dynamic>();
+    final expires = vipMap?['expiresAt'];
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.premiumUiCancelRenewal),
+        content: Text(
+          l10n.premiumUiCancelRenewalConfirm(
+            expires == null ? '—' : _formatDate(expires),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.premiumUiCancelRenewal),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    setState(() => _processingCheckout = true);
+    try {
+      final response = await AuthService().apiClient.post(
+        '/subscriptions/vip/cancel',
+        {'target': target},
+      );
+      if (response.statusCode != 200) {
+        throw Exception('cancel_failed');
+      }
+      await _loadData();
+      if (!mounted) return;
+      _showTopRightMessage(l10n.premiumUiCancelRenewalSuccess, Colors.green);
+    } catch (_) {
+      if (!mounted) return;
+      _showTopRightMessage(l10n.premiumUiCancelRenewalFailed, Colors.red);
+    } finally {
+      if (mounted) setState(() => _processingCheckout = false);
+    }
+  }
+
+  Future<void> _giftPlayerVip() async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController();
+    final username = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.premiumUiGiftVip),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.premiumUiGiftVipHint),
+            const SizedBox(height: 12),
+            TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: InputDecoration(
+                labelText: l10n.premiumUiGiftVipUsername,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: Text(l10n.premiumUiGiftVipConfirm),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    if (username == null || username.isEmpty || !mounted) return;
+
+    setState(() => _processingCheckout = true);
+    try {
+      final response = await AuthService().apiClient.post(
+        '/subscriptions/checkout/gift-player-vip',
+        {'recipientUsername': username},
+      );
+      if (response.statusCode != 200) {
+        throw Exception('gift_failed');
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final checkoutUrl = data['url'] as String?;
+      if (checkoutUrl == null || checkoutUrl.isEmpty) {
+        throw Exception('checkout_missing_url');
+      }
+      await _openCheckoutUrl(checkoutUrl);
+    } catch (_) {
+      if (!mounted) return;
+      _showTopRightMessage(l10n.premiumUiGiftVipFailed, Colors.red);
+    } finally {
+      if (mounted) setState(() => _processingCheckout = false);
+    }
+  }
+
   Future<void> _redeemCreditItem(Map<String, dynamic> item) async {
     final effectType = (item['effectType'] ?? '').toString();
     if (effectType == 'VEHICLE_REPAIR_FINISH' ||
@@ -840,10 +962,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final playerVip =
         (_status?['playerVip'] as Map?)?.cast<String, dynamic>() ?? const {};
     final crewVip = (_status?['crewVip'] as Map?)?.cast<String, dynamic>();
+    final lifetimeDays = (playerVip['lifetimeDays'] as num?)?.toInt() ?? 0;
 
     return _buildResponsiveTileGrid(
       minTileWidth: 180,
-      maxColumns: 3,
+      maxColumns: 4,
       children: [
         _buildKpiCard(
           l10n.premiumUiKpiPlayerVip,
@@ -868,6 +991,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
           _creditBalance.toString(),
           Icons.token,
           accent: Colors.teal.shade600,
+        ),
+        _buildKpiCard(
+          l10n.premiumUiPrestigeLabel,
+          '${_prestigeLabel(l10n, playerVip['prestigeTier']?.toString())} · ${l10n.premiumUiPrestigeDays(lifetimeDays)}',
+          Icons.military_tech,
+          accent: Colors.deepOrange.shade600,
         ),
       ],
     );
@@ -920,6 +1049,39 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final playerVip =
         (_status?['playerVip'] as Map?)?.cast<String, dynamic>() ?? const {};
     final crewVip = (_status?['crewVip'] as Map?)?.cast<String, dynamic>();
+    final playerAutoRenew = playerVip['autoRenewActive'] == true;
+    final crewAutoRenew = crewVip?['autoRenewActive'] == true;
+
+    String? playerSecondary() {
+      final parts = <String>[];
+      if (playerVip['expiresAt'] != null) {
+        parts.add(
+          l10n.premiumUiActiveUntil(_formatDate(playerVip['expiresAt'])),
+        );
+      }
+      parts.add(
+        playerAutoRenew
+            ? l10n.premiumUiAutoRenewActive
+            : l10n.premiumUiAutoRenewOff,
+      );
+      return parts.join(' · ');
+    }
+
+    String? crewSecondary() {
+      if (crewVip == null) return null;
+      final parts = <String>[];
+      if (crewVip['expiresAt'] != null) {
+        parts.add(
+          l10n.premiumUiActiveUntil(_formatDate(crewVip['expiresAt'])),
+        );
+      }
+      parts.add(
+        crewAutoRenew
+            ? l10n.premiumUiAutoRenewActive
+            : l10n.premiumUiAutoRenewOff,
+      );
+      return parts.join(' · ');
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -942,11 +1104,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
               accent: Colors.amber.shade700,
               icon: Icons.person,
               primaryValue: _priceLabel(playerVip['monthlyPriceEur'], l10n),
-              secondaryValue: playerVip['expiresAt'] == null
-                  ? null
-                  : l10n.premiumUiActiveUntil(
-                      _formatDate(playerVip['expiresAt']),
-                    ),
+              secondaryValue: playerSecondary(),
               badgeLabel: playerVip['isVip'] == true
                   ? l10n.premiumUiStatusActive
                   : l10n.premiumUiBadgeVip,
@@ -968,11 +1126,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
               accent: Colors.indigo.shade600,
               icon: Icons.groups,
               primaryValue: _priceLabel(crewVip?['monthlyPriceEur'], l10n),
-              secondaryValue: crewVip?['expiresAt'] == null
-                  ? null
-                  : l10n.premiumUiActiveUntil(
-                      _formatDate(crewVip?['expiresAt']),
-                    ),
+              secondaryValue: crewSecondary(),
               badgeLabel: crewVip == null
                   ? l10n.premiumUiBadgeCrewNeeded
                   : (crewVip['isVip'] == true
@@ -991,6 +1145,34 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   ? null
                   : () => _startCheckout('crew_vip'),
             ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            OutlinedButton.icon(
+              onPressed: _processingCheckout ? null : _giftPlayerVip,
+              icon: const Icon(Icons.card_giftcard, size: 18),
+              label: Text(l10n.premiumUiGiftVip),
+            ),
+            if (playerAutoRenew)
+              OutlinedButton.icon(
+                onPressed: _processingCheckout
+                    ? null
+                    : () => _cancelVipRenewal('player'),
+                icon: const Icon(Icons.cancel_schedule_send, size: 18),
+                label: Text(l10n.premiumUiCancelRenewal),
+              ),
+            if (crewAutoRenew)
+              OutlinedButton.icon(
+                onPressed: _processingCheckout
+                    ? null
+                    : () => _cancelVipRenewal('crew'),
+                icon: const Icon(Icons.cancel_schedule_send, size: 18),
+                label: Text('${l10n.premiumUiCancelRenewal} (crew)'),
+              ),
           ],
         ),
       ],

@@ -355,7 +355,11 @@ export const vaultService = {
           const nextVip = new Date(base.getTime() + 30 * 24 * 60 * 60 * 1000);
           await tx.player.update({
             where: { id: playerId },
-            data: { isVip: true, vipExpiresAt: nextVip },
+            data: {
+              isVip: true,
+              vipExpiresAt: nextVip,
+              vipLifetimeDays: { increment: 30 },
+            },
           });
           prize = { type: 'VIP_30D' };
         } else {

@@ -45,6 +45,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Voor Territory geldt: gebruik `TERRITORY_ACTION_DAILY_CAP=0` als default om de cap uit te zetten; begrenzing loopt daar via cooldown + anti-farm.
 - Territory Fase C: actief `safehouse_network`-project verhoogt passief regio-inkomen met `TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT` (default 10%; damaged = helft). Sabotage/supply contest-acties wijzigen project-HP/voortgang via runtime keys `TERRITORY_PROJECT_*`.
 - Territory Fase D: seizoen-awards gebruiken `TERRITORY_REWARD_CASH_MULTIPLIER_PERCENT` op crew-bank (storage-cap); region events kunnen passief inkomen verlagen via `TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT`.
+- VIP prestige (P6) is **display-only** (lifetime days / bronze-silver-gold). No combat, payout or cooldown power from prestige tiers.
 - Deep economy P5:
   - **Laundering:** cash sink (fee) + delayed bank credit + heat seize risk; success lightly reduces FBI heat. Direct bank deposit blijft gratis/instant.
   - **Stock market:** bank-funded buy/sell, slow synthetic ticks, position cap; los van crypto.

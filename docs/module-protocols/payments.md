@@ -4,13 +4,21 @@
 Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premium credits en credit-redemptions. Scope omvat checkout, webhook-fulfillment, wallet/ledger, entitlement-status en admin-beheer van catalogusdata. Niet in scope: generieke bank/economieflows zonder premium-relatie.
 
 ## Primary Frontend Entry
-- `client/lib/screens/crew_screen.dart`
-- Eventuele toekomstige premium/credits schermen in `client/lib/screens/`
+- `client/lib/screens/premium_screen.dart` (VIP buy/extend, gift, cancel auto-renew, prestige KPI)
+- `client/lib/screens/crew_screen.dart` (crew VIP checkout entry)
 
 ## Primary Backend Entry
 - `backend/src/routes/subscriptions.ts`
-- `backend/src/routes/admin.ts` voor catalogusbeheer
+- `backend/src/services/vipBenefitsService.ts` (VIP grant helpers, prestige tiers, expiry sweep)
+- `backend/src/routes/admin.ts` voor catalogusbeheer / VIP grant
 - `backend/prisma/schema.prisma`
+- Startup: `ensureVipPrestigeSchema.ts` (`players.vipLifetimeDays`, `crews.vipLifetimeDays`)
+
+## VIP polish (P6)
+- **Auto-renew:** Mollie subscription id op speler/crew; `GET /subscriptions/status` exposeert `autoRenewActive`; `POST /subscriptions/vip/cancel` stopt toekomstige charges maar behoudt `vipExpiresAt`.
+- **Gift Player VIP:** `POST /subscriptions/checkout/gift-player-vip` met `recipientUsername`; webhook type `player_vip_gift` verlengt VIP van ontvanger (geen auto-renew).
+- **Prestige (display-only):** lifetime VIP-dagen → tiers bronze/silver/gold (30/180/365); geen gameplay power.
+- Cron `vipExpirySweep` zet verlopen `isVip` uit (crew buildings downgraden).
 
 ## Change Rules
 - Gebruik provider-idempotentie: webhook-verwerking mag rewards nooit dubbel uitkeren.

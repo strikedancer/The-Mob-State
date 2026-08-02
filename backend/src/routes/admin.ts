@@ -33,6 +33,7 @@ import {
   CREW_MISSION_RUNTIME_SETTING_KEYS,
 } from '../services/crewMissionService';
 import { deletePortrait, listPortraits } from '../services/playerPortraitService';
+import { grantPlayerVipDays } from '../services/vipBenefitsService';
 
 const router = express.Router();
 
@@ -4185,15 +4186,15 @@ router.post(
         return res.status(404).json({ error: 'Player not found' });
       }
 
-      // Calculate expiration date
-      const vipExpiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
-
-      // Update player with VIP status
-      const updatedPlayer = await prisma.player.update({
+      const grant = await grantPlayerVipDays(player.id, days);
+      const updatedPlayer = await prisma.player.findUnique({
         where: { id: player.id },
-        data: {
+        select: {
+          id: true,
+          username: true,
           isVip: true,
-          vipExpiresAt,
+          vipExpiresAt: true,
+          vipLifetimeDays: true,
         },
       });
 
@@ -4201,10 +4202,11 @@ router.post(
         success: true,
         message: `VIP granted to ${username} for ${days} days`,
         player: {
-          id: updatedPlayer.id,
-          username: updatedPlayer.username,
-          isVip: updatedPlayer.isVip,
-          vipExpiresAt: updatedPlayer.vipExpiresAt,
+          id: updatedPlayer!.id,
+          username: updatedPlayer!.username,
+          isVip: updatedPlayer!.isVip,
+          vipExpiresAt: grant.vipExpiresAt,
+          vipLifetimeDays: grant.vipLifetimeDays,
         },
       });
     } catch (error) {

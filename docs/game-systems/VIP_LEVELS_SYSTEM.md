@@ -213,14 +213,18 @@ Level 10: 250M (3.6x last standard level)
 Per VIP level avg: 1.18B (steep but achievable)
 ```
 
+## Shipped polish (P6)
+- [x] Player/crew auto-renew visibility + cancel (`POST /subscriptions/vip/cancel`; paid-through period remains)
+- [x] Gift Player VIP by username (`POST /subscriptions/checkout/gift-player-vip`; one-time 30d, no auto-renew)
+- [x] Display-only prestige from `vipLifetimeDays` (bronze 30 / silver 180 / gold 365)
+
 ## Future Enhancements
 
 ### Potential Features
-- [ ] VIP auto-renewal system
 - [ ] VIP gifting between crews
 - [ ] Limited-time VIP sales/discounts
 - [ ] VIP-exclusive buildings (beyond just levels)
-- [ ] Crew prestige tiers (based on VIP days purchased)
+- [ ] Prestige gameplay bonuses (explicitly out of scope for P6 display-only)
 - [ ] VIP percentage bonuses (e.g., +5% storage capacity)
 
 ### Advanced Ideas

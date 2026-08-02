@@ -9,6 +9,12 @@ import {
   grantPurchasedCredits,
   redeemCreditItem,
 } from '../services/premiumCreditsService';
+import {
+  downgradeCrewAfterVipExpiry,
+  getVipPrestigeTier,
+  grantCrewVipDays,
+  grantPlayerVipDays,
+} from '../services/vipBenefitsService';
 
 const { createMollieClient } = require('@mollie/api-client');
 
@@ -21,7 +27,6 @@ const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 const MOLLIE_WEBHOOK_URL = process.env.MOLLIE_WEBHOOK_URL || `${APP_URL}/subscriptions/webhook`;
 const PLAYER_VIP_PRICE_EUR = process.env.MOLLIE_PLAYER_VIP_PRICE_EUR || '4.99';
 const CREW_VIP_PRICE_EUR = process.env.MOLLIE_CREW_VIP_PRICE_EUR || '9.99';
-const MAX_NON_VIP_BUILDING_LEVEL = 10;
 const PREMIUM_RUNTIME_KEYS = [
   'PREMIUM_PLAYER_VIP_PRICE_EUR',
   'PREMIUM_CREW_VIP_PRICE_EUR',
@@ -51,10 +56,12 @@ type PremiumOfferRecord = {
 };
 
 type PaymentMetadata = {
-  type: 'player_vip' | 'crew_vip' | 'one_time';
+  type: 'player_vip' | 'crew_vip' | 'one_time' | 'player_vip_gift';
   playerId: string;
   crewId?: string;
   productKey?: string;
+  recipientPlayerId?: string;
+  recipientUsername?: string;
 };
 
 type PaymentMetadataType = PaymentMetadata['type'];
@@ -391,80 +398,38 @@ function isLegacyBlockedOffer(offer: PremiumOfferRecord): boolean {
   );
 }
 
-async function downgradeCrewAfterVipExpiry(crewId: number): Promise<void> {
-  await prisma.$transaction(async (tx) => {
-    await tx.crewHqBuilding.updateMany({
-      where: { crewId },
-      data: { style: 'villa', level: 3 },
-    });
-
-    await Promise.all([
-      tx.crewCarStorageBuilding.updateMany({
-        where: { crewId, level: { gt: MAX_NON_VIP_BUILDING_LEVEL } },
-        data: { level: MAX_NON_VIP_BUILDING_LEVEL },
-      }),
-      tx.crewBoatStorageBuilding.updateMany({
-        where: { crewId, level: { gt: MAX_NON_VIP_BUILDING_LEVEL } },
-        data: { level: MAX_NON_VIP_BUILDING_LEVEL },
-      }),
-      tx.crewWeaponStorageBuilding.updateMany({
-        where: { crewId, level: { gt: MAX_NON_VIP_BUILDING_LEVEL } },
-        data: { level: MAX_NON_VIP_BUILDING_LEVEL },
-      }),
-      tx.crewAmmoStorageBuilding.updateMany({
-        where: { crewId, level: { gt: MAX_NON_VIP_BUILDING_LEVEL } },
-        data: { level: MAX_NON_VIP_BUILDING_LEVEL },
-      }),
-      tx.crewDrugStorageBuilding.updateMany({
-        where: { crewId, level: { gt: MAX_NON_VIP_BUILDING_LEVEL } },
-        data: { level: MAX_NON_VIP_BUILDING_LEVEL },
-      }),
-      tx.crewCashStorageBuilding.updateMany({
-        where: { crewId, level: { gt: MAX_NON_VIP_BUILDING_LEVEL } },
-        data: { level: MAX_NON_VIP_BUILDING_LEVEL },
-      }),
-    ]);
-  });
+function checkoutTypeFromMetadata(type: PaymentMetadataType): 'PLAYER_VIP' | 'CREW_VIP' | 'ONE_TIME' {
+  if (type === 'crew_vip') return 'CREW_VIP';
+  if (type === 'one_time') return 'ONE_TIME';
+  return 'PLAYER_VIP';
 }
 
 async function activateVipFromMetadata(
   metadata: PaymentMetadata,
   subscriptionId?: string
 ): Promise<void> {
+  if (metadata.type === 'player_vip_gift') {
+    const recipientId = parseInt(metadata.recipientPlayerId || '', 10);
+    if (!recipientId) return;
+    await grantPlayerVipDays(recipientId, 30);
+    return;
+  }
+
   const playerId = parseInt(metadata.playerId || '', 10);
   if (!playerId) return;
 
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { vipExpiresAt: true },
-  });
-
-  await prisma.player.update({
-    where: { id: playerId },
-    data: {
-      isVip: true,
-      vipExpiresAt: extendVipExpiry(player?.vipExpiresAt),
-      mollieSubscriptionId:
-        metadata.type === 'player_vip' ? subscriptionId || undefined : undefined,
-    },
-  });
+  if (metadata.type === 'player_vip') {
+    await grantPlayerVipDays(playerId, 30, {
+      mollieSubscriptionId: subscriptionId || undefined,
+    });
+    return;
+  }
 
   if (metadata.type === 'crew_vip' && metadata.crewId) {
     const crewId = parseInt(metadata.crewId, 10);
     if (!crewId) return;
-
-    const crew = await prisma.crew.findUnique({
-      where: { id: crewId },
-      select: { vipExpiresAt: true },
-    });
-
-    await prisma.crew.update({
-      where: { id: crewId },
-      data: {
-        isVip: true,
-        vipExpiresAt: extendVipExpiry(crew?.vipExpiresAt),
-        mollieSubscriptionId: subscriptionId || undefined,
-      },
+    await grantCrewVipDays(crewId, 30, {
+      mollieSubscriptionId: subscriptionId || undefined,
     });
   }
 }
@@ -776,12 +741,7 @@ async function reconcileRecentPaidTransactions(
 
     await upsertPaymentTransaction({
       playerId: Number(metadata.playerId),
-      checkoutType:
-        metadata.type === 'one_time'
-          ? 'ONE_TIME'
-          : metadata.type === 'crew_vip'
-            ? 'CREW_VIP'
-            : 'PLAYER_VIP',
+      checkoutType: checkoutTypeFromMetadata(metadata.type),
       productKey: metadata.productKey ?? null,
       amountValue: payment.amount.value,
       description: payment.description,
@@ -798,10 +758,12 @@ async function reconcileRecentPaidTransactions(
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
         const subscriptionId =
-          payment.subscriptionId ||
-          (payment.customerId
-            ? await ensureVipSubscription(metadata, payment.customerId)
-            : undefined);
+          metadata.type === 'player_vip_gift'
+            ? undefined
+            : payment.subscriptionId ||
+              (payment.customerId
+                ? await ensureVipSubscription(metadata, payment.customerId)
+                : undefined);
         await activateVipFromMetadata(metadata, subscriptionId);
       }
       continue;
@@ -819,8 +781,12 @@ async function reconcileRecentPaidTransactions(
 }
 
 async function ensureVipSubscription(metadata: PaymentMetadata, customerId: string) {
+  if (metadata.type === 'player_vip_gift' || metadata.type === 'one_time') {
+    return undefined;
+  }
+
   const mollie = getMollieClient();
-  const price = await getVipPrice(metadata.type);
+  const price = await getVipPrice(metadata.type === 'crew_vip' ? 'crew_vip' : 'player_vip');
   const startDate = toDateString(addDays(new Date(), 30));
 
   if (metadata.type === 'player_vip') {
@@ -954,6 +920,165 @@ router.post(
       return res.json({ url: checkoutUrl, provider: 'mollie' });
     } catch (error: unknown) {
       console.error('[Mollie] checkout/player-vip error:', error);
+      return next(error);
+    }
+  }
+);
+
+router.post(
+  '/checkout/gift-player-vip',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const buyerId = (req as any).player?.id as number;
+      const recipientUsername = String(req.body?.recipientUsername || '').trim();
+      if (!recipientUsername) {
+        return res.status(400).json({ event: 'error.recipient_required', params: {} });
+      }
+
+      const recipientRows = await prisma.$queryRawUnsafe<Array<{ id: number; username: string }>>(
+        `SELECT id, username FROM players WHERE LOWER(username) = LOWER(?) LIMIT 1`,
+        recipientUsername,
+      );
+      const recipient = recipientRows[0];
+      if (!recipient) {
+        return res.status(404).json({ event: 'error.recipient_not_found', params: {} });
+      }
+      if (recipient.id === buyerId) {
+        return res.status(400).json({ event: 'error.cannot_gift_self', params: {} });
+      }
+
+      const buyer = await prisma.player.findUnique({
+        where: { id: buyerId },
+        select: { email: true },
+      });
+      const customerId = await getOrCreateMollieCustomer(buyerId, buyer?.email);
+      const vipPriceEur = await getVipPrice('player_vip');
+      const payment = await createMollieCheckout({
+        playerId: buyerId,
+        customerId,
+        amountValue: vipPriceEur,
+        description: `Gift Player VIP → ${recipient.username}`,
+        checkoutType: 'PLAYER_VIP',
+        redirectStatus: 'success',
+        metadata: {
+          type: 'player_vip_gift',
+          playerId: String(buyerId),
+          recipientPlayerId: String(recipient.id),
+          recipientUsername: recipient.username,
+        },
+      });
+
+      const checkoutUrl = payment.getCheckoutUrl?.() || null;
+      if (!checkoutUrl) {
+        return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
+      }
+
+      return res.json({
+        url: checkoutUrl,
+        provider: 'mollie',
+        recipientUsername: recipient.username,
+      });
+    } catch (error: unknown) {
+      console.error('[Mollie] checkout/gift-player-vip error:', error);
+      return next(error);
+    }
+  }
+);
+
+router.post(
+  '/vip/cancel',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      const target = String(req.body?.target || 'player').toLowerCase();
+      const mollie = getMollieClient();
+
+      if (target === 'crew') {
+        const membership = await prisma.crewMember.findFirst({
+          where: { playerId, role: 'leader' },
+          include: {
+            crew: {
+              select: {
+                id: true,
+                mollieSubscriptionId: true,
+                vipExpiresAt: true,
+              },
+            },
+          },
+        });
+        if (!membership?.crew) {
+          return res.status(403).json({ event: 'error.not_crew_leader', params: {} });
+        }
+
+        const subscriptionId = membership.crew.mollieSubscriptionId;
+        const leader = await prisma.player.findUnique({
+          where: { id: playerId },
+          select: { mollieCustomerId: true },
+        });
+        if (!subscriptionId || !leader?.mollieCustomerId) {
+          return res.status(400).json({ event: 'error.no_active_renewal', params: {} });
+        }
+
+        try {
+          await mollie.customerSubscriptions.cancel(subscriptionId, {
+            customerId: leader.mollieCustomerId,
+          });
+        } catch (error) {
+          if (!isMollieNotFoundError(error)) {
+            throw error;
+          }
+        }
+
+        await prisma.crew.update({
+          where: { id: membership.crew.id },
+          data: { mollieSubscriptionId: null },
+        });
+
+        return res.json({
+          success: true,
+          target: 'crew',
+          autoRenewActive: false,
+          expiresAt: membership.crew.vipExpiresAt,
+        });
+      }
+
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: {
+          mollieCustomerId: true,
+          mollieSubscriptionId: true,
+          vipExpiresAt: true,
+        },
+      });
+      if (!player?.mollieSubscriptionId || !player.mollieCustomerId) {
+        return res.status(400).json({ event: 'error.no_active_renewal', params: {} });
+      }
+
+      try {
+        await mollie.customerSubscriptions.cancel(player.mollieSubscriptionId, {
+          customerId: player.mollieCustomerId,
+        });
+      } catch (error) {
+        if (!isMollieNotFoundError(error)) {
+          throw error;
+        }
+      }
+
+      await prisma.player.update({
+        where: { id: playerId },
+        data: { mollieSubscriptionId: null },
+      });
+
+      return res.json({
+        success: true,
+        target: 'player',
+        autoRenewActive: false,
+        expiresAt: player.vipExpiresAt,
+      });
+    } catch (error: unknown) {
+      console.error('[Mollie] vip/cancel error:', error);
       return next(error);
     }
   }
@@ -1223,6 +1348,7 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
           premiumCredits: true,
           hitProtectionExpiresAt: true,
           mollieSubscriptionId: true,
+          vipLifetimeDays: true,
         },
       }),
       prisma.crewMember.findFirst({
@@ -1234,6 +1360,7 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
               isVip: true,
               vipExpiresAt: true,
               mollieSubscriptionId: true,
+              vipLifetimeDays: true,
             },
           },
         },
@@ -1241,13 +1368,19 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
       getPremiumPricing(),
     ]);
 
+    const playerLifetimeDays = player?.vipLifetimeDays ?? 0;
+    const crewLifetimeDays = membership?.crew.vipLifetimeDays ?? 0;
+
     return res.json({
       paymentProvider: 'mollie',
       playerVip: {
         isVip: player?.isVip || false,
         expiresAt: player?.vipExpiresAt || null,
         subscriptionId: player?.mollieSubscriptionId || null,
+        autoRenewActive: Boolean(player?.mollieSubscriptionId),
         monthlyPriceEur: pricing.playerVipPriceEur,
+        lifetimeDays: playerLifetimeDays,
+        prestigeTier: getVipPrestigeTier(playerLifetimeDays),
       },
       crewVip: membership
         ? {
@@ -1255,7 +1388,10 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
             isVip: membership.crew.isVip,
             expiresAt: membership.crew.vipExpiresAt,
             subscriptionId: membership.crew.mollieSubscriptionId || null,
+            autoRenewActive: Boolean(membership.crew.mollieSubscriptionId),
             monthlyPriceEur: pricing.crewVipPriceEur,
+            lifetimeDays: crewLifetimeDays,
+            prestigeTier: getVipPrestigeTier(crewLifetimeDays),
           }
         : null,
       credits: {
@@ -1286,12 +1422,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
 
     await upsertPaymentTransaction({
       playerId: Number(metadata.playerId),
-      checkoutType:
-        metadata.type === 'one_time'
-          ? 'ONE_TIME'
-          : metadata.type === 'crew_vip'
-            ? 'CREW_VIP'
-            : 'PLAYER_VIP',
+      checkoutType: checkoutTypeFromMetadata(metadata.type),
       productKey: metadata.productKey ?? null,
       amountValue: payment.amount.value,
       description: payment.description,
@@ -1308,10 +1439,12 @@ router.post('/webhook', async (req: Request, res: Response) => {
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
         const subscriptionId =
-          payment.subscriptionId ||
-          (payment.customerId
-            ? await ensureVipSubscription(metadata, payment.customerId)
-            : undefined);
+          metadata.type === 'player_vip_gift'
+            ? undefined
+            : payment.subscriptionId ||
+              (payment.customerId
+                ? await ensureVipSubscription(metadata, payment.customerId)
+                : undefined);
         await activateVipFromMetadata(metadata, subscriptionId);
       }
     }

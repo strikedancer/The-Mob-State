@@ -14,6 +14,7 @@ import { processPendingTerritoryContests } from './territoryService';
 import { processDueVehicleRepairCompletions } from './vehicleService';
 import { processDueLaunderJobs } from './launderService';
 import { tickStockPrices } from './stockMarketService';
+import { expireStaleVipFlags, isVipStatusActive } from './vipBenefitsService';
 
 const prisma = new PrismaClient();
 
@@ -377,13 +378,16 @@ export async function runDrugProductionAutomation(): Promise<void> {
         isVip: true,
         autoCollectDrugs: true,
       },
-      select: { id: true },
+      select: { id: true, isVip: true, vipExpiresAt: true },
     });
 
     let totalCollected = 0;
     let playersCollected = 0;
 
     for (const player of autoCollectPlayers) {
+      if (!isVipStatusActive(player, now)) {
+        continue;
+      }
       const collected = await drugService.autoCollectAll(player.id);
       if (collected > 0) {
         totalCollected += collected;
@@ -472,6 +476,7 @@ export function getCronStatus() {
       territoryContestProcessor: 'Every minute',
       launderProcessor: 'Every minute',
       stockMarketTick: 'Every minute',
+      vipExpirySweep: 'Every 5 minutes',
       cryptoOrderProcessor: 'Every 30 seconds',
       eventScheduler: 'Every 5 minutes',
     },
@@ -542,6 +547,20 @@ export function initializeCronJobs(): void {
     }
   });
 
+  cron.schedule('*/5 * * * *', async () => {
+    try {
+      const result = await expireStaleVipFlags();
+      if (result.players > 0 || result.crews > 0) {
+        console.log(
+          `[CRON JOB] vipExpirySweep players=${result.players} crews=${result.crews}`,
+        );
+      }
+      lastJobExecutions['vipExpirySweep'] = new Date();
+    } catch (error) {
+      console.error('[CRON ERROR] vipExpirySweep:', error);
+    }
+  });
+
   cron.schedule('*/30 * * * * *', async () => {
     try {
       const result = await processOpenOrdersInBackground();
@@ -574,6 +593,7 @@ export function initializeCronJobs(): void {
   console.log('  - Territory Contest Processor: Every minute');
   console.log('  - Launder Processor: Every minute');
   console.log('  - Stock Market Tick: Every minute');
+  console.log('  - VIP Expiry Sweep: Every 5 minutes');
   console.log('  - Crypto Order Processor: Every 30 seconds');
   console.log('  - Game Event Scheduler: Every 5 minutes');
 }

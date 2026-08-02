@@ -19,6 +19,7 @@ import { ensureGarageUpgradeTrackSchema } from './startup/ensureGarageUpgradeTra
 import { ensureGarageMotorcycleTrackBackfill } from './startup/ensureGarageMotorcycleTrackBackfill';
 import { ensureVaultSchema } from './startup/ensureVaultSchema';
 import { ensureDeepEconomySchema } from './startup/ensureDeepEconomySchema';
+import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
@@ -60,6 +61,7 @@ async function startServer() {
   await ensureCrewMissionSchema();
   await ensureVaultSchema();
   await ensureDeepEconomySchema();
+  await ensureVipPrestigeSchema();
   await ensureDailyGoalsSchema();
   await ensureGarageUpgradeTrackSchema();
   await ensureGarageMotorcycleTrackBackfill();

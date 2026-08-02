@@ -20,6 +20,7 @@ import * as territoryService from '../services/territoryService';
 import {
   applyVipTimeoutReductionMs,
   applyVipTimeoutReductionSeconds,
+  getVipPrestigeTier,
   isVipStatusActive,
 } from '../services/vipBenefitsService';
 import {
@@ -324,6 +325,10 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       reputation: player.reputation || 0,
       isVip: player.isVip || false,
       vip: player.isVip || false,
+      vipLifetimeDays: (player as { vipLifetimeDays?: number }).vipLifetimeDays ?? 0,
+      vipPrestigeTier: getVipPrestigeTier(
+        (player as { vipLifetimeDays?: number }).vipLifetimeDays ?? 0,
+      ),
       isAlive,
       status: isAlive ? 'alive' : 'dead',
       isOnlineNow,
