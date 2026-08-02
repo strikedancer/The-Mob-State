@@ -112,9 +112,8 @@ class DrugSmugglingService {
 
     const inventory = await prisma.drugInventory.findUnique({
       where: {
-        playerId_country_drugType_quality: {
+        playerId_drugType_quality: {
           playerId,
-          country: player.currentCountry,
           drugType,
           quality,
         },
@@ -145,9 +144,8 @@ class DrugSmugglingService {
       if (inventory.quantity === quantity) {
         await tx.drugInventory.delete({
           where: {
-            playerId_country_drugType_quality: {
+            playerId_drugType_quality: {
               playerId,
-              country: player.currentCountry,
               drugType,
               quality,
             },
@@ -156,9 +154,8 @@ class DrugSmugglingService {
       } else {
         await tx.drugInventory.update({
           where: {
-            playerId_country_drugType_quality: {
+            playerId_drugType_quality: {
               playerId,
-              country: player.currentCountry,
               drugType,
               quality,
             },
@@ -302,9 +299,8 @@ class DrugSmugglingService {
       for (const s of ready) {
         const existing = await tx.drugInventory.findUnique({
           where: {
-            playerId_country_drugType_quality: {
+            playerId_drugType_quality: {
               playerId,
-              country: s.destination_country,
               drugType: s.drug_type,
               quality: s.quality,
             },
@@ -314,9 +310,8 @@ class DrugSmugglingService {
         if (existing) {
           await tx.drugInventory.update({
             where: {
-              playerId_country_drugType_quality: {
+              playerId_drugType_quality: {
                 playerId,
-                country: s.destination_country,
                 drugType: s.drug_type,
                 quality: s.quality,
               },
@@ -327,7 +322,6 @@ class DrugSmugglingService {
           await tx.drugInventory.create({
             data: {
               playerId,
-              country: s.destination_country,
               drugType: s.drug_type,
               quality: s.quality,
               quantity: s.quantity,

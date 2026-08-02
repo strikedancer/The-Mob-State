@@ -1,4 +1,4 @@
-import prisma from '../lib/prisma';
+﻿import prisma from '../lib/prisma';
 import countries from '../../content/countries.json';
 import { vehicleService } from './vehicleService';
 import { getAircraftById } from './aviationService';
@@ -207,7 +207,7 @@ class SmugglingService {
 
       return {
         transportKey: `vehicle:${vehicle.id}`,
-        transportLabel: `${vehicle.vehicleType.toUpperCase()} • ${vehicle.vehicleId}`,
+        transportLabel: `${vehicle.vehicleType.toUpperCase()} â€¢ ${vehicle.vehicleId}`,
         transportType,
         cargoSlots: this.vehicleSlotsForType(transportType),
         riskReduction: transportType === 'motorcycle' ? 0.08 : transportType === 'boat' ? 0.07 : 0.05,
@@ -224,7 +224,7 @@ class SmugglingService {
       const definition = getAircraftById(plane.aircraftType);
       return {
         transportKey: `aircraft:${plane.id}`,
-        transportLabel: `${definition?.name ?? plane.aircraftType} • #${plane.id}`,
+        transportLabel: `${definition?.name ?? plane.aircraftType} â€¢ #${plane.id}`,
         transportType: 'aircraft' as const,
         cargoSlots: this.aircraftCargoSlots(plane.aircraftType),
         riskReduction: this.aircraftRiskReduction(plane.aircraftType),
@@ -261,7 +261,7 @@ class SmugglingService {
       const definition = getAircraftById(plane.aircraftType);
       return {
         transportKey,
-        transportLabel: `${definition?.name ?? plane.aircraftType} • #${plane.id}`,
+        transportLabel: `${definition?.name ?? plane.aircraftType} â€¢ #${plane.id}`,
         transportType: 'aircraft',
         cargoSlots: this.aircraftCargoSlots(plane.aircraftType),
         riskReduction: this.aircraftRiskReduction(plane.aircraftType),
@@ -295,7 +295,7 @@ class SmugglingService {
 
     return {
       transportKey,
-      transportLabel: `${vehicle.vehicleType.toUpperCase()} • ${vehicle.vehicleId}`,
+      transportLabel: `${vehicle.vehicleType.toUpperCase()} â€¢ ${vehicle.vehicleId}`,
       transportType,
       cargoSlots: this.vehicleSlotsForType(transportType),
       riskReduction: transportType === 'motorcycle' ? 0.08 : transportType === 'boat' ? 0.07 : 0.05,
@@ -650,7 +650,7 @@ class SmugglingService {
               const vehicleType = resolveCrewLandVehicleType(v.vehicleId);
               return {
                 itemKey: `${vehicleType}:${v.id}`,
-                itemLabel: `${vehicleType === 'motorcycle' ? 'MOTORCYCLE' : 'CAR'} • ${v.vehicleId}`,
+                itemLabel: `${vehicleType === 'motorcycle' ? 'MOTORCYCLE' : 'CAR'} â€¢ ${v.vehicleId}`,
                 quantity: 1,
                 unitTag: 'vehicle',
                 metadata: { vehicleType, crewInventoryId: v.id },
@@ -658,7 +658,7 @@ class SmugglingService {
             }),
             ...crewBoats.map((v) => ({
               itemKey: `boat:${v.id}`,
-              itemLabel: `BOAT • ${v.vehicleId}`,
+              itemLabel: `BOAT â€¢ ${v.vehicleId}`,
               quantity: 1,
               unitTag: 'vehicle',
               metadata: { vehicleType: 'boat', crewInventoryId: v.id },
@@ -693,7 +693,7 @@ class SmugglingService {
       categories: {
         drug: drugs.map((d) => ({ itemKey: `${d.drugType}:${d.quality}`, itemLabel: `${d.drugType} (${d.quality})`, quantity: d.quantity, quality: d.quality, unitTag: 'g' })),
         trade: tradeGoods.map((g) => ({ itemKey: g.goodType, itemLabel: g.goodType, quantity: g.quantity, unitTag: 'unit' })),
-        vehicle: vehicles.map((v) => ({ itemKey: `vehicle:${v.id}`, itemLabel: `${v.vehicleType.toUpperCase()} • ${v.vehicleId}`, quantity: 1, unitTag: 'vehicle', metadata: { vehicleType: v.vehicleType, inventoryId: v.id } })),
+        vehicle: vehicles.map((v) => ({ itemKey: `vehicle:${v.id}`, itemLabel: `${v.vehicleType.toUpperCase()} â€¢ ${v.vehicleId}`, quantity: 1, unitTag: 'vehicle', metadata: { vehicleType: v.vehicleType, inventoryId: v.id } })),
         weapon: weapons.map((w) => ({ itemKey: w.weaponId, itemLabel: w.weaponId, quantity: w.quantity, unitTag: 'weapon' })),
         ammo: ammo.map((a) => ({ itemKey: a.ammoType, itemLabel: a.ammoType, quantity: a.quantity, unitTag: 'round' })),
       },
@@ -840,15 +840,15 @@ class SmugglingService {
           const quality = colonIdx > 0 ? itemKey.slice(colonIdx + 1) : String(input.metadata?.quality ?? 'C');
           storeItemKey = drugType;
           const inv = await tx.drugInventory.findUnique({
-            where: { playerId_country_drugType_quality: { playerId, country: player.currentCountry, drugType, quality } },
+            where: { playerId_drugType_quality: { playerId, drugType, quality } },
           });
           if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg drugs in inventory' } as const;
 
           if (inv.quantity === quantity) {
-            await tx.drugInventory.delete({ where: { playerId_country_drugType_quality: { playerId, country: player.currentCountry, drugType, quality } } });
+            await tx.drugInventory.delete({ where: { playerId_drugType_quality: { playerId, drugType, quality } } });
           } else {
             await tx.drugInventory.update({
-              where: { playerId_country_drugType_quality: { playerId, country: player.currentCountry, drugType, quality } },
+              where: { playerId_drugType_quality: { playerId, drugType, quality } },
               data: { quantity: inv.quantity - quantity },
             });
           }
@@ -947,7 +947,7 @@ class SmugglingService {
             await tx.crewBoatInventory.delete({ where: { id: boat.id } });
 
             effectiveQuantity = 1;
-            itemLabel = `BOAT • ${boat.vehicleId}`;
+            itemLabel = `BOAT â€¢ ${boat.vehicleId}`;
             unitTag = 'vehicle';
             metadata = {
               ...metadata,
@@ -972,7 +972,7 @@ class SmugglingService {
             await tx.crewCarInventory.delete({ where: { id: car.id } });
 
             effectiveQuantity = 1;
-            itemLabel = `${vehicleType === 'motorcycle' ? 'MOTORCYCLE' : 'CAR'} • ${car.vehicleId}`;
+            itemLabel = `${vehicleType === 'motorcycle' ? 'MOTORCYCLE' : 'CAR'} â€¢ ${car.vehicleId}`;
             unitTag = 'vehicle';
             metadata = {
               ...metadata,
@@ -1005,7 +1005,7 @@ class SmugglingService {
           await tx.vehicleInventory.delete({ where: { id: vehicle.id } });
 
           effectiveQuantity = 1;
-          itemLabel = `${vehicle.vehicleType.toUpperCase()} • ${vehicle.vehicleId}`;
+          itemLabel = `${vehicle.vehicleType.toUpperCase()} â€¢ ${vehicle.vehicleId}`;
           unitTag = 'vehicle';
           metadata = {
             ...metadata,
@@ -1199,7 +1199,7 @@ class SmugglingService {
         const drugType = colonIdx > 0 ? itemKey.slice(0, colonIdx) : itemKey;
         const quality = colonIdx > 0 ? itemKey.slice(colonIdx + 1) : String(input.metadata?.quality ?? 'C');
         const inv = await prisma.drugInventory.findUnique({
-          where: { playerId_country_drugType_quality: { playerId, country: player.currentCountry, drugType, quality } },
+          where: { playerId_drugType_quality: { playerId, drugType, quality } },
           select: { quantity: true },
         });
         availableQuantity = inv?.quantity ?? 0;
@@ -1445,17 +1445,17 @@ class SmugglingService {
         } else if (shipment.category === 'drug') {
           const quality = String(metadata.quality ?? 'C');
           const existing = await tx.drugInventory.findUnique({
-            where: { playerId_country_drugType_quality: { playerId, country: shipment.destination_country, drugType: shipment.item_key, quality } },
+            where: { playerId_drugType_quality: { playerId, drugType: shipment.item_key, quality } },
           });
 
           if (existing) {
             await tx.drugInventory.update({
-              where: { playerId_country_drugType_quality: { playerId, country: shipment.destination_country, drugType: shipment.item_key, quality } },
+              where: { playerId_drugType_quality: { playerId, drugType: shipment.item_key, quality } },
               data: { quantity: existing.quantity + shipment.quantity },
             });
           } else {
             await tx.drugInventory.create({
-              data: { playerId, country: shipment.destination_country, drugType: shipment.item_key, quality, quantity: shipment.quantity },
+              data: { playerId, drugType: shipment.item_key, quality, quantity: shipment.quantity },
             });
           }
         } else if (shipment.category === 'trade') {

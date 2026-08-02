@@ -8,6 +8,10 @@ Vehicle movement between countries also belongs here when cars or boats are relo
 ## Primary Frontend Entry
 - client/lib/screens/smuggling_screen.dart
 
+## Drug inventory contract
+
+`DrugInventory` is unique on **`playerId + drugType + quality`** (geen landkolom). Smokkel (`smugglingService` / `drugSmugglingService`) mag **niet** de oude Prisma-key `playerId_country_drugType_quality` gebruiken — dat veroorzaakt 500 `Server error` bij quote/send van drugs.
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.

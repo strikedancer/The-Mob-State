@@ -598,6 +598,9 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Kopen/verkopen**: live prijzen en inventory; elektronica-verkoop hangt af van **conditie**.
 - **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
+### Smokkel-hub (drugs-zendingen)
+- Persoonlijke drugsinventaris is **niet per land** in `DrugInventory` (unique: `playerId` + `drugType` + `quality`). Quote/send mag geen oude country-compound Prisma-key gebruiken — dat gaf 500 Server error.
+
 ### Trade Risk Factors (legacy / algemeen)
 Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s; details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md` / `TRADE_RISK_MECHANICS` waar van toepassing.
 
