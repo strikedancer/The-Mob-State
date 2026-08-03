@@ -177,6 +177,7 @@ class MafiaGameApp extends StatelessWidget {
             },
             '/prostitution-leaderboard': (context) => const ProstitutionLeaderboardScreen(),
             '/prostitution-rivalry': (context) => const ProstitutionRivalryScreen(),
+            '/estate-lot-preview': (context) => const EstateLotPreviewScreen(),
             '/achievements': (context) => const AchievementsScreen(),
             '/school': (context) => const SchoolScreen(),
             '/help': (context) => const HelpScreen(),

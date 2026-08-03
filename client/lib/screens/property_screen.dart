@@ -5,11 +5,12 @@ import '../models/property.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../widgets/property_card.dart';
+import '../widgets/responsive_modal.dart';
+import './estate_lot_preview_screen.dart';
 import './nightclub_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
-import '../widgets/responsive_modal.dart';
 class PropertyScreen extends StatefulWidget {
   const PropertyScreen({super.key});
 
@@ -439,6 +440,19 @@ class PropertyScreenState extends State<PropertyScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.properties),
+        actions: [
+          IconButton(
+            tooltip: 'Estate lot preview',
+            icon: const Icon(Icons.cottage_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const EstateLotPreviewScreen(),
+                ),
+              );
+            },
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           tabs: [
