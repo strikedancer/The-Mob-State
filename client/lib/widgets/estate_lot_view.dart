@@ -42,13 +42,13 @@ class EstateLotView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Painter order: base → back structures → house → front parking → fence overlay
+    // Painter order: base → fence (perimeter) → shed → house → parking (front)
     final layers = <String>[
       baseAsset,
+      fenceAsset(fenceLevel),
       shedAsset(shedLevel),
       houseAsset(houseLevel),
       parkingAsset(parkingLevel),
-      fenceAsset(fenceLevel),
     ];
 
     return AspectRatio(
