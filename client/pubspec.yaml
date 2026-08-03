@@ -133,6 +133,11 @@ flutter:
     - assets/images/drugs/
     - assets/images/facilities/
     - assets/images/homes/
+    - assets/images/homes/estate_lot/
+    - assets/images/homes/estate_lot/house/
+    - assets/images/homes/estate_lot/parking/
+    - assets/images/homes/estate_lot/shed/
+    - assets/images/homes/estate_lot/fence/
     - assets/images/jobs/
     - assets/images/materials/
     - assets/images/overlays/
