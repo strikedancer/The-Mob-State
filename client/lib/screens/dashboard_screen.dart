@@ -2246,7 +2246,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     // Empire hub: Workers=0, RLD=1, Events=2, Social=3
                                     arguments: {'tabIndex': 1},
                                   ),
-                                );
+                                ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.gavel,
