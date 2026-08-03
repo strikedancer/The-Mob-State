@@ -8331,6 +8331,95 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionUpgradeFailed => 'Upgrade mislukt';
 
   @override
+  String get prostitutionTabWorkers => 'Werkers';
+
+  @override
+  String get prostitutionTabRld => 'RLD';
+
+  @override
+  String get prostitutionTabEvents => 'Events';
+
+  @override
+  String get prostitutionTabSocial => 'Sociaal';
+
+  @override
+  String get prostitutionRecruitCeremonyTitle => 'Nieuwe recruit';
+
+  @override
+  String prostitutionCollectConfirm(String amount) {
+    return '€$amount aan openstaande inkomsten innen?';
+  }
+
+  @override
+  String get prostitutionCollectEmpty =>
+      'Er zijn nu geen inkomsten om te innen.';
+
+  @override
+  String prostitutionCollectSuccess(String amount) {
+    return '€$amount geïnd.';
+  }
+
+  @override
+  String get prostitutionCollectFailed => 'Innen van inkomsten mislukt.';
+
+  @override
+  String get prostitutionWorkersKpi => 'Werkers (S/RLD/NC)';
+
+  @override
+  String get prostitutionHourlyKpi => '€/uur';
+
+  @override
+  String get prostitutionRecruitReady => 'Klaar';
+
+  @override
+  String get prostitutionRetry => 'Opnieuw';
+
+  @override
+  String get prostitutionMove => 'Verplaats';
+
+  @override
+  String get prostitutionFbiHeat => 'FBI-heat';
+
+  @override
+  String get prostitutionRaidStatsTitle => 'Raidrisico';
+
+  @override
+  String get prostitutionRaidStatsDistricts => 'Districten';
+
+  @override
+  String get prostitutionRaidStatsBusted => 'Nu gebust';
+
+  @override
+  String prostitutionUpgradeTierConfirm(String tier, String cost) {
+    return 'Tier upgraden naar $tier voor €$cost?';
+  }
+
+  @override
+  String prostitutionUpgradeSecurityConfirm(String level, String cost) {
+    return 'Beveiliging upgraden naar niveau $level voor €$cost?';
+  }
+
+  @override
+  String prostitutionRoomsOccupied(String occupied, String total) {
+    return '$occupied/$total kamers';
+  }
+
+  @override
+  String prostitutionNextEarnings(String net) {
+    return 'Volgende: €$net/u netto';
+  }
+
+  @override
+  String prostitutionCurrentEarningsNet(String net) {
+    return 'Nu: €$net/u netto';
+  }
+
+  @override
+  String prostitutionRaidReduction(String pct) {
+    return 'Raidverlaging: $pct';
+  }
+
+  @override
   String get vipEventsTitle => 'VIP-evenementen';
 
   @override
@@ -14026,7 +14115,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Je beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: je kunt recruits verplaatsen tussen straat, Red Light District en nightclub via de actieknoppen op de kaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.';
+      'De Prostitution Empire-hub heeft vier tabs: Werkers, RLD, Events en Sociaal.\nJe beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nGebruik Innen om openstaande inkomsten uit de KPI-strip te innen.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: verplaats recruits tussen straat, Red Light District en nightclub via het Verplaats-menu op elke werkerkaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.';
 
   @override
   String get helpTopicProstitutionTips =>
@@ -14044,7 +14133,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Elk land heeft één of meerdere Red Light Districts die geclaimd kunnen worden. Claim een district door een vastgesteld aankoopbedrag te betalen.\nAls eigenaar van een district ontvang je een percentage van alle prostitutie-inkomsten in dat land — ook van andere spelers die er opereren.\nAndere spelers kunnen jouw district aanvallen om de ownership over te nemen. Hogere beveiliging verlaagt de aanvalskans.\nDistrict-upgrades (beveiliging, marketing, infrastructuur) verhogen je inkomenspercentage en verlagen de kans op verlies van ownership.\nJe kunt maximaal 3 districten tegelijk bezitten. Strategische keuze per land is essentieel.\nDrukste landen (Colombia, Dubai, Japan) geven het hoogste passieve inkomen maar zijn ook het vaakst omstreden.\nVerlies van een district kost je het aankoopbedrag niet terug: het is definitief verloren als een vijand succesvol claimt.';
+      'Elk land heeft één of meerdere Red Light Districts die geclaimd kunnen worden. Claim een district door een vastgesteld aankoopbedrag te betalen.\nAls eigenaar van een district ontvang je een percentage van alle prostitutie-inkomsten in dat land — ook van andere spelers die er opereren.\nAndere spelers kunnen jouw district aanvallen om de ownership over te nemen. Hogere beveiliging verlaagt de aanvalskans.\nIn het districtdetail kun je tier (inkomsten) en beveiliging (raidrisico) upgraden, en live raidstatistieken bekijken (FBI-heat, raidkans). Hogere beveiliging verlaagt de raidkans.\nJe kunt maximaal 3 districten tegelijk bezitten. Strategische keuze per land is essentieel.\nDrukste landen (Colombia, Dubai, Japan) geven het hoogste passieve inkomen maar zijn ook het vaakst omstreden.\nVerlies van een district kost je het aankoopbedrag niet terug: het is definitief verloren als een vijand succesvol claimt.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>

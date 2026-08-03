@@ -4909,6 +4909,95 @@
   "prostitutionMaxSecurity": "Max security reached",
   "prostitutionUpgradeSuccess": "Upgrade successful!",
   "prostitutionUpgradeFailed": "Upgrade failed",
+  "prostitutionTabWorkers": "Workers",
+  "prostitutionTabRld": "RLD",
+  "prostitutionTabEvents": "Events",
+  "prostitutionTabSocial": "Social",
+  "prostitutionRecruitCeremonyTitle": "New recruit",
+  "prostitutionCollectConfirm": "Collect €{amount} in pending earnings?",
+  "@prostitutionCollectConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectEmpty": "No earnings to collect right now.",
+  "prostitutionCollectSuccess": "Collected €{amount}.",
+  "@prostitutionCollectSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectFailed": "Could not collect earnings.",
+  "prostitutionWorkersKpi": "Workers (S/RLD/NC)",
+  "prostitutionHourlyKpi": "€/hour",
+  "prostitutionRecruitReady": "Ready",
+  "prostitutionRetry": "Retry",
+  "prostitutionMove": "Move",
+  "prostitutionFbiHeat": "FBI Heat",
+  "prostitutionRaidStatsTitle": "Raid risk",
+  "prostitutionRaidStatsDistricts": "Districts",
+  "prostitutionRaidStatsBusted": "Currently busted",
+  "prostitutionUpgradeTierConfirm": "Upgrade tier to {tier} for €{cost}?",
+  "@prostitutionUpgradeTierConfirm": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionUpgradeSecurityConfirm": "Upgrade security to level {level} for €{cost}?",
+  "@prostitutionUpgradeSecurityConfirm": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRoomsOccupied": "{occupied}/{total} rooms",
+  "@prostitutionRoomsOccupied": {
+    "placeholders": {
+      "occupied": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionNextEarnings": "Next: €{net}/h net",
+  "@prostitutionNextEarnings": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCurrentEarningsNet": "Now: €{net}/h net",
+  "@prostitutionCurrentEarningsNet": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRaidReduction": "Raid reduction: {pct}",
+  "@prostitutionRaidReduction": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
   "vipEventsTitle": "VIP Events",
   "vipEventsTabTitle": "VIP Events",
   "vipEventsDescription": "Assign prostitutes to VIP events for bonus earnings!",
@@ -8419,12 +8508,12 @@
   "helpTopicProstitutionCategory": "Empire",
   "helpTopicProstitutionTitle": "Prostitution",
   "helpTopicProstitutionSummary": "Build a prostitution network with recruits, events and VIP clients. A well-run network generates passive income but requires active management to control rivalry and police attention.",
-  "helpTopicProstitutionHow": "You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.",
+  "helpTopicProstitutionHow": "The Prostitution Empire hub has four tabs: Workers, RLD, Events and Social.\nYou manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nUse Collect to settle pending earnings shown in the KPI strip.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: move recruits between street, Red Light District and nightclub via the Move menu on each worker card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.",
   "helpTopicProstitutionTips": "Invest early in security: a rivalry attack that poaches your best recruit costs more than the security investment.\nOnly organise VIP events when recruits are above 80 popularity: below that threshold VIP clients simply pay the standard rate.",
   "helpTopicRedLightDistrictsCategory": "Empire",
   "helpTopicRedLightDistrictsTitle": "Red Light Districts",
   "helpTopicRedLightDistrictsSummary": "Claim and manage territorial districts per country. Owning a district gives passive income and control over prostitution activities in that region.",
-  "helpTopicRedLightDistrictsHow": "Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nDistrict upgrades (security, marketing, infrastructure) raise your income percentage and lower the chance of losing ownership.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.",
+  "helpTopicRedLightDistrictsHow": "Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nIn district detail you can upgrade tier (earnings) and security (raid risk), and view live raid stats (FBI heat, raid chance). Higher security lowers raid chance.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.",
   "helpTopicRedLightDistrictsTips": "Start with a less popular country for your first district: lower attack pressure gives you time to upgrade security before the real competition.\nUpgrade security of each district immediately after purchase: the first 24 hours are the most vulnerable to a takeover.",
   "helpTopicAchievementsCategory": "Meta",
   "helpTopicAchievementsTitle": "Achievements",

@@ -155,6 +155,22 @@ class MafiaGameApp extends StatelessWidget {
                 tabIndex = args;
               } else if (args is Map<String, dynamic>) {
                 tabIndex = args['tabIndex'] as int? ?? 0;
+              } else {
+                final tab = Uri.base.queryParameters['tab']?.toLowerCase();
+                switch (tab) {
+                  case 'rld':
+                    tabIndex = 1;
+                    break;
+                  case 'events':
+                    tabIndex = 2;
+                    break;
+                  case 'social':
+                    tabIndex = 3;
+                    break;
+                  case 'workers':
+                  default:
+                    tabIndex = 0;
+                }
               }
 
               return ProstitutionScreen(initialTabIndex: tabIndex);

@@ -8356,6 +8356,95 @@ class AppLocalizationsPt extends AppLocalizations {
   String get prostitutionUpgradeFailed => 'Falha na atualização';
 
   @override
+  String get prostitutionTabWorkers => 'Trabalhadores';
+
+  @override
+  String get prostitutionTabRld => 'RLD';
+
+  @override
+  String get prostitutionTabEvents => 'Eventos';
+
+  @override
+  String get prostitutionTabSocial => 'Social';
+
+  @override
+  String get prostitutionRecruitCeremonyTitle => 'Novo recruta';
+
+  @override
+  String prostitutionCollectConfirm(String amount) {
+    return 'Receber €$amount em ganhos pendentes?';
+  }
+
+  @override
+  String get prostitutionCollectEmpty =>
+      'Não há ganhos para coletar no momento.';
+
+  @override
+  String prostitutionCollectSuccess(String amount) {
+    return 'Arrecadou €$amount.';
+  }
+
+  @override
+  String get prostitutionCollectFailed => 'Não foi possível coletar ganhos.';
+
+  @override
+  String get prostitutionWorkersKpi => 'Trabalhadores (S/RLD/NC)';
+
+  @override
+  String get prostitutionHourlyKpi => '€/hora';
+
+  @override
+  String get prostitutionRecruitReady => 'Preparar';
+
+  @override
+  String get prostitutionRetry => 'Tentar novamente';
+
+  @override
+  String get prostitutionMove => 'Mover';
+
+  @override
+  String get prostitutionFbiHeat => 'Calor do FBI';
+
+  @override
+  String get prostitutionRaidStatsTitle => 'Risco de ataque';
+
+  @override
+  String get prostitutionRaidStatsDistricts => 'Distritos';
+
+  @override
+  String get prostitutionRaidStatsBusted => 'Atualmente preso';
+
+  @override
+  String prostitutionUpgradeTierConfirm(String tier, String cost) {
+    return 'Atualizar nível para $tier por €$cost?';
+  }
+
+  @override
+  String prostitutionUpgradeSecurityConfirm(String level, String cost) {
+    return 'Atualizar a segurança para o nível $level por €$cost?';
+  }
+
+  @override
+  String prostitutionRoomsOccupied(String occupied, String total) {
+    return '$occupied/$total quartos';
+  }
+
+  @override
+  String prostitutionNextEarnings(String net) {
+    return 'Próximo: €$net/h líquido';
+  }
+
+  @override
+  String prostitutionCurrentEarningsNet(String net) {
+    return 'Agora: €$net/h líquido';
+  }
+
+  @override
+  String prostitutionRaidReduction(String pct) {
+    return 'Redução de ataques: $pct';
+  }
+
+  @override
   String get vipEventsTitle => 'Eventos VIP';
 
   @override
@@ -14125,7 +14214,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Você gerencia recrutas, cada um com suas próprias estatísticas (experiência, popularidade, disponibilidade). Mais recrutas = maior renda passiva. \nOs turnos de trabalho duram 8 horas por recruta: após um turno, esse recruta precisa de um tempo de descanso antes de poder começar novamente. \nO gerenciamento de localização é flexível: você pode mover os recrutas entre a rua, o Red Light District e a boate usando os botões de ação em cada cartão. \nOs eventos são impulsionadores temporários: shows especiais, noites VIP e festas aumentam a receita por tick durante o evento. \nRivalidade: outros jogadores ou competidores NPC podem roubar seus recrutas ou sabotar eventos. Maior segurança reduz esse risco. \nOs clientes VIP pagam consideravelmente mais, mas exigem recrutas com alta popularidade (80+) e uma localização segura. \nA atenção da polícia (calor) aumenta com grandes transações e batidas. O calor elevado leva ao confisco de rendimentos ou ao encerramento temporário. \nCombinação com discoteca: uma discoteca oferece cobertura legal para atividades que provocam um aumento mais lento do calor. \nUse o painel de informações de ganhos na parte superior para comparar rapidamente a produção por hora de rua, RLD e boate. \nTabela de classificação: o maior faturamento semanal total ganha uma recompensa semanal em dinheiro e um distintivo.';
+      'O hub Prostitution Empire possui quatro guias: Trabalhadores, RLD, Eventos e Social.\nVocê gerencia recrutas, cada um com suas próprias estatísticas (experiência, popularidade, disponibilidade). Mais recrutas = maior renda passiva.\nUse Cobrar para liquidar ganhos pendentes mostrados na faixa de KPI.\nOs turnos de trabalho duram 8 horas por recruta: após um turno, esse recruta precisa de um tempo de descanso antes de poder começar novamente.\nO gerenciamento de localização é flexível: mova os recrutas entre a rua, o Distrito da Luz Vermelha e a boate por meio do menu Mover em cada cartão de trabalhador.\nOs eventos são impulsionadores temporários: shows especiais, noites VIP e festas aumentam a receita por tick durante o evento.\nRivalidade: outros jogadores ou competidores NPC podem roubar seus recrutas ou sabotar eventos. Maior segurança reduz esse risco.\nOs clientes VIP pagam consideravelmente mais, mas exigem recrutas com alta popularidade (80+) e uma localização segura.\nA atenção da polícia (calor) aumenta com grandes transações e batidas. O calor elevado leva ao confisco de rendimentos ou ao encerramento temporário.\nCombinação com discoteca: uma discoteca oferece cobertura legal para atividades que provocam um aumento mais lento do calor.\nUse o painel de informações de ganhos na parte superior para comparar rapidamente a produção por hora de rua, RLD e boate.\nTabela de classificação: o maior faturamento semanal total ganha uma recompensa semanal em dinheiro e um distintivo.';
 
   @override
   String get helpTopicProstitutionTips =>
@@ -14143,7 +14232,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Cada país tem um ou mais Distritos da Luz Vermelha que podem ser reivindicados. Reivindique um distrito pagando um valor de compra definido. \nComo proprietário de um distrito, você recebe uma porcentagem de toda a renda da prostituição naquele país – inclusive de outros jogadores que operam lá. \nOutros jogadores podem atacar o seu distrito para assumir a propriedade. Maior segurança diminui a chance de ataque. \nAs atualizações distritais (segurança, marketing, infraestrutura) aumentam a porcentagem de sua renda e reduzem a chance de perder a propriedade. \nVocê pode possuir até 3 distritos simultaneamente. A escolha estratégica do país é essencial. \nOs países mais movimentados (Colômbia, Dubai, Japão) proporcionam o rendimento passivo mais elevado, mas são também os mais contestados. \nPerder um distrito não reembolsa o preço de compra: ele será perdido permanentemente se um inimigo o reivindicar com sucesso.';
+      'Cada país tem um ou mais Distritos da Luz Vermelha que podem ser reivindicados. Reivindique um distrito pagando um valor de compra definido.\nComo proprietário de um distrito, você recebe uma porcentagem de toda a renda da prostituição naquele país – inclusive de outros jogadores que operam lá.\nOutros jogadores podem atacar o seu distrito para assumir a propriedade. Maior segurança diminui a chance de ataque.\nNos detalhes do distrito, você pode atualizar o nível (ganhos) e a segurança (risco de ataque) e visualizar estatísticas de ataque ao vivo (aquecimento do FBI, chance de ataque). Maior segurança reduz a chance de ataque.\nVocê pode possuir até 3 distritos simultaneamente. A escolha estratégica do país é essencial.\nOs países mais movimentados (Colômbia, Dubai, Japão) proporcionam o rendimento passivo mais elevado, mas são também os mais contestados.\nPerder um distrito não reembolsa o preço de compra: ele será perdido permanentemente se um inimigo o reivindicar com sucesso.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>

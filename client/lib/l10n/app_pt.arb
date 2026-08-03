@@ -8238,12 +8238,12 @@
   "helpTopicProstitutionCategory": "Império",
   "helpTopicProstitutionTitle": "Prostituição",
   "helpTopicProstitutionSummary": "Construa uma rede de prostituição com recrutas, eventos e clientes VIP. Uma rede bem gerida gera rendimentos passivos, mas requer uma gestão activa para controlar a rivalidade e a atenção da polícia.",
-  "helpTopicProstitutionHow": "Você gerencia recrutas, cada um com suas próprias estatísticas (experiência, popularidade, disponibilidade). Mais recrutas = maior renda passiva. \nOs turnos de trabalho duram 8 horas por recruta: após um turno, esse recruta precisa de um tempo de descanso antes de poder começar novamente. \nO gerenciamento de localização é flexível: você pode mover os recrutas entre a rua, o Red Light District e a boate usando os botões de ação em cada cartão. \nOs eventos são impulsionadores temporários: shows especiais, noites VIP e festas aumentam a receita por tick durante o evento. \nRivalidade: outros jogadores ou competidores NPC podem roubar seus recrutas ou sabotar eventos. Maior segurança reduz esse risco. \nOs clientes VIP pagam consideravelmente mais, mas exigem recrutas com alta popularidade (80+) e uma localização segura. \nA atenção da polícia (calor) aumenta com grandes transações e batidas. O calor elevado leva ao confisco de rendimentos ou ao encerramento temporário. \nCombinação com discoteca: uma discoteca oferece cobertura legal para atividades que provocam um aumento mais lento do calor. \nUse o painel de informações de ganhos na parte superior para comparar rapidamente a produção por hora de rua, RLD e boate. \nTabela de classificação: o maior faturamento semanal total ganha uma recompensa semanal em dinheiro e um distintivo.",
+  "helpTopicProstitutionHow": "O hub Prostitution Empire possui quatro guias: Trabalhadores, RLD, Eventos e Social.\nVocê gerencia recrutas, cada um com suas próprias estatísticas (experiência, popularidade, disponibilidade). Mais recrutas = maior renda passiva.\nUse Cobrar para liquidar ganhos pendentes mostrados na faixa de KPI.\nOs turnos de trabalho duram 8 horas por recruta: após um turno, esse recruta precisa de um tempo de descanso antes de poder começar novamente.\nO gerenciamento de localização é flexível: mova os recrutas entre a rua, o Distrito da Luz Vermelha e a boate por meio do menu Mover em cada cartão de trabalhador.\nOs eventos são impulsionadores temporários: shows especiais, noites VIP e festas aumentam a receita por tick durante o evento.\nRivalidade: outros jogadores ou competidores NPC podem roubar seus recrutas ou sabotar eventos. Maior segurança reduz esse risco.\nOs clientes VIP pagam consideravelmente mais, mas exigem recrutas com alta popularidade (80+) e uma localização segura.\nA atenção da polícia (calor) aumenta com grandes transações e batidas. O calor elevado leva ao confisco de rendimentos ou ao encerramento temporário.\nCombinação com discoteca: uma discoteca oferece cobertura legal para atividades que provocam um aumento mais lento do calor.\nUse o painel de informações de ganhos na parte superior para comparar rapidamente a produção por hora de rua, RLD e boate.\nTabela de classificação: o maior faturamento semanal total ganha uma recompensa semanal em dinheiro e um distintivo.",
   "helpTopicProstitutionTips": "Invista cedo em segurança: um ataque de rivalidade que persiga o seu melhor recruta custa mais do que o investimento em segurança. \nOrganize eventos VIP apenas quando os recrutas estiverem acima de 80 de popularidade: abaixo desse limite, os clientes VIP simplesmente pagam a taxa padrão.",
   "helpTopicRedLightDistrictsCategory": "Império",
   "helpTopicRedLightDistrictsTitle": "Distritos da Luz Vermelha",
   "helpTopicRedLightDistrictsSummary": "Reivindique e gerencie distritos territoriais por país. Possuir um distrito proporciona renda passiva e controle sobre as atividades de prostituição naquela região.",
-  "helpTopicRedLightDistrictsHow": "Cada país tem um ou mais Distritos da Luz Vermelha que podem ser reivindicados. Reivindique um distrito pagando um valor de compra definido. \nComo proprietário de um distrito, você recebe uma porcentagem de toda a renda da prostituição naquele país – inclusive de outros jogadores que operam lá. \nOutros jogadores podem atacar o seu distrito para assumir a propriedade. Maior segurança diminui a chance de ataque. \nAs atualizações distritais (segurança, marketing, infraestrutura) aumentam a porcentagem de sua renda e reduzem a chance de perder a propriedade. \nVocê pode possuir até 3 distritos simultaneamente. A escolha estratégica do país é essencial. \nOs países mais movimentados (Colômbia, Dubai, Japão) proporcionam o rendimento passivo mais elevado, mas são também os mais contestados. \nPerder um distrito não reembolsa o preço de compra: ele será perdido permanentemente se um inimigo o reivindicar com sucesso.",
+  "helpTopicRedLightDistrictsHow": "Cada país tem um ou mais Distritos da Luz Vermelha que podem ser reivindicados. Reivindique um distrito pagando um valor de compra definido.\nComo proprietário de um distrito, você recebe uma porcentagem de toda a renda da prostituição naquele país – inclusive de outros jogadores que operam lá.\nOutros jogadores podem atacar o seu distrito para assumir a propriedade. Maior segurança diminui a chance de ataque.\nNos detalhes do distrito, você pode atualizar o nível (ganhos) e a segurança (risco de ataque) e visualizar estatísticas de ataque ao vivo (aquecimento do FBI, chance de ataque). Maior segurança reduz a chance de ataque.\nVocê pode possuir até 3 distritos simultaneamente. A escolha estratégica do país é essencial.\nOs países mais movimentados (Colômbia, Dubai, Japão) proporcionam o rendimento passivo mais elevado, mas são também os mais contestados.\nPerder um distrito não reembolsa o preço de compra: ele será perdido permanentemente se um inimigo o reivindicar com sucesso.",
   "helpTopicRedLightDistrictsTips": "Comece com um país menos popular para o seu primeiro distrito: menor pressão de ataque lhe dá tempo para atualizar a segurança antes da competição real. \nAtualize a segurança de cada distrito imediatamente após a compra: as primeiras 24 horas são as mais vulneráveis ​​a uma aquisição.",
   "helpTopicAchievementsCategory": "meta",
   "helpTopicAchievementsTitle": "Conquistas",
@@ -8870,5 +8870,94 @@
       }
     }
   },
-  "premiumUiPrestigeMax": "Max prestige reached"
+  "premiumUiPrestigeMax": "Max prestige reached",
+  "prostitutionTabWorkers": "Trabalhadores",
+  "prostitutionTabRld": "RLD",
+  "prostitutionTabEvents": "Eventos",
+  "prostitutionTabSocial": "Social",
+  "prostitutionRecruitCeremonyTitle": "Novo recruta",
+  "prostitutionCollectConfirm": "Receber €{amount} em ganhos pendentes?",
+  "@prostitutionCollectConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectEmpty": "Não há ganhos para coletar no momento.",
+  "prostitutionCollectSuccess": "Arrecadou €{amount}.",
+  "@prostitutionCollectSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectFailed": "Não foi possível coletar ganhos.",
+  "prostitutionWorkersKpi": "Trabalhadores (S/RLD/NC)",
+  "prostitutionHourlyKpi": "€/hora",
+  "prostitutionRecruitReady": "Preparar",
+  "prostitutionRetry": "Tentar novamente",
+  "prostitutionMove": "Mover",
+  "prostitutionFbiHeat": "Calor do FBI",
+  "prostitutionRaidStatsTitle": "Risco de ataque",
+  "prostitutionRaidStatsDistricts": "Distritos",
+  "prostitutionRaidStatsBusted": "Atualmente preso",
+  "prostitutionUpgradeTierConfirm": "Atualizar nível para {tier} por €{cost}?",
+  "@prostitutionUpgradeTierConfirm": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionUpgradeSecurityConfirm": "Atualizar a segurança para o nível {level} por €{cost}?",
+  "@prostitutionUpgradeSecurityConfirm": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRoomsOccupied": "{occupied}/{total} quartos",
+  "@prostitutionRoomsOccupied": {
+    "placeholders": {
+      "occupied": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionNextEarnings": "Próximo: €{net}/h líquido",
+  "@prostitutionNextEarnings": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCurrentEarningsNet": "Agora: €{net}/h líquido",
+  "@prostitutionCurrentEarningsNet": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRaidReduction": "Redução de ataques: {pct}",
+  "@prostitutionRaidReduction": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  }
 }

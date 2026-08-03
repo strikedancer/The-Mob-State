@@ -8238,12 +8238,12 @@
   "helpTopicProstitutionCategory": "Imperium",
   "helpTopicProstitutionTitle": "Prostytucja",
   "helpTopicProstitutionSummary": "Zbuduj sieć prostytucji z rekrutami, wydarzeniami i klientami VIP. Dobrze zarządzana sieć generuje pasywny dochód, ale wymaga aktywnego zarządzania, aby kontrolować rywalizację i uwagę policji.",
-  "helpTopicProstitutionHow": "Zarządzasz rekrutami, każdy za pomocą własnych statystyk (doświadczenie, popularność, dostępność). Więcej rekrutów = wyższy dochód pasywny. \nPraca zmianowa trwa 8 godzin na rekruta: po zmianie rekrut potrzebuje czasu na odpoczynek, zanim będzie mógł zacząć od nowa. \nZarządzanie lokalizacjami jest elastyczne: możesz przenosić rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym, korzystając z przycisków akcji na każdej karcie. \nWydarzenia to tymczasowe wzmocnienia: specjalne pokazy, noce VIP i imprezy zwiększają dochód za każdy tik przez cały czas trwania wydarzenia. \nRywalizacja: inni gracze lub konkurenci NPC mogą kłusować na twoich rekrutów lub sabotować wydarzenia. Wyższe bezpieczeństwo zmniejsza to ryzyko. \nKlienci VIP płacą znacznie więcej, ale wymagają rekrutów o dużej popularności (80+) i bezpiecznej lokalizacji. \nUwaga policji (gorąco) wzrasta w przypadku dużych transakcji i nalotów. Wysoka temperatura prowadzi do konfiskaty dochodów lub tymczasowego przestoju. \nPołączenie z klubem nocnym: Nightclub zapewnia prawną ochronę działań powodujących wolniejszy wzrost temperatury. \nSkorzystaj z panelu analizy zarobków u góry, aby szybko porównać godzinowe wyniki dla ulicy, RLD i klubu nocnego. \nTabela liderów: najwyższy łączny tygodniowy obrót zapewnia cotygodniową nagrodę pieniężną i odznakę.",
+  "helpTopicProstitutionHow": "Centrum Imperium Prostytucji składa się z czterech zakładek: Pracownicy, RLD, Wydarzenia i Społeczności.\nZarządzasz rekrutami, każdy za pomocą własnych statystyk (doświadczenie, popularność, dostępność). Więcej rekrutów = wyższy dochód pasywny.\nUżyj opcji Collect, aby rozliczyć oczekujące zarobki pokazane na pasku KPI.\nPraca zmianowa trwa 8 godzin na rekruta: po zmianie rekrut potrzebuje czasu na odpoczynek, zanim będzie mógł zacząć od nowa.\nZarządzanie lokalizacjami jest elastyczne: przenoś rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym za pomocą menu Ruchu na każdej karcie pracownika.\nWydarzenia to tymczasowe wzmocnienia: specjalne pokazy, noce VIP i imprezy zwiększają dochód za każdy tik przez cały czas trwania wydarzenia.\nRywalizacja: inni gracze lub konkurenci NPC mogą kłusować na twoich rekrutów lub sabotować wydarzenia. Wyższe bezpieczeństwo zmniejsza to ryzyko.\nKlienci VIP płacą znacznie więcej, ale wymagają rekrutów o dużej popularności (80+) i bezpiecznej lokalizacji.\nUwaga policji (gorąco) wzrasta w przypadku dużych transakcji i nalotów. Wysoka temperatura prowadzi do konfiskaty dochodów lub tymczasowego przestoju.\nPołączenie z klubem nocnym: Nightclub zapewnia prawną ochronę działań powodujących wolniejszy wzrost temperatury.\nSkorzystaj z panelu analizy zarobków u góry, aby szybko porównać godzinowe wyniki dla ulicy, RLD i klubu nocnego.\nTabela liderów: najwyższy łączny tygodniowy obrót zapewnia cotygodniową nagrodę pieniężną i odznakę.",
   "helpTopicProstitutionTips": "Zainwestuj w bezpieczeństwo już na wczesnym etapie: atak rywalizacyjny, podczas którego kradniesz najlepszego rekruta, kosztuje więcej niż inwestycja w bezpieczeństwo. \nOrganizuj wydarzenia VIP tylko wtedy, gdy popularność rekrutów przekracza 80: poniżej tego progu klienci VIP płacą po prostu standardową stawkę.",
   "helpTopicRedLightDistrictsCategory": "Imperium",
   "helpTopicRedLightDistrictsTitle": "Dzielnice czerwonych latarni",
   "helpTopicRedLightDistrictsSummary": "Zgłaszaj i zarządzaj okręgami terytorialnymi w każdym kraju. Posiadanie dzielnicy daje pasywny dochód i kontrolę nad działalnością prostytucyjną w tym regionie.",
-  "helpTopicRedLightDistrictsHow": "W każdym kraju istnieje jedna lub więcej dzielnic czerwonych latarni, do których można się zgłosić. Zdobądź dzielnicę, płacąc ustaloną kwotę zakupu. \nJako właściciel dzielnicy otrzymujesz procent wszystkich dochodów z prostytucji w tym kraju – w tym od innych graczy tam działających. \nInni gracze mogą zaatakować Twoją dzielnicę, aby przejąć ją na własność. Wyższe bezpieczeństwo zmniejsza szansę na atak. \nUlepszenia dzielnic (bezpieczeństwo, marketing, infrastruktura) zwiększają procent twoich dochodów i zmniejszają ryzyko utraty własności. \nMożesz posiadać maksymalnie 3 dzielnice jednocześnie. Niezbędny jest strategiczny wybór kraju. \nNajbardziej ruchliwe kraje (Kolumbia, Dubaj, Japonia) zapewniają najwyższy dochód pasywny, ale są też najbardziej sporne. \nUtrata dzielnicy nie zwraca ceny zakupu: zostaje ona trwale utracona, jeśli wróg pomyślnie ją przejmie.",
+  "helpTopicRedLightDistrictsHow": "W każdym kraju istnieje jedna lub więcej dzielnic czerwonych latarni, do których można się zgłosić. Zdobądź dzielnicę, płacąc ustaloną kwotę zakupu.\nJako właściciel dzielnicy otrzymujesz procent wszystkich dochodów z prostytucji w tym kraju – w tym od innych graczy tam działających.\nInni gracze mogą zaatakować Twoją dzielnicę, aby przejąć ją na własność. Wyższe bezpieczeństwo zmniejsza szansę na atak.\nW szczegółach dzielnicy możesz podnieść poziom (zarobki) i bezpieczeństwo (ryzyko nalotu) oraz przeglądać statystyki najazdów na żywo (wyciek FBI, szansa na nalot). Wyższe bezpieczeństwo zmniejsza szansę na napad.\nMożesz posiadać maksymalnie 3 dzielnice jednocześnie. Niezbędny jest strategiczny wybór kraju.\nNajbardziej ruchliwe kraje (Kolumbia, Dubaj, Japonia) zapewniają najwyższy dochód pasywny, ale są też najbardziej sporne.\nUtrata dzielnicy nie zwraca ceny zakupu: zostaje ona trwale utracona, jeśli wróg pomyślnie ją przejmie.",
   "helpTopicRedLightDistrictsTips": "Zacznij od mniej popularnego kraju w swojej pierwszej dzielnicy: mniejsza presja ataków daje czas na ulepszenie zabezpieczeń przed prawdziwą konkurencją. \nZwiększ bezpieczeństwo każdej dzielnicy natychmiast po zakupie: pierwsze 24 godziny są najbardziej podatne na przejęcie.",
   "helpTopicAchievementsCategory": "Meta",
   "helpTopicAchievementsTitle": "Osiągnięcia",
@@ -8870,5 +8870,94 @@
       }
     }
   },
-  "premiumUiPrestigeMax": "Max prestige reached"
+  "premiumUiPrestigeMax": "Max prestige reached",
+  "prostitutionTabWorkers": "Pracownicy",
+  "prostitutionTabRld": "RLD",
+  "prostitutionTabEvents": "Wydarzenia",
+  "prostitutionTabSocial": "Społeczny",
+  "prostitutionRecruitCeremonyTitle": "Nowy rekrut",
+  "prostitutionCollectConfirm": "Zbierz {amount} oczekujących zarobków?",
+  "@prostitutionCollectConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectEmpty": "Brak zarobków do zebrania w tej chwili.",
+  "prostitutionCollectSuccess": "Zebrano {amount} €.",
+  "@prostitutionCollectSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectFailed": "Nie udało się zebrać zarobków.",
+  "prostitutionWorkersKpi": "Pracownicy (S/RLD/NC)",
+  "prostitutionHourlyKpi": "€/godz",
+  "prostitutionRecruitReady": "Gotowy",
+  "prostitutionRetry": "Spróbować ponownie",
+  "prostitutionMove": "Przenosić",
+  "prostitutionFbiHeat": "Temperatura FBI",
+  "prostitutionRaidStatsTitle": "Ryzyko napadu",
+  "prostitutionRaidStatsDistricts": "Dzielnice",
+  "prostitutionRaidStatsBusted": "Obecnie złapany",
+  "prostitutionUpgradeTierConfirm": "Uaktualnić poziom do {tier} za {cost}?",
+  "@prostitutionUpgradeTierConfirm": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionUpgradeSecurityConfirm": "Uaktualnić bezpieczeństwo do poziomu {level} za {cost}?",
+  "@prostitutionUpgradeSecurityConfirm": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRoomsOccupied": "{occupied}/{total} pokoi",
+  "@prostitutionRoomsOccupied": {
+    "placeholders": {
+      "occupied": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionNextEarnings": "Dalej: €{net}/h netto",
+  "@prostitutionNextEarnings": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCurrentEarningsNet": "Teraz: {net}/h netto",
+  "@prostitutionCurrentEarningsNet": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRaidReduction": "Redukcja nalotów: {pct}",
+  "@prostitutionRaidReduction": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  }
 }

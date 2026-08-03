@@ -580,7 +580,10 @@ interest = 0
 ### Munitiefabriek (ammo)
 - Productie wordt **server-side** getakt: claim-interval **20 minuten**, basis **3 patronen per ammo-type per tick** (level 1; schaalt met output-level). Sessievenster blijft 8 uur backlog. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
 
-### Prostitutie-rivaliteit
+### Prostitutie (Empire hub)
+- Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
+- **Collect** int openstaande inkomsten (`settleEarnings`); KPI-strip toont o.a. collectable, housing slots, recruit-cooldown en €/uur.
+- RLD-detail: tier- en security-upgrades + raid-risicopaneel (bestaande APIs). Geen speelregelwijzigingen — alleen UI.
 - Rivaliteit starten: vul **spelersnaam** in (numeriek ID blijft ook werken). Server: `POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`. Zie `docs/module-protocols/prostitution.md`.
 
 ### Tradable Goods (huidige build)

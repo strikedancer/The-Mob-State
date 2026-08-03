@@ -8,10 +8,14 @@ import '../models/achievement.dart';
 import '../services/prostitution_service.dart';
 import '../utils/achievement_notifier.dart';
 import '../widgets/jail_screen.dart';
-import 'prostitution_leaderboard_screen.dart';
-import 'prostitution_rivalry_screen.dart';
+import '../widgets/prostitution/empire_kpi_strip.dart';
+import '../widgets/prostitution/prostitution_empty_error.dart';
+import '../widgets/prostitution/prostitution_section_header.dart';
+import '../widgets/prostitution/prostitution_social_tab.dart';
+import 'red_light_districts_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
+
 class ProstitutionScreen extends StatefulWidget {
   final int initialTabIndex;
 
@@ -27,6 +31,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   List<Prostitute> _prostitutes = [];
   ProstituteHousingSummary? _housingSummary;
+  ProstituteStats? _stats;
+  bool _loadFailed = false;
+  bool _isCollecting = false;
 
   List<VipEvent> _activeEvents = [];
   List<VipEvent> _upcomingEvents = [];
@@ -114,7 +121,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   }
 
   Future<void> _loadData() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _loadFailed = false;
+    });
 
     final playerResult = await _service.getCurrentPlayer();
     if (playerResult['success'] == true) {
@@ -133,6 +143,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     if (result['success'] == true) {
       _prostitutes = result['prostitutes'] as List<Prostitute>;
       _housingSummary = result['housingSummary'] as ProstituteHousingSummary?;
+      _stats = result['stats'] as ProstituteStats?;
+      _loadFailed = false;
 
       if (mounted && _housingSummary?.betrayalTriggered == true) {
         final l10n = AppLocalizations.of(context)!;
@@ -145,6 +157,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         );
       }
     } else if (mounted) {
+      _loadFailed = true;
       final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
@@ -591,20 +604,194 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   ) {
     if (!mounted) return;
 
-    if (message != null && message.isNotEmpty) {
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(content: Text(message), backgroundColor: Colors.green),
-      );
-    }
+    final newest = _prostitutes.isNotEmpty ? _prostitutes.last : null;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) {
+        final l10n = AppLocalizations.of(ctx)!;
+        return AlertDialog(
+          backgroundColor: Colors.grey.shade900,
+          title: Text(
+            l10n.prostitutionRecruitCeremonyTitle,
+            style: const TextStyle(color: kProstitutionGold),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/images/prostitution/animation/recruitment_anim_frame5_success.png',
+                  height: 140,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const Icon(
+                    Icons.person_add,
+                    size: 64,
+                    color: kProstitutionGold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              if (newest != null)
+                Text(
+                  newest.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              if (message != null && message.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey.shade300),
+                ),
+              ],
+            ],
+          ),
+          actions: [
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx),
+              style: FilledButton.styleFrom(
+                backgroundColor: kProstitutionGold,
+                foregroundColor: Colors.black,
+              ),
+              child: Text(l10n.ok),
+            ),
+          ],
+        );
+      },
+    );
 
     if (achievements.isNotEmpty) {
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(milliseconds: 400), () {
         if (mounted) {
           AchievementNotifier.showMultipleAchievements(context, achievements);
         }
       });
     }
+  }
+
+  Future<void> _collectEarnings() async {
+    if (_isCollecting) return;
+    final l10n = AppLocalizations.of(context)!;
+    final potential = _stats?.potentialEarnings ?? 0;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.grey.shade900,
+        title: Text(l10n.prostitutionCollect),
+        content: Text(
+          potential > 0
+              ? l10n.prostitutionCollectConfirm(potential.toString())
+              : l10n.prostitutionCollectEmpty,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
+          if (potential > 0)
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              style: FilledButton.styleFrom(
+                backgroundColor: kProstitutionGold,
+                foregroundColor: Colors.black,
+              ),
+              child: Text(l10n.prostitutionCollect),
+            ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    setState(() => _isCollecting = true);
+    try {
+      final result = await _service.settleEarnings();
+      if (!mounted) return;
+      final earnings = (result['earnings'] as num?)?.toInt() ?? 0;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            result['success'] == true
+                ? (earnings > 0
+                    ? l10n.prostitutionCollectSuccess(earnings.toString())
+                    : l10n.prostitutionCollectEmpty)
+                : (result['message']?.toString() ??
+                    l10n.prostitutionCollectFailed),
+          ),
+          backgroundColor:
+              result['success'] == true ? Colors.green : Colors.red,
+        ),
+      );
+      if (result['success'] == true) {
+        await _loadData();
+      }
+    } finally {
+      if (mounted) setState(() => _isCollecting = false);
+    }
+  }
+
+  Widget _buildEmpireKpiStrip(AppLocalizations l10n) {
+    int street = 0;
+    int rld = 0;
+    int nightclub = 0;
+    double hourly = 0;
+    for (final p in _prostitutes) {
+      if (p.isCurrentlyBusted) continue;
+      hourly += _calculateHourlyEarningsForProstitute(p);
+      if (p.location == 'nightclub') {
+        nightclub++;
+      } else if (p.isInRedLight) {
+        rld++;
+      } else {
+        street++;
+      }
+    }
+    final potential = _stats?.potentialEarnings ?? 0;
+    final slots = _housingSummary == null
+        ? '—'
+        : '${_housingSummary!.occupiedSlots}/${_housingSummary!.totalCapacity}';
+    final recruitCd = _cooldownSeconds != null && _cooldownSeconds! > 0
+        ? _formatCooldown(_cooldownSeconds!)
+        : l10n.prostitutionRecruitReady;
+
+    return EmpireKpiStrip(
+      items: [
+        EmpireKpiItem(
+          label: l10n.prostitutionWorkersKpi,
+          value: '$street / $rld / $nightclub',
+          icon: Icons.groups,
+        ),
+        EmpireKpiItem(
+          label: l10n.prostitutionHourlyKpi,
+          value: '€${hourly.toStringAsFixed(0)}/h',
+          icon: Icons.payments,
+          accent: Colors.teal.shade300,
+        ),
+        EmpireKpiItem(
+          label: l10n.prostitutionPotentialEarnings,
+          value: '€$potential',
+          icon: Icons.savings,
+          accent: Colors.green.shade300,
+        ),
+        EmpireKpiItem(
+          label: l10n.prostitutionHousingSlots,
+          value: slots,
+          icon: Icons.home_work,
+        ),
+        EmpireKpiItem(
+          label: l10n.prostitutionRecruit,
+          value: recruitCd,
+          icon: Icons.timer,
+          accent: Colors.orange.shade300,
+        ),
+      ],
+    );
   }
 
   Future<void> _leaveEvent(EventParticipation participation) async {
@@ -705,7 +892,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     return Scaffold(
       body: _jailSeconds != null && _jailSeconds! > 0
@@ -792,6 +978,26 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             ),
                           ),
                         ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: _isCollecting ? null : _collectEarnings,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: kProstitutionGold,
+                              foregroundColor: Colors.black,
+                            ),
+                            icon: _isCollecting
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Icon(Icons.savings),
+                            label: Text(l10n.prostitutionCollect),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -810,6 +1016,12 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       ),
                     ),
                   ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                    child: _buildEmpireKpiStrip(l10n),
+                  ),
+                ),
                 if (_housingSummary != null)
                   SliverToBoxAdapter(
                     child: Padding(
@@ -822,14 +1034,15 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                     padding: const EdgeInsets.only(top: 8),
                     child: TabBar(
                       controller: _tabController,
-                      labelColor: theme.colorScheme.primary,
+                      labelColor: kProstitutionGold,
                       unselectedLabelColor: Colors.grey,
+                      indicatorColor: kProstitutionGold,
                       isScrollable: true,
                       tabs: [
-                        Tab(text: l10n.prostitutionMyProstitutes),
-                        Tab(text: l10n.vipEventsTabTitle),
-                        Tab(text: l10n.prostitutionLeaderboardButton),
-                        Tab(text: l10n.prostitutionRivalryButton),
+                        Tab(text: l10n.prostitutionTabWorkers),
+                        Tab(text: l10n.prostitutionTabRld),
+                        Tab(text: l10n.prostitutionTabEvents),
+                        Tab(text: l10n.prostitutionTabSocial),
                       ],
                     ),
                   ),
@@ -839,9 +1052,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 controller: _tabController,
                 children: [
                   _buildProstitutesTab(),
+                  const RedLightDistrictsScreen(embedded: true),
                   _buildEventsTab(),
-                  const ProstitutionLeaderboardScreen(),
-                  const ProstitutionRivalryScreen(),
+                  const ProstitutionSocialTab(),
                 ],
               ),
             ),
@@ -851,9 +1064,28 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Widget _buildProstitutesTab() {
     if (_isLoading) return const Center(child: CircularProgressIndicator());
 
+    final l10n = AppLocalizations.of(context)!;
+    if (_loadFailed) {
+      return ProstitutionEmptyError(
+        icon: Icons.cloud_off,
+        message: l10n.prostitutionLoadError,
+        actionLabel: l10n.prostitutionRetry,
+        onAction: _loadData,
+        isError: true,
+      );
+    }
+
     if (_prostitutes.isEmpty) {
-      return Center(
-        child: Text(AppLocalizations.of(context)!.prostitutionNoProstitutes),
+      return ProstitutionEmptyError(
+        icon: Icons.person_add_alt_1,
+        message: l10n.prostitutionNoProstitutes,
+        actionLabel: l10n.prostitutionRecruit,
+        onAction:
+            (_cooldownSeconds != null && _cooldownSeconds! > 0) ||
+                    (_jailSeconds != null && _jailSeconds! > 0) ||
+                    (_housingSummary != null && _housingSummary!.freeSlots <= 0)
+                ? null
+                : _recruitProstitute,
       );
     }
 
@@ -1139,7 +1371,16 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     final canWorkNow = !isBusted && shiftRemaining == null;
 
     return Card(
+      color: Colors.grey.shade900,
       clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isBusted
+              ? Colors.red.withOpacity(0.45)
+              : kProstitutionGold.withOpacity(0.28),
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1290,84 +1531,98 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 2),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 0,
-                        children: [
-                          if (!prostitute.isInRedLight &&
-                              !_isNightclubProstitute(prostitute) &&
-                              !isBusted)
-                            TextButton(
-                              onPressed: () =>
+                      if (!isBusted) ...[
+                        const SizedBox(height: 4),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: PopupMenuButton<String>(
+                            tooltip: l10n.prostitutionMove,
+                            onSelected: (value) {
+                              switch (value) {
+                                case 'street':
+                                  _moveProstituteToStreet(prostitute);
+                                  break;
+                                case 'rld':
                                   _moveProstituteToCurrentCountryRld(
                                     prostitute,
+                                  );
+                                  break;
+                                case 'nightclub':
+                                  _assignProstituteToNightclub(prostitute);
+                                  break;
+                              }
+                            },
+                            itemBuilder: (context) {
+                              final items = <PopupMenuEntry<String>>[];
+                              if (prostitute.isInRedLight ||
+                                  _isNightclubProstitute(prostitute)) {
+                                items.add(
+                                  PopupMenuItem(
+                                    value: 'street',
+                                    child: Text(
+                                      l10n.prostitutionMoveToStreetButton,
+                                    ),
                                   ),
-                              style: TextButton.styleFrom(
-                                minimumSize: const Size(0, 22),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 0,
-                                ),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                visualDensity: VisualDensity.compact,
+                                );
+                              }
+                              if (!prostitute.isInRedLight &&
+                                  !_isNightclubProstitute(prostitute)) {
+                                items.add(
+                                  PopupMenuItem(
+                                    value: 'rld',
+                                    child: Text(
+                                      l10n.prostitutionMoveToRldShort,
+                                    ),
+                                  ),
+                                );
+                              }
+                              if (!_isNightclubProstitute(prostitute)) {
+                                items.add(
+                                  PopupMenuItem(
+                                    value: 'nightclub',
+                                    child: Text(
+                                      l10n.prostitutionMoveToNightclubButton,
+                                    ),
+                                  ),
+                                );
+                              }
+                              return items;
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
                               ),
-                              child: Text(
-                                l10n.prostitutionMoveToRldShort,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          if ((prostitute.isInRedLight ||
-                                  _isNightclubProstitute(prostitute)) &&
-                              !isBusted)
-                            TextButton(
-                              onPressed: () =>
-                                  _moveProstituteToStreet(prostitute),
-                              style: TextButton.styleFrom(
-                                minimumSize: const Size(0, 22),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 0,
-                                ),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                visualDensity: VisualDensity.compact,
-                              ),
-                              child: Text(
-                                l10n.prostitutionMoveToStreetButton,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: kProstitutionGold.withOpacity(0.45),
                                 ),
                               ),
-                            ),
-                          if (!_isNightclubProstitute(prostitute) && !isBusted)
-                            TextButton(
-                              onPressed: () =>
-                                  _assignProstituteToNightclub(prostitute),
-                              style: TextButton.styleFrom(
-                                minimumSize: const Size(0, 22),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 0,
-                                ),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                visualDensity: VisualDensity.compact,
-                              ),
-                              child: Text(
-                                l10n.prostitutionMoveToNightclubButton,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.swap_horiz,
+                                    size: 14,
+                                    color: kProstitutionGold,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    l10n.prostitutionMove,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: kProstitutionGold,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                        ],
-                      ),
-                      const SizedBox(height: 2),
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: 4),
                       Text(
                         l10n.prostitutionEuroPerHour(
                           (hourlyEarnings * prostitute.happinessEarningsMultiplier)
@@ -1459,8 +1714,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue.shade700,
-                              foregroundColor: Colors.white,
+                              backgroundColor: kProstitutionGold,
+                              foregroundColor: Colors.black,
                               padding: const EdgeInsets.symmetric(vertical: 6),
                               minimumSize: const Size(0, 28),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -1490,8 +1745,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             value: prostitute.levelProgress,
                             minHeight: 6,
                             backgroundColor: Colors.black38,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.blue.shade600,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              kProstitutionGold,
                             ),
                           ),
                         ),
@@ -1604,32 +1859,30 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(
-            l10n.vipEventsActive,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ProstitutionSectionHeader(
+            icon: Icons.celebration,
+            title: l10n.vipEventsActive,
+            subtitle: l10n.vipEventsDescription,
           ),
-          const SizedBox(height: 8),
           if (_activeEvents.isEmpty)
             _buildEventsPlaceholder(l10n.vipEventNoActive)
           else
             ..._activeEvents.map(_buildEventCard),
           const SizedBox(height: 16),
-          Text(
-            l10n.vipEventsUpcoming,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ProstitutionSectionHeader(
+            icon: Icons.upcoming,
+            title: l10n.vipEventsUpcoming,
           ),
-          const SizedBox(height: 8),
           if (_upcomingEvents.isEmpty)
             _buildEventsPlaceholder(l10n.vipEventNoUpcoming)
           else
             ..._upcomingEvents.map(_buildEventCard),
           const SizedBox(height: 16),
           if (_myParticipations.isNotEmpty) ...[
-            Text(
-              l10n.vipEventsMyParticipations,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ProstitutionSectionHeader(
+              icon: Icons.assignment_ind,
+              title: l10n.vipEventsMyParticipations,
             ),
-            const SizedBox(height: 8),
             ..._myParticipations.map(_buildParticipationCard),
           ],
         ],
@@ -1640,33 +1893,69 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Widget _buildEventCard(VipEvent event) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${event.eventTypeIcon} ${event.title}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade900,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: kProstitutionGold.withOpacity(0.28)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${event.eventTypeIcon} ${event.title}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: kProstitutionGold,
             ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '${_localizedEventType(event.eventType, l10n)} • ${event.bonusText} ${l10n.vipEventBonus}',
+            style: TextStyle(color: Colors.grey.shade300),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${l10n.vipEventParticipants}: ${event.currentParticipants}/${event.maxParticipants}',
+            style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+          ),
+          if (event.isActive) ...[
             const SizedBox(height: 4),
             Text(
-              '${_localizedEventType(event.eventType, l10n)} • ${event.bonusText} ${l10n.vipEventBonus}',
+              '${l10n.vipEventEndsIn}: ${_formatIsoRelative(event.endTime)}',
+              style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
             ),
+          ] else ...[
             const SizedBox(height: 4),
             Text(
-              '${l10n.vipEventParticipants}: ${event.currentParticipants}/${event.maxParticipants}',
+              '${l10n.vipEventStartsIn}: ${_formatIsoRelative(event.startTime)}',
+              style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
             ),
-            const SizedBox(height: 8),
-            if (event.isActive && !event.isFull)
-              ElevatedButton(
+          ],
+          const SizedBox(height: 10),
+          if (event.isActive && !event.isFull)
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
                 onPressed: () => _showAssignDialog(event),
+                style: FilledButton.styleFrom(
+                  backgroundColor: kProstitutionGold,
+                  foregroundColor: Colors.black,
+                ),
                 child: Text(l10n.vipEventAssignProstitute),
               ),
-          ],
-        ),
+            )
+          else if (event.isFull)
+            Text(
+              l10n.vipEventFull,
+              style: const TextStyle(
+                color: Colors.orangeAccent,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -1674,8 +1963,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Widget _buildParticipationCard(EventParticipation participation) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade900,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white24),
+      ),
       child: ListTile(
         title: Text(participation.event?.title ?? l10n.vipEventTypeTitle),
         subtitle: Text(
@@ -1683,6 +1977,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         ),
         trailing: TextButton(
           onPressed: () => _leaveEvent(participation),
+          style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
           child: Text(l10n.vipEventLeave),
         ),
       ),
@@ -1691,13 +1986,30 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   Widget _buildEventsPlaceholder(String message) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: Colors.grey.shade900,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.white24),
       ),
-      child: Text(message),
+      child: Text(
+        message,
+        style: TextStyle(color: Colors.grey.shade300),
+      ),
     );
+  }
+
+  String _formatIsoRelative(DateTime? dt) {
+    if (dt == null) return '—';
+    final diff = dt.difference(DateTime.now());
+    if (diff.isNegative) return '0:00';
+    final hours = diff.inHours;
+    final minutes = diff.inMinutes % 60;
+    if (hours > 0) {
+      return '$hours:${minutes.toString().padLeft(2, '0')}';
+    }
+    return '0:${minutes.toString().padLeft(2, '0')}';
   }
 
   String _formatCooldown(int seconds) {

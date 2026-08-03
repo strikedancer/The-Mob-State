@@ -8410,6 +8410,96 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prostitutionUpgradeFailed => 'Das Upgrade ist fehlgeschlagen';
 
   @override
+  String get prostitutionTabWorkers => 'Arbeiter';
+
+  @override
+  String get prostitutionTabRld => 'RLD';
+
+  @override
+  String get prostitutionTabEvents => 'Veranstaltungen';
+
+  @override
+  String get prostitutionTabSocial => 'Sozial';
+
+  @override
+  String get prostitutionRecruitCeremonyTitle => 'Neuer Rekrut';
+
+  @override
+  String prostitutionCollectConfirm(String amount) {
+    return '$amount € an ausstehenden Einnahmen einsammeln?';
+  }
+
+  @override
+  String get prostitutionCollectEmpty =>
+      'Im Moment können keine Einnahmen erzielt werden.';
+
+  @override
+  String prostitutionCollectSuccess(String amount) {
+    return '$amount € gesammelt.';
+  }
+
+  @override
+  String get prostitutionCollectFailed =>
+      'Einnahmen konnten nicht eingezogen werden.';
+
+  @override
+  String get prostitutionWorkersKpi => 'Arbeiter (S/RLD/NC)';
+
+  @override
+  String get prostitutionHourlyKpi => '€/Stunde';
+
+  @override
+  String get prostitutionRecruitReady => 'Bereit';
+
+  @override
+  String get prostitutionRetry => 'Wiederholen';
+
+  @override
+  String get prostitutionMove => 'Bewegen';
+
+  @override
+  String get prostitutionFbiHeat => 'FBI-Hitze';
+
+  @override
+  String get prostitutionRaidStatsTitle => 'Überfallrisiko';
+
+  @override
+  String get prostitutionRaidStatsDistricts => 'Bezirke';
+
+  @override
+  String get prostitutionRaidStatsBusted => 'Derzeit kaputt';
+
+  @override
+  String prostitutionUpgradeTierConfirm(String tier, String cost) {
+    return 'Upgrade-Stufe auf $tier für $cost €?';
+  }
+
+  @override
+  String prostitutionUpgradeSecurityConfirm(String level, String cost) {
+    return 'Sicherheit auf Stufe $level für $cost € upgraden?';
+  }
+
+  @override
+  String prostitutionRoomsOccupied(String occupied, String total) {
+    return '$occupied/$total Räume';
+  }
+
+  @override
+  String prostitutionNextEarnings(String net) {
+    return 'Weiter: $net/h netto';
+  }
+
+  @override
+  String prostitutionCurrentEarningsNet(String net) {
+    return 'Jetzt: $net/h netto';
+  }
+
+  @override
+  String prostitutionRaidReduction(String pct) {
+    return 'Raid-Reduktion: $pct';
+  }
+
+  @override
   String get vipEventsTitle => 'VIP-Events';
 
   @override
@@ -14194,7 +14284,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Sie verwalten die Rekruten jeweils mit ihren eigenen Statistiken (Erfahrung, Beliebtheit, Verfügbarkeit). Mehr Rekruten = höheres passives Einkommen. \nDie Arbeitsschichten dauern pro Rekrut 8 Stunden: Nach einer Schicht benötigt dieser Rekrut Ruhezeit, bevor er wieder anfangen kann. \nDie Standortverwaltung ist flexibel: Sie können Rekruten mithilfe der Aktionsschaltflächen auf jeder Karte zwischen Straße, Rotlichtviertel und Nightclub bewegen. \nEvents sind vorübergehende Booster: Sondershows, VIP-Abende und Partys erhöhen die Einnahmen pro Tick für die Dauer der Veranstaltung. \nRivalität: Andere Spieler oder NPC-Konkurrenten können Ihre Rekruten abwerben oder Events sabotieren. Höhere Sicherheit verringert dieses Risiko. \nVIP-Kunden zahlen deutlich mehr, benötigen aber Rekruten mit hoher Beliebtheit (80+) und einem gesicherten Standort. \nBei Großtransaktionen und Razzien steigt die Aufmerksamkeit (Hitze) der Polizei. Hohe Hitze führt zur Beschlagnahme von Einkommen oder zur vorübergehenden Schließung. \nKombination mit Nightclub: Ein Nightclub bietet rechtlichen Schutz für Aktivitäten, die den Hitzeanstieg verlangsamen. \nNutzen Sie das Einnahmen-Einblicksfenster oben, um schnell die Stundenleistung für Straße, RLD und Nightclub zu vergleichen. \nBestenliste: Der höchste wöchentliche Gesamtumsatz gewinnt eine wöchentliche Geldprämie und ein Abzeichen.';
+      'Der Hub „Prostitution Empire“ verfügt über vier Registerkarten: Arbeiter, RLD, Ereignisse und Soziales.\nSie verwalten die Rekruten jeweils mit ihren eigenen Statistiken (Erfahrung, Beliebtheit, Verfügbarkeit). Mehr Rekruten = höheres passives Einkommen.\nVerwenden Sie „Collect“, um ausstehende Einnahmen abzurechnen, die im KPI-Streifen angezeigt werden.\nDie Arbeitsschichten dauern pro Rekrut 8 Stunden: Nach einer Schicht benötigt dieser Rekrut Ruhezeit, bevor er wieder anfangen kann.\nDie Standortverwaltung ist flexibel: Verschieben Sie Rekruten über das Menü „Verschieben“ auf jeder Arbeiterkarte zwischen Straße, Rotlichtviertel und Nightclub.\nEvents sind vorübergehende Booster: Sondershows, VIP-Abende und Partys erhöhen die Einnahmen pro Tick für die Dauer der Veranstaltung.\nRivalität: Andere Spieler oder NPC-Konkurrenten können Ihre Rekruten abwerben oder Events sabotieren. Höhere Sicherheit verringert dieses Risiko.\nVIP-Kunden zahlen deutlich mehr, benötigen aber Rekruten mit hoher Beliebtheit (80+) und einem gesicherten Standort.\nBei Großtransaktionen und Razzien steigt die Aufmerksamkeit (Hitze) der Polizei. Hohe Hitze führt zur Beschlagnahme von Einkommen oder zur vorübergehenden Schließung.\nKombination mit Nightclub: Ein Nightclub bietet rechtlichen Schutz für Aktivitäten, die den Hitzeanstieg verlangsamen.\nNutzen Sie das Einnahmen-Einblicksfenster oben, um schnell die Stundenleistung für Straße, RLD und Nightclub zu vergleichen.\nBestenliste: Der höchste wöchentliche Gesamtumsatz gewinnt eine wöchentliche Geldprämie und ein Abzeichen.';
 
   @override
   String get helpTopicProstitutionTips =>
@@ -14212,7 +14302,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'In jedem Land gibt es einen oder mehrere Rotlichtbezirke, die beansprucht werden können. Beanspruchen Sie einen Bezirk, indem Sie einen festgelegten Kaufbetrag bezahlen. \nAls Eigentümer eines Bezirks erhalten Sie einen Prozentsatz aller Prostitutionseinnahmen in diesem Land – auch von anderen dort tätigen Akteuren. \nAndere Spieler können Ihren Bezirk angreifen, um den Besitz zu übernehmen. Höhere Sicherheit verringert die Angriffswahrscheinlichkeit. \nBezirksverbesserungen (Sicherheit, Marketing, Infrastruktur) erhöhen Ihren Einkommensanteil und verringern die Wahrscheinlichkeit, den Besitz zu verlieren. \nSie können bis zu 3 Bezirke gleichzeitig besitzen. Eine strategische Länderauswahl ist von entscheidender Bedeutung. \nDie geschäftigsten Länder (Kolumbien, Dubai, Japan) bieten das höchste passive Einkommen, sind aber auch die am stärksten umkämpften Länder. \nDurch den Verlust eines Bezirks wird der Kaufpreis nicht zurückerstattet: Er geht dauerhaft verloren, wenn ein Feind ihn erfolgreich beansprucht.';
+      'In jedem Land gibt es einen oder mehrere Rotlichtbezirke, die beansprucht werden können. Beanspruchen Sie einen Bezirk, indem Sie einen festgelegten Kaufbetrag bezahlen.\nAls Eigentümer eines Bezirks erhalten Sie einen Prozentsatz aller Prostitutionseinnahmen in diesem Land – auch von anderen dort tätigen Akteuren.\nAndere Spieler können Ihren Bezirk angreifen, um den Besitz zu übernehmen. Höhere Sicherheit verringert die Angriffswahrscheinlichkeit.\nIn den Bezirksdetails können Sie die Stufe (Einnahmen) und die Sicherheit (Überfallrisiko) verbessern und Live-Überfallstatistiken (FBI-Hitze, Überfallchance) anzeigen. Höhere Sicherheit verringert die Wahrscheinlichkeit von Überfällen.\nSie können bis zu 3 Bezirke gleichzeitig besitzen. Eine strategische Länderauswahl ist von entscheidender Bedeutung.\nDie geschäftigsten Länder (Kolumbien, Dubai, Japan) bieten das höchste passive Einkommen, sind aber auch die am stärksten umkämpften Länder.\nDurch den Verlust eines Bezirks wird der Kaufpreis nicht zurückerstattet: Er geht dauerhaft verloren, wenn ein Feind ihn erfolgreich beansprucht.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>

@@ -1672,6 +1672,95 @@
   "prostitutionMaxSecurity": "Max beveiliging bereikt",
   "prostitutionUpgradeSuccess": "Upgrade succesvol!",
   "prostitutionUpgradeFailed": "Upgrade mislukt",
+  "prostitutionTabWorkers": "Werkers",
+  "prostitutionTabRld": "RLD",
+  "prostitutionTabEvents": "Events",
+  "prostitutionTabSocial": "Sociaal",
+  "prostitutionRecruitCeremonyTitle": "Nieuwe recruit",
+  "prostitutionCollectConfirm": "€{amount} aan openstaande inkomsten innen?",
+  "@prostitutionCollectConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectEmpty": "Er zijn nu geen inkomsten om te innen.",
+  "prostitutionCollectSuccess": "€{amount} geïnd.",
+  "@prostitutionCollectSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCollectFailed": "Innen van inkomsten mislukt.",
+  "prostitutionWorkersKpi": "Werkers (S/RLD/NC)",
+  "prostitutionHourlyKpi": "€/uur",
+  "prostitutionRecruitReady": "Klaar",
+  "prostitutionRetry": "Opnieuw",
+  "prostitutionMove": "Verplaats",
+  "prostitutionFbiHeat": "FBI-heat",
+  "prostitutionRaidStatsTitle": "Raidrisico",
+  "prostitutionRaidStatsDistricts": "Districten",
+  "prostitutionRaidStatsBusted": "Nu gebust",
+  "prostitutionUpgradeTierConfirm": "Tier upgraden naar {tier} voor €{cost}?",
+  "@prostitutionUpgradeTierConfirm": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionUpgradeSecurityConfirm": "Beveiliging upgraden naar niveau {level} voor €{cost}?",
+  "@prostitutionUpgradeSecurityConfirm": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRoomsOccupied": "{occupied}/{total} kamers",
+  "@prostitutionRoomsOccupied": {
+    "placeholders": {
+      "occupied": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionNextEarnings": "Volgende: €{net}/u netto",
+  "@prostitutionNextEarnings": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionCurrentEarningsNet": "Nu: €{net}/u netto",
+  "@prostitutionCurrentEarningsNet": {
+    "placeholders": {
+      "net": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionRaidReduction": "Raidverlaging: {pct}",
+  "@prostitutionRaidReduction": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
   "vipEventsTitle": "VIP-evenementen",
   "vipEventsTabTitle": "VIP-evenementen",
   "vipEventsDescription": "Wijs prostituees toe aan VIP events voor bonus inkomsten!",
@@ -8243,12 +8332,12 @@
   "helpTopicProstitutionCategory": "Empire",
   "helpTopicProstitutionTitle": "Prostitutie",
   "helpTopicProstitutionSummary": "Bouw een prostitutie-netwerk met recruits, events en VIP-klanten. Een goed gerund netwerk genereert passief geld maar vereist actief management om rivaliteit en politie-aandacht te beheersen.",
-  "helpTopicProstitutionHow": "Je beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: je kunt recruits verplaatsen tussen straat, Red Light District en nightclub via de actieknoppen op de kaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.",
+  "helpTopicProstitutionHow": "De Prostitution Empire-hub heeft vier tabs: Werkers, RLD, Events en Sociaal.\nJe beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nGebruik Innen om openstaande inkomsten uit de KPI-strip te innen.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: verplaats recruits tussen straat, Red Light District en nightclub via het Verplaats-menu op elke werkerkaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.",
   "helpTopicProstitutionTips": "Investeer vroeg in beveiliging: een rivaliteits-aanval die je beste recruit wegpakt kost je meer dan de beveiligingskosten.\nOrganiseer VIP-events alleen als je recruits boven 80 populariteit hebt: onder die drempel betalen VIP-klanten gewoon normaaltarief.",
   "helpTopicRedLightDistrictsCategory": "Empire",
   "helpTopicRedLightDistrictsTitle": "Red Light Districts",
   "helpTopicRedLightDistrictsSummary": "Claim en beheer territoriale districten per land. Eigenaarschap van een district geeft passief inkomen en controle over prostitutie-activiteiten in die regio.",
-  "helpTopicRedLightDistrictsHow": "Elk land heeft één of meerdere Red Light Districts die geclaimd kunnen worden. Claim een district door een vastgesteld aankoopbedrag te betalen.\nAls eigenaar van een district ontvang je een percentage van alle prostitutie-inkomsten in dat land — ook van andere spelers die er opereren.\nAndere spelers kunnen jouw district aanvallen om de ownership over te nemen. Hogere beveiliging verlaagt de aanvalskans.\nDistrict-upgrades (beveiliging, marketing, infrastructuur) verhogen je inkomenspercentage en verlagen de kans op verlies van ownership.\nJe kunt maximaal 3 districten tegelijk bezitten. Strategische keuze per land is essentieel.\nDrukste landen (Colombia, Dubai, Japan) geven het hoogste passieve inkomen maar zijn ook het vaakst omstreden.\nVerlies van een district kost je het aankoopbedrag niet terug: het is definitief verloren als een vijand succesvol claimt.",
+  "helpTopicRedLightDistrictsHow": "Elk land heeft één of meerdere Red Light Districts die geclaimd kunnen worden. Claim een district door een vastgesteld aankoopbedrag te betalen.\nAls eigenaar van een district ontvang je een percentage van alle prostitutie-inkomsten in dat land — ook van andere spelers die er opereren.\nAndere spelers kunnen jouw district aanvallen om de ownership over te nemen. Hogere beveiliging verlaagt de aanvalskans.\nIn het districtdetail kun je tier (inkomsten) en beveiliging (raidrisico) upgraden, en live raidstatistieken bekijken (FBI-heat, raidkans). Hogere beveiliging verlaagt de raidkans.\nJe kunt maximaal 3 districten tegelijk bezitten. Strategische keuze per land is essentieel.\nDrukste landen (Colombia, Dubai, Japan) geven het hoogste passieve inkomen maar zijn ook het vaakst omstreden.\nVerlies van een district kost je het aankoopbedrag niet terug: het is definitief verloren als een vijand succesvol claimt.",
   "helpTopicRedLightDistrictsTips": "Begin met een minder populair land voor je eerste district: lagere aanvalsdruk geeft je tijd om security te upgraden voor het echte werk.\nUpgrade beveiliging van elk district direct na aankoop: de eerste 24 uur zijn het kwetsbaarst voor een takeover.",
   "helpTopicAchievementsCategory": "Meta",
   "helpTopicAchievementsTitle": "Prestaties",

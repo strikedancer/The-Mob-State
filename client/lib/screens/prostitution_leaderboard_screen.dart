@@ -145,9 +145,9 @@ class _ProstitutionLeaderboardScreenState
       margin: const EdgeInsets.all(12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.deepPurple.withOpacity(0.2),
+        color: Colors.grey.shade900,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.deepPurple),
+        border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.45)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -163,7 +163,7 @@ class _ProstitutionLeaderboardScreenState
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.amber,
+              color: Color(0xFFD4AF37),
             ),
           ),
         ],
@@ -185,8 +185,19 @@ class _ProstitutionLeaderboardScreenState
         itemCount: entries.length,
         itemBuilder: (context, index) {
           final entry = entries[index];
-          return Card(
-            color: entry.isCurrentPlayer ? Colors.amber.withOpacity(0.2) : null,
+          return Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            decoration: BoxDecoration(
+              color: entry.isCurrentPlayer
+                  ? const Color(0xFFD4AF37).withOpacity(0.12)
+                  : Colors.grey.shade900,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: entry.isCurrentPlayer
+                    ? const Color(0xFFD4AF37).withOpacity(0.55)
+                    : Colors.white24,
+              ),
+            ),
             child: ListTile(
               leading: Text(
                 _rankIcon(entry.rank),
@@ -196,7 +207,8 @@ class _ProstitutionLeaderboardScreenState
                 ),
               ),
               title: GestureDetector(
-                onTap: () => _openPlayerProfile(entry.playerId, entry.username),
+                onTap: () =>
+                    _openPlayerProfile(entry.playerId, entry.username),
                 child: Text(
                   entry.username,
                   style: const TextStyle(color: Colors.lightBlue),
@@ -226,25 +238,47 @@ class _ProstitutionLeaderboardScreenState
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.black26,
+        color: Colors.grey.shade900,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.white24),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             l10n.prostitutionLeaderboardAchievements,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFD4AF37),
+            ),
           ),
           const SizedBox(height: 8),
-          ..._achievements
-              .take(3)
-              .map(
-                (achievement) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Text('🏆 ${achievement.displayName}'),
-                ),
-              ),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _achievements
+                .take(6)
+                .map(
+                  (achievement) => Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.06),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: const Color(0xFFD4AF37).withOpacity(0.35),
+                      ),
+                    ),
+                    child: Text(
+                      '🏆 ${achievement.displayName}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
         ],
       ),
     );

@@ -210,6 +210,7 @@ class _ProstitutionRivalryScreenState extends State<ProstitutionRivalryScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.grey.shade900,
         title: Text(
           Localizations.localeOf(context).languageCode == 'nl'
               ? 'Weet je het zeker?'
@@ -243,9 +244,12 @@ class _ProstitutionRivalryScreenState extends State<ProstitutionRivalryScreen> {
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(l10n.cancel),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFD4AF37),
+              foregroundColor: Colors.black,
+            ),
             child: Text(l10n.rivalryExecuteButton),
           ),
         ],
@@ -480,10 +484,11 @@ class _ProstitutionRivalryScreenState extends State<ProstitutionRivalryScreen> {
             else
               ..._history.take(10).map((item) {
                 final state = item.success ? '✅' : '❌';
+                final action = _actionLabel(item.actionType, l10n);
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 6),
                   child: Text(
-                    '$state ${item.attackerUsername} -> ${item.victimUsername} (${item.actionType})',
+                    '$state ${item.attackerUsername} → ${item.victimUsername} ($action)',
                   ),
                 );
               }),

@@ -12,13 +12,16 @@ Belangrijke configuratieknoppen (Admin Config):
 Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 
 ## Primary Frontend Entry
-- client/lib/screens/prostitution_screen.dart
+- client/lib/screens/prostitution_screen.dart — **Empire hub** tabs: Workers | RLD | Events | Social
+- Shared widgets: `client/lib/widgets/prostitution/` (KPI strip, section header, empty/error, social tab)
+- Deep-links: `/prostitution` with `tabIndex` args or `?tab=rld|events|social`; `/prostitution-leaderboard` and `/prostitution-rivalry` remain
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
+- UI surfaces (Collect earnings, recruit ceremony, rivalry history labels) must not invent new gameplay rules — only present existing APIs.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?
@@ -33,6 +36,14 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Responsive usability without pushing critical actions off-screen.
 - Weekly housing rent weergave moet overeenkomen met backend-config (standaard/VIP dagtarief x 7).
 - Rivaliteit starten accepteert **spelersnaam of numeriek ID** (`POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`); het challenge-veld mag geen puur-numeriek toetsenbord forceren.
+- 8u work / 8u rest shifts; earnings verschillen per locatie (street / RLD / nightclub).
+- Worker cards: hoogte volgt content (geen bottom-clip op web/tablet/desktop).
+
+## Empire hub IA
+- Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, collectable, housing, recruit CD), Collect → `settleEarnings`, recruit ceremony, Move menu + Work primary.
+- Tab 1 RLD: embedded `RedLightDistrictsScreen` (mobile RLD-menu and web sidebar deep-link hierheen, niet VIP Events).
+- Tab 2 Events: dark VIP event cards with participate/leave.
+- Tab 3 Social: Rivalry + Leaderboard segments (no nested chaos beyond existing period tabs).
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -46,7 +57,9 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
-- Verify prostitute cards in `Mijn Prostituees` are never bottom-clipped; card height must follow content (auto height) on web/tablet/desktop.
+- Verify prostitute cards in Workers are never bottom-clipped; card height must follow content (auto height) on web/tablet/desktop.
+- Verify Collect settles pending earnings and refreshes KPI; empty collect shows empty copy.
+- Verify mobile “Red Light Districts” opens hub tab RLD (index 1), not Events.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -8362,6 +8362,95 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prostitutionUpgradeFailed => 'Aktualizacja nie powiodła się';
 
   @override
+  String get prostitutionTabWorkers => 'Pracownicy';
+
+  @override
+  String get prostitutionTabRld => 'RLD';
+
+  @override
+  String get prostitutionTabEvents => 'Wydarzenia';
+
+  @override
+  String get prostitutionTabSocial => 'Społeczny';
+
+  @override
+  String get prostitutionRecruitCeremonyTitle => 'Nowy rekrut';
+
+  @override
+  String prostitutionCollectConfirm(String amount) {
+    return 'Zbierz $amount oczekujących zarobków?';
+  }
+
+  @override
+  String get prostitutionCollectEmpty =>
+      'Brak zarobków do zebrania w tej chwili.';
+
+  @override
+  String prostitutionCollectSuccess(String amount) {
+    return 'Zebrano $amount €.';
+  }
+
+  @override
+  String get prostitutionCollectFailed => 'Nie udało się zebrać zarobków.';
+
+  @override
+  String get prostitutionWorkersKpi => 'Pracownicy (S/RLD/NC)';
+
+  @override
+  String get prostitutionHourlyKpi => '€/godz';
+
+  @override
+  String get prostitutionRecruitReady => 'Gotowy';
+
+  @override
+  String get prostitutionRetry => 'Spróbować ponownie';
+
+  @override
+  String get prostitutionMove => 'Przenosić';
+
+  @override
+  String get prostitutionFbiHeat => 'Temperatura FBI';
+
+  @override
+  String get prostitutionRaidStatsTitle => 'Ryzyko napadu';
+
+  @override
+  String get prostitutionRaidStatsDistricts => 'Dzielnice';
+
+  @override
+  String get prostitutionRaidStatsBusted => 'Obecnie złapany';
+
+  @override
+  String prostitutionUpgradeTierConfirm(String tier, String cost) {
+    return 'Uaktualnić poziom do $tier za $cost?';
+  }
+
+  @override
+  String prostitutionUpgradeSecurityConfirm(String level, String cost) {
+    return 'Uaktualnić bezpieczeństwo do poziomu $level za $cost?';
+  }
+
+  @override
+  String prostitutionRoomsOccupied(String occupied, String total) {
+    return '$occupied/$total pokoi';
+  }
+
+  @override
+  String prostitutionNextEarnings(String net) {
+    return 'Dalej: €$net/h netto';
+  }
+
+  @override
+  String prostitutionCurrentEarningsNet(String net) {
+    return 'Teraz: $net/h netto';
+  }
+
+  @override
+  String prostitutionRaidReduction(String pct) {
+    return 'Redukcja nalotów: $pct';
+  }
+
+  @override
   String get vipEventsTitle => 'Wydarzenia VIP';
 
   @override
@@ -14128,7 +14217,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Zarządzasz rekrutami, każdy za pomocą własnych statystyk (doświadczenie, popularność, dostępność). Więcej rekrutów = wyższy dochód pasywny. \nPraca zmianowa trwa 8 godzin na rekruta: po zmianie rekrut potrzebuje czasu na odpoczynek, zanim będzie mógł zacząć od nowa. \nZarządzanie lokalizacjami jest elastyczne: możesz przenosić rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym, korzystając z przycisków akcji na każdej karcie. \nWydarzenia to tymczasowe wzmocnienia: specjalne pokazy, noce VIP i imprezy zwiększają dochód za każdy tik przez cały czas trwania wydarzenia. \nRywalizacja: inni gracze lub konkurenci NPC mogą kłusować na twoich rekrutów lub sabotować wydarzenia. Wyższe bezpieczeństwo zmniejsza to ryzyko. \nKlienci VIP płacą znacznie więcej, ale wymagają rekrutów o dużej popularności (80+) i bezpiecznej lokalizacji. \nUwaga policji (gorąco) wzrasta w przypadku dużych transakcji i nalotów. Wysoka temperatura prowadzi do konfiskaty dochodów lub tymczasowego przestoju. \nPołączenie z klubem nocnym: Nightclub zapewnia prawną ochronę działań powodujących wolniejszy wzrost temperatury. \nSkorzystaj z panelu analizy zarobków u góry, aby szybko porównać godzinowe wyniki dla ulicy, RLD i klubu nocnego. \nTabela liderów: najwyższy łączny tygodniowy obrót zapewnia cotygodniową nagrodę pieniężną i odznakę.';
+      'Centrum Imperium Prostytucji składa się z czterech zakładek: Pracownicy, RLD, Wydarzenia i Społeczności.\nZarządzasz rekrutami, każdy za pomocą własnych statystyk (doświadczenie, popularność, dostępność). Więcej rekrutów = wyższy dochód pasywny.\nUżyj opcji Collect, aby rozliczyć oczekujące zarobki pokazane na pasku KPI.\nPraca zmianowa trwa 8 godzin na rekruta: po zmianie rekrut potrzebuje czasu na odpoczynek, zanim będzie mógł zacząć od nowa.\nZarządzanie lokalizacjami jest elastyczne: przenoś rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym za pomocą menu Ruchu na każdej karcie pracownika.\nWydarzenia to tymczasowe wzmocnienia: specjalne pokazy, noce VIP i imprezy zwiększają dochód za każdy tik przez cały czas trwania wydarzenia.\nRywalizacja: inni gracze lub konkurenci NPC mogą kłusować na twoich rekrutów lub sabotować wydarzenia. Wyższe bezpieczeństwo zmniejsza to ryzyko.\nKlienci VIP płacą znacznie więcej, ale wymagają rekrutów o dużej popularności (80+) i bezpiecznej lokalizacji.\nUwaga policji (gorąco) wzrasta w przypadku dużych transakcji i nalotów. Wysoka temperatura prowadzi do konfiskaty dochodów lub tymczasowego przestoju.\nPołączenie z klubem nocnym: Nightclub zapewnia prawną ochronę działań powodujących wolniejszy wzrost temperatury.\nSkorzystaj z panelu analizy zarobków u góry, aby szybko porównać godzinowe wyniki dla ulicy, RLD i klubu nocnego.\nTabela liderów: najwyższy łączny tygodniowy obrót zapewnia cotygodniową nagrodę pieniężną i odznakę.';
 
   @override
   String get helpTopicProstitutionTips =>
@@ -14146,7 +14235,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'W każdym kraju istnieje jedna lub więcej dzielnic czerwonych latarni, do których można się zgłosić. Zdobądź dzielnicę, płacąc ustaloną kwotę zakupu. \nJako właściciel dzielnicy otrzymujesz procent wszystkich dochodów z prostytucji w tym kraju – w tym od innych graczy tam działających. \nInni gracze mogą zaatakować Twoją dzielnicę, aby przejąć ją na własność. Wyższe bezpieczeństwo zmniejsza szansę na atak. \nUlepszenia dzielnic (bezpieczeństwo, marketing, infrastruktura) zwiększają procent twoich dochodów i zmniejszają ryzyko utraty własności. \nMożesz posiadać maksymalnie 3 dzielnice jednocześnie. Niezbędny jest strategiczny wybór kraju. \nNajbardziej ruchliwe kraje (Kolumbia, Dubaj, Japonia) zapewniają najwyższy dochód pasywny, ale są też najbardziej sporne. \nUtrata dzielnicy nie zwraca ceny zakupu: zostaje ona trwale utracona, jeśli wróg pomyślnie ją przejmie.';
+      'W każdym kraju istnieje jedna lub więcej dzielnic czerwonych latarni, do których można się zgłosić. Zdobądź dzielnicę, płacąc ustaloną kwotę zakupu.\nJako właściciel dzielnicy otrzymujesz procent wszystkich dochodów z prostytucji w tym kraju – w tym od innych graczy tam działających.\nInni gracze mogą zaatakować Twoją dzielnicę, aby przejąć ją na własność. Wyższe bezpieczeństwo zmniejsza szansę na atak.\nW szczegółach dzielnicy możesz podnieść poziom (zarobki) i bezpieczeństwo (ryzyko nalotu) oraz przeglądać statystyki najazdów na żywo (wyciek FBI, szansa na nalot). Wyższe bezpieczeństwo zmniejsza szansę na napad.\nMożesz posiadać maksymalnie 3 dzielnice jednocześnie. Niezbędny jest strategiczny wybór kraju.\nNajbardziej ruchliwe kraje (Kolumbia, Dubaj, Japonia) zapewniają najwyższy dochód pasywny, ale są też najbardziej sporne.\nUtrata dzielnicy nie zwraca ceny zakupu: zostaje ona trwale utracona, jeśli wróg pomyślnie ją przejmie.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>

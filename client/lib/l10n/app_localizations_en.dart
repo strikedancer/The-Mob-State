@@ -8293,6 +8293,94 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prostitutionUpgradeFailed => 'Upgrade failed';
 
   @override
+  String get prostitutionTabWorkers => 'Workers';
+
+  @override
+  String get prostitutionTabRld => 'RLD';
+
+  @override
+  String get prostitutionTabEvents => 'Events';
+
+  @override
+  String get prostitutionTabSocial => 'Social';
+
+  @override
+  String get prostitutionRecruitCeremonyTitle => 'New recruit';
+
+  @override
+  String prostitutionCollectConfirm(String amount) {
+    return 'Collect €$amount in pending earnings?';
+  }
+
+  @override
+  String get prostitutionCollectEmpty => 'No earnings to collect right now.';
+
+  @override
+  String prostitutionCollectSuccess(String amount) {
+    return 'Collected €$amount.';
+  }
+
+  @override
+  String get prostitutionCollectFailed => 'Could not collect earnings.';
+
+  @override
+  String get prostitutionWorkersKpi => 'Workers (S/RLD/NC)';
+
+  @override
+  String get prostitutionHourlyKpi => '€/hour';
+
+  @override
+  String get prostitutionRecruitReady => 'Ready';
+
+  @override
+  String get prostitutionRetry => 'Retry';
+
+  @override
+  String get prostitutionMove => 'Move';
+
+  @override
+  String get prostitutionFbiHeat => 'FBI Heat';
+
+  @override
+  String get prostitutionRaidStatsTitle => 'Raid risk';
+
+  @override
+  String get prostitutionRaidStatsDistricts => 'Districts';
+
+  @override
+  String get prostitutionRaidStatsBusted => 'Currently busted';
+
+  @override
+  String prostitutionUpgradeTierConfirm(String tier, String cost) {
+    return 'Upgrade tier to $tier for €$cost?';
+  }
+
+  @override
+  String prostitutionUpgradeSecurityConfirm(String level, String cost) {
+    return 'Upgrade security to level $level for €$cost?';
+  }
+
+  @override
+  String prostitutionRoomsOccupied(String occupied, String total) {
+    return '$occupied/$total rooms';
+  }
+
+  @override
+  String prostitutionNextEarnings(String net) {
+    return 'Next: €$net/h net';
+  }
+
+  @override
+  String prostitutionCurrentEarningsNet(String net) {
+    return 'Now: €$net/h net';
+  }
+
+  @override
+  String prostitutionRaidReduction(String pct) {
+    return 'Raid reduction: $pct';
+  }
+
+  @override
   String get vipEventsTitle => 'VIP Events';
 
   @override
@@ -13994,7 +14082,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.';
+      'The Prostitution Empire hub has four tabs: Workers, RLD, Events and Social.\nYou manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nUse Collect to settle pending earnings shown in the KPI strip.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: move recruits between street, Red Light District and nightclub via the Move menu on each worker card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.';
 
   @override
   String get helpTopicProstitutionTips =>
@@ -14012,7 +14100,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nDistrict upgrades (security, marketing, infrastructure) raise your income percentage and lower the chance of losing ownership.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.';
+      'Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nIn district detail you can upgrade tier (earnings) and security (raid risk), and view live raid stats (FBI heat, raid chance). Higher security lowers raid chance.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>

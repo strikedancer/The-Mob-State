@@ -8420,6 +8420,95 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prostitutionUpgradeFailed => 'La mise à niveau a échoué';
 
   @override
+  String get prostitutionTabWorkers => 'Ouvriers';
+
+  @override
+  String get prostitutionTabRld => 'RLD';
+
+  @override
+  String get prostitutionTabEvents => 'Événements';
+
+  @override
+  String get prostitutionTabSocial => 'Sociale';
+
+  @override
+  String get prostitutionRecruitCeremonyTitle => 'Nouvelle recrue';
+
+  @override
+  String prostitutionCollectConfirm(String amount) {
+    return 'Collecter $amount€ de gains en attente ?';
+  }
+
+  @override
+  String get prostitutionCollectEmpty =>
+      'Aucun gain à percevoir pour le moment.';
+
+  @override
+  String prostitutionCollectSuccess(String amount) {
+    return 'Récolté$amount€.';
+  }
+
+  @override
+  String get prostitutionCollectFailed => 'Impossible de percevoir les gains.';
+
+  @override
+  String get prostitutionWorkersKpi => 'Travailleurs (S/RLD/NC)';
+
+  @override
+  String get prostitutionHourlyKpi => '€/heure';
+
+  @override
+  String get prostitutionRecruitReady => 'Prêt';
+
+  @override
+  String get prostitutionRetry => 'Réessayer';
+
+  @override
+  String get prostitutionMove => 'Se déplacer';
+
+  @override
+  String get prostitutionFbiHeat => 'Chaleur du FBI';
+
+  @override
+  String get prostitutionRaidStatsTitle => 'Risque de raid';
+
+  @override
+  String get prostitutionRaidStatsDistricts => 'Quartiers';
+
+  @override
+  String get prostitutionRaidStatsBusted => 'Actuellement en panne';
+
+  @override
+  String prostitutionUpgradeTierConfirm(String tier, String cost) {
+    return 'Mettre à niveau le niveau vers $tier pour $cost € ?';
+  }
+
+  @override
+  String prostitutionUpgradeSecurityConfirm(String level, String cost) {
+    return 'Améliorer la sécurité au niveau $level pour $cost€ ?';
+  }
+
+  @override
+  String prostitutionRoomsOccupied(String occupied, String total) {
+    return '$occupied/$total chambres';
+  }
+
+  @override
+  String prostitutionNextEarnings(String net) {
+    return 'Suivant : $net€/h net';
+  }
+
+  @override
+  String prostitutionCurrentEarningsNet(String net) {
+    return 'Actuellement : $net€/h net';
+  }
+
+  @override
+  String prostitutionRaidReduction(String pct) {
+    return 'Réduction des raids : $pct';
+  }
+
+  @override
   String get vipEventsTitle => 'Événements VIP';
 
   @override
@@ -14197,7 +14286,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Vous gérez les recrues chacune avec leurs propres statistiques (expérience, popularité, disponibilité). Plus de recrues = revenu passif plus élevé. \nLes quarts de travail durent 8 heures par recrue : après un quart de travail, cette recrue a besoin de temps de repos avant de pouvoir recommencer. \nLa gestion des emplacements est flexible : vous pouvez déplacer les recrues entre la rue, le quartier rouge et la discothèque à l\'aide des boutons d\'action présents sur chaque carte. \nLes événements sont des boosters temporaires : des spectacles spéciaux, des soirées VIP et des fêtes augmentent les revenus par tick pendant la durée de l\'événement. \nRivalité : d\'autres joueurs ou PNJ concurrents peuvent débaucher vos recrues ou saboter des événements. Une sécurité plus élevée réduit ce risque. \nLes clients VIP paient beaucoup plus mais nécessitent des recrues très populaires (80+) et un emplacement sécurisé. \nL\'attention (la chaleur) de la police augmente avec les transactions et les perquisitions importantes. La forte chaleur entraîne une confiscation des revenus ou une fermeture temporaire. \nCombinaison avec une discothèque : une discothèque offre une couverture légale aux activités faisant monter plus lentement la chaleur. \nUtilisez le panneau d\'informations sur les revenus en haut pour comparer rapidement la production horaire pour la rue, le RLD et la discothèque. \nClassement : le chiffre d\'affaires total hebdomadaire le plus élevé remporte une récompense hebdomadaire en espèces et un badge.';
+      'Le hub Prostitution Empire comporte quatre onglets : Travailleurs, RLD, Événements et Social.\nVous gérez les recrues chacune avec leurs propres statistiques (expérience, popularité, disponibilité). Plus de recrues = revenu passif plus élevé.\nUtilisez Collecter pour régler les revenus en attente affichés dans la bande KPI.\nLes quarts de travail durent 8 heures par recrue : après un quart de travail, cette recrue a besoin de temps de repos avant de pouvoir recommencer.\nLa gestion des emplacements est flexible : déplacez les recrues entre la rue, le quartier rouge et la discothèque via le menu Déplacer sur chaque carte d\'ouvrier.\nLes événements sont des boosters temporaires : des spectacles spéciaux, des soirées VIP et des fêtes augmentent les revenus par tick pendant la durée de l\'événement.\nRivalité : d\'autres joueurs ou PNJ concurrents peuvent débaucher vos recrues ou saboter des événements. Une sécurité plus élevée réduit ce risque.\nLes clients VIP paient beaucoup plus mais nécessitent des recrues très populaires (80+) et un emplacement sécurisé.\nL\'attention (la chaleur) de la police augmente avec les transactions et les perquisitions importantes. La forte chaleur entraîne une confiscation des revenus ou une fermeture temporaire.\nCombinaison avec une discothèque : une discothèque offre une couverture légale aux activités faisant monter plus lentement la chaleur.\nUtilisez le panneau d\'informations sur les revenus en haut pour comparer rapidement la production horaire pour la rue, le RLD et la discothèque.\nClassement : le chiffre d\'affaires total hebdomadaire le plus élevé remporte une récompense hebdomadaire en espèces et un badge.';
 
   @override
   String get helpTopicProstitutionTips =>
@@ -14215,7 +14304,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Chaque pays possède un ou plusieurs quartiers rouges qui peuvent être revendiqués. Réclamez un quartier en payant un montant d’achat fixe. \nEn tant que propriétaire d\'un district, vous recevez un pourcentage de tous les revenus de la prostitution dans ce pays, y compris ceux des autres acteurs qui y opèrent. \nD\'autres joueurs peuvent attaquer votre quartier pour en prendre possession. Une sécurité plus élevée réduit les risques d’attaque. \nLes améliorations du quartier (sécurité, marketing, infrastructures) augmentent votre pourcentage de revenus et réduisent le risque de perdre la propriété. \nVous pouvez posséder jusqu\'à 3 quartiers simultanément. Le choix stratégique du pays est essentiel. \nLes pays les plus actifs (Colombie, Dubaï, Japon) offrent les revenus passifs les plus élevés mais sont aussi les plus contestés. \nLa perte d\'un quartier ne rembourse pas le prix d\'achat : il est définitivement perdu si un ennemi parvient à s\'en emparer.';
+      'Chaque pays possède un ou plusieurs quartiers rouges qui peuvent être revendiqués. Réclamez un quartier en payant un montant d’achat fixe.\nEn tant que propriétaire d\'un district, vous recevez un pourcentage de tous les revenus de la prostitution dans ce pays, y compris ceux des autres acteurs qui y opèrent.\nD\'autres joueurs peuvent attaquer votre quartier pour en prendre possession. Une sécurité plus élevée réduit les risques d’attaque.\nDans les détails du district, vous pouvez améliorer le niveau (gains) et la sécurité (risque de raid), et afficher les statistiques de raid en direct (chaleur du FBI, chances de raid). Une sécurité plus élevée réduit les risques de raid.\nVous pouvez posséder jusqu\'à 3 quartiers simultanément. Le choix stratégique du pays est essentiel.\nLes pays les plus actifs (Colombie, Dubaï, Japon) offrent les revenus passifs les plus élevés mais sont aussi les plus contestés.\nLa perte d\'un quartier ne rembourse pas le prix d\'achat : il est définitivement perdu si un ennemi parvient à s\'en emparer.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>

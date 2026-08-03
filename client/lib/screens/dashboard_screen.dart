@@ -1788,7 +1788,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.prostitution:
         return const ProstitutionScreen();
       case _WebSection.redLightDistricts:
-        return const RedLightDistrictsScreen();
+        // Deep-link into Empire hub RLD tab (Workers=0, RLD=1, Events=2, Social=3).
+        return const ProstitutionScreen(initialTabIndex: 1);
       case _WebSection.achievements:
         return const AchievementsScreen();
     }
@@ -2242,9 +2243,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   onTap: () => Navigator.pushNamed(
                                     context,
                                     '/prostitution',
+                                    // Empire hub: Workers=0, RLD=1, Events=2, Social=3
                                     arguments: {'tabIndex': 1},
                                   ),
-                                ),
+                                );
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.gavel,

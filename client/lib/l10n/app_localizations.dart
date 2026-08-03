@@ -14868,6 +14868,150 @@ abstract class AppLocalizations {
   /// **'Upgrade failed'**
   String get prostitutionUpgradeFailed;
 
+  /// No description provided for @prostitutionTabWorkers.
+  ///
+  /// In en, this message translates to:
+  /// **'Workers'**
+  String get prostitutionTabWorkers;
+
+  /// No description provided for @prostitutionTabRld.
+  ///
+  /// In en, this message translates to:
+  /// **'RLD'**
+  String get prostitutionTabRld;
+
+  /// No description provided for @prostitutionTabEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get prostitutionTabEvents;
+
+  /// No description provided for @prostitutionTabSocial.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get prostitutionTabSocial;
+
+  /// No description provided for @prostitutionRecruitCeremonyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New recruit'**
+  String get prostitutionRecruitCeremonyTitle;
+
+  /// No description provided for @prostitutionCollectConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect €{amount} in pending earnings?'**
+  String prostitutionCollectConfirm(String amount);
+
+  /// No description provided for @prostitutionCollectEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No earnings to collect right now.'**
+  String get prostitutionCollectEmpty;
+
+  /// No description provided for @prostitutionCollectSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected €{amount}.'**
+  String prostitutionCollectSuccess(String amount);
+
+  /// No description provided for @prostitutionCollectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not collect earnings.'**
+  String get prostitutionCollectFailed;
+
+  /// No description provided for @prostitutionWorkersKpi.
+  ///
+  /// In en, this message translates to:
+  /// **'Workers (S/RLD/NC)'**
+  String get prostitutionWorkersKpi;
+
+  /// No description provided for @prostitutionHourlyKpi.
+  ///
+  /// In en, this message translates to:
+  /// **'€/hour'**
+  String get prostitutionHourlyKpi;
+
+  /// No description provided for @prostitutionRecruitReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get prostitutionRecruitReady;
+
+  /// No description provided for @prostitutionRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get prostitutionRetry;
+
+  /// No description provided for @prostitutionMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get prostitutionMove;
+
+  /// No description provided for @prostitutionFbiHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'FBI Heat'**
+  String get prostitutionFbiHeat;
+
+  /// No description provided for @prostitutionRaidStatsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid risk'**
+  String get prostitutionRaidStatsTitle;
+
+  /// No description provided for @prostitutionRaidStatsDistricts.
+  ///
+  /// In en, this message translates to:
+  /// **'Districts'**
+  String get prostitutionRaidStatsDistricts;
+
+  /// No description provided for @prostitutionRaidStatsBusted.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently busted'**
+  String get prostitutionRaidStatsBusted;
+
+  /// No description provided for @prostitutionUpgradeTierConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade tier to {tier} for €{cost}?'**
+  String prostitutionUpgradeTierConfirm(String tier, String cost);
+
+  /// No description provided for @prostitutionUpgradeSecurityConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade security to level {level} for €{cost}?'**
+  String prostitutionUpgradeSecurityConfirm(String level, String cost);
+
+  /// No description provided for @prostitutionRoomsOccupied.
+  ///
+  /// In en, this message translates to:
+  /// **'{occupied}/{total} rooms'**
+  String prostitutionRoomsOccupied(String occupied, String total);
+
+  /// No description provided for @prostitutionNextEarnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: €{net}/h net'**
+  String prostitutionNextEarnings(String net);
+
+  /// No description provided for @prostitutionCurrentEarningsNet.
+  ///
+  /// In en, this message translates to:
+  /// **'Now: €{net}/h net'**
+  String prostitutionCurrentEarningsNet(String net);
+
+  /// No description provided for @prostitutionRaidReduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid reduction: {pct}'**
+  String prostitutionRaidReduction(String pct);
+
   /// No description provided for @vipEventsTitle.
   ///
   /// In en, this message translates to:
@@ -24525,7 +24669,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicProstitutionHow.
   ///
   /// In en, this message translates to:
-  /// **'You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.'**
+  /// **'The Prostitution Empire hub has four tabs: Workers, RLD, Events and Social.\nYou manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nUse Collect to settle pending earnings shown in the KPI strip.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: move recruits between street, Red Light District and nightclub via the Move menu on each worker card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.'**
   String get helpTopicProstitutionHow;
 
   /// No description provided for @helpTopicProstitutionTips.
@@ -24555,7 +24699,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicRedLightDistrictsHow.
   ///
   /// In en, this message translates to:
-  /// **'Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nDistrict upgrades (security, marketing, infrastructure) raise your income percentage and lower the chance of losing ownership.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.'**
+  /// **'Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nIn district detail you can upgrade tier (earnings) and security (raid risk), and view live raid stats (FBI heat, raid chance). Higher security lowers raid chance.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.'**
   String get helpTopicRedLightDistrictsHow;
 
   /// No description provided for @helpTopicRedLightDistrictsTips.
