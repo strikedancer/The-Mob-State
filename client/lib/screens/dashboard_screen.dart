@@ -3501,9 +3501,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   1,
             ),
             const SizedBox(height: 8),
-            MarketTeaserTile(
-              onOpenMarket: () => _selectWebSection(_WebSection.blackMarket),
-            ),
+            const MarketTeaserTile(),
             const SizedBox(height: 8),
             Card(
               child: Padding(
