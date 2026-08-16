@@ -17,6 +17,7 @@ import '../utils/fontawesome_icons.dart';
 import '../utils/formatters.dart';
 import '../widgets/event_feed.dart';
 import '../widgets/market_teaser_tile.dart';
+import '../widgets/daily_goals_card.dart';
 import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
 import '../utils/localized_game_event_template.dart';
@@ -1976,6 +1977,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
+                DailyGoalsCard(
+                  onClaimed: () {
+                    context.read<AuthProvider>().refreshPlayer();
+                  },
+                ),
+                const SizedBox(height: 16),
                 const MarketTeaserTile(),
                 const SizedBox(height: 16),
 
@@ -3381,6 +3388,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 final isCompact =
                     constraints.maxWidth < _DashboardScreenState._tabletBreakpoint;
 
+                const dailyGoalsCard = DailyGoalsCard();
                 final weeklyGoalsCard = _buildWeeklyGoalsMiniCard();
 
             Widget buildLeftCard() {
@@ -4089,6 +4097,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       buildLeftCard(),
+                      const SizedBox(height: 16),
+                      dailyGoalsCard,
                       if (weeklyGoalsCard is! SizedBox) ...[
                         const SizedBox(height: 16),
                         weeklyGoalsCard,
@@ -4113,6 +4123,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               buildLeftCard(),
+                              const SizedBox(height: 16),
+                              dailyGoalsCard,
                               if (weeklyGoalsCard is! SizedBox) ...[
                                 const SizedBox(height: 16),
                                 weeklyGoalsCard,

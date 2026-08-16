@@ -30,7 +30,6 @@ class StartAndGoalsPanel extends StatefulWidget {
 
 class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
   Map<String, dynamic>? _onboarding;
-  Map<String, dynamic>? _daily;
   Map<String, dynamic>? _crewWeek;
   bool _loading = true;
   String? _claimingKey;
@@ -48,14 +47,12 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
       final api = AuthService().apiClient;
       final results = await Future.wait([
         api.get('/player/onboarding'),
-        api.get('/daily-goals/daily'),
         api.get('/crews/weekly-goal'),
       ]);
       if (!mounted) return;
       setState(() {
         _onboarding = _json(results[0].body)['data'] as Map<String, dynamic>?;
-        _daily = _json(results[1].body)['data'] as Map<String, dynamic>?;
-        _crewWeek = _json(results[2].body)['data'] as Map<String, dynamic>?;
+        _crewWeek = _json(results[1].body)['data'] as Map<String, dynamic>?;
         _loading = false;
       });
     } catch (_) {
@@ -100,61 +97,6 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
     );
   }
 
-  String _rewardLine(AppLocalizations? l10n, int cash, int xp) {
-    if (l10n != null) {
-      return l10n.dailyGoalReward(formatCurrency(cash), xp.toString());
-    }
-    return _isNl
-        ? 'Beloning: +${formatCurrency(cash)} en +$xp XP'
-        : 'Reward: +${formatCurrency(cash)} and +$xp XP';
-  }
-
-  Future<void> _claimDaily(String key) async {
-    if (_claimingKey != null) return;
-    setState(() => _claimingKey = key);
-    try {
-      final api = AuthService().apiClient;
-      final response = await api.post('/daily-goals/daily/claim', {'goalKey': key});
-      final decoded = _json(response.body);
-      if (!mounted) return;
-      final l10n = AppLocalizations.of(context);
-      if (decoded['success'] == true) {
-        final data = (decoded['data'] as Map?)?.cast<String, dynamic>() ?? {};
-        final cash = (data['rewardCash'] as num?)?.toInt() ?? 0;
-        final xp = (data['rewardXp'] as num?)?.toInt() ?? 0;
-        final title = l10n?.dailyGoalClaimed ??
-            (_isNl ? 'Dagdoel geclaimd!' : 'Daily goal claimed!');
-        _toast('$title ${_rewardLine(l10n, cash, xp)}');
-        final auth = context.read<AuthProvider>();
-        if (data['money'] != null || data['xp'] != null) {
-          auth.updatePlayerStats(
-            money: (data['money'] as num?)?.toInt(),
-            xp: (data['xp'] as num?)?.toInt(),
-            rank: (data['rank'] as num?)?.toInt(),
-          );
-        } else {
-          await auth.refreshPlayer();
-        }
-        widget.onGoalsChanged?.call();
-        await _load();
-        return;
-      }
-      _toast(
-        l10n?.failedPleaseTryAgain ?? (_isNl ? 'Mislukt. Probeer opnieuw.' : 'Failed. Please try again.'),
-        color: Colors.orange,
-      );
-    } catch (_) {
-      if (!mounted) return;
-      final l10n = AppLocalizations.of(context);
-      _toast(
-        l10n?.failedPleaseTryAgain ?? (_isNl ? 'Mislukt. Probeer opnieuw.' : 'Failed. Please try again.'),
-        color: Colors.orange,
-      );
-    } finally {
-      if (mounted) setState(() => _claimingKey = null);
-    }
-  }
-
   Future<void> _claimCrewWeek() async {
     if (_claimingKey != null) return;
     setState(() => _claimingKey = 'crew_week');
@@ -194,25 +136,20 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Card(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-        ),
-      );
+      return const SizedBox.shrink();
     }
 
     final l10n = AppLocalizations.of(context);
-    final completed = _onboarding?['completed'] == true;
-    final featuredKey = (_daily?['featured'] as Map?)?['key']?.toString();
-    final streak = (_daily?['streak'] as num?)?.toInt() ?? 0;
-    final goals = (_daily?['goals'] as List?) ?? const [];
+    final showStart = _onboarding != null && _onboarding!['completed'] != true;
     final crewIn = _crewWeek?['inCrew'] == true;
+    if (!showStart && !crewIn) {
+      return const SizedBox.shrink();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (!completed && _onboarding != null)
+        if (showStart)
           Card(
             color: const Color(0xFF2A1A12),
             child: Padding(
@@ -251,41 +188,6 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
               ),
             ),
           ),
-        if (goals.isNotEmpty)
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        l10n?.dailyGoals ?? (_isNl ? 'Dagdoelen' : 'Daily goals'),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      if (streak > 0) ...[
-                        const SizedBox(width: 8),
-                        Text(
-                          _isNl ? '$streak dagen streak' : '$streak day streak',
-                          style: const TextStyle(color: Color(0xFFD4AF37), fontSize: 12),
-                        ),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  ...goals.whereType<Map>().map((raw) {
-                    final g = Map<String, dynamic>.from(raw);
-                    return _dailyGoalRow(
-                      l10n: l10n,
-                      goal: g,
-                      highlighted: g['key']?.toString() == featuredKey,
-                    );
-                  }),
-                ],
-              ),
-            ),
-          ),
         if (crewIn)
           Card(
             child: ListTile(
@@ -314,99 +216,6 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
             ),
           ),
       ],
-    );
-  }
-
-  Widget _dailyGoalRow({
-    required AppLocalizations? l10n,
-    required Map<String, dynamic> goal,
-    required bool highlighted,
-  }) {
-    final key = goal['key']?.toString() ?? '';
-    final title = _isNl
-        ? (goal['titleNl'] as String? ?? key)
-        : (goal['titleEn'] as String? ?? key);
-    final progress = (goal['progress'] as num?)?.toInt() ?? 0;
-    final target = (goal['target'] as num?)?.toInt() ?? 0;
-    final claimable = goal['claimable'] == true;
-    final claimed = goal['claimed'] == true;
-    final cash = (goal['rewardCash'] as num?)?.toInt() ?? 0;
-    final xp = (goal['rewardXp'] as num?)?.toInt() ?? 0;
-    final reward = _rewardLine(l10n, cash, xp);
-    final busy = _claimingKey == key;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: highlighted ? const Color(0xFF2A1A12) : Colors.black.withOpacity(0.18),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: claimable
-                ? Colors.lightGreenAccent.withOpacity(0.55)
-                : highlighted
-                    ? const Color(0xFFD4AF37).withOpacity(0.45)
-                    : Colors.white10,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-                  ),
-                ),
-                Text(
-                  claimed
-                      ? (l10n?.claimed ?? (_isNl ? 'Geclaimd' : 'Claimed'))
-                      : claimable
-                          ? (l10n?.ready ?? (_isNl ? 'Klaar' : 'Ready'))
-                          : '$progress/$target',
-                  style: TextStyle(
-                    color: claimed
-                        ? Colors.greenAccent.withOpacity(0.9)
-                        : claimable
-                            ? Colors.lightGreenAccent
-                            : Colors.white70,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            Text(
-              claimed
-                  ? (_isNl ? 'Geclaimd · $reward' : 'Claimed · $reward')
-                  : reward,
-              style: TextStyle(
-                color: claimable ? const Color(0xFFD4AF37) : Colors.white70,
-                fontSize: 12,
-                fontWeight: claimable ? FontWeight.w700 : FontWeight.w500,
-              ),
-            ),
-            if (!claimed)
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: claimable && !busy && key.isNotEmpty ? () => _claimDaily(key) : null,
-                  child: Text(
-                    busy
-                        ? '…'
-                        : claimable
-                            ? '${l10n?.claim ?? 'Claim'} · +${formatCurrency(cash)}'
-                            : (l10n?.claim ?? 'Claim'),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
     );
   }
 }
