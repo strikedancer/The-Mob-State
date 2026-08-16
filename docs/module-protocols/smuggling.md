@@ -14,7 +14,7 @@ Vehicle movement between countries also belongs here when cars or boats are relo
 
 ## Crew + trade goods
 
-Crew-netwerk + handelswaren (`trade`) is **nog niet geïmplementeerd** (backend weigert; UI toont `smugglingCrewTradeNotAvailable`). In de hub is de trade-categorie uitgeschakeld zolang netwerk = crew; bij switch naar crew wordt trade automatisch teruggezet naar drugs.
+Crew-netwerk + handelswaren gebruikt `CrewTradeInventory` + `CrewTradeStorageBuilding` (spiegel van drugsopslag). Catalog/send/claim lezen en schrijven crew-trade rows. Stort vanuit persoonlijke handelswaren via `POST /crews/:id/storage/trade/deposit`. De trade-chip blijft aan bij crew-netwerk.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

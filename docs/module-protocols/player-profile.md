@@ -26,6 +26,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 - Nieuwe accounts kiezen bij registratie **mannelijk of vrouwelijk** (`LoginScreen`); de server slaat `gender` (`male` \| `female`) op en zet `avatar` op `default_1` / `default_2`. Bestaande accounts kunnen `gender` null hebben; avatars blijven via `settings` / rank-allowlist wisselbaar. **Preset** custom portret-PNG’s (defaults): `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API, zie `PROTOCOL_MASTER` AI-keys). **Speler-gestuurde portretten:** selfie-upload in Instellingen → kost premium credits, opslag onder `/images/player_avatars/...` op de runtime mount; zie [player-portraits.md](player-portraits.md). **Flutter web:** registratie toont `AvatarHelper` → na asset-fallback `Image.network` naar `/images/avatars/default_*.png`; die bestanden moeten op de **externe client-image mount** staan (`runtime/client-images/avatars/`, sync via deploy-script uit `client/assets/images/avatars/`). **Layout:** breed scherm = formulier rechts; onderaan zelfde **GuestLegalFooter** als marketing (`bottomNavigationBar`).
 
 ## Must Preserve
+- Publiek profiel toont featured achievements (top 6–9), tappable crew-naam en `EstateLotView` als er een huis/appartement met upgrade-levels is. Geen live landkaart.
 - Duidelijke profielnavigatie vanaf avatars en namen.
 - Correcte guard op null/ongeldige `playerId` waarden.
 - Privacygrenzen op publieke profielinformatie.

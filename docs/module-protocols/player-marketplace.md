@@ -36,6 +36,9 @@ Inventory for event items: `GET /game-events/my-items`. Grants via event reward 
 - `eventItemService.ts` — catalog + inventory credit/debit
 - `blackMarketService.ts` — vehicles
 
+## Dashboard
+- Compact **Markt**-tegel toont het aantal actieve listings (`GET /market/unified`) en de nieuwste itemlistings (max 8). Lege staat: “Zet een tool of drugs online”. Geen NPC-fake listings.
+
 ## Client
 - Sell FAB → kind picker (tool/drug/crypto/trade/event)
 - Polymorphic `PlayerToolMarketListing` model

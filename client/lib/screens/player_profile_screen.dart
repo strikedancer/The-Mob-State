@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 
 import '../config/app_config.dart';
 import '../models/vehicle.dart';
+import '../screens/crew_screen.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/estate_lot_view.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
@@ -395,6 +397,12 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
           const SizedBox(height: 12),
           _buildIdentityCard(),
           const SizedBox(height: 12),
+          _buildAchievementsCard(),
+          if (_playerData?['estateLot'] is Map) ...[
+            const SizedBox(height: 12),
+            _buildEstateCard(),
+          ],
+          const SizedBox(height: 12),
           _buildEconomyCard(),
           const SizedBox(height: 12),
           _buildListingsCard(),
@@ -618,7 +626,16 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
       title: _tr('Identiteit', 'Identity'),
       child: Column(
         children: [
-          _statTile(_tr('Crew', 'Crew'), crewDisplay, Icons.group),
+          InkWell(
+            onTap: (_playerData?['crewId'] as num?) != null
+                ? () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const CrewScreen()),
+                    );
+                  }
+                : null,
+            child: _statTile(_tr('Crew', 'Crew'), crewDisplay, Icons.group),
+          ),
           _divider(),
           _statTile(_tr('Rank', 'Rank'), rank, Icons.military_tech),
           _divider(),
@@ -646,6 +663,51 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
             Icons.favorite_border,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAchievementsCard() {
+    final raw = _playerData?['featuredAchievements'];
+    final items = raw is List
+        ? raw.whereType<Map>().take(9).toList()
+        : const <Map>[];
+    return _sectionCard(
+      title: _tr('Prestaties', 'Achievements'),
+      child: items.isEmpty
+          ? Text(
+              _tr('Nog geen badges', 'No badges yet'),
+              style: const TextStyle(color: Colors.white70),
+            )
+          : Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: items
+                  .map(
+                    (item) => Chip(
+                      avatar: const Icon(Icons.military_tech, size: 16),
+                      label: Text((item['title'] ?? item['id'] ?? '').toString()),
+                    ),
+                  )
+                  .toList(),
+            ),
+    );
+  }
+
+  Widget _buildEstateCard() {
+    final lot = Map<String, dynamic>.from(_playerData!['estateLot'] as Map);
+    final house = (lot['houseLevel'] as num?)?.toInt() ?? 1;
+    final parking = (lot['parkingLevel'] as num?)?.toInt() ?? house;
+    final shed = (lot['shedLevel'] as num?)?.toInt() ?? house;
+    final fence = (lot['fenceLevel'] as num?)?.toInt() ?? house;
+    return _sectionCard(
+      title: _tr('Landgoed', 'Estate'),
+      child: EstateLotView(
+        houseLevel: house,
+        parkingLevel: parking,
+        shedLevel: shed,
+        fenceLevel: fence,
+        goldFence: lot['goldFence'] == true,
       ),
     );
   }

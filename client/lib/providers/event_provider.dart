@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import '../services/auth_service.dart';
 import '../services/event_stream_service.dart';
 
 /// World event model
@@ -15,10 +17,21 @@ class WorldEvent {
   });
 
   factory WorldEvent.fromJson(Map<String, dynamic> json) {
+    final rawParams = json['params'];
+    Map<String, dynamic> params = {};
+    if (rawParams is Map<String, dynamic>) {
+      params = rawParams;
+    } else if (rawParams is String && rawParams.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(rawParams);
+        if (decoded is Map<String, dynamic>) params = decoded;
+      } catch (_) {}
+    }
+    final createdAt = json['createdAt'] as String?;
     return WorldEvent(
-      eventKey: json['event'] as String? ?? 'unknown',
-      params: json['params'] as Map<String, dynamic>? ?? {},
-      timestamp: DateTime.now(),
+      eventKey: json['event'] as String? ?? json['eventKey'] as String? ?? 'unknown',
+      params: params,
+      timestamp: createdAt != null ? DateTime.tryParse(createdAt) ?? DateTime.now() : DateTime.now(),
     );
   }
 }
@@ -43,6 +56,27 @@ class EventProvider with ChangeNotifier {
   /// Get error message if any
   String? get error => _error;
 
+  Future<void> hydrateFromApi() async {
+    try {
+      final response = await AuthService().apiClient.get('/events?limit=50');
+      if (response.statusCode != 200) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final rows = (data['events'] as List?) ?? const [];
+      final hydrated = rows
+          .whereType<Map>()
+          .map((row) => WorldEvent.fromJson(Map<String, dynamic>.from(row)))
+          .where((event) => event.eventKey != 'player.activity')
+          .toList();
+      if (hydrated.isEmpty) return;
+      _events
+        ..clear()
+        ..addAll(hydrated);
+      notifyListeners();
+    } catch (e) {
+      print('[EventProvider] Hydrate failed: $e');
+    }
+  }
+
   /// Start listening to events
   void connect() {
     if (_subscription != null) {
@@ -51,6 +85,7 @@ class EventProvider with ChangeNotifier {
     }
 
     print('[EventProvider] Starting event stream subscription...');
+    unawaited(hydrateFromApi());
 
     _subscription = _eventStreamService.eventStream.listen(
       _onEvent,

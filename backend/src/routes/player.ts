@@ -112,6 +112,17 @@ async function markPrisonActionCooldown(playerId: number, eventKey: string): Pro
   });
 }
 
+router.get('/onboarding', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { onboardingService } = await import('../services/onboardingService');
+    const data = await onboardingService.getStatus(req.player!.id);
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error('[PlayerRoute] Failed to load /player/onboarding', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
 // Get current player info
 router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
   try {
@@ -256,9 +267,11 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       include: { crew: true },
     });
 
+    let crewId: number | null = null;
     if (crewMembership) {
       crewName = crewMembership.crew.name;
       crewRole = crewMembership.role;
+      crewId = crewMembership.crewId;
     }
 
     let likesCount = 0;
@@ -313,6 +326,58 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
 
     const rankInfo = getRankTitle(player.rank);
 
+    let featuredAchievements: Array<{ id: string; title: string; icon?: string }> = [];
+    let estateLot: {
+      houseLevel: number;
+      parkingLevel: number;
+      shedLevel: number;
+      fenceLevel: number;
+      goldFence: boolean;
+    } | null = null;
+    try {
+      const { ACHIEVEMENT_DEFINITIONS } = await import('../services/achievementService');
+      const unlocked = await prisma.prostitutionAchievement.findMany({
+        where: { playerId },
+        orderBy: { unlockedAt: 'desc' },
+        take: 9,
+        select: { achievementType: true },
+      });
+      featuredAchievements = unlocked
+        .map((row) => {
+          const def = ACHIEVEMENT_DEFINITIONS[row.achievementType];
+          if (!def) return null;
+          return { id: def.id, title: def.title, icon: def.icon };
+        })
+        .filter((row): row is { id: string; title: string; icon?: string } => Boolean(row));
+
+      const residential = await prisma.property.findFirst({
+        where: { playerId, propertyType: { in: ['house', 'apartment'] } },
+        orderBy: { upgradeLevel: 'desc' },
+        select: { upgradeLevel: true },
+      });
+      if (residential) {
+        const level = Math.max(1, Math.min(10, residential.upgradeLevel || 1));
+        const goldFence = await prisma.playerCreditEntitlement.findFirst({
+          where: {
+            playerId,
+            key: 'estate_gold_fence',
+            status: 'ACTIVE',
+            OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+          },
+          select: { id: true },
+        });
+        estateLot = {
+          houseLevel: level,
+          parkingLevel: level,
+          shedLevel: Math.max(1, level - 1),
+          fenceLevel: goldFence ? 10 : level,
+          goldFence: Boolean(goldFence),
+        };
+      }
+    } catch (extraError) {
+      console.error('⚠️ Profile extras fallback:', extraError);
+    }
+
     return res.status(200).json({
       username: player.username,
       avatar: player.avatar || 'default_1',
@@ -343,6 +408,9 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       viewerHasLiked: !!existingLike,
       crewName,
       crewRole,
+      crewId,
+      featuredAchievements,
+      estateLot,
     });
   } catch (error) {
     console.error('❌ Error in /player/:playerId/profile:', error);

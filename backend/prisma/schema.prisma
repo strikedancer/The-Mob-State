@@ -497,6 +497,8 @@ model Crew {
   vipExpiresAt          DateTime?
   /// Cumulative crew VIP days granted. Display prestige only.
   vipLifetimeDays        Int                        @default(0)
+  recruitingOpen         Boolean                    @default(true)
+  autoAccept             Boolean                    @default(false)
   ammoInventory         CrewAmmoInventory[]
   ammoStorageBuilding   CrewAmmoStorageBuilding?
   boatInventory         CrewBoatInventory[]
@@ -506,6 +508,8 @@ model Crew {
   cashStorageBuilding   CrewCashStorageBuilding?
   drugInventory         CrewDrugInventory[]
   drugStorageBuilding   CrewDrugStorageBuilding?
+  tradeInventory        CrewTradeInventory[]
+  tradeStorageBuilding  CrewTradeStorageBuilding?
   heistAttempts         CrewHeistAttempt[]
   hqBuilding            CrewHqBuilding?
   joinRequests          CrewJoinRequest[]
@@ -867,6 +871,33 @@ model CrewDrugInventory {
   @@unique([crewId, goodType])
   @@index([crewId])
   @@map("crew_drug_inventory")
+}
+
+model CrewTradeStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_trade_storage_buildings")
+}
+
+model CrewTradeInventory {
+  id                   Int      @id @default(autoincrement())
+  crewId               Int
+  goodType             String   @db.VarChar(50)
+  quantity             Int      @default(0)
+  averagePurchasePrice Int      @default(0)
+  averageCondition     Int      @default(100)
+  updatedAt            DateTime @updatedAt
+  crew                 Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, goodType])
+  @@index([crewId])
+  @@map("crew_trade_inventory")
 }
 
 model CrewWar {

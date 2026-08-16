@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build aligned transparent estate-lot layers from chroma-green source art."""
+"""Layer extract helper. Final 12x12 lot compose lives in compose_estate_grid_12x12.py."""
 from __future__ import annotations
 
 import sys

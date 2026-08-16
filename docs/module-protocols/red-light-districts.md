@@ -20,6 +20,7 @@ District ownership, country-level expansion and prostitution territory progressi
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
+- Help mag geen PvP-districtovername beloven. Politieraids lopen via de tick (`checkAndExecuteRaid`) bij FBI-heat ≥ 50.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.

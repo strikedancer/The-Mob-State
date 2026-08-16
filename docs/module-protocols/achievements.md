@@ -19,6 +19,7 @@ Badge progression, category tracking, rewards and long-term account goals.
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
+- Uitgelichte unlocked achievements zijn zichtbaar op het publieke profiel (niet alleen self-only).
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.

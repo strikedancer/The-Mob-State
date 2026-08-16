@@ -110,6 +110,26 @@
         { "level": 14, "upgradeCost": 2250000000, "capacity": 77000, "requiresVip": true }
       ]
     },
+    "trade_storage": {
+      "label": "Trade Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 55000, "capacity": 50 },
+        { "level": 1, "upgradeCost": 160000, "capacity": 140 },
+        { "level": 2, "upgradeCost": 420000, "capacity": 300 },
+        { "level": 3, "upgradeCost": 1100000, "capacity": 650 },
+        { "level": 4, "upgradeCost": 2800000, "capacity": 1200 },
+        { "level": 5, "upgradeCost": 7000000, "capacity": 2200 },
+        { "level": 6, "upgradeCost": 15600000, "capacity": 3800 },
+        { "level": 7, "upgradeCost": 33000000, "capacity": 6500 },
+        { "level": 8, "upgradeCost": 66000000, "capacity": 10000 },
+        { "level": 9, "upgradeCost": 126000000, "capacity": 15000 },
+        { "level": 10, "upgradeCost": 220000000, "capacity": 22000, "requiresVip": true },
+        { "level": 11, "upgradeCost": 395000000, "capacity": 31000, "requiresVip": true },
+        { "level": 12, "upgradeCost": 710000000, "capacity": 43000, "requiresVip": true },
+        { "level": 13, "upgradeCost": 1280000000, "capacity": 58000, "requiresVip": true },
+        { "level": 14, "upgradeCost": 2250000000, "capacity": 77000, "requiresVip": true }
+      ]
+    },
     "cash_storage": {
       "label": "Cash Storage",
       "levels": [

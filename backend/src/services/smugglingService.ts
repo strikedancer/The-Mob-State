@@ -612,8 +612,9 @@ class SmugglingService {
     const resolvedScope: SmugglingNetworkScope = networkScope === 'crew' && crewId ? 'crew' : 'personal';
 
     if (resolvedScope === 'crew' && crewId) {
-      const [crewDrugs, crewCars, crewBoats, crewWeapons, crewAmmo] = await Promise.all([
+      const [crewDrugs, crewTrade, crewCars, crewBoats, crewWeapons, crewAmmo] = await Promise.all([
         prisma.crewDrugInventory.findMany({ where: { crewId, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
+        prisma.crewTradeInventory.findMany({ where: { crewId, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
         prisma.crewCarInventory.findMany({ where: { crewId }, orderBy: { addedAt: 'desc' } }),
         prisma.crewBoatInventory.findMany({ where: { crewId }, orderBy: { addedAt: 'desc' } }),
         prisma.crewWeaponInventory.findMany({ where: { crewId, quantity: { gt: 0 } }, orderBy: { weaponId: 'asc' } }),
@@ -644,7 +645,12 @@ class SmugglingService {
               metadata: { quality: parsed.quality, crewGoodType: d.goodType },
             };
           }),
-          trade: [],
+          trade: crewTrade.map((g) => ({
+            itemKey: g.goodType,
+            itemLabel: g.goodType,
+            quantity: g.quantity,
+            unitTag: 'unit',
+          })),
           vehicle: [
             ...crewCars.map((v) => {
               const vehicleType = resolveCrewLandVehicleType(v.vehicleId);
@@ -744,10 +750,6 @@ class SmugglingService {
     const crewId = await this.getPlayerCrewId(playerId);
     if (networkScope === 'crew' && !crewId) {
       return { success: false, message: 'Je zit niet in een crew' };
-    }
-
-    if (networkScope === 'crew' && category === 'trade') {
-      return { success: false, message: 'Crew-smokkel voor handelswaar is nog niet beschikbaar' };
     }
 
     if (transportMode === 'owned' && networkScope !== 'personal') {
@@ -858,18 +860,37 @@ class SmugglingService {
           metadata = { ...metadata, quality };
         }
       } else if (category === 'trade') {
-        const inv = await tx.inventory.findUnique({
-          where: { playerId_goodType: { playerId, goodType: itemKey } },
-        });
-        if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg handelswaar in inventory' } as const;
-
-        if (inv.quantity === quantity) {
-          await tx.inventory.delete({ where: { playerId_goodType: { playerId, goodType: itemKey } } });
-        } else {
-          await tx.inventory.update({
-            where: { playerId_goodType: { playerId, goodType: itemKey } },
-            data: { quantity: inv.quantity - quantity },
+        if (networkScope === 'crew') {
+          const inv = await tx.crewTradeInventory.findUnique({
+            where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
           });
+          if (!inv || inv.quantity < quantity) {
+            return { ok: false, message: 'Niet genoeg handelswaar in crew inventory' } as const;
+          }
+          if (inv.quantity === quantity) {
+            await tx.crewTradeInventory.delete({
+              where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
+            });
+          } else {
+            await tx.crewTradeInventory.update({
+              where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
+              data: { quantity: inv.quantity - quantity },
+            });
+          }
+        } else {
+          const inv = await tx.inventory.findUnique({
+            where: { playerId_goodType: { playerId, goodType: itemKey } },
+          });
+          if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg handelswaar in inventory' } as const;
+
+          if (inv.quantity === quantity) {
+            await tx.inventory.delete({ where: { playerId_goodType: { playerId, goodType: itemKey } } });
+          } else {
+            await tx.inventory.update({
+              where: { playerId_goodType: { playerId, goodType: itemKey } },
+              data: { quantity: inv.quantity - quantity },
+            });
+          }
         }
 
         itemLabel = itemKey;
@@ -1127,10 +1148,6 @@ class SmugglingService {
       return { success: false, message: 'Je zit niet in een crew' };
     }
 
-    if (networkScope === 'crew' && category === 'trade') {
-      return { success: false, message: 'Crew-smokkel voor handelswaar is nog niet beschikbaar' };
-    }
-
     if (transportMode === 'owned' && networkScope !== 'personal') {
       return { success: false, message: 'Eigen voertuigen werken alleen voor persoonlijke smokkel' };
     }
@@ -1205,11 +1222,19 @@ class SmugglingService {
         availableQuantity = inv?.quantity ?? 0;
       }
     } else if (category === 'trade') {
-      const inv = await prisma.inventory.findUnique({
-        where: { playerId_goodType: { playerId, goodType: itemKey } },
-        select: { quantity: true },
-      });
-      availableQuantity = inv?.quantity ?? 0;
+      if (networkScope === 'crew') {
+        const inv = await prisma.crewTradeInventory.findUnique({
+          where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
+          select: { quantity: true },
+        });
+        availableQuantity = inv?.quantity ?? 0;
+      } else {
+        const inv = await prisma.inventory.findUnique({
+          where: { playerId_goodType: { playerId, goodType: itemKey } },
+          select: { quantity: true },
+        });
+        availableQuantity = inv?.quantity ?? 0;
+      }
     } else if (category === 'weapon') {
       if (networkScope === 'crew') {
         const inv = await prisma.crewWeaponInventory.findUnique({
@@ -1456,6 +1481,26 @@ class SmugglingService {
           } else {
             await tx.drugInventory.create({
               data: { playerId, drugType: shipment.item_key, quality, quantity: shipment.quantity },
+            });
+          }
+        } else if (shipment.category === 'trade' && scope === 'crew') {
+          const existingCrewTrade = await tx.crewTradeInventory.findUnique({
+            where: { crewId_goodType: { crewId: crewId!, goodType: shipment.item_key } },
+          });
+          if (existingCrewTrade) {
+            await tx.crewTradeInventory.update({
+              where: { crewId_goodType: { crewId: crewId!, goodType: shipment.item_key } },
+              data: { quantity: existingCrewTrade.quantity + shipment.quantity },
+            });
+          } else {
+            await tx.crewTradeInventory.create({
+              data: {
+                crewId: crewId!,
+                goodType: shipment.item_key,
+                quantity: shipment.quantity,
+                averagePurchasePrice: 0,
+                averageCondition: 100,
+              },
             });
           }
         } else if (shipment.category === 'trade') {

@@ -2,6 +2,8 @@ import { Router, Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import * as crewService from '../services/crewService';
 import * as crewStorageService from '../services/crewStorageService';
+import { crewWeeklyGoalService } from '../services/crewWeeklyGoalService';
+import { onboardingService } from '../services/onboardingService';
 import {
   getCrewBuildingStatus,
   purchaseCrewBuilding,
@@ -53,6 +55,7 @@ router.post(
         name,
         leaderId: playerId,
       });
+      await onboardingService.markCrew(playerId);
 
       return res.status(201).json({
         event: 'crew.created',
@@ -102,6 +105,25 @@ router.post(
       }
 
       const playerId = req.player!.id;
+      const crew = await prisma.crew.findUnique({
+        where: { id: crewId },
+        select: { id: true, recruitingOpen: true, autoAccept: true },
+      });
+      if (!crew) {
+        return res.status(404).json({ event: 'error.crew_not_found', params: {} });
+      }
+      if (crew.recruitingOpen === false) {
+        return res.status(400).json({ event: 'error.recruiting_closed', params: {} });
+      }
+
+      if (crew.autoAccept) {
+        const joined = await crewService.joinCrew({ crewId, playerId });
+        await onboardingService.markCrew(playerId);
+        return res.json({
+          event: 'crew.joined',
+          params: { crew: joined, instant: true },
+        });
+      }
 
       const request = await crewService.requestJoinCrew(crewId, playerId);
 
@@ -160,6 +182,18 @@ router.post(
         if (error.message === 'REQUEST_ALREADY_PENDING') {
           return res.status(400).json({
             event: 'error.request_already_pending',
+            params: {},
+          });
+        }
+        if (error.message === 'RECRUITING_CLOSED') {
+          return res.status(400).json({
+            event: 'error.recruiting_closed',
+            params: {},
+          });
+        }
+        if (error.message === 'CREW_FULL') {
+          return res.status(400).json({
+            event: 'error.crew_full',
             params: {},
           });
         }
@@ -265,6 +299,81 @@ router.get('/mine', authenticate, async (req: AuthRequest, res: Response, next: 
     return next(error);
   }
 });
+
+router.get('/recruiting', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crews = await crewService.getRecruitingCrews();
+    const pending = await crewService.listPendingJoinRequestsForPlayer(req.player!.id);
+    return res.json({
+      event: 'crews.recruiting',
+      params: { crews, pendingRequests: pending },
+    });
+  } catch (error: unknown) {
+    return next(error);
+  }
+});
+
+router.get('/weekly-goal', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const data = await crewWeeklyGoalService.getStatus(req.player!.id);
+    return res.json({ success: true, data });
+  } catch (error: unknown) {
+    return next(error);
+  }
+});
+
+router.post('/weekly-goal/claim', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const data = await crewWeeklyGoalService.claim(req.player!.id);
+    return res.json({ success: true, data });
+  } catch (error: unknown) {
+    if (error instanceof Error && (error.message === 'NOT_IN_CREW' || error.message === 'NOT_CLAIMABLE')) {
+      return res.status(400).json({ event: 'error.weekly_goal', params: { code: error.message } });
+    }
+    return next(error);
+  }
+});
+
+router.post(
+  '/:id/recruiting',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const recruitingOpen =
+        typeof req.body?.recruitingOpen === 'boolean' ? req.body.recruitingOpen : undefined;
+      const autoAccept =
+        typeof req.body?.autoAccept === 'boolean' ? req.body.autoAccept : undefined;
+      const settings = await crewService.updateRecruitingSettings(req.player!.id, crewId, {
+        recruitingOpen,
+        autoAccept,
+      });
+      return res.json({ event: 'crew.recruiting_updated', params: settings });
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === 'NOT_CREW_LEADER') {
+        return res.status(403).json({ event: 'error.not_crew_leader', params: {} });
+      }
+      return next(error);
+    }
+  }
+);
+
+router.post(
+  '/:id/join/cancel',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      await crewService.cancelJoinRequest(crewId, req.player!.id);
+      return res.json({ event: 'crew.join_cancelled', params: {} });
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === 'REQUEST_NOT_FOUND') {
+        return res.status(404).json({ event: 'error.request_not_found', params: {} });
+      }
+      return next(error);
+    }
+  }
+);
 
 /**
  * GET /crews/:id
@@ -397,6 +506,7 @@ router.post(
 
       if (request) {
         await applyReputationAction(request.player.id, 'crew_join', true);
+        await onboardingService.markCrew(request.player.id);
       }
 
       if (request) {
@@ -1496,6 +1606,55 @@ router.post(
             event: 'error.invalid_quantity',
             params: {},
           });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+router.post(
+  '/:id/storage/trade/deposit',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { goodType, quantity } = req.body as { goodType?: string; quantity?: number };
+
+      if (isNaN(crewId) || !goodType || !quantity) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      const isMember = await crewService.isCrewMember(currentPlayerId, crewId);
+      if (!isMember) {
+        return res.status(403).json({
+          event: 'error.not_in_crew',
+          params: {},
+        });
+      }
+
+      await crewStorageService.depositCrewTradeGoods(crewId, currentPlayerId, goodType, quantity);
+      return res.json({
+        event: 'crew.storage_trade_deposit',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === 'TRADE_STORAGE_NOT_OWNED') {
+          return res.status(400).json({ event: 'error.trade_storage_not_owned', params: {} });
+        }
+        if (error.message === 'TRADE_STORAGE_FULL') {
+          return res.status(400).json({ event: 'error.trade_storage_full', params: {} });
+        }
+        if (error.message === 'INSUFFICIENT_TRADE_GOODS') {
+          return res.status(400).json({ event: 'error.insufficient_trade_goods', params: {} });
+        }
+        if (error.message === 'INVALID_QUANTITY') {
+          return res.status(400).json({ event: 'error.invalid_quantity', params: {} });
         }
       }
       return next(error);

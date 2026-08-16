@@ -34,6 +34,9 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Crew/HQ images must use the shared platform-safe loading path with icon fallback so externally mounted web assets do not disappear silently.
 - Side-building image style selection must follow the side-building level tier (L1-2 camping, L3-4 rural, L5-7 city, L8-10 villa, L11-15 vip) and may not be derived from current HQ style.
 - Top-level crew navigation should stay grouped by management intent instead of exposing every storage type as a separate main tab.
+- Crew recruiting uses `recruitingOpen` (default true) and `autoAccept` (default false). Open + auto-accept joins instantly via `joinCrew()`; open without auto-accept still uses a pending request. Closed crews stay off `GET /crews/recruiting`.
+- Applicants must see pending state and be able to cancel (`POST /crews/:id/join/cancel`). Leaders toggle recruiting on the Members tab.
+- Each ISO week has one missable crew weekly goal (`crew_week_mission_1`, fallback `crew_week_crimes_15`). Unclaimed rewards expire at the end of the UTC week. No invite API in this flow.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -56,6 +59,9 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify targeted Crew War actions show a selectable enemy player list and still submit the correct target player to the backend.
 - Verify purchase and upgrade buttons/dialogs show the correct euro amounts for HQ and every storage building.
 - Verify HQ/storage images still load on web when assets are served through external mounts or nginx alias fallbacks.
+- Verify an open auto-accept crew joins in one click and an open request-only crew shows pending + cancel.
+- Verify leaders can close recruiting and that closed crews disappear from the recruiting list.
+- Verify the weekly crew goal is visible on the crew overview and dashboard, and that an unclaimed goal is gone after the UTC week rolls.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

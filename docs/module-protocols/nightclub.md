@@ -25,6 +25,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
+- Tonight’s loop-kaart (crowd, stock, Restock, Boost crowd) blijft bovenaan; de rest van Ops Lab zit onder Geavanceerd. Geen handmatige omzet-collect (tick blijft leidend).
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.

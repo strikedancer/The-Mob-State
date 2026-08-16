@@ -41,8 +41,9 @@
 - **Web-zijmenu (ARB):** NL gebruikt gangster-/game-jargon in `app_nl.arb` (o.a. **Support**, **Crew**, **Handelswaren**, **Drugs**, **Red Light Districts**). Andere locales: waar een vertaling kennelijk fout is (bijv. ES **Multitud** i.p.v. crew, PT **Apoiar** als infinitief voor support), hoort dezelfde key in `app_es.arb` / `app_pt.arb` e.d. bewust te worden rechtgezet — niet alleen NL.
 - **Trainingscircuit (sportschool + schietschool):** één dashboard-entry en scherm (`TrainingHubScreen`). **Sportschool:** drie lijnen — **kracht**, **snelheid**, **uithouding** — elk met eigen **1 uur**-cooldown en **100-sessie**-plafond (`POST /gym/train` met `track`: `strength` | `speed` | `stamina`). De misdaadbonus is server-side **max +8%** totaal: per lijn loopt een term lineair mee tot 100 sessies (**+4%**, **+2%**, **+2%**); bestaande spelers kregen bij migratie de oude `sessionsCompleted`-waarde in alle drie de tellers gekopieerd zodat de som gelijk bleef. **Schietschool:** ongewijzigd aparte cooldown en cap (`/shooting-range`). Status voor hub + misdaadscherm laadt via **`GET /training/status`** (combineert beide status-objecten; combo-readiness gebruikt de **laatste** sportschool-training over alle lijnen). Op het **Misdaden**-scherm staat een korte regel met je actieve sportschool- en precisiebonus (zelfde waarden als de server in de slagingskans gebruikt). In **Help & Uitleg** staat dezelfde transparantie in topic **`crimes`** (`helpTopicCrimesHow` in alle actieve `app_*.arb`-talen, afgestemd op `trainingHub*`-terminologie). **Combo-readiness:** train je **dezelfde UTC-dag** in sportschool én schietbaan, dan geeft de server **+0,5%** extra slagingskans op crimes (constant `TRAINING_COMBO_READINESS_BONUS`; zichtbaar op het Misdaden-scherm wanneer actief). Op de **hub** zie je bij actieve combo een **chip**, kun je **status verversen** (liefst zonder volledige paginaloader), **Meer info** uitklappen (combo, aparte timers, hitlist-koppeling schietbaan) en op **web-dashboard** direct naar **Misdaden** springen om bonussen daar te zien. Voor het hub-scherm: help-topic-id **`training-hub`** (`docs/module-protocols/training-hub.md`). **Flutter web:** dashboard- en hub-iconen gebruiken core Material-glyphs zodat ze niet als leeg vierkant renderen; de hub-badge toont sportschool + schietschool met `fitness_center` en `gps_fixed` (niet `adjust` — die glyph ontbreekt vaak in het standaard webfont en lijkt dan “leeg”).
 - **Custom portretten (selfie→gangster)** in dezelfde avatar-kieslijst: tijdens generatie toont de client een **wachtdialoog** (niet weg te tikken); per tegel: **download** (links, PNG opslaan) en **verwijderen** (rechts) met **vectorgetekende** pictogrammen (geen icon-font, zodat web/modal ze wél toont) en **tooltips** in de spelertaal (ARB). Je kiest een **stijl** (o.a. noir, casual, pak, avondglamour); de server gebruikt je **accountgeslacht** (registratie) in de AI-prompt en stuurt Leonardo zo aan dat het **gezicht dichter bij je selfie** blijft (sterke Character Reference, geen PhotoReal-smooth). Staff kan overtredende portretten in het adminpanel wissen (zie `docs/module-protocols/player-portraits.md`).
-- Het dashboard kan daarnaast **Dagdoelen** tonen (claimable beloning in cash + XP) om dagelijkse terugkeer te stimuleren; op desktop staan deze onderaan de linker kolom.
-- Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie; op desktop staat deze onderaan de linker kolom.
+- Nieuwe spelers zien bovenaan een **Start-kaart** met één volgende stap: eerste misdaad → dagdoel of 1 job → crew zoeken/maken. Rang 3+ of afgeronde onboarding ziet geen verplichte tutorial.
+- Het dashboard toont **Dagdoelen** (claimable cash + XP) bovenaan op web én mobiel als één featured open doel plus een UTC claim-streak. De volledige lijst blijft beschikbaar. Featured daily pusht autodiefstal niet onder rang 5.
+- Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie; op desktop staat de volledige weeklijst onderaan de linker kolom. In een crew zie je daarnaast een missable **crew-weekdoel**.
 - Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
 - Het dashboard heeft een **Sessie recap** (icoon rechtsboven) met de laatste events van deze sessie (handig om beloningen en voortgang direct terug te zien).
 - Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim.
@@ -371,6 +372,9 @@ Voorbeelden:
 
 ## Properties
 
+- Huis en appartement tonen een **landgoed-lot** (`EstateLotView`) waarvan house/shed/garage/hek meeschalen met de residential upgrade-level. Preview-sliders blijven beschikbaar. Compose-pad: `scripts/compose_estate_grid_12x12.py`.
+- Cosmetisch **gouden hek** is een credit-sink zonder combat-power (`estate_gold_fence`).
+
 ### Property Types
 
 #### Low-End Properties
@@ -408,11 +412,13 @@ Voorbeelden:
 
 #### Crew Creation
 - **Cost**: â‚¬10,000
-- **Max members**: 10 spelers
+- **Max members**: schaalt met Crew HQ (tot 150)
 - **Leader permissions**: 
-  - Invite/kick members
+  - Kick members, open/sluit werving, auto-accept aan/uit
   - Start heists
   - Disband crew
+- **Joinen**: open + auto-accept is één klik; open zonder auto-accept blijft een verzoek dat de leader goedkeurt. Gesloten crews staan niet in de wervingslijst. Er is geen invite-link.
+- **Weekdoel**: één ISO-week doel per crew (meestal 1 crew-missie). Claim = crew-bank cash + kleine persoonlijke XP. Niet geclaimd = gemist.
 
 #### Crew Benefits
 - **Heists**: Toegang tot grote heists
@@ -603,6 +609,11 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 
 ### Smokkel-hub (drugs-zendingen)
 - Persoonlijke drugsinventaris is **niet per land** in `DrugInventory` (unique: `playerId` + `drugType` + `quality`). Quote/send mag geen oude country-compound Prisma-key gebruiken — dat gaf 500 Server error.
+- Crew-smokkel van **handelswaren** gebruikt gedeelde `CrewTradeInventory`. Stort eerst via crew-opslag; daarna catalog/send/claim op het crew-netwerk.
+- Het dashboard toont een **Markt**-tegel met het aantal actieve P2P-listings en een **wereldfeed** (recente `GET /events`, plus live SSE).
+- Nightclub opent met een **Tonight**-kaart (crowd, stock, Restock, Boost crowd); de rest van Ops Lab zit onder Geavanceerd. Omzet blijft via de tick.
+- RLD-raids draaien op de tick bij hoge FBI-heat. Collect heet **Nu ophalen**. Er is geen PvP-districtovername.
+- Publieke profielen tonen featured achievements, een tappable crew-naam en het landgoed als je een huis/appartement hebt.
 
 ### Trade Risk Factors (legacy / algemeen)
 Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s; details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md` / `TRADE_RISK_MECHANICS` waar van toepassing.
@@ -917,12 +928,12 @@ Bob: â‚¬300K counter-hit
 ## Tips & Strategies
 
 ### Beginner Strategy
-1. **Start met jobs**: Verdien eerste â‚¬10,000 safe
-2. **Koop garage**: Eerste property voor passief inkomen
-3. **Low-level crimes**: Pickpocket/shoplift voor XP
+1. **Eerste misdaad**: volg de Start-kaart; cash en XP komen meteen
+2. **Claim je dagdoel** of doe 1 job; houd je UTC-streak vast
+3. **Join of maak een crew** via de open wervingslijst (auto-accept = één klik)
 4. **Monitor health**: Gebruik emergency room bij < 10 HP
 5. **Avoid jail**: Laag wanted level houden
-6. **Stay off hitlist**: Don't mess with high-rank players early
+6. **Property/auto** pas vanaf rang 5; niet het eerste-uur pad
 
 ### Mid-Game Strategy
 1. **Properties**: Investeer in meerdere properties
@@ -954,6 +965,7 @@ Bob: â‚¬300K counter-hit
 - Spelers hebben een aparte `Premium & Credits` pagina in het side menu; web/PWA checkouts horen daarna terug te landen in die ingesloten game-sectie.
 - Dit scherm toont Player VIP, Crew VIP, creditbundels, je actuele creditsaldo en de actieve credit-items.
 - Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit en ondersteunt crew-perks en VIP-gated upgrades.
+- Cosmetische credit-items (zoals het gouden landgoedhek) geven geen combat-power.
 - VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar `Premium & Credits` in de game-shell, zodat de speler direct de uitkomst, vernieuwde VIP-status en bijgewerkte credits ziet.
 - Credit-items gebruiken wallet-credits in plaats van euro's. Admin beheert live welke items actief zijn, wat ze kosten en welk effecttype ze gebruiken.
 - Mogelijke credit-effecten zijn onder meer cash bundles, hit protection, cooldown resets, event boosts en context-gebonden voertuigacties.

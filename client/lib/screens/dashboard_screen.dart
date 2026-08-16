@@ -16,6 +16,8 @@ import '../utils/country_helper.dart';
 import '../utils/fontawesome_icons.dart';
 import '../utils/formatters.dart';
 import '../widgets/event_feed.dart';
+import '../widgets/market_teaser_tile.dart';
+import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
@@ -1967,6 +1969,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
+                StartAndGoalsPanel(playerRank: player.rank),
+                const SizedBox(height: 16),
+                const MarketTeaserTile(),
+                const SizedBox(height: 16),
 
                 // Action buttons - Grid layout
                 Card(
@@ -3486,6 +3492,36 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 onPressed: () => _openSessionRecap(l10n),
                 icon: const Icon(Icons.receipt_long, color: Colors.white70),
                 tooltip: l10n.sessionRecap,
+              ),
+            ),
+            StartAndGoalsPanel(
+              playerRank: Provider.of<AuthProvider>(context, listen: false)
+                      .currentPlayer
+                      ?.rank ??
+                  1,
+            ),
+            const SizedBox(height: 8),
+            MarketTeaserTile(
+              onOpenMarket: () => _selectWebSection(_WebSection.blackMarket),
+            ),
+            const SizedBox(height: 8),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.liveEvents,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    const SizedBox(
+                      height: 220,
+                      child: EventFeed(maxEvents: 8),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 8),

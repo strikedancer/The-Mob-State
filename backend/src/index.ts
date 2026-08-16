@@ -21,6 +21,8 @@ import { ensureVaultSchema } from './startup/ensureVaultSchema';
 import { ensureDeepEconomySchema } from './startup/ensureDeepEconomySchema';
 import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
+import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
+import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
 import fs from 'fs';
@@ -63,6 +65,8 @@ async function startServer() {
   await ensureDeepEconomySchema();
   await ensureVipPrestigeSchema();
   await ensureDailyGoalsSchema();
+  await ensureCrewRecruitingSchema();
+  await ensureCrewTradeStorageSchema();
   await ensureGarageUpgradeTrackSchema();
   await ensureGarageMotorcycleTrackBackfill();
   await ensureGameEventPresets();

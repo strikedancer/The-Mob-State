@@ -13,6 +13,8 @@ class Crew {
   final int? hqLevel;
   final bool isVip;
   final String? vipExpiresAt;
+  final bool recruitingOpen;
+  final bool autoAccept;
   final List<CrewMember> members;
 
   Crew({
@@ -24,6 +26,8 @@ class Crew {
     this.hqLevel,
     this.isVip = false,
     this.vipExpiresAt,
+    this.recruitingOpen = true,
+    this.autoAccept = false,
     required this.members,
   });
 

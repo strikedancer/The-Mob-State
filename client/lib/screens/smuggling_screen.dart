@@ -99,9 +99,6 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       }
       if (_selectedNetworkScope == 'crew') {
         _selectedTransportMode = 'commercial';
-        if (_selectedCategory == 'trade') {
-          _selectedCategory = 'drug';
-        }
       }
       if (!_channels.contains(_selectedChannel)) {
         _selectedChannel = 'courier';
@@ -271,6 +268,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
         return l10n.smugglingApiCargoOverflow;
       case 'Niet genoeg geld voor smokkelkosten':
         return l10n.smugglingApiInsufficientMoney;
+      case 'Niet genoeg handelswaar in crew inventory':
+        return l10n.smugglingApiInsufficientTradeGoods;
       case 'Niet genoeg drugs in crew inventory':
         return l10n.smugglingApiInsufficientDrugsCrew;
       case 'Niet genoeg drugs in inventory':
@@ -323,16 +322,6 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     int qty = int.tryParse(_quantityController.text.trim()) ?? 0;
     if (_selectedCategory == 'vehicle') {
       qty = 1;
-    }
-
-    if (_selectedCategory == 'trade' && _selectedNetworkScope == 'crew') {
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(l10n.smugglingCrewTradeNotAvailable),
-        ),
-      );
-      return;
     }
 
     if (_selectedTransportMode == 'owned' && _selectedOwnedTransportKey == null) {
@@ -745,15 +734,11 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             runSpacing: 8,
             children: ['drug', 'trade', 'vehicle', 'weapon', 'ammo'].map((c) {
               final selectedChip = c == _selectedCategory;
-              final tradeBlockedForCrew =
-                  c == 'trade' && _selectedNetworkScope == 'crew';
               return ChoiceChip(
                 selected: selectedChip,
                 label: Text(_categoryLabel(l10n, c)),
                 avatar: Icon(_categoryIcon(c), size: 18),
-                onSelected: tradeBlockedForCrew
-                    ? null
-                    : (_) {
+                onSelected: (_) {
                         setState(() {
                           _selectedCategory = c;
                           final list = _currentItems;
@@ -767,13 +752,6 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
               );
             }).toList(),
           ),
-          if (_selectedNetworkScope == 'crew') ...[
-            const SizedBox(height: 8),
-            Text(
-              l10n.smugglingCrewTradeNotAvailable,
-              style: const TextStyle(color: Colors.orangeAccent, fontSize: 12),
-            ),
-          ],
           const SizedBox(height: 10),
           if (_currentItems.isEmpty)
             Text(
@@ -949,11 +927,6 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                       if (_selectedNetworkScope == 'crew') return;
                       setState(() {
                         _selectedNetworkScope = 'crew';
-                        // Crew + trade goods is not implemented yet.
-                        if (_selectedCategory == 'trade') {
-                          _selectedCategory = 'drug';
-                          _quantityController.text = '1';
-                        }
                         if (_selectedTransportMode == 'owned') {
                           _selectedTransportMode = 'commercial';
                         }

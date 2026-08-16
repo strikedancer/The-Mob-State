@@ -68,6 +68,8 @@ class _CrewScreenState extends State<CrewScreen>
   late TabController _tabController;
   Crew? _myCrew;
   List<Crew> _allCrews = [];
+  final Set<int> _pendingJoinCrewIds = <int>{};
+  Map<String, dynamic>? _crewWeeklyGoal;
   List<CrewJoinRequest> _joinRequests = [];
   Map<String, int>? _crewStats;
   List<dynamic> _crewBuildings = [];
@@ -319,6 +321,24 @@ class _CrewScreenState extends State<CrewScreen>
       77000,
       123200,
     ],
+    'trade_storage': [
+      50,
+      140,
+      300,
+      650,
+      1200,
+      2200,
+      3800,
+      6500,
+      10000,
+      15000,
+      22000,
+      31000,
+      43000,
+      58000,
+      77000,
+      123200,
+    ],
     'cash_storage': [
       100000,
       600000,
@@ -414,6 +434,24 @@ class _CrewScreenState extends State<CrewScreen>
       2867500000,
     ],
     'drug_storage': [
+      55000,
+      160000,
+      420000,
+      1100000,
+      2800000,
+      7000000,
+      15600000,
+      33000000,
+      66000000,
+      126000000,
+      220000000,
+      395000000,
+      710000000,
+      1280000000,
+      2250000000,
+      3487500000,
+    ],
+    'trade_storage': [
       55000,
       160000,
       420000,
@@ -1377,7 +1415,11 @@ class _CrewScreenState extends State<CrewScreen>
     try {
       await _loadMyCrew();
 
-      final futures = <Future<void>>[_loadAllCrews(), _loadOneTimeProducts()];
+      final futures = <Future<void>>[
+        _loadAllCrews(),
+        _loadOneTimeProducts(),
+        _loadCrewWeeklyGoal(),
+      ];
       if (_myCrew != null) {
         futures.add(_loadCrewWarHub());
         futures.add(_loadCrewStats());
@@ -1449,19 +1491,108 @@ class _CrewScreenState extends State<CrewScreen>
   Future<void> _loadAllCrews() async {
     try {
       final apiClient = AuthService().apiClient;
-      final response = await apiClient.get('/crews');
+      final path = _myCrew == null ? '/crews/recruiting' : '/crews';
+      final response = await apiClient.get(path);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         final params = data['params'] as Map<String, dynamic>;
         final crewsList = params['crews'] as List;
+        final pending = params['pendingRequests'] as List? ?? const [];
         setState(() {
-          _allCrews = crewsList.map((c) => Crew.fromJson(c)).toList();
+          _allCrews = crewsList
+              .map((c) => Crew.fromJson(c as Map<String, dynamic>))
+              .toList();
+          _pendingJoinCrewIds
+            ..clear()
+            ..addAll(
+              pending
+                  .whereType<Map<String, dynamic>>()
+                  .map((row) => (row['crewId'] as num?)?.toInt())
+                  .whereType<int>(),
+            );
         });
       }
     } catch (e) {
       print('Error loading crews: $e');
     }
+  }
+
+  Future<void> _loadCrewWeeklyGoal() async {
+    try {
+      final response = await AuthService().apiClient.get('/crews/weekly-goal');
+      if (response.statusCode != 200) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (!mounted) return;
+      setState(() {
+        _crewWeeklyGoal = data['data'] as Map<String, dynamic>?;
+      });
+    } catch (_) {}
+  }
+
+  Future<void> _claimCrewWeeklyGoal() async {
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crews/weekly-goal/claim',
+        {},
+      );
+      if (!mounted) return;
+      final locale = Localizations.localeOf(context).languageCode;
+      if (response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl' ? 'Crew weekdoel geclaimd' : 'Crew weekly goal claimed',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadCrewWeeklyGoal();
+        await _loadMyCrew();
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _cancelJoin(int crewId) async {
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crews/$crewId/join/cancel',
+        {},
+      );
+      if (!mounted) return;
+      final locale = Localizations.localeOf(context).languageCode;
+      if (response.statusCode == 200) {
+        setState(() => _pendingJoinCrewIds.remove(crewId));
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl' ? 'Verzoek geannuleerd' : 'Request cancelled',
+            ),
+          ),
+        );
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _updateRecruiting({
+    bool? recruitingOpen,
+    bool? autoAccept,
+  }) async {
+    if (_myCrew == null) return;
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crews/${_myCrew!.id}/recruiting',
+        {
+          if (recruitingOpen != null) 'recruitingOpen': recruitingOpen,
+          if (autoAccept != null) 'autoAccept': autoAccept,
+        },
+      );
+      if (response.statusCode == 200) {
+        await _loadMyCrew();
+      }
+    } catch (_) {}
   }
 
   Future<void> _loadJoinRequests() async {
@@ -2108,13 +2239,15 @@ class _CrewScreenState extends State<CrewScreen>
 
       if (response.statusCode == 200) {
         if (mounted) {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          final instant = data['event'] == 'crew.joined';
           showTopRightFromSnackBar(
             context,
             SnackBar(
               content: Text(
                 Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Join request verstuurd!'
-                    : 'Join request sent!',
+                    ? (instant ? 'Je zit nu in de crew!' : 'Join request verstuurd!')
+                    : (instant ? 'You joined the crew!' : 'Join request sent!'),
               ),
               backgroundColor: Colors.green,
             ),
@@ -2142,6 +2275,12 @@ class _CrewScreenState extends State<CrewScreen>
                 : 'You already have a pending request';
           } else if (event == 'error.invalid_crew_id') {
             message = locale == 'nl' ? 'Ongeldige crew' : 'Invalid crew';
+          } else if (event == 'error.recruiting_closed') {
+            message = locale == 'nl'
+                ? 'Deze crew neemt geen leden aan'
+                : 'This crew is not recruiting';
+          } else if (event == 'error.crew_full') {
+            message = locale == 'nl' ? 'Deze crew is vol' : 'This crew is full';
           }
         } catch (_) {
           // Keep fallback message
@@ -3600,7 +3739,11 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  Future<void> _depositDrugs() async {
+  Future<void> _depositTradeGoods() async {
+    await _depositDrugs(trade: true);
+  }
+
+  Future<void> _depositDrugs({bool trade = false}) async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
     try {
@@ -3687,7 +3830,9 @@ class _CrewScreenState extends State<CrewScreen>
 
       final quantity = int.tryParse(qtyController.text) ?? 0;
       final depositResponse = await apiClient.post(
-        '/crews/${_myCrew!.id}/storage/drugs/deposit',
+        trade
+            ? '/crews/${_myCrew!.id}/storage/trade/deposit'
+            : '/crews/${_myCrew!.id}/storage/drugs/deposit',
         {'goodType': selectedGoodType, 'quantity': quantity},
       );
 
@@ -3755,6 +3900,8 @@ class _CrewScreenState extends State<CrewScreen>
         return Icons.inventory_2;
       case 'drug_storage':
         return Icons.medication;
+      case 'trade_storage':
+        return Icons.inventory;
       case 'cash_storage':
         return Icons.account_balance_wallet;
       default:
@@ -3882,6 +4029,15 @@ class _CrewScreenState extends State<CrewScreen>
                 _t(l10n, 'action.createCrew'),
               ),
             ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () => _tabController.animateTo(6),
+              child: Text(
+                Localizations.localeOf(context).languageCode == 'nl'
+                    ? 'Bekijk open crews'
+                    : 'Browse open crews',
+              ),
+            ),
           ],
         ),
       );
@@ -3903,6 +4059,7 @@ class _CrewScreenState extends State<CrewScreen>
     final weaponStorageOwned = (storageCapacities?['weapons'] as int? ?? 0) > 0;
     final ammoStorageOwned = (storageCapacities?['ammo'] as int? ?? 0) > 0;
     final drugStorageOwned = (storageCapacities?['drugs'] as int? ?? 0) > 0;
+    final tradeStorageOwned = (storageCapacities?['trade'] as int? ?? 0) > 0;
     final cashStorageOwned = (storageCapacities?['cash'] as int? ?? 0) > 0;
     final cashStorageBuilding = _crewBuildings.firstWhere(
       (b) => (b['type'] as String?) == 'cash_storage',
@@ -3930,6 +4087,30 @@ class _CrewScreenState extends State<CrewScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (_crewWeeklyGoal?['inCrew'] == true)
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.flag),
+                      title: Text(
+                        locale == 'nl'
+                            ? (_crewWeeklyGoal!['titleNl'] as String? ??
+                                'Crew weekdoel')
+                            : (_crewWeeklyGoal!['titleEn'] as String? ??
+                                'Crew weekly goal'),
+                      ),
+                      subtitle: Text(
+                        '${_crewWeeklyGoal!['progress'] ?? 0}/${_crewWeeklyGoal!['target'] ?? 1}'
+                        '${_crewWeeklyGoal!['claimed'] == true ? (locale == 'nl' ? ' · geclaimd' : ' · claimed') : ''}',
+                      ),
+                      trailing: _crewWeeklyGoal!['claimable'] == true
+                          ? TextButton(
+                              onPressed: _claimCrewWeeklyGoal,
+                              child: Text(locale == 'nl' ? 'Claim' : 'Claim'),
+                            )
+                          : null,
+                    ),
+                  ),
+                if (_crewWeeklyGoal?['inCrew'] == true) const SizedBox(height: 16),
                 // Crew Info Card
                 Card(
                   child: Padding(
@@ -4244,12 +4425,25 @@ class _CrewScreenState extends State<CrewScreen>
                                     : null,
                                 child: Text(_t(l10n, 'action.addDrugs')),
                               ),
+                              OutlinedButton(
+                                onPressed: tradeStorageOwned
+                                    ? _depositTradeGoods
+                                    : null,
+                                child: Text(
+                                  locale == 'nl' ? 'Handelswaren' : 'Trade goods',
+                                ),
+                              ),
                             ],
                           ),
                           Text(
                             locale == 'nl'
                                 ? 'Drugs: ${_crewStorage!['totals']['drugs']} / ${_crewStorage!['capacities']['drugs']}'
                                 : 'Drugs: ${_crewStorage!['totals']['drugs']} / ${_crewStorage!['capacities']['drugs']}',
+                          ),
+                          Text(
+                            locale == 'nl'
+                                ? 'Handelswaren: ${_crewStorage!['totals']['trade'] ?? 0} / ${_crewStorage!['capacities']['trade'] ?? 0}'
+                                : 'Trade goods: ${_crewStorage!['totals']['trade'] ?? 0} / ${_crewStorage!['capacities']['trade'] ?? 0}',
                           ),
                         ],
                       ],
@@ -4298,6 +4492,7 @@ class _CrewScreenState extends State<CrewScreen>
       'weapon_storage',
       'ammo_storage',
       'drug_storage',
+      'trade_storage',
       'cash_storage',
     ];
 
@@ -4537,6 +4732,17 @@ class _CrewScreenState extends State<CrewScreen>
             actionEn: 'Add',
           ),
           buildStorageTile(
+            icon: Icons.inventory,
+            titleNl: 'Handelswarenopslag',
+            titleEn: 'Trade Storage',
+            value: '${totals?['trade'] ?? 0} / ${capacities?['trade'] ?? 0}',
+            onPressed: (capacities?['trade'] as int? ?? 0) > 0
+                ? _depositTradeGoods
+                : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
             icon: Icons.account_balance_wallet,
             titleNl: 'Cash opslag',
             titleEn: 'Cash Storage',
@@ -4721,6 +4927,40 @@ class _CrewScreenState extends State<CrewScreen>
                   .toList(),
             ),
             if (isLeader) ...[
+              const SizedBox(height: 16),
+              Card(
+                child: Column(
+                  children: [
+                    SwitchListTile(
+                      title: Text(
+                        locale == 'nl' ? 'Werving open' : 'Recruiting open',
+                      ),
+                      subtitle: Text(
+                        locale == 'nl'
+                            ? 'Spelers kunnen jouw crew vinden in de open lijst'
+                            : 'Players can find your crew in the open list',
+                      ),
+                      value: _myCrew!.recruitingOpen,
+                      onChanged: (value) =>
+                          _updateRecruiting(recruitingOpen: value),
+                    ),
+                    SwitchListTile(
+                      title: Text(
+                        locale == 'nl' ? 'Direct toelaten' : 'Auto-accept',
+                      ),
+                      subtitle: Text(
+                        locale == 'nl'
+                            ? 'Open crews met deze optie joinen in één klik'
+                            : 'Open crews with this option join in one click',
+                      ),
+                      value: _myCrew!.autoAccept,
+                      onChanged: _myCrew!.recruitingOpen
+                          ? (value) => _updateRecruiting(autoAccept: value)
+                          : null,
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 16),
               Text(
                 _t(l10n, 'state.joinRequests'),
@@ -5946,6 +6186,10 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiBuildingAmmoStorage;
       case 'drug_storage':
         return loc.crewUiBuildingDrugStorage;
+      case 'trade_storage':
+        return Localizations.localeOf(context).languageCode == 'nl'
+            ? 'Handelswarenopslag'
+            : 'Trade storage';
       case 'cash_storage':
         return loc.crewUiBuildingCashStorage;
       default:
@@ -6532,6 +6776,16 @@ class _CrewScreenState extends State<CrewScreen>
                     '${_t(l10n, 'label.memberCount')}: ${crew.memberCount}',
                   ),
                   Text(
+                    crew.autoAccept
+                        ? (locale == 'nl'
+                            ? 'Open · direct joinen'
+                            : 'Open · instant join')
+                        : (locale == 'nl'
+                            ? 'Open · verzoek nodig'
+                            : 'Open · request required'),
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  Text(
                     '${locale == 'nl' ? 'Leader' : 'Leader'}: ${crew.leader?.playerInfo?.username ?? 'Unknown'}',
                   ),
                   if (crew.leader?.playerInfo != null)
@@ -6573,9 +6827,20 @@ class _CrewScreenState extends State<CrewScreen>
                     )
                   : _myCrew != null
                   ? null
+                  : _pendingJoinCrewIds.contains(crew.id)
+                  ? OutlinedButton(
+                      onPressed: () => _cancelJoin(crew.id),
+                      child: Text(
+                        locale == 'nl' ? 'Annuleer' : 'Cancel',
+                      ),
+                    )
                   : ElevatedButton(
                       onPressed: () => _joinCrew(crew.id),
-                      child: Text(_t(l10n, 'action.join')),
+                      child: Text(
+                        crew.autoAccept
+                            ? (locale == 'nl' ? 'Join nu' : 'Join now')
+                            : _t(l10n, 'action.join'),
+                      ),
                     ),
             ),
           );

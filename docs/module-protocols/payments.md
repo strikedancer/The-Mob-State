@@ -62,6 +62,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Voor `VEHICLE_REPAIR_FINISH` moet op beschadigde voertuigkaarten (garage/marina) een contextuele credits-knop zichtbaar zijn; de flow start indien nodig eerst reparatie en rondt daarna direct af via dezelfde redeem-flow met `vehicleInventoryId`.
 - Het instant-repair icoon op voertuigkaarten gebruikt een gecombineerde visual (steeksleutel + bliksem) zodat de actie herkenbaar blijft als reparatie én instant effect.
 - Tijdelijke `EVENT_BOOST` credit-items moeten capped side-grade boosts blijven; geen permanente statstacking of pay-to-win power creep.
+- Cosmetische credit-sinks (zoals `estate_gold_fence`) mogen geen combat-power toevoegen. Eerst meten of iemand credits skip’t; geen verplichte paywall.
 - Minigames met credits-inzet (zoals **Kraak de Kluis**) moeten credits **transactioneel** afschrijven (REDEEM) en prijzen **traceerbaar** uitbetalen (ledger + metadata: seasonKey, stakeTier). Als een VIP-prijs niet toepasbaar is (speler is al VIP), moet de prijs **consequent** worden omgezet naar credits (geen provider-jargon in UI).
 
 ## Backend Contract Guardrails

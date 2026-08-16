@@ -1001,6 +1001,24 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       ],
                     ),
                   ),
+                  if (_prostitutes.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Text(
+                        () {
+                          final latest = _prostitutes
+                              .map((p) => p.lastEarningsAt)
+                              .reduce((a, b) => a.isAfter(b) ? a : b);
+                          final local = latest.toLocal();
+                          final stamp =
+                              '${local.day}/${local.month} ${local.hour.toString().padLeft(2, '0')}:${local.minute.toString().padLeft(2, '0')}';
+                          return Localizations.localeOf(context).languageCode == 'nl'
+                              ? 'Laatst verrekend: $stamp'
+                              : 'Last settled: $stamp';
+                        }(),
+                        style: const TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
+                    ),
                 ),
                 if (_housingSummary != null && _housingSummary!.freeSlots <= 0)
                   SliverToBoxAdapter(

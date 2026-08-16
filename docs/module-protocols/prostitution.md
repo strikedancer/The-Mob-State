@@ -30,6 +30,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
+- Collect-label is “Nu ophalen” / “Collect now” en toont een last-settle hint. Tick blijft automatisch verrekenen.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.

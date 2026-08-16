@@ -145,6 +145,41 @@ function weekKeyUtc(date: Date): string {
   return dateKeyUtc(start);
 }
 
+function pickFeaturedGoal(
+  goals: Array<{ key: string; claimable: boolean; claimed: boolean }>,
+  rank: number
+) {
+  const hidden = rank < 5 ? new Set(['vehicle_theft_1']) : new Set<string>();
+  return (
+    goals.find((g) => g.claimable && !hidden.has(g.key)) ||
+    goals.find((g) => !g.claimed && !hidden.has(g.key)) ||
+    goals.find((g) => !g.claimed) ||
+    goals[0] ||
+    null
+  );
+}
+
+async function computeClaimStreak(playerId: number, todayKey: string): Promise<number> {
+  const claims = await prisma.playerDailyGoalClaim.findMany({
+    where: { playerId, goalKey: { not: { startsWith: 'weekly_' } } },
+    select: { dateKey: true },
+    distinct: ['dateKey'],
+  });
+  const days = new Set(claims.map((c) => c.dateKey));
+  let streak = 0;
+  const cursor = new Date(`${todayKey}T00:00:00.000Z`);
+  if (!days.has(todayKey)) {
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+  }
+  for (let i = 0; i < 60; i += 1) {
+    const key = dateKeyUtc(cursor);
+    if (!days.has(key)) break;
+    streak += 1;
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+  }
+  return streak;
+}
+
 export const dailyGoalsService = {
   dateKeyUtc,
 
@@ -179,7 +214,13 @@ export const dailyGoalsService = {
       };
     });
 
-    return { dateKey: key, goals };
+    const streak = await computeClaimStreak(playerId, key);
+    const featured = pickFeaturedGoal(goals, await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { rank: true },
+    }).then((p) => p?.rank ?? 1));
+
+    return { dateKey: key, goals, streak, featured };
   },
 
   async getWeeklyGoals(playerId: number) {

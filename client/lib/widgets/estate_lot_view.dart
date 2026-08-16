@@ -9,6 +9,7 @@ class EstateLotView extends StatelessWidget {
   final int parkingLevel;
   final int shedLevel;
   final int fenceLevel;
+  final bool goldFence;
   final BoxFit fit;
 
   static const int minLevel = 1;
@@ -20,6 +21,7 @@ class EstateLotView extends StatelessWidget {
     this.parkingLevel = 1,
     this.shedLevel = 1,
     this.fenceLevel = 1,
+    this.goldFence = false,
     this.fit = BoxFit.contain,
   });
 
@@ -57,12 +59,26 @@ class EstateLotView extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           for (final asset in layers)
-            Image.asset(
-              asset,
-              fit: fit,
-              filterQuality: FilterQuality.medium,
-              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-            ),
+            if (goldFence && asset.contains('/fence/'))
+              ColorFiltered(
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFFD4AF37),
+                  BlendMode.modulate,
+                ),
+                child: Image.asset(
+                  asset,
+                  fit: fit,
+                  filterQuality: FilterQuality.medium,
+                  errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                ),
+              )
+            else
+              Image.asset(
+                asset,
+                fit: fit,
+                filterQuality: FilterQuality.medium,
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+              ),
         ],
       ),
     );

@@ -5,6 +5,7 @@ import * as fbiService from './fbiService';
 import { prostituteService } from './prostituteService';
 import { propertyService } from './propertyService';
 import nightclubService from './nightclubService';
+import { policeRaidService } from './policeRaidService';
 import { RealTimeProvider, ITimeProvider } from '../utils/timeProvider';
 import { isRedisConnected } from './redisClient';
 import { tickQueue } from '../queues/tickQueue';
@@ -138,6 +139,30 @@ class TickService {
         console.log(
           `💃 Settled prostitution earnings for ${prostitutionResult.playersProcessed} players (total: €${prostitutionResult.totalEarningsSettled.toLocaleString()}, evicted: ${prostitutionResult.totalEvicted})`
         );
+      }
+
+      const raidCandidates = await prisma.player.findMany({
+        where: {
+          fbiHeat: { gte: 50 },
+          OR: [
+            { prostitutes: { some: { isBusted: false } } },
+            { ownedRedLightDistricts: { some: {} } },
+          ],
+        },
+        select: { id: true },
+        take: 200,
+      });
+      let raidsTriggered = 0;
+      for (const candidate of raidCandidates) {
+        try {
+          const raid = await policeRaidService.checkAndExecuteRaid(candidate.id);
+          if (raid.raidOccurred) raidsTriggered += 1;
+        } catch (raidError) {
+          console.error(`[Tick] RLD raid check failed for player ${candidate.id}:`, raidError);
+        }
+      }
+      if (raidsTriggered > 0) {
+        console.log(`🚨 RLD raids executed this tick: ${raidsTriggered}`);
       }
 
       // Process automatic nightclub drug sales for all open venues

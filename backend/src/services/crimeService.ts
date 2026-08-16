@@ -845,6 +845,11 @@ export const crimeService = {
         clearedRecordCount = await judgeService.expungeCriminalRecord(playerId);
       }
 
+      await runCrimeSideEffect('onboarding crime', async () => {
+        const { onboardingService } = await import('./onboardingService');
+        await onboardingService.markCrime(playerId);
+      });
+
       await runCrimeSideEffect('worldEvent crime.success', async () => {
         await worldEventService.createEvent('crime.success', {
           playerId,

@@ -315,6 +315,13 @@ class JobService {
     // Non-critical side effects should never block core job outcome
     if (success) {
       try {
+        const { onboardingService } = await import('./onboardingService');
+        await onboardingService.markJob(playerId);
+      } catch (err) {
+        console.error('[JobService] Failed to mark onboarding job:', err);
+      }
+
+      try {
         await worldEventService.createEvent(
           'job.completed',
           {

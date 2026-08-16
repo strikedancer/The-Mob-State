@@ -26,6 +26,7 @@ Scope-afbakening:
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
+- Residential house/apartment kaarten gebruiken `EstateLotView` gekoppeld aan `upgradeLevel` (house/parking/shed/hek). Preview-route blijft beschikbaar. Compose-pad: `scripts/compose_estate_grid_12x12.py`.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.

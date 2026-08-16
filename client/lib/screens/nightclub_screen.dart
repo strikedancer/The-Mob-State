@@ -1141,15 +1141,33 @@ class _NightclubScreenState extends State<NightclubScreen> {
                       child: ListView(
                         padding: EdgeInsets.all(_contentPadding()),
                         children: [
+                          _tonightLoopCard(),
+                          const SizedBox(height: 12),
                           _topControls(),
                           const SizedBox(height: 12),
                           _venueSelectorCard(),
                           const SizedBox(height: 12),
                           _operationsDeckCard(),
                           const SizedBox(height: 12),
-                          _nightclubIntelligenceCard(),
-                          const SizedBox(height: 12),
-                          _managementTabs(),
+                          ExpansionTile(
+                            initiallyExpanded: false,
+                            title: Text(
+                              Localizations.localeOf(context).languageCode == 'nl'
+                                  ? 'Geavanceerd'
+                                  : 'Advanced',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            collapsedIconColor: Colors.white70,
+                            iconColor: const Color(0xFFD4A24D),
+                            children: [
+                              _nightclubIntelligenceCard(),
+                              const SizedBox(height: 12),
+                              _managementTabs(),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -1242,6 +1260,61 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _tonightLoopCard() {
+    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
+    final operations = (data['operations'] as Map<String, dynamic>?) ?? const {};
+    final expansion = (operations['expansion'] as Map<String, dynamic>?) ?? const {};
+    final hospitality = (expansion['hospitality'] as Map<String, dynamic>?) ?? const {};
+    final crowdRaw = (data['crowdSize'] as num?)?.toDouble() ?? 0;
+    final crowd = crowdRaw.clamp(0, 100);
+    final stock = (hospitality['stockStatus'] ?? data['inventoryValue'] ?? '-').toString();
+    final isNl = Localizations.localeOf(context).languageCode == 'nl';
+
+    return _mafiaPanel(
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              isNl ? 'Tonight' : "Tonight's loop",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFFD4A24D),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _kpiChip(_t.nightclubKpiCrowd, '${crowd.toStringAsFixed(0)}%'),
+                _kpiChip(_t.nightclubStockStatus, stock),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                FilledButton.icon(
+                  onPressed: _buyHospitalityStock,
+                  icon: const Icon(Icons.local_bar),
+                  label: Text(isNl ? 'Restock' : 'Restock'),
+                ),
+                OutlinedButton.icon(
+                  onPressed: _investMarketing,
+                  icon: const Icon(Icons.campaign),
+                  label: Text(isNl ? 'Boost crowd' : 'Boost crowd'),
+                ),
+              ],
+            ),
           ],
         ),
       ),

@@ -23,6 +23,9 @@ interface CrewWithMembers {
   createdAt: Date;
   hqStyle?: string | null;
   hqLevel?: number | null;
+  recruitingOpen?: boolean;
+  autoAccept?: boolean;
+  missionLevel?: number;
   members: Array<{
     id: number;
     playerId: number;
@@ -147,6 +150,9 @@ export async function joinCrew(input: JoinCrewInput): Promise<CrewWithMembers> {
   if (!crew) {
     throw new Error('CREW_NOT_FOUND');
   }
+  if ((crew as { recruitingOpen?: boolean }).recruitingOpen === false) {
+    throw new Error('RECRUITING_CLOSED');
+  }
 
   // Check if player already in a crew
   const existingMembership = await prisma.crewMember.findFirst({
@@ -155,6 +161,12 @@ export async function joinCrew(input: JoinCrewInput): Promise<CrewWithMembers> {
 
   if (existingMembership) {
     throw new Error('ALREADY_IN_CREW');
+  }
+
+  const memberCap = await getCrewMemberCapForCrew(crewId);
+  const memberCount = await prisma.crewMember.count({ where: { crewId } });
+  if (memberCap > 0 && memberCount >= memberCap) {
+    throw new Error('CREW_FULL');
   }
 
   // Add player as member
@@ -179,6 +191,9 @@ export async function requestJoinCrew(
   const crew = await prisma.crew.findUnique({ where: { id: crewId } });
   if (!crew) {
     throw new Error('CREW_NOT_FOUND');
+  }
+  if ((crew as { recruitingOpen?: boolean }).recruitingOpen === false) {
+    throw new Error('RECRUITING_CLOSED');
   }
 
   const existingMembership = await prisma.crewMember.findFirst({
@@ -396,6 +411,9 @@ export async function getCrewById(crewId: number): Promise<CrewWithMembers> {
     createdAt: crew.createdAt,
     hqStyle: crew.hqBuilding?.style ?? null,
     hqLevel: crew.hqBuilding?.level ?? null,
+    recruitingOpen: (crew as { recruitingOpen?: boolean }).recruitingOpen !== false,
+    autoAccept: Boolean((crew as { autoAccept?: boolean }).autoAccept),
+    missionLevel: (crew as { missionLevel?: number }).missionLevel ?? 1,
     members: crew.members,
     memberCount: crew.members.length,
   };
@@ -455,9 +473,60 @@ export async function getAllCrews(): Promise<CrewWithMembers[]> {
     createdAt: crew.createdAt,
     hqStyle: crew.hqBuilding?.style ?? null,
     hqLevel: crew.hqBuilding?.level ?? null,
+    recruitingOpen: crew.recruitingOpen !== false,
+    autoAccept: Boolean(crew.autoAccept),
+    missionLevel: crew.missionLevel ?? 1,
     members: crew.members,
     memberCount: crew.members.length,
   }));
+}
+
+export async function getRecruitingCrews(): Promise<CrewWithMembers[]> {
+  const crews = await getAllCrews();
+  return crews.filter((crew) => crew.recruitingOpen !== false);
+}
+
+export async function updateRecruitingSettings(
+  playerId: number,
+  crewId: number,
+  input: { recruitingOpen?: boolean; autoAccept?: boolean }
+): Promise<{ recruitingOpen: boolean; autoAccept: boolean }> {
+  const isLeader = await isCrewLeader(playerId, crewId);
+  if (!isLeader) {
+    throw new Error('NOT_CREW_LEADER');
+  }
+  const updated = await prisma.crew.update({
+    where: { id: crewId },
+    data: {
+      ...(input.recruitingOpen !== undefined ? { recruitingOpen: input.recruitingOpen } : {}),
+      ...(input.autoAccept !== undefined ? { autoAccept: input.autoAccept } : {}),
+    },
+    select: { recruitingOpen: true, autoAccept: true },
+  });
+  return {
+    recruitingOpen: updated.recruitingOpen !== false,
+    autoAccept: Boolean(updated.autoAccept),
+  };
+}
+
+export async function cancelJoinRequest(crewId: number, playerId: number): Promise<void> {
+  const request = await prisma.crewJoinRequest.findFirst({
+    where: { crewId, playerId, status: 'pending' },
+  });
+  if (!request) {
+    throw new Error('REQUEST_NOT_FOUND');
+  }
+  await prisma.crewJoinRequest.update({
+    where: { id: request.id },
+    data: { status: 'cancelled' },
+  });
+}
+
+export async function listPendingJoinRequestsForPlayer(playerId: number) {
+  return prisma.crewJoinRequest.findMany({
+    where: { playerId, status: 'pending' },
+    select: { id: true, crewId: true, createdAt: true },
+  });
 }
 
 /**

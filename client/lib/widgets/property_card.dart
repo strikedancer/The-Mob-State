@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/property.dart';
 import '../utils/formatters.dart';
 import '../l10n/app_localizations.dart';
+import 'estate_lot_view.dart';
 
 class PropertyCard extends StatelessWidget {
   final PropertyDefinition? definition;
@@ -49,8 +50,19 @@ class PropertyCard extends StatelessWidget {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Property Image with Overlays
-                if (imagePath != null)
+                if (isOwned &&
+                    (propertyId == 'house' || propertyId == 'apartment'))
+                  SizedBox(
+                    height: 220,
+                    width: double.infinity,
+                    child: EstateLotView(
+                      houseLevel: ownedProperty!.level,
+                      parkingLevel: ownedProperty!.level,
+                      shedLevel: (ownedProperty!.level - 1).clamp(1, 10),
+                      fenceLevel: ownedProperty!.level,
+                    ),
+                  )
+                else if (imagePath != null)
                   Container(
                     height: 150,
                     width: double.infinity,

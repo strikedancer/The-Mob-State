@@ -263,6 +263,18 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     metadataJson: '{"boosts":{"eventContributionPct":0.15}}',
     sortOrder: 62,
   },
+  {
+    key: 'estate_gold_fence',
+    titleNl: 'Gouden hek (landgoed)',
+    titleEn: 'Gold estate fence',
+    descriptionNl: 'Cosmetisch gouden hek op je huis/appartement. Geen combat-bonus.',
+    descriptionEn: 'Cosmetic gold fence on your house/apartment. No combat bonus.',
+    creditCost: 80,
+    effectType: 'EVENT_BOOST',
+    durationHours: 8760,
+    metadataJson: '{"cosmetic":"gold_fence","boosts":{}}',
+    sortOrder: 80,
+  },
 ];
 
 const addHours = (date: Date, hours: number) => new Date(date.getTime() + hours * 60 * 60 * 1000);

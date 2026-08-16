@@ -15,6 +15,8 @@ Crew _$CrewFromJson(Map<String, dynamic> json) => Crew(
   hqLevel: (json['hqLevel'] as num?)?.toInt(),
   isVip: json['isVip'] as bool? ?? false,
   vipExpiresAt: json['vipExpiresAt'] as String?,
+  recruitingOpen: json['recruitingOpen'] as bool? ?? true,
+  autoAccept: json['autoAccept'] as bool? ?? false,
   members: (json['members'] as List<dynamic>)
       .map((e) => CrewMember.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -29,5 +31,7 @@ Map<String, dynamic> _$CrewToJson(Crew instance) => <String, dynamic>{
   'hqLevel': instance.hqLevel,
   'isVip': instance.isVip,
   'vipExpiresAt': instance.vipExpiresAt,
+  'recruitingOpen': instance.recruitingOpen,
+  'autoAccept': instance.autoAccept,
   'members': instance.members,
 };

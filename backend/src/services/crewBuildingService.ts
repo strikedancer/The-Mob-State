@@ -9,6 +9,7 @@ export type CrewBuildingType =
   | 'weapon_storage'
   | 'ammo_storage'
   | 'drug_storage'
+  | 'trade_storage'
   | 'cash_storage';
 
 export type CrewBuildingStyle = 'camping' | 'rural' | 'city' | 'villa' | 'vip';
@@ -53,6 +54,7 @@ const starterStorageTypes: CrewBuildingType[] = [
   'weapon_storage',
   'ammo_storage',
   'drug_storage',
+  'trade_storage',
   'cash_storage',
 ];
 
@@ -373,6 +375,8 @@ function getBuildingModel(type: CrewBuildingType) {
       return prisma.crewAmmoStorageBuilding;
     case 'drug_storage':
       return prisma.crewDrugStorageBuilding;
+    case 'trade_storage':
+      return prisma.crewTradeStorageBuilding;
     case 'cash_storage':
       return prisma.crewCashStorageBuilding;
     default:
@@ -386,7 +390,7 @@ export async function getCrewBuildingRecord(crewId: number, type: CrewBuildingTy
 }
 
 export async function ensureCrewStarterBuildings(crewId: number): Promise<void> {
-  const [hq, carStorage, boatStorage, weaponStorage, ammoStorage, drugStorage, cashStorage] =
+  const [hq, carStorage, boatStorage, weaponStorage, ammoStorage, drugStorage, tradeStorage, cashStorage] =
     await Promise.all([
       prisma.crewHqBuilding.findUnique({ where: { crewId } }),
       prisma.crewCarStorageBuilding.findUnique({ where: { crewId } }),
@@ -394,6 +398,7 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
       prisma.crewWeaponStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewAmmoStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewDrugStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewTradeStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewCashStorageBuilding.findUnique({ where: { crewId } }),
     ]);
 
@@ -403,6 +408,7 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
     weaponStorage,
     ammoStorage,
     drugStorage,
+    tradeStorage,
     cashStorage,
   ].some(Boolean);
   const missingTypes = starterStorageTypes.filter((type) => {
@@ -417,6 +423,8 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
         return !ammoStorage;
       case 'drug_storage':
         return !drugStorage;
+      case 'trade_storage':
+        return !tradeStorage;
       case 'cash_storage':
         return !cashStorage;
       default:
@@ -461,6 +469,9 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
     }
     if (!drugStorage) {
       await tx.crewDrugStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
+    }
+    if (!tradeStorage) {
+      await tx.crewTradeStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
     }
     if (!cashStorage) {
       await tx.crewCashStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });

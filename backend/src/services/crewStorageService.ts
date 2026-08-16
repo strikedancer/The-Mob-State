@@ -355,6 +355,80 @@ export async function depositCrewDrugs(
   });
 }
 
+export async function depositCrewTradeGoods(
+  crewId: number,
+  playerId: number,
+  goodType: string,
+  quantity: number
+) {
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    throw new Error('INVALID_QUANTITY');
+  }
+
+  const capacity = await getCrewStorageCapacity(crewId, 'trade_storage');
+  if (capacity <= 0) {
+    throw new Error('TRADE_STORAGE_NOT_OWNED');
+  }
+
+  const currentTotal = await prisma.crewTradeInventory.aggregate({
+    where: { crewId },
+    _sum: { quantity: true },
+  });
+  const currentQuantity = currentTotal._sum.quantity ?? 0;
+  if (currentQuantity + quantity > capacity) {
+    throw new Error('TRADE_STORAGE_FULL');
+  }
+
+  const playerItem = await prisma.inventory.findUnique({
+    where: { playerId_goodType: { playerId, goodType } },
+  });
+  if (!playerItem || playerItem.quantity < quantity) {
+    throw new Error('INSUFFICIENT_TRADE_GOODS');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    if (playerItem.quantity === quantity) {
+      await tx.inventory.delete({ where: { id: playerItem.id } });
+    } else {
+      await tx.inventory.update({
+        where: { id: playerItem.id },
+        data: { quantity: playerItem.quantity - quantity },
+      });
+    }
+
+    const existing = await tx.crewTradeInventory.findUnique({
+      where: { crewId_goodType: { crewId, goodType } },
+    });
+    if (existing) {
+      const totalQty = existing.quantity + quantity;
+      const weightedPrice = Math.floor(
+        (existing.averagePurchasePrice * existing.quantity + playerItem.purchasePrice * quantity) / totalQty
+      );
+      const weightedCondition = Math.floor(
+        (existing.averageCondition * existing.quantity + playerItem.condition * quantity) / totalQty
+      );
+      await tx.crewTradeInventory.update({
+        where: { id: existing.id },
+        data: {
+          quantity: totalQty,
+          averagePurchasePrice: weightedPrice,
+          averageCondition: weightedCondition,
+        },
+      });
+    } else {
+      await tx.crewTradeInventory.create({
+        data: {
+          crewId,
+          goodType,
+          quantity,
+          averagePurchasePrice: playerItem.purchasePrice,
+          averageCondition: playerItem.condition,
+        },
+      });
+    }
+  });
+}
+
 export async function getCrewStorageSummary(crewId: number) {
   const [
     carCapacity,
@@ -362,6 +436,7 @@ export async function getCrewStorageSummary(crewId: number) {
     weaponCapacity,
     ammoCapacity,
     drugCapacity,
+    tradeCapacity,
     cashCapacity,
   ] = await Promise.all([
     getCrewStorageCapacity(crewId, 'car_storage'),
@@ -369,6 +444,7 @@ export async function getCrewStorageSummary(crewId: number) {
     getCrewStorageCapacity(crewId, 'weapon_storage'),
     getCrewStorageCapacity(crewId, 'ammo_storage'),
     getCrewStorageCapacity(crewId, 'drug_storage'),
+    getCrewStorageCapacity(crewId, 'trade_storage'),
     getCrewStorageCapacity(crewId, 'cash_storage'),
   ]);
 
@@ -378,6 +454,7 @@ export async function getCrewStorageSummary(crewId: number) {
     weapons,
     ammo,
     drugs,
+    tradeGoods,
     crew,
   ] = await Promise.all([
     prisma.crewCarInventory.findMany({ where: { crewId } }),
@@ -385,12 +462,14 @@ export async function getCrewStorageSummary(crewId: number) {
     prisma.crewWeaponInventory.findMany({ where: { crewId } }),
     prisma.crewAmmoInventory.findMany({ where: { crewId } }),
     prisma.crewDrugInventory.findMany({ where: { crewId } }),
+    prisma.crewTradeInventory.findMany({ where: { crewId } }),
     prisma.crew.findUnique({ where: { id: crewId }, select: { bankBalance: true } }),
   ]);
 
   const weaponCount = weapons.reduce((sum, item) => sum + item.quantity, 0);
   const ammoCount = ammo.reduce((sum, item) => sum + item.quantity, 0);
   const drugCount = drugs.reduce((sum, item) => sum + item.quantity, 0);
+  const tradeCount = tradeGoods.reduce((sum, item) => sum + item.quantity, 0);
   const carsWithType = cars.map((vehicle) => ({
     ...vehicle,
     vehicleType: resolveCrewLandVehicleType(vehicle.vehicleId),
@@ -403,6 +482,7 @@ export async function getCrewStorageSummary(crewId: number) {
       weapons: weaponCapacity,
       ammo: ammoCapacity,
       drugs: drugCapacity,
+      trade: tradeCapacity,
       cash: cashCapacity,
     },
     totals: {
@@ -411,6 +491,7 @@ export async function getCrewStorageSummary(crewId: number) {
       weapons: weaponCount,
       ammo: ammoCount,
       drugs: drugCount,
+      trade: tradeCount,
       cash: crew?.bankBalance ?? 0,
     },
     inventory: {
@@ -419,6 +500,7 @@ export async function getCrewStorageSummary(crewId: number) {
       weapons,
       ammo,
       drugs,
+      trade: tradeGoods,
     },
   };
 }
