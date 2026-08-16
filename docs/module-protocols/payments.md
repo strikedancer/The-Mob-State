@@ -35,7 +35,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Payments -> Garage/TuneShop (repair/tune versnellen)
 - Payments -> Vault (Kraak de Kluis: credit inzet + prize payouts)
 - Payments -> Events (event boosts en tijdelijke multipliers)
-- Payments -> Admin (catalogusbeheer, transactiesupport, audit)
+- Payments -> Admin (catalogusbeheer, transactiesupport, audit, volledige speler-reset met behoud van VIP/betaalde credits)
 - Payments -> Dashboard/Notifications (premium status en betaalresultaten zichtbaar maken)
 
 ## Must Preserve
@@ -50,6 +50,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Player VIP voordelen met economy-impact (zoals cooldown-reductie of periodieke credit grants) moeten via backendregels afdwingbaar blijven en in de player copy expliciet vermeld worden.
 - Als Player VIP nieuwe module-specifieke QoL-perks krijgt (zoals VIP one-click ontbrekende materials kopen in Drugs Productie), moet die benefit expliciet in de VIP aankoop- en info-copy staan (NL+EN).
 - Wekelijkse Player VIP-credit grants moeten ledger-traceerbaar zijn via `player_credit_transactions` (reasonKey + metadata), zodat support/admin uitbetaling kan herleiden.
+- Admin full player reset (`POST /admin/players/:playerId/reset` en `reset-all`) mag VIP/abonnementvelden (`isVip`, `vipExpiresAt`, `vipLifetimeDays`, Mollie/Stripe customer/subscription ids) nooit wissen. Credits mogen alleen terug naar het restant van **betaalde** pack-aankopen (ledger `PURCHASE`/`REFUND` met `premium_checkout`); VIP-stipend, event rewards en vault-prijzen tellen niet als betaald.
 - Credit koopbundels en credit-redemption costs moeten admin-beheerbaar zijn via de premium adminflow en niet hardcoded in player UI.
 - Default creditbundels mogen server-side ge-seed worden voor een lege catalogus, maar key, prijs, credit-amount en beeldpad moeten stabiel en idempotent blijven.
 - Legacy offers met verouderde prijsstelling (zoals 1000 credits voor 1,99) mogen niet meer in de actieve player-catalogus of checkout terechtkomen; blokkeer of deactiveer deze server-side.
@@ -87,6 +88,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 8. Een lege premium-catalogus krijgt automatisch de verwachte default creditbundels (250 / 500 / 1000 / 2500) zonder duplicaten.
 9. Premium tiles laden op web correct via de externe runtime-route en tonen na een refresh de actuele cache-bust versie.
 10. Admin player-management kan premium credits set/add uitvoeren met correcte permissies (viewer blok, moderator limiet, super admin volledige limiet).
+11. Admin full player reset houdt VIP/auto-renew intact en zet `premiumCredits` op het restant van gekochte packs (niet op 0, niet inclusief stipend/event/vault).
 
 ## i18n and Messaging
 - Prijslabels en benefit-teksten in NL en EN synchroon houden.

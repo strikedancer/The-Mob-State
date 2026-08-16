@@ -840,3 +840,101 @@ export async function getActiveEventBoostEffects(
     ),
   };
 }
+
+type PaidCreditLedgerRow = {
+  delta: number;
+  reasonType: string;
+  reasonKey?: string | null;
+  metadataJson?: string | null;
+};
+
+function isUnpaidGrantReason(key: string): boolean {
+  return (
+    key.startsWith('event_reward_') ||
+    key === VIP_WEEKLY_STIPEND_REASON_KEY ||
+    key === 'vault_prize'
+  );
+}
+
+function isPaidCreditLedgerRow(row: PaidCreditLedgerRow): boolean {
+  const key = row.reasonKey ?? '';
+  if (isUnpaidGrantReason(key)) return false;
+
+  if (row.metadataJson) {
+    try {
+      const meta = JSON.parse(row.metadataJson) as { source?: string };
+      if (
+        meta.source === 'player_vip_weekly_stipend' ||
+        meta.source === 'vault' ||
+        meta.source === 'event'
+      ) {
+        return false;
+      }
+      if (meta.source === 'premium_checkout') {
+        return row.reasonType === 'PURCHASE' || row.reasonType === 'REFUND';
+      }
+    } catch {
+      // Fall through to reasonType rules.
+    }
+  }
+
+  // Real pack refunds count; vault prizes use REFUND + vault_prize (excluded above).
+  if (row.reasonType === 'REFUND') return true;
+  return row.reasonType === 'PURCHASE';
+}
+
+/** Keep leftover purchased credits; drop stipend/event/vault leftovers. */
+export function computePreservedPaidCredits(
+  rows: PaidCreditLedgerRow[],
+  currentBalance: number
+): number {
+  const paidNet = rows.reduce((sum, row) => {
+    return isPaidCreditLedgerRow(row) ? sum + row.delta : sum;
+  }, 0);
+  return Math.max(0, Math.min(currentBalance, paidNet));
+}
+
+export async function getPreservedPaidCredits(
+  tx: any,
+  playerId: number,
+  currentBalance: number
+): Promise<number> {
+  const rows = await tx.playerCreditTransaction.findMany({
+    where: { playerId },
+    select: {
+      delta: true,
+      reasonType: true,
+      reasonKey: true,
+      metadataJson: true,
+    },
+  });
+  return computePreservedPaidCredits(rows, currentBalance);
+}
+
+export async function applyCreditBalanceAdjustment(
+  tx: any,
+  playerId: number,
+  nextBalance: number,
+  reasonKey: string,
+  metadata: Record<string, unknown>
+): Promise<number> {
+  const player = await tx.player.findUnique({
+    where: { id: playerId },
+    select: { premiumCredits: true },
+  });
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+  const delta = nextBalance - player.premiumCredits;
+  if (delta === 0) {
+    return player.premiumCredits;
+  }
+  return updateCreditsBalance(
+    tx,
+    playerId,
+    delta,
+    'ADMIN_ADJUSTMENT',
+    reasonKey,
+    JSON.stringify(metadata)
+  );
+}

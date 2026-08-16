@@ -963,6 +963,7 @@ Bob: â‚¬300K counter-hit
 - Cooldown reset-items zijn alleen inwisselbaar bij een actieve cooldown; zonder actieve timer blijft het item zichtbaar maar geblokkeerd.
 - Player VIP geeft 10% kortere actie-timeouts/cooldowns op gameplay-actions; gevangenistijd (`jailRelease`) blijft ongewijzigd.
 - Player VIP krijgt wekelijks 100 premium credits (ledger-traceerbaar via credit-transacties).
+- Admin kan een speler **volledig resetten** (gameplay/progressie wissen). **Account, VIP-abonnement/auto-renew en restant gekochte creditpacks blijven behouden**; wekelijkse VIP-credits, event-credits en vault-prijzen tellen niet als betaald en verdwijnen. Ledger en betaalhistorie blijven staan.
 - Kill-reset met actieve Player VIP: contant geld reset naar â‚¬500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).
 - Op ondersteunde timeout-schermen (crime, jobs, school, voertuig- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren.

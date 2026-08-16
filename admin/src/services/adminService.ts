@@ -1531,7 +1531,14 @@ export const adminService = {
     return response.json();
   },
 
-  async resetPlayerProgress(playerId: number, reason?: string) {
+  async resetPlayerProgress(playerId: number, reason?: string): Promise<{
+    message: string;
+    playerId: number;
+    username: string;
+    preservedPaidCredits: number;
+    previousCredits: number;
+    vipKept: { isVip: boolean; vipExpiresAt: string | null; autoRenewActive: boolean };
+  }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/${playerId}/reset`, {
       method: "POST",
@@ -1546,7 +1553,12 @@ export const adminService = {
     return response.json();
   },
 
-  async resetAllPlayersProgress(reason?: string) {
+  async resetAllPlayersProgress(reason?: string): Promise<{
+    message: string;
+    affectedPlayers: number;
+    preservedPaidCreditsTotal: number;
+    vipKept: boolean;
+  }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/reset-all`, {
       method: "POST",

@@ -3499,8 +3499,8 @@ function App() {
 
     const confirmation = window.prompt(
       l(
-        "Typ RESET om deze speler volledig te resetten.",
-        "Type RESET to fully reset this player.",
+        "Typ RESET om deze speler volledig te resetten. VIP-abonnement en betaalde credits blijven behouden.",
+        "Type RESET to fully reset this player. VIP subscription and paid credits are kept.",
       ),
       "RESET",
     );
@@ -3510,13 +3510,21 @@ function App() {
 
     try {
       setIsResettingPlayerProgress(true);
-      await adminService.resetPlayerProgress(selectedPlayerId, reason.trim());
+      const result = await adminService.resetPlayerProgress(
+        selectedPlayerId,
+        reason.trim(),
+      );
       const refreshed = await adminService.getPlayerOverview(selectedPlayerId);
       setSelectedPlayerOverview(refreshed);
       setRecentActionsRefreshTick((tick) => tick + 1);
       await loadPlayers();
       await loadStats();
-      alert(l("Spelerprogress is gereset.", "Player progress has been reset."));
+      alert(
+        `${l("Spelerprogress is gereset.", "Player progress has been reset.")} ${l(
+          "VIP behouden. Betaalde credits over:",
+          "VIP kept. Paid credits remaining:",
+        )} ${result.preservedPaidCredits ?? 0}`,
+      );
     } catch (err) {
       if (handleUnauthorized(err)) return;
       alert(
@@ -3550,8 +3558,8 @@ function App() {
 
     const confirmation = window.prompt(
       l(
-        "Typ RESET ALL om ALLE spelers te resetten.",
-        "Type RESET ALL to reset ALL players.",
+        "Typ RESET ALL om ALLE spelers te resetten. VIP-abonnementen en betaalde credits blijven behouden.",
+        "Type RESET ALL to reset ALL players. VIP subscriptions and paid credits are kept.",
       ),
       "RESET ALL",
     );
@@ -3572,7 +3580,10 @@ function App() {
         setRecentActionsRefreshTick((tick) => tick + 1);
       }
       alert(
-        `${l("Alle spelerprogress is gereset", "All player progress has been reset")}: ${result.affectedPlayers}`,
+        `${l("Alle spelerprogress is gereset", "All player progress has been reset")}: ${result.affectedPlayers}. ${l(
+          "VIP behouden. Betaalde credits totaal over:",
+          "VIP kept. Paid credits remaining in total:",
+        )} ${result.preservedPaidCreditsTotal ?? 0}`,
       );
     } catch (err) {
       if (handleUnauthorized(err)) return;
@@ -7810,8 +7821,8 @@ function App() {
                                   </button>
                                   <small className="text-muted">
                                     {l(
-                                      "Slaat alle velden in dit beheerformulier op.",
-                                      "Saves all fields in this management form.",
+                                      "Opslaan wijzigt alleen dit formulier. Reset wist gameplay, maar houdt account, VIP-abonnement en betaalde credits.",
+                                      "Save only updates this form. Reset wipes gameplay but keeps the account, VIP subscription, and paid credits.",
                                     )}
                                   </small>
                                 </div>

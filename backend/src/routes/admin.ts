@@ -34,6 +34,10 @@ import {
 } from '../services/crewMissionService';
 import { deletePortrait, listPortraits } from '../services/playerPortraitService';
 import { grantPlayerVipDays } from '../services/vipBenefitsService';
+import {
+  applyCreditBalanceAdjustment,
+  getPreservedPaidCredits,
+} from '../services/premiumCreditsService';
 
 const router = express.Router();
 
@@ -461,29 +465,265 @@ const supportTodoCommentSchema = z.object({
   comment: z.string().trim().min(1).max(4000),
 });
 
-async function resetPlayerProgressInTransaction(tx: any, playerId: number) {
-  await tx.actionCooldown.deleteMany({ where: { playerId } });
-  await tx.crimeAttempt.deleteMany({ where: { playerId } });
-  await tx.jobAttempt.deleteMany({ where: { playerId } });
-  await tx.inventory.deleteMany({ where: { playerId } });
-  await tx.vehicleInventory.deleteMany({ where: { playerId } });
-  await tx.ammoInventory.deleteMany({ where: { playerId } });
-  await tx.weaponInventory.deleteMany({ where: { playerId } });
-  await tx.playerTools.deleteMany({ where: { playerId } });
-  await tx.property.deleteMany({ where: { playerId } });
-  await tx.prostitute.deleteMany({ where: { playerId } });
-  await tx.drugProduction.deleteMany({ where: { playerId } });
-  await tx.productionMaterial.deleteMany({ where: { playerId } });
-  await tx.playerActivity.deleteMany({ where: { playerId } });
-  await tx.worldEvent.deleteMany({ where: { playerId } });
-  await tx.crypto_orders.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_transactions.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_holdings.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_mission_progress.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_leaderboard_rewards.deleteMany({ where: { player_id: playerId } });
-  await tx.bankAccount.updateMany({ where: { playerId }, data: { balance: 0 } });
-  await tx.playerBackpack.deleteMany({ where: { playerId } }).catch(() => undefined);
-  await tx.playerSelectedVehicle.deleteMany({ where: { playerId } }).catch(() => undefined);
+async function tryResetDelete(label: string, fn: () => Promise<unknown>) {
+  try {
+    await fn();
+  } catch (error) {
+    console.warn(`Admin player reset skipped ${label}:`, error);
+  }
+}
+
+async function resetPlayerProgressInTransaction(
+  tx: any,
+  playerId: number
+): Promise<{ preservedPaidCredits: number; previousCredits: number }> {
+  const player = await tx.player.findUnique({
+    where: { id: playerId },
+    select: { premiumCredits: true },
+  });
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  const preservedPaidCredits = await getPreservedPaidCredits(
+    tx,
+    playerId,
+    player.premiumCredits
+  );
+
+  const crewMembership = await tx.crewMember
+    .findUnique({
+      where: { playerId },
+      select: { crewId: true, role: true },
+    })
+    .catch(() => null);
+  const wasCrewLeader = crewMembership?.role === 'leader';
+
+  await tryResetDelete('actionCooldown', () =>
+    tx.actionCooldown.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('crimeAttempt', () =>
+    tx.crimeAttempt.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('jobAttempt', () =>
+    tx.jobAttempt.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('inventory', () =>
+    tx.inventory.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('vehicleInventory', () =>
+    tx.vehicleInventory.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('ammoInventory', () =>
+    tx.ammoInventory.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('weaponInventory', () =>
+    tx.weaponInventory.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('playerTools', () =>
+    tx.playerTools.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('toolLoadouts', () =>
+    tx.toolLoadouts.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('toolTransfers', () =>
+    tx.toolTransfers.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('playerSelectedVehicle', () =>
+    tx.playerSelectedVehicle.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('vehicles', () => tx.vehicle.deleteMany({ where: { playerId } }));
+  await tryResetDelete('garages', () => tx.garage.deleteMany({ where: { playerId } }));
+  await tryResetDelete('marinas', () => tx.marina.deleteMany({ where: { playerId } }));
+  await tryResetDelete('aircraft', () => tx.aircraft.deleteMany({ where: { playerId } }));
+  await tryResetDelete('ammoFactories', () =>
+    tx.ammoFactory.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('aviationLicense', () =>
+    tx.aviationLicense.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('inventoryUpgrades', () =>
+    tx.inventoryUpgrades.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('playerBackpack', () =>
+    tx.playerBackpack.deleteMany({ where: { playerId } })
+  );
+
+  await tryResetDelete('nightclubAssignments', () =>
+    tx.nightclubProstituteAssignment.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('nightclubSeasonRewards', () =>
+    tx.nightclubSeasonReward.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('eventParticipations', () =>
+    tx.eventParticipation.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('prostitutes', () =>
+    tx.prostitute.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('nightclubVenues', () =>
+    tx.nightclubVenue.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('drugProduction', () =>
+    tx.drugProduction.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('properties', () =>
+    tx.property.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('casinoOwnership', () =>
+    tx.casinoOwnership.deleteMany({ where: { ownerId: playerId } })
+  );
+
+  await tryResetDelete('rldUnown', async () => {
+    const districts = await tx.redLightDistrict.findMany({
+      where: { ownerId: playerId },
+      select: { id: true },
+    });
+    if (districts.length > 0) {
+      const ids = districts.map((d: { id: number }) => d.id);
+      await tx.redLightRoom.updateMany({
+        where: { redLightDistrictId: { in: ids } },
+        data: { occupied: false },
+      });
+      await tx.redLightDistrict.updateMany({
+        where: { ownerId: playerId },
+        data: { ownerId: null, purchasedAt: null, tier: 1, securityLevel: 0 },
+      });
+    }
+  });
+
+  await tryResetDelete('drugInventory', () =>
+    tx.drugInventory.deleteMany({ where: { playerId } })
+  );
+  const ownedFacilities = await tx.drugFacility
+    .findMany({ where: { playerId }, select: { id: true } })
+    .catch(() => [] as Array<{ id: number }>);
+  if (ownedFacilities.length > 0) {
+    await tryResetDelete('drugFacilityUpgrades', () =>
+      tx.drugFacilityUpgrade.deleteMany({
+        where: { facilityId: { in: ownedFacilities.map((f: { id: number }) => f.id) } },
+      })
+    );
+  }
+  await tryResetDelete('drugFacilities', () =>
+    tx.drugFacility.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('productionMaterial', () =>
+    tx.productionMaterial.deleteMany({ where: { playerId } })
+  );
+
+  await tryResetDelete('playerActivity', () =>
+    tx.playerActivity.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('worldEvent', () =>
+    tx.worldEvent.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('dailyGoals', () =>
+    tx.playerDailyGoalClaim.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('vaultAttempts', () =>
+    tx.vaultAttempt.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('eventItems', () =>
+    tx.playerEventItem.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('marketListings', () =>
+    tx.playerMarketListing.deleteMany({
+      where: { OR: [{ sellerId: playerId }, { buyerId: playerId }] },
+    })
+  );
+  await tryResetDelete('gameEventProgress', () =>
+    tx.gameEventParticipantProgress.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('gameEventClaims', () =>
+    tx.gameEventRewardClaim.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('achievements', () =>
+    tx.prostitutionAchievement.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('prostitutionLeaderboard', () =>
+    tx.prostitutionLeaderboard.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('prostitutionInsurance', () =>
+    tx.prostitutionProtectionInsurance.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('rivalries', () =>
+    tx.prostitutionRivalry.deleteMany({
+      where: { OR: [{ playerId }, { rivalPlayerId: playerId }] },
+    })
+  );
+  await tryResetDelete('sabotage', () =>
+    tx.sabotageAction.deleteMany({
+      where: { OR: [{ attackerId: playerId }, { victimId: playerId }] },
+    })
+  );
+  await tryResetDelete('gymStats', () => tx.gymStats.deleteMany({ where: { playerId } }));
+  await tryResetDelete('shootingStats', () =>
+    tx.shootingRangeStats.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('playerSecurity', () =>
+    tx.playerSecurity.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('creditEntitlements', () =>
+    tx.playerCreditEntitlement.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('hitList', async () => {
+    await tx.hitList.deleteMany({
+      where: { OR: [{ targetId: playerId }, { placedById: playerId }] },
+    });
+    await tx.hitList.updateMany({
+      where: { completedBy: playerId },
+      data: { completedBy: null },
+    });
+  });
+  await tryResetDelete('npcPlayer', () =>
+    tx.nPCPlayer.deleteMany({ where: { playerId } })
+  );
+  await tryResetDelete('casinoTransactions', () =>
+    tx.casinoTransaction.deleteMany({
+      where: { OR: [{ playerId }, { ownerId: playerId }] },
+    })
+  );
+  await tryResetDelete('crewWarParticipants', () =>
+    tx.crewWarParticipant.deleteMany({ where: { playerId } })
+  );
+
+  await tryResetDelete('cryptoOrders', () =>
+    tx.crypto_orders.deleteMany({ where: { player_id: playerId } })
+  );
+  await tryResetDelete('cryptoTransactions', () =>
+    tx.crypto_transactions.deleteMany({ where: { player_id: playerId } })
+  );
+  await tryResetDelete('cryptoHoldings', () =>
+    tx.crypto_holdings.deleteMany({ where: { player_id: playerId } })
+  );
+  await tryResetDelete('cryptoMissions', () =>
+    tx.crypto_mission_progress.deleteMany({ where: { player_id: playerId } })
+  );
+  await tryResetDelete('cryptoLeaderboard', () =>
+    tx.crypto_leaderboard_rewards.deleteMany({ where: { player_id: playerId } })
+  );
+  await tryResetDelete('stockHoldings', () =>
+    tx.$executeRaw`DELETE FROM stock_holdings WHERE playerId = ${playerId}`
+  );
+  await tryResetDelete('stockTrades', () =>
+    tx.$executeRaw`DELETE FROM stock_trades WHERE playerId = ${playerId}`
+  );
+  await tryResetDelete('launderJobs', () =>
+    tx.$executeRaw`DELETE FROM launder_jobs WHERE playerId = ${playerId}`
+  );
+  await tryResetDelete('bankAccount', () =>
+    tx.bankAccount.updateMany({ where: { playerId }, data: { balance: 0 } })
+  );
+
+  if (!wasCrewLeader) {
+    await tryResetDelete('crewMembership', () =>
+      tx.crewMember.deleteMany({ where: { playerId } })
+    );
+  }
+  await tryResetDelete('crewJoinRequests', () =>
+    tx.crewJoinRequest.deleteMany({ where: { playerId } })
+  );
 
   await tx.player.update({
     where: { id: playerId },
@@ -511,13 +751,42 @@ async function resetPlayerProgressInTransaction(tx: any, playerId: number) {
       lastAmmoPurchaseAt: null,
       lastHospitalVisit: null,
       reputation: 0,
-      premiumCredits: 0,
       lastProstituteRecruitment: null,
       drugHeat: 0,
       autoCollectDrugs: false,
       lastDrugActionAt: null,
+      hitProtectionExpiresAt: null,
     },
   });
+
+  await applyCreditBalanceAdjustment(
+    tx,
+    playerId,
+    preservedPaidCredits,
+    'admin_full_reset_preserve_paid',
+    {
+      source: 'admin_player_full_reset',
+      previousCredits: player.premiumCredits,
+      preservedPaidCredits,
+    }
+  );
+
+  if (wasCrewLeader && crewMembership) {
+    await tx.crewMember.upsert({
+      where: { playerId },
+      update: { crewId: crewMembership.crewId, role: 'leader' },
+      create: {
+        playerId,
+        crewId: crewMembership.crewId,
+        role: 'leader',
+      },
+    });
+  }
+
+  return {
+    preservedPaidCredits,
+    previousCredits: player.premiumCredits,
+  };
 }
 
 const vehicleStatsSchema = z.object({
@@ -2452,26 +2721,42 @@ router.post(
       const { reason } = resetPlayerProgressSchema.parse(req.body || {});
       const target = await prisma.player.findUnique({
         where: { id: playerId },
-        select: { id: true, username: true },
+        select: {
+          id: true,
+          username: true,
+          isVip: true,
+          vipExpiresAt: true,
+          mollieSubscriptionId: true,
+        },
       });
       if (!target) {
         return res.status(404).json({ error: 'Player not found' });
       }
 
-      await prisma.$transaction(async (tx) => {
-        await resetPlayerProgressInTransaction(tx, playerId);
+      const resetResult = await prisma.$transaction(async (tx) => {
+        return resetPlayerProgressInTransaction(tx, playerId);
       });
 
       res.locals.auditLogDetails = {
         playerId,
         username: target.username,
         reason: reason || null,
+        preservedPaidCredits: resetResult.preservedPaidCredits,
+        previousCredits: resetResult.previousCredits,
+        vipKept: true,
       };
 
       return res.json({
         message: 'Player progress reset completed',
         playerId,
         username: target.username,
+        preservedPaidCredits: resetResult.preservedPaidCredits,
+        previousCredits: resetResult.previousCredits,
+        vipKept: {
+          isVip: target.isVip,
+          vipExpiresAt: target.vipExpiresAt,
+          autoRenewActive: Boolean(target.mollieSubscriptionId),
+        },
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -2498,20 +2783,26 @@ router.post(
       const { reason } = resetPlayerProgressSchema.parse(req.body || {});
       const players = await prisma.player.findMany({ select: { id: true, username: true } });
 
+      let preservedPaidCreditsTotal = 0;
       for (const player of players) {
-        await prisma.$transaction(async (tx) => {
-          await resetPlayerProgressInTransaction(tx, player.id);
+        const resetResult = await prisma.$transaction(async (tx) => {
+          return resetPlayerProgressInTransaction(tx, player.id);
         });
+        preservedPaidCreditsTotal += resetResult.preservedPaidCredits;
       }
 
       res.locals.auditLogDetails = {
         affectedPlayers: players.length,
         reason: reason || null,
+        preservedPaidCreditsTotal,
+        vipKept: true,
       };
 
       return res.json({
         message: 'All player progress has been reset',
         affectedPlayers: players.length,
+        preservedPaidCreditsTotal,
+        vipKept: true,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
