@@ -30,7 +30,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Stock Market en Crypto horen bereikbaar te zijn via mobile menu-grid én actions drawer / web quick actions (niet alleen via legacy tile fallback).
 - “Wat nu?” is optioneel; als we het tonen moet het compact blijven en mag het nooit primaire statistiekpanelen blokkeren of verstoppen. Als we het niet tonen, moeten doelen/recap nog steeds logisch vindbaar blijven.
 - Voor reward-gevoel en transparantie mag het dashboard een compacte **sessie recap** tonen (laatste events in deze sessie) zodat spelers direct zien wat acties opleverden. Dit mag de primaire loop niet onderbreken en moet optioneel/openklapbaar blijven.
-- Plaats de **Start-kaart** (alleen nieuwe spelers) en de **dagdoelen + streak** bovenaan web én mobiel. Elke dagdoelregel toont cash + XP vóór claim; na Claim verschijnt rechtsboven wat je kreeg. De volledige weekdoelenlijst mag daaronder of onder het speler/economie-paneel blijven. Featured daily mag `vehicle_theft_1` niet pushen onder rank 5.
+- Plaats de **Start-kaart** (alleen nieuwe spelers) en de **dagdoelen + streak één keer** bovenaan web én mobiel (niet nogmaals onder het economie-paneel). Elke dagdoelregel toont cash + XP vóór claim; na Claim verschijnt rechtsboven wat je kreeg. De weekdoelen-minikaart mag daaronder of onder het speler/economie-paneel blijven. Featured daily mag `vehicle_theft_1` niet pushen onder rank 5.
 - Dashboard toont een compacte **Markt**-tegel (actieve listings + CTA) en dezelfde **EventFeed** op web als op mobiel, gehydrateerd via `GET /events?limit=50`. Geen locatie-intel.
 - Weekdoelen moeten claimbaar zijn wanneer ze als “klaar”/“ready” worden getoond; zorg dat weekly-claims dezelfde window/key gebruiken als de weekdoelen-status (week start maandag UTC) zodat “1 klaar om te claimen” nooit in een claim-fout resulteert.
 - Claims en beloningen mogen niet falen door DB transaction timeouts: doe alleen de noodzakelijke DB-writes in de transaction en schrijf activity/world events best-effort ná commit.
@@ -61,7 +61,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verify no text overflows or clipped buttons appear.
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer dat nieuwe accounts een Start-kaart met één CTA zien (crime → daily/job → crew) en dat rank 3+ of afgeronde onboarding die kaart niet meer ziet.
-- Verifieer dat dagdoelen + claim-streak op mobiel én web bovenaan staan, dat elke regel cash + XP toont, dat Claim een toast met bedragen geeft, en dat autodiefstal niet featured is onder rank 5.
+- Verifieer dat dagdoelen + claim-streak op mobiel én web **één keer** bovenaan staan (niet dubbel onder het economie-paneel), dat elke regel cash + XP toont, dat Claim een toast met bedragen geeft, en dat autodiefstal niet featured is onder rank 5.
 - Verifieer in admin image-management dat uploaden en vervangen werkt voor dezelfde storage-root die door runtime `/assets/images` wordt geserveerd.
 - Verifieer dat modulefilter + zoekresultaten overeenkomen met de daadwerkelijke serverbestanden per module.
 

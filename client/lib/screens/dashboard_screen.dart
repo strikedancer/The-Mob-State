@@ -2533,8 +2533,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   DashboardStats? _stats;
   bool _loading = true;
   List<Map<String, dynamic>> _gameEventsActive = const [];
-  Map<String, dynamic>? _dailyGoals;
-  bool _dailyGoalsLoading = false;
   Map<String, dynamic>? _weeklyGoals;
   bool _weeklyGoalsLoading = false;
   Timer? _cooldownTimer;
@@ -2721,7 +2719,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     super.initState();
     _loadStats();
     _loadGameEventsOverview();
-    _loadDailyGoals();
     _loadWeeklyGoals();
 
     // Update cooldowns every second
@@ -2782,7 +2779,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       if (mounted) {
         _loadStats();
         _loadGameEventsOverview();
-        _loadDailyGoals();
         _loadWeeklyGoals();
       }
     });
@@ -2850,28 +2846,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     }
   }
 
-  Future<void> _loadDailyGoals() async {
-    if (_dailyGoalsLoading) return;
-    setState(() => _dailyGoalsLoading = true);
-    try {
-      final api = AuthService().apiClient;
-      final response = await api.get('/daily-goals/daily');
-      if (response.statusCode != 200) {
-        return;
-      }
-      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
-      if (decoded['success'] == true && decoded['data'] is Map) {
-        if (mounted) {
-          setState(() => _dailyGoals = Map<String, dynamic>.from(decoded['data'] as Map));
-        }
-      }
-    } catch (_) {
-      // keep last known state
-    } finally {
-      if (mounted) setState(() => _dailyGoalsLoading = false);
-    }
-  }
-
   Future<void> _loadWeeklyGoals() async {
     if (_weeklyGoalsLoading) return;
     setState(() => _weeklyGoalsLoading = true);
@@ -2928,7 +2902,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
           );
         }
         await _loadStats();
-        await _loadDailyGoals();
         await _loadWeeklyGoals();
         return;
       }
@@ -2957,161 +2930,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ),
       );
     }
-  }
-
-  Widget _buildDailyGoalsCard() {
-    final data = _dailyGoals;
-    final goals = (data?['goals'] as List?) ?? const [];
-    if (goals.isEmpty && !_dailyGoalsLoading) {
-      return const SizedBox.shrink();
-    }
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: _panelDecoration(accent: Colors.lightGreenAccent),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.task_alt, color: Colors.lightGreenAccent, size: 18),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  AppLocalizations.of(context)!.dailyGoals,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              if (_dailyGoalsLoading)
-                const SizedBox(
-                  width: 14,
-                  height: 14,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          ...goals.whereType<Map>().map((raw) {
-            final g = Map<String, dynamic>.from(raw);
-            final key = g['key']?.toString() ?? '';
-            final l10n = AppLocalizations.of(context)!;
-            final title = _dailyGoalTitle(l10n, key);
-            final progress = (g['progress'] as num?)?.toInt() ?? 0;
-            final target = (g['target'] as num?)?.toInt() ?? 0;
-            final claimable = g['claimable'] == true;
-            final claimed = g['claimed'] == true;
-            final rewardCash = (g['rewardCash'] as num?)?.toInt() ?? 0;
-            final rewardXp = (g['rewardXp'] as num?)?.toInt() ?? 0;
-
-            final ratio = target <= 0 ? 0.0 : (progress / target).clamp(0.0, 1.0);
-
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.white10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                        if (claimed)
-                          Text(
-                            AppLocalizations.of(context)!.claimed,
-                            style: TextStyle(
-                              color: Colors.greenAccent.withOpacity(0.9),
-                              fontWeight: FontWeight.w800,
-                              fontSize: 12,
-                            ),
-                          )
-                        else if (claimable)
-                          Text(
-                            AppLocalizations.of(context)!.ready,
-                            style: TextStyle(
-                              color: Colors.lightGreenAccent.withOpacity(0.9),
-                              fontWeight: FontWeight.w800,
-                              fontSize: 12,
-                            ),
-                          )
-                        else
-                          Text(
-                            '$progress/$target',
-                            style: TextStyle(color: Colors.white.withOpacity(0.75), fontSize: 12),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(999),
-                      child: LinearProgressIndicator(
-                        value: ratio,
-                        minHeight: 8,
-                        backgroundColor: Colors.white.withOpacity(0.12),
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          claimable ? Colors.lightGreenAccent : _dashboardGold.withOpacity(0.9),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            claimed
-                                ? '${l10n.claimed} · ${l10n.dailyGoalReward(formatCurrency(rewardCash), rewardXp.toString())}'
-                                : l10n.dailyGoalReward(
-                                    formatCurrency(rewardCash),
-                                    rewardXp.toString(),
-                                  ),
-                            style: TextStyle(
-                              color: claimable
-                                  ? const Color(0xFFD4AF37)
-                                  : Colors.white.withOpacity(0.75),
-                              fontSize: 12,
-                              fontWeight: claimable ? FontWeight.w700 : FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        if (!claimed)
-                          OutlinedButton(
-                            onPressed: claimable && key.isNotEmpty ? () => _claimDailyGoal(key) : null,
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              side: BorderSide(
-                                color: (claimable ? Colors.lightGreenAccent : Colors.white24).withOpacity(0.8),
-                              ),
-                            ),
-                            child: Text(AppLocalizations.of(context)!.claim),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ],
-      ),
-    );
   }
 
   Widget _buildWeeklyGoalsMiniCard() {
@@ -3531,7 +3349,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   1,
               onGoalsChanged: () {
                 _loadStats();
-                _loadDailyGoals();
                 _loadWeeklyGoals();
               },
             ),
@@ -3564,7 +3381,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 final isCompact =
                     constraints.maxWidth < _DashboardScreenState._tabletBreakpoint;
 
-                final dailyGoalsCard = _buildDailyGoalsCard();
                 final weeklyGoalsCard = _buildWeeklyGoalsMiniCard();
 
             Widget buildLeftCard() {
@@ -4273,10 +4089,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       buildLeftCard(),
-                      if (dailyGoalsCard is! SizedBox) ...[
-                        const SizedBox(height: 16),
-                        dailyGoalsCard,
-                      ],
                       if (weeklyGoalsCard is! SizedBox) ...[
                         const SizedBox(height: 16),
                         weeklyGoalsCard,
@@ -4301,10 +4113,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               buildLeftCard(),
-                              if (dailyGoalsCard is! SizedBox) ...[
-                                const SizedBox(height: 16),
-                                dailyGoalsCard,
-                              ],
                               if (weeklyGoalsCard is! SizedBox) ...[
                                 const SizedBox(height: 16),
                                 weeklyGoalsCard,
