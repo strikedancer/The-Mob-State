@@ -24,6 +24,7 @@ import 'screens/security_screen.dart';
 import 'screens/prostitution_screen.dart';
 import 'screens/prostitution_leaderboard_screen.dart';
 import 'screens/prostitution_rivalry_screen.dart';
+import 'screens/estate_lot_preview_screen.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/school_screen.dart';
 import 'screens/help_screen.dart';
