@@ -1969,7 +1969,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                StartAndGoalsPanel(playerRank: player.rank),
+                StartAndGoalsPanel(
+                  playerRank: player.rank,
+                  onGoalsChanged: () {
+                    context.read<AuthProvider>().refreshPlayer();
+                  },
+                ),
                 const SizedBox(height: 16),
                 const MarketTeaserTile(),
                 const SizedBox(height: 16),
@@ -2899,19 +2904,29 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       if (decoded['success'] == true) {
         final isWeekly = goalKey.startsWith('weekly_');
         final l10n = AppLocalizations.of(context)!;
+        final data = (decoded['data'] as Map?)?.cast<String, dynamic>() ?? {};
+        final cash = (data['rewardCash'] as num?)?.toInt() ?? 0;
+        final xp = (data['rewardXp'] as num?)?.toInt() ?? 0;
+        final title = isWeekly ? l10n.weeklyGoalClaimed : l10n.dailyGoalClaimed;
+        final reward = l10n.dailyGoalReward(formatCurrency(cash), xp.toString());
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              isWeekly
-                  ? l10n.weeklyGoalClaimed
-                  : l10n.dailyGoalClaimed,
-            ),
+            content: Text('$title $reward'),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
             margin: EdgeInsets.zero,
+            duration: const Duration(seconds: 4),
           ),
         );
+        final auth = context.read<AuthProvider>();
+        if (data['money'] != null || data['xp'] != null) {
+          auth.updatePlayerStats(
+            money: (data['money'] as num?)?.toInt(),
+            xp: (data['xp'] as num?)?.toInt(),
+            rank: (data['rank'] as num?)?.toInt(),
+          );
+        }
         await _loadStats();
         await _loadDailyGoals();
         await _loadWeeklyGoals();
@@ -3060,11 +3075,19 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       children: [
                         Expanded(
                           child: Text(
-                            l10n.dailyGoalReward(
-                              formatCurrency(rewardCash),
-                              rewardXp.toString(),
+                            claimed
+                                ? '${l10n.claimed} · ${l10n.dailyGoalReward(formatCurrency(rewardCash), rewardXp.toString())}'
+                                : l10n.dailyGoalReward(
+                                    formatCurrency(rewardCash),
+                                    rewardXp.toString(),
+                                  ),
+                            style: TextStyle(
+                              color: claimable
+                                  ? const Color(0xFFD4AF37)
+                                  : Colors.white.withOpacity(0.75),
+                              fontSize: 12,
+                              fontWeight: claimable ? FontWeight.w700 : FontWeight.w500,
                             ),
-                            style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -3244,13 +3267,20 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        l10n.dailyGoalReward(
-                                          formatCurrency(rewardCash),
-                                          rewardXp.toString(),
-                                        ),
+                                        claimedLocal
+                                            ? '${l10n.claimed} · ${l10n.dailyGoalReward(formatCurrency(rewardCash), rewardXp.toString())}'
+                                            : l10n.dailyGoalReward(
+                                                formatCurrency(rewardCash),
+                                                rewardXp.toString(),
+                                              ),
                                         style: TextStyle(
-                                          color: Colors.white.withOpacity(0.7),
+                                          color: claimableLocal
+                                              ? const Color(0xFFD4AF37)
+                                              : Colors.white.withOpacity(0.75),
                                           fontSize: 12,
+                                          fontWeight: claimableLocal
+                                              ? FontWeight.w700
+                                              : FontWeight.w500,
                                         ),
                                       ),
                                     ),
@@ -3499,6 +3529,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       .currentPlayer
                       ?.rank ??
                   1,
+              onGoalsChanged: () {
+                _loadStats();
+                _loadDailyGoals();
+                _loadWeeklyGoals();
+              },
             ),
             const SizedBox(height: 8),
             const MarketTeaserTile(),

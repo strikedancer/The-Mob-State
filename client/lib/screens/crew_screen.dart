@@ -1539,13 +1539,18 @@ class _CrewScreenState extends State<CrewScreen>
       if (!mounted) return;
       final locale = Localizations.localeOf(context).languageCode;
       if (response.statusCode == 200) {
+        final cash = (_crewWeeklyGoal?['rewardCrewCash'] as num?)?.toInt() ?? 25000;
+        final xp = (_crewWeeklyGoal?['rewardPersonalXp'] as num?)?.toInt() ?? 40;
         showTopRightFromSnackBar(
           context,
           SnackBar(
             content: Text(
-              locale == 'nl' ? 'Crew weekdoel geclaimd' : 'Crew weekly goal claimed',
+              locale == 'nl'
+                  ? 'Crew weekdoel geclaimd: +${_money(cash)} crewbank en +$xp XP'
+                  : 'Crew weekly goal claimed: +${_money(cash)} crew bank and +$xp XP',
             ),
             backgroundColor: Colors.green,
+            duration: const Duration(seconds: 4),
           ),
         );
         await _loadCrewWeeklyGoal();
@@ -4100,6 +4105,8 @@ class _CrewScreenState extends State<CrewScreen>
                       ),
                       subtitle: Text(
                         '${_crewWeeklyGoal!['progress'] ?? 0}/${_crewWeeklyGoal!['target'] ?? 1}'
+                        ' · ${locale == 'nl' ? 'Beloning' : 'Reward'}: +${_money((_crewWeeklyGoal!['rewardCrewCash'] as num?)?.toInt() ?? 25000)} '
+                        '${locale == 'nl' ? 'crewbank' : 'crew bank'} +${(_crewWeeklyGoal!['rewardPersonalXp'] as num?)?.toInt() ?? 40} XP'
                         '${_crewWeeklyGoal!['claimed'] == true ? (locale == 'nl' ? ' · geclaimd' : ' · claimed') : ''}',
                       ),
                       trailing: _crewWeeklyGoal!['claimable'] == true

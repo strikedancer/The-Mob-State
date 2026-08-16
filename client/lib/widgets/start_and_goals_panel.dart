@@ -1,21 +1,27 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
+import '../providers/auth_provider.dart';
 import '../screens/crime_screen.dart';
 import '../screens/crew_screen.dart';
 import '../screens/jobs_screen.dart';
 import '../services/auth_service.dart';
+import '../utils/formatters.dart';
+import '../utils/top_right_notification.dart';
 
 class StartAndGoalsPanel extends StatefulWidget {
   final bool compact;
   final int playerRank;
+  final VoidCallback? onGoalsChanged;
 
   const StartAndGoalsPanel({
     super.key,
     this.compact = false,
     this.playerRank = 1,
+    this.onGoalsChanged,
   });
 
   @override
@@ -27,6 +33,7 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
   Map<String, dynamic>? _daily;
   Map<String, dynamic>? _crewWeek;
   bool _loading = true;
+  String? _claimingKey;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
 
@@ -79,16 +86,109 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
     Navigator.push(context, MaterialPageRoute(builder: (_) => page)).then((_) => _load());
   }
 
+  void _toast(String text, {Color color = Colors.green}) {
+    if (!mounted) return;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(text),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.zero,
+        duration: const Duration(seconds: 4),
+      ),
+    );
+  }
+
+  String _rewardLine(AppLocalizations? l10n, int cash, int xp) {
+    if (l10n != null) {
+      return l10n.dailyGoalReward(formatCurrency(cash), xp.toString());
+    }
+    return _isNl
+        ? 'Beloning: +${formatCurrency(cash)} en +$xp XP'
+        : 'Reward: +${formatCurrency(cash)} and +$xp XP';
+  }
+
   Future<void> _claimDaily(String key) async {
-    final api = AuthService().apiClient;
-    await api.post('/daily-goals/daily/claim', {'goalKey': key});
-    await _load();
+    if (_claimingKey != null) return;
+    setState(() => _claimingKey = key);
+    try {
+      final api = AuthService().apiClient;
+      final response = await api.post('/daily-goals/daily/claim', {'goalKey': key});
+      final decoded = _json(response.body);
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (decoded['success'] == true) {
+        final data = (decoded['data'] as Map?)?.cast<String, dynamic>() ?? {};
+        final cash = (data['rewardCash'] as num?)?.toInt() ?? 0;
+        final xp = (data['rewardXp'] as num?)?.toInt() ?? 0;
+        final title = l10n?.dailyGoalClaimed ??
+            (_isNl ? 'Dagdoel geclaimd!' : 'Daily goal claimed!');
+        _toast('$title ${_rewardLine(l10n, cash, xp)}');
+        final auth = context.read<AuthProvider>();
+        if (data['money'] != null || data['xp'] != null) {
+          auth.updatePlayerStats(
+            money: (data['money'] as num?)?.toInt(),
+            xp: (data['xp'] as num?)?.toInt(),
+            rank: (data['rank'] as num?)?.toInt(),
+          );
+        } else {
+          await auth.refreshPlayer();
+        }
+        widget.onGoalsChanged?.call();
+        await _load();
+        return;
+      }
+      _toast(
+        l10n?.failedPleaseTryAgain ?? (_isNl ? 'Mislukt. Probeer opnieuw.' : 'Failed. Please try again.'),
+        color: Colors.orange,
+      );
+    } catch (_) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      _toast(
+        l10n?.failedPleaseTryAgain ?? (_isNl ? 'Mislukt. Probeer opnieuw.' : 'Failed. Please try again.'),
+        color: Colors.orange,
+      );
+    } finally {
+      if (mounted) setState(() => _claimingKey = null);
+    }
   }
 
   Future<void> _claimCrewWeek() async {
-    final api = AuthService().apiClient;
-    await api.post('/crews/weekly-goal/claim', {});
-    await _load();
+    if (_claimingKey != null) return;
+    setState(() => _claimingKey = 'crew_week');
+    try {
+      final api = AuthService().apiClient;
+      final response = await api.post('/crews/weekly-goal/claim', {});
+      final decoded = _json(response.body);
+      if (!mounted) return;
+      final cash = (_crewWeek?['rewardCrewCash'] as num?)?.toInt() ?? 25000;
+      final xp = (_crewWeek?['rewardPersonalXp'] as num?)?.toInt() ?? 40;
+      if (decoded['success'] == true || response.statusCode == 200) {
+        _toast(
+          _isNl
+              ? 'Crew weekdoel geclaimd: +${formatCurrency(cash)} crewbank en +$xp XP'
+              : 'Crew weekly goal claimed: +${formatCurrency(cash)} crew bank and +$xp XP',
+        );
+        await context.read<AuthProvider>().refreshPlayer();
+        widget.onGoalsChanged?.call();
+        await _load();
+        return;
+      }
+      _toast(
+        _isNl ? 'Mislukt. Probeer opnieuw.' : 'Failed. Please try again.',
+        color: Colors.orange,
+      );
+    } catch (_) {
+      if (!mounted) return;
+      _toast(
+        _isNl ? 'Mislukt. Probeer opnieuw.' : 'Failed. Please try again.',
+        color: Colors.orange,
+      );
+    } finally {
+      if (mounted) setState(() => _claimingKey = null);
+    }
   }
 
   @override
@@ -104,8 +204,9 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
 
     final l10n = AppLocalizations.of(context);
     final completed = _onboarding?['completed'] == true;
-    final featured = _daily?['featured'] as Map<String, dynamic>?;
+    final featuredKey = (_daily?['featured'] as Map?)?['key']?.toString();
     final streak = (_daily?['streak'] as num?)?.toInt() ?? 0;
+    final goals = (_daily?['goals'] as List?) ?? const [];
     final crewIn = _crewWeek?['inCrew'] == true;
 
     return Column(
@@ -150,7 +251,7 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
               ),
             ),
           ),
-        if (featured != null)
+        if (goals.isNotEmpty)
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -173,23 +274,14 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    _isNl
-                        ? (featured['titleNl'] as String? ?? featured['key'] as String? ?? '')
-                        : (featured['titleEn'] as String? ?? featured['key'] as String? ?? ''),
-                  ),
-                  Text(
-                    '${featured['progress'] ?? 0}/${featured['target'] ?? 0}',
-                    style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
-                  ),
-                  if (featured['claimable'] == true)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => _claimDaily(featured['key'] as String),
-                        child: Text(_isNl ? 'Claim' : 'Claim'),
-                      ),
-                    ),
+                  ...goals.whereType<Map>().map((raw) {
+                    final g = Map<String, dynamic>.from(raw);
+                    return _dailyGoalRow(
+                      l10n: l10n,
+                      goal: g,
+                      highlighted: g['key']?.toString() == featuredKey,
+                    );
+                  }),
                 ],
               ),
             ),
@@ -204,17 +296,117 @@ class _StartAndGoalsPanelState extends State<StartAndGoalsPanel> {
               ),
               subtitle: Text(
                 '${_crewWeek!['progress'] ?? 0}/${_crewWeek!['target'] ?? 1}'
+                ' · ${_isNl ? 'Beloning' : 'Reward'}: +${formatCurrency((_crewWeek!['rewardCrewCash'] as num?)?.toInt() ?? 25000)} '
+                '${_isNl ? 'crewbank' : 'crew bank'} +${(_crewWeek!['rewardPersonalXp'] as num?)?.toInt() ?? 40} XP'
                 '${_crewWeek!['claimed'] == true ? (_isNl ? ' · geclaimd' : ' · claimed') : ''}',
               ),
               trailing: _crewWeek!['claimable'] == true
                   ? TextButton(
-                      onPressed: _claimCrewWeek,
-                      child: Text(_isNl ? 'Claim' : 'Claim'),
+                      onPressed: _claimingKey == null ? _claimCrewWeek : null,
+                      child: Text(l10n?.claim ?? 'Claim'),
                     )
-                  : null,
+                  : Text(
+                      _crewWeek!['claimed'] == true
+                          ? (l10n?.claimed ?? (_isNl ? 'Geclaimd' : 'Claimed'))
+                          : '',
+                      style: const TextStyle(color: Colors.greenAccent, fontSize: 12),
+                    ),
             ),
           ),
       ],
+    );
+  }
+
+  Widget _dailyGoalRow({
+    required AppLocalizations? l10n,
+    required Map<String, dynamic> goal,
+    required bool highlighted,
+  }) {
+    final key = goal['key']?.toString() ?? '';
+    final title = _isNl
+        ? (goal['titleNl'] as String? ?? key)
+        : (goal['titleEn'] as String? ?? key);
+    final progress = (goal['progress'] as num?)?.toInt() ?? 0;
+    final target = (goal['target'] as num?)?.toInt() ?? 0;
+    final claimable = goal['claimable'] == true;
+    final claimed = goal['claimed'] == true;
+    final cash = (goal['rewardCash'] as num?)?.toInt() ?? 0;
+    final xp = (goal['rewardXp'] as num?)?.toInt() ?? 0;
+    final reward = _rewardLine(l10n, cash, xp);
+    final busy = _claimingKey == key;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: highlighted ? const Color(0xFF2A1A12) : Colors.black.withOpacity(0.18),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: claimable
+                ? Colors.lightGreenAccent.withOpacity(0.55)
+                : highlighted
+                    ? const Color(0xFFD4AF37).withOpacity(0.45)
+                    : Colors.white10,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Text(
+                  claimed
+                      ? (l10n?.claimed ?? (_isNl ? 'Geclaimd' : 'Claimed'))
+                      : claimable
+                          ? (l10n?.ready ?? (_isNl ? 'Klaar' : 'Ready'))
+                          : '$progress/$target',
+                  style: TextStyle(
+                    color: claimed
+                        ? Colors.greenAccent.withOpacity(0.9)
+                        : claimable
+                            ? Colors.lightGreenAccent
+                            : Colors.white70,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              claimed
+                  ? (_isNl ? 'Geclaimd · $reward' : 'Claimed · $reward')
+                  : reward,
+              style: TextStyle(
+                color: claimable ? const Color(0xFFD4AF37) : Colors.white70,
+                fontSize: 12,
+                fontWeight: claimable ? FontWeight.w700 : FontWeight.w500,
+              ),
+            ),
+            if (!claimed)
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: claimable && !busy && key.isNotEmpty ? () => _claimDaily(key) : null,
+                  child: Text(
+                    busy
+                        ? '…'
+                        : claimable
+                            ? '${l10n?.claim ?? 'Claim'} · +${formatCurrency(cash)}'
+                            : (l10n?.claim ?? 'Claim'),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

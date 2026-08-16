@@ -65,11 +65,13 @@ router.post('/daily/claim', authenticate, async (req: AuthRequest, res: Response
 
     const result = await dailyGoalsService.claimDailyGoal(playerId, goalKey);
     const isWeekly = goalKey.startsWith('weekly_');
+    const rewardNl = `+€${result.rewardCash} en +${result.rewardXp} XP`;
+    const rewardEn = `+€${result.rewardCash} and +${result.rewardXp} XP`;
     return res.status(200).json({
       success: true,
       data: result,
-      messageNl: isWeekly ? 'Weekdoel geclaimd!' : 'Dagdoel geclaimd!',
-      messageEn: isWeekly ? 'Weekly goal claimed!' : 'Daily goal claimed!',
+      messageNl: isWeekly ? `Weekdoel geclaimd: ${rewardNl}` : `Dagdoel geclaimd: ${rewardNl}`,
+      messageEn: isWeekly ? `Weekly goal claimed: ${rewardEn}` : `Daily goal claimed: ${rewardEn}`,
     });
   } catch (error: any) {
     const code = String(error?.code ?? error?.message ?? '');
