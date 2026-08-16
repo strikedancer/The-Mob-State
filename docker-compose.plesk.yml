@@ -14,6 +14,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+    mem_limit: 2g
+    mem_reservation: 512m
+    oom_score_adj: -500
     restart: unless-stopped
 
   redis:
@@ -26,6 +29,8 @@ services:
       interval: 10s
       timeout: 3s
       retries: 10
+    mem_limit: 256m
+    oom_score_adj: -300
     restart: unless-stopped
 
   backend:
@@ -71,6 +76,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    mem_limit: 1g
     restart: unless-stopped
 
   client:
@@ -83,6 +89,7 @@ services:
       - ${CLIENT_EXTERNAL_IMAGES_PATH:-/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images}:/mnt/external-images:ro
     ports:
       - 127.0.0.1:${CLIENT_PORT:-8080}:80
+    mem_limit: 256m
     restart: unless-stopped
 
   admin:
@@ -93,6 +100,7 @@ services:
         VITE_ADMIN_API_URL: ${API_BASE_URL}
     ports:
       - 127.0.0.1:${ADMIN_PORT:-8081}:80
+    mem_limit: 256m
     restart: unless-stopped
 
 volumes:

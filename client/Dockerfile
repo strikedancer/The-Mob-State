@@ -16,7 +16,10 @@ RUN sed -n '/^  assets:/,/^  [^ ]/p' pubspec.yaml \
   | xargs -r -I{} mkdir -p "{}"
 
 ARG WEB_API_BASE_URL=https://api.themobstate.com
-RUN flutter build web --release --dart-define=WEB_API_BASE_URL=${WEB_API_BASE_URL}
+# Cap the Dart heap and skip wasm dry-run. Uncapped flutter build web on an 8G
+# VPS (no swap) OOMs MariaDB and freezes SSH/HTTPS.
+ENV DART_VM_OPTIONS="--old_gen_heap_size=2048"
+RUN flutter build web --release --no-wasm-dry-run --dart-define=WEB_API_BASE_URL=${WEB_API_BASE_URL}
 
 FROM nginx:1.27-alpine
 

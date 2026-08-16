@@ -83,17 +83,20 @@ Alleen als `config` zonder fouten terugkomt, mag de rebuild door.
 Snelle check na backend deploy bij casino wijzigingen:
 - Als admin logs `PrismaClientValidationError` tonen met `purchasePrice is missing` tijdens casino-aankoop, controleer direct of `backend/src/services/casinoOwnershipService.ts` bij `property.upsert` het verplichte veld `purchasePrice` meestuurt en geen verouderde property velden gebruikt.
 
-Voor client of admin vervang je alleen de servicenaam:
+Voor client of admin: eerst memory-capped **build**, daarna **up zonder --build**. Onbegrensde `flutter build web` op deze 8G VPS (zonder swap) laat MariaDB/SSH vastlopen.
 
 ```bash
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps admin
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml build --memory 3g client
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-build --no-deps client
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml build --memory 1536m admin
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-build --no-deps admin
 ```
 
 Nooit doen:
 - geen inline secrets in `docker-compose.plesk.yml` plakken;
 - geen `docker compose down` als alleen 1 service aangepast hoeft te worden;
-- geen productiecompose draaien zonder `--env-file .env.plesk`.
+- geen productiecompose draaien zonder `--env-file .env.plesk`;
+- geen onbegrensde `up -d --build --no-deps client` op de 8G VPS (Flutter-compile kan MariaDB en SSH wegdrukken).
 
 Opschonen na migratie:
 - als een oude `.env` nog bestaat van voor de `.env.plesk` migratie, hernoem die naar een backup zoals `.env.pre-plesk-migration-YYYY-MM-DD-HHMMSS` zodat operators niet meer per ongeluk de verkeerde env-file gebruiken.

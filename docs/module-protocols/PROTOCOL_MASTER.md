@@ -323,6 +323,7 @@ cd C:\xampp\htdocs\mafia_game
 - Standaard projectpad op de VPS: `/var/www/vhosts/themobstate.com/apps/mafia_game` (aanpasbaar met `-ProjectDir`).
 - Als `HostName` niet uit de PuTTY-registry te lezen is: `-SshHost "jouw.host.of.ip"`.
 - Script gebruikt **geen** `plink -batch`, zodat **HTTP-proxy- of andere PuTTY-prompts** beantwoord kunnen worden.
+- **OOM-guard (verplicht op deze 8G VPS):** de host heeft **geen** ruime manoeuvreerruimte naast Plesk + MariaDB. `vps_pull_and_build.ps1` maakt/activeert daarom een **4G swapfile**, bouwt services **één voor één** met `docker compose build --memory …`, en start ze met `--no-build`. Flutter web gebruikt `--no-wasm-dry-run` + begrensde Dart-heap. **Niet** handmatig `up -d --build --no-deps client` draaien zonder memory-cap — dat heeft de VPS al laten vastlopen (MariaDB crash, SSH/HTTPS timeout).
 - **Alleen backend-gameplay** (bijv. stal-balans in `vehicleService`, geen client-release nodig): zelfde commando; gedrag en modules staan in **`steel_voertuig.md`** (en verwante economy-docs). Succesvolle lane-diefstal toont de gestolen-voertuig **popup** via `showStolenVehicleDialog` op `VehicleHeistScreen`.
 
 **Crew-mission / externe images** naar dezelfde mount als compose (`CLIENT_EXTERNAL_IMAGES_PATH` → `runtime/client-images` op de server):

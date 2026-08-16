@@ -75,22 +75,40 @@ cp -f client/assets/images/avatars/*.png runtime/client-images/avatars/ 2>/dev/n
 # Trade screen thumbnails (/images/trade_goods/cards/*); keep in sync with client/assets/images/trade_goods/cards/
 mkdir -p runtime/client-images/trade_goods/cards || true
 cp -f client/assets/images/trade_goods/cards/*.png runtime/client-images/trade_goods/cards/ 2>/dev/null || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
+# 8G host + Plesk + MariaDB. Uncapped `flutter build web` has frozen this VPS
+# (MariaDB crash recovery, SSH/HTTPS timeout). Keep a 4G swapfile and cap builds.
+if [ ! -f /swapfile ]; then
+  fallocate -l 4G /swapfile || dd if=/dev/zero of=/swapfile bs=1M count=4096
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  grep -q "/swapfile" /etc/fstab || echo "/swapfile none swap sw 0 0" >> /etc/fstab
+else
+  swapon /swapfile 2>/dev/null || true
+fi
+sysctl -w vm.swappiness=10 >/dev/null
+grep -q "^vm.swappiness" /etc/sysctl.conf || echo "vm.swappiness=10" >> /etc/sysctl.conf
+
+dc() { docker compose --env-file .env.plesk -f docker-compose.plesk.yml "$@"; }
+export COMPOSE_PARALLEL_LIMIT=1
+dc config
+dc build --memory 2560m backend
 # If a prior deploy left 20260414223000_expand_support_workflow in failed state (P3018), clear it so idempotent SQL can re-apply. No-op when not failed.
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260415061500_expand_player_security" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260426120000_add_push_game_events_preference" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260426183000_garage_upgrade_track" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260427094500_vault_monthly_season" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260502120000_add_player_gender" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260802140000_player_market_stack_lots" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260802160000_player_event_items" || true
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate deploy
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps admin
-docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260415061500_expand_player_security" || true
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260426120000_add_push_game_events_preference" || true
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260426183000_garage_upgrade_track" || true
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260427094500_vault_monthly_season" || true
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260502120000_add_player_gender" || true
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260802140000_player_market_stack_lots" || true
+dc run --rm backend npx prisma migrate resolve --rolled-back "20260802160000_player_event_items" || true
+dc run --rm backend npx prisma migrate deploy
+dc up -d --no-build --no-deps backend
+dc build --memory 3g client
+dc up -d --no-build --no-deps client
+dc build --memory 1536m admin
+dc up -d --no-build --no-deps admin
+dc logs --tail=120 backend
 '@.Replace("REMOTE_PROJECT_DIR", $dirUnix)
 
 $tmp = [System.IO.Path]::GetTempFileName() + ".sh"
