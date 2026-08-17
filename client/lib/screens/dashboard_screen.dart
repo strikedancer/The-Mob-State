@@ -519,6 +519,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ? _buildDrawer(context, l10n, 'navigation')
           : null,
       endDrawer: !showSidebars ? _buildDrawer(context, l10n, 'actions') : null,
+      bottomNavigationBar:
+          !showLeftSidebar ? _buildMobileQuickNavBar(l10n) : null,
       body: Column(
         children: [
           Container(
@@ -843,6 +845,105 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMobileQuickNavBar(AppLocalizations l10n) {
+    final items = <({
+      _WebSection section,
+      IconData icon,
+      String label,
+    })>[
+      (
+        section: _WebSection.crimes,
+        icon: Icons.warning,
+        label: l10n.mobileNavCrimes,
+      ),
+      (
+        section: _WebSection.vehicleHeist,
+        icon: Icons.directions_car_filled,
+        label: l10n.mobileNavSteal,
+      ),
+      (
+        section: _WebSection.jobs,
+        icon: Icons.work,
+        label: l10n.mobileNavWork,
+      ),
+      (
+        section: _WebSection.bank,
+        icon: Icons.account_balance,
+        label: l10n.mobileNavBank,
+      ),
+      (
+        section: _WebSection.crew,
+        icon: Icons.groups,
+        label: l10n.mobileNavCrew,
+      ),
+    ];
+
+    return Material(
+      color: _dashboardPanelDark,
+      elevation: 8,
+      child: SafeArea(
+        top: false,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: _dashboardGold.withOpacity(0.7)),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            children: [
+              for (final item in items)
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      _scaffoldKey.currentState?.closeDrawer();
+                      _scaffoldKey.currentState?.closeEndDrawer();
+                      if (item.section == _WebSection.vehicleHeist) {
+                        _openVehicleHeist(0);
+                      } else {
+                        _selectWebSection(item.section);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            item.icon,
+                            size: 22,
+                            color: _selectedWebSection == item.section
+                                ? _dashboardGold
+                                : Colors.white70,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            item.label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: _selectedWebSection == item.section
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: _selectedWebSection == item.section
+                                  ? _dashboardGold
+                                  : Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

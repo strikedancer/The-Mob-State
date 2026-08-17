@@ -91,6 +91,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - In embedded dashboard-views moet klik op dezelfde sectie een expliciete remount/refresh triggeren als de UX dat verwacht.
 - Gebruik bij mobiele schermen met filters + contentlijsten bij voorkeur één doorlopende verticale scrollcontainer.
 - Op mobiel/web-smal mag een sticky player-header bovenaan blijven staan, maar de rest van de pagina moet in één primaire scrollcontainer renderen; embed geen volledige schermen in kleine innerlijke viewport-vensters met aparte scrollbars.
+- Op mobiel mag daarnaast een sticky footer met de primaire loop-acties (Misdaden, Voertuig stelen, Werken, Bank, Crew) blijven staan; die footer mag content niet afsnijden (Scaffold `bottomNavigationBar`) en snackbars blijven top-right.
 - In `Expanded` contexten heeft `ListView` de voorkeur boven `SingleChildScrollView`.
 - Bij `TabBar + TabBarView` schermen: laat elke tabcontent zelf scrollen en voorkom nested scroll conflicts.
 - Mobile scroll ergonomie: lange “info panels” (zoals Vehicle Ops Intelligence) mogen op smalle schermen standaard ingeklapt zijn (dropdown) zodat primaire acties en content sneller in beeld komen; behoud wel een compacte samenvatting in de header.

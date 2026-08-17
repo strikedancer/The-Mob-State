@@ -1706,6 +1706,36 @@ abstract class AppLocalizations {
   /// **'Quick Actions'**
   String get quickActions;
 
+  /// No description provided for @mobileNavCrimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Crimes'**
+  String get mobileNavCrimes;
+
+  /// No description provided for @mobileNavSteal.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal'**
+  String get mobileNavSteal;
+
+  /// No description provided for @mobileNavWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get mobileNavWork;
+
+  /// No description provided for @mobileNavBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get mobileNavBank;
+
+  /// No description provided for @mobileNavCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get mobileNavCrew;
+
   /// No description provided for @liveEvents.
   ///
   /// In en, this message translates to:
@@ -23757,7 +23787,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDashboardHow.
   ///
   /// In en, this message translates to:
-  /// **'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nQuick Action blocks on the right are shortcuts to Crimes, Car Theft, Boat Theft, Work, Casino, Bank and School.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.\\nNew players see a Start card with one next step (first crime, daily/job, then crew). Rank 3+ or completed onboarding skips that card.\nDaily goals sit near the top on web and mobile: every goal shows its cash and XP reward, a claim button when ready, and a UTC claim streak. After you claim, a toast lists the cash and XP you received. Vehicle theft is not featured below rank 5.\nIf you are in a crew, a compact weekly crew goal line appears on the dashboard.'**
+  /// **'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nQuick Action blocks on the right are shortcuts to Crimes, Car Theft, Boat Theft, Work, Casino, Bank and School.\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away; the lightning menu still holds the other shortcuts.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.\\nNew players see a Start card with one next step (first crime, daily/job, then crew). Rank 3+ or completed onboarding skips that card.\nDaily goals sit near the top on web and mobile: every goal shows its cash and XP reward, a claim button when ready, and a UTC claim streak. After you claim, a toast lists the cash and XP you received. Vehicle theft is not featured below rank 5.\nIf you are in a crew, a compact weekly crew goal line appears on the dashboard.'**
   String get helpTopicDashboardHow;
 
   /// No description provided for @helpTopicDashboardTips.

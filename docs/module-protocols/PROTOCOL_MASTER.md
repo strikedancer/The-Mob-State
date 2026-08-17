@@ -167,7 +167,7 @@ Implementatievoorkeur:
 - Geen regressies op mobiel, tablet, desktop.
 - Alle nieuwe en aangepaste overlays, dialogs, modals en full-screen lock states moeten expliciet responsive zijn voor mobiel, tablet en desktop; vaste breedtes/hoogtes zonder clamp, scrollfallback of safe-area-afhandeling gelden niet als done.
 - Gebruik voor gedeelde overlays/dialogs een centraal responsive patroon of helper in plaats van losse one-off layoutlogica per scherm.
-- Op mobiel mag een sticky topbar of statusheader blijven staan, maar daaronder moet player-facing content altijd via precies één primaire verticale scrollflow bruikbaar blijven; losse ingebedde scrollvensters of verborgen inner-scrollgebieden gelden niet als done.
+- Op mobiel mag een sticky topbar of statusheader blijven staan, plus een sticky footer voor de primaire loop-acties (Misdaden, Voertuig stelen, Werken, Bank, Crew). Daartussen moet player-facing content altijd via precies één primaire verticale scrollflow bruikbaar blijven; losse ingebedde scrollvensters of verborgen inner-scrollgebieden gelden niet als done.
 - Duidelijke feedback voor succes/foutstatus behouden.
 - Geen kritieke actieknoppen verstoppen achter hover-only styling.
 - Bij lange beheerpagina's: groepeer secties in tabs i.p.v. eindeloze verticale stapels.
