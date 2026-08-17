@@ -2,6 +2,18 @@ import prisma from '../lib/prisma';
 import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
 
+export class LaunderBoundError extends Error {
+  minAmount: number;
+  maxAmount: number;
+
+  constructor(code: 'LAUNDER_AMOUNT_TOO_LOW' | 'LAUNDER_AMOUNT_TOO_HIGH', minAmount: number, maxAmount: number) {
+    super(code);
+    this.name = 'LaunderBoundError';
+    this.minAmount = minAmount;
+    this.maxAmount = maxAmount;
+  }
+}
+
 type LaunderConfig = {
   enabled: boolean;
   feePercent: number;
@@ -216,8 +228,12 @@ export async function startLaunderJob(playerId: number, amountInput: number) {
 
   const amount = Math.floor(Number(amountInput));
   if (!Number.isFinite(amount) || amount <= 0) throw new Error('INVALID_AMOUNT');
-  if (amount < cfg.minAmount) throw new Error('LAUNDER_AMOUNT_TOO_LOW');
-  if (amount > cfg.maxAmount) throw new Error('LAUNDER_AMOUNT_TOO_HIGH');
+  if (amount < cfg.minAmount) {
+    throw new LaunderBoundError('LAUNDER_AMOUNT_TOO_LOW', cfg.minAmount, cfg.maxAmount);
+  }
+  if (amount > cfg.maxAmount) {
+    throw new LaunderBoundError('LAUNDER_AMOUNT_TOO_HIGH', cfg.minAmount, cfg.maxAmount);
+  }
 
   await processDueLaunderJobs(20);
   const status = await getLaunderStatus(playerId);

@@ -526,6 +526,10 @@ Voorbeelden:
 - **Fee**: Geen kosten
 - **Instant**: Direct verwerkt
 
+#### Money Laundering (Witwassen)
+- **Min / max per wasbeurt**: `LAUNDER_MIN_AMOUNT` / `LAUNDER_MAX_AMOUNT` (default €10.000 – €5.000.000), zichtbaar op het bankscherm
+- **Fee / delay / seize**: runtime `LAUNDER_*`; output gaat naar de bank
+
 ### Interest Berekening
 ```
 // Disabled in bankService.applyInterest / applyInterestToAll

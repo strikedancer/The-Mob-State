@@ -13855,7 +13855,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Los depósitos gratuitos son instantáneos y no tienen tarifa, pero solo hasta un límite diario que aumenta con su rango (día UTC). Los retiros siguen siendo gratuitos e ilimitados.\nEl interés bancario pasivo está actualmente deshabilitado.\nEl dinero en el banco está protegido de confiscaciones policiales. Sólo el efectivo disponible se puede perder en el momento del arresto.\nEl historial de transacciones muestra todos los flujos entrantes y salientes con marca de tiempo, monto, contraparte de la transferencia y descripciones opcionales.\nLavado de dinero: lave efectivo por encima del límite diario gratuito en su banco con una comisión y un retraso. Mayor presión del FBI aumenta la oportunidad de aprovechar; el éxito reduce ligeramente el calor.\nCrimen de robo a un banco: tiene éxito en un 30% y roba entre un 10 y un 30% del saldo bancario de otro jugador al azar. Riesgo de alto nivel de búsqueda.\nEs posible transferir dinero a otros jugadores. Opcionalmente, puedes agregar una descripción y el destinatario también la verá en las transacciones. Verifique nuevamente tanto el monto como el destinatario antes de confirmar.';
+      'Los depósitos gratuitos son instantáneos y no tienen tarifa, pero solo hasta un límite diario que aumenta con su rango (día UTC). Los retiros siguen siendo gratuitos e ilimitados. \nEl interés bancario pasivo está actualmente deshabilitado. \nEl dinero en el banco está protegido de confiscaciones policiales. Sólo el efectivo disponible se puede perder en el momento del arresto. \nEl historial de transacciones muestra todos los flujos entrantes y salientes con marca de tiempo, monto, contraparte de la transferencia y descripciones opcionales. \nLavado de dinero: lave efectivo por encima del límite diario gratuito en su banco con una comisión y un retraso. Cada lavado tiene un mínimo y un máximo, mostrados en la pantalla del banco. Mayor presión del FBI aumenta la oportunidad de aprovechar; el éxito reduce ligeramente el calor. \nCrimen de robo a un banco: tiene éxito en un 30% y roba entre un 10 y un 30% del saldo bancario de otro jugador al azar. Riesgo de alto nivel de búsqueda. \nEs posible transferir dinero a otros jugadores. Opcionalmente, puedes agregar una descripción y el destinatario también la verá en las transacciones. Verifique nuevamente tanto el monto como el destinatario antes de confirmar.';
 
   @override
   String get helpTopicBankTips =>
@@ -14853,6 +14853,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get launderAmountLabel => 'Amount to wash';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Mín $min · Máx $max por lavado.';
+  }
+
+  @override
   String get launderStartButton => 'Start wash';
 
   @override
@@ -14865,10 +14870,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get launderErrorActive => 'A wash job is already running.';
 
   @override
-  String get launderErrorTooLow => 'Amount is below the minimum.';
+  String launderErrorTooLow(String min) {
+    return 'El monto está por debajo del mínimo ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Amount is above the maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'El monto está por encima del máximo ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Not enough cash on hand.';

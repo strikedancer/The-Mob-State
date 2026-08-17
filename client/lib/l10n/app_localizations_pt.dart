@@ -13832,7 +13832,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Os depósitos grátis são instantâneos e não têm taxas, mas apenas até um limite diário que varia de acordo com a sua classificação (dia UTC). As retiradas permanecem gratuitas e ilimitadas.\nOs juros bancários passivos estão atualmente desativados.\nO dinheiro no banco está protegido contra confiscos policiais. Apenas o dinheiro em mãos pode ser perdido na prisão.\nO histórico de transações mostra todos os fluxos de entrada e saída com carimbo de data/hora, valor, contraparte de transferência e descrições opcionais.\nLavagem de dinheiro: lave dinheiro acima do limite diário gratuito em seu banco com uma taxa e atraso. Maior pressão do FBI aumenta chance de apreensão; o sucesso reduz ligeiramente o calor.\nCrime de assalto a banco: consegue 30% e rouba 10-30% do saldo bancário aleatório de outro jogador. Alto risco de nível de procurado.\nÉ possível transferir dinheiro para outros jogadores. Opcionalmente, você pode adicionar uma descrição e o destinatário também a verá nas transações. Verifique novamente o valor e o destinatário antes de confirmar.';
+      'Os depósitos grátis são instantâneos e não têm taxas, mas apenas até um limite diário que varia de acordo com a sua classificação (dia UTC). As retiradas permanecem gratuitas e ilimitadas. \nOs juros bancários passivos estão atualmente desativados. \nO dinheiro no banco está protegido contra confiscos policiais. Apenas o dinheiro em mãos pode ser perdido na prisão. \nO histórico de transações mostra todos os fluxos de entrada e saída com carimbo de data/hora, valor, contraparte de transferência e descrições opcionais. \nLavagem de dinheiro: lave dinheiro acima do limite diário gratuito em seu banco com uma taxa e atraso. Cada lavagem possui um mínimo e um máximo, mostrados na tela do banco. Maior pressão do FBI aumenta chance de apreensão; o sucesso reduz ligeiramente o calor. \nCrime de assalto a banco: consegue 30% e rouba 10-30% do saldo bancário aleatório de outro jogador. Alto risco de nível de procurado. \nÉ possível transferir dinheiro para outros jogadores. Opcionalmente, você pode adicionar uma descrição e o destinatário também a verá nas transações. Verifique novamente o valor e o destinatário antes de confirmar.';
 
   @override
   String get helpTopicBankTips =>
@@ -14828,6 +14828,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get launderAmountLabel => 'Amount to wash';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Mín. $min · Máx. $max por lavagem.';
+  }
+
+  @override
   String get launderStartButton => 'Start wash';
 
   @override
@@ -14840,10 +14845,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get launderErrorActive => 'A wash job is already running.';
 
   @override
-  String get launderErrorTooLow => 'Amount is below the minimum.';
+  String launderErrorTooLow(String min) {
+    return 'O valor está abaixo do mínimo ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Amount is above the maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'O valor está acima do máximo ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Not enough cash on hand.';

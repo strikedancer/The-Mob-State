@@ -8128,7 +8128,7 @@
   "helpTopicBankCategory": "Economia",
   "helpTopicBankTitle": "Banca",
   "helpTopicBankSummary": "Deposita contanti funzionanti gratuitamente fino a un limite giornaliero. I contanti di grandi dimensioni devono essere riciclati con una commissione, ritardi e rischio di sequestro da parte dell'FBI.",
-  "helpTopicBankHow": "I depositi gratuiti sono istantanei e non prevedono commissioni, ma solo fino a un limite giornaliero proporzionale al tuo rango (giorno UTC). I prelievi rimangono gratuiti e illimitati.\nGli interessi bancari passivi sono attualmente disabilitati.\nIl denaro in banca è protetto dalle confische della polizia. Al momento dell'arresto può essere perso solo il denaro contante.\nLo storico delle transazioni mostra tutti i flussi in entrata e in uscita con timestamp, importo, controparte del bonifico e descrizioni facoltative.\nRiciclaggio di denaro: trasferisci contanti al di sopra del limite giornaliero gratuito nella tua banca pagando una commissione e ritardando. Una maggiore pressione da parte dell'FBI aumenta le possibilità di sequestro; il successo abbassa leggermente il calore.\nCrimine di rapina in banca: riesce al 30% e ruba il 10-30% del saldo bancario di un altro giocatore a caso. Rischio di livello ricercato elevato.\nÈ possibile trasferire denaro ad altri giocatori. Facoltativamente puoi aggiungere una descrizione e anche il destinatario la vedrà nelle transazioni. Ricontrolla sia l'importo che il destinatario prima di confermare.",
+  "helpTopicBankHow": "I depositi gratuiti sono istantanei e non prevedono commissioni, ma solo fino a un limite giornaliero proporzionale al tuo rango (giorno UTC). I prelievi rimangono gratuiti e illimitati. \nGli interessi bancari passivi sono attualmente disabilitati. \nIl denaro in banca è protetto dalle confische della polizia. Al momento dell'arresto può essere perso solo il denaro contante. \nLo storico delle transazioni mostra tutti i flussi in entrata e in uscita con timestamp, importo, controparte del bonifico e descrizioni facoltative. \nRiciclaggio di denaro: trasferisci contanti al di sopra del limite giornaliero gratuito nella tua banca pagando una commissione e ritardando. Ogni lavaggio ha un minimo e un massimo, mostrati nella schermata bancaria. Una maggiore pressione da parte dell'FBI aumenta le possibilità di sequestro; il successo abbassa leggermente il calore. \nCrimine di rapina in banca: riesce al 30% e ruba il 10-30% del saldo bancario di un altro giocatore a caso. Rischio di livello ricercato elevato. \nÈ possibile trasferire denaro ad altri giocatori. Facoltativamente puoi aggiungere una descrizione e anche il destinatario la vedrà nelle transazioni. Ricontrolla sia l'importo che il destinatario prima di confermare.",
   "helpTopicBankTips": "Utilizza il deposito giornaliero gratuito per piccoli contanti lavorativi in ​​modo che sia al sicuro dalla confisca.\nRiciclare denaro contante più grande quando si accetta la commissione e si coglie il rischio; il calore più basso è più sicuro.\nConservare un piccolo capitale circolante in contanti per le spese dirette (cauzione, viaggio, attrezzi).",
   "helpTopicCasinoCategory": "Economia",
   "helpTopicCasinoTitle": "Casinò",
@@ -8703,8 +8703,8 @@
   "launderStartedSuccess": "Laundering started.",
   "launderErrorCooldown": "Laundering is on cooldown.",
   "launderErrorActive": "A wash job is already running.",
-  "launderErrorTooLow": "Amount is below the minimum.",
-  "launderErrorTooHigh": "Amount is above the maximum.",
+  "launderErrorTooLow": "L'importo è inferiore al minimo ({min}).",
+  "launderErrorTooHigh": "L'importo è superiore al massimo ({max}).",
   "launderErrorInsufficientCash": "Not enough cash on hand.",
   "launderErrorDisabled": "Money laundering is disabled.",
   "launderErrorUnknown": "Could not start laundering.",
@@ -8980,5 +8980,30 @@
       }
     }
   },
-  "launderSectionCapHint": "Usalo per contanti al di sopra del limite di deposito gratuito odierno."
+  "launderSectionCapHint": "Usalo per contanti al di sopra del limite di deposito gratuito odierno.",
+  "launderAmountRange": "Min {min} · Max {max} per lavaggio.",
+  "@launderAmountRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "@launderErrorTooLow": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "@launderErrorTooHigh": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  }
 }

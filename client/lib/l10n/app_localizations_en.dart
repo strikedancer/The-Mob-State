@@ -13700,7 +13700,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
+      'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
 
   @override
   String get helpTopicBankTips =>
@@ -14694,6 +14694,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get launderAmountLabel => 'Amount to wash';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Min $min · Max $max per wash.';
+  }
+
+  @override
   String get launderStartButton => 'Start wash';
 
   @override
@@ -14706,10 +14711,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get launderErrorActive => 'A wash job is already running.';
 
   @override
-  String get launderErrorTooLow => 'Amount is below the minimum.';
+  String launderErrorTooLow(String min) {
+    return 'Amount is below the minimum ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Amount is above the maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'Amount is above the maximum ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Not enough cash on hand.';

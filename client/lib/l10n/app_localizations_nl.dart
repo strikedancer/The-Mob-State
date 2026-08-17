@@ -13733,7 +13733,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt.\nPassieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
+      'Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt.\nPassieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Elke wasbeurt heeft een minimum en maximum, zichtbaar op het bankscherm. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
 
   @override
   String get helpTopicBankTips =>
@@ -14728,6 +14728,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get launderAmountLabel => 'Bedrag om te wassen';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Min $min · Max $max per wasbeurt.';
+  }
+
+  @override
   String get launderStartButton => 'Start witwas';
 
   @override
@@ -14740,10 +14745,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get launderErrorActive => 'Er loopt al een witwasjob.';
 
   @override
-  String get launderErrorTooLow => 'Bedrag is onder het minimum.';
+  String launderErrorTooLow(String min) {
+    return 'Bedrag is onder het minimum ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Bedrag is boven het maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'Bedrag is boven het maximum ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Niet genoeg cash op zak.';

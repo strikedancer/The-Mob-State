@@ -13878,7 +13878,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'I depositi gratuiti sono istantanei e non prevedono commissioni, ma solo fino a un limite giornaliero proporzionale al tuo rango (giorno UTC). I prelievi rimangono gratuiti e illimitati.\nGli interessi bancari passivi sono attualmente disabilitati.\nIl denaro in banca è protetto dalle confische della polizia. Al momento dell\'arresto può essere perso solo il denaro contante.\nLo storico delle transazioni mostra tutti i flussi in entrata e in uscita con timestamp, importo, controparte del bonifico e descrizioni facoltative.\nRiciclaggio di denaro: trasferisci contanti al di sopra del limite giornaliero gratuito nella tua banca pagando una commissione e ritardando. Una maggiore pressione da parte dell\'FBI aumenta le possibilità di sequestro; il successo abbassa leggermente il calore.\nCrimine di rapina in banca: riesce al 30% e ruba il 10-30% del saldo bancario di un altro giocatore a caso. Rischio di livello ricercato elevato.\nÈ possibile trasferire denaro ad altri giocatori. Facoltativamente puoi aggiungere una descrizione e anche il destinatario la vedrà nelle transazioni. Ricontrolla sia l\'importo che il destinatario prima di confermare.';
+      'I depositi gratuiti sono istantanei e non prevedono commissioni, ma solo fino a un limite giornaliero proporzionale al tuo rango (giorno UTC). I prelievi rimangono gratuiti e illimitati. \nGli interessi bancari passivi sono attualmente disabilitati. \nIl denaro in banca è protetto dalle confische della polizia. Al momento dell\'arresto può essere perso solo il denaro contante. \nLo storico delle transazioni mostra tutti i flussi in entrata e in uscita con timestamp, importo, controparte del bonifico e descrizioni facoltative. \nRiciclaggio di denaro: trasferisci contanti al di sopra del limite giornaliero gratuito nella tua banca pagando una commissione e ritardando. Ogni lavaggio ha un minimo e un massimo, mostrati nella schermata bancaria. Una maggiore pressione da parte dell\'FBI aumenta le possibilità di sequestro; il successo abbassa leggermente il calore. \nCrimine di rapina in banca: riesce al 30% e ruba il 10-30% del saldo bancario di un altro giocatore a caso. Rischio di livello ricercato elevato. \nÈ possibile trasferire denaro ad altri giocatori. Facoltativamente puoi aggiungere una descrizione e anche il destinatario la vedrà nelle transazioni. Ricontrolla sia l\'importo che il destinatario prima di confermare.';
 
   @override
   String get helpTopicBankTips =>
@@ -14877,6 +14877,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get launderAmountLabel => 'Amount to wash';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Min $min · Max $max per lavaggio.';
+  }
+
+  @override
   String get launderStartButton => 'Start wash';
 
   @override
@@ -14889,10 +14894,14 @@ class AppLocalizationsIt extends AppLocalizations {
   String get launderErrorActive => 'A wash job is already running.';
 
   @override
-  String get launderErrorTooLow => 'Amount is below the minimum.';
+  String launderErrorTooLow(String min) {
+    return 'L\'importo è inferiore al minimo ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Amount is above the maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'L\'importo è superiore al massimo ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Not enough cash on hand.';

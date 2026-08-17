@@ -34,7 +34,7 @@ Niet in scope:
 - Eén actieve wash-job per speler.
 - Cooldown tussen jobs (`LAUNDER_COOLDOWN_SECONDS`).
 - Exact-once completion/seize claim op job-status (`processing` → `completed`/`seized`).
-- UI toont fee, duur en geschatte seize-kans voordat de speler start.
+- UI toont fee, duur, min/max per wasbeurt en geschatte seize-kans voordat de speler start.
 - Bank UI toont live countdown voor actieve job (`completesAt`) en cooldown, plus fee/payout-preview op het ingevoerde bedrag (zelfde fee-formule als backend).
 
 ## Runtime Keys
@@ -51,7 +51,7 @@ Niet in scope:
 1. Start wash met genoeg cash → cash daalt, job visible, bank nog niet gestegen.
 2. Na `completesAt` zonder seize → bank += `amountOut`, heat daalt (indien >0).
 3. Seize-pad → geen bankpayout, job status `seized`.
-4. Actieve job / cooldown / te laag / te hoog / disabled foutpaden.
+4. Actieve job / cooldown / te laag / te hoog / disabled foutpaden; min/max staan op het bankscherm en in de fouttekst.
 5. Help-topic bank vermeldt laundering én de dagelijkse gratis-stortingscap; geen belofte van tick-rente als die disabled is.
 6. Na het opgebruiken van de gratis cap blijft witwassen werken; directe storting niet tot de volgende UTC-dag.
 

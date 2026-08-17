@@ -24027,7 +24027,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBankHow.
   ///
   /// In en, this message translates to:
-  /// **'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.'**
+  /// **'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.'**
   String get helpTopicBankHow;
 
   /// No description provided for @helpTopicBankTips.
@@ -25697,6 +25697,12 @@ abstract class AppLocalizations {
   /// **'Amount to wash'**
   String get launderAmountLabel;
 
+  /// No description provided for @launderAmountRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Min {min} · Max {max} per wash.'**
+  String launderAmountRange(String min, String max);
+
   /// No description provided for @launderStartButton.
   ///
   /// In en, this message translates to:
@@ -25724,14 +25730,14 @@ abstract class AppLocalizations {
   /// No description provided for @launderErrorTooLow.
   ///
   /// In en, this message translates to:
-  /// **'Amount is below the minimum.'**
-  String get launderErrorTooLow;
+  /// **'Amount is below the minimum ({min}).'**
+  String launderErrorTooLow(String min);
 
   /// No description provided for @launderErrorTooHigh.
   ///
   /// In en, this message translates to:
-  /// **'Amount is above the maximum.'**
-  String get launderErrorTooHigh;
+  /// **'Amount is above the maximum ({max}).'**
+  String launderErrorTooHigh(String max);
 
   /// No description provided for @launderErrorInsufficientCash.
   ///

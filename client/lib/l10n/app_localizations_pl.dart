@@ -13835,7 +13835,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Darmowe depozyty są natychmiastowe i nie wiążą się z żadnymi opłatami, ale tylko do dziennego limitu, który skaluje się wraz z Twoją rangą (dzień UTC). Wypłaty pozostają bezpłatne i nieograniczone.\nPasywne oprocentowanie banku jest obecnie wyłączone.\nPieniądze w banku są chronione przed konfiskatą policyjną. Podczas aresztowania można utracić jedynie gotówkę, którą mamy pod ręką.\nHistoria transakcji pokazuje wszystkie przepływy przychodzące i wychodzące ze znacznikiem czasu, kwotą, kontrahentem przelewu i opcjonalnymi opisami.\nPranie brudnych pieniędzy: wpłać do swojego banku gotówkę powyżej darmowego limitu dziennego za opłatą i opóźnieniem. Wyższa temperatura FBI zwiększa szansę na przejęcie; sukces nieznacznie obniża temperaturę.\nPrzestępstwo związane z napadem na bank: udaje się przy 30% i kradnie 10-30% losowego salda bankowego innego gracza. Ryzyko wysokiego poziomu poszukiwanego.\nMożliwe jest przesyłanie pieniędzy innym graczom. Opcjonalnie możesz dodać opis, a odbiorca zobaczy go także w transakcjach. Przed potwierdzeniem dokładnie sprawdź kwotę i odbiorcę.';
+      'Darmowe depozyty są natychmiastowe i nie wiążą się z żadnymi opłatami, ale tylko do dziennego limitu, który skaluje się wraz z Twoją rangą (dzień UTC). Wypłaty pozostają bezpłatne i nieograniczone. \nPasywne oprocentowanie banku jest obecnie wyłączone. \nPieniądze w banku są chronione przed konfiskatą policyjną. Podczas aresztowania można utracić jedynie gotówkę, którą mamy pod ręką. \nHistoria transakcji pokazuje wszystkie przepływy przychodzące i wychodzące ze znacznikiem czasu, kwotą, kontrahentem przelewu i opcjonalnymi opisami. \nPranie brudnych pieniędzy: wpłać do swojego banku gotówkę powyżej darmowego limitu dziennego za opłatą i opóźnieniem. Każde pranie ma minimum i maksimum, pokazane na ekranie banku. Wyższa temperatura FBI zwiększa szansę na przejęcie; sukces nieznacznie obniża temperaturę. \nPrzestępstwo związane z napadem na bank: udaje się przy 30% i kradnie 10-30% losowego salda bankowego innego gracza. Ryzyko wysokiego poziomu poszukiwanego. \nMożliwe jest przesyłanie pieniędzy innym graczom. Opcjonalnie możesz dodać opis, a odbiorca zobaczy go także w transakcjach. Przed potwierdzeniem dokładnie sprawdź kwotę i odbiorcę.';
 
   @override
   String get helpTopicBankTips =>
@@ -14834,6 +14834,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get launderAmountLabel => 'Amount to wash';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Min. $min · Maks. $max na pranie.';
+  }
+
+  @override
   String get launderStartButton => 'Start wash';
 
   @override
@@ -14846,10 +14851,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get launderErrorActive => 'A wash job is already running.';
 
   @override
-  String get launderErrorTooLow => 'Amount is below the minimum.';
+  String launderErrorTooLow(String min) {
+    return 'Kwota jest poniżej minimum ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Amount is above the maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'Kwota przekracza maksimum ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Not enough cash on hand.';

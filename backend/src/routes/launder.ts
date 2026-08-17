@@ -10,6 +10,18 @@ const startSchema = z.object({
 });
 
 function mapLaunderError(error: unknown, res: Response, next: NextFunction) {
+  if (error instanceof launderService.LaunderBoundError) {
+    return res.status(400).json({
+      event:
+        error.message === 'LAUNDER_AMOUNT_TOO_HIGH'
+          ? 'launder.amount_too_high'
+          : 'launder.amount_too_low',
+      params: {
+        minAmount: error.minAmount,
+        maxAmount: error.maxAmount,
+      },
+    });
+  }
   if (!(error instanceof Error)) return next(error);
   const map: Record<string, [number, string]> = {
     LAUNDER_DISABLED: [403, 'launder.disabled'],

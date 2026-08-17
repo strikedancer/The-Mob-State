@@ -13902,7 +13902,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Kostenlose Einzahlungen erfolgen sofort und sind gebührenfrei, jedoch nur bis zu einer Tagesobergrenze, die mit Ihrem Rang (UTC-Tag) skaliert. Abhebungen bleiben kostenlos und unbegrenzt.\nPassive Bankzinsen sind derzeit deaktiviert.\nDas Geld auf der Bank ist vor polizeilichen Beschlagnahmungen geschützt. Bei der Festnahme kann nur Bargeld verloren gehen.\nDer Transaktionsverlauf zeigt alle ein- und ausgehenden Bewegungen mit Zeitstempel, Betrag, Überweisungsgegenpartei und optionalen Beschreibungen.\nGeldwäsche: Waschen Sie Bargeld, das über der kostenlosen Tagesobergrenze liegt, gegen eine Gebühr und mit Verzögerung auf Ihr Bankkonto. Höhere FBI-Hitze erhöht die Chance auf eine Beschlagnahmung; Erfolg senkt die Hitze etwas.\nBankraubkriminalität: Erfolgt bei 30 % und stiehlt 10–30 % des Bankguthabens eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko.\nEine Geldüberweisung an andere Spieler ist möglich. Optional können Sie eine Beschreibung hinzufügen, die dem Empfänger auch in Transaktionen angezeigt wird. Überprüfen Sie vor der Bestätigung sowohl den Betrag als auch den Empfänger.';
+      'Kostenlose Einzahlungen erfolgen sofort und sind gebührenfrei, jedoch nur bis zu einer Tagesobergrenze, die mit Ihrem Rang (UTC-Tag) skaliert. Abhebungen bleiben kostenlos und unbegrenzt. \nPassive Bankzinsen sind derzeit deaktiviert. \nDas Geld auf der Bank ist vor polizeilichen Beschlagnahmungen geschützt. Bei der Festnahme kann nur Bargeld verloren gehen. \nDer Transaktionsverlauf zeigt alle ein- und ausgehenden Bewegungen mit Zeitstempel, Betrag, Überweisungsgegenpartei und optionalen Beschreibungen. \nGeldwäsche: Waschen Sie Bargeld, das über der kostenlosen Tagesobergrenze liegt, gegen eine Gebühr und mit Verzögerung auf Ihr Bankkonto. Für jeden Waschgang gibt es ein Minimum und ein Maximum, die auf dem Bankbildschirm angezeigt werden. Höhere FBI-Hitze erhöht die Chance auf eine Beschlagnahmung; Erfolg senkt die Hitze etwas. \nBankraubkriminalität: Erfolgt bei 30 % und stiehlt 10–30 % des Bankguthabens eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko. \nEine Geldüberweisung an andere Spieler ist möglich. Optional können Sie eine Beschreibung hinzufügen, die dem Empfänger auch in Transaktionen angezeigt wird. Überprüfen Sie vor der Bestätigung sowohl den Betrag als auch den Empfänger.';
 
   @override
   String get helpTopicBankTips =>
@@ -14899,6 +14899,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get launderAmountLabel => 'Amount to wash';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Min. $min · Max. $max pro Waschgang.';
+  }
+
+  @override
   String get launderStartButton => 'Start wash';
 
   @override
@@ -14911,10 +14916,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get launderErrorActive => 'A wash job is already running.';
 
   @override
-  String get launderErrorTooLow => 'Amount is below the minimum.';
+  String launderErrorTooLow(String min) {
+    return 'Der Betrag liegt unter dem Mindestwert ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Amount is above the maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'Betrag liegt über dem Höchstwert ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Not enough cash on hand.';

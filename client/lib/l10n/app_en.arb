@@ -8418,7 +8418,7 @@
   "helpTopicBankCategory": "Economy",
   "helpTopicBankTitle": "Bank",
   "helpTopicBankSummary": "Deposit working cash for free up to a daily cap. Larger street cash must be laundered with a fee, delay and FBI-heat seize risk.",
-  "helpTopicBankHow": "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.",
+  "helpTopicBankHow": "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.",
   "helpTopicBankTips": "Use the free daily deposit for small working cash so it is safe from confiscation.\nLaunder larger street cash when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).",
   "helpTopicCasinoCategory": "Economy",
   "helpTopicCasinoTitle": "Casino",
@@ -8809,12 +8809,37 @@
     }
   },
   "launderAmountLabel": "Amount to wash",
+  "launderAmountRange": "Min {min} · Max {max} per wash.",
+  "@launderAmountRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "launderStartButton": "Start wash",
   "launderStartedSuccess": "Laundering started.",
   "launderErrorCooldown": "Laundering is on cooldown.",
   "launderErrorActive": "A wash job is already running.",
-  "launderErrorTooLow": "Amount is below the minimum.",
-  "launderErrorTooHigh": "Amount is above the maximum.",
+  "launderErrorTooLow": "Amount is below the minimum ({min}).",
+  "@launderErrorTooLow": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "launderErrorTooHigh": "Amount is above the maximum ({max}).",
+  "@launderErrorTooHigh": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "launderErrorInsufficientCash": "Not enough cash on hand.",
   "launderErrorDisabled": "Money laundering is disabled.",
   "launderErrorUnknown": "Could not start laundering.",

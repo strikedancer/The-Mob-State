@@ -13904,7 +13904,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Les dépôts gratuits sont instantanés et sans frais, mais seulement jusqu\'à un plafond quotidien qui évolue en fonction de votre classement (jour UTC). Les retraits restent gratuits et illimités.\nLes intérêts bancaires passifs sont actuellement désactivés.\nL\'argent en banque est protégé contre les confiscations policières. Seul l’argent liquide peut être perdu lors de l’arrestation.\nL\'historique des transactions montre tous les flux entrants et sortants avec l\'horodatage, le montant, la contrepartie du transfert et des descriptions facultatives.\nBlanchiment d\'argent : versez dans votre banque des espèces dépassant le plafond quotidien gratuit, moyennant des frais et un délai. Une chaleur plus élevée du FBI augmente les chances de saisie ; le succès diminue légèrement la chaleur.\nCrime de vol de banque : réussit à 30 % et vole 10 à 30 % du solde bancaire d\'un autre joueur au hasard. Risque de niveau de recherche élevé.\nTransférer de l\'argent à d\'autres joueurs est possible. Vous pouvez éventuellement ajouter une description, et le destinataire la verra également dans les transactions. Vérifiez à nouveau le montant et le destinataire avant de confirmer.';
+      'Les dépôts gratuits sont instantanés et sans frais, mais seulement jusqu\'à un plafond quotidien qui évolue en fonction de votre classement (jour UTC). Les retraits restent gratuits et illimités. \nLes intérêts bancaires passifs sont actuellement désactivés. \nL\'argent en banque est protégé contre les confiscations policières. Seul l’argent liquide peut être perdu lors de l’arrestation. \nL\'historique des transactions montre tous les flux entrants et sortants avec l\'horodatage, le montant, la contrepartie du transfert et des descriptions facultatives. \nBlanchiment d\'argent : versez dans votre banque des espèces dépassant le plafond quotidien gratuit, moyennant des frais et un délai. Chaque lavage a un minimum et un maximum, affichés sur l\'écran de la banque. Une chaleur plus élevée du FBI augmente les chances de saisie ; le succès diminue légèrement la chaleur. \nCrime de vol de banque : réussit à 30 % et vole 10 à 30 % du solde bancaire d\'un autre joueur au hasard. Risque de niveau de recherche élevé. \nTransférer de l\'argent à d\'autres joueurs est possible. Vous pouvez éventuellement ajouter une description, et le destinataire la verra également dans les transactions. Vérifiez à nouveau le montant et le destinataire avant de confirmer.';
 
   @override
   String get helpTopicBankTips =>
@@ -14902,6 +14902,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get launderAmountLabel => 'Amount to wash';
 
   @override
+  String launderAmountRange(String min, String max) {
+    return 'Min $min · Max $max par lavage.';
+  }
+
+  @override
   String get launderStartButton => 'Start wash';
 
   @override
@@ -14914,10 +14919,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get launderErrorActive => 'A wash job is already running.';
 
   @override
-  String get launderErrorTooLow => 'Amount is below the minimum.';
+  String launderErrorTooLow(String min) {
+    return 'Le montant est inférieur au minimum ($min).';
+  }
 
   @override
-  String get launderErrorTooHigh => 'Amount is above the maximum.';
+  String launderErrorTooHigh(String max) {
+    return 'Le montant est supérieur au maximum ($max).';
+  }
 
   @override
   String get launderErrorInsufficientCash => 'Not enough cash on hand.';

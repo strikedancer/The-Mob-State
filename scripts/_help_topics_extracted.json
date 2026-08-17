@@ -445,7 +445,7 @@
       "Passieve bankrente staat momenteel uit.",
       "Geld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.",
       "Transactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.",
-      "Witwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.",
+      "Witwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Elke wasbeurt heeft een minimum en maximum, zichtbaar op het bankscherm. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.",
       "Bank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.",
       "Geld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt."
     ],
@@ -454,7 +454,7 @@
       "Passive bank interest is currently disabled.",
       "Money in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.",
       "Transaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.",
-      "Money laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.",
+      "Money laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.",
       "Bank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.",
       "Transferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming."
     ],

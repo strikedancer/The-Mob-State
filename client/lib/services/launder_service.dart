@@ -26,6 +26,10 @@ class LaunderService {
         ...(data['params'] as Map<String, dynamic>? ?? {}),
       };
     }
-    return {'success': false, 'event': data['event']};
+    return {
+      'success': false,
+      'event': data['event'],
+      'params': data['params'] as Map<String, dynamic>? ?? const {},
+    };
   }
 }

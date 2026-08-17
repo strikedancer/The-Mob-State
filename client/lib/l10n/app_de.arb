@@ -8128,7 +8128,7 @@
   "helpTopicBankCategory": "Wirtschaft",
   "helpTopicBankTitle": "Bank",
   "helpTopicBankSummary": "Zahlen Sie Arbeitsgeld bis zu einer Tagesobergrenze kostenlos ein. Größeres Straßengeld muss mit einer Gebühr, Verzögerungen und dem Risiko einer Beschlagnahmung durch das FBI gewaschen werden.",
-  "helpTopicBankHow": "Kostenlose Einzahlungen erfolgen sofort und sind gebührenfrei, jedoch nur bis zu einer Tagesobergrenze, die mit Ihrem Rang (UTC-Tag) skaliert. Abhebungen bleiben kostenlos und unbegrenzt.\nPassive Bankzinsen sind derzeit deaktiviert.\nDas Geld auf der Bank ist vor polizeilichen Beschlagnahmungen geschützt. Bei der Festnahme kann nur Bargeld verloren gehen.\nDer Transaktionsverlauf zeigt alle ein- und ausgehenden Bewegungen mit Zeitstempel, Betrag, Überweisungsgegenpartei und optionalen Beschreibungen.\nGeldwäsche: Waschen Sie Bargeld, das über der kostenlosen Tagesobergrenze liegt, gegen eine Gebühr und mit Verzögerung auf Ihr Bankkonto. Höhere FBI-Hitze erhöht die Chance auf eine Beschlagnahmung; Erfolg senkt die Hitze etwas.\nBankraubkriminalität: Erfolgt bei 30 % und stiehlt 10–30 % des Bankguthabens eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko.\nEine Geldüberweisung an andere Spieler ist möglich. Optional können Sie eine Beschreibung hinzufügen, die dem Empfänger auch in Transaktionen angezeigt wird. Überprüfen Sie vor der Bestätigung sowohl den Betrag als auch den Empfänger.",
+  "helpTopicBankHow": "Kostenlose Einzahlungen erfolgen sofort und sind gebührenfrei, jedoch nur bis zu einer Tagesobergrenze, die mit Ihrem Rang (UTC-Tag) skaliert. Abhebungen bleiben kostenlos und unbegrenzt. \nPassive Bankzinsen sind derzeit deaktiviert. \nDas Geld auf der Bank ist vor polizeilichen Beschlagnahmungen geschützt. Bei der Festnahme kann nur Bargeld verloren gehen. \nDer Transaktionsverlauf zeigt alle ein- und ausgehenden Bewegungen mit Zeitstempel, Betrag, Überweisungsgegenpartei und optionalen Beschreibungen. \nGeldwäsche: Waschen Sie Bargeld, das über der kostenlosen Tagesobergrenze liegt, gegen eine Gebühr und mit Verzögerung auf Ihr Bankkonto. Für jeden Waschgang gibt es ein Minimum und ein Maximum, die auf dem Bankbildschirm angezeigt werden. Höhere FBI-Hitze erhöht die Chance auf eine Beschlagnahmung; Erfolg senkt die Hitze etwas. \nBankraubkriminalität: Erfolgt bei 30 % und stiehlt 10–30 % des Bankguthabens eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko. \nEine Geldüberweisung an andere Spieler ist möglich. Optional können Sie eine Beschreibung hinzufügen, die dem Empfänger auch in Transaktionen angezeigt wird. Überprüfen Sie vor der Bestätigung sowohl den Betrag als auch den Empfänger.",
   "helpTopicBankTips": "Nutzen Sie die kostenlose tägliche Einzahlung für kleine Arbeitsgelder, damit diese vor der Beschlagnahmung geschützt sind.\nWaschen Sie größeres Straßengeld, wenn Sie die Gebühr akzeptieren und das Risiko übernehmen. Niedrigere Hitze ist sicherer.\nHalten Sie ein kleines Betriebskapital als Bargeld für direkte Ausgaben (Kaution, Reisen, Werkzeuge) bereit.",
   "helpTopicCasinoCategory": "Wirtschaft",
   "helpTopicCasinoTitle": "Kasino",
@@ -8703,8 +8703,8 @@
   "launderStartedSuccess": "Laundering started.",
   "launderErrorCooldown": "Laundering is on cooldown.",
   "launderErrorActive": "A wash job is already running.",
-  "launderErrorTooLow": "Amount is below the minimum.",
-  "launderErrorTooHigh": "Amount is above the maximum.",
+  "launderErrorTooLow": "Der Betrag liegt unter dem Mindestwert ({min}).",
+  "launderErrorTooHigh": "Betrag liegt über dem Höchstwert ({max}).",
   "launderErrorInsufficientCash": "Not enough cash on hand.",
   "launderErrorDisabled": "Money laundering is disabled.",
   "launderErrorUnknown": "Could not start laundering.",
@@ -8980,5 +8980,30 @@
       }
     }
   },
-  "launderSectionCapHint": "Verwenden Sie diese Option für Straßenbargeld über dem heutigen kostenlosen Einzahlungslimit."
+  "launderSectionCapHint": "Verwenden Sie diese Option für Straßenbargeld über dem heutigen kostenlosen Einzahlungslimit.",
+  "launderAmountRange": "Min. {min} · Max. {max} pro Waschgang.",
+  "@launderAmountRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "@launderErrorTooLow": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "@launderErrorTooHigh": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  }
 }

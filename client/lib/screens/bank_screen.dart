@@ -127,6 +127,14 @@ class _BankScreenState extends State<BankScreen> {
       (((_launderStatus['config'] as Map?)?['feePercent'] as num?)?.toInt() ??
           12);
 
+  int get _launderMinAmount =>
+      (((_launderStatus['config'] as Map?)?['minAmount'] as num?)?.toInt() ??
+          10000);
+
+  int get _launderMaxAmount =>
+      (((_launderStatus['config'] as Map?)?['maxAmount'] as num?)?.toInt() ??
+          5000000);
+
   ({int fee, int payout})? _launderPreview() {
     final amount = int.tryParse(_launderAmountController.text.trim()) ?? 0;
     if (amount <= 0) return null;
@@ -176,6 +184,28 @@ class _BankScreenState extends State<BankScreen> {
     final l10n = AppLocalizations.of(context)!;
     final amount = int.tryParse(_launderAmountController.text.trim()) ?? 0;
     if (amount <= 0) return;
+    if (amount < _launderMinAmount) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            l10n.launderErrorTooLow(formatCurrency(_launderMinAmount)),
+          ),
+        ),
+      );
+      return;
+    }
+    if (amount > _launderMaxAmount) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            l10n.launderErrorTooHigh(formatCurrency(_launderMaxAmount)),
+          ),
+        ),
+      );
+      return;
+    }
     setState(() => _isLaundering = true);
     final result = await _launderService.start(amount);
     if (!mounted) return;
@@ -195,7 +225,7 @@ class _BankScreenState extends State<BankScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_launderError(result['event']?.toString(), l10n)),
+          content: Text(_launderError(result, l10n)),
           backgroundColor: Colors.red,
         ),
       );
@@ -217,16 +247,24 @@ class _BankScreenState extends State<BankScreen> {
     return data['params']?['reason']?.toString() ?? l10n.bankScreenDepositFailed;
   }
 
-  String _launderError(String? event, AppLocalizations l10n) {
+  String _launderError(Map<String, dynamic> result, AppLocalizations l10n) {
+    final event = result['event']?.toString();
+    final params = result['params'] is Map
+        ? Map<String, dynamic>.from(result['params'] as Map)
+        : const <String, dynamic>{};
+    final minAmount =
+        (params['minAmount'] as num?)?.toInt() ?? _launderMinAmount;
+    final maxAmount =
+        (params['maxAmount'] as num?)?.toInt() ?? _launderMaxAmount;
     switch (event) {
       case 'launder.cooldown':
         return l10n.launderErrorCooldown;
       case 'launder.already_active':
         return l10n.launderErrorActive;
       case 'launder.amount_too_low':
-        return l10n.launderErrorTooLow;
+        return l10n.launderErrorTooLow(formatCurrency(minAmount));
       case 'launder.amount_too_high':
-        return l10n.launderErrorTooHigh;
+        return l10n.launderErrorTooHigh(formatCurrency(maxAmount));
       case 'error.insufficient_cash':
         return l10n.launderErrorInsufficientCash;
       case 'launder.disabled':
@@ -908,6 +946,14 @@ class _BankScreenState extends State<BankScreen> {
                           style: TextStyle(color: Colors.grey.shade400, fontSize: 12.5),
                         ),
                       ],
+                      const SizedBox(height: 6),
+                      Text(
+                        l10n.launderAmountRange(
+                          formatCurrency(_launderMinAmount),
+                          formatCurrency(_launderMaxAmount),
+                        ),
+                        style: TextStyle(color: Colors.grey.shade300, fontSize: 12.5),
+                      ),
                       const SizedBox(height: 6),
                       Text(
                         l10n.launderSeizeChance(

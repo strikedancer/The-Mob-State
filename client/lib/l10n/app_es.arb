@@ -8128,7 +8128,7 @@
   "helpTopicBankCategory": "Economía",
   "helpTopicBankTitle": "Banco",
   "helpTopicBankSummary": "Deposite dinero en efectivo de forma gratuita hasta un límite diario. El dinero en efectivo de mayor tamaño debe lavarse con una tarifa, demora y riesgo de incautación por parte del FBI.",
-  "helpTopicBankHow": "Los depósitos gratuitos son instantáneos y no tienen tarifa, pero solo hasta un límite diario que aumenta con su rango (día UTC). Los retiros siguen siendo gratuitos e ilimitados.\nEl interés bancario pasivo está actualmente deshabilitado.\nEl dinero en el banco está protegido de confiscaciones policiales. Sólo el efectivo disponible se puede perder en el momento del arresto.\nEl historial de transacciones muestra todos los flujos entrantes y salientes con marca de tiempo, monto, contraparte de la transferencia y descripciones opcionales.\nLavado de dinero: lave efectivo por encima del límite diario gratuito en su banco con una comisión y un retraso. Mayor presión del FBI aumenta la oportunidad de aprovechar; el éxito reduce ligeramente el calor.\nCrimen de robo a un banco: tiene éxito en un 30% y roba entre un 10 y un 30% del saldo bancario de otro jugador al azar. Riesgo de alto nivel de búsqueda.\nEs posible transferir dinero a otros jugadores. Opcionalmente, puedes agregar una descripción y el destinatario también la verá en las transacciones. Verifique nuevamente tanto el monto como el destinatario antes de confirmar.",
+  "helpTopicBankHow": "Los depósitos gratuitos son instantáneos y no tienen tarifa, pero solo hasta un límite diario que aumenta con su rango (día UTC). Los retiros siguen siendo gratuitos e ilimitados. \nEl interés bancario pasivo está actualmente deshabilitado. \nEl dinero en el banco está protegido de confiscaciones policiales. Sólo el efectivo disponible se puede perder en el momento del arresto. \nEl historial de transacciones muestra todos los flujos entrantes y salientes con marca de tiempo, monto, contraparte de la transferencia y descripciones opcionales. \nLavado de dinero: lave efectivo por encima del límite diario gratuito en su banco con una comisión y un retraso. Cada lavado tiene un mínimo y un máximo, mostrados en la pantalla del banco. Mayor presión del FBI aumenta la oportunidad de aprovechar; el éxito reduce ligeramente el calor. \nCrimen de robo a un banco: tiene éxito en un 30% y roba entre un 10 y un 30% del saldo bancario de otro jugador al azar. Riesgo de alto nivel de búsqueda. \nEs posible transferir dinero a otros jugadores. Opcionalmente, puedes agregar una descripción y el destinatario también la verá en las transacciones. Verifique nuevamente tanto el monto como el destinatario antes de confirmar.",
   "helpTopicBankTips": "Utilice el depósito diario gratuito para pequeñas cantidades de dinero en efectivo para que esté a salvo de confiscación.\nLave dinero en efectivo en la calle cuando acepte la tarifa y aproveche el riesgo; un calor más bajo es más seguro.\nMantenga un pequeño capital de trabajo como efectivo para gastos directos (fianza, viajes, herramientas).",
   "helpTopicCasinoCategory": "Economía",
   "helpTopicCasinoTitle": "Casino",
@@ -8703,8 +8703,8 @@
   "launderStartedSuccess": "Laundering started.",
   "launderErrorCooldown": "Laundering is on cooldown.",
   "launderErrorActive": "A wash job is already running.",
-  "launderErrorTooLow": "Amount is below the minimum.",
-  "launderErrorTooHigh": "Amount is above the maximum.",
+  "launderErrorTooLow": "El monto está por debajo del mínimo ({min}).",
+  "launderErrorTooHigh": "El monto está por encima del máximo ({max}).",
   "launderErrorInsufficientCash": "Not enough cash on hand.",
   "launderErrorDisabled": "Money laundering is disabled.",
   "launderErrorUnknown": "Could not start laundering.",
@@ -8980,5 +8980,30 @@
       }
     }
   },
-  "launderSectionCapHint": "Úselo para obtener efectivo en la calle por encima del límite de depósito gratuito actual."
+  "launderSectionCapHint": "Úselo para obtener efectivo en la calle por encima del límite de depósito gratuito actual.",
+  "launderAmountRange": "Mín {min} · Máx {max} por lavado.",
+  "@launderAmountRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "@launderErrorTooLow": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "@launderErrorTooHigh": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  }
 }
