@@ -515,10 +515,10 @@ Voorbeelden:
 ### Transacties
 
 #### Deposit (Storten)
-- **Minimum**: â‚¬1
-- **Maximum**: Je huidige cash
-- **Fee**: Geen kosten
-- **Instant**: Direct verwerkt
+- **Minimum**: €1
+- **Daily free cap**: `BANK_FREE_DEPOSIT_DAILY_BASE` + `BANK_FREE_DEPOSIT_DAILY_PER_RANK` × rank (default €10.000 + €5.000 × rank, UTC-dag)
+- **Fee**: Geen kosten binnen de cap; daarboven via witwassen
+- **Instant**: Direct verwerkt (alleen binnen de cap)
 
 #### Withdraw (Opnemen)
 - **Minimum**: â‚¬1
@@ -937,7 +937,7 @@ Bob: â‚¬300K counter-hit
 
 ### Mid-Game Strategy
 1. **Properties**: Investeer in meerdere properties
-2. **Bank account**: Stort geld om cash te beschermen tegen confiscatie
+2. **Bank account**: Stort tot de dagelijkse gratis-cap; grotere straatcash witwassen
 3. **Higher crimes**: Car theft, burglary
 4. **Join crew**: Doe heists voor grote rewards
 5. **Trade**: Koop cheap goods, verkoop duur
@@ -1117,7 +1117,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Jobs system
 - âœ… Properties & passive income
 - âœ… Crews & heists
-- âœ… Bank accounts (safe storage; interest currently disabled)
+- âœ… Bank accounts (safe storage with a daily free-deposit cap; larger cash via laundering; interest currently disabled)
 - âœ… International travel
 - âœ… Trade market with risks
 - âœ… Aviation system
@@ -1129,7 +1129,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Drug production facilities
 - ✅ Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
 - ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / territory.md
-- ✅ Money laundering (cash→bank wash: fee, delay, FBI-heat seize risk) — see `money-laundering.md`
+- ✅ Money laundering (cash→bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) — see `money-laundering.md` / `bank.md`
 - ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
 - ✅ Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) — see `properties.md`
 

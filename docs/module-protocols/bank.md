@@ -7,7 +7,13 @@ Deposits, withdrawals, transfers, transaction history and money safety.
 Bank interest is **intentionally disabled** (`bankService.applyInterest` / `applyInterestToAll` return 0). Player help and GAMEPLAY copy must not promise passive tick interest until it is re-enabled.
 
 ## Related: Money Laundering
-Covert cash→bank wash (fee + delay + heat seize risk) leeft in [money-laundering.md](money-laundering.md) en UI op het bankscherm. Directe storting blijft gratis/instant; laundering is de riskante covert path.
+Covert cash→bank wash (fee + delay + heat seize risk) leeft in [money-laundering.md](money-laundering.md) en UI op het bankscherm. Directe storting blijft gratis/instant tot een dagelijkse cap (`BANK_FREE_DEPOSIT_DAILY_*`); daarboven is laundering de enige cash→bank path. Directe storting krijgt nooit fee/delay/seize.
+
+## Daily free deposit cap
+- UTC-dag. Formula: `base + perRank × rank` (defaults €10.000 + €5.000 × rank).
+- Opnames en transfers blijven gratis/onbeperkt.
+- Overschrijding wordt geweigerd (geen auto-split); restant moet witgewassen of tot de volgende UTC-dag bewaard.
+- Runtime: `BANK_FREE_DEPOSIT_DAILY_ENABLED` (0 = oude onbeperkte gratis storting), `BANK_FREE_DEPOSIT_DAILY_BASE`, `BANK_FREE_DEPOSIT_DAILY_PER_RANK`.
 
 ## Primary Frontend Entry
 - client/lib/screens/bank_screen.dart
@@ -30,6 +36,7 @@ Covert cash→bank wash (fee + delay + heat seize risk) leeft in [money-launderi
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Transaction history and transaction summary counters must reflect the same underlying deposit, withdrawal, sent-transfer and received-transfer data; withdrawals may not be omitted from the visible transaction summary.
+- Daily free-deposit remaining on the bank screen must match server quota (`GET /bank/account`); over-cap deposits must fail without auto-split.
 - Transaction history must preserve transfer counterpart identity and any optional player-entered description for deposits, withdrawals and transfers; received transfers must show the sender's description symmetrically when one was provided.
 
 ## i18n and Messaging
@@ -44,6 +51,7 @@ Covert cash→bank wash (fee + delay + heat seize risk) leeft in [money-launderi
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify daily free-deposit remaining, over-cap rejection, and that withdraw still works when remaining is 0.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

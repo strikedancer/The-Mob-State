@@ -438,32 +438,34 @@
     "categoryEn": "Economy",
     "titleNl": "Bank",
     "titleEn": "Bank",
-    "summaryNl": "Stort en beheer bankgeld veilig. Optioneel kun je cash witwassen met fee, wachttijd en FBI-heat risico.",
-    "summaryEn": "Deposit and manage bank money safely. Optionally launder cash with a fee, delay and FBI-heat seize risk.",
+    "summaryNl": "Stort werkkapitaal gratis tot een daglimiet. Grotere straatcash moet je witwassen met fee, wachttijd en FBI-heat risico.",
+    "summaryEn": "Deposit working cash for free up to a daily cap. Larger street cash must be laundered with a fee, delay and FBI-heat seize risk.",
     "howNl": [
-      "Storten en opnemen zijn gratis en direct. Passieve bankrente staat momenteel uit.",
+      "Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt.",
+      "Passieve bankrente staat momenteel uit.",
       "Geld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.",
       "Transactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.",
-      "Witwassen: was cash naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.",
+      "Witwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.",
       "Bank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.",
       "Geld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt."
     ],
     "howEn": [
-      "Deposits and withdrawals are free and instant. Passive bank interest is currently disabled.",
+      "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.",
+      "Passive bank interest is currently disabled.",
       "Money in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.",
       "Transaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.",
-      "Money laundering: wash cash into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.",
+      "Money laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.",
       "Bank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.",
       "Transferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming."
     ],
     "tipsNl": [
-      "Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.",
-      "Witwas alleen als je de fee en seize-kans accepteert; bij lage heat is dat veiliger.",
+      "Gebruik de gratis dagstorting voor klein werkkapitaal, zodat het veilig is voor confiscatie.",
+      "Witwas grotere straatcash als je de fee en seize-kans accepteert; bij lage heat is dat veiliger.",
       "Houd altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools)."
     ],
     "tipsEn": [
-      "Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.",
-      "Only launder when you accept the fee and seize risk; lower heat is safer.",
+      "Use the free daily deposit for small working cash so it is safe from confiscation.",
+      "Launder larger street cash when you accept the fee and seize risk; lower heat is safer.",
       "Keep a small working capital as cash for direct expenses (bail, travel, tools)."
     ],
     "protocolPath": "docs/module-protocols/bank.md"

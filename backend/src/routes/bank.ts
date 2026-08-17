@@ -91,6 +91,17 @@ router.post('/deposit', authenticate, async (req: AuthRequest, res: Response) =>
         });
       }
 
+      if (error instanceof bankService.DailyDepositCapError) {
+        return res.status(400).json({
+          event: 'bank.daily_deposit_cap',
+          params: {
+            remaining: error.remaining,
+            cap: error.cap,
+            depositedToday: error.depositedToday,
+          },
+        });
+      }
+
       if (error.message === 'PLAYER_NOT_FOUND') {
         return res.status(404).json({
           event: 'error.player_not_found',
@@ -350,7 +361,10 @@ router.get('/account', authenticate, async (req: AuthRequest, res: Response) => 
       });
     }
 
-    const account = await bankService.getAccountInfo(playerId);
+    const [account, quota] = await Promise.all([
+      bankService.getAccountInfo(playerId),
+      bankService.getFreeDepositQuota(playerId),
+    ]);
 
     return res.json({
       event: 'bank.account_info',
@@ -360,6 +374,10 @@ router.get('/account', authenticate, async (req: AuthRequest, res: Response) => 
         interestRate: account.interestRate,
         dailyInterest: Math.floor(account.balance * account.interestRate),
         createdAt: account.createdAt,
+        dailyDepositCapEnabled: quota.enabled,
+        dailyDepositCap: quota.cap,
+        depositedToday: quota.depositedToday,
+        dailyDepositRemaining: quota.remaining,
       },
     });
   } catch {

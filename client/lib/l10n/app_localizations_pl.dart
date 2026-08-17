@@ -4942,6 +4942,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get bankScreenDepositFailed => 'Wpłata nie powiodła się';
 
   @override
+  String bankScreenDailyDepositQuota(String remaining, String cap) {
+    return 'Wolne depozyty pozostały dzisiaj: $remaining z $cap. Większe ilości należy wyprać.';
+  }
+
+  @override
+  String get bankScreenDailyDepositCapReached =>
+      'Dzisiejszy limit darmowych wpłat został wyczerpany. Wypierz pozostałą gotówkę lub poczekaj do jutra (UTC).';
+
+  @override
+  String bankScreenDepositCapError(String remaining) {
+    return 'To przekracza pozostałą kwotę dzisiejszego bezpłatnego depozytu ($remaining). Wpłać do tej kwoty lub skorzystaj z prania brudnych pieniędzy.';
+  }
+
+  @override
   String get bankScreenWithdrawSuccess => 'Wypłata powiodła się';
 
   @override
@@ -13817,15 +13831,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Wpłacaj pieniądze, aby chronić gotówkę przed konfiskatą policyjną. Odsetki bankowe są obecnie wyłączone.';
+      'Wpłacaj gotówkę roboczą bezpłatnie do limitu dziennego. Większe uliczne pieniądze muszą zostać wyprane za opłatą, opóźnieniem i ryzykiem przejęcia przez FBI.';
 
   @override
   String get helpTopicBankHow =>
-      'Odsetki bankowe są obecnie wyłączone (brak biernych odsetek na tick).\nWpłaty i wypłaty są darmowe i natychmiastowe, bez minimum ani maksimum.\nPieniądze w banku są chronione przed konfiskatą policyjną. Tylko gotówka w ręku może zostać utracona przy aresztowaniu.\nHistoria transakcji pokazuje wszystkie przepływy ze znacznikiem czasu, kwotą, kontrahentem i opcjonalnym opisem.\nPrzestępstwo Napad na bank: 30% szansy i kradnie 10–30% salda bankowego losowego innego gracza. Wysokie ryzyko Wanted Level.\nPrzelewy do innych graczy są możliwe. Opcjonalny opis widoczny także dla odbiorcy. Sprawdź kwotę i odbiorcę przed potwierdzeniem.';
+      'Darmowe depozyty są natychmiastowe i nie wiążą się z żadnymi opłatami, ale tylko do dziennego limitu, który skaluje się wraz z Twoją rangą (dzień UTC). Wypłaty pozostają bezpłatne i nieograniczone.\nPasywne oprocentowanie banku jest obecnie wyłączone.\nPieniądze w banku są chronione przed konfiskatą policyjną. Podczas aresztowania można utracić jedynie gotówkę, którą mamy pod ręką.\nHistoria transakcji pokazuje wszystkie przepływy przychodzące i wychodzące ze znacznikiem czasu, kwotą, kontrahentem przelewu i opcjonalnymi opisami.\nPranie brudnych pieniędzy: wpłać do swojego banku gotówkę powyżej darmowego limitu dziennego za opłatą i opóźnieniem. Wyższa temperatura FBI zwiększa szansę na przejęcie; sukces nieznacznie obniża temperaturę.\nPrzestępstwo związane z napadem na bank: udaje się przy 30% i kradnie 10-30% losowego salda bankowego innego gracza. Ryzyko wysokiego poziomu poszukiwanego.\nMożliwe jest przesyłanie pieniędzy innym graczom. Opcjonalnie możesz dodać opis, a odbiorca zobaczy go także w transakcjach. Przed potwierdzeniem dokładnie sprawdź kwotę i odbiorcę.';
 
   @override
   String get helpTopicBankTips =>
-      'Natychmiast przelewaj duże kwoty do banku — gotówka w ręku jest zagrożona przy każdej próbie przestępstwa.\nUżywaj banku jako bezpiecznego składowania przed konfiskatą, nie jako farmy odsetek (odsetki wyłączone).\nTrzymaj mały kapitał obrotowy w gotówce na bieżące wydatki (kaucja, podróż, narzędzia).';
+      'Skorzystaj z bezpłatnego depozytu dziennego na niewielką gotówkę roboczą, aby była zabezpieczona przed konfiskatą.\nPraj większą gotówkę uliczną, gdy zaakceptujesz opłatę i przejmiesz ryzyko; niższa temperatura jest bezpieczniejsza.\nZachowaj niewielki kapitał obrotowy w postaci gotówki na bezpośrednie wydatki (kaucja, podróże, narzędzia).';
 
   @override
   String get helpTopicCasinoCategory => 'Gospodarka';
@@ -14781,6 +14795,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String launderSectionHint(int feePercent, int durationMinutes) {
     return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
   }
+
+  @override
+  String get launderSectionCapHint =>
+      'Użyj tego, aby wydać gotówkę na ulicy powyżej dzisiejszego limitu bezpłatnych wpłat.';
 
   @override
   String launderSeizeChance(String chance) {

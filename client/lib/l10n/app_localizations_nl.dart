@@ -4922,6 +4922,20 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bankScreenDepositFailed => 'Storting mislukt';
 
   @override
+  String bankScreenDailyDepositQuota(String remaining, String cap) {
+    return 'Gratis storten vandaag: $remaining van $cap. Grotere bedragen moet je witwassen.';
+  }
+
+  @override
+  String get bankScreenDailyDepositCapReached =>
+      'Dagelijkse gratis stortingslimiet is op. Witwas de rest of wacht tot morgen (UTC).';
+
+  @override
+  String bankScreenDepositCapError(String remaining) {
+    return 'Dat is meer dan je vandaag nog gratis mag storten ($remaining). Stort tot dat bedrag, of gebruik witwassen.';
+  }
+
+  @override
   String get bankScreenWithdrawSuccess => 'Opname gelukt';
 
   @override
@@ -13715,15 +13729,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Stort en beheer bankgeld veilig. Optioneel kun je cash witwassen met fee, wachttijd en FBI-heat risico.';
+      'Stort werkkapitaal gratis tot een daglimiet. Grotere straatcash moet je witwassen met fee, wachttijd en FBI-heat risico.';
 
   @override
   String get helpTopicBankHow =>
-      'Storten en opnemen zijn gratis en direct. Passieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
+      'Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt.\nPassieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
 
   @override
   String get helpTopicBankTips =>
-      'Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.\nWitwas alleen als je de fee en seize-kans accepteert; bij lage heat is dat veiliger.\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).';
+      'Gebruik de gratis dagstorting voor klein werkkapitaal, zodat het veilig is voor confiscatie.\nWitwas grotere straatcash als je de fee en seize-kans accepteert; bij lage heat is dat veiliger.\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).';
 
   @override
   String get helpTopicCasinoCategory => 'Economie';
@@ -14675,6 +14689,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String launderSectionHint(int feePercent, int durationMinutes) {
     return 'Was cash naar je bank met $feePercent% fee. Duurt ongeveer $durationMinutes minuten. Hogere FBI-heat betekent meer kans op inbeslagname.';
   }
+
+  @override
+  String get launderSectionCapHint =>
+      'Gebruik dit voor straatcash boven je gratis stortingslimiet van vandaag.';
 
   @override
   String launderSeizeChance(String chance) {

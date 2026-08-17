@@ -44,6 +44,9 @@ class _BankScreenState extends State<BankScreen> {
   bool _isLoadingTransactions = false;
   bool _isSearchingUsers = false;
   int _balance = 0;
+  bool _dailyDepositCapEnabled = false;
+  int _dailyDepositCap = 0;
+  int _dailyDepositRemaining = 0;
   int _currentPage = 1;
   int _totalPages = 1;
   int _totalTransactions = 0;
@@ -199,6 +202,21 @@ class _BankScreenState extends State<BankScreen> {
     }
   }
 
+  String _depositError(Map<String, dynamic> data, AppLocalizations l10n) {
+    final event = data['event']?.toString();
+    if (event == 'bank.daily_deposit_cap') {
+      final remaining =
+          (data['params']?['remaining'] as num?)?.toInt() ??
+          _dailyDepositRemaining;
+      if (remaining <= 0) {
+        return l10n.bankScreenDailyDepositCapReached;
+      }
+      return l10n.bankScreenDepositCapError(formatCurrency(remaining));
+    }
+
+    return data['params']?['reason']?.toString() ?? l10n.bankScreenDepositFailed;
+  }
+
   String _launderError(String? event, AppLocalizations l10n) {
     switch (event) {
       case 'launder.cooldown':
@@ -255,6 +273,12 @@ class _BankScreenState extends State<BankScreen> {
         final balance = (params?['balance'] as num?)?.toInt() ?? 0;
         setState(() {
           _balance = balance;
+          _dailyDepositCapEnabled =
+              params?['dailyDepositCapEnabled'] == true;
+          _dailyDepositCap =
+              (params?['dailyDepositCap'] as num?)?.toInt() ?? 0;
+          _dailyDepositRemaining =
+              (params?['dailyDepositRemaining'] as num?)?.toInt() ?? 0;
           _isLoading = false;
         });
       } else {
@@ -404,6 +428,22 @@ class _BankScreenState extends State<BankScreen> {
     final description = _amountDescriptionController.text.trim();
     if (amount <= 0) return;
 
+    if (_dailyDepositCapEnabled && amount > _dailyDepositRemaining) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _dailyDepositRemaining <= 0
+                ? l10n.bankScreenDailyDepositCapReached
+                : l10n.bankScreenDepositCapError(
+                    formatCurrency(_dailyDepositRemaining),
+                  ),
+          ),
+        ),
+      );
+      return;
+    }
+
     setState(() => _isSubmitting = true);
 
     try {
@@ -438,10 +478,7 @@ class _BankScreenState extends State<BankScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(
-                data['params']?['reason']?.toString() ??
-                    l10n.bankScreenDepositFailed,
-              ),
+              content: Text(_depositError(data, l10n)),
             ),
           );
         }
@@ -756,6 +793,23 @@ class _BankScreenState extends State<BankScreen> {
                       l10n.bankScreenBalanceLine(_balance),
                       style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
+                    if (_dailyDepositCapEnabled) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        _dailyDepositRemaining > 0
+                            ? l10n.bankScreenDailyDepositQuota(
+                                formatCurrency(_dailyDepositRemaining),
+                                formatCurrency(_dailyDepositCap),
+                              )
+                            : l10n.bankScreenDailyDepositCapReached,
+                        style: TextStyle(
+                          color: _dailyDepositRemaining > 0
+                              ? Colors.white70
+                              : Colors.orange.shade200,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -797,7 +851,11 @@ class _BankScreenState extends State<BankScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: _isSubmitting ? null : _deposit,
+                    onPressed: _isSubmitting ||
+                            (_dailyDepositCapEnabled &&
+                                _dailyDepositRemaining <= 0)
+                        ? null
+                        : _deposit,
                     icon: const Icon(Icons.arrow_downward),
                     label: Text(l10n.bankScreenDepositButton),
                   ),
@@ -843,6 +901,13 @@ class _BankScreenState extends State<BankScreen> {
                         ),
                         style: TextStyle(color: Colors.grey.shade400, fontSize: 12.5),
                       ),
+                      if (_dailyDepositCapEnabled) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          l10n.launderSectionCapHint,
+                          style: TextStyle(color: Colors.grey.shade400, fontSize: 12.5),
+                        ),
+                      ],
                       const SizedBox(height: 6),
                       Text(
                         l10n.launderSeizeChance(

@@ -4935,6 +4935,20 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bankScreenDepositFailed => 'Falha no depósito';
 
   @override
+  String bankScreenDailyDepositQuota(String remaining, String cap) {
+    return 'Depósitos gratuitos restantes hoje: $remaining de $cap. Quantidades maiores devem ser lavadas.';
+  }
+
+  @override
+  String get bankScreenDailyDepositCapReached =>
+      'O limite de depósito gratuito de hoje acabou. Lave o dinheiro restante ou espere até amanhã (UTC).';
+
+  @override
+  String bankScreenDepositCapError(String remaining) {
+    return 'Isso excede o depósito gratuito restante de hoje ($remaining). Deposite até esse valor ou use lavagem de dinheiro.';
+  }
+
+  @override
   String get bankScreenWithdrawSuccess => 'Retirada bem-sucedida';
 
   @override
@@ -13814,15 +13828,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Deposite dinheiro para manter o numerário fora do alcance dos confiscos policiais. Os juros bancários estão atualmente desativados.';
+      'Deposite dinheiro de trabalho gratuitamente até um limite diário. O dinheiro de rua maior deve ser lavado com uma taxa, atraso e risco de apreensão por calor do FBI.';
 
   @override
   String get helpTopicBankHow =>
-      'Os juros bancários estão atualmente desativados (sem juros passivos por tick).\nDepósitos e levantamentos são grátis e instantâneos, sem mínimo nem máximo.\nDinheiro no banco está protegido contra confiscos policiais. Só o dinheiro em mão pode ser perdido numa prisão.\nO histórico de transações mostra todos os fluxos com carimbo de data/hora, montante, contraparte e descrição opcional.\nCrime Assalto ao banco: 30% de sucesso e rouba 10–30% do saldo bancário de outro jogador aleatório. Alto risco de Wanted Level.\nTransferências para outros jogadores são possíveis. Descrição opcional também visível para o destinatário. Confirme montante e destinatário antes de enviar.';
+      'Os depósitos grátis são instantâneos e não têm taxas, mas apenas até um limite diário que varia de acordo com a sua classificação (dia UTC). As retiradas permanecem gratuitas e ilimitadas.\nOs juros bancários passivos estão atualmente desativados.\nO dinheiro no banco está protegido contra confiscos policiais. Apenas o dinheiro em mãos pode ser perdido na prisão.\nO histórico de transações mostra todos os fluxos de entrada e saída com carimbo de data/hora, valor, contraparte de transferência e descrições opcionais.\nLavagem de dinheiro: lave dinheiro acima do limite diário gratuito em seu banco com uma taxa e atraso. Maior pressão do FBI aumenta chance de apreensão; o sucesso reduz ligeiramente o calor.\nCrime de assalto a banco: consegue 30% e rouba 10-30% do saldo bancário aleatório de outro jogador. Alto risco de nível de procurado.\nÉ possível transferir dinheiro para outros jogadores. Opcionalmente, você pode adicionar uma descrição e o destinatário também a verá nas transações. Verifique novamente o valor e o destinatário antes de confirmar.';
 
   @override
   String get helpTopicBankTips =>
-      'Envie grandes montantes para o banco de imediato — o dinheiro em mão está em risco em cada tentativa de crime.\nUse o banco como armazenamento seguro contra confisco, não como quinta de juros (juros desativados).\nMantenha um pequeno capital de trabalho em dinheiro para despesas diretas (caução, viagem, ferramentas).';
+      'Use o depósito diário gratuito para pequenas quantias de dinheiro de trabalho, para que fique protegido contra confisco.\nLave muito dinheiro nas ruas ao aceitar a taxa e assumir o risco; o calor mais baixo é mais seguro.\nMantenha um pequeno capital de giro como dinheiro para despesas diretas (fiança, viagens, ferramentas).';
 
   @override
   String get helpTopicCasinoCategory => 'Economia';
@@ -14775,6 +14789,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String launderSectionHint(int feePercent, int durationMinutes) {
     return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
   }
+
+  @override
+  String get launderSectionCapHint =>
+      'Use isso para dinheiro de rua acima do limite de depósito gratuito de hoje.';
 
   @override
   String launderSeizeChance(String chance) {

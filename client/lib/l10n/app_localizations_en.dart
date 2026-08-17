@@ -4892,6 +4892,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bankScreenDepositFailed => 'Deposit failed';
 
   @override
+  String bankScreenDailyDepositQuota(String remaining, String cap) {
+    return 'Free deposits left today: $remaining of $cap. Larger amounts must be laundered.';
+  }
+
+  @override
+  String get bankScreenDailyDepositCapReached =>
+      'Today\'s free deposit limit is used up. Launder remaining cash or wait until tomorrow (UTC).';
+
+  @override
+  String bankScreenDepositCapError(String remaining) {
+    return 'That exceeds today\'s free deposit remaining ($remaining). Deposit up to that amount, or use money laundering.';
+  }
+
+  @override
   String get bankScreenWithdrawSuccess => 'Withdrawal successful';
 
   @override
@@ -13682,15 +13696,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Deposit and manage bank money safely. Optionally launder cash with a fee, delay and FBI-heat seize risk.';
+      'Deposit working cash for free up to a daily cap. Larger street cash must be laundered with a fee, delay and FBI-heat seize risk.';
 
   @override
   String get helpTopicBankHow =>
-      'Deposits and withdrawals are free and instant. Passive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
+      'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
 
   @override
   String get helpTopicBankTips =>
-      'Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.\nOnly launder when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).';
+      'Use the free daily deposit for small working cash so it is safe from confiscation.\nLaunder larger street cash when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).';
 
   @override
   String get helpTopicCasinoCategory => 'Economy';
@@ -14641,6 +14655,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String launderSectionHint(int feePercent, int durationMinutes) {
     return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
   }
+
+  @override
+  String get launderSectionCapHint =>
+      'Use this for street cash above today\'s free deposit limit.';
 
   @override
   String launderSeizeChance(String chance) {

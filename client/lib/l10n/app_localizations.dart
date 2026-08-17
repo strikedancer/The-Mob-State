@@ -8857,6 +8857,24 @@ abstract class AppLocalizations {
   /// **'Deposit failed'**
   String get bankScreenDepositFailed;
 
+  /// No description provided for @bankScreenDailyDepositQuota.
+  ///
+  /// In en, this message translates to:
+  /// **'Free deposits left today: {remaining} of {cap}. Larger amounts must be laundered.'**
+  String bankScreenDailyDepositQuota(String remaining, String cap);
+
+  /// No description provided for @bankScreenDailyDepositCapReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s free deposit limit is used up. Launder remaining cash or wait until tomorrow (UTC).'**
+  String get bankScreenDailyDepositCapReached;
+
+  /// No description provided for @bankScreenDepositCapError.
+  ///
+  /// In en, this message translates to:
+  /// **'That exceeds today\'s free deposit remaining ({remaining}). Deposit up to that amount, or use money laundering.'**
+  String bankScreenDepositCapError(String remaining);
+
   /// No description provided for @bankScreenWithdrawSuccess.
   ///
   /// In en, this message translates to:
@@ -24003,19 +24021,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBankSummary.
   ///
   /// In en, this message translates to:
-  /// **'Deposit and manage bank money safely. Optionally launder cash with a fee, delay and FBI-heat seize risk.'**
+  /// **'Deposit working cash for free up to a daily cap. Larger street cash must be laundered with a fee, delay and FBI-heat seize risk.'**
   String get helpTopicBankSummary;
 
   /// No description provided for @helpTopicBankHow.
   ///
   /// In en, this message translates to:
-  /// **'Deposits and withdrawals are free and instant. Passive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.'**
+  /// **'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.'**
   String get helpTopicBankHow;
 
   /// No description provided for @helpTopicBankTips.
   ///
   /// In en, this message translates to:
-  /// **'Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.\nOnly launder when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).'**
+  /// **'Use the free daily deposit for small working cash so it is safe from confiscation.\nLaunder larger street cash when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).'**
   String get helpTopicBankTips;
 
   /// No description provided for @helpTopicCasinoCategory.
@@ -25630,6 +25648,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wash cash into your bank with a {feePercent}% fee. Takes about {durationMinutes} minutes. Higher FBI heat means higher seize risk.'**
   String launderSectionHint(int feePercent, int durationMinutes);
+
+  /// No description provided for @launderSectionCapHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this for street cash above today\'s free deposit limit.'**
+  String get launderSectionCapHint;
 
   /// No description provided for @launderSeizeChance.
   ///

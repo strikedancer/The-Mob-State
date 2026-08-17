@@ -8127,9 +8127,9 @@
   "helpTopicPropertiesTips": "Investi presto in un magazzino se hai bisogno di più spazio di archiviazione per gli altri tuoi sistemi. \nScegli case e appartamenti quando desideri costruire più capacità abitative per i relativi sistemi di gioco. \nNon vendere troppo in fretta: il 70% rappresenta un notevole ribasso rispetto al prezzo di acquisto.",
   "helpTopicBankCategory": "Economia",
   "helpTopicBankTitle": "Banca",
-  "helpTopicBankSummary": "Deposita denaro per tenere i contanti fuori dalla portata delle confische della polizia. Gli interessi bancari sono attualmente disattivati.",
-  "helpTopicBankHow": "Gli interessi bancari sono attualmente disattivati (nessun interesse passivo per tick).\nDepositi e prelievi sono gratuiti e istantanei, senza minimo o massimo.\nIl denaro in banca è protetto dalle confische della polizia. Solo i contanti in mano possono essere persi in caso di arresto.\nLa cronologia delle transazioni mostra tutti i flussi con timestamp, importo, controparte e descrizione opzionale.\nCrimine Rapina in banca: 30% di successo e ruba il 10–30% del saldo bancario di un altro giocatore a caso. Alto rischio Wanted Level.\nI trasferimenti ad altri giocatori sono possibili. Descrizione opzionale visibile anche al destinatario. Controlla importo e destinatario prima di confermare.",
-  "helpTopicBankTips": "Invia subito grandi somme in banca: i contanti in mano sono a rischio a ogni tentativo di crimine.\nUsa la banca come deposito sicuro contro le confische, non come farm di interessi (interessi disattivati).\nTieni un piccolo capitale operativo in contanti per spese immediate (cauzione, viaggio, strumenti).",
+  "helpTopicBankSummary": "Deposita contanti funzionanti gratuitamente fino a un limite giornaliero. I contanti di grandi dimensioni devono essere riciclati con una commissione, ritardi e rischio di sequestro da parte dell'FBI.",
+  "helpTopicBankHow": "I depositi gratuiti sono istantanei e non prevedono commissioni, ma solo fino a un limite giornaliero proporzionale al tuo rango (giorno UTC). I prelievi rimangono gratuiti e illimitati.\nGli interessi bancari passivi sono attualmente disabilitati.\nIl denaro in banca è protetto dalle confische della polizia. Al momento dell'arresto può essere perso solo il denaro contante.\nLo storico delle transazioni mostra tutti i flussi in entrata e in uscita con timestamp, importo, controparte del bonifico e descrizioni facoltative.\nRiciclaggio di denaro: trasferisci contanti al di sopra del limite giornaliero gratuito nella tua banca pagando una commissione e ritardando. Una maggiore pressione da parte dell'FBI aumenta le possibilità di sequestro; il successo abbassa leggermente il calore.\nCrimine di rapina in banca: riesce al 30% e ruba il 10-30% del saldo bancario di un altro giocatore a caso. Rischio di livello ricercato elevato.\nÈ possibile trasferire denaro ad altri giocatori. Facoltativamente puoi aggiungere una descrizione e anche il destinatario la vedrà nelle transazioni. Ricontrolla sia l'importo che il destinatario prima di confermare.",
+  "helpTopicBankTips": "Utilizza il deposito giornaliero gratuito per piccoli contanti lavorativi in ​​modo che sia al sicuro dalla confisca.\nRiciclare denaro contante più grande quando si accetta la commissione e si coglie il rischio; il calore più basso è più sicuro.\nConservare un piccolo capitale circolante in contanti per le spese dirette (cauzione, viaggio, attrezzi).",
   "helpTopicCasinoCategory": "Economia",
   "helpTopicCasinoTitle": "Casinò",
   "helpTopicCasinoSummary": "Scommetti con contanti su slot, blackjack, roulette, dadi, baccarat e video poker. Varianza elevata: puoi vincere o perdere grandi somme velocemente.",
@@ -8959,5 +8959,26 @@
         "type": "String"
       }
     }
-  }
+  },
+  "bankScreenDailyDepositQuota": "Depositi liberi rimasti oggi: {remaining} di {cap}. Quantità maggiori devono essere riciclate.",
+  "@bankScreenDailyDepositQuota": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDailyDepositCapReached": "Il limite di deposito gratuito di oggi è esaurito. Riciclare il contante rimanente o attendere fino a domani (UTC).",
+  "bankScreenDepositCapError": "Ciò supera il deposito gratuito rimanente di oggi ({remaining}). Deposita fino a tale importo o utilizza il riciclaggio di denaro.",
+  "@bankScreenDepositCapError": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "launderSectionCapHint": "Usalo per contanti al di sopra del limite di deposito gratuito odierno."
 }

@@ -4963,6 +4963,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bankScreenDepositFailed => 'Die Einzahlung ist fehlgeschlagen';
 
   @override
+  String bankScreenDailyDepositQuota(String remaining, String cap) {
+    return 'Heute verbleibende kostenlose Einzahlungen: $remaining von $cap. Größere Mengen müssen gewaschen werden.';
+  }
+
+  @override
+  String get bankScreenDailyDepositCapReached =>
+      'Das heutige Gratis-Einzahlungslimit ist aufgebraucht. Waschen Sie das verbleibende Bargeld oder warten Sie bis morgen (UTC).';
+
+  @override
+  String bankScreenDepositCapError(String remaining) {
+    return 'Das übersteigt die verbleibende kostenlose Einzahlung heute ($remaining). Zahlen Sie bis zu diesem Betrag ein oder nutzen Sie Geldwäsche.';
+  }
+
+  @override
   String get bankScreenWithdrawSuccess => 'Auszahlung erfolgreich';
 
   @override
@@ -13884,15 +13898,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Zahlen Sie Geld ein, um Bargeld außerhalb der Reichweite polizeilicher Beschlagnahmungen zu halten. Bankzinsen sind derzeit deaktiviert.';
+      'Zahlen Sie Arbeitsgeld bis zu einer Tagesobergrenze kostenlos ein. Größeres Straßengeld muss mit einer Gebühr, Verzögerungen und dem Risiko einer Beschlagnahmung durch das FBI gewaschen werden.';
 
   @override
   String get helpTopicBankHow =>
-      'Bankzinsen sind derzeit deaktiviert (keine passiven Zinsen pro Tick).\nEinzahlungen und Abhebungen sind kostenlos und sofort, ohne Mindest- oder Höchstbetrag.\nGeld auf der Bank ist vor polizeilicher Beschlagnahme geschützt. Nur Bargeld kann bei einer Festnahme verloren gehen.\nDie Transaktionshistorie zeigt alle Zu- und Abflüsse mit Zeitstempel, Betrag, Gegenpartei und optionaler Beschreibung.\nBankraub-Crime: 30% Erfolgschance und stiehlt 10–30% des Banksaldos eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko.\nÜberweisungen an andere Spieler sind möglich. Optional mit Beschreibung; der Empfänger sieht sie ebenfalls. Prüfen Sie Betrag und Empfänger vor dem Bestätigen.';
+      'Kostenlose Einzahlungen erfolgen sofort und sind gebührenfrei, jedoch nur bis zu einer Tagesobergrenze, die mit Ihrem Rang (UTC-Tag) skaliert. Abhebungen bleiben kostenlos und unbegrenzt.\nPassive Bankzinsen sind derzeit deaktiviert.\nDas Geld auf der Bank ist vor polizeilichen Beschlagnahmungen geschützt. Bei der Festnahme kann nur Bargeld verloren gehen.\nDer Transaktionsverlauf zeigt alle ein- und ausgehenden Bewegungen mit Zeitstempel, Betrag, Überweisungsgegenpartei und optionalen Beschreibungen.\nGeldwäsche: Waschen Sie Bargeld, das über der kostenlosen Tagesobergrenze liegt, gegen eine Gebühr und mit Verzögerung auf Ihr Bankkonto. Höhere FBI-Hitze erhöht die Chance auf eine Beschlagnahmung; Erfolg senkt die Hitze etwas.\nBankraubkriminalität: Erfolgt bei 30 % und stiehlt 10–30 % des Bankguthabens eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko.\nEine Geldüberweisung an andere Spieler ist möglich. Optional können Sie eine Beschreibung hinzufügen, die dem Empfänger auch in Transaktionen angezeigt wird. Überprüfen Sie vor der Bestätigung sowohl den Betrag als auch den Empfänger.';
 
   @override
   String get helpTopicBankTips =>
-      'Schicken Sie große Beträge sofort auf die Bank — Bargeld ist bei jedem Crime-Versuch gefährdet.\nNutzen Sie die Bank als sicheren Speicher gegen Beschlagnahme, nicht als Zinsfarm (Zinsen sind deaktiviert).\nHalten Sie ein kleines Betriebskapital als Bargeld für direkte Ausgaben (Kaution, Reisen, Tools).';
+      'Nutzen Sie die kostenlose tägliche Einzahlung für kleine Arbeitsgelder, damit diese vor der Beschlagnahmung geschützt sind.\nWaschen Sie größeres Straßengeld, wenn Sie die Gebühr akzeptieren und das Risiko übernehmen. Niedrigere Hitze ist sicherer.\nHalten Sie ein kleines Betriebskapital als Bargeld für direkte Ausgaben (Kaution, Reisen, Werkzeuge) bereit.';
 
   @override
   String get helpTopicCasinoCategory => 'Wirtschaft';
@@ -14846,6 +14860,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String launderSectionHint(int feePercent, int durationMinutes) {
     return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
   }
+
+  @override
+  String get launderSectionCapHint =>
+      'Verwenden Sie diese Option für Straßenbargeld über dem heutigen kostenlosen Einzahlungslimit.';
 
   @override
   String launderSeizeChance(String chance) {

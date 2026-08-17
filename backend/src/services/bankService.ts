@@ -2,7 +2,7 @@
  * Bank Service - Phase 8.1
  *
  * Handles bank account operations:
- * - Deposits and withdrawals
+ * - Deposits (daily free cap) and withdrawals
  * - Balance checks
  * - Interest calculation
  * - Account creation
@@ -75,6 +75,27 @@ export interface RecentRecipient {
   isFriend: boolean;
 }
 
+export interface FreeDepositQuota {
+  enabled: boolean;
+  cap: number;
+  depositedToday: number;
+  remaining: number;
+}
+
+export class DailyDepositCapError extends Error {
+  remaining: number;
+  cap: number;
+  depositedToday: number;
+
+  constructor(remaining: number, cap: number, depositedToday: number) {
+    super('DAILY_DEPOSIT_CAP');
+    this.name = 'DailyDepositCapError';
+    this.remaining = remaining;
+    this.cap = cap;
+    this.depositedToday = depositedToday;
+  }
+}
+
 const normalizeDescription = (value: unknown): string | null => {
   if (typeof value !== 'string') {
     return null;
@@ -104,6 +125,86 @@ const parseWorldEventParams = (value: unknown): Record<string, unknown> => {
     ? (value as Record<string, unknown>)
     : {};
 };
+
+const parseEventAmount = (params: Record<string, unknown>): number => {
+  const amountValue = params.amount;
+  if (typeof amountValue === 'number') {
+    return Math.max(0, Math.floor(amountValue));
+  }
+  if (typeof amountValue === 'string') {
+    return Math.max(0, parseInt(amountValue, 10) || 0);
+  }
+  return 0;
+};
+
+const startOfUtcDay = (date: Date): Date =>
+  new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0));
+
+async function getRuntimeConfig(keys: string[]): Promise<Record<string, string>> {
+  if (keys.length === 0) return {};
+  const placeholders = keys.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+    `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+    ...keys,
+  );
+  return rows.reduce<Record<string, string>>((acc, row) => {
+    acc[row.configKey] = row.configValue;
+    return acc;
+  }, {});
+}
+
+async function sumDepositedToday(playerId: number): Promise<number> {
+  const events = await prisma.worldEvent.findMany({
+    where: {
+      playerId,
+      eventKey: 'bank.deposit',
+      createdAt: { gte: startOfUtcDay(new Date()) },
+    },
+    select: { params: true },
+  });
+
+  return events.reduce((total, event) => total + parseEventAmount(parseWorldEventParams(event.params)), 0);
+}
+
+async function getFreeDepositQuotaForPlayer(playerId: number, rank: number): Promise<FreeDepositQuota> {
+  const cfg = await getRuntimeConfig([
+    'BANK_FREE_DEPOSIT_DAILY_ENABLED',
+    'BANK_FREE_DEPOSIT_DAILY_BASE',
+    'BANK_FREE_DEPOSIT_DAILY_PER_RANK',
+  ]);
+
+  const enabled = Number(cfg.BANK_FREE_DEPOSIT_DAILY_ENABLED ?? 1) === 1;
+  const base = Math.max(0, Math.floor(Number(cfg.BANK_FREE_DEPOSIT_DAILY_BASE ?? 10000)));
+  const perRank = Math.max(0, Math.floor(Number(cfg.BANK_FREE_DEPOSIT_DAILY_PER_RANK ?? 5000)));
+  const safeRank = Math.max(0, Math.floor(rank));
+  const cap = base + perRank * safeRank;
+  const depositedToday = enabled ? await sumDepositedToday(playerId) : 0;
+  const remaining = enabled ? Math.max(0, cap - depositedToday) : 0;
+
+  return {
+    enabled,
+    cap,
+    depositedToday,
+    remaining,
+  };
+}
+
+/**
+ * Daily free-deposit quota (UTC day). Direct deposit stays free/instant within the cap;
+ * amounts above remaining must be laundered.
+ */
+export async function getFreeDepositQuota(playerId: number): Promise<FreeDepositQuota> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { rank: true },
+  });
+
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  return getFreeDepositQuotaForPlayer(playerId, player.rank);
+}
 
 /**
  * Get or create bank account for player
@@ -165,6 +266,11 @@ export async function deposit(
   // Check if player has enough cash
   if (player.money < amount) {
     throw new Error('INSUFFICIENT_CASH');
+  }
+
+  const quota = await getFreeDepositQuotaForPlayer(playerId, player.rank);
+  if (quota.enabled && amount > quota.remaining) {
+    throw new DailyDepositCapError(quota.remaining, quota.cap, quota.depositedToday);
   }
 
   // Get or create bank account

@@ -4,7 +4,7 @@
 Covert cash→bank wash jobs with fee, delay, FBI-heat seize risk, and small heat reduction on success.
 
 Niet in scope:
-- Directe bankstorting (blijft gratis/instant via Bank-module)
+- Directe bankstorting (gratis/instant tot dagelijkse cap via Bank-module; zie [bank.md](bank.md))
 - Crypto of aandelenhandel
 
 ## Primary Frontend Entry
@@ -18,7 +18,7 @@ Niet in scope:
 - Cron: `processDueLaunderJobs` elke minuut in `cronService.ts`
 
 ## Change Rules
-- Direct bank deposit mag nooit dezelfde fee/delay/seize risk krijgen als laundering.
+- Direct bank deposit mag nooit dezelfde fee/delay/seize risk krijgen als laundering. Begrenzing van directe storting loopt via de dagelijkse gratis-cap, niet via launder-risk.
 - Output gaat altijd naar bank (niet cash).
 - Seize-kans schaalt met FBI heat; succes mag heat licht verlagen via runtime key.
 - NL/EN copy + Help & Uitleg synchroon houden.
@@ -38,6 +38,7 @@ Niet in scope:
 - Bank UI toont live countdown voor actieve job (`completesAt`) en cooldown, plus fee/payout-preview op het ingevoerde bedrag (zelfde fee-formule als backend).
 
 ## Runtime Keys
+- `BANK_FREE_DEPOSIT_DAILY_ENABLED` / `BANK_FREE_DEPOSIT_DAILY_BASE` / `BANK_FREE_DEPOSIT_DAILY_PER_RANK`
 - `LAUNDER_ENABLED`
 - `LAUNDER_FEE_PERCENT` (default 12)
 - `LAUNDER_MIN_AMOUNT` / `LAUNDER_MAX_AMOUNT`
@@ -51,7 +52,8 @@ Niet in scope:
 2. Na `completesAt` zonder seize → bank += `amountOut`, heat daalt (indien >0).
 3. Seize-pad → geen bankpayout, job status `seized`.
 4. Actieve job / cooldown / te laag / te hoog / disabled foutpaden.
-5. Help-topic bank vermeldt laundering; geen belofte van tick-rente als die disabled is.
+5. Help-topic bank vermeldt laundering én de dagelijkse gratis-stortingscap; geen belofte van tick-rente als die disabled is.
+6. Na het opgebruiken van de gratis cap blijft witwassen werken; directe storting niet tot de volgende UTC-dag.
 
 ## When To Update This File
 Update bij nieuwe risk layers, payout destinations, heat-interacties of cron/claim wijzigingen.

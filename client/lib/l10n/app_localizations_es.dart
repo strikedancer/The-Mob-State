@@ -4955,6 +4955,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bankScreenDepositFailed => 'El depósito falló';
 
   @override
+  String bankScreenDailyDepositQuota(String remaining, String cap) {
+    return 'Depósitos gratuitos restantes hoy: $remaining de $cap. Se deben lavar cantidades mayores.';
+  }
+
+  @override
+  String get bankScreenDailyDepositCapReached =>
+      'El límite de depósito gratuito de hoy está agotado. Lave el efectivo restante o espere hasta mañana (UTC).';
+
+  @override
+  String bankScreenDepositCapError(String remaining) {
+    return 'Eso excede el depósito gratuito restante de hoy ($remaining). Deposite hasta esa cantidad o utilice el blanqueo de dinero.';
+  }
+
+  @override
   String get bankScreenWithdrawSuccess => 'Retiro exitoso';
 
   @override
@@ -13837,15 +13851,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Deposita dinero para mantener el efectivo fuera del alcance de las confiscaciones policiales. El interés bancario está desactivado actualmente.';
+      'Deposite dinero en efectivo de forma gratuita hasta un límite diario. El dinero en efectivo de mayor tamaño debe lavarse con una tarifa, demora y riesgo de incautación por parte del FBI.';
 
   @override
   String get helpTopicBankHow =>
-      'El interés bancario está desactivado actualmente (sin interés pasivo por tick).\nLos depósitos y retiros son gratuitos e instantáneos, sin mínimo ni máximo.\nEl dinero en el banco está protegido frente a confiscaciones policiales. Solo el efectivo en mano se puede perder al ser arrestado.\nEl historial de transacciones muestra todos los flujos con marca de tiempo, importe, contraparte y descripción opcional.\nCrimen Atraco al banco: 30% de éxito y roba el 10–30% del saldo bancario de otro jugador al azar. Alto riesgo de Wanted Level.\nPuedes transferir dinero a otros jugadores. Descripción opcional visible también para el receptor. Comprueba importe y destinatario antes de confirmar.';
+      'Los depósitos gratuitos son instantáneos y no tienen tarifa, pero solo hasta un límite diario que aumenta con su rango (día UTC). Los retiros siguen siendo gratuitos e ilimitados.\nEl interés bancario pasivo está actualmente deshabilitado.\nEl dinero en el banco está protegido de confiscaciones policiales. Sólo el efectivo disponible se puede perder en el momento del arresto.\nEl historial de transacciones muestra todos los flujos entrantes y salientes con marca de tiempo, monto, contraparte de la transferencia y descripciones opcionales.\nLavado de dinero: lave efectivo por encima del límite diario gratuito en su banco con una comisión y un retraso. Mayor presión del FBI aumenta la oportunidad de aprovechar; el éxito reduce ligeramente el calor.\nCrimen de robo a un banco: tiene éxito en un 30% y roba entre un 10 y un 30% del saldo bancario de otro jugador al azar. Riesgo de alto nivel de búsqueda.\nEs posible transferir dinero a otros jugadores. Opcionalmente, puedes agregar una descripción y el destinatario también la verá en las transacciones. Verifique nuevamente tanto el monto como el destinatario antes de confirmar.';
 
   @override
   String get helpTopicBankTips =>
-      'Envía grandes cantidades al banco de inmediato: el efectivo en mano está en riesgo en cada intento de crimen.\nUsa el banco como almacenamiento seguro contra confiscaciones, no como granja de intereses (interés desactivado).\nMantén un pequeño capital de trabajo en efectivo para gastos directos (fianza, viaje, herramientas).';
+      'Utilice el depósito diario gratuito para pequeñas cantidades de dinero en efectivo para que esté a salvo de confiscación.\nLave dinero en efectivo en la calle cuando acepte la tarifa y aproveche el riesgo; un calor más bajo es más seguro.\nMantenga un pequeño capital de trabajo como efectivo para gastos directos (fianza, viajes, herramientas).';
 
   @override
   String get helpTopicCasinoCategory => 'Economía';
@@ -14800,6 +14814,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String launderSectionHint(int feePercent, int durationMinutes) {
     return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
   }
+
+  @override
+  String get launderSectionCapHint =>
+      'Úselo para obtener efectivo en la calle por encima del límite de depósito gratuito actual.';
 
   @override
   String launderSeizeChance(String chance) {

@@ -47,7 +47,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Territory Fase D: seizoen-awards gebruiken `TERRITORY_REWARD_CASH_MULTIPLIER_PERCENT` op crew-bank (storage-cap); region events kunnen passief inkomen verlagen via `TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT`.
 - VIP prestige (P6) is **display-only** (lifetime days / bronze-silver-gold). No combat, payout or cooldown power from prestige tiers.
 - Deep economy P5:
-  - **Laundering:** cash sink (fee) + delayed bank credit + heat seize risk; success lightly reduces FBI heat. Direct bank deposit blijft gratis/instant.
+  - **Laundering:** cash sink (fee) + delayed bank credit + heat seize risk; success lightly reduces FBI heat. Direct bank deposit blijft gratis/instant tot een dagelijkse cap (`BANK_FREE_DEPOSIT_DAILY_*`); daarboven moet cash via laundering.
   - **Stock market:** bank-funded buy/sell, slow synthetic ticks, position cap; los van crypto.
   - **Property development:** bank sink voor permanente income-boost per eigendom (`PROPERTY_DEVELOP_*`).
 - Voor travel geldt 60 minuten cooldown per etappe als baseline en Premium `ACTION_COOLDOWN_RESET` voor `actionType=travel` moet beschikbaar zijn wanneer de cooldown actief is.
@@ -55,6 +55,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Garage **auto**- en **motor**-opslag: aparte upgrade-progressie per speler per land (eigen levels, eigen euro-kostencurve voor auto-track; motor-track gebruikt dezelfde prijsstappen als auto met +3 slots per motor-level t.o.v. basis motorplaatsen). Wijzigingen hieraan zijn economy-impact: check telemetry op storage-full en steal-fail door capaciteit.
 
 ## Runtime Keys (Leidend)
+- `BANK_FREE_DEPOSIT_DAILY_ENABLED` / `BANK_FREE_DEPOSIT_DAILY_BASE` / `BANK_FREE_DEPOSIT_DAILY_PER_RANK`
 - `LAUNDER_ENABLED` / `LAUNDER_FEE_PERCENT` / `LAUNDER_MIN_AMOUNT` / `LAUNDER_MAX_AMOUNT` / `LAUNDER_DURATION_MINUTES` / `LAUNDER_COOLDOWN_SECONDS` / `LAUNDER_SEIZE_CHANCE_PER_HEAT` / `LAUNDER_HEAT_REDUCTION_ON_SUCCESS`
 - `STOCK_MARKET_ENABLED` / `STOCK_MARKET_TICK_SECONDS` / `STOCK_MARKET_MAX_POSITIONS`
 - `PROPERTY_DEVELOP_ENABLED` / `PROPERTY_DEVELOP_MAX_LEVEL` / `PROPERTY_DEVELOP_COST_PERCENT_OF_PURCHASE` / `PROPERTY_DEVELOP_INCOME_BONUS_PERCENT_PER_LEVEL` / `PROPERTY_DEVELOP_COOLDOWN_SECONDS`

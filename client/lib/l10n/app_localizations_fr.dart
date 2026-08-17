@@ -4979,6 +4979,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bankScreenDepositFailed => 'Échec du dépôt';
 
   @override
+  String bankScreenDailyDepositQuota(String remaining, String cap) {
+    return 'Dépôts gratuits restants aujourd\'hui : $remaining sur $cap. Des quantités plus importantes doivent être blanchies.';
+  }
+
+  @override
+  String get bankScreenDailyDepositCapReached =>
+      'La limite de dépôt gratuit d\'aujourd\'hui est épuisée. Blanchissez l’argent restant ou attendez demain (UTC).';
+
+  @override
+  String bankScreenDepositCapError(String remaining) {
+    return 'Cela dépasse le dépôt gratuit restant d\'aujourd\'hui ($remaining). Déposez jusqu’à ce montant ou utilisez le blanchiment d’argent.';
+  }
+
+  @override
   String get bankScreenWithdrawSuccess => 'Retrait réussi';
 
   @override
@@ -13886,15 +13900,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicBankSummary =>
-      'Déposez de l’argent pour garder les liquidités hors de portée des confiscations policières. Les intérêts bancaires sont actuellement désactivés.';
+      'Déposez gratuitement de l’argent liquide jusqu’à un plafond quotidien. Les espèces de rue les plus importantes doivent être blanchies moyennant des frais, des retards et un risque de saisie thermique du FBI.';
 
   @override
   String get helpTopicBankHow =>
-      'Les intérêts bancaires sont actuellement désactivés (pas d’intérêts passifs par tick).\nLes dépôts et retraits sont gratuits et instantanés, sans minimum ni maximum.\nL’argent en banque est protégé des confiscations policières. Seul l’argent liquide peut être perdu lors d’une arrestation.\nL’historique des transactions montre tous les flux avec horodatage, montant, contrepartie et description optionnelle.\nCrime Braquage de banque : 30% de réussite et vole 10–30% du solde bancaire d’un autre joueur au hasard. Fort risque de Wanted Level.\nLes virements vers d’autres joueurs sont possibles. Description optionnelle visible aussi pour le destinataire. Vérifiez montant et destinataire avant de confirmer.';
+      'Les dépôts gratuits sont instantanés et sans frais, mais seulement jusqu\'à un plafond quotidien qui évolue en fonction de votre classement (jour UTC). Les retraits restent gratuits et illimités.\nLes intérêts bancaires passifs sont actuellement désactivés.\nL\'argent en banque est protégé contre les confiscations policières. Seul l’argent liquide peut être perdu lors de l’arrestation.\nL\'historique des transactions montre tous les flux entrants et sortants avec l\'horodatage, le montant, la contrepartie du transfert et des descriptions facultatives.\nBlanchiment d\'argent : versez dans votre banque des espèces dépassant le plafond quotidien gratuit, moyennant des frais et un délai. Une chaleur plus élevée du FBI augmente les chances de saisie ; le succès diminue légèrement la chaleur.\nCrime de vol de banque : réussit à 30 % et vole 10 à 30 % du solde bancaire d\'un autre joueur au hasard. Risque de niveau de recherche élevé.\nTransférer de l\'argent à d\'autres joueurs est possible. Vous pouvez éventuellement ajouter une description, et le destinataire la verra également dans les transactions. Vérifiez à nouveau le montant et le destinataire avant de confirmer.';
 
   @override
   String get helpTopicBankTips =>
-      'Envoyez immédiatement les gros montants à la banque — l’argent liquide est à risque à chaque tentative de crime.\nUtilisez la banque comme coffre-fort anti-confiscation, pas comme ferme à intérêts (intérêts désactivés).\nGardez un petit fonds de roulement en liquide pour les dépenses immédiates (caution, voyage, outils).';
+      'Utilisez le dépôt quotidien gratuit pour de petites espèces de travail afin qu\'elles soient à l\'abri de la confiscation.\nBlanchissez de l\'argent liquide plus important lorsque vous acceptez les frais et saisissez le risque ; une chaleur plus basse est plus sûre.\nConservez un petit fonds de roulement en espèces pour les dépenses directes (caution, déplacement, outils).';
 
   @override
   String get helpTopicCasinoCategory => 'Économie';
@@ -14849,6 +14863,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String launderSectionHint(int feePercent, int durationMinutes) {
     return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
   }
+
+  @override
+  String get launderSectionCapHint =>
+      'Utilisez-le pour obtenir de l\'argent public au-dessus de la limite de dépôt gratuit d\'aujourd\'hui.';
 
   @override
   String launderSeizeChance(String chance) {

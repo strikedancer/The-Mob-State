@@ -2873,6 +2873,26 @@
   },
   "bankScreenDepositSuccess": "Deposit successful",
   "bankScreenDepositFailed": "Deposit failed",
+  "bankScreenDailyDepositQuota": "Free deposits left today: {remaining} of {cap}. Larger amounts must be laundered.",
+  "@bankScreenDailyDepositQuota": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDailyDepositCapReached": "Today's free deposit limit is used up. Launder remaining cash or wait until tomorrow (UTC).",
+  "bankScreenDepositCapError": "That exceeds today's free deposit remaining ({remaining}). Deposit up to that amount, or use money laundering.",
+  "@bankScreenDepositCapError": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
   "bankScreenWithdrawSuccess": "Withdrawal successful",
   "bankScreenWithdrawFailed": "Withdrawal failed",
   "bankScreenTransferSuccess": "€{amount} transferred to {recipient}",
@@ -8397,9 +8417,9 @@
   "helpTopicPropertiesTips": "Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nDevelop high base-income properties first — the percentage boost matters more there.",
   "helpTopicBankCategory": "Economy",
   "helpTopicBankTitle": "Bank",
-  "helpTopicBankSummary": "Deposit and manage bank money safely. Optionally launder cash with a fee, delay and FBI-heat seize risk.",
-  "helpTopicBankHow": "Deposits and withdrawals are free and instant. Passive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.",
-  "helpTopicBankTips": "Send large amounts to the bank immediately — cash on hand is at risk with every crime attempt.\nOnly launder when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).",
+  "helpTopicBankSummary": "Deposit working cash for free up to a daily cap. Larger street cash must be laundered with a fee, delay and FBI-heat seize risk.",
+  "helpTopicBankHow": "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.",
+  "helpTopicBankTips": "Use the free daily deposit for small working cash so it is safe from confiscation.\nLaunder larger street cash when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).",
   "helpTopicCasinoCategory": "Economy",
   "helpTopicCasinoTitle": "Casino",
   "helpTopicCasinoSummary": "Gamble with cash on slots, blackjack, roulette, dice, baccarat and video poker. High variance: you can win or lose large amounts fast.",
@@ -8736,6 +8756,7 @@
       }
     }
   },
+  "launderSectionCapHint": "Use this for street cash above today's free deposit limit.",
   "launderSeizeChance": "Estimated seize chance: {chance}%",
   "@launderSeizeChance": {
     "placeholders": {
