@@ -260,6 +260,7 @@ POLICE_RATIO=10
 MAX_FLIGHTS_PER_DAY=100
 
 # Transactional mail (required on prod). Put SMTP_PASS only in .env.plesk, never in git.
+# Temporary login-without-verify: Admin → Config toggle (runtime key AUTH_REQUIRE_EMAIL_VERIFICATION). Default on.
 SMTP_HOST="themobstate.com"
 SMTP_PORT="465"
 SMTP_USER="noreply@themobstate.com"

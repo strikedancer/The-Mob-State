@@ -38,6 +38,10 @@ import {
   applyCreditBalanceAdjustment,
   getPreservedPaidCredits,
 } from '../services/premiumCreditsService';
+import {
+  authService,
+  AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
+} from '../services/authService';
 
 const router = express.Router();
 
@@ -1383,6 +1387,42 @@ router.get('/vehicle-ops/telemetry', async (req, res) => {
     return res.status(500).json({ error: 'Failed to fetch vehicle ops telemetry' });
   }
 });
+
+router.get('/auth/email-verification', async (_req, res) => {
+  try {
+    const required = await authService.getEmailVerificationRequired();
+    return res.json({
+      key: AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
+      required,
+      defaultRequired: true,
+    });
+  } catch (error) {
+    console.error('Admin get email-verification gate error:', error);
+    return res.status(500).json({ error: 'Failed to fetch email verification setting' });
+  }
+});
+
+router.put(
+  '/auth/email-verification',
+  auditLog({ action: 'UPDATE_EMAIL_VERIFICATION_GATE', targetType: 'Config' }),
+  async (req, res) => {
+    try {
+      const parsed = z.object({ required: z.boolean() }).parse(req.body ?? {});
+      const required = await authService.setEmailVerificationRequired(parsed.required);
+      return res.json({
+        key: AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
+        required,
+        defaultRequired: true,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Validation failed', details: error.flatten() });
+      }
+      console.error('Admin update email-verification gate error:', error);
+      return res.status(500).json({ error: 'Failed to update email verification setting' });
+    }
+  },
+);
 
 router.get('/crew-missions/runtime-config', async (_req, res) => {
   try {

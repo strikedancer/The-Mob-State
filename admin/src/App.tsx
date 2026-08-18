@@ -36,6 +36,7 @@ import {
 } from "./services/adminService";
 import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
 import { CrewMissionsAdminPanel } from "./components/CrewMissionsAdminPanel";
+import { EmailVerificationAdminPanel } from "./components/EmailVerificationAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
 import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
 import {
@@ -12437,6 +12438,7 @@ function App() {
               {activeTab === "config" && (
                 <>
                   <h1>{t.configEditorTitle}</h1>
+                  <EmailVerificationAdminPanel locale={language} />
                   <div className="config-warning">
                     ⚠️ <strong>{t.warning}:</strong> {t.configRestartWarning}
                   </div>

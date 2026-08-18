@@ -1864,6 +1864,39 @@ export const adminService = {
     return response.json();
   },
 
+  async getEmailVerificationGate(): Promise<{
+    key: string;
+    required: boolean;
+    defaultRequired: boolean;
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/auth/email-verification`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    await ensureOk(response, "Failed to fetch email verification setting");
+    return response.json();
+  },
+
+  async updateEmailVerificationGate(required: boolean): Promise<{
+    key: string;
+    required: boolean;
+    defaultRequired: boolean;
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/auth/email-verification`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ required }),
+    });
+    await ensureOk(response, "Failed to update email verification setting");
+    return response.json();
+  },
+
   async getConfig() {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/config`, {

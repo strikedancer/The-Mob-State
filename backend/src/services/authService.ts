@@ -9,6 +9,20 @@ import { normalizePlayerLanguage } from '../config/supportedLanguages';
 import { serializePlayerAvatarFields } from './playerPortraitService';
 
 const SALT_ROUNDS = 10;
+export const AUTH_REQUIRE_EMAIL_VERIFICATION_KEY = 'AUTH_REQUIRE_EMAIL_VERIFICATION';
+
+async function isEmailVerificationRequired(): Promise<boolean> {
+  try {
+    const rows = await prisma.$queryRawUnsafe<Array<{ configValue: string }>>(
+      `SELECT configValue FROM runtime_config WHERE configKey = ? LIMIT 1`,
+      AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
+    );
+    const raw = String(rows[0]?.configValue ?? '1').trim();
+    return raw !== '0';
+  } catch {
+    return true;
+  }
+}
 
 type PlayerGender = 'male' | 'female';
 
@@ -124,8 +138,10 @@ export const authService = {
       throw error;
     }
 
-    // Send verification email if email provided
-    if (email && verificationToken) {
+    const requireVerification = await isEmailVerificationRequired();
+
+    // Send verification email if email provided and the gate is on
+    if (email && verificationToken && requireVerification) {
       try {
         await emailService.sendVerificationEmail(email, username, verificationToken, normalizedLanguage);
         console.log(`[AuthService] Verification email sent to ${email}`);
@@ -135,7 +151,7 @@ export const authService = {
       }
     }
 
-    if (email) {
+    if (email && requireVerification) {
       return {
         requiresEmailVerification: true,
         message: 'VERIFICATION_EMAIL_SENT',
@@ -201,7 +217,7 @@ export const authService = {
       throw new Error('INVALID_CREDENTIALS');
     }
 
-    if (player.email && !player.emailVerified) {
+    if (player.email && !player.emailVerified && (await isEmailVerificationRequired())) {
       throw new Error('EMAIL_NOT_VERIFIED');
     }
 
@@ -266,5 +282,29 @@ export const authService = {
         }),
       },
     };
+  },
+
+  async getEmailVerificationRequired(): Promise<boolean> {
+    return isEmailVerificationRequired();
+  },
+
+  async setEmailVerificationRequired(required: boolean): Promise<boolean> {
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS runtime_config (
+        configKey VARCHAR(120) NOT NULL PRIMARY KEY,
+        configValue VARCHAR(255) NOT NULL,
+        updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+    `);
+    await prisma.$executeRawUnsafe(
+      `
+        INSERT INTO runtime_config (configKey, configValue)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE configValue = VALUES(configValue)
+      `,
+      AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
+      required ? '1' : '0',
+    );
+    return required;
   },
 };
