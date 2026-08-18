@@ -1020,12 +1020,34 @@ async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
     cfg.contestPrepMinutes + cfg.contestActiveMinutes + cfg.contestLockdownMinutes,
   );
 
-  await prisma.$executeRawUnsafe(
-    `UPDATE territory_contests
-     SET status = 'active'
+  const contestsBecomingActive = await prisma.$queryRawUnsafe<Array<{
+    id: number;
+    regionKey: string;
+    attackerCrewId: number;
+    defenderCrewId: number | null;
+  }>>(
+    `SELECT id, regionKey, attackerCrewId, defenderCrewId
+     FROM territory_contests
      WHERE status = 'preparing' AND activeAt IS NOT NULL AND activeAt <= ?`,
     now,
   );
+
+  for (const contest of contestsBecomingActive) {
+    const updated = await prisma.$executeRawUnsafe(
+      `UPDATE territory_contests
+       SET status = 'active'
+       WHERE id = ? AND status = 'preparing'`,
+      contest.id,
+    );
+    if (Number(updated) > 0) {
+      _notifyCrewContestBecameActive(
+        toNumeric(contest.attackerCrewId),
+        contest.defenderCrewId == null ? null : toNumeric(contest.defenderCrewId),
+        contest.regionKey,
+        toNumeric(contest.id),
+      ).catch(() => {});
+    }
+  }
 
   await prisma.$executeRawUnsafe(
     `UPDATE territory_contests
@@ -2416,6 +2438,58 @@ async function _regionHasActiveWarAftermath(regionKey: string, affectedCrewId: n
     affectedCrewId,
   );
   return rows.length > 0;
+}
+
+async function _regionNames(regionKey: string): Promise<{ nameNl: string; nameEn: string }> {
+  const rows = await prisma.$queryRawUnsafe<Array<{ nameNl: string; nameEn: string }>>(
+    `SELECT nameNl, nameEn FROM territory_regions WHERE regionKey = ? LIMIT 1`,
+    regionKey,
+  );
+  return {
+    nameNl: rows[0]?.nameNl || regionKey,
+    nameEn: rows[0]?.nameEn || regionKey,
+  };
+}
+
+function _regionNameForLang(names: { nameNl: string; nameEn: string }, lang: Language): string {
+  return lang === 'nl' ? names.nameNl : names.nameEn;
+}
+
+async function _notifyCrewContestBecameActive(
+  attackerCrewId: number,
+  defenderCrewId: number | null,
+  regionKey: string,
+  contestId: number,
+): Promise<void> {
+  const names = await _regionNames(regionKey);
+  const contestIdStr = String(contestId);
+  const crewIds = defenderCrewId && defenderCrewId !== attackerCrewId
+    ? [attackerCrewId, defenderCrewId]
+    : [attackerCrewId];
+
+  for (const crewId of crewIds) {
+    const role = crewId === attackerCrewId ? 'attacker' : 'defender';
+    const players = await _getCrewPlayers(crewId);
+    for (const p of players) {
+      const lang = await _getPlayerLanguage(p.id);
+      const n = translationService.getTranslations(lang).notification;
+      const copy = role === 'attacker'
+        ? n.territoryContestActiveAttacker
+        : n.territoryContestActiveDefender;
+      const regionName = _regionNameForLang(names, lang);
+      await notificationService.sendToPlayer(
+        p.id,
+        copy.title,
+        copy.pushBody(regionName, contestIdStr),
+        { type: 'territory_contest_active', regionKey, contestId: contestIdStr, role },
+      ).catch(() => {});
+      await _sendTerritoryInboxMessage(
+        p.id,
+        lang,
+        copy.inboxMessage(regionName, contestIdStr),
+      ).catch(() => {});
+    }
+  }
 }
 
 async function _notifyCrewContestStarted(crewId: number, regionKey: string, contestId: number): Promise<void> {

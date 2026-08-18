@@ -10,13 +10,14 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 - backend/src/routes/player.ts
 
 ## Change Rules
+- Dashboard header user menu (avatar) includes **My profile** so a player can open their own public profile without going through friends/chat.
 - Elke screen die een andere speler toont met bruikbare `playerId` moet navigatie naar het profiel bieden.
 - Profielnavigatie moet klikbaar en zichtbaar gesignaleerd worden; verstop dit niet achter impliciete of hover-only affordances.
 - Publieke profieldata mag geen live gameplay-intel lekken zoals huidig land of andere locatiecontext die hitlist/onderzoek beïnvloedt.
 - In context-screens zoals hitlist, chat of lijsten mag profielweergave de hoofdflow niet onnodig breken; embedded of contextuele navigatie heeft de voorkeur waar dat UX-technisch past.
 
 ## Cross-Module Dependencies
-- Friends -> Player Profile (social context)
+- Dashboard -> Player Profile (own profile via header user menu)
 - Messages -> Player Profile (gespreksdeelnemers)
 - Crew -> Player Profile (leden en eigenaars)
 - Hitlist -> Player Profile (target context met privacygrenzen)
@@ -42,11 +43,12 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 - Avatar- en naamnavigatie moeten dezelfde target gebruiken om inconsistent gedrag te voorkomen.
 
 ## QA Checklist
-1. Open profielnavigatie vanaf minimaal twee verschillende contextschermen.
-2. Controleer dat null/ontbrekende `playerId` niet klikbaar wordt gemaakt.
-3. Verifieer dat publiek profiel geen live locatie-informatie toont.
-4. Controleer NL/EN copy voor profielknoppen, likes en foutmeldingen.
-5. Verifieer dat embedded/contextuele flows de hoofdmodule niet onnodig kapot navigeren.
+1. Open je eigen profiel via de avatar-knop → Mijn profiel.
+2. Open profielnavigatie vanaf minimaal twee verschillende contextschermen.
+3. Controleer dat null/ontbrekende `playerId` niet klikbaar wordt gemaakt.
+4. Verifieer dat publiek profiel geen live locatie-informatie toont.
+5. Controleer NL/EN copy voor profielknoppen, likes en foutmeldingen.
+6. Verifieer dat embedded/contextuele flows de hoofdmodule niet onnodig kapot navigeren.
 
 ## Implementation Pattern
 

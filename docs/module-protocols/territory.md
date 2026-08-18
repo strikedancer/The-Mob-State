@@ -44,6 +44,7 @@
   - Territory income visibility + crewleader summary: gecontroleerde regio's keren nu server-authoritative passieve crew-bank inkomsten uit op basis van runtime-config per `valueTier`, loggen die payouts in `territory_reward_log`, tonen in de regio-modal echte bedragen per payout/per uur/per dag, en leveren in het crewleader-dashboard een samenvatting voor gebieden, landen, huidig inkomen en totaal verdiend territory-geld
   - Territory live-refresh fix: bij contest-start en verdedigen wordt de open regio-modal nu altijd direct ververst; als de eerste call fout terugkomt maar de contest al is aangemaakt, ziet de speler meteen de actuele conteststatus in plaats van pas na weg-navigeren. De modal berekent timerfallbacks bovendien lokaal vanuit `startedAt` + runtime-config als een timestamp in de payload nog ontbreekt
   - Territory live resolve fix: contest resolve dwingt punten nu eerst naar echte nummers voordat capture-percentages worden berekend, zodat neutrale regio's met alleen attacker-acties niet meer onterecht `winnerCrewId = NULL` eindigen; territory draait daarnaast nu ook via een minuut-cron zodat afhandeling en meldingen niet afhankelijk blijven van een latere map/overview read, en contest start/capture/loss versturen nu behalve push ook een inboxbericht
+  - Territory prep-ready push: wanneer een contest van `preparing` naar `active` gaat, krijgen aanvallende én verdedigende crewleden push + inbox (`territory_contest_active`) zodat ze weten dat acties ontgrendeld zijn; de overgang blijft cron/lifecycle-gestuurd en fire-and-forget
   - Territory admin/live API serialisatie-fix: `overview` en `leaderboard` normaliseren aggregate velden zoals `COUNT(...)` nu expliciet naar gewone numbers voordat Express JSON rendert, zodat admin/system logs geen `Do not know how to serialize a BigInt` meer krijgen op territory responses
   - Territory contest-start response-fix: ook de nieuw aangemaakte `contestId` uit `LAST_INSERT_ID()` wordt nu genormaliseerd naar een gewone number voordat de success-response teruggaat, zodat een eerste klik op `Aanvallen` niet stil een 500 geeft terwijl de contest al is gestart
   - Territory live start-fix: contest-start haalt de nieuw aangemaakte row nu via `LAST_INSERT_ID()` op in plaats van een exacte `startedAt` timestamp-match; hierdoor rollen starts op MariaDB `DATETIME`-kolommen zonder milliseconden niet meer stil terug. De attacker-actie `raid` gebruikt in de UI bovendien weer de correcte lowercase backend-action key
@@ -271,7 +272,7 @@ Admin moderation:
 - Flagging voor verdachte patronen (zelfde IP/device clusters) naar admin audit.
 
 ## Notifications & Messaging
-- Push/inbox events: contest started, contest under attack, region captured, region lost, season reward.
+- Push/inbox events: contest started, contest prep-ready/active (attack/defense unlocked), contest under attack, region captured, region lost, season reward.
 - Territory resolve moet ook zonder actieve speler-read binnen maximaal circa 1 minuut verwerkt worden; tijdgestuurde contest-eindes mogen niet uitsluitend afhangen van map/overview/action requests.
 - Fire-and-forget dispatch; gameplay transactie mag niet falen door notificatieproblemen.
 - Copy parity NL/EN verplicht in UI + push + inbox.
@@ -301,6 +302,7 @@ Admin moderation:
 16. Admin (of auto op `endsAt`) close season deelt awards exact-once en toont payout-samenvatting.
 17. Region events roteren via runtime_config en zijn zichtbaar op map/overview/dashboard/public home.
 18. Drama-widget toont hot contests / recente captures / rising crews / war theaters zonder PII.
+19. Prep-ready: na `preparing` → `active` ontvangen attacker- én defender-crew push + inbox (`territory_contest_active`), ook zonder open Territory-scherm (cron).
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.

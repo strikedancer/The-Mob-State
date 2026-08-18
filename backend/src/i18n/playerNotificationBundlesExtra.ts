@@ -155,6 +155,32 @@ const notificationDE: Translations['notification'] = {
         'Eine andere Crew hat einen Territoriumsangriff gestartet.',
       ].join('\n'),
   },
+  territoryContestActiveAttacker: {
+    title: 'Territoriumsangriff ist live!',
+    pushBody: (regionName, contestId) =>
+      `Die Vorbereitung für ${regionName} ist vorbei. Du kannst jetzt angreifen (Contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Territoriumsangriff ist live!',
+        '',
+        `Region: ${regionName}`,
+        `Contest: #${contestId}`,
+        'Die Vorbereitung ist beendet. Angriffsaktionen sind jetzt freigeschaltet.',
+      ].join('\n'),
+  },
+  territoryContestActiveDefender: {
+    title: 'Territoriumsverteidigung ist live!',
+    pushBody: (regionName, contestId) =>
+      `Der Angriff auf ${regionName} ist jetzt aktiv. Verteidige jetzt (Contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Territoriumsverteidigung ist live!',
+        '',
+        `Region: ${regionName}`,
+        `Contest: #${contestId}`,
+        'Die Vorbereitung ist beendet. Verteidigungsaktionen sind jetzt freigeschaltet.',
+      ].join('\n'),
+  },
   territoryCaptured: {
     title: 'Region erobert!',
     pushBody: (regionKey) => `Eure Crew hat ${regionKey} erobert.`,
@@ -328,6 +354,32 @@ const notificationFR: Translations['notification'] = {
         'Une autre crew a lancé une attaque territoriale.',
       ].join('\n'),
   },
+  territoryContestActiveAttacker: {
+    title: 'Attaque territoriale en cours !',
+    pushBody: (regionName, contestId) =>
+      `La préparation de ${regionName} est terminée. Tu peux attaquer (contest n°${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Attaque territoriale en cours !',
+        '',
+        `Région : ${regionName}`,
+        `Contest : #${contestId}`,
+        'La préparation est terminée. Les actions d’attaque sont débloquées.',
+      ].join('\n'),
+  },
+  territoryContestActiveDefender: {
+    title: 'Défense territoriale en cours !',
+    pushBody: (regionName, contestId) =>
+      `L’attaque sur ${regionName} est maintenant active. Défends maintenant (contest n°${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Défense territoriale en cours !',
+        '',
+        `Région : ${regionName}`,
+        `Contest : #${contestId}`,
+        'La préparation est terminée. Les actions de défense sont débloquées.',
+      ].join('\n'),
+  },
   territoryCaptured: {
     title: 'Région capturée !',
     pushBody: (regionKey) => `Ta crew a capturé ${regionKey}.`,
@@ -498,6 +550,32 @@ const notificationES: Translations['notification'] = {
         `Región: ${regionKey}`,
         `Contest: #${contestId}`,
         'Otra crew ha iniciado un ataque territorial.',
+      ].join('\n'),
+  },
+  territoryContestActiveAttacker: {
+    title: '¡El ataque territorial está activo!',
+    pushBody: (regionName, contestId) =>
+      `La preparación de ${regionName} ha terminado. Ya puedes atacar (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        '¡El ataque territorial está activo!',
+        '',
+        `Región: ${regionName}`,
+        `Contest: #${contestId}`,
+        'La preparación ha terminado. Las acciones de ataque están desbloqueadas.',
+      ].join('\n'),
+  },
+  territoryContestActiveDefender: {
+    title: '¡La defensa territorial está activa!',
+    pushBody: (regionName, contestId) =>
+      `El ataque a ${regionName} ya está activo. Defiende ahora (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        '¡La defensa territorial está activa!',
+        '',
+        `Región: ${regionName}`,
+        `Contest: #${contestId}`,
+        'La preparación ha terminado. Las acciones de defensa están desbloqueadas.',
       ].join('\n'),
   },
   territoryCaptured: {
@@ -673,6 +751,32 @@ const notificationIT: Translations['notification'] = {
         "Un'altra crew ha avviato un attacco territoriale.",
       ].join('\n'),
   },
+  territoryContestActiveAttacker: {
+    title: 'Attacco territoriale attivo!',
+    pushBody: (regionName, contestId) =>
+      `La preparazione di ${regionName} è finita. Puoi attaccare ora (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Attacco territoriale attivo!',
+        '',
+        `Regione: ${regionName}`,
+        `Contest: #${contestId}`,
+        'La preparazione è terminata. Le azioni di attacco sono sbloccate.',
+      ].join('\n'),
+  },
+  territoryContestActiveDefender: {
+    title: 'Difesa territoriale attiva!',
+    pushBody: (regionName, contestId) =>
+      `L'attacco a ${regionName} è ora attivo. Difendi ora (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Difesa territoriale attiva!',
+        '',
+        `Regione: ${regionName}`,
+        `Contest: #${contestId}`,
+        'La preparazione è terminata. Le azioni di difesa sono sbloccate.',
+      ].join('\n'),
+  },
   territoryCaptured: {
     title: 'Regione conquistata!',
     pushBody: (regionKey) => `La tua crew ha conquistato ${regionKey}.`,
@@ -839,6 +943,32 @@ const notificationPL: Translations['notification'] = {
         `Region: ${regionKey}`,
         `Contest: #${contestId}`,
         'Inna ekipa rozpoczęła atak terytorialny.',
+      ].join('\n'),
+  },
+  territoryContestActiveAttacker: {
+    title: 'Atak terytorialny jest aktywny!',
+    pushBody: (regionName, contestId) =>
+      `Przygotowanie ${regionName} zakończone. Możesz atakować (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Atak terytorialny jest aktywny!',
+        '',
+        `Region: ${regionName}`,
+        `Contest: #${contestId}`,
+        'Przygotowanie się skończyło. Akcje ataku są odblokowane.',
+      ].join('\n'),
+  },
+  territoryContestActiveDefender: {
+    title: 'Obrona terytorium jest aktywna!',
+    pushBody: (regionName, contestId) =>
+      `Atak na ${regionName} jest teraz aktywny. Broń się teraz (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Obrona terytorium jest aktywna!',
+        '',
+        `Region: ${regionName}`,
+        `Contest: #${contestId}`,
+        'Przygotowanie się skończyło. Akcje obrony są odblokowane.',
       ].join('\n'),
   },
   territoryCaptured: {
@@ -1009,6 +1139,32 @@ const notificationPT: Translations['notification'] = {
         `Região: ${regionKey}`,
         `Contest: #${contestId}`,
         'Outra crew iniciou um ataque territorial.',
+      ].join('\n'),
+  },
+  territoryContestActiveAttacker: {
+    title: 'Ataque territorial está ativo!',
+    pushBody: (regionName, contestId) =>
+      `A preparação de ${regionName} terminou. Já podes atacar (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Ataque territorial está ativo!',
+        '',
+        `Região: ${regionName}`,
+        `Contest: #${contestId}`,
+        'A preparação terminou. As ações de ataque estão desbloqueadas.',
+      ].join('\n'),
+  },
+  territoryContestActiveDefender: {
+    title: 'Defesa territorial está ativa!',
+    pushBody: (regionName, contestId) =>
+      `O ataque a ${regionName} está agora ativo. Defende agora (contest #${contestId}).`,
+    inboxMessage: (regionName, contestId) =>
+      [
+        'Defesa territorial está ativa!',
+        '',
+        `Região: ${regionName}`,
+        `Contest: #${contestId}`,
+        'A preparação terminou. As ações de defesa estão desbloqueadas.',
       ].join('\n'),
   },
   territoryCaptured: {

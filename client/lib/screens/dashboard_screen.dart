@@ -650,6 +650,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   tooltip: l10n.userAccountMenuTooltip,
                   onSelected: (value) async {
                     switch (value) {
+                      case 'profile':
+                        _openPlayerProfile(player);
+                        break;
                       case 'messages':
                         _selectWebSection(_WebSection.messages);
                         break;
@@ -692,6 +695,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                     const PopupMenuDivider(),
+                    PopupMenuItem<String>(
+                      value: 'profile',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.person, size: 20),
+                          const SizedBox(width: 12),
+                          Text(l10n.myProfile),
+                        ],
+                      ),
+                    ),
                     PopupMenuItem<String>(
                       value: 'messages',
                       child: Row(

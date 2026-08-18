@@ -22,6 +22,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Messages/Support/Bank/Crypto -> Notifications (player-facing signalering)
 - Cooldown-gedreven modules -> Notifications (expiry meldingen)
 - Crew Missions -> Notifications (start, result, cooldown-ready)
+- Territory -> Notifications (contest start, prep-ready/active, capture, loss)
 
 ## Must Preserve
 - Expliciete in-app permissie-entrypoint voor web/iOS homescreen push, doorgaans via Settings.
@@ -33,6 +34,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 ## Backend Guardrails
 - Voor cooldown-expiry meldingen: voeg nieuwe cooldown-actions toe in zowel `notificationService.sendCooldownExpiredNotification(...)` als de notifier-registratie in `cooldownService` of een gelijkwaardige scheduler.
 - Crew Missions cooldown-ready meldingen moeten persistent via backend-scan/cron verwerkt worden (niet alleen via in-memory timeout), met idempotente marking per mission run.
+- Territory contest `preparing` → `active` moet via persistente cron/lifecycle-sync push + inbox sturen naar aanvallende én verdedigende crewleden (`territory_contest_active`); die overgang mag niet stil blijven als niemand het Territory-scherm open heeft.
 - Cooldown-expiry push voor crimes, jobs en vehicle/boat theft mag nooit alleen op in-memory `setTimeout` vertrouwen; de effectieve cooldownduur en notificatiestatus moeten persistent reconstrueerbaar zijn zodat backend restarts, deploys of container-restarts geen expiry-pushes verliezen.
 - Admin moet een handmatige, auditeerbare test-push naar een specifieke speler kunnen sturen voor live QA; zo'n testactie moet device-count terugkoppelen zodat deliveryproblemen onderscheidbaar blijven van ontbrekende tokenregistratie.
 - Push-delivery fouten, ontbrekende device-registraties en admin test-push diagnosepaden moeten ook in het bestaande Admin > System Logs scherm landen met voldoende context (`source`, playerId, device-count, FCM error codes); console-only logging is onvoldoende voor live QA.
@@ -63,6 +65,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 9. Verifieer bij mislukte test-pushes of ontbrekende devices dat Admin > System Logs een bruikbare foutregel met pushcontext toont.
 10. Verifieer dat pushfouten hoofdflows niet blokkeren.
 11. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
+12. Verifieer dat een Territory-contest na de voorbereiding een push + inbox stuurt naar attacker- én defender-crew dat acties ontgrendeld zijn.
 
 ## When To Update This File
 Update bij nieuwe notificatiekanalen, FCM/service-worker gedrag, permission flows, cooldown-signalen of inbox/push koppelingen.

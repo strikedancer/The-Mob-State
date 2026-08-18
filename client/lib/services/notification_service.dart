@@ -316,6 +316,10 @@ class NotificationService {
       case 'crew_war_started':
       case 'crew_war_lockdown':
       case 'crew_war_ended':
+      case 'territory_contest_started':
+      case 'territory_contest_active':
+      case 'territory_captured':
+      case 'territory_lost':
         return '/dashboard';
       default:
         return null;

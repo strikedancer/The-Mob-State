@@ -211,6 +211,16 @@ export interface Translations {
       pushBody: (regionKey: string, contestId: string) => string;
       inboxMessage: (regionKey: string, contestId: string) => string;
     };
+    territoryContestActiveAttacker: {
+      title: string;
+      pushBody: (regionName: string, contestId: string) => string;
+      inboxMessage: (regionName: string, contestId: string) => string;
+    };
+    territoryContestActiveDefender: {
+      title: string;
+      pushBody: (regionName: string, contestId: string) => string;
+      inboxMessage: (regionName: string, contestId: string) => string;
+    };
     territoryCaptured: {
       title: string;
       pushBody: (regionKey: string) => string;
@@ -448,6 +458,32 @@ const translations: Record<'en' | 'nl', Translations> = {
             `Region: ${regionKey}`,
             `Contest: #${contestId}`,
             'Another crew has started a territory attack.',
+          ].join('\n'),
+      },
+      territoryContestActiveAttacker: {
+        title: 'Territory attack is live!',
+        pushBody: (regionName, contestId) =>
+          `Preparation for ${regionName} is over. You can attack now (contest #${contestId}).`,
+        inboxMessage: (regionName, contestId) =>
+          [
+            'Territory attack is live!',
+            '',
+            `Region: ${regionName}`,
+            `Contest: #${contestId}`,
+            'Preparation has ended. Attack actions are now unlocked.',
+          ].join('\n'),
+      },
+      territoryContestActiveDefender: {
+        title: 'Territory defense is live!',
+        pushBody: (regionName, contestId) =>
+          `The attack on ${regionName} is now active. Defend now (contest #${contestId}).`,
+        inboxMessage: (regionName, contestId) =>
+          [
+            'Territory defense is live!',
+            '',
+            `Region: ${regionName}`,
+            `Contest: #${contestId}`,
+            'Preparation has ended. Defense actions are now unlocked.',
           ].join('\n'),
       },
       territoryCaptured: {
@@ -697,6 +733,32 @@ const translations: Record<'en' | 'nl', Translations> = {
             `Regio: ${regionKey}`,
             `Contest: #${contestId}`,
             'Een andere crew heeft een territoriumaanval gestart.',
+          ].join('\n'),
+      },
+      territoryContestActiveAttacker: {
+        title: 'Territoriumaanval is live!',
+        pushBody: (regionName, contestId) =>
+          `De voorbereiding voor ${regionName} is klaar. Je kunt nu aanvallen (contest #${contestId}).`,
+        inboxMessage: (regionName, contestId) =>
+          [
+            'Territoriumaanval is live!',
+            '',
+            `Regio: ${regionName}`,
+            `Contest: #${contestId}`,
+            'De voorbereiding is afgelopen. Aanvalsacties zijn nu ontgrendeld.',
+          ].join('\n'),
+      },
+      territoryContestActiveDefender: {
+        title: 'Territoriumverdediging is live!',
+        pushBody: (regionName, contestId) =>
+          `De aanval op ${regionName} is nu actief. Verdedig nu (contest #${contestId}).`,
+        inboxMessage: (regionName, contestId) =>
+          [
+            'Territoriumverdediging is live!',
+            '',
+            `Regio: ${regionName}`,
+            `Contest: #${contestId}`,
+            'De voorbereiding is afgelopen. Verdedigingsacties zijn nu ontgrendeld.',
           ].join('\n'),
       },
       territoryCaptured: {
