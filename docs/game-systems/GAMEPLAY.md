@@ -117,6 +117,7 @@ Elke **5 minuten** gebeurt er automatisch:
 3. Bij succes:
    - Ontvang reward money
    - Ontvang XP
+   - Een noir/gold resultaatkaart toont cash + XP (zelfde contrast als het dashboard; geen lichte popup)
    - **Health damage**: 5-15 HP per crime attempt
    - Wanted level stijgt met 1-2 punten
 4. Bij falen:

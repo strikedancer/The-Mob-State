@@ -24,6 +24,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 
 ## Must Preserve
 - Clear success and failure feedback for the player.
+- Het crime-success overlay (`CrimeResultOverlay`) volgt de dashboard-identiteit (noir/gold, donker paneel, goud accent, expliciet wit/goud contrast). Geen lichte crème-kaarten of theme-inherited tekstkleur die op donkere UI onleesbaar wordt.
 - No auto-playing video overlays in the crimes loop.
 - Arrest feedback should be immediate message-first, optionally with a static image/icon indicator.
 - Accurate state refresh after an action completes.
@@ -55,6 +56,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify crime cooldown duration matches the configured reward tier after a successful attempt.
 - Verify no text overflows or clipped buttons appear.
+- Verify the success result overlay is readable on mobile and desktop (gold title, white crime name, cash/XP values, gold Continue) and matches the dashboard noir/gold shell.
 - Verify weapon-required crimes clearly show which weapon is selected, block cleanly when no weapon is selected, and stay synced with Inventory after refresh/navigation.
 - Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit or market-listed.
 - Verify an arrest during a weapon-based crime confiscates the used weapon, clears the saved selection when no copy remains, and tells the player about the confiscation in the crime result feedback.

@@ -8,6 +8,7 @@ class ResponsiveModalLayout extends StatelessWidget {
   final double desktopMaxWidth;
   final double minHeight;
   final Color backgroundColor;
+  final Color? cardColor;
   final EdgeInsetsGeometry? margin;
   final BorderRadiusGeometry borderRadius;
   final double elevation;
@@ -21,6 +22,7 @@ class ResponsiveModalLayout extends StatelessWidget {
     this.desktopMaxWidth = 920,
     this.minHeight = 240,
     this.backgroundColor = Colors.black87,
+    this.cardColor,
     this.margin,
     this.borderRadius = const BorderRadius.all(Radius.circular(18)),
     this.elevation = 12,
@@ -61,6 +63,8 @@ class ResponsiveModalLayout extends StatelessWidget {
                 horizontal: horizontalMargin,
                 vertical: verticalMargin,
               ),
+          color: cardColor,
+          surfaceTintColor: Colors.transparent,
           elevation: elevation,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
           clipBehavior: Clip.antiAlias,

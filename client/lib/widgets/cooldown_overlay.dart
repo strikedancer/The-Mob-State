@@ -298,15 +298,16 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
       }
 
       final isSuccess = widget.isSuccess == true;
-      final toneColor = isSuccess ? Colors.green : Colors.red;
-      final textColor = isSuccess ? Colors.green[900] : Colors.red[900];
+      final toneColor = isSuccess
+          ? const Color(0xFFFFB347)
+          : const Color(0xFFF87171);
 
       return Container(
         width: double.infinity,
         padding: EdgeInsets.all(compactWidth ? 12 : 14),
         decoration: BoxDecoration(
-          color: toneColor.withOpacity(0.18),
-          border: Border.all(color: toneColor, width: 1.5),
+          color: const Color(0xFF1B1212).withOpacity(0.88),
+          border: Border.all(color: toneColor.withOpacity(0.75), width: 1.4),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -327,7 +328,8 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                 style: TextStyle(
                   fontSize: compactWidth ? 13 : 14,
                   fontWeight: FontWeight.w600,
-                  color: textColor,
+                  color: Colors.white.withOpacity(0.92),
+                  height: 1.35,
                 ),
               ),
             ),
