@@ -29,6 +29,23 @@ export type NpcLiveCycleResult = {
   actions: string[];
 };
 
+export type NpcCycleOptions = {
+  allowBank?: boolean;
+  allowTravelStart?: boolean;
+  allowVehicleSteal?: boolean;
+};
+
+function tickMinutesForType(npcType: NPCType): number {
+  if (npcType === 'CONTINU') return 10;
+  if (npcType === 'GEMIDDELD') return 12;
+  return 20;
+}
+
+function shiftDate(value: Date | null | undefined, seconds: number): Date | null {
+  if (!value) return null;
+  return new Date(value.getTime() - seconds * 1000);
+}
+
 const STARTER_TOOLS = ['spray_paint', 'bolt_cutter', 'car_theft_tools', 'burglary_kit', 'crowbar'];
 const STARTER_WEAPON = 'knife';
 
@@ -283,14 +300,16 @@ async function tryStealVehicle(npcId: number, playerId: number): Promise<boolean
   const existing = await findLocalVehicle(playerId, player.currentCountry);
   if (existing) return false;
 
-  const cars = vehiclesData.cars.filter(
-    (car) =>
-      car.requiredRank <= player.rank &&
-      (!car.availableInCountries?.length ||
-        car.availableInCountries.includes(player.currentCountry)),
-  );
+  const cars = vehiclesData.cars
+    .filter(
+      (car) =>
+        car.requiredRank <= player.rank &&
+        (!car.availableInCountries?.length ||
+          car.availableInCountries.includes(player.currentCountry)),
+    )
+    .sort((a, b) => a.baseValue - b.baseValue);
   if (cars.length === 0) return false;
-  const vehicle = cars[Math.floor(Math.random() * Math.min(cars.length, 4))];
+  const vehicle = cars[Math.floor(Math.random() * Math.min(cars.length, 5))];
 
   try {
     const result = await vehicleService.stealVehicle(playerId, vehicle.id);
@@ -352,9 +371,10 @@ async function trySchool(npcId: number, playerId: number): Promise<boolean> {
 
 async function tryBank(npcId: number, playerId: number): Promise<boolean> {
   const player = await loadPlayer(playerId);
-  if (!player || player.money < 2500) return false;
-  const amount = Math.floor(player.money * 0.2);
-  if (amount < 100) return false;
+  if (!player || player.money < 10000) return false;
+  const reserve = 5000;
+  const amount = Math.floor((player.money - reserve) * 0.15);
+  if (amount < 250) return false;
   try {
     await bankService.getOrCreateBankAccount(playerId);
     await bankService.deposit(playerId, amount, 'npc-auto-deposit');
@@ -417,6 +437,7 @@ export async function runNpcLiveCycle(
   npcId: number,
   playerId: number,
   npcType: NPCType,
+  options: NpcCycleOptions = {},
 ): Promise<NpcLiveCycleResult> {
   const behavior = npcBehaviors.behaviors[npcType];
   const result: NpcLiveCycleResult = {
@@ -457,7 +478,9 @@ export async function runNpcLiveCycle(
     result.actions.push('gear');
   }
 
-  mark('vehicle', await tryStealVehicle(npcId, playerId));
+  if (options.allowVehicleSteal !== false) {
+    mark('vehicle', await tryStealVehicle(npcId, playerId));
+  }
   mark('job', await tryJob(npcId, playerId, behavior));
 
   const beforeCrime = await loadPlayer(playerId);
@@ -475,8 +498,139 @@ export async function runNpcLiveCycle(
   mark('range', await tryShootingRange(npcId, playerId));
   mark('school', await trySchool(npcId, playerId));
   mark('property', await tryProperty(npcId, playerId));
-  mark('travel', await tryTravel(npcId, playerId, behavior.travelChance ?? 0.2));
-  mark('bank', await tryBank(npcId, playerId));
+  if (options.allowTravelStart !== false) {
+    mark('travel', await tryTravel(npcId, playerId, behavior.travelChance ?? 0.2));
+  }
+  if (options.allowBank) {
+    mark('bank', await tryBank(npcId, playerId));
+  }
 
+  return result;
+}
+
+async function advancePlayerSimClock(playerId: number, seconds: number): Promise<void> {
+  if (seconds <= 0) return;
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: {
+      jailRelease: true,
+      intensiveCareUntil: true,
+      lastHospitalVisit: true,
+    },
+  });
+  if (!player) return;
+
+  await prisma.player.update({
+    where: { id: playerId },
+    data: {
+      jailRelease: shiftDate(player.jailRelease, seconds),
+      intensiveCareUntil: shiftDate(player.intensiveCareUntil, seconds),
+      lastHospitalVisit: shiftDate(player.lastHospitalVisit, seconds),
+    },
+  });
+
+  const cooldowns = await prisma.actionCooldown.findMany({
+    where: { playerId },
+    select: { id: true, lastUsedAt: true },
+  });
+  for (const cooldown of cooldowns) {
+    const next = shiftDate(cooldown.lastUsedAt, seconds);
+    if (!next) continue;
+    await prisma.actionCooldown.update({
+      where: { id: cooldown.id },
+      data: { lastUsedAt: next },
+    });
+  }
+
+  const gym = await prisma.gymStats.findUnique({ where: { playerId } });
+  if (gym) {
+    await prisma.gymStats.update({
+      where: { playerId },
+      data: {
+        lastTrainedAt: shiftDate(gym.lastTrainedAt, seconds),
+        speedLastTrainedAt: shiftDate(gym.speedLastTrainedAt, seconds),
+        staminaLastTrainedAt: shiftDate(gym.staminaLastTrainedAt, seconds),
+      },
+    });
+  }
+
+  const range = await prisma.shootingRangeStats.findUnique({ where: { playerId } });
+  if (range) {
+    await prisma.shootingRangeStats.update({
+      where: { playerId },
+      data: { lastTrainedAt: shiftDate(range.lastTrainedAt, seconds) },
+    });
+  }
+
+  const latestJail = await prisma.crimeAttempt.findFirst({
+    where: { playerId, jailed: true },
+    orderBy: { createdAt: 'desc' },
+    select: { id: true, createdAt: true },
+  });
+  if (latestJail) {
+    const nextCreated = shiftDate(latestJail.createdAt, seconds);
+    if (nextCreated) {
+      await prisma.crimeAttempt.update({
+        where: { id: latestJail.id },
+        data: { createdAt: nextCreated },
+      });
+    }
+  }
+}
+
+async function playerWealth(playerId: number): Promise<{ cash: number; xp: number; bank: number }> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { money: true, xp: true },
+  });
+  const bank = await prisma.bankAccount.findUnique({
+    where: { playerId },
+    select: { balance: true },
+  });
+  return {
+    cash: player?.money ?? 0,
+    xp: player?.xp ?? 0,
+    bank: bank?.balance ?? 0,
+  };
+}
+
+export async function simulateNpcGameHours(
+  npcId: number,
+  playerId: number,
+  npcType: NPCType,
+  hours: number,
+): Promise<NpcLiveCycleResult & { ticks: number; intervalMinutes: number }> {
+  const intervalMinutes = tickMinutesForType(npcType);
+  const ticks = Math.max(1, Math.min(150, Math.round((hours * 60) / intervalMinutes)));
+  const start = await playerWealth(playerId);
+  const result: NpcLiveCycleResult & { ticks: number; intervalMinutes: number } = {
+    activitiesPerformed: 0,
+    moneyEarned: 0,
+    xpEarned: 0,
+    arrests: 0,
+    actions: [],
+    ticks,
+    intervalMinutes,
+  };
+
+  for (let i = 0; i < ticks; i++) {
+    const elapsedMinutes = i * intervalMinutes;
+    const cycle = await runNpcLiveCycle(npcId, playerId, npcType, {
+      allowBank: elapsedMinutes > 0 && elapsedMinutes % 240 === 0,
+      allowTravelStart: elapsedMinutes === 0 || elapsedMinutes % 360 === 0,
+      allowVehicleSteal: elapsedMinutes === 0 || elapsedMinutes % 120 === 0,
+    });
+    result.activitiesPerformed += cycle.activitiesPerformed;
+    result.arrests += cycle.arrests;
+    result.actions.push(...cycle.actions);
+    if (i < ticks - 1) {
+      await advancePlayerSimClock(playerId, intervalMinutes * 60);
+    }
+  }
+
+  const end = await playerWealth(playerId);
+  result.moneyEarned = end.cash + end.bank - (start.cash + start.bank);
+  result.xpEarned = end.xp - start.xp;
   return result;
 }

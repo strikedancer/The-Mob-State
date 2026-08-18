@@ -3025,8 +3025,14 @@ function App() {
       const actionList = Array.isArray(result.result.actions)
         ? result.result.actions.join(", ")
         : "";
+      const crimeCount = Array.isArray(result.result.actions)
+        ? result.result.actions.filter((action: string) => action === "crime").length
+        : 0;
+      const jobCount = Array.isArray(result.result.actions)
+        ? result.result.actions.filter((action: string) => action === "job").length
+        : 0;
       alert(
-        `${t.simulationComplete}\n\n${l("Activiteiten", "Activities")}: ${result.result.activitiesPerformed}\n${l("Acties", "Actions")}: ${actionList || "—"}\n${l("Geld verdiend", "Money earned")}: €${result.result.moneyEarned}\n${l("XP verdiend", "XP earned")}: ${result.result.xpEarned}\n${l("Arrestaties", "Arrests")}: ${result.result.arrests}`,
+        `${t.simulationComplete}\n\n${l("Simulatietijd", "Simulated time")}: ${result.result.ticks || "?"} × ${result.result.intervalMinutes || "?"} min\n${l("Activiteiten", "Activities")}: ${result.result.activitiesPerformed}\n${l("Crimes", "Crimes")}: ${crimeCount}\n${l("Jobs", "Jobs")}: ${jobCount}\n${l("Acties", "Actions")}: ${actionList || "—"}\n${l("Vermogen-delta", "Wealth delta")}: €${result.result.moneyEarned}\n${l("XP verdiend", "XP earned")}: ${result.result.xpEarned}\n${l("Arrestaties", "Arrests")}: ${result.result.arrests}`,
       );
       setSimulatingNPC(null);
       await loadNPCs();
@@ -14411,8 +14417,8 @@ function App() {
                             }}
                           >
                             {l(
-                              "Voer een waarde in tussen 0.1 en 24 uur",
-                              "Enter a value between 0.1 and 24 hours",
+                              "Dit is echte speeltijd: cooldowns lopen mee. 24 uur is geen 8 snelle klikken. Bank stort max eens per 4 uur.",
+                              "This is real play time: cooldowns expire as time advances. 24 hours is not 8 instant clicks. Bank deposits at most once per 4 hours.",
                             )}
                           </small>
                         </div>

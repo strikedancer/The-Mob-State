@@ -4,7 +4,7 @@ import npcBehaviors from '../../content/npcBehaviors.json';
 import countries from '../../content/countries.json';
 import prisma from '../lib/prisma';
 import { getXPForRank } from '../config';
-import { runNpcLiveCycle } from './npcActionDriver';
+import { simulateNpcGameHours } from './npcActionDriver';
 
 interface NPCCreationOptions {
   username: string;
@@ -33,6 +33,8 @@ interface NPCActivityResult {
     wantedLevelReduced?: number;
   };
   actions?: string[];
+  ticks?: number;
+  intervalMinutes?: number;
 }
 
 export class NPCService {
@@ -276,30 +278,16 @@ export class NPCService {
       throw new Error('Player not found for NPC');
     }
 
-    const cycles = Math.max(1, Math.min(8, Math.ceil(hours)));
-    let activitiesPerformed = 0;
-    let totalMoneyEarned = 0;
-    let totalXpEarned = 0;
-    let arrests = 0;
-    const actions: string[] = [];
-
-    for (let i = 0; i < cycles; i++) {
-      const cycle = await runNpcLiveCycle(npc.id, npc.playerId, npc.npcType);
-      activitiesPerformed += cycle.activitiesPerformed;
-      totalMoneyEarned += cycle.moneyEarned;
-      totalXpEarned += cycle.xpEarned;
-      arrests += cycle.arrests;
-      actions.push(...cycle.actions);
-    }
+    const cycle = await simulateNpcGameHours(npc.id, npc.playerId, npc.npcType, hours);
 
     await prisma.nPCPlayer.update({
       where: { id: npcId },
       data: {
-        totalCrimes: { increment: actions.filter((action) => action === 'crime').length },
-        totalJobs: { increment: actions.filter((action) => action === 'job').length },
-        totalMoneyEarned: { increment: Math.max(0, totalMoneyEarned) },
-        totalXpEarned: { increment: Math.max(0, totalXpEarned) },
-        totalArrests: { increment: arrests },
+        totalCrimes: { increment: cycle.actions.filter((action) => action === 'crime').length },
+        totalJobs: { increment: cycle.actions.filter((action) => action === 'job').length },
+        totalMoneyEarned: { increment: Math.max(0, cycle.moneyEarned) },
+        totalXpEarned: { increment: Math.max(0, cycle.xpEarned) },
+        totalArrests: { increment: cycle.arrests },
         simulatedOnlineHours: { increment: hours },
         lastActivityAt: new Date(),
       },
@@ -307,11 +295,13 @@ export class NPCService {
 
     return {
       npcId,
-      activitiesPerformed,
-      moneyEarned: totalMoneyEarned,
-      xpEarned: totalXpEarned,
-      arrests,
-      actions,
+      activitiesPerformed: cycle.activitiesPerformed,
+      moneyEarned: cycle.moneyEarned,
+      xpEarned: cycle.xpEarned,
+      arrests: cycle.arrests,
+      actions: cycle.actions,
+      ticks: cycle.ticks,
+      intervalMinutes: cycle.intervalMinutes,
     };
   }
 
