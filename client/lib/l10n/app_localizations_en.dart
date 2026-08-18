@@ -1759,7 +1759,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rankMafioso => 'Mafioso';
 
   @override
+  String get rankEmptySuit => 'Empty Suit';
+
+  @override
+  String get rankDeliveryBoy => 'Delivery Boy';
+
+  @override
+  String get rankPicciotto => 'Picciotto';
+
+  @override
+  String get rankShoplifter => 'Shoplifter';
+
+  @override
+  String get rankPickpocket => 'Pickpocket';
+
+  @override
+  String get rankThief => 'Thief';
+
+  @override
+  String get rankAssociate => 'Associate';
+
+  @override
+  String get rankCadet => 'Cadet';
+
+  @override
+  String get rankSoldier => 'Soldier';
+
+  @override
+  String get rankSwindler => 'Swindler';
+
+  @override
+  String get rankAssassin => 'Assassin';
+
+  @override
+  String get rankLocalChief => 'Local Chief';
+
+  @override
+  String get rankChief => 'Chief';
+
+  @override
+  String get rankDrugLord => 'Drug Lord';
+
+  @override
   String get rankGodfather => 'Godfather';
+
+  @override
+  String get rankDon => 'Don';
+
+  @override
+  String get rankOverlord => 'Overlord';
+
+  @override
+  String get rankLegend => 'Legend';
+
+  @override
+  String get rankUnknown => 'Unknown';
 
   @override
   String get dailyGoalTitle_crime_3 => 'Do 3 crimes';
@@ -13600,7 +13654,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nThe avatar menu at the top right opens My profile, messages, help, settings and log out.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.';
+      'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nRank titles follow the same ladder as your public profile: for example Soldier around rank 25, and Godfather only from rank 60.\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nThe avatar menu at the top right opens My profile, messages, help, settings and log out.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.';
 
   @override
   String get helpTopicDashboardTips =>

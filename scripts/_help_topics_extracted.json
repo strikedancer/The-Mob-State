@@ -10,6 +10,7 @@
     "summaryEn": "Your central overview with all your stats, active cooldowns, live events and shortcuts to every part of the game.",
     "howNl": [
       "Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).",
+      "Rangtitels volgen dezelfde ladder als op je publieke profiel: bijvoorbeeld Soldaat rond rang 25 en Peetvader pas vanaf rang 60.",
       "Elke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.",
       "Als honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!",
       "Op mobiel houdt een sticky footer Misdaden, Voertuig stelen, Werken, Bank en Crew in één tik bereikbaar. Een gouden stip op Misdaden, Stelen of Werken betekent dat de cooldown klaar is. Alle andere onderdelen open je via het hamburger-menu of de zijbalk; dat menu is gegroepeerd (Acties, Wereld, Sociaal, Economie, Empire, Assets) en doorzoekbaar.",
@@ -28,6 +29,7 @@
     ],
     "howEn": [
       "Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).",
+      "Rank titles follow the same ladder as your public profile: for example Soldier around rank 25, and Godfather only from rank 60.",
       "Every 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.",
       "If hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!",
       "On mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.",

@@ -1789,7 +1789,61 @@ class AppLocalizationsDe extends AppLocalizations {
   String get rankMafioso => 'Mafioso';
 
   @override
+  String get rankEmptySuit => 'Leerer Anzug';
+
+  @override
+  String get rankDeliveryBoy => 'Bote';
+
+  @override
+  String get rankPicciotto => 'Picciotto';
+
+  @override
+  String get rankShoplifter => 'Ladendieb';
+
+  @override
+  String get rankPickpocket => 'Taschendieb';
+
+  @override
+  String get rankThief => 'Dieb';
+
+  @override
+  String get rankAssociate => 'Associate';
+
+  @override
+  String get rankCadet => 'Kadett';
+
+  @override
+  String get rankSoldier => 'Soldat';
+
+  @override
+  String get rankSwindler => 'Schwindler';
+
+  @override
+  String get rankAssassin => 'Attentäter';
+
+  @override
+  String get rankLocalChief => 'Lokaler Chef';
+
+  @override
+  String get rankChief => 'Chef';
+
+  @override
+  String get rankDrugLord => 'Drogenboss';
+
+  @override
   String get rankGodfather => 'Pate';
+
+  @override
+  String get rankDon => 'Don';
+
+  @override
+  String get rankOverlord => 'Oberherr';
+
+  @override
+  String get rankLegend => 'Legende';
+
+  @override
+  String get rankUnknown => 'Unbekannt';
 
   @override
   String get dailyGoalTitle_crime_3 => 'Begehen Sie 3 Verbrechen';
@@ -13802,7 +13856,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Die obere Leiste zeigt: Bargeld, Rang, Gesundheit (0–100 HP), Fahndungslevel (0–100) und FBI-Heat (0–100). \nAlle 5 Minuten wird ein automatischer Tick ausgelöst: Hunger sinkt um -2, Durst um -3, du heilst dich passiv um +5 HP (wenn HP > 0), Bankzinsen werden hinzugefügt (0,5 %) und das Fahndungslevel sinkt leicht, wenn es unter 10 liegt. \nWenn Hunger oder Durst 0 erreichen, sterben Sie und verbringen 3 Stunden auf der Intensivstation. Essen und trinken Sie pünktlich! \nAuf Mobilgeräten sorgt eine klebrige Fußzeile dafür, dass Verbrechen, Fahrzeugdiebstahl, Arbeit, Bank und Crew nur einen Fingertipp entfernt sind. Ein goldener Punkt auf „Verbrechen“, „Stehlen“ oder „Arbeit“ bedeutet, dass die Abklingzeit bereit ist. Alles andere finden Sie im Hamburger-Menü oder in der linken Seitenleiste; Dieses Menü ist gruppiert (Aktionen, Welt, Soziales, Wirtschaft, Imperium, Vermögenswerte) und durchsuchbar. \nCooldown-Timer pro Abschnitt zeigen an, wie lange es dauert, bis Ihre nächste Aktion verfügbar ist. Der Timer passt sich an, um die relevanteste Einheit anzuzeigen: Minuten, Stunden oder Tage. \nDie Statistikkarte verwendet jetzt echte Live-Zähler für Ausbrüche, Morde, Trefferlistenverträge, Reisen und Kugeln anstelle von festen Null-Platzhaltern. \nDas Dashboard verfügt jetzt auch über einen erweiterten Wirtschaftsbereich mit Bargeld, Bank, Krypto, Fahrzeugwert, Immobilienwert, Nettovermögen und einem 24-Stunden-Cashflow-Trend. \nDer Betriebsblock zeigt jetzt die aktive Produktion, die längste Abklingzeit, den Fahrzeugstatus (aktiv/gelistet/Transit) und die Timer für die nächste Produktion/das nächste Ereignis an. \nWenn Spielerevents live sind (z. B. wöchentliche Wettbewerbe), listet dasselbe rechte Feld kurz deren Titel und Links zur Seite „Events“ auf. Sie können Push für Rundenstart/-ende unter Einstellungen → Spielerereignisse ein- oder ausschalten (zusätzlich zu Geräteberechtigungen und anderen Push-Kategorien). \nBenachrichtigungen und Risiken umfassen jetzt ungelesene DMs, Support-Tickets, die auf Ihre Antwort warten, Ereignisse der letzten 24 Stunden und eine kompakte Risikobewertung (gesucht + FBI). \nWenn Ihre Crew an Crew Wars beteiligt ist, zeigt das Dashboard auch eine Crew Wars-Zusammenfassung mit Status, Gegner, Crewpunkten, Saisonrang und der verbleibenden Zeit in der aktuellen Phase an. \nDas Dashboard enthält jetzt auch eine Fahrzeug-Ops-Übersicht pro Auto/Motorrad/Boot mit Live-Cooldown-Chips (Hotspot, Crew, Crew-Match, Chop, Contract und Counter) sowie Hitze/Reputation, Vertrags- und Anspruchszahlen und Saisonpunkte. \nLive-Ereignisse treten auf, wenn andere Spieler wichtige Aktionen ausführen, wenn Sie angegriffen werden oder wenn es zu globalen Marktbewegungen kommt. \nDas Nachrichten-Badge zeigt ungelesene Systemnachrichten und persönliche Nachrichten an. \nDas Avatar-Menü oben rechts öffnet Mein Profil, Nachrichten, Hilfe, Einstellungen und Abmelden. \nDas linke Navigationsmenü gewährt Zugriff auf alle Spielabschnitte, gruppiert nach Kategorien: Aktionen, Welt, Soziales, Wirtschaft, Imperium und Vermögenswerte.\\nNeue Spieler sehen eine Startkarte mit einem nächsten Schritt (zuerst Verbrechen, täglich/Job, dann Crew). Bei Rang 3+ oder abgeschlossenem Onboarding wird diese Karte übersprungen. \nTägliche Ziele stehen im Internet und auf Mobilgeräten ganz oben: Für jedes Ziel werden die Geld- und XP-Belohnung, eine Schaltfläche zum Abholen, wenn es bereit ist, und eine UTC-Anspruchsserie angezeigt. Nachdem Sie Anspruch erhoben haben, werden in einem Toast die erhaltenen Bargeld- und XP-Werte aufgeführt. Unter Rang 5 wird Fahrzeugdiebstahl nicht aufgeführt. \nWenn Sie einer Crew angehören, erscheint auf dem Dashboard eine kompakte wöchentliche Mannschaftsziellinie.';
+      'Die obere Leiste zeigt: Bargeld, Rang, Gesundheit (0–100 HP), Fahndungslevel (0–100) und FBI-Heat (0–100). \nRangtitel folgen der gleichen Rangliste wie Ihr öffentliches Profil: zum Beispiel Soldat um Rang 25 und Pate erst ab Rang 60. \nAlle 5 Minuten wird ein automatischer Tick ausgelöst: Hunger sinkt um -2, Durst um -3, du heilst dich passiv um +5 HP (wenn HP > 0), Bankzinsen werden hinzugefügt (0,5 %) und das Fahndungslevel sinkt leicht, wenn es unter 10 liegt. \nWenn Hunger oder Durst 0 erreichen, sterben Sie und verbringen 3 Stunden auf der Intensivstation. Essen und trinken Sie pünktlich! \nAuf Mobilgeräten sorgt eine klebrige Fußzeile dafür, dass Verbrechen, Fahrzeugdiebstahl, Arbeit, Bank und Crew nur einen Fingertipp entfernt sind. Ein goldener Punkt auf „Verbrechen“, „Stehlen“ oder „Arbeit“ bedeutet, dass die Abklingzeit bereit ist. Alles andere finden Sie im Hamburger-Menü oder in der linken Seitenleiste; Dieses Menü ist gruppiert (Aktionen, Welt, Soziales, Wirtschaft, Imperium, Vermögenswerte) und durchsuchbar. \nCooldown-Timer pro Abschnitt zeigen an, wie lange es dauert, bis Ihre nächste Aktion verfügbar ist. Der Timer passt sich an, um die relevanteste Einheit anzuzeigen: Minuten, Stunden oder Tage. \nDie Statistikkarte verwendet jetzt echte Live-Zähler für Ausbrüche, Morde, Trefferlistenverträge, Reisen und Kugeln anstelle von festen Null-Platzhaltern. \nDas Dashboard verfügt jetzt auch über einen erweiterten Wirtschaftsbereich mit Bargeld, Bank, Krypto, Fahrzeugwert, Immobilienwert, Nettovermögen und einem 24-Stunden-Cashflow-Trend. \nDer Betriebsblock zeigt jetzt die aktive Produktion, die längste Abklingzeit, den Fahrzeugstatus (aktiv/gelistet/Transit) und die Timer für die nächste Produktion/das nächste Ereignis an. \nWenn Spielerevents live sind (z. B. wöchentliche Wettbewerbe), listet dasselbe rechte Feld kurz deren Titel und Links zur Seite „Events“ auf. Sie können Push für Rundenstart/-ende unter Einstellungen → Spielerereignisse ein- oder ausschalten (zusätzlich zu Geräteberechtigungen und anderen Push-Kategorien). \nBenachrichtigungen und Risiken umfassen jetzt ungelesene DMs, Support-Tickets, die auf Ihre Antwort warten, Ereignisse der letzten 24 Stunden und eine kompakte Risikobewertung (gesucht + FBI). \nWenn Ihre Crew an Crew Wars beteiligt ist, zeigt das Dashboard auch eine Crew Wars-Zusammenfassung mit Status, Gegner, Crewpunkten, Saisonrang und der verbleibenden Zeit in der aktuellen Phase an. \nDas Dashboard enthält jetzt auch eine Fahrzeug-Ops-Übersicht pro Auto/Motorrad/Boot mit Live-Cooldown-Chips (Hotspot, Crew, Crew-Match, Chop, Contract und Counter) sowie Hitze/Reputation, Vertrags- und Anspruchszahlen und Saisonpunkte. \nLive-Ereignisse treten auf, wenn andere Spieler wichtige Aktionen ausführen, wenn Sie angegriffen werden oder wenn es zu globalen Marktbewegungen kommt. \nDas Nachrichten-Badge zeigt ungelesene Systemnachrichten und persönliche Nachrichten an. \nDas Avatar-Menü oben rechts öffnet Mein Profil, Nachrichten, Hilfe, Einstellungen und Abmelden. \nDas linke Navigationsmenü gewährt Zugriff auf alle Spielabschnitte, gruppiert nach Kategorien: Aktionen, Welt, Soziales, Wirtschaft, Imperium und Vermögenswerte.';
 
   @override
   String get helpTopicDashboardTips =>

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 import '../models/vehicle.dart';
 import '../screens/crew_screen.dart';
 import '../utils/avatar_helper.dart';
+import '../utils/rank_display.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/estate_lot_view.dart';
 
@@ -36,6 +38,16 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
+
+  String _rankLabel() {
+    final rankNumber =
+        ((_playerData?['rank'] ?? _playerData?['level'] ?? 0) as num).toInt();
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return '${_playerData?['rankIcon'] ?? '❓'} ${_playerData?['rankTitle'] ?? _tr('Onbekend', 'Unknown')}';
+    }
+    return RankDisplay.withIcon(l10n, rankNumber);
+  }
 
   int get _likesCount => (_playerData?['likesCount'] as num?)?.toInt() ?? 0;
   bool get _viewerHasLiked => _playerData?['viewerHasLiked'] == true;
@@ -480,7 +492,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${_playerData?['rankIcon'] ?? '❓'} ${_playerData?['rankTitle'] ?? _tr('Onbekend', 'Unknown')}',
+                      _rankLabel(),
                       style: const TextStyle(color: Colors.white70),
                     ),
                   ],
@@ -607,8 +619,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     final rankNumber =
         ((_playerData?['rank'] ?? _playerData?['level'] ?? 0) as num).toInt();
     final reputation = (_playerData?['reputation'] ?? 0).toString();
-    final rank =
-        '#$rankNumber • ${_playerData?['rankIcon'] ?? '❓'} ${_playerData?['rankTitle'] ?? _tr('Onbekend', 'Unknown')}';
+    final rank = '#$rankNumber • ${_rankLabel()}';
     final vip = (_playerData?['vip'] == true || _playerData?['isVip'] == true)
         ? _tr('Ja', 'Yes')
         : _tr('Nee', 'No');

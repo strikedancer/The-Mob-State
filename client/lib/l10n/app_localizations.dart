@@ -3183,11 +3183,119 @@ abstract class AppLocalizations {
   /// **'Mafioso'**
   String get rankMafioso;
 
+  /// No description provided for @rankEmptySuit.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty Suit'**
+  String get rankEmptySuit;
+
+  /// No description provided for @rankDeliveryBoy.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Boy'**
+  String get rankDeliveryBoy;
+
+  /// No description provided for @rankPicciotto.
+  ///
+  /// In en, this message translates to:
+  /// **'Picciotto'**
+  String get rankPicciotto;
+
+  /// No description provided for @rankShoplifter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoplifter'**
+  String get rankShoplifter;
+
+  /// No description provided for @rankPickpocket.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickpocket'**
+  String get rankPickpocket;
+
+  /// No description provided for @rankThief.
+  ///
+  /// In en, this message translates to:
+  /// **'Thief'**
+  String get rankThief;
+
+  /// No description provided for @rankAssociate.
+  ///
+  /// In en, this message translates to:
+  /// **'Associate'**
+  String get rankAssociate;
+
+  /// No description provided for @rankCadet.
+  ///
+  /// In en, this message translates to:
+  /// **'Cadet'**
+  String get rankCadet;
+
+  /// No description provided for @rankSoldier.
+  ///
+  /// In en, this message translates to:
+  /// **'Soldier'**
+  String get rankSoldier;
+
+  /// No description provided for @rankSwindler.
+  ///
+  /// In en, this message translates to:
+  /// **'Swindler'**
+  String get rankSwindler;
+
+  /// No description provided for @rankAssassin.
+  ///
+  /// In en, this message translates to:
+  /// **'Assassin'**
+  String get rankAssassin;
+
+  /// No description provided for @rankLocalChief.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Chief'**
+  String get rankLocalChief;
+
+  /// No description provided for @rankChief.
+  ///
+  /// In en, this message translates to:
+  /// **'Chief'**
+  String get rankChief;
+
+  /// No description provided for @rankDrugLord.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Lord'**
+  String get rankDrugLord;
+
   /// No description provided for @rankGodfather.
   ///
   /// In en, this message translates to:
   /// **'Godfather'**
   String get rankGodfather;
+
+  /// No description provided for @rankDon.
+  ///
+  /// In en, this message translates to:
+  /// **'Don'**
+  String get rankDon;
+
+  /// No description provided for @rankOverlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Overlord'**
+  String get rankOverlord;
+
+  /// No description provided for @rankLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Legend'**
+  String get rankLegend;
+
+  /// No description provided for @rankUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get rankUnknown;
 
   /// No description provided for @dailyGoalTitle_crime_3.
   ///
@@ -23871,7 +23979,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDashboardHow.
   ///
   /// In en, this message translates to:
-  /// **'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nThe avatar menu at the top right opens My profile, messages, help, settings and log out.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.'**
+  /// **'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nRank titles follow the same ladder as your public profile: for example Soldier around rank 25, and Godfather only from rank 60.\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nThe avatar menu at the top right opens My profile, messages, help, settings and log out.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.'**
   String get helpTopicDashboardHow;
 
   /// No description provided for @helpTopicDashboardTips.

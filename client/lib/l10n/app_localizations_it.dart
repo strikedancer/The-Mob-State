@@ -1778,7 +1778,61 @@ class AppLocalizationsIt extends AppLocalizations {
   String get rankMafioso => 'Mafiosa';
 
   @override
+  String get rankEmptySuit => 'Abito vuoto';
+
+  @override
+  String get rankDeliveryBoy => 'Ragazzo delle consegne';
+
+  @override
+  String get rankPicciotto => 'Picciotto';
+
+  @override
+  String get rankShoplifter => 'Taccheggiatore';
+
+  @override
+  String get rankPickpocket => 'Borsaiolo';
+
+  @override
+  String get rankThief => 'Ladro';
+
+  @override
+  String get rankAssociate => 'Socio';
+
+  @override
+  String get rankCadet => 'Cadetto';
+
+  @override
+  String get rankSoldier => 'Soldato';
+
+  @override
+  String get rankSwindler => 'Truffatore';
+
+  @override
+  String get rankAssassin => 'Assassino';
+
+  @override
+  String get rankLocalChief => 'Capo locale';
+
+  @override
+  String get rankChief => 'Capo';
+
+  @override
+  String get rankDrugLord => 'Signore della droga';
+
+  @override
   String get rankGodfather => 'Padrino';
+
+  @override
+  String get rankDon => 'Don';
+
+  @override
+  String get rankOverlord => 'Signore supremo';
+
+  @override
+  String get rankLegend => 'Leggenda';
+
+  @override
+  String get rankUnknown => 'Sconosciuto';
 
   @override
   String get dailyGoalTitle_crime_3 => 'Compi 3 crimini';
@@ -13778,7 +13832,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'La barra superiore mostra: Contanti, Grado, Salute (0-100 HP), Livello ricercato (0-100) e Calore FBI (0-100). \nOgni 5 minuti si attiva un tick automatico: la fame scende -2, la sete -3, guarisci passivamente +5 HP (se HP > 0), vengono aggiunti gli interessi bancari (0,5%) e il livello ricercato scende leggermente quando è inferiore a 10. \nSe la fame o la sete raggiungono lo 0 muori e trascorri 3 ore in terapia intensiva. Mangia e bevi in ​​tempo! \nSul cellulare, un piè di pagina adesivo mantiene Crimini, Furto di veicoli, Lavoro, Banca ed Crew a portata di tocco. Un punto dorato su Crimini, Furto o Lavoro significa che il tempo di recupero è pronto. Tutto il resto è nel menu dell\'hamburger o nella barra laterale di sinistra; quel menu è raggruppato (Azioni, Mondo, Sociale, Economia, Impero, Risorse) e ricercabile. \nI timer di recupero per sezione mostrano quanto tempo manca alla disponibilità dell\'azione successiva. Il timer si adatta per mostrare l\'unità più rilevante: minuti, ore o giorni. \nLa scheda delle statistiche ora utilizza veri contatori live per evasioni, omicidi, contratti di hitlist, viaggi e proiettili invece di segnaposto fissi a zero. \nLa dashboard ora ha anche una sezione economica ampliata con contanti, banca, criptovalute, valore del veicolo, valore della proprietà, patrimonio netto e tendenza del flusso di cassa di 24 ore. \nIl blocco delle operazioni ora mostra la produzione attiva, il tempo di recupero più lungo, lo stato del veicolo (attivo/elencato/in transito) e i timer della produzione/evento successivo. \nQuando gli eventi dei giocatori sono in diretta (ad esempio, competizioni settimanali), lo stesso pannello di destra elenca brevemente i loro titoli e i collegamenti alla pagina Eventi. Puoi attivare o disattivare il push per l\'inizio/fine del round in Impostazioni → Eventi giocatore (oltre alle autorizzazioni del dispositivo e ad altre categorie push). \nNotifiche e rischi ora includono messaggi diretti non letti, ticket di supporto in attesa di risposta, eventi delle ultime 24 ore e un punteggio di rischio compatto (ricercato + FBI). \nQuando la tua squadra è coinvolta in Crew Wars, la dashboard mostra anche un riepilogo di Crew Wars con lo stato, l\'avversario, i punti della squadra, il grado della stagione e il tempo rimanente nella fase corrente. \nIl dashboard ora include anche una panoramica delle operazioni del veicolo per auto/moto/barca con chip di ricarica in tempo reale (hotspot, Crew, partita dell\'Crew, taglio, contratto e contatore), oltre a calore/reputazione, conteggi di contratti e reclami e punti stagionali. \nGli eventi dal vivo appaiono quando altri giocatori eseguono azioni importanti, quando vieni attaccato o quando si verificano movimenti del mercato globale. \nIl badge dei messaggi mostra i messaggi di sistema e i messaggi personali non letti. \nIl menu avatar in alto a destra apre Il mio profilo, i messaggi, la guida, le impostazioni e il logout. \nIl menu di navigazione a sinistra garantisce l\'accesso a tutte le sezioni del gioco raggruppate per categoria: Azioni, Mondo, Sociale, Economia, Impero e Risorse.\\nI nuovi giocatori vedono una carta Inizio con un passo successivo (primo crimine, quotidiano/lavoro, poi Crew). Il grado 3+ o l\'onboarding completato salta quella carta. \nGli obiettivi giornalieri si trovano in alto sul Web e sui dispositivi mobili: ogni obiettivo mostra la ricompensa in denaro e XP, un pulsante di richiesta quando è pronto e una serie di richieste UTC. Dopo aver rivendicato, un brindisi elenca il denaro e gli XP che hai ricevuto. Il furto di veicoli non è previsto al di sotto del grado 5. \nSe fai parte di una squadra, sulla dashboard viene visualizzata una linea di meta settimanale compatta della squadra.';
+      'La barra superiore mostra: Contanti, Grado, Salute (0-100 HP), Livello ricercato (0-100) e Calore FBI (0-100). \nI titoli di grado seguono la stessa scala del tuo profilo pubblico: ad esempio Soldato intorno al grado 25 e Padrino solo dal grado 60. \nOgni 5 minuti si attiva un tick automatico: la fame scende -2, la sete -3, guarisci passivamente +5 HP (se HP > 0), vengono aggiunti gli interessi bancari (0,5%) e il livello ricercato scende leggermente quando è inferiore a 10. \nSe la fame o la sete raggiungono lo 0 muori e trascorri 3 ore in terapia intensiva. Mangia e bevi in ​​tempo! \nSul cellulare, un piè di pagina adesivo mantiene Crimini, Furto di veicoli, Lavoro, Banca ed Crew a portata di tocco. Un punto dorato su Crimini, Furto o Lavoro significa che il tempo di recupero è pronto. Tutto il resto è nel menu dell\'hamburger o nella barra laterale di sinistra; quel menu è raggruppato (Azioni, Mondo, Sociale, Economia, Impero, Risorse) e ricercabile. \nI timer di recupero per sezione mostrano quanto tempo manca alla disponibilità dell\'azione successiva. Il timer si adatta per mostrare l\'unità più rilevante: minuti, ore o giorni. \nLa scheda delle statistiche ora utilizza veri contatori live per evasioni, omicidi, contratti di hitlist, viaggi e proiettili invece di segnaposto fissi a zero. \nLa dashboard ora ha anche una sezione economica ampliata con contanti, banca, criptovalute, valore del veicolo, valore della proprietà, patrimonio netto e tendenza del flusso di cassa di 24 ore. \nIl blocco delle operazioni ora mostra la produzione attiva, il tempo di recupero più lungo, lo stato del veicolo (attivo/elencato/in transito) e i timer della produzione/evento successivo. \nQuando gli eventi dei giocatori sono in diretta (ad esempio, competizioni settimanali), lo stesso pannello di destra elenca brevemente i loro titoli e i collegamenti alla pagina Eventi. Puoi attivare o disattivare il push per l\'inizio/fine del round in Impostazioni → Eventi giocatore (oltre alle autorizzazioni del dispositivo e ad altre categorie push). \nNotifiche e rischi ora includono messaggi diretti non letti, ticket di supporto in attesa di risposta, eventi delle ultime 24 ore e un punteggio di rischio compatto (ricercato + FBI). \nQuando la tua squadra è coinvolta in Crew Wars, la dashboard mostra anche un riepilogo di Crew Wars con lo stato, l\'avversario, i punti della squadra, il grado della stagione e il tempo rimanente nella fase corrente. \nIl dashboard ora include anche una panoramica delle operazioni del veicolo per auto/moto/barca con chip di ricarica in tempo reale (hotspot, Crew, partita dell\'Crew, taglio, contratto e contatore), oltre a calore/reputazione, conteggi di contratti e reclami e punti stagionali. \nGli eventi dal vivo appaiono quando altri giocatori eseguono azioni importanti, quando vieni attaccato o quando si verificano movimenti del mercato globale. \nIl badge dei messaggi mostra i messaggi di sistema e i messaggi personali non letti. \nIl menu avatar in alto a destra apre Il mio profilo, i messaggi, la guida, le impostazioni e il logout. \nIl menu di navigazione a sinistra garantisce l\'accesso a tutte le sezioni del gioco raggruppate per categoria: Azioni, Mondo, Sociale, Economia, Impero e Risorse.';
 
   @override
   String get helpTopicDashboardTips =>

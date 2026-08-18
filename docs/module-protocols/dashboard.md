@@ -39,6 +39,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Responsive usability without pushing critical actions off-screen.
 - Op mobiel (onder de tablet-breakpoint) blijft een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew altijd in beeld. Op Misdaden/Stelen/Werken toont een gouden stip dat de cooldown klaar is (`GET /player/action-cooldowns`). Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu / de zijbalk.
 - De hoofdbalk-avatar opent een gebruikersmenu met **Mijn profiel**, berichten, hulp, instellingen en uitloggen. Mijn profiel toont het publieke profiel van de ingelogde speler.
+- Rangtitels op dashboard en publiek profiel gebruiken dezelfde ladder als `backend/src/utils/rankSystem.ts` (`client/lib/utils/rank_display.dart`). Rang 21+ is niet automatisch Peetvader; Peetvader is rang 60–74, Soldaat is rang 25–29.
 - In web/dashboard-shell context moet klik op dezelfde sectie een expliciete remount of refresh kunnen triggeren wanneer dat scherm anders vastloopt op stale state.
 - Info- en statistiekblokken in dashboard/admin views moeten ook bij subtiele backgrounds en in dark mode expliciete contrasten voor tekst, border en hover/focus-state behouden.
 - Admin image-management flows voor extern gehoste server-assets moeten zowel toevoegen als vervangen ondersteunen zonder handmatige shell-stappen; mapnavigatie en bestandsfeedback (preview/pad/grootte/update-tijd) blijven verplicht zichtbaar.
@@ -66,6 +67,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer dat nieuwe accounts een Start-kaart met één CTA zien (crime → daily/job → crew) en dat rank 3+ of afgeronde onboarding die kaart niet meer ziet.
 - Verifieer dat dagdoelen **één keer** in de gestylede paneelkaart staan (niet dubbel bovenaan), dat elke regel cash + XP toont, dat Claim een toast met bedragen geeft, en dat autodiefstal niet featured is onder rank 5.
+- Verifieer dat de rangtitel op het dashboard dezelfde ladder volgt als het publieke profiel (Soldaat op 25–29, Peetvader op 60–74).
 - Verifieer in admin image-management dat uploaden en vervangen werkt voor dezelfde storage-root die door runtime `/assets/images` wordt geserveerd.
 - Verifieer dat modulefilter + zoekresultaten overeenkomen met de daadwerkelijke serverbestanden per module.
 

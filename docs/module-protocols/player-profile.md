@@ -29,6 +29,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 ## Must Preserve
 - Publiek profiel toont featured achievements (top 6–9), tappable crew-naam en `EstateLotView` als er een huis/appartement met upgrade-levels is. Geen live landkaart.
 - Duidelijke profielnavigatie vanaf avatars en namen.
+- Rangtitel op het publieke profiel is gelokaliseerd vanaf het numerieke rank-veld en gelijk aan de dashboard-rang (niet de ruwe Engelse API-`rankTitle`).
 - Correcte guard op null/ongeldige `playerId` waarden.
 - Privacygrenzen op publieke profielinformatie.
 - Consistente NL/EN copy en consistente kliksignalen.
@@ -44,11 +45,12 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 
 ## QA Checklist
 1. Open je eigen profiel via de avatar-knop → Mijn profiel.
-2. Open profielnavigatie vanaf minimaal twee verschillende contextschermen.
-3. Controleer dat null/ontbrekende `playerId` niet klikbaar wordt gemaakt.
-4. Verifieer dat publiek profiel geen live locatie-informatie toont.
-5. Controleer NL/EN copy voor profielknoppen, likes en foutmeldingen.
-6. Verifieer dat embedded/contextuele flows de hoofdmodule niet onnodig kapot navigeren.
+2. Verifieer dat de rangtitel op dashboard en publiek profiel hetzelfde is (bijv. Soldaat op rang 25–29, niet Peetvader).
+3. Open profielnavigatie vanaf minimaal twee verschillende contextschermen.
+4. Controleer dat null/ontbrekende `playerId` niet klikbaar wordt gemaakt.
+5. Verifieer dat publiek profiel geen live locatie-informatie toont.
+6. Controleer NL/EN copy voor profielknoppen, likes en foutmeldingen.
+7. Verifieer dat embedded/contextuele flows de hoofdmodule niet onnodig kapot navigeren.
 
 ## Implementation Pattern
 

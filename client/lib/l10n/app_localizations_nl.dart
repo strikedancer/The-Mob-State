@@ -1771,7 +1771,61 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rankMafioso => 'Maffioso';
 
   @override
+  String get rankEmptySuit => 'Leeg pak';
+
+  @override
+  String get rankDeliveryBoy => 'Bezorger';
+
+  @override
+  String get rankPicciotto => 'Picciotto';
+
+  @override
+  String get rankShoplifter => 'Winkeldief';
+
+  @override
+  String get rankPickpocket => 'Zakkenroller';
+
+  @override
+  String get rankThief => 'Dief';
+
+  @override
+  String get rankAssociate => 'Associate';
+
+  @override
+  String get rankCadet => 'Cadet';
+
+  @override
+  String get rankSoldier => 'Soldaat';
+
+  @override
+  String get rankSwindler => 'Oplichter';
+
+  @override
+  String get rankAssassin => 'Huurmoordenaar';
+
+  @override
+  String get rankLocalChief => 'Lokale baas';
+
+  @override
+  String get rankChief => 'Baas';
+
+  @override
+  String get rankDrugLord => 'Drugsbaron';
+
+  @override
   String get rankGodfather => 'Peetvader';
+
+  @override
+  String get rankDon => 'Don';
+
+  @override
+  String get rankOverlord => 'Overlord';
+
+  @override
+  String get rankLegend => 'Legende';
+
+  @override
+  String get rankUnknown => 'Onbekend';
 
   @override
   String get dailyGoalTitle_crime_3 => 'Pleeg 3 misdaden';
@@ -13633,7 +13687,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nOp mobiel houdt een sticky footer Misdaden, Voertuig stelen, Werken, Bank en Crew in één tik bereikbaar. Een gouden stip op Misdaden, Stelen of Werken betekent dat de cooldown klaar is. Alle andere onderdelen open je via het hamburger-menu of de zijbalk; dat menu is gegroepeerd (Acties, Wereld, Sociaal, Economie, Empire, Assets) en doorzoekbaar.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nVia het avatar-menu rechtsboven open je Mijn profiel, berichten, hulp, instellingen en uitloggen.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.';
+      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nRangtitels volgen dezelfde ladder als op je publieke profiel: bijvoorbeeld Soldaat rond rang 25 en Peetvader pas vanaf rang 60.\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nOp mobiel houdt een sticky footer Misdaden, Voertuig stelen, Werken, Bank en Crew in één tik bereikbaar. Een gouden stip op Misdaden, Stelen of Werken betekent dat de cooldown klaar is. Alle andere onderdelen open je via het hamburger-menu of de zijbalk; dat menu is gegroepeerd (Acties, Wereld, Sociaal, Economie, Empire, Assets) en doorzoekbaar.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nVia het avatar-menu rechtsboven open je Mijn profiel, berichten, hulp, instellingen en uitloggen.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.';
 
   @override
   String get helpTopicDashboardTips =>

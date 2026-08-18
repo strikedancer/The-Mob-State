@@ -1774,7 +1774,61 @@ class AppLocalizationsPl extends AppLocalizations {
   String get rankMafioso => 'Mafioso';
 
   @override
+  String get rankEmptySuit => 'Pusty garnitur';
+
+  @override
+  String get rankDeliveryBoy => 'Dostawca';
+
+  @override
+  String get rankPicciotto => 'Picciotto';
+
+  @override
+  String get rankShoplifter => 'Złodziej sklepowy';
+
+  @override
+  String get rankPickpocket => 'Kieszonkowiec';
+
+  @override
+  String get rankThief => 'Złodziej';
+
+  @override
+  String get rankAssociate => 'Współpracownik';
+
+  @override
+  String get rankCadet => 'Kadet';
+
+  @override
+  String get rankSoldier => 'Żołnierz';
+
+  @override
+  String get rankSwindler => 'Oszust';
+
+  @override
+  String get rankAssassin => 'Morderca';
+
+  @override
+  String get rankLocalChief => 'Lokalny szef';
+
+  @override
+  String get rankChief => 'Szef';
+
+  @override
+  String get rankDrugLord => 'Lord narkotyków';
+
+  @override
   String get rankGodfather => 'Ojciec chrzestny';
+
+  @override
+  String get rankDon => 'Don';
+
+  @override
+  String get rankOverlord => 'Suzeren';
+
+  @override
+  String get rankLegend => 'Legenda';
+
+  @override
+  String get rankUnknown => 'Nieznany';
 
   @override
   String get dailyGoalTitle_crime_3 => 'Dokonaj 3 przestępstw';
@@ -13735,7 +13789,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Górny pasek pokazuje: Gotówkę, Rangę, Zdrowie (0-100 HP), Poziom poszukiwanego (0-100) i FBI Heat (0-100). \nCo 5 minut uruchamia się automatyczny kleszcz: głód spada o -2, pragnienie -3, leczysz pasywnie +5 HP (jeśli HP > 0), doliczane są odsetki bankowe (0,5%), a poziom poszukiwania nieznacznie spada poniżej 10. \nJeśli głód lub pragnienie osiągną poziom 0, umierasz i spędzasz 3 godziny na oddziale intensywnej terapii. Jedz i pij na czas! \nNa urządzeniach mobilnych dzięki przyklejonej stopce przestępstwa, kradzieże pojazdów, praca, bank i Crew są w zasięgu jednego kliknięcia. Złota kropka na zbrodniach, kradzieży lub pracy oznacza, że ​​czas odnowienia jest gotowy. Cała reszta znajduje się w menu hamburgera lub na lewym pasku bocznym; to menu jest pogrupowane (Akcje, Świat, Społeczność, Ekonomia, Imperium, Zasoby) i można je przeszukiwać. \nLiczniki czasu odnowienia w każdej sekcji pokazują, ile czasu pozostało do następnej akcji. Timer dostosowuje się, aby pokazać najbardziej odpowiednią jednostkę: minuty, godziny lub dni. \nKarta statystyk wykorzystuje teraz rzeczywiste liczniki na żywo dla ucieczek, morderstw, kontraktów na listę hitów, podróży i kul, zamiast stałych zerowych symboli zastępczych. \nPulpit nawigacyjny ma teraz również rozszerzoną sekcję ekonomiczną z gotówką, bankami, kryptowalutami, wartością pojazdu, wartością nieruchomości, wartością netto i 24-godzinnym trendem przepływu środków pieniężnych. \nBlok operacji pokazuje teraz aktywną produkcję, najdłuższy czas odnowienia, status pojazdu (aktywny/wystawiony/przejazd) i liczniki czasu następnej produkcji/wydarzenia. \nGdy wydarzenia graczy są na żywo (np. cotygodniowe zawody), ten sam panel po prawej stronie zawiera krótką listę ich tytułów i linki do strony wydarzeń. Możesz włączyć lub wyłączyć funkcję push rozpoczęcia/zakończenia rundy w Ustawieniach → Wydarzenia gracza (oprócz uprawnień urządzenia i innych kategorii push). \nPowiadomienia i ryzyko obejmują teraz nieprzeczytane wiadomości prywatne, zgłoszenia do pomocy technicznej oczekujące na Twoją odpowiedź, zdarzenia z ostatnich 24 godzin oraz kompaktowy wynik ryzyka (poszukiwany + FBI). \nKiedy twoja Crew bierze udział w Crew Wars, na pulpicie nawigacyjnym wyświetlane jest także podsumowanie Crew Wars ze statusem, przeciwnikiem, punktami załogi, rangą sezonu i pozostałym czasem w bieżącej fazie. \nPanel kontrolny zawiera teraz także przegląd operacji pojazdu na samochód/motocykl/łódkę z żetonami czasu odnowienia na żywo (Hotspot, Crew, Mecz załogi, Chop, Kontrakt i Licznik), a także ciepło/reputację, liczbę kontraktów i roszczeń oraz punkty sezonowe. \nWydarzenia na żywo pojawiają się, gdy inni gracze wykonują ważne akcje, gdy zostaniesz zaatakowany lub gdy nastąpią ruchy na globalnym rynku. \nPlakietka wiadomości pokazuje nieprzeczytane wiadomości systemowe i wiadomości osobiste. \nMenu awatara w prawym górnym rogu otwiera Mój profil, wiadomości, pomoc, ustawienia i wylogowanie. \nLewe menu nawigacyjne zapewnia dostęp do wszystkich sekcji gry pogrupowanych według kategorii: Akcje, Świat, Społeczność, Ekonomia, Imperium i Zasoby.\\nNowi gracze widzą kartę Startu z kolejnym krokiem (pierwsze przestępstwo, dzień/zadanie, następnie Crew). Poziom 3 lub wyższy lub ukończone wdrożenie powoduje pominięcie tej karty. \nCele dzienne znajdują się na górze w internecie i na urządzeniach mobilnych: przy każdym celu wyświetlana jest nagroda pieniężna i PD, przycisk odbioru, gdy jest on gotowy, oraz seria zdobyczy UTC. Po odebraniu, toast wyszczególnia otrzymaną gotówkę i PD. Kradzież pojazdów nie jest prezentowana poniżej rangi 5. \nJeśli należysz do załogi, na desce rozdzielczej pojawi się kompaktowa linia tygodniowych celów załogi.';
+      'Górny pasek pokazuje: Gotówkę, Rangę, Zdrowie (0-100 HP), Poziom poszukiwanego (0-100) i FBI Heat (0-100). \nTytuły rang mają tę samą drabinkę, co Twój profil publiczny: na przykład Żołnierz około 25. stopnia, a Ojciec Chrzestny tylko od 60. stopnia. \nCo 5 minut uruchamia się automatyczny kleszcz: głód spada o -2, pragnienie -3, leczysz pasywnie +5 HP (jeśli HP > 0), doliczane są odsetki bankowe (0,5%), a poziom poszukiwania nieznacznie spada poniżej 10. \nJeśli głód lub pragnienie osiągną poziom 0, umierasz i spędzasz 3 godziny na oddziale intensywnej terapii. Jedz i pij na czas! \nNa urządzeniach mobilnych dzięki przyklejonej stopce przestępstwa, kradzieże pojazdów, praca, bank i Crew są w zasięgu jednego kliknięcia. Złota kropka na zbrodniach, kradzieży lub pracy oznacza, że ​​czas odnowienia jest gotowy. Cała reszta znajduje się w menu hamburgera lub na lewym pasku bocznym; to menu jest pogrupowane (Akcje, Świat, Społeczność, Ekonomia, Imperium, Zasoby) i można je przeszukiwać. \nLiczniki czasu odnowienia w każdej sekcji pokazują, ile czasu pozostało do następnej akcji. Timer dostosowuje się, aby pokazać najbardziej odpowiednią jednostkę: minuty, godziny lub dni. \nKarta statystyk wykorzystuje teraz rzeczywiste liczniki na żywo dla ucieczek, morderstw, kontraktów na listę hitów, podróży i kul, zamiast stałych zerowych symboli zastępczych. \nPulpit nawigacyjny ma teraz również rozszerzoną sekcję ekonomiczną z gotówką, bankami, kryptowalutami, wartością pojazdu, wartością nieruchomości, wartością netto i 24-godzinnym trendem przepływu środków pieniężnych. \nBlok operacji pokazuje teraz aktywną produkcję, najdłuższy czas odnowienia, status pojazdu (aktywny/wystawiony/przejazd) i liczniki czasu następnej produkcji/wydarzenia. \nGdy wydarzenia graczy są na żywo (np. cotygodniowe zawody), ten sam panel po prawej stronie zawiera krótką listę ich tytułów i linki do strony wydarzeń. Możesz włączyć lub wyłączyć funkcję push rozpoczęcia/zakończenia rundy w Ustawieniach → Wydarzenia gracza (oprócz uprawnień urządzenia i innych kategorii push). \nPowiadomienia i ryzyko obejmują teraz nieprzeczytane wiadomości prywatne, zgłoszenia do pomocy technicznej oczekujące na Twoją odpowiedź, zdarzenia z ostatnich 24 godzin oraz kompaktowy wynik ryzyka (poszukiwany + FBI). \nKiedy twoja Crew bierze udział w Crew Wars, na pulpicie nawigacyjnym wyświetlane jest także podsumowanie Crew Wars ze statusem, przeciwnikiem, punktami załogi, rangą sezonu i pozostałym czasem w bieżącej fazie. \nPanel kontrolny zawiera teraz także przegląd operacji pojazdu na samochód/motocykl/łódkę z żetonami czasu odnowienia na żywo (Hotspot, Crew, Mecz załogi, Chop, Kontrakt i Licznik), a także ciepło/reputację, liczbę kontraktów i roszczeń oraz punkty sezonowe. \nWydarzenia na żywo pojawiają się, gdy inni gracze wykonują ważne akcje, gdy zostaniesz zaatakowany lub gdy nastąpią ruchy na globalnym rynku. \nPlakietka wiadomości pokazuje nieprzeczytane wiadomości systemowe i wiadomości osobiste. \nMenu awatara w prawym górnym rogu otwiera Mój profil, wiadomości, pomoc, ustawienia i wylogowanie. \nLewe menu nawigacyjne zapewnia dostęp do wszystkich sekcji gry pogrupowanych według kategorii: Akcje, Świat, Społeczność, Ekonomia, Imperium i Zasoby.';
 
   @override
   String get helpTopicDashboardTips =>

@@ -1,6 +1,7 @@
 /**
  * Rank/Level System - Based on Mafiawar
- * Converts numeric rank to level titles
+ * Converts numeric rank to level titles.
+ * Flutter copy: `client/lib/utils/rank_display.dart` — keep bands in sync.
  */
 
 export const RANK_TITLES = [

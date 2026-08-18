@@ -23,6 +23,7 @@ import '../widgets/icu_overlay.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/localized_api_message.dart';
+import '../utils/rank_display.dart';
 import '../services/event_renderer.dart';
 import 'crime_screen.dart';
 import 'jobs_screen.dart';
@@ -1463,7 +1464,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Colors.green.shade300,
                     ),
                     _buildTopInfoItem(
-                      _getRankTitle(AppLocalizations.of(context)!, player.rank),
+                      RankDisplay.title(
+                        AppLocalizations.of(context)!,
+                        player.rank,
+                      ),
                       Colors.amber.shade300,
                     ),
                     _buildTopInfoItem(
@@ -1546,14 +1550,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ],
     );
-  }
-
-  String _getRankTitle(AppLocalizations l10n, int rank) {
-    if (rank <= 5) return l10n.rankBeginner;
-    if (rank <= 10) return l10n.rankCriminal;
-    if (rank <= 15) return l10n.rankGangster;
-    if (rank <= 20) return l10n.rankMafioso;
-    return l10n.rankGodfather;
   }
 
   Widget _buildWebContent(BuildContext context) {
@@ -3258,7 +3254,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     _buildInfoRow(l10n.nameLabel, player.username, Colors.white),
                     _buildInfoRow(
                       '${l10n.rank} (${player.rank})',
-                      _getRankTitle(l10n, player.rank),
+                      RankDisplay.title(l10n, player.rank),
                       Colors.amber.shade300,
                     ),
                     _buildInfoRow(
@@ -4358,14 +4354,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ),
       ],
     );
-  }
-
-  String _getRankTitle(AppLocalizations l10n, int rank) {
-    if (rank <= 5) return l10n.rankBeginner;
-    if (rank <= 10) return l10n.rankCriminal;
-    if (rank <= 15) return l10n.rankGangster;
-    if (rank <= 20) return l10n.rankMafioso;
-    return l10n.rankGodfather;
   }
 
   String _getMoneyStatus(AppLocalizations l10n, int money) {
