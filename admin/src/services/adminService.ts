@@ -2238,7 +2238,11 @@ export const adminService = {
     return response.json();
   },
 
-  async createNPC(username: string, activityLevel: string) {
+  async createNPC(
+    username: string,
+    activityLevel: string,
+    gender: "male" | "female" = "male",
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/npcs`, {
       method: "POST",
@@ -2246,11 +2250,33 @@ export const adminService = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ username, activityLevel }),
+      body: JSON.stringify({ username, activityLevel, gender }),
     });
 
     if (!response.ok) {
-      throw new Error("Failed to create NPC");
+      const data = await response.json().catch(() => ({}));
+      throw new Error(
+        (data as { message?: string }).message || "Failed to create NPC",
+      );
+    }
+
+    return response.json();
+  },
+
+  async deleteNPC(npcId: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/npcs/${npcId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(
+        (data as { message?: string }).message || "Failed to delete NPC",
+      );
     }
 
     return response.json();

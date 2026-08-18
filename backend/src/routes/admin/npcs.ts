@@ -10,10 +10,11 @@ const router = express.Router();
  */
 router.post('/', adminAuthMiddleware, async (req: Request, res: Response) => {
   try {
-    const { username, activityLevel, npcType } = req.body;
+    const { username, activityLevel, npcType, gender } = req.body;
     
     // Accept both activityLevel (from frontend) and npcType (legacy)
     const type = activityLevel || npcType;
+    const parsedGender = gender === 'female' ? 'female' : 'male';
 
     if (!username || !type) {
       return res.status(400).json({ 
@@ -29,7 +30,11 @@ router.post('/', adminAuthMiddleware, async (req: Request, res: Response) => {
       });
     }
 
-    const result = await NPCService.createNPC({ username, npcType: type });
+    const result = await NPCService.createNPC({
+      username,
+      npcType: type,
+      gender: parsedGender,
+    });
 
     res.status(201).json({
       success: true,
@@ -44,6 +49,12 @@ router.post('/', adminAuthMiddleware, async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error('Error creating NPC:', error);
+    if (error?.message === 'USERNAME_TAKEN') {
+      return res.status(409).json({
+        error: 'username_taken',
+        message: 'That username is already in use',
+      });
+    }
     res.status(500).json({ 
       error: 'creation_failed',
       message: error.message 

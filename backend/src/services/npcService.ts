@@ -22,6 +22,7 @@ const properties = propertiesData.properties;
 interface NPCCreationOptions {
   username: string;
   npcType: NPCType;
+  gender?: 'male' | 'female';
 }
 
 interface NPCActivityResult {
@@ -52,6 +53,12 @@ export class NPCService {
    */
   static async createNPC(options: NPCCreationOptions) {
     const { username, npcType } = options;
+    const gender = options.gender === 'female' ? 'female' : 'male';
+
+    const existing = await prisma.player.findUnique({ where: { username } });
+    if (existing) {
+      throw new Error('USERNAME_TAKEN');
+    }
 
     // Get initial stats based on NPC type
     const initialStats = npcBehaviors.initialStats[npcType];
@@ -65,6 +72,8 @@ export class NPCService {
         passwordHash: hashedPassword,
         email: `${username}@npc.local`,
         emailVerified: true,
+        gender,
+        avatar: gender === 'female' ? 'default_2' : 'default_1',
         money: initialStats.startingMoney,
         rank: initialStats.startingRank,
         xp: initialStats.startingXP,
@@ -152,6 +161,7 @@ export class NPCService {
                 health: Number(player?.health || 100),
                 currentCountry: String(player?.currentCountry || 'netherlands'),
               },
+              isActive: Boolean(npc.isActive),
               createdAt: npc.createdAt.toISOString(),
             };
           } catch (error) {

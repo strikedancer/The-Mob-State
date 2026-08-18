@@ -93,6 +93,7 @@ type TabType =
   | "crew-missions"
   | "territory"
   | "nightclubs";
+type ConfigSection = "access" | "housing" | "combat" | "keys";
 type PlayerDetailTab = "overview" | "manage" | "financial";
 type DateRangeFilter = "24h" | "7d" | "30d" | "all";
 type SystemLogDateRange = "1h" | "24h" | "7d" | "30d" | "all";
@@ -340,6 +341,7 @@ interface NPC {
     currentCountry: string;
   };
   createdAt: string;
+  isActive?: boolean;
 }
 
 interface AdminVehicle {
@@ -750,6 +752,7 @@ function App() {
   // Config state
   const [config, setConfig] = useState<Record<string, string>>({});
   const [configSearch, setConfigSearch] = useState("");
+  const [configSection, setConfigSection] = useState<ConfigSection>("access");
   const [editingConfig, setEditingConfig] = useState<Record<string, string>>(
     {},
   );
@@ -798,9 +801,10 @@ function App() {
   const [npcs, setNPCs] = useState<NPC[]>([]);
   const [npcLoading, setNPCLoading] = useState(false);
   const [selectedNPC, setSelectedNPC] = useState<NPC | null>(null);
-  const [creatingNPC, setCreatingNPC] = useState(false);
   const [newNPCUsername, setNewNPCUsername] = useState("");
   const [newNPCActivityLevel, setNewNPCActivityLevel] = useState("MATIG");
+  const [newNPCGender, setNewNPCGender] = useState<"male" | "female">("male");
+  const [npcFormError, setNpcFormError] = useState<string | null>(null);
   const [simulatingNPC, setSimulatingNPC] = useState<NPC | null>(null);
   const [simulateHours, setSimulateHours] = useState("1");
 
@@ -2944,19 +2948,57 @@ function App() {
 
   const handleCreateNPC = async () => {
     if (!newNPCUsername.trim()) {
-      alert(t.npcUsernameRequired);
+      setNpcFormError(t.npcUsernameRequired);
       return;
     }
     try {
       setNPCLoading(true);
-      await adminService.createNPC(newNPCUsername, newNPCActivityLevel);
+      setNpcFormError(null);
+      await adminService.createNPC(
+        newNPCUsername.trim(),
+        newNPCActivityLevel,
+        newNPCGender,
+      );
       setNewNPCUsername("");
       setNewNPCActivityLevel("MATIG");
-      setCreatingNPC(false);
+      setNewNPCGender("male");
       await loadNPCs();
     } catch (err) {
       console.error("Failed to create NPC:", err);
-      alert(t.failedCreateNpc);
+      const message = err instanceof Error ? err.message : t.failedCreateNpc;
+      setNpcFormError(
+        message === "That username is already in use"
+          ? l("Die gebruikersnaam is al in gebruik.", "That username is already in use.")
+          : message || t.failedCreateNpc,
+      );
+    } finally {
+      setNPCLoading(false);
+    }
+  };
+
+  const handleDeleteNPC = async (npc: NPC) => {
+    if (
+      !window.confirm(
+        l(
+          `NPC "${npc.username}" verwijderen? Het gekoppelde speleraccount wordt ook verwijderd.`,
+          `Delete NPC "${npc.username}"? The linked player account is also removed.`,
+        ),
+      )
+    ) {
+      return;
+    }
+    try {
+      setNPCLoading(true);
+      await adminService.deleteNPC(npc.id);
+      if (selectedNPC?.id === npc.id) setSelectedNPC(null);
+      await loadNPCs();
+    } catch (err) {
+      console.error("Failed to delete NPC:", err);
+      alert(
+        err instanceof Error
+          ? err.message
+          : l("NPC verwijderen mislukt.", "Failed to delete NPC."),
+      );
     } finally {
       setNPCLoading(false);
     }
@@ -3919,6 +3961,20 @@ function App() {
       key.toLowerCase().includes(configSearch.toLowerCase()) ||
       value.toLowerCase().includes(configSearch.toLowerCase()),
   );
+
+  const groupedConfig = filteredConfig.reduce<
+    Array<{ prefix: string; rows: Array<[string, string]> }>
+  >((groups, entry) => {
+    const underscore = entry[0].indexOf("_");
+    const prefix = underscore > 0 ? entry[0].slice(0, underscore) : "OTHER";
+    const existing = groups.find((group) => group.prefix === prefix);
+    if (existing) {
+      existing.rows.push(entry);
+      return groups;
+    }
+    groups.push({ prefix, rows: [entry] });
+    return groups;
+  }, []).sort((a, b) => a.prefix.localeCompare(b.prefix));
 
   const economyTuning = useMemo(
     () => ({
@@ -12438,10 +12494,38 @@ function App() {
               {activeTab === "config" && (
                 <>
                   <h1>{t.configEditorTitle}</h1>
-                  <EmailVerificationAdminPanel locale={language} />
-                  <div className="config-warning">
-                    ⚠️ <strong>{t.warning}:</strong> {t.configRestartWarning}
+                  <p className="text-muted">
+                    {l(
+                      "Instellingen staan per onderwerp. Gebruik Alle keys alleen voor ruwe runtime-waarden.",
+                      "Settings are grouped by topic. Use All keys only for raw runtime values.",
+                    )}
+                  </p>
+                  <div className="admin-subnav" role="tablist">
+                    {(
+                      [
+                        ["access", l("Toegang", "Access")],
+                        ["housing", l("Wonen & RLD", "Housing & RLD")],
+                        ["combat", l("Combat", "Combat")],
+                        ["keys", l("Alle keys", "All keys")],
+                      ] as Array<[ConfigSection, string]>
+                    ).map(([id, label]) => (
+                      <button
+                        key={id}
+                        type="button"
+                        role="tab"
+                        aria-selected={configSection === id}
+                        className={`admin-subnav-btn ${configSection === id ? "is-active" : ""}`}
+                        onClick={() => setConfigSection(id)}
+                      >
+                        {label}
+                      </button>
+                    ))}
                   </div>
+                  {configSection === "access" && (
+                    <EmailVerificationAdminPanel locale={language} />
+                  )}
+                  {configSection === "housing" && (
+                    <>
                   <div
                     className="table-container"
                     style={{ marginBottom: "1rem" }}
@@ -12606,6 +12690,9 @@ function App() {
                       </button>
                     </div>
                   </div>
+                    </>
+                  )}
+                  {configSection === "combat" && (
                   <div
                     className="table-container"
                     style={{ marginBottom: "1rem" }}
@@ -12698,16 +12785,34 @@ function App() {
                       </strong>
                     </p>
                   </div>
+                  )}
+                  {configSection === "keys" && (
+                    <>
+                  <div className="config-warning">
+                    ⚠️ <strong>{t.warning}:</strong> {t.configRestartWarning}
+                  </div>
                   <div className="search-bar">
                     <input
                       type="text"
                       placeholder={t.searchConfigKeys}
                       value={configSearch}
                       onChange={(e) => setConfigSearch(e.target.value)}
-                      className="search-input"
+                      className="search-input form-control"
                     />
                   </div>
-                  <div className="table-container">
+                  {groupedConfig.length === 0 && (
+                    <p className="text-muted">
+                      {l("Geen keys gevonden.", "No keys found.")}
+                    </p>
+                  )}
+                  {groupedConfig.map((group) => (
+                  <div className="table-container config-key-group" key={group.prefix}>
+                    <h3 className="h6 mb-2">
+                      {group.prefix}
+                      <span className="text-muted fw-normal ms-2">
+                        {group.rows.length}
+                      </span>
+                    </h3>
                     <table className="data-table">
                       <thead>
                         <tr>
@@ -12720,7 +12825,7 @@ function App() {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredConfig.map(([key]) => (
+                        {group.rows.map(([key]) => (
                           <tr key={key}>
                             <td>
                               <strong>{key}</strong>
@@ -12735,13 +12840,15 @@ function App() {
                                     [key]: e.target.value,
                                   })
                                 }
-                                className="config-input"
+                                className="config-input form-control"
                               />
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                  ))}
                     <div className="config-actions">
                       <button
                         className="btn-small btn-success"
@@ -12753,7 +12860,8 @@ function App() {
                         {t.reset}
                       </button>
                     </div>
-                  </div>
+                    </>
+                  )}
                 </>
               )}
 
@@ -14073,30 +14181,108 @@ function App() {
               {activeTab === "npcs" && (
                 <>
                   <h1>{t.npcManagementTitle}</h1>
-                  <div className="npc-header">
-                    <button
-                      className="btn-small btn-success"
-                      onClick={() => setCreatingNPC(true)}
-                    >
-                      + {t.createNpc}
-                    </button>
-                    <button
-                      className="btn-small"
-                      onClick={loadNPCs}
-                      disabled={npcLoading}
-                    >
-                      {npcLoading ? t.loading : `🔄 ${t.refresh}`}
-                    </button>
+                  <p className="text-muted">
+                    {l(
+                      "Voeg hier een NPC toe. Die krijgt een echt speleraccount en speelt automatisch volgens het activiteitsniveau.",
+                      "Add an NPC here. It gets a real player account and plays automatically according to the activity level.",
+                    )}
+                  </p>
+                  <div className="table-container npc-create-card">
+                    <h3 className="h5 mb-3">{t.createNpcTitle}</h3>
+                    {npcFormError && (
+                      <div className="alert alert-danger">{npcFormError}</div>
+                    )}
+                    <div className="form-grid npc-create-grid">
+                      <div className="form-group">
+                        <label htmlFor="npc-username">
+                          {l("Gebruikersnaam", "Username")} *
+                        </label>
+                        <input
+                          id="npc-username"
+                          className="form-control"
+                          type="text"
+                          value={newNPCUsername}
+                          onChange={(e) => setNewNPCUsername(e.target.value)}
+                          placeholder={l(
+                            "Bijv. NicoBot",
+                            "e.g. NicoBot",
+                          )}
+                          disabled={npcLoading}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="npc-activity">{t.activityLevel}</label>
+                        <select
+                          id="npc-activity"
+                          className="form-select"
+                          value={newNPCActivityLevel}
+                          onChange={(e) =>
+                            setNewNPCActivityLevel(e.target.value)
+                          }
+                          disabled={npcLoading}
+                        >
+                          <option value="MATIG">
+                            {l(
+                              "MATIG (1-2 misdaden/uur)",
+                              "MODERATE (1-2 crimes/hour)",
+                            )}
+                          </option>
+                          <option value="GEMIDDELD">
+                            {l(
+                              "GEMIDDELD (3-5 misdaden/uur)",
+                              "AVERAGE (3-5 crimes/hour)",
+                            )}
+                          </option>
+                          <option value="CONTINU">
+                            {l(
+                              "CONTINU (10-20 misdaden/uur)",
+                              "CONTINUOUS (10-20 crimes/hour)",
+                            )}
+                          </option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="npc-gender">
+                          {l("Geslacht", "Gender")}
+                        </label>
+                        <select
+                          id="npc-gender"
+                          className="form-select"
+                          value={newNPCGender}
+                          onChange={(e) =>
+                            setNewNPCGender(
+                              e.target.value === "female" ? "female" : "male",
+                            )
+                          }
+                          disabled={npcLoading}
+                        >
+                          <option value="male">{l("Man", "Male")}</option>
+                          <option value="female">{l("Vrouw", "Female")}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="npc-header">
+                      <button
+                        type="button"
+                        className="btn btn-success"
+                        onClick={() => void handleCreateNPC()}
+                        disabled={npcLoading}
+                      >
+                        {npcLoading ? t.creating : `+ ${t.createNpc}`}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => void loadNPCs()}
+                        disabled={npcLoading}
+                      >
+                        {npcLoading ? t.loading : t.refresh}
+                      </button>
+                    </div>
                   </div>
 
                   {npcs.length === 0 && !npcLoading && (
-                    <div
-                      style={{
-                        padding: "2rem",
-                        textAlign: "center",
-                        color: "var(--text-muted)",
-                      }}
-                    >
+                    <div className="alert alert-light border">
                       {t.noNpcsFound}
                     </div>
                   )}
@@ -14115,6 +14301,7 @@ function App() {
                             <th>{l("Geld verdiend", "Money earned")}</th>
                             <th>{l("Rang", "Rank")}</th>
                             <th>{l("Misdaden/uur", "Crimes/hour")}</th>
+                            <th>{l("Status", "Status")}</th>
                             <th>{t.actions}</th>
                           </tr>
                         </thead>
@@ -14143,6 +14330,15 @@ function App() {
                               <td>{npc.npcPlayer.rank}</td>
                               <td>{npc.stats.crimesPerHour.toFixed(2)}</td>
                               <td>
+                                <span
+                                  className={`badge ${npc.isActive === false ? "bg-secondary" : "bg-success"}`}
+                                >
+                                  {npc.isActive === false
+                                    ? l("Uit", "Off")
+                                    : l("Actief", "Active")}
+                                </span>
+                              </td>
+                              <td>
                                 <button
                                   className="btn-small btn-primary"
                                   onClick={() => handleViewNPCDetails(npc)}
@@ -14155,85 +14351,19 @@ function App() {
                                   disabled={npcLoading}
                                 >
                                   {t.simulate}
+                                </button>{" "}
+                                <button
+                                  className="btn-small btn-danger"
+                                  onClick={() => void handleDeleteNPC(npc)}
+                                  disabled={npcLoading}
+                                >
+                                  {t.delete}
                                 </button>
                               </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
-                    </div>
-                  )}
-
-                  {/* Create NPC Modal */}
-                  {creatingNPC && (
-                    <div
-                      className="modal-overlay"
-                      onClick={() => setCreatingNPC(false)}
-                    >
-                      <div
-                        className="admin-modal"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <h2>{t.createNpcTitle}</h2>
-                        <div className="form-group">
-                          <label>{l("Gebruikersnaam", "Username")} *</label>
-                          <input
-                            type="text"
-                            value={newNPCUsername}
-                            onChange={(e) => setNewNPCUsername(e.target.value)}
-                            placeholder={l(
-                              "Voer NPC gebruikersnaam in...",
-                              "Enter NPC username...",
-                            )}
-                            disabled={npcLoading}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>{t.activityLevel}</label>
-                          <select
-                            value={newNPCActivityLevel}
-                            onChange={(e) =>
-                              setNewNPCActivityLevel(e.target.value)
-                            }
-                            disabled={npcLoading}
-                          >
-                            <option value="MATIG">
-                              {l(
-                                "MATIG (1-2 misdaden/uur)",
-                                "MODERATE (1-2 crimes/hour)",
-                              )}
-                            </option>
-                            <option value="GEMIDDELD">
-                              {l(
-                                "GEMIDDELD (3-5 misdaden/uur)",
-                                "AVERAGE (3-5 crimes/hour)",
-                              )}
-                            </option>
-                            <option value="CONTINU">
-                              {l(
-                                "CONTINU (10-20 misdaden/uur)",
-                                "CONTINUOUS (10-20 crimes/hour)",
-                              )}
-                            </option>
-                          </select>
-                        </div>
-                        <div className="modal-actions">
-                          <button
-                            className="btn-small btn-success"
-                            onClick={handleCreateNPC}
-                            disabled={npcLoading}
-                          >
-                            {npcLoading ? t.creating : t.createNpc}
-                          </button>
-                          <button
-                            className="btn-small"
-                            onClick={() => setCreatingNPC(false)}
-                            disabled={npcLoading}
-                          >
-                            {t.cancel}
-                          </button>
-                        </div>
-                      </div>
                     </div>
                   )}
 
