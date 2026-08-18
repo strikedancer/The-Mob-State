@@ -4,7 +4,12 @@ import npcBehaviors from '../../content/npcBehaviors.json';
 import countries from '../../content/countries.json';
 import prisma from '../lib/prisma';
 import { getXPForRank } from '../config';
-import { simulateNpcGameHours } from './npcActionDriver';
+import {
+  maxLiveCyclesPerDay,
+  runNpcLiveCycle,
+  simulateNpcGameHours,
+  tickMinutesForType,
+} from './npcActionDriver';
 
 interface NPCCreationOptions {
   username: string;
@@ -35,6 +40,9 @@ interface NPCActivityResult {
   actions?: string[];
   ticks?: number;
   intervalMinutes?: number;
+  calendarHours?: number;
+  activeHours?: number;
+  sleepMinutes?: number;
 }
 
 export class NPCService {
@@ -288,7 +296,7 @@ export class NPCService {
         totalMoneyEarned: { increment: Math.max(0, cycle.moneyEarned) },
         totalXpEarned: { increment: Math.max(0, cycle.xpEarned) },
         totalArrests: { increment: cycle.arrests },
-        simulatedOnlineHours: { increment: hours },
+        simulatedOnlineHours: { increment: cycle.activeHours },
         lastActivityAt: new Date(),
       },
     });
@@ -302,6 +310,92 @@ export class NPCService {
       actions: cycle.actions,
       ticks: cycle.ticks,
       intervalMinutes: cycle.intervalMinutes,
+      calendarHours: cycle.calendarHours,
+      activeHours: cycle.activeHours,
+      sleepMinutes: cycle.sleepMinutes,
+    };
+  }
+
+  /**
+   * One real-time live cycle per NPC, capped at a normal play-day.
+   */
+  static async runScheduledTicks(): Promise<{
+    totalNPCs: number;
+    results: NPCActivityResult[];
+    totalActivities: number;
+    totalMoneyEarned: number;
+    totalXpEarned: number;
+    totalArrests: number;
+  }> {
+    const activeNPCs = await prisma.nPCPlayer.findMany({
+      where: { isActive: true },
+    });
+    const results: NPCActivityResult[] = [];
+    const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+    for (const npc of activeNPCs) {
+      const tickMinutes = tickMinutesForType(npc.npcType);
+      const sinceLastMs = Date.now() - new Date(npc.lastActivityAt).getTime();
+      if (sinceLastMs < tickMinutes * 60 * 1000) {
+        continue;
+      }
+
+      const crimesToday = await prisma.nPCActivityLog.count({
+        where: {
+          npcId: npc.id,
+          activityType: 'CRIME',
+          timestamp: { gte: dayAgo },
+        },
+      });
+      if (crimesToday >= maxLiveCyclesPerDay(npc.npcType)) {
+        continue;
+      }
+
+      try {
+        const cycle = await runNpcLiveCycle(npc.id, npc.playerId, npc.npcType, {
+          allowBank: true,
+          allowTravelStart: Math.random() < 0.15,
+          allowVehicleSteal: true,
+        });
+        await prisma.nPCPlayer.update({
+          where: { id: npc.id },
+          data: {
+            totalCrimes: { increment: cycle.actions.filter((action) => action === 'crime').length },
+            totalJobs: { increment: cycle.actions.filter((action) => action === 'job').length },
+            totalMoneyEarned: { increment: Math.max(0, cycle.moneyEarned) },
+            totalXpEarned: { increment: Math.max(0, cycle.xpEarned) },
+            totalArrests: { increment: cycle.arrests },
+            simulatedOnlineHours: { increment: tickMinutes / 60 },
+            lastActivityAt: new Date(),
+          },
+        });
+        results.push({
+          npcId: npc.id,
+          activitiesPerformed: cycle.activitiesPerformed,
+          moneyEarned: cycle.moneyEarned,
+          xpEarned: cycle.xpEarned,
+          arrests: cycle.arrests,
+          actions: cycle.actions,
+        });
+      } catch (error) {
+        console.error(`Failed to tick NPC ${npc.id}:`, error);
+        results.push({
+          npcId: npc.id,
+          activitiesPerformed: 0,
+          moneyEarned: 0,
+          xpEarned: 0,
+          arrests: 0,
+        });
+      }
+    }
+
+    return {
+      totalNPCs: activeNPCs.length,
+      results,
+      totalActivities: results.reduce((sum, row) => sum + row.activitiesPerformed, 0),
+      totalMoneyEarned: results.reduce((sum, row) => sum + row.moneyEarned, 0),
+      totalXpEarned: results.reduce((sum, row) => sum + row.xpEarned, 0),
+      totalArrests: results.reduce((sum, row) => sum + row.arrests, 0),
     };
   }
 

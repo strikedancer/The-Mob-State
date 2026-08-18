@@ -103,15 +103,16 @@
         "nightActive": 0.6
       },
       "crimePreferences": {
-        "shoplift": 0.08,
-        "steal_bike": 0.08,
-        "mug_person": 0.12,
-        "car_theft": 0.16,
-        "burglary": 0.16,
+        "mug_person": 0.06,
+        "car_theft": 0.1,
+        "burglary": 0.12,
         "rob_store": 0.12,
         "extortion": 0.1,
-        "atm_theft": 0.1,
-        "hijack_truck": 0.08
+        "atm_theft": 0.12,
+        "hijack_truck": 0.1,
+        "jewelry_heist": 0.1,
+        "hack_account": 0.08,
+        "smuggling": 0.1
       },
       "jobPreferences": {
         "warehouse_worker": 0.15,

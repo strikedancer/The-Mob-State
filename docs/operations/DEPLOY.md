@@ -263,7 +263,8 @@ MAX_FLIGHTS_PER_DAY=100
 # Temporary login-without-verify: Admin → Config → Toegang (runtime key AUTH_REQUIRE_EMAIL_VERIFICATION). Default on.
 # Admin Config is split into topic tabs (Access, Housing & RLD, Combat, All keys). Add NPCs from the form on Admin → NPCs.
 # NPCs now run the live player services (crimes, jobs, travel, training, bank, tools). Recreate old NPCs so rank/XP match the current curve.
-# Admin "simulate N hours" advances that NPC's cooldowns so 24h is paced play, not 8 instant bank dumps.
+# Admin "simulate N hours" = N calendar hours. Only a normal play-day is active
+# (MATIG 2.5h / GEMIDDELD 5h / CONTINU 8h); the rest is sleep for jail/cooldowns.
 SMTP_HOST="themobstate.com"
 SMTP_PORT="465"
 SMTP_USER="noreply@themobstate.com"

@@ -56,15 +56,13 @@ export class NPCScheduler {
    */
   private async runSimulation() {
     try {
-      const intervalMinutes = npcBehaviors.simulationSettings.tickIntervalMinutes;
-      const hours = intervalMinutes / 60;
+      console.log('[NPC Scheduler] Running live ticks');
 
-      console.log(`[NPC Scheduler] Running simulation for ${hours} hours`);
+      const result = await NPCService.runScheduledTicks();
 
-      const result = await NPCService.simulateAllNPCs(hours);
-
-      console.log(`[NPC Scheduler] Simulation complete:`, {
+      console.log('[NPC Scheduler] Tick complete:', {
         npcs: result.totalNPCs,
+        ran: result.results.length,
         activities: result.totalActivities,
         moneyEarned: result.totalMoneyEarned,
         xpEarned: result.totalXpEarned,

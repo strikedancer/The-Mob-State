@@ -35,10 +35,25 @@ export type NpcCycleOptions = {
   allowVehicleSteal?: boolean;
 };
 
-function tickMinutesForType(npcType: NPCType): number {
+export const NPC_ACTIVE_HOURS_PER_DAY: Record<NPCType, number> = {
+  MATIG: 2.5,
+  GEMIDDELD: 5,
+  CONTINU: 8,
+};
+
+export function tickMinutesForType(npcType: NPCType): number {
   if (npcType === 'CONTINU') return 10;
   if (npcType === 'GEMIDDELD') return 12;
   return 20;
+}
+
+export function activeHoursForCalendar(npcType: NPCType, calendarHours: number): number {
+  const activePerDay = NPC_ACTIVE_HOURS_PER_DAY[npcType] ?? 5;
+  return Math.max(0.1, calendarHours * (activePerDay / 24));
+}
+
+export function maxLiveCyclesPerDay(npcType: NPCType): number {
+  return Math.max(1, Math.round((NPC_ACTIVE_HOURS_PER_DAY[npcType] * 60) / tickMinutesForType(npcType)));
 }
 
 function shiftDate(value: Date | null | undefined, seconds: number): Date | null {
@@ -46,8 +61,9 @@ function shiftDate(value: Date | null | undefined, seconds: number): Date | null
   return new Date(value.getTime() - seconds * 1000);
 }
 
-const STARTER_TOOLS = ['spray_paint', 'bolt_cutter', 'car_theft_tools', 'burglary_kit', 'crowbar'];
 const STARTER_WEAPON = 'knife';
+const MAX_TOOL_PRICE_SHARE = 0.2;
+const MAX_TOOL_PRICE_ABS = 15000;
 
 async function logNpcAction(
   npcId: number,
@@ -155,17 +171,46 @@ async function tryContinueTravel(npcId: number, playerId: number): Promise<boole
   }
 }
 
+function scoreCrime(
+  crime: { id: string; minLevel: number; maxReward: number },
+  playerRank: number,
+  prefWeight: number,
+): number {
+  const stalePenalty = crime.minLevel < playerRank - 4 ? 0.35 : 1;
+  return (crime.minLevel * 80 + crime.maxReward * 0.04 + prefWeight * 40) * stalePenalty;
+}
+
+function pickWeightedFrom<T>(items: Array<{ item: T; weight: number }>): T | null {
+  if (items.length === 0) return null;
+  const total = items.reduce((sum, entry) => sum + Math.max(0.01, entry.weight), 0);
+  let roll = Math.random() * total;
+  for (const entry of items) {
+    roll -= Math.max(0.01, entry.weight);
+    if (roll <= 0) return entry.item;
+  }
+  return items[0].item;
+}
+
 async function tryBuyGear(npcId: number, playerId: number, behavior: Behavior): Promise<number> {
   const player = await loadPlayer(playerId);
   if (!player) return 0;
   let bought = 0;
 
-  for (const crimeId of Object.keys(behavior.crimePreferences)) {
-    const crime = crimeService.getCrimeDefinition(crimeId);
-    if (!crime || player.rank < crime.minLevel) continue;
-    const tools = await toolService.hasRequiredToolsForCrime(playerId, crimeId);
+  const rankedCrimes = crimeService
+    .getCrimesForLevel(player.rank)
+    .filter((crime) => !crime.requiredDrugs?.length && crime.id !== 'criminal_record_wipe')
+    .sort((a, b) => b.minLevel - a.minLevel || b.maxReward - a.maxReward)
+    .slice(0, 6);
+
+  for (const crime of rankedCrimes) {
+    if (bought >= 3) break;
+    const tools = await toolService.hasRequiredToolsForCrime(playerId, crime.id);
     for (const toolId of tools.missingTools) {
-      if (!STARTER_TOOLS.includes(toolId)) continue;
+      if (bought >= 3) break;
+      const definition = toolService.getToolDefinition(toolId);
+      const price = definition?.basePrice ?? 0;
+      const cashCap = Math.max(500, player.money * MAX_TOOL_PRICE_SHARE);
+      if (price > MAX_TOOL_PRICE_ABS || price > cashCap) continue;
       const result = await toolService.buyTool(playerId, toolId);
       if (result.success) {
         bought += 1;
@@ -205,9 +250,13 @@ async function tryJob(npcId: number, playerId: number, behavior: Behavior): Prom
   if (availableJobs.length === 0) return false;
 
   const preferred = pickWeightedId(behavior.jobPreferences);
+  const ranked = [...availableJobs].sort((a, b) => b.maxEarnings - a.maxEarnings);
+  const topJobs = ranked.slice(0, Math.min(4, ranked.length));
+  const preferredJob = availableJobs.find((item) => item.id === preferred);
   const job =
-    availableJobs.find((item) => item.id === preferred) ||
-    availableJobs[Math.floor(Math.random() * availableJobs.length)];
+    (preferredJob && Math.random() < 0.35 ? preferredJob : null) ||
+    pickWeightedFrom(topJobs.map((item, index) => ({ item, weight: topJobs.length - index }))) ||
+    ranked[0];
 
   try {
     const result = await jobService.workJob(playerId, job.id);
@@ -236,19 +285,18 @@ async function tryCrime(npcId: number, playerId: number, behavior: Behavior): Pr
   const player = await loadPlayer(playerId);
   if (!player) return false;
 
-  const preferredOrder = Object.entries(behavior.crimePreferences).sort((a, b) => b[1] - a[1]);
-  const candidates = [
-    ...preferredOrder.map(([id]) => id),
-    ...crimeService.getCrimesForLevel(player.rank).map((crime) => crime.id),
-  ];
+  const doable: Array<{
+    crime: NonNullable<ReturnType<typeof crimeService.getCrimeDefinition>>;
+    vehicleId?: number;
+    selectedWeaponId?: string;
+    weight: number;
+  }> = [];
 
-  for (const crimeId of candidates) {
-    const crime = crimeService.getCrimeDefinition(crimeId);
-    if (!crime || player.rank < crime.minLevel) continue;
-    if (crime.requiredDrugs?.length) continue;
-    if (crimeId === 'criminal_record_wipe') continue;
+  for (const crime of crimeService.getCrimesForLevel(player.rank)) {
+    if (!crime || crime.requiredDrugs?.length) continue;
+    if (crime.id === 'criminal_record_wipe') continue;
 
-    const tools = await toolService.hasRequiredToolsForCrime(playerId, crimeId);
+    const tools = await toolService.hasRequiredToolsForCrime(playerId, crime.id);
     if (!tools.hasAll) continue;
 
     let vehicleId: number | undefined;
@@ -265,33 +313,47 @@ async function tryCrime(npcId: number, playerId: number, behavior: Behavior): Pr
       selectedWeaponId = selected.weaponId;
     }
 
-    try {
-      const result = await crimeService.attemptCrime(
-        playerId,
-        crimeId,
-        vehicleId,
-        selectedWeaponId,
-      );
-      await cooldownService.setCooldown(
-        playerId,
-        'crime',
-        cooldownService.calculateCrimeCooldown(crime.maxReward),
-      );
-      await logNpcAction(
-        npcId,
-        'CRIME',
-        { crimeId, crimeName: crime.name, jailed: result.jailed },
-        result.success,
-        result.reward || 0,
-        result.xpGained || 0,
-      );
-      return true;
-    } catch (error) {
-      console.error('[NPC live] Crime failed:', crimeId, error);
-    }
+    doable.push({
+      crime,
+      vehicleId,
+      selectedWeaponId,
+      weight: scoreCrime(
+        crime,
+        player.rank,
+        (behavior.crimePreferences as Record<string, number>)[crime.id] ?? 0,
+      ),
+    });
   }
 
-  return false;
+  const ranked = doable.sort((a, b) => b.weight - a.weight).slice(0, 4);
+  const pick = pickWeightedFrom(ranked.map((entry) => ({ item: entry, weight: entry.weight })));
+  if (!pick) return false;
+
+  try {
+    const result = await crimeService.attemptCrime(
+      playerId,
+      pick.crime.id,
+      pick.vehicleId,
+      pick.selectedWeaponId,
+    );
+    await cooldownService.setCooldown(
+      playerId,
+      'crime',
+      cooldownService.calculateCrimeCooldown(pick.crime.maxReward),
+    );
+    await logNpcAction(
+      npcId,
+      'CRIME',
+      { crimeId: pick.crime.id, crimeName: pick.crime.name, jailed: result.jailed },
+      result.success,
+      result.reward || 0,
+      result.xpGained || 0,
+    );
+    return true;
+  } catch (error) {
+    console.error('[NPC live] Crime failed:', pick.crime.id, error);
+    return false;
+  }
 }
 
 async function tryStealVehicle(npcId: number, playerId: number): Promise<boolean> {
@@ -600,11 +662,27 @@ export async function simulateNpcGameHours(
   playerId: number,
   npcType: NPCType,
   hours: number,
-): Promise<NpcLiveCycleResult & { ticks: number; intervalMinutes: number }> {
+): Promise<
+  NpcLiveCycleResult & {
+    ticks: number;
+    intervalMinutes: number;
+    calendarHours: number;
+    activeHours: number;
+    sleepMinutes: number;
+  }
+> {
   const intervalMinutes = tickMinutesForType(npcType);
-  const ticks = Math.max(1, Math.min(150, Math.round((hours * 60) / intervalMinutes)));
+  const calendarHours = hours;
+  const activeHours = activeHoursForCalendar(npcType, calendarHours);
+  const ticks = Math.max(1, Math.min(150, Math.round((activeHours * 60) / intervalMinutes)));
   const start = await playerWealth(playerId);
-  const result: NpcLiveCycleResult & { ticks: number; intervalMinutes: number } = {
+  const result: NpcLiveCycleResult & {
+    ticks: number;
+    intervalMinutes: number;
+    calendarHours: number;
+    activeHours: number;
+    sleepMinutes: number;
+  } = {
     activitiesPerformed: 0,
     moneyEarned: 0,
     xpEarned: 0,
@@ -612,14 +690,17 @@ export async function simulateNpcGameHours(
     actions: [],
     ticks,
     intervalMinutes,
+    calendarHours,
+    activeHours,
+    sleepMinutes: 0,
   };
 
   for (let i = 0; i < ticks; i++) {
     const elapsedMinutes = i * intervalMinutes;
     const cycle = await runNpcLiveCycle(npcId, playerId, npcType, {
       allowBank: elapsedMinutes > 0 && elapsedMinutes % 240 === 0,
-      allowTravelStart: elapsedMinutes === 0 || elapsedMinutes % 360 === 0,
-      allowVehicleSteal: elapsedMinutes === 0 || elapsedMinutes % 120 === 0,
+      allowTravelStart: elapsedMinutes === 0 || elapsedMinutes % 240 === 0,
+      allowVehicleSteal: elapsedMinutes === 0 || elapsedMinutes % 60 === 0,
     });
     result.activitiesPerformed += cycle.activitiesPerformed;
     result.arrests += cycle.arrests;
@@ -627,6 +708,13 @@ export async function simulateNpcGameHours(
     if (i < ticks - 1) {
       await advancePlayerSimClock(playerId, intervalMinutes * 60);
     }
+  }
+
+  const activeMinutes = ticks * intervalMinutes;
+  const sleepMinutes = Math.max(0, Math.round(calendarHours * 60 - activeMinutes));
+  result.sleepMinutes = sleepMinutes;
+  if (sleepMinutes > 0) {
+    await advancePlayerSimClock(playerId, sleepMinutes * 60);
   }
 
   const end = await playerWealth(playerId);

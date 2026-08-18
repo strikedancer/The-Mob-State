@@ -18,6 +18,9 @@ Badge progression, category tracking, rewards and long-term account goals.
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
 
+## Economy
+- Crime/job/school/miljonair-payouts zijn een bonus, geen tweede inkomen. Early milestones (1–50 crimes/jobs, school level 1–5, eerste lawyer/doctor-shift) blijven in de lage duizenden, niet tonnen. Al uitbetaalde achievements worden niet herberekend.
+
 ## Must Preserve
 - Uitgelichte unlocked achievements zijn zichtbaar op het publieke profiel (niet alleen self-only).
 - Clear success and failure feedback for the player.

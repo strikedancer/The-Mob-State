@@ -3032,7 +3032,7 @@ function App() {
         ? result.result.actions.filter((action: string) => action === "job").length
         : 0;
       alert(
-        `${t.simulationComplete}\n\n${l("Simulatietijd", "Simulated time")}: ${result.result.ticks || "?"} × ${result.result.intervalMinutes || "?"} min\n${l("Activiteiten", "Activities")}: ${result.result.activitiesPerformed}\n${l("Crimes", "Crimes")}: ${crimeCount}\n${l("Jobs", "Jobs")}: ${jobCount}\n${l("Acties", "Actions")}: ${actionList || "—"}\n${l("Vermogen-delta", "Wealth delta")}: €${result.result.moneyEarned}\n${l("XP verdiend", "XP earned")}: ${result.result.xpEarned}\n${l("Arrestaties", "Arrests")}: ${result.result.arrests}`,
+        `${t.simulationComplete}\n\n${l("Kalender", "Calendar")}: ${result.result.calendarHours ?? hours}u\n${l("Actieve speeltijd", "Active play")}: ${result.result.activeHours ?? "?"}u (${result.result.ticks || "?"} × ${result.result.intervalMinutes || "?"} min)\n${l("Slaap/idle", "Sleep/idle")}: ${result.result.sleepMinutes ?? 0} min\n${l("Activiteiten", "Activities")}: ${result.result.activitiesPerformed}\n${l("Crimes", "Crimes")}: ${crimeCount}\n${l("Jobs", "Jobs")}: ${jobCount}\n${l("Acties", "Actions")}: ${actionList || "—"}\n${l("Vermogen-delta", "Wealth delta")}: €${result.result.moneyEarned}\n${l("XP verdiend", "XP earned")}: ${result.result.xpEarned}\n${l("Arrestaties", "Arrests")}: ${result.result.arrests}`,
       );
       setSimulatingNPC(null);
       await loadNPCs();
@@ -14417,8 +14417,8 @@ function App() {
                             }}
                           >
                             {l(
-                              "Dit is echte speeltijd: cooldowns lopen mee. 24 uur is geen 8 snelle klikken. Bank stort max eens per 4 uur.",
-                              "This is real play time: cooldowns expire as time advances. 24 hours is not 8 instant clicks. Bank deposits at most once per 4 hours.",
+                              "24 uur kalender = een normale speeldag (MATIG ±2,5u, GEMIDDELD ±5u, CONTINU ±8u actief), daarna slaap waarin jail/cooldowns doorlopen. Bank max eens per 4 actieve uren.",
+                              "24 calendar hours = a normal play day (CASUAL ~2.5h, AVERAGE ~5h, CONTINUOUS ~8h active), then sleep while jail/cooldowns keep expiring. Bank at most once per 4 active hours.",
                             )}
                           </small>
                         </div>
