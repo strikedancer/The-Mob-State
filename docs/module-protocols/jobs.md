@@ -26,6 +26,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 - Job pacing is reward-tier based; higher-paying jobs may not reuse a flat global cooldown if backend pacing has moved to dynamic cooldown seconds.
 - Soft balancing via sessieblokken (diminishing returns) mag alleen payout-rate afvlakken en mag nooit eindeloze progressieloops vervangen door harde caps.
 - Job success/failure semantics in help copy must match the actual backend logic; do not document jobs as guaranteed success if the service can still fail.
+- Admin NPCs must call `jobService.workJob` with the current job IDs and education gates, not a parallel payout path.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

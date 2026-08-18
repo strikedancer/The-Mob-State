@@ -262,6 +262,7 @@ MAX_FLIGHTS_PER_DAY=100
 # Transactional mail (required on prod). Put SMTP_PASS only in .env.plesk, never in git.
 # Temporary login-without-verify: Admin → Config → Toegang (runtime key AUTH_REQUIRE_EMAIL_VERIFICATION). Default on.
 # Admin Config is split into topic tabs (Access, Housing & RLD, Combat, All keys). Add NPCs from the form on Admin → NPCs.
+# NPCs now run the live player services (crimes, jobs, travel, training, bank, tools). Recreate old NPCs so rank/XP match the current curve.
 SMTP_HOST="themobstate.com"
 SMTP_PORT="465"
 SMTP_USER="noreply@themobstate.com"

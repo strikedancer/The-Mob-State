@@ -24,9 +24,11 @@
         "vandalism": 0.1
       },
       "jobPreferences": {
-        "cleaner": 0.5,
-        "delivery_driver": 0.3,
-        "warehouse_worker": 0.2
+        "newspaper_delivery": 0.3,
+        "car_wash": 0.25,
+        "grocery_bagger": 0.2,
+        "dishwasher": 0.15,
+        "street_sweeper": 0.1
       },
       "levelUpSpeed": "slow",
       "moneyManagement": {
@@ -35,8 +37,9 @@
         "spendOnWeapons": 0.1,
         "spendOnProperty": 0.1
       },
-      "crewParticipation": 0.1,
-      "heistParticipation": 0.05
+      "travelChance": 0.15,
+      "crewParticipation": 0,
+      "heistParticipation": 0
     },
     "GEMIDDELD": {
       "name": "Gemiddelde Speler",
@@ -56,20 +59,20 @@
         "nightActive": 0.2
       },
       "crimePreferences": {
-        "pickpocket": 0.2,
+        "pickpocket": 0.15,
         "shoplift": 0.15,
         "steal_bike": 0.15,
-        "burglary": 0.15,
+        "vandalism": 0.1,
+        "mug_person": 0.15,
         "car_theft": 0.15,
-        "drug_deal_small": 0.1,
-        "vandalism": 0.1
+        "burglary": 0.15
       },
       "jobPreferences": {
-        "delivery_driver": 0.3,
+        "pizza_delivery": 0.2,
+        "taxi_driver": 0.2,
         "warehouse_worker": 0.2,
         "construction_worker": 0.2,
-        "office_clerk": 0.15,
-        "salesperson": 0.15
+        "bartender": 0.2
       },
       "levelUpSpeed": "normal",
       "moneyManagement": {
@@ -78,8 +81,9 @@
         "spendOnWeapons": 0.15,
         "spendOnProperty": 0.15
       },
-      "crewParticipation": 0.4,
-      "heistParticipation": 0.2
+      "travelChance": 0.4,
+      "crewParticipation": 0,
+      "heistParticipation": 0
     },
     "CONTINU": {
       "name": "Continue Speler",
@@ -99,26 +103,24 @@
         "nightActive": 0.6
       },
       "crimePreferences": {
-        "pickpocket": 0.05,
-        "shoplift": 0.05,
-        "steal_bike": 0.05,
-        "burglary": 0.15,
-        "car_theft": 0.2,
-        "rob_store": 0.15,
-        "drug_deal_small": 0.1,
-        "drug_deal_large": 0.1,
-        "mug_person": 0.1,
-        "hijack_truck": 0.05
+        "shoplift": 0.08,
+        "steal_bike": 0.08,
+        "mug_person": 0.12,
+        "car_theft": 0.16,
+        "burglary": 0.16,
+        "rob_store": 0.12,
+        "extortion": 0.1,
+        "atm_theft": 0.1,
+        "hijack_truck": 0.08
       },
       "jobPreferences": {
-        "office_clerk": 0.15,
-        "salesperson": 0.15,
-        "programmer": 0.2,
-        "accountant": 0.15,
-        "manager": 0.15,
-        "engineer": 0.1,
-        "lawyer": 0.05,
-        "doctor": 0.05
+        "warehouse_worker": 0.15,
+        "mechanic": 0.15,
+        "electrician": 0.15,
+        "bartender": 0.15,
+        "security_guard": 0.15,
+        "programmer": 0.15,
+        "accountant": 0.1
       },
       "levelUpSpeed": "fast",
       "moneyManagement": {
@@ -127,25 +129,23 @@
         "spendOnWeapons": 0.25,
         "spendOnProperty": 0.25
       },
-      "crewParticipation": 0.8,
-      "heistParticipation": 0.6
+      "travelChance": 0.7,
+      "crewParticipation": 0,
+      "heistParticipation": 0
     }
   },
   "initialStats": {
     "MATIG": {
-      "startingMoney": 5000,
-      "startingRank": 1,
-      "startingXP": 0
+      "startingMoney": 8000,
+      "startingRank": 1
     },
     "GEMIDDELD": {
-      "startingMoney": 10000,
-      "startingRank": 3,
-      "startingXP": 500
+      "startingMoney": 15000,
+      "startingRank": 3
     },
     "CONTINU": {
-      "startingMoney": 25000,
-      "startingRank": 5,
-      "startingXP": 2000
+      "startingMoney": 30000,
+      "startingRank": 5
     }
   },
   "simulationSettings": {

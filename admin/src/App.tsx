@@ -3022,8 +3022,11 @@ function App() {
       setNPCLoading(true);
       const result = await adminService.simulateNPC(simulatingNPC.id, hours);
       console.log("Simulation result:", result);
+      const actionList = Array.isArray(result.result.actions)
+        ? result.result.actions.join(", ")
+        : "";
       alert(
-        `${t.simulationComplete}\n\n${l("Activiteiten", "Activities")}: ${result.result.activitiesPerformed}\n${l("Geld verdiend", "Money earned")}: €${result.result.moneyEarned}\n${l("XP verdiend", "XP earned")}: ${result.result.xpEarned}\n${l("Arrestaties", "Arrests")}: ${result.result.arrests}`,
+        `${t.simulationComplete}\n\n${l("Activiteiten", "Activities")}: ${result.result.activitiesPerformed}\n${l("Acties", "Actions")}: ${actionList || "—"}\n${l("Geld verdiend", "Money earned")}: €${result.result.moneyEarned}\n${l("XP verdiend", "XP earned")}: ${result.result.xpEarned}\n${l("Arrestaties", "Arrests")}: ${result.result.arrests}`,
       );
       setSimulatingNPC(null);
       await loadNPCs();

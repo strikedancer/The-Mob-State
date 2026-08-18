@@ -40,6 +40,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - When a player is arrested after a weapon-based crime, the used crime weapon must be confiscated consistently with the arrest consequences shown to the player; if that was the last copy, the saved crime-weapon selection must no longer remain active.
 - A crime that ends in arrest may not still surface as a clean success result in the UI; if police/FBI catch the player after the attempt, the final response must resolve as an arrest outcome with consistent vehicle/weapon confiscation messaging.
 - Crime-specific special effects must be explicit in player feedback; if a crime wipes or alters judicial history, the success message must state that effect clearly.
+- Admin NPCs must call `crimeService.attemptCrime` (plus the same jail/ICU/cooldown/tool/weapon/vehicle guards) instead of writing crime payouts directly to the player row.
 - Wanneer een crime eindigt in arrestatie moet de social notification pipeline voor vrienden/crew worden getriggerd zonder de crime-respons te blokkeren.
 - Munitie mag pas worden verbruikt nadat alle harde startvoorwaarden van de crime geldig zijn; een preflight requirement failure mag geen kogels kosten.
 
