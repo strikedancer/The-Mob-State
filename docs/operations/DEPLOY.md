@@ -259,10 +259,10 @@ TICK_INTERVAL_MINUTES=5
 POLICE_RATIO=10
 MAX_FLIGHTS_PER_DAY=100
 
-# Optional: Email/SMS for notifications
-SMTP_HOST=""
-SMTP_PORT=""
-SMTP_USER=""
+# Transactional mail (required on prod). Put SMTP_PASS only in .env.plesk, never in git.
+SMTP_HOST="themobstate.com"
+SMTP_PORT="465"
+SMTP_USER="noreply@themobstate.com"
 SMTP_PASS=""
 ```
 

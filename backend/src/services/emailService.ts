@@ -8,14 +8,16 @@ const normalizeBaseUrl = (url: string) => url.replace(/\/+$/, '');
 const appBaseUrl = normalizeBaseUrl(config.appBaseUrl);
 const apiBaseUrl = normalizeBaseUrl(config.apiBaseUrl);
 
-// SMTP Configuration
+// SMTP credentials come from env (never commit the mailbox password).
+const smtpUser = process.env.SMTP_USER || 'noreply@themobstate.com';
+const smtpPass = process.env.SMTP_PASS || '';
 const transporter = nodemailer.createTransport({
-  host: 'themobstate.com',
-  port: 465,
+  host: process.env.SMTP_HOST || 'themobstate.com',
+  port: Number(process.env.SMTP_PORT || 465),
   secure: true, // SSL
   auth: {
-    user: 'noreply@themobstate.com',
-    pass: 'Noreply@841215',
+    user: smtpUser,
+    pass: smtpPass,
   },
   tls: {
     rejectUnauthorized: false, // Accept self-signed certificates

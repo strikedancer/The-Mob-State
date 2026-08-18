@@ -67,6 +67,10 @@ services:
       MOLLIE_PLAYER_VIP_PRICE_EUR: ${MOLLIE_PLAYER_VIP_PRICE_EUR:-4.99}
       MOLLIE_CREW_VIP_PRICE_EUR: ${MOLLIE_CREW_VIP_PRICE_EUR:-9.99}
       LEONARDO_API_KEY: ${LEONARDO_API_KEY}
+      SMTP_HOST: ${SMTP_HOST:-themobstate.com}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_USER: ${SMTP_USER:-noreply@themobstate.com}
+      SMTP_PASS: ${SMTP_PASS}
     volumes:
       - ${CLIENT_EXTERNAL_IMAGES_PATH:-/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images}:/client/images
     ports:
