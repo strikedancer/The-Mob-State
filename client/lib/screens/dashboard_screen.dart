@@ -107,6 +107,8 @@ enum _WebSection {
   achievements,
 }
 
+enum _NavGroup { actions, world, social, economy, empire, assets, more }
+
 _WebSection _webSectionFromQueryParam(String? value) {
   switch ((value ?? '').toLowerCase()) {
     case 'premium':
@@ -178,6 +180,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _unreadCount = 0;
   int _pendingFriendRequestCount = 0;
   int _supportBadgeCount = 0;
+  Map<String, int> _navCooldowns = const {};
+  bool _navCooldownsLoaded = false;
+  Timer? _navCooldownTick;
+  Timer? _navCooldownRefresh;
+  final TextEditingController _menuSearchController = TextEditingController();
 
   void _openPlayerProfile(Player player) {
     Navigator.push(
@@ -202,6 +209,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _vehicleHeistTabIndex = initialTabIndex;
       _selectedWebSection = _WebSection.vehicleHeist;
     });
+    _scheduleNavCooldownRefresh();
   }
 
   void _selectWebSection(_WebSection section) {
@@ -212,6 +220,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _selectedWebSection = section;
       }
     });
+    if (section == _WebSection.crimes ||
+        section == _WebSection.jobs ||
+        section == _WebSection.vehicleHeist) {
+      _scheduleNavCooldownRefresh();
+    }
   }
 
   @override
@@ -227,6 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _refreshDashboardBadges();
       _setupSSEListener();
       _startPlayerRefreshTimer();
+      _startNavCooldownTimers();
       _checkPremiumPopupOnOpen();
     });
   }
@@ -235,6 +249,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void dispose() {
     _eventSubscription?.cancel();
     _playerRefreshTimer?.cancel();
+    _navCooldownTick?.cancel();
+    _navCooldownRefresh?.cancel();
+    _menuSearchController.dispose();
     super.dispose();
   }
 
@@ -275,7 +292,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _loadUnreadCount(),
       _loadPendingFriendRequestCount(),
       _loadSupportBadgeCount(),
+      _loadNavCooldowns(),
     ]);
+  }
+
+  void _startNavCooldownTimers() {
+    _navCooldownTick?.cancel();
+    _navCooldownRefresh?.cancel();
+    _navCooldownTick = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted || !_navCooldownsLoaded) return;
+      var changed = false;
+      final next = <String, int>{};
+      for (final entry in _navCooldowns.entries) {
+        if (entry.value > 0) {
+          next[entry.key] = entry.value - 1;
+          changed = true;
+        }
+      }
+      if (changed) {
+        setState(() => _navCooldowns = next);
+      }
+    });
+    _navCooldownRefresh = Timer.periodic(const Duration(seconds: 10), (_) {
+      _loadNavCooldowns();
+    });
+    _loadNavCooldowns();
+  }
+
+  void _scheduleNavCooldownRefresh() {
+    Future<void>.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        _loadNavCooldowns();
+      }
+    });
+  }
+
+  bool _navActionReady(List<String> actionTypes) {
+    if (!_navCooldownsLoaded) return false;
+    return actionTypes.any((type) => (_navCooldowns[type] ?? 0) <= 0);
+  }
+
+  Future<void> _loadNavCooldowns() async {
+    try {
+      final response = await AuthService().apiClient.get(
+        '/player/action-cooldowns',
+      );
+      if (response.statusCode != 200 || response.body.isEmpty) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final raw = data['cooldowns'];
+      if (raw is! Map) return;
+      final parsed = <String, int>{};
+      for (final entry in raw.entries) {
+        final value = entry.value;
+        parsed[entry.key.toString()] = value is num
+            ? value.toInt()
+            : int.tryParse(value.toString()) ?? 0;
+      }
+      if (!mounted) return;
+      setState(() {
+        _navCooldowns = parsed;
+        _navCooldownsLoaded = true;
+      });
+    } catch (_) {}
   }
 
   Future<void> _loadUnreadCount() async {
@@ -750,8 +828,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                     ),
-                    child: ListView(
-                      children: _buildWebMenuItems(context, l10n),
+                    child: Column(
+                      children: [
+                        _buildMenuSearchField(l10n),
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: ListView(
+                            children: _buildWebMenuItems(context, l10n),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 Expanded(
@@ -826,31 +912,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _WebSection section,
       IconData icon,
       String label,
+      bool ready,
     })>[
       (
         section: _WebSection.crimes,
         icon: Icons.warning,
         label: l10n.mobileNavCrimes,
+        ready: _navActionReady(const ['crime']),
       ),
       (
         section: _WebSection.vehicleHeist,
         icon: Icons.directions_car_filled,
         label: l10n.mobileNavSteal,
+        ready: _navActionReady(const [
+          'vehicle_theft',
+          'motorcycle_theft',
+          'boat_theft',
+        ]),
       ),
       (
         section: _WebSection.jobs,
         icon: Icons.work,
         label: l10n.mobileNavWork,
+        ready: _navActionReady(const ['job']),
       ),
       (
         section: _WebSection.bank,
         icon: Icons.account_balance,
         label: l10n.mobileNavBank,
+        ready: false,
       ),
       (
         section: _WebSection.crew,
         icon: Icons.groups,
         label: l10n.mobileNavCrew,
+        ready: false,
       ),
     ];
 
@@ -884,12 +980,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
-                            item.icon,
-                            size: 22,
-                            color: _selectedWebSection == item.section
-                                ? _dashboardGold
-                                : Colors.white70,
+                          _buildMobileNavIcon(
+                            icon: item.icon,
+                            selected: _selectedWebSection == item.section,
+                            ready: item.ready,
+                            readyLabel: l10n.mobileNavReady,
                           ),
                           const SizedBox(height: 2),
                           Text(
@@ -919,307 +1014,290 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Widget _buildMobileNavIcon({
+    required IconData icon,
+    required bool selected,
+    required bool ready,
+    required String readyLabel,
+  }) {
+    final iconWidget = Icon(
+      icon,
+      size: 22,
+      color: selected ? _dashboardGold : Colors.white70,
+    );
+    if (!ready) return iconWidget;
+    return Tooltip(
+      message: readyLabel,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          iconWidget,
+          Positioned(
+            right: -3,
+            top: -2,
+            child: Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: _dashboardGold,
+                shape: BoxShape.circle,
+                border: Border.all(color: _dashboardPanelDark, width: 1.2),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuSearchField(AppLocalizations l10n) {
+    return TextField(
+      controller: _menuSearchController,
+      onChanged: (_) => setState(() {}),
+      style: const TextStyle(color: Colors.white, fontSize: 13),
+      cursorColor: _dashboardGold,
+      decoration: InputDecoration(
+        isDense: true,
+        hintText: l10n.menuSearchHint,
+        hintStyle: const TextStyle(color: Colors.white54, fontSize: 13),
+        prefixIcon: const Icon(Icons.search, color: Colors.white54, size: 18),
+        prefixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+        filled: true,
+        fillColor: Colors.black.withOpacity(0.25),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.12)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.12)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: _dashboardGold),
+        ),
+      ),
+    );
+  }
+
+  String _navGroupLabel(AppLocalizations l10n, _NavGroup group) {
+    switch (group) {
+      case _NavGroup.actions:
+        return l10n.menuNavCategoryActions;
+      case _NavGroup.world:
+        return l10n.menuNavCategoryWorld;
+      case _NavGroup.social:
+        return l10n.menuNavCategorySocial;
+      case _NavGroup.economy:
+        return l10n.menuNavCategoryEconomy;
+      case _NavGroup.empire:
+        return l10n.menuNavCategoryEmpire;
+      case _NavGroup.assets:
+        return l10n.menuNavCategoryAssets;
+      case _NavGroup.more:
+        return l10n.menuNavCategoryMore;
+    }
+  }
+
   List<Widget> _buildWebMenuItems(
     BuildContext context,
     AppLocalizations l10n, {
     VoidCallback? onBeforeNavigate,
   }) {
-    final items =
-        <({IconData icon, String label, _WebSection section, int badge})>[
-          (
-            icon: Icons.dashboard,
-            label: l10n.dashboard,
-            section: _WebSection.dashboard,
-            badge: 0,
-          ),
-          (
-            icon: Icons.lock,
-            label: l10n.menuCrackVault,
-            section: _WebSection.vault,
-            badge: 0,
-          ),
-          (
-            icon: Icons.menu_book,
-            label: l10n.helpAndGuide,
-            section: _WebSection.help,
-            badge: 0,
-          ),
-          (
-            icon: FontAwesomeIcons.commentsSolid,
-            label: l10n.support,
-            section: _WebSection.support,
-            badge: _supportBadgeCount,
-          ),
-          (
-            icon: Icons.event,
-            label: l10n.events,
-            section: _WebSection.events,
-            badge: 0,
-          ),
-          (
-            icon: Icons.warning,
-            label: l10n.crimes,
-            section: _WebSection.crimes,
-            badge: 0,
-          ),
-          (
-            icon: Icons.work,
-            label: l10n.jobs,
-            section: _WebSection.jobs,
-            badge: 0,
-          ),
-          (
-            icon: Icons.flight,
-            label: l10n.travel,
-            section: _WebSection.travel,
-            badge: 0,
-          ),
-          (
-            icon: FontAwesomeIcons.planeSolid,
-            label: l10n.aviation,
-            section: _WebSection.aviation,
-            badge: 0,
-          ),
-          (
-            icon: Icons.groups,
-            label: l10n.crew,
-            section: _WebSection.crew,
-            badge: 0,
-          ),
-          (
-            icon: Icons.workspace_premium,
-            label: l10n.premiumAndCredits,
-            section: _WebSection.premium,
-            badge: 0,
-          ),
-          (
-            icon: Icons.group,
-            label: l10n.friends,
-            section: _WebSection.friends,
-            badge: _pendingFriendRequestCount,
-          ),
-          (
-            icon: Icons.inventory,
-            label: l10n.inventory,
-            section: _WebSection.inventory,
-            badge: 0,
-          ),
-          (
-            icon: Icons.business,
-            label: l10n.properties,
-            section: _WebSection.properties,
-            badge: 0,
-          ),
-          (
-            icon: Icons.account_balance,
-            label: l10n.bank,
-            section: _WebSection.bank,
-            badge: 0,
-          ),
-          (
-            icon: Icons.casino,
-            label: l10n.casino,
-            section: _WebSection.casino,
-            badge: 0,
-          ),
-          (
-            icon: Icons.store,
-            label: l10n.blackMarket,
-            section: _WebSection.blackMarket,
-            badge: 0,
-          ),
-          (
-            icon: Icons.local_pharmacy,
-            label: l10n.drugs,
-            section: _WebSection.drugs,
-            badge: 0,
-          ),
-          (
-            icon: Icons.nightlife,
-            label: l10n.nightclub,
-            section: _WebSection.nightclub,
-            badge: 0,
-          ),
-          (
-            icon: Icons.currency_bitcoin,
-            label: l10n.crypto,
-            section: _WebSection.crypto,
-            badge: 0,
-          ),
-          (
-            icon: Icons.show_chart,
-            label: l10n.stockMarketTitle,
-            section: _WebSection.stockMarket,
-            badge: 0,
-          ),
-          (
-            icon: Icons.local_shipping,
-            label: l10n.smuggling,
-            section: _WebSection.smuggling,
-            badge: 0,
-          ),
-          (
-            icon: Icons.build,
-            label: l10n.tools,
-            section: _WebSection.tools,
-            badge: 0,
-          ),
-          (
-            icon: Icons.gavel,
-            label: l10n.court,
-            section: _WebSection.court,
-            badge: 0,
-          ),
-          (
-            icon: Icons.gps_fixed,
-            label: l10n.hitlist,
-            section: _WebSection.hitlist,
-            badge: 0,
-          ),
-          (
-            icon: Icons.shield,
-            label: l10n.security,
-            section: _WebSection.security,
-            badge: 0,
-          ),
-          (
-            icon: Icons.local_hospital,
-            label: l10n.hospital,
-            section: _WebSection.hospital,
-            badge: 0,
-          ),
-          (
-            icon: Icons.gpp_bad,
-            label: l10n.jail,
-            section: _WebSection.prison,
-            badge: 0,
-          ),
-          (
-            icon: Icons.directions_car_filled,
-            label: l10n.vehicleHeist,
-            section: _WebSection.vehicleHeist,
-            badge: 0,
-          ),
-          (
-            icon: Icons.tune,
-            label: l10n.tuneShop,
-            section: _WebSection.tuneShop,
-            badge: 0,
-          ),
-          (
-            // fitness_center: reliably bundled on Flutter Web (sports_martial_arts can render empty).
-            icon: Icons.fitness_center,
-            label: l10n.trainingHubMenuLabel,
-            section: _WebSection.trainingHub,
-            badge: 0,
-          ),
-          (
-            icon: Icons.factory,
-            label: l10n.ammoFactory,
-            section: _WebSection.ammoFactory,
-            badge: 0,
-          ),
-          (
-            icon: Icons.school,
-            label: l10n.schoolMenuLabel,
-            section: _WebSection.school,
-            badge: 0,
-          ),
-          (
-            icon: Icons.language,
-            label: l10n.territory,
-            section: _WebSection.territory,
-            badge: 0,
-          ),
-          (
-            icon: Icons.favorite,
-            label: l10n.prostitutionTitle,
-            section: _WebSection.prostitution,
-            badge: 0,
-          ),
-          (
-            icon: Icons.storefront,
-            label: l10n.prostitutionRedLightDistricts,
-            section: _WebSection.redLightDistricts,
-            badge: 0,
-          ),
-          (
-            icon: Icons.emoji_events,
-            label: l10n.achievements,
-            section: _WebSection.achievements,
-            badge: 0,
-          ),
-        ];
+    final query = _menuSearchController.text.trim().toLowerCase();
+    ({IconData icon, String label, _WebSection section, int badge}) navItem({
+      required IconData icon,
+      required String label,
+      required _WebSection section,
+      int badge = 0,
+    }) {
+      return (icon: icon, label: label, section: section, badge: badge);
+    }
 
-    return items
-        .map(
-          (item) => Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
-              decoration: BoxDecoration(
-                gradient: _selectedWebSection == item.section
-                    ? LinearGradient(
-                        colors: [
-                          _dashboardGold.withOpacity(0.22),
-                          _dashboardGold.withOpacity(0.08),
-                        ],
-                      )
-                    : const LinearGradient(
-                        colors: [_dashboardPanelLight, _dashboardPanelDark],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: _selectedWebSection == item.section
-                      ? _dashboardGold.withOpacity(0.9)
-                      : Colors.white.withOpacity(0.08),
-                ),
-              ),
-              child: ListTile(
-                selected: _selectedWebSection == item.section,
-                leading: Icon(
-                  item.icon,
-                  color: _selectedWebSection == item.section
-                      ? _dashboardGold
-                      : Colors.white70,
-                ),
-                title: Text(
-                  item.label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: _selectedWebSection == item.section
-                        ? Colors.white
-                        : Colors.white70,
-                    fontWeight: _selectedWebSection == item.section
-                        ? FontWeight.w700
-                        : FontWeight.w500,
-                  ),
-                ),
-                trailing: item.badge > 0
-                    ? CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.red,
-                        child: Text(
-                          item.badge > 99 ? '99+' : '${item.badge}',
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    : null,
-                onTap: () {
-                  onBeforeNavigate?.call();
-                  _selectWebSection(item.section);
-                },
+    final dashboard = navItem(
+      icon: Icons.dashboard,
+      label: l10n.dashboard,
+      section: _WebSection.dashboard,
+    );
+    final groups = <_NavGroup, List<({IconData icon, String label, _WebSection section, int badge})>>{
+      _NavGroup.actions: [
+        navItem(icon: Icons.warning, label: l10n.crimes, section: _WebSection.crimes),
+        navItem(icon: Icons.work, label: l10n.jobs, section: _WebSection.jobs),
+        navItem(icon: Icons.directions_car_filled, label: l10n.vehicleHeist, section: _WebSection.vehicleHeist),
+        navItem(icon: Icons.lock, label: l10n.menuCrackVault, section: _WebSection.vault),
+        navItem(icon: Icons.event, label: l10n.events, section: _WebSection.events),
+        navItem(icon: Icons.gps_fixed, label: l10n.hitlist, section: _WebSection.hitlist),
+        navItem(icon: Icons.gavel, label: l10n.court, section: _WebSection.court),
+      ],
+      _NavGroup.world: [
+        navItem(icon: Icons.flight, label: l10n.travel, section: _WebSection.travel),
+        navItem(icon: FontAwesomeIcons.planeSolid, label: l10n.aviation, section: _WebSection.aviation),
+        navItem(icon: Icons.language, label: l10n.territory, section: _WebSection.territory),
+      ],
+      _NavGroup.social: [
+        navItem(icon: Icons.groups, label: l10n.crew, section: _WebSection.crew),
+        navItem(icon: Icons.group, label: l10n.friends, section: _WebSection.friends, badge: _pendingFriendRequestCount),
+        navItem(icon: FontAwesomeIcons.commentsSolid, label: l10n.support, section: _WebSection.support, badge: _supportBadgeCount),
+      ],
+      _NavGroup.economy: [
+        navItem(icon: Icons.account_balance, label: l10n.bank, section: _WebSection.bank),
+        navItem(icon: Icons.casino, label: l10n.casino, section: _WebSection.casino),
+        navItem(icon: Icons.store, label: l10n.blackMarket, section: _WebSection.blackMarket),
+        navItem(icon: Icons.currency_bitcoin, label: l10n.crypto, section: _WebSection.crypto),
+        navItem(icon: Icons.show_chart, label: l10n.stockMarketTitle, section: _WebSection.stockMarket),
+        navItem(icon: Icons.local_shipping, label: l10n.smuggling, section: _WebSection.smuggling),
+        navItem(icon: Icons.workspace_premium, label: l10n.premiumAndCredits, section: _WebSection.premium),
+      ],
+      _NavGroup.empire: [
+        navItem(icon: Icons.local_pharmacy, label: l10n.drugs, section: _WebSection.drugs),
+        navItem(icon: Icons.nightlife, label: l10n.nightclub, section: _WebSection.nightclub),
+        navItem(icon: Icons.business, label: l10n.properties, section: _WebSection.properties),
+        navItem(icon: Icons.favorite, label: l10n.prostitutionTitle, section: _WebSection.prostitution),
+        navItem(icon: Icons.storefront, label: l10n.prostitutionRedLightDistricts, section: _WebSection.redLightDistricts),
+        navItem(icon: Icons.factory, label: l10n.ammoFactory, section: _WebSection.ammoFactory),
+      ],
+      _NavGroup.assets: [
+        navItem(icon: Icons.inventory, label: l10n.inventory, section: _WebSection.inventory),
+        navItem(icon: Icons.build, label: l10n.tools, section: _WebSection.tools),
+        navItem(icon: Icons.tune, label: l10n.tuneShop, section: _WebSection.tuneShop),
+        navItem(icon: Icons.fitness_center, label: l10n.trainingHubMenuLabel, section: _WebSection.trainingHub),
+        navItem(icon: Icons.school, label: l10n.schoolMenuLabel, section: _WebSection.school),
+      ],
+      _NavGroup.more: [
+        navItem(icon: Icons.menu_book, label: l10n.helpAndGuide, section: _WebSection.help),
+        navItem(icon: Icons.local_hospital, label: l10n.hospital, section: _WebSection.hospital),
+        navItem(icon: Icons.gpp_bad, label: l10n.jail, section: _WebSection.prison),
+        navItem(icon: Icons.shield, label: l10n.security, section: _WebSection.security),
+        navItem(icon: Icons.emoji_events, label: l10n.achievements, section: _WebSection.achievements),
+      ],
+    };
+
+    bool matches(String label) =>
+        query.isEmpty || label.toLowerCase().contains(query);
+
+    final widgets = <Widget>[];
+    if (matches(dashboard.label)) {
+      widgets.add(_buildNavTile(dashboard, onBeforeNavigate));
+    }
+
+    var anyMatch = matches(dashboard.label);
+    for (final group in _NavGroup.values) {
+      final groupItems = (groups[group] ?? []).where((row) => matches(row.label)).toList();
+      if (groupItems.isEmpty) continue;
+      anyMatch = true;
+      final expanded = query.isNotEmpty ||
+          groupItems.any((row) => row.section == _selectedWebSection);
+      widgets.add(
+        Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(
+            key: PageStorageKey(
+              'nav-${group.name}-$query-${expanded ? 'open' : 'shut'}',
+            ),
+            initiallyExpanded: expanded,
+            tilePadding: const EdgeInsets.symmetric(horizontal: 8),
+            childrenPadding: const EdgeInsets.only(bottom: 6),
+            collapsedIconColor: Colors.white54,
+            iconColor: _dashboardGold,
+            title: Text(
+              _navGroupLabel(l10n, group),
+              style: const TextStyle(
+                color: _dashboardGold,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.6,
               ),
             ),
+            children: [
+              for (final row in groupItems) _buildNavTile(row, onBeforeNavigate),
+            ],
           ),
-        )
-        .toList();
+        ),
+      );
+    }
+
+    if (!anyMatch) {
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          child: Text(
+            l10n.menuSearchNoResults,
+            style: const TextStyle(color: Colors.white54, fontSize: 13),
+          ),
+        ),
+      );
+    }
+    return widgets;
+  }
+
+  Widget _buildNavTile(
+    ({IconData icon, String label, _WebSection section, int badge}) item,
+    VoidCallback? onBeforeNavigate,
+  ) {
+    final selected = _selectedWebSection == item.section;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        decoration: BoxDecoration(
+          gradient: selected
+              ? LinearGradient(
+                  colors: [
+                    _dashboardGold.withOpacity(0.22),
+                    _dashboardGold.withOpacity(0.08),
+                  ],
+                )
+              : const LinearGradient(
+                  colors: [_dashboardPanelLight, _dashboardPanelDark],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: selected
+                ? _dashboardGold.withOpacity(0.9)
+                : Colors.white.withOpacity(0.08),
+          ),
+        ),
+        child: ListTile(
+          dense: true,
+          visualDensity: VisualDensity.compact,
+          selected: selected,
+          leading: Icon(
+            item.icon,
+            color: selected ? _dashboardGold : Colors.white70,
+          ),
+          title: Text(
+            item.label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: selected ? Colors.white : Colors.white70,
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+            ),
+          ),
+          trailing: item.badge > 0
+              ? CircleAvatar(
+                  radius: 10,
+                  backgroundColor: Colors.red,
+                  child: Text(
+                    item.badge > 99 ? '99+' : '${item.badge}',
+                    style: const TextStyle(fontSize: 10, color: Colors.white),
+                  ),
+                )
+              : null,
+          onTap: () {
+            onBeforeNavigate?.call();
+            if (item.section == _WebSection.vehicleHeist) {
+              _openVehicleHeist(0);
+            } else {
+              _selectWebSection(item.section);
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget _buildDrawer(BuildContext context, AppLocalizations l10n) {
@@ -1256,12 +1334,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: _buildWebMenuItems(
-                  context,
-                  l10n,
-                  onBeforeNavigate: () =>
-                      _scaffoldKey.currentState?.closeDrawer(),
-                ),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                    child: _buildMenuSearchField(l10n),
+                  ),
+                  ..._buildWebMenuItems(
+                    context,
+                    l10n,
+                    onBeforeNavigate: () =>
+                        _scaffoldKey.currentState?.closeDrawer(),
+                  ),
+                ],
               ),
             ),
           ],

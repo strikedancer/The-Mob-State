@@ -893,6 +893,36 @@ class AppLocalizationsPl extends AppLocalizations {
   String get mobileNavCrew => 'Załoga';
 
   @override
+  String get mobileNavReady => 'Gotowy';
+
+  @override
+  String get menuSearchHint => 'Menu wyszukiwania';
+
+  @override
+  String get menuSearchNoResults => 'Brak pasujących stron';
+
+  @override
+  String get menuNavCategoryActions => 'Działania';
+
+  @override
+  String get menuNavCategoryWorld => 'Świat';
+
+  @override
+  String get menuNavCategorySocial => 'Społeczny';
+
+  @override
+  String get menuNavCategoryEconomy => 'Gospodarka';
+
+  @override
+  String get menuNavCategoryEmpire => 'Imperium';
+
+  @override
+  String get menuNavCategoryAssets => 'Aktywa';
+
+  @override
+  String get menuNavCategoryMore => 'Więcej';
+
+  @override
   String get liveEvents => 'Wydarzenia na żywo';
 
   @override
@@ -4963,7 +4993,21 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get bankScreenDailyDepositCapReached =>
-      'Dzisiejszy limit darmowych wpłat został wyczerpany. Wypierz pozostałą gotówkę lub poczekaj do jutra (UTC).';
+      'Dzisiejszy limit darmowych wpłat został wyczerpany. Wypierz pozostałą gotówkę lub poczekaj na reset UTC.';
+
+  @override
+  String bankScreenFillRemainingQuota(String amount) {
+    return 'Wypełnij pozostałe ($amount)';
+  }
+
+  @override
+  String bankScreenDailyDepositResetsIn(String time) {
+    return 'Darmowe depozyty resetują się o godzinie 00:00 UTC (pozostało $time).';
+  }
+
+  @override
+  String get bankScreenDailyDepositBelowLaunderMin =>
+      'Gotówkę poniżej minimum pralni można zdeponować bezpłatnie po zresetowaniu czasu UTC.';
 
   @override
   String bankScreenDepositCapError(String remaining) {
@@ -13688,7 +13732,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Górny pasek pokazuje: Gotówkę, Rangę, Zdrowie (0-100 HP), Poziom poszukiwanego (0-100) i FBI Heat (0-100).\nCo 5 minut uruchamia się automatyczny kleszcz: głód spada o -2, pragnienie -3, leczysz pasywnie +5 HP (jeśli HP > 0), doliczane są odsetki bankowe (0,5%), a poziom poszukiwania nieznacznie spada poniżej 10.\nJeśli głód lub pragnienie osiągną poziom 0, umierasz i spędzasz 3 godziny na oddziale intensywnej terapii. Jedz i pij na czas!\nNa urządzeniach mobilnych dzięki przyklejonej stopce przestępstwa, kradzieże pojazdów, praca, bank i Crew są w zasięgu jednego kliknięcia. Cała reszta znajduje się w menu hamburgera lub na lewym pasku bocznym.\nLiczniki czasu odnowienia w każdej sekcji pokazują, ile czasu pozostało do następnej akcji. Timer dostosowuje się, aby pokazać najbardziej odpowiednią jednostkę: minuty, godziny lub dni.\nKarta statystyk wykorzystuje teraz rzeczywiste liczniki na żywo dla ucieczek, morderstw, kontraktów na listę hitów, podróży i kul, zamiast stałych zerowych symboli zastępczych.\nPulpit nawigacyjny ma teraz również rozszerzoną sekcję ekonomiczną z gotówką, bankami, kryptowalutami, wartością pojazdu, wartością nieruchomości, wartością netto i 24-godzinnym trendem przepływu środków pieniężnych.\nBlok operacji pokazuje teraz aktywną produkcję, najdłuższy czas odnowienia, status pojazdu (aktywny/wystawiony/przejazd) i liczniki czasu następnej produkcji/wydarzenia.\nKiedy wydarzenia graczy są na żywo (np. cotygodniowe zawody), ten sam panel po prawej stronie zawiera krótką listę ich tytułów i linki do strony wydarzeń. Możesz włączyć lub wyłączyć funkcję push rozpoczęcia/zakończenia rundy w Ustawieniach → Wydarzenia gracza (oprócz uprawnień urządzenia i innych kategorii push).\nPowiadomienia i ryzyko obejmują teraz nieprzeczytane wiadomości prywatne, zgłoszenia do pomocy technicznej oczekujące na Twoją odpowiedź, zdarzenia z ostatnich 24 godzin oraz kompaktowy wynik ryzyka (poszukiwany + FBI).\nKiedy twoja Crew bierze udział w Crew Wars, na pulpicie nawigacyjnym wyświetlane jest także podsumowanie Crew Wars ze statusem, przeciwnikiem, punktami załogi, rangą sezonu i pozostałym czasem w bieżącej fazie.\nPanel kontrolny zawiera teraz także przegląd operacji pojazdu na samochód/motocykl/łódkę z żetonami czasu odnowienia na żywo (Hotspot, Crew, Mecz załogi, Chop, Kontrakt i Licznik), a także ciepło/reputację, liczbę kontraktów i roszczeń oraz punkty sezonowe.\nWydarzenia na żywo pojawiają się, gdy inni gracze wykonują ważne akcje, gdy zostaniesz zaatakowany lub gdy nastąpią ruchy na globalnym rynku.\nPlakietka wiadomości pokazuje nieprzeczytane wiadomości systemowe i wiadomości osobiste.\nLewe menu nawigacyjne zapewnia dostęp do wszystkich sekcji gry pogrupowanych według kategorii: Akcje, Świat, Społeczność, Ekonomia, Imperium i Zasoby.\\nNowi gracze widzą kartę Startu z kolejnym krokiem (pierwsze przestępstwo, dzień/zadanie, następnie Crew). Poziom 3 lub wyższy lub ukończone wdrożenie powoduje pominięcie tej karty.\nCele dzienne znajdują się na górze w internecie i na urządzeniach mobilnych: przy każdym celu wyświetlana jest nagroda pieniężna i PD, przycisk odbioru, gdy jest on gotowy, oraz seria zdobyczy UTC. Po odebraniu, toast wyszczególnia otrzymaną gotówkę i PD. Kradzież pojazdów nie jest prezentowana poniżej rangi 5.\nJeśli należysz do załogi, na desce rozdzielczej pojawi się kompaktowa linia tygodniowych celów załogi.';
+      'Górny pasek pokazuje: Gotówkę, Rangę, Zdrowie (0-100 HP), Poziom poszukiwanego (0-100) i FBI Heat (0-100).\nCo 5 minut uruchamia się automatyczny kleszcz: głód spada o -2, pragnienie -3, leczysz pasywnie +5 HP (jeśli HP > 0), doliczane są odsetki bankowe (0,5%), a poziom poszukiwania nieznacznie spada poniżej 10.\nJeśli głód lub pragnienie osiągną poziom 0, umierasz i spędzasz 3 godziny na oddziale intensywnej terapii. Jedz i pij na czas!\nNa urządzeniach mobilnych dzięki przyklejonej stopce przestępstwa, kradzieże pojazdów, praca, bank i Crew są w zasięgu jednego kliknięcia. Złota kropka na zbrodniach, kradzieży lub pracy oznacza, że ​​czas odnowienia jest gotowy. Cała reszta znajduje się w menu hamburgera lub na lewym pasku bocznym; to menu jest pogrupowane (Akcje, Świat, Społeczność, Ekonomia, Imperium, Zasoby) i można je przeszukiwać.\nLiczniki czasu odnowienia w każdej sekcji pokazują, ile czasu pozostało do następnej akcji. Timer dostosowuje się, aby pokazać najbardziej odpowiednią jednostkę: minuty, godziny lub dni.\nKarta statystyk wykorzystuje teraz rzeczywiste liczniki na żywo dla ucieczek, morderstw, kontraktów na listę hitów, podróży i kul, zamiast stałych zerowych symboli zastępczych.\nPulpit nawigacyjny ma teraz również rozszerzoną sekcję ekonomiczną z gotówką, bankami, kryptowalutami, wartością pojazdu, wartością nieruchomości, wartością netto i 24-godzinnym trendem przepływu środków pieniężnych.\nBlok operacji pokazuje teraz aktywną produkcję, najdłuższy czas odnowienia, status pojazdu (aktywny/wystawiony/przejazd) i liczniki czasu następnej produkcji/wydarzenia.\nKiedy wydarzenia graczy są na żywo (np. cotygodniowe zawody), ten sam panel po prawej stronie zawiera krótką listę ich tytułów i linki do strony wydarzeń. Możesz włączyć lub wyłączyć funkcję push rozpoczęcia/zakończenia rundy w Ustawieniach → Wydarzenia gracza (oprócz uprawnień urządzenia i innych kategorii push).\nPowiadomienia i ryzyko obejmują teraz nieprzeczytane wiadomości prywatne, zgłoszenia do pomocy technicznej oczekujące na Twoją odpowiedź, zdarzenia z ostatnich 24 godzin oraz kompaktowy wynik ryzyka (poszukiwany + FBI).\nKiedy twoja Crew bierze udział w Crew Wars, na pulpicie nawigacyjnym wyświetlane jest także podsumowanie Crew Wars ze statusem, przeciwnikiem, punktami załogi, rangą sezonu i pozostałym czasem w bieżącej fazie.\nPanel kontrolny zawiera teraz także przegląd operacji pojazdu na samochód/motocykl/łódkę z żetonami czasu odnowienia na żywo (Hotspot, Crew, Mecz załogi, Chop, Kontrakt i Licznik), a także ciepło/reputację, liczbę kontraktów i roszczeń oraz punkty sezonowe.\nWydarzenia na żywo pojawiają się, gdy inni gracze wykonują ważne akcje, gdy zostaniesz zaatakowany lub gdy nastąpią ruchy na globalnym rynku.\nPlakietka wiadomości pokazuje nieprzeczytane wiadomości systemowe i wiadomości osobiste.\nLewe menu nawigacyjne zapewnia dostęp do wszystkich sekcji gry pogrupowanych według kategorii: Akcje, Świat, Społeczność, Ekonomia, Imperium i Zasoby.\\nNowi gracze widzą kartę Startu z kolejnym krokiem (pierwsze przestępstwo, dzień/zadanie, następnie Crew). Poziom 3 lub wyższy lub ukończone wdrożenie powoduje pominięcie tej karty.\nCele dzienne znajdują się na górze w internecie i na urządzeniach mobilnych: przy każdym celu wyświetlana jest nagroda pieniężna i PD, przycisk odbioru, gdy jest on gotowy, oraz seria zdobyczy UTC. Po odebraniu, toast wyszczególnia otrzymaną gotówkę i PD. Kradzież pojazdów nie jest prezentowana poniżej rangi 5.\nJeśli należysz do załogi, na desce rozdzielczej pojawi się kompaktowa linia tygodniowych celów załogi.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13850,7 +13894,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Darmowe depozyty są natychmiastowe i nie wiążą się z żadnymi opłatami, ale tylko do dziennego limitu, który skaluje się wraz z Twoją rangą (dzień UTC). Wypłaty pozostają bezpłatne i nieograniczone. \nPasywne oprocentowanie banku jest obecnie wyłączone. \nPieniądze w banku są chronione przed konfiskatą policyjną. Podczas aresztowania można utracić jedynie gotówkę, którą mamy pod ręką. \nHistoria transakcji pokazuje wszystkie przepływy przychodzące i wychodzące ze znacznikiem czasu, kwotą, kontrahentem przelewu i opcjonalnymi opisami. \nPranie brudnych pieniędzy: wpłać do swojego banku gotówkę powyżej darmowego limitu dziennego za opłatą i opóźnieniem. Każde pranie ma minimum i maksimum, pokazane na ekranie banku. Wyższa temperatura FBI zwiększa szansę na przejęcie; sukces nieznacznie obniża temperaturę. \nPrzestępstwo związane z napadem na bank: udaje się przy 30% i kradnie 10-30% losowego salda bankowego innego gracza. Ryzyko wysokiego poziomu poszukiwanego. \nMożliwe jest przesyłanie pieniędzy innym graczom. Opcjonalnie możesz dodać opis, a odbiorca zobaczy go także w transakcjach. Przed potwierdzeniem dokładnie sprawdź kwotę i odbiorcę.';
+      'Darmowe depozyty są natychmiastowe i nie wiążą się z żadnymi opłatami, ale tylko do dziennego limitu, który skaluje się wraz z Twoją rangą (dzień UTC). Wypłaty pozostają bezpłatne i nieograniczone. Użyj opcji Wypełnij pozostałe, aby wprowadzić dzisiejszy limit resztek; gdy limit zostanie zużyty, na ekranie pojawi się odliczanie do 00:00 UTC.\nPasywne oprocentowanie banku jest obecnie wyłączone.\nPieniądze w banku są chronione przed konfiskatą policyjną. Podczas aresztowania można utracić jedynie gotówkę, którą mamy pod ręką.\nHistoria transakcji pokazuje wszystkie przepływy przychodzące i wychodzące ze znacznikiem czasu, kwotą, kontrahentem przelewu i opcjonalnymi opisami.\nPranie brudnych pieniędzy: wpłać do swojego banku gotówkę powyżej darmowego limitu dziennego za opłatą i opóźnieniem. Każde pranie ma minimum i maksimum, pokazane na ekranie banku. Wyższa temperatura FBI zwiększa szansę na przejęcie; sukces nieznacznie obniża temperaturę.\nPrzestępstwo związane z napadem na bank: udaje się przy 30% i kradnie 10-30% losowego salda bankowego innego gracza. Ryzyko wysokiego poziomu poszukiwanego.\nMożliwe jest przesyłanie pieniędzy innym graczom. Opcjonalnie możesz dodać opis, a odbiorca zobaczy go także w transakcjach. Przed potwierdzeniem dokładnie sprawdź kwotę i odbiorcę.';
 
   @override
   String get helpTopicBankTips =>

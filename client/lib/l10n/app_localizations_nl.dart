@@ -894,6 +894,36 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mobileNavCrew => 'Crew';
 
   @override
+  String get mobileNavReady => 'Klaar';
+
+  @override
+  String get menuSearchHint => 'Zoek in menu';
+
+  @override
+  String get menuSearchNoResults => 'Geen onderdelen gevonden';
+
+  @override
+  String get menuNavCategoryActions => 'Acties';
+
+  @override
+  String get menuNavCategoryWorld => 'Wereld';
+
+  @override
+  String get menuNavCategorySocial => 'Sociaal';
+
+  @override
+  String get menuNavCategoryEconomy => 'Economie';
+
+  @override
+  String get menuNavCategoryEmpire => 'Empire';
+
+  @override
+  String get menuNavCategoryAssets => 'Assets';
+
+  @override
+  String get menuNavCategoryMore => 'Meer';
+
+  @override
   String get liveEvents => 'Live events';
 
   @override
@@ -4943,7 +4973,21 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bankScreenDailyDepositCapReached =>
-      'Dagelijkse gratis stortingslimiet is op. Witwas de rest of wacht tot morgen (UTC).';
+      'Dagelijkse gratis stortingslimiet is op. Witwas de rest of wacht op de UTC-reset.';
+
+  @override
+  String bankScreenFillRemainingQuota(String amount) {
+    return 'Vul restant ($amount)';
+  }
+
+  @override
+  String bankScreenDailyDepositResetsIn(String time) {
+    return 'Gratis storten weer vanaf 00:00 UTC (nog $time).';
+  }
+
+  @override
+  String get bankScreenDailyDepositBelowLaunderMin =>
+      'Cash onder het witwasminimum kun je na de UTC-reset weer gratis storten.';
 
   @override
   String bankScreenDepositCapError(String remaining) {
@@ -13586,7 +13630,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nOp mobiel houdt een sticky footer Misdaden, Voertuig stelen, Werken, Bank en Crew in één tik bereikbaar. Alle andere onderdelen open je via het hamburger-menu of de zijbalk.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.\\nNieuwe spelers zien een Start-kaart met één volgende stap (eerste misdaad, dagdoel/job, daarna crew). Rang 3+ of afgeronde onboarding ziet die kaart niet.\nDagdoelen staan bovenaan op web en mobiel: elk doel toont cash- en XP-beloning, een claimknop als het klaar is, en een UTC claim-streak. Na claim zie je rechtsboven welke cash en XP je kreeg. Autodiefstal wordt onder rang 5 niet uitgelicht.\nZit je in een crew, dan zie je op het dashboard een compacte regel voor het wekelijkse crew-doel.';
+      'Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).\nElke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.\nAls honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!\nOp mobiel houdt een sticky footer Misdaden, Voertuig stelen, Werken, Bank en Crew in één tik bereikbaar. Een gouden stip op Misdaden, Stelen of Werken betekent dat de cooldown klaar is. Alle andere onderdelen open je via het hamburger-menu of de zijbalk; dat menu is gegroepeerd (Acties, Wereld, Sociaal, Economie, Empire, Assets) en doorzoekbaar.\nTimeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.\nDe statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.\nHet dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.\nIn het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.\nAls er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).\nMeldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).\nAls je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.\nDashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.\nLive events verschijnen als andere spelers grote acties uitvoeren, jij wordt aangevallen, of globale marktbewegingen plaatsvinden.\nBerichten-badge toont het aantal ongelezen systeemberichten en persoonlijke berichten.\nNavigatiemenu links geeft toegang tot alle spelonderdelen, gegroepeerd per categorie: Acties, Wereld, Sociaal, Economie, Empire en Assets.\\nNieuwe spelers zien een Start-kaart met één volgende stap (eerste misdaad, dagdoel/job, daarna crew). Rang 3+ of afgeronde onboarding ziet die kaart niet.\nDagdoelen staan bovenaan op web en mobiel: elk doel toont cash- en XP-beloning, een claimknop als het klaar is, en een UTC claim-streak. Na claim zie je rechtsboven welke cash en XP je kreeg. Autodiefstal wordt onder rang 5 niet uitgelicht.\nZit je in een crew, dan zie je op het dashboard een compacte regel voor het wekelijkse crew-doel.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13748,7 +13792,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt.\nPassieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Elke wasbeurt heeft een minimum en maximum, zichtbaar op het bankscherm. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
+      'Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt. Op het bankscherm vul je het restant van vandaag met één knop; als de limiet op is zie je de countdown tot 00:00 UTC.\nPassieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Elke wasbeurt heeft een minimum en maximum, zichtbaar op het bankscherm. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
 
   @override
   String get helpTopicBankTips =>

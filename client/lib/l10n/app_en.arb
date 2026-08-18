@@ -477,6 +477,16 @@
   "mobileNavWork": "Work",
   "mobileNavBank": "Bank",
   "mobileNavCrew": "Crew",
+  "mobileNavReady": "Ready",
+  "menuSearchHint": "Search menu",
+  "menuSearchNoResults": "No matching pages",
+  "menuNavCategoryActions": "Actions",
+  "menuNavCategoryWorld": "World",
+  "menuNavCategorySocial": "Social",
+  "menuNavCategoryEconomy": "Economy",
+  "menuNavCategoryEmpire": "Empire",
+  "menuNavCategoryAssets": "Assets",
+  "menuNavCategoryMore": "More",
   "liveEvents": "Live Events",
   "support": "Support",
   "events": "Events",
@@ -2889,7 +2899,24 @@
       }
     }
   },
-  "bankScreenDailyDepositCapReached": "Today's free deposit limit is used up. Launder remaining cash or wait until tomorrow (UTC).",
+  "bankScreenDailyDepositCapReached": "Today's free deposit limit is used up. Launder remaining cash or wait for the UTC reset.",
+  "bankScreenFillRemainingQuota": "Fill remaining ({amount})",
+  "@bankScreenFillRemainingQuota": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDailyDepositResetsIn": "Free deposits reset at 00:00 UTC ({time} left).",
+  "@bankScreenDailyDepositResetsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDailyDepositBelowLaunderMin": "Cash below the launder minimum can be deposited for free after the UTC reset.",
   "bankScreenDepositCapError": "That exceeds today's free deposit remaining ({remaining}). Deposit up to that amount, or use money laundering.",
   "@bankScreenDepositCapError": {
     "placeholders": {
@@ -8378,7 +8405,7 @@
   "helpTopicDashboardCategory": "Core",
   "helpTopicDashboardTitle": "Dashboard",
   "helpTopicDashboardSummary": "Your central overview with all your stats, active cooldowns, live events and shortcuts to every part of the game.",
-  "helpTopicDashboardHow": "Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. Everything else is in the hamburger menu or the left sidebar.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.\\nNew players see a Start card with one next step (first crime, daily/job, then crew). Rank 3+ or completed onboarding skips that card.\nDaily goals sit near the top on web and mobile: every goal shows its cash and XP reward, a claim button when ready, and a UTC claim streak. After you claim, a toast lists the cash and XP you received. Vehicle theft is not featured below rank 5.\nIf you are in a crew, a compact weekly crew goal line appears on the dashboard.",
+  "helpTopicDashboardHow": "Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.\\nNew players see a Start card with one next step (first crime, daily/job, then crew). Rank 3+ or completed onboarding skips that card.\nDaily goals sit near the top on web and mobile: every goal shows its cash and XP reward, a claim button when ready, and a UTC claim streak. After you claim, a toast lists the cash and XP you received. Vehicle theft is not featured below rank 5.\nIf you are in a crew, a compact weekly crew goal line appears on the dashboard.",
   "helpTopicDashboardTips": "Open the dashboard first after every login to see what changed while you were away.\nKeep wanted level below 10 so automatic decay works and arrest chances stay low.\nCheck unread messages before starting risky actions: rewards, order fills and system events all appear in your inbox.\\nUse the Start card for your first hour, then claim at least one daily goal each UTC day to keep your streak.\nEach daily goal shows cash and XP before you claim; after Claim a toast lists what you received.\nFeatured daily goals never push car theft before rank 5.",
   "helpTopicCrimesCategory": "Actions",
   "helpTopicCrimesTitle": "Crimes",
@@ -8423,7 +8450,7 @@
   "helpTopicBankCategory": "Economy",
   "helpTopicBankTitle": "Bank",
   "helpTopicBankSummary": "Deposit working cash for free up to a daily cap. Larger street cash must be laundered with a fee, delay and FBI-heat seize risk.",
-  "helpTopicBankHow": "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.",
+  "helpTopicBankHow": "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited. Use Fill remaining to enter today's leftover quota; when the cap is used up the screen shows the countdown to 00:00 UTC.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player's bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.",
   "helpTopicBankTips": "Use the free daily deposit for small working cash so it is safe from confiscation.\nLaunder larger street cash when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).",
   "helpTopicCasinoCategory": "Economy",
   "helpTopicCasinoTitle": "Casino",

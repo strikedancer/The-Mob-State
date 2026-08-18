@@ -33,8 +33,8 @@
 
 ## Dashboard
 
-- Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie en status.
-- Op mobiel staat onderin een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew; overige onderdelen blijven in het hamburger-menu.
+- Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie en status. Zijbalk en hamburger-menu zijn gegroepeerd en doorzoekbaar.
+- Op mobiel staat onderin een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew; een gouden stip betekent dat die cooldown klaar is. Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
 - Dashboard-baseline bevat economy-overzicht (cash/bank/crypto/assets/net worth), 24u cashflowtrend, 7d activiteit, operations-timers en notificatie/risico-indicatoren.
 - In **Instellingen** kun je de **spelertaal** wijzigen (o.a. NL, EN en extra Europese UI-talen); zie `docs/l10n-migration.md` voor uitbreiding en vertaalfallbacks. **Avatar wijzigen:** op web laadt de kies-grid portretten **via HTTP** naar `/images/avatars/…` (nginx, externe image-mount), niet via ingebouwde `Image.asset`, zodat dezelfde bestanden als op de server zichtbaar zijn zonder dubbel `assets/`-pad in de console.

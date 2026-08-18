@@ -1736,6 +1736,66 @@ abstract class AppLocalizations {
   /// **'Crew'**
   String get mobileNavCrew;
 
+  /// No description provided for @mobileNavReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get mobileNavReady;
+
+  /// No description provided for @menuSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search menu'**
+  String get menuSearchHint;
+
+  /// No description provided for @menuSearchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching pages'**
+  String get menuSearchNoResults;
+
+  /// No description provided for @menuNavCategoryActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get menuNavCategoryActions;
+
+  /// No description provided for @menuNavCategoryWorld.
+  ///
+  /// In en, this message translates to:
+  /// **'World'**
+  String get menuNavCategoryWorld;
+
+  /// No description provided for @menuNavCategorySocial.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get menuNavCategorySocial;
+
+  /// No description provided for @menuNavCategoryEconomy.
+  ///
+  /// In en, this message translates to:
+  /// **'Economy'**
+  String get menuNavCategoryEconomy;
+
+  /// No description provided for @menuNavCategoryEmpire.
+  ///
+  /// In en, this message translates to:
+  /// **'Empire'**
+  String get menuNavCategoryEmpire;
+
+  /// No description provided for @menuNavCategoryAssets.
+  ///
+  /// In en, this message translates to:
+  /// **'Assets'**
+  String get menuNavCategoryAssets;
+
+  /// No description provided for @menuNavCategoryMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get menuNavCategoryMore;
+
   /// No description provided for @liveEvents.
   ///
   /// In en, this message translates to:
@@ -8896,8 +8956,26 @@ abstract class AppLocalizations {
   /// No description provided for @bankScreenDailyDepositCapReached.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s free deposit limit is used up. Launder remaining cash or wait until tomorrow (UTC).'**
+  /// **'Today\'s free deposit limit is used up. Launder remaining cash or wait for the UTC reset.'**
   String get bankScreenDailyDepositCapReached;
+
+  /// No description provided for @bankScreenFillRemainingQuota.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill remaining ({amount})'**
+  String bankScreenFillRemainingQuota(String amount);
+
+  /// No description provided for @bankScreenDailyDepositResetsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Free deposits reset at 00:00 UTC ({time} left).'**
+  String bankScreenDailyDepositResetsIn(String time);
+
+  /// No description provided for @bankScreenDailyDepositBelowLaunderMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash below the launder minimum can be deposited for free after the UTC reset.'**
+  String get bankScreenDailyDepositBelowLaunderMin;
 
   /// No description provided for @bankScreenDepositCapError.
   ///
@@ -23787,7 +23865,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDashboardHow.
   ///
   /// In en, this message translates to:
-  /// **'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. Everything else is in the hamburger menu or the left sidebar.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.\\nNew players see a Start card with one next step (first crime, daily/job, then crew). Rank 3+ or completed onboarding skips that card.\nDaily goals sit near the top on web and mobile: every goal shows its cash and XP reward, a claim button when ready, and a UTC claim streak. After you claim, a toast lists the cash and XP you received. Vehicle theft is not featured below rank 5.\nIf you are in a crew, a compact weekly crew goal line appears on the dashboard.'**
+  /// **'Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).\nEvery 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.\nIf hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!\nOn mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.\nCooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.\nThe stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.\nThe dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.\nThe operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.\nWhen player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).\nNotifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).\nWhen your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.\nThe dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.\nLive events appear when other players perform major actions, when you are attacked, or when global market movements occur.\nMessage badge shows unread system messages and personal messages.\nLeft navigation menu grants access to all game sections grouped by category: Actions, World, Social, Economy, Empire and Assets.\\nNew players see a Start card with one next step (first crime, daily/job, then crew). Rank 3+ or completed onboarding skips that card.\nDaily goals sit near the top on web and mobile: every goal shows its cash and XP reward, a claim button when ready, and a UTC claim streak. After you claim, a toast lists the cash and XP you received. Vehicle theft is not featured below rank 5.\nIf you are in a crew, a compact weekly crew goal line appears on the dashboard.'**
   String get helpTopicDashboardHow;
 
   /// No description provided for @helpTopicDashboardTips.
@@ -24057,7 +24135,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBankHow.
   ///
   /// In en, this message translates to:
-  /// **'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.'**
+  /// **'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited. Use Fill remaining to enter today\'s leftover quota; when the cap is used up the screen shows the countdown to 00:00 UTC.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.'**
   String get helpTopicBankHow;
 
   /// No description provided for @helpTopicBankTips.

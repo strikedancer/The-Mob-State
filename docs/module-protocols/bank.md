@@ -36,7 +36,7 @@ Covert cash→bank wash (fee + delay + heat seize risk) leeft in [money-launderi
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Transaction history and transaction summary counters must reflect the same underlying deposit, withdrawal, sent-transfer and received-transfer data; withdrawals may not be omitted from the visible transaction summary.
-- Daily free-deposit remaining on the bank screen must match server quota (`GET /bank/account`); over-cap deposits must fail without auto-split.
+- Daily free-deposit remaining on the bank screen must match server quota (`GET /bank/account`); over-cap deposits must fail without auto-split. Show a Fill remaining control for leftover quota and a live countdown to 00:00 UTC when the cap is used up.
 - Transaction history must preserve transfer counterpart identity and any optional player-entered description for deposits, withdrawals and transfers; received transfers must show the sender's description symmetrically when one was provided.
 
 ## i18n and Messaging
@@ -51,7 +51,7 @@ Covert cash→bank wash (fee + delay + heat seize risk) leeft in [money-launderi
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
-- Verify daily free-deposit remaining, over-cap rejection, and that withdraw still works when remaining is 0.
+- Verify daily free-deposit remaining, over-cap rejection, Fill remaining, UTC reset countdown, and that withdraw still works when remaining is 0.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

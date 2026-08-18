@@ -903,6 +903,36 @@ class AppLocalizationsDe extends AppLocalizations {
   String get mobileNavCrew => 'Crew';
 
   @override
+  String get mobileNavReady => 'Bereit';
+
+  @override
+  String get menuSearchHint => 'Suchmenü';
+
+  @override
+  String get menuSearchNoResults => 'Keine passenden Seiten';
+
+  @override
+  String get menuNavCategoryActions => 'Aktionen';
+
+  @override
+  String get menuNavCategoryWorld => 'Welt';
+
+  @override
+  String get menuNavCategorySocial => 'Sozial';
+
+  @override
+  String get menuNavCategoryEconomy => 'Wirtschaft';
+
+  @override
+  String get menuNavCategoryEmpire => 'Reich';
+
+  @override
+  String get menuNavCategoryAssets => 'Vermögenswerte';
+
+  @override
+  String get menuNavCategoryMore => 'Mehr';
+
+  @override
   String get liveEvents => 'Live-Events';
 
   @override
@@ -4984,7 +5014,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bankScreenDailyDepositCapReached =>
-      'Das heutige Gratis-Einzahlungslimit ist aufgebraucht. Waschen Sie das verbleibende Bargeld oder warten Sie bis morgen (UTC).';
+      'Das heutige Gratis-Einzahlungslimit ist aufgebraucht. Waschen Sie das verbleibende Bargeld oder warten Sie auf den UTC-Reset.';
+
+  @override
+  String bankScreenFillRemainingQuota(String amount) {
+    return 'Verbleibende Füllung ($amount)';
+  }
+
+  @override
+  String bankScreenDailyDepositResetsIn(String time) {
+    return 'Kostenlose Einzahlungen werden um 00:00 UTC zurückgesetzt ($time übrig).';
+  }
+
+  @override
+  String get bankScreenDailyDepositBelowLaunderMin =>
+      'Bargeld, das unter dem Geldwäsche-Mindestbetrag liegt, kann nach dem UTC-Reset kostenlos eingezahlt werden.';
 
   @override
   String bankScreenDepositCapError(String remaining) {
@@ -13755,7 +13799,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'Die obere Leiste zeigt: Bargeld, Rang, Gesundheit (0–100 HP), Fahndungslevel (0–100) und FBI-Heat (0–100).\nAlle 5 Minuten wird ein automatischer Tick ausgelöst: Hunger sinkt um -2, Durst um -3, du heilst dich passiv um +5 HP (wenn HP > 0), Bankzinsen werden hinzugefügt (0,5 %) und das Fahndungslevel sinkt leicht, wenn es unter 10 liegt.\nWenn Hunger oder Durst 0 erreichen, sterben Sie und verbringen 3 Stunden auf der Intensivstation. Essen und trinken Sie pünktlich!\nAuf Mobilgeräten sorgt eine klebrige Fußzeile dafür, dass Verbrechen, Fahrzeugdiebstahl, Arbeit, Bank und Crew nur einen Fingertipp entfernt sind. Alles andere finden Sie im Hamburger-Menü oder in der linken Seitenleiste.\nCooldown-Timer pro Abschnitt zeigen an, wie lange es dauert, bis Ihre nächste Aktion verfügbar ist. Der Timer passt sich an, um die relevanteste Einheit anzuzeigen: Minuten, Stunden oder Tage.\nDie Statistikkarte verwendet jetzt echte Live-Zähler für Ausbrüche, Morde, Trefferlistenverträge, Reisen und Kugeln anstelle von festen Null-Platzhaltern.\nDas Dashboard verfügt jetzt auch über einen erweiterten Wirtschaftsbereich mit Bargeld, Bank, Krypto, Fahrzeugwert, Immobilienwert, Nettovermögen und einem 24-Stunden-Cashflow-Trend.\nDer Betriebsblock zeigt jetzt die aktive Produktion, die längste Abklingzeit, den Fahrzeugstatus (aktiv/gelistet/Transit) und die Timer für die nächste Produktion/das nächste Ereignis an.\nWenn Spielerevents live sind (z. B. wöchentliche Wettbewerbe), listet dasselbe rechte Feld kurz deren Titel und Links zur Seite „Events“ auf. Sie können Push für Rundenstart/-ende unter Einstellungen → Spielerereignisse ein- oder ausschalten (zusätzlich zu Geräteberechtigungen und anderen Push-Kategorien).\nBenachrichtigungen und Risiken umfassen jetzt ungelesene DMs, Support-Tickets, die auf Ihre Antwort warten, Ereignisse der letzten 24 Stunden und eine kompakte Risikobewertung (gesucht + FBI).\nWenn Ihre Crew an Crew Wars beteiligt ist, zeigt das Dashboard auch eine Crew Wars-Zusammenfassung mit Status, Gegner, Crewpunkten, Saisonrang und der verbleibenden Zeit in der aktuellen Phase an.\nDas Dashboard enthält jetzt auch eine Fahrzeug-Ops-Übersicht pro Auto/Motorrad/Boot mit Live-Cooldown-Chips (Hotspot, Crew, Crew-Match, Chop, Contract und Counter) sowie Hitze/Reputation, Vertrags- und Anspruchszahlen und Saisonpunkte.\nLive-Ereignisse treten auf, wenn andere Spieler wichtige Aktionen ausführen, wenn Sie angegriffen werden oder wenn es zu globalen Marktbewegungen kommt.\nDas Nachrichten-Badge zeigt ungelesene Systemnachrichten und persönliche Nachrichten an.\nDas linke Navigationsmenü gewährt Zugriff auf alle Spielabschnitte, gruppiert nach Kategorien: Aktionen, Welt, Soziales, Wirtschaft, Imperium und Vermögenswerte.\\nNeue Spieler sehen eine Startkarte mit einem nächsten Schritt (zuerst Verbrechen, täglich/Job, dann Crew). Bei Rang 3+ oder abgeschlossenem Onboarding wird diese Karte übersprungen.\nTägliche Ziele stehen im Internet und auf Mobilgeräten ganz oben: Für jedes Ziel werden die Geld- und XP-Belohnung, eine Schaltfläche zum Abholen, wenn es bereit ist, und eine UTC-Anspruchsserie angezeigt. Nachdem Sie Anspruch erhoben haben, werden in einem Toast die erhaltenen Bargeld- und XP-Werte aufgeführt. Unter Rang 5 wird Fahrzeugdiebstahl nicht aufgeführt.\nWenn Sie einer Crew angehören, erscheint auf dem Dashboard eine kompakte wöchentliche Mannschaftsziellinie.';
+      'Die obere Leiste zeigt: Bargeld, Rang, Gesundheit (0–100 HP), Fahndungslevel (0–100) und FBI-Heat (0–100).\nAlle 5 Minuten wird ein automatischer Tick ausgelöst: Hunger sinkt um -2, Durst um -3, du heilst dich passiv um +5 HP (wenn HP > 0), Bankzinsen werden hinzugefügt (0,5 %) und das Fahndungslevel sinkt leicht, wenn es unter 10 liegt.\nWenn Hunger oder Durst 0 erreichen, sterben Sie und verbringen 3 Stunden auf der Intensivstation. Essen und trinken Sie pünktlich!\nAuf Mobilgeräten sorgt eine klebrige Fußzeile dafür, dass Verbrechen, Fahrzeugdiebstahl, Arbeit, Bank und Crew nur einen Fingertipp entfernt sind. Ein goldener Punkt auf „Verbrechen“, „Stehlen“ oder „Arbeit“ bedeutet, dass die Abklingzeit bereit ist. Alles andere finden Sie im Hamburger-Menü oder in der linken Seitenleiste; Dieses Menü ist gruppiert (Aktionen, Welt, Soziales, Wirtschaft, Imperium, Vermögenswerte) und durchsuchbar.\nCooldown-Timer pro Abschnitt zeigen an, wie lange es dauert, bis Ihre nächste Aktion verfügbar ist. Der Timer passt sich an, um die relevanteste Einheit anzuzeigen: Minuten, Stunden oder Tage.\nDie Statistikkarte verwendet jetzt echte Live-Zähler für Ausbrüche, Morde, Trefferlistenverträge, Reisen und Kugeln anstelle von festen Null-Platzhaltern.\nDas Dashboard verfügt jetzt auch über einen erweiterten Wirtschaftsbereich mit Bargeld, Bank, Krypto, Fahrzeugwert, Immobilienwert, Nettovermögen und einem 24-Stunden-Cashflow-Trend.\nDer Betriebsblock zeigt jetzt die aktive Produktion, die längste Abklingzeit, den Fahrzeugstatus (aktiv/gelistet/Transit) und die Timer für die nächste Produktion/das nächste Ereignis an.\nWenn Spielerevents live sind (z. B. wöchentliche Wettbewerbe), listet dasselbe rechte Feld kurz deren Titel und Links zur Seite „Events“ auf. Sie können Push für Rundenstart/-ende unter Einstellungen → Spielerereignisse ein- oder ausschalten (zusätzlich zu Geräteberechtigungen und anderen Push-Kategorien).\nBenachrichtigungen und Risiken umfassen jetzt ungelesene DMs, Support-Tickets, die auf Ihre Antwort warten, Ereignisse der letzten 24 Stunden und eine kompakte Risikobewertung (gesucht + FBI).\nWenn Ihre Crew an Crew Wars beteiligt ist, zeigt das Dashboard auch eine Crew Wars-Zusammenfassung mit Status, Gegner, Crewpunkten, Saisonrang und der verbleibenden Zeit in der aktuellen Phase an.\nDas Dashboard enthält jetzt auch eine Fahrzeug-Ops-Übersicht pro Auto/Motorrad/Boot mit Live-Cooldown-Chips (Hotspot, Crew, Crew-Match, Chop, Contract und Counter) sowie Hitze/Reputation, Vertrags- und Anspruchszahlen und Saisonpunkte.\nLive-Ereignisse treten auf, wenn andere Spieler wichtige Aktionen ausführen, wenn Sie angegriffen werden oder wenn es zu globalen Marktbewegungen kommt.\nDas Nachrichten-Badge zeigt ungelesene Systemnachrichten und persönliche Nachrichten an.\nDas linke Navigationsmenü gewährt Zugriff auf alle Spielabschnitte, gruppiert nach Kategorien: Aktionen, Welt, Soziales, Wirtschaft, Imperium und Vermögenswerte.\\nNeue Spieler sehen eine Startkarte mit einem nächsten Schritt (zuerst Verbrechen, täglich/Job, dann Crew). Bei Rang 3+ oder abgeschlossenem Onboarding wird diese Karte übersprungen.\nTägliche Ziele stehen im Internet und auf Mobilgeräten ganz oben: Für jedes Ziel werden die Geld- und XP-Belohnung, eine Schaltfläche zum Abholen, wenn es bereit ist, und eine UTC-Anspruchsserie angezeigt. Nachdem Sie Anspruch erhoben haben, werden in einem Toast die erhaltenen Bargeld- und XP-Werte aufgeführt. Unter Rang 5 wird Fahrzeugdiebstahl nicht aufgeführt.\nWenn Sie einer Crew angehören, erscheint auf dem Dashboard eine kompakte wöchentliche Mannschaftsziellinie.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13917,7 +13961,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Kostenlose Einzahlungen erfolgen sofort und sind gebührenfrei, jedoch nur bis zu einer Tagesobergrenze, die mit Ihrem Rang (UTC-Tag) skaliert. Abhebungen bleiben kostenlos und unbegrenzt. \nPassive Bankzinsen sind derzeit deaktiviert. \nDas Geld auf der Bank ist vor polizeilichen Beschlagnahmungen geschützt. Bei der Festnahme kann nur Bargeld verloren gehen. \nDer Transaktionsverlauf zeigt alle ein- und ausgehenden Bewegungen mit Zeitstempel, Betrag, Überweisungsgegenpartei und optionalen Beschreibungen. \nGeldwäsche: Waschen Sie Bargeld, das über der kostenlosen Tagesobergrenze liegt, gegen eine Gebühr und mit Verzögerung auf Ihr Bankkonto. Für jeden Waschgang gibt es ein Minimum und ein Maximum, die auf dem Bankbildschirm angezeigt werden. Höhere FBI-Hitze erhöht die Chance auf eine Beschlagnahmung; Erfolg senkt die Hitze etwas. \nBankraubkriminalität: Erfolgt bei 30 % und stiehlt 10–30 % des Bankguthabens eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko. \nEine Geldüberweisung an andere Spieler ist möglich. Optional können Sie eine Beschreibung hinzufügen, die dem Empfänger auch in Transaktionen angezeigt wird. Überprüfen Sie vor der Bestätigung sowohl den Betrag als auch den Empfänger.';
+      'Kostenlose Einzahlungen erfolgen sofort und sind gebührenfrei, jedoch nur bis zu einer Tagesobergrenze, die mit Ihrem Rang (UTC-Tag) skaliert. Abhebungen bleiben kostenlos und unbegrenzt. Über „Verbleibend füllen“ geben Sie die heutige verbleibende Quote ein. Wenn die Kappe aufgebraucht ist, wird auf dem Bildschirm der Countdown bis 00:00 UTC angezeigt.\nPassive Bankzinsen sind derzeit deaktiviert.\nDas Geld auf der Bank ist vor polizeilichen Beschlagnahmungen geschützt. Bei der Festnahme kann nur Bargeld verloren gehen.\nDer Transaktionsverlauf zeigt alle ein- und ausgehenden Bewegungen mit Zeitstempel, Betrag, Überweisungsgegenpartei und optionalen Beschreibungen.\nGeldwäsche: Waschen Sie Bargeld, das über der kostenlosen Tagesobergrenze liegt, gegen eine Gebühr und mit Verzögerung auf Ihr Bankkonto. Für jeden Waschgang gibt es ein Minimum und ein Maximum, die auf dem Bankbildschirm angezeigt werden. Höhere FBI-Hitze erhöht die Chance auf eine Beschlagnahmung; Erfolg senkt die Hitze etwas.\nBankraubkriminalität: Erfolgt bei 30 % und stiehlt 10–30 % des Bankguthabens eines zufälligen anderen Spielers. Hohes Wanted-Level-Risiko.\nEine Geldüberweisung an andere Spieler ist möglich. Optional können Sie eine Beschreibung hinzufügen, die dem Empfänger auch in Transaktionen angezeigt wird. Überprüfen Sie vor der Bestätigung sowohl den Betrag als auch den Empfänger.';
 
   @override
   String get helpTopicBankTips =>

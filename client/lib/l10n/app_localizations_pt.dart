@@ -895,6 +895,36 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mobileNavCrew => 'Equipe';
 
   @override
+  String get mobileNavReady => 'Preparar';
+
+  @override
+  String get menuSearchHint => 'Menu de pesquisa';
+
+  @override
+  String get menuSearchNoResults => 'Nenhuma página correspondente';
+
+  @override
+  String get menuNavCategoryActions => 'Ações';
+
+  @override
+  String get menuNavCategoryWorld => 'Mundo';
+
+  @override
+  String get menuNavCategorySocial => 'Social';
+
+  @override
+  String get menuNavCategoryEconomy => 'Economia';
+
+  @override
+  String get menuNavCategoryEmpire => 'Império';
+
+  @override
+  String get menuNavCategoryAssets => 'Ativas';
+
+  @override
+  String get menuNavCategoryMore => 'Mais';
+
+  @override
   String get liveEvents => 'Eventos ao vivo';
 
   @override
@@ -4956,7 +4986,21 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get bankScreenDailyDepositCapReached =>
-      'O limite de depósito gratuito de hoje acabou. Lave o dinheiro restante ou espere até amanhã (UTC).';
+      'O limite de depósito gratuito de hoje acabou. Lave o dinheiro restante ou aguarde a redefinição do UTC.';
+
+  @override
+  String bankScreenFillRemainingQuota(String amount) {
+    return 'Preencha o restante ($amount)';
+  }
+
+  @override
+  String bankScreenDailyDepositResetsIn(String time) {
+    return 'Os depósitos gratuitos são reiniciados às 00:00 UTC ($time restantes).';
+  }
+
+  @override
+  String get bankScreenDailyDepositBelowLaunderMin =>
+      'Dinheiro abaixo do mínimo para lavagem pode ser depositado gratuitamente após a redefinição do UTC.';
 
   @override
   String bankScreenDepositCapError(String remaining) {
@@ -13685,7 +13729,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'A barra superior mostra: Dinheiro, Classificação, Saúde (0-100 HP), Nível de Procurado (0-100) e FBI Heat (0-100).\nA cada 5 minutos um tick automático é acionado: a fome cai -2, a sede -3, você cura passivamente +5 HP (se HP > 0), juros bancários são adicionados (0,5%) e o nível de procurado cai ligeiramente quando abaixo de 10.\nSe a fome ou a sede chegar a 0 você morre e fica 3 horas na UTI. Coma e beba na hora certa!\nNo celular, um rodapé aderente mantém Crimes, Roubo de veículos, Trabalho, Banco e Crew a um toque de distância. Todo o resto está no menu de hambúrguer ou na barra lateral esquerda.\nOs temporizadores de resfriamento por seção mostram quanto tempo até que sua próxima ação esteja disponível. O cronômetro se adapta para mostrar a unidade mais relevante: minutos, horas ou dias.\nO cartão de estatísticas agora usa contadores reais ao vivo para fugas, assassinatos, contratos de lista de alvos, viagens e balas, em vez de marcadores de zero fixos.\nO painel agora também tem uma seção de economia expandida com dinheiro, banco, criptografia, valor do veículo, valor da propriedade, patrimônio líquido e tendência de fluxo de caixa de 24 horas.\nO bloco de operações agora mostra a produção ativa, o tempo de espera mais longo, o status do veículo (ativo/listado/em trânsito) e os temporizadores da próxima produção/evento.\nQuando os eventos dos jogadores são ao vivo (por exemplo, competições semanais), o mesmo painel direito lista brevemente seus títulos e links para a página Eventos. Você pode ativar ou desativar o push para início/fim da rodada em Configurações → Eventos do jogador (além de permissões do dispositivo e outras categorias de push).\nNotificações e riscos agora incluem mensagens diretas não lidas, tickets de suporte aguardando sua resposta, eventos das últimas 24 horas e uma pontuação de risco compacta (procurado + FBI).\nQuando sua Crew está envolvida em Crew Wars, o painel também mostra um resumo do Crew Wars com status, oponente, pontos de Crew, classificação da temporada e o tempo restante na fase atual.\nO painel agora também inclui uma visão geral das operações de veículos por carro/motocicleta/barco com chips de resfriamento ao vivo (ponto de acesso, Crew, partida de Crew, corte, contrato e contador), além de calor/reputação, contagem de contratos e reivindicações e pontos de temporada.\nOs eventos ao vivo aparecem quando outros jogadores realizam ações importantes, quando você é atacado ou quando ocorrem movimentos no mercado global.\nO selo de mensagem mostra mensagens não lidas do sistema e mensagens pessoais.\nO menu de navegação à esquerda dá acesso a todas as seções do jogo agrupadas por categoria: Ações, Mundo, Social, Economia, Império e Ativos.\\nOs novos jogadores veem uma carta inicial com uma próxima etapa (primeiro crime, diário/trabalho, depois Crew). Rank 3+ ou integração concluída ignora esse cartão.\nAs metas diárias ficam no topo na web e em dispositivos móveis: cada meta mostra sua recompensa em dinheiro e XP, um botão de reivindicação quando estiver pronto e uma sequência de reivindicações UTC. Depois de reivindicar, um brinde lista o dinheiro e a XP que você recebeu. O roubo de veículos não é apresentado abaixo do nível 5.\nSe você estiver em uma equipe, uma linha compacta de metas semanais da equipe aparecerá no painel.';
+      'A barra superior mostra: Dinheiro, Classificação, Saúde (0-100 HP), Nível de Procurado (0-100) e FBI Heat (0-100).\nA cada 5 minutos um tick automático é acionado: a fome cai -2, a sede -3, você cura passivamente +5 HP (se HP > 0), juros bancários são adicionados (0,5%) e o nível de procurado cai ligeiramente quando abaixo de 10.\nSe a fome ou a sede chegar a 0 você morre e fica 3 horas na UTI. Coma e beba na hora certa!\nNo celular, um rodapé aderente mantém Crimes, Roubo de veículos, Trabalho, Banco e Crew a um toque de distância. Um ponto dourado em Crimes, Roubo ou Trabalho significa que o tempo de espera está pronto. Todo o resto está no menu hambúrguer ou na barra lateral esquerda; esse menu é agrupado (Ações, Mundo, Social, Economia, Império, Ativos) e pesquisável.\nOs temporizadores de resfriamento por seção mostram quanto tempo até que sua próxima ação esteja disponível. O cronômetro se adapta para mostrar a unidade mais relevante: minutos, horas ou dias.\nO cartão de estatísticas agora usa contadores reais ao vivo para fugas, assassinatos, contratos de lista de alvos, viagens e balas, em vez de marcadores de zero fixos.\nO painel agora também tem uma seção de economia expandida com dinheiro, banco, criptografia, valor do veículo, valor da propriedade, patrimônio líquido e tendência de fluxo de caixa de 24 horas.\nO bloco de operações agora mostra a produção ativa, o tempo de espera mais longo, o status do veículo (ativo/listado/em trânsito) e os temporizadores da próxima produção/evento.\nQuando os eventos dos jogadores são ao vivo (por exemplo, competições semanais), o mesmo painel direito lista brevemente seus títulos e links para a página Eventos. Você pode ativar ou desativar o push para início/fim da rodada em Configurações → Eventos do jogador (além de permissões do dispositivo e outras categorias de push).\nNotificações e riscos agora incluem mensagens diretas não lidas, tickets de suporte aguardando sua resposta, eventos das últimas 24 horas e uma pontuação de risco compacta (procurado + FBI).\nQuando sua Crew está envolvida em Crew Wars, o painel também mostra um resumo do Crew Wars com status, oponente, pontos de Crew, classificação da temporada e o tempo restante na fase atual.\nO painel agora também inclui uma visão geral das operações de veículos por carro/motocicleta/barco com chips de resfriamento ao vivo (ponto de acesso, Crew, partida de Crew, corte, contrato e contador), além de calor/reputação, contagem de contratos e reivindicações e pontos de temporada.\nOs eventos ao vivo aparecem quando outros jogadores realizam ações importantes, quando você é atacado ou quando ocorrem movimentos no mercado global.\nO selo de mensagem mostra mensagens não lidas do sistema e mensagens pessoais.\nO menu de navegação à esquerda dá acesso a todas as seções do jogo agrupadas por categoria: Ações, Mundo, Social, Economia, Império e Ativos.\\nOs novos jogadores veem uma carta inicial com uma próxima etapa (primeiro crime, diário/trabalho, depois Crew). Rank 3+ ou integração concluída ignora esse cartão.\nAs metas diárias ficam no topo na web e em dispositivos móveis: cada meta mostra sua recompensa em dinheiro e XP, um botão de reivindicação quando estiver pronto e uma sequência de reivindicações UTC. Depois de reivindicar, um brinde lista o dinheiro e a XP que você recebeu. O roubo de veículos não é apresentado abaixo do nível 5.\nSe você estiver em uma equipe, uma linha compacta de metas semanais da equipe aparecerá no painel.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13847,7 +13891,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Os depósitos grátis são instantâneos e não têm taxas, mas apenas até um limite diário que varia de acordo com a sua classificação (dia UTC). As retiradas permanecem gratuitas e ilimitadas. \nOs juros bancários passivos estão atualmente desativados. \nO dinheiro no banco está protegido contra confiscos policiais. Apenas o dinheiro em mãos pode ser perdido na prisão. \nO histórico de transações mostra todos os fluxos de entrada e saída com carimbo de data/hora, valor, contraparte de transferência e descrições opcionais. \nLavagem de dinheiro: lave dinheiro acima do limite diário gratuito em seu banco com uma taxa e atraso. Cada lavagem possui um mínimo e um máximo, mostrados na tela do banco. Maior pressão do FBI aumenta chance de apreensão; o sucesso reduz ligeiramente o calor. \nCrime de assalto a banco: consegue 30% e rouba 10-30% do saldo bancário aleatório de outro jogador. Alto risco de nível de procurado. \nÉ possível transferir dinheiro para outros jogadores. Opcionalmente, você pode adicionar uma descrição e o destinatário também a verá nas transações. Verifique novamente o valor e o destinatário antes de confirmar.';
+      'Os depósitos grátis são instantâneos e não têm taxas, mas apenas até um limite diário que varia de acordo com a sua classificação (dia UTC). As retiradas permanecem gratuitas e ilimitadas. Use Preencher restante para inserir a cota restante de hoje; quando o limite se esgota, a tela mostra a contagem regressiva até 00:00 UTC.\nOs juros bancários passivos estão atualmente desativados.\nO dinheiro no banco está protegido contra confiscos policiais. Apenas o dinheiro em mãos pode ser perdido na prisão.\nO histórico de transações mostra todos os fluxos de entrada e saída com carimbo de data/hora, valor, contraparte de transferência e descrições opcionais.\nLavagem de dinheiro: lave dinheiro acima do limite diário gratuito em seu banco com uma taxa e atraso. Cada lavagem possui um mínimo e um máximo, mostrados na tela do banco. Maior pressão do FBI aumenta chance de apreensão; o sucesso reduz ligeiramente o calor.\nCrime de assalto a banco: consegue 30% e rouba 10-30% do saldo bancário aleatório de outro jogador. Alto risco de nível de procurado.\nÉ possível transferir dinheiro para outros jogadores. Opcionalmente, você pode adicionar uma descrição e o destinatário também a verá nas transações. Verifique novamente o valor e o destinatário antes de confirmar.';
 
   @override
   String get helpTopicBankTips =>

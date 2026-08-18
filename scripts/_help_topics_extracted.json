@@ -12,7 +12,7 @@
       "Bovenbalk toont: Cash (contant), Rang, Gezondheid (0-100 HP), Wanted Level (0-100) en FBI Heat (0-100).",
       "Elke 5 minuten loopt een automatische tick: je honger daalt -2, dorst -3, je heelt passief +5 HP (als HP > 0), je bankrekening ontvangt rente (0.5%) en je wanted level daalt licht als het onder 10 staat.",
       "Als honger of dorst op 0 zakt ga je dood en beland je 3 uur in de ICU. Eet en drink op tijd!",
-      "Op mobiel houdt een sticky footer Misdaden, Voertuig stelen, Werken, Bank en Crew in één tik bereikbaar. Alle andere onderdelen open je via het hamburger-menu of de zijbalk.",
+      "Op mobiel houdt een sticky footer Misdaden, Voertuig stelen, Werken, Bank en Crew in één tik bereikbaar. Een gouden stip op Misdaden, Stelen of Werken betekent dat de cooldown klaar is. Alle andere onderdelen open je via het hamburger-menu of de zijbalk; dat menu is gegroepeerd (Acties, Wereld, Sociaal, Economie, Empire, Assets) en doorzoekbaar.",
       "Timeouts per onderdeel tonen hoelang je nog moet wachten voor een actie beschikbaar is. De timer toont automatisch de meest relevante eenheid: minuten, uren of dagen.",
       "De statistiekencard gebruikt nu echte live tellers voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels in plaats van vaste nul-placeholders.",
       "Het dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.",
@@ -29,7 +29,7 @@
       "Top bar shows: Cash, Rank, Health (0-100 HP), Wanted Level (0-100) and FBI Heat (0-100).",
       "Every 5 minutes an automatic tick fires: hunger drops -2, thirst -3, you heal passively +5 HP (if HP > 0), bank interest is added (0.5%) and wanted level drops slightly when below 10.",
       "If hunger or thirst reaches 0 you die and spend 3 hours in ICU. Eat and drink on time!",
-      "On mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. Everything else is in the hamburger menu or the left sidebar.",
+      "On mobile a sticky footer keeps Crimes, Vehicle theft, Work, Bank and Crew one tap away. A gold dot on Crimes, Steal or Work means that cooldown is ready. Everything else is in the hamburger menu or the left sidebar; that menu is grouped (Actions, World, Social, Economy, Empire, Assets) and searchable.",
       "Cooldown timers per section show how long until your next action is available. The timer adapts to show the most relevant unit: minutes, hours or days.",
       "The stats card now uses real live counters for breakouts, murders, hitlist contracts, travels and bullets instead of fixed zero placeholders.",
       "The dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.",
@@ -441,7 +441,7 @@
     "summaryNl": "Stort werkkapitaal gratis tot een daglimiet. Grotere straatcash moet je witwassen met fee, wachttijd en FBI-heat risico.",
     "summaryEn": "Deposit working cash for free up to a daily cap. Larger street cash must be laundered with a fee, delay and FBI-heat seize risk.",
     "howNl": [
-      "Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt.",
+      "Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt. Op het bankscherm vul je het restant van vandaag met één knop; als de limiet op is zie je de countdown tot 00:00 UTC.",
       "Passieve bankrente staat momenteel uit.",
       "Geld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.",
       "Transactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.",
@@ -450,7 +450,7 @@
       "Geld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt."
     ],
     "howEn": [
-      "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited.",
+      "Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited. Use Fill remaining to enter today's leftover quota; when the cap is used up the screen shows the countdown to 00:00 UTC.",
       "Passive bank interest is currently disabled.",
       "Money in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.",
       "Transaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.",

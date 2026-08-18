@@ -152,6 +152,22 @@ class _BankScreenState extends State<BankScreen> {
     return remaining.isNegative ? Duration.zero : remaining;
   }
 
+  Duration _timeUntilNextUtcMidnight() {
+    final now = DateTime.now().toUtc();
+    final next = DateTime.utc(now.year, now.month, now.day).add(
+      const Duration(days: 1),
+    );
+    final remaining = next.difference(now);
+    return remaining.isNegative ? Duration.zero : remaining;
+  }
+
+  void _fillRemainingDepositQuota(int cash) {
+    if (!_dailyDepositCapEnabled || _dailyDepositRemaining <= 0) return;
+    final fill = cash < _dailyDepositRemaining ? cash : _dailyDepositRemaining;
+    if (fill <= 0) return;
+    _amountController.text = '$fill';
+  }
+
   void _onTransferUsernameChanged(String query) {
     _searchDebounce?.cancel();
     _searchDebounce = Timer(const Duration(milliseconds: 250), () {
@@ -847,6 +863,28 @@ class _BankScreenState extends State<BankScreen> {
                           fontSize: 13,
                         ),
                       ),
+                      if (_dailyDepositRemaining <= 0) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.bankScreenDailyDepositResetsIn(
+                            formatDuration(_timeUntilNextUtcMidnight()),
+                          ),
+                          style: TextStyle(
+                            color: Colors.orange.shade200,
+                            fontSize: 12.5,
+                          ),
+                        ),
+                        if (cash > 0 && cash < _launderMinAmount) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.bankScreenDailyDepositBelowLaunderMin,
+                            style: TextStyle(
+                              color: Colors.grey.shade400,
+                              fontSize: 12.5,
+                            ),
+                          ),
+                        ],
+                      ],
                     ],
                   ],
                 ),
@@ -867,7 +905,28 @@ class _BankScreenState extends State<BankScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            if (_dailyDepositCapEnabled &&
+                _dailyDepositRemaining > 0 &&
+                cash > 0) ...[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: _isSubmitting
+                      ? null
+                      : () => _fillRemainingDepositQuota(cash),
+                  child: Text(
+                    l10n.bankScreenFillRemainingQuota(
+                      formatCurrency(
+                        cash < _dailyDepositRemaining
+                            ? cash
+                            : _dailyDepositRemaining,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ] else
+              const SizedBox(height: 10),
             TextField(
               controller: _amountDescriptionController,
               maxLength: 160,

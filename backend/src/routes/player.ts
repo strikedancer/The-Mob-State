@@ -835,6 +835,21 @@ router.put('/language', authenticate, async (req: AuthRequest, res: Response) =>
   }
 });
 
+// Lightweight cooldowns for mobile footer ready-dots (not the full dashboard-stats payload).
+router.get('/action-cooldowns', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player!.id;
+    const cooldowns = await getPlayerCooldowns(playerId);
+    return res.status(200).json({ cooldowns });
+  } catch (error) {
+    console.error('[Dashboard] Action cooldowns error:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
 // Get dashboard statistics
 router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Response) => {
   try {

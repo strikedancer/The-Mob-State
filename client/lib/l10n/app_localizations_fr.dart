@@ -903,6 +903,36 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mobileNavCrew => 'Équipage';
 
   @override
+  String get mobileNavReady => 'Prêt';
+
+  @override
+  String get menuSearchHint => 'Menu de recherche';
+
+  @override
+  String get menuSearchNoResults => 'Aucune page correspondante';
+
+  @override
+  String get menuNavCategoryActions => 'Actes';
+
+  @override
+  String get menuNavCategoryWorld => 'Monde';
+
+  @override
+  String get menuNavCategorySocial => 'Sociale';
+
+  @override
+  String get menuNavCategoryEconomy => 'Économie';
+
+  @override
+  String get menuNavCategoryEmpire => 'Empire';
+
+  @override
+  String get menuNavCategoryAssets => 'Actifs';
+
+  @override
+  String get menuNavCategoryMore => 'Plus';
+
+  @override
   String get liveEvents => 'Événements en direct';
 
   @override
@@ -5000,7 +5030,21 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bankScreenDailyDepositCapReached =>
-      'La limite de dépôt gratuit d\'aujourd\'hui est épuisée. Blanchissez l’argent restant ou attendez demain (UTC).';
+      'La limite de dépôt gratuit d\'aujourd\'hui est épuisée. Blanchissez l’argent restant ou attendez la réinitialisation UTC.';
+
+  @override
+  String bankScreenFillRemainingQuota(String amount) {
+    return 'Remplissez le reste ($amount)';
+  }
+
+  @override
+  String bankScreenDailyDepositResetsIn(String time) {
+    return 'Les dépôts gratuits sont réinitialisés à 00h00 UTC ($time gauche).';
+  }
+
+  @override
+  String get bankScreenDailyDepositBelowLaunderMin =>
+      'Les espèces inférieures au minimum de blanchiment peuvent être déposées gratuitement après la réinitialisation UTC.';
 
   @override
   String bankScreenDepositCapError(String remaining) {
@@ -13757,7 +13801,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicDashboardHow =>
-      'La barre supérieure affiche : Cash, Rank, Health (0-100 HP), Wanted Level (0-100) et FBI Heat (0-100).\nToutes les 5 minutes, un tick automatique se déclenche : la faim diminue de -2, la soif de -3, vous soignez passivement +5 HP (si HP > 0), des intérêts bancaires sont ajoutés (0,5%) et le niveau de recherche diminue légèrement lorsqu\'il est inférieur à 10.\nSi la faim ou la soif atteint 0, vous mourez et passez 3 heures en soins intensifs. Mangez et buvez à l\'heure !\nSur mobile, un pied de page collant permet de garder les crimes, le vol de véhicules, le travail, la banque et l\'équipage à portée de main. Tout le reste se trouve dans le menu hamburger ou dans la barre latérale gauche.\nLes minuteurs de recharge par section indiquent combien de temps il faudra pour que votre prochaine action soit disponible. La minuterie s\'adapte pour afficher l\'unité la plus pertinente : minutes, heures ou jours.\nLa carte de statistiques utilise désormais de vrais compteurs en direct pour les évasions, les meurtres, les contrats sur liste noire, les voyages et les balles au lieu d\'espaces réservés zéro fixes.\nLe tableau de bord comporte désormais également une section économique étendue avec des espèces, des banques, des crypto-monnaies, la valeur du véhicule, la valeur de la propriété, la valeur nette et une tendance des flux de trésorerie sur 24 heures.\nLe bloc des opérations affiche désormais la production active, le temps de recharge le plus long, l\'état du véhicule (actif/répertorié/en transit) et les minuteries de production/événement suivant.\nLorsque les événements des joueurs sont en direct (par exemple, une compétition hebdomadaire), le même panneau de droite répertorie brièvement leurs titres et les liens vers la page Événements. Vous pouvez activer ou désactiver le push pour le début/la fin du tour sous Paramètres → Événements du joueur (en plus des autorisations de l\'appareil et d\'autres catégories de push).\nLes notifications et les risques incluent désormais les DM non lus, les tickets d\'assistance en attente de votre réponse, les événements des dernières 24 heures et un score de risque compact (recherché + FBI).\nLorsque votre équipage est impliqué dans Crew Wars, le tableau de bord affiche également un résumé de Crew Wars avec le statut, l\'adversaire, les points d\'équipage, le classement de la saison et le temps restant dans la phase en cours.\nLe tableau de bord comprend désormais également un aperçu des opérations des véhicules par voiture/moto/bateau avec des puces de temps de recharge en direct (Hotspot, Crew, Crew match, Chop, Contract et Counter), ainsi que la chaleur/réputation, le nombre de contrats et de réclamations et les points de saison.\nDes événements en direct apparaissent lorsque d\'autres joueurs effectuent des actions majeures, lorsque vous êtes attaqué ou lorsque des mouvements de marché mondiaux se produisent.\nLe badge de message affiche les messages système non lus et les messages personnels.\nLe menu de navigation de gauche donne accès à toutes les sections du jeu regroupées par catégorie : Actions, Monde, Social, Économie, Empire et Actifs.\\nLes nouveaux joueurs voient une carte de départ avec une étape suivante (d\'abord crime, quotidien/travail, puis équipage). Le rang 3+ ou l’intégration terminée ignore cette carte.\nLes objectifs quotidiens figurent en haut de la liste sur le Web et sur mobile : chaque objectif affiche sa récompense en argent et en XP, un bouton de réclamation lorsqu\'il est prêt et une séquence de réclamation UTC. Après votre réclamation, un toast répertorie l\'argent et l\'XP que vous avez reçus. Le vol de véhicules ne figure pas en dessous du rang 5.\nSi vous faites partie d\'un équipage, une ligne d\'objectif hebdomadaire compacte apparaît sur le tableau de bord.';
+      'La barre supérieure affiche : Cash, Rank, Health (0-100 HP), Wanted Level (0-100) et FBI Heat (0-100).\nToutes les 5 minutes, un tick automatique se déclenche : la faim diminue de -2, la soif de -3, vous soignez passivement +5 HP (si HP > 0), des intérêts bancaires sont ajoutés (0,5%) et le niveau de recherche diminue légèrement lorsqu\'il est inférieur à 10.\nSi la faim ou la soif atteint 0, vous mourez et passez 3 heures en soins intensifs. Mangez et buvez à l\'heure !\nSur mobile, un pied de page collant permet de garder les crimes, le vol de véhicules, le travail, la banque et l\'équipage à portée de main. Un point doré sur Crimes, Vol ou Travail signifie que le temps de recharge est prêt. Tout le reste se trouve dans le menu hamburger ou dans la barre latérale gauche ; ce menu est regroupé (Actions, Monde, Social, Économie, Empire, Actifs) et consultable.\nLes minuteurs de recharge par section indiquent combien de temps il faudra pour que votre prochaine action soit disponible. La minuterie s\'adapte pour afficher l\'unité la plus pertinente : minutes, heures ou jours.\nLa carte de statistiques utilise désormais de vrais compteurs en direct pour les évasions, les meurtres, les contrats sur liste noire, les voyages et les balles au lieu d\'espaces réservés zéro fixes.\nLe tableau de bord comporte désormais également une section économique étendue avec des espèces, des banques, des crypto-monnaies, la valeur du véhicule, la valeur de la propriété, la valeur nette et une tendance des flux de trésorerie sur 24 heures.\nLe bloc des opérations affiche désormais la production active, le temps de recharge le plus long, l\'état du véhicule (actif/répertorié/en transit) et les minuteries de production/événement suivant.\nLorsque les événements des joueurs sont en direct (par exemple, une compétition hebdomadaire), le même panneau de droite répertorie brièvement leurs titres et les liens vers la page Événements. Vous pouvez activer ou désactiver le push pour le début/la fin du tour sous Paramètres → Événements du joueur (en plus des autorisations de l\'appareil et d\'autres catégories de push).\nLes notifications et les risques incluent désormais les DM non lus, les tickets d\'assistance en attente de votre réponse, les événements des dernières 24 heures et un score de risque compact (recherché + FBI).\nLorsque votre équipage est impliqué dans Crew Wars, le tableau de bord affiche également un résumé de Crew Wars avec le statut, l\'adversaire, les points d\'équipage, le classement de la saison et le temps restant dans la phase en cours.\nLe tableau de bord comprend désormais également un aperçu des opérations des véhicules par voiture/moto/bateau avec des puces de temps de recharge en direct (Hotspot, Crew, Crew match, Chop, Contract et Counter), ainsi que la chaleur/réputation, le nombre de contrats et de réclamations et les points de saison.\nDes événements en direct apparaissent lorsque d\'autres joueurs effectuent des actions majeures, lorsque vous êtes attaqué ou lorsque des mouvements de marché mondiaux se produisent.\nLe badge de message affiche les messages système non lus et les messages personnels.\nLe menu de navigation de gauche donne accès à toutes les sections du jeu regroupées par catégorie : Actions, Monde, Social, Économie, Empire et Actifs.\\nLes nouveaux joueurs voient une carte de départ avec une étape suivante (d\'abord crime, quotidien/travail, puis équipage). Le rang 3+ ou l’intégration terminée ignore cette carte.\nLes objectifs quotidiens figurent en haut de la liste sur le Web et sur mobile : chaque objectif affiche sa récompense en argent et en XP, un bouton de réclamation lorsqu\'il est prêt et une séquence de réclamation UTC. Après votre réclamation, un toast répertorie l\'argent et l\'XP que vous avez reçus. Le vol de véhicules ne figure pas en dessous du rang 5.\nSi vous faites partie d\'un équipage, une ligne d\'objectif hebdomadaire compacte apparaît sur le tableau de bord.';
 
   @override
   String get helpTopicDashboardTips =>
@@ -13919,7 +13963,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Les dépôts gratuits sont instantanés et sans frais, mais seulement jusqu\'à un plafond quotidien qui évolue en fonction de votre classement (jour UTC). Les retraits restent gratuits et illimités. \nLes intérêts bancaires passifs sont actuellement désactivés. \nL\'argent en banque est protégé contre les confiscations policières. Seul l’argent liquide peut être perdu lors de l’arrestation. \nL\'historique des transactions montre tous les flux entrants et sortants avec l\'horodatage, le montant, la contrepartie du transfert et des descriptions facultatives. \nBlanchiment d\'argent : versez dans votre banque des espèces dépassant le plafond quotidien gratuit, moyennant des frais et un délai. Chaque lavage a un minimum et un maximum, affichés sur l\'écran de la banque. Une chaleur plus élevée du FBI augmente les chances de saisie ; le succès diminue légèrement la chaleur. \nCrime de vol de banque : réussit à 30 % et vole 10 à 30 % du solde bancaire d\'un autre joueur au hasard. Risque de niveau de recherche élevé. \nTransférer de l\'argent à d\'autres joueurs est possible. Vous pouvez éventuellement ajouter une description, et le destinataire la verra également dans les transactions. Vérifiez à nouveau le montant et le destinataire avant de confirmer.';
+      'Les dépôts gratuits sont instantanés et sans frais, mais seulement jusqu\'à un plafond quotidien qui évolue en fonction de votre classement (jour UTC). Les retraits restent gratuits et illimités. Utilisez Remplir restant pour saisir le quota restant d\'aujourd\'hui ; lorsque le capuchon est épuisé, l\'écran affiche le compte à rebours jusqu\'à 00h00 UTC.\nLes intérêts bancaires passifs sont actuellement désactivés.\nL\'argent en banque est protégé contre les confiscations policières. Seul l’argent liquide peut être perdu lors de l’arrestation.\nL\'historique des transactions montre tous les flux entrants et sortants avec l\'horodatage, le montant, la contrepartie du transfert et des descriptions facultatives.\nBlanchiment d\'argent : versez dans votre banque des espèces dépassant le plafond quotidien gratuit, moyennant des frais et un délai. Chaque lavage a un minimum et un maximum, affichés sur l\'écran de la banque. Une chaleur plus élevée du FBI augmente les chances de saisie ; le succès diminue légèrement la chaleur.\nCrime de vol de banque : réussit à 30 % et vole 10 à 30 % du solde bancaire d\'un autre joueur au hasard. Risque de niveau de recherche élevé.\nTransférer de l\'argent à d\'autres joueurs est possible. Vous pouvez éventuellement ajouter une description, et le destinataire la verra également dans les transactions. Vérifiez à nouveau le montant et le destinataire avant de confirmer.';
 
   @override
   String get helpTopicBankTips =>
