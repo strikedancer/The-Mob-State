@@ -172,7 +172,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   static const double _mobileBreakpoint = 600;
   // Tablet layout threshold (drawers / stacked dashboard cards)
   static const double _tabletBreakpoint = 900;
-  // Wide desktop threshold (both side panels visible)
+  // Wide desktop threshold (native tile-grid column count)
   static const double _wideDesktopBreakpoint = 1200;
 
   int _unreadCount = 0;
@@ -510,15 +510,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final showSidebars = screenWidth >= _wideDesktopBreakpoint;
     final showLeftSidebar = screenWidth >= _tabletBreakpoint;
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: !showLeftSidebar
-          ? _buildDrawer(context, l10n, 'navigation')
-          : null,
-      endDrawer: !showSidebars ? _buildDrawer(context, l10n, 'actions') : null,
+      drawer: !showLeftSidebar ? _buildDrawer(context, l10n) : null,
       bottomNavigationBar:
           !showLeftSidebar ? _buildMobileQuickNavBar(l10n) : null,
       body: Column(
@@ -572,12 +568,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                 ),
-                if (!showSidebars)
-                  IconButton(
-                    icon: const Icon(Icons.flash_on),
-                    onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
-                    tooltip: l10n.quickActions,
-                  ),
                 PopupMenuButton<String>(
                   tooltip: l10n.userAccountMenuTooltip,
                   onSelected: (value) async {
@@ -823,24 +813,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                 ),
-                if (showSidebars)
-                  Container(
-                    width: 240,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [_dashboardPanelLight, _dashboardPanelDark],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      border: Border(
-                        left: BorderSide(
-                          color: _dashboardGold.withOpacity(0.6),
-                        ),
-                      ),
-                    ),
-                    child: _buildActionsPanel(context, l10n),
-                  ),
               ],
             ),
           ),
@@ -901,7 +873,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: InkWell(
                     onTap: () {
                       _scaffoldKey.currentState?.closeDrawer();
-                      _scaffoldKey.currentState?.closeEndDrawer();
                       if (item.section == _WebSection.vehicleHeist) {
                         _openVehicleHeist(0);
                       } else {
@@ -1251,194 +1222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .toList();
   }
 
-  Widget _buildActionsPanel(BuildContext context, AppLocalizations l10n) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          l10n.quickActions,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: _dashboardGold,
-            letterSpacing: 0.2,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: ListView(
-            children: [
-              _buildActionCard(
-                context,
-                icon: Icons.warning,
-                title: l10n.crimes,
-                subtitle: l10n.quickActionsCrimesSubtitle,
-                color: Colors.red.shade700,
-                onTap: () =>
-                    setState(() => _selectedWebSection = _WebSection.crimes),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.directions_car_filled,
-                title: l10n.vehicleHeist,
-                subtitle: l10n.quickActionsVehicleHeistSubtitle,
-                color: Colors.orange.shade700,
-                onTap: () => _openVehicleHeist(0),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.tune,
-                title: l10n.tuneShop,
-                subtitle: l10n.quickActionsTuneShopSubtitle,
-                color: Colors.purple.shade700,
-                onTap: () =>
-                    setState(() => _selectedWebSection = _WebSection.tuneShop),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.event,
-                title: l10n.events,
-                subtitle: l10n.quickActionsEventsSubtitle,
-                color: Colors.teal.shade700,
-                onTap: () =>
-                    setState(() => _selectedWebSection = _WebSection.events),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.work,
-                title: l10n.jobs,
-                subtitle: l10n.quickActionsJobsSubtitle,
-                color: Colors.green.shade700,
-                onTap: () =>
-                    setState(() => _selectedWebSection = _WebSection.jobs),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.casino,
-                title: l10n.casino,
-                subtitle: l10n.quickActionsCasinoSubtitle,
-                color: Colors.purple.shade700,
-                onTap: () =>
-                    setState(() => _selectedWebSection = _WebSection.casino),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.account_balance,
-                title: l10n.bank,
-                subtitle: l10n.quickActionsBankSubtitle,
-                color: Colors.indigo.shade700,
-                onTap: () =>
-                    setState(() => _selectedWebSection = _WebSection.bank),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.show_chart,
-                title: l10n.stockMarketTitle,
-                subtitle: l10n.stockMarketHint,
-                color: Colors.teal.shade700,
-                onTap: () => setState(
-                  () => _selectedWebSection = _WebSection.stockMarket,
-                ),
-              ),
-              const SizedBox(height: 12),
-              _buildActionCard(
-                context,
-                icon: Icons.school,
-                title: l10n.schoolMenuLabel,
-                subtitle: l10n.schoolMenuSubtitle,
-                color: Colors.amber.shade700,
-                onTap: () =>
-                    setState(() => _selectedWebSection = _WebSection.school),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [color.withOpacity(0.26), color.withOpacity(0.08)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          border: Border.all(color: color.withOpacity(0.45)),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [color, color.withOpacity(0.65)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(icon, color: Colors.white, size: 24),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: TextStyle(fontSize: 12, color: Colors.white70),
-                  ),
-                ],
-              ),
-            ),
-            Icon(Icons.arrow_forward_ios, size: 16, color: color),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDrawer(
-    BuildContext context,
-    AppLocalizations l10n,
-    String type,
-  ) {
+  Widget _buildDrawer(BuildContext context, AppLocalizations l10n) {
     return Drawer(
       child: Container(
         color: Theme.of(context).colorScheme.surface,
@@ -1472,139 +1256,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: type == 'navigation'
-                    ? _buildWebMenuItems(
-                        context,
-                        l10n,
-                        onBeforeNavigate: () =>
-                            _scaffoldKey.currentState?.closeDrawer(),
-                      )
-                    : [
-                        ListTile(
-                          leading: Icon(
-                            Icons.warning,
-                            color: Colors.red.shade700,
-                          ),
-                          title: Text(l10n.crimes),
-                          subtitle: Text(l10n.quickActionsCrimesSubtitle),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () => _selectedWebSection = _WebSection.crimes,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.directions_car_filled,
-                            color: Colors.orange.shade700,
-                          ),
-                          title: Text(l10n.vehicleHeist),
-                          subtitle: Text(l10n.quickActionsVehicleHeistSubtitle),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            _openVehicleHeist(0);
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.event,
-                            color: Colors.teal.shade700,
-                          ),
-                          title: Text(l10n.events),
-                          subtitle: Text(l10n.quickActionsEventsSubtitle),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () => _selectedWebSection = _WebSection.events,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.work,
-                            color: Colors.green.shade700,
-                          ),
-                          title: Text(l10n.jobs),
-                          subtitle: Text(l10n.quickActionsJobsSubtitle),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () => _selectedWebSection = _WebSection.jobs,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.casino,
-                            color: Colors.purple.shade700,
-                          ),
-                          title: Text(l10n.casino),
-                          subtitle: Text(l10n.quickActionsCasinoSubtitle),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () => _selectedWebSection = _WebSection.casino,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.account_balance,
-                            color: Colors.indigo.shade700,
-                          ),
-                          title: Text(l10n.bank),
-                          subtitle: Text(l10n.quickActionsBankSubtitle),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () => _selectedWebSection = _WebSection.bank,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.currency_bitcoin,
-                            color: Colors.cyan.shade700,
-                          ),
-                          title: Text(l10n.crypto),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () => _selectedWebSection = _WebSection.crypto,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.show_chart,
-                            color: Colors.teal.shade700,
-                          ),
-                          title: Text(l10n.stockMarketTitle),
-                          subtitle: Text(l10n.stockMarketHint),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () =>
-                                  _selectedWebSection = _WebSection.stockMarket,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.school,
-                            color: Colors.amber.shade700,
-                          ),
-                          title: Text(l10n.schoolMenuLabel),
-                          subtitle: Text(l10n.schoolMenuSubtitle),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(
-                              () => _selectedWebSection = _WebSection.school,
-                            );
-                          },
-                        ),
-                      ],
+                children: _buildWebMenuItems(
+                  context,
+                  l10n,
+                  onBeforeNavigate: () =>
+                      _scaffoldKey.currentState?.closeDrawer(),
+                ),
               ),
             ),
           ],
@@ -1612,6 +1269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
 
   Widget _buildCompactStatusBar(
     BuildContext context,

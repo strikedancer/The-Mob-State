@@ -24,10 +24,10 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
-- Dashboard shell en hoofdpanelen moeten visueel aansluiten op de game-identiteit (noir/gold), met nadruk op leesbaar contrast, subtiele gradients en duidelijke scheiding tussen navigatie, content en quick actions in plaats van vlakke donkere blokken.
+- Dashboard shell en hoofdpanelen moeten visueel aansluiten op de game-identiteit (noir/gold), met nadruk op leesbaar contrast, subtiele gradients en duidelijke scheiding tussen navigatie en content in plaats van vlakke donkere blokken.
 - Dashboard statistiekblokken mogen geen hardcoded nul-placeholders tonen wanneer er al echte backendtellers of bestaande spelerstats beschikbaar zijn.
 - Dashboard moet een complete baseline blijven tonen voor: economy (cash/bank/crypto/stocks/property/vehicle portfolio/net worth), cooldown-operaties, risicosignalen, notificaties en 24u/7d trendstatistieken; nieuwe modules die deze domeinen raken moeten hierop inhaken.
-- Stock Market en Crypto horen bereikbaar te zijn via mobile menu-grid én actions drawer / web quick actions (niet alleen via legacy tile fallback).
+- Stock Market en Crypto horen bereikbaar te zijn via de zijbalk, het hamburger-menu en de sticky footer (niet alleen via legacy tile fallback).
 - “Wat nu?” is optioneel; als we het tonen moet het compact blijven en mag het nooit primaire statistiekpanelen blokkeren of verstoppen. Als we het niet tonen, moeten doelen/recap nog steeds logisch vindbaar blijven.
 - Voor reward-gevoel en transparantie mag het dashboard een compacte **sessie recap** tonen (laatste events in deze sessie) zodat spelers direct zien wat acties opleverden. Dit mag de primaire loop niet onderbreken en moet optioneel/openklapbaar blijven.
 - Plaats de **Start-kaart** (alleen nieuwe spelers) bovenaan. **Dagdoelen** staan **één keer** in de gestylede paneelkaart (progress + cash/XP), op web bij het speler/economie-blok en op mobiel onder Start. Niet nog een tweede platte lijst bovenaan. Na Claim verschijnt rechtsboven wat je kreeg. De weekdoelen-minikaart mag naast/onder die kaart blijven. Featured daily mag `vehicle_theft_1` niet pushen onder rank 5.
@@ -37,7 +37,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Gekoppelde moduledata zoals Crew Wars mag dashboardstatistieken nooit als alles-of-niets dependency blokkeren; als een secundaire hub-call faalt moet het dashboard met veilige fallbackdata blijven renderen in plaats van 500 of nul-collaps van alle statistiekkaarten.
 - Vehicle Heist/Ops data (crew-acties, cooldowns, heat/reputatie, contracts/claims) moet als compacte dashboardsamenvatting zichtbaar blijven met live countdowns, inclusief veilige fallback per voertuigtype. Theft-cooldown na stelen blijft correct zichtbaar: API levert `cooldownRemainingSeconds` in steal-responses; embedded Vehicle Heist toont feedback rechtsboven in lijn met dashboard-notificatiepatroon.
 - Responsive usability without pushing critical actions off-screen.
-- Op mobiel (onder de tablet-breakpoint) blijft een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew altijd in beeld. Het bliksem-actiemenu blijft beschikbaar voor de overige quick actions.
+- Op mobiel (onder de tablet-breakpoint) blijft een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew altijd in beeld. Overige onderdelen blijven in het hamburger-menu / de zijbalk.
 - In web/dashboard-shell context moet klik op dezelfde sectie een expliciete remount of refresh kunnen triggeren wanneer dat scherm anders vastloopt op stale state.
 - Info- en statistiekblokken in dashboard/admin views moeten ook bij subtiele backgrounds en in dark mode expliciete contrasten voor tekst, border en hover/focus-state behouden.
 - Admin image-management flows voor extern gehoste server-assets moeten zowel toevoegen als vervangen ondersteunen zonder handmatige shell-stappen; mapnavigatie en bestandsfeedback (preview/pad/grootte/update-tijd) blijven verplicht zichtbaar.
@@ -60,7 +60,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verifieer dat een fout in een gekoppelde submodule zoals Crew Wars de dashboard-statistieken niet volledig leeg of op nul laat terugvallen.
 - Verifieer dat Vehicle Ops-data per voertuigtype (auto/motor/boot) op dashboard blijft renderen, ook als één type tijdelijk geen intelligence payload teruggeeft.
 - Verify no text overflows or clipped buttons appear.
-- Verifieer op smalle breedte de sticky footer (Misdaden, Stelen, Werken, Bank, Crew) en dat het bliksem-menu nog open gaat.
+- Verifieer op smalle breedte de sticky footer (Misdaden, Stelen, Werken, Bank, Crew) en dat het hamburger-menu alle overige onderdelen blijft tonen.
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer dat nieuwe accounts een Start-kaart met één CTA zien (crime → daily/job → crew) en dat rank 3+ of afgeronde onboarding die kaart niet meer ziet.
 - Verifieer dat dagdoelen **één keer** in de gestylede paneelkaart staan (niet dubbel bovenaan), dat elke regel cash + XP toont, dat Claim een toast met bedragen geeft, en dat autodiefstal niet featured is onder rank 5.

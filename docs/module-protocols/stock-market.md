@@ -27,7 +27,7 @@ Niet in scope:
 
 ## Cross-Module Dependencies
 - Stock Market -> Bank (funding)
-- Stock Market -> Dashboard (nav + economy strip `stockPortfolioValue` + quick actions / mobile menu)
+- Stock Market -> Dashboard (nav + economy strip `stockPortfolioValue` + sidebar / hamburger / mobile footer)
 - Stock Market -> Balance & Economy (sink/source pacing)
 - Stock Market -> Crypto (expliciet gescheiden; geen gedeelde orders)
 
