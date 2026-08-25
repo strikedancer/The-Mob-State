@@ -71,6 +71,10 @@ services:
       SMTP_PORT: ${SMTP_PORT:-465}
       SMTP_USER: ${SMTP_USER:-noreply@themobstate.com}
       SMTP_PASS: ${SMTP_PASS}
+      # Prefer Resend for Gmail deliverability; when set, SMTP is unused for outbound.
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-noreply@themobstate.com}
+      MAIL_FROM_NAME: ${MAIL_FROM_NAME:-The Mob State}
     volumes:
       - ${CLIENT_EXTERNAL_IMAGES_PATH:-/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images}:/client/images
     ports:
