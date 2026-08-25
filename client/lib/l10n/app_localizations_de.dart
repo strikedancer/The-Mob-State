@@ -15356,4 +15356,65 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get territoryErrorProjectTagMismatch =>
       'Dieser Projekttyp passt nicht zu den strategischen Tags dieser Region.';
+
+  @override
+  String get territoryStatsTitle => 'Statistiken über Ihr Besatzungsgebiet';
+
+  @override
+  String get territoryStatsAllTime => 'Allzeit';
+
+  @override
+  String get territoryStatsSeason => 'Diese Saison';
+
+  @override
+  String get territoryStatsWon => 'Won';
+
+  @override
+  String get territoryStatsDefended => 'Verteidigt';
+
+  @override
+  String get territoryStatsLost => 'Verloren';
+
+  @override
+  String get territoryStatsContests => 'Wettbewerbe';
+
+  @override
+  String get territoryStatsHoldTotal => 'Haltezeit insgesamt';
+
+  @override
+  String get territoryStatsHoldCurrent => 'Aktueller Halt';
+
+  @override
+  String get territoryStatsOwnedNow => 'Jetzt im Besitz';
+
+  @override
+  String get territoryLeaderboardScopeAllTime => 'Allzeit';
+
+  @override
+  String get territoryLeaderboardScopeSeason => 'Jahreszeit';
+
+  @override
+  String territoryLeaderboardStatsLine(
+    int won,
+    int defended,
+    int lost,
+    String hold,
+  ) {
+    return 'W $won · D $defended · L $lost · halten $hold';
+  }
+
+  @override
+  String territoryHoldDurationDaysHours(int days, int hours) {
+    return '${days}d ${hours}h';
+  }
+
+  @override
+  String territoryHoldDurationHoursMinutes(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String territoryHoldDurationMinutes(int minutes) {
+    return '${minutes}m';
+  }
 }

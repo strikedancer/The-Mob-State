@@ -5,6 +5,7 @@ import { notificationService } from './notificationService';
 import { translationService, type Language } from './translationService';
 import * as territoryProjectService from './territoryProjectService';
 import * as territoryMetaService from './territoryMetaService';
+import * as territoryCrewStatsService from './territoryCrewStatsService';
 import { ensureCurrentTerritorySeason } from '../startup/ensureTerritorySchema';
 
 // ---------------------------------------------------------------------------
@@ -264,7 +265,7 @@ async function buildViewerTerritoryCaps(
 
 type TerritoryRow = { id: number; countryCode: string; displayNameNl: string; displayNameEn: string; svgAssetKey: string; enabled: number };
 type RegionRow = { id: number; countryCode: string; regionKey: string; nameNl: string; nameEn: string; svgElementId: string; valueTier: number; strategicTagsJson: string | null; neighborsJson: string | null; enabled: number };
-type ControlRow = { id: number; regionKey: string; ownerCrewId: number | null; controlJson: string | null; stability: number; lastDecayAt: Date | null; lastIncomeAt: Date | null; updatedAt: Date };
+type ControlRow = { id: number; regionKey: string; ownerCrewId: number | null; controlJson: string | null; stability: number; lastDecayAt: Date | null; lastIncomeAt: Date | null; ownedSince: Date | null; updatedAt: Date };
 type ContestRow = { id: number; regionKey: string; status: string; attackerCrewId: number; defenderCrewId: number | null; startedAt: Date; activeAt: Date | null; lockdownAt: Date | null; resolveAt: Date | null; resolvedAt: Date | null; winnerCrewId: number | null; metadataJson: string | null };
 type SeasonRow = { id: number; seasonKey: string; status: string; startsAt: Date; endsAt: Date; rewardConfigJson: string | null };
 type MapContestRow = ContestRow & { attackerCrewName: string | null; defenderCrewName: string | null };
@@ -2318,15 +2319,16 @@ export async function defendContest(
 }
 
 export async function getCrewTerritory(crewId: number): Promise<{
-  regions: Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlPercent: number; contestStatus: string | null }>;
+  regions: Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlPercent: number; contestStatus: string | null; ownedSince: Date | null; currentHoldSeconds: number }>;
   season: SeasonRow | null;
   summary: TerritoryCrewEconomySummary;
+  stats: territoryCrewStatsService.TerritoryCrewStatsBundle;
 }> {
   await syncContestLifecycle();
 
-  const [controlled, seasons, summary] = await Promise.all([
-    prisma.$queryRawUnsafe<Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlJson: string | null; ownerCrewId: number | null }>>(
-      `SELECT tc.regionKey, tr.nameNl, tr.nameEn, tc.stability, tc.controlJson, tc.ownerCrewId
+  const [controlled, seasons, summary, stats] = await Promise.all([
+    prisma.$queryRawUnsafe<Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlJson: string | null; ownerCrewId: number | null; ownedSince: Date | null }>>(
+      `SELECT tc.regionKey, tr.nameNl, tr.nameEn, tc.stability, tc.controlJson, tc.ownerCrewId, tc.ownedSince
        FROM territory_control tc
        JOIN territory_regions tr ON tr.regionKey = tc.regionKey
        WHERE tc.ownerCrewId = ?`,
@@ -2336,6 +2338,7 @@ export async function getCrewTerritory(crewId: number): Promise<{
       `SELECT * FROM territory_seasons WHERE status = 'active' ORDER BY startsAt DESC LIMIT 1`
     ),
     getCrewEconomySummary(crewId),
+    territoryCrewStatsService.getStatsBundleForCrew(crewId),
   ]);
 
   // Active contests per region
@@ -2351,10 +2354,15 @@ export async function getCrewTerritory(crewId: number): Promise<{
   }
   const contestByRegion = activeContests.reduce<Record<string, string>>((a, c) => { a[c.regionKey] = c.status; return a; }, {});
 
+  const nowMs = Date.now();
   return {
     regions: controlled.map(r => {
       const cpJson = parseJson(r.controlJson);
       const controlPercent = r.ownerCrewId ? Number(cpJson[String(r.ownerCrewId)] ?? 0) : 0;
+      const ownedSince = r.ownedSince ?? null;
+      const currentHoldSeconds = ownedSince
+        ? Math.max(0, Math.floor((nowMs - new Date(ownedSince).getTime()) / 1000))
+        : 0;
       return {
         regionKey: r.regionKey,
         nameNl: r.nameNl,
@@ -2362,31 +2370,75 @@ export async function getCrewTerritory(crewId: number): Promise<{
         stability: r.stability,
         controlPercent,
         contestStatus: contestByRegion[r.regionKey] ?? null,
+        ownedSince,
+        currentHoldSeconds,
       };
     }),
     season: seasons[0] ?? null,
     summary,
+    stats,
   };
 }
 
-export async function getLeaderboard(): Promise<Array<{ crewId: number; crewName: string; regionsOwned: number }>> {
+export async function getLeaderboard(): Promise<Array<{
+  crewId: number;
+  crewName: string;
+  regionsOwned: number;
+  allTime: territoryCrewStatsService.TerritoryCrewStats;
+  season: territoryCrewStatsService.TerritoryCrewStats | null;
+  seasonKey: string | null;
+  currentHoldSeconds: number;
+}>> {
   await syncContestLifecycle();
 
-  const leaderboard = await prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number }>>(
-    `SELECT c.id AS crewId, c.name AS crewName, COUNT(tc.id) AS regionsOwned
+  const seasonKey = await territoryCrewStatsService.getActiveSeasonKey();
+  const leaderboard = await prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number; currentHoldSeconds: number }>>(
+    `SELECT c.id AS crewId, c.name AS crewName, COUNT(tc.id) AS regionsOwned,
+            COALESCE(SUM(TIMESTAMPDIFF(SECOND, tc.ownedSince, NOW())), 0) AS currentHoldSeconds
      FROM territory_control tc
      JOIN crews c ON c.id = tc.ownerCrewId
      WHERE tc.ownerCrewId IS NOT NULL
      GROUP BY c.id, c.name
-     ORDER BY regionsOwned DESC
+     ORDER BY regionsOwned DESC, c.name ASC
      LIMIT 20`
   );
 
-  return leaderboard.map((entry) => ({
-    crewId: toNumeric(entry.crewId),
-    crewName: entry.crewName,
-    regionsOwned: toNumeric(entry.regionsOwned),
-  }));
+  const crewIds = leaderboard.map((entry) => toNumeric(entry.crewId));
+  const [allTimeByCrew, seasonByCrew] = await Promise.all([
+    territoryCrewStatsService.getStatsByCrewIds(crewIds, territoryCrewStatsService.TERRITORY_STATS_ALL_TIME),
+    seasonKey
+      ? territoryCrewStatsService.getStatsByCrewIds(crewIds, seasonKey)
+      : Promise.resolve({} as Record<number, territoryCrewStatsService.TerritoryCrewStats>),
+  ]);
+
+  return leaderboard.map((entry) => {
+    const crewId = toNumeric(entry.crewId);
+    return {
+      crewId,
+      crewName: entry.crewName,
+      regionsOwned: toNumeric(entry.regionsOwned),
+      currentHoldSeconds: toNumeric(entry.currentHoldSeconds),
+      allTime: allTimeByCrew[crewId] ?? {
+        crewId,
+        seasonKey: territoryCrewStatsService.TERRITORY_STATS_ALL_TIME,
+        regionsWon: 0,
+        regionsDefended: 0,
+        regionsLost: 0,
+        contestsPlayed: 0,
+        holdSecondsTotal: 0,
+      },
+      season: seasonKey ? (seasonByCrew[crewId] ?? {
+        crewId,
+        seasonKey,
+        regionsWon: 0,
+        regionsDefended: 0,
+        regionsLost: 0,
+        contestsPlayed: 0,
+        holdSecondsTotal: 0,
+      }) : null,
+      seasonKey,
+    };
+  });
 }
 
 export async function resolveContest(contestId: number): Promise<{ winnerCrewId: number | null; regionKey: string }> {
@@ -2432,12 +2484,53 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
     winnerCrewId, contestId,
   );
 
+  const activeSeasonKey = await territoryCrewStatsService.getActiveSeasonKey();
+  const controlRows = await prisma.$queryRawUnsafe<Array<{ ownerCrewId: number | null; ownedSince: Date | null }>>(
+    'SELECT ownerCrewId, ownedSince FROM territory_control WHERE regionKey = ? LIMIT 1',
+    contest.regionKey,
+  );
+  const previousOwnerId = controlRows[0]?.ownerCrewId == null ? null : toNumeric(controlRows[0].ownerCrewId);
+  const previousOwnedSince = controlRows[0]?.ownedSince ?? null;
+
+  await territoryCrewStatsService.bumpCrewStatsAllScopes(toNumeric(contest.attackerCrewId), activeSeasonKey, {
+    contestsPlayed: 1,
+  });
+  if (contest.defenderCrewId != null) {
+    await territoryCrewStatsService.bumpCrewStatsAllScopes(toNumeric(contest.defenderCrewId), activeSeasonKey, {
+      contestsPlayed: 1,
+    });
+  }
+
   if (winnerCrewId !== null) {
+    const ownershipChanged = previousOwnerId !== winnerCrewId;
+    if (ownershipChanged && previousOwnerId != null) {
+      await territoryCrewStatsService.bankHoldSecondsForOwner(
+        previousOwnerId,
+        previousOwnedSince,
+        activeSeasonKey,
+      );
+    }
+
+    if (winnerCrewId === toNumeric(contest.attackerCrewId)) {
+      await territoryCrewStatsService.bumpCrewStatsAllScopes(winnerCrewId, activeSeasonKey, { regionsWon: 1 });
+      if (contest.defenderCrewId != null) {
+        await territoryCrewStatsService.bumpCrewStatsAllScopes(toNumeric(contest.defenderCrewId), activeSeasonKey, {
+          regionsLost: 1,
+        });
+      }
+    } else if (contest.defenderCrewId != null && winnerCrewId === toNumeric(contest.defenderCrewId)) {
+      await territoryCrewStatsService.bumpCrewStatsAllScopes(winnerCrewId, activeSeasonKey, { regionsDefended: 1 });
+    }
+
     await prisma.$executeRawUnsafe(
-      `UPDATE territory_control SET ownerCrewId = ?, controlJson = ?, stability = 100, lastIncomeAt = NOW(), updatedAt = NOW()
+      `UPDATE territory_control
+       SET ownerCrewId = ?, controlJson = ?, stability = 100, lastIncomeAt = NOW(),
+           ownedSince = CASE WHEN ? THEN NOW() ELSE COALESCE(ownedSince, NOW()) END,
+           updatedAt = NOW()
        WHERE regionKey = ?`,
       winnerCrewId,
       JSON.stringify({ [winnerCrewId]: 100 }),
+      ownershipChanged ? 1 : 0,
       contest.regionKey,
     );
 
@@ -2453,19 +2546,47 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
 // ── Admin Moderation ────────────────────────────────────────────────────────
 
 export async function adminAssignRegion(regionKey: string, crewId: number | null): Promise<void> {
+  const activeSeasonKey = await territoryCrewStatsService.getActiveSeasonKey();
+  const prev = await prisma.$queryRawUnsafe<Array<{ ownerCrewId: number | null; ownedSince: Date | null }>>(
+    'SELECT ownerCrewId, ownedSince FROM territory_control WHERE regionKey = ? LIMIT 1',
+    regionKey,
+  );
+  const previousOwnerId = prev[0]?.ownerCrewId == null ? null : toNumeric(prev[0].ownerCrewId);
+  if (previousOwnerId != null && previousOwnerId !== crewId) {
+    await territoryCrewStatsService.bankHoldSecondsForOwner(
+      previousOwnerId,
+      prev[0]?.ownedSince ?? null,
+      activeSeasonKey,
+    );
+  }
   await prisma.$executeRawUnsafe(
     `UPDATE territory_control
-     SET ownerCrewId = ?, controlJson = ?, stability = 100, lastIncomeAt = NOW(), updatedAt = NOW()
+     SET ownerCrewId = ?, controlJson = ?, stability = 100, lastIncomeAt = NOW(),
+         ownedSince = CASE WHEN ? IS NULL THEN NULL ELSE NOW() END, updatedAt = NOW()
      WHERE regionKey = ?`,
     crewId,
     crewId ? JSON.stringify({ [crewId]: 100 }) : '{}',
+    crewId,
     regionKey,
   );
 }
 
 export async function adminResetRegion(regionKey: string): Promise<void> {
+  const activeSeasonKey = await territoryCrewStatsService.getActiveSeasonKey();
+  const prev = await prisma.$queryRawUnsafe<Array<{ ownerCrewId: number | null; ownedSince: Date | null }>>(
+    'SELECT ownerCrewId, ownedSince FROM territory_control WHERE regionKey = ? LIMIT 1',
+    regionKey,
+  );
+  const previousOwnerId = prev[0]?.ownerCrewId == null ? null : toNumeric(prev[0].ownerCrewId);
+  if (previousOwnerId != null) {
+    await territoryCrewStatsService.bankHoldSecondsForOwner(
+      previousOwnerId,
+      prev[0]?.ownedSince ?? null,
+      activeSeasonKey,
+    );
+  }
   await prisma.$executeRawUnsafe(
-    `UPDATE territory_control SET ownerCrewId = NULL, controlJson = '{}', stability = 100, lastIncomeAt = NOW() WHERE regionKey = ?`,
+    `UPDATE territory_control SET ownerCrewId = NULL, controlJson = '{}', stability = 100, lastIncomeAt = NOW(), ownedSince = NULL WHERE regionKey = ?`,
     regionKey,
   );
   await prisma.$executeRawUnsafe(

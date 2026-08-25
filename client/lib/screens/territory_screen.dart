@@ -116,6 +116,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   List<Map<String, dynamic>> _countries = [];
   List<dynamic> _leaderboard = [];
   Map<String, dynamic> _overview = {};
+  Map<String, dynamic>? _crewTerritory;
+  bool _leaderboardShowSeason = false;
   String _selectedCountryCode = 'nl';
   int? _myCrewId;
   String? _myCrewName;
@@ -279,6 +281,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final myCrewId = myCrewIdRaw is num
         ? myCrewIdRaw.toInt()
         : int.tryParse(myCrewIdRaw?.toString() ?? '');
+    final crewTerritory = myCrewId == null
+        ? null
+        : await _service.getCrewTerritory(myCrewId);
     final regions =
         (mapDataMap['regions'] as List<dynamic>?) ?? const <dynamic>[];
     final selectedRegion = previousRegionKey == null
@@ -298,6 +303,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _mapData = mapDataMap;
       _overview = overview as Map<String, dynamic>;
       _leaderboard = leaderboard as List<dynamic>;
+      _crewTerritory = crewTerritory;
       _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
       _myCrewId = myCrewId;
       _myCrewName = myCrewMap?['name'] as String?;
@@ -1648,6 +1654,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           if (viewerCaps != null) _buildViewerCapsChips(viewerCaps),
+          if (_crewTerritory != null) _buildCrewStatsCard(_crewTerritory!),
           _buildSvgMapOverview(regions),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
@@ -2797,36 +2804,162 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   // â”€â”€ Leaderboard Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-  Widget _buildLeaderboardTab() {
-    if (_leaderboard.isEmpty) {
-      return Center(
-        child: Text(
-          _l10n.territoryLeaderboardEmpty,
-        ),
+  String _formatHoldDuration(int seconds) {
+    final t = _l10n;
+    final safe = seconds < 0 ? 0 : seconds;
+    final days = safe ~/ 86400;
+    final hours = (safe % 86400) ~/ 3600;
+    final minutes = (safe % 3600) ~/ 60;
+    if (days > 0) return t.territoryHoldDurationDaysHours(days, hours);
+    if (hours > 0) return t.territoryHoldDurationHoursMinutes(hours, minutes);
+    return t.territoryHoldDurationMinutes(minutes);
+  }
+
+  Map<String, dynamic>? _statsMapFromEntry(
+    Map<String, dynamic> entry, {
+    required bool season,
+  }) {
+    final raw = season ? entry['season'] : entry['allTime'];
+    if (raw is Map) return raw.cast<String, dynamic>();
+    return null;
+  }
+
+  Widget _buildCrewStatsCard(Map<String, dynamic> crewTerritory) {
+    final t = _l10n;
+    final stats = (crewTerritory['stats'] as Map?)?.cast<String, dynamic>();
+    if (stats == null) return const SizedBox.shrink();
+    final allTime = (stats['allTime'] as Map?)?.cast<String, dynamic>();
+    final season = (stats['season'] as Map?)?.cast<String, dynamic>();
+    final currentHold = (stats['currentHoldSeconds'] as num?)?.toInt() ?? 0;
+    final ownedNow = (stats['regionsOwned'] as num?)?.toInt() ?? 0;
+
+    Widget scopeBlock(String title, Map<String, dynamic>? row) {
+      if (row == null) {
+        return Text('$title: -', style: TextStyle(color: Colors.grey[700]));
+      }
+      final won = (row['regionsWon'] as num?)?.toInt() ?? 0;
+      final defended = (row['regionsDefended'] as num?)?.toInt() ?? 0;
+      final lost = (row['regionsLost'] as num?)?.toInt() ?? 0;
+      final contests = (row['contestsPlayed'] as num?)?.toInt() ?? 0;
+      final hold = (row['holdSecondsTotal'] as num?)?.toInt() ?? 0;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 4),
+          Text(
+            '${t.territoryStatsWon}: $won · ${t.territoryStatsDefended}: $defended · ${t.territoryStatsLost}: $lost',
+          ),
+          Text('${t.territoryStatsContests}: $contests'),
+          Text(
+            '${t.territoryStatsHoldTotal}: ${_formatHoldDuration(hold)}',
+          ),
+        ],
       );
     }
-    return ListView.separated(
-      padding: const EdgeInsets.all(16),
-      itemCount: _leaderboard.length,
-      separatorBuilder: (context, index) => const Divider(height: 1),
-      itemBuilder: (context, i) {
-        final entry = _leaderboard[i] as Map<String, dynamic>;
-        return ListTile(
-          leading: CircleAvatar(
-            child: Text(
-              '${i + 1}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+
+    return Card(
+      margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              t.territoryStatsTitle,
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
             ),
-          ),
-          title: Text(entry['crewName'] as String? ?? ''),
-          trailing: Text(
-            _l10n.territoryLeaderboardRegionsCount(
-              (entry['regionsOwned'] as num?)?.toInt() ?? 0,
+            const SizedBox(height: 8),
+            Text(
+              '${t.territoryStatsOwnedNow}: $ownedNow · ${t.territoryStatsHoldCurrent}: ${_formatHoldDuration(currentHold)}',
             ),
-            style: const TextStyle(fontWeight: FontWeight.w600),
+            const SizedBox(height: 10),
+            scopeBlock(t.territoryStatsAllTime, allTime),
+            if (season != null) ...[
+              const SizedBox(height: 10),
+              scopeBlock(t.territoryStatsSeason, season),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLeaderboardTab() {
+    final t = _l10n;
+    if (_leaderboard.isEmpty) {
+      return Center(child: Text(t.territoryLeaderboardEmpty));
+    }
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          child: SegmentedButton<bool>(
+            segments: [
+              ButtonSegment(
+                value: false,
+                label: Text(t.territoryLeaderboardScopeAllTime),
+              ),
+              ButtonSegment(
+                value: true,
+                label: Text(t.territoryLeaderboardScopeSeason),
+              ),
+            ],
+            selected: {_leaderboardShowSeason},
+            onSelectionChanged: (value) {
+              setState(() => _leaderboardShowSeason = value.first);
+            },
           ),
-        );
-      },
+        ),
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: _leaderboard.length,
+            separatorBuilder: (context, index) => const Divider(height: 1),
+            itemBuilder: (context, i) {
+              final entry = _leaderboard[i] as Map<String, dynamic>;
+              final stats = _statsMapFromEntry(
+                entry,
+                season: _leaderboardShowSeason,
+              );
+              final won = (stats?['regionsWon'] as num?)?.toInt() ?? 0;
+              final defended =
+                  (stats?['regionsDefended'] as num?)?.toInt() ?? 0;
+              final lost = (stats?['regionsLost'] as num?)?.toInt() ?? 0;
+              final holdTotal =
+                  (stats?['holdSecondsTotal'] as num?)?.toInt() ?? 0;
+              final currentHold =
+                  (entry['currentHoldSeconds'] as num?)?.toInt() ?? 0;
+              final holdLabel = _leaderboardShowSeason
+                  ? _formatHoldDuration(holdTotal + currentHold)
+                  : _formatHoldDuration(holdTotal + currentHold);
+              return ListTile(
+                leading: CircleAvatar(
+                  child: Text(
+                    '${i + 1}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                title: Text(entry['crewName'] as String? ?? ''),
+                subtitle: Text(
+                  t.territoryLeaderboardStatsLine(
+                    won,
+                    defended,
+                    lost,
+                    holdLabel,
+                  ),
+                ),
+                trailing: Text(
+                  t.territoryLeaderboardRegionsCount(
+                    (entry['regionsOwned'] as num?)?.toInt() ?? 0,
+                  ),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 

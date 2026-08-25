@@ -392,9 +392,39 @@ export async function ensureTerritorySchema(): Promise<void> {
     'ALTER TABLE territory_control ADD COLUMN lastIncomeAt DATETIME NULL AFTER lastDecayAt',
   );
 
+  await ensureColumn(
+    'territory_control',
+    'ownedSince',
+    'ALTER TABLE territory_control ADD COLUMN ownedSince DATETIME NULL AFTER lastIncomeAt',
+  );
+
   await prisma.$executeRawUnsafe(
     'UPDATE territory_control SET lastIncomeAt = COALESCE(lastIncomeAt, NOW())',
   );
+
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_control
+     SET ownedSince = COALESCE(ownedSince, lastIncomeAt, updatedAt, NOW())
+     WHERE ownerCrewId IS NOT NULL AND ownedSince IS NULL`,
+  );
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_crew_stats (
+      id INT NOT NULL AUTO_INCREMENT,
+      crewId INT NOT NULL,
+      seasonKey VARCHAR(64) NOT NULL,
+      regionsWon INT NOT NULL DEFAULT 0,
+      regionsDefended INT NOT NULL DEFAULT 0,
+      regionsLost INT NOT NULL DEFAULT 0,
+      contestsPlayed INT NOT NULL DEFAULT 0,
+      holdSecondsTotal BIGINT NOT NULL DEFAULT 0,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uq_territory_crew_stats (crewId, seasonKey),
+      INDEX idx_territory_crew_stats_season (seasonKey)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
 
   // ── Seed supported countries ──────────────────────────────────────────────
   const countries = [
@@ -527,8 +557,8 @@ export async function ensureTerritorySchema(): Promise<void> {
 
     // Ensure a control row exists for each region (neutral by default)
     await prisma.$executeRawUnsafe(
-      `INSERT INTO territory_control (regionKey, ownerCrewId, controlJson, stability, lastIncomeAt)
-       VALUES (?, NULL, '{}', 100, NOW())
+      `INSERT INTO territory_control (regionKey, ownerCrewId, controlJson, stability, lastIncomeAt, ownedSince)
+       VALUES (?, NULL, '{}', 100, NOW(), NULL)
        ON DUPLICATE KEY UPDATE regionKey = regionKey`,
       r.key,
     );
@@ -539,6 +569,13 @@ export async function ensureTerritorySchema(): Promise<void> {
 
   // ── Ensure current season ─────────────────────────────────────────────────
   await ensureCurrentTerritorySeason();
+
+  try {
+    const { backfillTerritoryCrewStatsFromContestsIfEmpty } = await import('../services/territoryCrewStatsService');
+    await backfillTerritoryCrewStatsFromContestsIfEmpty();
+  } catch (error) {
+    console.warn('[StartupSchema] Territory crew stats backfill skipped:', error);
+  }
 
   console.log('[StartupSchema] Territory schema check complete');
 }

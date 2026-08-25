@@ -9093,5 +9093,64 @@
         "type": "int"
       }
     }
+  },
+  "territoryStatsTitle": "Estatísticas do território da sua Crew",
+  "territoryStatsAllTime": "De todos os tempos",
+  "territoryStatsSeason": "Esta temporada",
+  "territoryStatsWon": "Ganho",
+  "territoryStatsDefended": "Defendida",
+  "territoryStatsLost": "Perdida",
+  "territoryStatsContests": "Concursos",
+  "territoryStatsHoldTotal": "Tempo total de espera",
+  "territoryStatsHoldCurrent": "Retenção atual",
+  "territoryStatsOwnedNow": "Possuído agora",
+  "territoryLeaderboardScopeAllTime": "De todos os tempos",
+  "territoryLeaderboardScopeSeason": "Temporada",
+  "territoryLeaderboardStatsLine": "W {won} · D {defended} · L {lost} · segure {hold}",
+  "territoryHoldDurationDaysHours": "{days}d {hours}h",
+  "territoryHoldDurationHoursMinutes": "{hours}h {minutes}m",
+  "territoryHoldDurationMinutes": "{minutes}m",
+  "@territoryLeaderboardStatsLine": {
+    "placeholders": {
+      "won": {
+        "type": "int"
+      },
+      "defended": {
+        "type": "int"
+      },
+      "lost": {
+        "type": "int"
+      },
+      "hold": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryHoldDurationDaysHours": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryHoldDurationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryHoldDurationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
   }
 }

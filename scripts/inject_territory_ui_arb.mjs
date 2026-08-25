@@ -77,6 +77,29 @@ const META = {
   territoryProjectLockedHq: {
     placeholders: { level: { type: 'int' } },
   },
+  territoryLeaderboardStatsLine: {
+    placeholders: {
+      won: { type: 'int' },
+      defended: { type: 'int' },
+      lost: { type: 'int' },
+      hold: { type: 'String' },
+    },
+  },
+  territoryHoldDurationDaysHours: {
+    placeholders: {
+      days: { type: 'int' },
+      hours: { type: 'int' },
+    },
+  },
+  territoryHoldDurationHoursMinutes: {
+    placeholders: {
+      hours: { type: 'int' },
+      minutes: { type: 'int' },
+    },
+  },
+  territoryHoldDurationMinutes: {
+    placeholders: { minutes: { type: 'int' } },
+  },
 };
 
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));

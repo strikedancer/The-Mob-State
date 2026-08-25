@@ -341,6 +341,7 @@ Voorbeelden:
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
 - Als de voorbereiding van een Territory-contest klaar is, krijgen aanvallende en verdedigende crewleden een push- en inboxbericht dat de strijd live is en acties ontgrendeld zijn.
 - Op mobiel ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven.
+- Per crew zie je Territory-statistieken (gewonnen, verdedigd, verloren, contests, totale hold-tijd) zowel all-time als voor het actieve seizoen: op de leaderboard via een all-time/seizoen-toggle, en als crew-statsblok op de kaarttab.
 
 ---
 
@@ -1137,6 +1138,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Drug production facilities
 - ✅ Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
 - ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / territory.md
+- ✅ Territory crew-stats (all-time + seizoen W/D/L/hold op leaderboard + crew-kaart) — see `territory.md`
 - ✅ Money laundering (cash→bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) — see `money-laundering.md` / `bank.md`
 - ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
 - ✅ Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) — see `properties.md`

@@ -26500,6 +26500,107 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This project type does not fit this region\'s strategic tags.'**
   String get territoryErrorProjectTagMismatch;
+
+  /// No description provided for @territoryStatsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew territory stats'**
+  String get territoryStatsTitle;
+
+  /// No description provided for @territoryStatsAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All-time'**
+  String get territoryStatsAllTime;
+
+  /// No description provided for @territoryStatsSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'This season'**
+  String get territoryStatsSeason;
+
+  /// No description provided for @territoryStatsWon.
+  ///
+  /// In en, this message translates to:
+  /// **'Won'**
+  String get territoryStatsWon;
+
+  /// No description provided for @territoryStatsDefended.
+  ///
+  /// In en, this message translates to:
+  /// **'Defended'**
+  String get territoryStatsDefended;
+
+  /// No description provided for @territoryStatsLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get territoryStatsLost;
+
+  /// No description provided for @territoryStatsContests.
+  ///
+  /// In en, this message translates to:
+  /// **'Contests'**
+  String get territoryStatsContests;
+
+  /// No description provided for @territoryStatsHoldTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold time total'**
+  String get territoryStatsHoldTotal;
+
+  /// No description provided for @territoryStatsHoldCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current hold'**
+  String get territoryStatsHoldCurrent;
+
+  /// No description provided for @territoryStatsOwnedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned now'**
+  String get territoryStatsOwnedNow;
+
+  /// No description provided for @territoryLeaderboardScopeAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All-time'**
+  String get territoryLeaderboardScopeAllTime;
+
+  /// No description provided for @territoryLeaderboardScopeSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Season'**
+  String get territoryLeaderboardScopeSeason;
+
+  /// No description provided for @territoryLeaderboardStatsLine.
+  ///
+  /// In en, this message translates to:
+  /// **'W {won} · D {defended} · L {lost} · hold {hold}'**
+  String territoryLeaderboardStatsLine(
+    int won,
+    int defended,
+    int lost,
+    String hold,
+  );
+
+  /// No description provided for @territoryHoldDurationDaysHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d {hours}h'**
+  String territoryHoldDurationDaysHours(int days, int hours);
+
+  /// No description provided for @territoryHoldDurationHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String territoryHoldDurationHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @territoryHoldDurationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m'**
+  String territoryHoldDurationMinutes(int minutes);
 }
 
 class _AppLocalizationsDelegate
