@@ -328,6 +328,7 @@ class JobService {
             jobId,
             jobName: job.name,
             earnings,
+            xpGained,
             educationBonusPercent,
             sessionPayoutMultiplier,
           },
@@ -355,18 +356,24 @@ class JobService {
         console.error('[JobService] Failed to log JOB activity:', err);
       }
     } else {
+      // Job failures are personal feedback (toast/result UI), not public world news —
+      // broadcasting them made the dashboard feed look like "errors" and listed
+      // locked jobs other players failed on.
       try {
-        await worldEventService.createEvent(
-          'job.failed',
+        await activityService.logActivity(
+          playerId,
+          'JOB',
+          `Failed work as ${job.name}`,
           {
-            jobId,
+            jobId: job.id,
             jobName: job.name,
             xpLost,
+            success: false,
           },
-          playerId
+          false
         );
       } catch (err) {
-        console.error('[JobService] Failed to create job.failed world event:', err);
+        console.error('[JobService] Failed to log failed JOB activity:', err);
       }
     }
 

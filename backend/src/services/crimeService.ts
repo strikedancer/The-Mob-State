@@ -851,14 +851,17 @@ export const crimeService = {
       });
 
       await runCrimeSideEffect('worldEvent crime.success', async () => {
-        await worldEventService.createEvent('crime.success', {
+        await worldEventService.createEvent(
+          'crime.success',
+          {
+            crimeName: crime.name,
+            reward,
+            xpGained,
+            clearedRecordCount,
+            sessionPayoutMultiplier,
+          },
           playerId,
-          crimeName: crime.name,
-          reward,
-          xpGained,
-          clearedRecordCount,
-          sessionPayoutMultiplier,
-        });
+        );
       });
 
       await runCrimeSideEffect('activity CRIME', async () => {
@@ -912,11 +915,14 @@ export const crimeService = {
       }
     } else if (jailed) {
       await runCrimeSideEffect('worldEvent crime.caught', async () => {
-        await worldEventService.createEvent('crime.caught', {
+        await worldEventService.createEvent(
+          'crime.caught',
+          {
+            crimeName: crime.name,
+            jailTime,
+          },
           playerId,
-          crimeName: crime.name,
-          jailTime,
-        });
+        );
       });
     }
 

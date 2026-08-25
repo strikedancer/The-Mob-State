@@ -1805,8 +1805,14 @@ abstract class AppLocalizations {
   /// No description provided for @liveEvents.
   ///
   /// In en, this message translates to:
-  /// **'Live Events'**
+  /// **'World feed'**
   String get liveEvents;
+
+  /// No description provided for @worldFeedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity from all players — not your personal job list.'**
+  String get worldFeedHint;
 
   /// No description provided for @support.
   ///
@@ -20234,6 +20240,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Completed work as {jobName}! +€{earnings}, +{xpGained} XP'**
   String evStreamJobSuccess(String jobName, String earnings, String xpGained);
+
+  /// No description provided for @evStreamActorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'{username}: {message}'**
+  String evStreamActorPrefix(String username, String message);
 
   /// No description provided for @evStreamJobSuccessEdu.
   ///

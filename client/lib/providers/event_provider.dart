@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import '../services/auth_service.dart';
 import '../services/event_stream_service.dart';
+import '../utils/world_event_feed_filter.dart';
 
 /// World event model
 class WorldEvent {
@@ -65,7 +66,7 @@ class EventProvider with ChangeNotifier {
       final hydrated = rows
           .whereType<Map>()
           .map((row) => WorldEvent.fromJson(Map<String, dynamic>.from(row)))
-          .where((event) => event.eventKey != 'player.activity')
+          .where((event) => isPublicWorldFeedEvent(event.eventKey))
           .toList();
       if (hydrated.isEmpty) return;
       _events
@@ -108,6 +109,10 @@ class EventProvider with ChangeNotifier {
       // Skip connection events (they're not real game events)
       if (eventKey == 'connection.established') {
         print('[EventProvider] Skipping connection event');
+        return;
+      }
+
+      if (!isPublicWorldFeedEvent(eventKey)) {
         return;
       }
       

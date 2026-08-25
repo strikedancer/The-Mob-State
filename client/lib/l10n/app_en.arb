@@ -488,7 +488,8 @@
   "menuNavCategoryEmpire": "Empire",
   "menuNavCategoryAssets": "Assets",
   "menuNavCategoryMore": "More",
-  "liveEvents": "Live Events",
+  "liveEvents": "World feed",
+  "worldFeedHint": "Activity from all players — not your personal job list.",
   "support": "Support",
   "events": "Events",
   "aviation": "Aviation",
@@ -6729,6 +6730,17 @@
         "type": "String"
       },
       "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamActorPrefix": "{username}: {message}",
+  "@evStreamActorPrefix": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "message": {
         "type": "String"
       }
     }

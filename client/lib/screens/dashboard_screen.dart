@@ -2258,11 +2258,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           children: [
                             const Icon(Icons.feed, size: 20),
                             const SizedBox(width: 8),
-                            Text(
-                              l10n.liveEvents,
-                              style: Theme.of(context).textTheme.titleLarge,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    l10n.liveEvents,
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                  Text(
+                                    l10n.worldFeedHint,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: Colors.white54),
+                                  ),
+                                ],
+                              ),
                             ),
-                            const Spacer(),
                             Consumer<EventProvider>(
                               builder: (context, eventProvider, _) {
                                 return Icon(
@@ -3223,6 +3237,13 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     Text(
                       l10n.liveEvents,
                       style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      l10n.worldFeedHint,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white.withOpacity(0.54),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     const SizedBox(

@@ -936,7 +936,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuNavCategoryMore => 'Más';
 
   @override
-  String get liveEvents => 'Eventos en vivo';
+  String get liveEvents => 'Feed mundial';
+
+  @override
+  String get worldFeedHint =>
+      'Actividad de todos los jugadores: no es tu lista de trabajos.';
 
   @override
   String get support => 'Soporte';
@@ -11526,6 +11530,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String evStreamJobSuccess(String jobName, String earnings, String xpGained) {
     return '¡Trabajo como $jobName completado! +€$earnings, +$xpGained XP';
+  }
+
+  @override
+  String evStreamActorPrefix(String username, String message) {
+    return '$username: $message';
   }
 
   @override

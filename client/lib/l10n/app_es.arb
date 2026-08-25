@@ -385,7 +385,7 @@
   "systemMessagesReadOnlyHint": "No se pueden responder los mensajes del sistema",
   "helpAndGuide": "Ayuda y guía",
   "quickActions": "Acciones Rápidas",
-  "liveEvents": "Eventos en vivo",
+  "liveEvents": "Feed mundial",
   "support": "Soporte",
   "events": "Eventos",
   "aviation": "Aviación",
@@ -9153,5 +9153,17 @@
       }
     }
   },
-  "jobOutcomeSuccess": "¡Trabajo completado!"
+  "jobOutcomeSuccess": "¡Trabajo completado!",
+  "worldFeedHint": "Actividad de todos los jugadores: no es tu lista de trabajos.",
+  "evStreamActorPrefix": "{username}: {message}",
+  "@evStreamActorPrefix": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "message": {
+        "type": "String"
+      }
+    }
+  }
 }

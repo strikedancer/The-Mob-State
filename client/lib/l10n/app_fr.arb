@@ -427,7 +427,7 @@
   "systemMessagesReadOnlyHint": "Il est impossible de répondre aux messages système",
   "helpAndGuide": "Aide et guide",
   "quickActions": "Actions rapides",
-  "liveEvents": "Événements en direct",
+  "liveEvents": "Fil mondial",
   "support": "Soutien",
   "events": "Événements",
   "aviation": "Aviation",
@@ -9153,5 +9153,17 @@
       }
     }
   },
-  "jobOutcomeSuccess": "Travail terminé !"
+  "jobOutcomeSuccess": "Travail terminé !",
+  "worldFeedHint": "Activité de tous les joueurs — pas votre liste d’emplois.",
+  "evStreamActorPrefix": "{username}: {message}",
+  "@evStreamActorPrefix": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "message": {
+        "type": "String"
+      }
+    }
+  }
 }

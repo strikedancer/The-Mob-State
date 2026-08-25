@@ -224,6 +224,12 @@ class EventRenderer {
     }
   }
 
+  String _withActor(Map<String, dynamic> params, String message) {
+    final username = params['username']?.toString().trim();
+    if (username == null || username.isEmpty) return message;
+    return l10n.evStreamActorPrefix(username, message);
+  }
+
   String _crimeSuccess(Map<String, dynamic> params) {
     final reward = (params['reward'] as num?)?.toInt() ?? 0;
     final xpGained = (params['xpGained'] as num?)?.toInt() ?? 0;
@@ -247,19 +253,25 @@ class EventRenderer {
       if (weaponConfiscated) {
         s += l10n.evStreamCrimeSeizedWeapon;
       }
-      return s;
+      return _withActor(params, s);
     }
     if (clearedRecordCount > 0) {
-      return l10n.evStreamCrimeSuccessCleared(
-        crimeName,
-        clearedRecordCount,
-        xpGained.toString(),
+      return _withActor(
+        params,
+        l10n.evStreamCrimeSuccessCleared(
+          crimeName,
+          clearedRecordCount,
+          xpGained.toString(),
+        ),
       );
     }
-    return l10n.evStreamCrimeSuccess(
-      crimeName,
-      reward.toString(),
-      xpGained.toString(),
+    return _withActor(
+      params,
+      l10n.evStreamCrimeSuccess(
+        crimeName,
+        reward.toString(),
+        xpGained.toString(),
+      ),
     );
   }
 
@@ -311,7 +323,7 @@ class EventRenderer {
     if (educationBonusPercent > 0) {
       base += l10n.evStreamJobSuccessEdu(educationBonusPercent.toString());
     }
-    return base;
+    return _withActor(params, base);
   }
 
   String _jobFailed(Map<String, dynamic> params) {

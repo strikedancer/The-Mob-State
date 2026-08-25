@@ -3312,7 +3312,8 @@
   "menuNavCategoryEmpire": "Empire",
   "menuNavCategoryAssets": "Assets",
   "menuNavCategoryMore": "Meer",
-  "liveEvents": "Live events",
+  "liveEvents": "Wereldfeed",
+  "worldFeedHint": "Activiteit van alle spelers — niet jouw persoonlijke banenlijst.",
   "support": "Support",
   "events": "Evenementen",
   "aviation": "Luchtvaart",
@@ -4968,6 +4969,17 @@
         "type": "String"
       },
       "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamActorPrefix": "{username}: {message}",
+  "@evStreamActorPrefix": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "message": {
         "type": "String"
       }
     }

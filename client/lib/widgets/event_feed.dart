@@ -4,6 +4,8 @@ import '../providers/event_provider.dart';
 import '../services/event_renderer.dart';
 import '../l10n/app_localizations.dart';
 
+import '../utils/world_event_feed_filter.dart';
+
 /// Widget that displays a live feed of world events
 class EventFeed extends StatelessWidget {
   final int maxEvents;
@@ -67,10 +69,20 @@ class EventFeed extends StatelessWidget {
 
         // Show events
         final displayEvents = eventProvider.events
-            // Filter out player.activity events (these are for friend feeds only)
-            .where((event) => event.eventKey != 'player.activity')
+            .where((event) => isPublicWorldFeedEvent(event.eventKey))
             .take(maxEvents)
             .toList();
+
+        if (displayEvents.isEmpty) {
+          return Center(
+            child: Text(
+              eventProvider.isConnected
+                  ? l10n.eventFeedConnectedWaiting
+                  : l10n.eventFeedConnecting,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          );
+        }
 
         return ListView.separated(
           padding: const EdgeInsets.all(8),
