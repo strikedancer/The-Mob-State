@@ -14,6 +14,8 @@ class CrimeResultOverlay extends StatelessWidget {
   final int xpGained;
   final VoidCallback onContinue;
   final bool embedded;
+  /// Optional headline; defaults to [AppLocalizations.crimeOutcomeSuccess].
+  final String? headline;
 
   const CrimeResultOverlay({
     super.key,
@@ -22,6 +24,7 @@ class CrimeResultOverlay extends StatelessWidget {
     required this.xpGained,
     required this.onContinue,
     this.embedded = false,
+    this.headline,
   });
 
   @override
@@ -71,7 +74,7 @@ class CrimeResultOverlay extends StatelessWidget {
                   ),
                   const SizedBox(height: 14),
                   Text(
-                    l10n.crimeOutcomeSuccess,
+                    headline ?? l10n.crimeOutcomeSuccess,
                     style: TextStyle(
                       fontSize: compactWidth ? 20 : 22,
                       fontWeight: FontWeight.w800,

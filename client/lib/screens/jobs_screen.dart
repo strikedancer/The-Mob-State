@@ -9,6 +9,7 @@ import '../services/event_renderer.dart';
 import '../services/jail_service.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/cooldown_overlay.dart';
+import '../widgets/crime_result_overlay.dart';
 import '../widgets/job_card.dart';
 import '../widgets/education_requirements_dialog.dart';
 import '../utils/job_localization.dart';
@@ -33,6 +34,10 @@ class _JobsScreenState extends State<JobsScreen> {
   String? _error;
   int? _jailTime; // null = not jailed, >0 = minutes remaining
   int? _cooldownSeconds; // null = not on cooldown, >0 = seconds remaining
+  bool _showJobResult = false;
+  String? _resultJobName;
+  int _jobEarnings = 0;
+  int _jobXpGained = 0;
 
   @override
   void initState() {
@@ -290,6 +295,13 @@ class _JobsScreenState extends State<JobsScreen> {
       final eventKey = data['event'] as String;
       final params = (data['params'] as Map<String, dynamic>?) ?? {};
 
+      int readInt(dynamic value) {
+        if (value is int) return value;
+        if (value is num) return value.round();
+        if (value is String) return int.tryParse(value) ?? 0;
+        return 0;
+      }
+
       // Check if error.cooldown - show cooldown overlay
       if (eventKey == 'error.cooldown') {
         final remainingSeconds = params['remainingSeconds'] as int? ?? 0;
@@ -329,20 +341,16 @@ class _JobsScreenState extends State<JobsScreen> {
       final l10n = AppLocalizations.of(context)!;
       final eventRenderer = EventRenderer(l10n);
       final message = eventRenderer.renderEvent(eventKey, params);
+      final success =
+          eventKey.contains('completed') || eventKey.contains('success');
+      final earnings = readInt(params['earnings']);
+      final xpGained = readInt(params['xpGained']);
 
-      setState(() {
-        _isWorking = false;
-      });
-
-      // Check if cooldown info is in response
       int? cooldownSeconds;
       if (data.containsKey('cooldown') && data['cooldown'] != null) {
         final cooldownData = data['cooldown'] as Map<String, dynamic>;
         if (cooldownData['remainingSeconds'] != null) {
-          cooldownSeconds = cooldownData['remainingSeconds'] as int;
-          setState(() {
-            _cooldownSeconds = cooldownSeconds;
-          });
+          cooldownSeconds = readInt(cooldownData['remainingSeconds']);
         }
       }
 
@@ -357,24 +365,44 @@ class _JobsScreenState extends State<JobsScreen> {
             rank: playerData['rank'] as int?,
           );
         } else {
-          // Fallback: refresh full player data
           await authProvider.refreshPlayer();
         }
+      }
 
-        // Keep cooldown UI embedded in this screen (no full-page route)
+      if (!mounted) return;
+
+      // Success: crime-style result window first, then cooldown (same as Misdaden).
+      if (success && (earnings > 0 || xpGained > 0)) {
+        setState(() {
+          _isWorking = false;
+          _resultJobName = JobLocalization.name(
+            job.id,
+            l10n,
+            fallback: job.name,
+          );
+          _jobEarnings = earnings;
+          _jobXpGained = xpGained;
+          _showJobResult = true;
+          if (cooldownSeconds != null && cooldownSeconds > 0) {
+            _cooldownSeconds = cooldownSeconds;
+          }
+        });
+        return;
+      }
+
+      setState(() {
+        _isWorking = false;
         if (cooldownSeconds != null && cooldownSeconds > 0) {
-          showActionResultToast(
-            context,
-            title: message,
-            success: eventKey.contains('completed') || eventKey.contains('success'),
-          );
-        } else {
-          showActionResultToast(
-            context,
-            title: message,
-            success: eventKey.contains('success') || eventKey.contains('completed'),
-          );
+          _cooldownSeconds = cooldownSeconds;
         }
+      });
+
+      if (mounted) {
+        showActionResultToast(
+          context,
+          title: message,
+          success: success,
+        );
       }
     } catch (e) {
       setState(() {
@@ -509,7 +537,23 @@ class _JobsScreenState extends State<JobsScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.jobs)),
-      body: _cooldownSeconds != null && _cooldownSeconds! > 0
+      body: _showJobResult
+          ? CrimeResultOverlay(
+              embedded: true,
+              headline: l10n.jobOutcomeSuccess,
+              crimeName: _resultJobName ?? l10n.jobs,
+              reward: _jobEarnings,
+              xpGained: _jobXpGained,
+              onContinue: () {
+                setState(() {
+                  _showJobResult = false;
+                  _resultJobName = null;
+                  _jobEarnings = 0;
+                  _jobXpGained = 0;
+                });
+              },
+            )
+          : _cooldownSeconds != null && _cooldownSeconds! > 0
           ? CooldownOverlay(
               actionType: 'job',
               cooldownActionType: 'job',

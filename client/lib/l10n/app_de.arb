@@ -52,7 +52,7 @@
       }
     }
   },
-  "dashboard": "Dashboard",
+  "dashboard": "Armaturenbrett",
   "crimes": "Verbrechen",
   "errorLoadingCrimes": "Verbrechen konnten nicht geladen werden",
   "connectionError": "Verbindungsfehler: {error}",
@@ -671,8 +671,8 @@
   "dashboardEventsLast24h": "Events der letzten 24 Std.",
   "dashboardRiskScore": "Risikowert",
   "dashboardRecruitProstitute": "Prostituierte rekrutieren",
-  "dashboardWarTheater": "War theater",
-  "dashboardHotRegions": "Hot regions",
+  "dashboardWarTheater": "Kriegstheater",
+  "dashboardHotRegions": "Heiße Regionen",
   "dashboardCrewWars": "Crew-Kriege",
   "dashboardStatusLabel": "Status",
   "dashboardCanDeclare": "Kriegserklärung möglich",
@@ -2448,7 +2448,7 @@
   "educationTrackNameMedicine": "Medizin",
   "educationTrackNameFinance": "Finanzen",
   "educationTrackNameEngineering": "Maschinenbau",
-  "educationTrackNameIt": "IT",
+  "educationTrackNameIt": "ES",
   "schoolTrackDescriptionAviation": "Flugtheorie, Navigation und Flugzeugbetrieb.",
   "schoolTrackDescriptionLaw": "Strafrecht, Verfahren und Gerichtspraxis.",
   "schoolTrackDescriptionMedicine": "Notfallmaßnahmen, Diagnostik und medizinische Praxis.",
@@ -2936,7 +2936,7 @@
   "supportStatusResolved": "Gelöst",
   "supportStatusClosed": "Geschlossen",
   "supportStatusArchived": "Archiviert",
-  "supportCategoryBug": "Bug",
+  "supportCategoryBug": "Insekt",
   "supportCategoryQuestion": "Frage",
   "supportCategoryFeedback": "Rückmeldung",
   "supportCategoryOther": "Andere",
@@ -6821,26 +6821,26 @@
   "bmHubLocationUnknown": "UNBEKANNT",
   "bmHubNoMarketListingsTitle": "Keine Inserate",
   "bmHubNoMarketListingsBody": "Keine passenden Fahrzeuge oder Items. Du kannst getragene Werkzeuge über „Item verkaufen“ listen.",
-  "bmHubSellKindTool": "Tool",
-  "bmHubSellKindDrug": "Drugs",
-  "bmHubSellKindCrypto": "Crypto",
-  "bmHubSellKindTrade": "Trade goods",
-  "bmHubQuantityEvent": "Quantity",
-  "bmHubListEventItemTitle": "Sell event item",
-  "bmHubNoEventItemsToSell": "No event items to sell",
-  "bmHubSellKindEvent": "Event items",
-  "bmHubNoDrugsToSell": "No drugs to sell",
-  "bmHubNoCryptoToSell": "No crypto to sell",
-  "bmHubNoTradeGoodsToSell": "No trade goods to sell",
-  "bmHubListDrugTitle": "List drugs",
-  "bmHubListDrugSelectLabel": "Drug stack",
-  "bmHubListCryptoTitle": "List crypto",
-  "bmHubListCryptoSelectLabel": "Asset",
-  "bmHubListTradeTitle": "List trade goods",
-  "bmHubListTradeSelectLabel": "Good",
-  "bmHubQuantityGrams": "Quantity (g)",
-  "bmHubQuantityCrypto": "Quantity",
-  "bmHubQuantityUnits": "Quantity",
+  "bmHubSellKindTool": "Werkzeug",
+  "bmHubSellKindDrug": "Drogen",
+  "bmHubSellKindCrypto": "Krypto",
+  "bmHubSellKindTrade": "Handelswaren",
+  "bmHubQuantityEvent": "Menge",
+  "bmHubListEventItemTitle": "Eventartikel verkaufen",
+  "bmHubNoEventItemsToSell": "Keine Eventartikel zum Verkauf",
+  "bmHubSellKindEvent": "Eventartikel",
+  "bmHubNoDrugsToSell": "Keine Medikamente zum Verkaufen",
+  "bmHubNoCryptoToSell": "Keine Kryptowährung zum Verkauf",
+  "bmHubNoTradeGoodsToSell": "Keine Handelsware zum Verkauf",
+  "bmHubListDrugTitle": "Listen Sie Medikamente auf",
+  "bmHubListDrugSelectLabel": "Medikamentenstapel",
+  "bmHubListCryptoTitle": "Krypto auflisten",
+  "bmHubListCryptoSelectLabel": "Vermögenswert",
+  "bmHubListTradeTitle": "Handelswaren auflisten",
+  "bmHubListTradeSelectLabel": "Gut",
+  "bmHubQuantityGrams": "Menge (g)",
+  "bmHubQuantityCrypto": "Menge",
+  "bmHubQuantityUnits": "Menge",
   "bmHubSellCarriedItem": "Item verkaufen",
   "bmHubToolQtyDurability": "Menge {qty} • {pct}% Zustand",
   "@bmHubToolQtyDurability": {
@@ -8336,39 +8336,39 @@
   "legalDigitalGoodsSection09Body": "Wir können diese Richtlinie und Beschreibungen für In-Game-Käufe aktualisieren. Die fortgesetzte Nutzung nach Änderungen stellt die Annahme der überarbeiteten Bedingungen dar, sofern dies gesetzlich zulässig ist.",
   "legalDigitalGoodsSection10Title": "Geltendes Recht",
   "legalDigitalGoodsSection10Body": "Sofern nicht zwingendes lokales Recht etwas anderes vorsieht, unterliegt diese Richtlinie den Gesetzen von England und Wales und Streitigkeiten unterliegen der ausschließlichen Zuständigkeit der Gerichte von England und Wales.",
-  "registerTermsRequired": "You must accept the Terms of Service to register.",
-  "registerTermsPrefix": "I agree to the ",
-  "registerTermsLink": "Terms of Service",
+  "registerTermsRequired": "Um sich zu registrieren, müssen Sie die Nutzungsbedingungen akzeptieren.",
+  "registerTermsPrefix": "Ich stimme dem zu",
+  "registerTermsLink": "Nutzungsbedingungen",
   "registerTermsSuffix": ".",
-  "legalTermsTitle": "Terms of Service",
-  "legalTermsLastUpdated": "Last updated: May 2026",
-  "legalTermsIntro": "These Terms of Service (\"Terms\") govern your access to and use of The Mob State website, web game and related services (\"Service\"). By creating an account or using the Service you agree to these Terms together with our Privacy Policy and, where applicable, our digital goods purchase policy.",
-  "legalTermsSection01Title": "Eligibility and account",
-  "legalTermsSection01Body": "You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You are responsible for activity under your account unless you notify us promptly via support if you suspect unauthorised access.",
-  "legalTermsSection02Title": "Licence to use the Service",
-  "legalTermsSection02Body": "We grant you a personal, non-exclusive, non-transferable, revocable licence to access and use the Service for entertainment in line with these Terms. All rights not expressly granted are reserved.",
-  "legalTermsSection03Title": "Acceptable use",
-  "legalTermsSection03Body": "You agree not to cheat, exploit bugs for unfair advantage, harass others, distribute malware, scrape or overload our systems without permission, impersonate staff, or use the Service for unlawful purposes. We may investigate reports and apply sanctions including warnings, suspensions or termination.",
-  "legalTermsSection04Title": "Virtual items and payments",
-  "legalTermsSection04Body": "Optional purchases may be available for virtual goods or features. Such purchases are subject to our Purchase of Digital Goods policy and checkout terms. Virtual items have no real-world cash value outside the Service except where mandatory law says otherwise.",
-  "legalTermsSection05Title": "User content",
-  "legalTermsSection05Body": "Where the Service allows you to submit text, images or other material, you retain ownership you already hold but grant us a licence to host, display and moderate that content as needed to operate the Service. You must have rights to anything you submit and must not upload unlawful or infringing material.",
-  "legalTermsSection06Title": "Availability and changes",
-  "legalTermsSection06Body": "We strive to keep the Service available but do not guarantee uninterrupted access. We may modify, suspend or discontinue features for maintenance, balance, legal or security reasons. We may update these Terms; continued use after notice where permitted by law constitutes acceptance of material changes.",
-  "legalTermsSection07Title": "Disclaimer and liability",
-  "legalTermsSection07Body": "The Service is provided \"as is\" to the fullest extent permitted by law. We exclude liability for indirect or consequential loss where allowed. Nothing in these Terms limits liability that cannot be limited under applicable mandatory consumer law.",
-  "legalTermsSection08Title": "Termination",
-  "legalTermsSection08Body": "You may stop using the Service at any time. We may suspend or terminate access if you breach these Terms, if required by law, or to protect the Service or other users. Provisions that by nature should survive will survive termination.",
-  "legalTermsSection09Title": "Governing law",
-  "legalTermsSection09Body": "Unless mandatory local law provides otherwise, these Terms are governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.",
-  "legalTermsSection10Title": "Contact",
-  "legalTermsSection10Body": "For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.",
-  "registerGenderTitle": "Your character",
-  "registerGenderSubtitle": "Tap a portrait — this sets your starter look and is saved to your account.",
-  "registerGenderMale": "Male gangster",
-  "registerGenderFemale": "Female gangster",
-  "genderRequired": "Choose male or female to continue.",
-  "settingsMyPortraits": "My portraits",
+  "legalTermsTitle": "Nutzungsbedingungen",
+  "legalTermsLastUpdated": "Letzte Aktualisierung: Mai 2026",
+  "legalTermsIntro": "Diese Nutzungsbedingungen („Bedingungen“) regeln Ihren Zugriff auf und Ihre Nutzung der The Mob State-Website, des Webspiels und der damit verbundenen Dienste („Dienst“). Durch die Erstellung eines Kontos oder die Nutzung des Dienstes stimmen Sie diesen Bedingungen zusammen mit unserer Datenschutzrichtlinie und gegebenenfalls unserer Richtlinie zum Kauf digitaler Waren zu.",
+  "legalTermsSection01Title": "Berechtigung und Konto",
+  "legalTermsSection01Body": "Sie müssen das bei der Registrierung für Ihre Region angegebene Mindestalter erreichen. Sie sind dafür verantwortlich, korrekte Registrierungsinformationen anzugeben und Ihre Anmeldeinformationen vertraulich zu behandeln. Sie sind für die Aktivitäten unter Ihrem Konto verantwortlich, es sei denn, Sie benachrichtigen uns umgehend über den Support, wenn Sie einen unbefugten Zugriff vermuten.",
+  "legalTermsSection02Title": "Lizenz zur Nutzung des Dienstes",
+  "legalTermsSection02Body": "Wir gewähren Ihnen eine persönliche, nicht ausschließliche, nicht übertragbare und widerrufliche Lizenz für den Zugriff auf den Dienst und dessen Nutzung zu Unterhaltungszwecken im Einklang mit diesen Bedingungen. Alle nicht ausdrücklich gewährten Rechte bleiben vorbehalten.",
+  "legalTermsSection03Title": "Akzeptable Verwendung",
+  "legalTermsSection03Body": "Sie erklären sich damit einverstanden, nicht zu betrügen, Fehler zu unfairen Vorteilen auszunutzen, andere zu belästigen, Malware zu verbreiten, unsere Systeme ohne Erlaubnis zu manipulieren oder zu überlasten, sich als Mitarbeiter auszugeben oder den Dienst für rechtswidrige Zwecke zu nutzen. Wir können Meldungen untersuchen und Sanktionen verhängen, einschließlich Verwarnungen, Suspendierungen oder Kündigungen.",
+  "legalTermsSection04Title": "Virtuelle Artikel und Zahlungen",
+  "legalTermsSection04Body": "Für virtuelle Güter oder Funktionen sind möglicherweise optionale Käufe möglich. Für solche Käufe gelten unsere Richtlinien zum Kauf digitaler Waren und unsere Checkout-Bedingungen. Virtuelle Gegenstände haben außerhalb des Dienstes keinen realen Geldwert, sofern nicht zwingende Gesetze etwas anderes vorschreiben.",
+  "legalTermsSection05Title": "Benutzerinhalte",
+  "legalTermsSection05Body": "Wenn der Dienst Ihnen die Übermittlung von Texten, Bildern oder anderen Materialien ermöglicht, behalten Sie das Eigentumsrecht, das Sie bereits besitzen, gewähren uns jedoch eine Lizenz zum Hosten, Anzeigen und Moderieren dieser Inhalte, soweit dies für den Betrieb des Dienstes erforderlich ist. Sie müssen Rechte an allem haben, was Sie einreichen, und dürfen kein rechtswidriges oder rechtsverletzendes Material hochladen.",
+  "legalTermsSection06Title": "Verfügbarkeit und Änderungen",
+  "legalTermsSection06Body": "Wir bemühen uns, den Dienst verfügbar zu halten, garantieren jedoch keinen ununterbrochenen Zugriff. Wir können Funktionen aus Wartungs-, Balance-, rechtlichen oder Sicherheitsgründen ändern, aussetzen oder einstellen. Wir können diese Bedingungen aktualisieren; Die fortgesetzte Nutzung nach Benachrichtigung, soweit gesetzlich zulässig, stellt die Annahme wesentlicher Änderungen dar.",
+  "legalTermsSection07Title": "Haftungsausschluss und Haftung",
+  "legalTermsSection07Body": "Der Dienst wird „wie besehen“ im größtmöglichen gesetzlich zulässigen Umfang bereitgestellt. Sofern zulässig, schließen wir die Haftung für indirekte Schäden oder Folgeschäden aus. Nichts in diesen Bedingungen schränkt die Haftung ein, die nach geltendem zwingendem Verbraucherrecht nicht eingeschränkt werden kann.",
+  "legalTermsSection08Title": "Beendigung",
+  "legalTermsSection08Body": "Sie können die Nutzung des Dienstes jederzeit beenden. Wir können den Zugriff sperren oder beenden, wenn Sie gegen diese Bedingungen verstoßen, sofern dies gesetzlich vorgeschrieben ist oder um den Dienst oder andere Benutzer zu schützen. Bestimmungen, die von Natur aus fortbestehen sollten, überdauern auch die Beendigung.",
+  "legalTermsSection09Title": "Geltendes Recht",
+  "legalTermsSection09Body": "Sofern nicht zwingendes lokales Recht etwas anderes vorsieht, unterliegen diese Bedingungen den Gesetzen von England und Wales und Streitigkeiten unterliegen der ausschließlichen Zuständigkeit der Gerichte von England und Wales.",
+  "legalTermsSection10Title": "Kontakt",
+  "legalTermsSection10Body": "Bei Fragen zu diesen Bedingungen kontaktieren Sie uns nach der Registrierung über das Support-Ticketsystem im Spiel oder über die offiziellen Website-Kontaktkanäle, sofern veröffentlicht.",
+  "registerGenderTitle": "Dein Charakter",
+  "registerGenderSubtitle": "Tippen Sie auf ein Porträt – dadurch wird Ihr Start-Look festgelegt und in Ihrem Konto gespeichert.",
+  "registerGenderMale": "Männlicher Gangster",
+  "registerGenderFemale": "Weiblicher Gangster",
+  "genderRequired": "Wählen Sie männlich oder weiblich, um fortzufahren.",
+  "settingsMyPortraits": "Meine Porträts",
   "settingsPortraitFromSelfieTitle": "Porträt vom Selfie",
   "settingsPortraitFromSelfieSubtitle": "Verwandeln Sie ein Selfie in ein Porträt im Gangster-Stil. Jeweils {credits} Credits.",
   "@settingsPortraitFromSelfieSubtitle": {
@@ -8413,15 +8413,15 @@
   "settingsPortraitUsingCustom": "Benutzerdefiniertes Porträt aktiv",
   "settingsPresetAvatars": "Voreingestellte Avatare",
   "settingsPortraitDeleteConfirm": "Dieses Porträt aus Ihrer Bibliothek entfernen?",
-  "settingsPortraitGenerating": "Creating your portrait… This may take a few minutes. Please wait.",
+  "settingsPortraitGenerating": "Erstellen Ihres Porträts… Dies kann einige Minuten dauern. Bitte warten.",
   "settingsPortraitDeleteHint": "Tap a portrait to use it as your avatar. Tap the trash icon to remove it.",
-  "settingsPortraitStyleSection": "Portrait look",
-  "settingsPortraitStyleHint": "Generation uses your account gender from registration. All styles stay appropriate for the game.",
-  "settingsPortraitStyleClassicNoir": "Classic noir",
-  "settingsPortraitStyleStreetCasual": "Street casual",
-  "settingsPortraitStyleSharpSuit": "Sharp suit",
-  "settingsPortraitStyleVelvetCharm": "Evening glamour",
-  "settingsPortraitDownloadFailed": "Could not download the portrait. Check your connection and try again.",
+  "settingsPortraitStyleSection": "Porträt-Look",
+  "settingsPortraitStyleHint": "Bei der Generierung wird das Geschlecht Ihres Kontos aus der Registrierung verwendet. Alle Stile bleiben dem Spiel angemessen.",
+  "settingsPortraitStyleClassicNoir": "Klassischer Noir",
+  "settingsPortraitStyleStreetCasual": "Straßenlässig",
+  "settingsPortraitStyleSharpSuit": "Scharfer Anzug",
+  "settingsPortraitStyleVelvetCharm": "Abendlicher Glamour",
+  "settingsPortraitDownloadFailed": "Das Porträt konnte nicht heruntergeladen werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
   "settingsPortraitDownloadTooltip": "Laden Sie dieses Porträt als PNG herunter",
   "settingsPortraitDeleteTooltip": "Entfernen Sie dieses Porträt aus Ihrer Bibliothek",
   "userAccountMenuTooltip": "Kontomenü",
@@ -8438,7 +8438,7 @@
   "helpTopicTrainingHubSummary": "Fitnessstudio (Kraft) und Schießstand (Präzision) an einem Ort. Beide Boni erhöhen Ihre Erfolgschance bei einem Verbrechen. Die Schussgenauigkeit wird auch bei Trefferlistenaktionen verwendet. Jeder Track hat seine eigene Abklingzeit und eine Obergrenze von 100 Sitzungen.",
   "helpTopicTrainingHubHow": "Fitnessstudio: Jede Sitzung erhöht Ihren permanenten Kraftbonus auf insgesamt bis zu +8 % (100 Sitzungen). Die Abklingzeit zwischen den Sitzungen beträgt 1 Stunde (VIP kann sie verkürzen).\nSchießstand: Jede Sitzung erhöht Ihren permanenten Genauigkeitsbonus auf insgesamt bis zu +10 % (100 Sitzungen). Die Abklingzeit zwischen den Sitzungen beträgt 1 Stunde (VIP kann sie verkürzen).\nBeide Boni werden vom Server in die Berechnung des Verbrechenserfolgs einbezogen.\nSie trainieren jede Strecke separat: zwei Timer und zwei Zugtasten – ein Bildschirm.\nDer Fortschritt wird nicht zurückgesetzt, es sei denn, das Personal verhängt eine schwere Strafe.",
   "helpTopicTrainingHubTips": "Planen Sie beide Tracks täglich: Kleine Schritte sorgen für einen klaren Vorsprung bei Verbrechen.\nÜberprüfen Sie Verbrechen, bei denen Sie am meisten scheitern: Stärke und Genauigkeit ergänzen sich – sie sind nicht derselbe Wert.",
-  "crimeTrainingBonusStrip": "Training bonuses on success chance: +{strengthPct}% strength, +{accuracyPct}% accuracy.",
+  "crimeTrainingBonusStrip": "Trainingsboni auf Erfolgschance: +{strengthPct} % Stärke, +{accuracyPct} % Genauigkeit.",
   "@crimeTrainingBonusStrip": {
     "placeholders": {
       "strengthPct": {
@@ -8635,8 +8635,8 @@
   "territoryEventPoliceOffensive": "Offensive der Polizei",
   "territoryEventHarborStrike": "Hafenstreik",
   "territoryEventBlackoutRumor": "Blackout-Gerücht",
-  "launderSectionTitle": "Money laundering",
-  "launderSectionHint": "Wash cash into your bank with a {feePercent}% fee. Takes about {durationMinutes} minutes. Higher FBI heat means higher seize risk.",
+  "launderSectionTitle": "Geldwäsche",
+  "launderSectionHint": "Überweisen Sie Bargeld mit einer Gebühr von {feePercent} % auf Ihre Bank. Dauert etwa {durationMinutes} Minuten. Höhere FBI-Hitze bedeutet höheres Risiko einer Beschlagnahme.",
   "@launderSectionHint": {
     "placeholders": {
       "feePercent": {
@@ -8647,7 +8647,7 @@
       }
     }
   },
-  "launderSeizeChance": "Estimated seize chance: {chance}%",
+  "launderSeizeChance": "Geschätzte Beschlagnahmungswahrscheinlichkeit: {chance} %",
   "@launderSeizeChance": {
     "placeholders": {
       "chance": {
@@ -8655,7 +8655,7 @@
       }
     }
   },
-  "launderActiveJob": "Wash in progress. Bank payout if successful: €{amount}",
+  "launderActiveJob": "Waschen läuft. Bankauszahlung bei Erfolg: {amount}",
   "@launderActiveJob": {
     "placeholders": {
       "amount": {
@@ -8663,7 +8663,7 @@
       }
     }
   },
-  "launderJobCountdown": "Completes in {time}",
+  "launderJobCountdown": "Abgeschlossen in {time}",
   "@launderJobCountdown": {
     "placeholders": {
       "time": {
@@ -8671,7 +8671,7 @@
       }
     }
   },
-  "launderCooldownCountdown": "Available again in {time}",
+  "launderCooldownCountdown": "Wieder verfügbar in {time}",
   "@launderCooldownCountdown": {
     "placeholders": {
       "time": {
@@ -8679,7 +8679,7 @@
       }
     }
   },
-  "launderPreviewFee": "Fee ({feePercent}%): €{fee}",
+  "launderPreviewFee": "Gebühr ({feePercent}%): {fee} €",
   "@launderPreviewFee": {
     "placeholders": {
       "feePercent": {
@@ -8690,7 +8690,7 @@
       }
     }
   },
-  "launderPreviewPayout": "Bank payout if successful: €{payout}",
+  "launderPreviewPayout": "Bankauszahlung bei Erfolg: {payout}",
   "@launderPreviewPayout": {
     "placeholders": {
       "payout": {
@@ -8698,36 +8698,36 @@
       }
     }
   },
-  "launderAmountLabel": "Amount to wash",
-  "launderStartButton": "Start wash",
-  "launderStartedSuccess": "Laundering started.",
-  "launderErrorCooldown": "Laundering is on cooldown.",
-  "launderErrorActive": "A wash job is already running.",
+  "launderAmountLabel": "Zu waschende Menge",
+  "launderStartButton": "Beginnen Sie mit dem Waschen",
+  "launderStartedSuccess": "Die Geldwäsche begann.",
+  "launderErrorCooldown": "„Geldwäsche“ ist in der Abklingzeit.",
+  "launderErrorActive": "Ein Waschauftrag läuft bereits.",
   "launderErrorTooLow": "Der Betrag liegt unter dem Mindestwert ({min}).",
   "launderErrorTooHigh": "Betrag liegt über dem Höchstwert ({max}).",
-  "launderErrorInsufficientCash": "Not enough cash on hand.",
-  "launderErrorDisabled": "Money laundering is disabled.",
-  "launderErrorUnknown": "Could not start laundering.",
-  "stockMarketTitle": "Stock market",
-  "stockMarketHint": "Trade with bank money. Prices move slowly — separate from crypto.",
-  "stockBankBalance": "Bank balance",
-  "stockPortfolioValue": "Portfolio value",
-  "stockQuantity": "Quantity",
-  "stockPrice": "Price",
-  "stockHolding": "Holding",
-  "stockValue": "Value",
-  "stockBuy": "Buy",
-  "stockSell": "Sell",
-  "stockTradeSuccess": "Trade completed.",
-  "stockErrorInsufficientBalance": "Not enough bank balance.",
-  "stockErrorInsufficientShares": "Not enough shares.",
-  "stockErrorPositionLimit": "Position limit reached.",
-  "stockErrorDisabled": "Stock market is disabled.",
-  "stockErrorUnknown": "Trade failed.",
-  "stockMarketLoadError": "Could not load the stock market.",
-  "stockMarketEmpty": "No tickers available right now.",
-  "stockMarketRetry": "Retry",
-  "stockPositionsOpen": "Open positions: {count}",
+  "launderErrorInsufficientCash": "Nicht genügend Bargeld vorhanden.",
+  "launderErrorDisabled": "Geldwäsche ist deaktiviert.",
+  "launderErrorUnknown": "Der Waschvorgang konnte nicht gestartet werden.",
+  "stockMarketTitle": "Börse",
+  "stockMarketHint": "Handeln Sie mit Bankgeld. Die Preise bewegen sich langsam – unabhängig von Krypto.",
+  "stockBankBalance": "Kontostand",
+  "stockPortfolioValue": "Portfoliowert",
+  "stockQuantity": "Menge",
+  "stockPrice": "Preis",
+  "stockHolding": "Halten",
+  "stockValue": "Wert",
+  "stockBuy": "Kaufen",
+  "stockSell": "Verkaufen",
+  "stockTradeSuccess": "Handel abgeschlossen.",
+  "stockErrorInsufficientBalance": "Nicht genügend Bankguthaben.",
+  "stockErrorInsufficientShares": "Nicht genügend Aktien.",
+  "stockErrorPositionLimit": "Positionslimit erreicht.",
+  "stockErrorDisabled": "Der Aktienmarkt ist deaktiviert.",
+  "stockErrorUnknown": "Der Handel ist gescheitert.",
+  "stockMarketLoadError": "Der Aktienmarkt konnte nicht geladen werden.",
+  "stockMarketEmpty": "Im Moment sind keine Ticker verfügbar.",
+  "stockMarketRetry": "Wiederholen",
+  "stockPositionsOpen": "Offene Stellen: {count}",
   "@stockPositionsOpen": {
     "placeholders": {
       "count": {
@@ -8735,7 +8735,7 @@
       }
     }
   },
-  "stockCashAvailable": "Available to invest: €{amount}",
+  "stockCashAvailable": "Verfügbar zum Investieren: {amount}",
   "@stockCashAvailable": {
     "placeholders": {
       "amount": {
@@ -8743,17 +8743,17 @@
       }
     }
   },
-  "propertyDevelopAction": "Develop",
-  "propertyDevelopedSuccess": "Property development complete.",
-  "helpTopicStockMarketCategory": "Economy",
-  "helpTopicStockMarketTitle": "Stock market",
-  "helpTopicStockMarketSummary": "Trade slow-moving stocks with bank money. Separate system from crypto.",
-  "helpTopicStockMarketHow": "Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.\nBuy and sell execute immediately at the server price and debit/credit your bank — not cash.\nPrices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.\nThere is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module.",
-  "helpTopicStockMarketTips": "Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.",
-  "premiumUiAutoRenewActive": "Auto-renews monthly",
-  "premiumUiAutoRenewOff": "No auto-renewal",
-  "premiumUiCancelRenewal": "Cancel renewal",
-  "premiumUiCancelRenewalConfirm": "Stop future VIP charges? Your current VIP stays active until {date}.",
+  "propertyDevelopAction": "Entwickeln",
+  "propertyDevelopedSuccess": "Grundstückserschließung abgeschlossen.",
+  "helpTopicStockMarketCategory": "Wirtschaft",
+  "helpTopicStockMarketTitle": "Börse",
+  "helpTopicStockMarketSummary": "Handeln Sie langsam laufende Aktien mit Bankgeld. Getrenntes System von Krypto.",
+  "helpTopicStockMarketHow": "Öffnen Sie die Börse über das Dashboard. Sie sehen Ticker, den aktuellen Preis, Ihre Bestände und Ihren Kontostand. \nKaufen und verkaufen Sie sofort zum Serverpreis und belasten/kreditieren Sie Ihre Bank – nicht Bargeld. \nDie Preise bewegen sich langsam (ungefähr jede Minute) mit leichter zufälliger Drift und Mean-Reversion; Es gibt keinen externen Live-Feed. \nEs gibt eine maximale Anzahl offener Stellen. Krypto-Orders, -Regime und -Bestenlisten sind nicht Teil dieses Moduls.",
+  "helpTopicStockMarketTips": "Halten Sie Reserven für Verbrechen/Reisen bereit – Aktien sind kein Notgeld. \nDiversifizieren Sie nicht blind über jeden Ticker hinweg: Das Positionslimit ist eng.",
+  "premiumUiAutoRenewActive": "Automatische monatliche Verlängerung",
+  "premiumUiAutoRenewOff": "Keine automatische Verlängerung",
+  "premiumUiCancelRenewal": "Verlängerung abbrechen",
+  "premiumUiCancelRenewalConfirm": "Zukünftige VIP-Gebühren stoppen? Ihr aktueller VIP bleibt bis {date} aktiv.",
   "@premiumUiCancelRenewalConfirm": {
     "placeholders": {
       "date": {
@@ -8761,19 +8761,19 @@
       }
     }
   },
-  "premiumUiCancelRenewalSuccess": "Auto-renewal cancelled.",
-  "premiumUiCancelRenewalFailed": "Could not cancel auto-renewal.",
-  "premiumUiGiftVip": "Gift VIP",
-  "premiumUiGiftVipHint": "Buy 30 days of Player VIP for another player.",
-  "premiumUiGiftVipUsername": "Recipient username",
-  "premiumUiGiftVipConfirm": "Continue to checkout",
-  "premiumUiGiftVipFailed": "Could not start VIP gift checkout.",
-  "premiumUiPrestigeLabel": "VIP prestige",
-  "premiumUiPrestigeNone": "None",
+  "premiumUiCancelRenewalSuccess": "Automatische Verlängerung abgebrochen.",
+  "premiumUiCancelRenewalFailed": "Die automatische Verlängerung konnte nicht abgebrochen werden.",
+  "premiumUiGiftVip": "Geschenk VIP",
+  "premiumUiGiftVipHint": "Kaufen Sie 30 Tage Spieler-VIP für einen anderen Spieler.",
+  "premiumUiGiftVipUsername": "Benutzername des Empfängers",
+  "premiumUiGiftVipConfirm": "Weiter zur Kasse",
+  "premiumUiGiftVipFailed": "Der Checkout für VIP-Geschenke konnte nicht gestartet werden.",
+  "premiumUiPrestigeLabel": "VIP-Prestige",
+  "premiumUiPrestigeNone": "Keiner",
   "premiumUiPrestigeBronze": "Bronze",
-  "premiumUiPrestigeSilver": "Silver",
+  "premiumUiPrestigeSilver": "Silber",
   "premiumUiPrestigeGold": "Gold",
-  "premiumUiPrestigeDays": "{days} lifetime days",
+  "premiumUiPrestigeDays": "{days} lebenslange Tage",
   "@premiumUiPrestigeDays": {
     "placeholders": {
       "days": {
@@ -8781,11 +8781,11 @@
       }
     }
   },
-  "premiumUiGiftCrewVip": "Gift Crew VIP",
-  "premiumUiGiftCrewVipHint": "Buy 30 days of Crew VIP for any crew by name. One-time gift — no auto-renew for that crew.",
-  "premiumUiGiftCrewVipName": "Crew name",
-  "premiumUiGiftCrewVipFailed": "Could not start Crew VIP gift checkout.",
-  "propertyDevelopedSuccessLevel": "Development complete — level {level}.",
+  "premiumUiGiftCrewVip": "Geschenk-Crew-VIP",
+  "premiumUiGiftCrewVipHint": "Kaufen Sie 30 Tage Crew-VIP für eine beliebige Crew mit Namen. Einmaliges Geschenk – keine automatische Verlängerung für diese Crew.",
+  "premiumUiGiftCrewVipName": "Name der Crew",
+  "premiumUiGiftCrewVipFailed": "Der Checkout für Crew-VIP-Geschenke konnte nicht gestartet werden.",
+  "propertyDevelopedSuccessLevel": "Entwicklung abgeschlossen – Level {level}.",
   "@propertyDevelopedSuccessLevel": {
     "placeholders": {
       "level": {
@@ -8793,8 +8793,8 @@
       }
     }
   },
-  "propertyDevelopConfirmTitle": "Develop property?",
-  "propertyDevelopConfirmBody": "Spend €{cost} from your bank to raise development to level {level}. Each level adds +{bonusPercent}% passive income.",
+  "propertyDevelopConfirmTitle": "Immobilie entwickeln?",
+  "propertyDevelopConfirmBody": "Geben Sie {cost} € von Ihrer Bank aus, um die Entwicklung auf Stufe {level} zu erhöhen. Jede Stufe fügt +{bonusPercent} % passives Einkommen hinzu.",
   "@propertyDevelopConfirmBody": {
     "placeholders": {
       "cost": {
@@ -8808,8 +8808,8 @@
       }
     }
   },
-  "propertyDevelopLevel": "Development",
-  "propertyDevelopIncomeBonusLabel": "Dev income bonus",
+  "propertyDevelopLevel": "Entwicklung",
+  "propertyDevelopIncomeBonusLabel": "Entwickler-Einkommensbonus",
   "propertyDevelopIncomeBonus": "+{percent}%",
   "@propertyDevelopIncomeBonus": {
     "placeholders": {
@@ -8818,8 +8818,8 @@
       }
     }
   },
-  "propertyDevelopIncomeLabel": "Passive income",
-  "propertyDevelopActionCost": "Develop · €{cost} → L{level}",
+  "propertyDevelopIncomeLabel": "Passives Einkommen",
+  "propertyDevelopActionCost": "Entwickeln · €{cost} → L{level}",
   "@propertyDevelopActionCost": {
     "placeholders": {
       "cost": {
@@ -8830,7 +8830,7 @@
       }
     }
   },
-  "propertyDevelopCooldown": "Develop available in {duration}",
+  "propertyDevelopCooldown": "Entwicklung verfügbar in {duration}",
   "@propertyDevelopCooldown": {
     "placeholders": {
       "duration": {
@@ -8838,7 +8838,7 @@
       }
     }
   },
-  "propertyDevelopErrorCooldown": "Development cooldown: {duration}",
+  "propertyDevelopErrorCooldown": "Abklingzeit der Entwicklung: {duration}",
   "@propertyDevelopErrorCooldown": {
     "placeholders": {
       "duration": {
@@ -8846,12 +8846,12 @@
       }
     }
   },
-  "propertyDevelopErrorCooldownGeneric": "Development is on cooldown.",
-  "propertyDevelopErrorMaxLevel": "This property is already at max development.",
-  "propertyDevelopErrorDisabled": "Property development is disabled.",
-  "propertyDevelopInsufficientBalance": "Not enough bank balance.",
-  "propertyDevelopErrorUnknown": "Could not develop this property.",
-  "premiumUiGiftVipPrice": "One-time price: {price} (30 days, no auto-renew).",
+  "propertyDevelopErrorCooldownGeneric": "Die Entwicklung befindet sich im Cooldown.",
+  "propertyDevelopErrorMaxLevel": "Diese Immobilie befindet sich bereits in der maximalen Entwicklungsphase.",
+  "propertyDevelopErrorDisabled": "Die Grundstückserschließung ist deaktiviert.",
+  "propertyDevelopInsufficientBalance": "Nicht genügend Bankguthaben.",
+  "propertyDevelopErrorUnknown": "Diese Immobilie konnte nicht bebaut werden.",
+  "premiumUiGiftVipPrice": "Einmaliger Preis: {price} (30 Tage, keine automatische Verlängerung).",
   "@premiumUiGiftVipPrice": {
     "placeholders": {
       "price": {
@@ -8859,7 +8859,7 @@
       }
     }
   },
-  "premiumUiPrestigeNext": "{days} days to {tier}",
+  "premiumUiPrestigeNext": "{days} Tage bis {tier}",
   "@premiumUiPrestigeNext": {
     "placeholders": {
       "days": {
@@ -8870,7 +8870,7 @@
       }
     }
   },
-  "premiumUiPrestigeMax": "Max prestige reached",
+  "premiumUiPrestigeMax": "Maximales Prestige erreicht",
   "prostitutionTabWorkers": "Arbeiter",
   "prostitutionTabRld": "RLD",
   "prostitutionTabEvents": "Veranstaltungen",
@@ -9045,7 +9045,7 @@
   "rankShoplifter": "Ladendieb",
   "rankPickpocket": "Taschendieb",
   "rankThief": "Dieb",
-  "rankAssociate": "Associate",
+  "rankAssociate": "Assoziieren",
   "rankCadet": "Kadett",
   "rankSoldier": "Soldat",
   "rankSwindler": "Schwindler",
@@ -9152,5 +9152,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "jobOutcomeSuccess": "Arbeit erledigt!"
 }

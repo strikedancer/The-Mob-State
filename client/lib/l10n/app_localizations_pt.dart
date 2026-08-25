@@ -8075,6 +8075,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crimeOutcomeSuccess => 'Crime bem sucedido!';
 
   @override
+  String get jobOutcomeSuccess => 'Trabalho concluído!';
+
+  @override
   String get crimeOutcomeCaught => 'Pego pela polícia';
 
   @override

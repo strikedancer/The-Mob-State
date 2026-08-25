@@ -373,6 +373,7 @@ Voorbeelden:
 - Legal income (geen wanted level increase)
 - Veilige manier om geld te verdienen
 - Minder lucratief dan crimes
+- Na een geslaagde job zie je eerst een resultaatvenster met verdiensten en XP (zelfde stijl als Misdaden); daarna volgt de cooldown.
 
 ---
 

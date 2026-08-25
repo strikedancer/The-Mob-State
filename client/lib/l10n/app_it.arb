@@ -9152,5 +9152,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "jobOutcomeSuccess": "Lavoro completato!"
 }

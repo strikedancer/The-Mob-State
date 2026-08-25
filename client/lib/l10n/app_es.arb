@@ -352,7 +352,7 @@
   "countryItaly": "Italia",
   "countryUk": "Reino Unido",
   "countrySwitzerland": "Suiza",
-  "crew": "Crew",
+  "crew": "Multitud",
   "profile": "Perfil",
   "logout": "Cerrar sesión",
   "logOut": "Finalizar la sesión",
@@ -601,8 +601,8 @@
   "dashboardEventsLast24h": "Eventos (últimas 24 h)",
   "dashboardRiskScore": "Puntuación de riesgo",
   "dashboardRecruitProstitute": "Reclutar prostituta",
-  "dashboardWarTheater": "War theater",
-  "dashboardHotRegions": "Hot regions",
+  "dashboardWarTheater": "teatro de guerra",
+  "dashboardHotRegions": "Regiones calientes",
   "dashboardCrewWars": "Guerras de crew",
   "dashboardStatusLabel": "Estado",
   "dashboardCanDeclare": "Puede declarar guerra",
@@ -633,7 +633,7 @@
   "crewRoleCoLeader": "Co-líder",
   "crewRoleMember": "Miembro",
   "vehicleOpsHotspot": "Punto de acceso",
-  "vehicleOpsCrew": "Crew",
+  "vehicleOpsCrew": "Multitud",
   "vehicleOpsCrewMatch": "partido de Crew",
   "vehicleOpsChop": "Cortar",
   "vehicleOpsContract": "Contrato",
@@ -2304,7 +2304,7 @@
   "educationTrackNameMedicine": "Medicamento",
   "educationTrackNameFinance": "Finanzas",
   "educationTrackNameEngineering": "Ingeniería",
-  "educationTrackNameIt": "IT",
+  "educationTrackNameIt": "ÉL",
   "schoolTrackDescriptionAviation": "Teoría de vuelo, navegación y operación de aeronaves.",
   "schoolTrackDescriptionLaw": "Derecho penal, procedimiento y práctica judicial.",
   "schoolTrackDescriptionMedicine": "Respuesta a emergencias, diagnóstico y práctica médica.",
@@ -2938,7 +2938,7 @@
   "supportMod_drugs": "Drogas",
   "supportMod_nightclub": "Club nocturno",
   "supportMod_prostitution": "Prostitución",
-  "supportMod_crew": "Crew",
+  "supportMod_crew": "Multitud",
   "supportMod_friends": "Amigos / jugadores",
   "supportMod_hitlist": "Lista negra",
   "supportMod_security": "Seguridad / FBI",
@@ -5545,7 +5545,7 @@
   },
   "smugglingNetwork": "Red",
   "smugglingPersonal": "Personal",
-  "smugglingCrew": "Crew",
+  "smugglingCrew": "Multitud",
   "smugglingChannelField": "canal de contrabando",
   "smugglingQuantity": "Cantidad",
   "smugglingVehiclesOneByOne": "Los vehículos se envían uno por uno.",
@@ -6262,7 +6262,7 @@
   "nightclubMgmtOpsLabSubtitleDefault": "11 sistemas para eventos, mejoras, rutas y rivales.",
   "nightclubManagementPanelTitle": "Gestión de discotecas",
   "nightclubChooseZoneHint": "Elija una zona de gestión y controle todo sin desplazamiento interno anidado.",
-  "nightclubChipCrew": "Crew",
+  "nightclubChipCrew": "Multitud",
   "nightclubChipStorage": "Almacenamiento",
   "nightclubChipDjShift": "turno de DJ",
   "nightclubChipSecurity": "Seguridad",
@@ -6821,26 +6821,26 @@
   "bmHubLocationUnknown": "DESCONOCIDA",
   "bmHubNoMarketListingsTitle": "Sin anuncios",
   "bmHubNoMarketListingsBody": "Nada coincide con tus filtros. Puedes listar herramientas llevadas con Vender objeto.",
-  "bmHubSellKindTool": "Tool",
-  "bmHubSellKindDrug": "Drugs",
-  "bmHubSellKindCrypto": "Crypto",
-  "bmHubSellKindTrade": "Trade goods",
-  "bmHubQuantityEvent": "Quantity",
-  "bmHubListEventItemTitle": "Sell event item",
-  "bmHubNoEventItemsToSell": "No event items to sell",
-  "bmHubSellKindEvent": "Event items",
-  "bmHubNoDrugsToSell": "No drugs to sell",
-  "bmHubNoCryptoToSell": "No crypto to sell",
-  "bmHubNoTradeGoodsToSell": "No trade goods to sell",
-  "bmHubListDrugTitle": "List drugs",
-  "bmHubListDrugSelectLabel": "Drug stack",
-  "bmHubListCryptoTitle": "List crypto",
-  "bmHubListCryptoSelectLabel": "Asset",
-  "bmHubListTradeTitle": "List trade goods",
-  "bmHubListTradeSelectLabel": "Good",
-  "bmHubQuantityGrams": "Quantity (g)",
-  "bmHubQuantityCrypto": "Quantity",
-  "bmHubQuantityUnits": "Quantity",
+  "bmHubSellKindTool": "Herramienta",
+  "bmHubSellKindDrug": "Drogas",
+  "bmHubSellKindCrypto": "Cripto",
+  "bmHubSellKindTrade": "bienes comerciales",
+  "bmHubQuantityEvent": "Cantidad",
+  "bmHubListEventItemTitle": "Vender artículo del evento",
+  "bmHubNoEventItemsToSell": "No hay artículos del evento para vender.",
+  "bmHubSellKindEvent": "Artículos de evento",
+  "bmHubNoDrugsToSell": "No hay drogas para vender",
+  "bmHubNoCryptoToSell": "No hay criptomonedas para vender",
+  "bmHubNoTradeGoodsToSell": "No hay bienes comerciales para vender.",
+  "bmHubListDrugTitle": "Lista de medicamentos",
+  "bmHubListDrugSelectLabel": "Pila de drogas",
+  "bmHubListCryptoTitle": "Lista de criptomonedas",
+  "bmHubListCryptoSelectLabel": "Activo",
+  "bmHubListTradeTitle": "Listar bienes comerciales",
+  "bmHubListTradeSelectLabel": "Buena",
+  "bmHubQuantityGrams": "Cantidad (gramos)",
+  "bmHubQuantityCrypto": "Cantidad",
+  "bmHubQuantityUnits": "Cantidad",
   "bmHubSellCarriedItem": "Vender objeto",
   "bmHubToolQtyDurability": "Cant.: {qty} • {pct}% estado",
   "@bmHubToolQtyDurability": {
@@ -8101,7 +8101,7 @@
   "helpTopicTravelHow": "Países disponibles: Países Bajos (inicio), Bélgica, Alemania, Francia, Reino Unido, España, Italia, Suiza, Estados Unidos, México, Colombia, Brasil. \nGastos de viaje: país vecino 500-2000 €, Europa → América 5000-10 000 €, larga distancia 10 000-20 000 €. \nRequisitos de viaje: no en la cárcel, no en la UCI, mínimo 20 HP, fondos de viaje disponibles. \nLas cantidades de medicamentos en su inventario cuentan como gramos reales para los controles de peso de transporte y de viaje; 500 significa 500 g, no 50 kg. \nCada país tiene diferentes precios de mercado (hasta un 300% de diferencia de precio), diferentes pagos por delitos y artículos comerciales únicos. \nRiesgo de transporte: la policía puede confiscar mercancías según el nivel de búsqueda (posibilidad = buscada × 2%, máximo 80%). El FBI puede confiscar todo a nivel internacional si la presión es alta. \nLa inspección aduanera tiene una probabilidad base del 10%. Puedes sobornar (1.000€-5.000€) o quedar atrapado perdiendo el 50% de los bienes. \nDespués de su llegada, todas las acciones estarán disponibles inmediatamente en el nuevo país. Los mercados y la velocidad del crimen varían según la ubicación.",
   "helpTopicTravelTips": "Combine siempre los viajes con el comercio, las drogas o el contrabando: los viajes vacíos desperdician dinero. \nReduzca su nivel de búsqueda antes de la salida: un nivel alto de búsqueda aumenta considerablemente el riesgo de confiscación en el camino. \nPlanifique su viaje de regreso con anticipación para saber qué traer a su llegada.",
   "helpTopicCrewCategory": "Social",
-  "helpTopicCrewTitle": "Crew",
+  "helpTopicCrewTitle": "Multitud",
   "helpTopicCrewSummary": "Forma un equipo o únete a jugadores existentes para realizar atracos juntos, compartir almacenamiento y fortalecerte como unidad.",
   "helpTopicCrewHow": "Crear una Crew cuesta 10.000 €. El cuartel general de la Crew determina cuántos miembros puede albergar tu Crew y aumenta hasta 150 miembros. El líder puede invitar, patear e iniciar atracos. \nBeneficios de la Crew: acceso a grandes atracos, almacenamiento compartido, bonificación de trabajo en equipo (+10% de éxito por miembro adicional, máximo +30%) y chat grupal. \nLas nuevas tripulaciones ahora comienzan con el nivel 1 del cuartel general de la Crew y todos los edificios de almacenamiento en el nivel 1, incluido el almacenamiento de efectivo, por lo que el banco de Crew y el almacenamiento compartido funcionan de inmediato. \nEl almacenamiento de vehículos de la Crew ahora también acepta motocicletas, por lo que los vehículos terrestres se pueden administrar juntos desde el mismo almacenamiento compartido de la Crew. \nCuando un miembro de la Crew es arrestado, los miembros de la Crew ahora reciben una notificación automática de que el jugador está encerrado y esperando ayuda. \nLa pantalla de la Crew ahora está agrupada en Descripción general, Sede y mejoras, Almacenamiento, Miembros, Sala de guerra, Misiones de la Crew, Tripulaciones y Chat para que la administración se sienta más tranquila y profesional. \nCrew Missions muestra plantillas de niveles, una tarjeta de carrera activa y carreras recientes. Los líderes/colíderes pueden comenzar y resolver; La reclamación de recompensas y la aceleración del tiempo de reutilización se manejan en la misma pestaña. \nHay misiones de Crew adicionales con operaciones con temática bancaria (depósito nocturno, red de desnatado, ruta blindada, bóveda subsidiaria, bóveda de reserva y cámara de compensación). No hay una segunda misión para el equipo del casino además de Casino Ledger Raid. \nLas recompensas de las misiones de la Crew provienen de la economía de las misiones del lado del servidor; Los saldos bancarios de otros jugadores no se cargan para estos pagos. \nAl comenzar una misión, ahora puedes asignar un rol por miembro de la Crew (planificador, ejecutor, logística, técnico) para obtener bonificaciones de equipo. \nLas tarjetas de misión activas y recientes ahora también muestran contribuciones de rol por jugador con puntuación y cualquier multiplicador de pago. \nLos miembros de la Crew ahora también reciben alertas push/en la aplicación sobre el inicio de la misión, el resultado de la misión y cuando el tiempo de reutilización de la misión vuelve a estar listo. \nMientras el tiempo de reutilización de una misión esté activo, no podrás iniciar una nueva misión; Primero espera el tiempo de reutilización restante o acelera con créditos. \nPara acelerar el tiempo de recuperación, primero verá el costo exacto del crédito y los minutos restantes antes de confirmar. \nCrew Wars tiene su propia pestaña War Room dentro de la pantalla de la Crew. Solo los líderes pueden declarar una guerra y se requiere que participen al menos 3 miembros de la Crew. \nTipos de guerra: Kill War, Economy War, Territory War y Total War. Cada guerra pasa por la preparación, la fase activa, el bloqueo y la resolución. \nDurante una guerra activa, los participantes pueden realizar acciones como asesinatos, asaltos, sabotaje, información, incursiones, escudos, mejoras y reclamos de territorio. Las acciones dirigidas ahora te permiten elegir directamente de una lista de miembros de la Crew oponente en lugar de escribir una identificación de jugador a mano. \nLos puntos de temporada se agregan a la tabla de clasificación de Crew Wars. La Sala de Guerra también muestra clasificaciones, acciones recientes y guerras recientes de tu Crew. \nEn Territory War y Total War, ahora reclamas regiones territoriales reales del sistema de territorios en lugar de objetivos de marcador de posición genéricos. \nEsas regiones de guerra ahora también muestran su valor estratégico en la Sala de Guerra: bonificación de reclamo, puntos de marca y etiquetas como puerto, capital o logística. Esto deja inmediatamente claro qué regiones valen más que un simple intercambio de propiedad. \nCrew Wars ya no elige objetivos territoriales solo según el nivel de valor, sino también según las etiquetas estratégicas y la presión adyacente del territorio atacante o defensor. Eso hace que Territory War y Total War se sientan más como una línea de frente real que como tres reclamos aleatorios. \nAtracos: Banco pequeño (2 jugadores, 40%, 10.000 €-30.000 €, 30 min de tiempo de reutilización), Joyería (3 jugadores, 35%, 20.000 €-50.000 €, 45 min), Atraco al casino (4 jugadores, 25%, 50.000 €-150.000 €, 2 horas), Reserva Federal (5 jugadores, 15%, 100.000-500.000€, 6 h, +20 FBI Heat). \nPara un atraco, todos los miembros deben estar en línea al inicio. Si alguien está ausente, el atraco fracasa. \nAtraco fallido: cárcel para todos, nivel de búsqueda +5, sin recompensa. \nLa recompensa del atraco se divide en partes iguales entre todos los miembros participantes. \nEl chat de la Crew está disponible para una rápida coordinación. \nProgresión del cuartel general de la Crew: cuanto más larga y activa sea la Crew, más mejoras y beneficios compartidos se desbloquearán.",
   "helpTopicCrewTips": "Los nuevos equipos pueden depositar dinero y utilizar el almacenamiento compartido de inmediato; después de eso, concéntrese en actualizaciones para obtener más capacidad en lugar de realizar una compra inicial por separado. \nPrimero revisa la Sala de Guerra para ver si tu Crew todavía está en tiempo de reutilización antes de intentar declarar una nueva guerra. \nCoordina las llamadas de objetivos en el chat de la Crew para no seguir cultivando al mismo oponente y hacer tropezar al guardia anti-granja. \nCoordine las horas de inicio del atraco en el chat del equipo para que todos estén en línea y nadie esté en la cárcel. \nElija un equipo en la misma zona horaria o patrón de actividad para obtener mejores tasas de éxito en los atracos. \nUtilice el almacenamiento compartido de la Crew para separar los bienes riesgosos de su inventario personal.",
@@ -8336,38 +8336,38 @@
   "legalDigitalGoodsSection09Body": "Es posible que actualicemos esta política y las descripciones de compras en el juego. El uso continuado después de los cambios constituye la aceptación de los términos revisados ​​cuando lo permita la ley.",
   "legalDigitalGoodsSection10Title": "Ley aplicable",
   "legalDigitalGoodsSection10Body": "A menos que la ley local obligatoria disponga lo contrario, esta política se rige por las leyes de Inglaterra y Gales y las disputas estarán sujetas a la jurisdicción exclusiva de los tribunales de Inglaterra y Gales.",
-  "registerTermsRequired": "You must accept the Terms of Service to register.",
-  "registerTermsPrefix": "I agree to the ",
-  "registerTermsLink": "Terms of Service",
+  "registerTermsRequired": "Debe aceptar los Términos de servicio para registrarse.",
+  "registerTermsPrefix": "Estoy de acuerdo con el",
+  "registerTermsLink": "Términos de servicio",
   "registerTermsSuffix": ".",
-  "legalTermsTitle": "Terms of Service",
-  "legalTermsLastUpdated": "Last updated: May 2026",
-  "legalTermsIntro": "These Terms of Service (\"Terms\") govern your access to and use of The Mob State website, web game and related services (\"Service\"). By creating an account or using the Service you agree to these Terms together with our Privacy Policy and, where applicable, our digital goods purchase policy.",
-  "legalTermsSection01Title": "Eligibility and account",
-  "legalTermsSection01Body": "You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You are responsible for activity under your account unless you notify us promptly via support if you suspect unauthorised access.",
-  "legalTermsSection02Title": "Licence to use the Service",
-  "legalTermsSection02Body": "We grant you a personal, non-exclusive, non-transferable, revocable licence to access and use the Service for entertainment in line with these Terms. All rights not expressly granted are reserved.",
-  "legalTermsSection03Title": "Acceptable use",
-  "legalTermsSection03Body": "You agree not to cheat, exploit bugs for unfair advantage, harass others, distribute malware, scrape or overload our systems without permission, impersonate staff, or use the Service for unlawful purposes. We may investigate reports and apply sanctions including warnings, suspensions or termination.",
-  "legalTermsSection04Title": "Virtual items and payments",
-  "legalTermsSection04Body": "Optional purchases may be available for virtual goods or features. Such purchases are subject to our Purchase of Digital Goods policy and checkout terms. Virtual items have no real-world cash value outside the Service except where mandatory law says otherwise.",
-  "legalTermsSection05Title": "User content",
-  "legalTermsSection05Body": "Where the Service allows you to submit text, images or other material, you retain ownership you already hold but grant us a licence to host, display and moderate that content as needed to operate the Service. You must have rights to anything you submit and must not upload unlawful or infringing material.",
-  "legalTermsSection06Title": "Availability and changes",
-  "legalTermsSection06Body": "We strive to keep the Service available but do not guarantee uninterrupted access. We may modify, suspend or discontinue features for maintenance, balance, legal or security reasons. We may update these Terms; continued use after notice where permitted by law constitutes acceptance of material changes.",
-  "legalTermsSection07Title": "Disclaimer and liability",
-  "legalTermsSection07Body": "The Service is provided \"as is\" to the fullest extent permitted by law. We exclude liability for indirect or consequential loss where allowed. Nothing in these Terms limits liability that cannot be limited under applicable mandatory consumer law.",
-  "legalTermsSection08Title": "Termination",
-  "legalTermsSection08Body": "You may stop using the Service at any time. We may suspend or terminate access if you breach these Terms, if required by law, or to protect the Service or other users. Provisions that by nature should survive will survive termination.",
-  "legalTermsSection09Title": "Governing law",
-  "legalTermsSection09Body": "Unless mandatory local law provides otherwise, these Terms are governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.",
-  "legalTermsSection10Title": "Contact",
-  "legalTermsSection10Body": "For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.",
-  "registerGenderTitle": "Your character",
-  "registerGenderSubtitle": "Tap a portrait — this sets your starter look and is saved to your account.",
-  "registerGenderMale": "Male gangster",
-  "registerGenderFemale": "Female gangster",
-  "genderRequired": "Choose male or female to continue.",
+  "legalTermsTitle": "Términos de servicio",
+  "legalTermsLastUpdated": "Última actualización: mayo de 2026",
+  "legalTermsIntro": "Estos Términos de servicio (\"Términos\") rigen su acceso y uso del sitio web, el juego web y los servicios relacionados de The Mob State (\"Servicio\"). Al crear una cuenta o utilizar el Servicio, acepta estos Términos junto con nuestra Política de Privacidad y, cuando corresponda, nuestra política de compra de productos digitales.",
+  "legalTermsSection01Title": "Elegibilidad y cuenta",
+  "legalTermsSection01Body": "Debe cumplir con la edad mínima que se muestra al registrarse para su región. Usted es responsable de proporcionar información de registro precisa y de mantener la confidencialidad de sus credenciales. Usted es responsable de la actividad de su cuenta a menos que nos notifique de inmediato a través del soporte si sospecha de un acceso no autorizado.",
+  "legalTermsSection02Title": "Licencia para utilizar el Servicio",
+  "legalTermsSection02Body": "Le otorgamos una licencia personal, no exclusiva, intransferible y revocable para acceder y utilizar el Servicio con fines de entretenimiento de acuerdo con estos Términos. Todos los derechos no otorgados expresamente están reservados.",
+  "legalTermsSection03Title": "Uso aceptable",
+  "legalTermsSection03Body": "Usted acepta no hacer trampa, explotar errores para obtener ventajas injustas, acosar a otros, distribuir malware, raspar o sobrecargar nuestros sistemas sin permiso, hacerse pasar por personal ni utilizar el Servicio con fines ilegales. Podemos investigar informes y aplicar sanciones que incluyen advertencias, suspensiones o despidos.",
+  "legalTermsSection04Title": "Artículos y pagos virtuales",
+  "legalTermsSection04Body": "Es posible que haya compras opcionales disponibles para bienes o funciones virtuales. Dichas compras están sujetas a nuestra política de compra de productos digitales y a nuestros términos de pago. Los artículos virtuales no tienen valor en efectivo en el mundo real fuera del Servicio, excepto cuando la ley obligatoria indique lo contrario.",
+  "legalTermsSection05Title": "Contenido del usuario",
+  "legalTermsSection05Body": "Cuando el Servicio le permite enviar texto, imágenes u otro material, usted conserva la propiedad que ya posee, pero nos otorga una licencia para alojar, mostrar y moderar ese contenido según sea necesario para operar el Servicio. Debe tener derechos sobre todo lo que envíe y no debe cargar material ilegal o infractor.",
+  "legalTermsSection06Title": "Disponibilidad y cambios",
+  "legalTermsSection06Body": "Nos esforzamos por mantener el Servicio disponible pero no garantizamos el acceso ininterrumpido. Podemos modificar, suspender o descontinuar funciones por razones de mantenimiento, equilibrio, legales o de seguridad. Podemos actualizar estos Términos; El uso continuado después del aviso cuando lo permita la ley constituye la aceptación de cambios materiales.",
+  "legalTermsSection07Title": "Descargo de responsabilidad y responsabilidad",
+  "legalTermsSection07Body": "El Servicio se proporciona \"tal cual\" en la máxima medida permitida por la ley. Excluimos la responsabilidad por pérdidas indirectas o consecuentes cuando esté permitido. Nada en estos Términos limita la responsabilidad que no pueda limitarse según la ley de consumo obligatoria aplicable.",
+  "legalTermsSection08Title": "Terminación",
+  "legalTermsSection08Body": "Puede dejar de utilizar el Servicio en cualquier momento. Podemos suspender o cancelar el acceso si usted incumple estos Términos, si así lo exige la ley, o para proteger el Servicio o a otros usuarios. Las disposiciones que por naturaleza deberían sobrevivir sobrevivirán a la terminación.",
+  "legalTermsSection09Title": "Ley aplicable",
+  "legalTermsSection09Body": "A menos que la ley local obligatoria disponga lo contrario, estos Términos se rigen por las leyes de Inglaterra y Gales y las disputas estarán sujetas a la jurisdicción exclusiva de los tribunales de Inglaterra y Gales.",
+  "legalTermsSection10Title": "Contacto",
+  "legalTermsSection10Body": "Si tiene preguntas sobre estos Términos, contáctenos a través del sistema de tickets de soporte del juego después del registro, o a través de los canales de contacto del sitio web oficial, si están publicados.",
+  "registerGenderTitle": "tu personaje",
+  "registerGenderSubtitle": "Toca un retrato: esto establece tu apariencia inicial y se guarda en tu cuenta.",
+  "registerGenderMale": "gángster masculino",
+  "registerGenderFemale": "gángster femenino",
+  "genderRequired": "Elija hombre o mujer para continuar.",
   "settingsMyPortraits": "mis retratos",
   "settingsPortraitFromSelfieTitle": "Retrato de selfie",
   "settingsPortraitFromSelfieSubtitle": "Convierte una selfie en un retrato estilo gángster. {credits} créditos cada uno.",
@@ -8413,15 +8413,15 @@
   "settingsPortraitUsingCustom": "Retrato personalizado activo",
   "settingsPresetAvatars": "avatares preestablecidos",
   "settingsPortraitDeleteConfirm": "¿Eliminar este retrato de tu biblioteca?",
-  "settingsPortraitGenerating": "Creating your portrait… This may take a few minutes. Please wait.",
+  "settingsPortraitGenerating": "Creando tu retrato… Esto puede tardar unos minutos. Espere por favor.",
   "settingsPortraitDeleteHint": "Tap a portrait to use it as your avatar. Tap the trash icon to remove it.",
-  "settingsPortraitStyleSection": "Portrait look",
-  "settingsPortraitStyleHint": "Generation uses your account gender from registration. All styles stay appropriate for the game.",
-  "settingsPortraitStyleClassicNoir": "Classic noir",
-  "settingsPortraitStyleStreetCasual": "Street casual",
-  "settingsPortraitStyleSharpSuit": "Sharp suit",
-  "settingsPortraitStyleVelvetCharm": "Evening glamour",
-  "settingsPortraitDownloadFailed": "Could not download the portrait. Check your connection and try again.",
+  "settingsPortraitStyleSection": "Mirada de retrato",
+  "settingsPortraitStyleHint": "Generation utiliza el género de su cuenta desde el registro. Todos los estilos siguen siendo apropiados para el juego.",
+  "settingsPortraitStyleClassicNoir": "negro clásico",
+  "settingsPortraitStyleStreetCasual": "Calle casual",
+  "settingsPortraitStyleSharpSuit": "traje afilado",
+  "settingsPortraitStyleVelvetCharm": "Glamour nocturno",
+  "settingsPortraitDownloadFailed": "No se pudo descargar el retrato. Comprueba tu conexión y vuelve a intentarlo.",
   "settingsPortraitDownloadTooltip": "Descarga este retrato como PNG",
   "settingsPortraitDeleteTooltip": "Elimina este retrato de tu biblioteca",
   "userAccountMenuTooltip": "Menú de cuenta",
@@ -8635,8 +8635,8 @@
   "territoryEventPoliceOffensive": "Ofensiva policial",
   "territoryEventHarborStrike": "huelga portuaria",
   "territoryEventBlackoutRumor": "Rumor de apagón",
-  "launderSectionTitle": "Money laundering",
-  "launderSectionHint": "Wash cash into your bank with a {feePercent}% fee. Takes about {durationMinutes} minutes. Higher FBI heat means higher seize risk.",
+  "launderSectionTitle": "Lavado de dinero",
+  "launderSectionHint": "Lave efectivo en su banco con una tarifa del {feePercent}%. Tarda aproximadamente {durationMinutes} minutos. Una mayor presión del FBI significa un mayor riesgo de incautación.",
   "@launderSectionHint": {
     "placeholders": {
       "feePercent": {
@@ -8647,7 +8647,7 @@
       }
     }
   },
-  "launderSeizeChance": "Estimated seize chance: {chance}%",
+  "launderSeizeChance": "Probabilidad estimada de incautación: {chance}%",
   "@launderSeizeChance": {
     "placeholders": {
       "chance": {
@@ -8655,7 +8655,7 @@
       }
     }
   },
-  "launderActiveJob": "Wash in progress. Bank payout if successful: €{amount}",
+  "launderActiveJob": "Lavado en curso. Pago bancario si tiene éxito: €{amount}",
   "@launderActiveJob": {
     "placeholders": {
       "amount": {
@@ -8663,7 +8663,7 @@
       }
     }
   },
-  "launderJobCountdown": "Completes in {time}",
+  "launderJobCountdown": "Se completa en {time}",
   "@launderJobCountdown": {
     "placeholders": {
       "time": {
@@ -8671,7 +8671,7 @@
       }
     }
   },
-  "launderCooldownCountdown": "Available again in {time}",
+  "launderCooldownCountdown": "Disponible nuevamente en {time}",
   "@launderCooldownCountdown": {
     "placeholders": {
       "time": {
@@ -8679,7 +8679,7 @@
       }
     }
   },
-  "launderPreviewFee": "Fee ({feePercent}%): €{fee}",
+  "launderPreviewFee": "Tarifa ({feePercent}%): €{fee}",
   "@launderPreviewFee": {
     "placeholders": {
       "feePercent": {
@@ -8690,7 +8690,7 @@
       }
     }
   },
-  "launderPreviewPayout": "Bank payout if successful: €{payout}",
+  "launderPreviewPayout": "Pago bancario si tiene éxito: €{payout}",
   "@launderPreviewPayout": {
     "placeholders": {
       "payout": {
@@ -8698,36 +8698,36 @@
       }
     }
   },
-  "launderAmountLabel": "Amount to wash",
-  "launderStartButton": "Start wash",
-  "launderStartedSuccess": "Laundering started.",
-  "launderErrorCooldown": "Laundering is on cooldown.",
-  "launderErrorActive": "A wash job is already running.",
+  "launderAmountLabel": "cantidad a lavar",
+  "launderStartButton": "Iniciar lavado",
+  "launderStartedSuccess": "Comenzó el lavado.",
+  "launderErrorCooldown": "El lavado está en tiempo de reutilización.",
+  "launderErrorActive": "Ya se está realizando un trabajo de lavado.",
   "launderErrorTooLow": "El monto está por debajo del mínimo ({min}).",
   "launderErrorTooHigh": "El monto está por encima del máximo ({max}).",
-  "launderErrorInsufficientCash": "Not enough cash on hand.",
-  "launderErrorDisabled": "Money laundering is disabled.",
-  "launderErrorUnknown": "Could not start laundering.",
-  "stockMarketTitle": "Stock market",
-  "stockMarketHint": "Trade with bank money. Prices move slowly — separate from crypto.",
-  "stockBankBalance": "Bank balance",
-  "stockPortfolioValue": "Portfolio value",
-  "stockQuantity": "Quantity",
-  "stockPrice": "Price",
-  "stockHolding": "Holding",
-  "stockValue": "Value",
-  "stockBuy": "Buy",
-  "stockSell": "Sell",
-  "stockTradeSuccess": "Trade completed.",
-  "stockErrorInsufficientBalance": "Not enough bank balance.",
-  "stockErrorInsufficientShares": "Not enough shares.",
-  "stockErrorPositionLimit": "Position limit reached.",
-  "stockErrorDisabled": "Stock market is disabled.",
-  "stockErrorUnknown": "Trade failed.",
-  "stockMarketLoadError": "Could not load the stock market.",
-  "stockMarketEmpty": "No tickers available right now.",
-  "stockMarketRetry": "Retry",
-  "stockPositionsOpen": "Open positions: {count}",
+  "launderErrorInsufficientCash": "No hay suficiente efectivo disponible.",
+  "launderErrorDisabled": "El blanqueo de capitales está inhabilitado.",
+  "launderErrorUnknown": "No se pudo iniciar el lavado.",
+  "stockMarketTitle": "mercado de valores",
+  "stockMarketHint": "Opere con dinero bancario. Los precios se mueven lentamente, separados de las criptomonedas.",
+  "stockBankBalance": "Saldo bancario",
+  "stockPortfolioValue": "Valor de la cartera",
+  "stockQuantity": "Cantidad",
+  "stockPrice": "Precio",
+  "stockHolding": "Tenencia",
+  "stockValue": "Valor",
+  "stockBuy": "Comprar",
+  "stockSell": "Vender",
+  "stockTradeSuccess": "Comercio completado.",
+  "stockErrorInsufficientBalance": "Saldo bancario insuficiente.",
+  "stockErrorInsufficientShares": "No hay suficientes acciones.",
+  "stockErrorPositionLimit": "Límite de posición alcanzado.",
+  "stockErrorDisabled": "El mercado de valores está inhabilitado.",
+  "stockErrorUnknown": "El comercio fracasó.",
+  "stockMarketLoadError": "No se pudo cargar el mercado de valores.",
+  "stockMarketEmpty": "No hay tickers disponibles en este momento.",
+  "stockMarketRetry": "Rever",
+  "stockPositionsOpen": "Posiciones abiertas: {count}",
   "@stockPositionsOpen": {
     "placeholders": {
       "count": {
@@ -8735,7 +8735,7 @@
       }
     }
   },
-  "stockCashAvailable": "Available to invest: €{amount}",
+  "stockCashAvailable": "Disponible para invertir: €{amount}",
   "@stockCashAvailable": {
     "placeholders": {
       "amount": {
@@ -8743,17 +8743,17 @@
       }
     }
   },
-  "propertyDevelopAction": "Develop",
-  "propertyDevelopedSuccess": "Property development complete.",
-  "helpTopicStockMarketCategory": "Economy",
-  "helpTopicStockMarketTitle": "Stock market",
-  "helpTopicStockMarketSummary": "Trade slow-moving stocks with bank money. Separate system from crypto.",
-  "helpTopicStockMarketHow": "Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.\nBuy and sell execute immediately at the server price and debit/credit your bank — not cash.\nPrices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.\nThere is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module.",
-  "helpTopicStockMarketTips": "Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.",
-  "premiumUiAutoRenewActive": "Auto-renews monthly",
-  "premiumUiAutoRenewOff": "No auto-renewal",
-  "premiumUiCancelRenewal": "Cancel renewal",
-  "premiumUiCancelRenewalConfirm": "Stop future VIP charges? Your current VIP stays active until {date}.",
+  "propertyDevelopAction": "Desarrollar",
+  "propertyDevelopedSuccess": "Desarrollo inmobiliario completo.",
+  "helpTopicStockMarketCategory": "Economía",
+  "helpTopicStockMarketTitle": "mercado de valores",
+  "helpTopicStockMarketSummary": "Opere acciones de lento movimiento con dinero bancario. Sistema separado de criptografía.",
+  "helpTopicStockMarketHow": "Abra el mercado de valores desde el tablero. Ve los tickers, el precio actual, sus tenencias y el saldo bancario. \nCompre y venda, ejecútelo inmediatamente al precio del servidor y debite/crédito en su banco, no en efectivo. \nLos precios avanzan lentamente (aproximadamente cada minuto) con una ligera deriva aleatoria y una reversión a la media; no hay transmisión en vivo externa. \nHay un número máximo de puestos vacantes. Las órdenes, regímenes y tablas de clasificación de criptomonedas no forman parte de este módulo.",
+  "helpTopicStockMarketTips": "Mantenga una reserva bancaria para delitos/viajes; las acciones no son efectivo de emergencia. \nNo diversifique a ciegas en cada ticker: el límite de posición es ajustado.",
+  "premiumUiAutoRenewActive": "Se renueva automáticamente mensualmente",
+  "premiumUiAutoRenewOff": "Sin renovación automática",
+  "premiumUiCancelRenewal": "Cancelar renovación",
+  "premiumUiCancelRenewalConfirm": "¿Detener futuros cargos VIP? Tu VIP actual permanece activo hasta el {date}.",
   "@premiumUiCancelRenewalConfirm": {
     "placeholders": {
       "date": {
@@ -8761,19 +8761,19 @@
       }
     }
   },
-  "premiumUiCancelRenewalSuccess": "Auto-renewal cancelled.",
-  "premiumUiCancelRenewalFailed": "Could not cancel auto-renewal.",
-  "premiumUiGiftVip": "Gift VIP",
-  "premiumUiGiftVipHint": "Buy 30 days of Player VIP for another player.",
-  "premiumUiGiftVipUsername": "Recipient username",
-  "premiumUiGiftVipConfirm": "Continue to checkout",
-  "premiumUiGiftVipFailed": "Could not start VIP gift checkout.",
-  "premiumUiPrestigeLabel": "VIP prestige",
-  "premiumUiPrestigeNone": "None",
-  "premiumUiPrestigeBronze": "Bronze",
-  "premiumUiPrestigeSilver": "Silver",
-  "premiumUiPrestigeGold": "Gold",
-  "premiumUiPrestigeDays": "{days} lifetime days",
+  "premiumUiCancelRenewalSuccess": "Renovación automática cancelada.",
+  "premiumUiCancelRenewalFailed": "No se pudo cancelar la renovación automática.",
+  "premiumUiGiftVip": "Regalo VIP",
+  "premiumUiGiftVipHint": "Compra 30 días de Jugador VIP para otra jugadora.",
+  "premiumUiGiftVipUsername": "Nombre de usuario del destinatario",
+  "premiumUiGiftVipConfirm": "Continuar pagando",
+  "premiumUiGiftVipFailed": "No se pudo iniciar el pago de regalos VIP.",
+  "premiumUiPrestigeLabel": "prestigio vip",
+  "premiumUiPrestigeNone": "Ninguna",
+  "premiumUiPrestigeBronze": "Bronce",
+  "premiumUiPrestigeSilver": "Plata",
+  "premiumUiPrestigeGold": "Oro",
+  "premiumUiPrestigeDays": "{days} días de por vida",
   "@premiumUiPrestigeDays": {
     "placeholders": {
       "days": {
@@ -8781,11 +8781,11 @@
       }
     }
   },
-  "premiumUiGiftCrewVip": "Gift Crew VIP",
-  "premiumUiGiftCrewVipHint": "Buy 30 days of Crew VIP for any crew by name. One-time gift — no auto-renew for that crew.",
-  "premiumUiGiftCrewVipName": "Crew name",
-  "premiumUiGiftCrewVipFailed": "Could not start Crew VIP gift checkout.",
-  "propertyDevelopedSuccessLevel": "Development complete — level {level}.",
+  "premiumUiGiftCrewVip": "Crew VIP de regalo",
+  "premiumUiGiftCrewVipHint": "Compra 30 días de Crew VIP para cualquier Crew por nombre. Regalo único: no hay renovación automática para ese equipo.",
+  "premiumUiGiftCrewVipName": "Nombre de la Crew",
+  "premiumUiGiftCrewVipFailed": "No se pudo iniciar el pago de regalos Crew VIP.",
+  "propertyDevelopedSuccessLevel": "Desarrollo completo - nivel {level}.",
   "@propertyDevelopedSuccessLevel": {
     "placeholders": {
       "level": {
@@ -8793,8 +8793,8 @@
       }
     }
   },
-  "propertyDevelopConfirmTitle": "Develop property?",
-  "propertyDevelopConfirmBody": "Spend €{cost} from your bank to raise development to level {level}. Each level adds +{bonusPercent}% passive income.",
+  "propertyDevelopConfirmTitle": "¿Desarrollar propiedad?",
+  "propertyDevelopConfirmBody": "Gasta {cost}€ de tu banco para elevar el desarrollo al nivel {level}. Cada nivel agrega +{bonusPercent}% de ingresos pasivos.",
   "@propertyDevelopConfirmBody": {
     "placeholders": {
       "cost": {
@@ -8808,8 +8808,8 @@
       }
     }
   },
-  "propertyDevelopLevel": "Development",
-  "propertyDevelopIncomeBonusLabel": "Dev income bonus",
+  "propertyDevelopLevel": "Desarrollo",
+  "propertyDevelopIncomeBonusLabel": "Bonificación de ingresos para desarrolladores",
   "propertyDevelopIncomeBonus": "+{percent}%",
   "@propertyDevelopIncomeBonus": {
     "placeholders": {
@@ -8818,8 +8818,8 @@
       }
     }
   },
-  "propertyDevelopIncomeLabel": "Passive income",
-  "propertyDevelopActionCost": "Develop · €{cost} → L{level}",
+  "propertyDevelopIncomeLabel": "Ingresos pasivos",
+  "propertyDevelopActionCost": "Desarrollar · €{cost} → L{level}",
   "@propertyDevelopActionCost": {
     "placeholders": {
       "cost": {
@@ -8830,7 +8830,7 @@
       }
     }
   },
-  "propertyDevelopCooldown": "Develop available in {duration}",
+  "propertyDevelopCooldown": "Desarrollar disponible en {duration}",
   "@propertyDevelopCooldown": {
     "placeholders": {
       "duration": {
@@ -8838,7 +8838,7 @@
       }
     }
   },
-  "propertyDevelopErrorCooldown": "Development cooldown: {duration}",
+  "propertyDevelopErrorCooldown": "Enfriamiento de desarrollo: {duration}",
   "@propertyDevelopErrorCooldown": {
     "placeholders": {
       "duration": {
@@ -8846,12 +8846,12 @@
       }
     }
   },
-  "propertyDevelopErrorCooldownGeneric": "Development is on cooldown.",
-  "propertyDevelopErrorMaxLevel": "This property is already at max development.",
-  "propertyDevelopErrorDisabled": "Property development is disabled.",
-  "propertyDevelopInsufficientBalance": "Not enough bank balance.",
-  "propertyDevelopErrorUnknown": "Could not develop this property.",
-  "premiumUiGiftVipPrice": "One-time price: {price} (30 days, no auto-renew).",
+  "propertyDevelopErrorCooldownGeneric": "El desarrollo está en tiempo de reutilización.",
+  "propertyDevelopErrorMaxLevel": "Esta propiedad ya se encuentra en máximo desarrollo.",
+  "propertyDevelopErrorDisabled": "La promoción inmobiliaria está inhabilitada.",
+  "propertyDevelopInsufficientBalance": "Saldo bancario insuficiente.",
+  "propertyDevelopErrorUnknown": "No se pudo desarrollar esta propiedad.",
+  "premiumUiGiftVipPrice": "Precio único: {price} (30 días, sin renovación automática).",
   "@premiumUiGiftVipPrice": {
     "placeholders": {
       "price": {
@@ -8859,7 +8859,7 @@
       }
     }
   },
-  "premiumUiPrestigeNext": "{days} days to {tier}",
+  "premiumUiPrestigeNext": "{days} días a {tier}",
   "@premiumUiPrestigeNext": {
     "placeholders": {
       "days": {
@@ -8870,7 +8870,7 @@
       }
     }
   },
-  "premiumUiPrestigeMax": "Max prestige reached",
+  "premiumUiPrestigeMax": "Prestigio máximo alcanzado",
   "prostitutionTabWorkers": "Trabajadores",
   "prostitutionTabRld": "RLD",
   "prostitutionTabEvents": "Eventos",
@@ -9010,7 +9010,7 @@
   "mobileNavSteal": "Robar",
   "mobileNavWork": "Trabajar",
   "mobileNavBank": "Banco",
-  "mobileNavCrew": "Crew",
+  "mobileNavCrew": "Multitud",
   "mobileNavReady": "Listo",
   "menuSearchHint": "Buscar en el menú",
   "menuSearchNoResults": "No hay páginas coincidentes",
@@ -9152,5 +9152,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "jobOutcomeSuccess": "¡Trabajo completado!"
 }

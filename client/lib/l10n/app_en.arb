@@ -4780,6 +4780,7 @@
     }
   },
   "crimeOutcomeSuccess": "Crime successful!",
+  "jobOutcomeSuccess": "Job completed!",
   "crimeOutcomeCaught": "Caught by police",
   "crimeOutcomeVehicleBreakdownBefore": "Your vehicle broke down before reaching the crime scene",
   "crimeOutcomeVehicleBreakdownDuring": "Vehicle broke down during escape - abandoned most loot",

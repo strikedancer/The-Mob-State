@@ -20,6 +20,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.
+- After a successful job, show the same style of earnings result overlay as crimes before the cooldown screen (money + XP, then Continue).
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.

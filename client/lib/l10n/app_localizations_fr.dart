@@ -8135,6 +8135,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crimeOutcomeSuccess => 'Crime réussi !';
 
   @override
+  String get jobOutcomeSuccess => 'Travail terminé !';
+
+  @override
   String get crimeOutcomeCaught => 'Arrêté par la police';
 
   @override

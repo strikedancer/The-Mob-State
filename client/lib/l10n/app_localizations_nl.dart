@@ -8049,6 +8049,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeOutcomeSuccess => 'Misdaad geslaagd!';
 
   @override
+  String get jobOutcomeSuccess => 'Werk voltooid!';
+
+  @override
   String get crimeOutcomeCaught => 'Gepakt door de politie';
 
   @override

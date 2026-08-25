@@ -64,20 +64,21 @@ class AppLocalizationsDe extends AppLocalizations {
   String get registrationSuccessful => 'Registrierung erfolgreich!';
 
   @override
-  String get registerGenderTitle => 'Your character';
+  String get registerGenderTitle => 'Dein Charakter';
 
   @override
   String get registerGenderSubtitle =>
-      'Tap a portrait — this sets your starter look and is saved to your account.';
+      'Tippen Sie auf ein Porträt – dadurch wird Ihr Start-Look festgelegt und in Ihrem Konto gespeichert.';
 
   @override
-  String get registerGenderMale => 'Male gangster';
+  String get registerGenderMale => 'Männlicher Gangster';
 
   @override
-  String get registerGenderFemale => 'Female gangster';
+  String get registerGenderFemale => 'Weiblicher Gangster';
 
   @override
-  String get genderRequired => 'Choose male or female to continue.';
+  String get genderRequired =>
+      'Wählen Sie männlich oder weiblich, um fortzufahren.';
 
   @override
   String get loginFailed => 'Fehler bei der Anmeldung';
@@ -156,7 +157,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardInfoNightclubRevenue => 'Einnahmen aus Nachtclubs';
 
   @override
-  String get dashboard => 'Dashboard';
+  String get dashboard => 'Armaturenbrett';
 
   @override
   String get crimes => 'Verbrechen';
@@ -1807,7 +1808,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get rankThief => 'Dieb';
 
   @override
-  String get rankAssociate => 'Associate';
+  String get rankAssociate => 'Assoziieren';
 
   @override
   String get rankCadet => 'Kadett';
@@ -2148,10 +2149,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Prostituierte rekrutieren';
 
   @override
-  String get dashboardWarTheater => 'War theater';
+  String get dashboardWarTheater => 'Kriegstheater';
 
   @override
-  String get dashboardHotRegions => 'Hot regions';
+  String get dashboardHotRegions => 'Heiße Regionen';
 
   @override
   String get dashboardCrewWars => 'Crew-Kriege';
@@ -2581,7 +2582,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get avatarChangeFailed => 'Avatar konnte nicht geändert werden';
 
   @override
-  String get settingsMyPortraits => 'My portraits';
+  String get settingsMyPortraits => 'Meine Porträts';
 
   @override
   String get settingsPortraitFromSelfieTitle => 'Porträt vom Selfie';
@@ -2636,7 +2637,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsPortraitGenerating =>
-      'Creating your portrait… This may take a few minutes. Please wait.';
+      'Erstellen Ihres Porträts… Dies kann einige Minuten dauern. Bitte warten.';
 
   @override
   String get settingsPortraitDeleteHint =>
@@ -2644,7 +2645,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsPortraitDownloadFailed =>
-      'Could not download the portrait. Check your connection and try again.';
+      'Das Porträt konnte nicht heruntergeladen werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.';
 
   @override
   String get settingsPortraitDownloadTooltip =>
@@ -2655,23 +2656,23 @@ class AppLocalizationsDe extends AppLocalizations {
       'Entfernen Sie dieses Porträt aus Ihrer Bibliothek';
 
   @override
-  String get settingsPortraitStyleSection => 'Portrait look';
+  String get settingsPortraitStyleSection => 'Porträt-Look';
 
   @override
   String get settingsPortraitStyleHint =>
-      'Generation uses your account gender from registration. All styles stay appropriate for the game.';
+      'Bei der Generierung wird das Geschlecht Ihres Kontos aus der Registrierung verwendet. Alle Stile bleiben dem Spiel angemessen.';
 
   @override
-  String get settingsPortraitStyleClassicNoir => 'Classic noir';
+  String get settingsPortraitStyleClassicNoir => 'Klassischer Noir';
 
   @override
-  String get settingsPortraitStyleStreetCasual => 'Street casual';
+  String get settingsPortraitStyleStreetCasual => 'Straßenlässig';
 
   @override
-  String get settingsPortraitStyleSharpSuit => 'Sharp suit';
+  String get settingsPortraitStyleSharpSuit => 'Scharfer Anzug';
 
   @override
-  String get settingsPortraitStyleVelvetCharm => 'Evening glamour';
+  String get settingsPortraitStyleVelvetCharm => 'Abendlicher Glamour';
 
   @override
   String error(String error) {
@@ -6723,64 +6724,64 @@ class AppLocalizationsDe extends AppLocalizations {
       'Keine passenden Fahrzeuge oder Items. Du kannst getragene Werkzeuge über „Item verkaufen“ listen.';
 
   @override
-  String get bmHubSellKindTool => 'Tool';
+  String get bmHubSellKindTool => 'Werkzeug';
 
   @override
-  String get bmHubSellKindDrug => 'Drugs';
+  String get bmHubSellKindDrug => 'Drogen';
 
   @override
-  String get bmHubSellKindCrypto => 'Crypto';
+  String get bmHubSellKindCrypto => 'Krypto';
 
   @override
-  String get bmHubSellKindTrade => 'Trade goods';
+  String get bmHubSellKindTrade => 'Handelswaren';
 
   @override
-  String get bmHubQuantityEvent => 'Quantity';
+  String get bmHubQuantityEvent => 'Menge';
 
   @override
-  String get bmHubListEventItemTitle => 'Sell event item';
+  String get bmHubListEventItemTitle => 'Eventartikel verkaufen';
 
   @override
-  String get bmHubNoEventItemsToSell => 'No event items to sell';
+  String get bmHubNoEventItemsToSell => 'Keine Eventartikel zum Verkauf';
 
   @override
-  String get bmHubSellKindEvent => 'Event items';
+  String get bmHubSellKindEvent => 'Eventartikel';
 
   @override
-  String get bmHubNoDrugsToSell => 'No drugs to sell';
+  String get bmHubNoDrugsToSell => 'Keine Medikamente zum Verkaufen';
 
   @override
-  String get bmHubNoCryptoToSell => 'No crypto to sell';
+  String get bmHubNoCryptoToSell => 'Keine Kryptowährung zum Verkauf';
 
   @override
-  String get bmHubNoTradeGoodsToSell => 'No trade goods to sell';
+  String get bmHubNoTradeGoodsToSell => 'Keine Handelsware zum Verkauf';
 
   @override
-  String get bmHubListDrugTitle => 'List drugs';
+  String get bmHubListDrugTitle => 'Listen Sie Medikamente auf';
 
   @override
-  String get bmHubListDrugSelectLabel => 'Drug stack';
+  String get bmHubListDrugSelectLabel => 'Medikamentenstapel';
 
   @override
-  String get bmHubListCryptoTitle => 'List crypto';
+  String get bmHubListCryptoTitle => 'Krypto auflisten';
 
   @override
-  String get bmHubListCryptoSelectLabel => 'Asset';
+  String get bmHubListCryptoSelectLabel => 'Vermögenswert';
 
   @override
-  String get bmHubListTradeTitle => 'List trade goods';
+  String get bmHubListTradeTitle => 'Handelswaren auflisten';
 
   @override
-  String get bmHubListTradeSelectLabel => 'Good';
+  String get bmHubListTradeSelectLabel => 'Gut';
 
   @override
-  String get bmHubQuantityGrams => 'Quantity (g)';
+  String get bmHubQuantityGrams => 'Menge (g)';
 
   @override
-  String get bmHubQuantityCrypto => 'Quantity';
+  String get bmHubQuantityCrypto => 'Menge';
 
   @override
-  String get bmHubQuantityUnits => 'Quantity';
+  String get bmHubQuantityUnits => 'Menge';
 
   @override
   String get bmHubSellCarriedItem => 'Item verkaufen';
@@ -8126,6 +8127,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crimeOutcomeSuccess => 'Krimi erfolgreich!';
 
   @override
+  String get jobOutcomeSuccess => 'Arbeit erledigt!';
+
+  @override
   String get crimeOutcomeCaught => 'Von der Polizei erwischt';
 
   @override
@@ -9141,7 +9145,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get educationTrackNameEngineering => 'Maschinenbau';
 
   @override
-  String get educationTrackNameIt => 'IT';
+  String get educationTrackNameIt => 'ES';
 
   @override
   String get educationTrackNameNarcotics => 'Betäubungsmitteltechnik';
@@ -11082,7 +11086,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get supportStatusArchived => 'Archiviert';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Insekt';
 
   @override
   String get supportCategoryQuestion => 'Frage';
@@ -11903,7 +11907,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String crimeTrainingBonusStrip(String strengthPct, String accuracyPct) {
-    return 'Training bonuses on success chance: +$strengthPct% strength, +$accuracyPct% accuracy.';
+    return 'Trainingsboni auf Erfolgschance: +$strengthPct % Stärke, +$accuracyPct % Genauigkeit.';
   }
 
   @override
@@ -14731,96 +14735,96 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get registerTermsRequired =>
-      'You must accept the Terms of Service to register.';
+      'Um sich zu registrieren, müssen Sie die Nutzungsbedingungen akzeptieren.';
 
   @override
-  String get registerTermsPrefix => 'I agree to the ';
+  String get registerTermsPrefix => 'Ich stimme dem zu';
 
   @override
-  String get registerTermsLink => 'Terms of Service';
+  String get registerTermsLink => 'Nutzungsbedingungen';
 
   @override
   String get registerTermsSuffix => '.';
 
   @override
-  String get legalTermsTitle => 'Terms of Service';
+  String get legalTermsTitle => 'Nutzungsbedingungen';
 
   @override
-  String get legalTermsLastUpdated => 'Last updated: May 2026';
+  String get legalTermsLastUpdated => 'Letzte Aktualisierung: Mai 2026';
 
   @override
   String get legalTermsIntro =>
-      'These Terms of Service (\"Terms\") govern your access to and use of The Mob State website, web game and related services (\"Service\"). By creating an account or using the Service you agree to these Terms together with our Privacy Policy and, where applicable, our digital goods purchase policy.';
+      'Diese Nutzungsbedingungen („Bedingungen“) regeln Ihren Zugriff auf und Ihre Nutzung der The Mob State-Website, des Webspiels und der damit verbundenen Dienste („Dienst“). Durch die Erstellung eines Kontos oder die Nutzung des Dienstes stimmen Sie diesen Bedingungen zusammen mit unserer Datenschutzrichtlinie und gegebenenfalls unserer Richtlinie zum Kauf digitaler Waren zu.';
 
   @override
-  String get legalTermsSection01Title => 'Eligibility and account';
+  String get legalTermsSection01Title => 'Berechtigung und Konto';
 
   @override
   String get legalTermsSection01Body =>
-      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You are responsible for activity under your account unless you notify us promptly via support if you suspect unauthorised access.';
+      'Sie müssen das bei der Registrierung für Ihre Region angegebene Mindestalter erreichen. Sie sind dafür verantwortlich, korrekte Registrierungsinformationen anzugeben und Ihre Anmeldeinformationen vertraulich zu behandeln. Sie sind für die Aktivitäten unter Ihrem Konto verantwortlich, es sei denn, Sie benachrichtigen uns umgehend über den Support, wenn Sie einen unbefugten Zugriff vermuten.';
 
   @override
-  String get legalTermsSection02Title => 'Licence to use the Service';
+  String get legalTermsSection02Title => 'Lizenz zur Nutzung des Dienstes';
 
   @override
   String get legalTermsSection02Body =>
-      'We grant you a personal, non-exclusive, non-transferable, revocable licence to access and use the Service for entertainment in line with these Terms. All rights not expressly granted are reserved.';
+      'Wir gewähren Ihnen eine persönliche, nicht ausschließliche, nicht übertragbare und widerrufliche Lizenz für den Zugriff auf den Dienst und dessen Nutzung zu Unterhaltungszwecken im Einklang mit diesen Bedingungen. Alle nicht ausdrücklich gewährten Rechte bleiben vorbehalten.';
 
   @override
-  String get legalTermsSection03Title => 'Acceptable use';
+  String get legalTermsSection03Title => 'Akzeptable Verwendung';
 
   @override
   String get legalTermsSection03Body =>
-      'You agree not to cheat, exploit bugs for unfair advantage, harass others, distribute malware, scrape or overload our systems without permission, impersonate staff, or use the Service for unlawful purposes. We may investigate reports and apply sanctions including warnings, suspensions or termination.';
+      'Sie erklären sich damit einverstanden, nicht zu betrügen, Fehler zu unfairen Vorteilen auszunutzen, andere zu belästigen, Malware zu verbreiten, unsere Systeme ohne Erlaubnis zu manipulieren oder zu überlasten, sich als Mitarbeiter auszugeben oder den Dienst für rechtswidrige Zwecke zu nutzen. Wir können Meldungen untersuchen und Sanktionen verhängen, einschließlich Verwarnungen, Suspendierungen oder Kündigungen.';
 
   @override
-  String get legalTermsSection04Title => 'Virtual items and payments';
+  String get legalTermsSection04Title => 'Virtuelle Artikel und Zahlungen';
 
   @override
   String get legalTermsSection04Body =>
-      'Optional purchases may be available for virtual goods or features. Such purchases are subject to our Purchase of Digital Goods policy and checkout terms. Virtual items have no real-world cash value outside the Service except where mandatory law says otherwise.';
+      'Für virtuelle Güter oder Funktionen sind möglicherweise optionale Käufe möglich. Für solche Käufe gelten unsere Richtlinien zum Kauf digitaler Waren und unsere Checkout-Bedingungen. Virtuelle Gegenstände haben außerhalb des Dienstes keinen realen Geldwert, sofern nicht zwingende Gesetze etwas anderes vorschreiben.';
 
   @override
-  String get legalTermsSection05Title => 'User content';
+  String get legalTermsSection05Title => 'Benutzerinhalte';
 
   @override
   String get legalTermsSection05Body =>
-      'Where the Service allows you to submit text, images or other material, you retain ownership you already hold but grant us a licence to host, display and moderate that content as needed to operate the Service. You must have rights to anything you submit and must not upload unlawful or infringing material.';
+      'Wenn der Dienst Ihnen die Übermittlung von Texten, Bildern oder anderen Materialien ermöglicht, behalten Sie das Eigentumsrecht, das Sie bereits besitzen, gewähren uns jedoch eine Lizenz zum Hosten, Anzeigen und Moderieren dieser Inhalte, soweit dies für den Betrieb des Dienstes erforderlich ist. Sie müssen Rechte an allem haben, was Sie einreichen, und dürfen kein rechtswidriges oder rechtsverletzendes Material hochladen.';
 
   @override
-  String get legalTermsSection06Title => 'Availability and changes';
+  String get legalTermsSection06Title => 'Verfügbarkeit und Änderungen';
 
   @override
   String get legalTermsSection06Body =>
-      'We strive to keep the Service available but do not guarantee uninterrupted access. We may modify, suspend or discontinue features for maintenance, balance, legal or security reasons. We may update these Terms; continued use after notice where permitted by law constitutes acceptance of material changes.';
+      'Wir bemühen uns, den Dienst verfügbar zu halten, garantieren jedoch keinen ununterbrochenen Zugriff. Wir können Funktionen aus Wartungs-, Balance-, rechtlichen oder Sicherheitsgründen ändern, aussetzen oder einstellen. Wir können diese Bedingungen aktualisieren; Die fortgesetzte Nutzung nach Benachrichtigung, soweit gesetzlich zulässig, stellt die Annahme wesentlicher Änderungen dar.';
 
   @override
-  String get legalTermsSection07Title => 'Disclaimer and liability';
+  String get legalTermsSection07Title => 'Haftungsausschluss und Haftung';
 
   @override
   String get legalTermsSection07Body =>
-      'The Service is provided \"as is\" to the fullest extent permitted by law. We exclude liability for indirect or consequential loss where allowed. Nothing in these Terms limits liability that cannot be limited under applicable mandatory consumer law.';
+      'Der Dienst wird „wie besehen“ im größtmöglichen gesetzlich zulässigen Umfang bereitgestellt. Sofern zulässig, schließen wir die Haftung für indirekte Schäden oder Folgeschäden aus. Nichts in diesen Bedingungen schränkt die Haftung ein, die nach geltendem zwingendem Verbraucherrecht nicht eingeschränkt werden kann.';
 
   @override
-  String get legalTermsSection08Title => 'Termination';
+  String get legalTermsSection08Title => 'Beendigung';
 
   @override
   String get legalTermsSection08Body =>
-      'You may stop using the Service at any time. We may suspend or terminate access if you breach these Terms, if required by law, or to protect the Service or other users. Provisions that by nature should survive will survive termination.';
+      'Sie können die Nutzung des Dienstes jederzeit beenden. Wir können den Zugriff sperren oder beenden, wenn Sie gegen diese Bedingungen verstoßen, sofern dies gesetzlich vorgeschrieben ist oder um den Dienst oder andere Benutzer zu schützen. Bestimmungen, die von Natur aus fortbestehen sollten, überdauern auch die Beendigung.';
 
   @override
-  String get legalTermsSection09Title => 'Governing law';
+  String get legalTermsSection09Title => 'Geltendes Recht';
 
   @override
   String get legalTermsSection09Body =>
-      'Unless mandatory local law provides otherwise, these Terms are governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.';
+      'Sofern nicht zwingendes lokales Recht etwas anderes vorsieht, unterliegen diese Bedingungen den Gesetzen von England und Wales und Streitigkeiten unterliegen der ausschließlichen Zuständigkeit der Gerichte von England und Wales.';
 
   @override
-  String get legalTermsSection10Title => 'Contact';
+  String get legalTermsSection10Title => 'Kontakt';
 
   @override
   String get legalTermsSection10Body =>
-      'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+      'Bei Fragen zu diesen Bedingungen kontaktieren Sie uns nach der Registrierung über das Support-Ticketsystem im Spiel oder über die offiziellen Website-Kontaktkanäle, sofern veröffentlicht.';
 
   @override
   String get helpTopicTrainingHubCategory => 'Ausbildung';
@@ -14972,11 +14976,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get territoryEventBlackoutRumor => 'Blackout-Gerücht';
 
   @override
-  String get launderSectionTitle => 'Money laundering';
+  String get launderSectionTitle => 'Geldwäsche';
 
   @override
   String launderSectionHint(int feePercent, int durationMinutes) {
-    return 'Wash cash into your bank with a $feePercent% fee. Takes about $durationMinutes minutes. Higher FBI heat means higher seize risk.';
+    return 'Überweisen Sie Bargeld mit einer Gebühr von $feePercent % auf Ihre Bank. Dauert etwa $durationMinutes Minuten. Höhere FBI-Hitze bedeutet höheres Risiko einer Beschlagnahme.';
   }
 
   @override
@@ -14985,36 +14989,36 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String launderSeizeChance(String chance) {
-    return 'Estimated seize chance: $chance%';
+    return 'Geschätzte Beschlagnahmungswahrscheinlichkeit: $chance %';
   }
 
   @override
   String launderActiveJob(String amount) {
-    return 'Wash in progress. Bank payout if successful: €$amount';
+    return 'Waschen läuft. Bankauszahlung bei Erfolg: $amount';
   }
 
   @override
   String launderJobCountdown(String time) {
-    return 'Completes in $time';
+    return 'Abgeschlossen in $time';
   }
 
   @override
   String launderCooldownCountdown(String time) {
-    return 'Available again in $time';
+    return 'Wieder verfügbar in $time';
   }
 
   @override
   String launderPreviewFee(int feePercent, String fee) {
-    return 'Fee ($feePercent%): €$fee';
+    return 'Gebühr ($feePercent%): $fee €';
   }
 
   @override
   String launderPreviewPayout(String payout) {
-    return 'Bank payout if successful: €$payout';
+    return 'Bankauszahlung bei Erfolg: $payout';
   }
 
   @override
-  String get launderAmountLabel => 'Amount to wash';
+  String get launderAmountLabel => 'Zu waschende Menge';
 
   @override
   String launderAmountRange(String min, String max) {
@@ -15022,16 +15026,16 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get launderStartButton => 'Start wash';
+  String get launderStartButton => 'Beginnen Sie mit dem Waschen';
 
   @override
-  String get launderStartedSuccess => 'Laundering started.';
+  String get launderStartedSuccess => 'Die Geldwäsche begann.';
 
   @override
-  String get launderErrorCooldown => 'Laundering is on cooldown.';
+  String get launderErrorCooldown => '„Geldwäsche“ ist in der Abklingzeit.';
 
   @override
-  String get launderErrorActive => 'A wash job is already running.';
+  String get launderErrorActive => 'Ein Waschauftrag läuft bereits.';
 
   @override
   String launderErrorTooLow(String min) {
@@ -15044,106 +15048,110 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get launderErrorInsufficientCash => 'Not enough cash on hand.';
+  String get launderErrorInsufficientCash =>
+      'Nicht genügend Bargeld vorhanden.';
 
   @override
-  String get launderErrorDisabled => 'Money laundering is disabled.';
+  String get launderErrorDisabled => 'Geldwäsche ist deaktiviert.';
 
   @override
-  String get launderErrorUnknown => 'Could not start laundering.';
+  String get launderErrorUnknown =>
+      'Der Waschvorgang konnte nicht gestartet werden.';
 
   @override
-  String get stockMarketTitle => 'Stock market';
+  String get stockMarketTitle => 'Börse';
 
   @override
   String get stockMarketHint =>
-      'Trade with bank money. Prices move slowly — separate from crypto.';
+      'Handeln Sie mit Bankgeld. Die Preise bewegen sich langsam – unabhängig von Krypto.';
 
   @override
-  String get stockBankBalance => 'Bank balance';
+  String get stockBankBalance => 'Kontostand';
 
   @override
-  String get stockPortfolioValue => 'Portfolio value';
+  String get stockPortfolioValue => 'Portfoliowert';
 
   @override
-  String get stockQuantity => 'Quantity';
+  String get stockQuantity => 'Menge';
 
   @override
-  String get stockPrice => 'Price';
+  String get stockPrice => 'Preis';
 
   @override
-  String get stockHolding => 'Holding';
+  String get stockHolding => 'Halten';
 
   @override
-  String get stockValue => 'Value';
+  String get stockValue => 'Wert';
 
   @override
-  String get stockBuy => 'Buy';
+  String get stockBuy => 'Kaufen';
 
   @override
-  String get stockSell => 'Sell';
+  String get stockSell => 'Verkaufen';
 
   @override
-  String get stockTradeSuccess => 'Trade completed.';
+  String get stockTradeSuccess => 'Handel abgeschlossen.';
 
   @override
-  String get stockErrorInsufficientBalance => 'Not enough bank balance.';
+  String get stockErrorInsufficientBalance => 'Nicht genügend Bankguthaben.';
 
   @override
-  String get stockErrorInsufficientShares => 'Not enough shares.';
+  String get stockErrorInsufficientShares => 'Nicht genügend Aktien.';
 
   @override
-  String get stockErrorPositionLimit => 'Position limit reached.';
+  String get stockErrorPositionLimit => 'Positionslimit erreicht.';
 
   @override
-  String get stockErrorDisabled => 'Stock market is disabled.';
+  String get stockErrorDisabled => 'Der Aktienmarkt ist deaktiviert.';
 
   @override
-  String get stockErrorUnknown => 'Trade failed.';
+  String get stockErrorUnknown => 'Der Handel ist gescheitert.';
 
   @override
-  String get stockMarketLoadError => 'Could not load the stock market.';
+  String get stockMarketLoadError =>
+      'Der Aktienmarkt konnte nicht geladen werden.';
 
   @override
-  String get stockMarketEmpty => 'No tickers available right now.';
+  String get stockMarketEmpty => 'Im Moment sind keine Ticker verfügbar.';
 
   @override
-  String get stockMarketRetry => 'Retry';
+  String get stockMarketRetry => 'Wiederholen';
 
   @override
   String stockPositionsOpen(int count) {
-    return 'Open positions: $count';
+    return 'Offene Stellen: $count';
   }
 
   @override
   String stockCashAvailable(String amount) {
-    return 'Available to invest: €$amount';
+    return 'Verfügbar zum Investieren: $amount';
   }
 
   @override
-  String get propertyDevelopAction => 'Develop';
+  String get propertyDevelopAction => 'Entwickeln';
 
   @override
-  String get propertyDevelopedSuccess => 'Property development complete.';
+  String get propertyDevelopedSuccess =>
+      'Grundstückserschließung abgeschlossen.';
 
   @override
   String propertyDevelopedSuccessLevel(int level) {
-    return 'Development complete — level $level.';
+    return 'Entwicklung abgeschlossen – Level $level.';
   }
 
   @override
-  String get propertyDevelopConfirmTitle => 'Develop property?';
+  String get propertyDevelopConfirmTitle => 'Immobilie entwickeln?';
 
   @override
   String propertyDevelopConfirmBody(String cost, int level, int bonusPercent) {
-    return 'Spend €$cost from your bank to raise development to level $level. Each level adds +$bonusPercent% passive income.';
+    return 'Geben Sie $cost € von Ihrer Bank aus, um die Entwicklung auf Stufe $level zu erhöhen. Jede Stufe fügt +$bonusPercent % passives Einkommen hinzu.';
   }
 
   @override
-  String get propertyDevelopLevel => 'Development';
+  String get propertyDevelopLevel => 'Entwicklung';
 
   @override
-  String get propertyDevelopIncomeBonusLabel => 'Dev income bonus';
+  String get propertyDevelopIncomeBonusLabel => 'Entwickler-Einkommensbonus';
 
   @override
   String propertyDevelopIncomeBonus(int percent) {
@@ -15151,141 +15159,146 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get propertyDevelopIncomeLabel => 'Passive income';
+  String get propertyDevelopIncomeLabel => 'Passives Einkommen';
 
   @override
   String propertyDevelopActionCost(String cost, int level) {
-    return 'Develop · €$cost → L$level';
+    return 'Entwickeln · €$cost → L$level';
   }
 
   @override
   String propertyDevelopCooldown(String duration) {
-    return 'Develop available in $duration';
+    return 'Entwicklung verfügbar in $duration';
   }
 
   @override
   String propertyDevelopErrorCooldown(String duration) {
-    return 'Development cooldown: $duration';
+    return 'Abklingzeit der Entwicklung: $duration';
   }
 
   @override
   String get propertyDevelopErrorCooldownGeneric =>
-      'Development is on cooldown.';
+      'Die Entwicklung befindet sich im Cooldown.';
 
   @override
   String get propertyDevelopErrorMaxLevel =>
-      'This property is already at max development.';
+      'Diese Immobilie befindet sich bereits in der maximalen Entwicklungsphase.';
 
   @override
   String get propertyDevelopErrorDisabled =>
-      'Property development is disabled.';
+      'Die Grundstückserschließung ist deaktiviert.';
 
   @override
-  String get propertyDevelopInsufficientBalance => 'Not enough bank balance.';
+  String get propertyDevelopInsufficientBalance =>
+      'Nicht genügend Bankguthaben.';
 
   @override
-  String get propertyDevelopErrorUnknown => 'Could not develop this property.';
+  String get propertyDevelopErrorUnknown =>
+      'Diese Immobilie konnte nicht bebaut werden.';
 
   @override
-  String get helpTopicStockMarketCategory => 'Economy';
+  String get helpTopicStockMarketCategory => 'Wirtschaft';
 
   @override
-  String get helpTopicStockMarketTitle => 'Stock market';
+  String get helpTopicStockMarketTitle => 'Börse';
 
   @override
   String get helpTopicStockMarketSummary =>
-      'Trade slow-moving stocks with bank money. Separate system from crypto.';
+      'Handeln Sie langsam laufende Aktien mit Bankgeld. Getrenntes System von Krypto.';
 
   @override
   String get helpTopicStockMarketHow =>
-      'Open Stock market from the dashboard. You see tickers, current price, your holdings and bank balance.\nBuy and sell execute immediately at the server price and debit/credit your bank — not cash.\nPrices tick slowly (about every minute) with light random drift and mean reversion; there is no external live feed.\nThere is a maximum number of open positions. Crypto orders, regimes and leaderboards are not part of this module.';
+      'Öffnen Sie die Börse über das Dashboard. Sie sehen Ticker, den aktuellen Preis, Ihre Bestände und Ihren Kontostand. \nKaufen und verkaufen Sie sofort zum Serverpreis und belasten/kreditieren Sie Ihre Bank – nicht Bargeld. \nDie Preise bewegen sich langsam (ungefähr jede Minute) mit leichter zufälliger Drift und Mean-Reversion; Es gibt keinen externen Live-Feed. \nEs gibt eine maximale Anzahl offener Stellen. Krypto-Orders, -Regime und -Bestenlisten sind nicht Teil dieses Moduls.';
 
   @override
   String get helpTopicStockMarketTips =>
-      'Keep bank reserve for crimes/travel — stocks are not emergency cash.\nDo not diversify blindly across every ticker: the position limit is tight.';
+      'Halten Sie Reserven für Verbrechen/Reisen bereit – Aktien sind kein Notgeld. \nDiversifizieren Sie nicht blind über jeden Ticker hinweg: Das Positionslimit ist eng.';
 
   @override
-  String get premiumUiAutoRenewActive => 'Auto-renews monthly';
+  String get premiumUiAutoRenewActive => 'Automatische monatliche Verlängerung';
 
   @override
-  String get premiumUiAutoRenewOff => 'No auto-renewal';
+  String get premiumUiAutoRenewOff => 'Keine automatische Verlängerung';
 
   @override
-  String get premiumUiCancelRenewal => 'Cancel renewal';
+  String get premiumUiCancelRenewal => 'Verlängerung abbrechen';
 
   @override
   String premiumUiCancelRenewalConfirm(String date) {
-    return 'Stop future VIP charges? Your current VIP stays active until $date.';
+    return 'Zukünftige VIP-Gebühren stoppen? Ihr aktueller VIP bleibt bis $date aktiv.';
   }
 
   @override
-  String get premiumUiCancelRenewalSuccess => 'Auto-renewal cancelled.';
+  String get premiumUiCancelRenewalSuccess =>
+      'Automatische Verlängerung abgebrochen.';
 
   @override
-  String get premiumUiCancelRenewalFailed => 'Could not cancel auto-renewal.';
+  String get premiumUiCancelRenewalFailed =>
+      'Die automatische Verlängerung konnte nicht abgebrochen werden.';
 
   @override
-  String get premiumUiGiftVip => 'Gift VIP';
+  String get premiumUiGiftVip => 'Geschenk VIP';
 
   @override
   String get premiumUiGiftVipHint =>
-      'Buy 30 days of Player VIP for another player.';
+      'Kaufen Sie 30 Tage Spieler-VIP für einen anderen Spieler.';
 
   @override
   String premiumUiGiftVipPrice(String price) {
-    return 'One-time price: $price (30 days, no auto-renew).';
+    return 'Einmaliger Preis: $price (30 Tage, keine automatische Verlängerung).';
   }
 
   @override
-  String get premiumUiGiftVipUsername => 'Recipient username';
+  String get premiumUiGiftVipUsername => 'Benutzername des Empfängers';
 
   @override
-  String get premiumUiGiftVipConfirm => 'Continue to checkout';
+  String get premiumUiGiftVipConfirm => 'Weiter zur Kasse';
 
   @override
-  String get premiumUiGiftVipFailed => 'Could not start VIP gift checkout.';
+  String get premiumUiGiftVipFailed =>
+      'Der Checkout für VIP-Geschenke konnte nicht gestartet werden.';
 
   @override
-  String get premiumUiPrestigeLabel => 'VIP prestige';
+  String get premiumUiPrestigeLabel => 'VIP-Prestige';
 
   @override
-  String get premiumUiPrestigeNone => 'None';
+  String get premiumUiPrestigeNone => 'Keiner';
 
   @override
   String get premiumUiPrestigeBronze => 'Bronze';
 
   @override
-  String get premiumUiPrestigeSilver => 'Silver';
+  String get premiumUiPrestigeSilver => 'Silber';
 
   @override
   String get premiumUiPrestigeGold => 'Gold';
 
   @override
   String premiumUiPrestigeDays(int days) {
-    return '$days lifetime days';
+    return '$days lebenslange Tage';
   }
 
   @override
   String premiumUiPrestigeNext(int days, String tier) {
-    return '$days days to $tier';
+    return '$days Tage bis $tier';
   }
 
   @override
-  String get premiumUiPrestigeMax => 'Max prestige reached';
+  String get premiumUiPrestigeMax => 'Maximales Prestige erreicht';
 
   @override
-  String get premiumUiGiftCrewVip => 'Gift Crew VIP';
+  String get premiumUiGiftCrewVip => 'Geschenk-Crew-VIP';
 
   @override
   String get premiumUiGiftCrewVipHint =>
-      'Buy 30 days of Crew VIP for any crew by name. One-time gift — no auto-renew for that crew.';
+      'Kaufen Sie 30 Tage Crew-VIP für eine beliebige Crew mit Namen. Einmaliges Geschenk – keine automatische Verlängerung für diese Crew.';
 
   @override
-  String get premiumUiGiftCrewVipName => 'Crew name';
+  String get premiumUiGiftCrewVipName => 'Name der Crew';
 
   @override
   String get premiumUiGiftCrewVipFailed =>
-      'Could not start Crew VIP gift checkout.';
+      'Der Checkout für Crew-VIP-Geschenke konnte nicht gestartet werden.';
 
   @override
   String get territoryOverlayContest => 'Wettbewerbsergebnisse';
