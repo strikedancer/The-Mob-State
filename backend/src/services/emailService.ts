@@ -8,15 +8,8 @@ const normalizeBaseUrl = (url: string) => url.replace(/\/+$/, '');
 const appBaseUrl = normalizeBaseUrl(config.appBaseUrl);
 const apiBaseUrl = normalizeBaseUrl(config.apiBaseUrl);
 
-// Mail transport: prefer Resend (ESP) when RESEND_API_KEY is set; else classic SMTP.
-// Never commit mailbox/API secrets — only .env.plesk / runtime env.
-const mailFromAddress = process.env.MAIL_FROM_ADDRESS || 'noreply@themobstate.com';
-const mailFromName = process.env.MAIL_FROM_NAME || 'The Mob State';
-const mailFromHeader = `"${mailFromName}" <${mailFromAddress}>`;
-const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
-const useResend = resendApiKey.length > 0;
-
-const smtpUser = process.env.SMTP_USER || mailFromAddress;
+// SMTP credentials come from env (never commit the mailbox password).
+const smtpUser = process.env.SMTP_USER || 'noreply@themobstate.com';
 const smtpPass = process.env.SMTP_PASS || '';
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'themobstate.com',
@@ -34,49 +27,6 @@ const transporter = nodemailer.createTransport({
   debug: false, // Disable debug output
   logger: false, // Disable logging
 });
-
-type OutboundMail = {
-  to: string;
-  subject: string;
-  html: string;
-  text?: string;
-};
-
-async function sendViaResend(mail: OutboundMail): Promise<void> {
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${resendApiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: mailFromHeader,
-      to: [mail.to],
-      subject: mail.subject,
-      html: mail.html,
-      ...(mail.text ? { text: mail.text } : {}),
-    }),
-  });
-
-  if (!response.ok) {
-    const body = await response.text().catch(() => '');
-    throw new Error(`Resend API ${response.status}: ${body.slice(0, 500)}`);
-  }
-}
-
-async function sendMail(mail: OutboundMail): Promise<void> {
-  if (useResend) {
-    await sendViaResend(mail);
-    return;
-  }
-  await transporter.sendMail({
-    from: mailFromHeader,
-    to: mail.to,
-    subject: mail.subject,
-    html: mail.html,
-    text: mail.text,
-  });
-}
 
 function buildCrewEmailHtml(params: {
   title: string;
@@ -151,18 +101,14 @@ function buildCrewEmailHtml(params: {
   `;
 }
 
-if (useResend) {
-  console.log('[EmailService] ✅ Outbound mail via Resend ESP');
-} else {
-  // Verify SMTP connection (but don't fail if it's not available)
-  transporter.verify((error) => {
-    if (error) {
-      console.warn('[EmailService] ⚠️  SMTP server not reachable (emails will fail):', error.message);
-    } else {
-      console.log('[EmailService] ✅ SMTP server ready to send emails');
-    }
-  });
-}
+// Verify SMTP connection (but don't fail if it's not available)
+transporter.verify((error) => {
+  if (error) {
+    console.warn('[EmailService] ⚠️  SMTP server not reachable (emails will fail):', error.message);
+  } else {
+    console.log('[EmailService] ✅ SMTP server ready to send emails');
+  }
+});
 
 export const emailService = {
   /**
@@ -255,7 +201,8 @@ export const emailService = {
 </html>
     `;
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: email,
       subject: v.subject,
       html: htmlContent,
@@ -347,7 +294,8 @@ export const emailService = {
 </html>
     `;
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: email,
       subject: p.subject,
       html: htmlContent,
@@ -425,7 +373,8 @@ export const emailService = {
 </html>
     `;
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.friendRequest.subject,
       html: htmlContent,
@@ -503,7 +452,8 @@ export const emailService = {
 </html>
     `;
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.friendAccepted.subject,
       html: htmlContent,
@@ -530,7 +480,8 @@ export const emailService = {
       automatedMessage: t.common.automatedMessage,
     });
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.crewJoinRequest.subject,
       html: htmlContent,
@@ -554,7 +505,8 @@ export const emailService = {
       automatedMessage: t.common.automatedMessage,
     });
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.crewJoinApproved.subject,
       html: htmlContent,
@@ -578,7 +530,8 @@ export const emailService = {
       automatedMessage: t.common.automatedMessage,
     });
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.crewJoinRejected.subject,
       html: htmlContent,
@@ -602,7 +555,8 @@ export const emailService = {
       automatedMessage: t.common.automatedMessage,
     });
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.crewKicked.subject,
       html: htmlContent,
@@ -627,7 +581,8 @@ export const emailService = {
       automatedMessage: t.common.automatedMessage,
     });
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.crewRoleChanged.subject,
       html: htmlContent,
@@ -653,7 +608,8 @@ export const emailService = {
       automatedMessage: t.common.automatedMessage,
     });
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.crewHeistResult.subject(success),
       html: htmlContent,
@@ -683,7 +639,8 @@ export const emailService = {
       automatedMessage: t.common.automatedMessage,
     });
 
-    await sendMail({
+    await transporter.sendMail({
+      from: '"The Mob State" <noreply@themobstate.com>',
       to: recipientEmail,
       subject: t.email.casinoLowBalance.subject,
       html: htmlContent,

@@ -259,17 +259,12 @@ TICK_INTERVAL_MINUTES=5
 POLICE_RATIO=10
 MAX_FLIGHTS_PER_DAY=100
 
-# Transactional mail (required on prod). Prefer Resend ESP for Gmail deliverability.
-# Put secrets only in .env.plesk, never in git.
-# When RESEND_API_KEY is set, outbound mail uses Resend; SMTP_* is unused for outbound.
+# Transactional mail (required on prod). Put SMTP_PASS only in .env.plesk, never in git.
 # Temporary login-without-verify: Admin → Config → Toegang (runtime key AUTH_REQUIRE_EMAIL_VERIFICATION). Default on.
 # Admin Config is split into topic tabs (Access, Housing & RLD, Combat, All keys). Add NPCs from the form on Admin → NPCs.
 # NPCs now run the live player services (crimes, jobs, travel, training, bank, tools). Recreate old NPCs so rank/XP match the current curve.
 # Admin "simulate N hours" = N calendar hours. Only a normal play-day is active
 # (MATIG 2.5h / GEMIDDELD 5h / CONTINU 8h); the rest is sleep for jail/cooldowns.
-RESEND_API_KEY=""
-MAIL_FROM_ADDRESS="noreply@themobstate.com"
-MAIL_FROM_NAME="The Mob State"
 SMTP_HOST="themobstate.com"
 SMTP_PORT="465"
 SMTP_USER="noreply@themobstate.com"
