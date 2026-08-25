@@ -76,6 +76,8 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     PROJECT_DESTROYED:              [409, 'territory.project_destroyed'],
     PROJECT_ALREADY_ACTIVE:         [409, 'territory.project_already_active'],
     PROJECT_CONTRIBUTE_COOLDOWN:    [429, 'territory.project_contribute_cooldown'],
+    PROJECT_INVALID_TYPE:           [400, 'territory.project_invalid_type'],
+    PROJECT_TAG_MISMATCH:           [403, 'territory.project_tag_mismatch'],
     SEASON_NOT_FOUND:               [404, 'territory.season_not_found'],
   };
 
@@ -232,19 +234,25 @@ const regionProjectSchema = z.object({
   regionKey: z.string().min(2).max(60),
 });
 
+const regionProjectStartSchema = z.object({
+  regionKey: z.string().min(2).max(60),
+  projectType: z.enum(['safehouse_network', 'surveillance_grid', 'arms_cache']),
+});
+
 /**
  * POST /territory/projects/start
- * Start a safehouse network project on an owned region (HQ-gated).
+ * Start a region project on an owned region (HQ + tag gated by project type).
  */
 router.post('/projects/start', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const crewId = await requireCrew(req, res);
     if (!crewId) return;
-    const body = regionProjectSchema.parse(req.body);
+    const body = regionProjectStartSchema.parse(req.body);
     const project = await territoryService.startRegionProject(
       req.player!.id,
       crewId,
       body.regionKey,
+      body.projectType,
       req.player?.currentCountry,
     );
     return res.json({ event: 'territory.project_started', params: { project } });

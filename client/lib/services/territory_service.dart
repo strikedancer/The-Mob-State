@@ -114,10 +114,14 @@ class TerritoryService {
     }
   }
 
-  Future<Map<String, dynamic>> startProject(String regionKey) async {
+  Future<Map<String, dynamic>> startProject(
+    String regionKey, {
+    required String projectType,
+  }) async {
     try {
       final response = await _api.post('/territory/projects/start', {
         'regionKey': regionKey,
+        'projectType': projectType,
       });
       final data = json.decode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {

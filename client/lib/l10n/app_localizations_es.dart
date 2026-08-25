@@ -14801,57 +14801,57 @@ class AppLocalizationsEs extends AppLocalizations {
     int active,
     int maxContests,
   ) {
-    return 'Regions $owned/$maxRegions · Contests $active/$maxContests';
+    return 'Regiones $owned/$maxRegions · Concursos $active/$maxContests';
   }
 
   @override
   String territoryCapsRegionsChip(int owned, int max) {
-    return 'Regions $owned/$max';
+    return 'Regiones $owned/$max';
   }
 
   @override
   String territoryCapsContestsChip(int active, int max) {
-    return 'Contests $active/$max';
+    return 'Concursos $active/$max';
   }
 
   @override
-  String get territoryDetailProject => 'Region project';
+  String get territoryDetailProject => 'Proyecto de región';
 
   @override
-  String get territoryProjectSafehouse => 'Safehouse network';
+  String get territoryProjectSafehouse => 'Red de casas seguras';
 
   @override
-  String get territoryProjectStatusBuilding => 'Building';
+  String get territoryProjectStatusBuilding => 'Edificio';
 
   @override
-  String get territoryProjectStatusActive => 'Active';
+  String get territoryProjectStatusActive => 'Activa';
 
   @override
-  String get territoryProjectStatusDamaged => 'Damaged';
+  String get territoryProjectStatusDamaged => 'Dañada';
 
   @override
-  String get territoryProjectStatusDestroyed => 'Destroyed';
+  String get territoryProjectStatusDestroyed => 'Destruido';
 
   @override
-  String get territoryProjectProgress => 'Progress';
+  String get territoryProjectProgress => 'Progreso';
 
   @override
-  String get territoryProjectHp => 'Integrity';
+  String get territoryProjectHp => 'Integridad';
 
   @override
   String territoryProjectIncomeBonusPct(int percent) {
-    return '+$percent% passive income';
+    return '+$percent% de ingresos pasivos';
   }
 
   @override
   String get territoryProjectStart => 'Start safehouse project';
 
   @override
-  String get territoryProjectContribute => 'Supply project';
+  String get territoryProjectContribute => 'Proyecto de suministro';
 
   @override
   String territoryProjectHqRequired(int level) {
-    return 'Requires HQ level $level';
+    return 'Requiere nivel HQ $level';
   }
 
   @override
@@ -14859,69 +14859,71 @@ class AppLocalizationsEs extends AppLocalizations {
       'A safehouse network boosts passive income. Sabotage damages it in contests; supply runs repair or advance it.';
 
   @override
-  String get territorySnackProjectStarted => 'Safehouse project started.';
+  String get territorySnackProjectStarted =>
+      'Se inició el proyecto de refugio.';
 
   @override
-  String get territorySnackProjectContributed => 'Project updated.';
+  String get territorySnackProjectContributed => 'Proyecto actualizado.';
 
   @override
   String get territoryErrorProjectHq =>
-      'Higher HQ level required to start this project.';
+      'Se requiere un nivel de sede más alto para iniciar este proyecto.';
 
   @override
   String get territoryErrorProjectNotOwner =>
-      'Only the controlling crew can manage this project.';
+      'Sólo el equipo de control puede gestionar este proyecto.';
 
   @override
-  String get territoryErrorProjectExists =>
-      'This region already has a project.';
+  String get territoryErrorProjectExists => 'Esta región ya tiene un proyecto.';
 
   @override
   String get territoryErrorProjectNotFound =>
-      'No project found for this region.';
+      'No se encontró ningún proyecto para esta región.';
 
   @override
   String get territoryErrorProjectDestroyed =>
-      'Project destroyed - start a new one.';
+      'Proyecto destruido: comience uno nuevo.';
 
   @override
-  String get territoryErrorProjectActive => 'Project is already active.';
+  String get territoryErrorProjectActive => 'El proyecto ya está activo.';
 
   @override
-  String get territoryErrorProjectCooldown => 'Project supply is on cooldown.';
+  String get territoryErrorProjectCooldown =>
+      'El suministro del proyecto está en enfriamiento.';
 
   @override
-  String get territoryDramaTitle => 'Territory drama';
+  String get territoryDramaTitle => 'Drama territorial';
 
   @override
-  String get territoryDramaHotContests => 'Hot contests';
+  String get territoryDramaHotContests => 'concursos calientes';
 
   @override
-  String get territoryDramaRecentCaptures => 'Recent captures';
+  String get territoryDramaRecentCaptures => 'Capturas recientes';
 
   @override
-  String get territoryDramaRisingCrews => 'Rising crews';
+  String get territoryDramaRisingCrews => 'Tripulaciones en ascenso';
 
   @override
-  String get territoryDramaWarTheaters => 'War theaters';
+  String get territoryDramaWarTheaters => 'Teatros de guerra';
 
   @override
-  String get territoryDramaRegionEvents => 'Region events';
+  String get territoryDramaRegionEvents => 'Eventos regionales';
 
   @override
-  String get territoryDramaEmpty => 'No live territory drama right now.';
+  String get territoryDramaEmpty =>
+      'No hay drama territorial en vivo en este momento.';
 
   @override
-  String get territoryDetailRegionEvent => 'Region event';
+  String get territoryDetailRegionEvent => 'Evento de región';
 
   @override
-  String get territoryEventPoliceOffensive => 'Police offensive';
+  String get territoryEventPoliceOffensive => 'Ofensiva policial';
 
   @override
-  String get territoryEventHarborStrike => 'Harbor strike';
+  String get territoryEventHarborStrike => 'huelga portuaria';
 
   @override
-  String get territoryEventBlackoutRumor => 'Blackout rumor';
+  String get territoryEventBlackoutRumor => 'Rumor de apagón';
 
   @override
   String get launderSectionTitle => 'Money laundering';
@@ -15238,4 +15240,75 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get premiumUiGiftCrewVipFailed =>
       'Could not start Crew VIP gift checkout.';
+
+  @override
+  String get territoryOverlayContest => 'Puntuaciones del concurso';
+
+  @override
+  String get territoryOverlayProject => 'Proyectos';
+
+  @override
+  String get territoryOverlayEvent => 'Eventos regionales';
+
+  @override
+  String get territoryLegendPocket => 'Bolsillo (borde fino)';
+
+  @override
+  String get territoryLegendCluster => 'Grupo (borde grueso)';
+
+  @override
+  String get territoryContestHudTitle => 'Concurso';
+
+  @override
+  String territoryContestHudScore(int attacker, int defender) {
+    return 'Puntuación $attacker:$defender';
+  }
+
+  @override
+  String get territoryProjectSurveillance => 'Cuadrícula de vigilancia';
+
+  @override
+  String get territoryProjectArmsCache => 'caché de armas';
+
+  @override
+  String get territoryProjectPickTitle => 'Elija un proyecto de región';
+
+  @override
+  String get territoryProjectPickSubtitle =>
+      'Un proyecto por región. El tipo depende de las etiquetas estratégicas y del nivel de sede.';
+
+  @override
+  String get territoryProjectStartGeneric => 'Iniciar proyecto';
+
+  @override
+  String get territoryProjectLockedTags =>
+      'Necesita una etiqueta estratégica coincidente';
+
+  @override
+  String territoryProjectLockedHq(int level) {
+    return 'Requiere sede $level';
+  }
+
+  @override
+  String get territoryProjectSafehouseDesc =>
+      'Bonificación de ingresos pasivos en esta región.';
+
+  @override
+  String get territoryProjectSurveillanceDesc =>
+      'Puntos intel_scan adicionales y tiempo de reutilización de información más corto (puerto/airhub/capital).';
+
+  @override
+  String get territoryProjectArmsCacheDesc =>
+      'Puntos extra de incursión y defensa (industria/frontera).';
+
+  @override
+  String get territoryBonusRegionProject => 'Proyecto de región';
+
+  @override
+  String get territoryErrorProjectInvalidType =>
+      'Tipo de proyecto desconocido.';
+
+  @override
+  String get territoryErrorProjectTagMismatch =>
+      'Este tipo de proyecto no se ajusta a las etiquetas estratégicas de esta región.';
 }

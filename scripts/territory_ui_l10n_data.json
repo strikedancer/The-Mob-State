@@ -35,9 +35,15 @@
     "territoryPointsLogicLine": "base {basePoints} + bonus {bonusPoints} = {totalPoints} contest points",
     "@territoryPointsLogicLine": {
       "placeholders": {
-        "basePoints": { "type": "int" },
-        "bonusPoints": { "type": "int" },
-        "totalPoints": { "type": "int" }
+        "basePoints": {
+          "type": "int"
+        },
+        "bonusPoints": {
+          "type": "int"
+        },
+        "totalPoints": {
+          "type": "int"
+        }
       }
     },
     "territoryErrorNotInCrew": "You must join a crew before you can attack territory.",
@@ -61,15 +67,23 @@
     "territoryMapHintTapMain": "Tap a region on the map to open territory information and the attack button in a modal.",
     "territoryMapHintTapPanel": "Tap a region to directly open the modal with territory information and attack actions.",
     "territoryMapHintMobile": "On mobile you can pinch in and out with two fingers and drag the zoomed map directly for smaller regions.",
-    "territoryMapHintColors": "Region colors show ownership; orange = active contest.",
+    "territoryMapHintColors": "Region colors show ownership; orange = active contest. Thicker borders mark clusters; thinner borders mark pockets. Use the layer toggles for contest scores, projects, and events.",
     "territoryMapOverviewTitle": "{country} map (crew control)",
     "@territoryMapOverviewTitle": {
-      "placeholders": { "country": { "type": "String" } }
+      "placeholders": {
+        "country": {
+          "type": "String"
+        }
+      }
     },
     "territoryLegendTitle": "Legend",
     "territoryYourCrewLine": "Your crew: {name}",
     "@territoryYourCrewLine": {
-      "placeholders": { "name": { "type": "String" } }
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
     },
     "territoryDetailRegionPreviewTitle": "Region preview",
     "territoryDetailRegionPreviewSubtitle": "Only the selected region, without the rest of the map.",
@@ -108,8 +122,12 @@
     "territoryNoticeWrongCountry": "You are viewing {viewingCountry}, but you are currently in {playerCountry}. You can browse this map, but attacks and contest actions only unlock after you travel to this country.",
     "@territoryNoticeWrongCountry": {
       "placeholders": {
-        "viewingCountry": { "type": "String" },
-        "playerCountry": { "type": "String" }
+        "viewingCountry": {
+          "type": "String"
+        },
+        "playerCountry": {
+          "type": "String"
+        }
       }
     },
     "territoryNoticeOwnRegion": "Your crew already controls this region.",
@@ -123,17 +141,29 @@
     "territoryRequiresHqShort": "requires HQ",
     "territoryHqLockedNotice": "Higher HQ level required for: {actions}.",
     "@territoryHqLockedNotice": {
-      "placeholders": { "actions": { "type": "String" } }
+      "placeholders": {
+        "actions": {
+          "type": "String"
+        }
+      }
     },
     "territoryNotInContestNotice": "You are not part of this contest, so you cannot perform actions here.",
     "territoryContestOtherCountryNotice": "This contest is taking place in another country. You can follow it, but you can only join once you are physically in {country}.",
     "@territoryContestOtherCountryNotice": {
-      "placeholders": { "country": { "type": "String" } }
+      "placeholders": {
+        "country": {
+          "type": "String"
+        }
+      }
     },
     "territoryLeaderboardEmpty": "No territory controlled yet.",
     "territoryLeaderboardRegionsCount": "{count} regions",
     "@territoryLeaderboardRegionsCount": {
-      "placeholders": { "count": { "type": "int" } }
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
     },
     "territorySeasonNone": "No active season found.",
     "territorySeasonCurrent": "Current season",
@@ -144,37 +174,100 @@
     "territoryDialogAttackTitle": "Attack?",
     "territoryDialogAttackBody": "Start a contest for {regionKey}?",
     "@territoryDialogAttackBody": {
-      "placeholders": { "regionKey": { "type": "String" } }
+      "placeholders": {
+        "regionKey": {
+          "type": "String"
+        }
+      }
     },
     "territorySnackJoinCrewFirst": "Join a crew first to attack territory.",
     "territorySnackContestStarted": "Contest started. Status: {status}. Wait for the preparation phase to finish before taking actions.",
     "@territorySnackContestStarted": {
-      "placeholders": { "status": { "type": "String" } }
+      "placeholders": {
+        "status": {
+          "type": "String"
+        }
+      }
     },
     "territorySnackContestAlreadyLive": "The contest is already started and the map has been refreshed. Status: {status}.",
     "@territorySnackContestAlreadyLive": {
-      "placeholders": { "status": { "type": "String" } }
+      "placeholders": {
+        "status": {
+          "type": "String"
+        }
+      }
     },
     "territoryPointsDelta": "+{points} points!",
     "@territoryPointsDelta": {
-      "placeholders": { "points": { "type": "String" } }
+      "placeholders": {
+        "points": {
+          "type": "String"
+        }
+      }
     },
     "territorySnackDefenseConfirmed": "Defense confirmed. Once the active phase starts, you can perform defensive actions.",
     "territorySnackContestRefreshed": "The contest state has been refreshed. You can now immediately see the current defense phase.",
     "territoryHqTooltipLocked": "Requires HQ level {required}. Current HQ level: {current}.",
     "@territoryHqTooltipLocked": {
       "placeholders": {
-        "required": { "type": "int" },
-        "current": { "type": "int" }
+        "required": {
+          "type": "int"
+        },
+        "current": {
+          "type": "int"
+        }
       }
     },
     "territoryHqButtonLocked": "{label} (requires HQ {level})",
     "@territoryHqButtonLocked": {
       "placeholders": {
-        "label": { "type": "String" },
-        "level": { "type": "int" }
+        "label": {
+          "type": "String"
+        },
+        "level": {
+          "type": "int"
+        }
       }
-    }
+    },
+    "territoryOverlayContest": "Contest scores",
+    "territoryOverlayProject": "Projects",
+    "territoryOverlayEvent": "Region events",
+    "territoryLegendPocket": "Pocket (thin border)",
+    "territoryLegendCluster": "Cluster (thick border)",
+    "territoryContestHudTitle": "Contest",
+    "territoryContestHudScore": "Score {attacker}:{defender}",
+    "@territoryContestHudScore": {
+      "placeholders": {
+        "attacker": {
+          "type": "int"
+        },
+        "defender": {
+          "type": "int"
+        }
+      }
+    },
+    "territoryProjectSurveillance": "Surveillance grid",
+    "territoryProjectArmsCache": "Arms cache",
+    "territoryProjectPickTitle": "Choose a region project",
+    "territoryProjectPickSubtitle": "One project per region. Type depends on strategic tags and HQ level.",
+    "territoryProjectStartGeneric": "Start project",
+    "territoryProjectLockedTags": "Needs matching strategic tag",
+    "territoryProjectLockedHq": "Requires HQ {level}",
+    "@territoryProjectLockedHq": {
+      "placeholders": {
+        "level": {
+          "type": "int"
+        }
+      }
+    },
+    "territoryProjectSafehouseDesc": "Passive income bonus on this region.",
+    "territoryProjectSurveillanceDesc": "Extra intel_scan points and shorter intel cooldown (harbor / airhub / capital).",
+    "territoryProjectArmsCacheDesc": "Extra raid and defense points (industry / border).",
+    "territoryProjectHint": "Choose a project type for this region. Sabotage damages it in contests; supply runs repair or advance it.",
+    "territoryProjectStart": "Start region project",
+    "territoryBonusRegionProject": "Region project",
+    "territoryErrorProjectInvalidType": "Unknown project type.",
+    "territoryErrorProjectTagMismatch": "This project type does not fit this region's strategic tags."
   },
   "nl": {
     "territoryContestStatusPreparing": "Voorbereiding",
@@ -231,7 +324,7 @@
     "territoryMapHintTapMain": "Tik op een gebied op de kaart om gebiedsinformatie en de aanvalsknop in een modal te openen.",
     "territoryMapHintTapPanel": "Klik op een gebied om direct de modal met gebiedsinformatie en aanvalsacties te openen.",
     "territoryMapHintMobile": "Op mobiel kun je met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen voor kleine gebieden.",
-    "territoryMapHintColors": "Regio-kleuren tonen eigendom; oranje = actieve contest.",
+    "territoryMapHintColors": "Regio-kleuren tonen eigendom; oranje = actieve contest. Dikkere randen = cluster, dunnere = pocket. Gebruik de lagen voor contest-scores, projecten en events.",
     "territoryMapOverviewTitle": "{country} kaart (crew controle)",
     "territoryLegendTitle": "Legenda",
     "territoryYourCrewLine": "Jouw crew: {name}",
@@ -299,6 +392,28 @@
     "territorySnackDefenseConfirmed": "Verdediging bevestigd. Zodra de actieve fase start, kun je verdedigingsacties uitvoeren.",
     "territorySnackContestRefreshed": "De conteststatus is ververst. Je ziet nu direct de actuele verdedigingsfase.",
     "territoryHqTooltipLocked": "Vereist HQ level {required}. Huidig HQ level: {current}.",
-    "territoryHqButtonLocked": "{label} (vereist HQ {level})"
+    "territoryHqButtonLocked": "{label} (vereist HQ {level})",
+    "territoryOverlayContest": "Contest-scores",
+    "territoryOverlayProject": "Projecten",
+    "territoryOverlayEvent": "Regio-events",
+    "territoryLegendPocket": "Pocket (dunne rand)",
+    "territoryLegendCluster": "Cluster (dikke rand)",
+    "territoryContestHudTitle": "Contest",
+    "territoryContestHudScore": "Stand {attacker}:{defender}",
+    "territoryProjectSurveillance": "Surveillance-netwerk",
+    "territoryProjectArmsCache": "Wapenopslag",
+    "territoryProjectPickTitle": "Kies een regioproject",
+    "territoryProjectPickSubtitle": "Een project per regio. Type hangt af van strategische tags en HQ-level.",
+    "territoryProjectStartGeneric": "Start project",
+    "territoryProjectLockedTags": "Past niet bij strategische tags",
+    "territoryProjectLockedHq": "Vereist HQ {level}",
+    "territoryProjectSafehouseDesc": "Passieve inkomensbonus op dit gebied.",
+    "territoryProjectSurveillanceDesc": "Extra intel_scan-punten en kortere intel-cooldown (haven / luchthub / hoofdstad).",
+    "territoryProjectArmsCacheDesc": "Extra raid- en defense-punten (industrie / grens).",
+    "territoryProjectHint": "Kies een projecttype voor dit gebied. Sabotage beschadigt het in contests; bevoorrading herstelt of bouwt het verder.",
+    "territoryProjectStart": "Start regioproject",
+    "territoryBonusRegionProject": "Regioproject",
+    "territoryErrorProjectInvalidType": "Onbekend projecttype.",
+    "territoryErrorProjectTagMismatch": "Dit projecttype past niet bij de strategische tags van dit gebied."
   }
 }

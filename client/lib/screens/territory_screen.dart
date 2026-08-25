@@ -140,6 +140,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Map<String, dynamic>? _selectedRegion;
   bool _isActing = false;
   bool _isRegionSheetOpen = false;
+  bool _overlayContest = true;
+  bool _overlayProject = true;
+  bool _overlayEvent = true;
 
   // â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   late TabController _tabController;
@@ -512,6 +515,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryBonusCrewMissionLevel;
       case 'crew-building':
         return t.territoryBonusCrewBuildings;
+      case 'region-project':
+        return t.territoryBonusRegionProject;
+      case 'region-event':
+        return t.territoryBonusOther;
       default:
         return t.territoryBonusOther;
     }
@@ -699,6 +706,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorProjectActive;
       case 'territory.project_contribute_cooldown':
         return t.territoryErrorProjectCooldown;
+      case 'territory.project_invalid_type':
+        return t.territoryErrorProjectInvalidType;
+      case 'territory.project_tag_mismatch':
+        return t.territoryErrorProjectTagMismatch;
       default:
         return event.isEmpty ? t.territoryErrorUnknown : event;
     }
@@ -1193,21 +1204,101 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     if (shapes.isEmpty) return template;
 
     var svg = template;
+    final overlayChunks = <String>[];
     for (final shape in shapes) {
       final region = regionBySvgId[shape.id.toLowerCase()];
       var fillHex = region != null ? _hexColorForRegion(region) : '#D1D5DB';
       if (_hoveredSvgElementId?.toLowerCase() == shape.id.toLowerCase()) {
         fillHex = _darkenHex(fillHex, 0.18);
       }
+      final strokeWidth = _strokeWidthForRegion(region);
       svg = _applyRegionStyleToElement(
         svg,
         shape.id,
         fillHex,
         strokeHex: '#000000',
-        strokeWidth: '1.1',
+        strokeWidth: strokeWidth,
       );
+      if (region != null) {
+        final marker = _buildSvgOverlayMarker(shape, region);
+        if (marker != null) overlayChunks.add(marker);
+      }
+    }
+    if (overlayChunks.isNotEmpty) {
+      final overlayGroup =
+          '<g id="territory-fase-e-overlays" pointer-events="none">${overlayChunks.join()}</g>';
+      final closeIdx = svg.toLowerCase().lastIndexOf('</svg>');
+      if (closeIdx >= 0) {
+        svg = '${svg.substring(0, closeIdx)}$overlayGroup${svg.substring(closeIdx)}';
+      }
     }
     return svg;
+  }
+
+  String _strokeWidthForRegion(Map<String, dynamic>? region) {
+    if (region == null) return '1.1';
+    final ownerAdjacent =
+        (region['ownerAdjacentOwnedRegions'] as num?)?.toInt() ??
+            (region['adjacentOwnedRegions'] as num?)?.toInt() ??
+            0;
+    final ownerCrewId = region['ownerCrewId'];
+    if (ownerCrewId == null) return '1.1';
+    if (ownerAdjacent >= 2) return '2.4';
+    if (ownerAdjacent <= 1) return '0.85';
+    return '1.1';
+  }
+
+  String? _buildSvgOverlayMarker(
+    _SvgRegionShape shape,
+    Map<String, dynamic> region,
+  ) {
+    final bounds = shape.path.getBounds();
+    if (bounds.isEmpty) return null;
+    final cx = bounds.center.dx;
+    final cy = bounds.center.dy;
+    final parts = <String>[];
+    final contestStatus = (region['contestStatus'] as String?)?.toLowerCase();
+    final contestLive = contestStatus != null &&
+        contestStatus != 'resolved' &&
+        contestStatus != 'cancelled';
+    if (_overlayContest && contestLive) {
+      final atk = (region['contestAttackerPoints'] as num?)?.toInt() ?? 0;
+      final def = (region['contestDefenderPoints'] as num?)?.toInt() ?? 0;
+      parts.add(
+        '<circle cx="$cx" cy="${cy - 10}" r="9" fill="#111827" fill-opacity="0.82" stroke="#F59E0B" stroke-width="1.2"/>'
+        '<text x="$cx" y="${cy - 7}" text-anchor="middle" font-size="7" fill="#FDE68A" font-family="Arial,sans-serif">$atk:$def</text>',
+      );
+    }
+    final project = (region['regionProject'] as Map?)?.cast<String, dynamic>();
+    final projectStatus = project?['status'] as String?;
+    if (_overlayProject &&
+        project != null &&
+        projectStatus != null &&
+        projectStatus != 'destroyed') {
+      final type = project['projectType'] as String? ?? '';
+      final letter = switch (type) {
+        'surveillance_grid' => 'V',
+        'arms_cache' => 'W',
+        _ => 'S',
+      };
+      final color = switch (projectStatus) {
+        'damaged' => '#F97316',
+        'building' => '#EAB308',
+        _ => '#14B8A6',
+      };
+      parts.add(
+        '<circle cx="${cx - 11}" cy="${cy + 10}" r="7" fill="$color" stroke="#111827" stroke-width="0.9"/>'
+        '<text x="${cx - 11}" y="${cy + 13}" text-anchor="middle" font-size="8" fill="#111827" font-family="Arial,sans-serif" font-weight="700">$letter</text>',
+      );
+    }
+    if (_overlayEvent && region['regionEvent'] != null) {
+      parts.add(
+        '<circle cx="${cx + 11}" cy="${cy + 10}" r="7" fill="#7C3AED" stroke="#111827" stroke-width="0.9"/>'
+        '<text x="${cx + 11}" y="${cy + 13}" text-anchor="middle" font-size="9" fill="#F8FAFC" font-family="Arial,sans-serif" font-weight="700">!</text>',
+      );
+    }
+    if (parts.isEmpty) return null;
+    return '<g>${parts.join()}</g>';
   }
 
   String _darkenHex(String hex, double amount) {
@@ -1312,6 +1403,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _TerritoryLegendEntry(
         label: _l10n.territoryLegendNeutral,
         colorHex: '#D1D5DB',
+      ),
+      _TerritoryLegendEntry(
+        label: _l10n.territoryLegendPocket,
+        colorHex: '#9CA3AF',
+      ),
+      _TerritoryLegendEntry(
+        label: _l10n.territoryLegendCluster,
+        colorHex: '#374151',
       ),
       ...crewEntries,
     ];
@@ -1839,6 +1938,52 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                       style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                     const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        FilterChip(
+                          label: Text(_l10n.territoryOverlayContest),
+                          selected: _overlayContest,
+                          onSelected: (value) {
+                            setState(() {
+                              _overlayContest = value;
+                              _renderedSvgMap = _renderSvgWithOwnership(
+                                (_mapData['regions'] as List<dynamic>?) ??
+                                    const [],
+                              );
+                            });
+                          },
+                        ),
+                        FilterChip(
+                          label: Text(_l10n.territoryOverlayProject),
+                          selected: _overlayProject,
+                          onSelected: (value) {
+                            setState(() {
+                              _overlayProject = value;
+                              _renderedSvgMap = _renderSvgWithOwnership(
+                                (_mapData['regions'] as List<dynamic>?) ??
+                                    const [],
+                              );
+                            });
+                          },
+                        ),
+                        FilterChip(
+                          label: Text(_l10n.territoryOverlayEvent),
+                          selected: _overlayEvent,
+                          onSelected: (value) {
+                            setState(() {
+                              _overlayEvent = value;
+                              _renderedSvgMap = _renderSvgWithOwnership(
+                                (_mapData['regions'] as List<dynamic>?) ??
+                                    const [],
+                              );
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
                     Text(
                       _l10n.territoryLegendTitle,
                       style: const TextStyle(
@@ -1993,22 +2138,27 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final projectProgress = (regionProject?['progress'] as num?)?.toInt() ?? 0;
     final projectHp = (regionProject?['hp'] as num?)?.toInt() ?? 0;
     final projectMaxHp = (regionProject?['maxHp'] as num?)?.toInt() ?? 100;
-    final viewerCaps =
-        (_mapData['viewerCaps'] as Map?)?.cast<String, dynamic>();
-    final projectMinHq =
-        (viewerCaps?['projectSafehouseMinHqLevel'] as num?)?.toInt() ?? 4;
+    final projectOptions =
+        ((region['projectOptions'] as List<dynamic>?) ?? const <dynamic>[])
+            .whereType<Map>()
+            .map((item) => item.cast<String, dynamic>())
+            .toList(growable: false);
     final canManageProject =
         isMyCrewRegion && _hasCrew && canActInSelectedCountry && !_isActing;
     final canStartProject =
         canManageProject &&
         contestStatus == null &&
-        (regionProject == null || projectStatus == 'destroyed') &&
-        viewerHqGlobalLevel >= projectMinHq;
+        (regionProject == null || projectStatus == 'destroyed');
     final canContributeProject =
         canManageProject &&
         contestStatus == null &&
         regionProject != null &&
         (projectStatus == 'building' || projectStatus == 'damaged');
+    final contestAttackerPoints =
+        (region['contestAttackerPoints'] as num?)?.toInt() ?? 0;
+    final contestDefenderPoints =
+        (region['contestDefenderPoints'] as num?)?.toInt() ?? 0;
+    final projectTypeKey = regionProject?['projectType'] as String?;
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -2036,6 +2186,53 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
     final t = _l10n;
     final detailContent = <Widget>[
+      if (hasContest) ...[
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.amber.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.amber.shade700),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                t.territoryContestHudTitle,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                t.territoryContestHudScore(
+                  contestAttackerPoints,
+                  contestDefenderPoints,
+                ),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              Text(
+                '${t.territoryDetailContestStatus}: ${_displayContestStatus(contestStatus)}',
+              ),
+              if (contestRole != null)
+                Text(
+                  '${t.territoryDetailYourRole}: ${_displayContestRole(contestRole)}',
+                ),
+              if (contestStatus == 'preparing')
+                Text(
+                  '${t.territoryDetailActionsUnlockIn}: ${_countdownLabel(contestActiveAt)}',
+                ),
+              if (contestStatus == 'active')
+                Text(
+                  '${t.territoryDetailActionsCloseIn}: ${_countdownLabel(contestLockdownAt)}',
+                ),
+              Text(
+                '${t.territoryDetailContestEndsIn}: ${_countdownLabel(contestResolveAt)}',
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+      ],
       _detailRow(
         t.territoryDetailOwner,
         ownerName ?? t.territoryDetailNeutral,
@@ -2052,16 +2249,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       ),
       _detailRow(
         t.territoryDetailValueTier,
-        '$incomeTierLabel (${('â­' * tier)})',
+        '$incomeTierLabel (${('⭐' * tier)})',
       ),
       _detailRow(
         t.territoryDetailPayout,
-        '${formatCurrency(passiveIncomeCash)} Â· ${_incomeIntervalLabel(passiveIncomeIntervalMinutes)}',
+        '${formatCurrency(passiveIncomeCash)} · ${_incomeIntervalLabel(passiveIncomeIntervalMinutes)}',
       ),
       if (strategicTags.isNotEmpty)
         _detailRow(
           t.territoryDetailStrategicRole,
-          strategicTags.join(' Â· '),
+          strategicTags.join(' · '),
         ),
       if (adjacentOwnedRegions > 0)
         _detailRow(
@@ -2081,7 +2278,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (activeWarPressure != null)
         _detailRow(
           t.territoryDetailWarPressure,
-          '${warPressureCrewName ?? t.unknown} Â· +$warPressureBonus ${t.territoryDetailAttackPressure} Â· -$warPressurePenalty ${t.territoryDetailStabilityWord} Â· ${warPressureRegionRole == 'theater'
+          '${warPressureCrewName ?? t.unknown} · +$warPressureBonus ${t.territoryDetailAttackPressure} · -$warPressurePenalty ${t.territoryDetailStabilityWord} · ${warPressureRegionRole == 'theater'
               ? t.territoryWarRoleTheater
               : warPressureRegionRole == 'adjacent'
               ? t.territoryWarRoleAdjacent
@@ -2103,7 +2300,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (regionProject != null) ...[
         _detailRow(
           t.territoryDetailProject,
-          '${t.territoryProjectSafehouse} · ${_projectStatusLabel(projectStatus)}'
+          '${_projectTypeLabel(projectTypeKey)} · ${_projectStatusLabel(projectStatus)}'
           '${projectIncomeBonusPercent > 0 ? ' · ${t.territoryProjectIncomeBonusPct(projectIncomeBonusPercent)}' : ''}',
         ),
         if (projectStatus == 'building')
@@ -2215,19 +2412,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         ),
         if (canStartProject) ...[
           const SizedBox(height: 12),
-          _buildActionButton(
-            label: t.territoryProjectStart,
-            icon: Icons.construction,
-            color: Colors.teal[700]!,
-            onTap: () => _startProject(region['regionKey'] as String),
-          ),
-        ] else if (canManageProject &&
-            (regionProject == null || projectStatus == 'destroyed') &&
-            viewerHqGlobalLevel < projectMinHq) ...[
-          const SizedBox(height: 8),
           Text(
-            t.territoryProjectHqRequired(projectMinHq),
+            t.territoryProjectPickTitle,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            t.territoryProjectPickSubtitle,
             style: TextStyle(color: Colors.grey[700], fontSize: 12),
+          ),
+          const SizedBox(height: 8),
+          ..._buildProjectTypePicker(
+            regionKey: region['regionKey'] as String,
+            options: projectOptions,
           ),
         ],
         if (canContributeProject) ...[
@@ -2556,7 +2753,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     required String label,
     required IconData icon,
     required Color color,
-    required VoidCallback onTap,
+    VoidCallback? onTap,
   }) {
     return SizedBox(
       width: double.infinity,
@@ -2567,7 +2764,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           backgroundColor: color,
           foregroundColor: Colors.white,
         ),
-        onPressed: _isActing ? null : onTap,
+        onPressed: (_isActing || onTap == null) ? null : onTap,
       ),
     );
   }
@@ -2840,9 +3037,95 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
   }
 
-  Future<void> _startProject(String regionKey) async {
+  String _projectTypeLabel(String? projectType) {
+    switch (projectType) {
+      case 'surveillance_grid':
+        return _l10n.territoryProjectSurveillance;
+      case 'arms_cache':
+        return _l10n.territoryProjectArmsCache;
+      case 'safehouse_network':
+      default:
+        return _l10n.territoryProjectSafehouse;
+    }
+  }
+
+  String _projectTypeDescription(String projectType) {
+    switch (projectType) {
+      case 'surveillance_grid':
+        return _l10n.territoryProjectSurveillanceDesc;
+      case 'arms_cache':
+        return _l10n.territoryProjectArmsCacheDesc;
+      case 'safehouse_network':
+      default:
+        return _l10n.territoryProjectSafehouseDesc;
+    }
+  }
+
+  List<Widget> _buildProjectTypePicker({
+    required String regionKey,
+    required List<Map<String, dynamic>> options,
+  }) {
+    final orderedTypes = const [
+      'safehouse_network',
+      'surveillance_grid',
+      'arms_cache',
+    ];
+    final byType = {
+      for (final option in options)
+        (option['projectType'] as String? ?? ''): option,
+    };
+    return orderedTypes.map((projectType) {
+      final option = byType[projectType] ??
+          <String, dynamic>{
+            'projectType': projectType,
+            'allowed': false,
+            'lockedByHq': true,
+            'lockedByTags': false,
+            'minHqLevel': 0,
+          };
+      final allowed = option['allowed'] == true;
+      final lockedByHq = option['lockedByHq'] == true;
+      final lockedByTags = option['lockedByTags'] == true;
+      final minHq = (option['minHqLevel'] as num?)?.toInt() ?? 0;
+      final subtitle = lockedByTags
+          ? _l10n.territoryProjectLockedTags
+          : (lockedByHq
+              ? _l10n.territoryProjectLockedHq(minHq)
+              : _projectTypeDescription(projectType));
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildActionButton(
+              label:
+                  '${_projectTypeLabel(projectType)} · ${_l10n.territoryProjectStartGeneric}',
+              icon: Icons.construction,
+              color: allowed ? Colors.teal[700]! : Colors.blueGrey,
+              onTap: allowed
+                  ? () => _startProject(regionKey, projectType: projectType)
+                  : null,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              subtitle,
+              style: TextStyle(color: Colors.grey[700], fontSize: 12),
+            ),
+          ],
+        ),
+      );
+    }).toList(growable: false);
+  }
+
+  Future<void> _startProject(
+    String regionKey, {
+    required String projectType,
+  }) async {
     setState(() => _isActing = true);
-    final result = await _service.startProject(regionKey);
+    final result = await _service.startProject(
+      regionKey,
+      projectType: projectType,
+    );
     if (!mounted) return;
     setState(() => _isActing = false);
 

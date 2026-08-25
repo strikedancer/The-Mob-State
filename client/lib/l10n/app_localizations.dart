@@ -21277,7 +21277,7 @@ abstract class AppLocalizations {
   /// No description provided for @territoryMapHintColors.
   ///
   /// In en, this message translates to:
-  /// **'Region colors show ownership; orange = active contest.'**
+  /// **'Region colors show ownership; orange = active contest. Thicker borders mark clusters; thinner borders mark pockets. Use the layer toggles for contest scores, projects, and events.'**
   String get territoryMapHintColors;
 
   /// No description provided for @territoryMapOverviewTitle.
@@ -24879,13 +24879,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTerritoryHow.
   ///
   /// In en, this message translates to:
-  /// **'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.'**
+  /// **'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.\nMap overlays show live contest scores, region projects, and events; thicker borders mark clusters and thinner borders mark pockets.\nOwned regions can start one project type: safehouse network (income), surveillance grid on harbor/airhub/capital (intel), or arms cache on industry/border (raid/defense).\nAttacking from an owned neighbor grants invasion bonuses; defending a pocket faces extra sabotage/raid pressure.'**
   String get helpTopicTerritoryHow;
 
   /// No description provided for @helpTopicTerritoryTips.
   ///
   /// In en, this message translates to:
-  /// **'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.'**
+  /// **'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nHold clusters for stronger defense support; isolated pockets invite invasion pressure from neighbors. Use layer toggles on the map to show contest scores, projects, and region events.'**
   String get helpTopicTerritoryTips;
 
   /// No description provided for @helpTopicProstitutionCategory.
@@ -25718,7 +25718,7 @@ abstract class AppLocalizations {
   /// No description provided for @territoryProjectStart.
   ///
   /// In en, this message translates to:
-  /// **'Start safehouse project'**
+  /// **'Start region project'**
   String get territoryProjectStart;
 
   /// No description provided for @territoryProjectContribute.
@@ -25736,7 +25736,7 @@ abstract class AppLocalizations {
   /// No description provided for @territoryProjectHint.
   ///
   /// In en, this message translates to:
-  /// **'A safehouse network boosts passive income. Sabotage damages it in contests; supply runs repair or advance it.'**
+  /// **'Choose a project type for this region. Sabotage damages it in contests; supply runs repair or advance it.'**
   String get territoryProjectHint;
 
   /// No description provided for @territorySnackProjectStarted.
@@ -26380,6 +26380,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not start Crew VIP gift checkout.'**
   String get premiumUiGiftCrewVipFailed;
+
+  /// No description provided for @territoryOverlayContest.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest scores'**
+  String get territoryOverlayContest;
+
+  /// No description provided for @territoryOverlayProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects'**
+  String get territoryOverlayProject;
+
+  /// No description provided for @territoryOverlayEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Region events'**
+  String get territoryOverlayEvent;
+
+  /// No description provided for @territoryLegendPocket.
+  ///
+  /// In en, this message translates to:
+  /// **'Pocket (thin border)'**
+  String get territoryLegendPocket;
+
+  /// No description provided for @territoryLegendCluster.
+  ///
+  /// In en, this message translates to:
+  /// **'Cluster (thick border)'**
+  String get territoryLegendCluster;
+
+  /// No description provided for @territoryContestHudTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest'**
+  String get territoryContestHudTitle;
+
+  /// No description provided for @territoryContestHudScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Score {attacker}:{defender}'**
+  String territoryContestHudScore(int attacker, int defender);
+
+  /// No description provided for @territoryProjectSurveillance.
+  ///
+  /// In en, this message translates to:
+  /// **'Surveillance grid'**
+  String get territoryProjectSurveillance;
+
+  /// No description provided for @territoryProjectArmsCache.
+  ///
+  /// In en, this message translates to:
+  /// **'Arms cache'**
+  String get territoryProjectArmsCache;
+
+  /// No description provided for @territoryProjectPickTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a region project'**
+  String get territoryProjectPickTitle;
+
+  /// No description provided for @territoryProjectPickSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One project per region. Type depends on strategic tags and HQ level.'**
+  String get territoryProjectPickSubtitle;
+
+  /// No description provided for @territoryProjectStartGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Start project'**
+  String get territoryProjectStartGeneric;
+
+  /// No description provided for @territoryProjectLockedTags.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs matching strategic tag'**
+  String get territoryProjectLockedTags;
+
+  /// No description provided for @territoryProjectLockedHq.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires HQ {level}'**
+  String territoryProjectLockedHq(int level);
+
+  /// No description provided for @territoryProjectSafehouseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Passive income bonus on this region.'**
+  String get territoryProjectSafehouseDesc;
+
+  /// No description provided for @territoryProjectSurveillanceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra intel_scan points and shorter intel cooldown (harbor / airhub / capital).'**
+  String get territoryProjectSurveillanceDesc;
+
+  /// No description provided for @territoryProjectArmsCacheDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra raid and defense points (industry / border).'**
+  String get territoryProjectArmsCacheDesc;
+
+  /// No description provided for @territoryBonusRegionProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Region project'**
+  String get territoryBonusRegionProject;
+
+  /// No description provided for @territoryErrorProjectInvalidType.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown project type.'**
+  String get territoryErrorProjectInvalidType;
+
+  /// No description provided for @territoryErrorProjectTagMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'This project type does not fit this region\'s strategic tags.'**
+  String get territoryErrorProjectTagMismatch;
 }
 
 class _AppLocalizationsDelegate

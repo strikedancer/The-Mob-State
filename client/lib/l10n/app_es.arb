@@ -8549,7 +8549,7 @@
   },
   "aviationUiLicensePurchaseFailed": "Error en la compra de la licencia.",
   "aviationUiLicensePurchasedSuccess": "Licencia de aviación adquirida.",
-  "territoryCapsLine": "Regions {owned}/{maxRegions} · Contests {active}/{maxContests}",
+  "territoryCapsLine": "Regiones {owned}/{maxRegions} · Concursos {active}/{maxContests}",
   "@territoryCapsLine": {
     "placeholders": {
       "owned": {
@@ -8566,7 +8566,7 @@
       }
     }
   },
-  "territoryCapsRegionsChip": "Regions {owned}/{max}",
+  "territoryCapsRegionsChip": "Regiones {owned}/{max}",
   "@territoryCapsRegionsChip": {
     "placeholders": {
       "owned": {
@@ -8577,7 +8577,7 @@
       }
     }
   },
-  "territoryCapsContestsChip": "Contests {active}/{max}",
+  "territoryCapsContestsChip": "Concursos {active}/{max}",
   "@territoryCapsContestsChip": {
     "placeholders": {
       "active": {
@@ -8588,15 +8588,15 @@
       }
     }
   },
-  "territoryDetailProject": "Region project",
-  "territoryProjectSafehouse": "Safehouse network",
-  "territoryProjectStatusBuilding": "Building",
-  "territoryProjectStatusActive": "Active",
-  "territoryProjectStatusDamaged": "Damaged",
-  "territoryProjectStatusDestroyed": "Destroyed",
-  "territoryProjectProgress": "Progress",
-  "territoryProjectHp": "Integrity",
-  "territoryProjectIncomeBonusPct": "+{percent}% passive income",
+  "territoryDetailProject": "Proyecto de región",
+  "territoryProjectSafehouse": "Red de casas seguras",
+  "territoryProjectStatusBuilding": "Edificio",
+  "territoryProjectStatusActive": "Activa",
+  "territoryProjectStatusDamaged": "Dañada",
+  "territoryProjectStatusDestroyed": "Destruido",
+  "territoryProjectProgress": "Progreso",
+  "territoryProjectHp": "Integridad",
+  "territoryProjectIncomeBonusPct": "+{percent}% de ingresos pasivos",
   "@territoryProjectIncomeBonusPct": {
     "placeholders": {
       "percent": {
@@ -8605,8 +8605,8 @@
     }
   },
   "territoryProjectStart": "Start safehouse project",
-  "territoryProjectContribute": "Supply project",
-  "territoryProjectHqRequired": "Requires HQ level {level}",
+  "territoryProjectContribute": "Proyecto de suministro",
+  "territoryProjectHqRequired": "Requiere nivel HQ {level}",
   "@territoryProjectHqRequired": {
     "placeholders": {
       "level": {
@@ -8615,26 +8615,26 @@
     }
   },
   "territoryProjectHint": "A safehouse network boosts passive income. Sabotage damages it in contests; supply runs repair or advance it.",
-  "territorySnackProjectStarted": "Safehouse project started.",
-  "territorySnackProjectContributed": "Project updated.",
-  "territoryErrorProjectHq": "Higher HQ level required to start this project.",
-  "territoryErrorProjectNotOwner": "Only the controlling crew can manage this project.",
-  "territoryErrorProjectExists": "This region already has a project.",
-  "territoryErrorProjectNotFound": "No project found for this region.",
-  "territoryErrorProjectDestroyed": "Project destroyed - start a new one.",
-  "territoryErrorProjectActive": "Project is already active.",
-  "territoryErrorProjectCooldown": "Project supply is on cooldown.",
-  "territoryDramaTitle": "Territory drama",
-  "territoryDramaHotContests": "Hot contests",
-  "territoryDramaRecentCaptures": "Recent captures",
-  "territoryDramaRisingCrews": "Rising crews",
-  "territoryDramaWarTheaters": "War theaters",
-  "territoryDramaRegionEvents": "Region events",
-  "territoryDramaEmpty": "No live territory drama right now.",
-  "territoryDetailRegionEvent": "Region event",
-  "territoryEventPoliceOffensive": "Police offensive",
-  "territoryEventHarborStrike": "Harbor strike",
-  "territoryEventBlackoutRumor": "Blackout rumor",
+  "territorySnackProjectStarted": "Se inició el proyecto de refugio.",
+  "territorySnackProjectContributed": "Proyecto actualizado.",
+  "territoryErrorProjectHq": "Se requiere un nivel de sede más alto para iniciar este proyecto.",
+  "territoryErrorProjectNotOwner": "Sólo el equipo de control puede gestionar este proyecto.",
+  "territoryErrorProjectExists": "Esta región ya tiene un proyecto.",
+  "territoryErrorProjectNotFound": "No se encontró ningún proyecto para esta región.",
+  "territoryErrorProjectDestroyed": "Proyecto destruido: comience uno nuevo.",
+  "territoryErrorProjectActive": "El proyecto ya está activo.",
+  "territoryErrorProjectCooldown": "El suministro del proyecto está en enfriamiento.",
+  "territoryDramaTitle": "Drama territorial",
+  "territoryDramaHotContests": "concursos calientes",
+  "territoryDramaRecentCaptures": "Capturas recientes",
+  "territoryDramaRisingCrews": "Tripulaciones en ascenso",
+  "territoryDramaWarTheaters": "Teatros de guerra",
+  "territoryDramaRegionEvents": "Eventos regionales",
+  "territoryDramaEmpty": "No hay drama territorial en vivo en este momento.",
+  "territoryDetailRegionEvent": "Evento de región",
+  "territoryEventPoliceOffensive": "Ofensiva policial",
+  "territoryEventHarborStrike": "huelga portuaria",
+  "territoryEventBlackoutRumor": "Rumor de apagón",
   "launderSectionTitle": "Money laundering",
   "launderSectionHint": "Wash cash into your bank with a {feePercent}% fee. Takes about {durationMinutes} minutes. Higher FBI heat means higher seize risk.",
   "@launderSectionHint": {
@@ -9056,5 +9056,42 @@
   "rankDon": "Don",
   "rankOverlord": "Señor",
   "rankLegend": "Leyenda",
-  "rankUnknown": "Desconocido"
+  "rankUnknown": "Desconocido",
+  "territoryOverlayContest": "Puntuaciones del concurso",
+  "territoryOverlayProject": "Proyectos",
+  "territoryOverlayEvent": "Eventos regionales",
+  "territoryLegendPocket": "Bolsillo (borde fino)",
+  "territoryLegendCluster": "Grupo (borde grueso)",
+  "territoryContestHudTitle": "Concurso",
+  "territoryContestHudScore": "Puntuación {attacker}:{defender}",
+  "territoryProjectSurveillance": "Cuadrícula de vigilancia",
+  "territoryProjectArmsCache": "caché de armas",
+  "territoryProjectPickTitle": "Elija un proyecto de región",
+  "territoryProjectPickSubtitle": "Un proyecto por región. El tipo depende de las etiquetas estratégicas y del nivel de sede.",
+  "territoryProjectStartGeneric": "Iniciar proyecto",
+  "territoryProjectLockedTags": "Necesita una etiqueta estratégica coincidente",
+  "territoryProjectLockedHq": "Requiere sede {level}",
+  "territoryProjectSafehouseDesc": "Bonificación de ingresos pasivos en esta región.",
+  "territoryProjectSurveillanceDesc": "Puntos intel_scan adicionales y tiempo de reutilización de información más corto (puerto/airhub/capital).",
+  "territoryProjectArmsCacheDesc": "Puntos extra de incursión y defensa (industria/frontera).",
+  "territoryBonusRegionProject": "Proyecto de región",
+  "territoryErrorProjectInvalidType": "Tipo de proyecto desconocido.",
+  "territoryErrorProjectTagMismatch": "Este tipo de proyecto no se ajusta a las etiquetas estratégicas de esta región.",
+  "@territoryContestHudScore": {
+    "placeholders": {
+      "attacker": {
+        "type": "int"
+      },
+      "defender": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryProjectLockedHq": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

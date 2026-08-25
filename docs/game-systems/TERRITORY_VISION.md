@@ -278,7 +278,7 @@ Waarschijnlijke metadata-uitbreidingen:
 ### Fase C: Diepe progression-koppeling
 
 1. Crew HQ upgrades koppelen aan Territory caps/modifiers — ✅ live (server caps + player-facing `viewerCaps`)
-2. territory projects per regio — ✅ live (`safehouse_network` thin slice)
+2. territory projects per regio — ✅ live (`safehouse_network` thin slice → Fase E catalogus)
 3. sabotage en denial loops op projecten — ✅ live (contest sabotage HP / supply repair+build)
 
 ### Fase D: Seizoen/meta-laag
@@ -286,6 +286,12 @@ Waarschijnlijke metadata-uitbreidingen:
 1. gecombineerde territory + war seasonal awards — ✅ live (admin/auto close)
 2. region event rotatie — ✅ live (`region_event` thin slice)
 3. public drama widgets op dashboard/home — ✅ live
+
+### Fase E: Kaart, projectkeuze, frontline
+
+1. Kaartoverlays (contest-score, project, event) + pocket/cluster stroke + legend toggles — ✅ live
+2. Projectcatalogus per regio (`safehouse_network` / `surveillance_grid` / `arms_cache`) met HQ+tag gates — ✅ live
+3. Invasie via owned neighbor + pocket-druk op raid/sabotage (zelfde preview als server) — ✅ live
 
 ## Aanbevolen Eerste Build
 

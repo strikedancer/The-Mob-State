@@ -78,6 +78,12 @@ async function getTerritoryConfig() {
     'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE',
     'TERRITORY_PROJECT_SAFEHOUSE_MIN_HQ_LEVEL',
     'TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT',
+    'TERRITORY_PROJECT_SURVEILLANCE_MIN_HQ_LEVEL',
+    'TERRITORY_PROJECT_SURVEILLANCE_INTEL_BONUS_POINTS',
+    'TERRITORY_PROJECT_SURVEILLANCE_INTEL_COOLDOWN_PERCENT',
+    'TERRITORY_PROJECT_ARMS_CACHE_MIN_HQ_LEVEL',
+    'TERRITORY_PROJECT_ARMS_CACHE_RAID_BONUS_POINTS',
+    'TERRITORY_PROJECT_ARMS_CACHE_DEFENSE_BONUS_POINTS',
     'TERRITORY_PROJECT_CONTRIBUTE_PROGRESS',
     'TERRITORY_PROJECT_CONTRIBUTE_COOLDOWN_SECONDS',
     'TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE',
@@ -149,6 +155,12 @@ async function getTerritoryConfig() {
     actionUnlockHqLevelDefense: actionUnlockHqLevels.defense,
     projectSafehouseMinHqLevel: Number(cfg['TERRITORY_PROJECT_SAFEHOUSE_MIN_HQ_LEVEL'] ?? 4),
     projectSafehouseIncomeBonusPercent: Number(cfg['TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT'] ?? 10),
+    projectSurveillanceMinHqLevel: Number(cfg['TERRITORY_PROJECT_SURVEILLANCE_MIN_HQ_LEVEL'] ?? 5),
+    projectSurveillanceIntelBonusPoints: Number(cfg['TERRITORY_PROJECT_SURVEILLANCE_INTEL_BONUS_POINTS'] ?? 2),
+    projectSurveillanceIntelCooldownPercent: Number(cfg['TERRITORY_PROJECT_SURVEILLANCE_INTEL_COOLDOWN_PERCENT'] ?? 75),
+    projectArmsCacheMinHqLevel: Number(cfg['TERRITORY_PROJECT_ARMS_CACHE_MIN_HQ_LEVEL'] ?? 6),
+    projectArmsCacheRaidBonusPoints: Number(cfg['TERRITORY_PROJECT_ARMS_CACHE_RAID_BONUS_POINTS'] ?? 2),
+    projectArmsCacheDefenseBonusPoints: Number(cfg['TERRITORY_PROJECT_ARMS_CACHE_DEFENSE_BONUS_POINTS'] ?? 2),
     projectContributeProgress: Number(cfg['TERRITORY_PROJECT_CONTRIBUTE_PROGRESS'] ?? 20),
     projectContributeCooldownSeconds: Number(cfg['TERRITORY_PROJECT_CONTRIBUTE_COOLDOWN_SECONDS'] ?? 900),
     projectSabotageHpDamage: Number(cfg['TERRITORY_PROJECT_SABOTAGE_HP_DAMAGE'] ?? 20),
@@ -181,6 +193,15 @@ function getProjectConfig(
   return {
     safehouseMinHqLevel: Math.max(0, Math.floor(cfg.projectSafehouseMinHqLevel)),
     safehouseIncomeBonusPercent: Math.max(0, Math.floor(cfg.projectSafehouseIncomeBonusPercent)),
+    surveillanceMinHqLevel: Math.max(0, Math.floor(cfg.projectSurveillanceMinHqLevel)),
+    surveillanceIntelBonusPoints: Math.max(0, Math.floor(cfg.projectSurveillanceIntelBonusPoints)),
+    surveillanceIntelCooldownPercent: Math.min(
+      100,
+      Math.max(25, Math.floor(cfg.projectSurveillanceIntelCooldownPercent)),
+    ),
+    armsCacheMinHqLevel: Math.max(0, Math.floor(cfg.projectArmsCacheMinHqLevel)),
+    armsCacheRaidBonusPoints: Math.max(0, Math.floor(cfg.projectArmsCacheRaidBonusPoints)),
+    armsCacheDefenseBonusPoints: Math.max(0, Math.floor(cfg.projectArmsCacheDefenseBonusPoints)),
     contributeProgress: Math.max(1, Math.floor(cfg.projectContributeProgress)),
     contributeCooldownSeconds: Math.max(0, Math.floor(cfg.projectContributeCooldownSeconds)),
     sabotageHpDamage: Math.max(1, Math.floor(cfg.projectSabotageHpDamage)),
@@ -454,7 +475,7 @@ function buildPassiveIncomeSnapshot(
 type StrategicActionBonus = {
   actionType: string;
   bonusPoints: number;
-  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building' | 'region-event';
+  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building' | 'region-event' | 'region-project';
   labelNl: string;
   labelEn: string;
 };
@@ -585,7 +606,14 @@ function buildRegionEventActionBonuses(event: territoryMetaService.ActiveRegionE
 
 function buildStrategicActionBonuses(
   region: RegionRow,
-  adjacentOwnedRegions: number,
+  options: {
+    /** Owned neighbors for the crew whose defender-side pocket/cluster bonuses apply. */
+    holderAdjacentOwned: number;
+    /** Attacker owns at least one neighbor of this region. */
+    invasionFromOwnedNeighbor?: boolean;
+    /** Defender/owner pocket (0–1 own neighbors) → attacker pressure bonuses. */
+    pocketPressureForAttacker?: boolean;
+  },
 ): StrategicActionBonus[] {
   const bonuses: StrategicActionBonus[] = [];
   const strategicTags = parseStringArray(region.strategicTagsJson).map((tag) => tag.toLowerCase());
@@ -596,6 +624,7 @@ function buildStrategicActionBonuses(
     labelEn: string,
     source: 'strategic-tag' | 'adjacency' = 'strategic-tag',
   ) => {
+    if (bonusPoints <= 0) return;
     bonuses.push({ actionType, bonusPoints, source, labelNl, labelEn });
   };
 
@@ -623,12 +652,14 @@ function buildStrategicActionBonuses(
     pushBonus('intel_scan', 1, 'Luchthub', 'Air hub');
     pushBonus('supply_run', 1, 'Luchthub', 'Air hub');
   }
+
+  const adjacentOwnedRegions = options.holderAdjacentOwned;
   if (adjacentOwnedRegions === 1) {
-    // Pocket: thin supply line — modest support only.
+    // Pocket: thin supply line — modest defender support only.
     pushBonus('patrol', 1, 'Dunne supply-line (pocket)', 'Thin supply line (pocket)', 'adjacency');
     pushBonus('defense', 1, 'Dunne supply-line (pocket)', 'Thin supply line (pocket)', 'adjacency');
   } else if (adjacentOwnedRegions >= 2) {
-    // Cluster: contiguous ownership — stronger patrol/raid/defense.
+    // Cluster: contiguous ownership — stronger patrol/raid/defense/supply.
     const clusterPoints = Math.min(3, adjacentOwnedRegions);
     pushBonus('patrol', clusterPoints, 'Cluster supply-line', 'Cluster supply line', 'adjacency');
     pushBonus('raid', clusterPoints - 1, 'Cluster supply-line', 'Cluster supply line', 'adjacency');
@@ -636,7 +667,29 @@ function buildStrategicActionBonuses(
     pushBonus('supply_run', 1, 'Cluster supply-line', 'Cluster supply line', 'adjacency');
   }
 
+  if (options.invasionFromOwnedNeighbor) {
+    pushBonus('raid', 2, 'Invasie via buurregio', 'Invasion via neighboring region', 'adjacency');
+    pushBonus('intel_scan', 1, 'Invasie via buurregio', 'Invasion via neighboring region', 'adjacency');
+  }
+  if (options.pocketPressureForAttacker) {
+    pushBonus('sabotage', 2, 'Pocket-druk', 'Pocket pressure', 'adjacency');
+    pushBonus('raid', 1, 'Pocket-druk', 'Pocket pressure', 'adjacency');
+  }
+
   return bonuses;
+}
+
+function mapProjectBonusesToStrategic(
+  project: territoryProjectService.TerritoryRegionProject | null,
+  config: territoryProjectService.TerritoryProjectConfig,
+): StrategicActionBonus[] {
+  return territoryProjectService.buildProjectActionBonuses(project, config).map((bonus) => ({
+    actionType: bonus.actionType,
+    bonusPoints: bonus.bonusPoints,
+    source: 'region-project' as const,
+    labelNl: bonus.labelNl,
+    labelEn: bonus.labelEn,
+  }));
 }
 
 function getActionBonusForType(bonuses: StrategicActionBonus[], actionType: string): number {
@@ -859,7 +912,7 @@ async function processPassiveTerritoryIncome(
   const projectConfig = getProjectConfig(cfg);
   const incomeBonusByRegion = await territoryProjectService.getActiveIncomeBonusByRegionKeys(
     rows.map((row) => row.regionKey),
-    projectConfig.safehouseIncomeBonusPercent,
+    projectConfig,
   );
   const incomePenaltyByRegion = await territoryMetaService.getActiveRegionEventIncomePenaltyByRegion(
     rows.map((row) => row.regionKey),
@@ -1128,11 +1181,15 @@ export async function getMapData(
     contestActiveAt: Date | null;
     contestLockdownAt: Date | null;
     contestResolveAt: Date | null;
+    contestAttackerPoints: number;
+    contestDefenderPoints: number;
     attackerCrewId: number | null;
     attackerCrewName: string | null;
     defenderCrewId: number | null;
     defenderCrewName: string | null;
     viewerContestRole: 'attacker' | 'defender' | null;
+    ownerAdjacentOwnedRegions: number;
+    projectOptions: territoryProjectService.TerritoryProjectOption[];
     viewerNextActionAt: Date | null;
     viewerCooldownSecondsRemaining: number;
     passiveIncomeIntervalMinutes: number;
@@ -1236,11 +1293,11 @@ export async function getMapData(
   }, {});
   const projectsByRegion = await territoryProjectService.getProjectsByRegionKeys(
     regions.map((region) => region.regionKey),
-    projectConfig.safehouseIncomeBonusPercent,
+    projectConfig,
   );
   const incomeBonusByRegion = await territoryProjectService.getActiveIncomeBonusByRegionKeys(
     regions.map((region) => region.regionKey),
-    projectConfig.safehouseIncomeBonusPercent,
+    projectConfig,
   );
   const regionEvents = await territoryMetaService.getActiveRegionEvents(
     regions.map((region) => region.regionKey),
@@ -1283,6 +1340,29 @@ export async function getMapData(
     );
   }
 
+  let contestPointsById: Record<number, { attackerPoints: number; defenderPoints: number }> = {};
+  if (contests.length > 0) {
+    const contestIds = contests.map((contest) => contest.id);
+    const placeholders = contestIds.map(() => '?').join(', ');
+    const tallyRows = await prisma.$queryRawUnsafe<Array<{ contestId: number; actorCrewId: number; totalPoints: number }>>(
+      `SELECT contestId, actorCrewId, SUM(pointsDelta) AS totalPoints
+       FROM territory_actions
+       WHERE contestId IN (${placeholders}) AND abuseFlagged = 0
+       GROUP BY contestId, actorCrewId`,
+      ...contestIds,
+    );
+    contestPointsById = contests.reduce<Record<number, { attackerPoints: number; defenderPoints: number }>>((acc, contest) => {
+      const rows = tallyRows.filter((row) => row.contestId === contest.id);
+      acc[contest.id] = {
+        attackerPoints: toNumeric(rows.find((row) => row.actorCrewId === contest.attackerCrewId)?.totalPoints ?? 0),
+        defenderPoints: toNumeric(
+          rows.find((row) => contest.defenderCrewId != null && row.actorCrewId === contest.defenderCrewId)?.totalPoints ?? 0,
+        ),
+      };
+      return acc;
+    }, {});
+  }
+
   const enrichedRegions = regions.map(r => {
     const ctrl = controlMap[r.regionKey];
     const contest = contestMap[r.regionKey];
@@ -1317,12 +1397,29 @@ export async function getMapData(
     };
     const strategicTags = parseStringArray(r.strategicTagsJson);
     const neighbors = parseStringArray(r.neighborsJson);
-    const adjacentOwnedRegions = viewer?.viewerCrewId == null
-      ? 0
-      : neighbors.reduce((count, neighborKey) => {
-          const neighborControl = controlMap[neighborKey];
-          return count + (neighborControl?.ownerCrewId === viewer.viewerCrewId ? 1 : 0);
-        }, 0);
+    const countOwnedNeighbors = (crewId: number | null | undefined): number => {
+      if (crewId == null) return 0;
+      return neighbors.reduce((count, neighborKey) => {
+        const neighborControl = controlMap[neighborKey];
+        return count + (neighborControl?.ownerCrewId === crewId ? 1 : 0);
+      }, 0);
+    };
+    const adjacentOwnedRegions = countOwnedNeighbors(viewer?.viewerCrewId);
+    const ownerCrewId = ctrl?.ownerCrewId ?? null;
+    const ownerAdjacentOwnedRegions = countOwnedNeighbors(ownerCrewId);
+    const holderCrewId = contest?.defenderCrewId ?? ownerCrewId;
+    const holderAdjacentOwned = countOwnedNeighbors(holderCrewId);
+    const viewerIsHolder = viewer?.viewerCrewId != null && holderCrewId === viewer.viewerCrewId;
+    const viewerIsPotentialAttacker = viewer?.viewerCrewId != null && !viewerIsHolder;
+    const invasionFromOwnedNeighbor = Boolean(viewerIsPotentialAttacker && adjacentOwnedRegions > 0);
+    const pocketPressureForAttacker = Boolean(viewerIsPotentialAttacker && holderAdjacentOwned <= 1);
+    const regionProject = projectsByRegion[r.regionKey] ?? null;
+    const projectOptions = territoryProjectService.listProjectOptions({
+      strategicTags,
+      hqGlobalLevel: viewerCrewProgression?.hqGlobalLevel ?? 0,
+      config: projectConfig,
+    });
+    const contestPoints = contest ? (contestPointsById[contest.id] ?? { attackerPoints: 0, defenderPoints: 0 }) : null;
     const rawWarPressure = activeWarPressureByRegion[r.regionKey] ?? null;
     const activeWarPressure = rawWarPressure && (ctrl?.ownerCrewId === rawWarPressure.affectedCrewId || contest?.defenderCrewId === rawWarPressure.affectedCrewId)
       ? {
@@ -1332,12 +1429,17 @@ export async function getMapData(
         }
       : null;
     const strategicActionBonuses = [
-      ...buildStrategicActionBonuses(r, adjacentOwnedRegions),
+      ...buildStrategicActionBonuses(r, {
+        holderAdjacentOwned: viewerIsHolder ? holderAdjacentOwned : 0,
+        invasionFromOwnedNeighbor,
+        pocketPressureForAttacker,
+      }),
       ...buildProgressionActionBonuses(viewerCrewProgression, cfg),
       ...(viewer?.viewerCrewId != null && activeWarPressure?.favoredCrewId === viewer.viewerCrewId
         ? buildWarPressureActionBonuses(activeWarPressure)
         : []),
       ...buildRegionEventActionBonuses(regionEvent),
+      ...mapProjectBonusesToStrategic(regionProject, projectConfig),
     ];
     const effectiveStability = Math.max(0, (ctrl?.stability ?? 100) - (activeWarPressure?.stabilityPenalty ?? 0));
     return {
@@ -1353,6 +1455,8 @@ export async function getMapData(
       contestActiveAt: contestSchedule?.activeAt ?? null,
       contestLockdownAt: contestSchedule?.lockdownAt ?? null,
       contestResolveAt: contestSchedule?.resolveAt ?? null,
+      contestAttackerPoints: contestPoints?.attackerPoints ?? 0,
+      contestDefenderPoints: contestPoints?.defenderPoints ?? 0,
       attackerCrewId: contest?.attackerCrewId ?? null,
       attackerCrewName: contest?.attackerCrewName ?? null,
       defenderCrewId: contest?.defenderCrewId ?? null,
@@ -1365,11 +1469,13 @@ export async function getMapData(
       passiveIncomeCashHourly: boostedIncome.amountPerHour,
       passiveIncomeCashDaily: boostedIncome.amountPerDay,
       projectIncomeBonusPercent,
-      regionProject: projectsByRegion[r.regionKey] ?? null,
+      regionProject,
       regionEvent,
       strategicTags,
       neighbors,
       adjacentOwnedRegions,
+      ownerAdjacentOwnedRegions,
+      projectOptions,
       activeWarPressure,
       strategicActionBonuses,
       viewerHqGlobalLevel: viewerCrewProgression?.hqGlobalLevel ?? 0,
@@ -2015,11 +2121,19 @@ export async function doAction(
     throw new Error('ACTION_ROLE_MISMATCH');
   }
 
-  // Cooldown check
+  // Cooldown check (surveillance grid can shorten intel_scan cooldown in-region)
+  const cooldownProjects = await territoryProjectService.getProjectsByRegionKeys([contest.regionKey], projectConfig);
+  const effectiveCooldownSeconds = actionType === 'intel_scan'
+    ? territoryProjectService.intelCooldownSecondsForRegion(
+      cfg.actionCooldownSeconds,
+      cooldownProjects[contest.regionKey] ?? null,
+      projectConfig,
+    )
+    : cfg.actionCooldownSeconds;
   const recentActions = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
     `SELECT COUNT(*) AS cnt FROM territory_actions
      WHERE actorId = ? AND contestId = ? AND createdAt > DATE_SUB(NOW(), INTERVAL ? SECOND)`,
-    playerId, contestId, cfg.actionCooldownSeconds,
+    playerId, contestId, effectiveCooldownSeconds,
   );
   if (Number(recentActions[0]?.cnt ?? 0) > 0) throw new Error('ACTION_COOLDOWN');
 
@@ -2050,7 +2164,18 @@ export async function doAction(
     defense: 6,
   };
   const adjacentOwnedRegions = await getAdjacentOwnedRegionCount(contestRegion, crewId);
-  const strategicActionBonuses = buildStrategicActionBonuses(contestRegion, adjacentOwnedRegions);
+  const isAttacker = contest.attackerCrewId === crewId;
+  const holderCrewId = contest.defenderCrewId ?? null;
+  const holderAdjacentOwned = holderCrewId == null
+    ? 0
+    : await getAdjacentOwnedRegionCount(contestRegion, holderCrewId);
+  const invasionFromOwnedNeighbor = isAttacker && adjacentOwnedRegions > 0;
+  const pocketPressureForAttacker = isAttacker && holderAdjacentOwned <= 1;
+  const strategicActionBonuses = buildStrategicActionBonuses(contestRegion, {
+    holderAdjacentOwned: isAttacker ? 0 : adjacentOwnedRegions,
+    invasionFromOwnedNeighbor,
+    pocketPressureForAttacker,
+  });
   const activeWarPressure = (await getActiveWarPressureEffects([contest.regionKey], new Date()))[contest.regionKey] ?? null;
   const warPressureApplies = activeWarPressure
     && activeWarPressure.favoredCrewId === crewId
@@ -2060,7 +2185,15 @@ export async function doAction(
   const regionEvents = await territoryMetaService.getActiveRegionEvents([contest.regionKey], new Date());
   const regionEventBonuses = buildRegionEventActionBonuses(regionEvents[0] ?? null);
   const progressionBonuses = buildProgressionActionBonuses(crewProgression, cfg);
-  const allActionBonuses = [...strategicActionBonuses, ...progressionBonuses, ...warPressureBonuses, ...regionEventBonuses];
+  const regionProjects = await territoryProjectService.getProjectsByRegionKeys([contest.regionKey], projectConfig);
+  const projectBonuses = mapProjectBonusesToStrategic(regionProjects[contest.regionKey] ?? null, projectConfig);
+  const allActionBonuses = [
+    ...strategicActionBonuses,
+    ...progressionBonuses,
+    ...warPressureBonuses,
+    ...regionEventBonuses,
+    ...projectBonuses,
+  ];
   const actionBonusPoints = getActionBonusForType(allActionBonuses, actionType);
   const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
   const stabilityDelta = actionType === 'sabotage' ? -5 : (actionType === 'supply_run' ? 3 : 0);
@@ -2116,16 +2249,24 @@ export async function startRegionProject(
   playerId: number,
   crewId: number,
   regionKey: string,
+  projectType: string,
   currentCountry: string | null | undefined,
 ): Promise<territoryProjectService.TerritoryRegionProject> {
   void playerId;
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
   const progression = await getCrewTerritoryProgression(crewId);
-  return territoryProjectService.startSafehouseProject({
+  const regions = await prisma.$queryRawUnsafe<RegionRow[]>(
+    'SELECT * FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1',
+    regionKey,
+  );
+  if (!regions[0]) throw new Error('REGION_NOT_FOUND');
+  return territoryProjectService.startRegionProject({
     crewId,
     regionKey,
+    projectType,
     hqGlobalLevel: progression.hqGlobalLevel,
+    strategicTags: parseStringArray(regions[0].strategicTagsJson),
     config: getProjectConfig(cfg),
     currentCountry,
     assertInCountry: assertPlayerInTerritoryCountry,
@@ -2141,7 +2282,7 @@ export async function contributeRegionProject(
   void playerId;
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
-  return territoryProjectService.contributeSafehouseProject({
+  return territoryProjectService.contributeRegionProject({
     crewId,
     regionKey,
     config: getProjectConfig(cfg),

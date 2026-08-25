@@ -1,6 +1,30 @@
 import prisma from '../lib/prisma';
 
 export const PROJECT_TYPE_SAFEHOUSE = 'safehouse_network';
+export const PROJECT_TYPE_SURVEILLANCE = 'surveillance_grid';
+export const PROJECT_TYPE_ARMS_CACHE = 'arms_cache';
+
+export const TERRITORY_PROJECT_TYPES = [
+  PROJECT_TYPE_SAFEHOUSE,
+  PROJECT_TYPE_SURVEILLANCE,
+  PROJECT_TYPE_ARMS_CACHE,
+] as const;
+
+export type TerritoryProjectType = (typeof TERRITORY_PROJECT_TYPES)[number];
+
+export type TerritoryProjectCatalogEntry = {
+  projectType: TerritoryProjectType;
+  requiredTags: string[];
+  minHqLevel: number;
+  incomeBonusPercent: number;
+  intelScanBonusPoints: number;
+  raidBonusPoints: number;
+  defenseBonusPoints: number;
+};
+
+export function isTerritoryProjectType(value: string): value is TerritoryProjectType {
+  return (TERRITORY_PROJECT_TYPES as readonly string[]).includes(value);
+}
 
 export type TerritoryProjectStatus = 'building' | 'active' | 'damaged' | 'destroyed';
 
@@ -20,11 +44,25 @@ export type TerritoryRegionProject = {
 export type TerritoryProjectConfig = {
   safehouseMinHqLevel: number;
   safehouseIncomeBonusPercent: number;
+  surveillanceMinHqLevel: number;
+  surveillanceIntelBonusPoints: number;
+  surveillanceIntelCooldownPercent: number;
+  armsCacheMinHqLevel: number;
+  armsCacheRaidBonusPoints: number;
+  armsCacheDefenseBonusPoints: number;
   contributeProgress: number;
   contributeCooldownSeconds: number;
   sabotageHpDamage: number;
   supplyRepairHp: number;
   supplyBuildProgress: number;
+};
+
+export type TerritoryProjectOption = {
+  projectType: TerritoryProjectType;
+  minHqLevel: number;
+  allowed: boolean;
+  lockedByHq: boolean;
+  lockedByTags: boolean;
 };
 
 export type ContestProjectEffect = {
@@ -66,7 +104,79 @@ function normalizeStatus(raw: string): TerritoryProjectStatus {
   return 'building';
 }
 
-function mapProjectRow(row: ProjectRow, incomeBonusPercent: number): TerritoryRegionProject {
+function catalogForConfig(config: TerritoryProjectConfig): TerritoryProjectCatalogEntry[] {
+  return [
+    {
+      projectType: PROJECT_TYPE_SAFEHOUSE,
+      requiredTags: [],
+      minHqLevel: Math.max(0, Math.floor(config.safehouseMinHqLevel)),
+      incomeBonusPercent: Math.max(0, Math.floor(config.safehouseIncomeBonusPercent)),
+      intelScanBonusPoints: 0,
+      raidBonusPoints: 0,
+      defenseBonusPoints: 0,
+    },
+    {
+      projectType: PROJECT_TYPE_SURVEILLANCE,
+      requiredTags: ['harbor', 'airhub', 'capital'],
+      minHqLevel: Math.max(0, Math.floor(config.surveillanceMinHqLevel)),
+      incomeBonusPercent: 0,
+      intelScanBonusPoints: Math.max(0, Math.floor(config.surveillanceIntelBonusPoints)),
+      raidBonusPoints: 0,
+      defenseBonusPoints: 0,
+    },
+    {
+      projectType: PROJECT_TYPE_ARMS_CACHE,
+      requiredTags: ['industry', 'border'],
+      minHqLevel: Math.max(0, Math.floor(config.armsCacheMinHqLevel)),
+      incomeBonusPercent: 0,
+      intelScanBonusPoints: 0,
+      raidBonusPoints: Math.max(0, Math.floor(config.armsCacheRaidBonusPoints)),
+      defenseBonusPoints: Math.max(0, Math.floor(config.armsCacheDefenseBonusPoints)),
+    },
+  ];
+}
+
+export function getProjectCatalogEntry(
+  projectType: string,
+  config: TerritoryProjectConfig,
+): TerritoryProjectCatalogEntry | null {
+  return catalogForConfig(config).find((entry) => entry.projectType === projectType) ?? null;
+}
+
+function regionHasRequiredTags(strategicTags: string[], requiredTags: string[]): boolean {
+  if (requiredTags.length === 0) return true;
+  const tags = strategicTags.map((tag) => tag.toLowerCase());
+  return requiredTags.some((required) => tags.includes(required.toLowerCase()));
+}
+
+export function listProjectOptions(params: {
+  strategicTags: string[];
+  hqGlobalLevel: number;
+  config: TerritoryProjectConfig;
+}): TerritoryProjectOption[] {
+  return catalogForConfig(params.config).map((entry) => {
+    const lockedByTags = !regionHasRequiredTags(params.strategicTags, entry.requiredTags);
+    const lockedByHq = params.hqGlobalLevel < entry.minHqLevel;
+    return {
+      projectType: entry.projectType,
+      minHqLevel: entry.minHqLevel,
+      lockedByHq,
+      lockedByTags,
+      allowed: !lockedByHq && !lockedByTags,
+    };
+  });
+}
+
+function incomeBonusForProject(row: ProjectRow, config: TerritoryProjectConfig): number {
+  if (row.projectType !== PROJECT_TYPE_SAFEHOUSE) return 0;
+  const percent = Math.max(0, Math.floor(config.safehouseIncomeBonusPercent));
+  const status = normalizeStatus(row.status);
+  if (status === 'active') return percent;
+  if (status === 'damaged') return Math.floor(percent / 2);
+  return 0;
+}
+
+function mapProjectRow(row: ProjectRow, config: TerritoryProjectConfig): TerritoryRegionProject {
   return {
     id: toNumeric(row.id),
     regionKey: row.regionKey,
@@ -77,15 +187,64 @@ function mapProjectRow(row: ProjectRow, incomeBonusPercent: number): TerritoryRe
     hp: Math.max(0, toNumeric(row.hp)),
     maxHp: Math.max(1, toNumeric(row.maxHp)),
     lastContributeAt: row.lastContributeAt ?? null,
-    incomeBonusPercent: row.status === 'active' || row.status === 'damaged'
-      ? Math.max(0, incomeBonusPercent)
-      : 0,
+    incomeBonusPercent: incomeBonusForProject(row, config),
   };
+}
+
+export function buildProjectActionBonuses(
+  project: TerritoryRegionProject | null,
+  config: TerritoryProjectConfig,
+): Array<{ actionType: string; bonusPoints: number; labelNl: string; labelEn: string }> {
+  if (!project || (project.status !== 'active' && project.status !== 'damaged')) return [];
+  const entry = getProjectCatalogEntry(project.projectType, config);
+  if (!entry) return [];
+  const damagedFactor = project.status === 'damaged' ? 0.5 : 1;
+  const bonuses: Array<{ actionType: string; bonusPoints: number; labelNl: string; labelEn: string }> = [];
+  const intel = Math.max(0, Math.floor(entry.intelScanBonusPoints * damagedFactor));
+  const raid = Math.max(0, Math.floor(entry.raidBonusPoints * damagedFactor));
+  const defense = Math.max(0, Math.floor(entry.defenseBonusPoints * damagedFactor));
+  if (intel > 0) {
+    bonuses.push({
+      actionType: 'intel_scan',
+      bonusPoints: intel,
+      labelNl: 'Surveillance-netwerk',
+      labelEn: 'Surveillance grid',
+    });
+  }
+  if (raid > 0) {
+    bonuses.push({
+      actionType: 'raid',
+      bonusPoints: raid,
+      labelNl: 'Wapenopslag',
+      labelEn: 'Arms cache',
+    });
+  }
+  if (defense > 0) {
+    bonuses.push({
+      actionType: 'defense',
+      bonusPoints: defense,
+      labelNl: 'Wapenopslag',
+      labelEn: 'Arms cache',
+    });
+  }
+  return bonuses;
+}
+
+export function intelCooldownSecondsForRegion(
+  baseCooldownSeconds: number,
+  project: TerritoryRegionProject | null,
+  config: TerritoryProjectConfig,
+): number {
+  const base = Math.max(0, Math.floor(baseCooldownSeconds));
+  if (!project || project.projectType !== PROJECT_TYPE_SURVEILLANCE) return base;
+  if (project.status !== 'active' && project.status !== 'damaged') return base;
+  const percent = Math.min(100, Math.max(25, Math.floor(config.surveillanceIntelCooldownPercent)));
+  return Math.max(0, Math.floor((base * percent) / 100));
 }
 
 export async function getProjectsByRegionKeys(
   regionKeys: string[],
-  incomeBonusPercent: number,
+  config: TerritoryProjectConfig,
 ): Promise<Record<string, TerritoryRegionProject>> {
   if (regionKeys.length === 0) return {};
   const placeholders = regionKeys.map(() => '?').join(',');
@@ -96,16 +255,16 @@ export async function getProjectsByRegionKeys(
     ...regionKeys,
   );
   return rows.reduce<Record<string, TerritoryRegionProject>>((acc, row) => {
-    acc[row.regionKey] = mapProjectRow(row, incomeBonusPercent);
+    acc[row.regionKey] = mapProjectRow(row, config);
     return acc;
   }, {});
 }
 
 export async function getActiveIncomeBonusByRegionKeys(
   regionKeys: string[],
-  incomeBonusPercent: number,
+  config: TerritoryProjectConfig,
 ): Promise<Record<string, number>> {
-  if (regionKeys.length === 0 || incomeBonusPercent <= 0) return {};
+  if (regionKeys.length === 0 || config.safehouseIncomeBonusPercent <= 0) return {};
   const placeholders = regionKeys.map(() => '?').join(',');
   const rows = await prisma.$queryRawUnsafe<Array<{ regionKey: string; status: string }>>(
     `SELECT regionKey, status FROM territory_region_projects
@@ -115,26 +274,46 @@ export async function getActiveIncomeBonusByRegionKeys(
     PROJECT_TYPE_SAFEHOUSE,
   );
   return rows.reduce<Record<string, number>>((acc, row) => {
-    // Damaged projects still pay a reduced bonus (half).
     acc[row.regionKey] = row.status === 'damaged'
-      ? Math.floor(incomeBonusPercent / 2)
-      : incomeBonusPercent;
+      ? Math.floor(config.safehouseIncomeBonusPercent / 2)
+      : config.safehouseIncomeBonusPercent;
     return acc;
   }, {});
 }
 
-export async function startSafehouseProject(params: {
+export async function startRegionProject(params: {
   crewId: number;
   regionKey: string;
+  projectType: string;
   hqGlobalLevel: number;
+  strategicTags: string[];
   config: TerritoryProjectConfig;
   currentCountry: string | null | undefined;
   assertInCountry: (currentCountry: string | null | undefined, regionCountryCode: string) => void;
 }): Promise<TerritoryRegionProject> {
-  const { crewId, regionKey, hqGlobalLevel, config, currentCountry, assertInCountry } = params;
+  const {
+    crewId,
+    regionKey,
+    projectType: rawType,
+    hqGlobalLevel,
+    strategicTags,
+    config,
+    currentCountry,
+    assertInCountry,
+  } = params;
 
-  if (hqGlobalLevel < config.safehouseMinHqLevel) {
+  if (!isTerritoryProjectType(rawType)) {
+    throw new Error('PROJECT_INVALID_TYPE');
+  }
+  const projectType = rawType;
+  const catalog = getProjectCatalogEntry(projectType, config);
+  if (!catalog) throw new Error('PROJECT_INVALID_TYPE');
+
+  if (hqGlobalLevel < catalog.minHqLevel) {
     throw new Error('PROJECT_HQ_LEVEL_REQUIRED');
+  }
+  if (!regionHasRequiredTags(strategicTags, catalog.requiredTags)) {
+    throw new Error('PROJECT_TAG_MISMATCH');
   }
 
   const regions = await prisma.$queryRawUnsafe<Array<{ regionKey: string; countryCode: string }>>(
@@ -168,7 +347,7 @@ export async function startSafehouseProject(params: {
            lastContributeAt = NULL, updatedAt = NOW()
        WHERE regionKey = ?`,
       crewId,
-      PROJECT_TYPE_SAFEHOUSE,
+      projectType,
       regionKey,
     );
   } else {
@@ -178,7 +357,7 @@ export async function startSafehouseProject(params: {
        VALUES (?, ?, ?, 'building', 0, 100, 100)`,
       regionKey,
       crewId,
-      PROJECT_TYPE_SAFEHOUSE,
+      projectType,
     );
   }
 
@@ -187,10 +366,27 @@ export async function startSafehouseProject(params: {
     regionKey,
   );
   if (!rows[0]) throw new Error('PROJECT_NOT_FOUND');
-  return mapProjectRow(rows[0], config.safehouseIncomeBonusPercent);
+  return mapProjectRow(rows[0], config);
 }
 
-export async function contributeSafehouseProject(params: {
+/** @deprecated Use startRegionProject — kept as alias for older call sites. */
+export async function startSafehouseProject(params: {
+  crewId: number;
+  regionKey: string;
+  hqGlobalLevel: number;
+  config: TerritoryProjectConfig;
+  currentCountry: string | null | undefined;
+  assertInCountry: (currentCountry: string | null | undefined, regionCountryCode: string) => void;
+  strategicTags?: string[];
+}): Promise<TerritoryRegionProject> {
+  return startRegionProject({
+    ...params,
+    projectType: PROJECT_TYPE_SAFEHOUSE,
+    strategicTags: params.strategicTags ?? [],
+  });
+}
+
+export async function contributeRegionProject(params: {
   crewId: number;
   regionKey: string;
   config: TerritoryProjectConfig;
@@ -266,7 +462,18 @@ export async function contributeSafehouseProject(params: {
     project.id,
   );
   if (!updated[0]) throw new Error('PROJECT_NOT_FOUND');
-  return mapProjectRow(updated[0], config.safehouseIncomeBonusPercent);
+  return mapProjectRow(updated[0], config);
+}
+
+/** @deprecated Use contributeRegionProject */
+export async function contributeSafehouseProject(params: {
+  crewId: number;
+  regionKey: string;
+  config: TerritoryProjectConfig;
+  currentCountry: string | null | undefined;
+  assertInCountry: (currentCountry: string | null | undefined, regionCountryCode: string) => void;
+}): Promise<TerritoryRegionProject> {
+  return contributeRegionProject(params);
 }
 
 export async function applyContestActionToProject(params: {

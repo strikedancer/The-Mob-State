@@ -68,6 +68,15 @@ const META = {
       level: { type: 'int' },
     },
   },
+  territoryContestHudScore: {
+    placeholders: {
+      attacker: { type: 'int' },
+      defender: { type: 'int' },
+    },
+  },
+  territoryProjectLockedHq: {
+    placeholders: { level: { type: 'int' } },
+  },
 };
 
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));

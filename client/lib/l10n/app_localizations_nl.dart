@@ -11958,7 +11958,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryValueHigh => 'Hoog';
 
   @override
-  String get territoryValueTop => 'Bovenkant';
+  String get territoryValueTop => 'Top';
 
   @override
   String get territoryTagCapital => 'Bestuurlijk centrum';
@@ -11979,7 +11979,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryActionPatrol => 'Patrouille';
 
   @override
-  String get territoryActionIntelScan => 'Intel-scan';
+  String get territoryActionIntelScan => 'Intel scan';
 
   @override
   String get territoryActionSabotage => 'Sabotage';
@@ -12000,10 +12000,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryBonusAdjacentSupport => 'Aangrenzende steun';
 
   @override
-  String get territoryBonusWarPressure => 'Oorlogsdruk';
+  String get territoryBonusWarPressure => 'War pressure';
 
   @override
-  String get territoryBonusHqLevel => 'HQ-niveau';
+  String get territoryBonusHqLevel => 'HQ level';
 
   @override
   String get territoryBonusCrewMissionLevel => 'Crew missielevel';
@@ -12102,7 +12102,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get territoryMapHintColors =>
-      'Regio-kleuren tonen eigendom; oranje = actieve contest.';
+      'Regio-kleuren tonen eigendom; oranje = actieve contest. Dikkere randen = cluster, dunnere = pocket. Gebruik de lagen voor contest-scores, projecten en events.';
 
   @override
   String territoryMapOverviewTitle(String country) {
@@ -12165,7 +12165,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Deze bonussen verhogen alleen je contestpunten per actie. De €-uitbetaling van het gebied blijft gelijk.';
 
   @override
-  String get territoryDetailWarPressure => 'Oorlogsdruk';
+  String get territoryDetailWarPressure => 'War pressure';
 
   @override
   String get territoryDetailAttackPressure => 'aanvalsdruk';
@@ -12195,7 +12195,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryDetailYourCrew => 'Jouw crew';
 
   @override
-  String get territoryDetailContestStatus => 'Wedstrijdstatus';
+  String get territoryDetailContestStatus => 'Contest status';
 
   @override
   String get territoryDetailYourRole => 'Jouw rol';
@@ -12293,7 +12293,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territorySeasonStatus => 'Status';
 
   @override
-  String get territorySeasonStart => 'Begin';
+  String get territorySeasonStart => 'Start';
 
   @override
   String get territorySeasonEnd => 'Einde';
@@ -14227,11 +14227,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTerritoryHow =>
-      'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.\nAlle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.\nTik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.\nBekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.\nOp mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.\nTerritorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.\nElke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.\nStart een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.\nZodra de voorbereiding klaar is, krijgen aanvallende én verdedigende crewleden een push- en inboxbericht zodat je weet dat er nu aangevallen of verdedigd kan worden. Die melding komt via de minuut-cron, ook als niemand het Territory-scherm open heeft.\nTijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.\nRegio\'s hebben nu ook strategische rollen zoals haven, industrie, hoofdstad, grensregio of logistiek knooppunt. Die rol bepaalt welke actions daar extra punten kunnen krijgen.\nAangrenzende regio\'s die al van jouw crew zijn leveren nu extra steun op bij contest-actions. De regio-modal laat zien welke strategische bonussen actief zijn en hoeveel buursteun jouw crew op dat gebied heeft.\nActiebonussen kunnen nu ook uit crew-progressie komen: HQ-level, crew missielevel en relevante bijgebouwen (wapen/munitie/auto/boot/drugs-opslag). Deze bonussen verhogen alleen contestpunten, niet de passieve cash van het gebied.\nSommige geavanceerde contest-acties zijn HQ-gated: als je HQ-level te laag is zie je direct `vereist HQ level X` op de actieknop.\nTerritory gebruikt standaard geen harde dagcap meer voor acties (runtime cap 0 = uit). Balans blijft via cooldown, anti-farm en strategische actiekeuze.\nAls een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.\nAanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.\nDe waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.\nContests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.\nGrote regio\'s (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.\nSeizoenale events geven bonus-beloningen en speciale challenges per regio\'s groep.\nPrevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.\nAnti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.';
+      'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.\nAlle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.\nTik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.\nBekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.\nOp mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.\nTerritorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.\nElke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.\nStart een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.\nZodra de voorbereiding klaar is, krijgen aanvallende én verdedigende crewleden een push- en inboxbericht zodat je weet dat er nu aangevallen of verdedigd kan worden. Die melding komt via de minuut-cron, ook als niemand het Territory-scherm open heeft.\nTijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.\nRegio\'s hebben nu ook strategische rollen zoals haven, industrie, hoofdstad, grensregio of logistiek knooppunt. Die rol bepaalt welke actions daar extra punten kunnen krijgen.\nAangrenzende regio\'s die al van jouw crew zijn leveren nu extra steun op bij contest-actions. De regio-modal laat zien welke strategische bonussen actief zijn en hoeveel buursteun jouw crew op dat gebied heeft.\nActiebonussen kunnen nu ook uit crew-progressie komen: HQ-level, crew missielevel en relevante bijgebouwen (wapen/munitie/auto/boot/drugs-opslag). Deze bonussen verhogen alleen contestpunten, niet de passieve cash van het gebied.\nSommige geavanceerde contest-acties zijn HQ-gated: als je HQ-level te laag is zie je direct `vereist HQ level X` op de actieknop.\nTerritory gebruikt standaard geen harde dagcap meer voor acties (runtime cap 0 = uit). Balans blijft via cooldown, anti-farm en strategische actiekeuze.\nAls een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.\nAanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.\nDe waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.\nContests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.\nGrote regio\'s (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.\nSeizoenale events geven bonus-beloningen en speciale challenges per regio\'s groep.\nPrevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.\nAnti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.\nKaartoverlays tonen live contest-scores, regioprojecten en events; dikkere randen markeren clusters en dunnere randen pockets.\nOp eigen regio\'s kun je een projecttype starten: safehouse-netwerk (inkomen), surveillance-netwerk op haven/luchthub/hoofdstad (intel), of wapenopslag op industrie/grens (raid/defense).\nAanvallen vanuit een eigen buurregio geeft invasiebonussen; een pocket krijgt extra sabotage-/raid-druk.';
 
   @override
   String get helpTopicTerritoryTips =>
-      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.';
+      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.\nHoud clusters voor sterkere verdedigingssteun; pockets nodigen invasiedruk vanuit buurregio\'s uit. Gebruik de kaartlagen voor contest-scores, projecten en regio-events.';
 
   @override
   String get helpTopicProstitutionCategory => 'Empire';
@@ -14719,7 +14719,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get territoryProjectStart => 'Start safehouse-project';
+  String get territoryProjectStart => 'Start regioproject';
 
   @override
   String get territoryProjectContribute => 'Bevoorraad project';
@@ -14731,7 +14731,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get territoryProjectHint =>
-      'Een safehouse-netwerk verhoogt passief inkomen. Sabotage beschadigt het in contests; supply runs repareren of bouwen het verder.';
+      'Kies een projecttype voor dit gebied. Sabotage beschadigt het in contests; bevoorrading herstelt of bouwt het verder.';
 
   @override
   String get territorySnackProjectStarted => 'Safehouse-project gestart.';
@@ -15114,4 +15114,73 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get premiumUiGiftCrewVipFailed =>
       'Crew VIP-cadeau checkout starten mislukt.';
+
+  @override
+  String get territoryOverlayContest => 'Contest-scores';
+
+  @override
+  String get territoryOverlayProject => 'Projecten';
+
+  @override
+  String get territoryOverlayEvent => 'Regio-events';
+
+  @override
+  String get territoryLegendPocket => 'Pocket (dunne rand)';
+
+  @override
+  String get territoryLegendCluster => 'Cluster (dikke rand)';
+
+  @override
+  String get territoryContestHudTitle => 'Contest';
+
+  @override
+  String territoryContestHudScore(int attacker, int defender) {
+    return 'Stand $attacker:$defender';
+  }
+
+  @override
+  String get territoryProjectSurveillance => 'Surveillance-netwerk';
+
+  @override
+  String get territoryProjectArmsCache => 'Wapenopslag';
+
+  @override
+  String get territoryProjectPickTitle => 'Kies een regioproject';
+
+  @override
+  String get territoryProjectPickSubtitle =>
+      'Een project per regio. Type hangt af van strategische tags en HQ-level.';
+
+  @override
+  String get territoryProjectStartGeneric => 'Start project';
+
+  @override
+  String get territoryProjectLockedTags => 'Past niet bij strategische tags';
+
+  @override
+  String territoryProjectLockedHq(int level) {
+    return 'Vereist HQ $level';
+  }
+
+  @override
+  String get territoryProjectSafehouseDesc =>
+      'Passieve inkomensbonus op dit gebied.';
+
+  @override
+  String get territoryProjectSurveillanceDesc =>
+      'Extra intel_scan-punten en kortere intel-cooldown (haven / luchthub / hoofdstad).';
+
+  @override
+  String get territoryProjectArmsCacheDesc =>
+      'Extra raid- en defense-punten (industrie / grens).';
+
+  @override
+  String get territoryBonusRegionProject => 'Regioproject';
+
+  @override
+  String get territoryErrorProjectInvalidType => 'Onbekend projecttype.';
+
+  @override
+  String get territoryErrorProjectTagMismatch =>
+      'Dit projecttype past niet bij de strategische tags van dit gebied.';
 }
