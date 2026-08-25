@@ -937,11 +937,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get menuNavCategoryMore => 'Mehr';
 
   @override
-  String get liveEvents => 'Welt-Feed';
+  String get liveEvents => 'Meine Aktivität';
 
   @override
-  String get worldFeedHint =>
-      'Aktivität aller Spieler — nicht deine persönliche Jobliste.';
+  String get worldFeedHint => 'Nur deine letzten Aktionen.';
 
   @override
   String get support => 'Unterstützung';

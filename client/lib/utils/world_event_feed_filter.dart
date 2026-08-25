@@ -1,18 +1,16 @@
-/// Keys excluded from the public dashboard world feed (andermans DMs/fails/noise).
-const _publicFeedExcludedExact = <String>{
+/// Keys excluded from the personal dashboard activity feed.
+const _personalFeedExcludedExact = <String>{
   'player.activity',
-  'job.failed',
-  'crew.message',
-  'direct_message.received',
-  'direct_message.sent',
-  'direct_message.read',
-  'direct_message.deleted',
+  'auth.session.login',
+  'connection.established',
 };
 
-bool isPublicWorldFeedEvent(String eventKey) {
+bool isPersonalDashboardFeedEvent(String eventKey) {
   if (eventKey.isEmpty) return false;
-  if (_publicFeedExcludedExact.contains(eventKey)) return false;
-  if (eventKey.startsWith('direct_message.')) return false;
-  if (eventKey.startsWith('job.error')) return false;
+  if (_personalFeedExcludedExact.contains(eventKey)) return false;
   return true;
 }
+
+/// Backward-compatible alias.
+bool isPublicWorldFeedEvent(String eventKey) =>
+    isPersonalDashboardFeedEvent(eventKey);

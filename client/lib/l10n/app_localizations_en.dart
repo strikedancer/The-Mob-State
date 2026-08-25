@@ -921,11 +921,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuNavCategoryMore => 'More';
 
   @override
-  String get liveEvents => 'World feed';
+  String get liveEvents => 'My activity';
 
   @override
-  String get worldFeedHint =>
-      'Activity from all players — not your personal job list.';
+  String get worldFeedHint => 'Only your recent actions.';
 
   @override
   String get support => 'Support';

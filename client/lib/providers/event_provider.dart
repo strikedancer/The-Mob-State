@@ -66,7 +66,7 @@ class EventProvider with ChangeNotifier {
       final hydrated = rows
           .whereType<Map>()
           .map((row) => WorldEvent.fromJson(Map<String, dynamic>.from(row)))
-          .where((event) => isPublicWorldFeedEvent(event.eventKey))
+          .where((event) => isPersonalDashboardFeedEvent(event.eventKey))
           .toList();
       if (hydrated.isEmpty) return;
       _events
@@ -112,7 +112,7 @@ class EventProvider with ChangeNotifier {
         return;
       }
 
-      if (!isPublicWorldFeedEvent(eventKey)) {
+      if (!isPersonalDashboardFeedEvent(eventKey)) {
         return;
       }
       

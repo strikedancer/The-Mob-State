@@ -356,9 +356,20 @@ class JobService {
         console.error('[JobService] Failed to log JOB activity:', err);
       }
     } else {
-      // Job failures are personal feedback (toast/result UI), not public world news —
-      // broadcasting them made the dashboard feed look like "errors" and listed
-      // locked jobs other players failed on.
+      try {
+        await worldEventService.createEvent(
+          'job.failed',
+          {
+            jobId,
+            jobName: job.name,
+            xpLost,
+          },
+          playerId,
+        );
+      } catch (err) {
+        console.error('[JobService] Failed to create job.failed world event:', err);
+      }
+
       try {
         await activityService.logActivity(
           playerId,

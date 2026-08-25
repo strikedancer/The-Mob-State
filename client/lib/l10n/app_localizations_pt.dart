@@ -928,11 +928,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get menuNavCategoryMore => 'Mais';
 
   @override
-  String get liveEvents => 'Feed mundial';
+  String get liveEvents => 'Minha atividade';
 
   @override
-  String get worldFeedHint =>
-      'Atividade de todos os jogadores — não é a sua lista de empregos.';
+  String get worldFeedHint => 'Apenas as suas ações recentes.';
 
   @override
   String get support => 'Suporte';

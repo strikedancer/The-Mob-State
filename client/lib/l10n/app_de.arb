@@ -427,7 +427,7 @@
   "systemMessagesReadOnlyHint": "Systemnachrichten können nicht beantwortet werden",
   "helpAndGuide": "Hilfe und Anleitung",
   "quickActions": "Schnelle Aktionen",
-  "liveEvents": "Welt-Feed",
+  "liveEvents": "Meine Aktivität",
   "support": "Unterstützung",
   "events": "Veranstaltungen",
   "aviation": "Luftfahrt",
@@ -9154,7 +9154,7 @@
     }
   },
   "jobOutcomeSuccess": "Arbeit erledigt!",
-  "worldFeedHint": "Aktivität aller Spieler — nicht deine persönliche Jobliste.",
+  "worldFeedHint": "Nur deine letzten Aktionen.",
   "evStreamActorPrefix": "{username}: {message}",
   "@evStreamActorPrefix": {
     "placeholders": {

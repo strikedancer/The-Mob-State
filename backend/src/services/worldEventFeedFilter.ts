@@ -1,24 +1,25 @@
-/** Exact event keys excluded from the public dashboard world feed. */
-export const PUBLIC_FEED_EXACT_EXCLUDE = [
+/**
+ * Keys that are stored/broadcast for other channels but should not clutter
+ * the player's personal dashboard activity feed.
+ */
+export const PERSONAL_FEED_EXACT_EXCLUDE = [
   'player.activity',
-  'job.failed',
-  'crew.message',
-  'direct_message.received',
-  'direct_message.sent',
-  'direct_message.read',
-  'direct_message.deleted',
+  'auth.session.login',
+  'connection.established',
 ] as const;
 
-/**
- * Event keys that must not appear on the public dashboard world feed.
- * Private messaging / crew chat use worldEvent + SSE today but are not public news.
- */
-export function isPublicWorldFeedEvent(eventKey: string): boolean {
+export function isPersonalDashboardFeedEvent(eventKey: string): boolean {
   if (!eventKey) return false;
-  if ((PUBLIC_FEED_EXACT_EXCLUDE as readonly string[]).includes(eventKey)) {
+  if ((PERSONAL_FEED_EXACT_EXCLUDE as readonly string[]).includes(eventKey)) {
     return false;
   }
-  if (eventKey.startsWith('direct_message.')) return false;
-  if (eventKey.startsWith('job.error')) return false;
   return true;
 }
+
+/** @deprecated Use isPersonalDashboardFeedEvent — public world feed removed. */
+export function isPublicWorldFeedEvent(eventKey: string): boolean {
+  return isPersonalDashboardFeedEvent(eventKey);
+}
+
+/** @deprecated */
+export const PUBLIC_FEED_EXACT_EXCLUDE = PERSONAL_FEED_EXACT_EXCLUDE;

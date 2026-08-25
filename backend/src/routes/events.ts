@@ -1,25 +1,28 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
+import { randomUUID } from 'crypto';
 import { worldEventService } from '../services/worldEventService';
 import { eventBroadcaster } from '../services/eventBroadcaster';
-import { randomUUID } from 'crypto';
+import { authenticate, AuthRequest } from '../middleware/authenticate';
 
 const router = Router();
 
 /**
  * GET /events
- * Get recent world events (paginated)
+ * Recent activity for the authenticated player (personal dashboard feed).
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   try {
+    const playerId = req.player!.id;
     const limit = parseInt(req.query.limit as string) || 50;
     const offset = parseInt(req.query.offset as string) || 0;
 
-    // Validate limit (max 100)
     const validLimit = Math.min(Math.max(1, limit), 100);
     const validOffset = Math.max(0, offset);
 
-    const events = await worldEventService.getRecentEvents(validLimit, validOffset);
-    const total = await worldEventService.getEventCount();
+    const events = await worldEventService.getRecentEvents(validLimit, validOffset, {
+      playerId,
+    });
+    const total = await worldEventService.getEventCount(playerId);
 
     return res.status(200).json({
       event: 'events.list',
@@ -27,6 +30,7 @@ router.get('/', async (req: Request, res: Response) => {
         limit: validLimit,
         offset: validOffset,
         total,
+        scope: 'player',
       },
       events,
     });
@@ -40,21 +44,19 @@ router.get('/', async (req: Request, res: Response) => {
 
 /**
  * GET /events/stream
- * Server-Sent Events endpoint for live world events
+ * SSE for the authenticated player's own activity.
  */
-router.get('/stream', (req: Request, res: Response) => {
+router.get('/stream', authenticate, (req: AuthRequest, res: Response) => {
   const clientId = randomUUID();
+  const playerId = req.player!.id;
 
-  // Set SSE headers
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
-  res.setHeader('X-Accel-Buffering', 'no'); // Disable nginx buffering
+  res.setHeader('X-Accel-Buffering', 'no');
 
-  // Add client to broadcaster
-  eventBroadcaster.addClient(clientId, res);
+  eventBroadcaster.addClient(clientId, res, playerId);
 
-  // Handle client disconnect
   req.on('close', () => {
     eventBroadcaster.removeClient(clientId);
   });

@@ -927,11 +927,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get menuNavCategoryMore => 'Meer';
 
   @override
-  String get liveEvents => 'Wereldfeed';
+  String get liveEvents => 'Mijn activiteit';
 
   @override
-  String get worldFeedHint =>
-      'Activiteit van alle spelers — niet jouw persoonlijke banenlijst.';
+  String get worldFeedHint => 'Alleen jouw recente acties.';
 
   @override
   String get support => 'Support';

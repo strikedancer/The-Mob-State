@@ -6,7 +6,7 @@ import '../l10n/app_localizations.dart';
 
 import '../utils/world_event_feed_filter.dart';
 
-/// Widget that displays a live feed of world events
+/// Widget that displays the player's personal activity feed
 class EventFeed extends StatelessWidget {
   final int maxEvents;
 
@@ -69,7 +69,7 @@ class EventFeed extends StatelessWidget {
 
         // Show events
         final displayEvents = eventProvider.events
-            .where((event) => isPublicWorldFeedEvent(event.eventKey))
+            .where((event) => isPersonalDashboardFeedEvent(event.eventKey))
             .take(maxEvents)
             .toList();
 

@@ -1,9 +1,6 @@
 import prisma from '../lib/prisma';
 import { eventBroadcaster } from './eventBroadcaster';
-import {
-  isPublicWorldFeedEvent,
-  PUBLIC_FEED_EXACT_EXCLUDE,
-} from './worldEventFeedFilter';
+import { isPersonalDashboardFeedEvent } from './worldEventFeedFilter';
 
 const safeStringify = (value: unknown): string => {
   try {
@@ -23,7 +20,8 @@ const safeParse = (value: string): unknown => {
 
 export const worldEventService = {
   /**
-   * Create a new world event
+   * Create a world/player event. When playerId is set, live SSE goes only to that player
+   * (dashboard shows personal activity, not a global feed).
    */
   async createEvent(
     eventKey: string,
@@ -49,26 +47,31 @@ export const worldEventService = {
       },
     });
 
-    // Private / noisy keys stay in DB for debugging/history but are not
-    // pushed to every client's public "world feed" SSE channel.
-    if (!isPublicWorldFeedEvent(eventKey)) {
+    if (!isPersonalDashboardFeedEvent(eventKey)) {
       return;
     }
 
-    eventBroadcaster.broadcast({
+    const payload = {
       event: eventKey,
       params: enrichedParams,
-    });
+      playerId: playerId ?? null,
+    };
+
+    if (playerId != null) {
+      eventBroadcaster.sendToPlayer(playerId, payload);
+      return;
+    }
+
+    // Events without a player (rare system notices) are not pushed to personal feeds.
   },
 
   /**
-   * Get recent world events (paginated).
-   * Default: public dashboard feed only (excludes DMs, crew chat, job fails, …).
+   * Recent events for one player (dashboard personal activity feed).
    */
   async getRecentEvents(
     limit = 50,
     offset = 0,
-    options?: { publicFeedOnly?: boolean }
+    options?: { playerId?: number }
   ): Promise<
     Array<{
       id: number;
@@ -78,23 +81,16 @@ export const worldEventService = {
       createdAt: Date;
     }>
   > {
-    const publicFeedOnly = options?.publicFeedOnly !== false;
-    // Over-fetch a bit so prefix filters still leave enough rows for the page.
-    const fetchTake = publicFeedOnly ? Math.min(limit * 3, 150) : limit;
+    const playerId = options?.playerId;
+    if (playerId == null) {
+      return [];
+    }
 
     const events = await prisma.worldEvent.findMany({
-      where: publicFeedOnly
-        ? {
-            NOT: {
-              eventKey: { in: [...PUBLIC_FEED_EXACT_EXCLUDE] },
-            },
-          }
-        : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: fetchTake,
-      skip: offset,
+      where: { playerId },
+      orderBy: { createdAt: 'desc' },
+      take: Math.min(Math.max(1, limit) * 2, 100),
+      skip: Math.max(0, offset),
       select: {
         id: true,
         eventKey: true,
@@ -104,25 +100,14 @@ export const worldEventService = {
       },
     });
 
-    const filtered = publicFeedOnly
-      ? events.filter((event) => isPublicWorldFeedEvent(event.eventKey)).slice(0, limit)
-      : events;
+    const filtered = events
+      .filter((event) => isPersonalDashboardFeedEvent(event.eventKey))
+      .slice(0, limit);
 
-    const playerIds = [
-      ...new Set(
-        filtered
-          .map((event) => event.playerId)
-          .filter((id): id is number => typeof id === 'number'),
-      ),
-    ];
-    const players =
-      playerIds.length > 0
-        ? await prisma.player.findMany({
-            where: { id: { in: playerIds } },
-            select: { id: true, username: true },
-          })
-        : [];
-    const usernameById = new Map(players.map((p) => [p.id, p.username]));
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { username: true },
+    });
 
     return filtered.map((event) => {
       const parsed = safeParse(event.params);
@@ -132,9 +117,8 @@ export const worldEventService = {
               ...(parsed as Record<string, unknown>),
               username:
                 (parsed as Record<string, unknown>).username ??
-                (event.playerId != null
-                  ? usernameById.get(event.playerId)
-                  : undefined),
+                player?.username ??
+                undefined,
             }
           : parsed;
       return {
@@ -147,10 +131,8 @@ export const worldEventService = {
     });
   },
 
-  /**
-   * Get total count of world events
-   */
-  async getEventCount(): Promise<number> {
-    return await prisma.worldEvent.count();
+  async getEventCount(playerId?: number): Promise<number> {
+    if (playerId == null) return 0;
+    return prisma.worldEvent.count({ where: { playerId } });
   },
 };

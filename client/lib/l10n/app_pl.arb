@@ -427,7 +427,7 @@
   "systemMessagesReadOnlyHint": "Na wiadomości systemowe nie można odpowiedzieć",
   "helpAndGuide": "Pomoc i przewodnik",
   "quickActions": "Szybkie działania",
-  "liveEvents": "Feed świata",
+  "liveEvents": "Moja aktywność",
   "support": "Wsparcie",
   "events": "Wydarzenia",
   "aviation": "Lotnictwo",
@@ -9154,7 +9154,7 @@
     }
   },
   "jobOutcomeSuccess": "Praca ukończona!",
-  "worldFeedHint": "Aktywność wszystkich graczy — to nie twoja lista prac.",
+  "worldFeedHint": "Tylko twoje ostatnie akcje.",
   "evStreamActorPrefix": "{username}: {message}",
   "@evStreamActorPrefix": {
     "placeholders": {

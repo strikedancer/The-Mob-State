@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../config/app_config.dart';
+import 'api_client.dart';
 
-/// Service to connect to SSE endpoint and stream real-time events
+/// Service to connect to SSE endpoint and stream the player's own activity.
 class EventStreamService {
   final String _url = '${AppConfig.apiBaseUrl}/events/stream';
+  final ApiClient _apiClient = ApiClient();
   StreamController<Map<String, dynamic>>? _controller;
   http.Client? _client;
   http.StreamedResponse? _response;
@@ -37,11 +39,19 @@ class EventStreamService {
 
     try {
       print('[EventStream] Connecting to $_url...');
+      final token = await _apiClient.getToken();
+      if (token == null || token.isEmpty) {
+        print('[EventStream] No auth token; postponing connect');
+        _scheduleReconnect();
+        return;
+      }
+
       _client = http.Client();
 
       final request = http.Request('GET', Uri.parse(_url));
       request.headers['Accept'] = 'text/event-stream';
       request.headers['Cache-Control'] = 'no-cache';
+      request.headers['Authorization'] = 'Bearer $token';
 
       _response = await _client!.send(request);
 

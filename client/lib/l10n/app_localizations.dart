@@ -1805,13 +1805,13 @@ abstract class AppLocalizations {
   /// No description provided for @liveEvents.
   ///
   /// In en, this message translates to:
-  /// **'World feed'**
+  /// **'My activity'**
   String get liveEvents;
 
   /// No description provided for @worldFeedHint.
   ///
   /// In en, this message translates to:
-  /// **'Activity from all players — not your personal job list.'**
+  /// **'Only your recent actions.'**
   String get worldFeedHint;
 
   /// No description provided for @support.
