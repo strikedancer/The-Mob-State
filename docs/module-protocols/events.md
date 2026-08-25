@@ -8,6 +8,7 @@
 - **Event Pass** (Mollie one-time, key `event_pass_7d`): `EVENT_BOOST` entitlement + small credit bonus; `balance-economy.md` / `payments.md` apply.
 - **Push (FCM)**: bij start en einde van een actief live event stuurt de server een **gelokaliseerde push** (NL/EN) naar spelers die in **Instellingen → Spelerevents** push aan hebben staan (`push_game_events`, standaard **aan**). Zie `gameEventNotificationService` + `playerNotificationPreferenceService`.
 - **Dashboard (client)**: web dashboard home laadt `/game-events/overview` en toont actieve events compact (zonder het overige dashboard te breken).
+- **Live leaderboard**: `GET /game-events/:id` toont top-10 op **score** tijdens `active` (ranks worden pas bij resolve weggeschreven); viewer buiten top-10 blijft meegenomen met berekende plaats.
 
 ## Operator checklist (deploy & runtime)
 

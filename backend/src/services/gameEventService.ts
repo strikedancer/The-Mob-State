@@ -401,23 +401,6 @@ class GameEventService {
           },
           take: 5,
         },
-        participants: {
-          where: playerId ? { OR: [{ playerId }, { rank: { lte: 10 } }] } : { rank: { lte: 10 } },
-          orderBy: [
-            { rank: 'asc' },
-            { score: 'desc' },
-          ],
-          take: 25,
-          include: {
-            player: {
-              select: {
-                id: true,
-                username: true,
-                rank: true,
-              },
-            },
-          },
-        },
       },
     });
 
@@ -425,17 +408,68 @@ class GameEventService {
       return null;
     }
 
-    const myProgress = playerId
+    // Ranks are only persisted when an event resolves. Live boards must sort by
+    // score — filtering on rank<=10 would return only the viewer (their row is
+    // included via playerId OR) while other participants still have rank=null.
+    const resolved = event.status === 'completed';
+    const participantInclude = {
+      player: {
+        select: {
+          id: true,
+          username: true,
+          rank: true,
+        },
+      },
+    } as const;
+
+    const topParticipants = await prisma.gameEventParticipantProgress.findMany({
+      where: { liveEventId },
+      orderBy: resolved
+        ? [{ rank: 'asc' }, { score: 'desc' }]
+        : [{ score: 'desc' }, { updatedAt: 'asc' }],
+      take: 10,
+      include: participantInclude,
+    });
+
+    let myProgress = playerId
       ? await prisma.gameEventParticipantProgress.findFirst({
-          where: {
-            liveEventId,
-            playerId,
-          },
+          where: { liveEventId, playerId },
+          include: participantInclude,
         })
       : null;
 
+    let participants = [...topParticipants];
+    if (myProgress && !participants.some((row) => row.playerId === playerId)) {
+      participants.push(myProgress);
+    }
+
+    if (!resolved) {
+      const liveRankById = new Map<number, number>();
+      topParticipants.forEach((row, index) => {
+        liveRankById.set(row.id, index + 1);
+      });
+
+      if (myProgress) {
+        const ahead = await prisma.gameEventParticipantProgress.count({
+          where: {
+            liveEventId,
+            score: { gt: myProgress.score },
+          },
+        });
+        const myRank = ahead + 1;
+        liveRankById.set(myProgress.id, myRank);
+        myProgress = { ...myProgress, rank: myRank };
+      }
+
+      participants = participants.map((row) => ({
+        ...row,
+        rank: liveRankById.get(row.id) ?? row.rank,
+      }));
+    }
+
     return {
       ...event,
+      participants,
       myProgress,
     };
   }

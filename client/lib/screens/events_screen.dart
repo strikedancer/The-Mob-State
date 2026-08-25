@@ -254,11 +254,14 @@ class _EventsScreenState extends State<EventsScreen> {
                       style: const TextStyle(color: Colors.white60),
                     )
                   else
-                    ...topParticipants.map((entry) {
+                    ...topParticipants.asMap().entries.map((indexed) {
+                      final entry = indexed.value;
                       final player = entry['player'] is Map
                           ? Map<String, dynamic>.from(entry['player'] as Map)
                           : <String, dynamic>{};
-                      final rank = (entry['rank'] as num?)?.toInt() ?? 0;
+                      final rank =
+                          (entry['rank'] as num?)?.toInt() ??
+                          (indexed.key + 1);
                       final score = (entry['score'] as num?)?.toDouble() ?? 0;
                       final username =
                           player['username']?.toString() ??
