@@ -1,10 +1,21 @@
 import '../l10n/app_localizations.dart';
+import '../utils/country_helper.dart';
 
 /// Renders backend event stream keys with [AppLocalizations] (all player locales).
 class EventRenderer {
   final AppLocalizations l10n;
 
   EventRenderer(this.l10n);
+
+  String _travelCountryLabel(Map<String, dynamic> params) {
+    final raw = params['country'] ??
+        params['toCountry'] ??
+        params['destination'] ??
+        params['destinationCountry'];
+    final code = raw?.toString().trim() ?? '';
+    if (code.isEmpty) return '—';
+    return CountryHelper.getLocalizedCountryName(code, l10n, fallbackName: code);
+  }
 
   String renderEvent(String eventKey, Map<String, dynamic> params) {
     switch (eventKey) {
@@ -32,14 +43,15 @@ class EventRenderer {
         return _jobError(params);
 
       case 'travel.departed':
+      case 'travel.journey_started':
         return l10n.evStreamTravelDeparted(
-          params['destination']?.toString() ?? '—',
-          '${params['cost'] ?? 0}',
+          _travelCountryLabel(params),
+          '${params['cost'] ?? params['travelCost'] ?? 0}',
         );
       case 'travel.arrived':
-        return l10n.evStreamTravelArrived(
-          params['country']?.toString() ?? '—',
-        );
+      case 'travel.journey_complete':
+      case 'travel.leg_completed':
+        return l10n.evStreamTravelArrived(_travelCountryLabel(params));
 
       case 'bank.deposit':
         return l10n.evStreamBankDeposit('${params['amount'] ?? 0}');
