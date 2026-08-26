@@ -6009,6 +6009,24 @@ abstract class AppLocalizations {
   /// **'Rewards'**
   String get crewUiLabelMissionRewards;
 
+  /// No description provided for @crewUiLabelMissionTradeCargo.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade cargo (crew storage)'**
+  String get crewUiLabelMissionTradeCargo;
+
+  /// No description provided for @crewUiHintMissionTradeCargo.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit the listed goods in crew storage before starting.'**
+  String get crewUiHintMissionTradeCargo;
+
+  /// No description provided for @crewUiErrorMissionTradeRequirementsNotMet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough trade goods in crew storage for this mission.'**
+  String get crewUiErrorMissionTradeRequirementsNotMet;
+
   /// No description provided for @crewUiLabelCrewMissionProgress.
   ///
   /// In en, this message translates to:
@@ -20207,6 +20225,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Complete as many crimes as possible in the live window.'**
   String get gameEventTmplStreetCrimeSpreeDesc;
+
+  /// No description provided for @gameEventTmplContrabandRushTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contraband Rush'**
+  String get gameEventTmplContrabandRushTitle;
+
+  /// No description provided for @gameEventTmplContrabandRushDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell contraband for profit or claim smuggled trade shipments — highest score wins.'**
+  String get gameEventTmplContrabandRushDesc;
 
   /// No description provided for @gameScreenLoadError.
   ///

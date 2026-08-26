@@ -9,6 +9,7 @@ Player-facing **handelswaren** UI is merged into the **Zwarte markt** hub: first
 - Country multipliers (`countries.json` → `tradeBonuses`), spoilage, volatility, weight and travel risk fields stay server-driven.
 - Smokkel van handelswaren (`smugglingService`) moet `purchasePrice`/`condition` meenemen; claim mag die niet op 0 zetten (anders is UI-winst = verkoopbedrag).
 - Verkoop (`/trade/sell`) geeft **kleine XP** (volume + winst, max 30) via `playerService.gainXP`.
+- Tijdens actief **`contraband_rush`** event (category `trade`): verkoop en claim van trade-smuggle shipments scoren eventpunten via `gameEventTradeContribution.ts` → `gameEventService.recordContribution(..., 'trade', ...)`. Zie `events.md`.
 
 ## When to read instead
 - UX, tabs, filters, vehicles and other black-market flows: **`docs/module-protocols/black-market.md`**.

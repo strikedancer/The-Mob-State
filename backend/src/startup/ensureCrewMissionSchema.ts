@@ -103,6 +103,15 @@ export async function ensureCrewMissionSchema(): Promise<void> {
     console.log('[StartupSchema] Added column crews.missionLevel');
   }
 
+  const hasRequirementsJson = await columnExists('crew_mission_templates', 'requirementsJson');
+  if (!hasRequirementsJson) {
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE crew_mission_templates
+      ADD COLUMN requirementsJson LONGTEXT NULL
+    `);
+    console.log('[StartupSchema] Added column crew_mission_templates.requirementsJson');
+  }
+
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS crew_mission_contributions (
       id INT NOT NULL AUTO_INCREMENT,

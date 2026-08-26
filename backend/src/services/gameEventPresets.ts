@@ -8,11 +8,12 @@ export const PRESET_GAME_EVENT_KEYS = [
   'smuggling_surge',
   'lab_output_challenge',
   'street_crime_spree',
+  'contraband_rush',
 ] as const;
 
 type PresetRow = {
   key: (typeof PRESET_GAME_EVENT_KEYS)[number];
-  category: 'vehicles' | 'smuggling' | 'drugs' | 'crime';
+  category: 'vehicles' | 'smuggling' | 'drugs' | 'crime' | 'trade';
   eventType: string;
   titleNl: string;
   titleEn: string;
@@ -77,6 +78,21 @@ const PRESET_ROWS: PresetRow[] = [
     durationMinutes: 2880,
     cooldownMinutes: 0,
     staggerDayOffset: 3,
+  },
+  {
+    key: 'contraband_rush',
+    category: 'trade',
+    eventType: 'contribution',
+    titleNl: 'Contraband Rush',
+    titleEn: 'Contraband Rush',
+    shortDescriptionNl:
+      'Verkoop handelswaren met winst of haal gesmokkelde lading op — hoogste score wint.',
+    shortDescriptionEn:
+      'Sell contraband for profit or claim smuggled trade shipments — highest score wins.',
+    intervalMinutes: WEEK_MINUTES,
+    durationMinutes: 2880,
+    cooldownMinutes: 0,
+    staggerDayOffset: 4,
   },
 ];
 

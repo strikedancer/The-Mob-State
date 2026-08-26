@@ -8,6 +8,8 @@
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
 import { playerService } from './playerService';
+import { gameEventService } from './gameEventService';
+import { scoreTradeSellContribution } from './gameEventTradeContribution';
 import tradableGoods from '../../content/tradableGoods.json';
 import countries from '../../content/countries.json';
 import { getPlayerCountry } from './travelService';
@@ -436,6 +438,13 @@ export async function sellGoods(
     },
     playerId
   );
+
+  const tradeEventPoints = scoreTradeSellContribution(realizedProfit, totalEarnings);
+  if (tradeEventPoints > 0) {
+    void gameEventService
+      .recordContribution(playerId, 'trade', tradeEventPoints)
+      .catch(() => {});
+  }
 
   return {
     success: true,

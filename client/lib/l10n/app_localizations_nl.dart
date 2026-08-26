@@ -3317,6 +3317,17 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiLabelMissionRewards => 'Beloningen';
 
   @override
+  String get crewUiLabelMissionTradeCargo => 'Handelslading (crew-opslag)';
+
+  @override
+  String get crewUiHintMissionTradeCargo =>
+      'Stort de vermelde goederen in crew-opslag vóór start.';
+
+  @override
+  String get crewUiErrorMissionTradeRequirementsNotMet =>
+      'Onvoldoende handelswaren in crew-opslag voor deze missie.';
+
+  @override
   String get crewUiLabelCrewMissionProgress =>
       'Voortgang van de bemanningsmissie';
 
@@ -11365,6 +11376,13 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get gameEventTmplStreetCrimeSpreeDesc =>
       'Pleg zoveel mogelijk misdaden in het actieve venster.';
+
+  @override
+  String get gameEventTmplContrabandRushTitle => 'Contraband Rush';
+
+  @override
+  String get gameEventTmplContrabandRushDesc =>
+      'Verkoop handelswaren met winst of haal gesmokkelde lading op — hoogste score wint.';
 
   @override
   String get gameScreenLoadError => 'Events konden niet geladen worden.';

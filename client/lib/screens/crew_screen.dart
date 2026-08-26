@@ -12,6 +12,7 @@ import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
+import '../utils/trade_good_l10n.dart';
 import '../l10n/app_localizations.dart';
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
@@ -180,6 +181,8 @@ class _CrewScreenState extends State<CrewScreen>
         case 'label.missionCooldown': return l10n.crewUiLabelMissionCooldown;
         case 'label.missionTier': return l10n.crewUiLabelMissionTier;
         case 'label.missionRewards': return l10n.crewUiLabelMissionRewards;
+        case 'label.missionTradeCargo': return l10n.crewUiLabelMissionTradeCargo;
+        case 'hint.missionTradeCargo': return l10n.crewUiHintMissionTradeCargo;
         case 'label.crewMissionProgress': return l10n.crewUiLabelCrewMissionProgress;
         case 'label.crewMissionXp': return l10n.crewUiLabelCrewMissionXp;
         case 'label.crewMissionLevelBonus': return l10n.crewUiLabelCrewMissionLevelBonus;
@@ -788,6 +791,8 @@ class _CrewScreenState extends State<CrewScreen>
         return l10n.crewUiTr18;
       case 'error.insufficient_credits':
         return l10n.crewUiTr19;
+      case 'error.mission_trade_requirements_not_met':
+        return l10n.crewUiErrorMissionTradeRequirementsNotMet;
       default:
         return l10n.crewUiTr10;
     }
@@ -919,6 +924,22 @@ class _CrewScreenState extends State<CrewScreen>
     return v.toStringAsFixed(2);
   }
 
+  List<Map<String, dynamic>> _extractMissionTradeRequirements(
+    Map<String, dynamic> template,
+  ) {
+    final raw = template['tradeRequirements'];
+    if (raw is! List) return const [];
+    return raw
+        .whereType<Map>()
+        .map((item) => item.cast<String, dynamic>())
+        .where((row) {
+          final goodType = (row['goodType'] ?? '').toString();
+          final quantity = (row['quantity'] as num?)?.toInt() ?? 0;
+          return goodType.isNotEmpty && quantity > 0;
+        })
+        .toList();
+  }
+
   String _crewMissionFallbackImagePath(String missionKey) {
     switch (missionKey) {
       case 'safehouse_supply_run':
@@ -944,6 +965,10 @@ class _CrewScreenState extends State<CrewScreen>
       case 'reserve_vault_breach':
         return 'images/crimes/diamond_heist_crime.png';
       case 'clearing_house_vault_run':
+        return 'images/crimes/counterfeit_money_crime.png';
+      case 'port_contraband_manifest':
+        return 'images/crimes/smuggling_crime.png';
+      case 'warehouse_luxury_offload':
         return 'images/crimes/counterfeit_money_crime.png';
       default:
         return 'images/casino/casino_background_landscape.png';
@@ -6440,6 +6465,7 @@ class _CrewScreenState extends State<CrewScreen>
     final missionKey = (template['missionKey'] ?? '').toString();
     final imagePath = (template['imageCardPath'] ?? '').toString();
     final fallbackPath = _crewMissionFallbackImagePath(missionKey);
+    final tradeRequirements = _extractMissionTradeRequirements(template);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -6523,6 +6549,37 @@ class _CrewScreenState extends State<CrewScreen>
                 Text(
                   '${_t(loc, 'label.missionRewards')}: ${_money(rewardCashMin)} - ${_money(rewardCashMax)} + $rewardCrewXp XP',
                 ),
+                if (tradeRequirements.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    _t(loc, 'label.missionTradeCargo'),
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _t(loc, 'hint.missionTradeCargo'),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 4,
+                    children: tradeRequirements.map((row) {
+                      final goodType = (row['goodType'] ?? '').toString();
+                      final quantity = (row['quantity'] as num?)?.toInt() ?? 0;
+                      return Chip(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: VisualDensity.compact,
+                        label: Text(
+                          '${TradeGoodL10n.name(loc, goodType)} × $quantity',
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
                 if (!unlocked) ...[
                   const SizedBox(height: 8),
                   Text(

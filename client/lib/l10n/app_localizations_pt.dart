@@ -3323,6 +3323,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewUiLabelMissionRewards => 'Recompensas';
 
   @override
+  String get crewUiLabelMissionTradeCargo =>
+      'Carga comercial (armazém da crew)';
+
+  @override
+  String get crewUiHintMissionTradeCargo =>
+      'Deposite as mercadorias listadas no armazém da crew antes de iniciar.';
+
+  @override
+  String get crewUiErrorMissionTradeRequirementsNotMet =>
+      'Mercadorias insuficientes no armazém da crew para esta missão.';
+
+  @override
   String get crewUiLabelCrewMissionProgress => 'Progressão da missão da Crew';
 
   @override
@@ -11432,6 +11444,13 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get gameEventTmplStreetCrimeSpreeDesc =>
       'Complete tantos crimes quanto possível na janela ao vivo.';
+
+  @override
+  String get gameEventTmplContrabandRushTitle => 'Corrida de contrabando';
+
+  @override
+  String get gameEventTmplContrabandRushDesc =>
+      'Venda contrabando com lucro ou recolha remessas — quem somar mais pontos vence.';
 
   @override
   String get gameScreenLoadError => 'Não foi possível carregar eventos.';

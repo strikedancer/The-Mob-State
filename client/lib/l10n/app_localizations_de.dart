@@ -3344,6 +3344,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crewUiLabelMissionRewards => 'Belohnungen';
 
   @override
+  String get crewUiLabelMissionTradeCargo => 'Handelsware (Crew-Lager)';
+
+  @override
+  String get crewUiHintMissionTradeCargo =>
+      'Lege die aufgeführten Waren vor dem Start ins Crew-Lager ein.';
+
+  @override
+  String get crewUiErrorMissionTradeRequirementsNotMet =>
+      'Nicht genug Handelswaren im Crew-Lager für diese Mission.';
+
+  @override
   String get crewUiLabelCrewMissionProgress =>
       'Fortschritt der Besatzungsmission';
 
@@ -11495,6 +11506,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get gameEventTmplStreetCrimeSpreeDesc =>
       'Schließe so viele Verbrechen wie möglich im Live-Fenster ab.';
+
+  @override
+  String get gameEventTmplContrabandRushTitle => 'Schmuggel-Rush';
+
+  @override
+  String get gameEventTmplContrabandRushDesc =>
+      'Verkaufe Schmuggelware mit Gewinn oder hole Schmuggelladungen ab — höchste Punktzahl gewinnt.';
 
   @override
   String get gameScreenLoadError => 'Ereignisse konnten nicht geladen werden.';

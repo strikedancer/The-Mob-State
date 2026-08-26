@@ -429,6 +429,44 @@ export async function depositCrewTradeGoods(
   });
 }
 
+/** Deduct crew trade inventory when starting a mission that requires contraband cargo. */
+export async function consumeCrewTradeGoods(
+  crewId: number,
+  requirements: Array<{ goodType: string; quantity: number }>
+): Promise<void> {
+  if (!requirements.length) {
+    return;
+  }
+
+  await prisma.$transaction(async (tx) => {
+    for (const req of requirements) {
+      const inv = await tx.crewTradeInventory.findUnique({
+        where: { crewId_goodType: { crewId, goodType: req.goodType } },
+      });
+      if (!inv || inv.quantity < req.quantity) {
+        throw new Error('MISSION_TRADE_REQUIREMENTS_NOT_MET');
+      }
+    }
+
+    for (const req of requirements) {
+      const inv = await tx.crewTradeInventory.findUnique({
+        where: { crewId_goodType: { crewId, goodType: req.goodType } },
+      });
+      if (!inv) {
+        throw new Error('MISSION_TRADE_REQUIREMENTS_NOT_MET');
+      }
+      if (inv.quantity === req.quantity) {
+        await tx.crewTradeInventory.delete({ where: { id: inv.id } });
+      } else {
+        await tx.crewTradeInventory.update({
+          where: { id: inv.id },
+          data: { quantity: inv.quantity - req.quantity },
+        });
+      }
+    }
+  });
+}
+
 export async function getCrewStorageSummary(crewId: number) {
   const [
     carCapacity,

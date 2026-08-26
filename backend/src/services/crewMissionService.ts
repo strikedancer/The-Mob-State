@@ -1,9 +1,15 @@
 import prisma from '../lib/prisma';
 import { notificationService } from './notificationService';
+import { consumeCrewTradeGoods } from './crewStorageService';
 
 type CrewMissionTier = 1 | 2 | 3;
 type CrewMissionOutcome = 'success' | 'partial' | 'fail';
 type CrewMissionRunStatus = 'in_progress' | 'completed';
+
+type TradeRequirement = {
+  goodType: string;
+  quantity: number;
+};
 
 type CrewMissionTemplate = {
   id: number;
@@ -25,6 +31,11 @@ type CrewMissionTemplate = {
   sortOrder: number;
   imageCardPath: string | null;
   imageScenePath: string | null;
+  tradeRequirements: TradeRequirement[];
+};
+
+type CrewMissionTemplateRow = CrewMissionTemplate & {
+  requirementsJson: string | null;
 };
 
 type CrewMissionRun = {
@@ -107,6 +118,7 @@ type MissionSeed = {
   sortOrder: number;
   imageCardPath: string;
   imageScenePath: string;
+  tradeRequirements?: TradeRequirement[];
 };
 
 const CREW_MISSION_RUNTIME_SETTING_DEFAULTS = {
@@ -401,6 +413,56 @@ const MISSION_SEEDS: MissionSeed[] = [
     imageScenePath: 'images/crew_missions/scenes/city_vault_prep.png',
   },
   {
+    missionKey: 'port_contraband_manifest',
+    tier: 2,
+    titleNl: 'Haven Contraband Manifest',
+    titleEn: 'Port Contraband Manifest',
+    descriptionNl:
+      'Vervalst havenmanifesten met crew-handelswaren. Stort tabak en koffie in crew-opslag vóór start.',
+    descriptionEn:
+      'Forge port manifests using crew trade cargo. Deposit tobacco and coffee in crew storage before starting.',
+    durationSeconds: 16 * 60,
+    cooldownSeconds: 18 * 60,
+    successChance: 0.61,
+    rewardCashMin: 102000,
+    rewardCashMax: 152000,
+    rewardCrewXp: 108,
+    rewardPersonalXp: 54,
+    failPenaltyPct: 0.14,
+    sortOrder: 32,
+    imageCardPath: 'images/crew_missions/cards/port_contraband_manifest.png',
+    imageScenePath: 'images/crew_missions/scenes/port_contraband_manifest.png',
+    tradeRequirements: [
+      { goodType: 'contraband_tobacco', quantity: 35 },
+      { goodType: 'contraband_coffee', quantity: 20 },
+    ],
+  },
+  {
+    missionKey: 'warehouse_luxury_offload',
+    tier: 2,
+    titleNl: 'Magazijn Luxe Offload',
+    titleEn: 'Warehouse Luxury Offload',
+    descriptionNl:
+      'Sla luxe contraband via een frontbedrijf in het crew-magazijn. Parfum en horloges uit crew-opslag vereist.',
+    descriptionEn:
+      'Offload luxury contraband through a front warehouse. Requires perfume and watches from crew storage.',
+    durationSeconds: 18 * 60,
+    cooldownSeconds: 20 * 60,
+    successChance: 0.58,
+    rewardCashMin: 115000,
+    rewardCashMax: 172000,
+    rewardCrewXp: 118,
+    rewardPersonalXp: 59,
+    failPenaltyPct: 0.16,
+    sortOrder: 33,
+    imageCardPath: 'images/crew_missions/cards/warehouse_luxury_offload.png',
+    imageScenePath: 'images/crew_missions/scenes/warehouse_luxury_offload.png',
+    tradeRequirements: [
+      { goodType: 'contraband_perfume', quantity: 12 },
+      { goodType: 'contraband_luxury_watches', quantity: 5 },
+    ],
+  },
+  {
     missionKey: 'territory_blackout_push',
     tier: 3,
     titleNl: 'Territory Blackout Push',
@@ -444,6 +506,30 @@ function toFloat(value: unknown, fallback = 0): number {
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
+}
+
+function parseTradeRequirements(raw: string | null | undefined): TradeRequirement[] {
+  if (!raw) {
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return parsed
+      .map((entry) => ({
+        goodType: String(entry?.goodType ?? '').trim(),
+        quantity: toInt(entry?.quantity, 0),
+      }))
+      .filter((entry) => entry.goodType.length > 0 && entry.quantity > 0);
+  } catch {
+    return [];
+  }
+}
+
+function serializeTradeRequirements(requirements?: TradeRequirement[]): string {
+  return JSON.stringify(requirements?.length ? requirements : []);
 }
 
 function computeHqGlobalLevel(
@@ -950,33 +1036,44 @@ function computeCooldownSpeedupCost(
 }
 
 async function getMissionTemplates(): Promise<CrewMissionTemplate[]> {
-  const rows = await prisma.$queryRawUnsafe<CrewMissionTemplate[]>(
+  const rows = await prisma.$queryRawUnsafe<CrewMissionTemplateRow[]>(
     `
       SELECT
         id, missionKey, tier, titleNl, titleEn, descriptionNl, descriptionEn,
         durationSeconds, cooldownSeconds, successChance, rewardCashMin, rewardCashMax,
         rewardCrewXp, rewardPersonalXp, failPenaltyPct, isActive, sortOrder,
-        imageCardPath, imageScenePath
+        imageCardPath, imageScenePath, requirementsJson
       FROM crew_mission_templates
       WHERE isActive = 1
       ORDER BY sortOrder ASC, id ASC
     `
   );
 
-  return rows.map((row) => ({
-    ...row,
-    tier: toInt(row.tier, 1) as CrewMissionTier,
-    durationSeconds: toInt(row.durationSeconds),
-    cooldownSeconds: toInt(row.cooldownSeconds),
-    successChance: clamp(toFloat(row.successChance), 0.05, 0.99),
-    rewardCashMin: toInt(row.rewardCashMin),
-    rewardCashMax: toInt(row.rewardCashMax),
-    rewardCrewXp: toInt(row.rewardCrewXp),
-    rewardPersonalXp: toInt(row.rewardPersonalXp),
-    failPenaltyPct: clamp(toFloat(row.failPenaltyPct), 0, 0.9),
-    isActive: toInt(row.isActive, 1),
-    sortOrder: toInt(row.sortOrder, 0),
-  }));
+  return rows.map((row) => {
+    const tradeRequirements = parseTradeRequirements(row.requirementsJson);
+    return {
+      id: toInt(row.id),
+      missionKey: row.missionKey,
+      tier: toInt(row.tier, 1) as CrewMissionTier,
+      titleNl: row.titleNl,
+      titleEn: row.titleEn,
+      descriptionNl: row.descriptionNl,
+      descriptionEn: row.descriptionEn,
+      durationSeconds: toInt(row.durationSeconds),
+      cooldownSeconds: toInt(row.cooldownSeconds),
+      successChance: clamp(toFloat(row.successChance), 0.05, 0.99),
+      rewardCashMin: toInt(row.rewardCashMin),
+      rewardCashMax: toInt(row.rewardCashMax),
+      rewardCrewXp: toInt(row.rewardCrewXp),
+      rewardPersonalXp: toInt(row.rewardPersonalXp),
+      failPenaltyPct: clamp(toFloat(row.failPenaltyPct), 0, 0.9),
+      isActive: toInt(row.isActive, 1),
+      sortOrder: toInt(row.sortOrder, 0),
+      imageCardPath: row.imageCardPath,
+      imageScenePath: row.imageScenePath,
+      tradeRequirements,
+    };
+  });
 }
 
 async function fetchRunForCrew(crewId: number, runId: number): Promise<CrewMissionRun | null> {
@@ -1007,8 +1104,8 @@ async function ensureSeededTemplates(): Promise<void> {
         INSERT INTO crew_mission_templates
           (missionKey, tier, titleNl, titleEn, descriptionNl, descriptionEn, durationSeconds, cooldownSeconds,
            successChance, rewardCashMin, rewardCashMax, rewardCrewXp, rewardPersonalXp, failPenaltyPct,
-           isActive, sortOrder, imageCardPath, imageScenePath)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
+           isActive, sortOrder, imageCardPath, imageScenePath, requirementsJson)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE
           tier = VALUES(tier),
           titleNl = VALUES(titleNl),
@@ -1025,7 +1122,8 @@ async function ensureSeededTemplates(): Promise<void> {
           failPenaltyPct = VALUES(failPenaltyPct),
           sortOrder = VALUES(sortOrder),
           imageCardPath = VALUES(imageCardPath),
-          imageScenePath = VALUES(imageScenePath)
+          imageScenePath = VALUES(imageScenePath),
+          requirementsJson = VALUES(requirementsJson)
       `,
       seed.missionKey,
       seed.tier,
@@ -1043,7 +1141,8 @@ async function ensureSeededTemplates(): Promise<void> {
       seed.failPenaltyPct,
       seed.sortOrder,
       seed.imageCardPath,
-      seed.imageScenePath
+      seed.imageScenePath,
+      serializeTradeRequirements(seed.tradeRequirements)
     );
   }
 }
@@ -1154,6 +1253,11 @@ export const crewMissionService = {
         throw new Error('MISSION_CLEARING_HOUSE_LOCKED');
       }
       throw new Error('MISSION_TIER_LOCKED');
+    }
+
+    const tradeRequirements = template.tradeRequirements ?? [];
+    if (tradeRequirements.length > 0) {
+      await consumeCrewTradeGoods(membership.crewId, tradeRequirements);
     }
 
     const cleanAssignments = assignments

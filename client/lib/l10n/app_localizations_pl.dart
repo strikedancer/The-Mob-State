@@ -3330,6 +3330,17 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewUiLabelMissionRewards => 'Nagrody';
 
   @override
+  String get crewUiLabelMissionTradeCargo => 'Towary handlowe (magazyn ekipy)';
+
+  @override
+  String get crewUiHintMissionTradeCargo =>
+      'Zdeponuj wymienione towary w magazynie ekipy przed startem.';
+
+  @override
+  String get crewUiErrorMissionTradeRequirementsNotMet =>
+      'Za mało towarów w magazynie ekipy na tę misję.';
+
+  @override
   String get crewUiLabelCrewMissionProgress => 'Postęp misji załogi';
 
   @override
@@ -11423,6 +11434,13 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get gameEventTmplStreetCrimeSpreeDesc =>
       'Dokonaj jak największej liczby przestępstw w oknie na żywo.';
+
+  @override
+  String get gameEventTmplContrabandRushTitle => 'Szaleństwo kontrabandy';
+
+  @override
+  String get gameEventTmplContrabandRushDesc =>
+      'Sprzedawaj kontrabandę z zyskiem lub odbieraj przesyłki — wygrywa najwyższy wynik.';
 
   @override
   String get gameScreenLoadError => 'Nie udało się wczytać wydarzeń.';

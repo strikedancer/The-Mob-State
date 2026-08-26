@@ -3,6 +3,8 @@ import countries from '../../content/countries.json';
 import { vehicleService } from './vehicleService';
 import { getAircraftById } from './aviationService';
 import { playerService } from './playerService';
+import { gameEventService } from './gameEventService';
+import { scoreTradeSmuggleClaim } from './gameEventTradeContribution';
 
 export type SmugglingCategory = 'drug' | 'trade' | 'vehicle' | 'weapon' | 'ammo';
 export type SmugglingChannel = 'package' | 'courier' | 'container' | 'owned';
@@ -1489,11 +1491,15 @@ class SmugglingService {
 
     let claimedQty = 0;
     let claimXp = 0;
+    let tradeEventPoints = 0;
 
     await prisma.$transaction(async (tx) => {
       for (const shipment of ready) {
         const metadata = this.parseMetadata(shipment);
         claimXp += xpForClaimedShipment(shipment.category, shipment.quantity);
+        if (shipment.category === 'trade') {
+          tradeEventPoints += scoreTradeSmuggleClaim(shipment.quantity);
+        }
 
         if (shipment.category === 'drug' && scope === 'crew') {
           const quality = String(metadata.quality ?? 'C');
@@ -1726,6 +1732,12 @@ class SmugglingService {
       } catch (err) {
         console.error('[SmugglingService] Failed to award claim XP:', err);
       }
+    }
+
+    if (tradeEventPoints > 0) {
+      void gameEventService
+        .recordContribution(playerId, 'trade', tradeEventPoints)
+        .catch(() => {});
     }
 
     const xpSuffix = awardedXp > 0 ? ` (+${awardedXp} XP)` : '';

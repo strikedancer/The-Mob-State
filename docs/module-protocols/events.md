@@ -4,11 +4,20 @@
 
 - Preset `GameEventTemplate` + `GameEventSchedule` (`interval`) seeds via `ensureGameEventPresets()` on backend startup.
 - `runEventScheduler` (cron) starts `active` `GameLiveEvent` instances, attaches default `GameEventRewardRule` rows, resolves on `endsAt`, then `processPendingRewardDeliveries` applies `cash` / `xp` / `premiumCredits` and optional catalogue `items[]` (→ `player_event_items`) from claims.
-- **Categories** wired in gameplay: `crime`, `drugs`, `smuggling`, `vehicles` — only one active preset per category to avoid double score from `recordContribution`.
+- **Categories** wired in gameplay: `crime`, `drugs`, `smuggling`, `vehicles`, **`trade`** — only one active preset per category to avoid double score from `recordContribution`.
 - **Event Pass** (Mollie one-time, key `event_pass_7d`): `EVENT_BOOST` entitlement + small credit bonus; `balance-economy.md` / `payments.md` apply.
 - **Push (FCM)**: bij start en einde van een actief live event stuurt de server een **gelokaliseerde push** (NL/EN) naar spelers die in **Instellingen → Spelerevents** push aan hebben staan (`push_game_events`, standaard **aan**). Zie `gameEventNotificationService` + `playerNotificationPreferenceService`.
 - **Dashboard (client)**: web dashboard home laadt `/game-events/overview` en toont actieve events compact (zonder het overige dashboard te breken).
 - **Live leaderboard**: `GET /game-events/:id` toont top-10 op **score** tijdens `active` (ranks worden pas bij resolve weggeschreven); viewer buiten top-10 blijft meegenomen met berekende plaats.
+
+## Preset: Contraband Rush (`contraband_rush`, category `trade`)
+
+- Seeded via `gameEventPresets.ts` (`staggerDayOffset: 4` in de wekelijkse rotatie).
+- **Scoring** (`gameEventTradeContribution.ts`):
+  - **Verkoop** handelswaren (`/trade/sell`): punten op basis van gerealiseerde winst (`floor(profit/200)`) + volume (`floor(earnings/1000)`); minimaal 1 punt bij positieve verkoop.
+  - **Claim** gesmokkelde trade-shipment (`smugglingService`, category `trade`): 1 punt per eenheid.
+  - **Kopen** telt niet mee. Smuggling-quotes (drugs/tools/etc.) blijven onder category `smuggling` (Smuggling Surge).
+- Client: `localized_game_event_template.dart` + ARB keys `gameEventTmplContrabandRush*`.
 
 ## Operator checklist (deploy & runtime)
 

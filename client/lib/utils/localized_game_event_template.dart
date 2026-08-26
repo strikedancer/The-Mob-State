@@ -20,6 +20,8 @@ String localizedGameEventTitle(
         return l10n.gameEventTmplLabOutputChallengeTitle;
       case 'street_crime_spree':
         return l10n.gameEventTmplStreetCrimeSpreeTitle;
+      case 'contraband_rush':
+        return l10n.gameEventTmplContrabandRushTitle;
       default:
         break;
     }
@@ -53,6 +55,8 @@ String localizedGameEventShortDescription(
         return l10n.gameEventTmplLabOutputChallengeDesc;
       case 'street_crime_spree':
         return l10n.gameEventTmplStreetCrimeSpreeDesc;
+      case 'contraband_rush':
+        return l10n.gameEventTmplContrabandRushDesc;
       default:
         break;
     }

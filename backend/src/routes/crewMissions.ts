@@ -57,6 +57,10 @@ function mapMissionErrorToResponse(error: unknown, res: any): boolean {
     });
     return true;
   }
+  if (message === 'MISSION_TRADE_REQUIREMENTS_NOT_MET') {
+    res.status(400).json({ event: 'error.mission_trade_requirements_not_met', params: {} });
+    return true;
+  }
   if (message === 'MISSION_START_FAILED') {
     res.status(500).json({ event: 'error.mission_start_failed', params: {} });
     return true;

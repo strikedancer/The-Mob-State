@@ -62,6 +62,7 @@ UX/i18n baseline:
 - responsive layout via `SingleChildScrollView` + `Wrap` cards
 - permissiehint voor non-leader/co-leader zichtbaar in UI
 - `Help & Uitleg` crew-topic bijgewerkt zodat de nieuwe Crew Missions-tab en flow ook in NL/EN documentatie staat.
+- missions met **trade cargo**: `requirementsJson` op template; `tradeRequirements[]` in overview; consumptie uit **crew trade storage** bij `POST /crew-missions/start` (`consumeCrewTradeGoods`); fout `error.mission_trade_requirements_not_met` als voorraad ontbreekt.
 
 ## Notification Status (Phase 4 Basis)
 
@@ -98,6 +99,8 @@ Doel:
 ### Tier 2 - Coordinated Ops (12-25 min)
 - `Armory Smuggle Chain` (`armory_smuggle_chain`)
 - `Port Hijack Window` (`port_hijack_window`)
+- `Port Contraband Manifest` (`port_contraband_manifest`) — **vereist crew trade storage**: 35× tabak + 20× koffie (verbruikt bij start)
+- `Warehouse Luxury Offload` (`warehouse_luxury_offload`) — **vereist crew trade storage**: 12× parfum + 5× luxe horloges
 - `Armored Pivot Route` (`armored_pivot_route`)
 - `Subsidiary Vault Window` (`subsidiary_vault_window`)
 - (Visiedoc) `City Vault Prep` — kan als aparte template worden toegevoegd

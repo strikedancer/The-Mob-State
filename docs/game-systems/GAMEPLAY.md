@@ -53,7 +53,8 @@
 
 ### Live spelerevents
 
-- Preset-terugkerende competitievensters (o.a. crime, drugs, smuggling, vehicles) worden door de server op een **interval** gepland; binnen het actieve venster telt je actie in die categorie mee voor de ranglijst; aan het eind volgen beloningen (o.a. cash, XP, kleine premium credits) volgens de regels in `docs/module-protocols/events.md`.
+- Preset-terugkerende competitievensters (o.a. crime, drugs, smuggling, vehicles, **trade**) worden door de server op een **interval** gepland; binnen het actieve venster telt je actie in die categorie mee voor de ranglijst; aan het eind volgen beloningen (o.a. cash, XP, kleine premium credits) volgens de regels in `docs/module-protocols/events.md`.
+- **Contraband Rush** (`trade`): verkoop handelswaren met winst en claim gesmokkelde trade-zendingen scoren punten (kopen telt niet; drug/tool-smokkel blijft onder Smuggling Surge).
 - Tijdens een lopend event toont de detail-leaderboard de **top 10 op score** (niet alleen jouw eigen rij); vaste ranks worden pas bij afloop vastgelegd.
 - In **Instellingen** kun je onder **Spelerevents** pushmeldingen bij start/einde van een ronde **per speler** aan- of uitzetten (standaard aan). In **Premium** bestaat optioneel **Event Pass (7 dagen)** (echt geld) voor +event-score en bonus credits, zonder directe combat pay-to-win.
 - Volledig operator-/deploy-pad: `docs/module-protocols/PROTOCOL_MASTER.md` (verwijst naar `events.md`).
@@ -464,6 +465,7 @@ Voorbeelden:
 
 ### Uitbreiding (bank-lijn + clearing house)
 - Zes extra crew missions (geen tweede casino-missie naast **Casino Ledger Raid**): night deposit, skim-netwerk, pantserroute, dochterbank-kluis, reservekluis en clearing house settlement-run.
+- **Trade cargo (T2)**: **Port Contraband Manifest** en **Warehouse Luxury Offload** vereisen handelswaren uit **crew trade storage** (tabak/koffie resp. parfum/luxe horloges); verbruikt bij start, niet bij claim.
 - Beloningen blijven uit de crew-mission economy (server); er wordt geen geld rechtstreeks uit andere spelers hun banksaldo gehaald.
 - Catalogus en getallen: [CREW_MISSIONS_EXPANSION_2026-04-26.md](CREW_MISSIONS_EXPANSION_2026-04-26.md). Afbeeldingen: `backend/scripts/generate_crew_missions_images_leonardo.py` (Leonardo API); gecommit runtime-PNG’s staan onder `runtime/client-images/crew_missions/cards/` en `.../scenes/` (zelfde mount als `CLIENT_EXTERNAL_IMAGES_PATH` op de server).
 
@@ -575,6 +577,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Flowers**, **electronics**, **diamonds**, **weapons**, **pharmaceuticals**
 - Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via de **handelswaren-tab** op de zwarte markt en gekoppelde inventory.
 - **16 contraband-lijnen** in vier categorieën (**starter**, **bulk**, **luxe**, **gevaarlijk**), elk met eigen risico's en **bronlanden** (`availableInCountries`); **verkopen** kan overal tegen de lokale multiplier. Filters en tier-sortering op de handelswaren-tab.
+- Tijdens **Contraband Rush** tellen winstgevende verkopen en het ophalen van gesmokkelde trade-lading mee voor het live event (category `trade`).
 
 ### Client UX (zwarte markt → handelswaren-tab)
 - **Risico-uitleg** (inklapbaar bovenaan): leesbare tekst op donkere kaarten via theme-kleuren (`onSurface`).
