@@ -1,6 +1,9 @@
 import prisma from '../lib/prisma';
 import { eventBroadcaster } from './eventBroadcaster';
-import { isPersonalDashboardFeedEvent } from './worldEventFeedFilter';
+import {
+  isPersonalDashboardFeedEvent,
+  shouldPushPlayerActivitySSE,
+} from './worldEventFeedFilter';
 
 const safeStringify = (value: unknown): string => {
   try {
@@ -47,7 +50,7 @@ export const worldEventService = {
       },
     });
 
-    if (!isPersonalDashboardFeedEvent(eventKey)) {
+    if (!shouldPushPlayerActivitySSE(eventKey)) {
       return;
     }
 

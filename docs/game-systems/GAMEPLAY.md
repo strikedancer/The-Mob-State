@@ -621,7 +621,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 ### Smokkel-hub (drugs-zendingen)
 - Persoonlijke drugsinventaris is **niet per land** in `DrugInventory` (unique: `playerId` + `drugType` + `quality`). Quote/send mag geen oude country-compound Prisma-key gebruiken — dat gaf 500 Server error.
 - Crew-smokkel van **handelswaren** gebruikt gedeelde `CrewTradeInventory`. Stort eerst via crew-opslag; daarna catalog/send/claim op het crew-netwerk.
-- Het dashboard toont een **Markt**-tegel met het aantal actieve P2P-listings en **Mijn activiteit** (recente `GET /events` + SSE van alleen jouw speler). Geen wereldwijde feed van andere spelers. Aankomstregels tonen het land (niet een streepje).
+- Het dashboard toont een **Markt**-tegel met het aantal actieve P2P-listings en **Mijn activiteit** (recente `GET /events` + SSE van alleen jouw speler). Geen wereldwijde feed van andere spelers. Privéberichten (`direct_message.*`) komen niet in die feed (wel live voor chat/badge). Aankomstregels tonen het land (niet een streepje).
 - Nightclub opent met een **Tonight**-kaart (crowd, stock, Restock, Boost crowd); de rest van Ops Lab zit onder Geavanceerd. Omzet blijft via de tick.
 - RLD-raids draaien op de tick bij hoge FBI-heat. Collect heet **Nu ophalen**. Er is geen PvP-districtovername.
 - Publieke profielen tonen featured achievements, een tappable crew-naam en het landgoed als je een huis/appartement hebt.

@@ -5,9 +5,17 @@ const _personalFeedExcludedExact = <String>{
   'connection.established',
 };
 
+/// Chat keys stay on SSE (badges/chat) but not in Mijn activiteit.
+const _personalFeedExcludedPrefixes = <String>[
+  'direct_message.',
+];
+
 bool isPersonalDashboardFeedEvent(String eventKey) {
   if (eventKey.isEmpty) return false;
   if (_personalFeedExcludedExact.contains(eventKey)) return false;
+  for (final prefix in _personalFeedExcludedPrefixes) {
+    if (eventKey.startsWith(prefix)) return false;
+  }
   return true;
 }
 
