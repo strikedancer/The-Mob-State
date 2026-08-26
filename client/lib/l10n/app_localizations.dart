@@ -20430,6 +20430,84 @@ abstract class AppLocalizations {
   /// **'No leaderboard data yet.'**
   String get gameScreenNoLeaderboard;
 
+  /// No description provided for @gameScreenPrizePool.
+  ///
+  /// In en, this message translates to:
+  /// **'Prize pool'**
+  String get gameScreenPrizePool;
+
+  /// No description provided for @gameScreenPrizePoolHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards are paid when the event ends.'**
+  String get gameScreenPrizePoolHint;
+
+  /// No description provided for @gameScreenPrizeRankSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'Place {rank}'**
+  String gameScreenPrizeRankSingle(String rank);
+
+  /// No description provided for @gameScreenPrizeRankRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Places {min}–{max}'**
+  String gameScreenPrizeRankRange(String min, String max);
+
+  /// No description provided for @gameScreenPrizeCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} credits'**
+  String gameScreenPrizeCredits(String amount);
+
+  /// No description provided for @gameScreenPrizeXp.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} XP'**
+  String gameScreenPrizeXp(String amount);
+
+  /// No description provided for @gameScreenPrizeItemLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ×{qty}'**
+  String gameScreenPrizeItemLine(String name, String qty);
+
+  /// No description provided for @gameScreenNoPrizes.
+  ///
+  /// In en, this message translates to:
+  /// **'No prize rules configured for this event.'**
+  String get gameScreenNoPrizes;
+
+  /// No description provided for @gameCardPrizeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Prizes for top 10 — tap for details'**
+  String get gameCardPrizeHint;
+
+  /// No description provided for @eventItemName_event_chip_gold.
+  ///
+  /// In en, this message translates to:
+  /// **'Event chip (gold)'**
+  String get eventItemName_event_chip_gold;
+
+  /// No description provided for @eventItemName_event_chip_silver.
+  ///
+  /// In en, this message translates to:
+  /// **'Event chip (silver)'**
+  String get eventItemName_event_chip_silver;
+
+  /// No description provided for @eventItemName_event_chip_bronze.
+  ///
+  /// In en, this message translates to:
+  /// **'Event chip (bronze)'**
+  String get eventItemName_event_chip_bronze;
+
+  /// No description provided for @eventItemName_event_badge_rival.
+  ///
+  /// In en, this message translates to:
+  /// **'Rival badge (bound)'**
+  String get eventItemName_event_badge_rival;
+
   /// No description provided for @gameScreenUnknownPlayer.
   ///
   /// In en, this message translates to:

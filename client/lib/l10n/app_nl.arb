@@ -4880,6 +4880,60 @@
   },
   "gameScreenLeaderboard": "Leiderbord (top 10)",
   "gameScreenNoLeaderboard": "Nog geen leaderboard data.",
+  "gameScreenPrizePool": "Prijzenpot",
+  "gameScreenPrizePoolHint": "Beloningen worden uitbetaald als het event eindigt.",
+  "gameScreenPrizeRankSingle": "Plaats {rank}",
+  "@gameScreenPrizeRankSingle": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeRankRange": "Plaats {min}–{max}",
+  "@gameScreenPrizeRankRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeCredits": "{amount} credits",
+  "@gameScreenPrizeCredits": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeXp": "{amount} XP",
+  "@gameScreenPrizeXp": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeItemLine": "{name} ×{qty}",
+  "@gameScreenPrizeItemLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenNoPrizes": "Geen prijsregels voor dit event.",
+  "gameCardPrizeHint": "Prijzen top 10 — tik voor details",
+  "eventItemName_event_chip_gold": "Event chip (goud)",
+  "eventItemName_event_chip_silver": "Event chip (zilver)",
+  "eventItemName_event_chip_bronze": "Event chip (brons)",
+  "eventItemName_event_badge_rival": "Rival badge (gebonden)",
   "gameScreenUnknownPlayer": "Onbekend",
   "gameCardActive": "Actief",
   "gameCardScheduled": "Gepland",

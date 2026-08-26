@@ -8,6 +8,8 @@ import '../providers/auth_provider.dart';
 import '../screens/player_profile_screen.dart';
 import '../services/auth_service.dart';
 import '../utils/avatar_helper.dart';
+import '../utils/formatters.dart';
+import '../utils/game_event_rewards.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 
@@ -171,6 +173,75 @@ class _EventsScreenState extends State<EventsScreen> {
     }
   }
 
+  Widget _buildPrizeTierRow(AppLocalizations l10n, GameEventPrizeTier tier) {
+    final parts = <String>[];
+    if (tier.cash > 0) parts.add(formatCurrency(tier.cash));
+    if (tier.premiumCredits > 0) {
+      parts.add(l10n.gameScreenPrizeCredits(tier.premiumCredits.toString()));
+    }
+    if (tier.xp > 0) {
+      parts.add(l10n.gameScreenPrizeXp(tier.xp.toString()));
+    }
+
+    IconData tierIcon;
+    Color tierColor;
+    if (tier.minRank == 1) {
+      tierIcon = Icons.emoji_events;
+      tierColor = const Color(0xFFFFD700);
+    } else if (tier.minRank <= 3) {
+      tierIcon = Icons.military_tech;
+      tierColor = const Color(0xFFC0C0C0);
+    } else {
+      tierIcon = Icons.workspace_premium;
+      tierColor = const Color(0xFFCD7F32);
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.28),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: tierColor.withValues(alpha: 0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(tierIcon, color: tierColor, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                formatPrizeRankLabel(l10n, tier.minRank, tier.maxRank),
+                style: TextStyle(
+                  color: tierColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          if (parts.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Text(
+              parts.join(' · '),
+              style: const TextStyle(color: Colors.white, fontSize: 13.5),
+            ),
+          ],
+          for (final item in tier.items) ...[
+            const SizedBox(height: 4),
+            Text(
+              l10n.gameScreenPrizeItemLine(
+                eventItemDisplayName(l10n, item.itemKey),
+                item.quantity.toString(),
+              ),
+              style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   Widget _buildLeaderboardRow(
     AppLocalizations l10n, {
     required int rank,
@@ -330,6 +401,9 @@ class _EventsScreenState extends State<EventsScreen> {
             : (myProgressRaw is Map
                   ? Map<String, dynamic>.from(myProgressRaw)
                   : null);
+        final prizeTiers = parseGameEventPrizeTiers(
+          (details['rewardRules'] as List?) ?? const <dynamic>[],
+        );
 
         return Dialog(
           backgroundColor: Colors.transparent,
@@ -512,6 +586,35 @@ class _EventsScreenState extends State<EventsScreen> {
                           ],
                           const SizedBox(height: 12),
                           Text(
+                            l10n.gameScreenPrizePool,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.gameScreenPrizePoolHint,
+                            style: const TextStyle(
+                              color: Colors.white54,
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          if (prizeTiers.isEmpty)
+                            _eventDetailsPanel(
+                              child: Text(
+                                l10n.gameScreenNoPrizes,
+                                style: const TextStyle(color: Colors.white60),
+                              ),
+                            )
+                          else
+                            ...prizeTiers.map(
+                              (tier) => _buildPrizeTierRow(l10n, tier),
+                            ),
+                          const SizedBox(height: 12),
+                          Text(
                             l10n.gameScreenLeaderboard,
                             style: const TextStyle(
                               color: Colors.white,
@@ -689,6 +792,14 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
               ],
               const SizedBox(height: 10),
+              Text(
+                l10n.gameCardPrizeHint,
+                style: TextStyle(
+                  color: _gold.withValues(alpha: 0.85),
+                  fontSize: 12,
+                ),
+              ),
+              const SizedBox(height: 6),
               Text(
                 l10n.gameCardTapDetails,
                 style: const TextStyle(

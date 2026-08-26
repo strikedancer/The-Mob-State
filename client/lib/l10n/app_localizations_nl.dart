@@ -11503,6 +11503,56 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gameScreenNoLeaderboard => 'Nog geen leaderboard data.';
 
   @override
+  String get gameScreenPrizePool => 'Prijzenpot';
+
+  @override
+  String get gameScreenPrizePoolHint =>
+      'Beloningen worden uitbetaald als het event eindigt.';
+
+  @override
+  String gameScreenPrizeRankSingle(String rank) {
+    return 'Plaats $rank';
+  }
+
+  @override
+  String gameScreenPrizeRankRange(String min, String max) {
+    return 'Plaats $min–$max';
+  }
+
+  @override
+  String gameScreenPrizeCredits(String amount) {
+    return '$amount credits';
+  }
+
+  @override
+  String gameScreenPrizeXp(String amount) {
+    return '$amount XP';
+  }
+
+  @override
+  String gameScreenPrizeItemLine(String name, String qty) {
+    return '$name ×$qty';
+  }
+
+  @override
+  String get gameScreenNoPrizes => 'Geen prijsregels voor dit event.';
+
+  @override
+  String get gameCardPrizeHint => 'Prijzen top 10 — tik voor details';
+
+  @override
+  String get eventItemName_event_chip_gold => 'Event chip (goud)';
+
+  @override
+  String get eventItemName_event_chip_silver => 'Event chip (zilver)';
+
+  @override
+  String get eventItemName_event_chip_bronze => 'Event chip (brons)';
+
+  @override
+  String get eventItemName_event_badge_rival => 'Rival badge (gebonden)';
+
+  @override
   String get gameScreenUnknownPlayer => 'Onbekend';
 
   @override

@@ -11468,6 +11468,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameScreenNoLeaderboard => 'No leaderboard data yet.';
 
   @override
+  String get gameScreenPrizePool => 'Prize pool';
+
+  @override
+  String get gameScreenPrizePoolHint => 'Rewards are paid when the event ends.';
+
+  @override
+  String gameScreenPrizeRankSingle(String rank) {
+    return 'Place $rank';
+  }
+
+  @override
+  String gameScreenPrizeRankRange(String min, String max) {
+    return 'Places $min–$max';
+  }
+
+  @override
+  String gameScreenPrizeCredits(String amount) {
+    return '$amount credits';
+  }
+
+  @override
+  String gameScreenPrizeXp(String amount) {
+    return '$amount XP';
+  }
+
+  @override
+  String gameScreenPrizeItemLine(String name, String qty) {
+    return '$name ×$qty';
+  }
+
+  @override
+  String get gameScreenNoPrizes => 'No prize rules configured for this event.';
+
+  @override
+  String get gameCardPrizeHint => 'Prizes for top 10 — tap for details';
+
+  @override
+  String get eventItemName_event_chip_gold => 'Event chip (gold)';
+
+  @override
+  String get eventItemName_event_chip_silver => 'Event chip (silver)';
+
+  @override
+  String get eventItemName_event_chip_bronze => 'Event chip (bronze)';
+
+  @override
+  String get eventItemName_event_badge_rival => 'Rival badge (bound)';
+
+  @override
   String get gameScreenUnknownPlayer => 'Unknown';
 
   @override

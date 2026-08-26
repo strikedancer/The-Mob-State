@@ -9300,5 +9300,59 @@
       }
     }
   },
-  "crimeTrainingOpenHub": "Tap to open training hub"
+  "crimeTrainingOpenHub": "Tap to open training hub",
+  "gameScreenPrizePool": "Prize pool",
+  "gameScreenPrizePoolHint": "Rewards are paid when the event ends.",
+  "gameScreenPrizeRankSingle": "Place {rank}",
+  "@gameScreenPrizeRankSingle": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeRankRange": "Places {min}–{max}",
+  "@gameScreenPrizeRankRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeCredits": "{amount} credits",
+  "@gameScreenPrizeCredits": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeXp": "{amount} XP",
+  "@gameScreenPrizeXp": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeItemLine": "{name} ×{qty}",
+  "@gameScreenPrizeItemLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenNoPrizes": "No prize rules configured for this event.",
+  "gameCardPrizeHint": "Prizes for top 10 — tap for details",
+  "eventItemName_event_chip_gold": "Event chip (gold)",
+  "eventItemName_event_chip_silver": "Event chip (silver)",
+  "eventItemName_event_chip_bronze": "Event chip (bronze)",
+  "eventItemName_event_badge_rival": "Rival badge (bound)"
 }
