@@ -32,9 +32,14 @@ class ShootingRangeService {
     const nextTrainAt = lastTrainedAt ? new Date(lastTrainedAt.getTime() + cooldownMs) : null;
     const canTrain = !nextTrainAt || nextTrainAt.getTime() <= Date.now();
 
+    const hitlistAccuracy = Number(
+      Math.min(0.9, 0.5 + (sessionsCompleted / MAX_SESSIONS) * 0.4).toFixed(4),
+    );
+
     return {
       sessionsCompleted,
       accuracyBonus,
+      hitlistAccuracy,
       lastTrainedAt,
       nextTrainAt,
       canTrain,

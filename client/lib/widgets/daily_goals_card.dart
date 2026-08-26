@@ -58,6 +58,8 @@ class _DailyGoalsCardState extends State<DailyGoalsCard> {
         return l10n.dailyGoalTitle_vehicle_theft_1;
       case 'travel_1':
         return l10n.dailyGoalTitle_travel_1;
+      case 'training_combo_1':
+        return l10n.dailyGoalTitle_training_combo_1;
       default:
         return key;
     }

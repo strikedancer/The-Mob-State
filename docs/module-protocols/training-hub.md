@@ -11,10 +11,13 @@ Single Flutter entry that combines **gym** (three tracks: strength / speed / sta
 ### Hub UX (player-facing)
 
 - **Header:** gradient hero with title/subtitle, optional **combo chip** when `trainingComboReadiness.active` is true (shows `bonusFraction` as a crime success bonus percentage).
+- **Gym section:** three tracks (**strength / speed / stamina**) with per-track progress, cooldown countdown, train button, aggregate gym bonus (+8% cap), and **Smart train** (first ready track). Client posts `POST /gym/train` with `{ "track": "strength"|"speed"|"stamina" }`.
+- **Shooting section:** accuracy bonus, hitlist accuracy line (`hitlistAccuracy` from status), train + cooldown.
+- **Live countdown:** hub ticks every second; silent refresh when a cooldown expires.
 - **Refresh:** reloads `GET /training/status` (and related state). Prefer **silent refresh** (no full-page blocking spinner) when the user taps refresh while already on the hub.
 - **“Open crimes” / misdaden:** optional `onOpenCrimes` callback (e.g. web dashboard embed) jumps to the crimes section so active bonuses are visible there too.
-- **“More info & options”:** `ExpansionTile` with short copy on combo rules, separate cooldowns/caps, and hitlist note (range progress feeds server hitlist logic).
-- **Icons:** use web-safe Material icons only (see Change rules).
+- **Crimes banner:** optional `onOpenTraining` on `CrimeScreen` — tappable strip linking back to the hub.
+- **Dashboard home:** `TrainingSummaryCard` shows aggregate bonuses + combo state; cooldown panel lists `gym_strength`, `gym_speed`, `gym_stamina` per track plus `gym` (soonest).
 
 Legacy wrappers (same UI):
 

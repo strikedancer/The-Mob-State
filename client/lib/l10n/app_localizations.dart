@@ -371,8 +371,26 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardTimeoutGym.
   ///
   /// In en, this message translates to:
-  /// **'Gym'**
+  /// **'Gym (soonest)'**
   String get dashboardTimeoutGym;
+
+  /// No description provided for @dashboardTimeoutGymStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym: strength'**
+  String get dashboardTimeoutGymStrength;
+
+  /// No description provided for @dashboardTimeoutGymSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym: speed'**
+  String get dashboardTimeoutGymSpeed;
+
+  /// No description provided for @dashboardTimeoutGymStamina.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym: stamina'**
+  String get dashboardTimeoutGymStamina;
 
   /// No description provided for @dashboardInfoDrugsGrams.
   ///
@@ -3326,6 +3344,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Complete 1 travel'**
   String get dailyGoalTitle_travel_1;
+
+  /// No description provided for @dailyGoalTitle_training_combo_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Train gym + shooting range (same day)'**
+  String get dailyGoalTitle_training_combo_1;
 
   /// No description provided for @dailyGoalTitle_weekly_crime_20.
   ///
@@ -13773,7 +13797,7 @@ abstract class AppLocalizations {
   /// No description provided for @trainingHubSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Build strength at the gym and accuracy at the range. Each track stacks up to 100 sessions with a 1-hour cooldown and adds to your crime success chance.'**
+  /// **'Three gym tracks (strength, speed, stamina) plus shooting range. Each track stacks up to 100 sessions with a 1-hour cooldown and adds to your crime success chance.'**
   String get trainingHubSubtitle;
 
   /// No description provided for @trainingHubSectionGym.
@@ -13835,6 +13859,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shooting range progress also feeds hitlist calculations on the server.'**
   String get trainingHubMoreInfoHitlist;
+
+  /// No description provided for @trainingHubHitlistAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Hitlist accuracy: {pct}%'**
+  String trainingHubHitlistAccuracy(String pct);
+
+  /// No description provided for @trainingSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training circuit'**
+  String get trainingSummaryTitle;
+
+  /// No description provided for @trainingSummaryOpenHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Open hub'**
+  String get trainingSummaryOpenHub;
+
+  /// No description provided for @trainingSummaryComboActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo active today'**
+  String get trainingSummaryComboActive;
+
+  /// No description provided for @trainingSummaryComboInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Train gym + range today for combo bonus'**
+  String get trainingSummaryComboInactive;
 
   /// No description provided for @trainingHubComboChip.
   ///
@@ -13962,34 +14016,88 @@ abstract class AppLocalizations {
   /// **'How does it work?'**
   String get gymHowItWorksTitle;
 
+  /// No description provided for @gymAggregateBonusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Total gym crime bonus'**
+  String get gymAggregateBonusTitle;
+
+  /// No description provided for @gymTrackStrengthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength'**
+  String get gymTrackStrengthTitle;
+
+  /// No description provided for @gymTrackSpeedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get gymTrackSpeedTitle;
+
+  /// No description provided for @gymTrackStaminaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stamina'**
+  String get gymTrackStaminaTitle;
+
+  /// No description provided for @gymTrackBonusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Track bonus'**
+  String get gymTrackBonusLabel;
+
+  /// No description provided for @gymSmartTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart train'**
+  String get gymSmartTrain;
+
+  /// No description provided for @gymSmartTrainHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Trains the first track that is ready (strength, then speed, then stamina).'**
+  String get gymSmartTrainHint;
+
+  /// No description provided for @gymCountdownReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get gymCountdownReady;
+
+  /// No description provided for @gymCountdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next in {time}'**
+  String gymCountdownLabel(String time);
+
   /// No description provided for @gymHowItWorksBullet1.
   ///
   /// In en, this message translates to:
-  /// **'• Train every hour for a strength boost'**
+  /// **'• Three tracks: strength (+4%), speed (+2%), stamina (+2%)'**
   String get gymHowItWorksBullet1;
 
   /// No description provided for @gymHowItWorksBullet2.
   ///
   /// In en, this message translates to:
-  /// **'• Each session gives +0.08% bonus'**
+  /// **'• Each track: 100 sessions max, 1 hour cooldown'**
   String get gymHowItWorksBullet2;
 
   /// No description provided for @gymHowItWorksBullet3.
   ///
   /// In en, this message translates to:
-  /// **'• Maximum of 100 sessions (+8% total)'**
+  /// **'• Combined gym bonus up to +8% on crime success'**
   String get gymHowItWorksBullet3;
 
   /// No description provided for @gymHowItWorksBullet4.
   ///
   /// In en, this message translates to:
-  /// **'• Increases your crime success rate'**
+  /// **'• Smart train picks the first ready track'**
   String get gymHowItWorksBullet4;
 
   /// No description provided for @gymHowItWorksBullet5.
   ///
   /// In en, this message translates to:
-  /// **'• Permanent bonus, every session counts'**
+  /// **'• Permanent progress — every session counts'**
   String get gymHowItWorksBullet5;
 
   /// No description provided for @buyAmmo.
@@ -20936,6 +21044,12 @@ abstract class AppLocalizations {
   /// **'Same-day combo (gym + range, UTC calendar): +{pct}% extra crime success chance.'**
   String crimeTrainingComboStrip(String pct);
 
+  /// No description provided for @crimeTrainingOpenHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to open training hub'**
+  String get crimeTrainingOpenHub;
+
   /// No description provided for @crimeCriminalRecordWipeDesc.
   ///
   /// In en, this message translates to:
@@ -25281,13 +25395,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTerritoryHow.
   ///
   /// In en, this message translates to:
-  /// **'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.\nMap overlays show live contest scores, region projects, and events; thicker borders mark clusters and thinner borders mark pockets.\nOwned regions can start one project type: safehouse network (income), surveillance grid on harbor/airhub/capital (intel), or arms cache on industry/border (raid/defense).\nAttacking from an owned neighbor grants invasion bonuses; defending a pocket faces extra sabotage/raid pressure.'**
+  /// **'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.'**
   String get helpTopicTerritoryHow;
 
   /// No description provided for @helpTopicTerritoryTips.
   ///
   /// In en, this message translates to:
-  /// **'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nHold clusters for stronger defense support; isolated pockets invite invasion pressure from neighbors. Use layer toggles on the map to show contest scores, projects, and region events.'**
+  /// **'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.'**
   String get helpTopicTerritoryTips;
 
   /// No description provided for @helpTopicProstitutionCategory.
@@ -26025,19 +26139,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTrainingHubSummary.
   ///
   /// In en, this message translates to:
-  /// **'Gym (strength) and shooting range (accuracy) in one place. Both bonuses add to your crime success chance; shooting accuracy is also used in hitlist actions. Each track has its own cooldown and a cap of 100 sessions.'**
+  /// **'Gym (three tracks: strength, speed, stamina) and shooting range in one place. Bonuses add to crime success; range also feeds hitlist. Each track has its own cooldown and 100-session cap.'**
   String get helpTopicTrainingHubSummary;
 
   /// No description provided for @helpTopicTrainingHubHow.
   ///
   /// In en, this message translates to:
-  /// **'Gym: each session increases your permanent strength bonus up to +8% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).\nShooting range: each session increases your permanent accuracy bonus up to +10% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).\nBoth bonuses are added by the server into crime success calculations.\nYou train each track separately: two timers and two train buttons — one screen.\nProgress does not reset unless staff applies a heavy penalty.'**
+  /// **'Gym: three tracks — strength (+4%), speed (+2%), stamina (+2%) — up to +8% combined (100 sessions each). 1-hour cooldown per track (VIP may shorten).\nSmart train picks the first track that is ready.\nShooting range: accuracy bonus up to +10% (100 sessions). 1-hour cooldown. Hitlist accuracy scales with range progress.\nSame UTC day: at least one gym and one range session for +0.5% extra crime combo.\nProgress does not reset unless staff applies a heavy penalty.'**
   String get helpTopicTrainingHubHow;
 
   /// No description provided for @helpTopicTrainingHubTips.
   ///
   /// In en, this message translates to:
-  /// **'Schedule both tracks daily: small steps stack into a clear edge on crimes.\nReview crimes where you fail most: strength and accuracy complement each other — they are not the same stat.'**
+  /// **'Schedule all tracks daily: small steps stack into a clear edge on crimes.\nUse Smart train for quick sessions; train individual tracks when you want to prioritize one stat.'**
   String get helpTopicTrainingHubTips;
 
   /// No description provided for @territoryCapsLine.

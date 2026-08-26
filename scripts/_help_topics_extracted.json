@@ -1244,29 +1244,29 @@
     "categoryEn": "Training",
     "titleNl": "Trainingscircuit",
     "titleEn": "Training hub",
-    "summaryNl": "Sportschool (kracht) en schietschool (nauwkeurigheid) op één plek. Beide bonussen tellen mee op je slagingskans bij misdaden; de schietschool telt ook mee bij hitlist-acties. Elke lijn heeft eigen cooldown en maximaal 100 sessies.",
-    "summaryEn": "Gym (strength) and shooting range (accuracy) in one place. Both bonuses add to your crime success chance; shooting accuracy is also used in hitlist actions. Each track has its own cooldown and a cap of 100 sessions.",
+    "summaryNl": "Sportschool (drie lijnen: kracht, snelheid, uithouding) en schietschool op één plek. Bonussen tellen mee op je slagingskans bij misdaden; schietschool ook bij hitlist. Elke lijn heeft eigen cooldown en max. 100 sessies.",
+    "summaryEn": "Gym (three tracks: strength, speed, stamina) and shooting range in one place. Bonuses add to crime success; range also feeds hitlist. Each track has its own cooldown and 100-session cap.",
     "howNl": [
-      "Sportschool: per sessie stijgt je vaste krachtbonus tot maximaal +8% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).",
-      "Schietschool: per sessie stijgt je nauwkeurigheidsbonus tot maximaal +10% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).",
-      "Beide bonussen worden door de server opgeteld bij de succesberekening van misdaden.",
-      "Je traint elke lijn afzonderlijk: twee timers, twee knoppen — maar één scherm.",
-      "Er is geen reset van voortgang, tenzij staff een zware correctie toepast."
+      "Sportschool: drie lijnen — kracht (+4%), snelheid (+2%), uithouding (+2%) — tot maximaal +8% gecombineerd (100 sessies per lijn). Cooldown 1 uur per lijn (VIP kan verkorten).",
+      "Slim trainen kiest automatisch de eerste lijn die klaar is.",
+      "Schietschool: nauwkeurigheidsbonus tot +10% (100 sessies). Cooldown 1 uur (VIP kan verkorten). Hitlist-nauwkeurigheid loopt mee met voortgang.",
+      "Zelfde UTC-dag: minstens één sportschool- én schietbaansessie voor +0,5% extra combo op misdaden.",
+      "Voortgang reset niet, tenzij staff een zware correctie toepast."
     ],
     "howEn": [
-      "Gym: each session increases your permanent strength bonus up to +8% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).",
-      "Shooting range: each session increases your permanent accuracy bonus up to +10% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).",
-      "Both bonuses are added by the server into crime success calculations.",
-      "You train each track separately: two timers and two train buttons — one screen.",
+      "Gym: three tracks — strength (+4%), speed (+2%), stamina (+2%) — up to +8% combined (100 sessions each). 1-hour cooldown per track (VIP may shorten).",
+      "Smart train picks the first track that is ready.",
+      "Shooting range: accuracy bonus up to +10% (100 sessions). 1-hour cooldown. Hitlist accuracy scales with range progress.",
+      "Same UTC day: at least one gym and one range session for +0.5% extra crime combo.",
       "Progress does not reset unless staff applies a heavy penalty."
     ],
     "tipsNl": [
-      "Plan beide lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.",
-      "Check misdaden waar je het meest faalt: kracht en nauwkeurigheid zijn complementair, niet hetzelfde."
+      "Plan alle lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.",
+      "Gebruik Slim trainen als je snel wilt doorpakken; per lijn trainen als je één stat prioriteit geeft."
     ],
     "tipsEn": [
-      "Schedule both tracks daily: small steps stack into a clear edge on crimes.",
-      "Review crimes where you fail most: strength and accuracy complement each other — they are not the same stat."
+      "Schedule all tracks daily: small steps stack into a clear edge on crimes.",
+      "Use Smart train for quick sessions; train individual tracks when you want to prioritize one stat."
     ],
     "protocolPath": "docs/module-protocols/training-hub.md"
   },

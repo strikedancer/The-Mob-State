@@ -147,6 +147,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dashboardTimeoutGym => 'Palestra';
 
   @override
+  String get dashboardTimeoutGymStrength => 'Gym: strength';
+
+  @override
+  String get dashboardTimeoutGymSpeed => 'Gym: speed';
+
+  @override
+  String get dashboardTimeoutGymStamina => 'Gym: stamina';
+
+  @override
   String get dashboardInfoDrugsGrams => 'Droga (grammi)';
 
   @override
@@ -1848,6 +1857,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get dailyGoalTitle_travel_1 => 'Completa 1 viaggio';
+
+  @override
+  String get dailyGoalTitle_training_combo_1 =>
+      'Train gym + shooting range (same day)';
 
   @override
   String get dailyGoalTitle_weekly_crime_20 => 'Settimanale: 20 crimini';
@@ -7832,6 +7845,24 @@ class AppLocalizationsIt extends AppLocalizations {
       'I progressi del poligono di tiro alimentano anche i calcoli della lista dei risultati sul server.';
 
   @override
+  String trainingHubHitlistAccuracy(String pct) {
+    return 'Hitlist accuracy: $pct%';
+  }
+
+  @override
+  String get trainingSummaryTitle => 'Training circuit';
+
+  @override
+  String get trainingSummaryOpenHub => 'Open hub';
+
+  @override
+  String get trainingSummaryComboActive => 'Combo active today';
+
+  @override
+  String get trainingSummaryComboInactive =>
+      'Train gym + range today for combo bonus';
+
+  @override
   String trainingHubComboChip(String pct) {
     return 'Combo attiva: +$pct% sui crimini';
   }
@@ -7904,6 +7935,36 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get gymHowItWorksTitle => 'Come funziona?';
+
+  @override
+  String get gymAggregateBonusTitle => 'Total gym crime bonus';
+
+  @override
+  String get gymTrackStrengthTitle => 'Strength';
+
+  @override
+  String get gymTrackSpeedTitle => 'Speed';
+
+  @override
+  String get gymTrackStaminaTitle => 'Stamina';
+
+  @override
+  String get gymTrackBonusLabel => 'Track bonus';
+
+  @override
+  String get gymSmartTrain => 'Smart train';
+
+  @override
+  String get gymSmartTrainHint =>
+      'Trains the first track that is ready (strength, then speed, then stamina).';
+
+  @override
+  String get gymCountdownReady => 'Ready';
+
+  @override
+  String gymCountdownLabel(String time) {
+    return 'Next in $time';
+  }
 
   @override
   String get gymHowItWorksBullet1 =>
@@ -12038,6 +12099,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String crimeTrainingComboStrip(String pct) {
     return 'Combo lo stesso giorno (palestra + poligono, calendario UTC): +$pct% probabilità extra di successo del crimine.';
   }
+
+  @override
+  String get crimeTrainingOpenHub => 'Tap to open training hub';
 
   @override
   String get crimeCriminalRecordWipeDesc =>

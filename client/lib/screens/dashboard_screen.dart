@@ -44,6 +44,7 @@ import 'tools_screen.dart';
 import 'hitlist_screen.dart';
 import 'security_screen.dart';
 import 'training_hub_screen.dart';
+import '../widgets/training_summary_card.dart';
 import 'ammo_factory_screen.dart';
 import 'school_screen.dart';
 import 'prostitution_screen.dart';
@@ -1560,13 +1561,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onSeenSnapshotChanged: _loadSupportBadgeCount,
         );
       case _WebSection.dashboard:
-        return const _WebDashboardHomeContent();
+        return _WebDashboardHomeContent(
+          onOpenTrainingHub: () =>
+              _selectWebSection(_WebSection.trainingHub),
+        );
       case _WebSection.vault:
         return const VaultScreen(embedded: true);
       case _WebSection.events:
         return const EventsScreen(embedded: true);
       case _WebSection.crimes:
-        return const CrimeScreen();
+        return CrimeScreen(
+          onOpenTraining: () =>
+              _selectWebSection(_WebSection.trainingHub),
+        );
       case _WebSection.jobs:
         return const JobsScreen();
       case _WebSection.messages:
@@ -2395,7 +2402,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 }
 
 class _WebDashboardHomeContent extends StatefulWidget {
-  const _WebDashboardHomeContent();
+  const _WebDashboardHomeContent({this.onOpenTrainingHub});
+
+  final VoidCallback? onOpenTrainingHub;
 
   @override
   State<_WebDashboardHomeContent> createState() =>
@@ -2421,6 +2430,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         return l10n.dailyGoalTitle_vehicle_theft_1;
       case 'travel_1':
         return l10n.dailyGoalTitle_travel_1;
+      case 'training_combo_1':
+        return l10n.dailyGoalTitle_training_combo_1;
       case 'weekly_crime_20':
         return l10n.dailyGoalTitle_weekly_crime_20;
       case 'weekly_job_10':
@@ -3228,6 +3239,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             const SizedBox(height: 8),
             const MarketTeaserTile(),
             const SizedBox(height: 8),
+            TrainingSummaryCard(onOpenHub: widget.onOpenTrainingHub),
+            const SizedBox(height: 8),
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(12),
@@ -3758,6 +3771,18 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       'shooting_range',
                     ),
                     _buildCooldownRow(l10n.dashboardTimeoutGym, 'gym'),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutGymStrength,
+                      'gym_strength',
+                    ),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutGymSpeed,
+                      'gym_speed',
+                    ),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutGymStamina,
+                      'gym_stamina',
+                    ),
                     _buildCooldownRow(l10n.hospital, 'hospital'),
                     _buildCooldownRow(
                       l10n.dashboardRecruitProstitute,

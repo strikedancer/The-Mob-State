@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { shootingRangeService } from '../services/shootingRangeService';
+import { checkAndUnlockAchievements } from '../services/achievementService';
 
 const router = Router();
 
@@ -44,6 +45,8 @@ router.post('/train', authenticate, async (req: AuthRequest, res: Response) => {
       nextTrainAt: (result as any).nextTrainAt,
     });
   }
+
+  void checkAndUnlockAchievements(req.player!.id).catch(() => {});
 
   return res.status(200).json({
     success: true,

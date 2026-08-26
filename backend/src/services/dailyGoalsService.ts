@@ -1,12 +1,14 @@
 import prisma from '../lib/prisma';
 import { getRankFromXP } from '../config';
 import { activityService } from './activityService';
+import { latestGymTrainAt } from './gymService';
 
 export type DailyGoalKey =
   | 'crime_3'
   | 'job_2'
   | 'vehicle_theft_1'
   | 'travel_1'
+  | 'training_combo_1'
   | 'weekly_crime_20'
   | 'weekly_job_10'
   | 'weekly_vehicle_theft_5'
@@ -55,6 +57,14 @@ const GOALS: DailyGoalDef[] = [
     rewardXp: 15,
   },
   {
+    key: 'training_combo_1',
+    titleNl: 'Trainingscombo vandaag',
+    titleEn: 'Training combo today',
+    target: 1,
+    rewardCash: 650,
+    rewardXp: 22,
+  },
+  {
     key: 'weekly_crime_20',
     titleNl: 'Weekdoel: 20 misdaden',
     titleEn: 'Weekly: 20 crimes',
@@ -99,8 +109,32 @@ function dateKeyUtc(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
+async function computeTrainingComboProgress(
+  playerId: number,
+  from: Date,
+): Promise<number> {
+  const [gymStats, shootingStats] = await Promise.all([
+    prisma.gymStats.findUnique({ where: { playerId } }),
+    prisma.shootingRangeStats.findUnique({ where: { playerId } }),
+  ]);
+  const gymLast = latestGymTrainAt({
+    lastTrainedAt: gymStats?.lastTrainedAt ?? null,
+    speedLastTrainedAt: gymStats?.speedLastTrainedAt ?? null,
+    staminaLastTrainedAt: gymStats?.staminaLastTrainedAt ?? null,
+  });
+  const shootLast = shootingStats?.lastTrainedAt ?? null;
+  if (!gymLast || !shootLast) {
+    return 0;
+  }
+  if (gymLast >= from && shootLast >= from) {
+    return 1;
+  }
+  return 0;
+}
+
 async function computeProgress(playerId: number, from: Date): Promise<Record<DailyGoalKey, number>> {
-  const [crimeCount, jobCount, vehicleTheftCount, travelCount] = await Promise.all([
+  const [crimeCount, jobCount, vehicleTheftCount, travelCount, trainingCombo] =
+    await Promise.all([
     prisma.crimeAttempt.count({
       where: { playerId, createdAt: { gte: from }, NOT: { crimeId: 'police_arrest' } },
     }),
@@ -117,6 +151,7 @@ async function computeProgress(playerId: number, from: Date): Promise<Record<Dai
         eventKey: { in: ['travel.arrived', 'travel.journey_complete'] },
       },
     }),
+    computeTrainingComboProgress(playerId, from),
   ]);
 
   return {
@@ -124,6 +159,7 @@ async function computeProgress(playerId: number, from: Date): Promise<Record<Dai
     job_2: jobCount,
     vehicle_theft_1: vehicleTheftCount,
     travel_1: travelCount,
+    training_combo_1: trainingCombo,
     weekly_crime_20: crimeCount,
     weekly_job_10: jobCount,
     weekly_vehicle_theft_5: vehicleTheftCount,

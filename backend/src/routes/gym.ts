@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { gymService, type GymTrainTrack } from '../services/gymService';
+import { checkAndUnlockAchievements } from '../services/achievementService';
 
 const router = Router();
 
@@ -44,6 +45,8 @@ router.post('/train', authenticate, async (req: AuthRequest, res) => {
       });
     }
   }
+
+  void checkAndUnlockAchievements(req.player!.id).catch(() => {});
 
   return res.json({
     event: 'gym.trained',

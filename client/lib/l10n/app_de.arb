@@ -9267,5 +9267,38 @@
         "type": "String"
       }
     }
-  }
+  },
+  "dashboardTimeoutGymStrength": "Gym: strength",
+  "dashboardTimeoutGymSpeed": "Gym: speed",
+  "dashboardTimeoutGymStamina": "Gym: stamina",
+  "dailyGoalTitle_training_combo_1": "Train gym + shooting range (same day)",
+  "trainingHubHitlistAccuracy": "Hitlist accuracy: {pct}%",
+  "@trainingHubHitlistAccuracy": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "trainingSummaryTitle": "Training circuit",
+  "trainingSummaryOpenHub": "Open hub",
+  "trainingSummaryComboActive": "Combo active today",
+  "trainingSummaryComboInactive": "Train gym + range today for combo bonus",
+  "gymAggregateBonusTitle": "Total gym crime bonus",
+  "gymTrackStrengthTitle": "Strength",
+  "gymTrackSpeedTitle": "Speed",
+  "gymTrackStaminaTitle": "Stamina",
+  "gymTrackBonusLabel": "Track bonus",
+  "gymSmartTrain": "Smart train",
+  "gymSmartTrainHint": "Trains the first track that is ready (strength, then speed, then stamina).",
+  "gymCountdownReady": "Ready",
+  "gymCountdownLabel": "Next in {time}",
+  "@gymCountdownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeTrainingOpenHub": "Tap to open training hub"
 }

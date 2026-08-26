@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -20,11 +21,13 @@ class TrainingHubScreen extends StatefulWidget {
 
 class _TrainingHubScreenState extends State<TrainingHubScreen> {
   static const Color _hubGold = Color(0xFFD4AF37);
+  static const Color _panelBg = Color(0xFF1A1210);
+  static const Color _panelBorder = Color(0xFF3A2820);
 
   final ApiClient _apiClient = ApiClient();
 
   bool _isLoading = true;
-  bool _trainingGym = false;
+  String? _trainingGymTrack;
   bool _trainingShooting = false;
 
   Map<String, dynamic>? _gymStatus;
@@ -32,10 +35,24 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
   bool _comboActive = false;
   double _comboBonusFraction = 0;
 
+  Timer? _tickTimer;
+  DateTime _now = DateTime.now();
+
   @override
   void initState() {
     super.initState();
     _loadAll();
+    _tickTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() => _now = DateTime.now());
+      _maybeRefreshOnCooldownEnd();
+    });
+  }
+
+  @override
+  void dispose() {
+    _tickTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadAll({bool showFullPageLoader = true}) async {
@@ -57,6 +74,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
           _comboActive = comboOn;
           _comboBonusFraction = comboFrac;
           _isLoading = false;
+          _now = DateTime.now();
         });
         return;
       }
@@ -77,14 +95,54 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
         _comboActive = false;
         _comboBonusFraction = 0;
         _isLoading = false;
+        _now = DateTime.now();
       });
     } catch (_) {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  /// Gym API: `{ event, params: { reason, nextTrainAt? } }` on failure.
-  /// Shooting API: `{ error, message?, nextTrainAt? }` on failure.
+  void _maybeRefreshOnCooldownEnd() {
+    if (_isLoading || _trainingGymTrack != null || _trainingShooting) return;
+    final gym = _gymStatus;
+    final shooting = _shootingStatus;
+    if (gym == null && shooting == null) return;
+
+    bool wasBlocked(String? raw, bool canTrain) {
+      if (canTrain) return false;
+      final at = _parseAt(raw);
+      if (at == null) return false;
+      final diff = at.difference(_now);
+      return diff.inSeconds <= 0 && diff.inSeconds > -2;
+    }
+
+    final gymBlocked = wasBlocked(
+      gym?['nextTrainAtStrength']?.toString() ?? gym?['nextTrainAt']?.toString(),
+      gym?['canTrainStrength'] == true,
+    ) ||
+        wasBlocked(
+          gym?['nextTrainAtSpeed']?.toString(),
+          gym?['canTrainSpeed'] == true,
+        ) ||
+        wasBlocked(
+          gym?['nextTrainAtStamina']?.toString(),
+          gym?['canTrainStamina'] == true,
+        );
+    final rangeBlocked = wasBlocked(
+      shooting?['nextTrainAt']?.toString(),
+      shooting?['canTrain'] == true,
+    );
+
+    if (gymBlocked || rangeBlocked) {
+      _loadAll(showFullPageLoader: false);
+    }
+  }
+
+  static DateTime? _parseAt(String? raw) {
+    if (raw == null || raw.isEmpty) return null;
+    return DateTime.tryParse(raw)?.toLocal();
+  }
+
   static (String? reason, DateTime? nextAt) _parseGymFailure(
     Map<String, dynamic>? data,
   ) {
@@ -92,7 +150,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     final params = data['params'] as Map<String, dynamic>?;
     final reason = params?['reason']?.toString();
     final raw = params?['nextTrainAt']?.toString();
-    return (reason, DateTime.tryParse(raw ?? '')?.toLocal());
+    return (reason, _parseAt(raw));
   }
 
   static (String? reason, DateTime? nextAt) _parseShootingFailure(
@@ -101,43 +159,55 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     if (data == null) return (null, null);
     final reason = data['error']?.toString();
     final raw = data['nextTrainAt']?.toString();
-    return (reason, DateTime.tryParse(raw ?? '')?.toLocal());
+    return (reason, _parseAt(raw));
   }
 
-  Future<void> _trainGym() async {
+  String? _pickSmartTrainTrack() {
+    final status = _gymStatus ?? {};
+    if (status['canTrainStrength'] == true) return 'strength';
+    if (status['canTrainSpeed'] == true) return 'speed';
+    if (status['canTrainStamina'] == true) return 'stamina';
+    return null;
+  }
+
+  Future<void> _trainGymTrack(String track) async {
     final l10n = AppLocalizations.of(context);
-    setState(() => _trainingGym = true);
+    setState(() => _trainingGymTrack = track);
     try {
-      final response = await _apiClient.post('/gym/train', {});
+      final response =
+          await _apiClient.post('/gym/train', {'track': track});
       final data = jsonDecode(response.body) as Map<String, dynamic>?;
       if (response.statusCode == 200) {
         if (mounted) {
           showTopRightFromSnackBar(
             context,
-            SnackBar(content: Text(l10n?.gymTrainSuccess ?? 'Training complete')),
+            SnackBar(
+              content: Text(l10n?.gymTrainSuccess ?? 'Training complete'),
+            ),
           );
         }
-        await _loadAll();
+        await _loadAll(showFullPageLoader: false);
       } else if (mounted) {
         final (reason, nextAt) = _parseGymFailure(data);
         final msg = _messageForGymFailure(l10n, reason, nextAt);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(msg)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(msg)),
+        );
       }
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n?.unknownError ?? 'Error',
-            ),
-          ),
+          SnackBar(content: Text(l10n?.unknownError ?? 'Error')),
         );
       }
     } finally {
-      if (mounted) setState(() => _trainingGym = false);
+      if (mounted) setState(() => _trainingGymTrack = null);
     }
+  }
+
+  Future<void> _smartTrainGym() async {
+    final track = _pickSmartTrainTrack();
+    if (track != null) await _trainGymTrack(track);
   }
 
   Future<void> _trainShooting() async {
@@ -156,17 +226,19 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(l10n?.shootingTrainSuccess ?? 'Training complete'),
+              content: Text(
+                l10n?.shootingTrainSuccess ?? 'Training complete',
+              ),
             ),
           );
         }
-        await _loadAll();
+        await _loadAll(showFullPageLoader: false);
       } else if (mounted) {
         final (reason, nextAt) = _parseShootingFailure(data);
         final msg = _messageForShootingFailure(l10n, reason, nextAt, data);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(msg)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(msg)),
+        );
       }
     } catch (_) {
       if (mounted) {
@@ -188,7 +260,8 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
       case 'MAX_SESSIONS':
         return l10n?.gymMaxSessionsReached ?? 'Maximum sessions reached';
       case 'COOLDOWN':
-        final label = nextAt != null ? DateFormat('HH:mm').format(nextAt) : '-';
+        final label =
+            nextAt != null ? DateFormat('HH:mm').format(nextAt) : '-';
         return l10n?.gymCooldown(label) ?? 'Next session at $label';
       default:
         return l10n?.unknownError ?? 'Error';
@@ -206,12 +279,26 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
         return l10n?.shootingMaxSessionsReached ??
             'Maximum training sessions reached';
       case 'COOLDOWN':
-        final label = nextAt != null ? DateFormat('HH:mm').format(nextAt) : '-';
+        final label =
+            nextAt != null ? DateFormat('HH:mm').format(nextAt) : '-';
         return l10n?.shootingCooldownLabel(label) ?? 'Next session at: $label';
       default:
         return data?['message']?.toString() ??
             (l10n?.unknownError ?? 'Error');
     }
+  }
+
+  String _formatCountdown(DateTime? nextAt, AppLocalizations? l10n) {
+    if (nextAt == null) return l10n?.gymCountdownReady ?? 'Ready';
+    final diff = nextAt.difference(_now);
+    if (diff.inSeconds <= 0) return l10n?.gymCountdownReady ?? 'Ready';
+    final h = diff.inHours;
+    final m = diff.inMinutes.remainder(60);
+    final s = diff.inSeconds.remainder(60);
+    final time = h > 0
+        ? '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}'
+        : '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+    return l10n?.gymCountdownLabel(time) ?? 'Next in $time';
   }
 
   @override
@@ -226,16 +313,11 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Color(0xFF1A0A0A),
-                Color(0xFF120808),
-              ],
+              colors: [Color(0xFF1A0A0A), Color(0xFF120808)],
             ),
           ),
           child: Center(
-            child: CircularProgressIndicator(
-              color: _hubGold,
-            ),
+            child: CircularProgressIndicator(color: _hubGold),
           ),
         ),
       );
@@ -247,10 +329,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1A0A0A),
-              Color(0xFF120808),
-            ],
+            colors: [Color(0xFF1A0A0A), Color(0xFF120808)],
           ),
         ),
         child: SafeArea(
@@ -320,9 +399,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                 decoration: BoxDecoration(
                   color: _hubGold.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _hubGold.withValues(alpha: 0.35),
-                  ),
+                  border: Border.all(color: _hubGold.withValues(alpha: 0.35)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -334,11 +411,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        Icons.add,
-                        size: 16,
-                        color: Colors.white54,
-                      ),
+                      child: Icon(Icons.add, size: 16, color: Colors.white54),
                     ),
                     Icon(
                       Icons.gps_fixed,
@@ -393,9 +466,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                   ),
                 ),
                 backgroundColor: Colors.amber.withValues(alpha: 0.18),
-                side: BorderSide(
-                  color: Colors.amber.withValues(alpha: 0.45),
-                ),
+                side: BorderSide(color: Colors.amber.withValues(alpha: 0.45)),
               ),
             ),
           ],
@@ -415,10 +486,12 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                   ),
                 ),
               Tooltip(
-                message:
-                    l10n?.trainingHubRefreshTooltip ?? 'Reload status from the server',
+                message: l10n?.trainingHubRefreshTooltip ??
+                    'Reload status from the server',
                 child: OutlinedButton.icon(
-                  onPressed: _isLoading ? null : () => _loadAll(showFullPageLoader: false),
+                  onPressed: _isLoading
+                      ? null
+                      : () => _loadAll(showFullPageLoader: false),
                   icon: const Icon(Icons.refresh, size: 20),
                   label: Text(l10n?.trainingHubRefreshStatus ?? 'Refresh'),
                   style: OutlinedButton.styleFrom(
@@ -427,14 +500,6 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                   ),
                 ),
               ),
-              if (widget.onOpenCrimes != null)
-                Text(
-                  l10n?.trainingHubOpenCrimesHint ??
-                      'Bonuses apply on the Crimes screen.',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.white60,
-                      ),
-                ),
             ],
           ),
           Theme(
@@ -493,18 +558,8 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
 
   Widget _buildGymColumn(BuildContext context, AppLocalizations? l10n) {
     final status = _gymStatus ?? {};
-    final sessions = status['sessionsCompleted'] ?? 0;
-    final strengthBonus = ((status['strengthBonus'] as num?) ?? 0) * 100;
-    final nextTrainAtRaw = status['nextTrainAt']?.toString();
-    final nextTrainAt = nextTrainAtRaw != null
-        ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
-        : null;
-    final nextTrainLabel = nextTrainAt != null
-        ? DateFormat('HH:mm').format(nextTrainAt)
-        : '-';
-    final canTrain = status['canTrain'] == true;
-    final progress = (sessions as num) / 100.0;
-    const maxBonus = 8.0;
+    final aggregateBonus = ((status['strengthBonus'] as num?) ?? 0) * 100;
+    final canSmartTrain = _pickSmartTrainTrack() != null;
 
     return _sectionShell(
       context: context,
@@ -516,58 +571,231 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _progressCard(
-            context,
-            title: l10n?.gymTrainingProgressTitle ?? 'Training progress',
-            sessionsLabel: l10n?.gymSessionsCompletedLabel ?? 'Sessions:',
-            sessions: sessions,
-            progress: progress.clamp(0.0, 1.0),
-            progressSuffix:
-                l10n?.gymProgressCompleteSuffix ?? 'complete',
-            progressColor: Colors.red,
+          _darkPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n?.gymAggregateBonusTitle ?? 'Total gym crime bonus',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '+${aggregateBonus.toStringAsFixed(1)}% / +8%',
+                  style: TextStyle(
+                    color: Colors.red.shade300,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  l10n?.gymBonusAppliedToCrimes ??
+                      'Applied to crime success chance.',
+                  style: const TextStyle(color: Colors.white60, fontSize: 12),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
-          _bonusPairCard(
+          _buildGymTrackCard(
             context,
-            currentLabel: l10n?.gymCurrentBonusTitle ?? 'Current bonus',
-            currentValue: '+${strengthBonus.toStringAsFixed(1)}%',
-            currentSubLabel:
-                l10n?.gymStrengthBonusLabel ?? 'Strength bonus',
-            maxValue: '+${maxBonus.toStringAsFixed(0)}%',
-            maxLabel: l10n?.gymMaximumLabel ?? 'Maximum',
-            gradient: [Colors.red.shade400, Colors.red.shade700],
-            infoText: l10n?.gymBonusAppliedToCrimes ??
-                'Applied to crime success chance.',
-          ),
-          const SizedBox(height: 12),
-          _trainCard(
-            context,
-            canTrain: canTrain,
-            isTraining: _trainingGym,
-            readyLabel: l10n?.gymReadyToTrain ?? 'Ready to train',
-            cooldownTitle:
-                l10n?.gymTrainingCooldownTitle ?? 'Training cooldown',
-            cooldownLine: l10n?.gymCooldown(nextTrainLabel) ??
-                'Next session at $nextTrainLabel',
-            cooldownHint: l10n?.gymCooldownHint ??
-                'Wait 1 hour between sessions.',
-            trainLabel: l10n?.gymTrain ?? 'Train',
-            trainingLabel: l10n?.gymTrainingInProgress ?? 'Training…',
+            l10n,
+            track: 'strength',
+            title: l10n?.gymTrackStrengthTitle ?? 'Strength',
+            sessions: status['sessionsCompleted'] ?? 0,
+            trackBonus: status['strengthTrackBonus'],
+            maxTrackBonus: 4.0,
+            canTrain: status['canTrainStrength'] == true,
+            nextTrainAt: _parseAt(
+              status['nextTrainAtStrength']?.toString() ??
+                  status['nextTrainAt']?.toString(),
+            ),
             accent: Colors.red,
             icon: Icons.fitness_center,
-            onTrain: _trainGym,
+          ),
+          const SizedBox(height: 10),
+          _buildGymTrackCard(
+            context,
+            l10n,
+            track: 'speed',
+            title: l10n?.gymTrackSpeedTitle ?? 'Speed',
+            sessions: status['speedSessionsCompleted'] ?? 0,
+            trackBonus: status['speedTrackBonus'],
+            maxTrackBonus: 2.0,
+            canTrain: status['canTrainSpeed'] == true,
+            nextTrainAt: _parseAt(status['nextTrainAtSpeed']?.toString()),
+            accent: Colors.orange,
+            icon: Icons.directions_run,
+          ),
+          const SizedBox(height: 10),
+          _buildGymTrackCard(
+            context,
+            l10n,
+            track: 'stamina',
+            title: l10n?.gymTrackStaminaTitle ?? 'Stamina',
+            sessions: status['staminaSessionsCompleted'] ?? 0,
+            trackBonus: status['staminaTrackBonus'],
+            maxTrackBonus: 2.0,
+            canTrain: status['canTrainStamina'] == true,
+            nextTrainAt: _parseAt(status['nextTrainAtStamina']?.toString()),
+            accent: Colors.deepOrange,
+            icon: Icons.favorite,
           ),
           const SizedBox(height: 12),
-          _howItWorksCard(
-            context,
-            title: l10n?.gymHowItWorksTitle ?? 'How it works',
-            bullets: [
-              l10n?.gymHowItWorksBullet1 ?? '',
-              l10n?.gymHowItWorksBullet2 ?? '',
-              l10n?.gymHowItWorksBullet3 ?? '',
-              l10n?.gymHowItWorksBullet4 ?? '',
-              l10n?.gymHowItWorksBullet5 ?? '',
+          _darkPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  l10n?.gymSmartTrain ?? 'Smart train',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n?.gymSmartTrainHint ??
+                      'Trains the first track that is ready.',
+                  style: const TextStyle(color: Colors.white60, fontSize: 12),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: canSmartTrain && _trainingGymTrack == null
+                        ? _smartTrainGym
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _hubGold,
+                      foregroundColor: Colors.black87,
+                      disabledBackgroundColor: Colors.grey.shade800,
+                    ),
+                    icon: _trainingGymTrack != null
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.auto_fix_high),
+                    label: Text(l10n?.gymSmartTrain ?? 'Smart train'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          _howItWorksCard(context, l10n, isGym: true),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGymTrackCard(
+    BuildContext context,
+    AppLocalizations? l10n, {
+    required String track,
+    required String title,
+    required num sessions,
+    required dynamic trackBonus,
+    required double maxTrackBonus,
+    required bool canTrain,
+    required DateTime? nextTrainAt,
+    required Color accent,
+    required IconData icon,
+  }) {
+    final bonusPct = ((trackBonus as num?) ?? 0) * 100;
+    final progress = sessions / 100.0;
+    final isTraining = _trainingGymTrack == track;
+
+    return _darkPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: accent, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Text(
+                '$sessions/100',
+                style: TextStyle(
+                  color: accent,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(
+              value: progress.clamp(0.0, 1.0),
+              minHeight: 8,
+              backgroundColor: Colors.white12,
+              valueColor: AlwaysStoppedAnimation<Color>(accent),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${l10n?.gymTrackBonusLabel ?? 'Track bonus'}: +${bonusPct.toStringAsFixed(2)}% / +${maxTrackBonus.toStringAsFixed(0)}%',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              Text(
+                _formatCountdown(canTrain ? null : nextTrainAt, l10n),
+                style: TextStyle(
+                  color: canTrain ? Colors.green.shade300 : Colors.orange.shade200,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: canTrain && !isTraining && _trainingGymTrack == null
+                  ? () => _trainGymTrack(track)
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: accent,
+                foregroundColor: Colors.white,
+                disabledBackgroundColor: Colors.grey.shade800,
+              ),
+              icon: isTraining
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Icon(icon, size: 18),
+              label: Text(
+                isTraining
+                    ? (l10n?.gymTrainingInProgress ?? 'Training…')
+                    : (l10n?.gymTrain ?? 'Train'),
+              ),
+            ),
           ),
         ],
       ),
@@ -578,13 +806,9 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     final status = _shootingStatus ?? {};
     final sessions = status['sessionsCompleted'] ?? 0;
     final accuracyBonus = ((status['accuracyBonus'] as num?) ?? 0) * 100;
-    final nextTrainAtRaw = status['nextTrainAt']?.toString();
-    final nextTrainAt = nextTrainAtRaw != null
-        ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
-        : null;
-    final nextTrainLabel = nextTrainAt != null
-        ? DateFormat('HH:mm').format(nextTrainAt)
-        : '-';
+    final hitlistPct =
+        (((status['hitlistAccuracy'] as num?) ?? 0) * 100).toStringAsFixed(1);
+    final nextTrainAt = _parseAt(status['nextTrainAt']?.toString());
     final canTrain = status['canTrain'] == true;
     final progress = (sessions as num) / 100.0;
     const maxBonus = 10.0;
@@ -600,60 +824,155 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _progressCard(
-            context,
-            title: l10n?.shootingTrainingProgressTitle ?? 'Training progress',
-            sessionsLabel:
-                l10n?.shootingSessionsCompletedLabel ?? 'Sessions:',
-            sessions: sessions,
-            progress: progress.clamp(0.0, 1.0),
-            progressSuffix:
-                l10n?.shootingProgressCompleteSuffix ?? 'complete',
-            progressColor: Colors.orange,
+          _darkPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n?.shootingTrainingProgressTitle ?? 'Training progress',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      l10n?.shootingSessionsCompletedLabel ?? 'Sessions:',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                    Text(
+                      '$sessions/100',
+                      style: TextStyle(
+                        color: Colors.orange.shade300,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: progress.clamp(0.0, 1.0),
+                    minHeight: 8,
+                    backgroundColor: Colors.white12,
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.orange.shade400),
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
-          _bonusPairCard(
-            context,
-            currentLabel: l10n?.shootingCurrentBonusTitle ?? 'Current bonus',
-            currentValue: '+${accuracyBonus.toStringAsFixed(1)}%',
-            currentSubLabel:
-                l10n?.shootingAccuracyBonusLabel ?? 'Accuracy bonus',
-            maxValue: '+${maxBonus.toStringAsFixed(0)}%',
-            maxLabel: l10n?.shootingMaximumLabel ?? 'Maximum',
-            gradient: [Colors.orange.shade400, Colors.orange.shade700],
-            infoText: l10n?.shootingBonusAppliedToCrimes ??
-                'Applied to crime success chance.',
+          _darkPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n?.shootingCurrentBonusTitle ?? 'Current bonus',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '+${accuracyBonus.toStringAsFixed(1)}% / +${maxBonus.toStringAsFixed(0)}%',
+                  style: TextStyle(
+                    color: Colors.orange.shade300,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  l10n?.shootingBonusAppliedToCrimes ??
+                      'Applied to crime success chance.',
+                  style: const TextStyle(color: Colors.white60, fontSize: 12),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n?.trainingHubHitlistAccuracy(hitlistPct) ??
+                      'Hitlist accuracy: $hitlistPct%',
+                  style: TextStyle(
+                    color: Colors.deepOrange.shade200,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
-          _trainCard(
-            context,
-            canTrain: canTrain,
-            isTraining: _trainingShooting,
-            readyLabel: l10n?.shootingReadyToTrain ?? 'Ready to train',
-            cooldownTitle:
-                l10n?.shootingTrainingCooldownTitle ?? 'Cooldown',
-            cooldownLine: l10n?.shootingCooldownLabel(nextTrainLabel) ??
-                'Next: $nextTrainLabel',
-            cooldownHint: l10n?.shootingCooldownHint ??
-                'Wait 1 hour between sessions.',
-            trainLabel: l10n?.shootingTrain ?? 'Train',
-            trainingLabel: l10n?.shootingTrainingInProgress ?? 'Training…',
-            accent: Colors.orange,
-            icon: Icons.gps_fixed,
-            onTrain: _trainShooting,
+          _darkPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      canTrain ? Icons.check_circle : Icons.schedule,
+                      color: canTrain ? Colors.green : Colors.orange,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        canTrain
+                            ? (l10n?.shootingReadyToTrain ?? 'Ready to train')
+                            : (l10n?.shootingTrainingCooldownTitle ??
+                                'Cooldown'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                if (!canTrain) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    _formatCountdown(nextTrainAt, l10n),
+                    style: TextStyle(color: Colors.orange.shade200),
+                  ),
+                ],
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: canTrain && !_trainingShooting
+                        ? _trainShooting
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange.shade700,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: Colors.grey.shade800,
+                    ),
+                    icon: _trainingShooting
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.gps_fixed),
+                    label: Text(
+                      _trainingShooting
+                          ? (l10n?.shootingTrainingInProgress ?? 'Training…')
+                          : (l10n?.shootingTrain ?? 'Train'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
-          _howItWorksCard(
-            context,
-            title: l10n?.shootingHowItWorksTitle ?? 'How it works',
-            bullets: [
-              l10n?.shootingHowItWorksBullet1 ?? '',
-              l10n?.shootingHowItWorksBullet2 ?? '',
-              l10n?.shootingHowItWorksBullet3 ?? '',
-              l10n?.shootingHowItWorksBullet4 ?? '',
-              l10n?.shootingHowItWorksBullet5 ?? '',
-            ],
-          ),
+          _howItWorksCard(context, l10n, isGym: false),
         ],
       ),
     );
@@ -670,7 +989,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: accent.withOpacity(0.35), width: 1),
+        border: Border.all(color: accent.withValues(alpha: 0.35), width: 1),
         boxShadow: [
           BoxShadow(
             color: accent.withValues(alpha: 0.12),
@@ -697,6 +1016,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                   sectionTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                 ),
               ),
@@ -705,9 +1025,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
           const SizedBox(height: 4),
           Text(
             sectionIntro,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[700],
-                ),
+            style: const TextStyle(color: Colors.white60, fontSize: 13),
           ),
           const SizedBox(height: 12),
           child,
@@ -716,307 +1034,73 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     );
   }
 
-  Widget _progressCard(
-    BuildContext context, {
-    required String title,
-    required String sessionsLabel,
-    required num sessions,
-    required double progress,
-    required String progressSuffix,
-    required Color progressColor,
-  }) {
-    return Card(
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(sessionsLabel, style: Theme.of(context).textTheme.bodyLarge),
-                Text(
-                  '$sessions/100',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: progressColor,
-                      ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: 10,
-                backgroundColor: Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(progressColor),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '${(progress * 100).toStringAsFixed(0)}% $progressSuffix',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[600],
-                  ),
-            ),
-          ],
-        ),
+  Widget _darkPanel({required Widget child}) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: _panelBg.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _panelBorder),
       ),
-    );
-  }
-
-  Widget _bonusPairCard(
-    BuildContext context, {
-    required String currentLabel,
-    required String currentValue,
-    required String currentSubLabel,
-    required String maxValue,
-    required String maxLabel,
-    required List<Color> gradient,
-    required String infoText,
-  }) {
-    return Card(
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              currentLabel,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: gradient,
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          currentValue,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          currentSubLabel,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          maxValue,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          maxLabel,
-                          style: const TextStyle(fontSize: 11, color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.blue.shade200),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: Colors.blue.shade700, size: 18),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      infoText,
-                      style: TextStyle(fontSize: 12, color: Colors.blue.shade900),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _trainCard(
-    BuildContext context, {
-    required bool canTrain,
-    required bool isTraining,
-    required String readyLabel,
-    required String cooldownTitle,
-    required String cooldownLine,
-    required String cooldownHint,
-    required String trainLabel,
-    required String trainingLabel,
-    required Color accent,
-    required IconData icon,
-    required VoidCallback onTrain,
-  }) {
-    return Card(
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  canTrain ? Icons.check_circle : Icons.schedule,
-                  color: canTrain ? Colors.green : Colors.orange,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    canTrain ? readyLabel : cooldownTitle,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-            if (!canTrain) ...[
-              const SizedBox(height: 8),
-              Text(cooldownLine, style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height: 4),
-              Text(
-                cooldownHint,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-              ),
-            ],
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: (!isTraining && canTrain) ? onTrain : null,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  backgroundColor: accent,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: Colors.grey[300],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                icon: isTraining
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                      )
-                    : Icon(icon),
-                label: Text(
-                  isTraining ? trainingLabel : trainLabel,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: child,
     );
   }
 
   Widget _howItWorksCard(
-    BuildContext context, {
-    required String title,
-    required List<String> bullets,
+    BuildContext context,
+    AppLocalizations? l10n, {
+    required bool isGym,
   }) {
-    return Card(
-      elevation: 2,
-      color: Colors.grey[100],
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.lightbulb_outline, color: Colors.amber[700]),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+    final bullets = isGym
+        ? [
+            l10n?.gymHowItWorksBullet1 ?? '',
+            l10n?.gymHowItWorksBullet2 ?? '',
+            l10n?.gymHowItWorksBullet3 ?? '',
+            l10n?.gymHowItWorksBullet4 ?? '',
+            l10n?.gymHowItWorksBullet5 ?? '',
+          ]
+        : [
+            l10n?.shootingHowItWorksBullet1 ?? '',
+            l10n?.shootingHowItWorksBullet2 ?? '',
+            l10n?.shootingHowItWorksBullet3 ?? '',
+            l10n?.shootingHowItWorksBullet4 ?? '',
+            l10n?.shootingHowItWorksBullet5 ?? '',
+          ];
+
+    return _darkPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.lightbulb_outline, color: Colors.amber.shade300),
+              const SizedBox(width: 8),
+              Text(
+                isGym
+                    ? (l10n?.gymHowItWorksTitle ?? 'How it works')
+                    : (l10n?.shootingHowItWorksTitle ?? 'How it works'),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            for (final b in bullets)
-              if (b.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Text(
-                    b,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey[800],
-                      height: 1.35,
-                    ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          for (final b in bullets)
+            if (b.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  b,
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    height: 1.35,
                   ),
                 ),
-          ],
-        ),
+              ),
+        ],
       ),
     );
   }

@@ -19,7 +19,10 @@ import '../utils/top_right_notification.dart';
 import '../utils/weapon_display_name.dart';
 
 class CrimeScreen extends StatefulWidget {
-  const CrimeScreen({super.key});
+  const CrimeScreen({super.key, this.onOpenTraining});
+
+  /// When set (e.g. web dashboard), opens the training hub section.
+  final VoidCallback? onOpenTraining;
 
   @override
   State<CrimeScreen> createState() => _CrimeScreenState();
@@ -202,6 +205,95 @@ class _CrimeScreenState extends State<CrimeScreen> {
     final accuracyPct = (_trainingAccuracyBonus * 100).toStringAsFixed(1);
     final comboPct =
         (_trainingComboBonusFraction * 100).toStringAsFixed(1);
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(
+              Icons.trending_up,
+              color: Color(0xFFD4AF37),
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                l10n.crimeTrainingBonusStrip(strengthPct, accuracyPct),
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12.5,
+                ),
+              ),
+            ),
+            if (widget.onOpenTraining != null)
+              Icon(
+                Icons.chevron_right,
+                color: Colors.white.withValues(alpha: 0.5),
+                size: 20,
+              ),
+          ],
+        ),
+        if (_trainingComboActive) ...[
+          const SizedBox(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.bolt,
+                color: Color(0xFFE6C35C),
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.crimeTrainingComboStrip(comboPct),
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+        if (widget.onOpenTraining != null) ...[
+          const SizedBox(height: 6),
+          Text(
+            l10n.crimeTrainingOpenHub,
+            style: TextStyle(
+              color: const Color(0xFFD4AF37).withValues(alpha: 0.85),
+              fontSize: 11,
+            ),
+          ),
+        ],
+      ],
+    );
+
+    if (widget.onOpenTraining != null) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: widget.onOpenTraining,
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.45),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: const Color(0xFFD4AF37).withValues(alpha: 0.45),
+                ),
+              ),
+              child: content,
+            ),
+          ),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: Container(
@@ -213,54 +305,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
             color: const Color(0xFFD4AF37).withValues(alpha: 0.45),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Icon(
-                  Icons.trending_up,
-                  color: Color(0xFFD4AF37),
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.crimeTrainingBonusStrip(strengthPct, accuracyPct),
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            if (_trainingComboActive) ...[
-              const SizedBox(height: 8),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.bolt,
-                    color: Color(0xFFE6C35C),
-                    size: 18,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      l10n.crimeTrainingComboStrip(comboPct),
-                      style: const TextStyle(
-                        color: Colors.white60,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ],
-        ),
+        child: content,
       ),
     );
   }

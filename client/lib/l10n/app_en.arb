@@ -46,7 +46,10 @@
   "dashboardTimeoutNightclubSeason": "Nightclub season",
   "dashboardTimeoutAmmo": "Buy bullets",
   "dashboardTimeoutShootingRange": "Shooting range",
-  "dashboardTimeoutGym": "Gym",
+  "dashboardTimeoutGym": "Gym (soonest)",
+  "dashboardTimeoutGymStrength": "Gym: strength",
+  "dashboardTimeoutGymSpeed": "Gym: speed",
+  "dashboardTimeoutGymStamina": "Gym: stamina",
   "dashboardInfoDrugsGrams": "Drugs (grams)",
   "dashboardInfoNightclubs": "Nightclubs",
   "dashboardInfoNightclubRevenue": "Nightclub revenue",
@@ -1187,6 +1190,7 @@
   "dailyGoalTitle_job_2": "Work 2 times",
   "dailyGoalTitle_vehicle_theft_1": "Steal 1 vehicle",
   "dailyGoalTitle_travel_1": "Complete 1 travel",
+  "dailyGoalTitle_training_combo_1": "Train gym + shooting range (same day)",
   "dailyGoalTitle_weekly_crime_20": "Weekly: 20 crimes",
   "dailyGoalTitle_weekly_job_10": "Weekly: work 10 times",
   "dailyGoalTitle_weekly_vehicle_theft_5": "Weekly: steal 5 vehicles",
@@ -3232,8 +3236,12 @@
   "tradeMarketCatalogSummary": "{total} products · {here} for sale in this country",
   "@tradeMarketCatalogSummary": {
     "placeholders": {
-      "total": { "type": "String" },
-      "here": { "type": "String" }
+      "total": {
+        "type": "String"
+      },
+      "here": {
+        "type": "String"
+      }
     }
   },
   "appeal": "Appeal",
@@ -4604,7 +4612,7 @@
   "shootingTrain": "Train",
   "trainingHubMenuLabel": "Training",
   "trainingHubTitle": "Training hub",
-  "trainingHubSubtitle": "Build strength at the gym and accuracy at the range. Each track stacks up to 100 sessions with a 1-hour cooldown and adds to your crime success chance.",
+  "trainingHubSubtitle": "Three gym tracks (strength, speed, stamina) plus shooting range. Each track stacks up to 100 sessions with a 1-hour cooldown and adds to your crime success chance.",
   "trainingHubSectionGym": "Gym",
   "trainingHubSectionShooting": "Shooting range",
   "trainingHubRefreshStatus": "Refresh",
@@ -4615,6 +4623,18 @@
   "trainingHubMoreInfoCombo": "Same UTC calendar day: complete at least one gym session and one range session for a small extra crime success bonus (+0.5%).",
   "trainingHubMoreInfoSeparate": "Gym and range each keep their own 1-hour cooldown and 100-session cap.",
   "trainingHubMoreInfoHitlist": "Shooting range progress also feeds hitlist calculations on the server.",
+  "trainingHubHitlistAccuracy": "Hitlist accuracy: {pct}%",
+  "@trainingHubHitlistAccuracy": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "trainingSummaryTitle": "Training circuit",
+  "trainingSummaryOpenHub": "Open hub",
+  "trainingSummaryComboActive": "Combo active today",
+  "trainingSummaryComboInactive": "Train gym + range today for combo bonus",
   "trainingHubComboChip": "Combo active: +{pct}% on crimes",
   "@trainingHubComboChip": {
     "placeholders": {
@@ -4664,11 +4684,27 @@
   "gymTrain": "Train",
   "gymTrainingInProgress": "Training...",
   "gymHowItWorksTitle": "How does it work?",
-  "gymHowItWorksBullet1": "• Train every hour for a strength boost",
-  "gymHowItWorksBullet2": "• Each session gives +0.08% bonus",
-  "gymHowItWorksBullet3": "• Maximum of 100 sessions (+8% total)",
-  "gymHowItWorksBullet4": "• Increases your crime success rate",
-  "gymHowItWorksBullet5": "• Permanent bonus, every session counts",
+  "gymAggregateBonusTitle": "Total gym crime bonus",
+  "gymTrackStrengthTitle": "Strength",
+  "gymTrackSpeedTitle": "Speed",
+  "gymTrackStaminaTitle": "Stamina",
+  "gymTrackBonusLabel": "Track bonus",
+  "gymSmartTrain": "Smart train",
+  "gymSmartTrainHint": "Trains the first track that is ready (strength, then speed, then stamina).",
+  "gymCountdownReady": "Ready",
+  "gymCountdownLabel": "Next in {time}",
+  "@gymCountdownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gymHowItWorksBullet1": "• Three tracks: strength (+4%), speed (+2%), stamina (+2%)",
+  "gymHowItWorksBullet2": "• Each track: 100 sessions max, 1 hour cooldown",
+  "gymHowItWorksBullet3": "• Combined gym bonus up to +8% on crime success",
+  "gymHowItWorksBullet4": "• Smart train picks the first ready track",
+  "gymHowItWorksBullet5": "• Permanent progress — every session counts",
   "buyAmmo": "Buy Ammo",
   "factoryPurchaseCost": "Purchase Cost: €{cost}",
   "@factoryPurchaseCost": {
@@ -7259,6 +7295,7 @@
       }
     }
   },
+  "crimeTrainingOpenHub": "Tap to open training hub",
   "crimeCriminalRecordWipeDesc": "Forge court files and wipe your full criminal record if the operation succeeds.",
   "crimeCardSuccessChance": "{percent}% success chance",
   "@crimeCardSuccessChance": {
@@ -8685,8 +8722,8 @@
   "helpTopicTerritoryCategory": "Empire",
   "helpTopicTerritoryTitle": "Territory",
   "helpTopicTerritorySummary": "Claim and control geographical regions for passive income, crew prestige and strategic regional bonuses. Territory combines map control with contests and seasonal rewards.",
-  "helpTopicTerritoryHow": "Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.\nMap overlays show live contest scores, region projects, and events; thicker borders mark clusters and thinner borders mark pockets.\nOwned regions can start one project type: safehouse network (income), surveillance grid on harbor/airhub/capital (intel), or arms cache on industry/border (raid/defense).\nAttacking from an owned neighbor grants invasion bonuses; defending a pocket faces extra sabotage/raid pressure.",
-  "helpTopicTerritoryTips": "Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nHold clusters for stronger defense support; isolated pockets invite invasion pressure from neighbors. Use layer toggles on the map to show contest scores, projects, and region events.",
+  "helpTopicTerritoryHow": "Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.",
+  "helpTopicTerritoryTips": "Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.",
   "helpTopicProstitutionCategory": "Empire",
   "helpTopicProstitutionTitle": "Prostitution",
   "helpTopicProstitutionSummary": "Build a prostitution network with recruits, events and VIP clients. A well-run network generates passive income but requires active management to control rivalry and police attention.",
@@ -8817,9 +8854,9 @@
   "legalTermsSection10Body": "For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.",
   "helpTopicTrainingHubCategory": "Training",
   "helpTopicTrainingHubTitle": "Training hub",
-  "helpTopicTrainingHubSummary": "Gym (strength) and shooting range (accuracy) in one place. Both bonuses add to your crime success chance; shooting accuracy is also used in hitlist actions. Each track has its own cooldown and a cap of 100 sessions.",
-  "helpTopicTrainingHubHow": "Gym: each session increases your permanent strength bonus up to +8% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).\nShooting range: each session increases your permanent accuracy bonus up to +10% total (100 sessions). Cooldown between sessions is 1 hour (VIP may shorten it).\nBoth bonuses are added by the server into crime success calculations.\nYou train each track separately: two timers and two train buttons — one screen.\nProgress does not reset unless staff applies a heavy penalty.",
-  "helpTopicTrainingHubTips": "Schedule both tracks daily: small steps stack into a clear edge on crimes.\nReview crimes where you fail most: strength and accuracy complement each other — they are not the same stat.",
+  "helpTopicTrainingHubSummary": "Gym (three tracks: strength, speed, stamina) and shooting range in one place. Bonuses add to crime success; range also feeds hitlist. Each track has its own cooldown and 100-session cap.",
+  "helpTopicTrainingHubHow": "Gym: three tracks — strength (+4%), speed (+2%), stamina (+2%) — up to +8% combined (100 sessions each). 1-hour cooldown per track (VIP may shorten).\nSmart train picks the first track that is ready.\nShooting range: accuracy bonus up to +10% (100 sessions). 1-hour cooldown. Hitlist accuracy scales with range progress.\nSame UTC day: at least one gym and one range session for +0.5% extra crime combo.\nProgress does not reset unless staff applies a heavy penalty.",
+  "helpTopicTrainingHubTips": "Schedule all tracks daily: small steps stack into a clear edge on crimes.\nUse Smart train for quick sessions; train individual tracks when you want to prioritize one stat.",
   "territoryCapsLine": "Regions {owned}/{maxRegions} · Contests {active}/{maxContests}",
   "@territoryCapsLine": {
     "placeholders": {

@@ -143,7 +143,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardTimeoutShootingRange => 'Schietschool';
 
   @override
-  String get dashboardTimeoutGym => 'Sportschool';
+  String get dashboardTimeoutGym => 'Sportschool (eerstvolgende)';
+
+  @override
+  String get dashboardTimeoutGymStrength => 'Sportschool: kracht';
+
+  @override
+  String get dashboardTimeoutGymSpeed => 'Sportschool: snelheid';
+
+  @override
+  String get dashboardTimeoutGymStamina => 'Sportschool: uithouding';
 
   @override
   String get dashboardInfoDrugsGrams => 'Drugs (gram)';
@@ -1841,6 +1850,10 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get dailyGoalTitle_travel_1 => 'Maak 1 reis';
+
+  @override
+  String get dailyGoalTitle_training_combo_1 =>
+      'Sportschool + schietschool (zelfde dag)';
 
   @override
   String get dailyGoalTitle_weekly_crime_20 => 'Week: 20 misdaden';
@@ -7746,7 +7759,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get trainingHubSubtitle =>
-      'Bouw kracht in de sportschool en nauwkeurigheid op de schietschool. Elke lijn loopt tot 100 sessies met 1 uur cooldown en telt mee op je slagingskans bij misdaden.';
+      'Drie sportschool-lijnen (kracht, snelheid, uithouding) en schietschool. Elke lijn loopt tot 100 sessies met 1 uur cooldown en telt mee op je slagingskans bij misdaden.';
 
   @override
   String get trainingHubSectionGym => 'Sportschool';
@@ -7781,6 +7794,24 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get trainingHubMoreInfoHitlist =>
       'Schietbaan-voortgang wordt door de server ook meegenomen in hitlist-berekeningen.';
+
+  @override
+  String trainingHubHitlistAccuracy(String pct) {
+    return 'Hitlist-nauwkeurigheid: $pct%';
+  }
+
+  @override
+  String get trainingSummaryTitle => 'Trainingscircuit';
+
+  @override
+  String get trainingSummaryOpenHub => 'Open circuit';
+
+  @override
+  String get trainingSummaryComboActive => 'Combo vandaag actief';
+
+  @override
+  String get trainingSummaryComboInactive =>
+      'Train sportschool + schietbaan vandaag voor combo-bonus';
 
   @override
   String trainingHubComboChip(String pct) {
@@ -7856,19 +7887,53 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gymHowItWorksTitle => 'Hoe werkt het?';
 
   @override
-  String get gymHowItWorksBullet1 => '• Train elk uur voor een krachtboost';
+  String get gymAggregateBonusTitle => 'Totale sportschool-bonus op crimes';
 
   @override
-  String get gymHowItWorksBullet2 => '• Elke sessie geeft +0.08% bonus';
+  String get gymTrackStrengthTitle => 'Kracht';
 
   @override
-  String get gymHowItWorksBullet3 => '• Maximum van 100 sessies (+8% totaal)';
+  String get gymTrackSpeedTitle => 'Snelheid';
 
   @override
-  String get gymHowItWorksBullet4 => '• Verhoogt je slagingskans bij misdaden';
+  String get gymTrackStaminaTitle => 'Uithouding';
 
   @override
-  String get gymHowItWorksBullet5 => '• Blijvende bonus; elke sessie telt';
+  String get gymTrackBonusLabel => 'Lijnbonus';
+
+  @override
+  String get gymSmartTrain => 'Slim trainen';
+
+  @override
+  String get gymSmartTrainHint =>
+      'Traint de eerste lijn die klaar is (kracht, dan snelheid, dan uithouding).';
+
+  @override
+  String get gymCountdownReady => 'Klaar';
+
+  @override
+  String gymCountdownLabel(String time) {
+    return 'Over $time';
+  }
+
+  @override
+  String get gymHowItWorksBullet1 =>
+      '• Drie lijnen: kracht (+4%), snelheid (+2%), uithouding (+2%)';
+
+  @override
+  String get gymHowItWorksBullet2 =>
+      '• Per lijn max. 100 sessies, 1 uur cooldown';
+
+  @override
+  String get gymHowItWorksBullet3 =>
+      '• Gecombineerde sportschoolbonus tot +8% op slagingskans';
+
+  @override
+  String get gymHowItWorksBullet4 =>
+      '• Slim trainen kiest de eerste beschikbare lijn';
+
+  @override
+  String get gymHowItWorksBullet5 => '• Blijvende voortgang — elke sessie telt';
 
   @override
   String get buyAmmo => 'Munitie Kopen';
@@ -11924,6 +11989,9 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get crimeTrainingOpenHub => 'Tik om het trainingscircuit te openen';
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
 
@@ -14460,11 +14528,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTerritoryHow =>
-      'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.\nAlle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.\nTik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.\nBekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.\nOp mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.\nTerritorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.\nElke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.\nStart een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.\nZodra de voorbereiding klaar is, krijgen aanvallende én verdedigende crewleden een push- en inboxbericht zodat je weet dat er nu aangevallen of verdedigd kan worden. Die melding komt via de minuut-cron, ook als niemand het Territory-scherm open heeft.\nTijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.\nRegio\'s hebben nu ook strategische rollen zoals haven, industrie, hoofdstad, grensregio of logistiek knooppunt. Die rol bepaalt welke actions daar extra punten kunnen krijgen.\nAangrenzende regio\'s die al van jouw crew zijn leveren nu extra steun op bij contest-actions. De regio-modal laat zien welke strategische bonussen actief zijn en hoeveel buursteun jouw crew op dat gebied heeft.\nActiebonussen kunnen nu ook uit crew-progressie komen: HQ-level, crew missielevel en relevante bijgebouwen (wapen/munitie/auto/boot/drugs-opslag). Deze bonussen verhogen alleen contestpunten, niet de passieve cash van het gebied.\nSommige geavanceerde contest-acties zijn HQ-gated: als je HQ-level te laag is zie je direct `vereist HQ level X` op de actieknop.\nTerritory gebruikt standaard geen harde dagcap meer voor acties (runtime cap 0 = uit). Balans blijft via cooldown, anti-farm en strategische actiekeuze.\nAls een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.\nAanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.\nDe waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.\nContests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.\nGrote regio\'s (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.\nSeizoenale events geven bonus-beloningen en speciale challenges per regio\'s groep.\nPrevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.\nAnti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.\nKaartoverlays tonen live contest-scores, regioprojecten en events; dikkere randen markeren clusters en dunnere randen pockets.\nOp eigen regio\'s kun je een projecttype starten: safehouse-netwerk (inkomen), surveillance-netwerk op haven/luchthub/hoofdstad (intel), of wapenopslag op industrie/grens (raid/defense).\nAanvallen vanuit een eigen buurregio geeft invasiebonussen; een pocket krijgt extra sabotage-/raid-druk.';
+      'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.\nAlle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.\nTik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.\nBekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.\nOp mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.\nTerritorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.\nElke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.\nStart een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.\nZodra de voorbereiding klaar is, krijgen aanvallende én verdedigende crewleden een push- en inboxbericht zodat je weet dat er nu aangevallen of verdedigd kan worden. Die melding komt via de minuut-cron, ook als niemand het Territory-scherm open heeft.\nTijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.\nRegio\'s hebben nu ook strategische rollen zoals haven, industrie, hoofdstad, grensregio of logistiek knooppunt. Die rol bepaalt welke actions daar extra punten kunnen krijgen.\nAangrenzende regio\'s die al van jouw crew zijn leveren nu extra steun op bij contest-actions. De regio-modal laat zien welke strategische bonussen actief zijn en hoeveel buursteun jouw crew op dat gebied heeft.\nActiebonussen kunnen nu ook uit crew-progressie komen: HQ-level, crew missielevel en relevante bijgebouwen (wapen/munitie/auto/boot/drugs-opslag). Deze bonussen verhogen alleen contestpunten, niet de passieve cash van het gebied.\nSommige geavanceerde contest-acties zijn HQ-gated: als je HQ-level te laag is zie je direct `vereist HQ level X` op de actieknop.\nTerritory gebruikt standaard geen harde dagcap meer voor acties (runtime cap 0 = uit). Balans blijft via cooldown, anti-farm en strategische actiekeuze.\nAls een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.\nAanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.\nDe waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.\nContests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.\nGrote regio\'s (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.\nSeizoenale events geven bonus-beloningen en speciale challenges per regio\'s groep.\nPrevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.\nAnti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.';
 
   @override
   String get helpTopicTerritoryTips =>
-      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.\nHoud clusters voor sterkere verdedigingssteun; pockets nodigen invasiedruk vanuit buurregio\'s uit. Gebruik de kaartlagen voor contest-scores, projecten en regio-events.';
+      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.';
 
   @override
   String get helpTopicProstitutionCategory => 'Empire';
@@ -14892,15 +14960,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTrainingHubSummary =>
-      'Sportschool (kracht) en schietschool (nauwkeurigheid) op één plek. Beide bonussen tellen mee op je slagingskans bij misdaden; de schietschool telt ook mee bij hitlist-acties. Elke lijn heeft eigen cooldown en maximaal 100 sessies.';
+      'Sportschool (drie lijnen: kracht, snelheid, uithouding) en schietschool op één plek. Bonussen tellen mee op je slagingskans bij misdaden; schietschool ook bij hitlist. Elke lijn heeft eigen cooldown en max. 100 sessies.';
 
   @override
   String get helpTopicTrainingHubHow =>
-      'Sportschool: per sessie stijgt je vaste krachtbonus tot maximaal +8% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).\nSchietschool: per sessie stijgt je nauwkeurigheidsbonus tot maximaal +10% (100 sessies). Cooldown tussen sessies is 1 uur (VIP kan dit verkorten).\nBeide bonussen worden door de server opgeteld bij de succesberekening van misdaden.\nJe traint elke lijn afzonderlijk: twee timers, twee knoppen — maar één scherm.\nEr is geen reset van voortgang, tenzij staff een zware correctie toepast.';
+      'Sportschool: drie lijnen — kracht (+4%), snelheid (+2%), uithouding (+2%) — tot maximaal +8% gecombineerd (100 sessies per lijn). Cooldown 1 uur per lijn (VIP kan verkorten).\nSlim trainen kiest automatisch de eerste lijn die klaar is.\nSchietschool: nauwkeurigheidsbonus tot +10% (100 sessies). Cooldown 1 uur (VIP kan verkorten). Hitlist-nauwkeurigheid loopt mee met voortgang.\nZelfde UTC-dag: minstens één sportschool- én schietbaansessie voor +0,5% extra combo op misdaden.\nVoortgang reset niet, tenzij staff een zware correctie toepast.';
 
   @override
   String get helpTopicTrainingHubTips =>
-      'Plan beide lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.\nCheck misdaden waar je het meest faalt: kracht en nauwkeurigheid zijn complementair, niet hetzelfde.';
+      'Plan alle lijnen dagelijks: kleine stapjes stapelen op tot een duidelijk voordeel bij misdaden.\nGebruik Slim trainen als je snel wilt doorpakken; per lijn trainen als je één stat prioriteit geeft.';
 
   @override
   String territoryCapsLine(

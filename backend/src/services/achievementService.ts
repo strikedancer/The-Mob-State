@@ -470,6 +470,42 @@ export const ACHIEVEMENT_DEFINITIONS: Record<string, AchievementDefinition> = {
     rewardReputation: 15,
     icon: '🏅',
   },
+
+  training_iron_reps: {
+    id: 'training_iron_reps',
+    title: 'Iron Reps',
+    description: 'Complete 25 gym sessions across all tracks',
+    category: 'mastery',
+    requirementType: 'gym_sessions_total',
+    requirementValue: 25,
+    rewardMoney: 15000,
+    rewardXp: 500,
+    icon: '🏋️',
+  },
+
+  training_sharp_shooter: {
+    id: 'training_sharp_shooter',
+    title: 'Sharp Shooter',
+    description: 'Complete 25 shooting range sessions',
+    category: 'mastery',
+    requirementType: 'shooting_range_sessions',
+    requirementValue: 25,
+    rewardMoney: 18000,
+    rewardXp: 550,
+    icon: '🎯',
+  },
+
+  training_full_circuit: {
+    id: 'training_full_circuit',
+    title: 'Full Circuit',
+    description: 'Reach maximum gym training bonus (+8%)',
+    category: 'mastery',
+    requirementType: 'gym_max_bonus_reached',
+    requirementValue: 1,
+    rewardMoney: 50000,
+    rewardXp: 1200,
+    icon: '⚡',
+  },
   
   untouchable_rival: {
     id: 'untouchable_rival',
@@ -1962,6 +1998,9 @@ interface AchievementSnapshot {
   cryptoPortfolioValue: number;
   crewWarActionsCount: number;
   crewWarMvpRewardsCount: number;
+  gymSessionsTotal: number;
+  shootingRangeSessions: number;
+  gymMaxBonusReached: number;
 }
 
 async function safeCount(
@@ -2040,6 +2079,8 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     prisonerBuyoutsCount,
     crewWarActionsCount,
     crewWarMvpRewardsCount,
+    gymStatsRow,
+    shootingStatsRow,
   ] = await Promise.all([
     safeValue(
       'player.money',
@@ -2278,6 +2319,29 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
         },
       })
     ),
+    safeValue(
+      'gymStats',
+      () =>
+        prisma.gymStats.findUnique({
+          where: { playerId },
+          select: {
+            sessionsCompleted: true,
+            speedSessionsCompleted: true,
+            staminaSessionsCompleted: true,
+            strengthBonus: true,
+          },
+        }),
+      null
+    ),
+    safeValue(
+      'shootingRangeStats',
+      () =>
+        prisma.shootingRangeStats.findUnique({
+          where: { playerId },
+          select: { sessionsCompleted: true },
+        }),
+      null
+    ),
   ]);
 
   const certificationsEarnedCount = Array.isArray(educationProfile.certifications)
@@ -2506,6 +2570,12 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     cryptoPortfolioValue,
     crewWarActionsCount,
     crewWarMvpRewardsCount,
+    gymSessionsTotal:
+      (gymStatsRow?.sessionsCompleted ?? 0) +
+      (gymStatsRow?.speedSessionsCompleted ?? 0) +
+      (gymStatsRow?.staminaSessionsCompleted ?? 0),
+    shootingRangeSessions: shootingStatsRow?.sessionsCompleted ?? 0,
+    gymMaxBonusReached: (gymStatsRow?.strengthBonus ?? 0) >= 0.08 ? 1 : 0,
   };
 }
 
@@ -2781,6 +2851,21 @@ function evaluateAchievement(
     case 'crew_war_mvp_rewards_count':
       currentValue = snapshot.crewWarMvpRewardsCount;
       data = { crewWarMvpRewardsCount: currentValue };
+      break;
+
+    case 'gym_sessions_total':
+      currentValue = snapshot.gymSessionsTotal;
+      data = { gymSessionsTotal: currentValue };
+      break;
+
+    case 'shooting_range_sessions':
+      currentValue = snapshot.shootingRangeSessions;
+      data = { shootingRangeSessions: currentValue };
+      break;
+
+    case 'gym_max_bonus_reached':
+      currentValue = snapshot.gymMaxBonusReached;
+      data = { gymMaxBonusReached: currentValue };
       break;
 
     case 'max_security_all': {
