@@ -5365,6 +5365,27 @@ class AppLocalizationsNl extends AppLocalizations {
       'Zeldzame farmaceutische producten';
 
   @override
+  String get contrabandSpiritsName => 'Luxe sterke drank';
+
+  @override
+  String get contrabandSpiritsDesc =>
+      'Gesmokkelde whisky, cognac en premium likeuren';
+
+  @override
+  String get contrabandTobaccoName => 'Tabak';
+
+  @override
+  String get contrabandTobaccoDesc =>
+      'Sigaretten en snuiftabak zonder accijnsstempel';
+
+  @override
+  String get contrabandArtName => 'Kunst & antiek';
+
+  @override
+  String get contrabandArtDesc =>
+      'Gesmokkelde schilderijen, beelden en antieke voorwerpen';
+
+  @override
   String get multiplier => 'Vermenigvuldiger';
 
   @override
@@ -5442,7 +5463,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get tradeRiskInsightBody =>
-      'BLOEMEN: bederven na de timer vanaf aankoop — verkoop op tijd.\nDIAMANTEN: koopprijzen schommelen met volatiliteit; plan waar je in het buitenland verkoopt.\nELEKTRONICA: kan per rit conditie verliezen, waardoor de verkoopwaarde daalt.\nWAPENS en FARMACEUTICA: gedeeltelijke inbeslagneming kan tijdens reizen — houd Wanted laag en lees de smokkelregels.\nPrijzen op dit scherm tonen al je huidige landmultiplier.';
+      'BRONLANDEN: niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nBLOEMEN: bederven na de timer vanaf aankoop — verkoop op tijd.\nDIAMANTEN & KUNST: hoge waarde met volatiliteit; plan je verkoopland.\nELEKTRONICA & TABAK: kunnen per rit conditie verliezen.\nWAPENS, DRANK & FARMACEUTICA: inbeslagneming mogelijk op reis — houd Wanted laag.\nPrijzen op dit scherm tonen al je huidige landmultiplier.';
 
   @override
   String tradeRiskSpoilageHours(String hours) {
@@ -5463,6 +5484,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String tradeRiskDamageTripPct(String pct) {
     return '$pct% schadekans per rit';
   }
+
+  @override
+  String tradeRiskHeavyWeight(String weight) {
+    return 'Zwaar ($weight gewicht)';
+  }
+
+  @override
+  String get tradeGoodNotAvailableHere =>
+      'Dit product is niet te koop in je huidige land. Reis naar een bronland.';
+
+  @override
+  String get tradeNoBuyableGoodsInCountry =>
+      'Geen handelswaren te koop in dit land. Reis naar een bronland om contraband in te slaan.';
+
+  @override
+  String get tradeUnavailableGoodsTitle => 'Niet te koop hier';
+
+  @override
+  String tradeUnavailableGoodsSubtitle(String count) {
+    return '$count producten alleen in bronlanden';
+  }
+
+  @override
+  String get tradeTravelToSourceHint =>
+      'Alleen te koop in bronlanden — reis om in te slaan';
 
   @override
   String get appeal => 'Hoger Beroep';

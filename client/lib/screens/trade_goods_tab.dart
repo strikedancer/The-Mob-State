@@ -186,9 +186,20 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       } else {
         if (mounted) {
           final l10n = AppLocalizations.of(context)!;
+          String message = l10n.errorBuying;
+          try {
+            final body = jsonDecode(response.body);
+            if (body is Map) {
+              if (body['error'] == 'GOOD_NOT_AVAILABLE_IN_COUNTRY') {
+                message = l10n.tradeGoodNotAvailableHere;
+              } else if (body['message'] != null) {
+                message = body['message'].toString();
+              }
+            }
+          } catch (_) {}
           showTopRightFromSnackBar(context, 
             SnackBar(
-              content: Text(l10n.errorBuying),
+              content: Text(message),
               backgroundColor: Colors.red,
             ),
           );
@@ -296,20 +307,8 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           ..._buildMarketHeaderChildren(l10n),
-          for (final good in _goods)
-            _buildGoodCard(
-              good,
-              _prices.firstWhere(
-                (p) => p.goodType == good.id,
-                orElse: () => GoodPrice(
-                  goodType: good.id,
-                  currentPrice: good.basePrice,
-                  sellPrice: (good.basePrice * 0.9).floor(),
-                  multiplier: 1.0,
-                ),
-              ),
-              true,
-            ),
+          ..._buildBuyableGoodCards(l10n),
+          ..._buildUnavailableGoodsSection(l10n),
           const SizedBox(height: 24),
           Divider(color: Theme.of(context).colorScheme.outlineVariant),
           const SizedBox(height: 8),
@@ -419,6 +418,30 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
           ),
         ),
       _buildTradeRiskGuide(l10n),
+      if (_buyableGoods.isEmpty && _goods.isNotEmpty)
+        Card(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.flight_takeoff, color: Colors.blue.shade700),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    l10n.tradeNoBuyableGoodsInCountry,
+                    style: TextStyle(
+                      fontSize: 13,
+                      height: 1.35,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       if (_goods.isEmpty)
         Padding(
           padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -431,6 +454,73 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         )
       else
         const SizedBox(height: 8),
+    ];
+  }
+
+  GoodPrice _priceForGood(String goodId) {
+    return _prices.firstWhere(
+      (p) => p.goodType == goodId,
+      orElse: () {
+        final g = _resolveGood(goodId);
+        return GoodPrice(
+          goodType: goodId,
+          currentPrice: g.basePrice,
+          sellPrice: (g.basePrice * 0.9).floor(),
+          multiplier: 1.0,
+        );
+      },
+    );
+  }
+
+  List<TradableGood> get _buyableGoods {
+    return _goods.where((good) => _priceForGood(good.id).availableToBuy).toList();
+  }
+
+  List<TradableGood> get _unavailableGoods {
+    return _goods.where((good) => !_priceForGood(good.id).availableToBuy).toList();
+  }
+
+  List<Widget> _buildBuyableGoodCards(AppLocalizations l10n) {
+    return [
+      for (final good in _buyableGoods)
+        _buildGoodCard(good, _priceForGood(good.id), true),
+    ];
+  }
+
+  List<Widget> _buildUnavailableGoodsSection(AppLocalizations l10n) {
+    final unavailable = _unavailableGoods;
+    if (unavailable.isEmpty) {
+      return const [];
+    }
+
+    return [
+      const SizedBox(height: 8),
+      Card(
+        margin: const EdgeInsets.only(bottom: 12),
+        child: Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            title: Text(
+              l10n.tradeUnavailableGoodsTitle,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+            subtitle: Text(
+              l10n.tradeUnavailableGoodsSubtitle(unavailable.length.toString()),
+              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+            ),
+            children: [
+              for (final good in unavailable)
+                ListTile(
+                  dense: true,
+                  leading: _goodHeaderArt(good),
+                  title: Text(_localizedGoodName(good, l10n)),
+                  subtitle: Text(l10n.tradeTravelToSourceHint),
+                ),
+            ],
+          ),
+        ),
+      ),
     ];
   }
 
@@ -520,6 +610,19 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         ),
       );
     }
+    if (good.weight >= 3) {
+      chips.add(
+        Chip(
+          avatar: Icon(Icons.fitness_center, size: 16, color: Colors.blueGrey.shade800),
+          label: Text(
+            l10n.tradeRiskHeavyWeight(good.weight.toString()),
+            style: const TextStyle(fontSize: 11),
+          ),
+          visualDensity: VisualDensity.compact,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      );
+    }
     return chips;
   }
 
@@ -530,6 +633,9 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       'contraband_diamonds' => [Colors.cyan.shade100, Colors.teal.shade200],
       'contraband_weapons' => [Colors.red.shade200, Colors.grey.shade800],
       'contraband_pharmaceuticals' => [Colors.green.shade100, Colors.lightGreen.shade200],
+      'contraband_spirits' => [Colors.amber.shade100, Colors.orange.shade300],
+      'contraband_tobacco' => [Colors.brown.shade100, Colors.brown.shade400],
+      'contraband_art' => [Colors.deepPurple.shade100, Colors.purple.shade300],
       _ => [Colors.grey.shade300, Colors.grey.shade500],
     };
     final assetPath = 'assets/images/trade_goods/cards/${good.id}.png';
@@ -575,6 +681,12 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         return l10n.contrabandWeaponsName;
       case 'contraband_pharmaceuticals':
         return l10n.contrabandPharmaceuticalsName;
+      case 'contraband_spirits':
+        return l10n.contrabandSpiritsName;
+      case 'contraband_tobacco':
+        return l10n.contrabandTobaccoName;
+      case 'contraband_art':
+        return l10n.contrabandArtName;
       default:
         return good.name;
     }
@@ -592,6 +704,12 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         return l10n.contrabandWeaponsDesc;
       case 'contraband_pharmaceuticals':
         return l10n.contrabandPharmaceuticalsDesc;
+      case 'contraband_spirits':
+        return l10n.contrabandSpiritsDesc;
+      case 'contraband_tobacco':
+        return l10n.contrabandTobaccoDesc;
+      case 'contraband_art':
+        return l10n.contrabandArtDesc;
       default:
         return good.description;
     }

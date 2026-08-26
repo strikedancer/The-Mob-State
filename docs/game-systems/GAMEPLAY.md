@@ -574,6 +574,7 @@ interest = 0
 Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Flowers**, **electronics**, **diamonds**, **weapons**, **pharmaceuticals**
 - Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via de **handelswaren-tab** op de zwarte markt en gekoppelde inventory.
+- **8 contraband-lijnen** (bloemen, elektronica, diamanten, wapens, farmaceutica, luxe drank, tabak, kunst/antiek). Elk goed is alleen **te koop in bronlanden** (`availableInCountries` in `tradableGoods.json`); **verkopen** kan overal waar je bent, tegen de lokale multiplier.
 
 ### Client UX (zwarte markt → handelswaren-tab)
 - Markt en **contraband-inventaris** staan in **één doorlopende scroll** (geen aparte sub-tabs „Goederen” / „Inventaris” meer); onderaan de lijst staat een duidelijke **Inventaris**-kop met verkoopkaarten of een lege staat.

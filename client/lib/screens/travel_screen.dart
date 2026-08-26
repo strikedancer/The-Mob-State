@@ -187,6 +187,12 @@ class _TravelScreenState extends State<TravelScreen> {
         return l10n.contrabandWeaponsName;
       case 'contraband_pharmaceuticals':
         return l10n.contrabandPharmaceuticalsName;
+      case 'contraband_spirits':
+        return l10n.contrabandSpiritsName;
+      case 'contraband_tobacco':
+        return l10n.contrabandTobaccoName;
+      case 'contraband_art':
+        return l10n.contrabandArtName;
       default:
         return goodType.replaceAll('contraband_', '');
     }

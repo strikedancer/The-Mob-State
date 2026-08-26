@@ -511,6 +511,12 @@
   "contrabandWeaponsDesc": "Illegale wapens en munitie",
   "contrabandPharmaceuticalsName": "Farmaceutica",
   "contrabandPharmaceuticalsDesc": "Zeldzame farmaceutische producten",
+  "contrabandSpiritsName": "Luxe sterke drank",
+  "contrabandSpiritsDesc": "Gesmokkelde whisky, cognac en premium likeuren",
+  "contrabandTobaccoName": "Tabak",
+  "contrabandTobaccoDesc": "Sigaretten en snuiftabak zonder accijnsstempel",
+  "contrabandArtName": "Kunst & antiek",
+  "contrabandArtDesc": "Gesmokkelde schilderijen, beelden en antieke voorwerpen",
   "multiplier": "Vermenigvuldiger",
   "sellPrice": "Verkoopprijs",
   "boughtFor": "Gekocht voor",
@@ -8692,7 +8698,7 @@
   "tradeNoGoodsLoaded": "Er zijn momenteel geen goederen beschikbaar.",
   "tradeRiskPanelTitle": "Reis- en marktrisico's",
   "tradeRiskPanelSubtitle": "Elk goed vertoont waar van toepassing bederf, prijsschommelingen, reisschade of inbeslagname.",
-  "tradeRiskInsightBody": "BLOEMEN: bederven na de timer vanaf aankoop — verkoop op tijd.\nDIAMANTEN: koopprijzen schommelen met volatiliteit; plan waar je in het buitenland verkoopt.\nELEKTRONICA: kan per rit conditie verliezen, waardoor de verkoopwaarde daalt.\nWAPENS en FARMACEUTICA: gedeeltelijke inbeslagneming kan tijdens reizen — houd Wanted laag en lees de smokkelregels.\nPrijzen op dit scherm tonen al je huidige landmultiplier.",
+  "tradeRiskInsightBody": "BRONLANDEN: niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nBLOEMEN: bederven na de timer vanaf aankoop — verkoop op tijd.\nDIAMANTEN & KUNST: hoge waarde met volatiliteit; plan je verkoopland.\nELEKTRONICA & TABAK: kunnen per rit conditie verliezen.\nWAPENS, DRANK & FARMACEUTICA: inbeslagneming mogelijk op reis — houd Wanted laag.\nPrijzen op dit scherm tonen al je huidige landmultiplier.",
   "tradeRiskSpoilageHours": "{hours}h bederfvenster",
   "@tradeRiskSpoilageHours": {
     "placeholders": {
@@ -8725,6 +8731,26 @@
       }
     }
   },
+  "tradeRiskHeavyWeight": "Zwaar ({weight} gewicht)",
+  "@tradeRiskHeavyWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeGoodNotAvailableHere": "Dit product is niet te koop in je huidige land. Reis naar een bronland.",
+  "tradeNoBuyableGoodsInCountry": "Geen handelswaren te koop in dit land. Reis naar een bronland om contraband in te slaan.",
+  "tradeUnavailableGoodsTitle": "Niet te koop hier",
+  "tradeUnavailableGoodsSubtitle": "{count} producten alleen in bronlanden",
+  "@tradeUnavailableGoodsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeTravelToSourceHint": "Alleen te koop in bronlanden — reis om in te slaan",
   "@aviationUiLicenseActiveBlurb": {
     "placeholders": {
       "type": {

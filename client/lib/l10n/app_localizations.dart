@@ -9673,6 +9673,42 @@ abstract class AppLocalizations {
   /// **'Rare pharmaceutical products'**
   String get contrabandPharmaceuticalsDesc;
 
+  /// No description provided for @contrabandSpiritsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Luxury spirits'**
+  String get contrabandSpiritsName;
+
+  /// No description provided for @contrabandSpiritsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggled whisky, cognac and premium liquors'**
+  String get contrabandSpiritsDesc;
+
+  /// No description provided for @contrabandTobaccoName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tobacco'**
+  String get contrabandTobaccoName;
+
+  /// No description provided for @contrabandTobaccoDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Untaxed cigarettes and snuff tobacco'**
+  String get contrabandTobaccoDesc;
+
+  /// No description provided for @contrabandArtName.
+  ///
+  /// In en, this message translates to:
+  /// **'Art & antiques'**
+  String get contrabandArtName;
+
+  /// No description provided for @contrabandArtDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggled paintings, sculptures and antique valuables'**
+  String get contrabandArtDesc;
+
   /// No description provided for @multiplier.
   ///
   /// In en, this message translates to:
@@ -9808,7 +9844,7 @@ abstract class AppLocalizations {
   /// No description provided for @tradeRiskInsightBody.
   ///
   /// In en, this message translates to:
-  /// **'FLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS: buy prices swing with volatility; plan where you sell abroad.\nELECTRONICS: can lose condition each trip, which lowers resale value.\nWEAPONS and PHARMACEUTICALS: partial seizure can happen on travel — keep Wanted low and read smuggling rules.\nPrices on this screen already include your current country multiplier.'**
+  /// **'SOURCE COUNTRIES: not every country sells everything — travel to buy cheap and sell where demand is high.\nFLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS & ART: high value with volatility; plan your sell country.\nELECTRONICS & TOBACCO: can lose condition each trip.\nWEAPONS, SPIRITS & PHARMACEUTICALS: seizure can happen on travel — keep Wanted low.\nPrices on this screen already include your current country multiplier.'**
   String get tradeRiskInsightBody;
 
   /// No description provided for @tradeRiskSpoilageHours.
@@ -9834,6 +9870,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{pct}% damage chance per trip'**
   String tradeRiskDamageTripPct(String pct);
+
+  /// No description provided for @tradeRiskHeavyWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavy ({weight} weight)'**
+  String tradeRiskHeavyWeight(String weight);
+
+  /// No description provided for @tradeGoodNotAvailableHere.
+  ///
+  /// In en, this message translates to:
+  /// **'This product is not for sale in your current country. Travel to a source country.'**
+  String get tradeGoodNotAvailableHere;
+
+  /// No description provided for @tradeNoBuyableGoodsInCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'No trade goods for sale in this country. Travel to a source country to stock up.'**
+  String get tradeNoBuyableGoodsInCountry;
+
+  /// No description provided for @tradeUnavailableGoodsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sold here'**
+  String get tradeUnavailableGoodsTitle;
+
+  /// No description provided for @tradeUnavailableGoodsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} products only in source countries'**
+  String tradeUnavailableGoodsSubtitle(String count);
+
+  /// No description provided for @tradeTravelToSourceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only sold in source countries — travel to buy'**
+  String get tradeTravelToSourceHint;
 
   /// No description provided for @appeal.
   ///

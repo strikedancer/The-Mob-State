@@ -3102,6 +3102,12 @@
   "contrabandWeaponsDesc": "Illegal weapons and ammunition",
   "contrabandPharmaceuticalsName": "Pharmaceuticals",
   "contrabandPharmaceuticalsDesc": "Rare pharmaceutical products",
+  "contrabandSpiritsName": "Luxury spirits",
+  "contrabandSpiritsDesc": "Smuggled whisky, cognac and premium liquors",
+  "contrabandTobaccoName": "Tobacco",
+  "contrabandTobaccoDesc": "Untaxed cigarettes and snuff tobacco",
+  "contrabandArtName": "Art & antiques",
+  "contrabandArtDesc": "Smuggled paintings, sculptures and antique valuables",
   "multiplier": "Multiplier",
   "sellPrice": "Sell price",
   "boughtFor": "Bought for",
@@ -3145,7 +3151,7 @@
   "tradeNoGoodsLoaded": "No goods are available right now.",
   "tradeRiskPanelTitle": "Travel and market risks",
   "tradeRiskPanelSubtitle": "Each good shows spoilage, price swings, trip damage or confiscation where it applies.",
-  "tradeRiskInsightBody": "FLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS: buy prices swing with volatility; plan where you sell abroad.\nELECTRONICS: can lose condition each trip, which lowers resale value.\nWEAPONS and PHARMACEUTICALS: partial seizure can happen on travel — keep Wanted low and read smuggling rules.\nPrices on this screen already include your current country multiplier.",
+  "tradeRiskInsightBody": "SOURCE COUNTRIES: not every country sells everything — travel to buy cheap and sell where demand is high.\nFLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS & ART: high value with volatility; plan your sell country.\nELECTRONICS & TOBACCO: can lose condition each trip.\nWEAPONS, SPIRITS & PHARMACEUTICALS: seizure can happen on travel — keep Wanted low.\nPrices on this screen already include your current country multiplier.",
   "tradeRiskSpoilageHours": "{hours}h spoil window",
   "@tradeRiskSpoilageHours": {
     "placeholders": {
@@ -3178,6 +3184,26 @@
       }
     }
   },
+  "tradeRiskHeavyWeight": "Heavy ({weight} weight)",
+  "@tradeRiskHeavyWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeGoodNotAvailableHere": "This product is not for sale in your current country. Travel to a source country.",
+  "tradeNoBuyableGoodsInCountry": "No trade goods for sale in this country. Travel to a source country to stock up.",
+  "tradeUnavailableGoodsTitle": "Not sold here",
+  "tradeUnavailableGoodsSubtitle": "{count} products only in source countries",
+  "@tradeUnavailableGoodsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeTravelToSourceHint": "Only sold in source countries — travel to buy",
   "appeal": "Appeal",
   "submitAppeal": "Submit Appeal",
   "bribeJudge": "Bribe Judge",

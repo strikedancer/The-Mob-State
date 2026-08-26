@@ -233,6 +233,27 @@ def _good_prompts() -> List[dict]:
                 "clinical green accent, sterile warehouse, no brand names, no text"
             ),
         },
+        {
+            "id": "contraband_spirits",
+            "prompt": (
+                "Cinematic dark-mafia game item icon, wooden crate with premium whisky and cognac bottles, "
+                "warm amber rim light, noir bar backroom mood, no labels, no text"
+            ),
+        },
+        {
+            "id": "contraband_tobacco",
+            "prompt": (
+                "Cinematic noir game item icon, shrink-wrapped cartons of untaxed cigarettes and tobacco, "
+                "brown warehouse tones, compact centered, no brand names, no text"
+            ),
+        },
+        {
+            "id": "contraband_art",
+            "prompt": (
+                "Cinematic dark-mafia game item icon, wrapped antique painting and small bronze statue, "
+                "gold and teal reflections, museum heist mood, no text"
+            ),
+        },
     ]
 
 

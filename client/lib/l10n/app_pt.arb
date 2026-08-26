@@ -9203,5 +9203,31 @@
   },
   "smugglingActiveFilter": "Active",
   "smugglingShowAllFilter": "All",
-  "smugglingClaimThisDepot": "Claim depot"
+  "smugglingClaimThisDepot": "Claim depot",
+  "contrabandSpiritsName": "Bebidas espirituosas de luxo",
+  "contrabandSpiritsDesc": "Whisky, conhaque e licores premium contrabandeados",
+  "contrabandTobaccoName": "Tabaco",
+  "contrabandTobaccoDesc": "Cigarros e rapé sem impostos",
+  "contrabandArtName": "Arte e antiguidades",
+  "contrabandArtDesc": "Pinturas, esculturas e antiguidades contrabandeadas",
+  "tradeGoodNotAvailableHere": "Este produto não é vendido no seu país atual. Viaje para um país de origem.",
+  "tradeNoBuyableGoodsInCountry": "Não há mercadorias à venda neste país. Viaje para um país de origem.",
+  "tradeUnavailableGoodsTitle": "Não vendido aqui",
+  "tradeUnavailableGoodsSubtitle": "{count} produtos apenas em países de origem",
+  "tradeTravelToSourceHint": "Apenas em países de origem — viaje para comprar",
+  "tradeRiskHeavyWeight": "Pesado ({weight} peso)",
+  "@tradeUnavailableGoodsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tradeRiskHeavyWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  }
 }

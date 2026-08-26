@@ -10,6 +10,7 @@ class TradableGood {
   final double? damageChancePerTrip;
   final double? confiscationChance;
   final double? priceVolatility;
+  final List<String> availableInCountries;
 
   TradableGood({
     required this.id,
@@ -22,6 +23,7 @@ class TradableGood {
     this.damageChancePerTrip,
     this.confiscationChance,
     this.priceVolatility,
+    this.availableInCountries = const [],
   });
 
   factory TradableGood.fromJson(Map<String, dynamic> json) {
@@ -43,6 +45,10 @@ class TradableGood {
       damageChancePerTrip: d('damageChancePerTrip'),
       confiscationChance: d('confiscationChance'),
       priceVolatility: d('priceVolatility'),
+      availableInCountries: (json['availableInCountries'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
     );
   }
 
@@ -58,6 +64,8 @@ class TradableGood {
       if (damageChancePerTrip != null) 'damageChancePerTrip': damageChancePerTrip,
       if (confiscationChance != null) 'confiscationChance': confiscationChance,
       if (priceVolatility != null) 'priceVolatility': priceVolatility,
+      if (availableInCountries.isNotEmpty)
+        'availableInCountries': availableInCountries,
     };
   }
 
@@ -73,6 +81,12 @@ class TradableGood {
         return '🌷';
       case 'contraband_electronics':
         return '📱';
+      case 'contraband_spirits':
+        return '🥃';
+      case 'contraband_tobacco':
+        return '🚬';
+      case 'contraband_art':
+        return '🖼️';
       default:
         return '📦';
     }
@@ -84,12 +98,16 @@ class GoodPrice {
   final int currentPrice;
   final int sellPrice;
   final double multiplier;
+  final bool availableToBuy;
+  final List<String> sourceCountries;
 
   GoodPrice({
     required this.goodType,
     required this.currentPrice,
     required this.sellPrice,
     required this.multiplier,
+    this.availableToBuy = true,
+    this.sourceCountries = const [],
   });
 
   factory GoodPrice.fromJson(Map<String, dynamic> json) {
@@ -98,6 +116,11 @@ class GoodPrice {
       currentPrice: (json['currentPrice'] as num?)?.toInt() ?? 0,
       sellPrice: (json['sellPrice'] as num?)?.toInt() ?? 0,
       multiplier: (json['multiplier'] as num?)?.toDouble() ?? 1.0,
+      availableToBuy: json['availableToBuy'] as bool? ?? true,
+      sourceCountries: (json['sourceCountries'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
     );
   }
 }

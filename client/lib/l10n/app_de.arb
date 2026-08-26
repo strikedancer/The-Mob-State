@@ -9203,5 +9203,31 @@
   },
   "smugglingActiveFilter": "Active",
   "smugglingShowAllFilter": "All",
-  "smugglingClaimThisDepot": "Claim depot"
+  "smugglingClaimThisDepot": "Claim depot",
+  "contrabandSpiritsName": "Luxusspirituosen",
+  "contrabandSpiritsDesc": "Geschmuggelter Whisky, Cognac und Premium-Liköre",
+  "contrabandTobaccoName": "Tabak",
+  "contrabandTobaccoDesc": "Unversteuerte Zigaretten und Schnupftabak",
+  "contrabandArtName": "Kunst & Antiquitäten",
+  "contrabandArtDesc": "Geschmuggelte Gemälde, Skulpturen und Antiquitäten",
+  "tradeGoodNotAvailableHere": "Dieses Produkt ist in deinem aktuellen Land nicht käuflich. Reise in ein Quellenland.",
+  "tradeNoBuyableGoodsInCountry": "In diesem Land gibt es keine käuflichen Handelswaren. Reise in ein Quellenland.",
+  "tradeUnavailableGoodsTitle": "Hier nicht käuflich",
+  "tradeUnavailableGoodsSubtitle": "{count} Produkte nur in Quellenländern",
+  "tradeTravelToSourceHint": "Nur in Quellenländern käuflich — reise zum Einkauf",
+  "tradeRiskHeavyWeight": "Schwer ({weight} Gewicht)",
+  "@tradeUnavailableGoodsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tradeRiskHeavyWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  }
 }

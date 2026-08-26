@@ -5,10 +5,13 @@
     "travelCost": 250,
     "tradeBonuses": {
       "contraband_flowers": 1.2,
-      "contraband_electronics": 1.0,
+      "contraband_electronics": 1,
       "contraband_diamonds": 0.8,
       "contraband_weapons": 0.9,
-      "contraband_pharmaceuticals": 1.1
+      "contraband_pharmaceuticals": 1.1,
+      "contraband_spirits": 1,
+      "contraband_tobacco": 0.85,
+      "contraband_art": 1.05
     },
     "description": "Bloemenland met gemiddelde prijzen."
   },
@@ -17,11 +20,14 @@
     "name": "België",
     "travelCost": 500,
     "tradeBonuses": {
-      "contraband_flowers": 1.0,
+      "contraband_flowers": 1,
       "contraband_electronics": 1.1,
       "contraband_diamonds": 1.3,
       "contraband_weapons": 0.8,
-      "contraband_pharmaceuticals": 1.0
+      "contraband_pharmaceuticals": 1,
+      "contraband_spirits": 1.05,
+      "contraband_tobacco": 1.1,
+      "contraband_art": 0.8
     },
     "description": "Buurland met goede diamantmarkt. Lage reiskosten."
   },
@@ -34,7 +40,10 @@
       "contraband_electronics": 1.3,
       "contraband_diamonds": 0.9,
       "contraband_weapons": 1.1,
-      "contraband_pharmaceuticals": 1.0
+      "contraband_pharmaceuticals": 1,
+      "contraband_spirits": 1.15,
+      "contraband_tobacco": 1.25,
+      "contraband_art": 1.1
     },
     "description": "Industrieel centrum. Hoge vraag naar electronica."
   },
@@ -45,9 +54,12 @@
     "tradeBonuses": {
       "contraband_flowers": 1.1,
       "contraband_electronics": 0.9,
-      "contraband_diamonds": 1.0,
+      "contraband_diamonds": 1,
       "contraband_weapons": 0.7,
-      "contraband_pharmaceuticals": 1.4
+      "contraband_pharmaceuticals": 1.4,
+      "contraband_spirits": 0.75,
+      "contraband_tobacco": 1.35,
+      "contraband_art": 0.75
     },
     "description": "Luxe goederen en farmaceutica zijn waardevol."
   },
@@ -57,10 +69,13 @@
     "travelCost": 1500,
     "tradeBonuses": {
       "contraband_flowers": 0.8,
-      "contraband_electronics": 1.0,
+      "contraband_electronics": 1,
       "contraband_diamonds": 1.2,
       "contraband_weapons": 1.3,
-      "contraband_pharmaceuticals": 0.9
+      "contraband_pharmaceuticals": 0.9,
+      "contraband_spirits": 1.1,
+      "contraband_tobacco": 1.2,
+      "contraband_art": 1
     },
     "description": "Smokkelroute. Goede wapenmarkt."
   },
@@ -69,11 +84,14 @@
     "name": "Italië",
     "travelCost": 1750,
     "tradeBonuses": {
-      "contraband_flowers": 1.0,
+      "contraband_flowers": 1,
       "contraband_electronics": 1.1,
       "contraband_diamonds": 1.4,
       "contraband_weapons": 1.2,
-      "contraband_pharmaceuticals": 1.0
+      "contraband_pharmaceuticals": 1,
+      "contraband_spirits": 0.8,
+      "contraband_tobacco": 1.15,
+      "contraband_art": 0.7
     },
     "description": "Maffia connecties. Hoge diamant en wapen prijzen."
   },
@@ -86,7 +104,10 @@
       "contraband_electronics": 1.2,
       "contraband_diamonds": 1.1,
       "contraband_weapons": 0.6,
-      "contraband_pharmaceuticals": 1.3
+      "contraband_pharmaceuticals": 1.3,
+      "contraband_spirits": 0.85,
+      "contraband_tobacco": 1.5,
+      "contraband_art": 1.25
     },
     "description": "Strenge wapenwetten, hoge prijzen voor andere goederen."
   },
@@ -99,7 +120,10 @@
       "contraband_electronics": 1.4,
       "contraband_diamonds": 1.5,
       "contraband_weapons": 0.9,
-      "contraband_pharmaceuticals": 1.2
+      "contraband_pharmaceuticals": 1.2,
+      "contraband_spirits": 1.2,
+      "contraband_tobacco": 1.25,
+      "contraband_art": 1.45
     },
     "description": "Bankgeheim. Beste prijzen voor diamanten en electronica."
   },
@@ -112,7 +136,10 @@
       "contraband_electronics": 1.3,
       "contraband_diamonds": 1.2,
       "contraband_weapons": 1.4,
-      "contraband_pharmaceuticals": 1.1
+      "contraband_pharmaceuticals": 1.1,
+      "contraband_spirits": 1.25,
+      "contraband_tobacco": 1.3,
+      "contraband_art": 1.35
     },
     "description": "Grote markt met hoge prijzen en strenge controles."
   },
@@ -125,7 +152,10 @@
       "contraband_electronics": 0.9,
       "contraband_diamonds": 0.8,
       "contraband_weapons": 1.5,
-      "contraband_pharmaceuticals": 0.9
+      "contraband_pharmaceuticals": 0.9,
+      "contraband_spirits": 0.65,
+      "contraband_tobacco": 0.95,
+      "contraband_art": 0.95
     },
     "description": "Smokkelroutes en hoge vraag naar wapens."
   },
@@ -138,7 +168,10 @@
       "contraband_electronics": 0.9,
       "contraband_diamonds": 0.9,
       "contraband_weapons": 1.3,
-      "contraband_pharmaceuticals": 0.8
+      "contraband_pharmaceuticals": 0.8,
+      "contraband_spirits": 0.9,
+      "contraband_tobacco": 0.65,
+      "contraband_art": 0.9
     },
     "description": "Risicovolle markt met hoge marges."
   },
@@ -149,9 +182,12 @@
     "tradeBonuses": {
       "contraband_flowers": 0.8,
       "contraband_electronics": 1.1,
-      "contraband_diamonds": 1.0,
+      "contraband_diamonds": 1,
       "contraband_weapons": 1.2,
-      "contraband_pharmaceuticals": 0.9
+      "contraband_pharmaceuticals": 0.9,
+      "contraband_spirits": 1,
+      "contraband_tobacco": 0.7,
+      "contraband_art": 1.05
     },
     "description": "Grote afzetmarkt met variabele prijzen."
   },
@@ -161,10 +197,13 @@
     "travelCost": 3400,
     "tradeBonuses": {
       "contraband_flowers": 0.9,
-      "contraband_electronics": 1.0,
+      "contraband_electronics": 1,
       "contraband_diamonds": 1.1,
       "contraband_weapons": 1.1,
-      "contraband_pharmaceuticals": 0.9
+      "contraband_pharmaceuticals": 0.9,
+      "contraband_spirits": 0.7,
+      "contraband_tobacco": 1.05,
+      "contraband_art": 1
     },
     "description": "Gemiddelde markt met kansen voor winst."
   },
@@ -177,7 +216,10 @@
       "contraband_electronics": 1.5,
       "contraband_diamonds": 1.2,
       "contraband_weapons": 0.6,
-      "contraband_pharmaceuticals": 1.4
+      "contraband_pharmaceuticals": 1.4,
+      "contraband_spirits": 1.25,
+      "contraband_tobacco": 1.2,
+      "contraband_art": 1.3
     },
     "description": "Topmarkt voor elektronica en farmaceutica."
   },
@@ -190,7 +232,10 @@
       "contraband_electronics": 1.4,
       "contraband_diamonds": 1.1,
       "contraband_weapons": 0.9,
-      "contraband_pharmaceuticals": 1.2
+      "contraband_pharmaceuticals": 1.2,
+      "contraband_spirits": 1.1,
+      "contraband_tobacco": 1.15,
+      "contraband_art": 1.15
     },
     "description": "Hoge vraag naar elektronica en luxe goederen."
   },
@@ -200,10 +245,13 @@
     "travelCost": 4500,
     "tradeBonuses": {
       "contraband_flowers": 0.7,
-      "contraband_electronics": 1.0,
+      "contraband_electronics": 1,
       "contraband_diamonds": 1.2,
       "contraband_weapons": 1.4,
-      "contraband_pharmaceuticals": 0.8
+      "contraband_pharmaceuticals": 0.8,
+      "contraband_spirits": 1.35,
+      "contraband_tobacco": 1.1,
+      "contraband_art": 1.1
     },
     "description": "Ruwe markt met hoge wapenprijzen."
   },
@@ -214,9 +262,12 @@
     "tradeBonuses": {
       "contraband_flowers": 0.9,
       "contraband_electronics": 1.1,
-      "contraband_diamonds": 1.0,
+      "contraband_diamonds": 1,
       "contraband_weapons": 1.2,
-      "contraband_pharmaceuticals": 1.0
+      "contraband_pharmaceuticals": 1,
+      "contraband_spirits": 1.05,
+      "contraband_tobacco": 0.6,
+      "contraband_art": 1
     },
     "description": "Kruispunt van handel en smokkelroutes."
   },
@@ -225,11 +276,14 @@
     "name": "Verenigde Arabische Emiraten",
     "travelCost": 5200,
     "tradeBonuses": {
-      "contraband_flowers": 1.0,
+      "contraband_flowers": 1,
       "contraband_electronics": 1.2,
       "contraband_diamonds": 1.5,
       "contraband_weapons": 0.8,
-      "contraband_pharmaceuticals": 1.3
+      "contraband_pharmaceuticals": 1.3,
+      "contraband_spirits": 1.3,
+      "contraband_tobacco": 1.2,
+      "contraband_art": 1.55
     },
     "description": "Luxe markt met hoge prijzen voor diamanten."
   },
@@ -239,10 +293,13 @@
     "travelCost": 4200,
     "tradeBonuses": {
       "contraband_flowers": 0.8,
-      "contraband_electronics": 1.0,
+      "contraband_electronics": 1,
       "contraband_diamonds": 1.3,
       "contraband_weapons": 1.1,
-      "contraband_pharmaceuticals": 0.9
+      "contraband_pharmaceuticals": 0.9,
+      "contraband_spirits": 1.15,
+      "contraband_tobacco": 1.05,
+      "contraband_art": 1.05
     },
     "description": "Mijnbouw en handel met goede marges."
   },
@@ -251,11 +308,14 @@
     "name": "Australië",
     "travelCost": 6000,
     "tradeBonuses": {
-      "contraband_flowers": 1.0,
+      "contraband_flowers": 1,
       "contraband_electronics": 1.2,
       "contraband_diamonds": 1.1,
       "contraband_weapons": 0.7,
-      "contraband_pharmaceuticals": 1.3
+      "contraband_pharmaceuticals": 1.3,
+      "contraband_spirits": 1.2,
+      "contraband_tobacco": 1.45,
+      "contraband_art": 1.15
     },
     "description": "Afgelegen markt met hoge prijzen en lange reistijd."
   }

@@ -5385,6 +5385,26 @@ class AppLocalizationsPl extends AppLocalizations {
   String get contrabandPharmaceuticalsDesc => 'Rzadkie produkty farmaceutyczne';
 
   @override
+  String get contrabandSpiritsName => 'Luksusowe alkohole';
+
+  @override
+  String get contrabandSpiritsDesc =>
+      'Przemycany whisky, koniak i premium likiery';
+
+  @override
+  String get contrabandTobaccoName => 'Tytoń';
+
+  @override
+  String get contrabandTobaccoDesc =>
+      'Nieopodatkowane papierosy i tytoń do snusu';
+
+  @override
+  String get contrabandArtName => 'Sztuka i antyki';
+
+  @override
+  String get contrabandArtDesc => 'Przemycane obrazy, rzeźby i antyki';
+
+  @override
   String get multiplier => 'Mnożnik';
 
   @override
@@ -5483,6 +5503,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String tradeRiskDamageTripPct(String pct) {
     return '$pct% szans na obrażenia na podróż';
   }
+
+  @override
+  String tradeRiskHeavyWeight(String weight) {
+    return 'Ciężki ($weight waga)';
+  }
+
+  @override
+  String get tradeGoodNotAvailableHere =>
+      'Ten produkt nie jest dostępny w twoim obecnym kraju. Podróżuj do kraju źródłowego.';
+
+  @override
+  String get tradeNoBuyableGoodsInCountry =>
+      'Brak towarów na sprzedaż w tym kraju. Podróżuj do kraju źródłowego.';
+
+  @override
+  String get tradeUnavailableGoodsTitle => 'Niedostępne tutaj';
+
+  @override
+  String tradeUnavailableGoodsSubtitle(String count) {
+    return '$count produktów tylko w krajach źródłowych';
+  }
+
+  @override
+  String get tradeTravelToSourceHint =>
+      'Tylko w krajach źródłowych — podróżuj, aby kupić';
 
   @override
   String get appeal => 'Odwołanie';

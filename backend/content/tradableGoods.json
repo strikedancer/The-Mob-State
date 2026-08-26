@@ -7,7 +7,8 @@
     "maxInventory": 1000,
     "weight": 1,
     "spoilageHours": 48,
-    "priceVolatility": 0.05
+    "priceVolatility": 0.05,
+    "availableInCountries": ["netherlands", "belgium", "colombia", "uk"]
   },
   {
     "id": "contraband_electronics",
@@ -17,7 +18,8 @@
     "maxInventory": 500,
     "weight": 2,
     "damageChancePerTrip": 0.15,
-    "priceVolatility": 0.10
+    "priceVolatility": 0.10,
+    "availableInCountries": ["germany", "japan", "china", "usa"]
   },
   {
     "id": "contraband_diamonds",
@@ -26,7 +28,8 @@
     "basePrice": 2000,
     "maxInventory": 100,
     "weight": 1,
-    "priceVolatility": 0.25
+    "priceVolatility": 0.25,
+    "availableInCountries": ["belgium", "south_africa", "united_arab_emirates", "switzerland"]
   },
   {
     "id": "contraband_weapons",
@@ -36,7 +39,8 @@
     "maxInventory": 200,
     "weight": 5,
     "confiscationChance": 0.20,
-    "priceVolatility": 0.08
+    "priceVolatility": 0.08,
+    "availableInCountries": ["mexico", "russia", "spain", "colombia", "turkey"]
   },
   {
     "id": "contraband_pharmaceuticals",
@@ -46,6 +50,42 @@
     "maxInventory": 300,
     "weight": 1,
     "confiscationChance": 0.15,
-    "priceVolatility": 0.12
+    "priceVolatility": 0.12,
+    "availableInCountries": ["france", "japan", "colombia", "australia", "netherlands"]
+  },
+  {
+    "id": "contraband_spirits",
+    "name": "Luxe sterke drank",
+    "description": "Gesmokkelde whisky, cognac en premium likeuren",
+    "basePrice": 1100,
+    "maxInventory": 180,
+    "weight": 3,
+    "confiscationChance": 0.11,
+    "priceVolatility": 0.05,
+    "availableInCountries": ["france", "italy", "mexico", "uk", "argentina"]
+  },
+  {
+    "id": "contraband_tobacco",
+    "name": "Tabak",
+    "description": "Sigaretten en snuiftabak zonder accijnsstempel",
+    "basePrice": 220,
+    "maxInventory": 900,
+    "weight": 2,
+    "confiscationChance": 0.06,
+    "damageChancePerTrip": 0.08,
+    "priceVolatility": 0.03,
+    "availableInCountries": ["turkey", "colombia", "brazil", "netherlands"]
+  },
+  {
+    "id": "contraband_art",
+    "name": "Kunst & antiek",
+    "description": "Gesmokkelde schilderijen, beelden en antieke voorwerpen",
+    "basePrice": 3200,
+    "maxInventory": 60,
+    "weight": 4,
+    "damageChancePerTrip": 0.22,
+    "confiscationChance": 0.09,
+    "priceVolatility": 0.22,
+    "availableInCountries": ["italy", "france", "belgium", "united_arab_emirates"]
   }
 ]

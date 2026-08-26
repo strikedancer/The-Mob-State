@@ -5334,6 +5334,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contrabandPharmaceuticalsDesc => 'Rare pharmaceutical products';
 
   @override
+  String get contrabandSpiritsName => 'Luxury spirits';
+
+  @override
+  String get contrabandSpiritsDesc =>
+      'Smuggled whisky, cognac and premium liquors';
+
+  @override
+  String get contrabandTobaccoName => 'Tobacco';
+
+  @override
+  String get contrabandTobaccoDesc => 'Untaxed cigarettes and snuff tobacco';
+
+  @override
+  String get contrabandArtName => 'Art & antiques';
+
+  @override
+  String get contrabandArtDesc =>
+      'Smuggled paintings, sculptures and antique valuables';
+
+  @override
   String get multiplier => 'Multiplier';
 
   @override
@@ -5410,7 +5430,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tradeRiskInsightBody =>
-      'FLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS: buy prices swing with volatility; plan where you sell abroad.\nELECTRONICS: can lose condition each trip, which lowers resale value.\nWEAPONS and PHARMACEUTICALS: partial seizure can happen on travel — keep Wanted low and read smuggling rules.\nPrices on this screen already include your current country multiplier.';
+      'SOURCE COUNTRIES: not every country sells everything — travel to buy cheap and sell where demand is high.\nFLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS & ART: high value with volatility; plan your sell country.\nELECTRONICS & TOBACCO: can lose condition each trip.\nWEAPONS, SPIRITS & PHARMACEUTICALS: seizure can happen on travel — keep Wanted low.\nPrices on this screen already include your current country multiplier.';
 
   @override
   String tradeRiskSpoilageHours(String hours) {
@@ -5431,6 +5451,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String tradeRiskDamageTripPct(String pct) {
     return '$pct% damage chance per trip';
   }
+
+  @override
+  String tradeRiskHeavyWeight(String weight) {
+    return 'Heavy ($weight weight)';
+  }
+
+  @override
+  String get tradeGoodNotAvailableHere =>
+      'This product is not for sale in your current country. Travel to a source country.';
+
+  @override
+  String get tradeNoBuyableGoodsInCountry =>
+      'No trade goods for sale in this country. Travel to a source country to stock up.';
+
+  @override
+  String get tradeUnavailableGoodsTitle => 'Not sold here';
+
+  @override
+  String tradeUnavailableGoodsSubtitle(String count) {
+    return '$count products only in source countries';
+  }
+
+  @override
+  String get tradeTravelToSourceHint =>
+      'Only sold in source countries — travel to buy';
 
   @override
   String get appeal => 'Appeal';

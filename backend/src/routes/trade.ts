@@ -134,6 +134,14 @@ router.post('/buy', authenticate, async (req: AuthRequest, res: Response, next: 
       });
     }
 
+    if (error.message === 'GOOD_NOT_AVAILABLE_IN_COUNTRY') {
+      return res.status(400).json({
+        success: false,
+        error: 'GOOD_NOT_AVAILABLE_IN_COUNTRY',
+        message: 'Dit product is niet te koop in je huidige land. Reis naar een bronland.',
+      });
+    }
+
     return next(error);
   }
 });

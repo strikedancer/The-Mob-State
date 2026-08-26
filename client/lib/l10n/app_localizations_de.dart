@@ -5408,6 +5408,27 @@ class AppLocalizationsDe extends AppLocalizations {
       'Seltene pharmazeutische Produkte';
 
   @override
+  String get contrabandSpiritsName => 'Luxusspirituosen';
+
+  @override
+  String get contrabandSpiritsDesc =>
+      'Geschmuggelter Whisky, Cognac und Premium-Liköre';
+
+  @override
+  String get contrabandTobaccoName => 'Tabak';
+
+  @override
+  String get contrabandTobaccoDesc =>
+      'Unversteuerte Zigaretten und Schnupftabak';
+
+  @override
+  String get contrabandArtName => 'Kunst & Antiquitäten';
+
+  @override
+  String get contrabandArtDesc =>
+      'Geschmuggelte Gemälde, Skulpturen und Antiquitäten';
+
+  @override
   String get multiplier => 'Multiplikator';
 
   @override
@@ -5509,6 +5530,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String tradeRiskDamageTripPct(String pct) {
     return '$pct % Schadenschance pro Fahrt';
   }
+
+  @override
+  String tradeRiskHeavyWeight(String weight) {
+    return 'Schwer ($weight Gewicht)';
+  }
+
+  @override
+  String get tradeGoodNotAvailableHere =>
+      'Dieses Produkt ist in deinem aktuellen Land nicht käuflich. Reise in ein Quellenland.';
+
+  @override
+  String get tradeNoBuyableGoodsInCountry =>
+      'In diesem Land gibt es keine käuflichen Handelswaren. Reise in ein Quellenland.';
+
+  @override
+  String get tradeUnavailableGoodsTitle => 'Hier nicht käuflich';
+
+  @override
+  String tradeUnavailableGoodsSubtitle(String count) {
+    return '$count Produkte nur in Quellenländern';
+  }
+
+  @override
+  String get tradeTravelToSourceHint =>
+      'Nur in Quellenländern käuflich — reise zum Einkauf';
 
   @override
   String get appeal => 'Appellieren';

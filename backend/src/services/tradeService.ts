@@ -23,6 +23,8 @@ export interface TradableGood {
   damageChancePerTrip?: number;
   confiscationChance?: number;
   priceVolatility?: number;
+  /** Countries where this good can be purchased (sell remains allowed everywhere). */
+  availableInCountries?: string[];
 }
 
 export interface TradeResult {
@@ -64,6 +66,31 @@ export function getGoodById(goodType: string): TradableGood | undefined {
  */
 export function isValidGood(goodType: string): boolean {
   return tradableGoods.some((g) => g.id === goodType);
+}
+
+/**
+ * Whether a good can be purchased in the given country.
+ * Legacy goods without `availableInCountries` remain buyable everywhere.
+ */
+export function isGoodAvailableInCountry(goodType: string, countryId: string): boolean {
+  const good = getGoodById(goodType);
+  if (!good) {
+    return false;
+  }
+  const sources = good.availableInCountries;
+  if (!sources?.length) {
+    return true;
+  }
+  return sources.includes(countryId);
+}
+
+/** Country-specific trade bonus multiplier (no volatility). */
+export function getTradeBonus(goodType: string, countryId: string): number {
+  const country = countries.find((c) => c.id === countryId);
+  if (!country) {
+    return 1.0;
+  }
+  return (country as any).tradeBonuses?.[goodType] || 1.0;
 }
 
 /**
@@ -175,6 +202,10 @@ export async function buyGoods(
 
   // Get player's current country
   const currentCountry = await getPlayerCountry(playerId);
+
+  if (!isGoodAvailableInCountry(goodType, currentCountry)) {
+    throw new Error('GOOD_NOT_AVAILABLE_IN_COUNTRY');
+  }
 
   // Calculate price in current country
   const pricePerUnit = calculatePrice(goodType, currentCountry);
@@ -423,6 +454,8 @@ export async function getCurrentPrices(playerId: number) {
   const currentCountry = await getPlayerCountry(playerId);
 
   return tradableGoods.map((good) => {
+    const multiplier = getTradeBonus(good.id, currentCountry);
+    const availableToBuy = isGoodAvailableInCountry(good.id, currentCountry);
     const buyPrice = calculatePrice(good.id, currentCountry);
     const sellPrice = Math.floor(buyPrice * 0.9); // 10% spread
     
@@ -431,8 +464,11 @@ export async function getCurrentPrices(playerId: number) {
       goodName: good.name,
       basePrice: good.basePrice,
       currentPrice: buyPrice,
-      sellPrice: sellPrice,
+      sellPrice,
+      multiplier,
       maxInventory: good.maxInventory,
+      availableToBuy,
+      sourceCountries: good.availableInCountries ?? [],
     };
   });
 }

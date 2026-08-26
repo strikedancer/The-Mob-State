@@ -9203,5 +9203,31 @@
   },
   "smugglingActiveFilter": "Active",
   "smugglingShowAllFilter": "All",
-  "smugglingClaimThisDepot": "Claim depot"
+  "smugglingClaimThisDepot": "Claim depot",
+  "contrabandSpiritsName": "Luksusowe alkohole",
+  "contrabandSpiritsDesc": "Przemycany whisky, koniak i premium likiery",
+  "contrabandTobaccoName": "Tytoń",
+  "contrabandTobaccoDesc": "Nieopodatkowane papierosy i tytoń do snusu",
+  "contrabandArtName": "Sztuka i antyki",
+  "contrabandArtDesc": "Przemycane obrazy, rzeźby i antyki",
+  "tradeGoodNotAvailableHere": "Ten produkt nie jest dostępny w twoim obecnym kraju. Podróżuj do kraju źródłowego.",
+  "tradeNoBuyableGoodsInCountry": "Brak towarów na sprzedaż w tym kraju. Podróżuj do kraju źródłowego.",
+  "tradeUnavailableGoodsTitle": "Niedostępne tutaj",
+  "tradeUnavailableGoodsSubtitle": "{count} produktów tylko w krajach źródłowych",
+  "tradeTravelToSourceHint": "Tylko w krajach źródłowych — podróżuj, aby kupić",
+  "tradeRiskHeavyWeight": "Ciężki ({weight} waga)",
+  "@tradeUnavailableGoodsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tradeRiskHeavyWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  }
 }
