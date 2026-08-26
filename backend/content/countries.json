@@ -11,7 +11,15 @@
       "contraband_pharmaceuticals": 1.1,
       "contraband_spirits": 1,
       "contraband_tobacco": 0.85,
-      "contraband_art": 1.05
+      "contraband_art": 1.05,
+      "contraband_spices": 1.05,
+      "contraband_coffee": 0.95,
+      "contraband_fur_leather": 1,
+      "contraband_perfume": 1.15,
+      "contraband_counterfeit_cash": 1.1,
+      "contraband_rare_wine": 1.2,
+      "contraband_luxury_watches": 1.25,
+      "contraband_gold": 1.1
     },
     "description": "Bloemenland met gemiddelde prijzen."
   },
@@ -27,7 +35,15 @@
       "contraband_pharmaceuticals": 1,
       "contraband_spirits": 1.05,
       "contraband_tobacco": 1.1,
-      "contraband_art": 0.8
+      "contraband_art": 0.8,
+      "contraband_spices": 1,
+      "contraband_coffee": 1.05,
+      "contraband_fur_leather": 1.05,
+      "contraband_perfume": 1.1,
+      "contraband_counterfeit_cash": 1.05,
+      "contraband_rare_wine": 1.15,
+      "contraband_luxury_watches": 1.2,
+      "contraband_gold": 1.15
     },
     "description": "Buurland met goede diamantmarkt. Lage reiskosten."
   },
@@ -43,7 +59,15 @@
       "contraband_pharmaceuticals": 1,
       "contraband_spirits": 1.15,
       "contraband_tobacco": 1.25,
-      "contraband_art": 1.1
+      "contraband_art": 1.1,
+      "contraband_spices": 1.1,
+      "contraband_coffee": 1.05,
+      "contraband_fur_leather": 1.05,
+      "contraband_perfume": 1.2,
+      "contraband_counterfeit_cash": 1.15,
+      "contraband_rare_wine": 1.25,
+      "contraband_luxury_watches": 0.85,
+      "contraband_gold": 1.2
     },
     "description": "Industrieel centrum. Hoge vraag naar electronica."
   },
@@ -59,7 +83,15 @@
       "contraband_pharmaceuticals": 1.4,
       "contraband_spirits": 0.75,
       "contraband_tobacco": 1.35,
-      "contraband_art": 0.75
+      "contraband_art": 0.75,
+      "contraband_spices": 1.15,
+      "contraband_coffee": 1.1,
+      "contraband_fur_leather": 1.2,
+      "contraband_perfume": 0.75,
+      "contraband_counterfeit_cash": 1.2,
+      "contraband_rare_wine": 0.7,
+      "contraband_luxury_watches": 1.15,
+      "contraband_gold": 1.25
     },
     "description": "Luxe goederen en farmaceutica zijn waardevol."
   },
@@ -75,7 +107,15 @@
       "contraband_pharmaceuticals": 0.9,
       "contraband_spirits": 1.1,
       "contraband_tobacco": 1.2,
-      "contraband_art": 1
+      "contraband_art": 1,
+      "contraband_spices": 1.05,
+      "contraband_coffee": 1,
+      "contraband_fur_leather": 0.85,
+      "contraband_perfume": 1.1,
+      "contraband_counterfeit_cash": 1.1,
+      "contraband_rare_wine": 0.8,
+      "contraband_luxury_watches": 1.15,
+      "contraband_gold": 1.1
     },
     "description": "Smokkelroute. Goede wapenmarkt."
   },
@@ -91,7 +131,15 @@
       "contraband_pharmaceuticals": 1,
       "contraband_spirits": 0.8,
       "contraband_tobacco": 1.15,
-      "contraband_art": 0.7
+      "contraband_art": 0.7,
+      "contraband_spices": 1.1,
+      "contraband_coffee": 1.05,
+      "contraband_fur_leather": 1.15,
+      "contraband_perfume": 0.8,
+      "contraband_counterfeit_cash": 1.15,
+      "contraband_rare_wine": 0.75,
+      "contraband_luxury_watches": 1.1,
+      "contraband_gold": 1.2
     },
     "description": "Maffia connecties. Hoge diamant en wapen prijzen."
   },
@@ -107,7 +155,15 @@
       "contraband_pharmaceuticals": 1.3,
       "contraband_spirits": 0.85,
       "contraband_tobacco": 1.5,
-      "contraband_art": 1.25
+      "contraband_art": 1.25,
+      "contraband_spices": 1.2,
+      "contraband_coffee": 1.15,
+      "contraband_fur_leather": 1.25,
+      "contraband_perfume": 0.9,
+      "contraband_counterfeit_cash": 1.25,
+      "contraband_rare_wine": 1.3,
+      "contraband_luxury_watches": 1.35,
+      "contraband_gold": 1.3
     },
     "description": "Strenge wapenwetten, hoge prijzen voor andere goederen."
   },
@@ -123,7 +179,15 @@
       "contraband_pharmaceuticals": 1.2,
       "contraband_spirits": 1.2,
       "contraband_tobacco": 1.25,
-      "contraband_art": 1.45
+      "contraband_art": 1.45,
+      "contraband_spices": 1.15,
+      "contraband_coffee": 1.2,
+      "contraband_fur_leather": 1.2,
+      "contraband_perfume": 1.25,
+      "contraband_counterfeit_cash": 1.2,
+      "contraband_rare_wine": 1.35,
+      "contraband_luxury_watches": 0.75,
+      "contraband_gold": 0.8
     },
     "description": "Bankgeheim. Beste prijzen voor diamanten en electronica."
   },
@@ -139,7 +203,15 @@
       "contraband_pharmaceuticals": 1.1,
       "contraband_spirits": 1.25,
       "contraband_tobacco": 1.3,
-      "contraband_art": 1.35
+      "contraband_art": 1.35,
+      "contraband_spices": 1.15,
+      "contraband_coffee": 1.1,
+      "contraband_fur_leather": 1.2,
+      "contraband_perfume": 1.25,
+      "contraband_counterfeit_cash": 1.3,
+      "contraband_rare_wine": 1.3,
+      "contraband_luxury_watches": 1.25,
+      "contraband_gold": 1.25
     },
     "description": "Grote markt met hoge prijzen en strenge controles."
   },
@@ -155,7 +227,15 @@
       "contraband_pharmaceuticals": 0.9,
       "contraband_spirits": 0.65,
       "contraband_tobacco": 0.95,
-      "contraband_art": 0.95
+      "contraband_art": 0.95,
+      "contraband_spices": 0.7,
+      "contraband_coffee": 0.85,
+      "contraband_fur_leather": 0.95,
+      "contraband_perfume": 0.95,
+      "contraband_counterfeit_cash": 0.75,
+      "contraband_rare_wine": 0.9,
+      "contraband_luxury_watches": 0.95,
+      "contraband_gold": 0.9
     },
     "description": "Smokkelroutes en hoge vraag naar wapens."
   },
@@ -171,7 +251,15 @@
       "contraband_pharmaceuticals": 0.8,
       "contraband_spirits": 0.9,
       "contraband_tobacco": 0.65,
-      "contraband_art": 0.9
+      "contraband_art": 0.9,
+      "contraband_spices": 0.65,
+      "contraband_coffee": 0.6,
+      "contraband_fur_leather": 0.9,
+      "contraband_perfume": 0.9,
+      "contraband_counterfeit_cash": 0.7,
+      "contraband_rare_wine": 0.95,
+      "contraband_luxury_watches": 0.9,
+      "contraband_gold": 0.85
     },
     "description": "Risicovolle markt met hoge marges."
   },
@@ -187,7 +275,15 @@
       "contraband_pharmaceuticals": 0.9,
       "contraband_spirits": 1,
       "contraband_tobacco": 0.7,
-      "contraband_art": 1.05
+      "contraband_art": 1.05,
+      "contraband_spices": 0.7,
+      "contraband_coffee": 0.65,
+      "contraband_fur_leather": 0.95,
+      "contraband_perfume": 1,
+      "contraband_counterfeit_cash": 0.85,
+      "contraband_rare_wine": 1,
+      "contraband_luxury_watches": 1.05,
+      "contraband_gold": 0.95
     },
     "description": "Grote afzetmarkt met variabele prijzen."
   },
@@ -203,7 +299,15 @@
       "contraband_pharmaceuticals": 0.9,
       "contraband_spirits": 0.7,
       "contraband_tobacco": 1.05,
-      "contraband_art": 1
+      "contraband_art": 1,
+      "contraband_spices": 0.85,
+      "contraband_coffee": 0.8,
+      "contraband_fur_leather": 0.8,
+      "contraband_perfume": 1.05,
+      "contraband_counterfeit_cash": 0.9,
+      "contraband_rare_wine": 0.7,
+      "contraband_luxury_watches": 1.1,
+      "contraband_gold": 1
     },
     "description": "Gemiddelde markt met kansen voor winst."
   },
@@ -219,7 +323,15 @@
       "contraband_pharmaceuticals": 1.4,
       "contraband_spirits": 1.25,
       "contraband_tobacco": 1.2,
-      "contraband_art": 1.3
+      "contraband_art": 1.3,
+      "contraband_spices": 1.2,
+      "contraband_coffee": 1.25,
+      "contraband_fur_leather": 1.3,
+      "contraband_perfume": 1.3,
+      "contraband_counterfeit_cash": 1.25,
+      "contraband_rare_wine": 1.35,
+      "contraband_luxury_watches": 0.85,
+      "contraband_gold": 1.35
     },
     "description": "Topmarkt voor elektronica en farmaceutica."
   },
@@ -235,7 +347,15 @@
       "contraband_pharmaceuticals": 1.2,
       "contraband_spirits": 1.1,
       "contraband_tobacco": 1.15,
-      "contraband_art": 1.15
+      "contraband_art": 1.15,
+      "contraband_spices": 1,
+      "contraband_coffee": 1.05,
+      "contraband_fur_leather": 1.05,
+      "contraband_perfume": 1.15,
+      "contraband_counterfeit_cash": 0.65,
+      "contraband_rare_wine": 1.2,
+      "contraband_luxury_watches": 1.2,
+      "contraband_gold": 1.15
     },
     "description": "Hoge vraag naar elektronica en luxe goederen."
   },
@@ -251,7 +371,15 @@
       "contraband_pharmaceuticals": 0.8,
       "contraband_spirits": 1.35,
       "contraband_tobacco": 1.1,
-      "contraband_art": 1.1
+      "contraband_art": 1.1,
+      "contraband_spices": 0.9,
+      "contraband_coffee": 0.95,
+      "contraband_fur_leather": 0.7,
+      "contraband_perfume": 1.1,
+      "contraband_counterfeit_cash": 0.75,
+      "contraband_rare_wine": 1.15,
+      "contraband_luxury_watches": 1.2,
+      "contraband_gold": 0.85
     },
     "description": "Ruwe markt met hoge wapenprijzen."
   },
@@ -267,7 +395,15 @@
       "contraband_pharmaceuticals": 1,
       "contraband_spirits": 1.05,
       "contraband_tobacco": 0.6,
-      "contraband_art": 1
+      "contraband_art": 1,
+      "contraband_spices": 0.6,
+      "contraband_coffee": 0.7,
+      "contraband_fur_leather": 0.75,
+      "contraband_perfume": 1,
+      "contraband_counterfeit_cash": 0.95,
+      "contraband_rare_wine": 1.05,
+      "contraband_luxury_watches": 1.05,
+      "contraband_gold": 1
     },
     "description": "Kruispunt van handel en smokkelroutes."
   },
@@ -283,7 +419,15 @@
       "contraband_pharmaceuticals": 1.3,
       "contraband_spirits": 1.3,
       "contraband_tobacco": 1.2,
-      "contraband_art": 1.55
+      "contraband_art": 1.55,
+      "contraband_spices": 1.1,
+      "contraband_coffee": 1.15,
+      "contraband_fur_leather": 1.25,
+      "contraband_perfume": 0.85,
+      "contraband_counterfeit_cash": 1.15,
+      "contraband_rare_wine": 1.4,
+      "contraband_luxury_watches": 0.8,
+      "contraband_gold": 0.75
     },
     "description": "Luxe markt met hoge prijzen voor diamanten."
   },
@@ -299,7 +443,15 @@
       "contraband_pharmaceuticals": 0.9,
       "contraband_spirits": 1.15,
       "contraband_tobacco": 1.05,
-      "contraband_art": 1.05
+      "contraband_art": 1.05,
+      "contraband_spices": 0.95,
+      "contraband_coffee": 0.9,
+      "contraband_fur_leather": 1,
+      "contraband_perfume": 1.1,
+      "contraband_counterfeit_cash": 1,
+      "contraband_rare_wine": 1.15,
+      "contraband_luxury_watches": 1.15,
+      "contraband_gold": 0.65
     },
     "description": "Mijnbouw en handel met goede marges."
   },
@@ -315,7 +467,15 @@
       "contraband_pharmaceuticals": 1.3,
       "contraband_spirits": 1.2,
       "contraband_tobacco": 1.45,
-      "contraband_art": 1.15
+      "contraband_art": 1.15,
+      "contraband_spices": 1.25,
+      "contraband_coffee": 1.2,
+      "contraband_fur_leather": 1.3,
+      "contraband_perfume": 1.25,
+      "contraband_counterfeit_cash": 1.35,
+      "contraband_rare_wine": 1.35,
+      "contraband_luxury_watches": 1.4,
+      "contraband_gold": 1.35
     },
     "description": "Afgelegen markt met hoge prijzen en lange reistijd."
   }

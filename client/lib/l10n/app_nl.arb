@@ -517,6 +517,22 @@
   "contrabandTobaccoDesc": "Sigaretten en snuiftabak zonder accijnsstempel",
   "contrabandArtName": "Kunst & antiek",
   "contrabandArtDesc": "Gesmokkelde schilderijen, beelden en antieke voorwerpen",
+  "contrabandSpicesName": "Specerijen",
+  "contrabandSpicesDesc": "Exotische kruiden en specerijen in bulkzakken",
+  "contrabandCoffeeName": "Koffie",
+  "contrabandCoffeeDesc": "Premium koffiebonen en gemalen koffie zonder certificaat",
+  "contrabandFurLeatherName": "Bont & leer",
+  "contrabandFurLeatherDesc": "Illegaal gewonnen bont, exotisch leer en luxe pelzen",
+  "contrabandPerfumeName": "Parfum",
+  "contrabandPerfumeDesc": "Gesmokkelde designerparfums en geurconcentraten",
+  "contrabandCounterfeitCashName": "Nepgeld",
+  "contrabandCounterfeitCashDesc": "Hoogwaardige vervalsingen en ongebruikte bankbiljetten",
+  "contrabandRareWineName": "Zeldzame wijn",
+  "contrabandRareWineDesc": "Vintage wijnen en exclusieve wijncollecties",
+  "contrabandLuxuryWatchesName": "Luxe horloges",
+  "contrabandLuxuryWatchesDesc": "Gesmokkelde prestige-horloges zonder papieren",
+  "contrabandGoldName": "Goud",
+  "contrabandGoldDesc": "Gesmolten goudstaven en ongemarkeerde edelmetaalblokken",
   "multiplier": "Vermenigvuldiger",
   "sellPrice": "Verkoopprijs",
   "boughtFor": "Gekocht voor",
@@ -8698,7 +8714,7 @@
   "tradeNoGoodsLoaded": "Er zijn momenteel geen goederen beschikbaar.",
   "tradeRiskPanelTitle": "Reis- en marktrisico's",
   "tradeRiskPanelSubtitle": "Elk goed vertoont waar van toepassing bederf, prijsschommelingen, reisschade of inbeslagname.",
-  "tradeRiskInsightBody": "BRONLANDEN: niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nBLOEMEN: bederven na de timer vanaf aankoop — verkoop op tijd.\nDIAMANTEN & KUNST: hoge waarde met volatiliteit; plan je verkoopland.\nELEKTRONICA & TABAK: kunnen per rit conditie verliezen.\nWAPENS, DRANK & FARMACEUTICA: inbeslagneming mogelijk op reis — houd Wanted laag.\nPrijzen op dit scherm tonen al je huidige landmultiplier.",
+  "tradeRiskInsightBody": "16 CONTRABAND-LIJNEN in 4 categorieën (starter, bulk, luxe, gevaarlijk). Niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nSTARTER/BULK: bederf of lage marge — ideaal om te leren.\nLUXE: diamanten, goud, horloges, kunst — hoge waarde, plan je verkoopland.\nGEVAARLIJK: wapens en nepgeld — hoge inbeslagneming; houd Wanted laag.\nGebruik filters bovenaan om snel te zoeken.",
   "tradeRiskSpoilageHours": "{hours}h bederfvenster",
   "@tradeRiskSpoilageHours": {
     "placeholders": {
@@ -8751,6 +8767,23 @@
     }
   },
   "tradeTravelToSourceHint": "Alleen te koop in bronlanden — reis om in te slaan",
+  "tradeCategoryAll": "Alles",
+  "tradeCategoryStarter": "Starter",
+  "tradeCategoryBulk": "Bulk",
+  "tradeCategoryLuxury": "Luxe",
+  "tradeCategoryDangerous": "Gevaarlijk",
+  "tradeFilterAvailableHere": "Te koop hier",
+  "tradeMarketCatalogSummary": "{total} producten · {here} te koop in dit land",
+  "@tradeMarketCatalogSummary": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "here": {
+        "type": "String"
+      }
+    }
+  },
   "@aviationUiLicenseActiveBlurb": {
     "placeholders": {
       "type": {

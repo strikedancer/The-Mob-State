@@ -9229,5 +9229,38 @@
         "type": "String"
       }
     }
+  },
+  "contrabandSpicesName": "Gewürze",
+  "contrabandSpicesDesc": "Exotische Kräuter und Gewürze in Säcken",
+  "contrabandCoffeeName": "Kaffee",
+  "contrabandCoffeeDesc": "Premium-Kaffeebohnen ohne Zertifikat",
+  "contrabandFurLeatherName": "Pelz & Leder",
+  "contrabandFurLeatherDesc": "Illegal gewonnener Pelz und exotisches Leder",
+  "contrabandPerfumeName": "Parfum",
+  "contrabandPerfumeDesc": "Geschmuggelte Designerparfums",
+  "contrabandCounterfeitCashName": "Falschgeld",
+  "contrabandCounterfeitCashDesc": "Hochwertige Fälschungen und Banknoten",
+  "contrabandRareWineName": "Seltene Weine",
+  "contrabandRareWineDesc": "Vintage-Weine und exklusive Sammlungen",
+  "contrabandLuxuryWatchesName": "Luxusuhren",
+  "contrabandLuxuryWatchesDesc": "Geschmuggelte Prestige-Uhren ohne Papiere",
+  "contrabandGoldName": "Gold",
+  "contrabandGoldDesc": "Geschmolzene Goldbarren und unmarkiertes Bullion",
+  "tradeCategoryAll": "Alle",
+  "tradeCategoryStarter": "Starter",
+  "tradeCategoryBulk": "Bulk",
+  "tradeCategoryLuxury": "Luxus",
+  "tradeCategoryDangerous": "Gefährlich",
+  "tradeFilterAvailableHere": "Hier käuflich",
+  "tradeMarketCatalogSummary": "{total} Produkte · {here} hier käuflich",
+  "@tradeMarketCatalogSummary": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "here": {
+        "type": "String"
+      }
+    }
   }
 }

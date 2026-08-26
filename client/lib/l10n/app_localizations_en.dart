@@ -5354,6 +5354,61 @@ class AppLocalizationsEn extends AppLocalizations {
       'Smuggled paintings, sculptures and antique valuables';
 
   @override
+  String get contrabandSpicesName => 'Spices';
+
+  @override
+  String get contrabandSpicesDesc => 'Exotic herbs and spices in bulk sacks';
+
+  @override
+  String get contrabandCoffeeName => 'Coffee';
+
+  @override
+  String get contrabandCoffeeDesc =>
+      'Premium coffee beans and ground coffee without certificates';
+
+  @override
+  String get contrabandFurLeatherName => 'Fur & leather';
+
+  @override
+  String get contrabandFurLeatherDesc =>
+      'Illegally sourced fur, exotic leather and luxury pelts';
+
+  @override
+  String get contrabandPerfumeName => 'Perfume';
+
+  @override
+  String get contrabandPerfumeDesc =>
+      'Smuggled designer perfumes and fragrance concentrates';
+
+  @override
+  String get contrabandCounterfeitCashName => 'Counterfeit cash';
+
+  @override
+  String get contrabandCounterfeitCashDesc =>
+      'High-quality forgeries and unused banknote stacks';
+
+  @override
+  String get contrabandRareWineName => 'Rare wine';
+
+  @override
+  String get contrabandRareWineDesc =>
+      'Vintage wines and exclusive wine collections';
+
+  @override
+  String get contrabandLuxuryWatchesName => 'Luxury watches';
+
+  @override
+  String get contrabandLuxuryWatchesDesc =>
+      'Smuggled prestige watches without papers';
+
+  @override
+  String get contrabandGoldName => 'Gold';
+
+  @override
+  String get contrabandGoldDesc =>
+      'Melted gold bars and unmarked bullion blocks';
+
+  @override
   String get multiplier => 'Multiplier';
 
   @override
@@ -5430,7 +5485,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tradeRiskInsightBody =>
-      'SOURCE COUNTRIES: not every country sells everything — travel to buy cheap and sell where demand is high.\nFLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS & ART: high value with volatility; plan your sell country.\nELECTRONICS & TOBACCO: can lose condition each trip.\nWEAPONS, SPIRITS & PHARMACEUTICALS: seizure can happen on travel — keep Wanted low.\nPrices on this screen already include your current country multiplier.';
+      '16 CONTRABAND LINES in 4 categories (starter, bulk, luxury, dangerous). Not every country sells everything — travel to buy cheap and sell where demand is high.\nSTARTER/BULK: spoilage or low margin — great for learning routes.\nLUXURY: diamonds, gold, watches, art — high value, plan your sell country.\nDANGEROUS: weapons and counterfeit cash — high seizure risk; keep Wanted low.\nUse the filters at the top to browse quickly.';
 
   @override
   String tradeRiskSpoilageHours(String hours) {
@@ -5476,6 +5531,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tradeTravelToSourceHint =>
       'Only sold in source countries — travel to buy';
+
+  @override
+  String get tradeCategoryAll => 'All';
+
+  @override
+  String get tradeCategoryStarter => 'Starter';
+
+  @override
+  String get tradeCategoryBulk => 'Bulk';
+
+  @override
+  String get tradeCategoryLuxury => 'Luxury';
+
+  @override
+  String get tradeCategoryDangerous => 'Dangerous';
+
+  @override
+  String get tradeFilterAvailableHere => 'For sale here';
+
+  @override
+  String tradeMarketCatalogSummary(String total, String here) {
+    return '$total products · $here for sale in this country';
+  }
 
   @override
   String get appeal => 'Appeal';

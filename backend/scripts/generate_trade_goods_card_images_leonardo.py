@@ -254,6 +254,62 @@ def _good_prompts() -> List[dict]:
                 "gold and teal reflections, museum heist mood, no text"
             ),
         },
+        {
+            "id": "contraband_spices",
+            "prompt": (
+                "Cinematic noir game item icon, burlap sacks of colorful exotic spices and chili peppers, "
+                "warm warehouse light, compact centered, no text"
+            ),
+        },
+        {
+            "id": "contraband_coffee",
+            "prompt": (
+                "Cinematic dark-mafia game item icon, burlap coffee sacks and roasted beans, "
+                "rich brown tones, steam hint, compact centered, no text"
+            ),
+        },
+        {
+            "id": "contraband_fur_leather",
+            "prompt": (
+                "Cinematic noir game item icon, rolled exotic fur pelts and leather hides on a crate, "
+                "cold blue rim light, gritty texture, no text"
+            ),
+        },
+        {
+            "id": "contraband_perfume",
+            "prompt": (
+                "Cinematic dark-mafia game item icon, luxury perfume bottles in a padded crate, "
+                "gold and glass reflections, compact centered, no brand names, no text"
+            ),
+        },
+        {
+            "id": "contraband_counterfeit_cash",
+            "prompt": (
+                "Cinematic noir game item icon, shrink-wrapped bricks of banknotes in a duffel bag, "
+                "green accent light, clandestine mood, no readable currency text"
+            ),
+        },
+        {
+            "id": "contraband_rare_wine",
+            "prompt": (
+                "Cinematic dark-mafia game item icon, wooden case of vintage wine bottles with wax seals, "
+                "cellar mood, purple and amber light, no labels, no text"
+            ),
+        },
+        {
+            "id": "contraband_luxury_watches",
+            "prompt": (
+                "Cinematic noir game item icon, velvet tray with luxury wristwatches catching cold light, "
+                "teal and gold reflections, compact centered, no logos, no text"
+            ),
+        },
+        {
+            "id": "contraband_gold",
+            "prompt": (
+                "Cinematic dark-mafia game item icon, stacked unmarked gold bars on black velvet, "
+                "heavy gold gleam, vault mood, compact centered, no text"
+            ),
+        },
     ]
 
 

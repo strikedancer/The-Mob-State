@@ -9709,6 +9709,102 @@ abstract class AppLocalizations {
   /// **'Smuggled paintings, sculptures and antique valuables'**
   String get contrabandArtDesc;
 
+  /// No description provided for @contrabandSpicesName.
+  ///
+  /// In en, this message translates to:
+  /// **'Spices'**
+  String get contrabandSpicesName;
+
+  /// No description provided for @contrabandSpicesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Exotic herbs and spices in bulk sacks'**
+  String get contrabandSpicesDesc;
+
+  /// No description provided for @contrabandCoffeeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Coffee'**
+  String get contrabandCoffeeName;
+
+  /// No description provided for @contrabandCoffeeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium coffee beans and ground coffee without certificates'**
+  String get contrabandCoffeeDesc;
+
+  /// No description provided for @contrabandFurLeatherName.
+  ///
+  /// In en, this message translates to:
+  /// **'Fur & leather'**
+  String get contrabandFurLeatherName;
+
+  /// No description provided for @contrabandFurLeatherDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Illegally sourced fur, exotic leather and luxury pelts'**
+  String get contrabandFurLeatherDesc;
+
+  /// No description provided for @contrabandPerfumeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfume'**
+  String get contrabandPerfumeName;
+
+  /// No description provided for @contrabandPerfumeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggled designer perfumes and fragrance concentrates'**
+  String get contrabandPerfumeDesc;
+
+  /// No description provided for @contrabandCounterfeitCashName.
+  ///
+  /// In en, this message translates to:
+  /// **'Counterfeit cash'**
+  String get contrabandCounterfeitCashName;
+
+  /// No description provided for @contrabandCounterfeitCashDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'High-quality forgeries and unused banknote stacks'**
+  String get contrabandCounterfeitCashDesc;
+
+  /// No description provided for @contrabandRareWineName.
+  ///
+  /// In en, this message translates to:
+  /// **'Rare wine'**
+  String get contrabandRareWineName;
+
+  /// No description provided for @contrabandRareWineDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Vintage wines and exclusive wine collections'**
+  String get contrabandRareWineDesc;
+
+  /// No description provided for @contrabandLuxuryWatchesName.
+  ///
+  /// In en, this message translates to:
+  /// **'Luxury watches'**
+  String get contrabandLuxuryWatchesName;
+
+  /// No description provided for @contrabandLuxuryWatchesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggled prestige watches without papers'**
+  String get contrabandLuxuryWatchesDesc;
+
+  /// No description provided for @contrabandGoldName.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold'**
+  String get contrabandGoldName;
+
+  /// No description provided for @contrabandGoldDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Melted gold bars and unmarked bullion blocks'**
+  String get contrabandGoldDesc;
+
   /// No description provided for @multiplier.
   ///
   /// In en, this message translates to:
@@ -9844,7 +9940,7 @@ abstract class AppLocalizations {
   /// No description provided for @tradeRiskInsightBody.
   ///
   /// In en, this message translates to:
-  /// **'SOURCE COUNTRIES: not every country sells everything — travel to buy cheap and sell where demand is high.\nFLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS & ART: high value with volatility; plan your sell country.\nELECTRONICS & TOBACCO: can lose condition each trip.\nWEAPONS, SPIRITS & PHARMACEUTICALS: seizure can happen on travel — keep Wanted low.\nPrices on this screen already include your current country multiplier.'**
+  /// **'16 CONTRABAND LINES in 4 categories (starter, bulk, luxury, dangerous). Not every country sells everything — travel to buy cheap and sell where demand is high.\nSTARTER/BULK: spoilage or low margin — great for learning routes.\nLUXURY: diamonds, gold, watches, art — high value, plan your sell country.\nDANGEROUS: weapons and counterfeit cash — high seizure risk; keep Wanted low.\nUse the filters at the top to browse quickly.'**
   String get tradeRiskInsightBody;
 
   /// No description provided for @tradeRiskSpoilageHours.
@@ -9906,6 +10002,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Only sold in source countries — travel to buy'**
   String get tradeTravelToSourceHint;
+
+  /// No description provided for @tradeCategoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get tradeCategoryAll;
+
+  /// No description provided for @tradeCategoryStarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Starter'**
+  String get tradeCategoryStarter;
+
+  /// No description provided for @tradeCategoryBulk.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk'**
+  String get tradeCategoryBulk;
+
+  /// No description provided for @tradeCategoryLuxury.
+  ///
+  /// In en, this message translates to:
+  /// **'Luxury'**
+  String get tradeCategoryLuxury;
+
+  /// No description provided for @tradeCategoryDangerous.
+  ///
+  /// In en, this message translates to:
+  /// **'Dangerous'**
+  String get tradeCategoryDangerous;
+
+  /// No description provided for @tradeFilterAvailableHere.
+  ///
+  /// In en, this message translates to:
+  /// **'For sale here'**
+  String get tradeFilterAvailableHere;
+
+  /// No description provided for @tradeMarketCatalogSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} products · {here} for sale in this country'**
+  String tradeMarketCatalogSummary(String total, String here);
 
   /// No description provided for @appeal.
   ///

@@ -25,6 +25,10 @@ export interface TradableGood {
   priceVolatility?: number;
   /** Countries where this good can be purchased (sell remains allowed everywhere). */
   availableInCountries?: string[];
+  /** UI grouping: starter | bulk | luxury | dangerous */
+  category?: string;
+  /** Sort hint: 1 (entry) .. 4 (endgame) */
+  tier?: number;
 }
 
 export interface TradeResult {
@@ -469,6 +473,8 @@ export async function getCurrentPrices(playerId: number) {
       maxInventory: good.maxInventory,
       availableToBuy,
       sourceCountries: good.availableInCountries ?? [],
+      category: good.category ?? 'luxury',
+      tier: good.tier ?? 2,
     };
   });
 }

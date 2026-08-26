@@ -13,6 +13,7 @@ import '../widgets/jail_screen.dart';
 import '../widgets/cooldown_overlay.dart';
 import '../utils/fontawesome_icons.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/trade_good_l10n.dart';
 
 class TravelScreen extends StatefulWidget {
   const TravelScreen({super.key});
@@ -176,26 +177,7 @@ class _TravelScreenState extends State<TravelScreen> {
   }
 
   String _localizedGoodType(String goodType, AppLocalizations l10n) {
-    switch (goodType) {
-      case 'contraband_flowers':
-        return l10n.contrabandFlowersName;
-      case 'contraband_electronics':
-        return l10n.contrabandElectronicsName;
-      case 'contraband_diamonds':
-        return l10n.contrabandDiamondsName;
-      case 'contraband_weapons':
-        return l10n.contrabandWeaponsName;
-      case 'contraband_pharmaceuticals':
-        return l10n.contrabandPharmaceuticalsName;
-      case 'contraband_spirits':
-        return l10n.contrabandSpiritsName;
-      case 'contraband_tobacco':
-        return l10n.contrabandTobaccoName;
-      case 'contraband_art':
-        return l10n.contrabandArtName;
-      default:
-        return goodType.replaceAll('contraband_', '');
-    }
+    return TradeGoodL10n.name(l10n, goodType);
   }
 
   Future<void> _startJourney(Country country) async {

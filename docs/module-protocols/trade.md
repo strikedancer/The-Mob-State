@@ -5,7 +5,7 @@ Player-facing **handelswaren** UI is merged into the **Zwarte markt** hub: first
 
 ## Scope (unchanged backend)
 - REST: `/trade/goods`, `/trade/prices`, `/trade/inventory`, `/trade/buy`, `/trade/sell` (`backend/src/routes/trade.ts`, `tradeService`).
-- **8 contraband lines** in `backend/content/tradableGoods.json`; each has `availableInCountries` (buy only in source countries; sell anywhere with country multiplier).
+- **16 contraband lines** in `backend/content/tradableGoods.json`; each has `availableInCountries` (buy only in source countries; sell anywhere with country multiplier), `category` (starter|bulk|luxury|dangerous) and `tier` (1–4).
 - Country multipliers (`countries.json` → `tradeBonuses`), spoilage, volatility, weight and travel risk fields stay server-driven.
 - Smokkel van handelswaren (`smugglingService`) moet `purchasePrice`/`condition` meenemen; claim mag die niet op 0 zetten (anders is UI-winst = verkoopbedrag).
 - Verkoop (`/trade/sell`) geeft **kleine XP** (volume + winst, max 30) via `playerService.gainXP`.

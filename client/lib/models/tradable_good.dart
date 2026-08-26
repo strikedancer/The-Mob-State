@@ -11,6 +11,8 @@ class TradableGood {
   final double? confiscationChance;
   final double? priceVolatility;
   final List<String> availableInCountries;
+  final String? category;
+  final int tier;
 
   TradableGood({
     required this.id,
@@ -24,6 +26,8 @@ class TradableGood {
     this.confiscationChance,
     this.priceVolatility,
     this.availableInCountries = const [],
+    this.category,
+    this.tier = 2,
   });
 
   factory TradableGood.fromJson(Map<String, dynamic> json) {
@@ -49,6 +53,8 @@ class TradableGood {
               ?.map((e) => e.toString())
               .toList() ??
           const [],
+      category: json['category'] as String?,
+      tier: (json['tier'] as num?)?.toInt() ?? 2,
     );
   }
 
@@ -66,6 +72,8 @@ class TradableGood {
       if (priceVolatility != null) 'priceVolatility': priceVolatility,
       if (availableInCountries.isNotEmpty)
         'availableInCountries': availableInCountries,
+      if (category != null) 'category': category,
+      'tier': tier,
     };
   }
 
@@ -87,6 +95,22 @@ class TradableGood {
         return '🚬';
       case 'contraband_art':
         return '🖼️';
+      case 'contraband_spices':
+        return '🌶️';
+      case 'contraband_coffee':
+        return '☕';
+      case 'contraband_fur_leather':
+        return '🧥';
+      case 'contraband_perfume':
+        return '🧴';
+      case 'contraband_counterfeit_cash':
+        return '💵';
+      case 'contraband_rare_wine':
+        return '🍷';
+      case 'contraband_luxury_watches':
+        return '⌚';
+      case 'contraband_gold':
+        return '🥇';
       default:
         return '📦';
     }

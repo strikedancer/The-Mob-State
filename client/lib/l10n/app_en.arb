@@ -3108,6 +3108,22 @@
   "contrabandTobaccoDesc": "Untaxed cigarettes and snuff tobacco",
   "contrabandArtName": "Art & antiques",
   "contrabandArtDesc": "Smuggled paintings, sculptures and antique valuables",
+  "contrabandSpicesName": "Spices",
+  "contrabandSpicesDesc": "Exotic herbs and spices in bulk sacks",
+  "contrabandCoffeeName": "Coffee",
+  "contrabandCoffeeDesc": "Premium coffee beans and ground coffee without certificates",
+  "contrabandFurLeatherName": "Fur & leather",
+  "contrabandFurLeatherDesc": "Illegally sourced fur, exotic leather and luxury pelts",
+  "contrabandPerfumeName": "Perfume",
+  "contrabandPerfumeDesc": "Smuggled designer perfumes and fragrance concentrates",
+  "contrabandCounterfeitCashName": "Counterfeit cash",
+  "contrabandCounterfeitCashDesc": "High-quality forgeries and unused banknote stacks",
+  "contrabandRareWineName": "Rare wine",
+  "contrabandRareWineDesc": "Vintage wines and exclusive wine collections",
+  "contrabandLuxuryWatchesName": "Luxury watches",
+  "contrabandLuxuryWatchesDesc": "Smuggled prestige watches without papers",
+  "contrabandGoldName": "Gold",
+  "contrabandGoldDesc": "Melted gold bars and unmarked bullion blocks",
   "multiplier": "Multiplier",
   "sellPrice": "Sell price",
   "boughtFor": "Bought for",
@@ -3151,7 +3167,7 @@
   "tradeNoGoodsLoaded": "No goods are available right now.",
   "tradeRiskPanelTitle": "Travel and market risks",
   "tradeRiskPanelSubtitle": "Each good shows spoilage, price swings, trip damage or confiscation where it applies.",
-  "tradeRiskInsightBody": "SOURCE COUNTRIES: not every country sells everything — travel to buy cheap and sell where demand is high.\nFLOWERS: spoil after the timer from purchase — sell in time.\nDIAMONDS & ART: high value with volatility; plan your sell country.\nELECTRONICS & TOBACCO: can lose condition each trip.\nWEAPONS, SPIRITS & PHARMACEUTICALS: seizure can happen on travel — keep Wanted low.\nPrices on this screen already include your current country multiplier.",
+  "tradeRiskInsightBody": "16 CONTRABAND LINES in 4 categories (starter, bulk, luxury, dangerous). Not every country sells everything — travel to buy cheap and sell where demand is high.\nSTARTER/BULK: spoilage or low margin — great for learning routes.\nLUXURY: diamonds, gold, watches, art — high value, plan your sell country.\nDANGEROUS: weapons and counterfeit cash — high seizure risk; keep Wanted low.\nUse the filters at the top to browse quickly.",
   "tradeRiskSpoilageHours": "{hours}h spoil window",
   "@tradeRiskSpoilageHours": {
     "placeholders": {
@@ -3204,6 +3220,19 @@
     }
   },
   "tradeTravelToSourceHint": "Only sold in source countries — travel to buy",
+  "tradeCategoryAll": "All",
+  "tradeCategoryStarter": "Starter",
+  "tradeCategoryBulk": "Bulk",
+  "tradeCategoryLuxury": "Luxury",
+  "tradeCategoryDangerous": "Dangerous",
+  "tradeFilterAvailableHere": "For sale here",
+  "tradeMarketCatalogSummary": "{total} products · {here} for sale in this country",
+  "@tradeMarketCatalogSummary": {
+    "placeholders": {
+      "total": { "type": "String" },
+      "here": { "type": "String" }
+    }
+  },
   "appeal": "Appeal",
   "submitAppeal": "Submit Appeal",
   "bribeJudge": "Bribe Judge",

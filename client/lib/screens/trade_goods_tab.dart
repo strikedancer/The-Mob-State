@@ -9,6 +9,9 @@ import '../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../utils/trade_good_l10n.dart';
+
+enum _TradeMarketFilter { all, here, starter, bulk, luxury, dangerous }
 
 /// Contraband handelswaren (market + inventory) embedded in [BlackMarketScreen].
 class TradeGoodsTab extends StatefulWidget {
@@ -29,6 +32,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
   String? _inventoryLoadError;
   final Map<String, int> _buyQuantities = {};
   final Map<String, int> _sellQuantities = {};
+  _TradeMarketFilter _marketFilter = _TradeMarketFilter.all;
   late final ApiClient _apiClient;
 
   @override
@@ -418,6 +422,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
           ),
         ),
       _buildTradeRiskGuide(l10n),
+      _buildMarketFilterBar(l10n),
       if (_buyableGoods.isEmpty && _goods.isNotEmpty)
         Card(
           margin: const EdgeInsets.only(bottom: 12),
@@ -472,12 +477,100 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     );
   }
 
+  List<TradableGood> get _sortedGoods {
+    final list = List<TradableGood>.from(_goods);
+    list.sort((a, b) {
+      final tierCmp = a.tier.compareTo(b.tier);
+      if (tierCmp != 0) return tierCmp;
+      return a.basePrice.compareTo(b.basePrice);
+    });
+    return list;
+  }
+
+  bool _matchesMarketFilter(TradableGood good) {
+    switch (_marketFilter) {
+      case _TradeMarketFilter.all:
+        return true;
+      case _TradeMarketFilter.here:
+        return _priceForGood(good.id).availableToBuy;
+      case _TradeMarketFilter.starter:
+        return good.category == 'starter';
+      case _TradeMarketFilter.bulk:
+        return good.category == 'bulk';
+      case _TradeMarketFilter.luxury:
+        return good.category == 'luxury';
+      case _TradeMarketFilter.dangerous:
+        return good.category == 'dangerous';
+    }
+  }
+
   List<TradableGood> get _buyableGoods {
-    return _goods.where((good) => _priceForGood(good.id).availableToBuy).toList();
+    return _sortedGoods
+        .where(
+          (good) =>
+              _priceForGood(good.id).availableToBuy &&
+              _matchesMarketFilter(good),
+        )
+        .toList();
   }
 
   List<TradableGood> get _unavailableGoods {
-    return _goods.where((good) => !_priceForGood(good.id).availableToBuy).toList();
+    return _sortedGoods
+        .where(
+          (good) =>
+              !_priceForGood(good.id).availableToBuy &&
+              _matchesMarketFilter(good),
+        )
+        .toList();
+  }
+
+  Widget _buildMarketFilterBar(AppLocalizations l10n) {
+    final buyableHere =
+        _goods.where((g) => _priceForGood(g.id).availableToBuy).length;
+
+    Widget chip(_TradeMarketFilter filter, String label) {
+      final selected = _marketFilter == filter;
+      return Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: FilterChip(
+          label: Text(label),
+          selected: selected,
+          onSelected: (_) => setState(() => _marketFilter = filter),
+          visualDensity: VisualDensity.compact,
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.tradeMarketCatalogSummary(
+            _goods.length.toString(),
+            buyableHere.toString(),
+          ),
+          style: TextStyle(
+            fontSize: 12,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 8),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              chip(_TradeMarketFilter.all, l10n.tradeCategoryAll),
+              chip(_TradeMarketFilter.here, l10n.tradeFilterAvailableHere),
+              chip(_TradeMarketFilter.starter, l10n.tradeCategoryStarter),
+              chip(_TradeMarketFilter.bulk, l10n.tradeCategoryBulk),
+              chip(_TradeMarketFilter.luxury, l10n.tradeCategoryLuxury),
+              chip(_TradeMarketFilter.dangerous, l10n.tradeCategoryDangerous),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
+    );
   }
 
   List<Widget> _buildBuyableGoodCards(AppLocalizations l10n) {
@@ -517,7 +610,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
                 ListTile(
                   dense: true,
                   leading: _goodHeaderArt(good),
-                  title: Text(_localizedGoodName(good, l10n)),
+                  title: Text(TradeGoodL10n.name(l10n, good.id)),
                   subtitle: Text(l10n.tradeTravelToSourceHint),
                 ),
             ],
@@ -653,6 +746,14 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       'contraband_spirits' => [Colors.amber.shade100, Colors.orange.shade300],
       'contraband_tobacco' => [Colors.brown.shade100, Colors.brown.shade400],
       'contraband_art' => [Colors.deepPurple.shade100, Colors.purple.shade300],
+      'contraband_spices' => [Colors.orange.shade100, Colors.red.shade200],
+      'contraband_coffee' => [Colors.brown.shade200, Colors.amber.shade100],
+      'contraband_fur_leather' => [Colors.grey.shade400, Colors.brown.shade300],
+      'contraband_perfume' => [Colors.pink.shade100, Colors.purple.shade200],
+      'contraband_counterfeit_cash' => [Colors.green.shade200, Colors.grey.shade700],
+      'contraband_rare_wine' => [Colors.red.shade100, Colors.purple.shade200],
+      'contraband_luxury_watches' => [Colors.blueGrey.shade200, Colors.amber.shade100],
+      'contraband_gold' => [Colors.amber.shade200, Colors.yellow.shade600],
       _ => [Colors.grey.shade300, Colors.grey.shade500],
     };
     final assetPath = 'assets/images/trade_goods/cards/${good.id}.png';
@@ -686,59 +787,14 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     );
   }
 
-  String _localizedGoodName(TradableGood good, AppLocalizations l10n) {
-    switch (good.id) {
-      case 'contraband_flowers':
-        return l10n.contrabandFlowersName;
-      case 'contraband_electronics':
-        return l10n.contrabandElectronicsName;
-      case 'contraband_diamonds':
-        return l10n.contrabandDiamondsName;
-      case 'contraband_weapons':
-        return l10n.contrabandWeaponsName;
-      case 'contraband_pharmaceuticals':
-        return l10n.contrabandPharmaceuticalsName;
-      case 'contraband_spirits':
-        return l10n.contrabandSpiritsName;
-      case 'contraband_tobacco':
-        return l10n.contrabandTobaccoName;
-      case 'contraband_art':
-        return l10n.contrabandArtName;
-      default:
-        return good.name;
-    }
-  }
-
-  String _localizedGoodDescription(TradableGood good, AppLocalizations l10n) {
-    switch (good.id) {
-      case 'contraband_flowers':
-        return l10n.contrabandFlowersDesc;
-      case 'contraband_electronics':
-        return l10n.contrabandElectronicsDesc;
-      case 'contraband_diamonds':
-        return l10n.contrabandDiamondsDesc;
-      case 'contraband_weapons':
-        return l10n.contrabandWeaponsDesc;
-      case 'contraband_pharmaceuticals':
-        return l10n.contrabandPharmaceuticalsDesc;
-      case 'contraband_spirits':
-        return l10n.contrabandSpiritsDesc;
-      case 'contraband_tobacco':
-        return l10n.contrabandTobaccoDesc;
-      case 'contraband_art':
-        return l10n.contrabandArtDesc;
-      default:
-        return good.description;
-    }
-  }
-
   Widget _buildGoodCard(TradableGood good, GoodPrice price, bool isBuying) {
     final l10n = AppLocalizations.of(context)!;
     final quantity = _buyQuantities[good.id] ?? 1;
     final totalCost = price.currentPrice * quantity;
-    final localizedName = _localizedGoodName(good, l10n);
-    final localizedDescription = _localizedGoodDescription(good, l10n);
+    final localizedName = TradeGoodL10n.name(l10n, good.id);
+    final localizedDescription = TradeGoodL10n.description(l10n, good.id);
     final riskChips = _riskChipsForGood(good, l10n);
+    final categoryLabel = TradeGoodL10n.categoryLabel(l10n, good.category);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -762,6 +818,18 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      if (good.category != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            categoryLabel,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
                       Text(
                         localizedDescription,
                         style: TextStyle(
@@ -879,7 +947,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     final l10n = AppLocalizations.of(context)!;
     final quantity = _sellQuantities[good.id] ?? 1;
     final maxSell = item.quantity.clamp(1, 999);
-    final localizedName = _localizedGoodName(good, l10n);
+    final localizedName = TradeGoodL10n.name(l10n, good.id);
 
     // Apply condition damage to sell price
     final effectiveSellPrice = (price.sellPrice * (item.condition / 100))

@@ -5405,6 +5405,56 @@ class AppLocalizationsPl extends AppLocalizations {
   String get contrabandArtDesc => 'Przemycane obrazy, rzeźby i antyki';
 
   @override
+  String get contrabandSpicesName => 'Przyprawy';
+
+  @override
+  String get contrabandSpicesDesc => 'Egzotyczne zioła i przyprawy luzem';
+
+  @override
+  String get contrabandCoffeeName => 'Kawa';
+
+  @override
+  String get contrabandCoffeeDesc => 'Premium ziarna kawy bez certyfikatu';
+
+  @override
+  String get contrabandFurLeatherName => 'Futro i skóra';
+
+  @override
+  String get contrabandFurLeatherDesc => 'Nielegalne futro i egzotyczna skóra';
+
+  @override
+  String get contrabandPerfumeName => 'Perfumy';
+
+  @override
+  String get contrabandPerfumeDesc => 'Przemycane perfumy designerskie';
+
+  @override
+  String get contrabandCounterfeitCashName => 'Fałszywe pieniądze';
+
+  @override
+  String get contrabandCounterfeitCashDesc =>
+      'Wysokiej jakości fałszerstwa banknotów';
+
+  @override
+  String get contrabandRareWineName => 'Rzadkie wino';
+
+  @override
+  String get contrabandRareWineDesc => 'Wina vintage i ekskluzywne kolekcje';
+
+  @override
+  String get contrabandLuxuryWatchesName => 'Luksusowe zegarki';
+
+  @override
+  String get contrabandLuxuryWatchesDesc =>
+      'Przemycane zegarki prestiżowe bez papierów';
+
+  @override
+  String get contrabandGoldName => 'Złoto';
+
+  @override
+  String get contrabandGoldDesc => 'Stopione sztabki złota bez znaków';
+
+  @override
   String get multiplier => 'Mnożnik';
 
   @override
@@ -5528,6 +5578,29 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get tradeTravelToSourceHint =>
       'Tylko w krajach źródłowych — podróżuj, aby kupić';
+
+  @override
+  String get tradeCategoryAll => 'Wszystko';
+
+  @override
+  String get tradeCategoryStarter => 'Start';
+
+  @override
+  String get tradeCategoryBulk => 'Hurt';
+
+  @override
+  String get tradeCategoryLuxury => 'Luksus';
+
+  @override
+  String get tradeCategoryDangerous => 'Niebezpieczne';
+
+  @override
+  String get tradeFilterAvailableHere => 'Na sprzedaż tutaj';
+
+  @override
+  String tradeMarketCatalogSummary(String total, String here) {
+    return '$total produktów · $here na sprzedaż tutaj';
+  }
 
   @override
   String get appeal => 'Odwołanie';

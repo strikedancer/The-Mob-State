@@ -9229,5 +9229,38 @@
         "type": "String"
       }
     }
+  },
+  "contrabandSpicesName": "Especias",
+  "contrabandSpicesDesc": "Hierbas y especias exóticas a granel",
+  "contrabandCoffeeName": "Café",
+  "contrabandCoffeeDesc": "Granos de café premium sin certificado",
+  "contrabandFurLeatherName": "Pieles y cuero",
+  "contrabandFurLeatherDesc": "Pieles ilegales y cuero exótico",
+  "contrabandPerfumeName": "Perfume",
+  "contrabandPerfumeDesc": "Perfumes de diseñador de contrabando",
+  "contrabandCounterfeitCashName": "Dinero falso",
+  "contrabandCounterfeitCashDesc": "Falsificaciones de alta calidad",
+  "contrabandRareWineName": "Vino raro",
+  "contrabandRareWineDesc": "Vinos vintage y colecciones exclusivas",
+  "contrabandLuxuryWatchesName": "Relojes de lujo",
+  "contrabandLuxuryWatchesDesc": "Relojes de prestigio sin papeles",
+  "contrabandGoldName": "Oro",
+  "contrabandGoldDesc": "Lingotes de oro fundido sin marcar",
+  "tradeCategoryAll": "Todo",
+  "tradeCategoryStarter": "Inicial",
+  "tradeCategoryBulk": "A granel",
+  "tradeCategoryLuxury": "Lujo",
+  "tradeCategoryDangerous": "Peligroso",
+  "tradeFilterAvailableHere": "A la venta aquí",
+  "tradeMarketCatalogSummary": "{total} productos · {here} a la venta aquí",
+  "@tradeMarketCatalogSummary": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "here": {
+        "type": "String"
+      }
+    }
   }
 }

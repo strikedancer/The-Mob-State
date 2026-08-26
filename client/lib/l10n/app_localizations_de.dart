@@ -5429,6 +5429,58 @@ class AppLocalizationsDe extends AppLocalizations {
       'Geschmuggelte Gemälde, Skulpturen und Antiquitäten';
 
   @override
+  String get contrabandSpicesName => 'Gewürze';
+
+  @override
+  String get contrabandSpicesDesc => 'Exotische Kräuter und Gewürze in Säcken';
+
+  @override
+  String get contrabandCoffeeName => 'Kaffee';
+
+  @override
+  String get contrabandCoffeeDesc => 'Premium-Kaffeebohnen ohne Zertifikat';
+
+  @override
+  String get contrabandFurLeatherName => 'Pelz & Leder';
+
+  @override
+  String get contrabandFurLeatherDesc =>
+      'Illegal gewonnener Pelz und exotisches Leder';
+
+  @override
+  String get contrabandPerfumeName => 'Parfum';
+
+  @override
+  String get contrabandPerfumeDesc => 'Geschmuggelte Designerparfums';
+
+  @override
+  String get contrabandCounterfeitCashName => 'Falschgeld';
+
+  @override
+  String get contrabandCounterfeitCashDesc =>
+      'Hochwertige Fälschungen und Banknoten';
+
+  @override
+  String get contrabandRareWineName => 'Seltene Weine';
+
+  @override
+  String get contrabandRareWineDesc => 'Vintage-Weine und exklusive Sammlungen';
+
+  @override
+  String get contrabandLuxuryWatchesName => 'Luxusuhren';
+
+  @override
+  String get contrabandLuxuryWatchesDesc =>
+      'Geschmuggelte Prestige-Uhren ohne Papiere';
+
+  @override
+  String get contrabandGoldName => 'Gold';
+
+  @override
+  String get contrabandGoldDesc =>
+      'Geschmolzene Goldbarren und unmarkiertes Bullion';
+
+  @override
   String get multiplier => 'Multiplikator';
 
   @override
@@ -5555,6 +5607,29 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get tradeTravelToSourceHint =>
       'Nur in Quellenländern käuflich — reise zum Einkauf';
+
+  @override
+  String get tradeCategoryAll => 'Alle';
+
+  @override
+  String get tradeCategoryStarter => 'Starter';
+
+  @override
+  String get tradeCategoryBulk => 'Bulk';
+
+  @override
+  String get tradeCategoryLuxury => 'Luxus';
+
+  @override
+  String get tradeCategoryDangerous => 'Gefährlich';
+
+  @override
+  String get tradeFilterAvailableHere => 'Hier käuflich';
+
+  @override
+  String tradeMarketCatalogSummary(String total, String here) {
+    return '$total Produkte · $here hier käuflich';
+  }
 
   @override
   String get appeal => 'Appellieren';

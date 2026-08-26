@@ -5386,6 +5386,62 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gesmokkelde schilderijen, beelden en antieke voorwerpen';
 
   @override
+  String get contrabandSpicesName => 'Specerijen';
+
+  @override
+  String get contrabandSpicesDesc =>
+      'Exotische kruiden en specerijen in bulkzakken';
+
+  @override
+  String get contrabandCoffeeName => 'Koffie';
+
+  @override
+  String get contrabandCoffeeDesc =>
+      'Premium koffiebonen en gemalen koffie zonder certificaat';
+
+  @override
+  String get contrabandFurLeatherName => 'Bont & leer';
+
+  @override
+  String get contrabandFurLeatherDesc =>
+      'Illegaal gewonnen bont, exotisch leer en luxe pelzen';
+
+  @override
+  String get contrabandPerfumeName => 'Parfum';
+
+  @override
+  String get contrabandPerfumeDesc =>
+      'Gesmokkelde designerparfums en geurconcentraten';
+
+  @override
+  String get contrabandCounterfeitCashName => 'Nepgeld';
+
+  @override
+  String get contrabandCounterfeitCashDesc =>
+      'Hoogwaardige vervalsingen en ongebruikte bankbiljetten';
+
+  @override
+  String get contrabandRareWineName => 'Zeldzame wijn';
+
+  @override
+  String get contrabandRareWineDesc =>
+      'Vintage wijnen en exclusieve wijncollecties';
+
+  @override
+  String get contrabandLuxuryWatchesName => 'Luxe horloges';
+
+  @override
+  String get contrabandLuxuryWatchesDesc =>
+      'Gesmokkelde prestige-horloges zonder papieren';
+
+  @override
+  String get contrabandGoldName => 'Goud';
+
+  @override
+  String get contrabandGoldDesc =>
+      'Gesmolten goudstaven en ongemarkeerde edelmetaalblokken';
+
+  @override
   String get multiplier => 'Vermenigvuldiger';
 
   @override
@@ -5463,7 +5519,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get tradeRiskInsightBody =>
-      'BRONLANDEN: niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nBLOEMEN: bederven na de timer vanaf aankoop — verkoop op tijd.\nDIAMANTEN & KUNST: hoge waarde met volatiliteit; plan je verkoopland.\nELEKTRONICA & TABAK: kunnen per rit conditie verliezen.\nWAPENS, DRANK & FARMACEUTICA: inbeslagneming mogelijk op reis — houd Wanted laag.\nPrijzen op dit scherm tonen al je huidige landmultiplier.';
+      '16 CONTRABAND-LIJNEN in 4 categorieën (starter, bulk, luxe, gevaarlijk). Niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nSTARTER/BULK: bederf of lage marge — ideaal om te leren.\nLUXE: diamanten, goud, horloges, kunst — hoge waarde, plan je verkoopland.\nGEVAARLIJK: wapens en nepgeld — hoge inbeslagneming; houd Wanted laag.\nGebruik filters bovenaan om snel te zoeken.';
 
   @override
   String tradeRiskSpoilageHours(String hours) {
@@ -5509,6 +5565,29 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get tradeTravelToSourceHint =>
       'Alleen te koop in bronlanden — reis om in te slaan';
+
+  @override
+  String get tradeCategoryAll => 'Alles';
+
+  @override
+  String get tradeCategoryStarter => 'Starter';
+
+  @override
+  String get tradeCategoryBulk => 'Bulk';
+
+  @override
+  String get tradeCategoryLuxury => 'Luxe';
+
+  @override
+  String get tradeCategoryDangerous => 'Gevaarlijk';
+
+  @override
+  String get tradeFilterAvailableHere => 'Te koop hier';
+
+  @override
+  String tradeMarketCatalogSummary(String total, String here) {
+    return '$total producten · $here te koop in dit land';
+  }
 
   @override
   String get appeal => 'Hoger Beroep';
