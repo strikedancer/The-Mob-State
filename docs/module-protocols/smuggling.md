@@ -18,6 +18,8 @@ Crew-netwerk + handelswaren gebruikt `CrewTradeInventory` + `CrewTradeStorageBui
 
 Persoonlijke én crew-handelswaren behouden bij smokkel hun **inkoopprijs** (`purchasePrice` / `averagePurchasePrice`) en **conditie** in shipment-metadata; claim merge’t die gewogen terug in inventory zodat winst = verkoop − inkoop klopt.
 
+Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zending, max 60 per actie).
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.

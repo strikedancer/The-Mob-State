@@ -7,6 +7,7 @@
 
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
+import { playerService } from './playerService';
 import tradableGoods from '../../content/tradableGoods.json';
 import countries from '../../content/countries.json';
 import { getPlayerCountry } from './travelService';
@@ -33,6 +34,15 @@ export interface TradeResult {
   totalCost: number;
   newBalance: number;
   newQuantity: number;
+  xpGained?: number;
+  realizedProfit?: number;
+}
+
+/** Small XP from selling contraband: volume + profit, capped so crimes stay primary. */
+export function calculateTradeSellXp(totalEarnings: number, realizedProfit: number): number {
+  const volumeXp = Math.floor(Math.max(0, totalEarnings) / 400);
+  const profitXp = Math.floor(Math.max(0, realizedProfit) / 200);
+  return Math.min(30, Math.max(1, volumeXp + profitXp));
 }
 
 /**
@@ -322,6 +332,9 @@ export async function sellGoods(
   }
 
   const totalEarnings = pricePerUnit * quantity;
+  const unitCost = inventoryItem.purchasePrice || 0;
+  const realizedProfit = (pricePerUnit - unitCost) * quantity;
+  const xpGained = calculateTradeSellXp(totalEarnings, realizedProfit);
 
   // Get player
   const player = await prisma.player.findUnique({
@@ -364,6 +377,14 @@ export async function sellGoods(
         }),
   ]);
 
+  let awardedXp = 0;
+  try {
+    const xpResult = await playerService.gainXP(playerId, xpGained);
+    awardedXp = xpResult.xpGained;
+  } catch (err) {
+    console.error('[TradeService] Failed to award sell XP:', err);
+  }
+
   // Create world event
   await worldEventService.createEvent(
     'trade.sold',
@@ -374,6 +395,8 @@ export async function sellGoods(
       quantity,
       pricePerUnit,
       totalEarnings,
+      realizedProfit,
+      xpGained: awardedXp,
       country: currentCountry,
     },
     playerId
@@ -388,6 +411,8 @@ export async function sellGoods(
     totalCost: totalEarnings,
     newBalance: updatedPlayer.money,
     newQuantity,
+    xpGained: awardedXp,
+    realizedProfit,
   };
 }
 

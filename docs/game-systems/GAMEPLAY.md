@@ -154,50 +154,17 @@ Elke **5 minuten** gebeurt er automatisch:
 
 ### Crime Categories
 
-#### Beginner Crimes (Level 1)
-- **Zakkenrollen** (Pickpocket)
-  - Success chance: 70%
-  - Reward: â‚¬50-â‚¬200
-  - XP: 10
-  - Jail time bij arrest: 5 minuten
+#### Beginner Crimes (Level 1–4)
+- **Zakkenrollen** (Pickpocket): ~70% kans, €50–€200, **25 XP**, 5 min cel
+- **Winkeldiefstal** (Shoplift): ~65% kans, €100–€300, **35 XP**, 10 min cel
+- **Fiets stelen**: ~60% kans, €80–€150, **28 XP**
+- **Vandalisme / Graffiti**: lage payout, **18 / 12 XP**
+- **Beroving** (rank 2+): **40 XP**; **Auto-diefstal** (rank 3+): **65 XP**; **Kleine drugsdeal** (rank 3+): **50 XP**; **Autoonderdelen** (rank 4+): **55 XP**
 
-- **Winkeldiefstal** (Shoplift)
-  - Success chance: 65%
-  - Reward: â‚¬100-â‚¬300
-  - XP: 15
-  - Jail time bij arrest: 10 minuten
+Vroege XP is expres wat hoger zodat spelers sneller richting rang 5 (meer content) komen. Smokkel-claim en handelswaar-verkoop geven **kleine** XP (niet de hoofdbron).
 
-#### Medium Crimes (Level 5-10)
-- **Inbraak** (Burglary)
-  - Success chance: 55%
-  - Reward: â‚¬300-â‚¬800
-  - XP: 25
-  - Jail time bij arrest: 15 minuten
-  - Vehicle required: Nee
-
-- **Auto Diefstal** (Car Theft)
-  - Success chance: 50%
-  - Reward: â‚¬500-â‚¬1,500
-  - XP: 30
-  - Jail time bij arrest: 20 minuten
-  - Vehicle required: Ja
-  - Breakdown chance: 15%
-
-#### Advanced Crimes (Level 15+)
-- **Gewapende Overval** (Armed Robbery)
-  - Success chance: 45%
-  - Reward: â‚¬1,000-â‚¬3,000
-  - XP: 40
-  - Jail time bij arrest: 30 minuten
-  - Vehicle required: Ja
-
-- **Bank Robbery**
-  - Success chance: 30%
-  - Reward: â‚¬5,000-â‚¬15,000
-  - XP: 75
-  - Jail time bij arrest: 60 minuten
-  - Vehicle required: Ja
-  - Breakdown chance: 25%
+#### Medium Crimes (vanaf Level 5)
+- **Inbraak** (Burglary) en hogere misdaden: zie `backend/content/crimes.json` voor actuele XP/rewards.
 
 ---
 
@@ -616,7 +583,9 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 
 ### Trade Mechanics (samenvatting)
 - **Kopen/verkopen**: live prijzen en inventory; elektronica-verkoop hangt af van **conditie**. Winst = verkoopprijs − inkoopprijs (`purchasePrice` op inventory).
+- **XP bij verkoop**: klein (max 30), gebaseerd op omzet + winst — misdaden blijven de hoofd-XP-bron.
 - **Smokkel van handelswaren** bewaart inkoopprijs en conditie in de zending en zet die bij claim terug (gewogen gemiddelde bij samenvoegen); anders leek winst gelijk aan het hele verkoopbedrag.
+- **XP bij smokkel-claim**: klein per zending (max 60 per claim-actie), afhankelijk van categorie/hoeveelheid.
 - **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
 ### Smokkel-hub (drugs-zendingen)

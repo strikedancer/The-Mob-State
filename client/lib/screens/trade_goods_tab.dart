@@ -221,10 +221,18 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         body: jsonEncode({'goodType': goodType, 'quantity': quantity}),
       );
       if (response.statusCode == 200) {
-        if (mounted) {
+          if (mounted) {
           final l10n = AppLocalizations.of(context)!;
+          final body = jsonDecode(response.body);
+          final apiMessage = body is Map ? body['message']?.toString() : null;
+          final xpGained = body is Map ? body['xpGained'] : null;
+          final snackText = (apiMessage != null && apiMessage.isNotEmpty)
+              ? apiMessage
+              : (xpGained is num && xpGained > 0)
+                  ? '${l10n.sold} (+$xpGained XP)'
+                  : l10n.sold;
           showTopRightFromSnackBar(context, 
-            SnackBar(content: Text(l10n.sold), backgroundColor: Colors.green),
+            SnackBar(content: Text(snackText), backgroundColor: Colors.green),
           );
         }
         _loadMarketData();

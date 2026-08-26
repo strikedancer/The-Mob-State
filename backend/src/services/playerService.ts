@@ -99,4 +99,46 @@ export const playerService = {
       xpLost: actualXpLost,
     };
   },
+
+  /**
+   * Award XP and recalculate rank when the player levels up.
+   */
+  async gainXP(
+    playerId: number,
+    amount: number
+  ): Promise<{ newXP: number; xpGained: number; newRank: number; rankedUp: boolean }> {
+    const xpGained = Math.max(0, Math.floor(amount));
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { xp: true, rank: true },
+    });
+
+    if (!player) {
+      throw new Error('PLAYER_NOT_FOUND');
+    }
+
+    if (xpGained <= 0) {
+      return {
+        newXP: player.xp,
+        xpGained: 0,
+        newRank: player.rank,
+        rankedUp: false,
+      };
+    }
+
+    const { getRankFromXP } = await import('../config');
+    const newXP = player.xp + xpGained;
+    const newRank = getRankFromXP(newXP);
+    const rankedUp = newRank > player.rank;
+
+    await prisma.player.update({
+      where: { id: playerId },
+      data: {
+        xp: { increment: xpGained },
+        ...(rankedUp ? { rank: newRank } : {}),
+      },
+    });
+
+    return { newXP, xpGained, newRank, rankedUp };
+  },
 };

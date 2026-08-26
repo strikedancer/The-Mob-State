@@ -2,6 +2,7 @@
 import countries from '../../content/countries.json';
 import { vehicleService } from './vehicleService';
 import { getAircraftById } from './aviationService';
+import { playerService } from './playerService';
 
 export type SmugglingCategory = 'drug' | 'trade' | 'vehicle' | 'weapon' | 'ammo';
 export type SmugglingChannel = 'package' | 'courier' | 'container' | 'owned';
@@ -35,6 +36,25 @@ function blendInventoryAverage(
   const total = existingQty + addQty;
   if (total <= 0) return 0;
   return Math.floor((existingQty * existingValue + addQty * addValue) / total);
+}
+
+/** Modest XP for claiming a depot shipment; capped so crimes remain the main XP source. */
+function xpForClaimedShipment(category: SmugglingCategory, quantity: number): number {
+  const qty = Math.max(1, Math.floor(quantity));
+  switch (category) {
+    case 'trade':
+      return Math.min(20, 5 + Math.floor(qty / 2));
+    case 'drug':
+      return Math.min(25, 8 + Math.floor(qty / 25));
+    case 'weapon':
+      return Math.min(15, 4 + qty);
+    case 'ammo':
+      return Math.min(12, 3 + Math.floor(qty / 20));
+    case 'vehicle':
+      return 15;
+    default:
+      return 5;
+  }
 }
 
 type ShipmentStatus = 'in_transit' | 'ready' | 'seized' | 'claimed';
@@ -1432,7 +1452,7 @@ class SmugglingService {
     };
   }
 
-  async claimCurrentDepot(playerId: number, scope: SmugglingNetworkScope = 'personal'): Promise<{ success: boolean; message: string; claimedPackages?: number; claimedQuantity?: number }> {
+  async claimCurrentDepot(playerId: number, scope: SmugglingNetworkScope = 'personal'): Promise<{ success: boolean; message: string; claimedPackages?: number; claimedQuantity?: number; xpGained?: number }> {
     await this.ensureTable();
 
     const player = await prisma.player.findUnique({
@@ -1468,10 +1488,12 @@ class SmugglingService {
     }
 
     let claimedQty = 0;
+    let claimXp = 0;
 
     await prisma.$transaction(async (tx) => {
       for (const shipment of ready) {
         const metadata = this.parseMetadata(shipment);
+        claimXp += xpForClaimedShipment(shipment.category, shipment.quantity);
 
         if (shipment.category === 'drug' && scope === 'crew') {
           const quality = String(metadata.quality ?? 'C');
@@ -1695,11 +1717,24 @@ class SmugglingService {
       }
     });
 
+    claimXp = Math.min(60, claimXp);
+    let awardedXp = 0;
+    if (claimXp > 0) {
+      try {
+        const xpResult = await playerService.gainXP(playerId, claimXp);
+        awardedXp = xpResult.xpGained;
+      } catch (err) {
+        console.error('[SmugglingService] Failed to award claim XP:', err);
+      }
+    }
+
+    const xpSuffix = awardedXp > 0 ? ` (+${awardedXp} XP)` : '';
     return {
       success: true,
-      message: `${ready.length} ${scope === 'crew' ? 'crew-' : ''}zending(en) opgehaald in ${this.countryNameById(player.currentCountry)}`,
+      message: `${ready.length} ${scope === 'crew' ? 'crew-' : ''}zending(en) opgehaald in ${this.countryNameById(player.currentCountry)}${xpSuffix}`,
       claimedPackages: ready.length,
       claimedQuantity: claimedQty,
+      xpGained: awardedXp,
     };
   }
 }

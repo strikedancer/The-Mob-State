@@ -7,7 +7,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import * as tradeService from '../services/tradeService';
-import prisma from '../lib/prisma';
 import { applyReputationAction } from '../services/reputationService';
 
 const router = express.Router();
@@ -160,26 +159,10 @@ router.post('/sell', authenticate, async (req: AuthRequest, res: Response, next:
       });
     }
 
-    const inventorySnapshot = await prisma.inventory.findUnique({
-      where: {
-        playerId_goodType: {
-          playerId,
-          goodType,
-        },
-      },
-      select: {
-        purchasePrice: true,
-      },
-    });
-
     const result = await tradeService.sellGoods(playerId, goodType, quantity);
 
-    const quantityNum = Number(quantity);
-    const averagePurchasePrice = inventorySnapshot?.purchasePrice ?? result.pricePerUnit;
-    const realizedProfit =
-      Number.isFinite(quantityNum) && quantityNum > 0
-        ? (result.pricePerUnit - averagePurchasePrice) * quantityNum
-        : 0;
+    const realizedProfit = result.realizedProfit ?? 0;
+    const xpGained = result.xpGained ?? 0;
 
     const newReputation = await applyReputationAction(
       playerId,
@@ -187,8 +170,9 @@ router.post('/sell', authenticate, async (req: AuthRequest, res: Response, next:
       realizedProfit > 0,
     );
 
+    const xpSuffix = xpGained > 0 ? ` (+${xpGained} XP)` : '';
     return res.json({
-      message: `Je hebt ${quantity}x ${result.goodName} verkocht voor €${result.totalCost.toLocaleString()}!`,
+      message: `Je hebt ${quantity}x ${result.goodName} verkocht voor €${result.totalCost.toLocaleString()}!${xpSuffix}`,
       realizedProfit,
       reputation: newReputation,
       ...result,
