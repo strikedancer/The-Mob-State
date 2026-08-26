@@ -25,6 +25,18 @@ function resolveCrewLandVehicleType(vehicleId: string): 'car' | 'motorcycle' {
     : 'car';
 }
 
+/** Weighted average for purchase price / condition when merging inventory stacks. */
+function blendInventoryAverage(
+  existingQty: number,
+  existingValue: number,
+  addQty: number,
+  addValue: number
+): number {
+  const total = existingQty + addQty;
+  if (total <= 0) return 0;
+  return Math.floor((existingQty * existingValue + addQty * addValue) / total);
+}
+
 type ShipmentStatus = 'in_transit' | 'ready' | 'seized' | 'claimed';
 
 interface ShipmentRow {
@@ -867,6 +879,11 @@ class SmugglingService {
           if (!inv || inv.quantity < quantity) {
             return { ok: false, message: 'Niet genoeg handelswaar in crew inventory' } as const;
           }
+          metadata = {
+            ...metadata,
+            purchasePrice: inv.averagePurchasePrice ?? 0,
+            condition: inv.averageCondition ?? 100,
+          };
           if (inv.quantity === quantity) {
             await tx.crewTradeInventory.delete({
               where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
@@ -883,6 +900,11 @@ class SmugglingService {
           });
           if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg handelswaar in inventory' } as const;
 
+          metadata = {
+            ...metadata,
+            purchasePrice: inv.purchasePrice ?? 0,
+            condition: inv.condition ?? 100,
+          };
           if (inv.quantity === quantity) {
             await tx.inventory.delete({ where: { playerId_goodType: { playerId, goodType: itemKey } } });
           } else {
@@ -1484,13 +1506,33 @@ class SmugglingService {
             });
           }
         } else if (shipment.category === 'trade' && scope === 'crew') {
+          const arrivingPrice = Math.max(0, Math.floor(Number(metadata.purchasePrice ?? 0)));
+          const arrivingCondition = Math.min(
+            100,
+            Math.max(0, Math.floor(Number(metadata.condition ?? 100)))
+          );
           const existingCrewTrade = await tx.crewTradeInventory.findUnique({
             where: { crewId_goodType: { crewId: crewId!, goodType: shipment.item_key } },
           });
           if (existingCrewTrade) {
+            const newQty = existingCrewTrade.quantity + shipment.quantity;
             await tx.crewTradeInventory.update({
               where: { crewId_goodType: { crewId: crewId!, goodType: shipment.item_key } },
-              data: { quantity: existingCrewTrade.quantity + shipment.quantity },
+              data: {
+                quantity: newQty,
+                averagePurchasePrice: blendInventoryAverage(
+                  existingCrewTrade.quantity,
+                  existingCrewTrade.averagePurchasePrice ?? 0,
+                  shipment.quantity,
+                  arrivingPrice
+                ),
+                averageCondition: blendInventoryAverage(
+                  existingCrewTrade.quantity,
+                  existingCrewTrade.averageCondition ?? 100,
+                  shipment.quantity,
+                  arrivingCondition
+                ),
+              },
             });
           } else {
             await tx.crewTradeInventory.create({
@@ -1498,17 +1540,37 @@ class SmugglingService {
                 crewId: crewId!,
                 goodType: shipment.item_key,
                 quantity: shipment.quantity,
-                averagePurchasePrice: 0,
-                averageCondition: 100,
+                averagePurchasePrice: arrivingPrice,
+                averageCondition: arrivingCondition,
               },
             });
           }
         } else if (shipment.category === 'trade') {
+          const arrivingPrice = Math.max(0, Math.floor(Number(metadata.purchasePrice ?? 0)));
+          const arrivingCondition = Math.min(
+            100,
+            Math.max(0, Math.floor(Number(metadata.condition ?? 100)))
+          );
           const existing = await tx.inventory.findUnique({ where: { playerId_goodType: { playerId, goodType: shipment.item_key } } });
           if (existing) {
+            const newQty = existing.quantity + shipment.quantity;
             await tx.inventory.update({
               where: { playerId_goodType: { playerId, goodType: shipment.item_key } },
-              data: { quantity: existing.quantity + shipment.quantity },
+              data: {
+                quantity: newQty,
+                purchasePrice: blendInventoryAverage(
+                  existing.quantity,
+                  existing.purchasePrice ?? 0,
+                  shipment.quantity,
+                  arrivingPrice
+                ),
+                condition: blendInventoryAverage(
+                  existing.quantity,
+                  existing.condition ?? 100,
+                  shipment.quantity,
+                  arrivingCondition
+                ),
+              },
             });
           } else {
             await tx.inventory.create({
@@ -1516,8 +1578,8 @@ class SmugglingService {
                 playerId,
                 goodType: shipment.item_key,
                 quantity: shipment.quantity,
-                purchasePrice: 0,
-                condition: 100,
+                purchasePrice: arrivingPrice,
+                condition: arrivingCondition,
               },
             });
           }

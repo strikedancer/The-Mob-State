@@ -615,7 +615,8 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/…` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).
 
 ### Trade Mechanics (samenvatting)
-- **Kopen/verkopen**: live prijzen en inventory; elektronica-verkoop hangt af van **conditie**.
+- **Kopen/verkopen**: live prijzen en inventory; elektronica-verkoop hangt af van **conditie**. Winst = verkoopprijs − inkoopprijs (`purchasePrice` op inventory).
+- **Smokkel van handelswaren** bewaart inkoopprijs en conditie in de zending en zet die bij claim terug (gewogen gemiddelde bij samenvoegen); anders leek winst gelijk aan het hele verkoopbedrag.
 - **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
 ### Smokkel-hub (drugs-zendingen)

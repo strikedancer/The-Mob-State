@@ -6,6 +6,7 @@ Player-facing **handelswaren** UI is merged into the **Zwarte markt** hub: first
 ## Scope (unchanged backend)
 - REST: `/trade/goods`, `/trade/prices`, `/trade/inventory`, `/trade/buy`, `/trade/sell` (`backend/src/routes/trade.ts`, `tradeService`).
 - Country multipliers, spoilage, volatility and travel risk fields stay server-driven.
+- Smokkel van handelswaren (`smugglingService`) moet `purchasePrice`/`condition` meenemen; claim mag die niet op 0 zetten (anders is UI-winst = verkoopbedrag).
 
 ## When to read instead
 - UX, tabs, filters, vehicles and other black-market flows: **`docs/module-protocols/black-market.md`**.
