@@ -49,6 +49,20 @@ const liveEventInclude = {
   },
 } satisfies Prisma.GameLiveEventInclude;
 
+/** Live leaderboard rank from score (ranks persist only after event resolve). */
+async function computeLiveParticipantRank(
+  liveEventId: number,
+  score: number,
+): Promise<number> {
+  const ahead = await prisma.gameEventParticipantProgress.count({
+    where: {
+      liveEventId,
+      score: { gt: score },
+    },
+  });
+  return ahead + 1;
+}
+
 class GameEventService {
   async listTemplates() {
     return prisma.gameEventTemplate.findMany({
@@ -372,7 +386,8 @@ class GameEventService {
 
     const featured = active[0] ?? upcoming[0] ?? null;
     const liveEventIds = [...active, ...upcoming].map((item) => item.id);
-    const myProgress = playerId && liveEventIds.length > 0
+    const activeEventIds = new Set(active.map((item) => item.id));
+    const rawProgress = playerId && liveEventIds.length > 0
       ? await prisma.gameEventParticipantProgress.findMany({
           where: {
             playerId,
@@ -380,6 +395,16 @@ class GameEventService {
           },
         })
       : [];
+
+    const myProgress = await Promise.all(
+      rawProgress.map(async (row) => {
+        if (!activeEventIds.has(row.liveEventId) || row.rank != null) {
+          return row;
+        }
+        const rank = await computeLiveParticipantRank(row.liveEventId, row.score);
+        return { ...row, rank };
+      }),
+    );
 
     return {
       serverTime: now,
@@ -450,13 +475,10 @@ class GameEventService {
       });
 
       if (myProgress) {
-        const ahead = await prisma.gameEventParticipantProgress.count({
-          where: {
-            liveEventId,
-            score: { gt: myProgress.score },
-          },
-        });
-        const myRank = ahead + 1;
+        const myRank = await computeLiveParticipantRank(
+          liveEventId,
+          myProgress.score,
+        );
         liveRankById.set(myProgress.id, myRank);
         myProgress = { ...myProgress, rank: myRank };
       }
