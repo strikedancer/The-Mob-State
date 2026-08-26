@@ -507,7 +507,10 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
             ),
             subtitle: Text(
               l10n.tradeUnavailableGoodsSubtitle(unavailable.length.toString()),
-              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             children: [
               for (final good in unavailable)
@@ -525,26 +528,40 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
   }
 
   Widget _buildTradeRiskGuide(AppLocalizations l10n) {
+    final scheme = Theme.of(context).colorScheme;
+    final bodyColor = scheme.onSurface.withValues(alpha: 0.92);
+    final subtitleColor = scheme.onSurfaceVariant.withValues(alpha: 0.95);
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          iconColor: scheme.onSurface,
+          collapsedIconColor: scheme.onSurfaceVariant,
           title: Text(
             l10n.tradeRiskPanelTitle,
-            style: const TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: scheme.onSurface,
+            ),
           ),
           subtitle: Text(
             l10n.tradeRiskPanelSubtitle,
-            style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+            style: TextStyle(fontSize: 12, color: subtitleColor),
           ),
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               child: Text(
                 l10n.tradeRiskInsightBody,
-                style: TextStyle(fontSize: 13, height: 1.35, color: Colors.grey[800]),
+                style: TextStyle(
+                  fontSize: 13,
+                  height: 1.45,
+                  color: bodyColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ],
@@ -747,7 +764,10 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
                       ),
                       Text(
                         localizedDescription,
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
