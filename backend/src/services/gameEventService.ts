@@ -4,6 +4,7 @@ import { worldEventService } from './worldEventService';
 import { getActiveEventBoostEffects, grantPurchasedCredits } from './premiumCreditsService';
 import { creditEventItem, parseEventItemGrants } from './eventItemService';
 import { gameEventNotificationService } from './gameEventNotificationService';
+import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 import type { GameEventTemplate, GameLiveEvent } from '@prisma/client';
 
 type GameLiveEventWithTemplate = GameLiveEvent & { template: GameEventTemplate };
@@ -61,6 +62,44 @@ async function computeLiveParticipantRank(
     },
   });
   return ahead + 1;
+}
+
+const eventParticipantPlayerInclude = {
+  player: {
+    select: {
+      id: true,
+      username: true,
+      rank: true,
+      avatar: true,
+      activePortrait: {
+        select: { imagePath: true },
+      },
+    },
+  },
+} as const;
+
+function mapEventParticipantRow<
+  T extends {
+    player?: {
+      id: number;
+      username: string;
+      rank: number;
+      avatar: string | null;
+      activePortrait?: { imagePath: string } | null;
+    } | null;
+  },
+>(row: T): T {
+  if (!row.player) {
+    return row;
+  }
+  const { activePortrait, ...playerRest } = row.player;
+  return {
+    ...row,
+    player: {
+      ...playerRest,
+      activePortraitPath: activePortraitPathFromRow(activePortrait?.imagePath ?? null),
+    },
+  };
 }
 
 class GameEventService {
@@ -437,15 +476,7 @@ class GameEventService {
     // score — filtering on rank<=10 would return only the viewer (their row is
     // included via playerId OR) while other participants still have rank=null.
     const resolved = event.status === 'completed';
-    const participantInclude = {
-      player: {
-        select: {
-          id: true,
-          username: true,
-          rank: true,
-        },
-      },
-    } as const;
+    const participantInclude = eventParticipantPlayerInclude;
 
     const topParticipants = await prisma.gameEventParticipantProgress.findMany({
       where: { liveEventId },
@@ -487,6 +518,19 @@ class GameEventService {
         ...row,
         rank: liveRankById.get(row.id) ?? row.rank,
       }));
+    }
+
+    participants = participants
+      .map(mapEventParticipantRow)
+      .sort((a, b) => {
+        const rankA = a.rank ?? Number.MAX_SAFE_INTEGER;
+        const rankB = b.rank ?? Number.MAX_SAFE_INTEGER;
+        if (rankA !== rankB) return rankA - rankB;
+        return b.score - a.score;
+      });
+
+    if (myProgress) {
+      myProgress = mapEventParticipantRow(myProgress);
     }
 
     return {

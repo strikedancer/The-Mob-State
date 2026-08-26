@@ -16,7 +16,7 @@ Na **elke afgeronde taak** die **getrackte** bestanden wijzigt (code, client, ba
 
    Niet de volledige `docker compose config`-output plakken (kan secrets bevatten); tail-logs zijn ok.
 
-**Uitzonderingen (alleen als de gebruiker het expliciet zegt):** lokaal-only, geen commit, geen push, of geen deploy. **Technische blokkade** (geen `plink`, geen netwerk): kort melden wat lokaal wél gedaan is en welke commando’s de gebruiker zelf moet draaien.
+**Uitzonderingen (alleen als de gebruiker het expliciet zegt):** lokaal-only, **geen commit**, geen push, of geen deploy. **Geen aparte bevestiging vragen** — na een afgeronde codetaak direct commit + push + deploy (gebruikersvoorkeur aug 2026). **Technische blokkade** (geen `plink`, geen netwerk): kort melden wat lokaal wél gedaan is en welke commando’s de gebruiker zelf moet draaien.
 
 **Niet** standaard deployen: puur lokale experimenten, of als de gebruiker alleen een vraag stelde zonder codewijziging.
 
