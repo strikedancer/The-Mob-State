@@ -22355,6 +22355,150 @@ abstract class AppLocalizations {
   /// **'Error: {detail}'**
   String smugglingClientErrorPrefix(String detail);
 
+  /// No description provided for @smugglingStepCargo.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo'**
+  String get smugglingStepCargo;
+
+  /// No description provided for @smugglingStepRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get smugglingStepRoute;
+
+  /// No description provided for @smugglingStepTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get smugglingStepTransport;
+
+  /// No description provided for @smugglingStepConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get smugglingStepConfirm;
+
+  /// No description provided for @smugglingNextStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get smugglingNextStep;
+
+  /// No description provided for @smugglingBackStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get smugglingBackStep;
+
+  /// No description provided for @smugglingEmptyCargoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to ship'**
+  String get smugglingEmptyCargoTitle;
+
+  /// No description provided for @smugglingEmptyCargoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy trade goods, drugs or gear first, then return here.'**
+  String get smugglingEmptyCargoHint;
+
+  /// No description provided for @smugglingEmptyShipmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No active runs'**
+  String get smugglingEmptyShipmentsTitle;
+
+  /// No description provided for @smugglingEmptyShipmentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a shipment above. Travel light and claim from the depot.'**
+  String get smugglingEmptyShipmentsHint;
+
+  /// No description provided for @smugglingEmptyDepotsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Depots empty'**
+  String get smugglingEmptyDepotsTitle;
+
+  /// No description provided for @smugglingEmptyDepotsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready packages appear here when a shipment arrives.'**
+  String get smugglingEmptyDepotsHint;
+
+  /// No description provided for @smugglingResultSendTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipment underway'**
+  String get smugglingResultSendTitle;
+
+  /// No description provided for @smugglingResultClaimTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Depot claimed'**
+  String get smugglingResultClaimTitle;
+
+  /// No description provided for @smugglingResultFeeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee'**
+  String get smugglingResultFeeLabel;
+
+  /// No description provided for @smugglingResultEtaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ETA'**
+  String get smugglingResultEtaLabel;
+
+  /// No description provided for @smugglingResultXpLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'XP'**
+  String get smugglingResultXpLabel;
+
+  /// No description provided for @smugglingResultRiskLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk'**
+  String get smugglingResultRiskLabel;
+
+  /// No description provided for @smugglingEtaReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrived'**
+  String get smugglingEtaReady;
+
+  /// No description provided for @smugglingEtaMinutesLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m left'**
+  String smugglingEtaMinutesLeft(int minutes);
+
+  /// No description provided for @smugglingEtaSecondsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds}s left'**
+  String smugglingEtaSecondsLeft(int seconds);
+
+  /// No description provided for @smugglingActiveFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get smugglingActiveFilter;
+
+  /// No description provided for @smugglingShowAllFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get smugglingShowAllFilter;
+
+  /// No description provided for @smugglingClaimThisDepot.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim depot'**
+  String get smugglingClaimThisDepot;
+
   /// No description provided for @cryptoMarketNoData.
   ///
   /// In en, this message translates to:

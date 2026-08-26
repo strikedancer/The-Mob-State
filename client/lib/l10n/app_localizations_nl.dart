@@ -12748,6 +12748,85 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get smugglingStepCargo => 'Vracht';
+
+  @override
+  String get smugglingStepRoute => 'Route';
+
+  @override
+  String get smugglingStepTransport => 'Transport';
+
+  @override
+  String get smugglingStepConfirm => 'Bevestigen';
+
+  @override
+  String get smugglingNextStep => 'Volgende';
+
+  @override
+  String get smugglingBackStep => 'Terug';
+
+  @override
+  String get smugglingEmptyCargoTitle => 'Niets om te smokkelen';
+
+  @override
+  String get smugglingEmptyCargoHint =>
+      'Koop eerst handelswaar, drugs of uitrusting en kom terug.';
+
+  @override
+  String get smugglingEmptyShipmentsTitle => 'Geen actieve zendingen';
+
+  @override
+  String get smugglingEmptyShipmentsHint =>
+      'Start hierboven een zending. Reis leeg en claim uit het depot.';
+
+  @override
+  String get smugglingEmptyDepotsTitle => 'Depots leeg';
+
+  @override
+  String get smugglingEmptyDepotsHint =>
+      'Klaarstaande pakketten verschijnen hier bij aankomst.';
+
+  @override
+  String get smugglingResultSendTitle => 'Zending onderweg';
+
+  @override
+  String get smugglingResultClaimTitle => 'Depot opgehaald';
+
+  @override
+  String get smugglingResultFeeLabel => 'Kosten';
+
+  @override
+  String get smugglingResultEtaLabel => 'ETA';
+
+  @override
+  String get smugglingResultXpLabel => 'XP';
+
+  @override
+  String get smugglingResultRiskLabel => 'Risico';
+
+  @override
+  String get smugglingEtaReady => 'Aangekomen';
+
+  @override
+  String smugglingEtaMinutesLeft(int minutes) {
+    return 'Nog ${minutes}m';
+  }
+
+  @override
+  String smugglingEtaSecondsLeft(int seconds) {
+    return 'Nog ${seconds}s';
+  }
+
+  @override
+  String get smugglingActiveFilter => 'Actief';
+
+  @override
+  String get smugglingShowAllFilter => 'Alles';
+
+  @override
+  String get smugglingClaimThisDepot => 'Depot claimen';
+
+  @override
   String get cryptoMarketNoData => 'Geen crypto marktdata beschikbaar';
 
   @override

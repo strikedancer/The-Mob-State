@@ -6297,6 +6297,44 @@
   "smugglingClientQuoteFailed": "Quote mislukt",
   "smugglingClientClaimFailed": "Ophalen mislukt",
   "smugglingClientErrorPrefix": "Fout: {detail}",
+  "smugglingStepCargo": "Vracht",
+  "smugglingStepRoute": "Route",
+  "smugglingStepTransport": "Transport",
+  "smugglingStepConfirm": "Bevestigen",
+  "smugglingNextStep": "Volgende",
+  "smugglingBackStep": "Terug",
+  "smugglingEmptyCargoTitle": "Niets om te smokkelen",
+  "smugglingEmptyCargoHint": "Koop eerst handelswaar, drugs of uitrusting en kom terug.",
+  "smugglingEmptyShipmentsTitle": "Geen actieve zendingen",
+  "smugglingEmptyShipmentsHint": "Start hierboven een zending. Reis leeg en claim uit het depot.",
+  "smugglingEmptyDepotsTitle": "Depots leeg",
+  "smugglingEmptyDepotsHint": "Klaarstaande pakketten verschijnen hier bij aankomst.",
+  "smugglingResultSendTitle": "Zending onderweg",
+  "smugglingResultClaimTitle": "Depot opgehaald",
+  "smugglingResultFeeLabel": "Kosten",
+  "smugglingResultEtaLabel": "ETA",
+  "smugglingResultXpLabel": "XP",
+  "smugglingResultRiskLabel": "Risico",
+  "smugglingEtaReady": "Aangekomen",
+  "smugglingEtaMinutesLeft": "Nog {minutes}m",
+  "@smugglingEtaMinutesLeft": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingEtaSecondsLeft": "Nog {seconds}s",
+  "@smugglingEtaSecondsLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingActiveFilter": "Actief",
+  "smugglingShowAllFilter": "Alles",
+  "smugglingClaimThisDepot": "Depot claimen",
   "@smugglingOwnedTransportCapacityLine": {
     "placeholders": {
       "slots": {

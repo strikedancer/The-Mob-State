@@ -12901,6 +12901,85 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get smugglingStepCargo => 'Cargo';
+
+  @override
+  String get smugglingStepRoute => 'Route';
+
+  @override
+  String get smugglingStepTransport => 'Transport';
+
+  @override
+  String get smugglingStepConfirm => 'Confirm';
+
+  @override
+  String get smugglingNextStep => 'Next';
+
+  @override
+  String get smugglingBackStep => 'Back';
+
+  @override
+  String get smugglingEmptyCargoTitle => 'Nothing to ship';
+
+  @override
+  String get smugglingEmptyCargoHint =>
+      'Buy trade goods, drugs or gear first, then return here.';
+
+  @override
+  String get smugglingEmptyShipmentsTitle => 'No active runs';
+
+  @override
+  String get smugglingEmptyShipmentsHint =>
+      'Start a shipment above. Travel light and claim from the depot.';
+
+  @override
+  String get smugglingEmptyDepotsTitle => 'Depots empty';
+
+  @override
+  String get smugglingEmptyDepotsHint =>
+      'Ready packages appear here when a shipment arrives.';
+
+  @override
+  String get smugglingResultSendTitle => 'Shipment underway';
+
+  @override
+  String get smugglingResultClaimTitle => 'Depot claimed';
+
+  @override
+  String get smugglingResultFeeLabel => 'Fee';
+
+  @override
+  String get smugglingResultEtaLabel => 'ETA';
+
+  @override
+  String get smugglingResultXpLabel => 'XP';
+
+  @override
+  String get smugglingResultRiskLabel => 'Risk';
+
+  @override
+  String get smugglingEtaReady => 'Arrived';
+
+  @override
+  String smugglingEtaMinutesLeft(int minutes) {
+    return '${minutes}m left';
+  }
+
+  @override
+  String smugglingEtaSecondsLeft(int seconds) {
+    return '${seconds}s left';
+  }
+
+  @override
+  String get smugglingActiveFilter => 'Active';
+
+  @override
+  String get smugglingShowAllFilter => 'All';
+
+  @override
+  String get smugglingClaimThisDepot => 'Claim depot';
+
+  @override
   String get cryptoMarketNoData => 'Keine Kryptomarktdaten verfügbar';
 
   @override

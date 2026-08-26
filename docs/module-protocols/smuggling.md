@@ -5,8 +5,11 @@ Shipment routing, quotes, depots, channels, destinations and risk handling.
 
 Vehicle movement between countries also belongs here when cars or boats are relocated through the smuggling network.
 
+**Hub UX (Phase 1):** noir/gold mafia panels, stepped send flow (Cargo → Route → Transport → Confirm), ETA countdown on shipment cards, and a result overlay for successful send/claim.
+
 ## Primary Frontend Entry
 - client/lib/screens/smuggling_screen.dart
+- client/lib/widgets/smuggling_result_overlay.dart
 
 ## Drug inventory contract
 
@@ -34,12 +37,13 @@ Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zen
 - If the change touches cross-country vehicle movement, has the corresponding Garage/Marina protocol been reviewed too?
 
 ## Must Preserve
-- Clear success and failure feedback for the player.
+- Clear success and failure feedback for the player (result overlay on send/claim success; snackbar on failure).
 - Accurate state refresh after an action completes.
-- Consistent formatting for money, timers, percentages and labels.
+- Consistent formatting for money, timers, percentages and labels (including live ETA countdown from `etaAt`).
 - Responsive usability without pushing critical actions off-screen.
 - De speler moet expliciet kunnen zien of een quote via commercieel kanaal of eigen transport loopt.
 - Cargo-capaciteit en confiscatierisico van eigen transport moeten zichtbaar en server-side leidend blijven.
+- Hub blijft noir/gold panel styling met stepped send wizard; API-logica en message-localisatie helpers niet stil breken.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/smuggling_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/smuggling_result_overlay.dart';
 
 class SmugglingScreen extends StatefulWidget {
   const SmugglingScreen({super.key});
@@ -13,6 +16,9 @@ class SmugglingScreen extends StatefulWidget {
 }
 
 class _SmugglingScreenState extends State<SmugglingScreen> {
+  static const _gold = Color(0xFFD4A24D);
+  static const _goldSoft = Color(0x66D4A24D);
+
   final SmugglingService _smugglingService = SmugglingService();
   final TextEditingController _quantityController = TextEditingController(
     text: '1',
@@ -21,6 +27,9 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   bool _isLoading = true;
   bool _isSending = false;
   bool _isClaiming = false;
+
+  int _sendStep = 0;
+  bool _shipmentsActiveOnly = true;
 
   String _selectedCategory = 'drug';
   String? _selectedItemKey;
@@ -47,14 +56,22 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   Map<String, dynamic>? _quote;
   bool _isQuoteLoading = false;
 
+  Timer? _etaTicker;
+  DateTime _now = DateTime.now();
+
   @override
   void initState() {
     super.initState();
+    _etaTicker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() => _now = DateTime.now());
+    });
     _loadData();
   }
 
   @override
   void dispose() {
+    _etaTicker?.cancel();
     _quantityController.dispose();
     super.dispose();
   }
@@ -103,28 +120,45 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       if (!_channels.contains(_selectedChannel)) {
         _selectedChannel = 'courier';
       }
-      final availableOwnedTransport = ownedTransports.whereType<Map<String, dynamic>>().toList();
+      final availableOwnedTransport =
+          ownedTransports.whereType<Map<String, dynamic>>().toList();
       if (availableOwnedTransport.isEmpty) {
         _selectedOwnedTransportKey = null;
         _selectedTransportMode = 'commercial';
-      } else if (
-          _selectedOwnedTransportKey == null ||
+      } else if (_selectedOwnedTransportKey == null ||
           !availableOwnedTransport.any(
-            (transport) => transport['transportKey']?.toString() == _selectedOwnedTransportKey,
+            (transport) =>
+                transport['transportKey']?.toString() ==
+                _selectedOwnedTransportKey,
           )) {
-        _selectedOwnedTransportKey = availableOwnedTransport.first['transportKey']?.toString();
+        _selectedOwnedTransportKey =
+            availableOwnedTransport.first['transportKey']?.toString();
       }
       _shipments = (overview['shipments'] as List<dynamic>?) ?? [];
       _depots = (overview['depots'] as List<dynamic>?) ?? [];
 
       final itemsForCategory =
           (_categories[_selectedCategory] as List<dynamic>?) ?? [];
-      _selectedItemKey = itemsForCategory.isNotEmpty
-          ? itemsForCategory.first['itemKey']?.toString()
-          : null;
-      _selectedDestination = destinations.isNotEmpty
-          ? destinations.first['id']?.toString()
-          : null;
+      if (_selectedItemKey == null ||
+          !itemsForCategory.any(
+            (item) =>
+                item is Map<String, dynamic> &&
+                item['itemKey']?.toString() == _selectedItemKey,
+          )) {
+        _selectedItemKey = itemsForCategory.isNotEmpty
+            ? itemsForCategory.first['itemKey']?.toString()
+            : null;
+      }
+      if (_selectedDestination == null ||
+          !destinations.any(
+            (d) =>
+                d is Map<String, dynamic> &&
+                d['id']?.toString() == _selectedDestination,
+          )) {
+        _selectedDestination = destinations.isNotEmpty
+            ? destinations.first['id']?.toString()
+            : null;
+      }
       _quote = null;
       _isLoading = false;
     });
@@ -215,7 +249,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     }
 
     final claim = RegExp(
-      r'^(\d+) (?:crew-)?zending\(en\) opgehaald in (.+)$',
+      r'^(\d+) (?:crew-)?zending\(en\) opgehaald in (.+?)(?: \(\+\d+ XP\))?$',
     ).firstMatch(s);
     if (claim != null) {
       final count = int.parse(claim.group(1)!);
@@ -305,6 +339,32 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     }
   }
 
+  Future<void> _showResultOverlay({
+    required String title,
+    required String subtitle,
+    int? fee,
+    int? etaMinutes,
+    int? xpGained,
+    double? riskPercent,
+    String? confiscationMessage,
+  }) async {
+    if (!mounted) return;
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => SmugglingResultOverlay(
+        title: title,
+        subtitle: subtitle,
+        fee: fee,
+        etaMinutes: etaMinutes,
+        xpGained: xpGained,
+        riskPercent: riskPercent,
+        confiscationMessage: confiscationMessage,
+        onContinue: () => Navigator.of(ctx).pop(),
+      ),
+    );
+  }
+
   Future<void> _sendShipment() async {
     final l10n = AppLocalizations.of(context)!;
     final selectedItem = _selectedItem;
@@ -371,22 +431,41 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
     setState(() => _isSending = false);
 
-    showTopRightFromSnackBar(
-      context,
-      SnackBar(
-        content: Text(
-          _localizeSmugglingApiMessage(
-            l10n,
-            result['message']?.toString(),
-          ),
-        ),
-        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
-      ),
+    final localized = _localizeSmugglingApiMessage(
+      l10n,
+      result['message']?.toString(),
     );
 
     if (result['success'] == true) {
       _quantityController.text = '1';
+      setState(() => _sendStep = 0);
+      final fee = (result['shippingFee'] as num?)?.toInt();
+      final eta = (result['etaMinutes'] as num?)?.toInt();
+      final riskRaw = double.tryParse(result['seizureChance']?.toString() ?? '');
+      final riskPct = riskRaw != null ? riskRaw * 100 : null;
+      final confiscation = result['confiscationMessage']?.toString() ??
+          (result['metadata'] is Map<String, dynamic>
+              ? (result['metadata'] as Map<String, dynamic>)['confiscationMessage']
+                    ?.toString()
+              : null);
+
+      await _showResultOverlay(
+        title: l10n.smugglingResultSendTitle,
+        subtitle: localized,
+        fee: fee,
+        etaMinutes: eta,
+        riskPercent: riskPct,
+        confiscationMessage: confiscation,
+      );
       await _loadData();
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(localized),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -399,21 +478,29 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
     setState(() => _isClaiming = false);
 
-    showTopRightFromSnackBar(
-      context,
-      SnackBar(
-        content: Text(
-          _localizeSmugglingApiMessage(
-            l10n,
-            result['message']?.toString(),
-          ),
-        ),
-        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
-      ),
+    final localized = _localizeSmugglingApiMessage(
+      l10n,
+      result['message']?.toString(),
     );
 
     if (result['success'] == true) {
+      final xp = (result['xpGained'] as num?)?.toInt();
+      final confiscation = result['confiscationMessage']?.toString();
+      await _showResultOverlay(
+        title: l10n.smugglingResultClaimTitle,
+        subtitle: localized,
+        xpGained: xp,
+        confiscationMessage: confiscation,
+      );
       await _loadData();
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(localized),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -521,9 +608,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   }
 
   String _networkLabel(AppLocalizations l10n, String network) {
-    return network == 'crew'
-        ? l10n.smugglingCrew
-        : l10n.smugglingPersonal;
+    return network == 'crew' ? l10n.smugglingCrew : l10n.smugglingPersonal;
   }
 
   String _channelHintFor(
@@ -564,6 +649,21 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     }
   }
 
+  Color _statusColor(String status) {
+    switch (status) {
+      case 'ready':
+        return Colors.lightGreenAccent;
+      case 'seized':
+        return Colors.redAccent;
+      case 'claimed':
+        return Colors.blueAccent;
+      case 'in_transit':
+        return Colors.orangeAccent;
+      default:
+        return Colors.white70;
+    }
+  }
+
   String _backgroundAssetForWidth(double width) {
     if (width >= 1200) {
       return 'assets/images/backgrounds/smuggling_hub_bg_desktop.png';
@@ -588,6 +688,187 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     return 'assets/images/ui/smuggling_crate_mobile.png';
   }
 
+  InputDecoration _fieldDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.white70),
+      filled: true,
+      fillColor: const Color(0x33241A0F),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: _goldSoft),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: _gold),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: _goldSoft),
+      ),
+    );
+  }
+
+  Widget _mafiaPanel({required Widget child, EdgeInsetsGeometry? padding}) {
+    return Container(
+      padding: padding ?? const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xCC110A0A), Color(0xCC24120A), Color(0xCC16110E)],
+        ),
+        border: Border.all(color: _goldSoft),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x66000000),
+            blurRadius: 16,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+  Widget _kpiChip(String label, String value, {Color? valueColor}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: const Color(0x33241A0F),
+        border: Border.all(color: const Color(0x55D4A24D)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white70, fontSize: 11),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: valueColor ?? const Color(0xFFFFE3A0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _emptyState({
+    required double width,
+    required String title,
+    required String hint,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Column(
+        children: [
+          Image.asset(
+            _crateAssetForWidth(width),
+            width: 64,
+            height: 64,
+            errorBuilder: (context, error, stackTrace) =>
+                const Icon(Icons.inventory_2, size: 48, color: _gold),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.orangeAccent,
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            hint,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _etaLabel(AppLocalizations l10n, Map<String, dynamic> shipment) {
+    final status = shipment['status']?.toString() ?? '';
+    if (status == 'ready') return l10n.smugglingEtaReady;
+    if (status != 'in_transit') return _shipmentStatusLabel(l10n, status);
+
+    final etaRaw = shipment['etaAt']?.toString();
+    if (etaRaw == null || etaRaw.isEmpty) {
+      return _shipmentStatusLabel(l10n, status);
+    }
+    final eta = DateTime.tryParse(etaRaw)?.toLocal();
+    if (eta == null) return _shipmentStatusLabel(l10n, status);
+
+    final remaining = eta.difference(_now);
+    if (remaining.inSeconds <= 0) return l10n.smugglingEtaReady;
+    if (remaining.inMinutes >= 1) {
+      return l10n.smugglingEtaMinutesLeft(remaining.inMinutes);
+    }
+    return l10n.smugglingEtaSecondsLeft(remaining.inSeconds);
+  }
+
+  bool _canAdvanceFromStep(int step) {
+    switch (step) {
+      case 0:
+        return _selectedItem != null;
+      case 1:
+        return _selectedDestination != null;
+      case 2:
+        if (_selectedTransportMode == 'owned') {
+          return _selectedOwnedTransportKey != null &&
+              _selectedNetworkScope != 'crew';
+        }
+        return _selectedChannel.isNotEmpty;
+      default:
+        return true;
+    }
+  }
+
+  List<Map<String, dynamic>> get _orderedShipments {
+    final list = _shipments.whereType<Map<String, dynamic>>().toList();
+    int rank(String status) {
+      switch (status) {
+        case 'ready':
+          return 0;
+        case 'in_transit':
+          return 1;
+        case 'seized':
+          return 2;
+        case 'claimed':
+          return 3;
+        default:
+          return 4;
+      }
+    }
+
+    list.sort((a, b) {
+      final ra = rank(a['status']?.toString() ?? '');
+      final rb = rank(b['status']?.toString() ?? '');
+      if (ra != rb) return ra.compareTo(rb);
+      return 0;
+    });
+
+    if (_shipmentsActiveOnly) {
+      return list
+          .where((s) {
+            final status = s['status']?.toString() ?? '';
+            return status == 'in_transit' || status == 'ready';
+          })
+          .toList();
+    }
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -602,8 +883,9 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       child: Container(
         color: Colors.black.withOpacity(0.58),
         child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator(color: _gold))
             : RefreshIndicator(
+                color: _gold,
                 onRefresh: _loadData,
                 child: ListView(
                   padding: const EdgeInsets.all(16),
@@ -625,64 +907,74 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   Widget _buildHeader(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
+    final narrow = width < 700;
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.55),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            _emblemAssetForWidth(width),
-            width: 56,
-            height: 56,
-            errorBuilder: (context, error, stackTrace) =>
-                const Icon(Icons.local_shipping, size: 42, color: Colors.amber),
+    final claimButtons = Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        OutlinedButton.icon(
+          onPressed: _isClaiming ? null : () => _claimCurrentDepot('personal'),
+          icon: const Icon(Icons.inventory_2, size: 18),
+          label: Text(l10n.smugglingClaimPersonal),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: _gold,
+            side: const BorderSide(color: _gold),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.smugglingHubTitle,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  l10n.smugglingHubSubtitle,
-                  style: const TextStyle(color: Colors.white70),
-                ),
-              ],
+        ),
+        if (_canUseCrewNetwork)
+          ElevatedButton.icon(
+            onPressed: _isClaiming ? null : () => _claimCurrentDepot('crew'),
+            icon: const Icon(Icons.groups, size: 18),
+            label: Text(l10n.smugglingClaimCrew),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _gold,
+              foregroundColor: const Color(0xFF1B1212),
             ),
           ),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
+      ],
+    );
+
+    return _mafiaPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              ElevatedButton.icon(
-                onPressed: _isClaiming
-                    ? null
-                    : () => _claimCurrentDepot('personal'),
-                icon: const Icon(Icons.inventory_2),
-                label: Text(l10n.smugglingClaimPersonal),
+              Image.asset(
+                _emblemAssetForWidth(width),
+                width: 56,
+                height: 56,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.local_shipping, size: 42, color: _gold),
               ),
-              if (_canUseCrewNetwork)
-                ElevatedButton.icon(
-                  onPressed: _isClaiming
-                      ? null
-                      : () => _claimCurrentDepot('crew'),
-                  icon: const Icon(Icons.groups),
-                  label: Text(l10n.smugglingClaimCrew),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.smugglingHubTitle,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: _gold,
+                      ),
+                    ),
+                    Text(
+                      l10n.smugglingHubSubtitle,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ],
                 ),
+              ),
+              if (!narrow) claimButtons,
             ],
           ),
+          if (narrow) ...[
+            const SizedBox(height: 12),
+            claimButtons,
+          ],
         ],
       ),
     );
@@ -691,20 +983,14 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   Widget _buildSendPanel(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
-    final selected = _selectedItem;
-    final selectedOwnedTransport = _selectedOwnedTransport;
-    final isVehicle = _selectedCategory == 'vehicle';
-    final maxQty = (selected is Map<String, dynamic>)
-        ? ((selected['quantity'] as num?)?.toInt() ?? 1)
-        : 1;
+    final stepLabels = [
+      l10n.smugglingStepCargo,
+      l10n.smugglingStepRoute,
+      l10n.smugglingStepTransport,
+      l10n.smugglingStepConfirm,
+    ];
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.55),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white24),
-      ),
+    return _mafiaPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -715,7 +1001,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                 width: 28,
                 height: 28,
                 errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.inventory_2, color: Colors.white),
+                    const Icon(Icons.inventory_2, color: _gold),
               ),
               const SizedBox(width: 8),
               Text(
@@ -728,53 +1014,409 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: ['drug', 'trade', 'vehicle', 'weapon', 'ammo'].map((c) {
-              final selectedChip = c == _selectedCategory;
-              return ChoiceChip(
-                selected: selectedChip,
-                label: Text(_categoryLabel(l10n, c)),
-                avatar: Icon(_categoryIcon(c), size: 18),
-                onSelected: (_) {
-                        setState(() {
-                          _selectedCategory = c;
-                          final list = _currentItems;
-                          _selectedItemKey = list.isNotEmpty
-                              ? list.first['itemKey']?.toString()
-                              : null;
-                          _quantityController.text = '1';
-                        });
-                        _loadQuote();
-                      },
+          const SizedBox(height: 12),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(stepLabels.length, (i) {
+                final active = i == _sendStep;
+                final done = i < _sendStep;
+                return Padding(
+                  padding: EdgeInsets.only(right: i < 3 ? 8 : 0),
+                  child: InkWell(
+                    onTap: () {
+                      if (i <= _sendStep ||
+                          (i == _sendStep + 1 &&
+                              _canAdvanceFromStep(_sendStep))) {
+                        setState(() => _sendStep = i);
+                        if (i == 3) _loadQuote();
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: active
+                            ? _gold.withOpacity(0.22)
+                            : done
+                                ? const Color(0x33241A0F)
+                                : Colors.black26,
+                        border: Border.all(
+                          color: active || done ? _gold : _goldSoft,
+                          width: active ? 1.4 : 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${i + 1}',
+                            style: TextStyle(
+                              color: active || done ? _gold : Colors.white54,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            stepLabels[i],
+                            style: TextStyle(
+                              color: active || done
+                                  ? Colors.white
+                                  : Colors.white54,
+                              fontWeight:
+                                  active ? FontWeight.w700 : FontWeight.w500,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
+          const SizedBox(height: 14),
+          if (_sendStep == 0) _buildCargoStep(context),
+          if (_sendStep == 1) _buildRouteStep(context),
+          if (_sendStep == 2) _buildTransportStep(context),
+          if (_sendStep == 3) _buildConfirmStep(context),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              if (_sendStep > 0)
+                OutlinedButton(
+                  onPressed: () => setState(() => _sendStep -= 1),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: _gold,
+                    side: const BorderSide(color: _goldSoft),
+                  ),
+                  child: Text(l10n.smugglingBackStep),
+                ),
+              const Spacer(),
+              if (_sendStep < 3)
+                ElevatedButton(
+                  onPressed: _canAdvanceFromStep(_sendStep)
+                      ? () {
+                          setState(() => _sendStep += 1);
+                          if (_sendStep == 3) _loadQuote();
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _gold,
+                    foregroundColor: const Color(0xFF1B1212),
+                    disabledBackgroundColor: _gold.withOpacity(0.35),
+                  ),
+                  child: Text(l10n.smugglingNextStep),
+                )
+              else
+                ElevatedButton.icon(
+                  onPressed: _isSending ||
+                          (_selectedTransportMode == 'owned' &&
+                              _selectedOwnedTransportKey == null)
+                      ? null
+                      : _sendShipment,
+                  icon: _isSending
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Color(0xFF1B1212),
+                          ),
+                        )
+                      : const Icon(Icons.send),
+                  label: Text(l10n.smugglingStartSmuggling),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _gold,
+                    foregroundColor: const Color(0xFF1B1212),
+                    disabledBackgroundColor: _gold.withOpacity(0.35),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCargoStep(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final width = MediaQuery.of(context).size.width;
+    final selected = _selectedItem;
+    final isVehicle = _selectedCategory == 'vehicle';
+    final maxQty = (selected is Map<String, dynamic>)
+        ? ((selected['quantity'] as num?)?.toInt() ?? 1)
+        : 1;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: ['drug', 'trade', 'vehicle', 'weapon', 'ammo'].map((c) {
+            final selectedChip = c == _selectedCategory;
+            return ChoiceChip(
+              selected: selectedChip,
+              label: Text(_categoryLabel(l10n, c)),
+              avatar: Icon(
+                _categoryIcon(c),
+                size: 18,
+                color: selectedChip ? const Color(0xFF1B1212) : _gold,
+              ),
+              selectedColor: _gold,
+              backgroundColor: const Color(0x33241A0F),
+              labelStyle: TextStyle(
+                color: selectedChip ? const Color(0xFF1B1212) : Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              side: BorderSide(color: selectedChip ? _gold : _goldSoft),
+              onSelected: (_) {
+                setState(() {
+                  _selectedCategory = c;
+                  final list = _currentItems;
+                  _selectedItemKey = list.isNotEmpty
+                      ? list.first['itemKey']?.toString()
+                      : null;
+                  _quantityController.text = '1';
+                });
+                _loadQuote();
+              },
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 12),
+        if (_currentItems.isEmpty)
+          _emptyState(
+            width: width,
+            title: l10n.smugglingEmptyCargoTitle,
+            hint: l10n.smugglingEmptyCargoHint,
+          )
+        else ...[
+          DropdownButtonFormField<String>(
+            value: _selectedItemKey,
+            dropdownColor: const Color(0xFF1B1212),
+            decoration: _fieldDecoration(l10n.smugglingFieldItem),
+            items: _currentItems.map((item) {
+              final map = item as Map<String, dynamic>;
+              final key = map['itemKey']?.toString() ?? '';
+              final qty = (map['quantity'] as num?)?.toInt() ?? 0;
+              final label =
+                  '${map['itemLabel']} • $qty ${map['unitTag'] ?? ''}';
+              return DropdownMenuItem<String>(
+                value: key,
+                child: Text(
+                  label,
+                  style: const TextStyle(color: Colors.white),
+                ),
               );
             }).toList(),
+            onChanged: (value) {
+              setState(() {
+                _selectedItemKey = value;
+                _quantityController.text = '1';
+              });
+              _loadQuote();
+            },
           ),
           const SizedBox(height: 10),
-          if (_currentItems.isEmpty)
+          TextField(
+            controller: _quantityController,
+            keyboardType: TextInputType.number,
+            enabled: !isVehicle,
+            onChanged: (_) => _loadQuote(),
+            style: const TextStyle(color: Colors.white),
+            decoration: _fieldDecoration(l10n.smugglingQuantity).copyWith(
+              helperText: isVehicle
+                  ? l10n.smugglingVehiclesOneByOne
+                  : l10n.smugglingMaxQuantity(maxQty),
+              helperStyle: const TextStyle(color: Colors.white54),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildRouteStep(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField<String>(
+          value: _selectedDestination,
+          dropdownColor: const Color(0xFF1B1212),
+          decoration: _fieldDecoration(l10n.smugglingFieldDestination),
+          items: _destinations.map((d) {
+            final map = d as Map<String, dynamic>;
+            return DropdownMenuItem<String>(
+              value: map['id']?.toString(),
+              child: Text(
+                map['name']?.toString() ?? '',
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() => _selectedDestination = value);
+            _loadQuote();
+          },
+        ),
+        const SizedBox(height: 12),
+        Text(
+          l10n.smugglingNetwork,
+          style: const TextStyle(color: Colors.white70),
+        ),
+        const SizedBox(height: 6),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            ChoiceChip(
+              selected: _selectedNetworkScope == 'personal',
+              label: Text(l10n.smugglingPersonal),
+              selectedColor: _gold,
+              backgroundColor: const Color(0x33241A0F),
+              labelStyle: TextStyle(
+                color: _selectedNetworkScope == 'personal'
+                    ? const Color(0xFF1B1212)
+                    : Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              side: BorderSide(
+                color: _selectedNetworkScope == 'personal' ? _gold : _goldSoft,
+              ),
+              onSelected: (_) async {
+                if (_selectedNetworkScope == 'personal') return;
+                setState(() => _selectedNetworkScope = 'personal');
+                await _loadData();
+              },
+            ),
+            if (_canUseCrewNetwork)
+              ChoiceChip(
+                selected: _selectedNetworkScope == 'crew',
+                label: Text(l10n.smugglingCrew),
+                selectedColor: _gold,
+                backgroundColor: const Color(0x33241A0F),
+                labelStyle: TextStyle(
+                  color: _selectedNetworkScope == 'crew'
+                      ? const Color(0xFF1B1212)
+                      : Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+                side: BorderSide(
+                  color: _selectedNetworkScope == 'crew' ? _gold : _goldSoft,
+                ),
+                onSelected: (_) async {
+                  if (_selectedNetworkScope == 'crew') return;
+                  setState(() {
+                    _selectedNetworkScope = 'crew';
+                    if (_selectedTransportMode == 'owned') {
+                      _selectedTransportMode = 'commercial';
+                    }
+                  });
+                  await _loadData();
+                },
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTransportStep(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final selectedOwnedTransport = _selectedOwnedTransport;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.smugglingTransport,
+          style: const TextStyle(color: Colors.white70),
+        ),
+        const SizedBox(height: 6),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            ChoiceChip(
+              selected: _selectedTransportMode == 'commercial',
+              label: Text(l10n.smugglingCommercialChannel),
+              selectedColor: _gold,
+              backgroundColor: const Color(0x33241A0F),
+              labelStyle: TextStyle(
+                color: _selectedTransportMode == 'commercial'
+                    ? const Color(0xFF1B1212)
+                    : Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              side: BorderSide(
+                color: _selectedTransportMode == 'commercial' ? _gold : _goldSoft,
+              ),
+              onSelected: (_) {
+                if (_selectedTransportMode == 'commercial') return;
+                setState(() => _selectedTransportMode = 'commercial');
+                _loadQuote();
+              },
+            ),
+            ChoiceChip(
+              selected: _selectedTransportMode == 'owned',
+              label: Text(l10n.smugglingOwnedVehicleAircraft),
+              selectedColor: _gold,
+              backgroundColor: const Color(0x33241A0F),
+              labelStyle: TextStyle(
+                color: _selectedTransportMode == 'owned'
+                    ? const Color(0xFF1B1212)
+                    : Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              side: BorderSide(
+                color: _selectedTransportMode == 'owned' ? _gold : _goldSoft,
+              ),
+              onSelected: (_currentOwnedTransports.isEmpty ||
+                      _selectedNetworkScope == 'crew')
+                  ? null
+                  : (_) {
+                      if (_selectedTransportMode == 'owned') return;
+                      setState(() => _selectedTransportMode = 'owned');
+                      _loadQuote();
+                    },
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        if (_selectedTransportMode == 'owned' &&
+            _selectedNetworkScope != 'crew') ...[
+          if (_currentOwnedTransports.isEmpty)
             Text(
-              l10n.smugglingNoItemsInCategory,
+              l10n.smugglingNoOwnedTransportInCountry,
               style: const TextStyle(color: Colors.orangeAccent),
             )
           else ...[
             DropdownButtonFormField<String>(
-              value: _selectedItemKey,
-              dropdownColor: Colors.black87,
-              decoration: InputDecoration(
-                labelText: l10n.smugglingFieldItem,
-                labelStyle: const TextStyle(color: Colors.white70),
-                filled: true,
-                fillColor: Colors.black45,
-                border: const OutlineInputBorder(),
-              ),
-              items: _currentItems.map((item) {
-                final map = item as Map<String, dynamic>;
-                final key = map['itemKey']?.toString() ?? '';
-                final qty = (map['quantity'] as num?)?.toInt() ?? 0;
-                final label =
-                    '${map['itemLabel']} • $qty ${map['unitTag'] ?? ''}';
+              value: _selectedOwnedTransportKey,
+              dropdownColor: const Color(0xFF1B1212),
+              decoration: _fieldDecoration(l10n.smugglingOwnedTransportFieldLabel),
+              items: _currentOwnedTransports.map((transport) {
+                final map = transport as Map<String, dynamic>;
+                final key = map['transportKey']?.toString() ?? '';
+                final slots = (map['cargoSlots'] as num?)?.toInt() ?? 0;
+                final risk =
+                    (((map['riskReduction'] as num?)?.toDouble() ?? 0) * 100)
+                        .toStringAsFixed(0);
+                final label = l10n.smugglingOwnedTransportDropdownRow(
+                  map['transportLabel']?.toString() ?? '',
+                  slots,
+                  risk,
+                );
                 return DropdownMenuItem<String>(
                   value: key,
                   child: Text(
@@ -784,224 +1426,104 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                 );
               }).toList(),
               onChanged: (value) {
-                setState(() {
-                  _selectedItemKey = value;
-                  _quantityController.text = '1';
-                });
+                setState(() => _selectedOwnedTransportKey = value);
                 _loadQuote();
               },
             ),
-            const SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              value: _selectedDestination,
-              dropdownColor: Colors.black87,
-              decoration: InputDecoration(
-                labelText: l10n.smugglingFieldDestination,
-                labelStyle: const TextStyle(color: Colors.white70),
-                filled: true,
-                fillColor: Colors.black45,
-                border: const OutlineInputBorder(),
+            if (selectedOwnedTransport != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                l10n.smugglingOwnedTransportCapacityLine(
+                  (selectedOwnedTransport['cargoSlots'] as num?)?.toInt() ?? 0,
+                  ((((selectedOwnedTransport['confiscationChance'] as num?)
+                                  ?.toDouble() ??
+                              0) *
+                          100))
+                      .toStringAsFixed(0),
+                ),
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
-              items: _destinations.map((d) {
-                final map = d as Map<String, dynamic>;
-                return DropdownMenuItem<String>(
-                  value: map['id']?.toString(),
-                  child: Text(
-                    map['name']?.toString() ?? '',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() => _selectedDestination = value);
-                _loadQuote();
-              },
-            ),
-            const SizedBox(height: 10),
-            Text(
-              l10n.smugglingTransport,
-              style: const TextStyle(color: Colors.white70),
-            ),
-            const SizedBox(height: 6),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                ChoiceChip(
-                  selected: _selectedTransportMode == 'commercial',
-                  label: Text(l10n.smugglingCommercialChannel),
-                  onSelected: (_) {
-                    if (_selectedTransportMode == 'commercial') return;
-                    setState(() => _selectedTransportMode = 'commercial');
-                    _loadQuote();
-                  },
-                ),
-                ChoiceChip(
-                  selected: _selectedTransportMode == 'owned',
-                  label: Text(l10n.smugglingOwnedVehicleAircraft),
-                  onSelected: (_currentOwnedTransports.isEmpty || _selectedNetworkScope == 'crew')
-                      ? null
-                      : (_) {
-                          if (_selectedTransportMode == 'owned') return;
-                          setState(() => _selectedTransportMode = 'owned');
-                          _loadQuote();
-                        },
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            if (_selectedTransportMode == 'owned' && _selectedNetworkScope != 'crew')
-              if (_currentOwnedTransports.isEmpty)
-                Text(
-                  l10n.smugglingNoOwnedTransportInCountry,
-                  style: const TextStyle(color: Colors.orangeAccent),
-                )
-              else ...[
-                DropdownButtonFormField<String>(
-                  value: _selectedOwnedTransportKey,
-                  dropdownColor: Colors.black87,
-                  decoration: InputDecoration(
-                    labelText: l10n.smugglingOwnedTransportFieldLabel,
-                    labelStyle: const TextStyle(color: Colors.white70),
-                    filled: true,
-                    fillColor: Colors.black45,
-                    border: const OutlineInputBorder(),
-                  ),
-                  items: _currentOwnedTransports.map((transport) {
-                    final map = transport as Map<String, dynamic>;
-                    final key = map['transportKey']?.toString() ?? '';
-                    final slots = (map['cargoSlots'] as num?)?.toInt() ?? 0;
-                    final risk = (((map['riskReduction'] as num?)?.toDouble() ?? 0) * 100).toStringAsFixed(0);
-                    final label = l10n.smugglingOwnedTransportDropdownRow(
-                      map['transportLabel']?.toString() ?? '',
-                      slots,
-                      risk,
-                    );
-                    return DropdownMenuItem<String>(
-                      value: key,
-                      child: Text(
-                        label,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() => _selectedOwnedTransportKey = value);
-                    _loadQuote();
-                  },
-                ),
-                const SizedBox(height: 10),
-                if (selectedOwnedTransport != null)
-                  Text(
-                    l10n.smugglingOwnedTransportCapacityLine(
-                      (selectedOwnedTransport['cargoSlots'] as num?)?.toInt() ?? 0,
-                      ((((selectedOwnedTransport['confiscationChance'] as num?)?.toDouble() ?? 0) * 100)).toStringAsFixed(0),
-                    ),
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                const SizedBox(height: 10),
-              ],
-            Text(
-              l10n.smugglingNetwork,
-              style: const TextStyle(color: Colors.white70),
-            ),
-            const SizedBox(height: 6),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                ChoiceChip(
-                  selected: _selectedNetworkScope == 'personal',
-                  label: Text(l10n.smugglingPersonal),
-                  onSelected: (_) async {
-                    if (_selectedNetworkScope == 'personal') return;
-                    setState(() => _selectedNetworkScope = 'personal');
-                    await _loadData();
-                  },
-                ),
-                if (_canUseCrewNetwork)
-                  ChoiceChip(
-                    selected: _selectedNetworkScope == 'crew',
-                    label: Text(l10n.smugglingCrew),
-                    onSelected: (_) async {
-                      if (_selectedNetworkScope == 'crew') return;
-                      setState(() {
-                        _selectedNetworkScope = 'crew';
-                        if (_selectedTransportMode == 'owned') {
-                          _selectedTransportMode = 'commercial';
-                        }
-                      });
-                      await _loadData();
-                    },
-                  ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            if (_selectedTransportMode == 'commercial') ...[
-              DropdownButtonFormField<String>(
-                value: _selectedChannel,
-                dropdownColor: Colors.black87,
-                decoration: InputDecoration(
-                  labelText: l10n.smugglingChannelField,
-                  labelStyle: const TextStyle(color: Colors.white70),
-                  filled: true,
-                  fillColor: Colors.black45,
-                  border: const OutlineInputBorder(),
-                ),
-                items: _channels.map((c) {
-                  final channel = c.toString();
-                  return DropdownMenuItem<String>(
-                    value: channel,
-                    child: Text(
-                      _channelLabel(l10n, channel),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  if (value == null) return;
-                  setState(() => _selectedChannel = value);
-                  _loadQuote();
-                },
-              ),
-              const SizedBox(height: 10),
             ],
-            Text(
-              _channelHintFor(l10n, _selectedCategory, _selectedTransportMode),
-              style: const TextStyle(color: Colors.white70, fontSize: 12),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _quantityController,
-              keyboardType: TextInputType.number,
-              enabled: !isVehicle,
-              onChanged: (_) => _loadQuote(),
-              decoration: InputDecoration(
-                labelText: l10n.smugglingQuantity,
-                helperText: isVehicle
-                    ? l10n.smugglingVehiclesOneByOne
-                    : l10n.smugglingMaxQuantity(maxQty),
-                filled: true,
-                fillColor: Colors.black45,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            _buildQuotePanel(context),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton.icon(
-                onPressed: _isSending || (_selectedTransportMode == 'owned' && _selectedOwnedTransportKey == null)
-                    ? null
-                    : _sendShipment,
-                icon: const Icon(Icons.send),
-                label: Text(l10n.smugglingStartSmuggling),
-              ),
-            ),
           ],
         ],
-      ),
+        if (_selectedTransportMode == 'commercial') ...[
+          DropdownButtonFormField<String>(
+            value: _selectedChannel,
+            dropdownColor: const Color(0xFF1B1212),
+            decoration: _fieldDecoration(l10n.smugglingChannelField),
+            items: _channels.map((c) {
+              final channel = c.toString();
+              return DropdownMenuItem<String>(
+                value: channel,
+                child: Text(
+                  _channelLabel(l10n, channel),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() => _selectedChannel = value);
+              _loadQuote();
+            },
+          ),
+        ],
+        const SizedBox(height: 10),
+        Text(
+          _channelHintFor(l10n, _selectedCategory, _selectedTransportMode),
+          style: const TextStyle(color: Colors.white70, fontSize: 12),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildConfirmStep(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final selected = _selectedItem;
+    final itemLabel = selected is Map<String, dynamic>
+        ? selected['itemLabel']?.toString() ?? ''
+        : '';
+    final qty = _selectedCategory == 'vehicle'
+        ? 1
+        : (int.tryParse(_quantityController.text.trim()) ?? 0);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _kpiChip(l10n.smugglingFieldItem, '$itemLabel × $qty'),
+            _kpiChip(
+              l10n.smugglingFieldDestination,
+              () {
+                for (final d in _destinations) {
+                  if (d is Map<String, dynamic> &&
+                      d['id']?.toString() == _selectedDestination) {
+                    return d['name']?.toString() ??
+                        (_selectedDestination ?? '—');
+                  }
+                }
+                return _selectedDestination ?? '—';
+              }(),
+            ),
+            _kpiChip(
+              l10n.smugglingNetwork,
+              _networkLabel(l10n, _selectedNetworkScope),
+            ),
+            _kpiChip(
+              l10n.smugglingTransport,
+              _selectedTransportMode == 'owned'
+                  ? (_selectedOwnedTransport?['transportLabel']?.toString() ??
+                      l10n.smugglingChannelOwned)
+                  : _channelLabel(l10n, _selectedChannel),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        _buildQuotePanel(context),
+      ],
     );
   }
 
@@ -1010,7 +1532,11 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     final localeName = Localizations.localeOf(context).toString();
 
     if (_isQuoteLoading) {
-      return const LinearProgressIndicator(minHeight: 2);
+      return const LinearProgressIndicator(
+        minHeight: 2,
+        color: _gold,
+        backgroundColor: _goldSoft,
+      );
     }
 
     if (_quote == null) {
@@ -1039,75 +1565,80 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     final recommended = _quote!['recommendedChannel']?.toString();
     final transportLabel = _quote!['transportLabel']?.toString();
     final cargoSlotsRequired = (_quote!['cargoSlotsRequired'] as num?)?.toInt();
-    final cargoSlotsAvailable = (_quote!['cargoSlotsAvailable'] as num?)?.toInt();
+    final cargoSlotsAvailable =
+        (_quote!['cargoSlotsAvailable'] as num?)?.toInt();
 
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.black45,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.smugglingQuoteLiveTitle,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.smugglingQuoteLiveTitle,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _kpiChip(l10n.smugglingResultFeeLabel, formatCurrency(fee)),
+            _kpiChip(l10n.smugglingResultEtaLabel, '${eta}m'),
+            _kpiChip(
+              l10n.smugglingResultRiskLabel,
+              '$risk%',
+              valueColor: Colors.orangeAccent,
+            ),
+            if (cargoSlotsRequired != null && cargoSlotsAvailable != null)
+              _kpiChip(
+                l10n.smugglingStepCargo,
+                '$cargoSlotsRequired / $cargoSlotsAvailable',
+              ),
+          ],
+        ),
+        if (transportLabel != null && transportLabel.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text(
+            l10n.smugglingOwnedTransportCaption(transportLabel),
+            style: const TextStyle(color: Colors.lightBlueAccent),
+          ),
+        ],
+        if (cooldown > 0) ...[
+          const SizedBox(height: 6),
+          Text(
+            l10n.smugglingCooldownActive(
+              formatAdaptiveDurationFromSeconds(
+                cooldown,
+                localeName: localeName,
+              ),
+            ),
+            style: const TextStyle(color: Colors.orangeAccent),
+          ),
+        ],
+        if (recommended != null && recommended.isNotEmpty) ...[
           const SizedBox(height: 4),
           Text(
-            l10n.smugglingQuoteSummaryLine(fee.toString(), eta, risk),
-            style: const TextStyle(color: Colors.white70),
+            l10n.smugglingRecommendedChannel(_channelLabel(l10n, recommended)),
+            style: const TextStyle(color: Colors.lightBlueAccent),
           ),
-          if (transportLabel != null && transportLabel.isNotEmpty)
-            Text(
-              l10n.smugglingOwnedTransportCaption(transportLabel),
-              style: const TextStyle(color: Colors.lightBlueAccent),
-            ),
-          if (cargoSlotsRequired != null && cargoSlotsAvailable != null)
-            Text(
-              l10n.smugglingCargoSlotsLine(cargoSlotsRequired, cargoSlotsAvailable),
-              style: const TextStyle(color: Colors.white70),
-            ),
-          if (cooldown > 0)
-            Text(
-              l10n.smugglingCooldownActive(
-                formatAdaptiveDurationFromSeconds(
-                  cooldown,
-                  localeName: localeName,
-                ),
-              ),
-              style: const TextStyle(color: Colors.orangeAccent),
-            ),
-          if (recommended != null && recommended.isNotEmpty)
-            Text(
-              l10n.smugglingRecommendedChannel(_channelLabel(l10n, recommended)),
-              style: const TextStyle(color: Colors.lightBlueAccent),
-            ),
-          if (!canAfford)
-            Text(
-              l10n.smugglingInsufficientCash,
-              style: const TextStyle(color: Colors.redAccent),
-            ),
         ],
-      ),
+        if (!canAfford) ...[
+          const SizedBox(height: 4),
+          Text(
+            l10n.smugglingInsufficientCash,
+            style: const TextStyle(color: Colors.redAccent),
+          ),
+        ],
+      ],
     );
   }
 
   Widget _buildDepotsPanel(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final width = MediaQuery.of(context).size.width;
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.55),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white24),
-      ),
+    return _mafiaPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1121,51 +1652,90 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
           ),
           const SizedBox(height: 8),
           if (_depots.isEmpty)
-            Text(
-              l10n.smugglingDepotsEmpty,
-              style: const TextStyle(color: Colors.white70),
+            _emptyState(
+              width: width,
+              title: l10n.smugglingEmptyDepotsTitle,
+              hint: l10n.smugglingEmptyDepotsHint,
             )
           else
             ..._depots.map((d) {
               final depot = d as Map<String, dynamic>;
               final canClaimHere = depot['canClaimHere'] == true;
               final packages = (depot['packages'] as num?)?.toInt() ?? 0;
-              final totalQuantity = (depot['totalQuantity'] as num?)?.toInt() ?? 0;
-              return ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(
-                  canClaimHere ? Icons.check_circle : Icons.location_on,
-                  color: canClaimHere
-                      ? Colors.lightGreenAccent
-                      : Colors.white70,
+              final totalQuantity =
+                  (depot['totalQuantity'] as num?)?.toInt() ?? 0;
+              final scope =
+                  depot['networkScope']?.toString() ?? 'personal';
+
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color(0x33241A0F),
+                  border: Border.all(
+                    color: canClaimHere
+                        ? Colors.lightGreenAccent.withOpacity(0.7)
+                        : _goldSoft,
+                  ),
                 ),
-                title: Text(
-                  '${depot['countryName']}',
-                  style: const TextStyle(color: Colors.white),
-                ),
-                subtitle: Text(
-                  l10n.smugglingDepotLine(packages, totalQuantity),
-                  style: const TextStyle(color: Colors.white70),
-                ),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                child: Row(
                   children: [
-                    Text(
-                      _networkLabel(
-                        l10n,
-                        depot['networkScope']?.toString() ?? 'personal',
-                      ),
-                      style: const TextStyle(
-                        color: Colors.amberAccent,
-                        fontSize: 12,
+                    Icon(
+                      canClaimHere ? Icons.check_circle : Icons.location_on,
+                      color: canClaimHere
+                          ? Colors.lightGreenAccent
+                          : Colors.white70,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${depot['countryName']}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            l10n.smugglingDepotLine(packages, totalQuantity),
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Text(
+                            _networkLabel(l10n, scope),
+                            style: const TextStyle(
+                              color: _gold,
+                              fontSize: 12,
+                            ),
+                          ),
+                          if (canClaimHere)
+                            Text(
+                              l10n.smugglingClaimHere,
+                              style: const TextStyle(
+                                color: Colors.lightGreenAccent,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                     if (canClaimHere)
-                      Text(
-                        l10n.smugglingClaimHere,
-                        style: const TextStyle(color: Colors.lightGreenAccent),
+                      ElevatedButton(
+                        onPressed: _isClaiming
+                            ? null
+                            : () => _claimCurrentDepot(scope),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _gold,
+                          foregroundColor: const Color(0xFF1B1212),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                        ),
+                        child: Text(l10n.smugglingClaimThisDepot),
                       ),
                   ],
                 ),
@@ -1178,68 +1748,183 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
   Widget _buildShipmentsPanel(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final width = MediaQuery.of(context).size.width;
+    final ordered = _orderedShipments;
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.55),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white24),
-      ),
+    return _mafiaPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.smugglingStatusTitle,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  l10n.smugglingStatusTitle,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SegmentedButton<bool>(
+                segments: [
+                  ButtonSegment(
+                    value: true,
+                    label: Text(l10n.smugglingActiveFilter),
+                  ),
+                  ButtonSegment(
+                    value: false,
+                    label: Text(l10n.smugglingShowAllFilter),
+                  ),
+                ],
+                selected: {_shipmentsActiveOnly},
+                onSelectionChanged: (value) {
+                  setState(() => _shipmentsActiveOnly = value.first);
+                },
+                style: ButtonStyle(
+                  visualDensity: VisualDensity.compact,
+                  foregroundColor: WidgetStateProperty.resolveWith((states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return const Color(0xFF1B1212);
+                    }
+                    return Colors.white70;
+                  }),
+                  backgroundColor: WidgetStateProperty.resolveWith((states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return _gold;
+                    }
+                    return const Color(0x33241A0F);
+                  }),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
-          if (_shipments.isEmpty)
-            Text(
-              l10n.smugglingNoShipmentsYet,
-              style: const TextStyle(color: Colors.white70),
+          if (ordered.isEmpty)
+            _emptyState(
+              width: width,
+              title: l10n.smugglingEmptyShipmentsTitle,
+              hint: l10n.smugglingEmptyShipmentsHint,
             )
           else
-            ..._shipments.take(20).map((s) {
-              final shipment = s as Map<String, dynamic>;
+            ...ordered.take(20).map((shipment) {
               final status = shipment['status']?.toString() ?? 'unknown';
-              final statusColor = status == 'ready'
-                  ? Colors.lightGreenAccent
-                  : status == 'seized'
-                  ? Colors.redAccent
-                  : status == 'claimed'
-                  ? Colors.blueAccent
-                  : Colors.orangeAccent;
+              final statusColor = _statusColor(status);
+              final dense = status == 'claimed' || status == 'seized';
+              final canClaimHere = shipment['canClaimHere'] == true;
+              final scope =
+                  shipment['networkScope']?.toString() ?? 'personal';
 
               final ownedExtra = (shipment['metadata'] is Map<String, dynamic> &&
-                      (shipment['metadata'] as Map<String, dynamic>)['ownedTransport'] is Map<String, dynamic>)
+                      (shipment['metadata'] as Map<String, dynamic>)[
+                          'ownedTransport'] is Map<String, dynamic>)
                   ? ' • ${((shipment['metadata'] as Map<String, dynamic>)['ownedTransport'] as Map<String, dynamic>)['transportLabel']}'
                   : '';
-              final riskPct = ((double.tryParse(shipment['seizureChance'].toString()) ?? 0) * 100).toStringAsFixed(1);
+              final riskPct =
+                  ((double.tryParse(shipment['seizureChance'].toString()) ?? 0) *
+                          100)
+                      .toStringAsFixed(1);
 
-              return Card(
-                color: Colors.black38,
+              return Container(
                 margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  title: Text(
-                    '${shipment['itemLabel']} • ${shipment['quantity']} ${shipment['unitTag'] ?? ''}',
-                    style: const TextStyle(color: Colors.white),
+                padding: EdgeInsets.all(dense ? 10 : 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color(0x33241A0F),
+                  border: Border.all(
+                    color: canClaimHere
+                        ? Colors.lightGreenAccent.withOpacity(0.55)
+                        : _goldSoft,
                   ),
-                  subtitle: Text(
-                    '${shipment['originCountryName']} → ${shipment['destinationCountryName']} • ${_networkLabel(l10n, shipment['networkScope']?.toString() ?? 'personal')} • ${_channelLabel(l10n, shipment['channel']?.toString() ?? 'courier')}$ownedExtra • €${shipment['shippingFee']} • ${l10n.smugglingSeizureRiskPercent(riskPct)}',
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  trailing: Text(
-                    _shipmentStatusLabel(l10n, status),
-                    style: TextStyle(
-                      color: statusColor,
-                      fontWeight: FontWeight.bold,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '${shipment['itemLabel']} • ${shipment['quantity']} ${shipment['unitTag'] ?? ''}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: dense ? 13 : 14,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(999),
+                            color: statusColor.withOpacity(0.18),
+                            border: Border.all(
+                              color: statusColor.withOpacity(0.7),
+                            ),
+                          ),
+                          child: Text(
+                            _shipmentStatusLabel(l10n, status),
+                            style: TextStyle(
+                              color: statusColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                    if (!dense) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        '${shipment['originCountryName']} → ${shipment['destinationCountryName']} • ${_networkLabel(l10n, scope)} • ${_channelLabel(l10n, shipment['channel']?.toString() ?? 'courier')}$ownedExtra • €${shipment['shippingFee']} • ${l10n.smugglingSeizureRiskPercent(riskPct)}',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          size: 14,
+                          color: status == 'ready'
+                              ? Colors.lightGreenAccent
+                              : _gold,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          _etaLabel(l10n, shipment),
+                          style: TextStyle(
+                            color: status == 'ready'
+                                ? Colors.lightGreenAccent
+                                : const Color(0xFFFFE3A0),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const Spacer(),
+                        if (canClaimHere)
+                          TextButton(
+                            onPressed: _isClaiming
+                                ? null
+                                : () => _claimCurrentDepot(scope),
+                            style: TextButton.styleFrom(
+                              foregroundColor: _gold,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            child: Text(l10n.smugglingClaimThisDepot),
+                          ),
+                      ],
+                    ),
+                  ],
                 ),
               );
             }),

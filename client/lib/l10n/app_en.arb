@@ -7761,6 +7761,44 @@
       }
     }
   },
+  "smugglingStepCargo": "Cargo",
+  "smugglingStepRoute": "Route",
+  "smugglingStepTransport": "Transport",
+  "smugglingStepConfirm": "Confirm",
+  "smugglingNextStep": "Next",
+  "smugglingBackStep": "Back",
+  "smugglingEmptyCargoTitle": "Nothing to ship",
+  "smugglingEmptyCargoHint": "Buy trade goods, drugs or gear first, then return here.",
+  "smugglingEmptyShipmentsTitle": "No active runs",
+  "smugglingEmptyShipmentsHint": "Start a shipment above. Travel light and claim from the depot.",
+  "smugglingEmptyDepotsTitle": "Depots empty",
+  "smugglingEmptyDepotsHint": "Ready packages appear here when a shipment arrives.",
+  "smugglingResultSendTitle": "Shipment underway",
+  "smugglingResultClaimTitle": "Depot claimed",
+  "smugglingResultFeeLabel": "Fee",
+  "smugglingResultEtaLabel": "ETA",
+  "smugglingResultXpLabel": "XP",
+  "smugglingResultRiskLabel": "Risk",
+  "smugglingEtaReady": "Arrived",
+  "smugglingEtaMinutesLeft": "{minutes}m left",
+  "@smugglingEtaMinutesLeft": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingEtaSecondsLeft": "{seconds}s left",
+  "@smugglingEtaSecondsLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingActiveFilter": "Active",
+  "smugglingShowAllFilter": "All",
+  "smugglingClaimThisDepot": "Claim depot",
   "cryptoMarketNoData": "No crypto market data available",
   "cryptoMarketTitle": "Crypto market",
   "cryptoMarketOpenOrdersCount": "Open orders: {count}",
