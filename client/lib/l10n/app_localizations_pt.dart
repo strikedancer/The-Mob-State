@@ -11790,6 +11790,14 @@ class AppLocalizationsPt extends AppLocalizations {
       'Venda contrabando com lucro ou recolha remessas — quem somar mais pontos vence.';
 
   @override
+  String get gameEventTmplMonthlyEmpireShowdownTitle =>
+      'Monthly Empire Showdown';
+
+  @override
+  String get gameEventTmplMonthlyEmpireShowdownDesc =>
+      'All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.';
+
+  @override
   String get gameScreenLoadError => 'Não foi possível carregar eventos.';
 
   @override

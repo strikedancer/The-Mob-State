@@ -3,6 +3,8 @@
 ## Scope
 
 - Preset `GameEventTemplate` + `GameEventSchedule` (`interval`) seeds via `ensureGameEventPresets()` on backend startup.
+- **Weekly** presets (48h windows, 7-day interval, staggered): vehicles / smuggling / drugs / crime / trade.
+- **Monthly Empire Showdown** (`monthly_empire_showdown`, category `allround`): 7-day live window every ~30 days; receives score from **all** gameplay categories via `recordContribution` (OR `allround`). Top ranks grant rare vehicle / weapons / ammo / parts (cash fallback if garage/world-cap blocks).
 - `runEventScheduler` (cron) starts `active` `GameLiveEvent` instances, attaches default `GameEventRewardRule` rows, resolves on `endsAt`, then `processPendingRewardDeliveries` applies `cash` / `xp` / `premiumCredits` and optional catalogue `items[]` (→ `player_event_items`) from claims.
 - **Extended rewards** (via `eventRewardFulfillmentService`): `ammo[]`, `tools[]`, `weapons[]`, `vehicles[]` (world-cap + garage/marina checks; cash fallback if blocked), `vehicleParts` `{ car, motorcycle, boat }`. Category presets seed modest ammo/parts/tools for weekly rounds.
 - **Categories** wired in gameplay: `crime`, `drugs`, `smuggling`, `vehicles`, **`trade`** — only one active preset per category to avoid double score from `recordContribution`.

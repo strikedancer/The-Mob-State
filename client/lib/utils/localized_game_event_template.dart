@@ -22,6 +22,8 @@ String localizedGameEventTitle(
         return l10n.gameEventTmplStreetCrimeSpreeTitle;
       case 'contraband_rush':
         return l10n.gameEventTmplContrabandRushTitle;
+      case 'monthly_empire_showdown':
+        return l10n.gameEventTmplMonthlyEmpireShowdownTitle;
       default:
         break;
     }
@@ -57,6 +59,8 @@ String localizedGameEventShortDescription(
         return l10n.gameEventTmplStreetCrimeSpreeDesc;
       case 'contraband_rush':
         return l10n.gameEventTmplContrabandRushDesc;
+      case 'monthly_empire_showdown':
+        return l10n.gameEventTmplMonthlyEmpireShowdownDesc;
       default:
         break;
     }

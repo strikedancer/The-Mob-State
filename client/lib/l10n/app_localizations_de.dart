@@ -11852,6 +11852,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Verkaufe Schmuggelware mit Gewinn oder hole Schmuggelladungen ab — höchste Punktzahl gewinnt.';
 
   @override
+  String get gameEventTmplMonthlyEmpireShowdownTitle =>
+      'Monthly Empire Showdown';
+
+  @override
+  String get gameEventTmplMonthlyEmpireShowdownDesc =>
+      'All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.';
+
+  @override
   String get gameScreenLoadError => 'Ereignisse konnten nicht geladen werden.';
 
   @override

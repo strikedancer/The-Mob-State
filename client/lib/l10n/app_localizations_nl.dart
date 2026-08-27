@@ -11727,6 +11727,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Verkoop handelswaren met winst of haal gesmokkelde lading op — hoogste score wint.';
 
   @override
+  String get gameEventTmplMonthlyEmpireShowdownTitle =>
+      'Maandelijkse Empire Showdown';
+
+  @override
+  String get gameEventTmplMonthlyEmpireShowdownDesc =>
+      'Maandchallenge: score met misdaden, voertuigen, drugs, smokkel én handel. Top ranks winnen zeldzame voertuigen, wapens, munitie en onderdelen.';
+
+  @override
   String get gameScreenLoadError => 'Events konden niet geladen worden.';
 
   @override

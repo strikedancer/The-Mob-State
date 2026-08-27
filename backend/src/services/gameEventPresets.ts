@@ -1,19 +1,22 @@
 import prisma from '../lib/prisma';
 
 const WEEK_MINUTES = 7 * 24 * 60;
+const MONTH_MINUTES = 30 * 24 * 60;
 
-/** Eén key per `category` zodat dezelfde actie niet dubbel telt (recordContribution = alle actieve met zelfde category). */
+/** Eén key per `category` zodat dezelfde actie niet dubbel telt (recordContribution = alle actieve met zelfde category).
+ * `allround` is special: receives contributions from every gameplay category. */
 export const PRESET_GAME_EVENT_KEYS = [
   'weekly_vehicle_theft_hunt',
   'smuggling_surge',
   'lab_output_challenge',
   'street_crime_spree',
   'contraband_rush',
+  'monthly_empire_showdown',
 ] as const;
 
 type PresetRow = {
   key: (typeof PRESET_GAME_EVENT_KEYS)[number];
-  category: 'vehicles' | 'smuggling' | 'drugs' | 'crime' | 'trade';
+  category: 'vehicles' | 'smuggling' | 'drugs' | 'crime' | 'trade' | 'allround';
   eventType: string;
   titleNl: string;
   titleEn: string;
@@ -93,6 +96,21 @@ const PRESET_ROWS: PresetRow[] = [
     durationMinutes: 2880,
     cooldownMinutes: 0,
     staggerDayOffset: 4,
+  },
+  {
+    key: 'monthly_empire_showdown',
+    category: 'allround',
+    eventType: 'contribution',
+    titleNl: 'Maandelijkse Empire Showdown',
+    titleEn: 'Monthly Empire Showdown',
+    shortDescriptionNl:
+      'Maandchallenge: score met misdaden, voertuigen, drugs, smokkel én handel. Top ranks winnen zeldzame beloningen.',
+    shortDescriptionEn:
+      'Monthly all-round challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare rewards.',
+    intervalMinutes: MONTH_MINUTES,
+    durationMinutes: 7 * 24 * 60, // 7 days live
+    cooldownMinutes: 0,
+    staggerDayOffset: 0,
   },
 ];
 
@@ -183,6 +201,54 @@ export function getDefaultRewardRulesForTemplateKey(
           },
           low: {
             ammo: [{ ammoType: '9mm', quantity: 10 }],
+          },
+        };
+      case 'monthly_empire_showdown':
+        return {
+          top: {
+            cash: 150_000,
+            premiumCredits: 25,
+            xp: 2500,
+            items: [
+              { itemKey: 'event_chip_gold', quantity: 3 },
+              { itemKey: 'event_badge_rival', quantity: 1 },
+            ],
+            vehicles: [
+              {
+                vehicleId: 'honda_nsx_street',
+                condition: 90,
+                fuel: 60,
+                cashFallback: 75_000,
+              },
+            ],
+            weapons: [{ weaponId: 'handgun_heavy', condition: 100 }],
+            ammo: [
+              { ammoType: '45acp', quantity: 120 },
+              { ammoType: '9mm', quantity: 100 },
+            ],
+            vehicleParts: { car: 20, motorcycle: 10, boat: 8 },
+            tools: [
+              { toolId: 'car_theft_tools', quantity: 1 },
+              { toolId: 'hacking_laptop', quantity: 1 },
+            ],
+          },
+          mid: {
+            cash: 75_000,
+            premiumCredits: 12,
+            xp: 1200,
+            items: [{ itemKey: 'event_chip_gold', quantity: 1 }],
+            weapons: [{ weaponId: 'handgun_9mm', condition: 100 }],
+            ammo: [{ ammoType: '9mm', quantity: 80 }],
+            vehicleParts: { car: 10, motorcycle: 5, boat: 3 },
+            tools: [{ toolId: 'bolt_cutter', quantity: 1 }],
+          },
+          low: {
+            cash: 25_000,
+            premiumCredits: 5,
+            xp: 500,
+            items: [{ itemKey: 'event_chip_silver', quantity: 1 }],
+            ammo: [{ ammoType: '9mm', quantity: 40 }],
+            vehicleParts: { car: 4, motorcycle: 2 },
           },
         };
       default:

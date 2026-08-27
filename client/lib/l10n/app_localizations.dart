@@ -20788,6 +20788,18 @@ abstract class AppLocalizations {
   /// **'Sell contraband for profit or claim smuggled trade shipments — highest score wins.'**
   String get gameEventTmplContrabandRushDesc;
 
+  /// No description provided for @gameEventTmplMonthlyEmpireShowdownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Empire Showdown'**
+  String get gameEventTmplMonthlyEmpireShowdownTitle;
+
+  /// No description provided for @gameEventTmplMonthlyEmpireShowdownDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.'**
+  String get gameEventTmplMonthlyEmpireShowdownDesc;
+
   /// No description provided for @gameScreenLoadError.
   ///
   /// In en, this message translates to:

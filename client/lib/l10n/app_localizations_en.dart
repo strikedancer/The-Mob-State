@@ -11692,6 +11692,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Sell contraband for profit or claim smuggled trade shipments — highest score wins.';
 
   @override
+  String get gameEventTmplMonthlyEmpireShowdownTitle =>
+      'Monthly Empire Showdown';
+
+  @override
+  String get gameEventTmplMonthlyEmpireShowdownDesc =>
+      'All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.';
+
+  @override
   String get gameScreenLoadError => 'Could not load events.';
 
   @override

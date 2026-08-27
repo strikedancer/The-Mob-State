@@ -769,6 +769,12 @@ class _EventsScreenState extends State<EventsScreen> {
           icon: Icons.storefront,
           accent: const Color(0xFFD4AF37),
         );
+      case 'allround':
+        return (
+          asset: 'assets/images/backgrounds/crime_background.png',
+          icon: Icons.emoji_events,
+          accent: const Color(0xFFB388FF),
+        );
       default:
         return (
           asset: 'assets/images/backgrounds/crime_background.png',

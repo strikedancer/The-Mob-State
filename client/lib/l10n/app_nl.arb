@@ -5052,6 +5052,8 @@
   "gameEventTmplStreetCrimeSpreeDesc": "Pleg zoveel mogelijk misdaden in het actieve venster.",
   "gameEventTmplContrabandRushTitle": "Contraband Rush",
   "gameEventTmplContrabandRushDesc": "Verkoop handelswaren met winst of haal gesmokkelde lading op — hoogste score wint.",
+  "gameEventTmplMonthlyEmpireShowdownTitle": "Maandelijkse Empire Showdown",
+  "gameEventTmplMonthlyEmpireShowdownDesc": "Maandchallenge: score met misdaden, voertuigen, drugs, smokkel én handel. Top ranks winnen zeldzame voertuigen, wapens, munitie en onderdelen.",
   "gameScreenLoadError": "Events konden niet geladen worden.",
   "gameScreenDetailsLoadError": "Eventdetails konden niet geladen worden.",
   "gameScreenSectionLive": "Live events",

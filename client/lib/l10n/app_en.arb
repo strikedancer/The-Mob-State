@@ -6864,6 +6864,8 @@
   "gameEventTmplStreetCrimeSpreeDesc": "Complete as many crimes as possible in the live window.",
   "gameEventTmplContrabandRushTitle": "Contraband Rush",
   "gameEventTmplContrabandRushDesc": "Sell contraband for profit or claim smuggled trade shipments — highest score wins.",
+  "gameEventTmplMonthlyEmpireShowdownTitle": "Monthly Empire Showdown",
+  "gameEventTmplMonthlyEmpireShowdownDesc": "All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.",
   "gameScreenLoadError": "Could not load events.",
   "gameScreenDetailsLoadError": "Could not load event details.",
   "gameScreenSectionLive": "Live Events",

@@ -633,7 +633,9 @@ class GameEventService {
       const activeEvents = await prisma.gameLiveEvent.findMany({
         where: {
           status: 'active',
-          template: { category },
+          template: {
+            OR: [{ category }, { category: 'allround' }],
+          },
           AND: [
             { OR: [{ startedAt: null }, { startedAt: { lte: now } }] },
             { OR: [{ endsAt: null }, { endsAt: { gt: now } }] },

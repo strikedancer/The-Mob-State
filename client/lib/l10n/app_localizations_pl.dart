@@ -11780,6 +11780,14 @@ class AppLocalizationsPl extends AppLocalizations {
       'Sprzedawaj kontrabandę z zyskiem lub odbieraj przesyłki — wygrywa najwyższy wynik.';
 
   @override
+  String get gameEventTmplMonthlyEmpireShowdownTitle =>
+      'Monthly Empire Showdown';
+
+  @override
+  String get gameEventTmplMonthlyEmpireShowdownDesc =>
+      'All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.';
+
+  @override
   String get gameScreenLoadError => 'Nie udało się wczytać wydarzeń.';
 
   @override

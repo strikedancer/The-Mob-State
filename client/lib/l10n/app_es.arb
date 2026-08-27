@@ -9851,5 +9851,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "gameEventTmplMonthlyEmpireShowdownTitle": "Monthly Empire Showdown",
+  "gameEventTmplMonthlyEmpireShowdownDesc": "All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts."
 }
