@@ -8829,6 +8829,51 @@
     }
   },
   "crimeTrainingOpenHub": "Tik om het trainingscircuit te openen",
+  "crimeScreenHeroTitle": "Straatmisdaden",
+  "crimeScreenHeroSubtitle": "Kies je volgende slag. Trainingsbonussen en je crime-wapen gelden voor elke poging.",
+  "crimeScreenPrepTitle": "Voorbereiding",
+  "crimeScreenFilterAll": "Alle misdaden",
+  "crimeScreenFilterAvailable": "Alleen beschikbaar",
+  "crimeScreenSortLabel": "Sorteer",
+  "crimeScreenSortReward": "Hoogste beloning",
+  "crimeScreenSortRank": "Vereiste rank",
+  "crimeScreenSortSuccess": "Slagingskans",
+  "crimeScreenLiveEventActive": "Live event: {title}",
+  "@crimeScreenLiveEventActive": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeScreenLiveEventProgress": "Score {score} · Rank {rank} · {timeLeft}",
+  "@crimeScreenLiveEventProgress": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "rank": {
+        "type": "String"
+      },
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeScreenOpenEvents": "Tik voor eventdetails",
+  "crimeScreenTrainingNudge": "Nog geen trainingsbonus — train sportschool en schietbaan voor extra slagingskans.",
+  "crimeCardRankRequired": "Rank {rank}+",
+  "@crimeCardRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crimeCardTierLow": "Klein",
+  "crimeCardTierMid": "Serieus",
+  "crimeCardTierHigh": "Groot",
+  "crimeScreenNoMatches": "Geen misdaden voor dit filter.",
   "trainingHubRefreshStatus": "Vernieuwen",
   "trainingHubRefreshTooltip": "Status opnieuw van de server laden",
   "trainingHubOpenCrimes": "Open misdaden",

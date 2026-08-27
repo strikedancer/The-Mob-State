@@ -21194,6 +21194,118 @@ abstract class AppLocalizations {
   /// **'Tap to open training hub'**
   String get crimeTrainingOpenHub;
 
+  /// No description provided for @crimeScreenHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Street crimes'**
+  String get crimeScreenHeroTitle;
+
+  /// No description provided for @crimeScreenHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your next score. Training bonuses and your weapon loadout apply to every attempt.'**
+  String get crimeScreenHeroSubtitle;
+
+  /// No description provided for @crimeScreenPrepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prep before you hit'**
+  String get crimeScreenPrepTitle;
+
+  /// No description provided for @crimeScreenFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All crimes'**
+  String get crimeScreenFilterAll;
+
+  /// No description provided for @crimeScreenFilterAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available only'**
+  String get crimeScreenFilterAvailable;
+
+  /// No description provided for @crimeScreenSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get crimeScreenSortLabel;
+
+  /// No description provided for @crimeScreenSortReward.
+  ///
+  /// In en, this message translates to:
+  /// **'Top reward'**
+  String get crimeScreenSortReward;
+
+  /// No description provided for @crimeScreenSortRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank required'**
+  String get crimeScreenSortRank;
+
+  /// No description provided for @crimeScreenSortSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success chance'**
+  String get crimeScreenSortSuccess;
+
+  /// No description provided for @crimeScreenLiveEventActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live event: {title}'**
+  String crimeScreenLiveEventActive(String title);
+
+  /// No description provided for @crimeScreenLiveEventProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Score {score} · Rank {rank} · {timeLeft}'**
+  String crimeScreenLiveEventProgress(
+    String score,
+    String rank,
+    String timeLeft,
+  );
+
+  /// No description provided for @crimeScreenOpenEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for event details'**
+  String get crimeScreenOpenEvents;
+
+  /// No description provided for @crimeScreenTrainingNudge.
+  ///
+  /// In en, this message translates to:
+  /// **'No training bonus yet — hit the gym and range for extra success chance.'**
+  String get crimeScreenTrainingNudge;
+
+  /// No description provided for @crimeCardRankRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank {rank}+'**
+  String crimeCardRankRequired(int rank);
+
+  /// No description provided for @crimeCardTierLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Petty'**
+  String get crimeCardTierLow;
+
+  /// No description provided for @crimeCardTierMid.
+  ///
+  /// In en, this message translates to:
+  /// **'Serious'**
+  String get crimeCardTierMid;
+
+  /// No description provided for @crimeCardTierHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Major'**
+  String get crimeCardTierHigh;
+
+  /// No description provided for @crimeScreenNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No crimes match this filter.'**
+  String get crimeScreenNoMatches;
+
   /// No description provided for @crimeCriminalRecordWipeDesc.
   ///
   /// In en, this message translates to:

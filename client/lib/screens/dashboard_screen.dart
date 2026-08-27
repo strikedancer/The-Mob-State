@@ -1573,6 +1573,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return CrimeScreen(
           onOpenTraining: () =>
               _selectWebSection(_WebSection.trainingHub),
+          onOpenEvents: () => _selectWebSection(_WebSection.events),
         );
       case _WebSection.jobs:
         return const JobsScreen();

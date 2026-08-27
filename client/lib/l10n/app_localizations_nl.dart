@@ -12088,6 +12088,72 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeTrainingOpenHub => 'Tik om het trainingscircuit te openen';
 
   @override
+  String get crimeScreenHeroTitle => 'Straatmisdaden';
+
+  @override
+  String get crimeScreenHeroSubtitle =>
+      'Kies je volgende slag. Trainingsbonussen en je crime-wapen gelden voor elke poging.';
+
+  @override
+  String get crimeScreenPrepTitle => 'Voorbereiding';
+
+  @override
+  String get crimeScreenFilterAll => 'Alle misdaden';
+
+  @override
+  String get crimeScreenFilterAvailable => 'Alleen beschikbaar';
+
+  @override
+  String get crimeScreenSortLabel => 'Sorteer';
+
+  @override
+  String get crimeScreenSortReward => 'Hoogste beloning';
+
+  @override
+  String get crimeScreenSortRank => 'Vereiste rank';
+
+  @override
+  String get crimeScreenSortSuccess => 'Slagingskans';
+
+  @override
+  String crimeScreenLiveEventActive(String title) {
+    return 'Live event: $title';
+  }
+
+  @override
+  String crimeScreenLiveEventProgress(
+    String score,
+    String rank,
+    String timeLeft,
+  ) {
+    return 'Score $score · Rank $rank · $timeLeft';
+  }
+
+  @override
+  String get crimeScreenOpenEvents => 'Tik voor eventdetails';
+
+  @override
+  String get crimeScreenTrainingNudge =>
+      'Nog geen trainingsbonus — train sportschool en schietbaan voor extra slagingskans.';
+
+  @override
+  String crimeCardRankRequired(int rank) {
+    return 'Rank $rank+';
+  }
+
+  @override
+  String get crimeCardTierLow => 'Klein';
+
+  @override
+  String get crimeCardTierMid => 'Serieus';
+
+  @override
+  String get crimeCardTierHigh => 'Groot';
+
+  @override
+  String get crimeScreenNoMatches => 'Geen misdaden voor dit filter.';
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
 

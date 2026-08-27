@@ -12214,6 +12214,72 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crimeTrainingOpenHub => 'Tap to open training hub';
 
   @override
+  String get crimeScreenHeroTitle => 'Street crimes';
+
+  @override
+  String get crimeScreenHeroSubtitle =>
+      'Pick your next score. Training bonuses and your weapon loadout apply to every attempt.';
+
+  @override
+  String get crimeScreenPrepTitle => 'Prep before you hit';
+
+  @override
+  String get crimeScreenFilterAll => 'All crimes';
+
+  @override
+  String get crimeScreenFilterAvailable => 'Available only';
+
+  @override
+  String get crimeScreenSortLabel => 'Sort';
+
+  @override
+  String get crimeScreenSortReward => 'Top reward';
+
+  @override
+  String get crimeScreenSortRank => 'Rank required';
+
+  @override
+  String get crimeScreenSortSuccess => 'Success chance';
+
+  @override
+  String crimeScreenLiveEventActive(String title) {
+    return 'Live event: $title';
+  }
+
+  @override
+  String crimeScreenLiveEventProgress(
+    String score,
+    String rank,
+    String timeLeft,
+  ) {
+    return 'Score $score · Rank $rank · $timeLeft';
+  }
+
+  @override
+  String get crimeScreenOpenEvents => 'Tap for event details';
+
+  @override
+  String get crimeScreenTrainingNudge =>
+      'No training bonus yet — hit the gym and range for extra success chance.';
+
+  @override
+  String crimeCardRankRequired(int rank) {
+    return 'Rank $rank+';
+  }
+
+  @override
+  String get crimeCardTierLow => 'Petty';
+
+  @override
+  String get crimeCardTierMid => 'Serious';
+
+  @override
+  String get crimeCardTierHigh => 'Major';
+
+  @override
+  String get crimeScreenNoMatches => 'No crimes match this filter.';
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Forgez des dossiers judiciaires et effacez l’intégralité de votre casier judiciaire si l’opération réussit.';
 
