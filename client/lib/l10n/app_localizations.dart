@@ -21880,6 +21880,114 @@ abstract class AppLocalizations {
   /// **'Repeating the same job back-to-back lowers your success chance. Rotate work or train at school for better odds on pro jobs.'**
   String get jobScreenRepeatPenaltyHint;
 
+  /// No description provided for @jobFlavorRegularShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Solid shift — nothing flashy, but the paycheck cleared.'**
+  String get jobFlavorRegularShift;
+
+  /// No description provided for @jobFlavorOvertimeShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Overtime approved — extra hours on the clock.'**
+  String get jobFlavorOvertimeShift;
+
+  /// No description provided for @jobFlavorCashTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash tip landed under the table.'**
+  String get jobFlavorCashTip;
+
+  /// No description provided for @jobFlavorBigClient.
+  ///
+  /// In en, this message translates to:
+  /// **'A big client kept you busy all shift.'**
+  String get jobFlavorBigClient;
+
+  /// No description provided for @jobFlavorUnderCounterTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone slid a tip under the counter.'**
+  String get jobFlavorUnderCounterTip;
+
+  /// No description provided for @jobFlavorTaxiNightFare.
+  ///
+  /// In en, this message translates to:
+  /// **'Late-night fare paid double — no questions asked.'**
+  String get jobFlavorTaxiNightFare;
+
+  /// No description provided for @jobFlavorSecuritySideGig.
+  ///
+  /// In en, this message translates to:
+  /// **'Off-the-books security gig on the side.'**
+  String get jobFlavorSecuritySideGig;
+
+  /// No description provided for @jobFlavorWarehouseFind.
+  ///
+  /// In en, this message translates to:
+  /// **'Found unclaimed goods in the warehouse.'**
+  String get jobFlavorWarehouseFind;
+
+  /// No description provided for @jobFlavorIntelPickup.
+  ///
+  /// In en, this message translates to:
+  /// **'You picked up useful street chatter on the job.'**
+  String get jobFlavorIntelPickup;
+
+  /// No description provided for @jobFlavorClientStiffed.
+  ///
+  /// In en, this message translates to:
+  /// **'Client stiffed you — no pay this round.'**
+  String get jobFlavorClientStiffed;
+
+  /// No description provided for @jobFlavorBossCaughtSlacking.
+  ///
+  /// In en, this message translates to:
+  /// **'Boss caught you slacking — shift ended early.'**
+  String get jobFlavorBossCaughtSlacking;
+
+  /// No description provided for @jobFlavorRegisterShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Register came up short — you took the blame.'**
+  String get jobFlavorRegisterShort;
+
+  /// No description provided for @jobFlavorEquipmentFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment failure killed the shift.'**
+  String get jobFlavorEquipmentFailure;
+
+  /// No description provided for @jobFlavorShiftCutShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift cut short with no payout.'**
+  String get jobFlavorShiftCutShort;
+
+  /// No description provided for @jobResultFlavorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened'**
+  String get jobResultFlavorLabel;
+
+  /// No description provided for @jobResultIntelInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Street intel sent to your inbox.'**
+  String get jobResultIntelInbox;
+
+  /// No description provided for @jobResultTipBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'+€{amount} tip bonus'**
+  String jobResultTipBonus(String amount);
+
+  /// No description provided for @jobCardIntelChance.
+  ///
+  /// In en, this message translates to:
+  /// **'Street intel'**
+  String get jobCardIntelChance;
+
   /// No description provided for @crimeCriminalRecordWipeDesc.
   ///
   /// In en, this message translates to:

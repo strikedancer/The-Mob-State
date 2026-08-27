@@ -18,6 +18,9 @@ class CrimeResultOverlay extends StatelessWidget {
   final bool isSuccess;
   /// Optional headline; defaults to success or failure l10n.
   final String? headline;
+  final String? flavorLine;
+  final String? tipBonusLabel;
+  final bool intelDropped;
 
   const CrimeResultOverlay({
     super.key,
@@ -29,6 +32,9 @@ class CrimeResultOverlay extends StatelessWidget {
     this.embedded = false,
     this.isSuccess = true,
     this.headline,
+    this.flavorLine,
+    this.tipBonusLabel,
+    this.intelDropped = false,
   });
 
   @override
@@ -104,6 +110,52 @@ class CrimeResultOverlay extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
+                  if (flavorLine != null && flavorLine!.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      l10n.jobResultFlavorLabel,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white.withOpacity(0.55),
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      flavorLine!,
+                      style: TextStyle(
+                        fontSize: compactWidth ? 13 : 14,
+                        height: 1.35,
+                        color: Colors.white.withOpacity(0.82),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                  if (tipBonusLabel != null && tipBonusLabel!.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      tipBonusLabel!,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: _resultMoney,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                  if (intelDropped) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.jobResultIntelInbox,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: accent.withOpacity(0.9),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                   const SizedBox(height: 22),
                   if (isSuccess)
                     Wrap(

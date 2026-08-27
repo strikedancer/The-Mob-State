@@ -12470,6 +12470,72 @@ class AppLocalizationsEn extends AppLocalizations {
       'Repeating the same job back-to-back lowers your success chance. Rotate work or train at school for better odds on pro jobs.';
 
   @override
+  String get jobFlavorRegularShift =>
+      'Solid shift — nothing flashy, but the paycheck cleared.';
+
+  @override
+  String get jobFlavorOvertimeShift =>
+      'Overtime approved — extra hours on the clock.';
+
+  @override
+  String get jobFlavorCashTip => 'Cash tip landed under the table.';
+
+  @override
+  String get jobFlavorBigClient => 'A big client kept you busy all shift.';
+
+  @override
+  String get jobFlavorUnderCounterTip =>
+      'Someone slid a tip under the counter.';
+
+  @override
+  String get jobFlavorTaxiNightFare =>
+      'Late-night fare paid double — no questions asked.';
+
+  @override
+  String get jobFlavorSecuritySideGig =>
+      'Off-the-books security gig on the side.';
+
+  @override
+  String get jobFlavorWarehouseFind =>
+      'Found unclaimed goods in the warehouse.';
+
+  @override
+  String get jobFlavorIntelPickup =>
+      'You picked up useful street chatter on the job.';
+
+  @override
+  String get jobFlavorClientStiffed =>
+      'Client stiffed you — no pay this round.';
+
+  @override
+  String get jobFlavorBossCaughtSlacking =>
+      'Boss caught you slacking — shift ended early.';
+
+  @override
+  String get jobFlavorRegisterShort =>
+      'Register came up short — you took the blame.';
+
+  @override
+  String get jobFlavorEquipmentFailure => 'Equipment failure killed the shift.';
+
+  @override
+  String get jobFlavorShiftCutShort => 'Shift cut short with no payout.';
+
+  @override
+  String get jobResultFlavorLabel => 'What happened';
+
+  @override
+  String get jobResultIntelInbox => 'Street intel sent to your inbox.';
+
+  @override
+  String jobResultTipBonus(String amount) {
+    return '+€$amount tip bonus';
+  }
+
+  @override
+  String get jobCardIntelChance => 'Street intel';
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Forge court files and wipe your full criminal record if the operation succeeds.';
 

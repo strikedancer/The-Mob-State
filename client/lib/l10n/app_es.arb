@@ -9722,5 +9722,30 @@
   },
   "jobOutcomeFailed": "Shift didn't pay off",
   "jobResultXpLostLabel": "XP lost",
-  "jobScreenRepeatPenaltyHint": "Repeating the same job back-to-back lowers your success chance. Rotate work or train at school for better odds on pro jobs."
+  "jobScreenRepeatPenaltyHint": "Repeating the same job back-to-back lowers your success chance. Rotate work or train at school for better odds on pro jobs.",
+  "jobFlavorRegularShift": "Solid shift — nothing flashy, but the paycheck cleared.",
+  "jobFlavorOvertimeShift": "Overtime approved — extra hours on the clock.",
+  "jobFlavorCashTip": "Cash tip landed under the table.",
+  "jobFlavorBigClient": "A big client kept you busy all shift.",
+  "jobFlavorUnderCounterTip": "Someone slid a tip under the counter.",
+  "jobFlavorTaxiNightFare": "Late-night fare paid double — no questions asked.",
+  "jobFlavorSecuritySideGig": "Off-the-books security gig on the side.",
+  "jobFlavorWarehouseFind": "Found unclaimed goods in the warehouse.",
+  "jobFlavorIntelPickup": "You picked up useful street chatter on the job.",
+  "jobFlavorClientStiffed": "Client stiffed you — no pay this round.",
+  "jobFlavorBossCaughtSlacking": "Boss caught you slacking — shift ended early.",
+  "jobFlavorRegisterShort": "Register came up short — you took the blame.",
+  "jobFlavorEquipmentFailure": "Equipment failure killed the shift.",
+  "jobFlavorShiftCutShort": "Shift cut short with no payout.",
+  "jobResultFlavorLabel": "What happened",
+  "jobResultIntelInbox": "Street intel sent to your inbox.",
+  "jobResultTipBonus": "+€{amount} tip bonus",
+  "@jobResultTipBonus": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "jobCardIntelChance": "Street intel"
 }

@@ -29,6 +29,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 - Job success/failure semantics in help copy must match the actual backend logic; do not document jobs as guaranteed success if the service can still fail.
 - Success chance scales by payout tier (entry ~92%, mid ~85%, elite ~78%), with school-track bonuses on gated jobs and a penalty for repeating the same job consecutively.
 - Education gates apply to mechanic, paramedic, accountant, programmer, lawyer, doctor, and airline pilot.
+- Job flavor events (tips, failed shift stories) and street-intel inbox drops can fire on work attempts; intel jobs: taxi, security, bartender, pizza delivery, truck driver.
 - Admin NPCs must call `jobService.workJob` with the current job IDs and education gates, not a parallel payout path.
 
 ## i18n and Messaging

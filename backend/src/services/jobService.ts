@@ -10,6 +10,7 @@ import config from '../config';
 import { serializeAchievementForClient } from './achievementService';
 import { economyBalanceService } from './economyBalanceService';
 import { calculateJobCooldown } from './cooldownService';
+import { jobFlavorService } from './jobFlavorService';
 
 interface JobDefinition {
   id: string;
@@ -318,6 +319,13 @@ class JobService {
     );
     const successRoll = Math.random();
     const success = successRoll < successRate;
+    const flavor = await jobFlavorService.rollOutcome({
+      playerId,
+      jobId,
+      maxPay: job.maxEarnings,
+      success,
+      currentCountry: player.currentCountry,
+    });
     const diminishingContext = await economyBalanceService.getDiminishingContext(
       playerId,
       'job',
@@ -328,6 +336,7 @@ class JobService {
     let educationBonusPercent = 0;
     let xpGained = 0;
     let xpLost = 0;
+    let tipBonusAmount = 0;
 
     if (success) {
       // Success: Calculate earnings (random between min and max)
@@ -337,6 +346,10 @@ class JobService {
       const salaryBonus = this.getEducationSalaryMultiplier(educationProfile, jobId);
       educationBonusPercent = salaryBonus.bonusPercent;
       earnings = Math.floor(baseEarnings * salaryBonus.multiplier);
+      if (flavor.tipBonusPercent > 0) {
+        tipBonusAmount = Math.floor(earnings * (flavor.tipBonusPercent / 100));
+        earnings += tipBonusAmount;
+      }
       if (sessionPayoutMultiplier < 1) {
         earnings = economyBalanceService.applySoftDiminishing(
           earnings,
@@ -344,7 +357,7 @@ class JobService {
           1,
         );
       }
-      xpGained = job.xpReward;
+      xpGained = job.xpReward + (flavor.bonusXp ?? 0);
     } else {
       // Failure: Lose XP (5-10% of potential earnings as XP penalty)
       const xpLossPercent =
@@ -427,11 +440,24 @@ class JobService {
             xpGained,
             educationBonusPercent,
             sessionPayoutMultiplier,
+            flavorKey: flavor.flavorKey,
+            tipBonusAmount,
+            tipBonusPercent: flavor.tipBonusPercent,
+            bonusXp: flavor.bonusXp,
+            intelDropped: flavor.intel != null,
           },
           playerId
         );
       } catch (err) {
         console.error('[JobService] Failed to create job.completed world event:', err);
+      }
+
+      if (flavor.intel) {
+        try {
+          await jobFlavorService.deliverIntelInbox(playerId, flavor.intel);
+        } catch (err) {
+          console.error('[JobService] Failed to deliver job intel inbox:', err);
+        }
       }
 
       try {
@@ -445,6 +471,9 @@ class JobService {
             earnings,
             xpGained,
             sessionPayoutMultiplier,
+            flavorKey: flavor.flavorKey,
+            tipBonusAmount,
+            intelDropped: flavor.intel != null,
           },
           true
         );
@@ -459,6 +488,7 @@ class JobService {
             jobId,
             jobName: job.name,
             xpLost,
+            flavorKey: flavor.flavorKey,
           },
           playerId,
         );
@@ -476,6 +506,7 @@ class JobService {
             jobName: job.name,
             xpLost,
             success: false,
+            flavorKey: flavor.flavorKey,
           },
           false
         );
@@ -505,6 +536,11 @@ class JobService {
       xpLost,
       successChance: Math.round(successRate * 100),
       educationBonusPercent,
+      flavorKey: flavor.flavorKey,
+      tipBonusAmount,
+      tipBonusPercent: flavor.tipBonusPercent,
+      bonusXp: flavor.bonusXp,
+      intelDropped: flavor.intel != null,
       player: result.player,
       newlyUnlockedAchievements,
       sessionPayoutMultiplier,

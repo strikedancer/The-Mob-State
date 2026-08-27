@@ -11,6 +11,7 @@ import '../services/api_client.dart';
 import '../services/event_renderer.dart';
 import '../services/jail_service.dart';
 import '../utils/job_localization.dart';
+import '../utils/job_flavor_localization.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/action_result_toast.dart';
 import '../widgets/cooldown_overlay.dart';
@@ -59,6 +60,9 @@ class _JobsScreenState extends State<JobsScreen> {
   int _jobEarnings = 0;
   int _jobXpGained = 0;
   int _jobXpLost = 0;
+  String? _resultFlavorLine;
+  String? _resultTipBonusLabel;
+  bool _resultIntelDropped = false;
   _JobListFilter _listFilter = _JobListFilter.all;
   _JobListSort _listSort = _JobListSort.reward;
 
@@ -790,6 +794,13 @@ class _JobsScreenState extends State<JobsScreen> {
       final earnings = readInt(params['earnings']);
       final xpGained = readInt(params['xpGained']);
       final xpLost = readInt(params['xpLost']);
+      final flavorKey = params['flavorKey']?.toString();
+      final tipBonusAmount = readInt(params['tipBonusAmount']);
+      final intelDropped = params['intelDropped'] == true;
+      final flavorLine = jobFlavorText(l10n, flavorKey);
+      final tipBonusLabel = tipBonusAmount > 0
+          ? l10n.jobResultTipBonus(tipBonusAmount.toString())
+          : null;
 
       int? cooldownSeconds;
       if (data.containsKey('cooldown') && data['cooldown'] != null) {
@@ -827,6 +838,9 @@ class _JobsScreenState extends State<JobsScreen> {
           _jobEarnings = earnings;
           _jobXpGained = xpGained;
           _jobXpLost = 0;
+          _resultFlavorLine = flavorLine;
+          _resultTipBonusLabel = tipBonusLabel;
+          _resultIntelDropped = intelDropped;
           _showJobResult = true;
           if (cooldownSeconds != null && cooldownSeconds > 0) {
             _cooldownSeconds = cooldownSeconds;
@@ -847,6 +861,9 @@ class _JobsScreenState extends State<JobsScreen> {
           _jobEarnings = 0;
           _jobXpGained = 0;
           _jobXpLost = xpLost;
+          _resultFlavorLine = flavorLine;
+          _resultTipBonusLabel = null;
+          _resultIntelDropped = false;
           _showJobResult = true;
           if (cooldownSeconds != null && cooldownSeconds > 0) {
             _cooldownSeconds = cooldownSeconds;
@@ -941,6 +958,9 @@ class _JobsScreenState extends State<JobsScreen> {
               reward: _jobEarnings,
               xpGained: _jobXpGained,
               xpLost: _jobXpLost,
+              flavorLine: _resultFlavorLine,
+              tipBonusLabel: _resultTipBonusLabel,
+              intelDropped: _resultIntelDropped,
               onContinue: () {
                 setState(() {
                   _showJobResult = false;
@@ -949,6 +969,9 @@ class _JobsScreenState extends State<JobsScreen> {
                   _jobEarnings = 0;
                   _jobXpGained = 0;
                   _jobXpLost = 0;
+                  _resultFlavorLine = null;
+                  _resultTipBonusLabel = null;
+                  _resultIntelDropped = false;
                 });
               },
             )

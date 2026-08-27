@@ -29,6 +29,13 @@ class JobCard extends StatefulWidget {
 
 class _JobCardState extends State<JobCard> {
   static const Color _gold = Color(0xFFD4AF37);
+  static const Set<String> _intelJobIds = {
+    'taxi_driver',
+    'security_guard',
+    'bartender',
+    'pizza_delivery',
+    'truck_driver',
+  };
   bool _isHovered = false;
 
   int _successPercent() => widget.job.successChance ?? 85;
@@ -230,6 +237,45 @@ class _JobCardState extends State<JobCard> {
                                 '⏱️',
                                 style: TextStyle(fontSize: 12),
                               ),
+                            ),
+                          ),
+                        ),
+                      if (_intelJobIds.contains(widget.job.id))
+                        Positioned(
+                          bottom: 6,
+                          left: 6,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.72),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: const Color(0xFF4A9FD4).withValues(
+                                  alpha: 0.65,
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.radar,
+                                  size: 10,
+                                  color: Color(0xFF4A9FD4),
+                                ),
+                                const SizedBox(width: 3),
+                                Text(
+                                  l10n.jobCardIntelChance,
+                                  style: const TextStyle(
+                                    color: Color(0xFF4A9FD4),
+                                    fontSize: 8.5,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

@@ -12506,6 +12506,71 @@ class AppLocalizationsNl extends AppLocalizations {
       'Dezelfde baan steeds opnieuw doen verlaagt je slagingskans. Wissel af of train op school voor betere kansen op pro-banen.';
 
   @override
+  String get jobFlavorRegularShift =>
+      'Gewone dienst — niets spectaculairs, maar wel uitbetaald.';
+
+  @override
+  String get jobFlavorOvertimeShift =>
+      'Overuren goedgekeurd — extra uren op de klok.';
+
+  @override
+  String get jobFlavorCashTip => 'Contante fooi onder de counter.';
+
+  @override
+  String get jobFlavorBigClient => 'Grote klant hield je de hele dienst bezig.';
+
+  @override
+  String get jobFlavorUnderCounterTip =>
+      'Iemand schoof een fooi onder de toonbank.';
+
+  @override
+  String get jobFlavorTaxiNightFare =>
+      'Nachtrit betaalde dubbel — geen vragen gesteld.';
+
+  @override
+  String get jobFlavorSecuritySideGig =>
+      'Off-the-books beveiligersklusje erbij.';
+
+  @override
+  String get jobFlavorWarehouseFind =>
+      'Onbeheerde spullen gevonden in het magazijn.';
+
+  @override
+  String get jobFlavorIntelPickup =>
+      'Nuttige straatpraat opgepikt tijdens werk.';
+
+  @override
+  String get jobFlavorClientStiffed =>
+      'Klant betaalde niet — geen loon deze ronde.';
+
+  @override
+  String get jobFlavorBossCaughtSlacking =>
+      'Baas betrapte je — dienst vroeg afgelopen.';
+
+  @override
+  String get jobFlavorRegisterShort => 'Kassa tekort — jij kreeg de schuld.';
+
+  @override
+  String get jobFlavorEquipmentFailure => 'Apparatuurstoring — dienst kapot.';
+
+  @override
+  String get jobFlavorShiftCutShort => 'Dienst afgebroken zonder uitbetaling.';
+
+  @override
+  String get jobResultFlavorLabel => 'Wat er gebeurde';
+
+  @override
+  String get jobResultIntelInbox => 'Straatintel naar je inbox gestuurd.';
+
+  @override
+  String jobResultTipBonus(String amount) {
+    return '+€$amount fooibonus';
+  }
+
+  @override
+  String get jobCardIntelChance => 'Straatintel';
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
 

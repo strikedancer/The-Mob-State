@@ -9138,6 +9138,31 @@
   "jobOutcomeFailed": "Dienst mislukt",
   "jobResultXpLostLabel": "XP verloren",
   "jobScreenRepeatPenaltyHint": "Dezelfde baan steeds opnieuw doen verlaagt je slagingskans. Wissel af of train op school voor betere kansen op pro-banen.",
+  "jobFlavorRegularShift": "Gewone dienst — niets spectaculairs, maar wel uitbetaald.",
+  "jobFlavorOvertimeShift": "Overuren goedgekeurd — extra uren op de klok.",
+  "jobFlavorCashTip": "Contante fooi onder de counter.",
+  "jobFlavorBigClient": "Grote klant hield je de hele dienst bezig.",
+  "jobFlavorUnderCounterTip": "Iemand schoof een fooi onder de toonbank.",
+  "jobFlavorTaxiNightFare": "Nachtrit betaalde dubbel — geen vragen gesteld.",
+  "jobFlavorSecuritySideGig": "Off-the-books beveiligersklusje erbij.",
+  "jobFlavorWarehouseFind": "Onbeheerde spullen gevonden in het magazijn.",
+  "jobFlavorIntelPickup": "Nuttige straatpraat opgepikt tijdens werk.",
+  "jobFlavorClientStiffed": "Klant betaalde niet — geen loon deze ronde.",
+  "jobFlavorBossCaughtSlacking": "Baas betrapte je — dienst vroeg afgelopen.",
+  "jobFlavorRegisterShort": "Kassa tekort — jij kreeg de schuld.",
+  "jobFlavorEquipmentFailure": "Apparatuurstoring — dienst kapot.",
+  "jobFlavorShiftCutShort": "Dienst afgebroken zonder uitbetaling.",
+  "jobResultFlavorLabel": "Wat er gebeurde",
+  "jobResultIntelInbox": "Straatintel naar je inbox gestuurd.",
+  "jobResultTipBonus": "+€{amount} fooibonus",
+  "@jobResultTipBonus": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "jobCardIntelChance": "Straatintel",
   "trainingHubRefreshStatus": "Vernieuwen",
   "trainingHubRefreshTooltip": "Status opnieuw van de server laden",
   "trainingHubOpenCrimes": "Open misdaden",
