@@ -3,6 +3,7 @@ import '../models/vehicle.dart';
 import '../l10n/app_localizations.dart';
 import 'overlay_image.dart';
 import '../utils/formatters.dart';
+import 'vehicle_catalog_dialog.dart';
 
 class VehicleCard extends StatelessWidget {
   final VehicleInventoryItem vehicle;
@@ -31,45 +32,6 @@ class VehicleCard extends StatelessWidget {
     this.onDeselectForCrimes,
     this.isSelectedForCrimes = false,
   });
-
-  String _tr(BuildContext context, String nl, String en) {
-    final lang = Localizations.localeOf(context).languageCode;
-    return lang == 'nl' ? nl : en;
-  }
-
-  Color _rarityColor(String rarity) {
-    switch (rarity) {
-      case 'common':
-        return Colors.grey.shade400;
-      case 'uncommon':
-        return Colors.green.shade400;
-      case 'rare':
-        return Colors.blue.shade300;
-      case 'epic':
-        return Colors.purple.shade300;
-      case 'legendary':
-        return Colors.amber.shade300;
-      default:
-        return Colors.white70;
-    }
-  }
-
-  String _rarityLabel(BuildContext context, String rarity) {
-    switch (rarity) {
-      case 'common':
-        return _tr(context, 'Gewoon', 'Common');
-      case 'uncommon':
-        return _tr(context, 'Ongewoon', 'Uncommon');
-      case 'rare':
-        return _tr(context, 'Zeldzaam', 'Rare');
-      case 'epic':
-        return _tr(context, 'Episch', 'Epic');
-      case 'legendary':
-        return _tr(context, 'Legendarisch', 'Legendary');
-      default:
-        return rarity;
-    }
-  }
 
   Color _getConditionColor() {
     final colorName = vehicle.getConditionColor();
@@ -109,7 +71,7 @@ class VehicleCard extends StatelessWidget {
 
     return formatAdaptiveDuration(
       diff,
-      localeName: Localizations.localeOf(context).languageCode,
+      localeName: AppLocalizations.of(context)!.localeName,
       includeSeconds: diff.inHours == 0,
     );
   }
@@ -199,14 +161,14 @@ class VehicleCard extends StatelessWidget {
                             color: Colors.black.withOpacity(0.52),
                             borderRadius: BorderRadius.circular(999),
                             border: Border.all(
-                              color: _rarityColor(rarity).withOpacity(0.95),
+                              color: rarityColor(rarity).withOpacity(0.95),
                               width: 1,
                             ),
                           ),
                           child: Text(
-                            _rarityLabel(context, rarity),
+                            rarityLabel(l10n, rarity),
                             style: TextStyle(
-                              color: _rarityColor(rarity),
+                              color: rarityColor(rarity),
                               fontWeight: FontWeight.w800,
                               fontSize: isSmallScreen ? 10 : 11,
                               letterSpacing: 0.2,
@@ -241,7 +203,7 @@ class VehicleCard extends StatelessWidget {
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
-                            'In transport • ${_getTimeRemaining(vehicle.transportArrivalTime, context)}',
+                            '${l10n.vehicleCardInTransit} • ${_getTimeRemaining(vehicle.transportArrivalTime, context)}',
                             style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
@@ -276,7 +238,7 @@ class VehicleCard extends StatelessWidget {
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
-                            'In reparatie • ${_getTimeRemaining(vehicle.repairCompletesAt, context)}',
+                            '${l10n.vehicleRepair} • ${_getTimeRemaining(vehicle.repairCompletesAt, context)}',
                             style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
@@ -304,7 +266,7 @@ class VehicleCard extends StatelessWidget {
 
                 // Condition Bar
                 _buildStatusBar(
-                  label: _tr(context, 'Conditie', 'Condition'),
+                  label: l10n.vehicleCondition,
                   value: vehicle.condition,
                   color: _getConditionColor(),
                 ),
@@ -312,7 +274,7 @@ class VehicleCard extends StatelessWidget {
 
                 // Fuel Bar
                 _buildStatusBar(
-                  label: _tr(context, 'Brandstof', 'Fuel'),
+                  label: l10n.vehicleCardFuelLabel,
                   value: vehicle.fuelLevel,
                   color: _getFuelColor(),
                 ),
@@ -323,7 +285,7 @@ class VehicleCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      _tr(context, 'Waarde:', 'Value:'),
+                      l10n.vehicleCardValueLabel,
                       style: theme.textTheme.bodySmall,
                     ),
                     Text(
@@ -342,12 +304,12 @@ class VehicleCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      _tr(context, 'Locatie:', 'Location:'),
+                      l10n.vehicleCardLocationLabel,
                       style: theme.textTheme.bodySmall,
                     ),
                     Text(
                       _isInTransit()
-                          ? '${_tr(context, 'Onderweg', 'In transit')} → ${_formatLocation(vehicle.transportDestination ?? vehicle.currentLocation ?? 'Unknown')}'
+                          ? '${l10n.vehicleCardInTransit} → ${_formatLocation(vehicle.transportDestination ?? vehicle.currentLocation ?? 'Unknown')}'
                           : _formatLocation(
                               vehicle.currentLocation ?? 'Unknown',
                             ),
@@ -372,22 +334,22 @@ class VehicleCard extends StatelessWidget {
                         _buildStatBadge(
                           icon: Icons.speed,
                           value: vehicle.definition!.stats!.speed ?? 0,
-                          tooltip: 'Snelheid',
+                          tooltip: l10n.vehicleStatSpeed,
                         ),
                         _buildStatBadge(
                           icon: Icons.shield,
                           value: vehicle.definition!.stats!.armor ?? 0,
-                          tooltip: 'Pantser',
+                          tooltip: l10n.tuneShopStatArmor,
                         ),
                         _buildStatBadge(
                           icon: Icons.inventory_2,
                           value: vehicle.definition!.stats!.cargo ?? 0,
-                          tooltip: 'Lading',
+                          tooltip: l10n.vehicleStatCargo,
                         ),
                         _buildStatBadge(
                           icon: Icons.visibility_off,
                           value: vehicle.definition!.stats!.stealth ?? 0,
-                          tooltip: 'Stealth',
+                          tooltip: l10n.vehicleStatStealth,
                         ),
                       ],
                     ),
@@ -420,14 +382,14 @@ class VehicleCard extends StatelessWidget {
                         ),
                       if (onRefuel != null && vehicle.fuelLevel < 100)
                         _buildActionButton(
-                          label: 'Tanken',
+                          label: l10n.vehicleRefuel,
                           icon: Icons.local_gas_station,
                           color: Colors.amber,
                           onPressed: vehicle.isBusy ? null : onRefuel!,
                         ),
                       if (onRepair != null && vehicle.condition < 100)
                         _buildActionButton(
-                          label: 'Repareer',
+                          label: l10n.vehicleRepair,
                           icon: Icons.build,
                           color: Colors.purple,
                           onPressed: vehicle.isBusy ? null : onRepair!,
@@ -437,7 +399,7 @@ class VehicleCard extends StatelessWidget {
                         _buildActionButton(
                           label:
                               finishRepairCreditsLabel ??
-                              'Versnel reparatie met credits',
+                              l10n.vehicleGarageRepairInstantGeneric,
                           icon: Icons.flash_on,
                           color: Colors.amber,
                           onPressed: onFinishRepairWithCredits,
@@ -473,21 +435,21 @@ class VehicleCard extends StatelessWidget {
                         ),
                       if (onList != null && !vehicle.marketListing)
                         _buildActionButton(
-                          label: 'Adverteer',
+                          label: l10n.list,
                           icon: Icons.storefront,
                           color: Colors.blue,
                           onPressed: vehicle.isBusy ? null : onList!,
                         ),
                       if (onSell != null)
                         _buildActionButton(
-                          label: 'Verkoop',
+                          label: l10n.sell,
                           icon: Icons.sell,
                           color: Colors.green,
                           onPressed: vehicle.isBusy ? null : onSell!,
                         ),
                       if (onScrap != null)
                         _buildActionButton(
-                          label: 'Sloop',
+                          label: l10n.vehicleGarageScrapAction,
                           icon: Icons.recycling,
                           color: Colors.red,
                           onPressed: vehicle.isBusy ? null : onScrap!,
@@ -515,7 +477,7 @@ class VehicleCard extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Te koop voor €${vehicle.askingPrice}',
+                            '${l10n.prostitutionForSale} €${vehicle.askingPrice}',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,

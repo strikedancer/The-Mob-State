@@ -2166,6 +2166,414 @@ abstract class AppLocalizations {
   /// **'Countries: {countries}'**
   String vehicleHeistCatalogCountries(String countries);
 
+  /// No description provided for @vehicleHeistCatalogFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All vehicles'**
+  String get vehicleHeistCatalogFilterAll;
+
+  /// No description provided for @vehicleHeistCatalogFilterAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'World stock available'**
+  String get vehicleHeistCatalogFilterAvailable;
+
+  /// No description provided for @vehicleHeistCatalogFilterEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Event only'**
+  String get vehicleHeistCatalogFilterEvent;
+
+  /// No description provided for @vehicleHeistCatalogSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get vehicleHeistCatalogSortLabel;
+
+  /// No description provided for @vehicleHeistCatalogSortValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get vehicleHeistCatalogSortValue;
+
+  /// No description provided for @vehicleHeistCatalogSortRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank required'**
+  String get vehicleHeistCatalogSortRank;
+
+  /// No description provided for @vehicleHeistCatalogSortRarity.
+  ///
+  /// In en, this message translates to:
+  /// **'Rarity'**
+  String get vehicleHeistCatalogSortRarity;
+
+  /// No description provided for @vehicleHeistCatalogSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get vehicleHeistCatalogSortName;
+
+  /// No description provided for @vehicleHeistOpsPrimaryActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick ops'**
+  String get vehicleHeistOpsPrimaryActions;
+
+  /// No description provided for @vehicleHeistOpsAdvancedActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced ops'**
+  String get vehicleHeistOpsAdvancedActions;
+
+  /// No description provided for @vehicleHeistOpsShowDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Show intel details'**
+  String get vehicleHeistOpsShowDetails;
+
+  /// No description provided for @vehicleHeistOpsHideDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide intel details'**
+  String get vehicleHeistOpsHideDetails;
+
+  /// No description provided for @vehicleGarageStealMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal motorcycle'**
+  String get vehicleGarageStealMotorcycle;
+
+  /// No description provided for @vehicleGarageNoMotorcyclesInGarage.
+  ///
+  /// In en, this message translates to:
+  /// **'No motorcycles in garage'**
+  String get vehicleGarageNoMotorcyclesInGarage;
+
+  /// No description provided for @vehicleGarageHeistMotorcycleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Heist — Motorcycle'**
+  String get vehicleGarageHeistMotorcycleTitle;
+
+  /// No description provided for @vehicleGarageCreditBoltWithCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up with credits ({cost} credits)'**
+  String vehicleGarageCreditBoltWithCost(String cost);
+
+  /// No description provided for @vehicleGarageCreditBoltGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up with credits — cost shown on the next screen'**
+  String get vehicleGarageCreditBoltGeneric;
+
+  /// No description provided for @vehicleGarageRepairSpeedUpUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair speed-up is currently unavailable.'**
+  String get vehicleGarageRepairSpeedUpUnavailable;
+
+  /// No description provided for @vehicleGarageInsufficientCreditsRepairSpeedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough credits for repair speed-up.'**
+  String get vehicleGarageInsufficientCreditsRepairSpeedUp;
+
+  /// No description provided for @vehicleGarageRepairJobNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This repair is already completed or no longer active.'**
+  String get vehicleGarageRepairJobNotFound;
+
+  /// No description provided for @vehicleGarageRepairSpeedUpFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to speed up repair.'**
+  String get vehicleGarageRepairSpeedUpFailed;
+
+  /// No description provided for @vehicleGarageRepairCompletedInstant.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle repair completed instantly.'**
+  String get vehicleGarageRepairCompletedInstant;
+
+  /// No description provided for @vehicleGarageVehicleNotDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle is not damaged.'**
+  String get vehicleGarageVehicleNotDamaged;
+
+  /// No description provided for @vehicleGarageRepairStartFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start repair.'**
+  String get vehicleGarageRepairStartFailed;
+
+  /// No description provided for @vehicleGarageRepairInstantWithCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair instantly for {cost} credits'**
+  String vehicleGarageRepairInstantWithCost(String cost);
+
+  /// No description provided for @vehicleGarageRepairInstantGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair instantly with credits'**
+  String get vehicleGarageRepairInstantGeneric;
+
+  /// No description provided for @vehicleGarageMotorStorageCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle storage capacity'**
+  String get vehicleGarageMotorStorageCapacity;
+
+  /// No description provided for @vehicleGarageMotorcyclesStored.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycles stored: {current}/{total}'**
+  String vehicleGarageMotorcyclesStored(String current, String total);
+
+  /// No description provided for @vehicleGarageStealVehiclesToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal vehicles to get started'**
+  String get vehicleGarageStealVehiclesToStart;
+
+  /// No description provided for @vehicleGarageMotorcycleStolen.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle stolen'**
+  String get vehicleGarageMotorcycleStolen;
+
+  /// No description provided for @vehicleGarageStealOutcomeXp.
+  ///
+  /// In en, this message translates to:
+  /// **'XP: +{xp}'**
+  String vehicleGarageStealOutcomeXp(String xp);
+
+  /// No description provided for @vehicleGarageStealOutcomeWanted.
+  ///
+  /// In en, this message translates to:
+  /// **'Wanted: {level}'**
+  String vehicleGarageStealOutcomeWanted(String level);
+
+  /// No description provided for @vehicleGarageStealOutcomeJail.
+  ///
+  /// In en, this message translates to:
+  /// **'Jail: {minutes} min'**
+  String vehicleGarageStealOutcomeJail(String minutes);
+
+  /// No description provided for @vehicleGarageStealOutcomeBail.
+  ///
+  /// In en, this message translates to:
+  /// **'Bail: {amount}'**
+  String vehicleGarageStealOutcomeBail(String amount);
+
+  /// No description provided for @vehicleGarageStealEscapedPolice.
+  ///
+  /// In en, this message translates to:
+  /// **'You were spotted by the police, but you managed to escape.'**
+  String get vehicleGarageStealEscapedPolice;
+
+  /// No description provided for @vehicleGarageScrapConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Scrap this vehicle for parts? This cannot be undone.'**
+  String get vehicleGarageScrapConfirm;
+
+  /// No description provided for @vehicleGarageScrapAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Scrap'**
+  String get vehicleGarageScrapAction;
+
+  /// No description provided for @vehicleGarageScrapFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Scrap failed'**
+  String get vehicleGarageScrapFailed;
+
+  /// No description provided for @vehicleGarageScrapSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle scrapped — +{parts} {type} parts'**
+  String vehicleGarageScrapSuccess(String parts, String type);
+
+  /// No description provided for @vehicleGaragePartsTypeCar.
+  ///
+  /// In en, this message translates to:
+  /// **'car'**
+  String get vehicleGaragePartsTypeCar;
+
+  /// No description provided for @vehicleGaragePartsTypeMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'motorcycle'**
+  String get vehicleGaragePartsTypeMotorcycle;
+
+  /// No description provided for @vehicleGaragePartsTypeBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'boat'**
+  String get vehicleGaragePartsTypeBoat;
+
+  /// No description provided for @vehicleGarageNoFuelTank.
+  ///
+  /// In en, this message translates to:
+  /// **'This vehicle has no fuel tank'**
+  String get vehicleGarageNoFuelTank;
+
+  /// No description provided for @vehicleGarageTankFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Tank is already full'**
+  String get vehicleGarageTankFull;
+
+  /// No description provided for @vehicleGarageRefuelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refuel vehicle'**
+  String get vehicleGarageRefuelTitle;
+
+  /// No description provided for @vehicleGarageRefuelCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current fuel: {current}L / {max}L'**
+  String vehicleGarageRefuelCurrent(String current, String max);
+
+  /// No description provided for @vehicleGarageRefuelNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Required fuel: {needed}L'**
+  String vehicleGarageRefuelNeeded(String needed);
+
+  /// No description provided for @vehicleGarageRefuelCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost: {cost}'**
+  String vehicleGarageRefuelCost(String cost);
+
+  /// No description provided for @vehicleGarageRefuelConfirmQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to fully refuel this vehicle?'**
+  String get vehicleGarageRefuelConfirmQuestion;
+
+  /// No description provided for @vehicleGarageRefuelSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle refueled!'**
+  String get vehicleGarageRefuelSuccess;
+
+  /// No description provided for @vehicleGarageRefuelFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Refueling failed'**
+  String get vehicleGarageRefuelFailed;
+
+  /// No description provided for @vehicleGarageRepairAlreadyInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'This vehicle is already being repaired'**
+  String get vehicleGarageRepairAlreadyInProgress;
+
+  /// No description provided for @vehicleGarageRepairTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair vehicle'**
+  String get vehicleGarageRepairTitle;
+
+  /// No description provided for @vehicleGarageRepairCurrentCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Current condition: {condition}%'**
+  String vehicleGarageRepairCurrentCondition(String condition);
+
+  /// No description provided for @vehicleGarageRepairDamagePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Damage: {percent}%'**
+  String vehicleGarageRepairDamagePercent(String percent);
+
+  /// No description provided for @vehicleGarageRepairCostLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair cost: {cost}'**
+  String vehicleGarageRepairCostLine(String cost);
+
+  /// No description provided for @vehicleGarageRepairEstimatedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated repair time: {duration}'**
+  String vehicleGarageRepairEstimatedTime(String duration);
+
+  /// No description provided for @vehicleGarageRepairTimerNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair starts immediately, but only completes after the timer ends.'**
+  String get vehicleGarageRepairTimerNote;
+
+  /// No description provided for @vehicleGarageRepairStartedUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair started. The vehicle is temporarily unavailable.'**
+  String get vehicleGarageRepairStartedUnavailable;
+
+  /// No description provided for @vehicleGarageRepairFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair failed'**
+  String get vehicleGarageRepairFailed;
+
+  /// No description provided for @vehicleGaragePoliceEventActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Police vehicle event active — {timeLeft} left'**
+  String vehicleGaragePoliceEventActive(String timeLeft);
+
+  /// No description provided for @vehicleGaragePoliceEventNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next police vehicle event starts in {timeLeft}'**
+  String vehicleGaragePoliceEventNext(String timeLeft);
+
+  /// No description provided for @vehicleGarageNoVehiclesInCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'There are currently no vehicles available in this country.'**
+  String get vehicleGarageNoVehiclesInCountry;
+
+  /// No description provided for @vehicleGarageUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'until'**
+  String get vehicleGarageUntil;
+
+  /// No description provided for @vehicleCardFuelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get vehicleCardFuelLabel;
+
+  /// No description provided for @vehicleCardValueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Value:'**
+  String get vehicleCardValueLabel;
+
+  /// No description provided for @vehicleCardLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location:'**
+  String get vehicleCardLocationLabel;
+
+  /// No description provided for @vehicleCardInTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'In transit'**
+  String get vehicleCardInTransit;
+
   /// No description provided for @vehicleHeistUpgradeCost.
   ///
   /// In en, this message translates to:

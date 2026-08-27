@@ -8,11 +8,11 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/jail_service.dart';
 import '../widgets/jail_screen.dart';
-import '../widgets/overlay_image.dart';
 import '../widgets/vehicle_card.dart';
 import '../services/theft_cooldown_credit_service.dart';
 import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/theft_cooldown_steal_control.dart';
+import '../widgets/vehicle_catalog_dialog.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
@@ -52,12 +52,6 @@ class _MarinaScreenState extends State<MarinaScreen> {
   int? _repairFinishCreditCost;
   int? _stealCreditCostHint;
 
-  String _tr(String nl, String en) {
-    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
-  }
-
-  String _confirmTitle() => _tr('Weet je het zeker?', 'Are you sure?');
-
   String get _sectionTitle =>
       widget.titleOverride ?? AppLocalizations.of(context)!.marina;
 
@@ -81,7 +75,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
     }
     return formatAdaptiveDurationFromSeconds(
       _stealCooldownSeconds,
-      localeName: Localizations.localeOf(context).languageCode,
+      localeName: AppLocalizations.of(context)!.localeName,
     );
   }
 
@@ -137,17 +131,12 @@ class _MarinaScreenState extends State<MarinaScreen> {
   }
 
   String _marinaBoltTooltip() {
+    final l10n = AppLocalizations.of(context)!;
     final c = _stealCreditCostHint;
     if (c != null && c > 0) {
-      return _tr(
-        'Versnellen met credits ($c credits)',
-        'Speed up with credits ($c credits)',
-      );
+      return l10n.vehicleGarageCreditBoltWithCost(c.toString());
     }
-    return _tr(
-      'Versnellen met credits — kosten in het volgende scherm',
-      'Speed up with credits — cost shown on the next screen',
-    );
+    return l10n.vehicleGarageCreditBoltGeneric;
   }
 
   Future<void> _redeemMarinaStealCooldown(
@@ -290,10 +279,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
           context,
           SnackBar(
             content: Text(
-              _tr(
-                'Reparatie-versnelling is nu niet beschikbaar.',
-                'Repair speed-up is currently unavailable.',
-              ),
+              AppLocalizations.of(context)!.vehicleGarageRepairSpeedUpUnavailable,
             ),
             backgroundColor: Colors.orange,
           ),
@@ -318,10 +304,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
           context,
           SnackBar(
             content: Text(
-              _tr(
-                'Onvoldoende credits voor reparatie-versnelling.',
-                'Not enough credits for repair speed-up.',
-              ),
+              AppLocalizations.of(context)!
+                  .vehicleGarageInsufficientCreditsRepairSpeedUp,
             ),
             backgroundColor: Colors.red,
           ),
@@ -342,25 +326,17 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
       if (redeemResponse.statusCode != 200) {
         final code = (payload['code'] ?? '').toString();
+        final l10n = AppLocalizations.of(context)!;
         String message;
         switch (code) {
           case 'REPAIR_JOB_NOT_FOUND':
-            message = _tr(
-              'Deze reparatie is al afgerond of niet meer actief.',
-              'This repair is already completed or no longer active.',
-            );
+            message = l10n.vehicleGarageRepairJobNotFound;
             break;
           case 'INSUFFICIENT_CREDITS':
-            message = _tr(
-              'Onvoldoende credits voor reparatie-versnelling.',
-              'Not enough credits for repair speed-up.',
-            );
+            message = l10n.vehicleGarageInsufficientCreditsRepairSpeedUp;
             break;
           default:
-            message = _tr(
-              'Reparatie versnellen mislukt.',
-              'Failed to speed up repair.',
-            );
+            message = l10n.vehicleGarageRepairSpeedUpFailed;
         }
 
         showTopRightFromSnackBar(
@@ -373,10 +349,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
       final successMessage =
           (payload['message'] ??
-                  _tr(
-                    'Voertuigreparatie direct afgerond.',
-                    'Vehicle repair completed instantly.',
-                  ))
+                  AppLocalizations.of(context)!
+                      .vehicleGarageRepairCompletedInstant)
               .toString();
 
       showTopRightFromSnackBar(
@@ -390,7 +364,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
         context,
         SnackBar(
           content: Text(
-            _tr('Reparatie versnellen mislukt.', 'Failed to speed up repair.'),
+            AppLocalizations.of(context)!.vehicleGarageRepairSpeedUpFailed,
           ),
           backgroundColor: Colors.red,
         ),
@@ -414,7 +388,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
         context,
         SnackBar(
           content: Text(
-            _tr('Voertuig is niet beschadigd.', 'Vehicle is not damaged.'),
+            AppLocalizations.of(context)!.vehicleGarageVehicleNotDamaged,
           ),
           backgroundColor: Colors.orange,
         ),
@@ -431,7 +405,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
           SnackBar(
             content: Text(
               provider.error ??
-                  _tr('Reparatie starten mislukt.', 'Failed to start repair.'),
+                  AppLocalizations.of(context)!.vehicleGarageRepairStartFailed,
             ),
             backgroundColor: Colors.red,
           ),
@@ -512,14 +486,12 @@ class _MarinaScreenState extends State<MarinaScreen> {
       onFinishRepairWithCredits: boat.condition < 100
           ? () => _repairInstantWithCredits(provider, boat)
           : null,
-      finishRepairCreditsLabel: _tr(
-        _repairFinishCreditCost != null
-            ? 'Repareer instant voor $_repairFinishCreditCost credits'
-            : 'Repareer instant met credits',
-        _repairFinishCreditCost != null
-            ? 'Repair instantly for $_repairFinishCreditCost credits'
-            : 'Repair instantly with credits',
-      ),
+      finishRepairCreditsLabel: _repairFinishCreditCost != null
+          ? AppLocalizations.of(context)!
+              .vehicleGarageRepairInstantWithCost(
+                _repairFinishCreditCost.toString(),
+              )
+          : AppLocalizations.of(context)!.vehicleGarageRepairInstantGeneric,
       onSell: () => _sellVehicle(provider, boat.id),
       onScrap: () => _scrapVehicle(provider, boat.id),
       onList: () => _showListOnMarketDialog(provider, boat),
@@ -654,7 +626,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.directions_boat_filled_outlined),
-                      tooltip: _tr('Beschikbare boten', 'Available boats'),
+                      tooltip: AppLocalizations.of(context)!
+                          .vehicleHeistCatalogTitleBoats,
                       onPressed: () => _showAvailableBoatCatalog(
                         vehicleProvider,
                         authProvider,
@@ -1144,29 +1117,33 @@ class _MarinaScreenState extends State<MarinaScreen> {
     String baseMessage,
     VehicleProvider provider,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     final details = <String>[];
     final xpGained = provider.lastStealXpGained;
     if (xpGained > 0) {
-      details.add(_tr('XP: +$xpGained', 'XP: +$xpGained'));
+      details.add(l10n.vehicleGarageStealOutcomeXp(xpGained.toString()));
     }
 
     final wantedLevel = provider.lastStealWantedLevel;
     if (wantedLevel != null) {
-      details.add('Wanted: ${wantedLevel.toStringAsFixed(0)}');
+      details.add(
+        l10n.vehicleGarageStealOutcomeWanted(
+          wantedLevel.toStringAsFixed(0),
+        ),
+      );
     }
 
     if (provider.lastStealArrested && provider.lastStealJailMinutes > 0) {
       details.add(
-        _tr(
-          'Gevangenis: ${provider.lastStealJailMinutes} min',
-          'Jail: ${provider.lastStealJailMinutes} min',
+        l10n.vehicleGarageStealOutcomeJail(
+          provider.lastStealJailMinutes.toString(),
         ),
       );
     }
 
     final bail = provider.lastStealBailAmount;
     if (bail != null && bail > 0) {
-      details.add(_tr('Borg: \$$bail', 'Bail: \$$bail'));
+      details.add(l10n.vehicleGarageStealOutcomeBail('€$bail'));
     }
 
     if (details.isEmpty) return baseMessage;
@@ -1189,10 +1166,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
     if (gotCaughtButEscaped) {
       return _withStealOutcomeDetails(
-        _tr(
-          'Je werd gesnapt door de politie, maar je wist te ontkomen.',
-          'You were spotted by the police, but you managed to escape.',
-        ),
+        AppLocalizations.of(context)!.vehicleGarageStealEscapedPolice,
         provider,
       );
     }
@@ -1235,7 +1209,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_confirmTitle()),
+        title: Text(AppLocalizations.of(context)!.confirmAction),
         content: Text(AppLocalizations.of(context)!.confirmSellBoat),
         actions: [
           TextButton(
@@ -1282,13 +1256,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_confirmTitle()),
-        content: Text(
-          _tr(
-            'Deze boot slopen voor onderdelen? Dit kan niet ongedaan gemaakt worden.',
-            'Scrap this boat for parts? This cannot be undone.',
-          ),
-        ),
+        title: Text(AppLocalizations.of(context)!.confirmAction),
+        content: Text(AppLocalizations.of(context)!.vehicleGarageScrapConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -1297,7 +1266,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(_tr('Slopen', 'Scrap')),
+            child: Text(AppLocalizations.of(context)!.vehicleGarageScrapAction),
           ),
         ],
       ),
@@ -1310,21 +1279,17 @@ class _MarinaScreenState extends State<MarinaScreen> {
     if (!mounted) return;
 
     if (result != null) {
+      final l10n = AppLocalizations.of(context)!;
       final gained = result['partsGained'] as int? ?? 0;
-      final type = (result['partsType'] as String? ?? 'boat').toLowerCase();
-      final typeNl = type == 'motorcycle'
-          ? 'motor'
-          : type == 'boat'
-          ? 'boot'
-          : 'auto';
-      final typeEn = type == 'motorcycle'
-          ? 'motorcycle'
-          : type == 'boat'
-          ? 'boat'
-          : 'car';
-      final msg = _tr(
-        'Voertuig gesloopt — +$gained $typeNl-onderdelen',
-        'Vehicle scrapped — +$gained $typeEn parts',
+      final partsType = (result['partsType'] as String? ?? 'boat').toLowerCase();
+      final typeLabel = switch (partsType) {
+        'motorcycle' => l10n.vehicleGaragePartsTypeMotorcycle,
+        'boat' => l10n.vehicleGaragePartsTypeBoat,
+        _ => l10n.vehicleGaragePartsTypeCar,
+      };
+      final msg = l10n.vehicleGarageScrapSuccess(
+        gained.toString(),
+        typeLabel,
       );
       showTopRightFromSnackBar(
         context,
@@ -1335,7 +1300,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
         context,
         SnackBar(
           content: Text(
-            provider.error ?? _tr('Slopen mislukt', 'Scrap failed'),
+            provider.error ??
+                AppLocalizations.of(context)!.vehicleGarageScrapFailed,
           ),
           backgroundColor: Colors.red,
         ),
@@ -1354,7 +1320,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_confirmTitle()),
+        title: Text(AppLocalizations.of(context)!.confirmAction),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1428,16 +1394,12 @@ class _MarinaScreenState extends State<MarinaScreen> {
   }
 
   Future<void> _refuelVehicle(VehicleProvider provider, vehicle) async {
+    final l10n = AppLocalizations.of(context)!;
     if (vehicle.definition?.fuelCapacity == null) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Dit voertuig heeft geen brandstoftank',
-              'This vehicle has no fuel tank',
-            ),
-          ),
+          content: Text(l10n.vehicleGarageNoFuelTank),
         ),
       );
       return;
@@ -1450,7 +1412,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
     if (fuelNeeded <= 0.5) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_tr('Tank is al vol', 'Tank is already full'))),
+        SnackBar(content: Text(l10n.vehicleGarageTankFull)),
       );
       return;
     }
@@ -1459,59 +1421,55 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(_confirmTitle()),
+      builder: (context) {
+        final dialogL10n = AppLocalizations.of(context)!;
+        return AlertDialog(
+        title: Text(dialogL10n.confirmAction),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _tr('Voertuig tanken', 'Refuel vehicle'),
+              dialogL10n.vehicleGarageRefuelTitle,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Huidige brandstof: ${currentFuel.toStringAsFixed(1)}L / ${maxFuel}L',
-                'Current fuel: ${currentFuel.toStringAsFixed(1)}L / ${maxFuel}L',
+              dialogL10n.vehicleGarageRefuelCurrent(
+                currentFuel.toStringAsFixed(1),
+                maxFuel.toString(),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Benodigde brandstof: ${fuelNeeded.toStringAsFixed(1)}L',
-                'Required fuel: ${fuelNeeded.toStringAsFixed(1)}L',
+              dialogL10n.vehicleGarageRefuelNeeded(
+                fuelNeeded.toStringAsFixed(1),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Kosten: €${cost.toStringAsFixed(0)}',
-                'Cost: €${cost.toStringAsFixed(0)}',
+              dialogL10n.vehicleGarageRefuelCost(
+                cost.toStringAsFixed(0),
               ),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Text(
-              _tr(
-                'Wil je dit voertuig volledig tanken?',
-                'Do you want to fully refuel this vehicle?',
-              ),
-            ),
+            Text(dialogL10n.vehicleGarageRefuelConfirmQuestion),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)!.cancel),
+            child: Text(dialogL10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(_tr('Tanken', 'Refuel')),
+            child: Text(dialogL10n.vehicleRefuel),
           ),
         ],
-      ),
+      );
+      },
     );
 
     if (confirmed != true || !mounted) return;
@@ -1522,7 +1480,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_tr('Voertuig getankt!', 'Vehicle refueled!'))),
+        SnackBar(content: Text(l10n.vehicleGarageRefuelSuccess)),
       );
       // Small delay to ensure data is fetched and UI updates
       await Future.delayed(const Duration(milliseconds: 500));
@@ -1534,7 +1492,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
         context,
         SnackBar(
           content: Text(
-            provider.error ?? _tr('Tanken mislukt', 'Refueling failed'),
+            provider.error ?? l10n.vehicleGarageRefuelFailed,
           ),
         ),
       );
@@ -1542,16 +1500,12 @@ class _MarinaScreenState extends State<MarinaScreen> {
   }
 
   Future<void> _repairVehicle(VehicleProvider provider, vehicle) async {
+    final l10n = AppLocalizations.of(context)!;
     if (vehicle.repairInProgress == true) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Dit voertuig is al in reparatie',
-              'This vehicle is already being repaired',
-            ),
-          ),
+          content: Text(l10n.vehicleGarageRepairAlreadyInProgress),
         ),
       );
       return;
@@ -1561,9 +1515,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr('Voertuig is niet beschadigd', 'Vehicle is not damaged'),
-          ),
+          content: Text(l10n.vehicleGarageVehicleNotDamaged),
         ),
       );
       return;
@@ -1577,69 +1529,66 @@ class _MarinaScreenState extends State<MarinaScreen> {
       vehicle.condition,
       'boat',
     );
+    final repairDurationLabel = formatAdaptiveDuration(
+      estimatedRepairDuration,
+      localeName: l10n.localeName,
+      includeSeconds: false,
+    );
 
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(_confirmTitle()),
+      builder: (context) {
+        final dialogL10n = AppLocalizations.of(context)!;
+        return AlertDialog(
+        title: Text(dialogL10n.confirmAction),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _tr('Voertuig repareren', 'Repair vehicle'),
+              dialogL10n.vehicleGarageRepairTitle,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Huidige conditie: ${vehicle.condition.toInt()}%',
-                'Current condition: ${vehicle.condition.toInt()}%',
+              dialogL10n.vehicleGarageRepairCurrentCondition(
+                vehicle.condition.toInt().toString(),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Schade: ${damagePercent.toInt()}%',
-                'Damage: ${damagePercent.toInt()}%',
+              dialogL10n.vehicleGarageRepairDamagePercent(
+                damagePercent.toInt().toString(),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Reparatiekosten: €${repairCost.toStringAsFixed(0)}',
-                'Repair cost: €${repairCost.toStringAsFixed(0)}',
+              dialogL10n.vehicleGarageRepairCostLine(
+                repairCost.toStringAsFixed(0),
               ),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Geschatte reparatietijd: ${formatAdaptiveDuration(estimatedRepairDuration, localeName: 'nl', includeSeconds: false)}',
-                'Estimated repair time: ${formatAdaptiveDuration(estimatedRepairDuration, localeName: 'en', includeSeconds: false)}',
-              ),
+              dialogL10n.vehicleGarageRepairEstimatedTime(repairDurationLabel),
             ),
             const SizedBox(height: 16),
-            Text(
-              _tr(
-                'Reparatie start direct, maar wordt pas na de timer afgerond.',
-                'Repair starts immediately, but only completes after the timer ends.',
-              ),
-            ),
+            Text(dialogL10n.vehicleGarageRepairTimerNote),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)!.cancel),
+            child: Text(dialogL10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(_tr('Repareer', 'Repair')),
+            child: Text(dialogL10n.vehicleRepair),
           ),
         ],
-      ),
+      );
+      },
     );
 
     if (confirmed != true || !mounted) return;
@@ -1651,12 +1600,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            _tr(
-              'Reparatie gestart. De boot is tijdelijk niet beschikbaar.',
-              'Repair started. The boat is temporarily unavailable.',
-            ),
-          ),
+          content: Text(l10n.vehicleGarageRepairStartedUnavailable),
         ),
       );
       await _loadData();
@@ -1665,7 +1609,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
         context,
         SnackBar(
           content: Text(
-            provider.error ?? _tr('Reparatie mislukt', 'Repair failed'),
+            provider.error ?? l10n.vehicleGarageRepairFailed,
           ),
         ),
       );
@@ -1691,44 +1635,11 @@ class _MarinaScreenState extends State<MarinaScreen> {
     return Duration(seconds: totalSeconds);
   }
 
-  Color _rarityColor(String rarity) {
-    switch (rarity) {
-      case 'common':
-        return Colors.grey.shade400;
-      case 'uncommon':
-        return Colors.green.shade400;
-      case 'rare':
-        return Colors.blue.shade300;
-      case 'epic':
-        return Colors.purple.shade300;
-      case 'legendary':
-        return Colors.amber.shade300;
-      default:
-        return Colors.white70;
-    }
-  }
-
-  String _rarityLabel(String rarity) {
-    switch (rarity) {
-      case 'common':
-        return _tr('Gewoon', 'Common');
-      case 'uncommon':
-        return _tr('Ongewoon', 'Uncommon');
-      case 'rare':
-        return _tr('Zeldzaam', 'Rare');
-      case 'epic':
-        return _tr('Episch', 'Epic');
-      case 'legendary':
-        return _tr('Legendarisch', 'Legendary');
-      default:
-        return rarity;
-    }
-  }
-
   Future<void> _showAvailableBoatCatalog(
     VehicleProvider provider,
     AuthProvider authProvider,
   ) async {
+    final l10n = AppLocalizations.of(context)!;
     final currentCountry =
         authProvider.currentPlayer?.currentCountry ?? 'netherlands';
     await provider.fetchAvailableVehicles(currentCountry);
@@ -1739,6 +1650,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
             .where((vehicle) => vehicle.vehicleCategory == 'boat')
             .toList()
           ..sort((a, b) => (a.baseValue ?? 0).compareTo(b.baseValue ?? 0));
+
     final policeEvent = provider.policeVehicleEvent;
     final eventActive = policeEvent?['active'] == true;
     final eventCategory = (policeEvent?['activeCategory'] ?? '').toString();
@@ -1750,203 +1662,88 @@ class _MarinaScreenState extends State<MarinaScreen> {
     final eventAppliesToMarina =
         eventActive && (eventAllCategories || eventCategory == 'boat');
 
-    await showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(_tr('Beschikbare boten', 'Available boats')),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width < 700
-              ? double.maxFinite
-              : 720,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: eventAppliesToMarina
-                      ? Colors.orange.withOpacity(0.18)
-                      : Colors.blueGrey.withOpacity(0.22),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: eventAppliesToMarina
-                        ? Colors.orangeAccent
-                        : Colors.white24,
-                  ),
-                ),
-                child: Text(
-                  eventAppliesToMarina
-                      ? _tr(
-                          'Politie-voertuig event actief - nog ${formatAdaptiveDurationFromSeconds(eventRemaining, localeName: Localizations.localeOf(context).languageCode)}',
-                          'Police vehicle event active - ${formatAdaptiveDurationFromSeconds(eventRemaining, localeName: Localizations.localeOf(context).languageCode)} left',
-                        )
-                      : _tr(
-                          'Volgende politie-boot event over ${formatAdaptiveDurationFromSeconds(eventStartsIn, localeName: Localizations.localeOf(context).languageCode)}',
-                          'Next police boat event starts in ${formatAdaptiveDurationFromSeconds(eventStartsIn, localeName: Localizations.localeOf(context).languageCode)}',
-                        ),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
-              if (boats.isEmpty)
-                Text(
-                  () {
-                    final lock = provider.regionalBlacklistForType('boat');
-                    if (lock?['active'] == true) {
-                      final ends = DateTime.tryParse((lock?['endsAt'] ?? '').toString());
-                      final suffix = ends == null
-                          ? ''
-                          : ' (${_tr('tot', 'until')} ${formatAdaptiveDurationFromSeconds(
-                              ends.difference(DateTime.now().toUtc()).inSeconds.clamp(0, 999999),
-                              localeName: Localizations.localeOf(context).languageCode,
-                            )})';
-                      return _tr(
-                        (lock?['reasonNl']?.toString() ?? 'Regionale blokkade actief.') + suffix,
-                        (lock?['reasonEn']?.toString() ?? 'Regional lock active.') + suffix,
-                      );
-                    }
-                    return _tr(
-                      'Er zijn nu geen boten beschikbaar in dit land.',
-                      'There are currently no boats available in this country.',
-                    );
-                  }(),
-                )
-              else
-                Flexible(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: boats.length,
-                    separatorBuilder: (_, index) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final vehicle = boats[index];
-                      final image = vehicle.imageNew ?? vehicle.image;
-                      final rarity = vehicle.rarity ?? 'common';
-                      final marketValue =
-                          vehicle.marketValue?[currentCountry] ??
-                          vehicle.baseValue ??
-                          0;
-                      return Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.white12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (image != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: OverlayImageBuilder()
-                                        .base('assets/images/vehicles/$image')
-                                        .width(90)
-                                        .height(64)
-                                        .fit(BoxFit.contain)
-                                        .build(),
-                                  )
-                                else
-                                  const SizedBox(width: 90, height: 64),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        vehicle.name ?? '-',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Wrap(
-                                        spacing: 8,
-                                        runSpacing: 8,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                              vertical: 4,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: _rarityColor(
-                                                rarity,
-                                              ).withOpacity(0.16),
-                                              borderRadius:
-                                                  BorderRadius.circular(999),
-                                              border: Border.all(
-                                                color: _rarityColor(rarity),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              _rarityLabel(rarity),
-                                              style: TextStyle(
-                                                color: _rarityColor(rarity),
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            _tr(
-                                              'Waarde: ${formatCurrency(marketValue)}',
-                                              'Value: ${formatCurrency(marketValue)}',
-                                            ),
-                                          ),
-                                          Text(
-                                            _tr(
-                                              'Rank: ${vehicle.requiredRank ?? '-'}',
-                                              'Rank: ${vehicle.requiredRank ?? '-'}',
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Text(vehicle.description ?? ''),
-                            const SizedBox(height: 8),
-                            Text(
-                              _tr(
-                                'In spel: ${vehicle.currentWorldCount ?? 0}/${vehicle.maxGameAvailability ?? '-'} beschikbaar',
-                                'In game: ${vehicle.currentWorldCount ?? 0}/${vehicle.maxGameAvailability ?? '-'} available',
-                              ),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              _tr(
-                                'Landen: ${(vehicle.availableInCountries ?? const <String>[]).join(', ')}',
-                                'Countries: ${(vehicle.availableInCountries ?? const <String>[]).join(', ')}',
-                              ),
-                              style: const TextStyle(color: Colors.white70),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-            ],
+    final localeName = l10n.localeName;
+    final bannerChildren = <Widget>[
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: eventAppliesToMarina
+              ? Colors.orange.withOpacity(0.18)
+              : Colors.blueGrey.withOpacity(0.22),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: eventAppliesToMarina ? Colors.orangeAccent : Colors.white24,
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(AppLocalizations.of(context)!.cancel),
-          ),
-        ],
+        child: Text(
+          eventAppliesToMarina
+              ? l10n.vehicleGaragePoliceEventActive(
+                  formatAdaptiveDurationFromSeconds(
+                    eventRemaining,
+                    localeName: localeName,
+                  ),
+                )
+              : l10n.vehicleGaragePoliceEventNext(
+                  formatAdaptiveDurationFromSeconds(
+                    eventStartsIn,
+                    localeName: localeName,
+                  ),
+                ),
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
       ),
+    ];
+
+    if (boats.isEmpty) {
+      final lock = provider.regionalBlacklistForType('boat');
+      if (lock?['active'] == true) {
+        final ends = DateTime.tryParse((lock?['endsAt'] ?? '').toString());
+        final isNl = localeName.startsWith('nl');
+        final reason = isNl
+            ? (lock?['reasonNl']?.toString() ??
+                l10n.vehicleHeistRegionalLockActive)
+            : (lock?['reasonEn']?.toString() ??
+                l10n.vehicleHeistRegionalLockActive);
+        final suffix = ends == null
+            ? ''
+            : ' (${l10n.vehicleGarageUntil} ${formatAdaptiveDurationFromSeconds(
+                ends.difference(DateTime.now().toUtc()).inSeconds.clamp(
+                  0,
+                  999999,
+                ),
+                localeName: localeName,
+              )})';
+        bannerChildren.addAll([
+          const SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.redAccent.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.redAccent.withOpacity(0.5)),
+            ),
+            child: Text(
+              '$reason$suffix',
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ]);
+      }
+    }
+
+    final headerBanner = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: bannerChildren,
+    );
+
+    await showVehicleCatalogDialog(
+      context,
+      title: l10n.vehicleHeistCatalogTitleBoats,
+      vehicles: boats,
+      currentCountry: currentCountry,
+      headerBanner: headerBanner,
     );
   }
 

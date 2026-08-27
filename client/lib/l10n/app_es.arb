@@ -9483,5 +9483,201 @@
     }
   },
   "gameCardJoinCta": "Join & view board",
-  "gameCardViewPrizes": "View prize pool"
+  "gameCardViewPrizes": "View prize pool",
+  "vehicleHeistCatalogFilterAll": "All vehicles",
+  "vehicleHeistCatalogFilterAvailable": "World stock available",
+  "vehicleHeistCatalogFilterEvent": "Event only",
+  "vehicleHeistCatalogSortLabel": "Sort",
+  "vehicleHeistCatalogSortValue": "Value",
+  "vehicleHeistCatalogSortRank": "Rank required",
+  "vehicleHeistCatalogSortRarity": "Rarity",
+  "vehicleHeistCatalogSortName": "Name",
+  "vehicleHeistOpsPrimaryActions": "Quick ops",
+  "vehicleHeistOpsAdvancedActions": "Advanced ops",
+  "vehicleHeistOpsShowDetails": "Show intel details",
+  "vehicleHeistOpsHideDetails": "Hide intel details",
+  "vehicleGarageStealMotorcycle": "Steal motorcycle",
+  "vehicleGarageNoMotorcyclesInGarage": "No motorcycles in garage",
+  "vehicleGarageHeistMotorcycleTitle": "Vehicle Heist — Motorcycle",
+  "vehicleGarageCreditBoltWithCost": "Speed up with credits ({cost} credits)",
+  "@vehicleGarageCreditBoltWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageCreditBoltGeneric": "Speed up with credits — cost shown on the next screen",
+  "vehicleGarageRepairSpeedUpUnavailable": "Repair speed-up is currently unavailable.",
+  "vehicleGarageInsufficientCreditsRepairSpeedUp": "Not enough credits for repair speed-up.",
+  "vehicleGarageRepairJobNotFound": "This repair is already completed or no longer active.",
+  "vehicleGarageRepairSpeedUpFailed": "Failed to speed up repair.",
+  "vehicleGarageRepairCompletedInstant": "Vehicle repair completed instantly.",
+  "vehicleGarageVehicleNotDamaged": "Vehicle is not damaged.",
+  "vehicleGarageRepairStartFailed": "Failed to start repair.",
+  "vehicleGarageRepairInstantWithCost": "Repair instantly for {cost} credits",
+  "@vehicleGarageRepairInstantWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairInstantGeneric": "Repair instantly with credits",
+  "vehicleGarageMotorStorageCapacity": "Motorcycle storage capacity",
+  "vehicleGarageMotorcyclesStored": "Motorcycles stored: {current}/{total}",
+  "@vehicleGarageMotorcyclesStored": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealVehiclesToStart": "Steal vehicles to get started",
+  "vehicleGarageMotorcycleStolen": "Motorcycle stolen",
+  "vehicleGarageStealOutcomeXp": "XP: +{xp}",
+  "@vehicleGarageStealOutcomeXp": {
+    "placeholders": {
+      "xp": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealOutcomeWanted": "Wanted: {level}",
+  "@vehicleGarageStealOutcomeWanted": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealOutcomeJail": "Jail: {minutes} min",
+  "@vehicleGarageStealOutcomeJail": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealOutcomeBail": "Bail: {amount}",
+  "@vehicleGarageStealOutcomeBail": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealEscapedPolice": "You were spotted by the police, but you managed to escape.",
+  "vehicleGarageScrapConfirm": "Scrap this vehicle for parts? This cannot be undone.",
+  "vehicleGarageScrapAction": "Scrap",
+  "vehicleGarageScrapFailed": "Scrap failed",
+  "vehicleGarageScrapSuccess": "Vehicle scrapped — +{parts} {type} parts",
+  "@vehicleGarageScrapSuccess": {
+    "placeholders": {
+      "parts": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGaragePartsTypeCar": "car",
+  "vehicleGaragePartsTypeMotorcycle": "motorcycle",
+  "vehicleGaragePartsTypeBoat": "boat",
+  "vehicleGarageNoFuelTank": "This vehicle has no fuel tank",
+  "vehicleGarageTankFull": "Tank is already full",
+  "vehicleGarageRefuelTitle": "Refuel vehicle",
+  "vehicleGarageRefuelCurrent": "Current fuel: {current}L / {max}L",
+  "@vehicleGarageRefuelCurrent": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRefuelNeeded": "Required fuel: {needed}L",
+  "@vehicleGarageRefuelNeeded": {
+    "placeholders": {
+      "needed": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRefuelCost": "Cost: {cost}",
+  "@vehicleGarageRefuelCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRefuelConfirmQuestion": "Do you want to fully refuel this vehicle?",
+  "vehicleGarageRefuelSuccess": "Vehicle refueled!",
+  "vehicleGarageRefuelFailed": "Refueling failed",
+  "vehicleGarageRepairAlreadyInProgress": "This vehicle is already being repaired",
+  "vehicleGarageRepairTitle": "Repair vehicle",
+  "vehicleGarageRepairCurrentCondition": "Current condition: {condition}%",
+  "@vehicleGarageRepairCurrentCondition": {
+    "placeholders": {
+      "condition": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairDamagePercent": "Damage: {percent}%",
+  "@vehicleGarageRepairDamagePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairCostLine": "Repair cost: {cost}",
+  "@vehicleGarageRepairCostLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairEstimatedTime": "Estimated repair time: {duration}",
+  "@vehicleGarageRepairEstimatedTime": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairTimerNote": "Repair starts immediately, but only completes after the timer ends.",
+  "vehicleGarageRepairStartedUnavailable": "Repair started. The vehicle is temporarily unavailable.",
+  "vehicleGarageRepairFailed": "Repair failed",
+  "vehicleGaragePoliceEventActive": "Police vehicle event active — {timeLeft} left",
+  "@vehicleGaragePoliceEventActive": {
+    "placeholders": {
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGaragePoliceEventNext": "Next police vehicle event starts in {timeLeft}",
+  "@vehicleGaragePoliceEventNext": {
+    "placeholders": {
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageNoVehiclesInCountry": "There are currently no vehicles available in this country.",
+  "vehicleGarageUntil": "until",
+  "vehicleCardFuelLabel": "Fuel",
+  "vehicleCardValueLabel": "Value:",
+  "vehicleCardLocationLabel": "Location:",
+  "vehicleCardInTransit": "In transit"
 }

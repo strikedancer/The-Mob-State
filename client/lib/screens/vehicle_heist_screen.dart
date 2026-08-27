@@ -5,7 +5,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/vehicle.dart';
 import '../providers/auth_provider.dart';
 import '../providers/vehicle_provider.dart';
 import '../services/api_client.dart';
@@ -18,8 +17,8 @@ import '../l10n/app_localizations.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/theft_cooldown_steal_control.dart';
-import '../widgets/overlay_image.dart';
 import '../widgets/stolen_vehicle_dialog.dart';
+import '../widgets/vehicle_catalog_dialog.dart';
 import 'events_screen.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
@@ -61,7 +60,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   int? _embeddedJailSeconds;
   int _jailContentEpoch = 0;
   final Map<int, int> _stealCreditHintByTab = {};
-  bool _opsIntelExpandedMobile = false;
+  bool _opsPanelExpanded = false;
   Map<String, dynamic>? _liveVehicleEvent;
   Map<String, dynamic>? _liveVehicleEventProgress;
   DateTime _eventNow = DateTime.now();
@@ -83,9 +82,9 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _activeTabIndex = _tabController.index;
         });
         _refreshOpsIntelligence();
-        // Mobile: keep ops intel collapsed by default when switching types.
-        if (_opsIntelExpandedMobile) {
-          setState(() => _opsIntelExpandedMobile = false);
+        // Keep ops collapsed by default when switching vehicle type.
+        if (_opsPanelExpanded) {
+          setState(() => _opsPanelExpanded = false);
         }
       }
     });
@@ -934,232 +933,22 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final currentCountry =
         authProvider.currentPlayer?.currentCountry ?? 'netherlands';
     final category = _catalogCategoryForTab(_activeTabIndex);
+    final l10n = AppLocalizations.of(context)!;
 
     await provider.fetchStealableCatalog(category: category);
     if (!mounted) return;
 
-    final vehicles = [...provider.availableVehicles]
-      ..sort((a, b) {
-        final aIsPoliceEvent = (a.id ?? '').startsWith('event_politie_');
-        final bIsPoliceEvent = (b.id ?? '').startsWith('event_politie_');
-        if (aIsPoliceEvent != bIsPoliceEvent) {
-          return aIsPoliceEvent ? -1 : 1;
-        }
-        return (a.baseValue ?? 0).compareTo(b.baseValue ?? 0);
-      });
+    final title = _activeTabIndex == 0
+        ? l10n.vehicleHeistCatalogTitleCars
+        : _activeTabIndex == 1
+        ? l10n.vehicleHeistCatalogTitleMotorcycles
+        : l10n.vehicleHeistCatalogTitleBoats;
 
-    await showDialog<void>(
-      context: context,
-      builder: (context) {
-        final l10n = AppLocalizations.of(context);
-        return AlertDialog(
-          title: Text(
-            _activeTabIndex == 0
-                ? (l10n?.vehicleHeistCatalogTitleCars ?? 'Available cars')
-                : _activeTabIndex == 1
-                ? (l10n?.vehicleHeistCatalogTitleMotorcycles ??
-                    'Available motorcycles')
-                : (l10n?.vehicleHeistCatalogTitleBoats ?? 'Available boats'),
-          ),
-          content: SizedBox(
-            width: MediaQuery.of(context).size.width < 700
-                ? double.maxFinite
-                : 720,
-            child: vehicles.isEmpty
-                ? Text(
-                    l10n?.vehicleHeistCatalogEmpty ??
-                        'There are currently no vehicles available in this segment.',
-                  )
-                : ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: vehicles.length,
-                    separatorBuilder: (_, index) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final vehicle = vehicles[index];
-                      return _buildCatalogCard(vehicle, currentCountry);
-                    },
-                  ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(l10n?.close ?? 'Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Color _rarityColor(String rarity) {
-    switch (rarity) {
-      case 'common':
-        return Colors.greenAccent.shade100;
-      case 'uncommon':
-        return Colors.lightBlueAccent.shade100;
-      case 'rare':
-        return Colors.deepPurpleAccent.shade100;
-      case 'epic':
-        return Colors.purple.shade300;
-      case 'legendary':
-        return Colors.amber.shade300;
-      default:
-        return Colors.white70;
-    }
-  }
-
-  String _rarityLabel(String rarity) {
-    final l10n = AppLocalizations.of(context);
-    switch (rarity) {
-      case 'common':
-        return l10n?.vehicleHeistRarityCommon ?? 'Common';
-      case 'uncommon':
-        return l10n?.vehicleHeistRarityUncommon ?? 'Uncommon';
-      case 'rare':
-        return l10n?.vehicleHeistRarityRare ?? 'Rare';
-      case 'epic':
-        return l10n?.vehicleHeistRarityEpic ?? 'Epic';
-      case 'legendary':
-        return l10n?.vehicleHeistRarityLegendary ?? 'Legendary';
-      default:
-        return rarity;
-    }
-  }
-
-  Widget _buildCatalogCard(VehicleDefinition vehicle, String currentCountry) {
-    final l10n = AppLocalizations.of(context);
-    final image = vehicle.imageNew ?? vehicle.image;
-    final rarity = (vehicle.rarity ?? 'common').toLowerCase();
-    final marketValue =
-        vehicle.marketValue?[currentCountry] ?? vehicle.baseValue ?? 0;
-    final countries = vehicle.availableInCountries ?? const <String>[];
-    final primaryCountry = countries.isNotEmpty ? countries.first : '-';
-    final isPoliceEventVehicle = (vehicle.id ?? '').startsWith(
-      'event_politie_',
-    );
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.18),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (image != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: OverlayImageBuilder()
-                      .base('assets/images/vehicles/$image')
-                      .width(90)
-                      .height(64)
-                      .fit(BoxFit.contain)
-                      .build(),
-                )
-              else
-                const SizedBox(width: 90, height: 64),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      vehicle.name ?? '-',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: _rarityColor(rarity).withOpacity(0.16),
-                            borderRadius: BorderRadius.circular(999),
-                            border: Border.all(color: _rarityColor(rarity)),
-                          ),
-                          child: Text(
-                            _rarityLabel(rarity),
-                            style: TextStyle(
-                              color: _rarityColor(rarity),
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        if (isPoliceEventVehicle)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.redAccent.withOpacity(0.18),
-                              borderRadius: BorderRadius.circular(999),
-                              border: Border.all(
-                                color: Colors.redAccent.withOpacity(0.7),
-                              ),
-                            ),
-                            child: Text(
-                              l10n?.vehicleHeistEventOnlyTag ?? 'Event-only',
-                              style: const TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        Text(
-                          l10n?.vehicleHeistCatalogValue(formatCurrency(marketValue)) ??
-                              'Value: ${formatCurrency(marketValue)}',
-                        ),
-                        Text(
-                          l10n?.vehicleHeistCatalogRank(
-                                (vehicle.requiredRank ?? '-').toString(),
-                              ) ??
-                              'Rank: ${vehicle.requiredRank ?? '-'}',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(vehicle.description ?? ''),
-          const SizedBox(height: 8),
-          Text(
-            l10n?.vehicleHeistCatalogInGameAvailability(
-                  '${vehicle.currentWorldCount ?? 0}/${vehicle.maxGameAvailability ?? '-'}',
-                ) ??
-                'In game: ${vehicle.currentWorldCount ?? 0}/${vehicle.maxGameAvailability ?? '-'} available',
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            l10n?.vehicleHeistCatalogMostCommonIn(primaryCountry) ??
-                'Most common in: $primaryCountry',
-            style: const TextStyle(color: Colors.white),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            l10n?.vehicleHeistCatalogCountries(countries.join(', ')) ??
-                'Countries: ${countries.join(', ')}',
-            style: const TextStyle(color: Colors.white70),
-          ),
-        ],
-      ),
+    await showVehicleCatalogDialog(
+      context,
+      title: title,
+      vehicles: provider.availableVehicles,
+      currentCountry: currentCountry,
     );
   }
 
@@ -1852,7 +1641,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   Widget _buildOpsIntelligencePanel(VehicleProvider provider) {
     final l10n = AppLocalizations.of(context)!;
     final intel = provider.vehicleOpsIntelligence;
-    final isMobile = MediaQuery.of(context).size.width < 600;
     final heat = (intel?['categoryHeat'] as Map<String, dynamic>?) ?? const {};
     final pattern =
         (intel?['policePattern'] as Map<String, dynamic>?) ?? const {};
@@ -1864,20 +1652,12 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final rep = (intel?['opsReputation'] as Map<String, dynamic>?) ?? const {};
     final blacklist =
         (intel?['regionalBlacklist'] as Map<String, dynamic>?) ?? const {};
-    final interception =
-        (intel?['hotspotInterception'] as Map<String, dynamic>?) ?? const {};
-    final insurance =
-        (intel?['contrabandInsurance'] as Map<String, dynamic>?) ?? const {};
-    final countryModifier =
-        (intel?['countryModifier'] as Map<String, dynamic>?) ?? const {};
     final contractsBoard =
         (intel?['contractsBoard'] as Map<String, dynamic>?) ?? const {};
     final crewMatchmaking =
         (intel?['crewMatchmaking'] as Map<String, dynamic>?) ?? const {};
     final counterIntercept =
         (intel?['counterIntercept'] as Map<String, dynamic>?) ?? const {};
-    final openClaims =
-        (insurance['openClaims'] as List<dynamic>? ?? const <dynamic>[]);
     final hotspots = (intel?['hotspots'] as List<dynamic>? ?? const []);
     final hotspot =
         hotspots.isNotEmpty && hotspots.first is Map<String, dynamic>
@@ -1885,12 +1665,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         : const <String, dynamic>{};
     final isLoading = provider.vehicleOpsLoading;
     final hasCrew = crewOp['available'] == true;
-    final contracts =
-        (contractsBoard['contracts'] as List<dynamic>? ?? const <dynamic>[]);
-    final firstContract =
-        contracts.isNotEmpty && contracts.first is Map<String, dynamic>
-        ? contracts.first as Map<String, dynamic>
-        : const <String, dynamic>{};
     final hotspotCooldown = _liveCooldownSeconds(
       hotspot['cooldownRemainingSeconds'],
     );
@@ -1907,7 +1681,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final counterCooldown = _liveCooldownSeconds(
       counterIntercept['cooldownRemainingSeconds'],
     );
-    final partsRefresh = _liveCooldownSeconds(partsMarket['refreshInSeconds']);
 
     Color heatColor;
     final heatLevel = (heat['level'] ?? 'LOW').toString().toUpperCase();
@@ -1970,23 +1743,20 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   icon: const Icon(Icons.refresh, size: 18),
                   tooltip: l10n.vehicleHeistOpsIntelRefreshTooltip,
                 ),
-              if (isMobile)
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _opsIntelExpandedMobile = !_opsIntelExpandedMobile;
-                    });
-                  },
-                  icon: Icon(
-                    _opsIntelExpandedMobile
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
-                    size: 20,
-                  ),
-                  tooltip: _opsIntelExpandedMobile
-                      ? l10n.vehicleHeistCollapse
-                      : l10n.vehicleHeistExpand,
+              IconButton(
+                onPressed: () {
+                  setState(() => _opsPanelExpanded = !_opsPanelExpanded);
+                },
+                icon: Icon(
+                  _opsPanelExpanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  size: 20,
                 ),
+                tooltip: _opsPanelExpanded
+                    ? l10n.vehicleHeistOpsHideDetails
+                    : l10n.vehicleHeistOpsShowDetails,
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -2025,311 +1795,215 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
               ),
             ],
           ),
-          if (!isMobile || _opsIntelExpandedMobile) const SizedBox(height: 10),
-          if (isMobile && !_opsIntelExpandedMobile)
-            Text(
-              l10n.vehicleHeistOpsIntelTapToExpand,
-              style: const TextStyle(color: Colors.white60, fontSize: 12),
+          const SizedBox(height: 10),
+          Text(
+            l10n.vehicleHeistOpsPrimaryActions,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
             ),
-          if (isMobile && !_opsIntelExpandedMobile) const SizedBox(height: 2),
-          if (!isMobile || _opsIntelExpandedMobile)
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final stacked = constraints.maxWidth < 820;
-              final controls = Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
+          ),
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              OutlinedButton.icon(
+                onPressed:
+                    isLoading || _opsActionInProgress || hotspotCooldown > 0
+                    ? null
+                    : () => _runHotspotOp(provider),
+                icon: const Icon(Icons.local_police, size: 16),
+                label: Text(l10n.vehicleHeistOpsHotspotRunButton),
+              ),
+              OutlinedButton.icon(
+                onPressed:
+                    isLoading || _opsActionInProgress || chopCooldown > 0
+                    ? null
+                    : () => _claimChopContract(provider),
+                icon: const Icon(Icons.build_circle, size: 16),
+                label: Text(l10n.vehicleHeistOpsClaimContractButton),
+              ),
+              OutlinedButton.icon(
+                onPressed: isLoading || _opsActionInProgress
+                    ? null
+                    : () => _buyOpsParts(provider),
+                icon: const Icon(Icons.precision_manufacturing, size: 16),
+                label: Text(l10n.vehicleHeistOpsBuyPartsButton),
+              ),
+              OutlinedButton.icon(
+                onPressed:
+                    isLoading || _opsActionInProgress || contractCooldown > 0
+                    ? null
+                    : () => _runOpsContract(provider),
+                icon: const Icon(Icons.assignment_turned_in, size: 16),
+                label: Text(l10n.vehicleHeistOpsOpsContractButton),
+              ),
+            ],
+          ),
+          if (!_opsPanelExpanded)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                l10n.vehicleHeistOpsIntelTapToExpand,
+                style: const TextStyle(color: Colors.white54, fontSize: 11.5),
+              ),
+            ),
+          if (_opsPanelExpanded) ...[
+            const SizedBox(height: 10),
+            Text(
+              l10n.vehicleHeistOpsAdvancedActions,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontWeight: FontWeight.w700,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if (hasCrew)
                   OutlinedButton.icon(
                     onPressed:
-                        isLoading || _opsActionInProgress || hotspotCooldown > 0
+                        isLoading || _opsActionInProgress || crewCooldown > 0
                         ? null
-                        : () => _runHotspotOp(provider),
-                    icon: const Icon(Icons.local_police, size: 16),
-                    label: Text(l10n.vehicleHeistOpsHotspotRunButton),
+                        : () => _runCrewOp(provider),
+                    icon: const Icon(Icons.groups, size: 16),
+                    label: Text(l10n.vehicleHeistOpsCrewOpButton),
                   ),
-                  if (hasCrew)
-                    OutlinedButton.icon(
-                      onPressed:
-                          isLoading || _opsActionInProgress || crewCooldown > 0
-                          ? null
-                          : () => _runCrewOp(provider),
-                      icon: const Icon(Icons.groups, size: 16),
-                      label: Text(l10n.vehicleHeistOpsCrewOpButton),
-                    ),
-                  OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
-                        ? null
-                        : () => _buyOpsParts(provider),
-                    icon: const Icon(Icons.precision_manufacturing, size: 16),
-                    label: Text(l10n.vehicleHeistOpsBuyPartsButton),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed:
-                        isLoading || _opsActionInProgress || chopCooldown > 0
-                        ? null
-                        : () => _claimChopContract(provider),
-                    icon: const Icon(Icons.build_circle, size: 16),
-                    label: Text(l10n.vehicleHeistOpsClaimContractButton),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
-                        ? null
-                        : () => _purchaseInsurance(provider),
-                    icon: const Icon(Icons.verified_user, size: 16),
-                    label: Text(l10n.vehicleHeistOpsInsuranceButton),
-                  ),
-                  if (hasCrew)
-                    OutlinedButton.icon(
-                      onPressed:
-                          isLoading ||
-                              _opsActionInProgress ||
-                              crewMatchCooldown > 0
-                          ? null
-                          : () => _runCrewMatch(provider),
-                      icon: const Icon(Icons.emoji_events, size: 16),
-                      label: Text(l10n.vehicleHeistOpsCrewMatchButton),
-                    ),
-                  if (!hasCrew)
-                    _buildOpsPill(
-                      l10n.vehicleHeistOpsCrewJoinToUnlock,
-                      color: Colors.amberAccent,
-                    ),
-                  OutlinedButton.icon(
-                    onPressed:
-                        isLoading || _opsActionInProgress || counterCooldown > 0
-                        ? null
-                        : () => _runCounterIntercept(provider),
-                    icon: const Icon(Icons.swap_horiz, size: 16),
-                    label: Text(l10n.vehicleHeistOpsCounterButton),
-                  ),
+                OutlinedButton.icon(
+                  onPressed: isLoading || _opsActionInProgress
+                      ? null
+                      : () => _purchaseInsurance(provider),
+                  icon: const Icon(Icons.verified_user, size: 16),
+                  label: Text(l10n.vehicleHeistOpsInsuranceButton),
+                ),
+                if (hasCrew)
                   OutlinedButton.icon(
                     onPressed:
                         isLoading ||
                             _opsActionInProgress ||
-                            contractCooldown > 0
+                            crewMatchCooldown > 0
                         ? null
-                        : () => _runOpsContract(provider),
-                    icon: const Icon(Icons.assignment_turned_in, size: 16),
-                    label: Text(l10n.vehicleHeistOpsOpsContractButton),
+                        : () => _runCrewMatch(provider),
+                    icon: const Icon(Icons.emoji_events, size: 16),
+                    label: Text(l10n.vehicleHeistOpsCrewMatchButton),
                   ),
-                  OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
-                        ? null
-                        : () => _resolveInsuranceClaim(provider),
-                    icon: const Icon(Icons.gavel, size: 16),
-                    label: Text(l10n.vehicleHeistOpsClaimDisputeButton),
+                if (!hasCrew)
+                  _buildOpsPill(
+                    l10n.vehicleHeistOpsCrewJoinToUnlock,
+                    color: Colors.amberAccent,
                   ),
-                ],
-              );
-
-              final stats = Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                OutlinedButton.icon(
+                  onPressed:
+                      isLoading || _opsActionInProgress || counterCooldown > 0
+                      ? null
+                      : () => _runCounterIntercept(provider),
+                  icon: const Icon(Icons.swap_horiz, size: 16),
+                  label: Text(l10n.vehicleHeistOpsCounterButton),
+                ),
+                OutlinedButton.icon(
+                  onPressed: isLoading || _opsActionInProgress
+                      ? null
+                      : () => _resolveInsuranceClaim(provider),
+                  icon: const Icon(Icons.gavel, size: 16),
+                  label: Text(l10n.vehicleHeistOpsClaimDisputeButton),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
                 children: [
-                  Text(
-                    l10n.vehicleHeistOpsIntelHotspotLine(
-                      ((l10n.localeName.startsWith('nl') ? hotspot['nameNl'] : hotspot['nameEn']) ?? '-')
-                          .toString(),
+                  _buildOpsActionInfoCard(
+                    icon: Icons.local_police,
+                    title: l10n.vehicleHeistOpsHotspotRunTitle,
+                    payout: l10n.vehicleHeistOpsIntelCashRangePayout(
+                      formatCurrency(
+                        (hotspot['rewardMin'] as num?)?.toInt() ?? 0,
+                      ),
+                      formatCurrency(
+                        (hotspot['rewardMax'] as num?)?.toInt() ?? 0,
+                      ),
                     ),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                    cooldownSeconds: hotspotCooldown,
+                  ),
+                  const SizedBox(width: 8),
+                  _buildOpsActionInfoCard(
+                    icon: Icons.groups,
+                    title: l10n.vehicleHeistOpsCrewOpTitle,
+                    payout: l10n.vehicleHeistOpsIntelYouCashRangePayout(
+                      formatCurrency(
+                        (crewOp['rewardPersonalMin'] as num?)?.toInt() ?? 0,
+                      ),
+                      formatCurrency(
+                        (crewOp['rewardPersonalMax'] as num?)?.toInt() ?? 0,
+                      ),
                     ),
+                    cooldownSeconds: crewCooldown,
+                    requirement: hasCrew
+                        ? l10n.vehicleHeistOpsCrewRequiredYes
+                        : l10n.vehicleHeistOpsCrewRequiredNoJoinFirst,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.vehicleHeistOpsIntelHotspotRewardLine(
-                      formatCurrency((hotspot['rewardMin'] as num?)?.toInt() ?? 0),
-                      formatCurrency((hotspot['rewardMax'] as num?)?.toInt() ?? 0),
+                  const SizedBox(width: 8),
+                  _buildOpsActionInfoCard(
+                    icon: Icons.build_circle,
+                    title: l10n.vehicleHeistOpsClaimContractTitle,
+                    payout: l10n.vehicleHeistOpsIntelCashPayout(
+                      formatCurrency(
+                        (chop['rewardMoney'] as num?)?.toInt() ?? 0,
+                      ),
                     ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.vehicleHeistOpsIntelWhyCashLine,
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  const SizedBox(height: 8),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        _buildOpsActionInfoCard(
-                          icon: Icons.local_police,
-                          title: l10n.vehicleHeistOpsHotspotRunTitle,
-                          payout: l10n.vehicleHeistOpsIntelCashRangePayout(
-                            formatCurrency(
-                              (hotspot['rewardMin'] as num?)?.toInt() ?? 0,
-                            ),
-                            formatCurrency(
-                              (hotspot['rewardMax'] as num?)?.toInt() ?? 0,
-                            ),
-                          ),
-                          cooldownSeconds: hotspotCooldown,
-                        ),
-                        const SizedBox(width: 8),
-                        _buildOpsActionInfoCard(
-                          icon: Icons.groups,
-                          title: l10n.vehicleHeistOpsCrewOpTitle,
-                          payout: l10n.vehicleHeistOpsIntelYouCashRangePayout(
-                            formatCurrency(
-                              (crewOp['rewardPersonalMin'] as num?)?.toInt() ??
-                                  0,
-                            ),
-                            formatCurrency(
-                              (crewOp['rewardPersonalMax'] as num?)?.toInt() ??
-                                  0,
-                            ),
-                          ),
-                          cooldownSeconds: crewCooldown,
-                          requirement: hasCrew
-                              ? l10n.vehicleHeistOpsCrewRequiredYes
-                              : l10n.vehicleHeistOpsCrewRequiredNoJoinFirst,
-                        ),
-                        const SizedBox(width: 8),
-                        _buildOpsActionInfoCard(
-                          icon: Icons.build_circle,
-                          title: l10n.vehicleHeistOpsClaimContractTitle,
-                          payout: l10n.vehicleHeistOpsIntelCashPayout(
-                            formatCurrency(
-                              (chop['rewardMoney'] as num?)?.toInt() ?? 0,
-                            ),
-                          ),
-                          cooldownSeconds: chopCooldown,
-                        ),
-                        const SizedBox(width: 8),
-                        _buildOpsActionInfoCard(
-                          icon: Icons.assignment_turned_in,
-                          title: l10n.vehicleHeistOpsOpsContractTitle,
-                          payout: l10n.vehicleHeistOpsIntelContractsPayout(
-                            contracts.length.toString(),
-                            (firstContract['rewardMoney'] is num)
-                                ? l10n.vehicleHeistOpsIntelContractsFrom(
-                                    formatCurrency(
-                                      (firstContract['rewardMoney'] as num)
-                                          .toInt(),
-                                    ),
-                                  )
-                                : '',
-                          ),
-                          cooldownSeconds: contractCooldown,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelPartsPricesLine(
-                      (prices['car'] ?? '-').toString(),
-                      (prices['motorcycle'] ?? '-').toString(),
-                      (prices['boat'] ?? '-').toString(),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelPartsMarketRefreshLine(
-                      _formatCooldown(partsRefresh),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelCrewLine(
-                      (crewOp['crewName'] ?? '-').toString(),
-                      (crewOp['crewSize'] ?? 0).toString(),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelChopRewardLine(
-                      formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelInterceptWindowLine(
-                      interception['activeWindow'] == true
-                          ? l10n.vehicleHeistActive
-                          : l10n.vehicleHeistOff,
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    blacklist['active'] == true
-                        ? l10n.vehicleHeistOpsIntelBlacklistLine(
-                            ((l10n.localeName.startsWith('nl')
-                                        ? blacklist['reasonNl']
-                                        : blacklist['reasonEn']) ??
-                                    '-')
-                                .toString(),
-                          )
-                        : l10n.vehicleHeistOpsIntelBlacklistNoneLine,
-                    style: TextStyle(
-                      color: blacklist['active'] == true
-                          ? Colors.redAccent
-                          : Colors.white70,
-                    ),
-                  ),
-                  Text(
-                    insurance['active'] == true
-                        ? l10n.vehicleHeistOpsIntelInsuranceActiveLine(
-                            (insurance['tier'] ?? '-').toString(),
-                          )
-                        : l10n.vehicleHeistOpsIntelInsuranceInactiveLine,
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelCountryModifierLine(
-                      ((l10n.localeName.startsWith('nl')
-                                  ? countryModifier['nameNl']
-                                  : countryModifier['nameEn']) ??
-                              '-')
-                          .toString(),
-                      (countryModifier['payoutMultiplier'] ?? 1).toString(),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelCrewSeasonLine(
-                      (crewMatchmaking['seasonKey'] ?? '-').toString(),
-                      ((crewMatchmaking['current'] as Map<String, dynamic>?)?[
-                                  'points'] ??
-                              0)
-                          .toString(),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelContractsCooldownLine(
-                      contracts.length.toString(),
-                      _formatCooldown(contractCooldown),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.vehicleHeistOpsIntelCounterCooldownLine(
-                      _formatCooldown(counterCooldown),
-                      openClaims.length.toString(),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
+                    cooldownSeconds: chopCooldown,
                   ),
                 ],
-              );
-
-              if (stacked) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [stats, const SizedBox(height: 10), controls],
-                );
-              }
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: stats),
-                  const SizedBox(width: 10),
-                  Expanded(child: controls),
-                ],
-              );
-            },
-          ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.vehicleHeistOpsIntelHotspotLine(
+                ((l10n.localeName.startsWith('nl')
+                            ? hotspot['nameNl']
+                            : hotspot['nameEn']) ??
+                        '-')
+                    .toString(),
+              ),
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                fontSize: 12.5,
+              ),
+            ),
+            Text(
+              l10n.vehicleHeistOpsIntelPartsPricesLine(
+                (prices['car'] ?? '-').toString(),
+                (prices['motorcycle'] ?? '-').toString(),
+                (prices['boat'] ?? '-').toString(),
+              ),
+              style: const TextStyle(color: Colors.white60, fontSize: 11.5),
+            ),
+            Text(
+              l10n.vehicleHeistOpsIntelChopRewardLine(
+                formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0),
+              ),
+              style: const TextStyle(color: Colors.white60, fontSize: 11.5),
+            ),
+            if (blacklist['active'] == true)
+              Text(
+                l10n.vehicleHeistOpsIntelBlacklistLine(
+                  ((l10n.localeName.startsWith('nl')
+                              ? blacklist['reasonNl']
+                              : blacklist['reasonEn']) ??
+                          '-')
+                      .toString(),
+                ),
+                style: const TextStyle(color: Colors.redAccent, fontSize: 11.5),
+              ),
+          ],
         ],
       ),
     );

@@ -1142,6 +1142,259 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get vehicleHeistCatalogFilterAll => 'Alle voertuigen';
+
+  @override
+  String get vehicleHeistCatalogFilterAvailable => 'Wereldvoorraad beschikbaar';
+
+  @override
+  String get vehicleHeistCatalogFilterEvent => 'Alleen event';
+
+  @override
+  String get vehicleHeistCatalogSortLabel => 'Sorteer';
+
+  @override
+  String get vehicleHeistCatalogSortValue => 'Waarde';
+
+  @override
+  String get vehicleHeistCatalogSortRank => 'Vereiste rank';
+
+  @override
+  String get vehicleHeistCatalogSortRarity => 'Zeldzaamheid';
+
+  @override
+  String get vehicleHeistCatalogSortName => 'Naam';
+
+  @override
+  String get vehicleHeistOpsPrimaryActions => 'Snelle ops';
+
+  @override
+  String get vehicleHeistOpsAdvancedActions => 'Geavanceerde ops';
+
+  @override
+  String get vehicleHeistOpsShowDetails => 'Toon intel-details';
+
+  @override
+  String get vehicleHeistOpsHideDetails => 'Verberg intel-details';
+
+  @override
+  String get vehicleGarageStealMotorcycle => 'Steel motor';
+
+  @override
+  String get vehicleGarageNoMotorcyclesInGarage => 'Geen motoren in garage';
+
+  @override
+  String get vehicleGarageHeistMotorcycleTitle => 'Voertuig stelen — Motor';
+
+  @override
+  String vehicleGarageCreditBoltWithCost(String cost) {
+    return 'Versnellen met credits ($cost credits)';
+  }
+
+  @override
+  String get vehicleGarageCreditBoltGeneric =>
+      'Versnellen met credits — kosten in het volgende scherm';
+
+  @override
+  String get vehicleGarageRepairSpeedUpUnavailable =>
+      'Reparatie-versnelling is nu niet beschikbaar.';
+
+  @override
+  String get vehicleGarageInsufficientCreditsRepairSpeedUp =>
+      'Onvoldoende credits voor reparatie-versnelling.';
+
+  @override
+  String get vehicleGarageRepairJobNotFound =>
+      'Deze reparatie is al afgerond of niet meer actief.';
+
+  @override
+  String get vehicleGarageRepairSpeedUpFailed =>
+      'Reparatie versnellen mislukt.';
+
+  @override
+  String get vehicleGarageRepairCompletedInstant =>
+      'Voertuigreparatie direct afgerond.';
+
+  @override
+  String get vehicleGarageVehicleNotDamaged => 'Voertuig is niet beschadigd.';
+
+  @override
+  String get vehicleGarageRepairStartFailed => 'Reparatie starten mislukt.';
+
+  @override
+  String vehicleGarageRepairInstantWithCost(String cost) {
+    return 'Repareer instant voor $cost credits';
+  }
+
+  @override
+  String get vehicleGarageRepairInstantGeneric =>
+      'Repareer instant met credits';
+
+  @override
+  String get vehicleGarageMotorStorageCapacity => 'Motorstalling capaciteit';
+
+  @override
+  String vehicleGarageMotorcyclesStored(String current, String total) {
+    return 'Motoren in opslag: $current/$total';
+  }
+
+  @override
+  String get vehicleGarageStealVehiclesToStart =>
+      'Steel voertuigen om te starten';
+
+  @override
+  String get vehicleGarageMotorcycleStolen => 'Motor gestolen';
+
+  @override
+  String vehicleGarageStealOutcomeXp(String xp) {
+    return 'XP: +$xp';
+  }
+
+  @override
+  String vehicleGarageStealOutcomeWanted(String level) {
+    return 'Gezocht: $level';
+  }
+
+  @override
+  String vehicleGarageStealOutcomeJail(String minutes) {
+    return 'Gevangenis: $minutes min';
+  }
+
+  @override
+  String vehicleGarageStealOutcomeBail(String amount) {
+    return 'Borg: $amount';
+  }
+
+  @override
+  String get vehicleGarageStealEscapedPolice =>
+      'Je werd gesnapt door de politie, maar je wist te ontkomen.';
+
+  @override
+  String get vehicleGarageScrapConfirm =>
+      'Dit voertuig slopen voor onderdelen? Dit kan niet ongedaan gemaakt worden.';
+
+  @override
+  String get vehicleGarageScrapAction => 'Slopen';
+
+  @override
+  String get vehicleGarageScrapFailed => 'Slopen mislukt';
+
+  @override
+  String vehicleGarageScrapSuccess(String parts, String type) {
+    return 'Voertuig gesloopt — +$parts $type-onderdelen';
+  }
+
+  @override
+  String get vehicleGaragePartsTypeCar => 'auto';
+
+  @override
+  String get vehicleGaragePartsTypeMotorcycle => 'motor';
+
+  @override
+  String get vehicleGaragePartsTypeBoat => 'boot';
+
+  @override
+  String get vehicleGarageNoFuelTank => 'Dit voertuig heeft geen brandstoftank';
+
+  @override
+  String get vehicleGarageTankFull => 'Tank is al vol';
+
+  @override
+  String get vehicleGarageRefuelTitle => 'Voertuig tanken';
+
+  @override
+  String vehicleGarageRefuelCurrent(String current, String max) {
+    return 'Huidige brandstof: ${current}L / ${max}L';
+  }
+
+  @override
+  String vehicleGarageRefuelNeeded(String needed) {
+    return 'Benodigde brandstof: ${needed}L';
+  }
+
+  @override
+  String vehicleGarageRefuelCost(String cost) {
+    return 'Kosten: $cost';
+  }
+
+  @override
+  String get vehicleGarageRefuelConfirmQuestion =>
+      'Wil je dit voertuig volledig tanken?';
+
+  @override
+  String get vehicleGarageRefuelSuccess => 'Voertuig getankt!';
+
+  @override
+  String get vehicleGarageRefuelFailed => 'Tanken mislukt';
+
+  @override
+  String get vehicleGarageRepairAlreadyInProgress =>
+      'Dit voertuig is al in reparatie';
+
+  @override
+  String get vehicleGarageRepairTitle => 'Voertuig repareren';
+
+  @override
+  String vehicleGarageRepairCurrentCondition(String condition) {
+    return 'Huidige conditie: $condition%';
+  }
+
+  @override
+  String vehicleGarageRepairDamagePercent(String percent) {
+    return 'Schade: $percent%';
+  }
+
+  @override
+  String vehicleGarageRepairCostLine(String cost) {
+    return 'Reparatiekosten: $cost';
+  }
+
+  @override
+  String vehicleGarageRepairEstimatedTime(String duration) {
+    return 'Geschatte reparatietijd: $duration';
+  }
+
+  @override
+  String get vehicleGarageRepairTimerNote =>
+      'Reparatie start direct, maar wordt pas na de timer afgerond.';
+
+  @override
+  String get vehicleGarageRepairStartedUnavailable =>
+      'Reparatie gestart. Het voertuig is tijdelijk niet beschikbaar.';
+
+  @override
+  String get vehicleGarageRepairFailed => 'Reparatie mislukt';
+
+  @override
+  String vehicleGaragePoliceEventActive(String timeLeft) {
+    return 'Politie-voertuig event actief — nog $timeLeft';
+  }
+
+  @override
+  String vehicleGaragePoliceEventNext(String timeLeft) {
+    return 'Volgende politie-voertuig event over $timeLeft';
+  }
+
+  @override
+  String get vehicleGarageNoVehiclesInCountry =>
+      'Er zijn nu geen voertuigen beschikbaar in dit land.';
+
+  @override
+  String get vehicleGarageUntil => 'tot';
+
+  @override
+  String get vehicleCardFuelLabel => 'Brandstof';
+
+  @override
+  String get vehicleCardValueLabel => 'Waarde:';
+
+  @override
+  String get vehicleCardLocationLabel => 'Locatie:';
+
+  @override
+  String get vehicleCardInTransit => 'Onderweg';
+
+  @override
   String vehicleHeistUpgradeCost(String cost) {
     return 'Upgraden ($cost)';
   }

@@ -3908,6 +3908,202 @@
       }
     }
   },
+  "vehicleHeistCatalogFilterAll": "Alle voertuigen",
+  "vehicleHeistCatalogFilterAvailable": "Wereldvoorraad beschikbaar",
+  "vehicleHeistCatalogFilterEvent": "Alleen event",
+  "vehicleHeistCatalogSortLabel": "Sorteer",
+  "vehicleHeistCatalogSortValue": "Waarde",
+  "vehicleHeistCatalogSortRank": "Vereiste rank",
+  "vehicleHeistCatalogSortRarity": "Zeldzaamheid",
+  "vehicleHeistCatalogSortName": "Naam",
+  "vehicleHeistOpsPrimaryActions": "Snelle ops",
+  "vehicleHeistOpsAdvancedActions": "Geavanceerde ops",
+  "vehicleHeistOpsShowDetails": "Toon intel-details",
+  "vehicleHeistOpsHideDetails": "Verberg intel-details",
+  "vehicleGarageStealMotorcycle": "Steel motor",
+  "vehicleGarageNoMotorcyclesInGarage": "Geen motoren in garage",
+  "vehicleGarageHeistMotorcycleTitle": "Voertuig stelen — Motor",
+  "vehicleGarageCreditBoltWithCost": "Versnellen met credits ({cost} credits)",
+  "@vehicleGarageCreditBoltWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageCreditBoltGeneric": "Versnellen met credits — kosten in het volgende scherm",
+  "vehicleGarageRepairSpeedUpUnavailable": "Reparatie-versnelling is nu niet beschikbaar.",
+  "vehicleGarageInsufficientCreditsRepairSpeedUp": "Onvoldoende credits voor reparatie-versnelling.",
+  "vehicleGarageRepairJobNotFound": "Deze reparatie is al afgerond of niet meer actief.",
+  "vehicleGarageRepairSpeedUpFailed": "Reparatie versnellen mislukt.",
+  "vehicleGarageRepairCompletedInstant": "Voertuigreparatie direct afgerond.",
+  "vehicleGarageVehicleNotDamaged": "Voertuig is niet beschadigd.",
+  "vehicleGarageRepairStartFailed": "Reparatie starten mislukt.",
+  "vehicleGarageRepairInstantWithCost": "Repareer instant voor {cost} credits",
+  "@vehicleGarageRepairInstantWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairInstantGeneric": "Repareer instant met credits",
+  "vehicleGarageMotorStorageCapacity": "Motorstalling capaciteit",
+  "vehicleGarageMotorcyclesStored": "Motoren in opslag: {current}/{total}",
+  "@vehicleGarageMotorcyclesStored": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealVehiclesToStart": "Steel voertuigen om te starten",
+  "vehicleGarageMotorcycleStolen": "Motor gestolen",
+  "vehicleGarageStealOutcomeXp": "XP: +{xp}",
+  "@vehicleGarageStealOutcomeXp": {
+    "placeholders": {
+      "xp": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealOutcomeWanted": "Gezocht: {level}",
+  "@vehicleGarageStealOutcomeWanted": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealOutcomeJail": "Gevangenis: {minutes} min",
+  "@vehicleGarageStealOutcomeJail": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealOutcomeBail": "Borg: {amount}",
+  "@vehicleGarageStealOutcomeBail": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageStealEscapedPolice": "Je werd gesnapt door de politie, maar je wist te ontkomen.",
+  "vehicleGarageScrapConfirm": "Dit voertuig slopen voor onderdelen? Dit kan niet ongedaan gemaakt worden.",
+  "vehicleGarageScrapAction": "Slopen",
+  "vehicleGarageScrapFailed": "Slopen mislukt",
+  "vehicleGarageScrapSuccess": "Voertuig gesloopt — +{parts} {type}-onderdelen",
+  "@vehicleGarageScrapSuccess": {
+    "placeholders": {
+      "parts": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGaragePartsTypeCar": "auto",
+  "vehicleGaragePartsTypeMotorcycle": "motor",
+  "vehicleGaragePartsTypeBoat": "boot",
+  "vehicleGarageNoFuelTank": "Dit voertuig heeft geen brandstoftank",
+  "vehicleGarageTankFull": "Tank is al vol",
+  "vehicleGarageRefuelTitle": "Voertuig tanken",
+  "vehicleGarageRefuelCurrent": "Huidige brandstof: {current}L / {max}L",
+  "@vehicleGarageRefuelCurrent": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRefuelNeeded": "Benodigde brandstof: {needed}L",
+  "@vehicleGarageRefuelNeeded": {
+    "placeholders": {
+      "needed": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRefuelCost": "Kosten: {cost}",
+  "@vehicleGarageRefuelCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRefuelConfirmQuestion": "Wil je dit voertuig volledig tanken?",
+  "vehicleGarageRefuelSuccess": "Voertuig getankt!",
+  "vehicleGarageRefuelFailed": "Tanken mislukt",
+  "vehicleGarageRepairAlreadyInProgress": "Dit voertuig is al in reparatie",
+  "vehicleGarageRepairTitle": "Voertuig repareren",
+  "vehicleGarageRepairCurrentCondition": "Huidige conditie: {condition}%",
+  "@vehicleGarageRepairCurrentCondition": {
+    "placeholders": {
+      "condition": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairDamagePercent": "Schade: {percent}%",
+  "@vehicleGarageRepairDamagePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairCostLine": "Reparatiekosten: {cost}",
+  "@vehicleGarageRepairCostLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairEstimatedTime": "Geschatte reparatietijd: {duration}",
+  "@vehicleGarageRepairEstimatedTime": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageRepairTimerNote": "Reparatie start direct, maar wordt pas na de timer afgerond.",
+  "vehicleGarageRepairStartedUnavailable": "Reparatie gestart. Het voertuig is tijdelijk niet beschikbaar.",
+  "vehicleGarageRepairFailed": "Reparatie mislukt",
+  "vehicleGaragePoliceEventActive": "Politie-voertuig event actief — nog {timeLeft}",
+  "@vehicleGaragePoliceEventActive": {
+    "placeholders": {
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGaragePoliceEventNext": "Volgende politie-voertuig event over {timeLeft}",
+  "@vehicleGaragePoliceEventNext": {
+    "placeholders": {
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleGarageNoVehiclesInCountry": "Er zijn nu geen voertuigen beschikbaar in dit land.",
+  "vehicleGarageUntil": "tot",
+  "vehicleCardFuelLabel": "Brandstof",
+  "vehicleCardValueLabel": "Waarde:",
+  "vehicleCardLocationLabel": "Locatie:",
+  "vehicleCardInTransit": "Onderweg",
   "vehicleHeistUpgradeCost": "Upgraden ({cost})",
   "@vehicleHeistUpgradeCost": {
     "placeholders": {

@@ -1151,6 +1151,258 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get vehicleHeistCatalogFilterAll => 'All vehicles';
+
+  @override
+  String get vehicleHeistCatalogFilterAvailable => 'World stock available';
+
+  @override
+  String get vehicleHeistCatalogFilterEvent => 'Event only';
+
+  @override
+  String get vehicleHeistCatalogSortLabel => 'Sort';
+
+  @override
+  String get vehicleHeistCatalogSortValue => 'Value';
+
+  @override
+  String get vehicleHeistCatalogSortRank => 'Rank required';
+
+  @override
+  String get vehicleHeistCatalogSortRarity => 'Rarity';
+
+  @override
+  String get vehicleHeistCatalogSortName => 'Name';
+
+  @override
+  String get vehicleHeistOpsPrimaryActions => 'Quick ops';
+
+  @override
+  String get vehicleHeistOpsAdvancedActions => 'Advanced ops';
+
+  @override
+  String get vehicleHeistOpsShowDetails => 'Show intel details';
+
+  @override
+  String get vehicleHeistOpsHideDetails => 'Hide intel details';
+
+  @override
+  String get vehicleGarageStealMotorcycle => 'Steal motorcycle';
+
+  @override
+  String get vehicleGarageNoMotorcyclesInGarage => 'No motorcycles in garage';
+
+  @override
+  String get vehicleGarageHeistMotorcycleTitle => 'Vehicle Heist — Motorcycle';
+
+  @override
+  String vehicleGarageCreditBoltWithCost(String cost) {
+    return 'Speed up with credits ($cost credits)';
+  }
+
+  @override
+  String get vehicleGarageCreditBoltGeneric =>
+      'Speed up with credits — cost shown on the next screen';
+
+  @override
+  String get vehicleGarageRepairSpeedUpUnavailable =>
+      'Repair speed-up is currently unavailable.';
+
+  @override
+  String get vehicleGarageInsufficientCreditsRepairSpeedUp =>
+      'Not enough credits for repair speed-up.';
+
+  @override
+  String get vehicleGarageRepairJobNotFound =>
+      'This repair is already completed or no longer active.';
+
+  @override
+  String get vehicleGarageRepairSpeedUpFailed => 'Failed to speed up repair.';
+
+  @override
+  String get vehicleGarageRepairCompletedInstant =>
+      'Vehicle repair completed instantly.';
+
+  @override
+  String get vehicleGarageVehicleNotDamaged => 'Vehicle is not damaged.';
+
+  @override
+  String get vehicleGarageRepairStartFailed => 'Failed to start repair.';
+
+  @override
+  String vehicleGarageRepairInstantWithCost(String cost) {
+    return 'Repair instantly for $cost credits';
+  }
+
+  @override
+  String get vehicleGarageRepairInstantGeneric =>
+      'Repair instantly with credits';
+
+  @override
+  String get vehicleGarageMotorStorageCapacity => 'Motorcycle storage capacity';
+
+  @override
+  String vehicleGarageMotorcyclesStored(String current, String total) {
+    return 'Motorcycles stored: $current/$total';
+  }
+
+  @override
+  String get vehicleGarageStealVehiclesToStart =>
+      'Steal vehicles to get started';
+
+  @override
+  String get vehicleGarageMotorcycleStolen => 'Motorcycle stolen';
+
+  @override
+  String vehicleGarageStealOutcomeXp(String xp) {
+    return 'XP: +$xp';
+  }
+
+  @override
+  String vehicleGarageStealOutcomeWanted(String level) {
+    return 'Wanted: $level';
+  }
+
+  @override
+  String vehicleGarageStealOutcomeJail(String minutes) {
+    return 'Jail: $minutes min';
+  }
+
+  @override
+  String vehicleGarageStealOutcomeBail(String amount) {
+    return 'Bail: $amount';
+  }
+
+  @override
+  String get vehicleGarageStealEscapedPolice =>
+      'You were spotted by the police, but you managed to escape.';
+
+  @override
+  String get vehicleGarageScrapConfirm =>
+      'Scrap this vehicle for parts? This cannot be undone.';
+
+  @override
+  String get vehicleGarageScrapAction => 'Scrap';
+
+  @override
+  String get vehicleGarageScrapFailed => 'Scrap failed';
+
+  @override
+  String vehicleGarageScrapSuccess(String parts, String type) {
+    return 'Vehicle scrapped — +$parts $type parts';
+  }
+
+  @override
+  String get vehicleGaragePartsTypeCar => 'car';
+
+  @override
+  String get vehicleGaragePartsTypeMotorcycle => 'motorcycle';
+
+  @override
+  String get vehicleGaragePartsTypeBoat => 'boat';
+
+  @override
+  String get vehicleGarageNoFuelTank => 'This vehicle has no fuel tank';
+
+  @override
+  String get vehicleGarageTankFull => 'Tank is already full';
+
+  @override
+  String get vehicleGarageRefuelTitle => 'Refuel vehicle';
+
+  @override
+  String vehicleGarageRefuelCurrent(String current, String max) {
+    return 'Current fuel: ${current}L / ${max}L';
+  }
+
+  @override
+  String vehicleGarageRefuelNeeded(String needed) {
+    return 'Required fuel: ${needed}L';
+  }
+
+  @override
+  String vehicleGarageRefuelCost(String cost) {
+    return 'Cost: $cost';
+  }
+
+  @override
+  String get vehicleGarageRefuelConfirmQuestion =>
+      'Do you want to fully refuel this vehicle?';
+
+  @override
+  String get vehicleGarageRefuelSuccess => 'Vehicle refueled!';
+
+  @override
+  String get vehicleGarageRefuelFailed => 'Refueling failed';
+
+  @override
+  String get vehicleGarageRepairAlreadyInProgress =>
+      'This vehicle is already being repaired';
+
+  @override
+  String get vehicleGarageRepairTitle => 'Repair vehicle';
+
+  @override
+  String vehicleGarageRepairCurrentCondition(String condition) {
+    return 'Current condition: $condition%';
+  }
+
+  @override
+  String vehicleGarageRepairDamagePercent(String percent) {
+    return 'Damage: $percent%';
+  }
+
+  @override
+  String vehicleGarageRepairCostLine(String cost) {
+    return 'Repair cost: $cost';
+  }
+
+  @override
+  String vehicleGarageRepairEstimatedTime(String duration) {
+    return 'Estimated repair time: $duration';
+  }
+
+  @override
+  String get vehicleGarageRepairTimerNote =>
+      'Repair starts immediately, but only completes after the timer ends.';
+
+  @override
+  String get vehicleGarageRepairStartedUnavailable =>
+      'Repair started. The vehicle is temporarily unavailable.';
+
+  @override
+  String get vehicleGarageRepairFailed => 'Repair failed';
+
+  @override
+  String vehicleGaragePoliceEventActive(String timeLeft) {
+    return 'Police vehicle event active — $timeLeft left';
+  }
+
+  @override
+  String vehicleGaragePoliceEventNext(String timeLeft) {
+    return 'Next police vehicle event starts in $timeLeft';
+  }
+
+  @override
+  String get vehicleGarageNoVehiclesInCountry =>
+      'There are currently no vehicles available in this country.';
+
+  @override
+  String get vehicleGarageUntil => 'until';
+
+  @override
+  String get vehicleCardFuelLabel => 'Fuel';
+
+  @override
+  String get vehicleCardValueLabel => 'Value:';
+
+  @override
+  String get vehicleCardLocationLabel => 'Location:';
+
+  @override
+  String get vehicleCardInTransit => 'In transit';
+
+  @override
   String vehicleHeistUpgradeCost(String cost) {
     return 'Actualizar ($cost)';
   }
