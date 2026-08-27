@@ -1630,6 +1630,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           key: ValueKey('vehicle-heist-$_vehicleHeistTabIndex'),
           embedded: true,
           initialTabIndex: _vehicleHeistTabIndex,
+          onOpenEvents: () => _selectWebSection(_WebSection.events),
         );
       case _WebSection.tuneShop:
         return const TuneShopScreen(embedded: true);

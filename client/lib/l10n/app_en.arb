@@ -506,6 +506,31 @@
   "tools": "tools",
   "vehicleHeist": "Vehicle Heist",
   "vehicleHeistTitle": "Vehicle Heist",
+  "vehicleHeistHeroSubtitle": "Steal cars, motorcycles and boats. Upgrade storage lanes and climb the weekly theft hunt.",
+  "vehicleHeistLiveEventActive": "Live event: {title}",
+  "@vehicleHeistLiveEventActive": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistLiveEventProgress": "Score {score} · Rank {rank} · {timeLeft}",
+  "@vehicleHeistLiveEventProgress": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "rank": {
+        "type": "String"
+      },
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpenEvents": "Tap for event details",
+  "vehicleHeistStolenHeadline": "Vehicle secured",
   "vehicleHeistTabSubtitleCar": "Steal cars for cash and parts.",
   "vehicleHeistTabSubtitleMotorcycle": "Steal motorcycles for cash and parts.",
   "vehicleHeistTabSubtitleBoat": "Steal boats for cash and parts.",

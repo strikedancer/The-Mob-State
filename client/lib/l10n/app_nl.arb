@@ -3770,6 +3770,31 @@
   "smuggling": "Smokkelen",
   "vehicleHeist": "Voertuig stelen",
   "vehicleHeistTitle": "Voertuig stelen",
+  "vehicleHeistHeroSubtitle": "Steel auto's, motoren en boten. Upgrade je opslag-lijnen en klim op het wekelijkse dieven-event.",
+  "vehicleHeistLiveEventActive": "Live event: {title}",
+  "@vehicleHeistLiveEventActive": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistLiveEventProgress": "Score {score} · Rank {rank} · {timeLeft}",
+  "@vehicleHeistLiveEventProgress": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "rank": {
+        "type": "String"
+      },
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpenEvents": "Tik voor eventdetails",
+  "vehicleHeistStolenHeadline": "Voertuig binnen",
   "vehicleHeistTabSubtitleCar": "Steel auto's voor cash en onderdelen.",
   "vehicleHeistTabSubtitleMotorcycle": "Steel motoren voor cash en onderdelen.",
   "vehicleHeistTabSubtitleBoat": "Steel boten voor cash en onderdelen.",

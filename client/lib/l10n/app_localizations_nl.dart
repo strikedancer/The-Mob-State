@@ -981,6 +981,30 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleHeistTitle => 'Voertuig stelen';
 
   @override
+  String get vehicleHeistHeroSubtitle =>
+      'Steel auto\'s, motoren en boten. Upgrade je opslag-lijnen en klim op het wekelijkse dieven-event.';
+
+  @override
+  String vehicleHeistLiveEventActive(String title) {
+    return 'Live event: $title';
+  }
+
+  @override
+  String vehicleHeistLiveEventProgress(
+    String score,
+    String rank,
+    String timeLeft,
+  ) {
+    return 'Score $score · Rank $rank · $timeLeft';
+  }
+
+  @override
+  String get vehicleHeistOpenEvents => 'Tik voor eventdetails';
+
+  @override
+  String get vehicleHeistStolenHeadline => 'Voertuig binnen';
+
+  @override
   String get vehicleHeistTabSubtitleCar =>
       'Steel auto\'s voor cash en onderdelen.';
 

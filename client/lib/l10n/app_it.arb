@@ -4455,6 +4455,31 @@
   },
   "tuneShopErrorInvalidStat": "Statistica di ottimizzazione non valida",
   "vehicleHeistTitle": "Furto di veicoli",
+  "vehicleHeistHeroSubtitle": "Steal cars, motorcycles and boats. Upgrade storage lanes and climb the weekly theft hunt.",
+  "vehicleHeistLiveEventActive": "Live event: {title}",
+  "@vehicleHeistLiveEventActive": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistLiveEventProgress": "Score {score} · Rank {rank} · {timeLeft}",
+  "@vehicleHeistLiveEventProgress": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "rank": {
+        "type": "String"
+      },
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpenEvents": "Tap for event details",
+  "vehicleHeistStolenHeadline": "Vehicle secured",
   "vehicleHeistTabSubtitleCar": "Ruba auto per contanti e pezzi di ricambio.",
   "vehicleHeistTabSubtitleMotorcycle": "Ruba motociclette in cambio di contanti e pezzi di ricambio.",
   "vehicleHeistTabSubtitleBoat": "Ruba barche in cambio di contanti e pezzi di ricambio.",

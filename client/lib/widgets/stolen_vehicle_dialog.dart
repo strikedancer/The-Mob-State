@@ -3,8 +3,44 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/vehicle.dart';
 import 'overlay_image.dart';
+import 'responsive_modal.dart';
 
-/// Result popup after a successful vehicle theft (garage / marina / heist).
+const Color _gold = Color(0xFFD4AF37);
+const Color _panelDark = Color(0xFF1B1212);
+const Color _panelLight = Color(0xFF2A1A1A);
+const Color _vehicleAccent = Color(0xFFF0A04B);
+
+String _rarityLabel(AppLocalizations l10n, String? rarity) {
+  switch ((rarity ?? 'common').toLowerCase()) {
+    case 'uncommon':
+      return l10n.vehicleHeistRarityUncommon;
+    case 'rare':
+      return l10n.vehicleHeistRarityRare;
+    case 'epic':
+      return l10n.vehicleHeistRarityEpic;
+    case 'legendary':
+      return l10n.vehicleHeistRarityLegendary;
+    default:
+      return l10n.vehicleHeistRarityCommon;
+  }
+}
+
+Color _rarityColor(String? rarity) {
+  switch ((rarity ?? 'common').toLowerCase()) {
+    case 'uncommon':
+      return Colors.greenAccent;
+    case 'rare':
+      return const Color(0xFF64B5F6);
+    case 'epic':
+      return const Color(0xFFBA68C8);
+    case 'legendary':
+      return _gold;
+    default:
+      return Colors.white70;
+  }
+}
+
+/// Noir/gold success popup after a successful vehicle theft.
 Future<void> showStolenVehicleDialog(
   BuildContext context,
   VehicleInventoryItem vehicle, {
@@ -13,6 +49,8 @@ Future<void> showStolenVehicleDialog(
   final definition = vehicle.definition;
   final stats = definition?.stats;
   final l10n = AppLocalizations.of(context)!;
+  final rarity = definition?.rarity;
+  final rarityColor = _rarityColor(rarity);
 
   String typeLabel() {
     switch (vehicle.vehicleType) {
@@ -44,166 +82,276 @@ Future<void> showStolenVehicleDialog(
   await showDialog<void>(
     context: context,
     barrierDismissible: false,
+    barrierColor: Colors.black.withValues(alpha: 0.88),
     builder: (dialogContext) {
       final image = vehicle.conditionImage;
-      final screenWidth = MediaQuery.of(dialogContext).size.width;
-      final dialogWidth = screenWidth < 600
-          ? screenWidth - 32
-          : screenWidth < 1024
-              ? 560.0
-              : 680.0;
-      final imageHeight = screenWidth < 600 ? 150.0 : 220.0;
+      final screenWidth = MediaQuery.sizeOf(dialogContext).width;
+      final imageHeight = screenWidth < 600 ? 160.0 : 220.0;
       final type = typeLabel();
 
-      return AlertDialog(
-        title: Text(l10n.stolenVehicleTitle(type)),
-        content: SizedBox(
-          width: dialogWidth,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (image != null && image.isNotEmpty)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: OverlayImageBuilder()
-                        .base('assets/images/vehicles/$image')
-                        .width(double.infinity)
-                        .height(imageHeight)
-                        .fit(BoxFit.contain)
-                        .build(),
-                  )
-                else
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: ResponsiveModalLayout(
+          phoneMaxWidth: 520,
+          tabletMaxWidth: 620,
+          desktopMaxWidth: 680,
+          cardColor: _panelDark,
+          child: Container(
+            padding: EdgeInsets.all(screenWidth < 430 ? 18 : 24),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [_panelLight, _panelDark],
+              ),
+              border: Border.all(
+                color: _gold.withValues(alpha: 0.7),
+                width: 1.2,
+              ),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   Container(
-                    width: double.infinity,
-                    height: imageHeight,
-                    alignment: Alignment.center,
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.circular(8),
+                      shape: BoxShape.circle,
+                      color: _vehicleAccent.withValues(alpha: 0.16),
+                      border: Border.all(color: _vehicleAccent, width: 1.4),
                     ),
-                    child: Icon(fallbackIcon(), size: 48),
+                    child: Icon(
+                      fallbackIcon(),
+                      size: 30,
+                      color: _vehicleAccent,
+                    ),
                   ),
-                const SizedBox(height: 12),
-                Text(
-                  definition?.name ?? l10n.unknownVehicleType(type),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.vehicleHeistStolenHeadline,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                      color: _gold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
+                  const SizedBox(height: 6),
+                  Text(
+                    definition?.name ?? l10n.unknownVehicleType(type),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8,
+                    runSpacing: 6,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: rarityColor.withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: rarityColor.withValues(alpha: 0.55),
+                          ),
+                        ),
+                        child: Text(
+                          _rarityLabel(l10n, rarity),
+                          style: TextStyle(
+                            color: rarityColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.06),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(color: Colors.white24),
+                        ),
+                        child: Text(
+                          type,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   if (xpGained > 0) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     Text(
                       l10n.xpReward(xpGained.toString()),
                       style: const TextStyle(
-                        color: Colors.green,
+                        color: Color(0xFF86EFAC),
                         fontWeight: FontWeight.w700,
+                        fontSize: 14,
                       ),
                     ),
                   ],
-                const SizedBox(height: 10),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final statItems = [
-                      (
-                        label: l10n.vehicleStatSpeed,
-                        value: statText(stats?.speed),
-                        icon: Icons.speed,
-                      ),
-                      (
-                        label: l10n.vehicleStatFuel,
-                        value: '${vehicle.fuelLevel}%',
-                        icon: Icons.local_gas_station,
-                      ),
-                      (
-                        label: l10n.condition,
-                        value: '${vehicle.condition}%',
-                        icon: Icons.build_circle,
-                      ),
-                      (
-                        label: l10n.armor,
-                        value: statText(stats?.armor),
-                        icon: Icons.shield,
-                      ),
-                      (
-                        label: l10n.vehicleStatCargo,
-                        value: statText(stats?.cargo),
-                        icon: Icons.inventory_2,
-                      ),
-                      (
-                        label: l10n.vehicleStatStealth,
-                        value: statText(stats?.stealth),
-                        icon: Icons.visibility_off,
-                      ),
-                    ];
-
-                    final columns = constraints.maxWidth < 600 ? 1 : 2;
-
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: statItems.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: columns,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 8,
-                        childAspectRatio: 3.8,
-                      ),
-                      itemBuilder: (context, index) {
-                        final stat = statItems[index];
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 8,
+                  const SizedBox(height: 14),
+                  if (image != null && image.isNotEmpty)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: _gold.withValues(alpha: 0.35),
                           ),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.04),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(
-                                stat.icon,
-                                size: 16,
-                                color: Colors.grey[700],
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  stat.label,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: OverlayImageBuilder()
+                            .base('assets/images/vehicles/$image')
+                            .width(double.infinity)
+                            .height(imageHeight)
+                            .fit(BoxFit.contain)
+                            .build(),
+                      ),
+                    )
+                  else
+                    Container(
+                      width: double.infinity,
+                      height: imageHeight,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.35),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.white12),
+                      ),
+                      child: Icon(fallbackIcon(), size: 52, color: Colors.white38),
+                    ),
+                  const SizedBox(height: 14),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final statItems = [
+                        (
+                          label: l10n.vehicleStatSpeed,
+                          value: statText(stats?.speed),
+                          icon: Icons.speed,
+                        ),
+                        (
+                          label: l10n.vehicleStatFuel,
+                          value: '${vehicle.fuelLevel}%',
+                          icon: Icons.local_gas_station,
+                        ),
+                        (
+                          label: l10n.condition,
+                          value: '${vehicle.condition}%',
+                          icon: Icons.build_circle,
+                        ),
+                        (
+                          label: l10n.armor,
+                          value: statText(stats?.armor),
+                          icon: Icons.shield,
+                        ),
+                        (
+                          label: l10n.vehicleStatCargo,
+                          value: statText(stats?.cargo),
+                          icon: Icons.inventory_2,
+                        ),
+                        (
+                          label: l10n.vehicleStatStealth,
+                          value: statText(stats?.stealth),
+                          icon: Icons.visibility_off,
+                        ),
+                      ];
+
+                      final columns = constraints.maxWidth < 520 ? 1 : 2;
+
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: statItems.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: columns,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 3.6,
+                        ),
+                        itemBuilder: (context, index) {
+                          final stat = statItems[index];
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.35),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.white12),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(stat.icon, size: 16, color: _gold),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    stat.label,
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                stat.value,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  stat.value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 12,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 18),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _gold,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        l10n.continueAction,
+                        style: const TextStyle(fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(l10n.continueAction),
-          ),
-        ],
       );
     },
   );

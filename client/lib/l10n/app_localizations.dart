@@ -1910,6 +1910,40 @@ abstract class AppLocalizations {
   /// **'Vehicle Heist'**
   String get vehicleHeistTitle;
 
+  /// No description provided for @vehicleHeistHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal cars, motorcycles and boats. Upgrade storage lanes and climb the weekly theft hunt.'**
+  String get vehicleHeistHeroSubtitle;
+
+  /// No description provided for @vehicleHeistLiveEventActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live event: {title}'**
+  String vehicleHeistLiveEventActive(String title);
+
+  /// No description provided for @vehicleHeistLiveEventProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Score {score} · Rank {rank} · {timeLeft}'**
+  String vehicleHeistLiveEventProgress(
+    String score,
+    String rank,
+    String timeLeft,
+  );
+
+  /// No description provided for @vehicleHeistOpenEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for event details'**
+  String get vehicleHeistOpenEvents;
+
+  /// No description provided for @vehicleHeistStolenHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle secured'**
+  String get vehicleHeistStolenHeadline;
+
   /// No description provided for @vehicleHeistTabSubtitleCar.
   ///
   /// In en, this message translates to:

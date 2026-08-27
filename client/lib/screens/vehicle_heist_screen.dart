@@ -12,6 +12,7 @@ import '../services/api_client.dart';
 import '../services/jail_service.dart';
 import '../services/theft_cooldown_credit_service.dart';
 import '../utils/formatters.dart';
+import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/jail_screen.dart';
@@ -19,6 +20,7 @@ import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/theft_cooldown_steal_control.dart';
 import '../widgets/overlay_image.dart';
 import '../widgets/stolen_vehicle_dialog.dart';
+import 'events_screen.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
 
@@ -27,10 +29,14 @@ class VehicleHeistScreen extends StatefulWidget {
     super.key,
     this.initialTabIndex = 0,
     this.embedded = false,
+    this.onOpenEvents,
   });
 
   final int initialTabIndex;
   final bool embedded;
+
+  /// When set (e.g. web dashboard), opens the live events section.
+  final VoidCallback? onOpenEvents;
 
   @override
   State<VehicleHeistScreen> createState() => _VehicleHeistScreenState();
@@ -38,6 +44,11 @@ class VehicleHeistScreen extends StatefulWidget {
 
 class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     with SingleTickerProviderStateMixin {
+  static const Color _gold = Color(0xFFD4AF37);
+  static const Color _panelBg = Color(0xFF151B28);
+  static const Color _panelBorder = Color(0xFF2A3344);
+  static const Color _vehicleAccent = Color(0xFFF0A04B);
+
   final ApiClient _apiClient = ApiClient();
   final JailService _jailService = JailService();
   late final TabController _tabController;
@@ -51,6 +62,9 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   int _jailContentEpoch = 0;
   final Map<int, int> _stealCreditHintByTab = {};
   bool _opsIntelExpandedMobile = false;
+  Map<String, dynamic>? _liveVehicleEvent;
+  Map<String, dynamic>? _liveVehicleEventProgress;
+  DateTime _eventNow = DateTime.now();
 
   @override
   void initState() {
@@ -78,6 +92,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshOpsIntelligence();
       _refreshLaneCapacities();
+      _loadLiveVehicleEvent();
       if (widget.embedded) {
         unawaited(_refreshEmbeddedJailStatus());
       }
@@ -90,7 +105,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       if (widget.embedded && timer.tick % 30 == 0) {
         unawaited(_refreshEmbeddedJailStatus());
       }
-      setState(() {});
+      setState(() => _eventNow = DateTime.now());
     });
   }
 
@@ -99,6 +114,315 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     _opsTicker?.cancel();
     _tabController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadLiveVehicleEvent() async {
+    try {
+      final response = await _apiClient.get('/game-events/overview');
+      if (response.statusCode != 200 || !mounted) return;
+
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final activeList = ((data['active'] as List?) ?? const <dynamic>[])
+          .whereType<Map>()
+          .map((item) => Map<String, dynamic>.from(item))
+          .toList();
+      final progressList = ((data['myProgress'] as List?) ?? const <dynamic>[])
+          .whereType<Map>()
+          .map((item) => Map<String, dynamic>.from(item))
+          .toList();
+
+      Map<String, dynamic>? vehicleEvent;
+      for (final event in activeList) {
+        final template = event['template'] is Map
+            ? Map<String, dynamic>.from(event['template'] as Map)
+            : null;
+        if (template?['key']?.toString() == 'weekly_vehicle_theft_hunt') {
+          vehicleEvent = event;
+          break;
+        }
+      }
+
+      Map<String, dynamic>? progress;
+      if (vehicleEvent != null) {
+        final eventId = (vehicleEvent['id'] as num?)?.toInt();
+        if (eventId != null) {
+          for (final item in progressList) {
+            if ((item['liveEventId'] as num?)?.toInt() == eventId) {
+              progress = item;
+              break;
+            }
+          }
+        }
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _liveVehicleEvent = vehicleEvent;
+        _liveVehicleEventProgress = progress;
+      });
+    } catch (_) {
+      // Non-blocking — heist screen works without event data.
+    }
+  }
+
+  void _openEvents() {
+    if (widget.onOpenEvents != null) {
+      widget.onOpenEvents!();
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const EventsScreen()),
+    );
+  }
+
+  String _formatEventCountdown(DateTime? endsAt, AppLocalizations l10n) {
+    if (endsAt == null) return l10n.gameScreenDash;
+    final diff = endsAt.difference(_eventNow);
+    if (diff.inSeconds <= 0) return l10n.gameScreenCountdownNow;
+    final h = diff.inHours;
+    final m = diff.inMinutes.remainder(60);
+    final s = diff.inSeconds.remainder(60);
+    if (h > 0) {
+      return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+    }
+    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+  }
+
+  Widget _buildPageHero(AppLocalizations l10n, VehicleProvider provider) {
+    final totalOwned = provider.inventory.length;
+    final carCount = _countForTab(provider, 0);
+    final motorCount = _countForTab(provider, 1);
+    final boatCount = _countForTab(provider, 2);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF3A2814).withValues(alpha: 0.95),
+            _panelBg.withValues(alpha: 0.95),
+          ],
+        ),
+        border: Border.all(color: _gold.withValues(alpha: 0.45)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: _vehicleAccent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _vehicleAccent.withValues(alpha: 0.45),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.directions_car_filled,
+                  color: _vehicleAccent,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.vehicleHeistTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.vehicleHeistHeroSubtitle,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              OutlinedButton.icon(
+                onPressed: provider.isLoading
+                    ? null
+                    : () => _showCatalogForActiveTab(provider),
+                icon: const Icon(Icons.menu_book, size: 18),
+                label: Text(l10n.catalog),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: _gold,
+                  side: BorderSide(color: _gold.withValues(alpha: 0.45)),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _statChip('$totalOwned ${l10n.vehicles.toLowerCase()}', _gold),
+              _statChip('${l10n.car} $carCount', _tabAccentColor(0)),
+              _statChip('${l10n.motorcycle} $motorCount', _tabAccentColor(1)),
+              _statChip('${l10n.boat} $boatCount', _tabAccentColor(2)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _statChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiveEventBanner(AppLocalizations l10n) {
+    final event = _liveVehicleEvent;
+    if (event == null) return const SizedBox.shrink();
+
+    final template = event['template'] is Map
+        ? Map<String, dynamic>.from(event['template'] as Map)
+        : null;
+    final title = localizedGameEventTitle(l10n, template);
+    final endsAt =
+        DateTime.tryParse(event['endsAt']?.toString() ?? '')?.toLocal();
+    final score = (_liveVehicleEventProgress?['score'] as num?)?.toDouble();
+    final rank = (_liveVehicleEventProgress?['rank'] as num?)?.toInt();
+    final scoreLabel = score == null
+        ? l10n.gameScreenDash
+        : score.toStringAsFixed(0);
+    final rankLabel =
+        rank == null ? l10n.gameScreenDash : rank.toString();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: _openEvents,
+          borderRadius: BorderRadius.circular(14),
+          child: Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              gradient: LinearGradient(
+                colors: [
+                  _vehicleAccent.withValues(alpha: 0.28),
+                  const Color(0xFF1A1210),
+                ],
+              ),
+              border: Border.all(
+                color: _vehicleAccent.withValues(alpha: 0.55),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.emoji_events, color: _gold, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.vehicleHeistLiveEventActive(title),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                      color: Colors.white.withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.vehicleHeistLiveEventProgress(
+                    scoreLabel,
+                    rankLabel,
+                    _formatEventCountdown(endsAt, l10n),
+                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.vehicleHeistOpenEvents,
+                  style: TextStyle(
+                    color: _gold.withValues(alpha: 0.85),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabQuickSelect(AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: List.generate(3, (index) {
+          final accent = _tabAccentColor(index);
+          final isActive = _activeTabIndex == index;
+          return ChoiceChip(
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(_tabIcon(index), size: 16, color: isActive ? accent : Colors.white70),
+                const SizedBox(width: 6),
+                Text(_tabTitle(l10n, index)),
+              ],
+            ),
+            selected: isActive,
+            onSelected: (_) => _tabController.animateTo(index),
+            selectedColor: accent.withValues(alpha: 0.22),
+            labelStyle: TextStyle(
+              color: isActive ? accent : Colors.white70,
+              fontWeight: FontWeight.w700,
+            ),
+            side: BorderSide(
+              color: isActive
+                  ? accent.withValues(alpha: 0.65)
+                  : _panelBorder,
+            ),
+          );
+        }),
+      ),
+    );
   }
 
   int _countForTab(VehicleProvider provider, int tabIndex) {
@@ -498,6 +822,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
       if (!mounted) return;
       if (success) {
+        unawaited(_loadLiveVehicleEvent());
         if (stolenVehicle != null) {
           await showStolenVehicleDialog(
             context,
@@ -2023,14 +2348,14 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.black.withOpacity(0.5),
-                Colors.black.withOpacity(0.2),
+                const Color(0xFF1A1210).withValues(alpha: 0.92),
+                Colors.black.withValues(alpha: 0.55),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             border: Border(
-              bottom: BorderSide(color: Colors.white.withOpacity(0.08)),
+              bottom: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
             ),
           ),
           child: AnimatedSwitcher(
@@ -2039,58 +2364,20 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
             switchOutCurve: Curves.easeIn,
             child: Column(
               key: ValueKey<int>(_activeTabIndex),
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 42,
-                      height: 42,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD4AF37).withOpacity(0.14),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: const Color(0xFFD4AF37).withOpacity(0.35),
-                        ),
-                      ),
-                      child: Icon(
-                        _tabIcon(_activeTabIndex),
-                        color: const Color(0xFFD4AF37),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.vehicleHeistTitle,
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            _tabSubtitle(l10n, _activeTabIndex),
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: Colors.white70),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    OutlinedButton.icon(
-                      onPressed: provider.isLoading
-                          ? null
-                          : () => _showCatalogForActiveTab(provider),
-                      icon: const Icon(Icons.menu_book, size: 18),
-                      label: Text(l10n.catalog),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: BorderSide(color: Colors.white.withOpacity(0.28)),
-                      ),
-                    ),
-                  ],
+                _buildPageHero(l10n, provider),
+                _buildLiveEventBanner(l10n),
+                _buildTabQuickSelect(l10n),
+                Text(
+                  _tabSubtitle(l10n, _activeTabIndex),
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     final isStacked = constraints.maxWidth < 900;
@@ -2187,12 +2474,38 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     );
 
     return widget.embedded
-        ? content
+        ? DecoratedBox(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF1A1210), Color(0xFF0C0A0A)],
+              ),
+            ),
+            child: content,
+          )
         : Scaffold(
+            backgroundColor: const Color(0xFF0C0A0A),
             appBar: AppBar(
               title: Text(l10n.vehicleHeistTitle),
             ),
-            body: content,
+            body: DecoratedBox(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF1A1210), Color(0xFF0C0A0A)],
+                ),
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/backgrounds/garage_background.png',
+                  ),
+                  fit: BoxFit.cover,
+                  opacity: 0.18,
+                ),
+              ),
+              child: content,
+            ),
           );
   }
 }

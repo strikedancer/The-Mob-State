@@ -4455,6 +4455,31 @@
   },
   "tuneShopErrorInvalidStat": "Estadística de ajuste no válida",
   "vehicleHeistTitle": "Atraco de vehículos",
+  "vehicleHeistHeroSubtitle": "Steal cars, motorcycles and boats. Upgrade storage lanes and climb the weekly theft hunt.",
+  "vehicleHeistLiveEventActive": "Live event: {title}",
+  "@vehicleHeistLiveEventActive": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistLiveEventProgress": "Score {score} · Rank {rank} · {timeLeft}",
+  "@vehicleHeistLiveEventProgress": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "rank": {
+        "type": "String"
+      },
+      "timeLeft": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpenEvents": "Tap for event details",
+  "vehicleHeistStolenHeadline": "Vehicle secured",
   "vehicleHeistTabSubtitleCar": "Roba autos por dinero en efectivo y repuestos.",
   "vehicleHeistTabSubtitleMotorcycle": "Robar motocicletas por dinero en efectivo y repuestos.",
   "vehicleHeistTabSubtitleBoat": "Roba barcos por dinero en efectivo y piezas.",

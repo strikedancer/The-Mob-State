@@ -980,6 +980,30 @@ class AppLocalizationsPl extends AppLocalizations {
   String get vehicleHeistTitle => 'Napad na pojazd';
 
   @override
+  String get vehicleHeistHeroSubtitle =>
+      'Steal cars, motorcycles and boats. Upgrade storage lanes and climb the weekly theft hunt.';
+
+  @override
+  String vehicleHeistLiveEventActive(String title) {
+    return 'Live event: $title';
+  }
+
+  @override
+  String vehicleHeistLiveEventProgress(
+    String score,
+    String rank,
+    String timeLeft,
+  ) {
+    return 'Score $score · Rank $rank · $timeLeft';
+  }
+
+  @override
+  String get vehicleHeistOpenEvents => 'Tap for event details';
+
+  @override
+  String get vehicleHeistStolenHeadline => 'Vehicle secured';
+
+  @override
   String get vehicleHeistTabSubtitleCar =>
       'Kradnij samochody za gotówkę i części.';
 
