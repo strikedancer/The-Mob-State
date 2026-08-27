@@ -9091,6 +9091,35 @@
       }
     }
   },
+  "crimeCardToolBannerNeeded": "{tools} nodig",
+  "@crimeCardToolBannerNeeded": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardToolBannerReady": "{tools} bij je",
+  "@crimeCardToolBannerReady": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardToolBannerStorage": "{tools} in opslag",
+  "@crimeCardToolBannerStorage": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardBlockerVehicle": "Voertuig nodig",
+  "crimeCardBlockerDrugs": "Drugs nodig",
+  "crimeCardBlockerWeapon": "Wapen nodig",
+  "crimeCardBlockerAmmo": "Munitie nodig",
+  "crimeCardBlockerCriminalRecord": "Geen strafblad",
   "crimeCardTierLow": "Klein",
   "crimeCardTierMid": "Serieus",
   "crimeCardTierHigh": "Groot",

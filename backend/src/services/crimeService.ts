@@ -1309,35 +1309,119 @@ export const crimeService = {
   },
 
   /**
-   * Whether the player can attempt this crime right now (rank + resources).
+   * Evaluate whether the player can attempt this crime and why not.
    */
-  canAttemptCrime(
+  evaluateCrimeReadiness(
     crimeId: string,
     context: Awaited<ReturnType<typeof crimeService.buildCrimeReadinessContext>>,
-  ): boolean {
+  ): {
+    canAttempt: boolean;
+    readinessBlocker:
+      | 'rank'
+      | 'criminal_record'
+      | 'vehicle'
+      | 'weapon'
+      | 'weapon_ammo'
+      | 'tools'
+      | 'tools_in_storage'
+      | 'drugs'
+      | null;
+    missingToolIds: string[];
+    toolsInStorageIds: string[];
+    toolsReady: boolean;
+  } {
     const crime = this.getCrimeDefinition(crimeId);
+    const requiredTools = crime ? toolService.getRequiredToolsForCrime(crimeId) : [];
+    const missingToolIds: string[] = [];
+    const toolsInStorageIds: string[] = [];
+
+    for (const toolId of requiredTools) {
+      if (context.carriedToolIds.has(toolId)) {
+        continue;
+      }
+      if (context.storageToolIds.has(toolId)) {
+        toolsInStorageIds.push(toolId);
+      } else {
+        missingToolIds.push(toolId);
+      }
+    }
+
+    const toolsReady =
+      requiredTools.length === 0 ||
+      (missingToolIds.length === 0 && toolsInStorageIds.length === 0);
+
     if (!crime) {
-      return false;
+      return {
+        canAttempt: false,
+        readinessBlocker: 'rank',
+        missingToolIds,
+        toolsInStorageIds,
+        toolsReady,
+      };
     }
 
     if (context.playerRank < crime.minLevel) {
-      return false;
+      return {
+        canAttempt: false,
+        readinessBlocker: 'rank',
+        missingToolIds,
+        toolsInStorageIds,
+        toolsReady,
+      };
     }
 
     if (crimeId === CRIMINAL_RECORD_WIPE_CRIME_ID && !context.hasCriminalRecord) {
-      return false;
+      return {
+        canAttempt: false,
+        readinessBlocker: 'criminal_record',
+        missingToolIds,
+        toolsInStorageIds,
+        toolsReady,
+      };
+    }
+
+    if (missingToolIds.length > 0) {
+      return {
+        canAttempt: false,
+        readinessBlocker: 'tools',
+        missingToolIds,
+        toolsInStorageIds,
+        toolsReady,
+      };
+    }
+
+    if (toolsInStorageIds.length > 0) {
+      return {
+        canAttempt: false,
+        readinessBlocker: 'tools_in_storage',
+        missingToolIds,
+        toolsInStorageIds,
+        toolsReady,
+      };
     }
 
     if (crime.requiredVehicle) {
       const vehicle = context.selectedVehicle;
       if (!vehicle || vehicle.inventory.fuelLevel <= 0) {
-        return false;
+        return {
+          canAttempt: false,
+          readinessBlocker: 'vehicle',
+          missingToolIds,
+          toolsInStorageIds,
+          toolsReady,
+        };
       }
     }
 
     if (crime.requiredWeapon) {
       if (!context.selectedWeapon || context.selectedWeapon.condition <= 0) {
-        return false;
+        return {
+          canAttempt: false,
+          readinessBlocker: 'weapon',
+          missingToolIds,
+          toolsInStorageIds,
+          toolsReady,
+        };
       }
 
       const def = context.weaponDefinition;
@@ -1350,22 +1434,27 @@ export const crimeService = {
         (def?.intimidation ?? 0) >= (crime.minIntimidation || 0);
 
       if (!isTypeAllowed || !meetsDamage || !meetsIntimidation) {
-        return false;
+        return {
+          canAttempt: false,
+          readinessBlocker: 'weapon',
+          missingToolIds,
+          toolsInStorageIds,
+          toolsReady,
+        };
       }
 
       if (def?.requiresAmmo && def.ammoType) {
         const needed = def.ammoPerCrime || 1;
         const have = context.ammoCounts.get(def.ammoType) ?? 0;
         if (have < needed) {
-          return false;
+          return {
+            canAttempt: false,
+            readinessBlocker: 'weapon_ammo',
+            missingToolIds,
+            toolsInStorageIds,
+            toolsReady,
+          };
         }
-      }
-    }
-
-    const requiredTools = toolService.getRequiredToolsForCrime(crimeId);
-    for (const toolId of requiredTools) {
-      if (!context.carriedToolIds.has(toolId)) {
-        return false;
       }
     }
 
@@ -1379,10 +1468,32 @@ export const crimeService = {
         }
       }
       if (!hasDrugs) {
-        return false;
+        return {
+          canAttempt: false,
+          readinessBlocker: 'drugs',
+          missingToolIds,
+          toolsInStorageIds,
+          toolsReady,
+        };
       }
     }
 
-    return true;
+    return {
+      canAttempt: true,
+      readinessBlocker: null,
+      missingToolIds,
+      toolsInStorageIds,
+      toolsReady,
+    };
+  },
+
+  /**
+   * Whether the player can attempt this crime right now (rank + resources).
+   */
+  canAttemptCrime(
+    crimeId: string,
+    context: Awaited<ReturnType<typeof crimeService.buildCrimeReadinessContext>>,
+  ): boolean {
+    return this.evaluateCrimeReadiness(crimeId, context).canAttempt;
   },
 };

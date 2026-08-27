@@ -12419,6 +12419,36 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String crimeCardToolBannerNeeded(String tools) {
+    return '$tools nodig';
+  }
+
+  @override
+  String crimeCardToolBannerReady(String tools) {
+    return '$tools bij je';
+  }
+
+  @override
+  String crimeCardToolBannerStorage(String tools) {
+    return '$tools in opslag';
+  }
+
+  @override
+  String get crimeCardBlockerVehicle => 'Voertuig nodig';
+
+  @override
+  String get crimeCardBlockerDrugs => 'Drugs nodig';
+
+  @override
+  String get crimeCardBlockerWeapon => 'Wapen nodig';
+
+  @override
+  String get crimeCardBlockerAmmo => 'Munitie nodig';
+
+  @override
+  String get crimeCardBlockerCriminalRecord => 'Geen strafblad';
+
+  @override
   String get crimeCardTierLow => 'Klein';
 
   @override

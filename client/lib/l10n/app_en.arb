@@ -7641,6 +7641,35 @@
       }
     }
   },
+  "crimeCardToolBannerNeeded": "{tools} required",
+  "@crimeCardToolBannerNeeded": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardToolBannerReady": "{tools} ready",
+  "@crimeCardToolBannerReady": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardToolBannerStorage": "{tools} in storage",
+  "@crimeCardToolBannerStorage": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardBlockerVehicle": "Vehicle required",
+  "crimeCardBlockerDrugs": "Drugs required",
+  "crimeCardBlockerWeapon": "Weapon required",
+  "crimeCardBlockerAmmo": "Ammo required",
+  "crimeCardBlockerCriminalRecord": "No record",
   "crimeCardTierLow": "Petty",
   "crimeCardTierMid": "Serious",
   "crimeCardTierHigh": "Major",

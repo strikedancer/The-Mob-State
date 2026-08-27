@@ -28,6 +28,14 @@ Crime _$CrimeFromJson(Map<String, dynamic> json) => Crime(
   minDrugQuantity: (json['minDrugQuantity'] as num?)?.toInt(),
   requiredWeapon: json['requiredWeapon'] as bool?,
   canAttempt: json['canAttempt'] as bool?,
+  readinessBlocker: json['readinessBlocker'] as String?,
+  missingToolIds: (json['missingToolIds'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  toolsInStorageIds: (json['toolsInStorageIds'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  toolsReady: json['toolsReady'] as bool?,
   isFederalCrime: json['isFederalCrime'] as bool? ?? false,
 );
 
@@ -49,5 +57,9 @@ Map<String, dynamic> _$CrimeToJson(Crime instance) => <String, dynamic>{
   'minDrugQuantity': instance.minDrugQuantity,
   'requiredWeapon': instance.requiredWeapon,
   'canAttempt': instance.canAttempt,
+  'readinessBlocker': instance.readinessBlocker,
+  'missingToolIds': instance.missingToolIds,
+  'toolsInStorageIds': instance.toolsInStorageIds,
+  'toolsReady': instance.toolsReady,
   'isFederalCrime': instance.isFederalCrime,
 };

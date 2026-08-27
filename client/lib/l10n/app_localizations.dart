@@ -21724,6 +21724,54 @@ abstract class AppLocalizations {
   /// **'Rank {rank}+'**
   String crimeCardRankRequired(int rank);
 
+  /// No description provided for @crimeCardToolBannerNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'{tools} required'**
+  String crimeCardToolBannerNeeded(String tools);
+
+  /// No description provided for @crimeCardToolBannerReady.
+  ///
+  /// In en, this message translates to:
+  /// **'{tools} ready'**
+  String crimeCardToolBannerReady(String tools);
+
+  /// No description provided for @crimeCardToolBannerStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'{tools} in storage'**
+  String crimeCardToolBannerStorage(String tools);
+
+  /// No description provided for @crimeCardBlockerVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle required'**
+  String get crimeCardBlockerVehicle;
+
+  /// No description provided for @crimeCardBlockerDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs required'**
+  String get crimeCardBlockerDrugs;
+
+  /// No description provided for @crimeCardBlockerWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon required'**
+  String get crimeCardBlockerWeapon;
+
+  /// No description provided for @crimeCardBlockerAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo required'**
+  String get crimeCardBlockerAmmo;
+
+  /// No description provided for @crimeCardBlockerCriminalRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'No record'**
+  String get crimeCardBlockerCriminalRecord;
+
   /// No description provided for @crimeCardTierLow.
   ///
   /// In en, this message translates to:

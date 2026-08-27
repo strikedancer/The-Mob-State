@@ -40,6 +40,18 @@ class Crime {
   /// Server-evaluated: rank + vehicle/drugs/tools/weapon requirements met.
   final bool? canAttempt;
 
+  /// Primary blocker when [canAttempt] is false (e.g. tools, rank, vehicle).
+  final String? readinessBlocker;
+
+  /// Required tools the player does not carry (and not in storage).
+  final List<String>? missingToolIds;
+
+  /// Required tools owned but only in property storage.
+  final List<String>? toolsInStorageIds;
+
+  /// All required tools are carried on the player.
+  final bool? toolsReady;
+
   // Computed properties (not from JSON)
   final bool isFederalCrime;
 
@@ -61,6 +73,10 @@ class Crime {
     this.minDrugQuantity,
     this.requiredWeapon,
     this.canAttempt,
+    this.readinessBlocker,
+    this.missingToolIds,
+    this.toolsInStorageIds,
+    this.toolsReady,
     this.isFederalCrime = false,
   });
 

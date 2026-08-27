@@ -12383,6 +12383,36 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String crimeCardToolBannerNeeded(String tools) {
+    return '$tools required';
+  }
+
+  @override
+  String crimeCardToolBannerReady(String tools) {
+    return '$tools ready';
+  }
+
+  @override
+  String crimeCardToolBannerStorage(String tools) {
+    return '$tools in storage';
+  }
+
+  @override
+  String get crimeCardBlockerVehicle => 'Vehicle required';
+
+  @override
+  String get crimeCardBlockerDrugs => 'Drugs required';
+
+  @override
+  String get crimeCardBlockerWeapon => 'Weapon required';
+
+  @override
+  String get crimeCardBlockerAmmo => 'Ammo required';
+
+  @override
+  String get crimeCardBlockerCriminalRecord => 'No record';
+
+  @override
   String get crimeCardTierLow => 'Petty';
 
   @override

@@ -64,11 +64,202 @@ class _CrimeCardState extends State<CrimeCard> {
     }
   }
 
+  bool get _hasToolRequirement =>
+      widget.crime.requiredTools != null &&
+      widget.crime.requiredTools!.isNotEmpty;
+
+  String _formatToolNames(AppLocalizations l10n, List<String> toolIds) {
+    return toolIds
+        .map((id) => localizedToolName(l10n, id, null))
+        .join(', ');
+  }
+
+  String? _blockerLabel(AppLocalizations l10n) {
+    switch (widget.crime.readinessBlocker) {
+      case 'rank':
+        return l10n.crimeCardRankRequired(widget.crime.requiredRank);
+      case 'tools':
+        final missing = widget.crime.missingToolIds;
+        if (missing != null && missing.isNotEmpty) {
+          return l10n.crimeCardToolBannerNeeded(
+            _formatToolNames(l10n, missing),
+          );
+        }
+        return l10n.tooltipCrimeRequiresTools;
+      case 'tools_in_storage':
+        final stored = widget.crime.toolsInStorageIds;
+        if (stored != null && stored.isNotEmpty) {
+          return l10n.crimeCardToolBannerStorage(
+            _formatToolNames(l10n, stored),
+          );
+        }
+        return l10n.tooltipCrimeRequiresTools;
+      case 'vehicle':
+        return l10n.crimeCardBlockerVehicle;
+      case 'drugs':
+        return l10n.crimeCardBlockerDrugs;
+      case 'weapon':
+        return l10n.crimeCardBlockerWeapon;
+      case 'weapon_ammo':
+        return l10n.crimeCardBlockerAmmo;
+      case 'criminal_record':
+        return l10n.crimeCardBlockerCriminalRecord;
+      default:
+        if (!widget.canCommit) {
+          return l10n.crimeCardRankRequired(widget.crime.requiredRank);
+        }
+        return null;
+    }
+  }
+
+  Widget? _buildToolBanner(AppLocalizations l10n) {
+    if (!_hasToolRequirement) return null;
+
+    final toolIds = widget.crime.requiredTools!;
+    final toolLabel = _formatToolNames(l10n, toolIds);
+    final blocker = widget.crime.readinessBlocker;
+    final toolsReady = widget.crime.toolsReady == true;
+
+    late final String bannerText;
+    late final Color bannerColor;
+    late final Color textColor;
+    IconData trailingIcon;
+    Color trailingColor;
+
+    if (toolsReady && widget.canCommit) {
+      bannerText = l10n.crimeCardToolBannerReady(toolLabel);
+      bannerColor = const Color(0xFF1B5E20);
+      textColor = Colors.greenAccent;
+      trailingIcon = Icons.check_circle_rounded;
+      trailingColor = Colors.greenAccent;
+    } else if (blocker == 'tools_in_storage') {
+      bannerText = l10n.crimeCardToolBannerStorage(toolLabel);
+      bannerColor = const Color(0xFF5D4037);
+      textColor = Colors.orangeAccent;
+      trailingIcon = Icons.home_work_outlined;
+      trailingColor = Colors.orangeAccent;
+    } else if (blocker == 'tools' || widget.crime.toolsReady == false) {
+      bannerText = l10n.crimeCardToolBannerNeeded(toolLabel);
+      bannerColor = const Color(0xFF4A3728);
+      textColor = const Color(0xFFFFB74D);
+      trailingIcon = Icons.lock_outline_rounded;
+      trailingColor = const Color(0xFFFFB74D);
+    } else if (blocker == 'rank') {
+      bannerText = l10n.crimeCardToolBannerNeeded(toolLabel);
+      bannerColor = Colors.black.withValues(alpha: 0.72);
+      textColor = Colors.white60;
+      trailingIcon = Icons.build_rounded;
+      trailingColor = Colors.white54;
+    } else {
+      bannerText = l10n.crimeCardToolBannerReady(toolLabel);
+      bannerColor = const Color(0xFF1B5E20).withValues(alpha: 0.85);
+      textColor = Colors.greenAccent;
+      trailingIcon = Icons.check_circle_outline_rounded;
+      trailingColor = Colors.greenAccent;
+    }
+
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.transparent,
+              bannerColor.withValues(alpha: 0.92),
+            ],
+          ),
+        ),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+          color: bannerColor.withValues(alpha: 0.88),
+          child: Row(
+            children: [
+              Icon(Icons.build_rounded, size: 13, color: textColor),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  bannerText,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w700,
+                    height: 1.15,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(trailingIcon, size: 13, color: trailingColor),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget? _buildBlockerBadge(AppLocalizations l10n) {
+    if (widget.canCommit) return null;
+
+    final label = _blockerLabel(l10n);
+    if (label == null) return null;
+
+    // Tool blockers use the bottom banner; skip duplicate top badge.
+    if (_hasToolRequirement &&
+        (widget.crime.readinessBlocker == 'tools' ||
+            widget.crime.readinessBlocker == 'tools_in_storage')) {
+      return null;
+    }
+
+    return Positioned(
+      top: 6,
+      right: 6,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 120),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 7,
+          vertical: 3,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.75),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: Colors.white38),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.lock,
+              color: Colors.white70,
+              size: 11,
+            ),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   List<String> _getRequirementIcons() {
     final icons = <String>[];
 
-    if (widget.crime.requiredTools != null &&
-        widget.crime.requiredTools!.isNotEmpty) {
+    if (_hasToolRequirement) {
       icons.add('🔧');
     }
     if (widget.crime.requiresVehicle) {
@@ -120,8 +311,7 @@ class _CrimeCardState extends State<CrimeCard> {
           .join(' ');
     }
 
-    if (widget.crime.requiredTools != null &&
-        widget.crime.requiredTools!.isNotEmpty) {
+    if (_hasToolRequirement) {
       final toolNames = widget.crime.requiredTools!
           .map((toolId) => localizedToolName(l10n, toolId, null))
           .toList();
@@ -195,6 +385,9 @@ class _CrimeCardState extends State<CrimeCard> {
     final borderColor = _isHovered
         ? tierStyle.border.withValues(alpha: 0.95)
         : tierStyle.border.withValues(alpha: widget.canCommit ? 0.55 : 0.25);
+
+    final toolBanner = _buildToolBanner(l10n);
+    final blockerBadge = _buildBlockerBadge(l10n);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -284,47 +477,12 @@ class _CrimeCardState extends State<CrimeCard> {
                           ),
                         ),
                       ),
-                      if (!widget.canCommit)
-                        Positioned(
-                          top: 6,
-                          right: 6,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 3,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.75),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.white38),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.lock,
-                                  color: Colors.white70,
-                                  size: 11,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  l10n.crimeCardRankRequired(
-                                    widget.crime.requiredRank,
-                                  ),
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      if (blockerBadge != null) blockerBadge,
                       if (!widget.canCommit)
                         Container(
                           color: Colors.black.withValues(alpha: 0.42),
                         ),
+                      if (toolBanner != null) toolBanner,
                     ],
                   ),
                 ),

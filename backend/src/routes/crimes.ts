@@ -104,10 +104,18 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
             undefined,
             vehicleStatsForCrime,
           );
+          const readiness = crimeService.evaluateCrimeReadiness(
+            crime.id,
+            readinessContext,
+          );
           return {
             ...crime,
             playerSuccessChance: Math.round(playerSuccessChance * 100),
-            canAttempt: crimeService.canAttemptCrime(crime.id, readinessContext),
+            canAttempt: readiness.canAttempt,
+            readinessBlocker: readiness.readinessBlocker,
+            missingToolIds: readiness.missingToolIds,
+            toolsInStorageIds: readiness.toolsInStorageIds,
+            toolsReady: readiness.toolsReady,
           };
         }),
       );
