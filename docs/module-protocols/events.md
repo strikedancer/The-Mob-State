@@ -4,6 +4,7 @@
 
 - Preset `GameEventTemplate` + `GameEventSchedule` (`interval`) seeds via `ensureGameEventPresets()` on backend startup.
 - `runEventScheduler` (cron) starts `active` `GameLiveEvent` instances, attaches default `GameEventRewardRule` rows, resolves on `endsAt`, then `processPendingRewardDeliveries` applies `cash` / `xp` / `premiumCredits` and optional catalogue `items[]` (→ `player_event_items`) from claims.
+- **Extended rewards** (via `eventRewardFulfillmentService`): `ammo[]`, `tools[]`, `weapons[]`, `vehicles[]` (world-cap + garage/marina checks; cash fallback if blocked), `vehicleParts` `{ car, motorcycle, boat }`. Category presets seed modest ammo/parts/tools for weekly rounds.
 - **Categories** wired in gameplay: `crime`, `drugs`, `smuggling`, `vehicles`, **`trade`** — only one active preset per category to avoid double score from `recordContribution`.
 - **Event Pass** (Mollie one-time, key `event_pass_7d`): `EVENT_BOOST` entitlement + small credit bonus; `balance-economy.md` / `payments.md` apply.
 - **Push (FCM)**: bij start en einde van een actief live event stuurt de server een **gelokaliseerde push** (NL/EN) naar spelers die in **Instellingen → Spelerevents** push aan hebben staan (`push_game_events`, standaard **aan**). Zie `gameEventNotificationService` + `playerNotificationPreferenceService`.

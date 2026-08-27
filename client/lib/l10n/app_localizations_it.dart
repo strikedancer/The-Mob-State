@@ -11962,6 +11962,41 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String gameScreenPrizeAmmoLine(String type, String qty) {
+    return 'Ammo $type ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeToolLine(String toolId, String qty) {
+    return 'Tool: $toolId ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeWeaponLine(String weaponId, String qty) {
+    return 'Weapon: $weaponId ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeVehicleLine(String vehicleId) {
+    return 'Rare vehicle: $vehicleId';
+  }
+
+  @override
+  String gameScreenPrizeCarParts(String qty) {
+    return 'Car parts ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeMotorcycleParts(String qty) {
+    return 'Motorcycle parts ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeBoatParts(String qty) {
+    return 'Boat parts ×$qty';
+  }
+
+  @override
   String get gameScreenNoPrizes => 'No prize rules configured for this event.';
 
   @override

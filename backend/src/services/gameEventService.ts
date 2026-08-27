@@ -3,6 +3,11 @@ import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
 import { getActiveEventBoostEffects, grantPurchasedCredits } from './premiumCreditsService';
 import { creditEventItem, parseEventItemGrants } from './eventItemService';
+import {
+  fulfillExtendedEventRewards,
+  hasExtendedEventRewards,
+  parseExtendedEventRewards,
+} from './eventRewardFulfillmentService';
 import { gameEventNotificationService } from './gameEventNotificationService';
 import { getDefaultRewardRulesForTemplateKey } from './gameEventPresets';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
@@ -752,7 +757,8 @@ class GameEventService {
   }
 
   /**
-   * Pays out pending event reward claims (cash, XP, optional premium credits) created at resolve time.
+   * Pays out pending event reward claims (cash, XP, premium credits, event items,
+   * and extended grants: ammo / tools / parts / weapons / vehicles).
    */
   async processPendingRewardDeliveries(batchSize = 50): Promise<void> {
     const pending = await prisma.gameEventRewardClaim.findMany({
@@ -771,8 +777,15 @@ class GameEventService {
         const xp = toFiniteInt(granted.xp, 0);
         const premiumCredits = toFiniteInt(granted.premiumCredits, 0);
         const itemGrants = parseEventItemGrants(granted);
+        const extended = parseExtendedEventRewards(granted);
 
-        if (cash <= 0 && xp <= 0 && premiumCredits <= 0 && itemGrants.length === 0) {
+        if (
+          cash <= 0 &&
+          xp <= 0 &&
+          premiumCredits <= 0 &&
+          itemGrants.length === 0 &&
+          !hasExtendedEventRewards(extended)
+        ) {
           await prisma.gameEventRewardClaim.update({
             where: { id: claim.id },
             data: { deliveryStatus: 'completed', claimedAt: new Date() },
@@ -810,6 +823,7 @@ class GameEventService {
               claim.liveEventId,
             );
           }
+          await fulfillExtendedEventRewards(tx, claim.playerId, granted);
           await tx.gameEventRewardClaim.update({
             where: { id: claim.id },
             data: { deliveryStatus: 'completed', claimedAt: new Date() },

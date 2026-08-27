@@ -20980,6 +20980,48 @@ abstract class AppLocalizations {
   /// **'{name} ×{qty}'**
   String gameScreenPrizeItemLine(String name, String qty);
 
+  /// No description provided for @gameScreenPrizeAmmoLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo {type} ×{qty}'**
+  String gameScreenPrizeAmmoLine(String type, String qty);
+
+  /// No description provided for @gameScreenPrizeToolLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Tool: {toolId} ×{qty}'**
+  String gameScreenPrizeToolLine(String toolId, String qty);
+
+  /// No description provided for @gameScreenPrizeWeaponLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon: {weaponId} ×{qty}'**
+  String gameScreenPrizeWeaponLine(String weaponId, String qty);
+
+  /// No description provided for @gameScreenPrizeVehicleLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rare vehicle: {vehicleId}'**
+  String gameScreenPrizeVehicleLine(String vehicleId);
+
+  /// No description provided for @gameScreenPrizeCarParts.
+  ///
+  /// In en, this message translates to:
+  /// **'Car parts ×{qty}'**
+  String gameScreenPrizeCarParts(String qty);
+
+  /// No description provided for @gameScreenPrizeMotorcycleParts.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle parts ×{qty}'**
+  String gameScreenPrizeMotorcycleParts(String qty);
+
+  /// No description provided for @gameScreenPrizeBoatParts.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat parts ×{qty}'**
+  String gameScreenPrizeBoatParts(String qty);
+
   /// No description provided for @gameScreenNoPrizes.
   ///
   /// In en, this message translates to:

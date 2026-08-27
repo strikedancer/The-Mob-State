@@ -11858,6 +11858,41 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String gameScreenPrizeAmmoLine(String type, String qty) {
+    return 'Munitie $type ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeToolLine(String toolId, String qty) {
+    return 'Gereedschap: $toolId ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeWeaponLine(String weaponId, String qty) {
+    return 'Wapen: $weaponId ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeVehicleLine(String vehicleId) {
+    return 'Zeldzaam voertuig: $vehicleId';
+  }
+
+  @override
+  String gameScreenPrizeCarParts(String qty) {
+    return 'Auto-onderdelen ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeMotorcycleParts(String qty) {
+    return 'Motor-onderdelen ×$qty';
+  }
+
+  @override
+  String gameScreenPrizeBoatParts(String qty) {
+    return 'Boot-onderdelen ×$qty';
+  }
+
+  @override
   String get gameScreenNoPrizes => 'Geen prijsregels voor dit event.';
 
   @override

@@ -258,6 +258,13 @@ class _EventsScreenState extends State<EventsScreen> {
               style: const TextStyle(color: Colors.white70, fontSize: 12.5),
             ),
           ],
+          for (final line in tier.extendedPrizeLines(l10n)) ...[
+            const SizedBox(height: 4),
+            Text(
+              line,
+              style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+            ),
+          ],
         ],
       ),
     );
@@ -781,6 +788,10 @@ class _EventsScreenState extends State<EventsScreen> {
     if (top.cash > 0) parts.add(formatCurrency(top.cash));
     if (top.premiumCredits > 0) {
       parts.add(l10n.gameScreenPrizeCredits(top.premiumCredits.toString()));
+    }
+    final extras = top.extendedPrizeLines(l10n);
+    if (extras.isNotEmpty) {
+      parts.add(extras.first);
     }
     if (parts.isEmpty && top.xp > 0) {
       parts.add(l10n.gameScreenPrizeXp(top.xp.toString()));

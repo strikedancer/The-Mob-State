@@ -5208,6 +5208,71 @@
       }
     }
   },
+  "gameScreenPrizeAmmoLine": "Munitie {type} ×{qty}",
+  "@gameScreenPrizeAmmoLine": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeToolLine": "Gereedschap: {toolId} ×{qty}",
+  "@gameScreenPrizeToolLine": {
+    "placeholders": {
+      "toolId": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeWeaponLine": "Wapen: {weaponId} ×{qty}",
+  "@gameScreenPrizeWeaponLine": {
+    "placeholders": {
+      "weaponId": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeVehicleLine": "Zeldzaam voertuig: {vehicleId}",
+  "@gameScreenPrizeVehicleLine": {
+    "placeholders": {
+      "vehicleId": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeCarParts": "Auto-onderdelen ×{qty}",
+  "@gameScreenPrizeCarParts": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeMotorcycleParts": "Motor-onderdelen ×{qty}",
+  "@gameScreenPrizeMotorcycleParts": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeBoatParts": "Boot-onderdelen ×{qty}",
+  "@gameScreenPrizeBoatParts": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
   "gameScreenNoPrizes": "Geen prijsregels voor dit event.",
   "gameCardPrizeHint": "Prijzen top 10 — tik voor details",
   "eventItemName_event_chip_gold": "Event chip (goud)",

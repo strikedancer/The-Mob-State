@@ -107,7 +107,7 @@ function lastTriggeredForStagger(
 }
 
 export function getDefaultRewardRulesForTemplateKey(
-  _templateKey: string
+  templateKey: string
 ): Array<{
   triggerType: string;
   triggerConfigJson: Record<string, unknown>;
@@ -115,6 +115,85 @@ export function getDefaultRewardRulesForTemplateKey(
   sortOrder: number;
   isActive: boolean;
 }> {
+  const categoryExtras = (() => {
+    switch (templateKey) {
+      case 'weekly_vehicle_theft_hunt':
+        return {
+          top: {
+            vehicleParts: { car: 8, motorcycle: 4, boat: 2 },
+            tools: [{ toolId: 'car_theft_tools', quantity: 1 }],
+          },
+          mid: {
+            vehicleParts: { car: 4, motorcycle: 2 },
+          },
+          low: {
+            vehicleParts: { car: 2 },
+          },
+        };
+      case 'smuggling_surge':
+        return {
+          top: {
+            tools: [{ toolId: 'gps_jammer', quantity: 1 }],
+            ammo: [{ ammoType: '9mm', quantity: 50 }],
+          },
+          mid: {
+            ammo: [{ ammoType: '9mm', quantity: 30 }],
+          },
+          low: {
+            ammo: [{ ammoType: '9mm', quantity: 15 }],
+          },
+        };
+      case 'lab_output_challenge':
+        return {
+          top: {
+            tools: [{ toolId: 'toolbox', quantity: 1 }],
+            vehicleParts: { car: 3 },
+          },
+          mid: {
+            vehicleParts: { car: 2 },
+          },
+          low: {
+            vehicleParts: { car: 1 },
+          },
+        };
+      case 'street_crime_spree':
+        return {
+          top: {
+            ammo: [{ ammoType: '9mm', quantity: 80 }],
+            weapons: [{ weaponId: 'knife', condition: 100 }],
+            tools: [{ toolId: 'bolt_cutter', quantity: 1 }],
+          },
+          mid: {
+            ammo: [{ ammoType: '9mm', quantity: 40 }],
+            tools: [{ toolId: 'crowbar', quantity: 1 }],
+          },
+          low: {
+            ammo: [{ ammoType: '9mm', quantity: 20 }],
+          },
+        };
+      case 'contraband_rush':
+        return {
+          top: {
+            ammo: [{ ammoType: '45acp', quantity: 40 }],
+            vehicleParts: { car: 3, boat: 2 },
+          },
+          mid: {
+            ammo: [{ ammoType: '9mm', quantity: 25 }],
+            vehicleParts: { car: 2 },
+          },
+          low: {
+            ammo: [{ ammoType: '9mm', quantity: 10 }],
+          },
+        };
+      default:
+        return {
+          top: { ammo: [{ ammoType: '9mm', quantity: 40 }] },
+          mid: { ammo: [{ ammoType: '9mm', quantity: 20 }] },
+          low: { ammo: [{ ammoType: '9mm', quantity: 10 }] },
+        };
+    }
+  })();
+
   return [
     {
       triggerType: 'rank_range',
@@ -124,6 +203,7 @@ export function getDefaultRewardRulesForTemplateKey(
         premiumCredits: 8,
         xp: 800,
         items: [{ itemKey: 'event_chip_gold', quantity: 1 }],
+        ...categoryExtras.top,
       },
       sortOrder: 0,
       isActive: true,
@@ -136,6 +216,7 @@ export function getDefaultRewardRulesForTemplateKey(
         premiumCredits: 4,
         xp: 500,
         items: [{ itemKey: 'event_chip_silver', quantity: 1 }],
+        ...categoryExtras.mid,
       },
       sortOrder: 1,
       isActive: true,
@@ -148,6 +229,7 @@ export function getDefaultRewardRulesForTemplateKey(
         premiumCredits: 2,
         xp: 200,
         items: [{ itemKey: 'event_chip_bronze', quantity: 1 }],
+        ...categoryExtras.low,
       },
       sortOrder: 2,
       isActive: true,

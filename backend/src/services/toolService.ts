@@ -103,6 +103,14 @@ class ToolService {
     });
   }
 
+  /** Public wrapper for event reward grants / admin tooling. */
+  async ensureToolCatalogEntry(toolId: string): Promise<boolean> {
+    const tool = this.getToolDefinition(toolId);
+    if (!tool) return false;
+    await this.ensureCrimeToolExists(tool);
+    return true;
+  }
+
   /**
    * Get player's tool inventory with definitions
    */

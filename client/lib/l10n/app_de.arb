@@ -9786,5 +9786,70 @@
       }
     }
   },
-  "crimeCardWeaponBannerAmmo": "Ammo required"
+  "crimeCardWeaponBannerAmmo": "Ammo required",
+  "gameScreenPrizeAmmoLine": "Ammo {type} ×{qty}",
+  "@gameScreenPrizeAmmoLine": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeToolLine": "Tool: {toolId} ×{qty}",
+  "@gameScreenPrizeToolLine": {
+    "placeholders": {
+      "toolId": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeWeaponLine": "Weapon: {weaponId} ×{qty}",
+  "@gameScreenPrizeWeaponLine": {
+    "placeholders": {
+      "weaponId": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeVehicleLine": "Rare vehicle: {vehicleId}",
+  "@gameScreenPrizeVehicleLine": {
+    "placeholders": {
+      "vehicleId": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeCarParts": "Car parts ×{qty}",
+  "@gameScreenPrizeCarParts": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeMotorcycleParts": "Motorcycle parts ×{qty}",
+  "@gameScreenPrizeMotorcycleParts": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenPrizeBoatParts": "Boat parts ×{qty}",
+  "@gameScreenPrizeBoatParts": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  }
 }
