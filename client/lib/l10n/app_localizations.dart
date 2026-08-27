@@ -21748,6 +21748,114 @@ abstract class AppLocalizations {
   /// **'No crimes match this filter.'**
   String get crimeScreenNoMatches;
 
+  /// No description provided for @jobScreenHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Honest work'**
+  String get jobScreenHeroTitle;
+
+  /// No description provided for @jobScreenHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady cash and XP without the heat. School certificates unlock higher-paying positions.'**
+  String get jobScreenHeroSubtitle;
+
+  /// No description provided for @jobScreenPrepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Career path'**
+  String get jobScreenPrepTitle;
+
+  /// No description provided for @jobScreenEducationStrip.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} jobs locked — complete school certificates to unlock them.'**
+  String jobScreenEducationStrip(int count);
+
+  /// No description provided for @jobScreenEducationNudge.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher education opens better jobs with bigger payouts and longer cooldowns.'**
+  String get jobScreenEducationNudge;
+
+  /// No description provided for @jobScreenOpenSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to open school'**
+  String get jobScreenOpenSchool;
+
+  /// No description provided for @jobScreenFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All jobs'**
+  String get jobScreenFilterAll;
+
+  /// No description provided for @jobScreenFilterAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available only'**
+  String get jobScreenFilterAvailable;
+
+  /// No description provided for @jobScreenSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get jobScreenSortLabel;
+
+  /// No description provided for @jobScreenSortReward.
+  ///
+  /// In en, this message translates to:
+  /// **'Top pay'**
+  String get jobScreenSortReward;
+
+  /// No description provided for @jobScreenSortRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank required'**
+  String get jobScreenSortRank;
+
+  /// No description provided for @jobScreenSortSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success chance'**
+  String get jobScreenSortSuccess;
+
+  /// No description provided for @jobScreenNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No jobs match this filter.'**
+  String get jobScreenNoMatches;
+
+  /// No description provided for @jobCardTierLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry'**
+  String get jobCardTierLow;
+
+  /// No description provided for @jobCardTierMid.
+  ///
+  /// In en, this message translates to:
+  /// **'Skilled'**
+  String get jobCardTierMid;
+
+  /// No description provided for @jobCardTierHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Executive'**
+  String get jobCardTierHigh;
+
+  /// No description provided for @jobCardEducationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'School req.'**
+  String get jobCardEducationRequired;
+
+  /// No description provided for @jobCardSuccessChance.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% success chance'**
+  String jobCardSuccessChance(int percent);
+
   /// No description provided for @crimeCriminalRecordWipeDesc.
   ///
   /// In en, this message translates to:

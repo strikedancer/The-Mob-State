@@ -1576,7 +1576,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onOpenEvents: () => _selectWebSection(_WebSection.events),
         );
       case _WebSection.jobs:
-        return const JobsScreen();
+        return JobsScreen(
+          onOpenSchool: () => _selectWebSection(_WebSection.school),
+        );
       case _WebSection.messages:
         return const DirectMessagesScreen();
       case _WebSection.help:

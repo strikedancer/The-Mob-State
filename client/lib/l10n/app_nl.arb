@@ -9095,6 +9095,38 @@
   "crimeCardTierMid": "Serieus",
   "crimeCardTierHigh": "Groot",
   "crimeScreenNoMatches": "Geen misdaden voor dit filter.",
+  "jobScreenHeroTitle": "Eerlijk werk",
+  "jobScreenHeroSubtitle": "Stabiel cash en XP zonder heat. Schooldiploma's ontgrendelen beter betaalde functies.",
+  "jobScreenPrepTitle": "Carrièrepad",
+  "jobScreenEducationStrip": "{count} banen vergrendeld — rond schoolcertificaten af om ze te ontgrendelen.",
+  "@jobScreenEducationStrip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "jobScreenEducationNudge": "Hogere opleiding opent betere banen met hogere uitbetaling en langere cooldowns.",
+  "jobScreenOpenSchool": "Tik om school te openen",
+  "jobScreenFilterAll": "Alle banen",
+  "jobScreenFilterAvailable": "Alleen beschikbaar",
+  "jobScreenSortLabel": "Sorteer",
+  "jobScreenSortReward": "Hoogste loon",
+  "jobScreenSortRank": "Vereiste rank",
+  "jobScreenSortSuccess": "Slagingskans",
+  "jobScreenNoMatches": "Geen banen voor dit filter.",
+  "jobCardTierLow": "Instap",
+  "jobCardTierMid": "Gevorderd",
+  "jobCardTierHigh": "Topfunctie",
+  "jobCardEducationRequired": "School vereist",
+  "jobCardSuccessChance": "{percent}% slagingskans",
+  "@jobCardSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "trainingHubRefreshStatus": "Vernieuwen",
   "trainingHubRefreshTooltip": "Status opnieuw van de server laden",
   "trainingHubOpenCrimes": "Open misdaden",

@@ -12431,6 +12431,66 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeScreenNoMatches => 'Geen misdaden voor dit filter.';
 
   @override
+  String get jobScreenHeroTitle => 'Eerlijk werk';
+
+  @override
+  String get jobScreenHeroSubtitle =>
+      'Stabiel cash en XP zonder heat. Schooldiploma\'s ontgrendelen beter betaalde functies.';
+
+  @override
+  String get jobScreenPrepTitle => 'Carrièrepad';
+
+  @override
+  String jobScreenEducationStrip(int count) {
+    return '$count banen vergrendeld — rond schoolcertificaten af om ze te ontgrendelen.';
+  }
+
+  @override
+  String get jobScreenEducationNudge =>
+      'Hogere opleiding opent betere banen met hogere uitbetaling en langere cooldowns.';
+
+  @override
+  String get jobScreenOpenSchool => 'Tik om school te openen';
+
+  @override
+  String get jobScreenFilterAll => 'Alle banen';
+
+  @override
+  String get jobScreenFilterAvailable => 'Alleen beschikbaar';
+
+  @override
+  String get jobScreenSortLabel => 'Sorteer';
+
+  @override
+  String get jobScreenSortReward => 'Hoogste loon';
+
+  @override
+  String get jobScreenSortRank => 'Vereiste rank';
+
+  @override
+  String get jobScreenSortSuccess => 'Slagingskans';
+
+  @override
+  String get jobScreenNoMatches => 'Geen banen voor dit filter.';
+
+  @override
+  String get jobCardTierLow => 'Instap';
+
+  @override
+  String get jobCardTierMid => 'Gevorderd';
+
+  @override
+  String get jobCardTierHigh => 'Topfunctie';
+
+  @override
+  String get jobCardEducationRequired => 'School vereist';
+
+  @override
+  String jobCardSuccessChance(int percent) {
+    return '$percent% slagingskans';
+  }
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
 

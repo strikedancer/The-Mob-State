@@ -9679,5 +9679,37 @@
   "vehicleCardFuelLabel": "Fuel",
   "vehicleCardValueLabel": "Value:",
   "vehicleCardLocationLabel": "Location:",
-  "vehicleCardInTransit": "In transit"
+  "vehicleCardInTransit": "In transit",
+  "jobScreenHeroTitle": "Honest work",
+  "jobScreenHeroSubtitle": "Steady cash and XP without the heat. School certificates unlock higher-paying positions.",
+  "jobScreenPrepTitle": "Career path",
+  "jobScreenEducationStrip": "{count} jobs locked — complete school certificates to unlock them.",
+  "@jobScreenEducationStrip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "jobScreenEducationNudge": "Higher education opens better jobs with bigger payouts and longer cooldowns.",
+  "jobScreenOpenSchool": "Tap to open school",
+  "jobScreenFilterAll": "All jobs",
+  "jobScreenFilterAvailable": "Available only",
+  "jobScreenSortLabel": "Sort",
+  "jobScreenSortReward": "Top pay",
+  "jobScreenSortRank": "Rank required",
+  "jobScreenSortSuccess": "Success chance",
+  "jobScreenNoMatches": "No jobs match this filter.",
+  "jobCardTierLow": "Entry",
+  "jobCardTierMid": "Skilled",
+  "jobCardTierHigh": "Executive",
+  "jobCardEducationRequired": "School req.",
+  "jobCardSuccessChance": "{percent}% success chance",
+  "@jobCardSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

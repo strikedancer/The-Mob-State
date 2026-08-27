@@ -1,30 +1,49 @@
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../l10n/app_localizations.dart';
 import '../models/job.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/event_renderer.dart';
 import '../services/jail_service.dart';
-import '../widgets/jail_screen.dart';
-import '../widgets/cooldown_overlay.dart';
-import '../widgets/crime_result_overlay.dart';
-import '../widgets/job_card.dart';
-import '../widgets/education_requirements_dialog.dart';
 import '../utils/job_localization.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/action_result_toast.dart';
+import '../widgets/cooldown_overlay.dart';
+import '../widgets/crime_result_overlay.dart';
+import '../widgets/education_requirements_dialog.dart';
+import '../widgets/jail_screen.dart';
+import '../widgets/job_card.dart';
 import '../utils/web_asset_helper.dart';
+import 'school_screen.dart';
+
+enum _JobListFilter { all, available }
+
+enum _JobListSort { reward, rank, success }
 
 class JobsScreen extends StatefulWidget {
-  const JobsScreen({super.key});
+  const JobsScreen({
+    super.key,
+    this.onOpenSchool,
+  });
+
+  /// When set (e.g. web dashboard), opens the school section.
+  final VoidCallback? onOpenSchool;
 
   @override
   State<JobsScreen> createState() => _JobsScreenState();
 }
 
 class _JobsScreenState extends State<JobsScreen> {
+  static const Color _gold = Color(0xFFD4AF37);
+  static const Color _panelBg = Color(0xFF151B28);
+  static const Color _panelBorder = Color(0xFF2A3344);
+  static const Color _jobAccent = Color(0xFF4A9FD4);
+
   final ApiClient _apiClient = ApiClient();
   final JailService _jailService = JailService();
   List<Job> _jobs = [];
@@ -32,12 +51,14 @@ class _JobsScreenState extends State<JobsScreen> {
   bool _isLoading = true;
   bool _isWorking = false;
   String? _error;
-  int? _jailTime; // null = not jailed, >0 = minutes remaining
-  int? _cooldownSeconds; // null = not on cooldown, >0 = seconds remaining
+  int? _jailTime;
+  int? _cooldownSeconds;
   bool _showJobResult = false;
   String? _resultJobName;
   int _jobEarnings = 0;
   int _jobXpGained = 0;
+  _JobListFilter _listFilter = _JobListFilter.all;
+  _JobListSort _listSort = _JobListSort.reward;
 
   @override
   void initState() {
@@ -45,12 +66,338 @@ class _JobsScreenState extends State<JobsScreen> {
     _checkJailStatusAndLoadJobs();
   }
 
+  Future<void> _refreshJobsScreen() async {
+    await _checkJailStatusAndLoadJobs();
+  }
+
+  void _openSchool() {
+    if (widget.onOpenSchool != null) {
+      widget.onOpenSchool!();
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const SchoolScreen()),
+    );
+  }
+
+  List<Job> _visibleJobs(int playerRank) {
+    final filtered = _jobs.where((job) {
+      if (_listFilter == _JobListFilter.available) {
+        return playerRank >= job.requiredRank;
+      }
+      return true;
+    }).toList();
+
+    filtered.sort((a, b) {
+      switch (_listSort) {
+        case _JobListSort.rank:
+          final rankCmp = a.requiredRank.compareTo(b.requiredRank);
+          if (rankCmp != 0) return rankCmp;
+          return b.maxPay.compareTo(a.maxPay);
+        case _JobListSort.success:
+          return b.maxPay.compareTo(a.maxPay);
+        case _JobListSort.reward:
+          return b.maxPay.compareTo(a.maxPay);
+      }
+    });
+
+    return filtered;
+  }
+
+  Widget _panel({required Widget child, EdgeInsetsGeometry? padding}) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+      padding: padding ?? const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: _panelBg.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: _panelBorder),
+      ),
+      child: child,
+    );
+  }
+
+  Widget _statChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageHero(AppLocalizations l10n, int playerRank) {
+    final availableCount =
+        _jobs.where((j) => playerRank >= j.requiredRank).length;
+
+    return _panel(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: _jobAccent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _jobAccent.withValues(alpha: 0.45),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.work_outline,
+                  color: _jobAccent,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.jobScreenHeroTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.jobScreenHeroSubtitle,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _statChip(
+                '${_jobs.length} ${l10n.jobs.toLowerCase()}',
+                _gold,
+              ),
+              _statChip(
+                '$availableCount ${l10n.jobScreenFilterAvailable.toLowerCase()}',
+                Colors.greenAccent,
+              ),
+              if (_lockedJobs.isNotEmpty)
+                _statChip(
+                  '${_lockedJobs.length} ${l10n.jobCardEducationRequired.toLowerCase()}',
+                  const Color(0xFFFFC107),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPrepStrip(AppLocalizations l10n) {
+    if (_lockedJobs.isEmpty) {
+      return _panel(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.jobScreenPrepTitle,
+              style: const TextStyle(
+                color: _gold,
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.jobScreenEducationNudge,
+              style: const TextStyle(color: Colors.white60, fontSize: 12),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final stripBody = Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _gold.withValues(alpha: 0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.school, color: _gold, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.jobScreenEducationStrip(_lockedJobs.length),
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              if (widget.onOpenSchool != null)
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.white.withValues(alpha: 0.45),
+                  size: 18,
+                ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            l10n.jobScreenEducationNudge,
+            style: const TextStyle(color: Colors.white60, fontSize: 11.5),
+          ),
+          if (widget.onOpenSchool != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              l10n.jobScreenOpenSchool,
+              style: TextStyle(
+                color: _gold.withValues(alpha: 0.85),
+                fontSize: 11,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+
+    return _panel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.jobScreenPrepTitle,
+            style: const TextStyle(
+              color: _gold,
+              fontWeight: FontWeight.w800,
+              fontSize: 15,
+            ),
+          ),
+          const SizedBox(height: 12),
+          if (widget.onOpenSchool == null)
+            stripBody
+          else
+            InkWell(
+              onTap: _openSchool,
+              borderRadius: BorderRadius.circular(10),
+              child: stripBody,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterSortBar(AppLocalizations l10n) {
+    return _panel(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          ChoiceChip(
+            label: Text(l10n.jobScreenFilterAll),
+            selected: _listFilter == _JobListFilter.all,
+            onSelected: (_) =>
+                setState(() => _listFilter = _JobListFilter.all),
+            selectedColor: _gold.withValues(alpha: 0.25),
+            labelStyle: TextStyle(
+              color: _listFilter == _JobListFilter.all
+                  ? _gold
+                  : Colors.white70,
+              fontWeight: FontWeight.w600,
+            ),
+            side: BorderSide(
+              color: _listFilter == _JobListFilter.all
+                  ? _gold.withValues(alpha: 0.6)
+                  : _panelBorder,
+            ),
+          ),
+          ChoiceChip(
+            label: Text(l10n.jobScreenFilterAvailable),
+            selected: _listFilter == _JobListFilter.available,
+            onSelected: (_) =>
+                setState(() => _listFilter = _JobListFilter.available),
+            selectedColor: Colors.greenAccent.withValues(alpha: 0.18),
+            labelStyle: TextStyle(
+              color: _listFilter == _JobListFilter.available
+                  ? Colors.greenAccent
+                  : Colors.white70,
+              fontWeight: FontWeight.w600,
+            ),
+            side: BorderSide(
+              color: _listFilter == _JobListFilter.available
+                  ? Colors.greenAccent.withValues(alpha: 0.55)
+                  : _panelBorder,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            l10n.jobScreenSortLabel,
+            style: const TextStyle(color: Colors.white54, fontSize: 12),
+          ),
+          DropdownButton<_JobListSort>(
+            value: _listSort,
+            dropdownColor: _panelBg,
+            underline: const SizedBox.shrink(),
+            iconEnabledColor: _gold,
+            style: const TextStyle(color: Colors.white, fontSize: 12.5),
+            items: [
+              DropdownMenuItem(
+                value: _JobListSort.reward,
+                child: Text(l10n.jobScreenSortReward),
+              ),
+              DropdownMenuItem(
+                value: _JobListSort.rank,
+                child: Text(l10n.jobScreenSortRank),
+              ),
+              DropdownMenuItem(
+                value: _JobListSort.success,
+                child: Text(l10n.jobScreenSortSuccess),
+              ),
+            ],
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() => _listSort = value);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _checkJailStatusAndLoadJobs() async {
-    // First check if player is in jail
     final jailTime = await _jailService.checkJailStatus();
 
     if (jailTime > 0) {
-      // Refresh player data to get current wanted level for bail button
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.refreshPlayer();
 
@@ -58,17 +405,15 @@ class _JobsScreenState extends State<JobsScreen> {
         _jailTime = jailTime;
         _isLoading = false;
       });
-      return; // Don't load jobs if jailed
+      return;
     }
 
-    // Check for active cooldown by attempting to load jobs
     try {
       final response = await _apiClient.get('/jobs');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        // Check for cooldown in response
         if (data['cooldown'] != null && data['cooldown'] is Map) {
           final cooldownData = data['cooldown'] as Map<String, dynamic>;
           if (cooldownData['remainingSeconds'] != null) {
@@ -76,11 +421,10 @@ class _JobsScreenState extends State<JobsScreen> {
               _cooldownSeconds = cooldownData['remainingSeconds'] as int;
               _isLoading = false;
             });
-            return; // Don't load jobs if on cooldown
+            return;
           }
         }
 
-        // No cooldown, load education-aware jobs payload
         await _loadJobs();
         return;
       } else {
@@ -153,7 +497,39 @@ class _JobsScreenState extends State<JobsScreen> {
     );
   }
 
-  Widget _buildLockedJobTile(Map<String, dynamic> job) {
+  _JobPayTier _lockedJobTier(int maxPay) {
+    if (maxPay >= 2000) return _JobPayTier.high;
+    if (maxPay >= 500) return _JobPayTier.mid;
+    return _JobPayTier.low;
+  }
+
+  ({Color accent, Color border, String label}) _lockedTierStyle(
+    AppLocalizations l10n,
+    _JobPayTier tier,
+  ) {
+    switch (tier) {
+      case _JobPayTier.high:
+        return (
+          accent: _jobAccent,
+          border: _jobAccent,
+          label: l10n.jobCardTierHigh,
+        );
+      case _JobPayTier.mid:
+        return (
+          accent: _gold,
+          border: const Color(0xFFFFC107),
+          label: l10n.jobCardTierMid,
+        );
+      case _JobPayTier.low:
+        return (
+          accent: Colors.white70,
+          border: Colors.white24,
+          label: l10n.jobCardTierLow,
+        );
+    }
+  }
+
+  Widget _buildLockedJobCard(Map<String, dynamic> job) {
     final l10n = AppLocalizations.of(context)!;
     final jobId = job['id']?.toString() ?? '';
     final rawName = job['name']?.toString() ?? l10n.jobs;
@@ -161,18 +537,15 @@ class _JobsScreenState extends State<JobsScreen> {
     final locName = JobLocalization.name(jobId, l10n, fallback: rawName);
     final locDesc = JobLocalization.description(jobId, l10n, fallback: rawDesc);
     final imageAsset = 'assets/images/jobs/${job['id']}_job.png';
+    final maxPay = (job['maxEarnings'] as num?)?.toInt() ?? 0;
+    final tierStyle = _lockedTierStyle(l10n, _lockedJobTier(maxPay));
+    final isWide = MediaQuery.sizeOf(context).width >= 900;
 
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: BorderSide(
-          color: const Color(0xFFFFC107).withOpacity(0.75),
-          width: 1,
-        ),
-      ),
+    return Material(
+      color: const Color(0xFF151B28),
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
-        borderRadius: BorderRadius.circular(10),
         onTap: () => _showLockedJobDetails(job),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,97 +553,154 @@ class _JobsScreenState extends State<JobsScreen> {
             Expanded(
               flex: 3,
               child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(10),
-                      ),
-                      color: Colors.grey[850],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(10),
-                      ),
-                      child: WebAssetHelper.image(
-                        imageAsset,
-                        fit: BoxFit.cover,
+                  WebAssetHelper.image(
+                    imageAsset,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: const Color(0xFF1E2433),
                         alignment: Alignment.center,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[850],
-                            alignment: Alignment.center,
-                            child: const Icon(
-                              Icons.work_outline,
-                              color: Colors.white54,
-                              size: 26,
-                            ),
-                          );
-                        },
+                        child: const Icon(
+                          Icons.work_outline,
+                          color: Colors.white54,
+                          size: 26,
+                        ),
+                      );
+                    },
+                  ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.08),
+                          Colors.black.withValues(alpha: 0.72),
+                        ],
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(10),
+                  Positioned(
+                    top: 6,
+                    left: 6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 3,
                       ),
-                      color: Colors.black.withOpacity(0.5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.65),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: tierStyle.accent.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      child: Text(
+                        tierStyle.label,
+                        style: TextStyle(
+                          color: tierStyle.accent,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.lock,
-                        color: Color(0xFFFFC107),
-                        size: 28,
+                  ),
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 3,
                       ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.75),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: const Color(0xFFFFC107)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.school,
+                            color: Color(0xFFFFC107),
+                            size: 11,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            l10n.jobCardEducationRequired,
+                            style: const TextStyle(
+                              color: Color(0xFFFFC107),
+                              fontSize: 9,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(color: Colors.black.withValues(alpha: 0.48)),
+                  const Center(
+                    child: Icon(
+                      Icons.lock,
+                      color: Color(0xFFFFC107),
+                      size: 28,
                     ),
                   ),
                 ],
               ),
             ),
-            Expanded(
-              flex: 2,
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: tierStyle.border.withValues(alpha: 0.45),
+                    width: 1.1,
+                  ),
+                ),
+              ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+                padding: const EdgeInsets.fromLTRB(8, 7, 8, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       locName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white70,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      locDesc,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 9, color: Colors.grey[300]),
                     ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.school,
-                          size: 12,
-                          color: Color(0xFFFFC107),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.achievementLocked,
+                    if (locDesc.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text(
+                          locDesc,
                           style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFFFFC107),
+                            fontSize: 9,
+                            height: 1.2,
+                            color: Colors.white54,
                           ),
+                          maxLines: isWide ? 2 : 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ],
+                      ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.educationLockedJobsSectionTitle,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFFFC107),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -302,7 +732,6 @@ class _JobsScreenState extends State<JobsScreen> {
         return 0;
       }
 
-      // Check if error.cooldown - show cooldown overlay
       if (eventKey == 'error.cooldown') {
         final remainingSeconds = params['remainingSeconds'] as int? ?? 0;
 
@@ -313,7 +742,6 @@ class _JobsScreenState extends State<JobsScreen> {
         return;
       }
 
-      // Check if error.jailed - handle specially
       if (eventKey == 'error.jailed') {
         final remainingTime = params['remainingTime'] as int? ?? 0;
         final l10n = AppLocalizations.of(context)!;
@@ -322,7 +750,7 @@ class _JobsScreenState extends State<JobsScreen> {
 
         setState(() {
           _isWorking = false;
-          _jailTime = remainingTime; // Show jail screen
+          _jailTime = remainingTime;
         });
 
         if (mounted) {
@@ -354,7 +782,6 @@ class _JobsScreenState extends State<JobsScreen> {
         }
       }
 
-      // Update player stats from response
       if (mounted) {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         if (data.containsKey('player')) {
@@ -371,7 +798,6 @@ class _JobsScreenState extends State<JobsScreen> {
 
       if (!mounted) return;
 
-      // Success: crime-style result window first, then cooldown (same as Misdaden).
       if (success && (earnings > 0 || xpGained > 0)) {
         setState(() {
           _isWorking = false;
@@ -413,133 +839,62 @@ class _JobsScreenState extends State<JobsScreen> {
     }
   }
 
-  // Unused - kept for potential future use
-  /*
-  String _localizedJobName(Job job, AppLocalizations l10n) {
-    switch (job.id) {
-      case 'newspaper_delivery':
-        return l10n.jobNewspaperDeliveryName;
-      case 'car_wash':
-        return l10n.jobCarWashName;
-      case 'grocery_bagger':
-        return l10n.jobGroceryBaggerName;
-      case 'dishwasher':
-        return l10n.jobDishwasherName;
-      case 'street_sweeper':
-        return l10n.jobStreetSweeperName;
-      case 'pizza_delivery':
-        return l10n.jobPizzaDeliveryName;
-      case 'taxi_driver':
-        return l10n.jobTaxiDriverName;
-      case 'warehouse_worker':
-        return l10n.jobWarehouseWorkerName;
-      case 'construction_worker':
-        return l10n.jobConstructionWorkerName;
-      case 'bartender':
-        return l10n.jobBartenderName;
-      case 'security_guard':
-        return l10n.jobSecurityGuardName;
-      case 'truck_driver':
-        return l10n.jobTruckDriverName;
-      case 'mechanic':
-        return l10n.jobMechanicName;
-      case 'electrician':
-        return l10n.jobElectricianName;
-      case 'plumber':
-        return l10n.jobPlumberName;
-      case 'chef':
-        return l10n.jobChefName;
-      case 'paramedic':
-        return l10n.jobParamedicName;
-      case 'programmer':
-        return l10n.jobProgrammerName;
-      case 'accountant':
-        return l10n.jobAccountantName;
-      case 'lawyer':
-        return l10n.jobLawyerName;
-      case 'real_estate_agent':
-        return l10n.jobRealEstateAgentName;
-      case 'stockbroker':
-        return l10n.jobStockbrokerName;
-      case 'doctor':
-        return l10n.jobDoctorName;
-      case 'airline_pilot':
-        return l10n.jobAirlinePilotName;
-      default:
-        return job.name;
-    }
-  }
-  */
+  SliverGrid _buildJobGrid({
+    required List<Job> jobs,
+    required int playerRank,
+  }) {
+    return SliverGrid(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: MediaQuery.of(context).size.width < 480
+            ? 2
+            : MediaQuery.of(context).size.width < 900
+            ? 3
+            : 5,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.82,
+      ),
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final job = jobs[index];
+          final canWork = playerRank >= job.requiredRank;
+          final locName = JobLocalization.name(
+            job.id,
+            AppLocalizations.of(context)!,
+            fallback: job.name,
+          );
+          final locDesc = JobLocalization.description(
+            job.id,
+            AppLocalizations.of(context)!,
+            fallback: job.description ?? '',
+          );
 
-  // Unused - kept for potential future use
-  /*
-  String _localizedJobDescription(Job job, AppLocalizations l10n) {
-    switch (job.id) {
-      case 'newspaper_delivery':
-        return l10n.jobNewspaperDeliveryDesc;
-      case 'car_wash':
-        return l10n.jobCarWashDesc;
-      case 'grocery_bagger':
-        return l10n.jobGroceryBaggerDesc;
-      case 'dishwasher':
-        return l10n.jobDishwasherDesc;
-      case 'street_sweeper':
-        return l10n.jobStreetSweeperDesc;
-      case 'pizza_delivery':
-        return l10n.jobPizzaDeliveryDesc;
-      case 'taxi_driver':
-        return l10n.jobTaxiDriverDesc;
-      case 'warehouse_worker':
-        return l10n.jobWarehouseWorkerDesc;
-      case 'construction_worker':
-        return l10n.jobConstructionWorkerDesc;
-      case 'bartender':
-        return l10n.jobBartenderDesc;
-      case 'security_guard':
-        return l10n.jobSecurityGuardDesc;
-      case 'truck_driver':
-        return l10n.jobTruckDriverDesc;
-      case 'mechanic':
-        return l10n.jobMechanicDesc;
-      case 'electrician':
-        return l10n.jobElectricianDesc;
-      case 'plumber':
-        return l10n.jobPlumberDesc;
-      case 'chef':
-        return l10n.jobChefDesc;
-      case 'paramedic':
-        return l10n.jobParamedicDesc;
-      case 'programmer':
-        return l10n.jobProgrammerDesc;
-      case 'accountant':
-        return l10n.jobAccountantDesc;
-      case 'lawyer':
-        return l10n.jobLawyerDesc;
-      case 'real_estate_agent':
-        return l10n.jobRealEstateAgentDesc;
-      case 'stockbroker':
-        return l10n.jobStockbrokerDesc;
-      case 'doctor':
-        return l10n.jobDoctorDesc;
-      case 'airline_pilot':
-        return l10n.jobAirlinePilotDesc;
-      default:
-        return job.description ?? '';
-    }
+          return JobCard(
+            job: job,
+            canWork: canWork,
+            isWorking: _isWorking,
+            onTap: () => _doJob(job),
+            jobName: locName,
+            jobDescription: locDesc,
+          );
+        },
+        childCount: jobs.length,
+      ),
+    );
   }
-  */
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final player = authProvider.currentPlayer;
+    final playerRank = player?.rank ?? 1;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.jobs)),
       body: _showJobResult
           ? CrimeResultOverlay(
-              embedded: true,
+              embedded: kIsWeb,
               headline: l10n.jobOutcomeSuccess,
               crimeName: _resultJobName ?? l10n.jobs,
               reward: _jobEarnings,
@@ -558,7 +913,7 @@ class _JobsScreenState extends State<JobsScreen> {
               actionType: 'job',
               cooldownActionType: 'job',
               remainingSeconds: _cooldownSeconds!,
-              embedded: true,
+              embedded: kIsWeb,
               onExpired: () {
                 setState(() {
                   _cooldownSeconds = null;
@@ -568,6 +923,7 @@ class _JobsScreenState extends State<JobsScreen> {
             )
           : _jailTime != null && _jailTime! > 0
           ? JailOverlay(
+              embedded: kIsWeb,
               remainingSeconds: _jailTime!,
               wantedLevel: player?.wantedLevel,
               onReleased: () {
@@ -602,63 +958,93 @@ class _JobsScreenState extends State<JobsScreen> {
                 ),
               ),
             )
-          : ListView(
-              padding: const EdgeInsets.all(8),
-              children: [
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).size.width < 480
-                        ? 2
-                        : MediaQuery.of(context).size.width < 900
-                        ? 3
-                        : 5,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 0.78,
+          : RefreshIndicator(
+              color: _gold,
+              onRefresh: _refreshJobsScreen,
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF101820), Color(0xFF0C0A0A)],
                   ),
-                  itemCount: _jobs.length,
-                  itemBuilder: (context, index) {
-                    final job = _jobs[index];
-                    final canWork = (player?.rank ?? 1) >= job.requiredRank;
-
-                    return JobCard(
-                      job: job,
-                      canWork: canWork,
-                      isWorking: _isWorking,
-                      onTap: () => _doJob(job),
-                    );
-                  },
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/backgrounds/gym_bg.png'),
+                    fit: BoxFit.cover,
+                    opacity: 0.18,
+                  ),
                 ),
-                if (_lockedJobs.isNotEmpty) ...[
-                  const SizedBox(height: 12),
-                  Text(
-                    l10n.educationLockedJobsSectionTitle,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: MediaQuery.of(context).size.width < 480
-                          ? 2
-                          : MediaQuery.of(context).size.width < 900
-                          ? 3
-                          : 5,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 0.78,
+                child: CustomScrollView(
+                  slivers: [
+                    const SliverToBoxAdapter(child: SizedBox(height: 12)),
+                    SliverToBoxAdapter(
+                      child: _buildPageHero(l10n, playerRank),
                     ),
-                    itemCount: _lockedJobs.length,
-                    itemBuilder: (context, index) {
-                      return _buildLockedJobTile(_lockedJobs[index]);
-                    },
-                  ),
-                ],
-              ],
+                    SliverToBoxAdapter(child: _buildPrepStrip(l10n)),
+                    SliverToBoxAdapter(child: _buildFilterSortBar(l10n)),
+                    Builder(
+                      builder: (context) {
+                        final visibleJobs = _visibleJobs(playerRank);
+                        if (visibleJobs.isEmpty) {
+                          return SliverToBoxAdapter(
+                            child: _panel(
+                              child: Text(
+                                l10n.jobScreenNoMatches,
+                                style: const TextStyle(color: Colors.white70),
+                              ),
+                            ),
+                          );
+                        }
+                        return _buildJobGrid(
+                          jobs: visibleJobs,
+                          playerRank: playerRank,
+                        );
+                      },
+                    ),
+                    if (_lockedJobs.isNotEmpty) ...[
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                          child: Text(
+                            l10n.educationLockedJobsSectionTitle,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
+                        sliver: SliverGrid(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                MediaQuery.of(context).size.width < 480
+                                ? 2
+                                : MediaQuery.of(context).size.width < 900
+                                ? 3
+                                : 5,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 0.82,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) =>
+                                _buildLockedJobCard(_lockedJobs[index]),
+                            childCount: _lockedJobs.length,
+                          ),
+                        ),
+                      ),
+                    ] else
+                      const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                  ],
+                ),
+              ),
             ),
     );
   }
 }
+
+enum _JobPayTier { low, mid, high }
