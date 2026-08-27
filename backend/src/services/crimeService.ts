@@ -25,6 +25,10 @@ import {
   TRAINING_COMBO_READINESS_BONUS,
 } from '../lib/trainingComboReadiness';
 import { latestGymTrainAt } from './gymService';
+import {
+  scaleCrimeJailMinutes,
+  crimeFailWantedIncrease,
+} from '../utils/crimeJailScaling';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 /** Minimum rank to steal cars — keep in sync with vehicleService.stealVehicle. */
@@ -358,6 +362,9 @@ export const crimeService = {
     let xpLost = 0;
     let jailed = crimeResult.jailed;
     let jailTime = crimeResult.jailTime;
+    if (jailTime > 0) {
+      jailTime = scaleCrimeJailMinutes(jailTime, player.rank, crime.minLevel);
+    }
     const vehicleBroken = crimeResult.vehicleBrokeDown || false;
     const diminishingContext = await economyBalanceService.getDiminishingContext(
       playerId,
@@ -398,8 +405,12 @@ export const crimeService = {
         // Federal crime increases FBI heat
         await fbiService.increaseFBIHeat(playerId, config.fbiHeatIncreaseOnFederalCrimeFail);
       } else {
-        // Regular crime increases wanted level
-        await policeService.increaseWantedLevel(playerId, config.wantedLevelIncreaseOnCrimeFail);
+        // Regular crime increases wanted level (softer for low ranks)
+        const wantedBump = crimeFailWantedIncrease(
+          player.rank,
+          config.wantedLevelIncreaseOnCrimeFail,
+        );
+        await policeService.increaseWantedLevel(playerId, wantedBump);
       }
 
       // Additional jail check if outcome engine didn't jail
@@ -408,7 +419,7 @@ export const crimeService = {
         if (jailRoll < config.crimeJailChance) {
           // 50% chance of getting caught and additional XP loss
           jailed = true;
-          jailTime = crime.jailTime;
+          jailTime = scaleCrimeJailMinutes(crime.jailTime, player.rank, crime.minLevel);
           
           // Additional XP loss when jailed (5% of current rank's XP requirement)
           const { getXPForRank } = await import('../config');
