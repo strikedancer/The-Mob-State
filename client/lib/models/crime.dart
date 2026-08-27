@@ -37,6 +37,9 @@ class Crime {
   // Required weapon for the crime
   final bool? requiredWeapon;
 
+  /// Server-evaluated: rank + vehicle/drugs/tools/weapon requirements met.
+  final bool? canAttempt;
+
   // Computed properties (not from JSON)
   final bool isFederalCrime;
 
@@ -57,6 +60,7 @@ class Crime {
     this.requiredDrugs,
     this.minDrugQuantity,
     this.requiredWeapon,
+    this.canAttempt,
     this.isFederalCrime = false,
   });
 

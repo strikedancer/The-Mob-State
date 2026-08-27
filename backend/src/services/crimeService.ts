@@ -14,7 +14,7 @@ import { vehicleService } from './vehicleService';
 import { weaponSelectionService } from './weaponSelectionService';
 import config from '../config';
 import { processCrimeAttempt, CrimeOutcome } from '../utils/crimeOutcomeEngine';
-import { getPlayerTool, degradeTool } from './vehicleToolService';
+import { getPlayerTool, degradeTool, resolveSelectedCrimeVehicle } from './vehicleToolService';
 import { serializeAchievementForClient } from './achievementService';
 import * as judgeService from './judgeService';
 import { notificationService } from './notificationService';
@@ -1238,5 +1238,151 @@ export const crimeService = {
 
     // Keep realistic bounds: at least 5%, at most 95%
     return Math.max(0.05, Math.min(successChance, 0.95));
+  },
+
+  /**
+   * Load player state once for crime readiness checks (GET /crimes list).
+   */
+  async buildCrimeReadinessContext(
+    playerId: number,
+    playerRank: number,
+    currentCountry: string,
+  ) {
+    const [
+      selectedVehicle,
+      selectedWeapon,
+      drugRows,
+      carriedTools,
+      storageTools,
+      ammoInventory,
+      criminalRecordCount,
+    ] = await Promise.all([
+      resolveSelectedCrimeVehicle(playerId, currentCountry),
+      weaponSelectionService.getSelectedCrimeWeapon(playerId),
+      prisma.drugInventory.findMany({
+        where: { playerId },
+        select: { drugType: true, quantity: true },
+      }),
+      prisma.playerTools.findMany({
+        where: { playerId, location: 'carried', durability: { gt: 0 } },
+        select: { toolId: true },
+      }),
+      prisma.playerTools.findMany({
+        where: { playerId, location: { not: 'carried' }, durability: { gt: 0 } },
+        select: { toolId: true },
+      }),
+      prisma.ammoInventory.findMany({
+        where: { playerId },
+        select: { ammoType: true, quantity: true },
+      }),
+      judgeService.getVisibleCriminalRecordCount(playerId),
+    ]);
+
+    const drugTotalsByType = new Map<string, number>();
+    for (const row of drugRows) {
+      drugTotalsByType.set(
+        row.drugType,
+        (drugTotalsByType.get(row.drugType) ?? 0) + row.quantity,
+      );
+    }
+
+    const ammoCounts = new Map<string, number>();
+    for (const row of ammoInventory) {
+      ammoCounts.set(row.ammoType, row.quantity);
+    }
+
+    const weaponDefinition = selectedWeapon
+      ? weaponService.getAllWeapons().find((w) => w.id === selectedWeapon.weaponId)
+      : undefined;
+
+    return {
+      playerRank,
+      hasCriminalRecord: criminalRecordCount > 0,
+      selectedVehicle,
+      selectedWeapon,
+      weaponDefinition,
+      ammoCounts,
+      drugTotalsByType,
+      carriedToolIds: new Set(carriedTools.map((t) => t.toolId)),
+      storageToolIds: new Set(storageTools.map((t) => t.toolId)),
+    };
+  },
+
+  /**
+   * Whether the player can attempt this crime right now (rank + resources).
+   */
+  canAttemptCrime(
+    crimeId: string,
+    context: Awaited<ReturnType<typeof crimeService.buildCrimeReadinessContext>>,
+  ): boolean {
+    const crime = this.getCrimeDefinition(crimeId);
+    if (!crime) {
+      return false;
+    }
+
+    if (context.playerRank < crime.minLevel) {
+      return false;
+    }
+
+    if (crimeId === CRIMINAL_RECORD_WIPE_CRIME_ID && !context.hasCriminalRecord) {
+      return false;
+    }
+
+    if (crime.requiredVehicle) {
+      const vehicle = context.selectedVehicle;
+      if (!vehicle || vehicle.inventory.fuelLevel <= 0) {
+        return false;
+      }
+    }
+
+    if (crime.requiredWeapon) {
+      if (!context.selectedWeapon || context.selectedWeapon.condition <= 0) {
+        return false;
+      }
+
+      const def = context.weaponDefinition;
+      const suitableTypes = crime.suitableWeaponTypes || [];
+      const isTypeAllowed =
+        suitableTypes.length === 0 ||
+        (def && suitableTypes.includes(def.type));
+      const meetsDamage = (def?.damage ?? 0) >= (crime.minDamage || 0);
+      const meetsIntimidation =
+        (def?.intimidation ?? 0) >= (crime.minIntimidation || 0);
+
+      if (!isTypeAllowed || !meetsDamage || !meetsIntimidation) {
+        return false;
+      }
+
+      if (def?.requiresAmmo && def.ammoType) {
+        const needed = def.ammoPerCrime || 1;
+        const have = context.ammoCounts.get(def.ammoType) ?? 0;
+        if (have < needed) {
+          return false;
+        }
+      }
+    }
+
+    const requiredTools = toolService.getRequiredToolsForCrime(crimeId);
+    for (const toolId of requiredTools) {
+      if (!context.carriedToolIds.has(toolId)) {
+        return false;
+      }
+    }
+
+    if (crime.requiredDrugs && crime.minDrugQuantity) {
+      let hasDrugs = false;
+      for (const drugType of crime.requiredDrugs) {
+        const total = context.drugTotalsByType.get(drugType) ?? 0;
+        if (total >= crime.minDrugQuantity) {
+          hasDrugs = true;
+          break;
+        }
+      }
+      if (!hasDrugs) {
+        return false;
+      }
+    }
+
+    return true;
   },
 };

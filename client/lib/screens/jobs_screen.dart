@@ -63,7 +63,7 @@ class _JobsScreenState extends State<JobsScreen> {
   String? _resultFlavorLine;
   String? _resultTipBonusLabel;
   bool _resultIntelDropped = false;
-  _JobListFilter _listFilter = _JobListFilter.all;
+  _JobListFilter _listFilter = _JobListFilter.available;
   _JobListSort _listSort = _JobListSort.reward;
 
   @override

@@ -86,9 +86,15 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
       }
     }
 
-    // Calculate player-specific success chances for each crime.
+    // Calculate player-specific success chances and readiness for each crime.
     let crimesWithChances = crimes;
     if (playerId) {
+      const readinessContext = await crimeService.buildCrimeReadinessContext(
+        playerId,
+        req.player!.rank,
+        req.player!.currentCountry,
+      );
+
       crimesWithChances = await Promise.all(
         crimes.map(async (crime) => {
           const vehicleStatsForCrime = crime.requiredVehicle ? vehicleStats : undefined;
@@ -101,6 +107,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
           return {
             ...crime,
             playerSuccessChance: Math.round(playerSuccessChance * 100),
+            canAttempt: crimeService.canAttemptCrime(crime.id, readinessContext),
           };
         }),
       );

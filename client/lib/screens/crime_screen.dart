@@ -74,7 +74,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
   double _trainingComboBonusFraction = 0;
   Map<String, dynamic>? _liveCrimeEvent;
   Map<String, dynamic>? _liveCrimeEventProgress;
-  _CrimeListFilter _listFilter = _CrimeListFilter.all;
+  _CrimeListFilter _listFilter = _CrimeListFilter.available;
   _CrimeListSort _listSort = _CrimeListSort.reward;
   DateTime _now = DateTime.now();
   Timer? _tickTimer;
@@ -207,10 +207,14 @@ class _CrimeScreenState extends State<CrimeScreen> {
         ((crime.baseSuccessChance ?? 0) * 100).round();
   }
 
+  bool _crimeCanAttempt(Crime crime, int playerRank) {
+    return crime.canAttempt ?? playerRank >= crime.requiredRank;
+  }
+
   List<Crime> _visibleCrimes(int playerRank) {
     final filtered = _crimes.where((crime) {
       if (_listFilter == _CrimeListFilter.available) {
-        return playerRank >= crime.requiredRank;
+        return _crimeCanAttempt(crime, playerRank);
       }
       return true;
     }).toList();
@@ -262,7 +266,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
   Widget _buildPageHero(AppLocalizations l10n, int playerRank) {
     final availableCount =
-        _crimes.where((c) => playerRank >= c.requiredRank).length;
+        _crimes.where((c) => _crimeCanAttempt(c, playerRank)).length;
 
     return _panel(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
@@ -1386,8 +1390,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 final crime = visibleCrimes[index];
-                                final canCommit =
-                                    playerRank >= crime.requiredRank;
+                                final canCommit = _crimeCanAttempt(crime, playerRank);
                                 final localizedName = CrimeLocalization.name(
                                   crime,
                                   l10n,
