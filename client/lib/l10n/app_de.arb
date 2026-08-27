@@ -9776,5 +9776,15 @@
   "crimeCardBlockerDrugs": "Drugs required",
   "crimeCardBlockerWeapon": "Weapon required",
   "crimeCardBlockerAmmo": "Ammo required",
-  "crimeCardBlockerCriminalRecord": "No record"
+  "crimeCardBlockerCriminalRecord": "No record",
+  "crimeCardWeaponBannerNeeded": "Crime weapon required",
+  "crimeCardWeaponBannerReady": "{weapon} selected",
+  "@crimeCardWeaponBannerReady": {
+    "placeholders": {
+      "weapon": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardWeaponBannerAmmo": "Ammo required"
 }

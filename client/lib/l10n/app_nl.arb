@@ -9120,6 +9120,16 @@
   "crimeCardBlockerWeapon": "Wapen nodig",
   "crimeCardBlockerAmmo": "Munitie nodig",
   "crimeCardBlockerCriminalRecord": "Geen strafblad",
+  "crimeCardWeaponBannerNeeded": "Misdaadwapen nodig",
+  "crimeCardWeaponBannerReady": "{weapon} geselecteerd",
+  "@crimeCardWeaponBannerReady": {
+    "placeholders": {
+      "weapon": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCardWeaponBannerAmmo": "Munitie nodig",
   "crimeCardTierLow": "Klein",
   "crimeCardTierMid": "Serieus",
   "crimeCardTierHigh": "Groot",

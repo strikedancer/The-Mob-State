@@ -55,6 +55,15 @@ class Crime {
   /// All required tools are carried on the player.
   final bool? toolsReady;
 
+  /// Selected crime weapon meets requirements (when [requiredWeapon] is true).
+  final bool? weaponReady;
+
+  /// Player's selected crime weapon id (if any).
+  final String? selectedCrimeWeaponId;
+
+  /// Display name fallback for selected crime weapon.
+  final String? selectedCrimeWeaponName;
+
   // Computed properties (not from JSON)
   final bool isFederalCrime;
 
@@ -81,6 +90,9 @@ class Crime {
     this.missingToolIds,
     this.toolsInStorageIds,
     this.toolsReady,
+    this.weaponReady,
+    this.selectedCrimeWeaponId,
+    this.selectedCrimeWeaponName,
     this.isFederalCrime = false,
   });
 

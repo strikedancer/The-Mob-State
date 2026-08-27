@@ -12449,6 +12449,17 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeCardBlockerCriminalRecord => 'Geen strafblad';
 
   @override
+  String get crimeCardWeaponBannerNeeded => 'Misdaadwapen nodig';
+
+  @override
+  String crimeCardWeaponBannerReady(String weapon) {
+    return '$weapon geselecteerd';
+  }
+
+  @override
+  String get crimeCardWeaponBannerAmmo => 'Munitie nodig';
+
+  @override
   String get crimeCardTierLow => 'Klein';
 
   @override

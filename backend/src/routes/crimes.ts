@@ -120,6 +120,12 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
             missingToolIds: readiness.missingToolIds,
             toolsInStorageIds: readiness.toolsInStorageIds,
             toolsReady: readiness.toolsReady,
+            weaponReady: crimeService.isWeaponReadyForCrime(
+              crime.id,
+              readinessContext,
+            ),
+            selectedCrimeWeaponId: readinessContext.selectedWeapon?.weaponId ?? null,
+            selectedCrimeWeaponName: readinessContext.selectedWeapon?.name ?? null,
           };
         }),
       );

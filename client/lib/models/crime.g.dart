@@ -37,6 +37,9 @@ Crime _$CrimeFromJson(Map<String, dynamic> json) => Crime(
       ?.map((e) => e as String)
       .toList(),
   toolsReady: json['toolsReady'] as bool?,
+  weaponReady: json['weaponReady'] as bool?,
+  selectedCrimeWeaponId: json['selectedCrimeWeaponId'] as String?,
+  selectedCrimeWeaponName: json['selectedCrimeWeaponName'] as String?,
   isFederalCrime: json['isFederalCrime'] as bool? ?? false,
 );
 
@@ -63,5 +66,8 @@ Map<String, dynamic> _$CrimeToJson(Crime instance) => <String, dynamic>{
   'missingToolIds': instance.missingToolIds,
   'toolsInStorageIds': instance.toolsInStorageIds,
   'toolsReady': instance.toolsReady,
+  'weaponReady': instance.weaponReady,
+  'selectedCrimeWeaponId': instance.selectedCrimeWeaponId,
+  'selectedCrimeWeaponName': instance.selectedCrimeWeaponName,
   'isFederalCrime': instance.isFederalCrime,
 };

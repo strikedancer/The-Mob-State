@@ -21772,6 +21772,24 @@ abstract class AppLocalizations {
   /// **'No record'**
   String get crimeCardBlockerCriminalRecord;
 
+  /// No description provided for @crimeCardWeaponBannerNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime weapon required'**
+  String get crimeCardWeaponBannerNeeded;
+
+  /// No description provided for @crimeCardWeaponBannerReady.
+  ///
+  /// In en, this message translates to:
+  /// **'{weapon} selected'**
+  String crimeCardWeaponBannerReady(String weapon);
+
+  /// No description provided for @crimeCardWeaponBannerAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo required'**
+  String get crimeCardWeaponBannerAmmo;
+
   /// No description provided for @crimeCardTierLow.
   ///
   /// In en, this message translates to:

@@ -3,6 +3,7 @@ import '../models/crime.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/tool_display_name.dart';
+import '../utils/weapon_display_name.dart';
 
 enum _CrimeRewardTier { low, mid, high }
 
@@ -68,6 +69,10 @@ class _CrimeCardState extends State<CrimeCard> {
       widget.crime.requiredTools != null &&
       widget.crime.requiredTools!.isNotEmpty;
 
+  bool get _hasWeaponRequirement => widget.crime.requiredWeapon == true;
+
+  static const double _requirementBannerHeight = 30;
+
   String _formatToolNames(AppLocalizations l10n, List<String> toolIds) {
     return toolIds
         .map((id) => localizedToolName(l10n, id, null))
@@ -112,7 +117,7 @@ class _CrimeCardState extends State<CrimeCard> {
     }
   }
 
-  Widget? _buildToolBanner(AppLocalizations l10n) {
+  Widget? _buildToolBanner(AppLocalizations l10n, {double bottom = 0}) {
     if (!_hasToolRequirement) return null;
 
     final toolIds = widget.crime.requiredTools!;
@@ -158,10 +163,96 @@ class _CrimeCardState extends State<CrimeCard> {
       trailingColor = Colors.greenAccent;
     }
 
+    return _buildRequirementBanner(
+      bottom: bottom,
+      bannerColor: bannerColor,
+      textColor: textColor,
+      leadingIcon: Icons.build_rounded,
+      bannerText: bannerText,
+      trailingIcon: trailingIcon,
+      trailingColor: trailingColor,
+    );
+  }
+
+  Widget? _buildWeaponBanner(AppLocalizations l10n, {double bottom = 0}) {
+    if (!_hasWeaponRequirement) return null;
+
+    final blocker = widget.crime.readinessBlocker;
+    final weaponReady = widget.crime.weaponReady == true;
+    final weaponLabel = localizedWeaponDisplayName(
+      l10n,
+      widget.crime.selectedCrimeWeaponId,
+      widget.crime.selectedCrimeWeaponName,
+    );
+
+    late final String bannerText;
+    late final Color bannerColor;
+    late final Color textColor;
+    IconData trailingIcon;
+    Color trailingColor;
+
+    if (weaponReady && widget.canCommit) {
+      final label = weaponLabel.isNotEmpty
+          ? weaponLabel
+          : l10n.tooltipCrimeRequiresWeapon;
+      bannerText = l10n.crimeCardWeaponBannerReady(label);
+      bannerColor = const Color(0xFF1A237E);
+      textColor = Colors.lightBlueAccent;
+      trailingIcon = Icons.check_circle_rounded;
+      trailingColor = Colors.lightBlueAccent;
+    } else if (blocker == 'weapon_ammo') {
+      bannerText = l10n.crimeCardWeaponBannerAmmo;
+      bannerColor = const Color(0xFF4A148C);
+      textColor = Colors.purpleAccent;
+      trailingIcon = Icons.lock_outline_rounded;
+      trailingColor = Colors.purpleAccent;
+    } else if (blocker == 'weapon' || widget.crime.weaponReady == false) {
+      bannerText = l10n.crimeCardWeaponBannerNeeded;
+      bannerColor = const Color(0xFF311B92);
+      textColor = const Color(0xFFB39DDB);
+      trailingIcon = Icons.lock_outline_rounded;
+      trailingColor = const Color(0xFFB39DDB);
+    } else if (blocker == 'rank') {
+      bannerText = l10n.crimeCardWeaponBannerNeeded;
+      bannerColor = Colors.black.withValues(alpha: 0.72);
+      textColor = Colors.white60;
+      trailingIcon = Icons.whatshot_outlined;
+      trailingColor = Colors.white54;
+    } else {
+      final label = weaponLabel.isNotEmpty
+          ? weaponLabel
+          : l10n.tooltipCrimeRequiresWeapon;
+      bannerText = l10n.crimeCardWeaponBannerReady(label);
+      bannerColor = const Color(0xFF1A237E).withValues(alpha: 0.88);
+      textColor = Colors.lightBlueAccent;
+      trailingIcon = Icons.check_circle_outline_rounded;
+      trailingColor = Colors.lightBlueAccent;
+    }
+
+    return _buildRequirementBanner(
+      bottom: bottom,
+      bannerColor: bannerColor,
+      textColor: textColor,
+      leadingIcon: Icons.whatshot_outlined,
+      bannerText: bannerText,
+      trailingIcon: trailingIcon,
+      trailingColor: trailingColor,
+    );
+  }
+
+  Widget _buildRequirementBanner({
+    required double bottom,
+    required Color bannerColor,
+    required Color textColor,
+    required IconData leadingIcon,
+    required String bannerText,
+    required IconData trailingIcon,
+    required Color trailingColor,
+  }) {
     return Positioned(
       left: 0,
       right: 0,
-      bottom: 0,
+      bottom: bottom,
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -179,7 +270,7 @@ class _CrimeCardState extends State<CrimeCard> {
           color: bannerColor.withValues(alpha: 0.88),
           child: Row(
             children: [
-              Icon(Icons.build_rounded, size: 13, color: textColor),
+              Icon(leadingIcon, size: 13, color: textColor),
               const SizedBox(width: 5),
               Expanded(
                 child: Text(
@@ -208,10 +299,15 @@ class _CrimeCardState extends State<CrimeCard> {
     final label = _blockerLabel(l10n);
     if (label == null) return null;
 
-    // Tool blockers use the bottom banner; skip duplicate top badge.
+    // Requirement banners cover these blockers; skip duplicate top badge.
     if (_hasToolRequirement &&
         (widget.crime.readinessBlocker == 'tools' ||
             widget.crime.readinessBlocker == 'tools_in_storage')) {
+      return null;
+    }
+    if (_hasWeaponRequirement &&
+        (widget.crime.readinessBlocker == 'weapon' ||
+            widget.crime.readinessBlocker == 'weapon_ammo')) {
       return null;
     }
 
@@ -386,7 +482,10 @@ class _CrimeCardState extends State<CrimeCard> {
         ? tierStyle.border.withValues(alpha: 0.95)
         : tierStyle.border.withValues(alpha: widget.canCommit ? 0.55 : 0.25);
 
-    final toolBanner = _buildToolBanner(l10n);
+    final weaponBanner = _buildWeaponBanner(l10n);
+    final toolBottomOffset =
+        weaponBanner != null ? _requirementBannerHeight : 0.0;
+    final toolBanner = _buildToolBanner(l10n, bottom: toolBottomOffset);
     final blockerBadge = _buildBlockerBadge(l10n);
 
     return MouseRegion(
@@ -482,6 +581,7 @@ class _CrimeCardState extends State<CrimeCard> {
                         Container(
                           color: Colors.black.withValues(alpha: 0.42),
                         ),
+                      if (weaponBanner != null) weaponBanner,
                       if (toolBanner != null) toolBanner,
                     ],
                   ),

@@ -1322,6 +1322,46 @@ export const crimeService = {
   },
 
   /**
+   * Whether the player's selected crime weapon satisfies this crime's requirements.
+   */
+  isWeaponReadyForCrime(
+    crimeId: string,
+    context: Awaited<ReturnType<typeof crimeService.buildCrimeReadinessContext>>,
+  ): boolean {
+    const crime = this.getCrimeDefinition(crimeId);
+    if (!crime?.requiredWeapon) {
+      return true;
+    }
+
+    if (!context.selectedWeapon || context.selectedWeapon.condition <= 0) {
+      return false;
+    }
+
+    const def = context.weaponDefinition;
+    const suitableTypes = crime.suitableWeaponTypes || [];
+    const isTypeAllowed =
+      suitableTypes.length === 0 ||
+      (def && suitableTypes.includes(def.type));
+    const meetsDamage = (def?.damage ?? 0) >= (crime.minDamage || 0);
+    const meetsIntimidation =
+      (def?.intimidation ?? 0) >= (crime.minIntimidation || 0);
+
+    if (!isTypeAllowed || !meetsDamage || !meetsIntimidation) {
+      return false;
+    }
+
+    if (def?.requiresAmmo && def.ammoType) {
+      const needed = def.ammoPerCrime || 1;
+      const have = context.ammoCounts.get(def.ammoType) ?? 0;
+      if (have < needed) {
+        return false;
+      }
+    }
+
+    return true;
+  },
+
+  /**
    * Evaluate whether the player can attempt this crime and why not.
    */
   evaluateCrimeReadiness(

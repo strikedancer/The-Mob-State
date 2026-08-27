@@ -12559,6 +12559,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crimeCardBlockerCriminalRecord => 'No record';
 
   @override
+  String get crimeCardWeaponBannerNeeded => 'Crime weapon required';
+
+  @override
+  String crimeCardWeaponBannerReady(String weapon) {
+    return '$weapon selected';
+  }
+
+  @override
+  String get crimeCardWeaponBannerAmmo => 'Ammo required';
+
+  @override
   String get crimeCardTierLow => 'Petty';
 
   @override
