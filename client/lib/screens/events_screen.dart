@@ -13,12 +13,21 @@ import '../utils/formatters.dart';
 import '../utils/game_event_rewards.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/season_pass_panel.dart';
+import 'premium_screen.dart';
 
 class EventsScreen extends StatefulWidget {
   /// When true (e.g. web dashboard panel), no [AppBar] — parent provides chrome.
   final bool embedded;
 
-  const EventsScreen({super.key, this.embedded = false});
+  /// Opens Premium & Credits (Season Pass purchase).
+  final VoidCallback? onOpenPremium;
+
+  const EventsScreen({
+    super.key,
+    this.embedded = false,
+    this.onOpenPremium,
+  });
 
   @override
   State<EventsScreen> createState() => _EventsScreenState();
@@ -1234,6 +1243,17 @@ class _EventsScreenState extends State<EventsScreen> {
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
           children: [
             _buildPageHero(l10n),
+            SeasonPassPanel(
+              onBuyPremium: () {
+                if (widget.onOpenPremium != null) {
+                  widget.onOpenPremium!();
+                  return;
+                }
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const PremiumScreen()),
+                );
+              },
+            ),
             _sectionTitle(l10n.gameScreenSectionLive),
             if (_active.isEmpty)
               Padding(

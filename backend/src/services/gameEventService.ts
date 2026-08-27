@@ -10,6 +10,7 @@ import {
 } from './eventRewardFulfillmentService';
 import { gameEventNotificationService } from './gameEventNotificationService';
 import { getDefaultRewardRulesForTemplateKey } from './gameEventPresets';
+import { seasonPassService } from './seasonPassService';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 import type { GameEventTemplate, GameLiveEvent } from '@prisma/client';
 
@@ -644,7 +645,11 @@ class GameEventService {
         select: { id: true },
       });
 
-      if (!activeEvents.length) return;
+      if (!activeEvents.length) {
+        // Still advance season pass from gameplay even without a live weekly event.
+        void seasonPassService.addSeasonPassScore(playerId, boostedAmount);
+        return;
+      }
 
       await Promise.all(
         activeEvents.map((event) =>
@@ -671,6 +676,8 @@ class GameEventService {
           }),
         ),
       );
+
+      void seasonPassService.addSeasonPassScore(playerId, boostedAmount);
     } catch (err) {
       console.error('[GameEventService] recordContribution error:', err);
     }

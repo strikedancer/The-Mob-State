@@ -1850,6 +1850,126 @@ abstract class AppLocalizations {
   /// **'Open events'**
   String get liveEventRailOpenEvents;
 
+  /// No description provided for @seasonPassTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Season Pass {season}'**
+  String seasonPassTitle(String season);
+
+  /// No description provided for @seasonPassSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Play live events to earn pass XP. Free rewards for everyone — unlock the premium track once for €7.99 this month (not a subscription).'**
+  String get seasonPassSubtitle;
+
+  /// No description provided for @seasonPassScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Pass XP: {score}'**
+  String seasonPassScore(String score);
+
+  /// No description provided for @seasonPassNextLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next level {level}: {remaining} XP to go'**
+  String seasonPassNextLevel(String level, String remaining);
+
+  /// No description provided for @seasonPassBuyCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock premium · €7.99'**
+  String get seasonPassBuyCta;
+
+  /// No description provided for @seasonPassPremiumActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get seasonPassPremiumActive;
+
+  /// No description provided for @seasonPassFreeTrack.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get seasonPassFreeTrack;
+
+  /// No description provided for @seasonPassTrackFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get seasonPassTrackFree;
+
+  /// No description provided for @seasonPassTrackPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get seasonPassTrackPremium;
+
+  /// No description provided for @seasonPassLevelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level} · {score} XP'**
+  String seasonPassLevelLabel(String level, String score);
+
+  /// No description provided for @seasonPassClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim'**
+  String get seasonPassClaim;
+
+  /// No description provided for @seasonPassClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed'**
+  String get seasonPassClaimed;
+
+  /// No description provided for @seasonPassLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get seasonPassLocked;
+
+  /// No description provided for @seasonPassClaimSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Season Pass reward claimed'**
+  String get seasonPassClaimSuccess;
+
+  /// No description provided for @seasonPassClaimFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not claim reward'**
+  String get seasonPassClaimFailed;
+
+  /// No description provided for @seasonPassRewardAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo'**
+  String get seasonPassRewardAmmo;
+
+  /// No description provided for @seasonPassRewardVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rare vehicle'**
+  String get seasonPassRewardVehicle;
+
+  /// No description provided for @seasonPassRewardWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon'**
+  String get seasonPassRewardWeapon;
+
+  /// No description provided for @seasonPassRewardParts.
+  ///
+  /// In en, this message translates to:
+  /// **'Parts'**
+  String get seasonPassRewardParts;
+
+  /// No description provided for @seasonPassRewardBundle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward pack'**
+  String get seasonPassRewardBundle;
+
   /// No description provided for @aviation.
   ///
   /// In en, this message translates to:

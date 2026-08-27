@@ -3358,6 +3358,60 @@
   "support": "Support",
   "events": "Evenementen",
   "liveEventRailOpenEvents": "Open evenementen",
+  "seasonPassTitle": "Season Pass {season}",
+  "@seasonPassTitle": {
+    "placeholders": {
+      "season": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassSubtitle": "Speel live events voor pass-XP. Gratis beloningen voor iedereen — ontgrendel het premium track eenmalig voor €7,99 deze maand (geen abonnement).",
+  "seasonPassScore": "Pass-XP: {score}",
+  "@seasonPassScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassNextLevel": "Volgend level {level}: nog {remaining} XP",
+  "@seasonPassNextLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassBuyCta": "Premium ontgrendelen · €7,99",
+  "seasonPassPremiumActive": "Premium",
+  "seasonPassFreeTrack": "Gratis",
+  "seasonPassTrackFree": "Gratis",
+  "seasonPassTrackPremium": "Premium",
+  "seasonPassLevelLabel": "Level {level} · {score} XP",
+  "@seasonPassLevelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassClaim": "Claim",
+  "seasonPassClaimed": "Geclaimd",
+  "seasonPassLocked": "Vergrendeld",
+  "seasonPassClaimSuccess": "Season Pass beloning geclaimd",
+  "seasonPassClaimFailed": "Claimen mislukt",
+  "seasonPassRewardAmmo": "Munitie",
+  "seasonPassRewardVehicle": "Zeldzaam voertuig",
+  "seasonPassRewardWeapon": "Wapen",
+  "seasonPassRewardParts": "Onderdelen",
+  "seasonPassRewardBundle": "Beloningspakket",
   "aviation": "Luchtvaart",
   "premiumAndCredits": "Premium & credits",
   "bank": "Bank",

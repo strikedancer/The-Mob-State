@@ -1604,7 +1604,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.vault:
         return const VaultScreen(embedded: true);
       case _WebSection.events:
-        return const EventsScreen(embedded: true);
+        return EventsScreen(
+          embedded: true,
+          onOpenPremium: () => _selectWebSection(_WebSection.premium),
+        );
       case _WebSection.crimes:
         return CrimeScreen(
           onOpenTraining: () =>

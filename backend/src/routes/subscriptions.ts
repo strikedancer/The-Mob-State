@@ -15,6 +15,7 @@ import {
   grantCrewVipDays,
   grantPlayerVipDays,
 } from '../services/vipBenefitsService';
+import { seasonPassService } from '../services/seasonPassService';
 
 const { createMollieClient } = require('@mollie/api-client');
 
@@ -154,6 +155,40 @@ async function ensureEventPassOffer(): Promise<void> {
   });
 }
 
+async function ensureSeasonPassOffer(): Promise<void> {
+  await prisma.premiumOneTimeOffer.createMany({
+    data: [
+      {
+        key: 'season_pass_monthly',
+        titleNl: 'Season Pass (deze maand)',
+        titleEn: 'Season Pass (this month)',
+        descriptionNl:
+          'Eenmalig €7,99 — geen abonnement. Ontgrendel het premium track van de maandelijkse Season Pass (munitie, onderdelen, zeldzame beloningen). Progress via live events.',
+        descriptionEn:
+          'One-time €7.99 — not a subscription. Unlocks the premium track of the monthly Season Pass (ammo, parts, rare rewards). Progress via live events.',
+        imageUrl: 'images/premium_tiles/credits_1000.png',
+        priceEurCents: 799,
+        rewardType: 'season_pass',
+        moneyAmount: null,
+        ammoType: null,
+        ammoQuantity: null,
+        creditAmount: 75,
+        rewardKey: 'season_pass_monthly',
+        durationHours: 31 * 24,
+        rewardValue: null,
+        metadataJson: JSON.stringify({
+          seasonPass: true,
+          boosts: { eventContributionPct: 0 },
+        }),
+        isActive: true,
+        showPopupOnOpen: false,
+        sortOrder: 185,
+      },
+    ],
+    skipDuplicates: true,
+  });
+}
+
 async function ensureDefaultCreditBundleOffers(): Promise<void> {
   await prisma.premiumOneTimeOffer.createMany({
     data: DEFAULT_CREDIT_BUNDLE_OFFERS.map((offer) => ({
@@ -272,6 +307,12 @@ function buildRewardSummary(offer: PremiumOfferRecord, locale: 'nl' | 'en') {
       : `+${offer.creditAmount ?? 0} credits`;
   }
 
+  if (offer.rewardType === 'season_pass') {
+    return locale === 'nl'
+      ? `Season Pass premium track · +${offer.creditAmount ?? 0} credits`
+      : `Season Pass premium track · +${offer.creditAmount ?? 0} credits`;
+  }
+
   const duration = offer.durationHours ? `${offer.durationHours}h` : null;
   const rewardKey = offer.rewardKey || (locale === 'nl' ? 'Event boost' : 'Event boost');
   const base = duration ? `${rewardKey} · ${duration}` : rewardKey;
@@ -374,6 +415,7 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
 async function listActivePremiumOffers() {
   await ensureDefaultCreditBundleOffers();
   await ensureEventPassOffer();
+  await ensureSeasonPassOffer();
   const offers = await premiumOfferRepo.findMany({
     where: { isActive: true },
     orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
@@ -384,6 +426,7 @@ async function listActivePremiumOffers() {
 async function getActivePremiumOfferByKey(key: string) {
   await ensureDefaultCreditBundleOffers();
   await ensureEventPassOffer();
+  await ensureSeasonPassOffer();
   const offer = await premiumOfferRepo.findFirst({
     where: { key, isActive: true },
   });
@@ -673,6 +716,27 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
       }
 
       await grantPurchasedCredits(tx, playerId, product.creditAmount, product.key);
+      return;
+    }
+
+    if (product.rewardType === 'season_pass') {
+      await seasonPassService.unlockSeasonPassPremium(playerId);
+      const durationHours = product.durationHours ?? 31 * 24;
+      await createTimedCreditEntitlement(
+        tx,
+        playerId,
+        product.rewardKey || product.key,
+        'EVENT_BOOST',
+        durationHours,
+        {
+          source: 'premium_checkout',
+          seasonPass: true,
+          boosts: { eventContributionPct: 0 },
+        },
+      );
+      if (product.creditAmount && product.creditAmount > 0) {
+        await grantPurchasedCredits(tx, playerId, product.creditAmount, product.key);
+      }
       return;
     }
 

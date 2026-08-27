@@ -9854,5 +9854,59 @@
   },
   "gameEventTmplMonthlyEmpireShowdownTitle": "Monthly Empire Showdown",
   "gameEventTmplMonthlyEmpireShowdownDesc": "All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.",
-  "liveEventRailOpenEvents": "Open events"
+  "liveEventRailOpenEvents": "Open events",
+  "seasonPassTitle": "Season Pass {season}",
+  "@seasonPassTitle": {
+    "placeholders": {
+      "season": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassSubtitle": "Play live events to earn pass XP. Free rewards for everyone — unlock the premium track once for €7.99 this month (not a subscription).",
+  "seasonPassScore": "Pass XP: {score}",
+  "@seasonPassScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassNextLevel": "Next level {level}: {remaining} XP to go",
+  "@seasonPassNextLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassBuyCta": "Unlock premium · €7.99",
+  "seasonPassPremiumActive": "Premium",
+  "seasonPassFreeTrack": "Free",
+  "seasonPassTrackFree": "Free",
+  "seasonPassTrackPremium": "Premium",
+  "seasonPassLevelLabel": "Level {level} · {score} XP",
+  "@seasonPassLevelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassClaim": "Claim",
+  "seasonPassClaimed": "Claimed",
+  "seasonPassLocked": "Locked",
+  "seasonPassClaimSuccess": "Season Pass reward claimed",
+  "seasonPassClaimFailed": "Could not claim reward",
+  "seasonPassRewardAmmo": "Ammo",
+  "seasonPassRewardVehicle": "Rare vehicle",
+  "seasonPassRewardWeapon": "Weapon",
+  "seasonPassRewardParts": "Parts",
+  "seasonPassRewardBundle": "Reward pack"
 }

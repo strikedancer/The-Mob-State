@@ -950,6 +950,75 @@ class AppLocalizationsPl extends AppLocalizations {
   String get liveEventRailOpenEvents => 'Open events';
 
   @override
+  String seasonPassTitle(String season) {
+    return 'Season Pass $season';
+  }
+
+  @override
+  String get seasonPassSubtitle =>
+      'Play live events to earn pass XP. Free rewards for everyone — unlock the premium track once for €7.99 this month (not a subscription).';
+
+  @override
+  String seasonPassScore(String score) {
+    return 'Pass XP: $score';
+  }
+
+  @override
+  String seasonPassNextLevel(String level, String remaining) {
+    return 'Next level $level: $remaining XP to go';
+  }
+
+  @override
+  String get seasonPassBuyCta => 'Unlock premium · €7.99';
+
+  @override
+  String get seasonPassPremiumActive => 'Premium';
+
+  @override
+  String get seasonPassFreeTrack => 'Free';
+
+  @override
+  String get seasonPassTrackFree => 'Free';
+
+  @override
+  String get seasonPassTrackPremium => 'Premium';
+
+  @override
+  String seasonPassLevelLabel(String level, String score) {
+    return 'Level $level · $score XP';
+  }
+
+  @override
+  String get seasonPassClaim => 'Claim';
+
+  @override
+  String get seasonPassClaimed => 'Claimed';
+
+  @override
+  String get seasonPassLocked => 'Locked';
+
+  @override
+  String get seasonPassClaimSuccess => 'Season Pass reward claimed';
+
+  @override
+  String get seasonPassClaimFailed => 'Could not claim reward';
+
+  @override
+  String get seasonPassRewardAmmo => 'Ammo';
+
+  @override
+  String get seasonPassRewardVehicle => 'Rare vehicle';
+
+  @override
+  String get seasonPassRewardWeapon => 'Weapon';
+
+  @override
+  String get seasonPassRewardParts => 'Parts';
+
+  @override
+  String get seasonPassRewardBundle => 'Reward pack';
+
+  @override
   String get aviation => 'Lotnictwo';
 
   @override
