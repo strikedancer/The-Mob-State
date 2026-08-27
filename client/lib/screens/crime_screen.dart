@@ -207,14 +207,18 @@ class _CrimeScreenState extends State<CrimeScreen> {
         ((crime.baseSuccessChance ?? 0) * 100).round();
   }
 
+  bool _crimeIsAvailable(Crime crime, int playerRank) {
+    return crime.isAvailable ?? playerRank >= crime.requiredRank;
+  }
+
   bool _crimeCanAttempt(Crime crime, int playerRank) {
-    return crime.canAttempt ?? playerRank >= crime.requiredRank;
+    return crime.canAttempt ?? false;
   }
 
   List<Crime> _visibleCrimes(int playerRank) {
     final filtered = _crimes.where((crime) {
       if (_listFilter == _CrimeListFilter.available) {
-        return _crimeCanAttempt(crime, playerRank);
+        return _crimeIsAvailable(crime, playerRank);
       }
       return true;
     }).toList();
@@ -266,7 +270,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
   Widget _buildPageHero(AppLocalizations l10n, int playerRank) {
     final availableCount =
-        _crimes.where((c) => _crimeCanAttempt(c, playerRank)).length;
+        _crimes.where((c) => _crimeIsAvailable(c, playerRank)).length;
 
     return _panel(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),

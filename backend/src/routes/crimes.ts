@@ -112,6 +112,10 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
             ...crime,
             playerSuccessChance: Math.round(playerSuccessChance * 100),
             canAttempt: readiness.canAttempt,
+            isAvailable: crimeService.isCrimeListedAvailable(
+              crime.id,
+              readinessContext,
+            ),
             readinessBlocker: readiness.readinessBlocker,
             missingToolIds: readiness.missingToolIds,
             toolsInStorageIds: readiness.toolsInStorageIds,

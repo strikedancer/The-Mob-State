@@ -27,6 +27,8 @@ import {
 import { latestGymTrainAt } from './gymService';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
+/** Minimum rank to steal cars — keep in sync with vehicleService.stealVehicle. */
+const LAND_VEHICLE_THEFT_MIN_RANK = 5;
 
 async function runCrimeSideEffect(
   label: string,
@@ -1485,6 +1487,55 @@ export const crimeService = {
       toolsInStorageIds,
       toolsReady,
     };
+  },
+
+  /**
+   * Whether a crime should appear under the "available" filter.
+   * Tool/weapon gaps are OK (buyable); vehicle/drug crimes need system rank unlocks.
+   */
+  isCrimeListedAvailable(
+    crimeId: string,
+    context: Awaited<ReturnType<typeof crimeService.buildCrimeReadinessContext>>,
+  ): boolean {
+    const crime = this.getCrimeDefinition(crimeId);
+    if (!crime) {
+      return false;
+    }
+
+    if (context.playerRank < crime.minLevel) {
+      return false;
+    }
+
+    if (crimeId === CRIMINAL_RECORD_WIPE_CRIME_ID && !context.hasCriminalRecord) {
+      return false;
+    }
+
+    if (crime.requiredVehicle && context.playerRank < LAND_VEHICLE_THEFT_MIN_RANK) {
+      return false;
+    }
+
+    if (crime.requiredDrugs && crime.minDrugQuantity) {
+      let hasDrugs = false;
+      for (const drugType of crime.requiredDrugs) {
+        const total = context.drugTotalsByType.get(drugType) ?? 0;
+        if (total >= crime.minDrugQuantity) {
+          hasDrugs = true;
+          break;
+        }
+      }
+
+      if (!hasDrugs) {
+        const canObtainAnyDrug = crime.requiredDrugs.some((drugId) => {
+          const drugDef = drugService.getDrugDefinition(drugId);
+          return drugDef != null && context.playerRank >= drugDef.requiredRank;
+        });
+        if (!canObtainAnyDrug) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   },
 
   /**

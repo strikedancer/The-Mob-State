@@ -40,6 +40,9 @@ class Crime {
   /// Server-evaluated: rank + vehicle/drugs/tools/weapon requirements met.
   final bool? canAttempt;
 
+  /// Show under "Beschikbaar" filter (rank OK; tools/weapons buyable; drugs/vehicles need rank unlock).
+  final bool? isAvailable;
+
   /// Primary blocker when [canAttempt] is false (e.g. tools, rank, vehicle).
   final String? readinessBlocker;
 
@@ -73,6 +76,7 @@ class Crime {
     this.minDrugQuantity,
     this.requiredWeapon,
     this.canAttempt,
+    this.isAvailable,
     this.readinessBlocker,
     this.missingToolIds,
     this.toolsInStorageIds,
