@@ -1844,6 +1844,12 @@ abstract class AppLocalizations {
   /// **'Events'**
   String get events;
 
+  /// No description provided for @liveEventRailOpenEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Open events'**
+  String get liveEventRailOpenEvents;
+
   /// No description provided for @aviation.
   ///
   /// In en, this message translates to:

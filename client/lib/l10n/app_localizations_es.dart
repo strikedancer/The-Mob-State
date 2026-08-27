@@ -957,6 +957,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get events => 'Eventos';
 
   @override
+  String get liveEventRailOpenEvents => 'Open events';
+
+  @override
   String get aviation => 'Aviación';
 
   @override

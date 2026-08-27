@@ -948,6 +948,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get events => 'Evenementen';
 
   @override
+  String get liveEventRailOpenEvents => 'Open evenementen';
+
+  @override
   String get aviation => 'Luchtvaart';
 
   @override

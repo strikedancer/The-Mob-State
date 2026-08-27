@@ -20,6 +20,7 @@ import '../widgets/market_teaser_tile.dart';
 import '../widgets/daily_goals_card.dart';
 import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
+import '../widgets/live_event_rail.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/localized_api_message.dart';
@@ -205,6 +206,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _webSectionRefreshSeed = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _vehicleHeistTabIndex = 0;
+  List<Map<String, dynamic>> _gameEventsActive = const [];
+  Timer? _gameEventsRefreshTimer;
 
   void _openVehicleHeist([int initialTabIndex = 0]) {
     setState(() {
@@ -244,13 +247,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _startPlayerRefreshTimer();
       _startNavCooldownTimers();
       _checkPremiumPopupOnOpen();
+      _loadActiveGameEventsForRail();
+      _gameEventsRefreshTimer = Timer.periodic(
+        const Duration(seconds: 60),
+        (_) => _loadActiveGameEventsForRail(),
+      );
     });
+  }
+
+  Future<void> _loadActiveGameEventsForRail() async {
+    try {
+      final api = AuthService().apiClient;
+      final response = await api.get('/game-events/overview');
+      if (response.statusCode != 200 || !mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final active = ((data['active'] as List?) ?? const <dynamic>[])
+          .whereType<Map>()
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
+      if (!mounted) return;
+      setState(() => _gameEventsActive = active);
+    } catch (_) {
+      // Non-blocking — rail simply stays empty.
+    }
   }
 
   @override
   void dispose() {
     _eventSubscription?.cancel();
     _playerRefreshTimer?.cancel();
+    _gameEventsRefreshTimer?.cancel();
     _navCooldownTick?.cancel();
     _navCooldownRefresh?.cancel();
     _menuSearchController.dispose();
@@ -597,7 +623,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       drawer: !showLeftSidebar ? _buildDrawer(context, l10n) : null,
       bottomNavigationBar:
           !showLeftSidebar ? _buildMobileQuickNavBar(l10n) : null,
-      body: Column(
+      body: Stack(
+        children: [
+          Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -917,6 +945,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
+        ],
+      ),
+          if (_selectedWebSection != _WebSection.events)
+            LiveEventRail(
+              activeEvents: _gameEventsActive,
+              onOpenEvents: () => _selectWebSection(_WebSection.events),
+              topOffset: showLeftSidebar ? 96 : 128,
+            ),
         ],
       ),
     );
