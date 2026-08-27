@@ -11588,6 +11588,52 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gameScreenNoUpcoming => 'Il n\'y a aucun événement programmé.';
 
   @override
+  String get gameScreenHeroTitle => 'Live events';
+
+  @override
+  String get gameScreenHeroSubtitle =>
+      'Compete for cash, credits and event chips. Climb the board before the timer hits zero.';
+
+  @override
+  String gameScreenActiveCount(String count) {
+    return '$count live';
+  }
+
+  @override
+  String gameScreenUpcomingCount(String count) {
+    return '$count upcoming';
+  }
+
+  @override
+  String get gameScreenCountdownNow => 'now';
+
+  @override
+  String gameScreenCountdownDays(String days, String hours, String minutes) {
+    return '${days}d $hours:$minutes';
+  }
+
+  @override
+  String gameCardEndsIn(String time) {
+    return 'Ends in $time';
+  }
+
+  @override
+  String gameCardStartsIn(String time) {
+    return 'Starts in $time';
+  }
+
+  @override
+  String gameCardTopPrize(String prize) {
+    return '1st place: $prize';
+  }
+
+  @override
+  String get gameCardJoinCta => 'Join & view board';
+
+  @override
+  String get gameCardViewPrizes => 'View prize pool';
+
+  @override
   String gameScreenStatusPrefix(String value) {
     return 'Statut : $value';
   }

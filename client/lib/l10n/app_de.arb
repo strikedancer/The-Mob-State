@@ -9354,5 +9354,64 @@
   "eventItemName_event_chip_gold": "Event chip (gold)",
   "eventItemName_event_chip_silver": "Event chip (silver)",
   "eventItemName_event_chip_bronze": "Event chip (bronze)",
-  "eventItemName_event_badge_rival": "Rival badge (bound)"
+  "eventItemName_event_badge_rival": "Rival badge (bound)",
+  "gameScreenHeroTitle": "Live events",
+  "gameScreenHeroSubtitle": "Compete for cash, credits and event chips. Climb the board before the timer hits zero.",
+  "gameScreenActiveCount": "{count} live",
+  "@gameScreenActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenUpcomingCount": "{count} upcoming",
+  "@gameScreenUpcomingCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenCountdownNow": "now",
+  "gameScreenCountdownDays": "{days}d {hours}:{minutes}",
+  "@gameScreenCountdownDays": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardEndsIn": "Ends in {time}",
+  "@gameCardEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardStartsIn": "Starts in {time}",
+  "@gameCardStartsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardTopPrize": "1st place: {prize}",
+  "@gameCardTopPrize": {
+    "placeholders": {
+      "prize": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardJoinCta": "Join & view board",
+  "gameCardViewPrizes": "View prize pool"
 }

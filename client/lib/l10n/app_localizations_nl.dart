@@ -11469,6 +11469,52 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gameScreenNoUpcoming => 'Er zijn geen geplande events.';
 
   @override
+  String get gameScreenHeroTitle => 'Live events';
+
+  @override
+  String get gameScreenHeroSubtitle =>
+      'Strijd om cash, credits en event chips. Klim op het bord voordat de timer op nul staat.';
+
+  @override
+  String gameScreenActiveCount(String count) {
+    return '$count live';
+  }
+
+  @override
+  String gameScreenUpcomingCount(String count) {
+    return '$count aankomend';
+  }
+
+  @override
+  String get gameScreenCountdownNow => 'nu';
+
+  @override
+  String gameScreenCountdownDays(String days, String hours, String minutes) {
+    return '${days}d $hours:$minutes';
+  }
+
+  @override
+  String gameCardEndsIn(String time) {
+    return 'Eindigt over $time';
+  }
+
+  @override
+  String gameCardStartsIn(String time) {
+    return 'Start over $time';
+  }
+
+  @override
+  String gameCardTopPrize(String prize) {
+    return '1e plek: $prize';
+  }
+
+  @override
+  String get gameCardJoinCta => 'Meedoen & bord bekijken';
+
+  @override
+  String get gameCardViewPrizes => 'Bekijk prijzenpot';
+
+  @override
   String gameScreenStatusPrefix(String value) {
     return 'Status: $value';
   }

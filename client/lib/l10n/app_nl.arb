@@ -4837,6 +4837,65 @@
   "gameScreenNoActive": "Er zijn nu geen actieve events.",
   "gameScreenSectionUpcoming": "Aankomende events",
   "gameScreenNoUpcoming": "Er zijn geen geplande events.",
+  "gameScreenHeroTitle": "Live events",
+  "gameScreenHeroSubtitle": "Strijd om cash, credits en event chips. Klim op het bord voordat de timer op nul staat.",
+  "gameScreenActiveCount": "{count} live",
+  "@gameScreenActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenUpcomingCount": "{count} aankomend",
+  "@gameScreenUpcomingCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenCountdownNow": "nu",
+  "gameScreenCountdownDays": "{days}d {hours}:{minutes}",
+  "@gameScreenCountdownDays": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardEndsIn": "Eindigt over {time}",
+  "@gameCardEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardStartsIn": "Start over {time}",
+  "@gameCardStartsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardTopPrize": "1e plek: {prize}",
+  "@gameCardTopPrize": {
+    "placeholders": {
+      "prize": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardJoinCta": "Meedoen & bord bekijken",
+  "gameCardViewPrizes": "Bekijk prijzenpot",
   "gameScreenStatusPrefix": "Status: {value}",
   "@gameScreenStatusPrefix": {
     "placeholders": {

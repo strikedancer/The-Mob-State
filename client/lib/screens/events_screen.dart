@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -34,12 +35,25 @@ class _EventsScreenState extends State<EventsScreen> {
   String? _error;
   List<Map<String, dynamic>> _active = const [];
   List<Map<String, dynamic>> _upcoming = const [];
+  List<Map<String, dynamic>> _upcomingPreview = const [];
   Map<int, Map<String, dynamic>> _progressByEvent = const {};
+  DateTime _now = DateTime.now();
+  Timer? _tickTimer;
 
   @override
   void initState() {
     super.initState();
     _loadOverview();
+    _tickTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() => _now = DateTime.now());
+    });
+  }
+
+  @override
+  void dispose() {
+    _tickTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadOverview() async {
@@ -63,6 +77,11 @@ class _EventsScreenState extends State<EventsScreen> {
           .whereType<Map>()
           .map((item) => Map<String, dynamic>.from(item))
           .toList();
+      final upcomingPreviewList =
+          ((data['upcomingPreview'] as List?) ?? const <dynamic>[])
+              .whereType<Map>()
+              .map((item) => Map<String, dynamic>.from(item))
+              .toList();
       final progressList = ((data['myProgress'] as List?) ?? const <dynamic>[])
           .whereType<Map>()
           .map((item) => Map<String, dynamic>.from(item))
@@ -80,9 +99,11 @@ class _EventsScreenState extends State<EventsScreen> {
       setState(() {
         _active = activeList;
         _upcoming = upcomingList;
+        _upcomingPreview = upcomingPreviewList;
         _progressByEvent = progressByEvent;
         _isLoading = false;
         _error = null;
+        _now = DateTime.now();
       });
     } catch (_) {
       if (!mounted) return;
@@ -354,55 +375,60 @@ class _EventsScreenState extends State<EventsScreen> {
       return;
     }
 
+    final isPreview = event['preview'] == true;
     final eventId = (event['id'] as num?)?.toInt();
-    if (eventId == null) {
-      return;
+    Map<String, dynamic>? details;
+
+    if (isPreview || eventId == null) {
+      details = Map<String, dynamic>.from(event);
+    } else {
+      details = await _loadEventDetails(eventId);
+      if (!mounted) {
+        return;
+      }
+      if (details == null) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.gameScreenDetailsLoadError),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
     }
 
-    final details = await _loadEventDetails(eventId);
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
-    if (details == null) {
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(l10n.gameScreenDetailsLoadError),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    final template = details['template'] is Map
-        ? Map<String, dynamic>.from(details['template'] as Map)
+    final eventDetails = details;
+    final template = eventDetails['template'] is Map
+        ? Map<String, dynamic>.from(eventDetails['template'] as Map)
         : null;
     final currentPlayerId =
         Provider.of<AuthProvider>(context, listen: false).currentPlayer?.id;
     final statusLabel = localizedGameEventLiveStatus(
       l10n,
-      details['status']?.toString(),
+      eventDetails['status']?.toString(),
     );
-    final isActive = details['status']?.toString() == 'active';
+    final isActive = eventDetails['status']?.toString() == 'active';
 
     await showDialog<void>(
       context: context,
       builder: (dialogContext) {
         final participants =
-            ((details['participants'] as List?) ?? const <dynamic>[])
+            ((eventDetails['participants'] as List?) ?? const <dynamic>[])
                 .whereType<Map>()
                 .map((item) => Map<String, dynamic>.from(item))
                 .toList();
 
-        final myProgressRaw = details['myProgress'];
+        final myProgressRaw = eventDetails['myProgress'];
         final myProgress = myProgressRaw is Map<String, dynamic>
             ? myProgressRaw
             : (myProgressRaw is Map
                   ? Map<String, dynamic>.from(myProgressRaw)
                   : null);
         final prizeTiers = parseGameEventPrizeTiers(
-          (details['rewardRules'] as List?) ?? const <dynamic>[],
+          (eventDetails['rewardRules'] as List?) ?? const <dynamic>[],
         );
 
         return Dialog(
@@ -520,7 +546,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                 Text(
                                   l10n.gameScreenStartLine(
                                     _formatDateTime(
-                                      details['startedAt']?.toString(),
+                                      eventDetails['startedAt']?.toString(),
                                       l10n,
                                     ),
                                   ),
@@ -529,7 +555,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                 Text(
                                   l10n.gameScreenEndLine(
                                     _formatDateTime(
-                                      details['endsAt']?.toString(),
+                                      eventDetails['endsAt']?.toString(),
                                       l10n,
                                     ),
                                   ),
@@ -613,47 +639,49 @@ class _EventsScreenState extends State<EventsScreen> {
                             ...prizeTiers.map(
                               (tier) => _buildPrizeTierRow(l10n, tier),
                             ),
-                          const SizedBox(height: 12),
-                          Text(
-                            l10n.gameScreenLeaderboard,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          if (participants.isEmpty)
-                            _eventDetailsPanel(
-                              child: Text(
-                                l10n.gameScreenNoLeaderboard,
-                                style: const TextStyle(color: Colors.white60),
+                          if (!isPreview) ...[
+                            const SizedBox(height: 12),
+                            Text(
+                              l10n.gameScreenLeaderboard,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                            )
-                          else
-                            ...participants.asMap().entries.map((indexed) {
-                              final entry = indexed.value;
-                              final player = entry['player'] is Map
-                                  ? Map<String, dynamic>.from(
-                                      entry['player'] as Map,
-                                    )
-                                  : <String, dynamic>{};
-                              final rank =
-                                  (entry['rank'] as num?)?.toInt() ??
-                                  (indexed.key + 1);
-                              final score =
-                                  (entry['score'] as num?)?.toDouble() ?? 0;
-                              final playerId =
-                                  (player['id'] as num?)?.toInt();
-                              return _buildLeaderboardRow(
-                                l10n,
-                                rank: rank,
-                                score: score,
-                                player: player,
-                                highlight: playerId != null &&
-                                    playerId == currentPlayerId,
-                              );
-                            }),
+                            ),
+                            const SizedBox(height: 8),
+                            if (participants.isEmpty)
+                              _eventDetailsPanel(
+                                child: Text(
+                                  l10n.gameScreenNoLeaderboard,
+                                  style: const TextStyle(color: Colors.white60),
+                                ),
+                              )
+                            else
+                              ...participants.asMap().entries.map((indexed) {
+                                final entry = indexed.value;
+                                final player = entry['player'] is Map
+                                    ? Map<String, dynamic>.from(
+                                        entry['player'] as Map,
+                                      )
+                                    : <String, dynamic>{};
+                                final rank =
+                                    (entry['rank'] as num?)?.toInt() ??
+                                    (indexed.key + 1);
+                                final score =
+                                    (entry['score'] as num?)?.toDouble() ?? 0;
+                                final playerId =
+                                    (player['id'] as num?)?.toInt();
+                                return _buildLeaderboardRow(
+                                  l10n,
+                                  rank: rank,
+                                  score: score,
+                                  player: player,
+                                  highlight: playerId != null &&
+                                      playerId == currentPlayerId,
+                                );
+                              }),
+                          ],
                         ],
                       ),
                     ),
@@ -678,6 +706,89 @@ class _EventsScreenState extends State<EventsScreen> {
     );
   }
 
+  String _formatCountdown(DateTime? at, AppLocalizations l10n) {
+    if (at == null) return l10n.gameScreenDash;
+    final diff = at.difference(_now);
+    if (diff.inSeconds <= 0) return l10n.gameScreenCountdownNow;
+    final d = diff.inDays;
+    final h = diff.inHours.remainder(24);
+    final m = diff.inMinutes.remainder(60);
+    final s = diff.inSeconds.remainder(60);
+    if (d > 0) {
+      return l10n.gameScreenCountdownDays(
+        d.toString(),
+        h.toString().padLeft(2, '0'),
+        m.toString().padLeft(2, '0'),
+      );
+    }
+    if (h > 0) {
+      return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+    }
+    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+  }
+
+  ({String asset, IconData icon, Color accent}) _categoryTheme(
+    Map<String, dynamic>? template,
+  ) {
+    final category = (template?['category']?.toString() ?? '').toLowerCase();
+    switch (category) {
+      case 'crime':
+        return (
+          asset: 'assets/images/backgrounds/crime_background.png',
+          icon: Icons.warning_amber_rounded,
+          accent: const Color(0xFFE85D4C),
+        );
+      case 'drugs':
+        return (
+          asset: 'assets/images/backgrounds/drug_production_bg.png',
+          icon: Icons.science,
+          accent: const Color(0xFF5CC8A0),
+        );
+      case 'smuggling':
+        return (
+          asset: 'assets/images/backgrounds/smuggling_hub_bg.png',
+          icon: Icons.local_shipping,
+          accent: const Color(0xFF5B9BD5),
+        );
+      case 'vehicles':
+        return (
+          asset: 'assets/images/backgrounds/garage_background.png',
+          icon: Icons.directions_car,
+          accent: const Color(0xFFF0A04B),
+        );
+      case 'trade':
+        return (
+          asset: 'assets/images/backgrounds/weapon_shop_bg.png',
+          icon: Icons.storefront,
+          accent: const Color(0xFFD4AF37),
+        );
+      default:
+        return (
+          asset: 'assets/images/backgrounds/crime_background.png',
+          icon: Icons.emoji_events,
+          accent: _gold,
+        );
+    }
+  }
+
+  String? _topPrizeTeaser(AppLocalizations l10n, Map<String, dynamic> event) {
+    final tiers = parseGameEventPrizeTiers(
+      (event['rewardRules'] as List?) ?? const <dynamic>[],
+    );
+    if (tiers.isEmpty) return null;
+    final top = tiers.first;
+    final parts = <String>[];
+    if (top.cash > 0) parts.add(formatCurrency(top.cash));
+    if (top.premiumCredits > 0) {
+      parts.add(l10n.gameScreenPrizeCredits(top.premiumCredits.toString()));
+    }
+    if (parts.isEmpty && top.xp > 0) {
+      parts.add(l10n.gameScreenPrizeXp(top.xp.toString()));
+    }
+    if (parts.isEmpty) return null;
+    return l10n.gameCardTopPrize(parts.join(' · '));
+  }
+
   Widget _buildEventCard(
     AppLocalizations l10n,
     Map<String, dynamic> event, {
@@ -687,128 +798,382 @@ class _EventsScreenState extends State<EventsScreen> {
         ? Map<String, dynamic>.from(event['template'] as Map)
         : null;
     final eventId = (event['id'] as num?)?.toInt();
+    final isPreview = event['preview'] == true;
     final progress = eventId != null ? _progressByEvent[eventId] : null;
     final score = (progress?['score'] as num?)?.toDouble();
     final rank = (progress?['rank'] as num?)?.toInt();
-    final progressPercent = (progress?['progressPercent'] as num?)?.toDouble();
+    final theme = _categoryTheme(template);
+    final endsAt = DateTime.tryParse(event['endsAt']?.toString() ?? '')?.toLocal();
+    final startsAt =
+        DateTime.tryParse(event['startedAt']?.toString() ?? '')?.toLocal();
+    final prizeTeaser = _topPrizeTeaser(l10n, event);
+    final title = localizedGameEventTitle(l10n, template);
+    final desc = localizedGameEventShortDescription(l10n, template);
 
-    return Card(
-      color: const Color(0xFF1A1F2A),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => _openEventDetails(event),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isActive
+              ? theme.accent.withValues(alpha: 0.55)
+              : _gold.withValues(alpha: 0.35),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.accent.withValues(alpha: 0.18),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => _openEventDetails(event),
+            child: SizedBox(
+              height: 210,
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  Expanded(
-                    child: Text(
-                      localizedGameEventTitle(l10n, template),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
+                  Image.asset(
+                    theme.asset,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: const Color(0xFF1A1210),
+                    ),
+                  ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.35),
+                          Colors.black.withValues(alpha: 0.82),
+                          const Color(0xFF0A0808).withValues(alpha: 0.96),
+                        ],
+                        stops: const [0.0, 0.45, 1.0],
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isActive
-                          ? Colors.green.withOpacity(0.2)
-                          : Colors.orange.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(999),
-                      border: Border.all(
-                        color: isActive ? Colors.green : Colors.orange,
-                      ),
-                    ),
-                    child: Text(
-                      isActive
-                          ? l10n.gameCardActive
-                          : l10n.gameCardScheduled,
-                      style: TextStyle(
-                        color: isActive
-                            ? Colors.greenAccent
-                            : Colors.orangeAccent,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: theme.accent.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: theme.accent.withValues(alpha: 0.5),
+                                ),
+                              ),
+                              child: Icon(
+                                theme.icon,
+                                color: theme.accent,
+                                size: 22,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 17,
+                                  height: 1.15,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isActive
+                                    ? Colors.green.withValues(alpha: 0.22)
+                                    : Colors.orange.withValues(alpha: 0.22),
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(
+                                  color: isActive
+                                      ? Colors.greenAccent
+                                      : Colors.orangeAccent,
+                                ),
+                              ),
+                              child: Text(
+                                isActive
+                                    ? l10n.gameCardActive
+                                    : l10n.gameCardScheduled,
+                                style: TextStyle(
+                                  color: isActive
+                                      ? Colors.greenAccent
+                                      : Colors.orangeAccent,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (desc.isNotEmpty) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            desc,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
+                        const Spacer(),
+                        if (isActive) ...[
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.timer_outlined,
+                                size: 16,
+                                color: theme.accent,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                l10n.gameCardEndsIn(
+                                  _formatCountdown(endsAt, l10n),
+                                ),
+                                style: TextStyle(
+                                  color: theme.accent,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (progress != null) ...[
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                _statChip(
+                                  l10n.gameCardYourScore(
+                                    (score ?? 0).toStringAsFixed(0),
+                                  ),
+                                  theme.accent,
+                                ),
+                                const SizedBox(width: 8),
+                                _statChip(
+                                  l10n.gameCardYourRank(
+                                    rank?.toString() ?? l10n.gameScreenDash,
+                                  ),
+                                  _gold,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ] else ...[
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.schedule,
+                                size: 16,
+                                color: Colors.orangeAccent,
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  l10n.gameCardStartsIn(
+                                    _formatCountdown(startsAt, l10n),
+                                  ),
+                                  style: const TextStyle(
+                                    color: Colors.orangeAccent,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12.5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        if (prizeTeaser != null) ...[
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.emoji_events,
+                                size: 16,
+                                color: _gold,
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  prizeTeaser,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: _gold,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 7,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.accent.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: theme.accent.withValues(alpha: 0.55),
+                              ),
+                            ),
+                            child: Text(
+                              isPreview
+                                  ? l10n.gameCardViewPrizes
+                                  : l10n.gameCardJoinCta,
+                              style: TextStyle(
+                                color: theme.accent,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 12.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              if (localizedGameEventShortDescription(
-                l10n,
-                template,
-              ).isNotEmpty)
-                Text(
-                  localizedGameEventShortDescription(l10n, template),
-                  style: const TextStyle(color: Colors.white70),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _statChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageHero(AppLocalizations l10n) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 18),
+      padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF4A2814).withValues(alpha: 0.95),
+            const Color(0xFF120808),
+          ],
+        ),
+        border: Border.all(color: _gold.withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: _gold.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: _gold.withValues(alpha: 0.4)),
                 ),
-              const SizedBox(height: 10),
-              Text(
-                l10n.gameScreenStartLine(
-                  _formatDateTime(event['startedAt']?.toString(), l10n),
-                ),
-                style: const TextStyle(color: Colors.white60, fontSize: 12),
+                child: const Icon(Icons.emoji_events, color: _gold, size: 28),
               ),
-              Text(
-                l10n.gameScreenEndLine(
-                  _formatDateTime(event['endsAt']?.toString(), l10n),
-                ),
-                style: const TextStyle(color: Colors.white60, fontSize: 12),
-              ),
-              if (progress != null) ...[
-                const SizedBox(height: 10),
-                Text(
-                  l10n.gameCardYourScore(
-                    (score ?? 0).toStringAsFixed(0),
-                  ),
-                  style: const TextStyle(color: Colors.white),
-                ),
-                Text(
-                  l10n.gameCardYourRank(
-                    rank?.toString() ?? l10n.gameScreenDash,
-                  ),
-                  style: const TextStyle(color: Colors.white),
-                ),
-                if (progressPercent != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: LinearProgressIndicator(
-                      value: (progressPercent / 100).clamp(0.0, 1.0),
-                      backgroundColor: Colors.white12,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        Colors.lightBlueAccent,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.gameScreenHeroTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
-                  ),
-              ],
-              const SizedBox(height: 10),
-              Text(
-                l10n.gameCardPrizeHint,
-                style: TextStyle(
-                  color: _gold.withValues(alpha: 0.85),
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                l10n.gameCardTapDetails,
-                style: const TextStyle(
-                  color: Colors.lightBlueAccent,
-                  fontSize: 12,
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.gameScreenHeroSubtitle,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _statChip(
+                l10n.gameScreenActiveCount(_active.length.toString()),
+                Colors.greenAccent,
+              ),
+              _statChip(
+                l10n.gameScreenUpcomingCount(
+                  (_upcoming.length + _upcomingPreview.length).toString(),
+                ),
+                Colors.orangeAccent,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10, top: 4),
+      child: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -817,10 +1182,11 @@ class _EventsScreenState extends State<EventsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final upcomingCombined = [..._upcoming, ..._upcomingPreview];
 
     Widget body;
     if (_isLoading) {
-      body = const Center(child: CircularProgressIndicator());
+      body = const Center(child: CircularProgressIndicator(color: _gold));
     } else if (_error != null) {
       body = Center(
         child: Padding(
@@ -845,53 +1211,61 @@ class _EventsScreenState extends State<EventsScreen> {
       );
     } else {
       body = RefreshIndicator(
+        color: _gold,
         onRefresh: _loadOverview,
         child: ListView(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
           children: [
-            Text(
-              l10n.gameScreenSectionLive,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
+            _buildPageHero(l10n),
+            _sectionTitle(l10n.gameScreenSectionLive),
             if (_active.isEmpty)
-              Text(
-                l10n.gameScreenNoActive,
-                style: const TextStyle(color: Colors.white70),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  l10n.gameScreenNoActive,
+                  style: const TextStyle(color: Colors.white70),
+                ),
+              )
+            else
+              ..._active.map(
+                (event) => _buildEventCard(l10n, event, isActive: true),
               ),
-            ..._active.map(
-              (event) => _buildEventCard(l10n, event, isActive: true),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              l10n.gameScreenSectionUpcoming,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            _sectionTitle(l10n.gameScreenSectionUpcoming),
+            if (upcomingCombined.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF151010),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white12),
+                ),
+                child: Text(
+                  l10n.gameScreenNoUpcoming,
+                  style: const TextStyle(color: Colors.white70),
+                ),
+              )
+            else
+              ...upcomingCombined.map(
+                (event) => _buildEventCard(l10n, event, isActive: false),
               ),
-            ),
-            const SizedBox(height: 10),
-            if (_upcoming.isEmpty)
-              Text(
-                l10n.gameScreenNoUpcoming,
-                style: const TextStyle(color: Colors.white70),
-              ),
-            ..._upcoming.map(
-              (event) => _buildEventCard(l10n, event, isActive: false),
-            ),
           ],
         ),
       );
     }
 
     return Scaffold(
+      backgroundColor: const Color(0xFF0C0A0A),
       appBar: widget.embedded ? null : AppBar(title: Text(l10n.events)),
-      body: body,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF1A0A0A), Color(0xFF0C0A0A)],
+          ),
+        ),
+        child: body,
+      ),
     );
   }
 }

@@ -20382,6 +20382,72 @@ abstract class AppLocalizations {
   /// **'There are no scheduled events.'**
   String get gameScreenNoUpcoming;
 
+  /// No description provided for @gameScreenHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live events'**
+  String get gameScreenHeroTitle;
+
+  /// No description provided for @gameScreenHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Compete for cash, credits and event chips. Climb the board before the timer hits zero.'**
+  String get gameScreenHeroSubtitle;
+
+  /// No description provided for @gameScreenActiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} live'**
+  String gameScreenActiveCount(String count);
+
+  /// No description provided for @gameScreenUpcomingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} upcoming'**
+  String gameScreenUpcomingCount(String count);
+
+  /// No description provided for @gameScreenCountdownNow.
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get gameScreenCountdownNow;
+
+  /// No description provided for @gameScreenCountdownDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d {hours}:{minutes}'**
+  String gameScreenCountdownDays(String days, String hours, String minutes);
+
+  /// No description provided for @gameCardEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in {time}'**
+  String gameCardEndsIn(String time);
+
+  /// No description provided for @gameCardStartsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts in {time}'**
+  String gameCardStartsIn(String time);
+
+  /// No description provided for @gameCardTopPrize.
+  ///
+  /// In en, this message translates to:
+  /// **'1st place: {prize}'**
+  String gameCardTopPrize(String prize);
+
+  /// No description provided for @gameCardJoinCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Join & view board'**
+  String get gameCardJoinCta;
+
+  /// No description provided for @gameCardViewPrizes.
+  ///
+  /// In en, this message translates to:
+  /// **'View prize pool'**
+  String get gameCardViewPrizes;
+
   /// No description provided for @gameScreenStatusPrefix.
   ///
   /// In en, this message translates to:

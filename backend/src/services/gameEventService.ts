@@ -4,6 +4,7 @@ import { worldEventService } from './worldEventService';
 import { getActiveEventBoostEffects, grantPurchasedCredits } from './premiumCreditsService';
 import { creditEventItem, parseEventItemGrants } from './eventItemService';
 import { gameEventNotificationService } from './gameEventNotificationService';
+import { getDefaultRewardRulesForTemplateKey } from './gameEventPresets';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 import type { GameEventTemplate, GameLiveEvent } from '@prisma/client';
 
@@ -426,6 +427,9 @@ class GameEventService {
     const featured = active[0] ?? upcoming[0] ?? null;
     const liveEventIds = [...active, ...upcoming].map((item) => item.id);
     const activeEventIds = new Set(active.map((item) => item.id));
+    const activeTemplateIds = new Set(active.map((item) => item.templateId));
+    const scheduledTemplateIds = new Set(upcoming.map((item) => item.templateId));
+
     const rawProgress = playerId && liveEventIds.length > 0
       ? await prisma.gameEventParticipantProgress.findMany({
           where: {
@@ -445,11 +449,62 @@ class GameEventService {
       }),
     );
 
+    // Scheduler starts events as `active` immediately, so `upcoming` is often empty.
+    // Preview the next interval starts from enabled schedules for templates not live yet.
+    const schedules = await prisma.gameEventSchedule.findMany({
+      where: {
+        enabled: true,
+        scheduleType: 'interval',
+        template: { isActive: true },
+      },
+      include: { template: true },
+      orderBy: { lastTriggeredAt: 'asc' },
+    });
+
+    const upcomingPreview = schedules
+      .filter((schedule) => {
+        if (!schedule.intervalMinutes) return false;
+        if (activeTemplateIds.has(schedule.templateId)) return false;
+        if (scheduledTemplateIds.has(schedule.templateId)) return false;
+        return true;
+      })
+      .map((schedule) => {
+        const intervalMs = schedule.intervalMinutes! * 60 * 1000;
+        const cooldownMs = (schedule.cooldownMinutes ?? 0) * 60 * 1000;
+        const durationMs = (schedule.durationMinutes ?? 60) * 60 * 1000;
+        const waitMs = Math.max(intervalMs, cooldownMs);
+        const startsAt = schedule.lastTriggeredAt
+          ? new Date(schedule.lastTriggeredAt.getTime() + waitMs)
+          : now;
+        const endsAt = new Date(Math.max(startsAt.getTime(), now.getTime()) + durationMs);
+        const defaultRules = getDefaultRewardRulesForTemplateKey(schedule.template.key);
+        return {
+          id: null as number | null,
+          preview: true as const,
+          status: 'scheduled' as const,
+          startedAt: startsAt,
+          endsAt,
+          template: schedule.template,
+          rewardRules: defaultRules.map((rule, index) => ({
+            id: -(index + 1),
+            triggerType: rule.triggerType,
+            triggerConfigJson: JSON.stringify(rule.triggerConfigJson),
+            rewardsJson: JSON.stringify(rule.rewardsJson),
+            sortOrder: rule.sortOrder,
+            isActive: rule.isActive,
+          })),
+        };
+      })
+      .filter((item) => item.startedAt.getTime() > now.getTime() - 60_000)
+      .sort((a, b) => a.startedAt.getTime() - b.startedAt.getTime())
+      .slice(0, 8);
+
     return {
       serverTime: now,
       featured,
       active,
       upcoming,
+      upcomingPreview,
       myProgress,
     };
   }
