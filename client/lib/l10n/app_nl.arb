@@ -9127,6 +9127,17 @@
       }
     }
   },
+  "jobCardEducationPayBonus": "+{percent}% school-loonbonus",
+  "@jobCardEducationPayBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "jobOutcomeFailed": "Dienst mislukt",
+  "jobResultXpLostLabel": "XP verloren",
+  "jobScreenRepeatPenaltyHint": "Dezelfde baan steeds opnieuw doen verlaagt je slagingskans. Wissel af of train op school voor betere kansen op pro-banen.",
   "trainingHubRefreshStatus": "Vernieuwen",
   "trainingHubRefreshTooltip": "Status opnieuw van de server laden",
   "trainingHubOpenCrimes": "Open misdaden",

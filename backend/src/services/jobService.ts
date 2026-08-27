@@ -20,6 +20,8 @@ interface JobDefinition {
   maxEarnings: number;
   xpReward: number;
   cooldownMinutes: number;
+  successChance?: number;
+  educationBonusPercent?: number;
 }
 
 type PlayerEducationProfile = Awaited<
@@ -67,6 +69,88 @@ class JobService {
     return { multiplier, bonusPercent };
   }
 
+  /** Base success by payout tier — entry jobs safer, elite jobs harder. */
+  private getBaseSuccessRate(maxEarnings: number): number {
+    if (maxEarnings >= 2000) return 0.78;
+    if (maxEarnings >= 500) return 0.85;
+    return 0.92;
+  }
+
+  /** +2% per relevant school track level on gated jobs (max +12%). */
+  private getEducationSuccessBonus(
+    profile: PlayerEducationProfile,
+    jobId: string,
+  ): number {
+    const gate = educationService.getJobGate(jobId);
+    if (!gate?.requirements.trackId) return 0;
+    const trackLevel = profile.tracks[gate.requirements.trackId]?.level ?? 0;
+    return Math.min(0.12, Math.max(0, trackLevel * 0.02));
+  }
+
+  /** Penalty for spamming the same job back-to-back (−4% per repeat after first, max −12%). */
+  private getRepeatJobPenalty(consecutiveSameJob: number): number {
+    if (consecutiveSameJob < 2) return 0;
+    return Math.min(0.12, (consecutiveSameJob - 1) * 0.04);
+  }
+
+  private countConsecutiveSameJob(
+    recentAttempts: Array<{ jobId: string }>,
+    jobId: string,
+  ): number {
+    if (recentAttempts.length === 0 || recentAttempts[0]?.jobId !== jobId) {
+      return 0;
+    }
+    let streak = 0;
+    for (const attempt of recentAttempts) {
+      if (attempt.jobId === jobId) streak += 1;
+      else break;
+    }
+    return streak;
+  }
+
+  calculateSuccessRateForJob(
+    job: Pick<JobDefinition, 'id' | 'maxEarnings'>,
+    profile: PlayerEducationProfile,
+    consecutiveSameJob: number,
+  ): number {
+    const raw =
+      this.getBaseSuccessRate(job.maxEarnings) +
+      this.getEducationSuccessBonus(profile, job.id) -
+      this.getRepeatJobPenalty(consecutiveSameJob);
+    return Math.min(0.95, Math.max(0.55, raw));
+  }
+
+  private async getRecentJobAttempts(playerId: number, limit = 8) {
+    return prisma.jobAttempt.findMany({
+      where: { playerId },
+      orderBy: { completedAt: 'desc' },
+      take: limit,
+      select: { jobId: true },
+    });
+  }
+
+  private enrichJobForPlayer(
+    job: JobDefinition,
+    profile: PlayerEducationProfile,
+    recentAttempts: Array<{ jobId: string }>,
+  ): JobDefinition {
+    const consecutiveSameJob = this.countConsecutiveSameJob(
+      recentAttempts,
+      job.id,
+    );
+    const successRate = this.calculateSuccessRateForJob(
+      job,
+      profile,
+      consecutiveSameJob,
+    );
+    const salaryBonus = this.getEducationSalaryMultiplier(profile, job.id);
+    return {
+      ...this.withComputedCooldown(job),
+      successChance: Math.round(successRate * 100),
+      educationBonusPercent: salaryBonus.bonusPercent,
+    };
+  }
+
   constructor() {
     this.loadJobs();
   }
@@ -112,6 +196,7 @@ class JobService {
   }> {
     const rankFilteredJobs = this.getJobsForLevel(playerRank);
     const profile = await educationService.getPlayerEducationProfile(playerId);
+    const recentAttempts = await this.getRecentJobAttempts(playerId);
 
     const availableJobs: JobDefinition[] = [];
     const lockedJobs: Array<
@@ -130,12 +215,14 @@ class JobService {
       );
 
       if (eligibility.allowed) {
-        availableJobs.push(job);
+        availableJobs.push(
+          this.enrichJobForPlayer(job, profile, recentAttempts),
+        );
         continue;
       }
 
       lockedJobs.push({
-        ...job,
+        ...this.withComputedCooldown(job),
         gateId: eligibility.gateId,
         gateLabelKey: eligibility.gateLabelKey,
         educationMissing: eligibility.missing,
@@ -219,9 +306,18 @@ class JobService {
     // Reward-based job cooldown pacing is enforced in the jobs route
     // through cooldownService before and after workJob is executed.
 
-    // Jobs have 85% success rate (safer than crimes)
+    const recentAttempts = await this.getRecentJobAttempts(playerId);
+    const consecutiveSameJob = this.countConsecutiveSameJob(
+      recentAttempts,
+      jobId,
+    );
+    const successRate = this.calculateSuccessRateForJob(
+      job,
+      educationProfile,
+      consecutiveSameJob,
+    );
     const successRoll = Math.random();
-    const success = successRoll < 0.85;
+    const success = successRoll < successRate;
     const diminishingContext = await economyBalanceService.getDiminishingContext(
       playerId,
       'job',
@@ -407,6 +503,8 @@ class JobService {
       earnings: result.earnings,
       xpGained: result.xpGained,
       xpLost,
+      successChance: Math.round(successRate * 100),
+      educationBonusPercent,
       player: result.player,
       newlyUnlockedAchievements,
       sessionPayoutMultiplier,

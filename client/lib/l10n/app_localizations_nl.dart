@@ -12491,6 +12491,21 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String jobCardEducationPayBonus(int percent) {
+    return '+$percent% school-loonbonus';
+  }
+
+  @override
+  String get jobOutcomeFailed => 'Dienst mislukt';
+
+  @override
+  String get jobResultXpLostLabel => 'XP verloren';
+
+  @override
+  String get jobScreenRepeatPenaltyHint =>
+      'Dezelfde baan steeds opnieuw doen verlaagt je slagingskans. Wissel af of train op school voor betere kansen op pro-banen.';
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
 

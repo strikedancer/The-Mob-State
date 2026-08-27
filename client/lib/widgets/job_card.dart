@@ -31,7 +31,7 @@ class _JobCardState extends State<JobCard> {
   static const Color _gold = Color(0xFFD4AF37);
   bool _isHovered = false;
 
-  static const int _jobSuccessPercent = 85;
+  int _successPercent() => widget.job.successChance ?? 85;
 
   _JobPayTier _payTier() {
     if (widget.job.maxPay >= 2000) return _JobPayTier.high;
@@ -78,7 +78,9 @@ class _JobCardState extends State<JobCard> {
     final tier = _payTier();
     final tierStyle = _tierStyle(l10n, tier);
     final isWide = MediaQuery.sizeOf(context).width >= 900;
-    final successFraction = _jobSuccessPercent / 100.0;
+    final successPercent = _successPercent();
+    final successFraction = successPercent / 100.0;
+    final eduBonus = widget.job.educationBonusPercent ?? 0;
 
     final borderColor = _isHovered
         ? tierStyle.border.withValues(alpha: 0.95)
@@ -283,15 +285,11 @@ class _JobCardState extends State<JobCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    l10n.jobCardSuccessChance(
-                                      _jobSuccessPercent,
-                                    ),
+                                    l10n.jobCardSuccessChance(successPercent),
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w700,
-                                      color: _successBarColor(
-                                        _jobSuccessPercent,
-                                      ),
+                                      color: _successBarColor(successPercent),
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -302,10 +300,24 @@ class _JobCardState extends State<JobCard> {
                                       minHeight: 4,
                                       backgroundColor: Colors.white12,
                                       valueColor: AlwaysStoppedAnimation(
-                                        _successBarColor(_jobSuccessPercent),
+                                        _successBarColor(successPercent),
                                       ),
                                     ),
                                   ),
+                                  if (eduBonus > 0)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        l10n.jobCardEducationPayBonus(
+                                          eduBonus,
+                                        ),
+                                        style: TextStyle(
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.w600,
+                                          color: _gold.withValues(alpha: 0.9),
+                                        ),
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),

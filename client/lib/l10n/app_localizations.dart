@@ -21856,6 +21856,30 @@ abstract class AppLocalizations {
   /// **'{percent}% success chance'**
   String jobCardSuccessChance(int percent);
 
+  /// No description provided for @jobCardEducationPayBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'+{percent}% school pay bonus'**
+  String jobCardEducationPayBonus(int percent);
+
+  /// No description provided for @jobOutcomeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift didn\'t pay off'**
+  String get jobOutcomeFailed;
+
+  /// No description provided for @jobResultXpLostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'XP lost'**
+  String get jobResultXpLostLabel;
+
+  /// No description provided for @jobScreenRepeatPenaltyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeating the same job back-to-back lowers your success chance. Rotate work or train at school for better odds on pro jobs.'**
+  String get jobScreenRepeatPenaltyHint;
+
   /// No description provided for @crimeCriminalRecordWipeDesc.
   ///
   /// In en, this message translates to:

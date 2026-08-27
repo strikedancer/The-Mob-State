@@ -16,6 +16,8 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
   xpReward: (json['xpReward'] as num).toInt(),
   cooldownMinutes: (json['cooldownMinutes'] as num?)?.toInt(),
   image: json['image'] as String?,
+  successChance: (json['successChance'] as num?)?.toInt(),
+  educationBonusPercent: (json['educationBonusPercent'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
@@ -28,4 +30,6 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
   'xpReward': instance.xpReward,
   'cooldownMinutes': instance.cooldownMinutes,
   'image': instance.image,
+  'successChance': instance.successChance,
+  'educationBonusPercent': instance.educationBonusPercent,
 };

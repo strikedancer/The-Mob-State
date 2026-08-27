@@ -20,6 +20,8 @@ class Job {
   final int xpReward;
   final int? cooldownMinutes;
   final String? image;
+  final int? successChance;
+  final int? educationBonusPercent;
 
   Job({
     required this.id,
@@ -31,6 +33,8 @@ class Job {
     required this.xpReward,
     this.cooldownMinutes,
     this.image,
+    this.successChance,
+    this.educationBonusPercent,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);

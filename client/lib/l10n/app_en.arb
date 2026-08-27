@@ -7677,6 +7677,17 @@
       }
     }
   },
+  "jobCardEducationPayBonus": "+{percent}% school pay bonus",
+  "@jobCardEducationPayBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "jobOutcomeFailed": "Shift didn't pay off",
+  "jobResultXpLostLabel": "XP lost",
+  "jobScreenRepeatPenaltyHint": "Repeating the same job back-to-back lowers your success chance. Rotate work or train at school for better odds on pro jobs.",
   "crimeCriminalRecordWipeDesc": "Forge court files and wipe your full criminal record if the operation succeeds.",
   "crimeCardSuccessChance": "{percent}% success chance",
   "@crimeCardSuccessChance": {

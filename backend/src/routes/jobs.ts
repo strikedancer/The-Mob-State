@@ -158,6 +158,7 @@ router.post('/:jobId/work', authenticate, async (req: AuthRequest, res: Response
         xpGained: result.xpGained,
         xpLost: result.xpLost,
         success: result.success,
+        successChance: (result as any).successChance ?? 85,
         educationBonusPercent: (result as any).educationBonusPercent ?? 0,
         sessionPayoutMultiplier: (result as any).sessionPayoutMultiplier ?? 1,
         sessionAttemptsInWindow: (result as any).sessionAttemptsInWindow ?? 0,

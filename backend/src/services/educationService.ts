@@ -56,6 +56,30 @@ const TRACK_MIN_PLAYER_RANK: Record<EducationTrackId, number> = {
 
 const EDUCATION_GATES: EducationGate[] = [
   {
+    id: 'gate_job_mechanic',
+    label: 'Job: Monteur',
+    labelKey: 'education.gate.job.mechanic',
+    targetType: 'job',
+    targetId: 'mechanic',
+    requirements: { trackId: 'engineering', level: 2, certifications: ['industrial_safety'] },
+  },
+  {
+    id: 'gate_job_paramedic',
+    label: 'Job: Ambulanceverpleegkundige',
+    labelKey: 'education.gate.job.paramedic',
+    targetType: 'job',
+    targetId: 'paramedic',
+    requirements: { trackId: 'medicine', level: 2, certifications: ['paramedic_cert'] },
+  },
+  {
+    id: 'gate_job_accountant',
+    label: 'Job: Accountant',
+    labelKey: 'education.gate.job.accountant',
+    targetType: 'job',
+    targetId: 'accountant',
+    requirements: { trackId: 'finance', level: 2, certifications: ['financial_analyst'] },
+  },
+  {
     id: 'gate_job_programmer',
     label: 'Job: Programmeur',
     labelKey: 'education.gate.job.programmer',

@@ -12624,6 +12624,21 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String jobCardEducationPayBonus(int percent) {
+    return '+$percent% school pay bonus';
+  }
+
+  @override
+  String get jobOutcomeFailed => 'Shift didn\'t pay off';
+
+  @override
+  String get jobResultXpLostLabel => 'XP lost';
+
+  @override
+  String get jobScreenRepeatPenaltyHint =>
+      'Repeating the same job back-to-back lowers your success chance. Rotate work or train at school for better odds on pro jobs.';
+
+  @override
   String get crimeCriminalRecordWipeDesc =>
       'Fälschen Sie Gerichtsakten und löschen Sie Ihr gesamtes Strafregister, wenn die Operation erfolgreich ist.';
 

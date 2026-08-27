@@ -54,9 +54,11 @@ class _JobsScreenState extends State<JobsScreen> {
   int? _jailTime;
   int? _cooldownSeconds;
   bool _showJobResult = false;
+  bool _jobResultSuccess = true;
   String? _resultJobName;
   int _jobEarnings = 0;
   int _jobXpGained = 0;
+  int _jobXpLost = 0;
   _JobListFilter _listFilter = _JobListFilter.all;
   _JobListSort _listSort = _JobListSort.reward;
 
@@ -95,6 +97,10 @@ class _JobsScreenState extends State<JobsScreen> {
           if (rankCmp != 0) return rankCmp;
           return b.maxPay.compareTo(a.maxPay);
         case _JobListSort.success:
+          final successCmp = (b.successChance ?? 85).compareTo(
+            a.successChance ?? 85,
+          );
+          if (successCmp != 0) return successCmp;
           return b.maxPay.compareTo(a.maxPay);
         case _JobListSort.reward:
           return b.maxPay.compareTo(a.maxPay);
@@ -233,6 +239,11 @@ class _JobsScreenState extends State<JobsScreen> {
               l10n.jobScreenEducationNudge,
               style: const TextStyle(color: Colors.white60, fontSize: 12),
             ),
+            const SizedBox(height: 6),
+            Text(
+              l10n.jobScreenRepeatPenaltyHint,
+              style: const TextStyle(color: Colors.white54, fontSize: 11.5),
+            ),
           ],
         ),
       );
@@ -274,6 +285,11 @@ class _JobsScreenState extends State<JobsScreen> {
           Text(
             l10n.jobScreenEducationNudge,
             style: const TextStyle(color: Colors.white60, fontSize: 11.5),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            l10n.jobScreenRepeatPenaltyHint,
+            style: const TextStyle(color: Colors.white54, fontSize: 11),
           ),
           if (widget.onOpenSchool != null) ...[
             const SizedBox(height: 4),
@@ -773,6 +789,7 @@ class _JobsScreenState extends State<JobsScreen> {
           eventKey.contains('completed') || eventKey.contains('success');
       final earnings = readInt(params['earnings']);
       final xpGained = readInt(params['xpGained']);
+      final xpLost = readInt(params['xpLost']);
 
       int? cooldownSeconds;
       if (data.containsKey('cooldown') && data['cooldown'] != null) {
@@ -801,6 +818,7 @@ class _JobsScreenState extends State<JobsScreen> {
       if (success && (earnings > 0 || xpGained > 0)) {
         setState(() {
           _isWorking = false;
+          _jobResultSuccess = true;
           _resultJobName = JobLocalization.name(
             job.id,
             l10n,
@@ -808,6 +826,27 @@ class _JobsScreenState extends State<JobsScreen> {
           );
           _jobEarnings = earnings;
           _jobXpGained = xpGained;
+          _jobXpLost = 0;
+          _showJobResult = true;
+          if (cooldownSeconds != null && cooldownSeconds > 0) {
+            _cooldownSeconds = cooldownSeconds;
+          }
+        });
+        return;
+      }
+
+      if (!success) {
+        setState(() {
+          _isWorking = false;
+          _jobResultSuccess = false;
+          _resultJobName = JobLocalization.name(
+            job.id,
+            l10n,
+            fallback: job.name,
+          );
+          _jobEarnings = 0;
+          _jobXpGained = 0;
+          _jobXpLost = xpLost;
           _showJobResult = true;
           if (cooldownSeconds != null && cooldownSeconds > 0) {
             _cooldownSeconds = cooldownSeconds;
@@ -895,16 +934,21 @@ class _JobsScreenState extends State<JobsScreen> {
       body: _showJobResult
           ? CrimeResultOverlay(
               embedded: kIsWeb,
-              headline: l10n.jobOutcomeSuccess,
+              isSuccess: _jobResultSuccess,
+              headline:
+                  _jobResultSuccess ? l10n.jobOutcomeSuccess : null,
               crimeName: _resultJobName ?? l10n.jobs,
               reward: _jobEarnings,
               xpGained: _jobXpGained,
+              xpLost: _jobXpLost,
               onContinue: () {
                 setState(() {
                   _showJobResult = false;
+                  _jobResultSuccess = true;
                   _resultJobName = null;
                   _jobEarnings = 0;
                   _jobXpGained = 0;
+                  _jobXpLost = 0;
                 });
               },
             )
