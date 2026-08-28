@@ -2650,8 +2650,8 @@
   "premiumUiStatusInactive": "Inactive",
   "premiumUiNoCrew": "No crew",
   "premiumUiSectionVipTitle": "VIP subscriptions",
-  "premiumUiSectionVipSubtitle": "Professional VIP tiles with clear pricing, status and benefits.",
-  "premiumUiPlayerVipSubtitle": "Exclusive account perks, avatar unlocks and premium QoL.",
+  "premiumUiSectionVipSubtitle": "VIP includes monthly auto-renew via Mollie. Cancel anytime; your paid period stays active.",
+  "premiumUiPlayerVipSubtitle": "Exclusive account perks, avatar unlocks and premium QoL — renews automatically each month.",
   "premiumUiActiveUntil": "Active until {date}",
   "@premiumUiActiveUntil": {
     "placeholders": {

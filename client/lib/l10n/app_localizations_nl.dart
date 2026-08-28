@@ -4630,11 +4630,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumUiSectionVipSubtitle =>
-      'Professionele VIP-tegels met duidelijke prijzen, status en voordelen.';
+      'VIP verlengt maandelijks automatisch via Mollie. Stop wanneer je wilt; de betaalde periode blijft geldig.';
 
   @override
   String get premiumUiPlayerVipSubtitle =>
-      'Exclusieve accountvoordelen, avatar-ontgrendelingen en premium QoL.';
+      'Exclusieve accountvoordelen, avatar-ontgrendelingen en premium QoL — verlengt automatisch elke maand.';
 
   @override
   String premiumUiActiveUntil(String date) {

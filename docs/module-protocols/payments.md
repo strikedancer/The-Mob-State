@@ -15,7 +15,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Startup: `ensureVipPrestigeSchema.ts` (`players.vipLifetimeDays`, `crews.vipLifetimeDays`)
 
 ## VIP polish (P6)
-- **Auto-renew:** Mollie subscription id op speler/crew; `GET /subscriptions/status` exposeert `autoRenewActive`; `POST /subscriptions/vip/cancel` stopt toekomstige charges maar behoudt `vipExpiresAt`.
+- **Auto-renew:** Na eerste betaalde Player/Crew VIP checkout maakt de webhook een Mollie-subscription (`interval: 1 month`, `startDate` ≈ `vipExpiresAt`). Recurring charges verlengen VIP +30 dagen. Mislukte renew-payments wissen VIP/subscription-id **niet** meer (betaalde periode blijft tot `vipExpiresAt`; stoppen alleen via `POST /subscriptions/vip/cancel`). Fulfillment is idempotent per Mollie payment id. Metadata-fallback via `mollieSubscriptionId` als renew-payment metadata mist.
 - **Gift Player VIP:** `POST /subscriptions/checkout/gift-player-vip` met `recipientUsername`; webhook type `player_vip_gift` verlengt VIP van ontvanger (geen auto-renew). Premium UI toont eenmalige prijs uit `giftPrices.playerVipEur`.
 - **Gift Crew VIP:** `POST /subscriptions/checkout/gift-crew-vip` met `recipientCrewName`; webhook type `crew_vip_gift` verlengt crew VIP 30 dagen (geen auto-renew). Iedere speler mag cadeau doen (niet alleen leaders). UI toont `giftPrices.crewVipEur`.
 - Prestige KPI toont lifetime days + dagen tot volgende tier (bronze 30 / silver 180 / gold 365; display-only).

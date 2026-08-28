@@ -8297,8 +8297,8 @@
   "premiumUiStatusInactive": "Inactief",
   "premiumUiNoCrew": "Geen crew",
   "premiumUiSectionVipTitle": "VIP-abonnementen",
-  "premiumUiSectionVipSubtitle": "Professionele VIP-tegels met duidelijke prijzen, status en voordelen.",
-  "premiumUiPlayerVipSubtitle": "Exclusieve accountvoordelen, avatar-ontgrendelingen en premium QoL.",
+  "premiumUiSectionVipSubtitle": "VIP verlengt maandelijks automatisch via Mollie. Stop wanneer je wilt; de betaalde periode blijft geldig.",
+  "premiumUiPlayerVipSubtitle": "Exclusieve accountvoordelen, avatar-ontgrendelingen en premium QoL — verlengt automatisch elke maand.",
   "premiumUiActiveUntil": "Actief tot {date}",
   "@premiumUiActiveUntil": {
     "placeholders": {

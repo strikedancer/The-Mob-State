@@ -10,7 +10,6 @@ import {
   redeemCreditItem,
 } from '../services/premiumCreditsService';
 import {
-  downgradeCrewAfterVipExpiry,
   getVipPrestigeTier,
   grantCrewVipDays,
   grantPlayerVipDays,
@@ -497,44 +496,132 @@ async function activateVipFromMetadata(
   }
 }
 
-async function deactivateVipForSubscription(
+/**
+ * Resolve VIP metadata from a Mollie payment. Recurring charges sometimes omit
+ * payment metadata; fall back to our stored mollieSubscriptionId mapping.
+ */
+async function resolveVipPaymentMetadata(
+  payment: {
+    id?: string;
+    metadata?: unknown;
+    subscriptionId?: string | null;
+    customerId?: string | null;
+  },
+  fallbackTransactionMetadata?: unknown,
+): Promise<PaymentMetadata | null> {
+  const fromPayment = parsePaymentMetadata(payment.metadata);
+  if (fromPayment?.playerId && fromPayment.type) {
+    return fromPayment;
+  }
+
+  const fromTx = parsePaymentMetadata(fallbackTransactionMetadata);
+  if (fromTx?.playerId && fromTx.type) {
+    return fromTx;
+  }
+
+  const subscriptionId = payment.subscriptionId || null;
+  if (!subscriptionId) {
+    return null;
+  }
+
+  const player = await prisma.player.findFirst({
+    where: { mollieSubscriptionId: subscriptionId },
+    select: { id: true },
+  });
+  if (player) {
+    return {
+      type: 'player_vip',
+      playerId: String(player.id),
+    };
+  }
+
+  const crew = await prisma.crew.findFirst({
+    where: { mollieSubscriptionId: subscriptionId },
+    select: { id: true },
+  });
+  if (crew) {
+    // Prefer the buyer/customer when known; otherwise any crew member works for grant.
+    let playerId: string | undefined;
+    if (payment.customerId) {
+      const buyer = await prisma.player.findFirst({
+        where: { mollieCustomerId: payment.customerId },
+        select: { id: true },
+      });
+      if (buyer) playerId = String(buyer.id);
+    }
+    if (!playerId) {
+      const member = await prisma.crewMember.findFirst({
+        where: { crewId: crew.id },
+        select: { playerId: true },
+        orderBy: { id: 'asc' },
+      });
+      if (member) playerId = String(member.playerId);
+    }
+    if (!playerId) return null;
+    return {
+      type: 'crew_vip',
+      playerId,
+      crewId: String(crew.id),
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Idempotent VIP grant per Mollie payment id (same table as one-time fulfillments).
+ * Returns false when this payment was already fulfilled.
+ */
+async function fulfillVipPurchaseOnce(
+  paymentId: string,
   metadata: PaymentMetadata,
-  subscriptionId?: string
+  subscriptionId?: string,
+): Promise<boolean> {
+  const playerId = Number(metadata.playerId);
+  if (!Number.isFinite(playerId) || playerId <= 0) {
+    return false;
+  }
+
+  const productKey =
+    metadata.type === 'crew_vip' || metadata.type === 'crew_vip_gift'
+      ? `vip:${metadata.type}:${metadata.crewId || 'unknown'}`
+      : metadata.type === 'player_vip_gift'
+        ? `vip:${metadata.type}:${metadata.recipientPlayerId || 'unknown'}`
+        : `vip:${metadata.type}`;
+
+  const insertedRows = await prisma.$executeRawUnsafe(
+    `INSERT IGNORE INTO stripe_payment_fulfillments (stripeSessionId, playerId, productKey, payload, fulfilledAt)
+     VALUES (?, ?, ?, ?, NOW(3))`,
+    paymentId,
+    playerId,
+    productKey,
+    JSON.stringify({ ...metadata, subscriptionId: subscriptionId || null }),
+  );
+
+  if (Number(insertedRows) === 0) {
+    return false;
+  }
+
+  await activateVipFromMetadata(metadata, subscriptionId);
+  return true;
+}
+
+/**
+ * A failed/canceled/expired *renewal payment* must NOT wipe paid-through VIP or the
+ * Mollie subscription id (Mollie may retry; cancel is explicit via /vip/cancel).
+ */
+async function noteFailedVipRenewalPayment(
+  metadata: PaymentMetadata,
+  subscriptionId?: string,
+  paymentStatus?: string,
 ): Promise<void> {
-  const playerId = parseInt(metadata.playerId || '', 10);
-  if (metadata.type === 'player_vip' && playerId) {
-    await prisma.player.update({
-      where: { id: playerId },
-      data: { isVip: false, vipExpiresAt: null, mollieSubscriptionId: null },
-    });
-  }
-
-  if (metadata.type === 'crew_vip' && metadata.crewId) {
-    const crewId = parseInt(metadata.crewId, 10);
-    if (crewId) {
-      await prisma.crew.update({
-        where: { id: crewId },
-        data: { isVip: false, vipExpiresAt: null, mollieSubscriptionId: null },
-      });
-      await downgradeCrewAfterVipExpiry(crewId);
-      return;
-    }
-  }
-
-  if (subscriptionId) {
-    const crew = await prisma.crew.findFirst({
-      where: { mollieSubscriptionId: subscriptionId },
-      select: { id: true },
-    });
-
-    if (crew) {
-      await prisma.crew.update({
-        where: { id: crew.id },
-        data: { isVip: false, vipExpiresAt: null, mollieSubscriptionId: null },
-      });
-      await downgradeCrewAfterVipExpiry(crew.id);
-    }
-  }
+  console.warn('[Mollie] VIP subscription payment not paid — keeping VIP until vipExpiresAt', {
+    type: metadata.type,
+    playerId: metadata.playerId,
+    crewId: metadata.crewId,
+    subscriptionId,
+    paymentStatus,
+  });
 }
 
 async function getOrCreateMollieCustomer(
@@ -812,8 +899,7 @@ async function reconcileRecentPaidTransactions(
     }
 
     const payment = await mollie.payments.get(transaction.providerPaymentId);
-    const metadata =
-      parsePaymentMetadata(payment.metadata) || parsePaymentMetadata(transaction.metadataJson);
+    const metadata = await resolveVipPaymentMetadata(payment, transaction.metadataJson);
 
     if (!metadata?.playerId || !metadata.type) {
       continue;
@@ -841,14 +927,21 @@ async function reconcileRecentPaidTransactions(
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
-        const subscriptionId =
-          metadata.type === 'player_vip_gift' || metadata.type === 'crew_vip_gift'
-            ? undefined
-            : payment.subscriptionId ||
-              (payment.customerId
-                ? await ensureVipSubscription(metadata, payment.customerId)
-                : undefined);
-        await activateVipFromMetadata(metadata, subscriptionId);
+        const isGift =
+          metadata.type === 'player_vip_gift' || metadata.type === 'crew_vip_gift';
+        let subscriptionId = isGift ? undefined : payment.subscriptionId || undefined;
+        // Grant first so a newly created Mollie subscription can start at the new vipExpiresAt.
+        await fulfillVipPurchaseOnce(payment.id, metadata, subscriptionId);
+        if (!isGift && !subscriptionId && payment.customerId) {
+          try {
+            subscriptionId = await ensureVipSubscription(metadata, payment.customerId);
+          } catch (error) {
+            console.error('[Mollie] ensureVipSubscription failed (reconcile)', {
+              paymentId: payment.id,
+              error,
+            });
+          }
+        }
       }
       continue;
     }
@@ -859,7 +952,11 @@ async function reconcileRecentPaidTransactions(
         payment.status === 'expired') &&
       payment.subscriptionId
     ) {
-      await deactivateVipForSubscription(metadata, payment.subscriptionId);
+      await noteFailedVipRenewalPayment(
+        metadata,
+        payment.subscriptionId,
+        payment.status,
+      );
     }
   }
 }
@@ -875,27 +972,38 @@ async function ensureVipSubscription(metadata: PaymentMetadata, customerId: stri
 
   const mollie = getMollieClient();
   const price = await getVipPrice(metadata.type === 'crew_vip' ? 'crew_vip' : 'player_vip');
-  const startDate = toDateString(addDays(new Date(), 30));
 
+  // Charge when current paid-through VIP ends (or tomorrow if already expired / first buy).
+  let vipExpiresAt: Date | null = null;
   if (metadata.type === 'player_vip') {
     const player = await prisma.player.findUnique({
       where: { id: Number(metadata.playerId) },
-      select: { mollieSubscriptionId: true },
+      select: { mollieSubscriptionId: true, vipExpiresAt: true },
     });
     if (player?.mollieSubscriptionId) {
       return player.mollieSubscriptionId;
     }
+    vipExpiresAt = player?.vipExpiresAt ?? null;
   }
 
   if (metadata.type === 'crew_vip' && metadata.crewId) {
     const crew = await prisma.crew.findUnique({
       where: { id: Number(metadata.crewId) },
-      select: { mollieSubscriptionId: true },
+      select: { mollieSubscriptionId: true, vipExpiresAt: true },
     });
     if (crew?.mollieSubscriptionId) {
       return crew.mollieSubscriptionId;
     }
+    vipExpiresAt = crew?.vipExpiresAt ?? null;
   }
+
+  const tomorrow = addDays(new Date(), 1);
+  const fallbackRenew = addDays(new Date(), 30);
+  const renewAt =
+    vipExpiresAt && vipExpiresAt.getTime() > tomorrow.getTime()
+      ? vipExpiresAt
+      : fallbackRenew;
+  const startDate = toDateString(renewAt);
 
   const subscription = await mollie.customerSubscriptions.create({
     customerId,
@@ -1564,9 +1672,10 @@ router.post('/webhook', async (req: Request, res: Response) => {
     }
 
     const payment = await mollie.payments.get(paymentId);
-    const metadata = ((payment.metadata || {}) as PaymentMetadata) || null;
+    const metadata = await resolveVipPaymentMetadata(payment);
 
     if (!metadata?.playerId || !metadata.type) {
+      // Still ACK so Mollie does not retry forever for unrelated payments.
       return res.json({ received: true });
     }
 
@@ -1588,14 +1697,20 @@ router.post('/webhook', async (req: Request, res: Response) => {
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
-        const subscriptionId =
-          metadata.type === 'player_vip_gift' || metadata.type === 'crew_vip_gift'
-            ? undefined
-            : payment.subscriptionId ||
-              (payment.customerId
-                ? await ensureVipSubscription(metadata, payment.customerId)
-                : undefined);
-        await activateVipFromMetadata(metadata, subscriptionId);
+        const isGift =
+          metadata.type === 'player_vip_gift' || metadata.type === 'crew_vip_gift';
+        let subscriptionId = isGift ? undefined : payment.subscriptionId || undefined;
+        await fulfillVipPurchaseOnce(payment.id, metadata, subscriptionId);
+        if (!isGift && !subscriptionId && payment.customerId) {
+          try {
+            subscriptionId = await ensureVipSubscription(metadata, payment.customerId);
+          } catch (error) {
+            console.error('[Mollie webhook] ensureVipSubscription failed', {
+              paymentId: payment.id,
+              error,
+            });
+          }
+        }
       }
     }
 
@@ -1605,7 +1720,11 @@ router.post('/webhook', async (req: Request, res: Response) => {
         payment.status === 'expired') &&
       payment.subscriptionId
     ) {
-      await deactivateVipForSubscription(metadata, payment.subscriptionId);
+      await noteFailedVipRenewalPayment(
+        metadata,
+        payment.subscriptionId,
+        payment.status,
+      );
     }
 
     return res.json({ received: true });

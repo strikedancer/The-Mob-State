@@ -4600,11 +4600,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumUiSectionVipSubtitle =>
-      'Professional VIP tiles with clear pricing, status and benefits.';
+      'VIP includes monthly auto-renew via Mollie. Cancel anytime; your paid period stays active.';
 
   @override
   String get premiumUiPlayerVipSubtitle =>
-      'Exclusive account perks, avatar unlocks and premium QoL.';
+      'Exclusive account perks, avatar unlocks and premium QoL — renews automatically each month.';
 
   @override
   String premiumUiActiveUntil(String date) {

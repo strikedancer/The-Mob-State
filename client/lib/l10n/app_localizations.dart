@@ -8326,13 +8326,13 @@ abstract class AppLocalizations {
   /// No description provided for @premiumUiSectionVipSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Professional VIP tiles with clear pricing, status and benefits.'**
+  /// **'VIP includes monthly auto-renew via Mollie. Cancel anytime; your paid period stays active.'**
   String get premiumUiSectionVipSubtitle;
 
   /// No description provided for @premiumUiPlayerVipSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Exclusive account perks, avatar unlocks and premium QoL.'**
+  /// **'Exclusive account perks, avatar unlocks and premium QoL — renews automatically each month.'**
   String get premiumUiPlayerVipSubtitle;
 
   /// No description provided for @premiumUiActiveUntil.
