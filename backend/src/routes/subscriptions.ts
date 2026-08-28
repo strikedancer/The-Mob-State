@@ -417,6 +417,7 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
                   key: offer.rewardKey ?? offer.key,
                   durationHours: offer.durationHours ?? 0,
                   value: offer.rewardValue ?? 0,
+                  creditAmount: offer.creditAmount ?? 0,
                 },
     rewardSummaryNl: buildRewardSummary(offer, 'nl'),
     rewardSummaryEn: buildRewardSummary(offer, 'en'),
