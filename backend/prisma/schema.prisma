@@ -2464,6 +2464,7 @@ enum PremiumOfferRewardType {
   ammo
   credits
   event_boost
+  season_pass
 }
 
 enum PaymentProvider {

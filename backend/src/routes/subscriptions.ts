@@ -42,7 +42,7 @@ type PremiumOfferRecord = {
   descriptionEn: string | null;
   imageUrl: string | null;
   priceEurCents: number;
-  rewardType: 'money' | 'ammo' | 'credits' | 'event_boost';
+  rewardType: 'money' | 'ammo' | 'credits' | 'event_boost' | 'season_pass';
   moneyAmount: number | null;
   ammoType: string | null;
   ammoQuantity: number | null;
@@ -156,37 +156,42 @@ async function ensureEventPassOffer(): Promise<void> {
 }
 
 async function ensureSeasonPassOffer(): Promise<void> {
-  await prisma.premiumOneTimeOffer.createMany({
-    data: [
-      {
-        key: 'season_pass_monthly',
-        titleNl: 'Season Pass (deze maand)',
-        titleEn: 'Season Pass (this month)',
-        descriptionNl:
-          'Eenmalig €7,99 — geen abonnement. Ontgrendel het premium track van de maandelijkse Season Pass (munitie, onderdelen, zeldzame beloningen). Progress via live events.',
-        descriptionEn:
-          'One-time €7.99 — not a subscription. Unlocks the premium track of the monthly Season Pass (ammo, parts, rare rewards). Progress via live events.',
-        imageUrl: 'images/premium_tiles/credits_1000.png',
-        priceEurCents: 799,
-        rewardType: 'season_pass',
-        moneyAmount: null,
-        ammoType: null,
-        ammoQuantity: null,
-        creditAmount: 75,
-        rewardKey: 'season_pass_monthly',
-        durationHours: 31 * 24,
-        rewardValue: null,
-        metadataJson: JSON.stringify({
-          seasonPass: true,
-          boosts: { eventContributionPct: 0 },
-        }),
-        isActive: true,
-        showPopupOnOpen: false,
-        sortOrder: 185,
-      },
-    ],
-    skipDuplicates: true,
-  });
+  try {
+    await prisma.premiumOneTimeOffer.createMany({
+      data: [
+        {
+          key: 'season_pass_monthly',
+          titleNl: 'Season Pass (deze maand)',
+          titleEn: 'Season Pass (this month)',
+          descriptionNl:
+            'Eenmalig €7,99 — geen abonnement. Ontgrendel het premium track van de maandelijkse Season Pass (munitie, onderdelen, zeldzame beloningen). Progress via live events.',
+          descriptionEn:
+            'One-time €7.99 — not a subscription. Unlocks the premium track of the monthly Season Pass (ammo, parts, rare rewards). Progress via live events.',
+          imageUrl: 'images/premium_tiles/credits_1000.png',
+          priceEurCents: 799,
+          rewardType: 'season_pass',
+          moneyAmount: null,
+          ammoType: null,
+          ammoQuantity: null,
+          creditAmount: 75,
+          rewardKey: 'season_pass_monthly',
+          durationHours: 31 * 24,
+          rewardValue: null,
+          metadataJson: JSON.stringify({
+            seasonPass: true,
+            boosts: { eventContributionPct: 0 },
+          }),
+          isActive: true,
+          showPopupOnOpen: false,
+          sortOrder: 185,
+        },
+      ],
+      skipDuplicates: true,
+    });
+  } catch (error) {
+    // Never break the whole Premium catalog if this seed fails (e.g. enum not migrated yet).
+    console.error('[Premium] ensureSeasonPassOffer failed:', error);
+  }
 }
 
 async function ensureDefaultCreditBundleOffers(): Promise<void> {
@@ -401,12 +406,19 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
           ? { type: 'ammo', ammoType: offer.ammoType ?? '', quantity: offer.ammoQuantity ?? 0 }
           : offer.rewardType === 'credits'
             ? { type: 'credits', amount: offer.creditAmount ?? 0 }
-            : {
-                type: 'event_boost',
-                key: offer.rewardKey ?? offer.key,
-                durationHours: offer.durationHours ?? 0,
-                value: offer.rewardValue ?? 0,
-              },
+            : offer.rewardType === 'season_pass'
+              ? {
+                  type: 'season_pass',
+                  key: offer.rewardKey ?? offer.key,
+                  durationHours: offer.durationHours ?? 0,
+                  creditAmount: offer.creditAmount ?? 0,
+                }
+              : {
+                  type: 'event_boost',
+                  key: offer.rewardKey ?? offer.key,
+                  durationHours: offer.durationHours ?? 0,
+                  value: offer.rewardValue ?? 0,
+                },
     rewardSummaryNl: buildRewardSummary(offer, 'nl'),
     rewardSummaryEn: buildRewardSummary(offer, 'en'),
   };
