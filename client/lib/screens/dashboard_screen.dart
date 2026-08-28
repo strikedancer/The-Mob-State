@@ -644,7 +644,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onPressed: () {
                   Navigator.of(ctx).pop();
                   if (kIsWeb) {
-                    setState(() => _selectedWebSection = _WebSection.crew);
+                    setState(() {
+                      _selectedWebSection = _WebSection.crew;
+                      _expandedNavGroup = _NavGroup.social;
+                    });
                   } else {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const CrewScreen()),
