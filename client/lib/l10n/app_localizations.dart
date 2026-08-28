@@ -8443,6 +8443,48 @@ abstract class AppLocalizations {
   /// **'Pick a bundle via visual tiles. Popular 1000-credit option gets its own spotlight.'**
   String get premiumUiSectionBuyCreditsSubtitle;
 
+  /// No description provided for @premiumUiSectionPassesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Season & event passes'**
+  String get premiumUiSectionPassesTitle;
+
+  /// No description provided for @premiumUiSectionPassesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time unlocks for the monthly Season Pass premium track and short event boosts.'**
+  String get premiumUiSectionPassesSubtitle;
+
+  /// No description provided for @premiumUiBadgeSeasonPass.
+  ///
+  /// In en, this message translates to:
+  /// **'Season Pass'**
+  String get premiumUiBadgeSeasonPass;
+
+  /// No description provided for @premiumUiBadgeEventPass.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Pass'**
+  String get premiumUiBadgeEventPass;
+
+  /// No description provided for @premiumUiSeasonPassFallbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Season Pass (this month)'**
+  String get premiumUiSeasonPassFallbackTitle;
+
+  /// No description provided for @premiumUiEventPassFallbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Pass'**
+  String get premiumUiEventPassFallbackTitle;
+
+  /// No description provided for @premiumUiBuyPassCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy · {price}'**
+  String premiumUiBuyPassCta(String price);
+
   /// No description provided for @premiumUiNoCreditBundles.
   ///
   /// In en, this message translates to:

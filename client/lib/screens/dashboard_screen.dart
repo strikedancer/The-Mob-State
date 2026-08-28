@@ -210,6 +210,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Timer? _gameEventsRefreshTimer;
   /// Accordion: only one side-menu category open at a time (null = all collapsed).
   _NavGroup? _expandedNavGroup;
+  /// Optional product to highlight when opening Premium (e.g. season_pass_monthly).
+  String? _premiumFocusProductKey;
 
   void _openVehicleHeist([int initialTabIndex = 0]) {
     setState(() {
@@ -220,7 +222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _scheduleNavCooldownRefresh();
   }
 
-  void _selectWebSection(_WebSection section) {
+  void _selectWebSection(_WebSection section, {String? focusProductKey}) {
     setState(() {
       if (_selectedWebSection == section) {
         _webSectionRefreshSeed++;
@@ -231,6 +233,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (group != null) {
         _expandedNavGroup = group;
       }
+      _premiumFocusProductKey =
+          section == _WebSection.premium ? focusProductKey : null;
     });
     if (section == _WebSection.crimes ||
         section == _WebSection.jobs ||
@@ -1682,7 +1686,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.events:
         return EventsScreen(
           embedded: true,
-          onOpenPremium: () => _selectWebSection(_WebSection.premium),
+          onOpenPremium: () => _selectWebSection(
+            _WebSection.premium,
+            focusProductKey: 'season_pass_monthly',
+          ),
         );
       case _WebSection.crimes:
         return CrimeScreen(
@@ -1707,7 +1714,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.crew:
         return const CrewScreen();
       case _WebSection.premium:
-        return const PremiumScreen(embedded: true);
+        return PremiumScreen(
+          embedded: true,
+          focusProductKey: _premiumFocusProductKey,
+        );
       case _WebSection.friends:
         return const FriendsScreen();
       case _WebSection.inventory:

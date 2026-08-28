@@ -2677,6 +2677,18 @@
   "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP grants access to extra crew upgrades and shared premium perks for your crew flow. After purchase, active status and expiry are updated immediately.",
   "premiumUiSectionBuyCreditsTitle": "Buy credits",
   "premiumUiSectionBuyCreditsSubtitle": "Pick a bundle via visual tiles. Popular 1000-credit option gets its own spotlight.",
+  "premiumUiSectionPassesTitle": "Season & event passes",
+  "premiumUiSectionPassesSubtitle": "One-time unlocks for the monthly Season Pass premium track and short event boosts.",
+  "premiumUiBadgeSeasonPass": "Season Pass",
+  "premiumUiBadgeEventPass": "Event Pass",
+  "premiumUiSeasonPassFallbackTitle": "Season Pass (this month)",
+  "premiumUiEventPassFallbackTitle": "Event Pass",
+  "premiumUiBuyPassCta": "Buy · {price}",
+  "@premiumUiBuyPassCta": {
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
   "premiumUiNoCreditBundles": "There are no active credit bundles right now.",
   "premiumUiCreditBundleFallbackTitle": "Credit bundle",
   "premiumUiCreditBundleFallbackDescription": "Instant credits for your premium wallet.",

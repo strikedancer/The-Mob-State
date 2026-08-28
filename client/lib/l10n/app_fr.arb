@@ -10001,5 +10001,19 @@
         "type": "int"
       }
     }
+  },
+  "premiumUiSectionPassesTitle": "Season & event passes",
+  "premiumUiSectionPassesSubtitle": "One-time unlocks for the monthly Season Pass premium track and short event boosts.",
+  "premiumUiBadgeSeasonPass": "Season Pass",
+  "premiumUiBadgeEventPass": "Event Pass",
+  "premiumUiSeasonPassFallbackTitle": "Season Pass (this month)",
+  "premiumUiEventPassFallbackTitle": "Event Pass",
+  "premiumUiBuyPassCta": "Buy · {price}",
+  "@premiumUiBuyPassCta": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
   }
 }

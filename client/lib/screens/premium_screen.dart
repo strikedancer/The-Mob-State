@@ -10,9 +10,16 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 
 class PremiumScreen extends StatefulWidget {
-  const PremiumScreen({super.key, this.embedded = false});
+  const PremiumScreen({
+    super.key,
+    this.embedded = false,
+    this.focusProductKey,
+  });
 
   final bool embedded;
+
+  /// When set (e.g. `season_pass_monthly`), scroll that offer into view after load.
+  final String? focusProductKey;
 
   @override
   State<PremiumScreen> createState() => _PremiumScreenState();
@@ -32,6 +39,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
   List<Map<String, dynamic>> _creditItems = const [];
   List<Map<String, dynamic>> _entitlements = const [];
   int _creditBalance = 0;
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _passOffersKey = GlobalKey();
+  bool _didFocusProduct = false;
 
   /// Catalog fields from API are provided as Dutch + English only.
   bool _useNlCatalogCopy(BuildContext context) =>
@@ -62,6 +72,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => _showRedirectFeedback(),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -102,17 +118,21 @@ class _PremiumScreenState extends State<PremiumScreen> {
       setState(() {
         _status = statusData;
         _products = (productData['products'] as List<dynamic>? ?? const [])
-            .whereType<Map<String, dynamic>>()
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
             .toList();
         _creditItems = (creditData['items'] as List<dynamic>? ?? const [])
-            .whereType<Map<String, dynamic>>()
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
             .toList();
         _entitlements =
             (creditData['entitlements'] as List<dynamic>? ?? const [])
-                .whereType<Map<String, dynamic>>()
+                .whereType<Map>()
+                .map((e) => Map<String, dynamic>.from(e))
                 .toList();
         _creditBalance = (creditData['balance'] as num?)?.toInt() ?? 0;
       });
+      _scheduleFocusProduct();
     } catch (_) {
       if (!mounted) return;
       final l10n = AppLocalizations.of(context)!;
@@ -519,6 +539,45 @@ class _PremiumScreenState extends State<PremiumScreen> {
       )
       .toList();
 
+  /// Season Pass + Event Pass style one-time offers (not credit bundles).
+  List<Map<String, dynamic>> get _passPurchaseOffers => _products.where((product) {
+    final type = ((product['reward'] as Map?)?['type'] ?? '').toString();
+    return type == 'season_pass' || type == 'event_boost';
+  }).toList();
+
+  void _scheduleFocusProduct() {
+    if (_didFocusProduct) return;
+    final focusKey = (widget.focusProductKey ?? '').trim();
+    if (focusKey.isEmpty) return;
+    final hasOffer = _passPurchaseOffers.any(
+      (p) => (p['key'] ?? '').toString() == focusKey,
+    );
+    if (!hasOffer) return;
+    _didFocusProduct = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final ctx = _passOffersKey.currentContext;
+      if (ctx == null) return;
+      Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 420),
+        curve: Curves.easeOutCubic,
+        alignment: 0.08,
+      );
+    });
+  }
+
+  String _rewardTypeOf(Map<String, dynamic> product) =>
+      ((product['reward'] as Map?)?['type'] ?? '').toString();
+
+  int _passBonusCredits(Map<String, dynamic> product) {
+    final reward =
+        (product['reward'] as Map?)?.cast<String, dynamic>() ?? const {};
+    final fromReward = (reward['creditAmount'] as num?)?.toInt();
+    if (fromReward != null && fromReward > 0) return fromReward;
+    // Catalog may also expose credits on event_boost via summary only; fall back 0.
+    return 0;
+  }
+
   int _creditAmountFromProduct(Map<String, dynamic> product) {
     final reward =
         (product['reward'] as Map?)?.cast<String, dynamic>() ?? const {};
@@ -884,6 +943,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     String? badgeLabel,
     String? infoTitle,
     String? infoBody,
+    bool highlighted = false,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     final resolvedInfoTitle = (infoTitle ?? title).trim();
@@ -895,11 +955,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: accent.withOpacity(0.35)),
+        border: Border.all(
+          color: highlighted ? accent : accent.withOpacity(0.35),
+          width: highlighted ? 2.4 : 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: accent.withOpacity(0.1),
-            blurRadius: 16,
+            color: accent.withOpacity(highlighted ? 0.28 : 0.1),
+            blurRadius: highlighted ? 22 : 16,
             offset: const Offset(0, 8),
           ),
         ],
@@ -1302,6 +1365,97 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 
+  Widget _buildPassPurchases(AppLocalizations l10n) {
+    final offers = _passPurchaseOffers;
+    if (offers.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      key: _passOffersKey,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionHeader(
+          title: l10n.premiumUiSectionPassesTitle,
+          subtitle: l10n.premiumUiSectionPassesSubtitle,
+          icon: Icons.workspace_premium_outlined,
+          accent: const Color(0xFFB388FF),
+        ),
+        const SizedBox(height: 8),
+        _buildResponsiveTileGrid(
+          minTileWidth: 280,
+          maxColumns: 2,
+          children: offers.map((product) => _buildPassOfferCard(product, l10n)).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPassOfferCard(
+    Map<String, dynamic> product,
+    AppLocalizations l10n,
+  ) {
+    final useNl = _useNlCatalogCopy(context);
+    final title = useNl
+        ? (product['titleNl'] ?? '').toString()
+        : (product['titleEn'] ?? '').toString();
+    final description = useNl
+        ? (product['descriptionNl'] ?? '').toString()
+        : (product['descriptionEn'] ?? '').toString();
+    final summary = useNl
+        ? (product['rewardSummaryNl'] ?? '').toString()
+        : (product['rewardSummaryEn'] ?? '').toString();
+    final rewardType = _rewardTypeOf(product);
+    final isSeasonPass = rewardType == 'season_pass';
+    final configuredImage = (product['imageUrl'] ?? '').toString().trim();
+    final imagePath = configuredImage.isNotEmpty
+        ? configuredImage
+        : (isSeasonPass
+              ? '$_premiumTilesBasePath/credits_1000.png'
+              : '$_premiumTilesBasePath/shop_event_boost.png');
+    final price = _oneTimePriceLabel(product['priceEur']);
+    final bonusCredits = _passBonusCredits(product);
+    final accent = isSeasonPass
+        ? const Color(0xFFB388FF)
+        : Colors.pink.shade600;
+    final resolvedTitle = title.trim().isEmpty
+        ? (isSeasonPass
+              ? l10n.premiumUiSeasonPassFallbackTitle
+              : l10n.premiumUiEventPassFallbackTitle)
+        : title.trim();
+    final resolvedDescription = description.trim().isEmpty
+        ? summary
+        : description.trim();
+    final secondaryBits = <String>[price];
+    if (bonusCredits > 0) {
+      secondaryBits.add(l10n.premiumUiCreditsCount(bonusCredits));
+    }
+    final focusKey = (widget.focusProductKey ?? '').trim();
+    final highlighted =
+        focusKey.isNotEmpty && focusKey == (product['key'] ?? '').toString();
+
+    return _buildVisualTile(
+      title: resolvedTitle,
+      subtitle: resolvedDescription,
+      imagePath: imagePath,
+      accent: accent,
+      icon: isSeasonPass ? Icons.emoji_events : Icons.flash_on,
+      primaryValue: price,
+      secondaryValue: secondaryBits.join(' · '),
+      badgeLabel: isSeasonPass
+          ? l10n.premiumUiBadgeSeasonPass
+          : l10n.premiumUiBadgeEventPass,
+      actionLabel: l10n.premiumUiBuyPassCta(price),
+      infoTitle: resolvedTitle,
+      infoBody: resolvedDescription,
+      highlighted: highlighted,
+      onPressed: _processingCheckout
+          ? null
+          : () => _startCheckout(
+              'one_time',
+              productKey: (product['key'] ?? '').toString(),
+            ),
+    );
+  }
+
   Widget _buildCreditPurchases(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1511,6 +1665,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView(
+        controller: _scrollController,
         padding: const EdgeInsets.all(16),
         children: [
           Text(
@@ -1527,6 +1682,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
           _buildStatusStrip(l10n),
           const SizedBox(height: 24),
           _buildVipPlans(l10n),
+          if (_passPurchaseOffers.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            _buildPassPurchases(l10n),
+          ],
           const SizedBox(height: 24),
           _buildCreditPurchases(l10n),
           const SizedBox(height: 24),

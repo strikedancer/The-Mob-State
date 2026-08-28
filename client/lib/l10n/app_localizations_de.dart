@@ -4734,6 +4734,30 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wählen Sie über die visuellen Kacheln ein Bündel aus. Die beliebte 1000-Credit-Option erhält ein eigenes Rampenlicht.';
 
   @override
+  String get premiumUiSectionPassesTitle => 'Season & event passes';
+
+  @override
+  String get premiumUiSectionPassesSubtitle =>
+      'One-time unlocks for the monthly Season Pass premium track and short event boosts.';
+
+  @override
+  String get premiumUiBadgeSeasonPass => 'Season Pass';
+
+  @override
+  String get premiumUiBadgeEventPass => 'Event Pass';
+
+  @override
+  String get premiumUiSeasonPassFallbackTitle => 'Season Pass (this month)';
+
+  @override
+  String get premiumUiEventPassFallbackTitle => 'Event Pass';
+
+  @override
+  String premiumUiBuyPassCta(String price) {
+    return 'Buy · $price';
+  }
+
+  @override
   String get premiumUiNoCreditBundles =>
       'Derzeit sind keine aktiven Kreditpakete vorhanden.';
 

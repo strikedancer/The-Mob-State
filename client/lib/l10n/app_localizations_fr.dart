@@ -4748,6 +4748,30 @@ class AppLocalizationsFr extends AppLocalizations {
       'Choisissez un lot via des vignettes visuelles. L\'option populaire de 1 000 crédits bénéficie de son propre intérêt.';
 
   @override
+  String get premiumUiSectionPassesTitle => 'Season & event passes';
+
+  @override
+  String get premiumUiSectionPassesSubtitle =>
+      'One-time unlocks for the monthly Season Pass premium track and short event boosts.';
+
+  @override
+  String get premiumUiBadgeSeasonPass => 'Season Pass';
+
+  @override
+  String get premiumUiBadgeEventPass => 'Event Pass';
+
+  @override
+  String get premiumUiSeasonPassFallbackTitle => 'Season Pass (this month)';
+
+  @override
+  String get premiumUiEventPassFallbackTitle => 'Event Pass';
+
+  @override
+  String premiumUiBuyPassCta(String price) {
+    return 'Buy · $price';
+  }
+
+  @override
   String get premiumUiNoCreditBundles =>
       'Il n’y a aucun forfait de crédit actif pour le moment.';
 

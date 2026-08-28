@@ -4699,6 +4699,30 @@ class AppLocalizationsNl extends AppLocalizations {
       'Kies een bundel via visuele tegels. Populaire optie met 1000 credits krijgt zijn eigen spotlight.';
 
   @override
+  String get premiumUiSectionPassesTitle => 'Season- & eventpassen';
+
+  @override
+  String get premiumUiSectionPassesSubtitle =>
+      'Eenmalige unlocks voor het maandelijkse Season Pass premium-track en korte event-boosts.';
+
+  @override
+  String get premiumUiBadgeSeasonPass => 'Season Pass';
+
+  @override
+  String get premiumUiBadgeEventPass => 'Event Pass';
+
+  @override
+  String get premiumUiSeasonPassFallbackTitle => 'Season Pass (deze maand)';
+
+  @override
+  String get premiumUiEventPassFallbackTitle => 'Event Pass';
+
+  @override
+  String premiumUiBuyPassCta(String price) {
+    return 'Koop · $price';
+  }
+
+  @override
   String get premiumUiNoCreditBundles =>
       'Er zijn nu geen creditbundels actief.';
 
