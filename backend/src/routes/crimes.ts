@@ -10,6 +10,7 @@ import { applyReputationDelta } from '../services/reputationService';
 import { resolveSelectedCrimeVehicle } from '../services/vehicleToolService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
 import { gameEventService } from '../services/gameEventService';
+import { seasonPassService } from '../services/seasonPassService';
 
 const router = Router();
 
@@ -288,6 +289,14 @@ router.post(
     // Record event contribution (fire-and-forget)
     if (result.success) {
       gameEventService.recordContribution(req.player!.id, 'crime', 1).catch(() => {});
+      const reward = Math.floor(Number(result.reward ?? 0));
+      const xpGained = Math.floor(Number(result.xpGained ?? 0));
+      if (reward > 0) {
+        seasonPassService.addSeasonPassProgress(req.player!.id, 'money', reward).catch(() => {});
+      }
+      if (xpGained > 0) {
+        seasonPassService.addSeasonPassProgress(req.player!.id, 'xp', xpGained).catch(() => {});
+      }
     }
 
     // Reputation changes on crime outcomes and FBI escalation.

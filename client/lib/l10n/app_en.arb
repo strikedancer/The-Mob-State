@@ -502,7 +502,52 @@
       "season": { "type": "String" }
     }
   },
-  "seasonPassSubtitle": "Play live events to earn pass XP. Free rewards for everyone — unlock the premium track once for €7.99 this month (not a subscription).",
+  "seasonPassSubtitle": "50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Event prize (free) and Season Pass bonus (premium) per row.",
+  "seasonPassGoalsProgress": "{completed} / {total} goals reached",
+  "@seasonPassGoalsProgress": {
+    "placeholders": {
+      "completed": { "type": "String" },
+      "total": { "type": "String" }
+    }
+  },
+  "seasonPassColumnGoal": "Goal",
+  "seasonPassColumnEvent": "Event",
+  "seasonPassColumnPremium": "Pass",
+  "seasonPassGoalCrime": "Complete {count} crimes",
+  "@seasonPassGoalCrime": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "seasonPassGoalVehicles": "Steal {count} vehicles",
+  "@seasonPassGoalVehicles": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "seasonPassGoalSmuggling": "Smuggle {count} units",
+  "@seasonPassGoalSmuggling": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "seasonPassGoalDrugs": "Produce {count} drugs",
+  "@seasonPassGoalDrugs": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "seasonPassGoalMoney": "Earn {amount} cash",
+  "@seasonPassGoalMoney": {
+    "placeholders": { "amount": { "type": "String" } }
+  },
+  "seasonPassGoalXp": "Gain {count} XP",
+  "@seasonPassGoalXp": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "seasonPassGoalGeneric": "Reach {count}",
+  "@seasonPassGoalGeneric": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "seasonPassGoalProgress": "{current} done · {remaining} to go",
+  "@seasonPassGoalProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "remaining": { "type": "int" }
+    }
+  },
   "seasonPassScore": "Pass XP: {score}",
   "@seasonPassScore": {
     "placeholders": {
@@ -538,6 +583,7 @@
   "seasonPassRewardWeapon": "Weapon",
   "seasonPassRewardParts": "Parts",
   "seasonPassRewardBundle": "Reward pack",
+  "seasonPassRewardXp": "XP boost",
   "aviation": "Aviation",
   "premiumAndCredits": "Premium & Credits",
   "bank": "Bank",

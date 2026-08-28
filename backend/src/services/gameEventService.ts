@@ -645,9 +645,12 @@ class GameEventService {
         select: { id: true },
       });
 
+      const passCategory = seasonPassService.mapEventCategoryToSeasonPass(category);
+      if (passCategory) {
+        void seasonPassService.addSeasonPassProgress(playerId, passCategory, boostedAmount);
+      }
+
       if (!activeEvents.length) {
-        // Still advance season pass from gameplay even without a live weekly event.
-        void seasonPassService.addSeasonPassScore(playerId, boostedAmount);
         return;
       }
 
@@ -677,7 +680,6 @@ class GameEventService {
         ),
       );
 
-      void seasonPassService.addSeasonPassScore(playerId, boostedAmount);
     } catch (err) {
       console.error('[GameEventService] recordContribution error:', err);
     }

@@ -9908,5 +9908,87 @@
   "seasonPassRewardVehicle": "Rare vehicle",
   "seasonPassRewardWeapon": "Weapon",
   "seasonPassRewardParts": "Parts",
-  "seasonPassRewardBundle": "Reward pack"
+  "seasonPassRewardBundle": "Reward pack",
+  "seasonPassGoalsProgress": "{completed} / {total} goals reached",
+  "@seasonPassGoalsProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassColumnGoal": "Goal",
+  "seasonPassColumnEvent": "Event",
+  "seasonPassColumnPremium": "Pass",
+  "seasonPassGoalCrime": "Complete {count} crimes",
+  "@seasonPassGoalCrime": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPassGoalVehicles": "Steal {count} vehicles",
+  "@seasonPassGoalVehicles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPassGoalSmuggling": "Smuggle {count} units",
+  "@seasonPassGoalSmuggling": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPassGoalDrugs": "Produce {count} drugs",
+  "@seasonPassGoalDrugs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPassGoalMoney": "Earn {amount} cash",
+  "@seasonPassGoalMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonPassGoalXp": "Gain {count} XP",
+  "@seasonPassGoalXp": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPassGoalGeneric": "Reach {count}",
+  "@seasonPassGoalGeneric": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPassGoalProgress": "{current} done · {remaining} to go",
+  "@seasonPassGoalProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonPassRewardXp": "XP boost"
 }

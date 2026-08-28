@@ -480,6 +480,18 @@ class JobService {
       } catch (err) {
         console.error('[JobService] Failed to log JOB activity:', err);
       }
+
+      try {
+        const { seasonPassService } = await import('./seasonPassService');
+        if (earnings > 0) {
+          void seasonPassService.addSeasonPassProgress(playerId, 'money', earnings);
+        }
+        if (xpGained > 0) {
+          void seasonPassService.addSeasonPassProgress(playerId, 'xp', xpGained);
+        }
+      } catch (err) {
+        console.error('[JobService] Season pass progress failed:', err);
+      }
     } else {
       try {
         await worldEventService.createEvent(

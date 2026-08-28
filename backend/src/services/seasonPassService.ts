@@ -1,138 +1,30 @@
 /**
  * Monthly Season Pass (€7.99 one-shot, not a subscription).
- * Free track for everyone; premium track unlocks after Mollie purchase for the current YYYY-MM season.
- * Progress comes from live-event contributions (any category).
+ * 50 category-specific goals per month; free track for everyone, premium after Mollie purchase.
  */
 
 import prisma from '../lib/prisma';
-import {
-  fulfillExtendedEventRewards,
-  parseExtendedEventRewards,
-} from './eventRewardFulfillmentService';
+import { fulfillExtendedEventRewards } from './eventRewardFulfillmentService';
 import { creditEventItem } from './eventItemService';
 import { grantPurchasedCredits } from './premiumCreditsService';
+import {
+  SEASON_PASS_LEVELS,
+  SeasonPassGoalCategory,
+  SeasonPassLevelDef,
+} from './seasonPassLevels';
 
 export type SeasonPassTrack = 'free' | 'premium';
 
-export type SeasonPassLevelDef = {
-  level: number;
-  scoreRequired: number;
-  free: Record<string, unknown>;
-  premium: Record<string, unknown>;
-};
+export type { SeasonPassLevelDef, SeasonPassGoalCategory };
 
-const SEASON_PASS_LEVELS: SeasonPassLevelDef[] = [
-  {
-    level: 1,
-    scoreRequired: 10,
-    free: { cash: 2_500, ammo: [{ ammoType: '9mm', quantity: 20 }] },
-    premium: { cash: 7_500, ammo: [{ ammoType: '9mm', quantity: 50 }], premiumCredits: 2 },
-  },
-  {
-    level: 2,
-    scoreRequired: 30,
-    free: { vehicleParts: { car: 2 }, xp: 50 },
-    premium: {
-      vehicleParts: { car: 5, motorcycle: 2 },
-      tools: [{ toolId: 'bolt_cutter', quantity: 1 }],
-      premiumCredits: 3,
-    },
-  },
-  {
-    level: 3,
-    scoreRequired: 60,
-    free: { ammo: [{ ammoType: '9mm', quantity: 30 }], items: [{ itemKey: 'event_chip_bronze', quantity: 1 }] },
-    premium: {
-      ammo: [{ ammoType: '45acp', quantity: 40 }],
-      items: [{ itemKey: 'event_chip_silver', quantity: 1 }],
-      premiumCredits: 4,
-    },
-  },
-  {
-    level: 4,
-    scoreRequired: 100,
-    free: { cash: 5_000, vehicleParts: { car: 3 } },
-    premium: {
-      cash: 15_000,
-      tools: [{ toolId: 'crowbar', quantity: 1 }],
-      vehicleParts: { car: 8, boat: 2 },
-      premiumCredits: 5,
-    },
-  },
-  {
-    level: 5,
-    scoreRequired: 150,
-    free: { ammo: [{ ammoType: '9mm', quantity: 40 }], xp: 100 },
-    premium: {
-      weapons: [{ weaponId: 'knife', condition: 100 }],
-      ammo: [{ ammoType: '9mm', quantity: 80 }],
-      premiumCredits: 6,
-    },
-  },
-  {
-    level: 6,
-    scoreRequired: 220,
-    free: { vehicleParts: { motorcycle: 2 }, cash: 7_500 },
-    premium: {
-      vehicleParts: { car: 10, motorcycle: 6, boat: 3 },
-      tools: [{ toolId: 'car_theft_tools', quantity: 1 }],
-      premiumCredits: 8,
-    },
-  },
-  {
-    level: 7,
-    scoreRequired: 300,
-    free: { items: [{ itemKey: 'event_chip_silver', quantity: 1 }], ammo: [{ ammoType: '9mm', quantity: 50 }] },
-    premium: {
-      items: [{ itemKey: 'event_chip_gold', quantity: 1 }],
-      ammo: [{ ammoType: '12gauge', quantity: 25 }],
-      premiumCredits: 10,
-    },
-  },
-  {
-    level: 8,
-    scoreRequired: 400,
-    free: { cash: 10_000, xp: 150 },
-    premium: {
-      cash: 30_000,
-      weapons: [{ weaponId: 'handgun_9mm', condition: 100 }],
-      premiumCredits: 12,
-    },
-  },
-  {
-    level: 9,
-    scoreRequired: 550,
-    free: { vehicleParts: { car: 5, boat: 1 }, ammo: [{ ammoType: '9mm', quantity: 60 }] },
-    premium: {
-      vehicleParts: { car: 15, motorcycle: 8, boat: 5 },
-      tools: [{ toolId: 'hacking_laptop', quantity: 1 }],
-      premiumCredits: 15,
-    },
-  },
-  {
-    level: 10,
-    scoreRequired: 750,
-    free: {
-      cash: 20_000,
-      items: [{ itemKey: 'event_chip_gold', quantity: 1 }],
-      xp: 250,
-    },
-    premium: {
-      cash: 50_000,
-      vehicles: [
-        {
-          vehicleId: 'moto_kawasaki_ninja_zx_10r_track_2',
-          condition: 85,
-          fuel: 50,
-          cashFallback: 40_000,
-        },
-      ],
-      weapons: [{ weaponId: 'handgun_heavy', condition: 100 }],
-      items: [{ itemKey: 'event_badge_rival', quantity: 1 }],
-      premiumCredits: 25,
-    },
-  },
-];
+const STAT_COLUMNS: Record<SeasonPassGoalCategory, string> = {
+  crime: 'stat_crime',
+  vehicles: 'stat_vehicles',
+  smuggling: 'stat_smuggling',
+  drugs: 'stat_drugs',
+  money: 'stat_money',
+  xp: 'stat_xp',
+};
 
 let tablesReady = false;
 
@@ -149,6 +41,18 @@ export function seasonWindow(seasonKey: string): { startsAt: Date; endsAt: Date 
   return { startsAt, endsAt };
 }
 
+async function ensureStatColumns(): Promise<void> {
+  for (const col of Object.values(STAT_COLUMNS)) {
+    try {
+      await prisma.$executeRawUnsafe(
+        `ALTER TABLE player_season_pass ADD COLUMN ${col} INT NOT NULL DEFAULT 0`,
+      );
+    } catch {
+      /* column exists */
+    }
+  }
+}
+
 export async function ensureSeasonPassTables(): Promise<void> {
   if (tablesReady) return;
   await prisma.$executeRawUnsafe(`
@@ -157,11 +61,18 @@ export async function ensureSeasonPassTables(): Promise<void> {
       season_key VARCHAR(10) NOT NULL,
       score INT NOT NULL DEFAULT 0,
       premium_unlocked TINYINT(1) NOT NULL DEFAULT 0,
+      stat_crime INT NOT NULL DEFAULT 0,
+      stat_vehicles INT NOT NULL DEFAULT 0,
+      stat_smuggling INT NOT NULL DEFAULT 0,
+      stat_drugs INT NOT NULL DEFAULT 0,
+      stat_money INT NOT NULL DEFAULT 0,
+      stat_xp INT NOT NULL DEFAULT 0,
       updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
       PRIMARY KEY (player_id, season_key),
       INDEX idx_season_pass_season (season_key)
     )
   `);
+  await ensureStatColumns();
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS player_season_pass_claims (
       player_id INT NOT NULL,
@@ -186,18 +97,44 @@ async function ensureRow(playerId: number, seasonKey: string): Promise<void> {
   );
 }
 
-export async function addSeasonPassScore(playerId: number, amount: number): Promise<void> {
+/** @deprecated Prefer addSeasonPassProgress with a specific category. */
+export async function addSeasonPassScore(_playerId: number, _amount: number): Promise<void> {
+  /* no-op: generic score removed in favour of category stats */
+}
+
+export async function addSeasonPassProgress(
+  playerId: number,
+  category: SeasonPassGoalCategory,
+  amount: number,
+): Promise<void> {
   if (amount <= 0) return;
   const seasonKey = currentSeasonKey();
+  const col = STAT_COLUMNS[category];
+  if (!col) return;
   await ensureRow(playerId, seasonKey);
   await prisma.$executeRawUnsafe(
     `UPDATE player_season_pass
-     SET score = score + ?
+     SET ${col} = ${col} + ?, score = score + ?
      WHERE player_id = ? AND season_key = ?`,
+    Math.floor(amount),
     Math.floor(amount),
     playerId,
     seasonKey,
   );
+}
+
+const EVENT_CATEGORY_MAP: Record<string, SeasonPassGoalCategory | undefined> = {
+  crime: 'crime',
+  vehicles: 'vehicles',
+  smuggling: 'smuggling',
+  drugs: 'drugs',
+};
+
+export function mapEventCategoryToSeasonPass(
+  category: string,
+): SeasonPassGoalCategory | null {
+  if (category in STAT_COLUMNS) return category as SeasonPassGoalCategory;
+  return EVENT_CATEGORY_MAP[category] ?? null;
 }
 
 export async function unlockSeasonPassPremium(
@@ -217,7 +154,28 @@ export async function unlockSeasonPassPremium(
 type ProgressRow = {
   score: number;
   premium_unlocked: number | boolean;
+  stat_crime: number;
+  stat_vehicles: number;
+  stat_smuggling: number;
+  stat_drugs: number;
+  stat_money: number;
+  stat_xp: number;
 };
+
+function statsFromRow(row: ProgressRow | undefined) {
+  return {
+    crime: Number(row?.stat_crime ?? 0),
+    vehicles: Number(row?.stat_vehicles ?? 0),
+    smuggling: Number(row?.stat_smuggling ?? 0),
+    drugs: Number(row?.stat_drugs ?? 0),
+    money: Number(row?.stat_money ?? 0),
+    xp: Number(row?.stat_xp ?? 0),
+  };
+}
+
+function progressForGoal(stats: ReturnType<typeof statsFromRow>, def: SeasonPassLevelDef): number {
+  return stats[def.goalCategory] ?? 0;
+}
 
 export async function getSeasonPassStatus(playerId: number) {
   const seasonKey = currentSeasonKey();
@@ -225,12 +183,14 @@ export async function getSeasonPassStatus(playerId: number) {
   await ensureRow(playerId, seasonKey);
 
   const rows = await prisma.$queryRawUnsafe<ProgressRow[]>(
-    `SELECT score, premium_unlocked FROM player_season_pass
+    `SELECT score, premium_unlocked,
+            stat_crime, stat_vehicles, stat_smuggling, stat_drugs, stat_money, stat_xp
+     FROM player_season_pass
      WHERE player_id = ? AND season_key = ? LIMIT 1`,
     playerId,
     seasonKey,
   );
-  const score = Number(rows[0]?.score ?? 0);
+  const stats = statsFromRow(rows[0]);
   const premiumUnlocked = Boolean(rows[0]?.premium_unlocked);
 
   const claimRows = await prisma.$queryRawUnsafe<
@@ -244,10 +204,14 @@ export async function getSeasonPassStatus(playerId: number) {
   const claimed = new Set(claimRows.map((r) => `${r.track}:${r.level}`));
 
   const levels = SEASON_PASS_LEVELS.map((def) => {
-    const unlocked = score >= def.scoreRequired;
+    const progress = progressForGoal(stats, def);
+    const unlocked = progress >= def.goalTarget;
     return {
       level: def.level,
-      scoreRequired: def.scoreRequired,
+      goalCategory: def.goalCategory,
+      goalTarget: def.goalTarget,
+      progress,
+      remaining: Math.max(0, def.goalTarget - progress),
       unlocked,
       free: {
         rewards: def.free,
@@ -263,21 +227,24 @@ export async function getSeasonPassStatus(playerId: number) {
     };
   });
 
-  const nextLevel = SEASON_PASS_LEVELS.find((l) => score < l.scoreRequired) ?? null;
+  const nextLevel = levels.find((l) => !l.unlocked) ?? null;
 
   return {
     seasonKey,
     startsAt,
     endsAt,
-    score,
+    totalGoals: SEASON_PASS_LEVELS.length,
+    stats,
     premiumUnlocked,
     priceEurCents: 799,
     productKey: 'season_pass_monthly',
     nextLevel: nextLevel
       ? {
           level: nextLevel.level,
-          scoreRequired: nextLevel.scoreRequired,
-          remaining: Math.max(0, nextLevel.scoreRequired - score),
+          goalCategory: nextLevel.goalCategory,
+          goalTarget: nextLevel.goalTarget,
+          progress: nextLevel.progress,
+          remaining: nextLevel.remaining,
         }
       : null,
     levels,
@@ -376,6 +343,8 @@ export const seasonPassService = {
   seasonWindow,
   ensureSeasonPassTables,
   addSeasonPassScore,
+  addSeasonPassProgress,
+  mapEventCategoryToSeasonPass,
   unlockSeasonPassPremium,
   getSeasonPassStatus,
   claimSeasonPassReward,

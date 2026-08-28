@@ -957,7 +957,61 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get seasonPassSubtitle =>
-      'Speel live events voor pass-XP. Gratis beloningen voor iedereen — ontgrendel het premium track eenmalig voor €7,99 deze maand (geen abonnement).';
+      '50 maandelijkse doelen: misdaden, voertuigen, smokkel, drugs, verdiend geld en XP. Event-beloning (gratis) en Season Pass-bonus (premium) per regel.';
+
+  @override
+  String seasonPassGoalsProgress(String completed, String total) {
+    return '$completed / $total doelen behaald';
+  }
+
+  @override
+  String get seasonPassColumnGoal => 'Doel';
+
+  @override
+  String get seasonPassColumnEvent => 'Event';
+
+  @override
+  String get seasonPassColumnPremium => 'Pass';
+
+  @override
+  String seasonPassGoalCrime(int count) {
+    return 'Voltooi $count misdaden';
+  }
+
+  @override
+  String seasonPassGoalVehicles(int count) {
+    return 'Steel $count voertuigen';
+  }
+
+  @override
+  String seasonPassGoalSmuggling(int count) {
+    return 'Smuggle $count eenheden';
+  }
+
+  @override
+  String seasonPassGoalDrugs(int count) {
+    return 'Produceer $count drugs';
+  }
+
+  @override
+  String seasonPassGoalMoney(String amount) {
+    return 'Verdien $amount';
+  }
+
+  @override
+  String seasonPassGoalXp(int count) {
+    return 'Verdien $count XP';
+  }
+
+  @override
+  String seasonPassGoalGeneric(int count) {
+    return 'Bereik $count';
+  }
+
+  @override
+  String seasonPassGoalProgress(int current, int remaining) {
+    return '$current gedaan · nog $remaining';
+  }
 
   @override
   String seasonPassScore(String score) {
@@ -1018,6 +1072,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get seasonPassRewardBundle => 'Beloningspakket';
+
+  @override
+  String get seasonPassRewardXp => 'XP-bonus';
 
   @override
   String get aviation => 'Luchtvaart';

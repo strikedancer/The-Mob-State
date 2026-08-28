@@ -1859,8 +1859,80 @@ abstract class AppLocalizations {
   /// No description provided for @seasonPassSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Play live events to earn pass XP. Free rewards for everyone — unlock the premium track once for €7.99 this month (not a subscription).'**
+  /// **'50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Event prize (free) and Season Pass bonus (premium) per row.'**
   String get seasonPassSubtitle;
+
+  /// No description provided for @seasonPassGoalsProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} / {total} goals reached'**
+  String seasonPassGoalsProgress(String completed, String total);
+
+  /// No description provided for @seasonPassColumnGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get seasonPassColumnGoal;
+
+  /// No description provided for @seasonPassColumnEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get seasonPassColumnEvent;
+
+  /// No description provided for @seasonPassColumnPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Pass'**
+  String get seasonPassColumnPremium;
+
+  /// No description provided for @seasonPassGoalCrime.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete {count} crimes'**
+  String seasonPassGoalCrime(int count);
+
+  /// No description provided for @seasonPassGoalVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal {count} vehicles'**
+  String seasonPassGoalVehicles(int count);
+
+  /// No description provided for @seasonPassGoalSmuggling.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggle {count} units'**
+  String seasonPassGoalSmuggling(int count);
+
+  /// No description provided for @seasonPassGoalDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Produce {count} drugs'**
+  String seasonPassGoalDrugs(int count);
+
+  /// No description provided for @seasonPassGoalMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn {amount} cash'**
+  String seasonPassGoalMoney(String amount);
+
+  /// No description provided for @seasonPassGoalXp.
+  ///
+  /// In en, this message translates to:
+  /// **'Gain {count} XP'**
+  String seasonPassGoalXp(int count);
+
+  /// No description provided for @seasonPassGoalGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach {count}'**
+  String seasonPassGoalGeneric(int count);
+
+  /// No description provided for @seasonPassGoalProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} done · {remaining} to go'**
+  String seasonPassGoalProgress(int current, int remaining);
 
   /// No description provided for @seasonPassScore.
   ///
@@ -1969,6 +2041,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reward pack'**
   String get seasonPassRewardBundle;
+
+  /// No description provided for @seasonPassRewardXp.
+  ///
+  /// In en, this message translates to:
+  /// **'XP boost'**
+  String get seasonPassRewardXp;
 
   /// No description provided for @aviation.
   ///
