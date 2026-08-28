@@ -26,7 +26,31 @@ enum SeasonPassRewardKind {
 
 const _tilesBase = 'images/premium_tiles';
 
-String? _weaponImagePath(Map<String, dynamic> rewards) {
+const _weaponLabels = <String, String>{
+  'knife': 'Mes',
+  'handgun_9mm': 'Pistool 9mm',
+  'handgun_heavy': 'Zwaar pistool',
+  'smg_compact': 'Compacte SMG',
+  'smg_suppressed': 'SMG (demper)',
+  'shotgun_pump': 'Pump shotgun',
+  'shotgun_tactical': 'Tactische shotgun',
+  'assault_rifle': 'Aanvalsgeweer',
+  'sniper_standard': 'Sluipschuttersgeweer',
+  'molotov': 'Molotov',
+  'grenade_flash': 'Flashbang',
+  'grenade_frag': 'Granaat',
+};
+
+const _toolLabels = <String, String>{
+  'bolt_cutter': 'Betonschaar',
+  'crowbar': 'Koevoet',
+  'car_theft_tools': 'Auto-gereedschap',
+  'hacking_laptop': 'Hacking laptop',
+  'gps_jammer': 'GPS-jammer',
+  'toolbox': 'Gereedschapskist',
+};
+
+String? _weaponIdFromRewards(Map<String, dynamic> rewards) {
   if (rewards['weapons'] is! List || (rewards['weapons'] as List).isEmpty) {
     return null;
   }
@@ -34,7 +58,32 @@ String? _weaponImagePath(Map<String, dynamic> rewards) {
   if (first is! Map) return null;
   final id = first['weaponId']?.toString().trim();
   if (id == null || id.isEmpty) return null;
+  return id;
+}
+
+String? _toolIdFromRewards(Map<String, dynamic> rewards) {
+  if (rewards['tools'] is! List || (rewards['tools'] as List).isEmpty) {
+    return null;
+  }
+  final first = (rewards['tools'] as List).first;
+  if (first is! Map) return null;
+  final id = first['toolId']?.toString().trim();
+  if (id == null || id.isEmpty) return null;
+  return id;
+}
+
+String? _weaponImagePath(Map<String, dynamic> rewards) {
+  final id = _weaponIdFromRewards(rewards);
+  if (id == null) return null;
   return 'images/weapons/$id.png';
+}
+
+String _weaponLabel(String weaponId, String fallback) {
+  return _weaponLabels[weaponId] ?? fallback;
+}
+
+String _toolLabel(String toolId, String fallback) {
+  return _toolLabels[toolId] ?? fallback;
 }
 
 SeasonPassRewardDisplay seasonPassRewardDisplay(
@@ -61,7 +110,10 @@ SeasonPassRewardDisplay seasonPassRewardDisplay(
   final hasVehicle =
       rewards['vehicles'] is List && (rewards['vehicles'] as List).isNotEmpty;
   final weaponPath = _weaponImagePath(rewards);
-  final hasWeapon = weaponPath != null;
+  final weaponId = _weaponIdFromRewards(rewards);
+  final hasWeapon = weaponPath != null && weaponId != null;
+  final toolId = _toolIdFromRewards(rewards);
+  final hasTool = toolId != null;
   final hasAmmo =
       rewards['ammo'] is List && (rewards['ammo'] as List).isNotEmpty;
   final hasParts = rewards['vehicleParts'] is Map;
@@ -75,11 +127,20 @@ SeasonPassRewardDisplay seasonPassRewardDisplay(
     );
   }
   if (hasWeapon) {
+    final name = _weaponLabel(weaponId, weaponLabel);
     return SeasonPassRewardDisplay(
       imagePath: weaponPath,
-      label: cash > 0 ? formatCash(cash) : weaponLabel,
-      subtitle: cash > 0 ? weaponLabel : null,
+      label: name,
+      subtitle: cash > 0 ? formatCash(cash) : null,
       kind: SeasonPassRewardKind.weapon,
+    );
+  }
+  if (hasTool) {
+    return SeasonPassRewardDisplay(
+      imagePath: 'images/ui/materials_inventory.png',
+      label: _toolLabel(toolId, partsLabel),
+      subtitle: cash > 0 ? formatCash(cash) : null,
+      kind: SeasonPassRewardKind.parts,
     );
   }
   if (credits > 0) {

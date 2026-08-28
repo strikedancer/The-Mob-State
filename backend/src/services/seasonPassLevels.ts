@@ -38,6 +38,45 @@ const CATEGORY_TARGETS: Record<SeasonPassGoalCategory, number[]> = {
   xp: [100, 300, 700, 1_500, 3_000, 5_500, 9_000, 14_000],
 };
 
+/** Non-VIP weapons for premium track — each used at most once per season ladder. */
+const PREMIUM_WEAPON_SCHEDULE: Array<{ level: number; weaponId: string; ammo?: { ammoType: string; quantity: number } }> = [
+  { level: 7, weaponId: 'knife', ammo: { ammoType: '9mm', quantity: 30 } },
+  { level: 13, weaponId: 'molotov' },
+  { level: 19, weaponId: 'handgun_9mm', ammo: { ammoType: '9mm', quantity: 60 } },
+  { level: 25, weaponId: 'handgun_heavy', ammo: { ammoType: '45acp', quantity: 40 } },
+  { level: 31, weaponId: 'smg_compact', ammo: { ammoType: '9mm', quantity: 90 } },
+  { level: 37, weaponId: 'shotgun_pump', ammo: { ammoType: '12gauge', quantity: 40 } },
+  { level: 43, weaponId: 'smg_suppressed', ammo: { ammoType: '9mm', quantity: 100 } },
+  { level: 47, weaponId: 'shotgun_tactical', ammo: { ammoType: '12gauge', quantity: 50 } },
+];
+
+const PREMIUM_TOOL_SCHEDULE: Array<{ level: number; toolId: string }> = [
+  { level: 10, toolId: 'bolt_cutter' },
+  { level: 20, toolId: 'crowbar' },
+  { level: 30, toolId: 'car_theft_tools' },
+  { level: 40, toolId: 'hacking_laptop' },
+];
+
+const PREMIUM_AMMO_ROTATION = ['9mm', '45acp', '12gauge', '762mm', '556mm', '308'] as const;
+
+function premiumWeaponGrant(level: number): Record<string, unknown> | null {
+  const entry = PREMIUM_WEAPON_SCHEDULE.find((w) => w.level === level);
+  if (!entry) return null;
+  const grant: Record<string, unknown> = {
+    weapons: [{ weaponId: entry.weaponId, condition: 100 }],
+  };
+  if (entry.ammo) {
+    grant.ammo = [entry.ammo];
+  }
+  return grant;
+}
+
+function premiumToolGrant(level: number): Record<string, unknown> | null {
+  const entry = PREMIUM_TOOL_SCHEDULE.find((t) => t.level === level);
+  if (!entry) return null;
+  return { tools: [{ toolId: entry.toolId, quantity: 1 }] };
+}
+
 function freeReward(level: number, category: SeasonPassGoalCategory): Record<string, unknown> {
   const cash = Math.floor(1_500 + level * 800 + (category === 'money' ? 2_000 : 0));
   if (level % 10 === 0) {
@@ -81,37 +120,84 @@ function premiumReward(level: number, category: SeasonPassGoalCategory): Record<
           cashFallback: 45_000,
         },
       ],
-      weapons: [{ weaponId: 'handgun_heavy', condition: 100 }],
+      weapons: [{ weaponId: 'assault_rifle', condition: 100 }],
+      ammo: [{ ammoType: '762mm', quantity: 120 }],
       items: [{ itemKey: 'event_badge_rival', quantity: 1 }],
       premiumCredits: 25,
     };
   }
+
+  const weaponGrant = premiumWeaponGrant(level);
+  if (weaponGrant) {
+    return {
+      cash,
+      premiumCredits: credits || 3,
+      ...weaponGrant,
+    };
+  }
+
+  const toolGrant = premiumToolGrant(level);
+  if (toolGrant) {
+    return {
+      cash: cash * 2,
+      premiumCredits: credits || 5,
+      items: [
+        {
+          itemKey: level >= 30 ? 'event_chip_gold' : 'event_chip_silver',
+          quantity: 1,
+        },
+      ],
+      ...toolGrant,
+    };
+  }
+
   if (level % 10 === 0) {
     return {
       cash: cash * 2,
-      tools: [{ toolId: level >= 30 ? 'hacking_laptop' : 'car_theft_tools', quantity: 1 }],
       premiumCredits: credits || 5,
-      items: [{ itemKey: level >= 30 ? 'event_chip_gold' : 'event_chip_silver', quantity: 1 }],
+      items: [
+        {
+          itemKey: level >= 30 ? 'event_chip_gold' : 'event_chip_silver',
+          quantity: 1,
+        },
+      ],
+      ammo: [
+        {
+          ammoType: PREMIUM_AMMO_ROTATION[(level / 10 - 1) % PREMIUM_AMMO_ROTATION.length],
+          quantity: 35 + level,
+        },
+      ],
     };
   }
-  if (level % 7 === 0) {
-    return {
-      cash,
-      weapons: [{ weaponId: level >= 35 ? 'handgun_9mm' : 'knife', condition: 100 }],
-      ammo: [{ ammoType: '9mm', quantity: 40 + level }],
-      premiumCredits: credits || 3,
-    };
-  }
+
   if (category === 'vehicles') {
     return {
       cash,
-      vehicleParts: { car: 3 + Math.floor(level / 6), motorcycle: 2, boat: level >= 30 ? 1 : 0 },
+      vehicleParts: {
+        car: 3 + Math.floor(level / 6),
+        motorcycle: 2,
+        boat: level >= 30 ? 1 : 0,
+      },
       premiumCredits: credits || 2,
     };
   }
+
+  if (category === 'crime' || category === 'smuggling') {
+    return {
+      cash,
+      ammo: [
+        {
+          ammoType: PREMIUM_AMMO_ROTATION[(level - 1) % PREMIUM_AMMO_ROTATION.length],
+          quantity: 20 + level,
+        },
+      ],
+      premiumCredits: credits || 2,
+    };
+  }
+
   return {
     cash,
-    ammo: [{ ammoType: level >= 25 ? '12gauge' : '45acp', quantity: 25 + level }],
+    xp: 20 + Math.floor(level / 2),
     premiumCredits: credits || 2,
   };
 }
