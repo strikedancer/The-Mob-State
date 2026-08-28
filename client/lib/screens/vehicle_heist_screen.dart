@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/vehicle.dart';
 import '../providers/auth_provider.dart';
 import '../providers/vehicle_provider.dart';
 import '../services/api_client.dart';
@@ -14,8 +15,8 @@ import '../utils/formatters.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
-import '../widgets/crime_result_overlay.dart';
 import '../widgets/jail_screen.dart';
+import '../widgets/stolen_vehicle_dialog.dart';
 import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/theft_cooldown_steal_control.dart';
 import '../widgets/vehicle_catalog_dialog.dart';
@@ -63,6 +64,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   String _stealResultTitle = '';
   String? _stealResultMessage;
   int _stealResultXp = 0;
+  VehicleInventoryItem? _stealResultVehicle;
   int _jailContentEpoch = 0;
   final Map<int, int> _stealCreditHintByTab = {};
   bool _opsPanelExpanded = false;
@@ -842,6 +844,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _stealResultTitle = vehicleName;
           _stealResultMessage = l10n.vehicleHeistSuccessStolen(vehicleName);
           _stealResultXp = stealXpGained;
+          _stealResultVehicle = stolenVehicle;
         });
       } else if (stealArrested) {
         setState(() {
@@ -851,6 +854,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _stealResultMessage =
               l10n.vehicleHeistArrested(stealJail.toString());
           _stealResultXp = 0;
+          _stealResultVehicle = null;
         });
       } else if (stealCooldown > 0) {
         setState(() {
@@ -860,6 +864,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _stealResultMessage = stealError ??
               l10n.vehicleHeistCooldownActive(_formatCooldown(stealCooldown));
           _stealResultXp = 0;
+          _stealResultVehicle = null;
         });
       } else if (lockActive) {
         final ends = DateTime.tryParse(lockEndsAt ?? '');
@@ -878,6 +883,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   : (lockReasonEn ?? l10n.vehicleHeistRegionalLockActive)) +
               endsSuffix;
           _stealResultXp = 0;
+          _stealResultVehicle = null;
         });
       } else {
         setState(() {
@@ -886,6 +892,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _stealResultTitle = typeLabel;
           _stealResultMessage = stealError ?? l10n.vehicleHeistStealFailed;
           _stealResultXp = 0;
+          _stealResultVehicle = null;
         });
       }
     } finally {
@@ -2036,18 +2043,15 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final l10n = AppLocalizations.of(context)!;
 
     if (_showStealResult) {
-      final result = CrimeResultOverlay(
+      final result = VehicleTheftResultOverlay(
         embedded: widget.embedded,
         isSuccess: _stealResultSuccess,
-        headline: _stealResultSuccess
-            ? l10n.vehicleHeistStolenHeadline
-            : l10n.jobOutcomeFailed,
-        crimeName: _stealResultTitle.isNotEmpty
+        vehicle: _stealResultVehicle,
+        title: _stealResultTitle.isNotEmpty
             ? _stealResultTitle
             : l10n.vehicleHeistTitle,
-        reward: 0,
+        message: _stealResultMessage,
         xpGained: _stealResultXp,
-        flavorLine: _stealResultMessage,
         onContinue: () {
           if (!mounted) return;
           setState(() {
@@ -2056,6 +2060,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
             _stealResultTitle = '';
             _stealResultMessage = null;
             _stealResultXp = 0;
+            _stealResultVehicle = null;
           });
         },
       );
