@@ -80,11 +80,11 @@ class CrimeResultOverlay extends StatelessWidget {
                       color: accent.withOpacity(0.16),
                       border: Border.all(color: accent, width: 1.4),
                     ),
-                    child: Icon(
-                      isSuccess ? Icons.emoji_events : Icons.work_off_outlined,
-                      size: compactWidth ? 30 : 34,
-                      color: accent,
-                    ),
+                      child: Icon(
+                        isSuccess ? Icons.emoji_events : Icons.cancel_outlined,
+                        size: compactWidth ? 30 : 34,
+                        color: accent,
+                      ),
                   ),
                   const SizedBox(height: 14),
                   Text(
@@ -157,41 +157,44 @@ class CrimeResultOverlay extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 22),
-                  if (isSuccess)
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: compactWidth ? double.infinity : 220,
-                          child: _ResultStat(
-                            icon: Icons.payments_outlined,
-                            label: l10n.crimeResultMoneyLabel,
-                            value: '+${formatCurrency(reward)}',
-                            valueColor: _resultMoney,
-                            accent: accent,
-                          ),
-                        ),
-                        SizedBox(
-                          width: compactWidth ? double.infinity : 220,
-                          child: _ResultStat(
-                            icon: Icons.auto_awesome,
-                            label: l10n.crimeResultXpLabel,
-                            value: l10n.jobXpRewardShort(xpGained.toString()),
-                            valueColor: accent,
-                            accent: accent,
-                          ),
-                        ),
-                      ],
-                    )
-                  else
+                  if (isSuccess) ...[
+                    if (reward > 0 || xpGained > 0)
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          if (reward > 0)
+                            SizedBox(
+                              width: compactWidth ? double.infinity : 220,
+                              child: _ResultStat(
+                                icon: Icons.payments_outlined,
+                                label: l10n.crimeResultMoneyLabel,
+                                value: '+${formatCurrency(reward)}',
+                                valueColor: _resultMoney,
+                                accent: accent,
+                              ),
+                            ),
+                          if (xpGained > 0)
+                            SizedBox(
+                              width: compactWidth ? double.infinity : 220,
+                              child: _ResultStat(
+                                icon: Icons.auto_awesome,
+                                label: l10n.crimeResultXpLabel,
+                                value: l10n.jobXpRewardShort(xpGained.toString()),
+                                valueColor: accent,
+                                accent: accent,
+                              ),
+                            ),
+                        ],
+                      ),
+                  ] else if (xpLost > 0)
                     SizedBox(
                       width: compactWidth ? double.infinity : 260,
                       child: _ResultStat(
                         icon: Icons.trending_down,
                         label: l10n.jobResultXpLostLabel,
-                        value: xpLost > 0 ? '−$xpLost XP' : l10n.gameScreenDash,
+                        value: '−$xpLost XP',
                         valueColor: const Color(0xFFFF8A80),
                         accent: accent,
                       ),

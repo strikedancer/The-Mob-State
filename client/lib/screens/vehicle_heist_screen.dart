@@ -14,10 +14,10 @@ import '../utils/formatters.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/crime_result_overlay.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/theft_cooldown_steal_control.dart';
-import '../widgets/stolen_vehicle_dialog.dart';
 import '../widgets/vehicle_catalog_dialog.dart';
 import 'events_screen.dart';
 import 'garage_screen.dart';
@@ -58,6 +58,11 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   DateTime? _opsLastRefreshAt;
   final Map<String, Map<String, int>> _laneCapacities = {};
   int? _embeddedJailSeconds;
+  bool _showStealResult = false;
+  bool _stealResultSuccess = false;
+  String _stealResultTitle = '';
+  String? _stealResultMessage;
+  int _stealResultXp = 0;
   int _jailContentEpoch = 0;
   final Map<int, int> _stealCreditHintByTab = {};
   bool _opsPanelExpanded = false;
@@ -820,32 +825,42 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       }
 
       if (!mounted) return;
+
+      final typeLabel = switch (vehicleType) {
+        'motorcycle' => l10n.motorcycle,
+        'boat' => l10n.vehicleTypeBoat,
+        _ => l10n.vehicleTypeCar,
+      };
+
       if (success) {
         unawaited(_loadLiveVehicleEvent());
-        if (stolenVehicle != null) {
-          await showStolenVehicleDialog(
-            context,
-            stolenVehicle,
-            xpGained: stealXpGained,
-          );
-        } else {
-          final gained =
-              provider.lastStolenVehicle?.definition?.name ??
-              l10n.vehicleHeistGenericVehicle;
-          _showTopMessage(
-            l10n.vehicleHeistSuccessStolen(gained),
-            success: true,
-          );
-        }
-      } else if (stealCooldown > 0) {
-        _showTopMessage(
-          stealError ??
-              l10n.vehicleHeistCooldownActive(_formatCooldown(stealCooldown)),
-        );
+        final vehicleName = stolenVehicle?.definition?.name ??
+            l10n.vehicleHeistGenericVehicle;
+        setState(() {
+          _showStealResult = true;
+          _stealResultSuccess = true;
+          _stealResultTitle = vehicleName;
+          _stealResultMessage = l10n.vehicleHeistSuccessStolen(vehicleName);
+          _stealResultXp = stealXpGained;
+        });
       } else if (stealArrested) {
-        _showTopMessage(
-          l10n.vehicleHeistArrested(stealJail.toString()),
-        );
+        setState(() {
+          _showStealResult = true;
+          _stealResultSuccess = false;
+          _stealResultTitle = typeLabel;
+          _stealResultMessage =
+              l10n.vehicleHeistArrested(stealJail.toString());
+          _stealResultXp = 0;
+        });
+      } else if (stealCooldown > 0) {
+        setState(() {
+          _showStealResult = true;
+          _stealResultSuccess = false;
+          _stealResultTitle = typeLabel;
+          _stealResultMessage = stealError ??
+              l10n.vehicleHeistCooldownActive(_formatCooldown(stealCooldown));
+          _stealResultXp = 0;
+        });
       } else if (lockActive) {
         final ends = DateTime.tryParse(lockEndsAt ?? '');
         final endsSuffix = ends == null
@@ -854,17 +869,24 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 ends.difference(DateTime.now().toUtc()).inSeconds.clamp(0, 999999),
                 localeName: l10n.localeName,
               )})';
-        _showTopMessage(
-          (l10n.localeName.startsWith('nl')
+        setState(() {
+          _showStealResult = true;
+          _stealResultSuccess = false;
+          _stealResultTitle = typeLabel;
+          _stealResultMessage = (l10n.localeName.startsWith('nl')
                   ? (lockReasonNl ?? l10n.vehicleHeistRegionalLockActive)
                   : (lockReasonEn ?? l10n.vehicleHeistRegionalLockActive)) +
-              endsSuffix,
-        );
+              endsSuffix;
+          _stealResultXp = 0;
+        });
       } else {
-        _showTopMessage(
-          stealError ??
-              l10n.vehicleHeistStealFailed,
-        );
+        setState(() {
+          _showStealResult = true;
+          _stealResultSuccess = false;
+          _stealResultTitle = typeLabel;
+          _stealResultMessage = stealError ?? l10n.vehicleHeistStealFailed;
+          _stealResultXp = 0;
+        });
       }
     } finally {
       if (mounted) {
@@ -2012,6 +2034,49 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    if (_showStealResult) {
+      final result = CrimeResultOverlay(
+        embedded: widget.embedded,
+        isSuccess: _stealResultSuccess,
+        headline: _stealResultSuccess
+            ? l10n.vehicleHeistStolenHeadline
+            : l10n.jobOutcomeFailed,
+        crimeName: _stealResultTitle.isNotEmpty
+            ? _stealResultTitle
+            : l10n.vehicleHeistTitle,
+        reward: 0,
+        xpGained: _stealResultXp,
+        flavorLine: _stealResultMessage,
+        onContinue: () {
+          if (!mounted) return;
+          setState(() {
+            _showStealResult = false;
+            _stealResultSuccess = false;
+            _stealResultTitle = '';
+            _stealResultMessage = null;
+            _stealResultXp = 0;
+          });
+        },
+      );
+      return widget.embedded
+          ? DecoratedBox(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF1A1210), Color(0xFF0C0A0A)],
+                ),
+              ),
+              child: result,
+            )
+          : Scaffold(
+              backgroundColor: const Color(0xFF0C0A0A),
+              appBar: AppBar(title: Text(l10n.vehicleHeistTitle)),
+              body: result,
+            );
+    }
+
     final content = Consumer<VehicleProvider>(
       builder: (context, provider, _) {
         final l10n = AppLocalizations.of(context)!;
