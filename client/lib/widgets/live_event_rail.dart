@@ -13,14 +13,67 @@ class LiveEventRail extends StatelessWidget {
     super.key,
     required this.activeEvents,
     required this.onOpenEvents,
+    this.claimableByCategory = const {},
     this.maxVisible = 4,
     this.topOffset = 120,
   });
 
   final List<Map<String, dynamic>> activeEvents;
   final VoidCallback onOpenEvents;
+  /// Event Pass claimable reward counts keyed by goal category
+  /// (`crime`, `vehicles`, `smuggling`, `drugs`, `money`, `xp`).
+  final Map<String, int> claimableByCategory;
   final int maxVisible;
   final double topOffset;
+
+  static int claimablesForEventCategory(
+    String? eventCategory,
+    Map<String, int> claimableByCategory,
+  ) {
+    final cat = (eventCategory ?? '').toLowerCase();
+    switch (cat) {
+      case 'crime':
+        return claimableByCategory['crime'] ?? 0;
+      case 'vehicles':
+        return claimableByCategory['vehicles'] ?? 0;
+      case 'smuggling':
+        return claimableByCategory['smuggling'] ?? 0;
+      case 'drugs':
+        return claimableByCategory['drugs'] ?? 0;
+      case 'trade':
+        return claimableByCategory['money'] ?? 0;
+      case 'allround':
+        return (claimableByCategory['money'] ?? 0) +
+            (claimableByCategory['xp'] ?? 0);
+      default:
+        return 0;
+    }
+  }
+
+  /// Money/XP claimables with no matching allround/trade avatar still need a home.
+  static int orphanClaimables(
+    List<Map<String, dynamic>> events,
+    Map<String, int> claimableByCategory,
+  ) {
+    var hasMoneyHome = false;
+    var hasXpHome = false;
+    for (final event in events) {
+      final template = event['template'] is Map
+          ? Map<String, dynamic>.from(event['template'] as Map)
+          : null;
+      final cat = (template?['category']?.toString() ?? '').toLowerCase();
+      if (cat == 'allround') {
+        hasMoneyHome = true;
+        hasXpHome = true;
+      } else if (cat == 'trade') {
+        hasMoneyHome = true;
+      }
+    }
+    var orphan = 0;
+    if (!hasMoneyHome) orphan += claimableByCategory['money'] ?? 0;
+    if (!hasXpHome) orphan += claimableByCategory['xp'] ?? 0;
+    return orphan;
+  }
 
   static ({IconData icon, Color accent}) categoryStyle(String? category) {
     switch ((category ?? '').toLowerCase()) {
@@ -47,6 +100,7 @@ class LiveEventRail extends StatelessWidget {
 
     final visible = activeEvents.take(maxVisible).toList();
     final overflow = activeEvents.length - visible.length;
+    final orphans = orphanClaimables(visible, claimableByCategory);
 
     return Positioned(
       right: 8,
@@ -58,6 +112,16 @@ class LiveEventRail extends StatelessWidget {
             if (i > 0) const SizedBox(height: 10),
             _EventAvatarButton(
               event: visible[i],
+              claimableCount: claimablesForEventCategory(
+                    (visible[i]['template'] is Map
+                            ? Map<String, dynamic>.from(
+                                visible[i]['template'] as Map,
+                              )
+                            : null)?['category']
+                        ?.toString(),
+                    claimableByCategory,
+                  ) +
+                  (i == 0 ? orphans : 0),
               onTap: () => _showEventSheet(context, visible[i]),
             ),
           ],
@@ -209,10 +273,15 @@ class LiveEventRail extends StatelessWidget {
 }
 
 class _EventAvatarButton extends StatefulWidget {
-  const _EventAvatarButton({required this.event, required this.onTap});
+  const _EventAvatarButton({
+    required this.event,
+    required this.onTap,
+    this.claimableCount = 0,
+  });
 
   final Map<String, dynamic> event;
   final VoidCallback onTap;
+  final int claimableCount;
 
   @override
   State<_EventAvatarButton> createState() => _EventAvatarButtonState();
@@ -246,6 +315,10 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
     final l10n = AppLocalizations.of(context)!;
     final title = localizedGameEventTitle(l10n, template);
 
+    final badge = widget.claimableCount > 0
+        ? (widget.claimableCount > 99 ? '99+' : '${widget.claimableCount}')
+        : null;
+
     return Tooltip(
       message: title,
       child: AnimatedBuilder(
@@ -257,25 +330,75 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
             child: InkWell(
               onTap: widget.onTap,
               customBorder: const CircleBorder(),
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF0F1420).withValues(alpha: 0.92),
-                  border: Border.all(
-                    color: style.accent.withValues(alpha: 0.55 + glow * 0.35),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: style.accent.withValues(alpha: glow * 0.55),
-                      blurRadius: 10,
-                      spreadRadius: 0.5,
+              child: SizedBox(
+                width: 52,
+                height: 52,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                      left: 2,
+                      top: 2,
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFF0F1420).withValues(alpha: 0.92),
+                          border: Border.all(
+                            color: style.accent
+                                .withValues(alpha: 0.55 + glow * 0.35),
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: style.accent.withValues(alpha: glow * 0.55),
+                              blurRadius: 10,
+                              spreadRadius: 0.5,
+                            ),
+                          ],
+                        ),
+                        child: Icon(style.icon, color: style.accent, size: 22),
+                      ),
                     ),
+                    if (badge != null)
+                      Positioned(
+                        right: -2,
+                        top: -2,
+                        child: Container(
+                          constraints: const BoxConstraints(
+                            minWidth: 18,
+                            minHeight: 18,
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE53935),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: const Color(0xFF0F1420),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.45),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            badge,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 10,
+                              height: 1.1,
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
-                child: Icon(style.icon, color: style.accent, size: 22),
               ),
             ),
           );

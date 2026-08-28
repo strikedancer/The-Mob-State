@@ -207,6 +207,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _vehicleHeistTabIndex = 0;
   List<Map<String, dynamic>> _gameEventsActive = const [];
+  /// Event Pass claimable counts by goal category for live event rail badges.
+  Map<String, int> _eventPassClaimableByCategory = const {};
   Timer? _gameEventsRefreshTimer;
   /// Accordion: only one side-menu category open at a time (null = all collapsed).
   _NavGroup? _expandedNavGroup;
@@ -223,6 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _selectWebSection(_WebSection section, {String? focusProductKey}) {
+    final previous = _selectedWebSection;
     setState(() {
       if (_selectedWebSection == section) {
         _webSectionRefreshSeed++;
@@ -240,6 +243,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         section == _WebSection.jobs ||
         section == _WebSection.vehicleHeist) {
       _scheduleNavCooldownRefresh();
+    }
+    // Refresh claimable badges after leaving Events (claims happen there).
+    if (previous == _WebSection.events && section != _WebSection.events) {
+      _loadActiveGameEventsForRail();
     }
   }
 
@@ -324,18 +331,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> _loadActiveGameEventsForRail() async {
     try {
       final api = AuthService().apiClient;
-      final response = await api.get('/game-events/overview');
-      if (response.statusCode != 200 || !mounted) return;
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      final active = ((data['active'] as List?) ?? const <dynamic>[])
-          .whereType<Map>()
-          .map((e) => Map<String, dynamic>.from(e))
-          .toList();
+      final results = await Future.wait([
+        api.get('/game-events/overview'),
+        api.get('/season-pass/status'),
+      ]);
       if (!mounted) return;
-      setState(() => _gameEventsActive = active);
+
+      List<Map<String, dynamic>> active = _gameEventsActive;
+      final eventsRes = results[0];
+      if (eventsRes.statusCode == 200) {
+        final data = jsonDecode(eventsRes.body) as Map<String, dynamic>;
+        active = ((data['active'] as List?) ?? const <dynamic>[])
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
+      }
+
+      Map<String, int> claimableByCategory = const {};
+      final passRes = results[1];
+      if (passRes.statusCode == 200) {
+        claimableByCategory = _claimableByCategoryFromSeasonPass(
+          jsonDecode(passRes.body) as Map<String, dynamic>,
+        );
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _gameEventsActive = active;
+        _eventPassClaimableByCategory = claimableByCategory;
+      });
     } catch (_) {
-      // Non-blocking — rail simply stays empty.
+      // Non-blocking — rail simply stays empty / without badges.
     }
+  }
+
+  /// Counts claimable free + premium Event Pass rewards per goal category.
+  Map<String, int> _claimableByCategoryFromSeasonPass(
+    Map<String, dynamic> status,
+  ) {
+    final levels = (status['levels'] as List?) ?? const [];
+    final counts = <String, int>{};
+    for (final raw in levels) {
+      if (raw is! Map) continue;
+      final level = Map<String, dynamic>.from(raw);
+      final cat = level['goalCategory']?.toString() ?? '';
+      if (cat.isEmpty) continue;
+      var n = 0;
+      final free = level['free'];
+      final premium = level['premium'];
+      if (free is Map && free['claimable'] == true) n += 1;
+      if (premium is Map && premium['claimable'] == true) n += 1;
+      if (n > 0) {
+        counts[cat] = (counts[cat] ?? 0) + n;
+      }
+    }
+    return counts;
   }
 
   @override
@@ -1019,6 +1069,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (_selectedWebSection != _WebSection.events)
             LiveEventRail(
               activeEvents: _gameEventsActive,
+              claimableByCategory: _eventPassClaimableByCategory,
               onOpenEvents: () => _selectWebSection(_WebSection.events),
               topOffset: showLeftSidebar ? 96 : 128,
             ),
