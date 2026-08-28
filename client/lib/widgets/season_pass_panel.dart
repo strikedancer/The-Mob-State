@@ -70,7 +70,11 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(l10n.seasonPassClaimSuccess),
+              content: Text(
+                track == 'premium'
+                    ? l10n.seasonPassClaimSuccessPremium
+                    : l10n.seasonPassClaimSuccessFree,
+              ),
               backgroundColor: Colors.green,
             ),
           );

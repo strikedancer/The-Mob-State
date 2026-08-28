@@ -1070,6 +1070,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get seasonPassClaimSuccess => 'Season Pass reward claimed';
 
   @override
+  String get seasonPassClaimSuccessFree => 'Free event prize claimed';
+
+  @override
+  String get seasonPassClaimSuccessPremium =>
+      'Premium Event Pass reward claimed';
+
+  @override
   String get seasonPassClaimFailed => 'Could not claim reward';
 
   @override

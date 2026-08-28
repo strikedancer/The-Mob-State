@@ -3582,6 +3582,8 @@
   "seasonPassClaimed": "Geclaimd",
   "seasonPassLocked": "Vergrendeld",
   "seasonPassClaimSuccess": "Event Pass beloning geclaimd",
+  "seasonPassClaimSuccessFree": "Gratis eventprijs geclaimd",
+  "seasonPassClaimSuccessPremium": "Premium Event Pass-beloning geclaimd",
   "seasonPassClaimFailed": "Claimen mislukt",
   "seasonPassRewardAmmo": "Munitie",
   "seasonPassRewardVehicle": "Zeldzaam voertuig",

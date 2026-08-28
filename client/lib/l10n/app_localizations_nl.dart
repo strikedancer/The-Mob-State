@@ -1061,6 +1061,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get seasonPassClaimSuccess => 'Event Pass beloning geclaimd';
 
   @override
+  String get seasonPassClaimSuccessFree => 'Gratis eventprijs geclaimd';
+
+  @override
+  String get seasonPassClaimSuccessPremium =>
+      'Premium Event Pass-beloning geclaimd';
+
+  @override
   String get seasonPassClaimFailed => 'Claimen mislukt';
 
   @override

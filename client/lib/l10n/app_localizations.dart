@@ -2012,6 +2012,18 @@ abstract class AppLocalizations {
   /// **'Event Pass reward claimed'**
   String get seasonPassClaimSuccess;
 
+  /// No description provided for @seasonPassClaimSuccessFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free event prize claimed'**
+  String get seasonPassClaimSuccessFree;
+
+  /// No description provided for @seasonPassClaimSuccessPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Event Pass reward claimed'**
+  String get seasonPassClaimSuccessPremium;
+
   /// No description provided for @seasonPassClaimFailed.
   ///
   /// In en, this message translates to:
