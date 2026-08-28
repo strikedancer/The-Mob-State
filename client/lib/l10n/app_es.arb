@@ -9990,5 +9990,16 @@
       }
     }
   },
-  "seasonPassRewardXp": "XP boost"
+  "seasonPassRewardXp": "XP boost",
+  "seasonPassGoalRatio": "{current}/{target}",
+  "@seasonPassGoalRatio": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  }
 }

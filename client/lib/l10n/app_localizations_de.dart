@@ -1024,6 +1024,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String seasonPassGoalRatio(int current, int target) {
+    return '$current/$target';
+  }
+
+  @override
   String seasonPassScore(String score) {
     return 'Pass XP: $score';
   }

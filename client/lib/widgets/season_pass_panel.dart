@@ -8,7 +8,7 @@ import '../utils/formatters.dart';
 import '../utils/season_pass_reward_assets.dart';
 import '../utils/top_right_notification.dart';
 
-/// Monthly Season Pass — 50 category goals with event + premium reward columns.
+/// Monthly Season Pass — compact single-line goal rows with reward tiles.
 class SeasonPassPanel extends StatefulWidget {
   const SeasonPassPanel({super.key, this.onBuyPremium});
 
@@ -23,7 +23,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
   static const Color _panelBg = Color(0xFF151B28);
   static const Color _accent = Color(0xFFB388FF);
   static const Color _eventCol = Color(0xFF4FC3F7);
-  static const Color _premiumCol = Color(0xFFD4AF37);
+  static const Color _premiumCol = Color(0xFFE8C547);
 
   final _api = AuthService().apiClient;
   Map<String, dynamic>? _status;
@@ -100,12 +100,10 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
     if (mounted) setState(() => _claiming = false);
   }
 
-  String _goalDescription(AppLocalizations l10n, Map<String, dynamic> level) {
+  String _goalTitle(AppLocalizations l10n, Map<String, dynamic> level) {
     final cat = level['goalCategory']?.toString() ?? '';
     final target = (level['goalTarget'] as num?)?.toInt() ?? 0;
-    final progress = (level['progress'] as num?)?.toInt() ?? 0;
-    final remaining = (level['remaining'] as num?)?.toInt() ?? 0;
-    final base = switch (cat) {
+    return switch (cat) {
       'crime' => l10n.seasonPassGoalCrime(target),
       'vehicles' => l10n.seasonPassGoalVehicles(target),
       'smuggling' => l10n.seasonPassGoalSmuggling(target),
@@ -114,8 +112,6 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
       'xp' => l10n.seasonPassGoalXp(target),
       _ => l10n.seasonPassGoalGeneric(target),
     };
-    if (level['unlocked'] == true) return base;
-    return '$base · ${l10n.seasonPassGoalProgress(progress, remaining)}';
   }
 
   SeasonPassRewardDisplay _display(
@@ -135,68 +131,301 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
     );
   }
 
-  Widget _rewardCell({
+  Widget _assetTile({
+    required String path,
+    required Color accent,
+    double size = 46,
+  }) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            accent.withValues(alpha: 0.22),
+            Colors.black.withValues(alpha: 0.45),
+          ],
+        ),
+        border: Border.all(color: accent.withValues(alpha: 0.55), width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: 0.18),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Image.asset(
+            path,
+            fit: BoxFit.contain,
+            filterQuality: FilterQuality.high,
+            errorBuilder: (_, __, ___) =>
+                Icon(Icons.redeem, color: accent, size: size * 0.55),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _rewardChip({
     required SeasonPassRewardDisplay display,
     required Color accent,
-    required String columnLabel,
     required bool claimable,
     required bool claimed,
     required bool locked,
     required VoidCallback onClaim,
     required AppLocalizations l10n,
   }) {
-    return Expanded(
-      child: Column(
-        children: [
-          Text(
-            columnLabel,
-            style: TextStyle(
-              color: accent.withValues(alpha: 0.85),
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
+    final canTap = claimable && !locked && !claimed;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: canTap && !_claiming ? onClaim : null,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          constraints: const BoxConstraints(minWidth: 148, maxWidth: 168),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.35),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: claimed
+                  ? Colors.greenAccent.withValues(alpha: 0.5)
+                  : claimable
+                      ? accent.withValues(alpha: 0.65)
+                      : Colors.white12,
             ),
           ),
-          const SizedBox(height: 4),
-          Image.asset(
-            display.imagePath,
-            width: 44,
-            height: 44,
-            fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => Icon(Icons.card_giftcard, color: accent, size: 36),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            display.label,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: Colors.white, fontSize: 10.5, fontWeight: FontWeight.w600),
-          ),
-          if (display.subtitle != null)
-            Text(
-              display.subtitle!,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Colors.white54, fontSize: 9.5),
-            ),
-          const SizedBox(height: 4),
-          if (claimed)
-            Text(l10n.seasonPassClaimed, style: TextStyle(color: accent, fontSize: 10))
-          else if (locked)
-            const Icon(Icons.lock, size: 14, color: Colors.white38)
-          else if (claimable)
-            TextButton(
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _assetTile(path: display.imagePath, accent: accent),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      display.label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        height: 1.1,
+                      ),
+                    ),
+                    if (display.subtitle != null)
+                      Text(
+                        display.subtitle!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: accent.withValues(alpha: 0.85),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    const SizedBox(height: 2),
+                    if (claimed)
+                      Text(
+                        l10n.seasonPassClaimed,
+                        style: const TextStyle(
+                          color: Colors.greenAccent,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    else if (locked)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.lock, size: 12, color: Colors.white38),
+                          const SizedBox(width: 3),
+                          Text(
+                            l10n.seasonPassLocked,
+                            style: const TextStyle(
+                              color: Colors.white38,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      )
+                    else if (claimable)
+                      Text(
+                        l10n.seasonPassClaim,
+                        style: TextStyle(
+                          color: accent,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-              onPressed: _claiming ? null : onClaim,
-              child: Text(l10n.seasonPassClaim, style: TextStyle(color: accent, fontSize: 11)),
-            )
-          else
-            Text(l10n.seasonPassLocked, style: const TextStyle(color: Colors.white38, fontSize: 10)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _goalRow({
+    required Map<String, dynamic> level,
+    required AppLocalizations l10n,
+    required bool premium,
+    required bool even,
+  }) {
+    final lvl = (level['level'] as num?)?.toInt() ?? 0;
+    final unlocked = level['unlocked'] == true;
+    final progress = (level['progress'] as num?)?.toInt() ?? 0;
+    final target = (level['goalTarget'] as num?)?.toInt() ?? 1;
+    final cat = level['goalCategory']?.toString() ?? '';
+    final free = level['free'] is Map
+        ? Map<String, dynamic>.from(level['free'] as Map)
+        : <String, dynamic>{};
+    final prem = level['premium'] is Map
+        ? Map<String, dynamic>.from(level['premium'] as Map)
+        : <String, dynamic>{};
+    final freeRewards = free['rewards'] is Map
+        ? Map<String, dynamic>.from(free['rewards'] as Map)
+        : null;
+    final premRewards = prem['rewards'] is Map
+        ? Map<String, dynamic>.from(prem['rewards'] as Map)
+        : null;
+
+    final ratio = target > 0 ? (progress / target).clamp(0.0, 1.0) : 0.0;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
+      decoration: BoxDecoration(
+        color: even
+            ? Colors.black.withValues(alpha: 0.18)
+            : Colors.black.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: unlocked
+              ? _accent.withValues(alpha: 0.28)
+              : Colors.white.withValues(alpha: 0.06),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 26,
+            height: 26,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: unlocked
+                  ? _gold.withValues(alpha: 0.2)
+                  : Colors.white.withValues(alpha: 0.06),
+              border: Border.all(
+                color: unlocked ? _gold.withValues(alpha: 0.7) : Colors.white24,
+              ),
+            ),
+            child: Text(
+              '$lvl',
+              style: TextStyle(
+                color: unlocked ? _gold : Colors.white54,
+                fontWeight: FontWeight.w800,
+                fontSize: 11,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          _assetTile(
+            path: seasonPassGoalCategoryIcon(cat),
+            accent: _accent,
+            size: 36,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            flex: 4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _goalTitle(l10n, level),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: unlocked ? Colors.white : Colors.white70,
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        l10n.seasonPassGoalRatio(progress, target),
+                        style: TextStyle(
+                          color: unlocked ? Colors.greenAccent : _gold,
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w800,
+                          fontFeatures: const [FontFeature.tabularFigures()],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: LinearProgressIndicator(
+                    value: ratio,
+                    minHeight: 3,
+                    backgroundColor: Colors.white10,
+                    color: unlocked ? Colors.greenAccent : _accent,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          _rewardChip(
+            display: _display(freeRewards, l10n),
+            accent: _eventCol,
+            claimable: free['claimable'] == true,
+            claimed: free['claimed'] == true,
+            locked: !unlocked,
+            onClaim: () => _claim(lvl, 'free'),
+            l10n: l10n,
+          ),
+          const SizedBox(width: 6),
+          _rewardChip(
+            display: _display(premRewards, l10n),
+            accent: _premiumCol,
+            claimable: prem['claimable'] == true,
+            claimed: prem['claimed'] == true,
+            locked: !unlocked || !premium,
+            onClaim: () => _claim(lvl, 'premium'),
+            l10n: l10n,
+          ),
         ],
       ),
     );
@@ -215,7 +444,11 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
           border: Border.all(color: _accent.withValues(alpha: 0.35)),
         ),
         child: const Center(
-          child: SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2)),
+          child: SizedBox(
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
         ),
       );
     }
@@ -250,17 +483,25 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
               Expanded(
                 child: Text(
                   l10n.seasonPassTitle(seasonKey),
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 15),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 15,
+                  ),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: premium ? _accent.withValues(alpha: 0.2) : Colors.white12,
+                  color: premium
+                      ? _accent.withValues(alpha: 0.2)
+                      : Colors.white12,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  premium ? l10n.seasonPassPremiumActive : l10n.seasonPassFreeTrack,
+                  premium
+                      ? l10n.seasonPassPremiumActive
+                      : l10n.seasonPassFreeTrack,
                   style: TextStyle(
                     color: premium ? _accent : Colors.white70,
                     fontSize: 11,
@@ -271,14 +512,19 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
             ],
           ),
           const SizedBox(height: 6),
-          Text(l10n.seasonPassSubtitle, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
-          const SizedBox(height: 8),
           Text(
-            l10n.seasonPassGoalsProgress(completed.toString(), totalGoals.toString()),
-            style: const TextStyle(color: _gold, fontWeight: FontWeight.w700, fontSize: 13),
+            l10n.seasonPassGoalsProgress(
+              completed.toString(),
+              totalGoals.toString(),
+            ),
+            style: const TextStyle(
+              color: _gold,
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
           ),
           if (!premium) ...[
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
@@ -293,138 +539,59 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
             ),
           ],
           const SizedBox(height: 10),
-          Row(
-            children: [
-              const SizedBox(width: 36),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  l10n.seasonPassColumnGoal,
-                  style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.w600),
+          Padding(
+            padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
+            child: Row(
+              children: [
+                const SizedBox(width: 70),
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                    l10n.seasonPassColumnGoal,
+                    style: const TextStyle(
+                      color: Colors.white54,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  l10n.seasonPassColumnEvent,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: _eventCol.withValues(alpha: 0.9), fontSize: 10, fontWeight: FontWeight.w600),
+                SizedBox(
+                  width: 168,
+                  child: Text(
+                    l10n.seasonPassColumnEvent,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: _eventCol.withValues(alpha: 0.95),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  l10n.seasonPassColumnPremium,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: _premiumCol.withValues(alpha: 0.9), fontSize: 10, fontWeight: FontWeight.w600),
+                const SizedBox(width: 6),
+                SizedBox(
+                  width: 168,
+                  child: Text(
+                    l10n.seasonPassColumnPremium,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: _premiumCol.withValues(alpha: 0.95),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const SizedBox(height: 6),
-          ...levels.map((level) {
-            final lvl = (level['level'] as num?)?.toInt() ?? 0;
-            final unlocked = level['unlocked'] == true;
-            final progress = (level['progress'] as num?)?.toInt() ?? 0;
-            final target = (level['goalTarget'] as num?)?.toInt() ?? 1;
-            final free = level['free'] is Map
-                ? Map<String, dynamic>.from(level['free'] as Map)
-                : <String, dynamic>{};
-            final prem = level['premium'] is Map
-                ? Map<String, dynamic>.from(level['premium'] as Map)
-                : <String, dynamic>{};
-            final freeRewards = free['rewards'] is Map
-                ? Map<String, dynamic>.from(free['rewards'] as Map)
-                : null;
-            final premRewards = prem['rewards'] is Map
-                ? Map<String, dynamic>.from(prem['rewards'] as Map)
-                : null;
-            final freeDisplay = _display(freeRewards, l10n);
-            final premDisplay = _display(premRewards, l10n);
-
-            return Container(
-              margin: const EdgeInsets.only(bottom: 6),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: unlocked ? 0.22 : 0.12),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: unlocked ? _accent.withValues(alpha: 0.3) : Colors.white10,
-                ),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 28,
-                        child: Text(
-                          '$lvl',
-                          style: TextStyle(
-                            color: unlocked ? _gold : Colors.white38,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _goalDescription(l10n, level),
-                              style: TextStyle(
-                                color: unlocked ? Colors.white : Colors.white70,
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w600,
-                                height: 1.25,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(3),
-                              child: LinearProgressIndicator(
-                                value: target > 0 ? (progress / target).clamp(0.0, 1.0) : 0,
-                                minHeight: 4,
-                                backgroundColor: Colors.white12,
-                                color: unlocked ? Colors.greenAccent : _accent,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 28),
-                      _rewardCell(
-                        display: freeDisplay,
-                        accent: _eventCol,
-                        columnLabel: l10n.seasonPassTrackFree,
-                        claimable: free['claimable'] == true,
-                        claimed: free['claimed'] == true,
-                        locked: !unlocked,
-                        onClaim: () => _claim(lvl, 'free'),
-                        l10n: l10n,
-                      ),
-                      const SizedBox(width: 6),
-                      _rewardCell(
-                        display: premDisplay,
-                        accent: _premiumCol,
-                        columnLabel: l10n.seasonPassTrackPremium,
-                        claimable: prem['claimable'] == true,
-                        claimed: prem['claimed'] == true,
-                        locked: !unlocked || !premium,
-                        onClaim: () => _claim(lvl, 'premium'),
-                        l10n: l10n,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+          ...levels.asMap().entries.map((entry) {
+            return _goalRow(
+              level: entry.value,
+              l10n: l10n,
+              premium: premium,
+              even: entry.key.isEven,
             );
           }),
         ],

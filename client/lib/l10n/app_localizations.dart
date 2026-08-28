@@ -1934,6 +1934,12 @@ abstract class AppLocalizations {
   /// **'{current} done · {remaining} to go'**
   String seasonPassGoalProgress(int current, int remaining);
 
+  /// No description provided for @seasonPassGoalRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{target}'**
+  String seasonPassGoalRatio(int current, int target);
+
   /// No description provided for @seasonPassScore.
   ///
   /// In en, this message translates to:

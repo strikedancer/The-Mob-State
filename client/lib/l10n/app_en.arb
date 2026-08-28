@@ -548,6 +548,13 @@
       "remaining": { "type": "int" }
     }
   },
+  "seasonPassGoalRatio": "{current}/{target}",
+  "@seasonPassGoalRatio": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "target": { "type": "int" }
+    }
+  },
   "seasonPassScore": "Pass XP: {score}",
   "@seasonPassScore": {
     "placeholders": {
