@@ -13,6 +13,13 @@ import { clearPlayerCrimeVehicle } from './vehicleToolService';
 import countries from '../../content/countries.json';
 import tradableGoods from '../../content/tradableGoods.json';
 import travelRoutes from '../../content/travelRoutes.json';
+import {
+  CARRIED_MATERIAL_LOCATION,
+  getCarriedMaterialSlots,
+  materialTravelArrestBonus,
+  materialTravelConfiscationChance,
+} from './productionMaterialStock';
+import toolService from './toolService';
 
 export interface Country {
   id: string;
@@ -317,10 +324,65 @@ async function clearAllPlayerGoods(playerId: number): Promise<void> {
       where: { playerId },
     });
 
+    // Only wipe backpack materials — country depots stay safe.
     await tx.productionMaterial.deleteMany({
-      where: { playerId },
+      where: { playerId, country: CARRIED_MATERIAL_LOCATION },
     });
   });
+
+  const usage = await toolService.calculateInventoryUsage(playerId);
+  await prisma.player.update({
+    where: { id: playerId },
+    data: { inventory_slots_used: usage },
+  });
+}
+
+async function confiscateCarriedMaterials(
+  playerId: number,
+  wantedLevel: number,
+): Promise<Array<{ materialId: string; quantity: number }>> {
+  const carried = await prisma.productionMaterial.findMany({
+    where: { playerId, country: CARRIED_MATERIAL_LOCATION },
+  });
+  if (carried.length === 0) return [];
+
+  const slots = await getCarriedMaterialSlots(playerId);
+  const chance = materialTravelConfiscationChance(slots, wantedLevel);
+  const confiscated: Array<{ materialId: string; quantity: number }> = [];
+
+  for (const item of carried) {
+    if (Math.random() >= chance) continue;
+    const confiscationPercent = 0.3 + Math.random() * 0.4;
+    const quantityLost = Math.max(1, Math.floor(item.quantity * confiscationPercent));
+    confiscated.push({ materialId: item.materialId, quantity: quantityLost });
+    const remaining = item.quantity - quantityLost;
+    if (remaining <= 0) {
+      await prisma.productionMaterial.delete({ where: { id: item.id } });
+    } else {
+      await prisma.productionMaterial.update({
+        where: { id: item.id },
+        data: { quantity: remaining },
+      });
+    }
+  }
+
+  if (confiscated.length > 0) {
+    const usage = await toolService.calculateInventoryUsage(playerId);
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { inventory_slots_used: usage },
+    });
+  }
+
+  return confiscated;
+}
+
+function getTravelArrestChance(wantedLevel: number, materialSlots = 0): number {
+  const chance =
+    BASE_ARREST_CHANCE +
+    wantedLevel * WANTED_LEVEL_ARREST_BONUS +
+    materialTravelArrestBonus(materialSlots);
+  return Math.min(chance, MAX_ARREST_CHANCE);
 }
 
 async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Promise<void> {
@@ -358,11 +420,6 @@ async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Prom
     'Border Police',
     'TRAVEL'
   );
-}
-
-function getTravelArrestChance(wantedLevel: number): number {
-  const chance = BASE_ARREST_CHANCE + wantedLevel * WANTED_LEVEL_ARREST_BONUS;
-  return Math.min(chance, MAX_ARREST_CHANCE);
 }
 
 /**
@@ -443,8 +500,9 @@ export async function startJourney(playerId: number, destinationCountryId: strin
   // Clear selected crime vehicle when player moves to different country
   await clearPlayerCrimeVehicle(playerId);
 
-  // Check for arrest on first leg (hybrid chance)
-  const arrestChance = getTravelArrestChance(player.wantedLevel);
+  // Check for arrest on first leg (hybrid chance; backpack materials raise risk)
+  const materialSlots = await getCarriedMaterialSlots(playerId);
+  const arrestChance = getTravelArrestChance(player.wantedLevel, materialSlots);
   if (Math.random() < arrestChance) {
     await clearAllPlayerGoods(playerId);
     await sendPlayerToJail(playerId, TRAVEL_JAIL_TIME_MINUTES);
@@ -463,6 +521,11 @@ export async function startJourney(playerId: number, destinationCountryId: strin
     throw error;
   }
 
+  const confiscatedMaterials = await confiscateCarriedMaterials(
+    playerId,
+    player.wantedLevel,
+  );
+
   // Log activity
   const routeDescription = route.path.slice(1).map((id) => getCountryById(id)?.name || id).join(' → ');
   await activityService.logActivity(
@@ -478,6 +541,8 @@ export async function startJourney(playerId: number, destinationCountryId: strin
       legsCost: baseCostPerLeg,
       totalCost,
       direct: isSingleLegJourney,
+      confiscatedMaterials:
+        confiscatedMaterials.length > 0 ? confiscatedMaterials : undefined,
     },
     true
   );
@@ -495,6 +560,8 @@ export async function startJourney(playerId: number, destinationCountryId: strin
       route: route.path,
       totalLegs,
       direct: isSingleLegJourney,
+      confiscatedMaterials:
+        confiscatedMaterials.length > 0 ? confiscatedMaterials : undefined,
     },
     playerId
   );
@@ -573,6 +640,10 @@ export async function travelToCountry(playerId: number, countryId: string): Prom
   // Process inventory risks during travel
   const confiscatedGoods: Array<{ goodType: string; quantity: number }> = [];
   const damagedGoods: Array<{ goodType: string; damagePercent: number }> = [];
+  const confiscatedMaterials = await confiscateCarriedMaterials(
+    playerId,
+    player.wantedLevel,
+  );
 
   const inventory = await prisma.inventory.findMany({
     where: { playerId },
@@ -649,6 +720,8 @@ export async function travelToCountry(playerId: number, countryId: string): Prom
       travelCost,
       confiscatedGoods: confiscatedGoods.length > 0 ? confiscatedGoods : undefined,
       damagedGoods: damagedGoods.length > 0 ? damagedGoods : undefined,
+      confiscatedMaterials:
+        confiscatedMaterials.length > 0 ? confiscatedMaterials : undefined,
     },
     playerId
   );
@@ -800,8 +873,9 @@ export async function continueJourney(playerId: number): Promise<TravelResult> {
   // Clear selected crime vehicle when player moves to different country
   await clearPlayerCrimeVehicle(playerId);
 
-  // Check for arrest on this leg (hybrid chance)
-  const arrestChance = getTravelArrestChance(player.wantedLevel);
+  // Check for arrest on this leg (hybrid chance; backpack materials raise risk)
+  const materialSlots = await getCarriedMaterialSlots(playerId);
+  const arrestChance = getTravelArrestChance(player.wantedLevel, materialSlots);
   if (Math.random() < arrestChance) {
     await clearAllPlayerGoods(playerId);
     await sendPlayerToJail(playerId, TRAVEL_JAIL_TIME_MINUTES);
@@ -823,6 +897,10 @@ export async function continueJourney(playerId: number): Promise<TravelResult> {
   // Process inventory risks on this leg
   const confiscatedGoods: Array<{ goodType: string; quantity: number }> = [];
   const damagedGoods: Array<{ goodType: string; damagePercent: number }> = [];
+  const confiscatedMaterials = await confiscateCarriedMaterials(
+    playerId,
+    player.wantedLevel,
+  );
 
   const inventory = await prisma.inventory.findMany({
     where: { playerId },
@@ -916,6 +994,8 @@ export async function continueJourney(playerId: number): Promise<TravelResult> {
       totalLegs,
       confiscatedGoods: confiscatedGoods.length > 0 ? confiscatedGoods : undefined,
       damagedGoods: damagedGoods.length > 0 ? damagedGoods : undefined,
+      confiscatedMaterials:
+        confiscatedMaterials.length > 0 ? confiscatedMaterials : undefined,
     },
     playerId
   );

@@ -5760,6 +5760,91 @@ class AppLocalizationsNl extends AppLocalizations {
   String get materials => 'Materialen';
 
   @override
+  String get materialsShopTitle => 'Materialenwinkel';
+
+  @override
+  String get materialsShopRulesTitle => 'Lokaal depot vs rugzak';
+
+  @override
+  String get materialsShopRulesBody =>
+      'Gekochte materialen gaan in het depot van je huidige land en zijn alleen daar te gebruiken voor productie. Laad ze in je upgradebare rugzak om te reizen — bij grenscontroles kun je een deel kwijtraken of aangehouden worden. Landdepots blijven veilig.';
+
+  @override
+  String materialsShopBackpackSlots(String used, String capacity) {
+    return 'Rugzakslots: $used/$capacity';
+  }
+
+  @override
+  String materialsShopCurrentCountry(String country) {
+    return 'Huidig land: $country';
+  }
+
+  @override
+  String materialsShopStockLine(int depot, int carried) {
+    return 'Lokaal depot: $depot · Rugzak: $carried';
+  }
+
+  @override
+  String get materialsShopBuy => 'Kopen';
+
+  @override
+  String get materialsShopToBackpack => 'Naar rugzak';
+
+  @override
+  String get materialsShopToDepot => 'Naar depot';
+
+  @override
+  String get materialsShopTransferToBackpackHint =>
+      'Verplaats van lokaal depot naar je rugzak (telt mee voor slots; travel-risico).';
+
+  @override
+  String get materialsShopTransferToDepotHint =>
+      'Laad uit de rugzak naar het depot van je huidige land.';
+
+  @override
+  String get materialsShopQuantity => 'Hoeveelheid';
+
+  @override
+  String materialsShopMaxQty(int max) {
+    return 'Max: $max';
+  }
+
+  @override
+  String materialsShopPriceEach(String price) {
+    return 'Prijs: €$price per stuk';
+  }
+
+  @override
+  String materialsShopTotal(String total) {
+    return 'Totaal: €$total';
+  }
+
+  @override
+  String materialsShopNeedMoney(String amount) {
+    return 'Je hebt €$amount nodig';
+  }
+
+  @override
+  String get materialsShopBuyOk => 'Materialen gekocht in lokaal depot';
+
+  @override
+  String get materialsShopBuyFailed => 'Aankoop mislukt';
+
+  @override
+  String get materialsShopTransferOk => 'Materialen verplaatst';
+
+  @override
+  String get materialsShopTransferFailed => 'Verplaatsen mislukt';
+
+  @override
+  String materialsShopLoadError(String error) {
+    return 'Fout bij laden: $error';
+  }
+
+  @override
+  String get materialsShopEmpty => 'Geen materialen beschikbaar';
+
+  @override
   String get production => 'Productie';
 
   @override

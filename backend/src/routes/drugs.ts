@@ -38,16 +38,50 @@ router.get('/materials', authenticate, (_req: AuthRequest, res: Response) => {
 
 /**
  * @route   GET /drugs/my-materials
- * @desc    Get player's material inventory
+ * @desc    Get player's material inventory (country depots + backpack)
  * @access  Private
  */
 router.get('/my-materials', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const materials = await drugService.getPlayerMaterials(req.player!.id);
-    res.json({ success: true, materials });
+    const payload = await drugService.getPlayerMaterials(req.player!.id);
+    res.json({ success: true, ...payload });
   } catch (error: any) {
     console.error('Error fetching player materials:', error);
     res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/**
+ * @route   POST /drugs/materials/transfer
+ * @desc    Move materials between current-country depot and backpack
+ * @access  Private
+ */
+router.post('/materials/transfer', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { materialId, quantity, direction } = req.body ?? {};
+    if (!materialId || typeof materialId !== 'string') {
+      return res.status(400).json({ success: false, message: 'materialId required' });
+    }
+    if (direction !== 'to_backpack' && direction !== 'to_depot') {
+      return res.status(400).json({
+        success: false,
+        message: 'direction must be to_backpack or to_depot',
+      });
+    }
+    const qty = typeof quantity === 'string' ? parseInt(quantity, 10) : Number(quantity);
+    const result = await drugService.transferMaterial(
+      req.player!.id,
+      materialId,
+      qty,
+      direction,
+    );
+    if (result.success) {
+      return res.json(result);
+    }
+    return res.status(400).json(result);
+  } catch (error: any) {
+    console.error('Error transferring material:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 

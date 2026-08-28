@@ -1739,12 +1739,15 @@ model DrugInventory {
 model ProductionMaterial {
   id         Int    @id @default(autoincrement())
   playerId   Int
+  /// Country depot id, or `_carried_` when in the personal backpack.
+  country    String @default("netherlands") @db.VarChar(50)
   materialId String @db.VarChar(50)
   quantity   Int    @default(0)
   player     Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
-  @@unique([playerId, materialId])
+  @@unique([playerId, country, materialId])
   @@index([playerId])
+  @@index([country], map: "idx_production_materials_country")
   @@map("production_materials")
 }
 

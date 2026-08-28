@@ -62,23 +62,39 @@ class DrugService {
     }
   }
 
-  // Get player's materials
-  Future<List<PlayerMaterial>> getPlayerMaterials() async {
+  // Get player's materials (country depots + backpack)
+  Future<PlayerMaterialsSnapshot> getPlayerMaterials() async {
     try {
       final response = await _apiClient.get('/drugs/my-materials');
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['success'] == true) {
-          final List<dynamic> materialsJson = data['materials'] ?? [];
-          return materialsJson
-              .map((json) => PlayerMaterial.fromJson(json))
-              .toList();
+          return PlayerMaterialsSnapshot.fromJson(
+            Map<String, dynamic>.from(data as Map),
+          );
         }
       }
-      return [];
+      return PlayerMaterialsSnapshot.empty();
     } catch (e) {
       print('Error loading player materials: $e');
-      return [];
+      return PlayerMaterialsSnapshot.empty();
+    }
+  }
+
+  Future<Map<String, dynamic>> transferMaterial({
+    required String materialId,
+    required int quantity,
+    required String direction, // to_backpack | to_depot
+  }) async {
+    try {
+      final response = await _apiClient.post('/drugs/materials/transfer', {
+        'materialId': materialId,
+        'quantity': quantity,
+        'direction': direction,
+      });
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
     }
   }
 

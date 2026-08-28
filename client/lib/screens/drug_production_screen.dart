@@ -26,7 +26,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   final DrugService _drugService = DrugService();
   List<DrugDefinition> _drugs = [];
   List<MaterialDefinition> _materialDefinitions = [];
-  List<PlayerMaterial> _playerMaterials = [];
+  PlayerMaterialsSnapshot _materialsSnapshot = PlayerMaterialsSnapshot.empty();
   List<DrugProduction> _activeProductions = [];
   List<DrugFacilityInfo> _facilities = [];
   bool _isLoading = true;
@@ -159,7 +159,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
       setState(() {
         _drugs = results[0] as List<DrugDefinition>;
         _materialDefinitions = results[1] as List<MaterialDefinition>;
-        _playerMaterials = results[2] as List<PlayerMaterial>;
+        _materialsSnapshot = results[2] as PlayerMaterialsSnapshot;
         _activeProductions = results[3] as List<DrugProduction>;
         _facilities = results[4] as List<DrugFacilityInfo>;
         _stats = results[5] as DrugStats?;
@@ -291,22 +291,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
   bool _hasRequiredMaterials(DrugDefinition drug) {
     for (final entry in drug.materials.entries) {
-      final materialId = entry.key;
-      final required = entry.value;
-
-      final playerMaterial = _playerMaterials.firstWhere(
-        (m) => m.materialId == materialId,
-        orElse: () => PlayerMaterial(
-          id: 0,
-          materialId: materialId,
-          name: '',
-          description: '',
-          quantity: 0,
-          price: 0,
-        ),
-      );
-
-      if (playerMaterial.quantity < required) {
+      if (_materialsSnapshot.availableForProduction(entry.key) < entry.value) {
         return false;
       }
     }
@@ -319,21 +304,10 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     for (final entry in drug.materials.entries) {
       final materialId = entry.key;
       final required = entry.value;
+      final have = _materialsSnapshot.availableForProduction(materialId);
 
-      final playerMaterial = _playerMaterials.firstWhere(
-        (m) => m.materialId == materialId,
-        orElse: () => PlayerMaterial(
-          id: 0,
-          materialId: materialId,
-          name: '',
-          description: '',
-          quantity: 0,
-          price: 0,
-        ),
-      );
-
-      if (playerMaterial.quantity < required) {
-        final shortage = required - playerMaterial.quantity;
+      if (have < required) {
+        final shortage = required - have;
         final displayName = _getMaterialName(materialId);
         missing.add('$displayName: $shortage');
       }
@@ -350,20 +324,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     for (final entry in drug.materials.entries) {
       final materialId = entry.key;
       final required = entry.value;
-
-      final playerMaterial = _playerMaterials.firstWhere(
-        (m) => m.materialId == materialId,
-        orElse: () => PlayerMaterial(
-          id: 0,
-          materialId: materialId,
-          name: '',
-          description: '',
-          quantity: 0,
-          price: 0,
-        ),
-      );
-
-      final missing = required - playerMaterial.quantity;
+      final have = _materialsSnapshot.availableForProduction(materialId);
+      final missing = required - have;
       if (missing <= 0) continue;
 
       final materialDef = _materialDefinitions.firstWhere(
@@ -1423,27 +1385,13 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                     children: drug.materials.entries.map((
                                                       entry,
                                                     ) {
-                                                      final material =
-                                                          _playerMaterials.firstWhere(
-                                                            (m) =>
-                                                                m.materialId ==
-                                                                entry.key,
-                                                            orElse: () =>
-                                                                PlayerMaterial(
-                                                                  id: 0,
-                                                                  materialId:
-                                                                      entry.key,
-                                                                  name:
-                                                                      entry.key,
-                                                                  description:
-                                                                      '',
-                                                                  quantity: 0,
-                                                                  price: 0,
-                                                                ),
-                                                          );
+                                                      final have =
+                                                          _materialsSnapshot
+                                                              .availableForProduction(
+                                                        entry.key,
+                                                      );
                                                       final hasEnough =
-                                                          material.quantity >=
-                                                          entry.value;
+                                                          have >= entry.value;
                                                       return Container(
                                                         padding:
                                                             const EdgeInsets.symmetric(
@@ -1477,7 +1425,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          '${_getMaterialName(entry.key)} ${material.quantity}/${entry.value}',
+                                                          '${_getMaterialName(entry.key)} $have/${entry.value}',
                                                           style: TextStyle(
                                                             fontSize: 11,
                                                             color: hasEnough

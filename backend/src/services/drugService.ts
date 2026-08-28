@@ -4,6 +4,18 @@ import path from 'path';
 import { drugFacilityService } from './drugFacilityService';
 import { isVipStatusActive } from './vipBenefitsService';
 import { checkAndUnlockAchievements } from './achievementService';
+import {
+  CARRIED_MATERIAL_LOCATION,
+  MATERIAL_UNITS_PER_SLOT,
+  addMaterialStock,
+  deductForProduction,
+  getCarriedMaterialSlots,
+  getProductionAvailableMap,
+  materialSlotsForQuantity,
+  removeMaterialStock,
+} from './productionMaterialStock';
+import { getPlayerCarryingCapacity } from './backpackService';
+import toolService from './toolService';
 
 interface DrugDefinition {
   id: string;
@@ -111,8 +123,8 @@ class DrugService {
     return this.materials.get(materialId);
   }
 
-  // Buy production materials
-  async buyMaterial(playerId: number, materialId: string, quantity: number): Promise<{ success: boolean; message: string }> {
+  // Buy production materials into the current-country depot (not backpack).
+  async buyMaterial(playerId: number, materialId: string, quantity: number): Promise<{ success: boolean; message: string; country?: string }> {
     const material = this.materials.get(materialId);
     if (!material) {
       return { success: false, message: 'Onbekend materiaal' };
@@ -122,6 +134,7 @@ class DrugService {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
+      select: { money: true, currentCountry: true },
     });
 
     if (!player) {
@@ -135,49 +148,20 @@ class DrugService {
       };
     }
 
-    // Update or create material inventory
-    const existingMaterial = await prisma.productionMaterial.findUnique({
-      where: {
-        playerId_materialId: {
-          playerId,
-          materialId,
-        },
-      },
-    });
+    const country = player.currentCountry || 'netherlands';
 
-    if (existingMaterial) {
-      await prisma.productionMaterial.update({
-        where: {
-          playerId_materialId: {
-            playerId,
-            materialId,
-          },
-        },
-        data: {
-          quantity: existingMaterial.quantity + quantity,
-        },
+    await prisma.$transaction(async (tx) => {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: totalCost } },
       });
-    } else {
-      await prisma.productionMaterial.create({
-        data: {
-          playerId,
-          materialId,
-          quantity,
-        },
-      });
-    }
-
-    // Deduct money
-    await prisma.player.update({
-      where: { id: playerId },
-      data: {
-        money: player.money - totalCost,
-      },
+      await addMaterialStock(tx, playerId, country, materialId, quantity);
     });
 
     return {
       success: true,
-      message: `${quantity}x ${material.name} gekocht voor €${totalCost.toLocaleString()}`,
+      message: `${quantity}x ${material.name} gekocht voor depot in ${country} (€${totalCost.toLocaleString()})`,
+      country,
     };
   }
 
@@ -197,7 +181,7 @@ class DrugService {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true, isVip: true, vipExpiresAt: true },
+      select: { money: true, isVip: true, vipExpiresAt: true, currentCountry: true },
     });
 
     if (!player) {
@@ -208,15 +192,8 @@ class DrugService {
       return { success: false, message: 'Deze snelle aankoop is alleen beschikbaar voor VIP-spelers / This quick purchase is only available for VIP players' };
     }
 
-    const currentMaterials = await prisma.productionMaterial.findMany({
-      where: { playerId },
-      select: { materialId: true, quantity: true },
-    });
-
-    const currentMap: Record<string, number> = {};
-    for (const row of currentMaterials) {
-      currentMap[row.materialId] = row.quantity;
-    }
+    const country = player.currentCountry || 'netherlands';
+    const available = await getProductionAvailableMap(playerId, country);
 
     const purchaseLines: Array<{
       materialId: string;
@@ -228,7 +205,7 @@ class DrugService {
     let totalCost = 0;
 
     for (const [materialId, requiredQty] of Object.entries(drug.materials)) {
-      const availableQty = currentMap[materialId] ?? 0;
+      const availableQty = available[materialId]?.total ?? 0;
       const missingQty = Math.max(0, requiredQty - availableQty);
       if (missingQty <= 0) {
         continue;
@@ -277,41 +254,38 @@ class DrugService {
       });
 
       for (const line of purchaseLines) {
-        await tx.productionMaterial.upsert({
-          where: {
-            playerId_materialId: {
-              playerId,
-              materialId: line.materialId,
-            },
-          },
-          update: {
-            quantity: { increment: line.quantity },
-          },
-          create: {
-            playerId,
-            materialId: line.materialId,
-            quantity: line.quantity,
-          },
-        });
+        await addMaterialStock(tx, playerId, country, line.materialId, line.quantity);
       }
     });
 
     return {
       success: true,
-      message: `VIP snelle aankoop voltooid / VIP quick purchase completed for ${drug.displayName}: €${totalCost.toLocaleString()}`,
+      message: `VIP snelle aankoop voltooid / VIP quick purchase completed for ${drug.displayName}: €${totalCost.toLocaleString()} (depot ${country})`,
       totalCost,
       purchased: purchaseLines,
     };
   }
 
-  // Get player's materials inventory
-  async getPlayerMaterials(playerId: number): Promise<any[]> {
+  // Get player's materials inventory (depot rows + backpack)
+  async getPlayerMaterials(playerId: number): Promise<{
+    currentCountry: string;
+    materials: any[];
+    depot: any[];
+    carried: any[];
+    backpack: { capacity: number; used: number; materialSlots: number; unitsPerSlot: number };
+  }> {
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const currentCountry = player?.currentCountry || 'netherlands';
     const materials = await prisma.productionMaterial.findMany({
       where: { playerId },
     });
 
-    return materials.map((m) => {
+    const mapped = materials.map((m) => {
       const def = this.materials.get(m.materialId);
+      const carried = m.country === CARRIED_MATERIAL_LOCATION;
       return {
         id: m.id,
         materialId: m.materialId,
@@ -319,8 +293,145 @@ class DrugService {
         description: def?.description || '',
         quantity: m.quantity,
         price: def?.price || 0,
+        country: m.country,
+        location: carried ? 'carried' : 'depot',
+        slots: carried ? materialSlotsForQuantity(m.quantity) : 0,
       };
     });
+
+    const capacity = await getPlayerCarryingCapacity(playerId);
+    const used = await toolService.calculateInventoryUsage(playerId);
+    const materialSlots = await getCarriedMaterialSlots(playerId);
+
+    return {
+      currentCountry,
+      materials: mapped,
+      depot: mapped.filter((m) => m.location === 'depot'),
+      carried: mapped.filter((m) => m.location === 'carried'),
+      backpack: {
+        capacity,
+        used,
+        materialSlots,
+        unitsPerSlot: MATERIAL_UNITS_PER_SLOT,
+      },
+    };
+  }
+
+  /**
+   * Move materials between current-country depot and backpack.
+   * direction: 'to_backpack' | 'to_depot'
+   */
+  async transferMaterial(
+    playerId: number,
+    materialId: string,
+    quantity: number,
+    direction: 'to_backpack' | 'to_depot',
+  ): Promise<{ success: boolean; message: string }> {
+    if (!Number.isFinite(quantity) || quantity < 1) {
+      return { success: false, message: 'Ongeldige hoeveelheid / Invalid quantity' };
+    }
+    const material = this.materials.get(materialId);
+    if (!material) {
+      return { success: false, message: 'Onbekend materiaal / Unknown material' };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    if (!player) {
+      return { success: false, message: 'Speler niet gevonden / Player not found' };
+    }
+    const country = player.currentCountry || 'netherlands';
+
+    try {
+      if (direction === 'to_backpack') {
+        const depotRow = await prisma.productionMaterial.findUnique({
+          where: {
+            playerId_country_materialId: { playerId, country, materialId },
+          },
+        });
+        if (!depotRow || depotRow.quantity < quantity) {
+          return {
+            success: false,
+            message: `Niet genoeg in lokaal depot (${depotRow?.quantity ?? 0}) / Not enough in local depot`,
+          };
+        }
+
+        const carriedRow = await prisma.productionMaterial.findUnique({
+          where: {
+            playerId_country_materialId: {
+              playerId,
+              country: CARRIED_MATERIAL_LOCATION,
+              materialId,
+            },
+          },
+        });
+        const slotsBefore = materialSlotsForQuantity(carriedRow?.quantity ?? 0);
+        const slotsAfter = materialSlotsForQuantity((carriedRow?.quantity ?? 0) + quantity);
+        const extraSlots = Math.max(0, slotsAfter - slotsBefore);
+        const capacity = await getPlayerCarryingCapacity(playerId);
+        const used = await toolService.calculateInventoryUsage(playerId);
+        if (used + extraSlots > capacity) {
+          return {
+            success: false,
+            message: `Rugzak vol (${used}/${capacity} slots). Upgrade je rugzak of neem minder mee. / Backpack full (${used}/${capacity} slots).`,
+          };
+        }
+
+        await prisma.$transaction(async (tx) => {
+          await removeMaterialStock(tx, playerId, country, materialId, quantity);
+          await addMaterialStock(tx, playerId, CARRIED_MATERIAL_LOCATION, materialId, quantity);
+        });
+        const newUsage = await toolService.calculateInventoryUsage(playerId);
+        await prisma.player.update({
+          where: { id: playerId },
+          data: { inventory_slots_used: newUsage },
+        });
+
+        return {
+          success: true,
+          message: `${quantity}x ${material.name} in rugzak geladen / loaded into backpack`,
+        };
+      }
+
+      // to_depot
+      const carriedRow = await prisma.productionMaterial.findUnique({
+        where: {
+          playerId_country_materialId: {
+            playerId,
+            country: CARRIED_MATERIAL_LOCATION,
+            materialId,
+          },
+        },
+      });
+      if (!carriedRow || carriedRow.quantity < quantity) {
+        return {
+          success: false,
+          message: `Niet genoeg in rugzak (${carriedRow?.quantity ?? 0}) / Not enough in backpack`,
+        };
+      }
+
+      await prisma.$transaction(async (tx) => {
+        await removeMaterialStock(tx, playerId, CARRIED_MATERIAL_LOCATION, materialId, quantity);
+        await addMaterialStock(tx, playerId, country, materialId, quantity);
+      });
+      const newUsage = await toolService.calculateInventoryUsage(playerId);
+      await prisma.player.update({
+        where: { id: playerId },
+        data: { inventory_slots_used: newUsage },
+      });
+
+      return {
+        success: true,
+        message: `${quantity}x ${material.name} naar depot in ${country} / moved to depot in ${country}`,
+      };
+    } catch (error: any) {
+      if (error?.message === 'INSUFFICIENT_MATERIALS') {
+        return { success: false, message: 'Onvoldoende materialen / Insufficient materials' };
+      }
+      throw error;
+    }
   }
 
   // Start drug production
@@ -386,23 +497,19 @@ class DrugService {
         facility.upgrades,
       );
     }
-    // Check if player has all required materials
-    const playerMaterials = await prisma.productionMaterial.findMany({
-      where: { playerId },
-    });
-
-    const materialMap: { [key: string]: number } = {};
-    playerMaterials.forEach((m) => {
-      materialMap[m.materialId] = m.quantity;
-    });
+    // Check materials: local depot (current country) + backpack
+    const country = player.currentCountry || 'netherlands';
+    const available = await getProductionAvailableMap(playerId, country);
 
     for (const [materialId, required] of Object.entries(drug.materials)) {
-      const available = materialMap[materialId] || 0;
-      if (available < required) {
+      const have = available[materialId]?.total ?? 0;
+      if (have < required) {
         const materialDef = this.materials.get(materialId);
+        const depot = available[materialId]?.depot ?? 0;
+        const carried = available[materialId]?.carried ?? 0;
         return {
           success: false,
-          message: `Je hebt ${required}x ${materialDef?.name || materialId} nodig (je hebt ${available})`,
+          message: `Je hebt ${required}x ${materialDef?.name || materialId} nodig (depot ${depot} + rugzak ${carried})`,
         };
       }
     }
@@ -422,22 +529,22 @@ class DrugService {
       }
     }
 
-    // Deduct materials
-    for (const [materialId, required] of Object.entries(drug.materials)) {
-      await prisma.productionMaterial.update({
-        where: {
-          playerId_materialId: {
-            playerId,
-            materialId,
-          },
-        },
-        data: {
-          quantity: {
-            decrement: required,
-          },
-        },
+    // Deduct materials (depot first, then backpack)
+    try {
+      await prisma.$transaction(async (tx) => {
+        await deductForProduction(tx, playerId, country, drug.materials);
       });
+    } catch (error: any) {
+      if (error?.message === 'INSUFFICIENT_MATERIALS') {
+        return { success: false, message: 'Onvoldoende materialen / Insufficient materials' };
+      }
+      throw error;
     }
+    const usageAfter = await toolService.calculateInventoryUsage(playerId);
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { inventory_slots_used: usageAfter },
+    });
 
     // ── Apply facility multipliers ──────────────────────────────────────────────
     const { yieldBonus, speedBonus, qualityBonus } = facilityMultipliers;

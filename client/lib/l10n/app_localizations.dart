@@ -10289,6 +10289,138 @@ abstract class AppLocalizations {
   /// **'Materials'**
   String get materials;
 
+  /// No description provided for @materialsShopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials Shop'**
+  String get materialsShopTitle;
+
+  /// No description provided for @materialsShopRulesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Local depot vs backpack'**
+  String get materialsShopRulesTitle;
+
+  /// No description provided for @materialsShopRulesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Bought materials go into the depot of your current country and can only be used for production there. Load them into your upgradeable backpack to travel — border checks may confiscate part of your load or arrest you. Country depots stay safe.'**
+  String get materialsShopRulesBody;
+
+  /// No description provided for @materialsShopBackpackSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Backpack slots: {used}/{capacity}'**
+  String materialsShopBackpackSlots(String used, String capacity);
+
+  /// No description provided for @materialsShopCurrentCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Current country: {country}'**
+  String materialsShopCurrentCountry(String country);
+
+  /// No description provided for @materialsShopStockLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Local depot: {depot} · Backpack: {carried}'**
+  String materialsShopStockLine(int depot, int carried);
+
+  /// No description provided for @materialsShopBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get materialsShopBuy;
+
+  /// No description provided for @materialsShopToBackpack.
+  ///
+  /// In en, this message translates to:
+  /// **'To backpack'**
+  String get materialsShopToBackpack;
+
+  /// No description provided for @materialsShopToDepot.
+  ///
+  /// In en, this message translates to:
+  /// **'To depot'**
+  String get materialsShopToDepot;
+
+  /// No description provided for @materialsShopTransferToBackpackHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Move from local depot into your backpack (counts toward slots; travel risk).'**
+  String get materialsShopTransferToBackpackHint;
+
+  /// No description provided for @materialsShopTransferToDepotHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Unload backpack into the depot of your current country.'**
+  String get materialsShopTransferToDepotHint;
+
+  /// No description provided for @materialsShopQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get materialsShopQuantity;
+
+  /// No description provided for @materialsShopMaxQty.
+  ///
+  /// In en, this message translates to:
+  /// **'Max: {max}'**
+  String materialsShopMaxQty(int max);
+
+  /// No description provided for @materialsShopPriceEach.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: €{price} each'**
+  String materialsShopPriceEach(String price);
+
+  /// No description provided for @materialsShopTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: €{total}'**
+  String materialsShopTotal(String total);
+
+  /// No description provided for @materialsShopNeedMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'You need €{amount}'**
+  String materialsShopNeedMoney(String amount);
+
+  /// No description provided for @materialsShopBuyOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials purchased into local depot'**
+  String get materialsShopBuyOk;
+
+  /// No description provided for @materialsShopBuyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed'**
+  String get materialsShopBuyFailed;
+
+  /// No description provided for @materialsShopTransferOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials moved'**
+  String get materialsShopTransferOk;
+
+  /// No description provided for @materialsShopTransferFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer failed'**
+  String get materialsShopTransferFailed;
+
+  /// No description provided for @materialsShopLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while loading: {error}'**
+  String materialsShopLoadError(String error);
+
+  /// No description provided for @materialsShopEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No materials available'**
+  String get materialsShopEmpty;
+
   /// No description provided for @production.
   ///
   /// In en, this message translates to:

@@ -493,6 +493,90 @@
   "vehicles": "Voertuigen",
   "backpacks": "Rugzakken",
   "materials": "Materialen",
+  "materialsShopTitle": "Materialenwinkel",
+  "materialsShopRulesTitle": "Lokaal depot vs rugzak",
+  "materialsShopRulesBody": "Gekochte materialen gaan in het depot van je huidige land en zijn alleen daar te gebruiken voor productie. Laad ze in je upgradebare rugzak om te reizen — bij grenscontroles kun je een deel kwijtraken of aangehouden worden. Landdepots blijven veilig.",
+  "materialsShopBackpackSlots": "Rugzakslots: {used}/{capacity}",
+  "@materialsShopBackpackSlots": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "capacity": {
+        "type": "String"
+      }
+    }
+  },
+  "materialsShopCurrentCountry": "Huidig land: {country}",
+  "@materialsShopCurrentCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "materialsShopStockLine": "Lokaal depot: {depot} · Rugzak: {carried}",
+  "@materialsShopStockLine": {
+    "placeholders": {
+      "depot": {
+        "type": "int"
+      },
+      "carried": {
+        "type": "int"
+      }
+    }
+  },
+  "materialsShopBuy": "Kopen",
+  "materialsShopToBackpack": "Naar rugzak",
+  "materialsShopToDepot": "Naar depot",
+  "materialsShopTransferToBackpackHint": "Verplaats van lokaal depot naar je rugzak (telt mee voor slots; travel-risico).",
+  "materialsShopTransferToDepotHint": "Laad uit de rugzak naar het depot van je huidige land.",
+  "materialsShopQuantity": "Hoeveelheid",
+  "materialsShopMaxQty": "Max: {max}",
+  "@materialsShopMaxQty": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "materialsShopPriceEach": "Prijs: €{price} per stuk",
+  "@materialsShopPriceEach": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "materialsShopTotal": "Totaal: €{total}",
+  "@materialsShopTotal": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "materialsShopNeedMoney": "Je hebt €{amount} nodig",
+  "@materialsShopNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "materialsShopBuyOk": "Materialen gekocht in lokaal depot",
+  "materialsShopBuyFailed": "Aankoop mislukt",
+  "materialsShopTransferOk": "Materialen verplaatst",
+  "materialsShopTransferFailed": "Verplaatsen mislukt",
+  "materialsShopLoadError": "Fout bij laden: {error}",
+  "@materialsShopLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "materialsShopEmpty": "Geen materialen beschikbaar",
   "production": "Productie",
   "stock": "Voorraad",
   "retryAgain": "Opnieuw proberen",

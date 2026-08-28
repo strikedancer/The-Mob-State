@@ -5,6 +5,33 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 
 ## Primary Frontend Entry
 - client/lib/screens/drug_environment_screen.dart
+- Materials buy / transfer: `client/lib/screens/materials_shop_screen.dart` (also via Black Market → Materials)
+
+## Production materials: country depot + backpack (2026-08)
+
+### Player rules
+1. **Buy** → stock goes into the **depot of the player's current country** (not the backpack).
+2. **Production** in country X consumes **depot(X) first**, then **backpack** (`_carried_`).
+3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` for the current country only.
+4. **Backpack capacity**: materials use slots (`ceil(qty / 5)` per stack) together with tools/weapons (`toolService.calculateInventoryUsage`). Upgrade backpacks to carry more.
+5. **Travel**:
+   - Country depots are **safe** (not wiped on arrest).
+   - Backpack materials raise **arrest chance** and can be **partially confiscated** per leg.
+   - Full arrest still wipes trade inventory + finished drugs + **carried materials only**.
+
+### Data model
+- `production_materials.country`: country id **or** sentinel `_carried_` for backpack.
+- Unique: `(playerId, country, materialId)`.
+- Migration: `20260829120000_production_materials_country_depot` backfills existing rows to the player's `currentCountry`.
+
+### API
+- `GET /drugs/my-materials` → `{ materials, depot, carried, currentCountry, backpack }`
+- `POST /drugs/materials/buy/:materialId` → depot only
+- `POST /drugs/materials/transfer` `{ materialId, quantity, direction }`
+- VIP `buy-missing` also credits the **current-country depot**
+
+### Helper module
+- `backend/src/services/productionMaterialStock.ts`
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -31,6 +58,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
 - Facility ownership or type (including darkweb storefront) must not imply silent auto-sale of finished drug output unless a dedicated sale feature explicitly exists and is documented.
 - Education-gated drug facility progression: slot/equipment upgrades that are locked behind school gates must return structured requirement details (`gateId`, `gateLabelKey`, `missing`) so the client can render the education requirements dialog instead of a generic error.
+- Materials bought into a country depot must not silently become backpack cargo; travel risk applies only to `_carried_` stock.
 
 ## Backend Contract Guardrails (Drugs)
 - If drugs services use Prisma nested `include` (example: production -> facility -> upgrades), relation fields must exist in `schema.prisma`.
@@ -64,6 +92,9 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Verify owned facilities remain visible and upgrade options stay available after travel or refresh.
 - Verify no Prisma validation errors appear in backend logs while loading drugs screens.
 - Verify collect action removes only the collected production card without showing global loading spinner or reloading unrelated content blocks.
+- Buy materials in country A → stock only in depot A; production in A works; travel without loading backpack leaves depot A intact.
+- Transfer to backpack → slots increase; travel can confiscate/arrest carried stock; depot elsewhere untouched.
+- Unload backpack into depot of current country after travel.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -531,6 +531,9 @@ class ToolService {
 
     totalSlots += weaponSlots;
 
+    const { getCarriedMaterialSlots } = await import('./productionMaterialStock');
+    totalSlots += await getCarriedMaterialSlots(playerId);
+
     return totalSlots;
   }
 

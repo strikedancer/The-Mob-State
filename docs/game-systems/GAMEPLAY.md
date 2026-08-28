@@ -595,6 +595,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 ### Smokkel-hub (drugs-zendingen)
 - Hub-UX: noir/gold panels, 4-staps send (vracht → route → transport → bevestigen), ETA-countdown en result-overlay bij succesvolle send/claim.
 - Persoonlijke drugsinventaris is **niet per land** in `DrugInventory` (unique: `playerId` + `drugType` + `quality`). Quote/send mag geen oude country-compound Prisma-key gebruiken — dat gaf 500 Server error.
+- **Productiematerialen** liggen wél per land in `production_materials.country` (depot) of in de rugzak (`country = _carried_`). Kopen → huidig-land depot; meenemen → expliciet transfer naar rugzak (slots); travel kan rugzak-materiaal afpakken/aanhouding verhogen; landdepots blijven veilig. Details: `docs/module-protocols/drugs.md`.
 - Crew-smokkel van **handelswaren** gebruikt gedeelde `CrewTradeInventory`. Stort eerst via crew-opslag; daarna catalog/send/claim op het crew-netwerk.
 - Het dashboard toont een **Markt**-tegel met het aantal actieve P2P-listings en **Mijn activiteit** (recente `GET /events` + SSE van alleen jouw speler). Geen wereldwijde feed van andere spelers. Privéberichten (`direct_message.*`) komen niet in die feed (wel live voor chat/badge). Aankomstregels tonen het land (niet een streepje).
 - Nightclub opent met een **Tonight**-kaart (crowd, stock, Restock, Boost crowd); de rest van Ops Lab zit onder Geavanceerd. Omzet blijft via de tick.

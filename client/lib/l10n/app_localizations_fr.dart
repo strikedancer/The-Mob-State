@@ -5819,6 +5819,91 @@ class AppLocalizationsFr extends AppLocalizations {
   String get materials => 'Matériels';
 
   @override
+  String get materialsShopTitle => 'Materials Shop';
+
+  @override
+  String get materialsShopRulesTitle => 'Local depot vs backpack';
+
+  @override
+  String get materialsShopRulesBody =>
+      'Bought materials go into the depot of your current country and can only be used for production there. Load them into your upgradeable backpack to travel — border checks may confiscate part of your load or arrest you. Country depots stay safe.';
+
+  @override
+  String materialsShopBackpackSlots(String used, String capacity) {
+    return 'Backpack slots: $used/$capacity';
+  }
+
+  @override
+  String materialsShopCurrentCountry(String country) {
+    return 'Current country: $country';
+  }
+
+  @override
+  String materialsShopStockLine(int depot, int carried) {
+    return 'Local depot: $depot · Backpack: $carried';
+  }
+
+  @override
+  String get materialsShopBuy => 'Buy';
+
+  @override
+  String get materialsShopToBackpack => 'To backpack';
+
+  @override
+  String get materialsShopToDepot => 'To depot';
+
+  @override
+  String get materialsShopTransferToBackpackHint =>
+      'Move from local depot into your backpack (counts toward slots; travel risk).';
+
+  @override
+  String get materialsShopTransferToDepotHint =>
+      'Unload backpack into the depot of your current country.';
+
+  @override
+  String get materialsShopQuantity => 'Quantity';
+
+  @override
+  String materialsShopMaxQty(int max) {
+    return 'Max: $max';
+  }
+
+  @override
+  String materialsShopPriceEach(String price) {
+    return 'Price: €$price each';
+  }
+
+  @override
+  String materialsShopTotal(String total) {
+    return 'Total: €$total';
+  }
+
+  @override
+  String materialsShopNeedMoney(String amount) {
+    return 'You need €$amount';
+  }
+
+  @override
+  String get materialsShopBuyOk => 'Materials purchased into local depot';
+
+  @override
+  String get materialsShopBuyFailed => 'Purchase failed';
+
+  @override
+  String get materialsShopTransferOk => 'Materials moved';
+
+  @override
+  String get materialsShopTransferFailed => 'Transfer failed';
+
+  @override
+  String materialsShopLoadError(String error) {
+    return 'Error while loading: $error';
+  }
+
+  @override
+  String get materialsShopEmpty => 'No materials available';
+
+  @override
   String get production => 'Production';
 
   @override

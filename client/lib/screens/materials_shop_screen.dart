@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../models/drug_models.dart';
-import '../services/drug_service.dart';
-import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../l10n/app_localizations.dart';
+import '../models/drug_models.dart';
+import '../providers/auth_provider.dart';
+import '../services/drug_service.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
 
@@ -16,11 +18,9 @@ class MaterialsShopScreen extends StatefulWidget {
 class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
   final DrugService _drugService = DrugService();
   List<MaterialDefinition> _materials = [];
-  List<PlayerMaterial> _playerMaterials = [];
+  PlayerMaterialsSnapshot _snapshot = PlayerMaterialsSnapshot.empty();
   bool _isLoading = true;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
+  String? _busyMaterialId;
 
   @override
   void initState() {
@@ -32,87 +32,131 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
     setState(() => _isLoading = true);
     try {
       final materials = await _drugService.getMaterials();
-      final playerMaterials = await _drugService.getPlayerMaterials();
+      final snapshot = await _drugService.getPlayerMaterials();
+      if (!mounted) return;
       setState(() {
         _materials = materials;
-        _playerMaterials = playerMaterials;
+        _snapshot = snapshot;
         _isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() => _isLoading = false);
-      if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(_tr('Fout bij laden: $e', 'Error while loading: $e'))),
-        );
-      }
+      final l10n = AppLocalizations.of(context)!;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.materialsShopLoadError('$e'))),
+      );
     }
   }
 
-  int _getPlayerMaterialQuantity(String materialId) {
-    final material = _playerMaterials.firstWhere(
-      (m) => m.materialId == materialId,
-      orElse: () => PlayerMaterial(
-        id: 0,
-        materialId: materialId,
-        name: '',
-        description: '',
-        quantity: 0,
-        price: 0,
-      ),
-    );
-    return material.quantity;
-  }
-
   Future<void> _buyMaterial(MaterialDefinition material) async {
-    final quantity = await _showQuantityDialog(material);
+    final l10n = AppLocalizations.of(context)!;
+    final quantity = await _showQuantityDialog(
+      title: material.name,
+      subtitle: material.description,
+      confirmLabel: l10n.materialsShopBuy,
+      unitPrice: material.price,
+    );
     if (quantity == null || quantity <= 0) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final totalCost = material.price * quantity;
-
-    if (authProvider.currentPlayer!.money < totalCost) {
-      if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(
-            content: Text('${_tr('Je hebt', 'You need')} €${totalCost.toString().replaceAllMapped(
-                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                  (Match m) => '${m[1]}.',
-                )} ${_tr('nodig', 'required')}'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+    if ((authProvider.currentPlayer?.money ?? 0) < totalCost) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.materialsShopNeedMoney(_formatMoney(totalCost))),
+          backgroundColor: Colors.red,
+        ),
+      );
       return;
     }
 
+    setState(() => _busyMaterialId = material.id);
     final result = await _drugService.buyMaterial(material.id, quantity);
+    if (!mounted) return;
+    setState(() => _busyMaterialId = null);
 
-    if (mounted) {
-      if (result['success'] == true) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(
-            content: Text(result['message']),
-            backgroundColor: Colors.green,
-          ),
-        );
-        _loadData();
-      } else {
-        showTopRightFromSnackBar(context, 
-          SnackBar(
-            content: Text(result['message'] ?? _tr('Aankoop mislukt', 'Purchase failed')),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          result['message']?.toString() ??
+              (result['success'] == true
+                  ? l10n.materialsShopBuyOk
+                  : l10n.materialsShopBuyFailed),
+        ),
+        backgroundColor:
+            result['success'] == true ? Colors.green : Colors.red,
+      ),
+    );
+    if (result['success'] == true) {
+      await authProvider.refreshPlayer();
+      await _loadData();
     }
   }
 
-  Future<int?> _showQuantityDialog(MaterialDefinition material) async {
-    final controller = TextEditingController(text: '1');
+  Future<void> _transfer(
+    MaterialDefinition material, {
+    required String direction,
+    required int maxQty,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    if (maxQty <= 0) return;
+    final quantity = await _showQuantityDialog(
+      title: material.name,
+      subtitle: direction == 'to_backpack'
+          ? l10n.materialsShopTransferToBackpackHint
+          : l10n.materialsShopTransferToDepotHint,
+      confirmLabel: direction == 'to_backpack'
+          ? l10n.materialsShopToBackpack
+          : l10n.materialsShopToDepot,
+      unitPrice: null,
+      initialQty: maxQty > 1 ? 1 : maxQty,
+      maxQty: maxQty,
+    );
+    if (quantity == null || quantity <= 0) return;
+
+    setState(() => _busyMaterialId = material.id);
+    final result = await _drugService.transferMaterial(
+      materialId: material.id,
+      quantity: quantity,
+      direction: direction,
+    );
+    if (!mounted) return;
+    setState(() => _busyMaterialId = null);
+
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          result['message']?.toString() ??
+              (result['success'] == true
+                  ? l10n.materialsShopTransferOk
+                  : l10n.materialsShopTransferFailed),
+        ),
+        backgroundColor:
+            result['success'] == true ? Colors.green : Colors.orange,
+      ),
+    );
+    if (result['success'] == true) await _loadData();
+  }
+
+  Future<int?> _showQuantityDialog({
+    required String title,
+    required String subtitle,
+    required String confirmLabel,
+    int? unitPrice,
+    int initialQty = 1,
+    int? maxQty,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController(text: '$initialQty');
     return showDialog<int>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(material.name),
+        title: Text(title),
         content: ResponsiveDialogContent(
           phoneMaxWidth: 340,
           tabletMaxWidth: 420,
@@ -121,80 +165,89 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(material.description),
-              const SizedBox(height: 16),
-              Text(
-                '${_tr('Prijs', 'Price')}: €${material.price.toString().replaceAllMapped(
-                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                      (Match m) => '${m[1]}.',
-                    )} ${_tr('per stuk', 'each')}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              Text(subtitle),
+              if (unitPrice != null) ...[
+                const SizedBox(height: 12),
+                Text(
+                  l10n.materialsShopPriceEach(_formatMoney(unitPrice)),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+              if (maxQty != null) ...[
+                const SizedBox(height: 8),
+                Text(l10n.materialsShopMaxQty(maxQty)),
+              ],
               const SizedBox(height: 16),
               TextField(
                 controller: controller,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: _tr('Hoeveelheid', 'Quantity'),
+                  labelText: l10n.materialsShopQuantity,
                   border: const OutlineInputBorder(),
                 ),
-                onChanged: (value) {},
               ),
-              const SizedBox(height: 8),
-              ValueListenableBuilder(
-                valueListenable: controller,
-                builder: (context, TextEditingValue value, _) {
-                  final qty = int.tryParse(value.text) ?? 0;
-                  final total = material.price * qty;
-                  return Text(
-                    '${_tr('Totaal', 'Total')}: €${total.toString().replaceAllMapped(
-                          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                          (Match m) => '${m[1]}.',
-                        )}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  );
-                },
-              ),
+              if (unitPrice != null) ...[
+                const SizedBox(height: 8),
+                ValueListenableBuilder(
+                  valueListenable: controller,
+                  builder: (context, value, _) {
+                    final qty = int.tryParse(value.text) ?? 0;
+                    return Text(
+                      l10n.materialsShopTotal(_formatMoney(unitPrice * qty)),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    );
+                  },
+                ),
+              ],
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () {
-              final qty = int.tryParse(controller.text);
+              var qty = int.tryParse(controller.text) ?? 0;
+              if (maxQty != null && qty > maxQty) qty = maxQty;
               Navigator.pop(context, qty);
             },
-            child: Text(_tr('Kopen', 'Buy')),
+            child: Text(confirmLabel),
           ),
         ],
       ),
     );
   }
 
+  String _formatMoney(int amount) {
+    return amount.toString().replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (m) => '${m[1]}.',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
+    final country = _snapshot.currentCountry.isEmpty
+        ? (authProvider.currentPlayer?.currentCountry ?? '—')
+        : _snapshot.currentCountry;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_tr('Materialen Shop', 'Materials Shop')),
+        title: Text(l10n.materialsShopTitle),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                '€${authProvider.currentPlayer?.money.toString().replaceAllMapped(
-                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                      (Match m) => '${m[1]}.',
-                    ) ?? '0'}',
+                '€${_formatMoney(authProvider.currentPlayer?.money ?? 0)}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -209,70 +262,159 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _loadData,
-              child: _materials.isEmpty
-                  ? Center(child: Text(_tr('Geen materialen beschikbaar', 'No materials available')))
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: _materials.length,
-                      itemBuilder: (context, index) {
-                        final material = _materials[index];
-                        final owned = _getPlayerMaterialQuantity(material.id);
-
-                        return Card(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.grey[200],
-                              child: Image.asset(
-                                material.getImagePath(),
-                                width: 40,
-                                height: 40,
-                                errorBuilder: (context, error, stackTrace) => const Icon(Icons.science),
-                              ),
-                            ),
-                            title: Text(
-                              material.name,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(material.description),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '${_tr('Prijs', 'Price')}: €${material.price.toString().replaceAllMapped(
-                                        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                        (Match m) => '${m[1]}.',
-                                      )}',
-                                  style: const TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                if (owned > 0)
-                                  Text(
-                                    '${_tr('In bezit', 'Owned')}: $owned',
-                                    style: TextStyle(
-                                      color: Colors.blue[700],
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            trailing: ElevatedButton.icon(
-                              onPressed: () => _buyMaterial(material),
-                              icon: const Icon(Icons.shopping_cart, size: 18),
-                              label: Text(_tr('Koop', 'Buy')),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                foregroundColor: Colors.white,
-                              ),
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  Card(
+                    color: const Color(0xFF151B28),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.materialsShopRulesTitle,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
                             ),
                           ),
-                        );
-                      },
+                          const SizedBox(height: 6),
+                          Text(
+                            l10n.materialsShopRulesBody,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              height: 1.35,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            l10n.materialsShopBackpackSlots(
+                              '${_snapshot.backpackUsed}',
+                              '${_snapshot.backpackCapacity}',
+                            ),
+                            style: const TextStyle(
+                              color: Color(0xFFD4AF37),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            l10n.materialsShopCurrentCountry(country),
+                            style: const TextStyle(color: Colors.white60),
+                          ),
+                        ],
+                      ),
                     ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (_materials.isEmpty)
+                    Center(child: Text(l10n.materialsShopEmpty))
+                  else
+                    ..._materials.map((material) {
+                      final depot = _snapshot.depotQty(material.id);
+                      final carried = _snapshot.carriedQty(material.id);
+                      final busy = _busyMaterialId == material.id;
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 28,
+                                    backgroundColor: Colors.grey[200],
+                                    child: Image.asset(
+                                      material.getImagePath(),
+                                      width: 36,
+                                      height: 36,
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          const Icon(Icons.science),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          material.name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(material.description),
+                                        Text(
+                                          l10n.materialsShopPriceEach(
+                                            _formatMoney(material.price),
+                                          ),
+                                          style: const TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                l10n.materialsShopStockLine(depot, carried),
+                                style: TextStyle(
+                                  color: Colors.blue[700],
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  ElevatedButton.icon(
+                                    onPressed:
+                                        busy ? null : () => _buyMaterial(material),
+                                    icon: const Icon(Icons.shopping_cart, size: 18),
+                                    label: Text(l10n.materialsShopBuy),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                  ),
+                                  OutlinedButton.icon(
+                                    onPressed: busy || depot <= 0
+                                        ? null
+                                        : () => _transfer(
+                                              material,
+                                              direction: 'to_backpack',
+                                              maxQty: depot,
+                                            ),
+                                    icon: const Icon(Icons.backpack, size: 18),
+                                    label: Text(l10n.materialsShopToBackpack),
+                                  ),
+                                  OutlinedButton.icon(
+                                    onPressed: busy || carried <= 0
+                                        ? null
+                                        : () => _transfer(
+                                              material,
+                                              direction: 'to_depot',
+                                              maxQty: carried,
+                                            ),
+                                    icon: const Icon(Icons.warehouse, size: 18),
+                                    label: Text(l10n.materialsShopToDepot),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                ],
+              ),
             ),
     );
   }

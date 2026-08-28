@@ -3418,6 +3418,70 @@
   "inventory": "Inventory",
   "backpacks": "Backpacks",
   "materials": "Materials",
+  "materialsShopTitle": "Materials Shop",
+  "materialsShopRulesTitle": "Local depot vs backpack",
+  "materialsShopRulesBody": "Bought materials go into the depot of your current country and can only be used for production there. Load them into your upgradeable backpack to travel — border checks may confiscate part of your load or arrest you. Country depots stay safe.",
+  "materialsShopBackpackSlots": "Backpack slots: {used}/{capacity}",
+  "@materialsShopBackpackSlots": {
+    "placeholders": {
+      "used": { "type": "String" },
+      "capacity": { "type": "String" }
+    }
+  },
+  "materialsShopCurrentCountry": "Current country: {country}",
+  "@materialsShopCurrentCountry": {
+    "placeholders": {
+      "country": { "type": "String" }
+    }
+  },
+  "materialsShopStockLine": "Local depot: {depot} · Backpack: {carried}",
+  "@materialsShopStockLine": {
+    "placeholders": {
+      "depot": { "type": "int" },
+      "carried": { "type": "int" }
+    }
+  },
+  "materialsShopBuy": "Buy",
+  "materialsShopToBackpack": "To backpack",
+  "materialsShopToDepot": "To depot",
+  "materialsShopTransferToBackpackHint": "Move from local depot into your backpack (counts toward slots; travel risk).",
+  "materialsShopTransferToDepotHint": "Unload backpack into the depot of your current country.",
+  "materialsShopQuantity": "Quantity",
+  "materialsShopMaxQty": "Max: {max}",
+  "@materialsShopMaxQty": {
+    "placeholders": {
+      "max": { "type": "int" }
+    }
+  },
+  "materialsShopPriceEach": "Price: €{price} each",
+  "@materialsShopPriceEach": {
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+  "materialsShopTotal": "Total: €{total}",
+  "@materialsShopTotal": {
+    "placeholders": {
+      "total": { "type": "String" }
+    }
+  },
+  "materialsShopNeedMoney": "You need €{amount}",
+  "@materialsShopNeedMoney": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "materialsShopBuyOk": "Materials purchased into local depot",
+  "materialsShopBuyFailed": "Purchase failed",
+  "materialsShopTransferOk": "Materials moved",
+  "materialsShopTransferFailed": "Transfer failed",
+  "materialsShopLoadError": "Error while loading: {error}",
+  "@materialsShopLoadError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "materialsShopEmpty": "No materials available",
   "production": "Production",
   "stock": "Stock",
   "retryAgain": "Retry",

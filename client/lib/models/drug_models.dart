@@ -109,6 +109,9 @@ class PlayerMaterial {
   final String description;
   final int quantity;
   final int price;
+  final String country;
+  final String location; // depot | carried
+  final int slots;
 
   PlayerMaterial({
     required this.id,
@@ -117,7 +120,12 @@ class PlayerMaterial {
     required this.description,
     required this.quantity,
     required this.price,
+    this.country = '',
+    this.location = 'depot',
+    this.slots = 0,
   });
+
+  bool get isCarried => location == 'carried';
 
   factory PlayerMaterial.fromJson(Map<String, dynamic> json) {
     return PlayerMaterial(
@@ -127,11 +135,84 @@ class PlayerMaterial {
       description: json['description'] ?? '',
       quantity: json['quantity'] ?? 0,
       price: json['price'] ?? 0,
+      country: (json['country'] ?? '').toString(),
+      location: (json['location'] ?? 'depot').toString(),
+      slots: (json['slots'] as num?)?.toInt() ?? 0,
     );
   }
 
   String getImagePath() {
     return 'assets/images/materials/$materialId.png';
+  }
+}
+
+class PlayerMaterialsSnapshot {
+  final String currentCountry;
+  final List<PlayerMaterial> materials;
+  final List<PlayerMaterial> depot;
+  final List<PlayerMaterial> carried;
+  final int backpackCapacity;
+  final int backpackUsed;
+  final int materialSlots;
+  final int unitsPerSlot;
+
+  PlayerMaterialsSnapshot({
+    required this.currentCountry,
+    required this.materials,
+    required this.depot,
+    required this.carried,
+    required this.backpackCapacity,
+    required this.backpackUsed,
+    required this.materialSlots,
+    required this.unitsPerSlot,
+  });
+
+  factory PlayerMaterialsSnapshot.empty() => PlayerMaterialsSnapshot(
+        currentCountry: '',
+        materials: const [],
+        depot: const [],
+        carried: const [],
+        backpackCapacity: 5,
+        backpackUsed: 0,
+        materialSlots: 0,
+        unitsPerSlot: 5,
+      );
+
+  factory PlayerMaterialsSnapshot.fromJson(Map<String, dynamic> json) {
+    final materialsJson = (json['materials'] as List?) ?? const [];
+    final materials = materialsJson
+        .whereType<Map>()
+        .map((e) => PlayerMaterial.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
+    final backpack = (json['backpack'] as Map?)?.cast<String, dynamic>() ?? {};
+    return PlayerMaterialsSnapshot(
+      currentCountry: (json['currentCountry'] ?? '').toString(),
+      materials: materials,
+      depot: materials.where((m) => !m.isCarried).toList(),
+      carried: materials.where((m) => m.isCarried).toList(),
+      backpackCapacity: (backpack['capacity'] as num?)?.toInt() ?? 5,
+      backpackUsed: (backpack['used'] as num?)?.toInt() ?? 0,
+      materialSlots: (backpack['materialSlots'] as num?)?.toInt() ?? 0,
+      unitsPerSlot: (backpack['unitsPerSlot'] as num?)?.toInt() ?? 5,
+    );
+  }
+
+  int depotQty(String materialId, {String? country}) {
+    final c = country ?? currentCountry;
+    return materials
+        .where((m) => !m.isCarried && m.materialId == materialId && m.country == c)
+        .fold<int>(0, (sum, m) => sum + m.quantity);
+  }
+
+  int carriedQty(String materialId) {
+    return materials
+        .where((m) => m.isCarried && m.materialId == materialId)
+        .fold<int>(0, (sum, m) => sum + m.quantity);
+  }
+
+  /// Materials usable for production here: local depot + backpack.
+  int availableForProduction(String materialId) {
+    return depotQty(materialId) + carriedQty(materialId);
   }
 }
 
