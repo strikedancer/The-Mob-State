@@ -208,11 +208,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _vehicleHeistTabIndex = 0;
   List<Map<String, dynamic>> _gameEventsActive = const [];
   Timer? _gameEventsRefreshTimer;
+  /// Accordion: only one side-menu category open at a time (null = all collapsed).
+  _NavGroup? _expandedNavGroup;
 
   void _openVehicleHeist([int initialTabIndex = 0]) {
     setState(() {
       _vehicleHeistTabIndex = initialTabIndex;
       _selectedWebSection = _WebSection.vehicleHeist;
+      _expandedNavGroup = _navGroupForSection(_WebSection.vehicleHeist);
     });
     _scheduleNavCooldownRefresh();
   }
@@ -224,11 +227,69 @@ class _DashboardScreenState extends State<DashboardScreen> {
       } else {
         _selectedWebSection = section;
       }
+      final group = _navGroupForSection(section);
+      if (group != null) {
+        _expandedNavGroup = group;
+      }
     });
     if (section == _WebSection.crimes ||
         section == _WebSection.jobs ||
         section == _WebSection.vehicleHeist) {
       _scheduleNavCooldownRefresh();
+    }
+  }
+
+  _NavGroup? _navGroupForSection(_WebSection section) {
+    switch (section) {
+      case _WebSection.crimes:
+      case _WebSection.jobs:
+      case _WebSection.vehicleHeist:
+      case _WebSection.vault:
+      case _WebSection.events:
+      case _WebSection.hitlist:
+      case _WebSection.court:
+        return _NavGroup.actions;
+      case _WebSection.travel:
+      case _WebSection.aviation:
+      case _WebSection.territory:
+        return _NavGroup.world;
+      case _WebSection.crew:
+      case _WebSection.friends:
+      case _WebSection.support:
+        return _NavGroup.social;
+      case _WebSection.bank:
+      case _WebSection.casino:
+      case _WebSection.blackMarket:
+      case _WebSection.crypto:
+      case _WebSection.stockMarket:
+      case _WebSection.smuggling:
+      case _WebSection.premium:
+        return _NavGroup.economy;
+      case _WebSection.drugs:
+      case _WebSection.nightclub:
+      case _WebSection.properties:
+      case _WebSection.prostitution:
+      case _WebSection.redLightDistricts:
+      case _WebSection.ammoFactory:
+        return _NavGroup.empire;
+      case _WebSection.inventory:
+      case _WebSection.tools:
+      case _WebSection.tuneShop:
+      case _WebSection.trainingHub:
+      case _WebSection.school:
+        return _NavGroup.assets;
+      case _WebSection.help:
+      case _WebSection.hospital:
+      case _WebSection.prison:
+      case _WebSection.security:
+      case _WebSection.achievements:
+        return _NavGroup.more;
+      case _WebSection.dashboard:
+      case _WebSection.messages:
+      case _WebSection.settings:
+      case _WebSection.garage:
+      case _WebSection.marina:
+        return null;
     }
   }
 
@@ -238,6 +299,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _selectedWebSection = _webSectionFromQueryParam(
       Uri.base.queryParameters['section'],
     );
+    _expandedNavGroup = _navGroupForSection(_selectedWebSection);
     // Connect to event stream when dashboard opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
@@ -1237,16 +1299,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final groupItems = (groups[group] ?? []).where((row) => matches(row.label)).toList();
       if (groupItems.isEmpty) continue;
       anyMatch = true;
-      final expanded = query.isNotEmpty ||
-          groupItems.any((row) => row.section == _selectedWebSection);
+      // Search: keep matching groups open. Otherwise accordion: only `_expandedNavGroup`.
+      final expanded = query.isNotEmpty
+          ? true
+          : _expandedNavGroup == group;
       widgets.add(
         Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
-            key: PageStorageKey(
-              'nav-${group.name}-$query-${expanded ? 'open' : 'shut'}',
-            ),
+            key: ValueKey('nav-${group.name}-$query-${expanded ? 'open' : 'shut'}'),
             initiallyExpanded: expanded,
+            maintainState: false,
+            onExpansionChanged: (isOpen) {
+              if (query.isNotEmpty) return;
+              setState(() {
+                if (isOpen) {
+                  _expandedNavGroup = group;
+                } else if (_expandedNavGroup == group) {
+                  _expandedNavGroup = null;
+                }
+              });
+            },
             tilePadding: const EdgeInsets.symmetric(horizontal: 8),
             childrenPadding: const EdgeInsets.only(bottom: 6),
             collapsedIconColor: Colors.white54,
