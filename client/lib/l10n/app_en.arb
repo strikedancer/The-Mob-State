@@ -496,13 +496,13 @@
   "support": "Support",
   "events": "Events",
   "liveEventRailOpenEvents": "Open events",
-  "seasonPassTitle": "Season Pass {season}",
+  "seasonPassTitle": "Event Pass {season}",
   "@seasonPassTitle": {
     "placeholders": {
       "season": { "type": "String" }
     }
   },
-  "seasonPassSubtitle": "50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Event prize (free) and Season Pass bonus (premium) per row.",
+  "seasonPassSubtitle": "50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Free event prize and Event Pass bonus (premium) per row.",
   "seasonPassGoalsProgress": "{completed} / {total} goals reached",
   "@seasonPassGoalsProgress": {
     "placeholders": {
@@ -568,7 +568,7 @@
       "remaining": { "type": "String" }
     }
   },
-  "seasonPassBuyCta": "Unlock premium · €7.99",
+  "seasonPassBuyCta": "Unlock Event Pass · €7.99",
   "seasonPassPremiumActive": "Premium",
   "seasonPassFreeTrack": "Free",
   "seasonPassTrackFree": "Free",
@@ -583,7 +583,7 @@
   "seasonPassClaim": "Claim",
   "seasonPassClaimed": "Claimed",
   "seasonPassLocked": "Locked",
-  "seasonPassClaimSuccess": "Season Pass reward claimed",
+  "seasonPassClaimSuccess": "Event Pass reward claimed",
   "seasonPassClaimFailed": "Could not claim reward",
   "seasonPassRewardAmmo": "Ammo",
   "seasonPassRewardVehicle": "Rare vehicle",
@@ -2677,11 +2677,11 @@
   "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP grants access to extra crew upgrades and shared premium perks for your crew flow. After purchase, active status and expiry are updated immediately.",
   "premiumUiSectionBuyCreditsTitle": "Buy credits",
   "premiumUiSectionBuyCreditsSubtitle": "Pick a bundle via visual tiles. Popular 1000-credit option gets its own spotlight.",
-  "premiumUiSectionPassesTitle": "Season & event passes",
-  "premiumUiSectionPassesSubtitle": "One-time unlocks for the monthly Season Pass premium track and short event boosts.",
-  "premiumUiBadgeSeasonPass": "Season Pass",
+  "premiumUiSectionPassesTitle": "Event Pass",
+  "premiumUiSectionPassesSubtitle": "One-time unlock for the monthly Event Pass premium track. Not a subscription.",
+  "premiumUiBadgeSeasonPass": "Event Pass",
   "premiumUiBadgeEventPass": "Event Pass",
-  "premiumUiSeasonPassFallbackTitle": "Season Pass (this month)",
+  "premiumUiSeasonPassFallbackTitle": "Event Pass (this month)",
   "premiumUiEventPassFallbackTitle": "Event Pass",
   "premiumUiBuyPassCta": "Buy · {price}",
   "@premiumUiBuyPassCta": {

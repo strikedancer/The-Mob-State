@@ -3358,7 +3358,7 @@
   "support": "Support",
   "events": "Evenementen",
   "liveEventRailOpenEvents": "Open evenementen",
-  "seasonPassTitle": "Season Pass {season}",
+  "seasonPassTitle": "Event Pass {season}",
   "@seasonPassTitle": {
     "placeholders": {
       "season": {
@@ -3366,7 +3366,7 @@
       }
     }
   },
-  "seasonPassSubtitle": "50 maandelijkse doelen: misdaden, voertuigen, smokkel, drugs, verdiend geld en XP. Event-beloning (gratis) en Season Pass-bonus (premium) per regel.",
+  "seasonPassSubtitle": "50 maandelijkse doelen: misdaden, voertuigen, smokkel, drugs, verdiend geld en XP. Gratis event-beloning en Event Pass-bonus (premium) per regel.",
   "seasonPassGoalsProgress": "{completed} / {total} doelen behaald",
   "@seasonPassGoalsProgress": {
     "placeholders": {
@@ -3478,7 +3478,7 @@
       }
     }
   },
-  "seasonPassBuyCta": "Premium ontgrendelen · €7,99",
+  "seasonPassBuyCta": "Event Pass ontgrendelen · €7,99",
   "seasonPassPremiumActive": "Premium",
   "seasonPassFreeTrack": "Gratis",
   "seasonPassTrackFree": "Gratis",
@@ -3497,7 +3497,7 @@
   "seasonPassClaim": "Claim",
   "seasonPassClaimed": "Geclaimd",
   "seasonPassLocked": "Vergrendeld",
-  "seasonPassClaimSuccess": "Season Pass beloning geclaimd",
+  "seasonPassClaimSuccess": "Event Pass beloning geclaimd",
   "seasonPassClaimFailed": "Claimen mislukt",
   "seasonPassRewardAmmo": "Munitie",
   "seasonPassRewardVehicle": "Zeldzaam voertuig",
@@ -8324,11 +8324,11 @@
   "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP geeft toegang tot extra crew-upgrades en gedeelde premium voordelen voor je crewflow. Na aankoop wordt de actieve status en vervaldatum direct bijgewerkt.",
   "premiumUiSectionBuyCreditsTitle": "Credits kopen",
   "premiumUiSectionBuyCreditsSubtitle": "Kies een bundel via visuele tegels. Populaire optie met 1000 credits krijgt zijn eigen spotlight.",
-  "premiumUiSectionPassesTitle": "Season- & eventpassen",
-  "premiumUiSectionPassesSubtitle": "Eenmalige unlocks voor het maandelijkse Season Pass premium-track en korte event-boosts.",
-  "premiumUiBadgeSeasonPass": "Season Pass",
+  "premiumUiSectionPassesTitle": "Event Pass",
+  "premiumUiSectionPassesSubtitle": "Eenmalige unlock voor het maandelijkse Event Pass premium-track. Geen abonnement.",
+  "premiumUiBadgeSeasonPass": "Event Pass",
   "premiumUiBadgeEventPass": "Event Pass",
-  "premiumUiSeasonPassFallbackTitle": "Season Pass (deze maand)",
+  "premiumUiSeasonPassFallbackTitle": "Event Pass (deze maand)",
   "premiumUiEventPassFallbackTitle": "Event Pass",
   "premiumUiBuyPassCta": "Koop · {price}",
   "@premiumUiBuyPassCta": {

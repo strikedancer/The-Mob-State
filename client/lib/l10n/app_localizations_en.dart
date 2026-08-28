@@ -946,12 +946,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String seasonPassTitle(String season) {
-    return 'Season Pass $season';
+    return 'Event Pass $season';
   }
 
   @override
   String get seasonPassSubtitle =>
-      '50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Event prize (free) and Season Pass bonus (premium) per row.';
+      '50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Free event prize and Event Pass bonus (premium) per row.';
 
   @override
   String seasonPassGoalsProgress(String completed, String total) {
@@ -1023,7 +1023,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get seasonPassBuyCta => 'Unlock premium · €7.99';
+  String get seasonPassBuyCta => 'Unlock Event Pass · €7.99';
 
   @override
   String get seasonPassPremiumActive => 'Premium';
@@ -1052,7 +1052,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seasonPassLocked => 'Locked';
 
   @override
-  String get seasonPassClaimSuccess => 'Season Pass reward claimed';
+  String get seasonPassClaimSuccess => 'Event Pass reward claimed';
 
   @override
   String get seasonPassClaimFailed => 'Could not claim reward';
@@ -4669,20 +4669,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Pick a bundle via visual tiles. Popular 1000-credit option gets its own spotlight.';
 
   @override
-  String get premiumUiSectionPassesTitle => 'Season & event passes';
+  String get premiumUiSectionPassesTitle => 'Event Pass';
 
   @override
   String get premiumUiSectionPassesSubtitle =>
-      'One-time unlocks for the monthly Season Pass premium track and short event boosts.';
+      'One-time unlock for the monthly Event Pass premium track. Not a subscription.';
 
   @override
-  String get premiumUiBadgeSeasonPass => 'Season Pass';
+  String get premiumUiBadgeSeasonPass => 'Event Pass';
 
   @override
   String get premiumUiBadgeEventPass => 'Event Pass';
 
   @override
-  String get premiumUiSeasonPassFallbackTitle => 'Season Pass (this month)';
+  String get premiumUiSeasonPassFallbackTitle => 'Event Pass (this month)';
 
   @override
   String get premiumUiEventPassFallbackTitle => 'Event Pass';

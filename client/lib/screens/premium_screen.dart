@@ -539,10 +539,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
       )
       .toList();
 
-  /// Season Pass + Event Pass style one-time offers (not credit bundles).
+  /// Monthly Event Pass only (no short 7-day event boost packs here).
   List<Map<String, dynamic>> get _passPurchaseOffers => _products.where((product) {
     final type = ((product['reward'] as Map?)?['type'] ?? '').toString();
-    return type == 'season_pass' || type == 'event_boost';
+    final key = (product['key'] ?? '').toString();
+    return type == 'season_pass' || key == 'season_pass_monthly';
   }).toList();
 
   void _scheduleFocusProduct() {
@@ -566,15 +567,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
     });
   }
 
-  String _rewardTypeOf(Map<String, dynamic> product) =>
-      ((product['reward'] as Map?)?['type'] ?? '').toString();
-
   int _passBonusCredits(Map<String, dynamic> product) {
     final reward =
         (product['reward'] as Map?)?.cast<String, dynamic>() ?? const {};
     final fromReward = (reward['creditAmount'] as num?)?.toInt();
     if (fromReward != null && fromReward > 0) return fromReward;
-    // Catalog may also expose credits on event_boost via summary only; fall back 0.
     return 0;
   }
 
@@ -1403,23 +1400,15 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final summary = useNl
         ? (product['rewardSummaryNl'] ?? '').toString()
         : (product['rewardSummaryEn'] ?? '').toString();
-    final rewardType = _rewardTypeOf(product);
-    final isSeasonPass = rewardType == 'season_pass';
     final configuredImage = (product['imageUrl'] ?? '').toString().trim();
     final imagePath = configuredImage.isNotEmpty
         ? configuredImage
-        : (isSeasonPass
-              ? '$_premiumTilesBasePath/credits_1000.png'
-              : '$_premiumTilesBasePath/shop_event_boost.png');
+        : '$_premiumTilesBasePath/credits_1000.png';
     final price = _oneTimePriceLabel(product['priceEur']);
     final bonusCredits = _passBonusCredits(product);
-    final accent = isSeasonPass
-        ? const Color(0xFFB388FF)
-        : Colors.pink.shade600;
+    final accent = const Color(0xFFB388FF);
     final resolvedTitle = title.trim().isEmpty
-        ? (isSeasonPass
-              ? l10n.premiumUiSeasonPassFallbackTitle
-              : l10n.premiumUiEventPassFallbackTitle)
+        ? l10n.premiumUiSeasonPassFallbackTitle
         : title.trim();
     final resolvedDescription = description.trim().isEmpty
         ? summary
@@ -1437,12 +1426,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
       subtitle: resolvedDescription,
       imagePath: imagePath,
       accent: accent,
-      icon: isSeasonPass ? Icons.emoji_events : Icons.flash_on,
+      icon: Icons.emoji_events,
       primaryValue: price,
       secondaryValue: secondaryBits.join(' · '),
-      badgeLabel: isSeasonPass
-          ? l10n.premiumUiBadgeSeasonPass
-          : l10n.premiumUiBadgeEventPass,
+      badgeLabel: l10n.premiumUiBadgeSeasonPass,
       actionLabel: l10n.premiumUiBuyPassCta(price),
       infoTitle: resolvedTitle,
       infoBody: resolvedDescription,

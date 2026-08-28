@@ -952,12 +952,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String seasonPassTitle(String season) {
-    return 'Season Pass $season';
+    return 'Event Pass $season';
   }
 
   @override
   String get seasonPassSubtitle =>
-      '50 maandelijkse doelen: misdaden, voertuigen, smokkel, drugs, verdiend geld en XP. Event-beloning (gratis) en Season Pass-bonus (premium) per regel.';
+      '50 maandelijkse doelen: misdaden, voertuigen, smokkel, drugs, verdiend geld en XP. Gratis event-beloning en Event Pass-bonus (premium) per regel.';
 
   @override
   String seasonPassGoalsProgress(String completed, String total) {
@@ -1029,7 +1029,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get seasonPassBuyCta => 'Premium ontgrendelen · €7,99';
+  String get seasonPassBuyCta => 'Event Pass ontgrendelen · €7,99';
 
   @override
   String get seasonPassPremiumActive => 'Premium';
@@ -1058,7 +1058,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get seasonPassLocked => 'Vergrendeld';
 
   @override
-  String get seasonPassClaimSuccess => 'Season Pass beloning geclaimd';
+  String get seasonPassClaimSuccess => 'Event Pass beloning geclaimd';
 
   @override
   String get seasonPassClaimFailed => 'Claimen mislukt';
@@ -4699,20 +4699,20 @@ class AppLocalizationsNl extends AppLocalizations {
       'Kies een bundel via visuele tegels. Populaire optie met 1000 credits krijgt zijn eigen spotlight.';
 
   @override
-  String get premiumUiSectionPassesTitle => 'Season- & eventpassen';
+  String get premiumUiSectionPassesTitle => 'Event Pass';
 
   @override
   String get premiumUiSectionPassesSubtitle =>
-      'Eenmalige unlocks voor het maandelijkse Season Pass premium-track en korte event-boosts.';
+      'Eenmalige unlock voor het maandelijkse Event Pass premium-track. Geen abonnement.';
 
   @override
-  String get premiumUiBadgeSeasonPass => 'Season Pass';
+  String get premiumUiBadgeSeasonPass => 'Event Pass';
 
   @override
   String get premiumUiBadgeEventPass => 'Event Pass';
 
   @override
-  String get premiumUiSeasonPassFallbackTitle => 'Season Pass (deze maand)';
+  String get premiumUiSeasonPassFallbackTitle => 'Event Pass (deze maand)';
 
   @override
   String get premiumUiEventPassFallbackTitle => 'Event Pass';

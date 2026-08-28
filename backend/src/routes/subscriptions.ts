@@ -124,34 +124,15 @@ const DEFAULT_CREDIT_BUNDLE_OFFERS = [
 ];
 
 async function ensureEventPassOffer(): Promise<void> {
-  await prisma.premiumOneTimeOffer.createMany({
-    data: [
-      {
-        key: 'event_pass_7d',
-        titleNl: 'Event Pass (7 dagen)',
-        titleEn: 'Event Pass (7 days)',
-        descriptionNl:
-          '+10% event-score op live events, plus 50 bonus credits. Zijwaarts voordeel: geen directe combat-boost.',
-        descriptionEn:
-          '+10% event score on live events, plus 50 bonus credits. Side-grade only: no direct combat boost.',
-        imageUrl: 'images/premium_tiles/credits_500.png',
-        priceEurCents: 599,
-        rewardType: 'event_boost',
-        moneyAmount: null,
-        ammoType: null,
-        ammoQuantity: null,
-        creditAmount: 50,
-        rewardKey: 'event_pass_7d',
-        durationHours: 168,
-        rewardValue: null,
-        metadataJson: JSON.stringify({ boosts: { eventContributionPct: 0.1 } }),
-        isActive: true,
-        showPopupOnOpen: false,
-        sortOrder: 190,
-      },
-    ],
-    skipDuplicates: true,
-  });
+  // Monthly Event Pass replaced the old 7-day Event Pass pack — keep it off the catalog.
+  try {
+    await prisma.premiumOneTimeOffer.updateMany({
+      where: { key: 'event_pass_7d' },
+      data: { isActive: false },
+    });
+  } catch (error) {
+    console.error('[Premium] deactivate event_pass_7d failed:', error);
+  }
 }
 
 async function ensureSeasonPassOffer(): Promise<void> {
@@ -160,12 +141,12 @@ async function ensureSeasonPassOffer(): Promise<void> {
       data: [
         {
           key: 'season_pass_monthly',
-          titleNl: 'Season Pass (deze maand)',
-          titleEn: 'Season Pass (this month)',
+          titleNl: 'Event Pass (deze maand)',
+          titleEn: 'Event Pass (this month)',
           descriptionNl:
-            'Eenmalig €7,99 — geen abonnement. Ontgrendel het premium track van de maandelijkse Season Pass (munitie, onderdelen, zeldzame beloningen). Progress via live events.',
+            'Eenmalig €7,99 — geen abonnement. Ontgrendel het premium track van de maandelijkse Event Pass (munitie, onderdelen, zeldzame beloningen). Progress via live events.',
           descriptionEn:
-            'One-time €7.99 — not a subscription. Unlocks the premium track of the monthly Season Pass (ammo, parts, rare rewards). Progress via live events.',
+            'One-time €7.99 — not a subscription. Unlocks the premium track of the monthly Event Pass (ammo, parts, rare rewards). Progress via live events.',
           imageUrl: 'images/premium_tiles/credits_1000.png',
           priceEurCents: 799,
           rewardType: 'season_pass',
@@ -186,6 +167,21 @@ async function ensureSeasonPassOffer(): Promise<void> {
         },
       ],
       skipDuplicates: true,
+    });
+    // Refresh copy for existing rows (createMany skips duplicates).
+    await prisma.premiumOneTimeOffer.updateMany({
+      where: { key: 'season_pass_monthly' },
+      data: {
+        titleNl: 'Event Pass (deze maand)',
+        titleEn: 'Event Pass (this month)',
+        descriptionNl:
+          'Eenmalig €7,99 — geen abonnement. Ontgrendel het premium track van de maandelijkse Event Pass (munitie, onderdelen, zeldzame beloningen). Progress via live events.',
+        descriptionEn:
+          'One-time €7.99 — not a subscription. Unlocks the premium track of the monthly Event Pass (ammo, parts, rare rewards). Progress via live events.',
+        isActive: true,
+        priceEurCents: 799,
+        sortOrder: 185,
+      },
     });
   } catch (error) {
     // Never break the whole Premium catalog if this seed fails (e.g. enum not migrated yet).
@@ -313,8 +309,8 @@ function buildRewardSummary(offer: PremiumOfferRecord, locale: 'nl' | 'en') {
 
   if (offer.rewardType === 'season_pass') {
     return locale === 'nl'
-      ? `Season Pass premium track · +${offer.creditAmount ?? 0} credits`
-      : `Season Pass premium track · +${offer.creditAmount ?? 0} credits`;
+      ? `Event Pass premium track · +${offer.creditAmount ?? 0} credits`
+      : `Event Pass premium track · +${offer.creditAmount ?? 0} credits`;
   }
 
   const duration = offer.durationHours ? `${offer.durationHours}h` : null;

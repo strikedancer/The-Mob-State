@@ -1853,13 +1853,13 @@ abstract class AppLocalizations {
   /// No description provided for @seasonPassTitle.
   ///
   /// In en, this message translates to:
-  /// **'Season Pass {season}'**
+  /// **'Event Pass {season}'**
   String seasonPassTitle(String season);
 
   /// No description provided for @seasonPassSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Event prize (free) and Season Pass bonus (premium) per row.'**
+  /// **'50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Free event prize and Event Pass bonus (premium) per row.'**
   String get seasonPassSubtitle;
 
   /// No description provided for @seasonPassGoalsProgress.
@@ -1955,7 +1955,7 @@ abstract class AppLocalizations {
   /// No description provided for @seasonPassBuyCta.
   ///
   /// In en, this message translates to:
-  /// **'Unlock premium · €7.99'**
+  /// **'Unlock Event Pass · €7.99'**
   String get seasonPassBuyCta;
 
   /// No description provided for @seasonPassPremiumActive.
@@ -2009,7 +2009,7 @@ abstract class AppLocalizations {
   /// No description provided for @seasonPassClaimSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Season Pass reward claimed'**
+  /// **'Event Pass reward claimed'**
   String get seasonPassClaimSuccess;
 
   /// No description provided for @seasonPassClaimFailed.
@@ -8446,19 +8446,19 @@ abstract class AppLocalizations {
   /// No description provided for @premiumUiSectionPassesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Season & event passes'**
+  /// **'Event Pass'**
   String get premiumUiSectionPassesTitle;
 
   /// No description provided for @premiumUiSectionPassesSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'One-time unlocks for the monthly Season Pass premium track and short event boosts.'**
+  /// **'One-time unlock for the monthly Event Pass premium track. Not a subscription.'**
   String get premiumUiSectionPassesSubtitle;
 
   /// No description provided for @premiumUiBadgeSeasonPass.
   ///
   /// In en, this message translates to:
-  /// **'Season Pass'**
+  /// **'Event Pass'**
   String get premiumUiBadgeSeasonPass;
 
   /// No description provided for @premiumUiBadgeEventPass.
@@ -8470,7 +8470,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumUiSeasonPassFallbackTitle.
   ///
   /// In en, this message translates to:
-  /// **'Season Pass (this month)'**
+  /// **'Event Pass (this month)'**
   String get premiumUiSeasonPassFallbackTitle;
 
   /// No description provided for @premiumUiEventPassFallbackTitle.
