@@ -31,7 +31,15 @@ class CrimeCard extends StatefulWidget {
 
 class _CrimeCardState extends State<CrimeCard> {
   static const Color _gold = Color(0xFFD4AF37);
-  bool _isHovered = false;
+  /// Hover must not [setState] the whole card — on Flutter web that rebuilds
+  /// [InkWell] mid-gesture and drops the first tap (crime only fires on 2nd click).
+  final ValueNotifier<bool> _hovered = ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    _hovered.dispose();
+    super.dispose();
+  }
 
   _CrimeRewardTier _rewardTier() {
     if (widget.crime.maxPay >= 15000) return _CrimeRewardTier.high;
@@ -478,9 +486,9 @@ class _CrimeCardState extends State<CrimeCard> {
         ((widget.crime.baseSuccessChance ?? 0) * 100).round();
     final successFraction = (successChance.clamp(0, 100)) / 100.0;
 
-    final borderColor = _isHovered
-        ? tierStyle.border.withValues(alpha: 0.95)
-        : tierStyle.border.withValues(alpha: widget.canCommit ? 0.55 : 0.25);
+    final idleBorderColor = tierStyle.border.withValues(
+      alpha: widget.canCommit ? 0.55 : 0.25,
+    );
 
     final weaponBanner = _buildWeaponBanner(l10n);
     final toolBottomOffset =
@@ -488,251 +496,259 @@ class _CrimeCardState extends State<CrimeCard> {
     final toolBanner = _buildToolBanner(l10n, bottom: toolBottomOffset);
     final blockerBadge = _buildBlockerBadge(l10n);
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 140),
-        curve: Curves.easeOut,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: _isHovered && widget.canCommit
-              ? [
-                  BoxShadow(
-                    color: tierStyle.accent.withValues(alpha: 0.28),
-                    blurRadius: 14,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : const [],
-        ),
-        child: Material(
-          color: const Color(0xFF151B28),
-          borderRadius: BorderRadius.circular(12),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: (widget.isCommitting || !widget.canCommit)
-                ? null
-                : widget.onTap,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      WebAssetHelper.image(
-                        imageAsset,
-                        fit: BoxFit.cover,
+    final cardBody = Material(
+      color: const Color(0xFF151B28),
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: (widget.isCommitting || !widget.canCommit)
+            ? null
+            : widget.onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  WebAssetHelper.image(
+                    imageAsset,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: const Color(0xFF1E2433),
                         alignment: Alignment.center,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: const Color(0xFF1E2433),
-                            alignment: Alignment.center,
-                            child: const Icon(
-                              Icons.image_not_supported,
-                              color: Colors.white54,
-                              size: 26,
-                            ),
-                          );
-                        },
+                        child: const Icon(
+                          Icons.image_not_supported,
+                          color: Colors.white54,
+                          size: 26,
+                        ),
+                      );
+                    },
+                  ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.08),
+                          Colors.black.withValues(alpha: 0.72),
+                        ],
                       ),
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.black.withValues(alpha: 0.08),
-                              Colors.black.withValues(alpha: 0.72),
+                    ),
+                  ),
+                  Positioned(
+                    top: 6,
+                    left: 6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.65),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: tierStyle.accent.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      child: Text(
+                        tierStyle.label,
+                        style: TextStyle(
+                          color: tierStyle.accent,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (blockerBadge != null) blockerBadge,
+                  if (!widget.canCommit)
+                    Container(
+                      color: Colors.black.withValues(alpha: 0.42),
+                    ),
+                  if (weaponBanner != null) weaponBanner,
+                  if (toolBanner != null) toolBanner,
+                ],
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: idleBorderColor, width: 1.1),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 7, 8, 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.crimeName,
+                            style: TextStyle(
+                              fontSize: isWide ? 12.5 : 11,
+                              fontWeight: FontWeight.w800,
+                              color:
+                                  widget.canCommit ? Colors.white : Colors.grey,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (requirementIcons.isNotEmpty)
+                          Tooltip(
+                            message: _getRequirementsTooltip(l10n) ?? '',
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: requirementIcons
+                                  .map(
+                                    (ico) => Padding(
+                                      padding: const EdgeInsets.only(left: 3),
+                                      child: Text(
+                                        ico,
+                                        style: const TextStyle(fontSize: 13),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          )
+                        else if (defaultIcon != null)
+                          Tooltip(
+                            message: _getRequirementsTooltip(l10n) ?? '',
+                            child: Text(
+                              defaultIcon,
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                          ),
+                      ],
+                    ),
+                    if (widget.crimeDescription.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text(
+                          widget.crimeDescription,
+                          style: TextStyle(
+                            fontSize: isWide ? 10 : 9,
+                            height: 1.2,
+                            color: widget.canCommit
+                                ? Colors.white60
+                                : Colors.grey,
+                          ),
+                          maxLines: isWide ? 2 : 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.crimeCardSuccessChance(successChance),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: _successBarColor(successChance),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: LinearProgressIndicator(
+                                  value: successFraction,
+                                  minHeight: 4,
+                                  backgroundColor: Colors.white12,
+                                  valueColor: AlwaysStoppedAnimation(
+                                    _successBarColor(successChance),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: 6,
-                        left: 6,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 7,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.65),
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: tierStyle.accent.withValues(alpha: 0.7),
-                            ),
-                          ),
-                          child: Text(
-                            tierStyle.label,
-                            style: TextStyle(
-                              color: tierStyle.accent,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (blockerBadge != null) blockerBadge,
-                      if (!widget.canCommit)
-                        Container(
-                          color: Colors.black.withValues(alpha: 0.42),
-                        ),
-                      if (weaponBanner != null) weaponBanner,
-                      if (toolBanner != null) toolBanner,
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: borderColor, width: 1.1),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 7, 8, 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                        const SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Expanded(
-                              child: Text(
-                                widget.crimeName,
+                            if (widget.crime.minPay > 0 ||
+                                widget.crime.maxPay > 0)
+                              Text(
+                                l10n.jobPayRangeEuro(
+                                  widget.crime.minPay.toString(),
+                                  widget.crime.maxPay.toString(),
+                                ),
                                 style: TextStyle(
-                                  fontSize: isWide ? 12.5 : 11,
-                                  fontWeight: FontWeight.w800,
-                                  color: widget.canCommit
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (requirementIcons.isNotEmpty)
-                              Tooltip(
-                                message: _getRequirementsTooltip(l10n) ?? '',
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: requirementIcons
-                                      .map(
-                                        (ico) => Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 3,
-                                          ),
-                                          child: Text(
-                                            ico,
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              )
-                            else if (defaultIcon != null)
-                              Tooltip(
-                                message: _getRequirementsTooltip(l10n) ?? '',
-                                child: Text(
-                                  defaultIcon,
-                                  style: const TextStyle(fontSize: 13),
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.green[400],
                                 ),
                               ),
-                          ],
-                        ),
-                        if (widget.crimeDescription.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2),
-                            child: Text(
-                              widget.crimeDescription,
-                              style: TextStyle(
-                                fontSize: isWide ? 10 : 9,
-                                height: 1.2,
-                                color: widget.canCommit
-                                    ? Colors.white60
-                                    : Colors.grey,
+                            if (widget.crime.xpReward > 0)
+                              Text(
+                                l10n.jobXpRewardShort(
+                                  widget.crime.xpReward.toString(),
+                                ),
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.blue[300],
+                                ),
                               ),
-                              maxLines: isWide ? 2 : 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        const SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n.crimeCardSuccessChance(
-                                      successChance,
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: _successBarColor(successChance),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(4),
-                                    child: LinearProgressIndicator(
-                                      value: successFraction,
-                                      minHeight: 4,
-                                      backgroundColor: Colors.white12,
-                                      valueColor: AlwaysStoppedAnimation(
-                                        _successBarColor(successChance),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                if (widget.crime.minPay > 0 ||
-                                    widget.crime.maxPay > 0)
-                                  Text(
-                                    l10n.jobPayRangeEuro(
-                                      widget.crime.minPay.toString(),
-                                      widget.crime.maxPay.toString(),
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 9.5,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.green[400],
-                                    ),
-                                  ),
-                                if (widget.crime.xpReward > 0)
-                                  Text(
-                                    l10n.jobXpRewardShort(
-                                      widget.crime.xpReward.toString(),
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.blue[300],
-                                    ),
-                                  ),
-                              ],
-                            ),
                           ],
                         ),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
+      ),
+    );
+
+    return MouseRegion(
+      onEnter: (_) => _hovered.value = true,
+      onExit: (_) => _hovered.value = false,
+      child: ValueListenableBuilder<bool>(
+        valueListenable: _hovered,
+        // Preserve InkWell across hover paints so the first web click is not dropped.
+        child: cardBody,
+        builder: (context, isHovered, child) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 140),
+            curve: Curves.easeOut,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isHovered
+                    ? tierStyle.border.withValues(alpha: 0.95)
+                    : idleBorderColor,
+                width: 1.1,
+              ),
+              boxShadow: isHovered && widget.canCommit
+                  ? [
+                      BoxShadow(
+                        color: tierStyle.accent.withValues(alpha: 0.28),
+                        blurRadius: 14,
+                        spreadRadius: 0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                  : const [],
+            ),
+            child: child,
+          );
+        },
       ),
     );
   }
