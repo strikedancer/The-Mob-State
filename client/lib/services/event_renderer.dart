@@ -131,6 +131,24 @@ class EventRenderer {
           '${params['price'] ?? params['cost'] ?? 0}',
         );
 
+      case 'drugs.production_started':
+        return l10n.evStreamDrugsProductionStarted(
+          params['drugName']?.toString() ??
+              params['drugType']?.toString() ??
+              '—',
+          '${params['minutes'] ?? 0}',
+        );
+      case 'drugs.production_collected':
+        return l10n.evStreamDrugsProductionCollected(
+          '${params['quantity'] ?? 0}',
+          params['drugName']?.toString() ??
+              params['drugType']?.toString() ??
+              '—',
+          params['qualityLabel']?.toString() ??
+              params['quality']?.toString() ??
+              '—',
+        );
+
       case 'vehicle.repair.completed':
         return l10n.evStreamVehicleRepairCompleted(
           _vehicleTypeLabel(params['vehicleType']?.toString()),

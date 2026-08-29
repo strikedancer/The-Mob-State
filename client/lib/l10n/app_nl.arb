@@ -5910,6 +5910,31 @@
       }
     }
   },
+  "evStreamDrugsProductionStarted": "{drugName}-productie gestart — klaar over {minutes} min",
+  "@evStreamDrugsProductionStarted": {
+    "placeholders": {
+      "drugName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsProductionCollected": "{quantity}g {drugName} ({quality}) opgehaald",
+  "@evStreamDrugsProductionCollected": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugName": {
+        "type": "String"
+      },
+      "quality": {
+        "type": "String"
+      }
+    }
+  },
   "evStreamVehicleRepairCompleted": "Reparatie klaar: {vehicleType} {vehicleName}",
   "@evStreamVehicleRepairCompleted": {
     "placeholders": {

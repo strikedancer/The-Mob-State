@@ -12530,6 +12530,20 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsProductionStarted(String drugName, String minutes) {
+    return 'Started $drugName production — ready in $minutes min';
+  }
+
+  @override
+  String evStreamDrugsProductionCollected(
+    String quantity,
+    String drugName,
+    String quality,
+  ) {
+    return 'Collected ${quantity}g $drugName ($quality)';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,

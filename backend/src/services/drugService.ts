@@ -16,6 +16,8 @@ import {
 } from './productionMaterialStock';
 import { getPlayerCarryingCapacity } from './backpackService';
 import toolService from './toolService';
+import { worldEventService } from './worldEventService';
+import { activityService } from './activityService';
 
 interface DrugDefinition {
   id: string;
@@ -603,6 +605,32 @@ class DrugService {
     // Production increases heat
     await this.updateHeat(playerId, 5 + incident.heatDelta);
 
+    await worldEventService.createEvent(
+      'drugs.production_started',
+      {
+        drugType: drugId,
+        drugName: drug.displayName,
+        minutes: reducedMinutes,
+        quantity: yield_amount,
+        quality,
+        qualityLabel,
+      },
+      playerId,
+    );
+    await activityService.logActivity(
+      playerId,
+      'DRUG_PRODUCTION_STARTED',
+      `${drug.displayName} productie gestart (${reducedMinutes} min)`,
+      {
+        drugType: drugId,
+        drugName: drug.displayName,
+        minutes: reducedMinutes,
+        quantity: yield_amount,
+        quality,
+      },
+      false,
+    );
+
     return {
       success: true,
       message: `${drug.displayName} productie gestart! Klaar over ${reducedMinutes} min — opbrengst: ${yield_amount}, kwaliteit: ${qualityLabel}${incident.summary.isNotEmpty ? `\n${incident.summary}` : ''}`,
@@ -1022,9 +1050,34 @@ class DrugService {
       );
     }
 
+    const drugName = drug?.displayName || production.drugType;
+    await worldEventService.createEvent(
+      'drugs.production_collected',
+      {
+        drugType: production.drugType,
+        drugName,
+        quantity: production.quantity,
+        quality,
+        qualityLabel,
+      },
+      playerId,
+    );
+    await activityService.logActivity(
+      playerId,
+      'DRUG_PRODUCTION_COLLECTED',
+      `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald`,
+      {
+        drugType: production.drugType,
+        drugName,
+        quantity: production.quantity,
+        quality,
+      },
+      false,
+    );
+
     return {
       success: true,
-      message: `${production.quantity}g ${drug?.displayName || production.drugType} (${qualityLabel}) opgehaald!${raidMessage}`,
+      message: `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald!${raidMessage}`,
       quantity: production.quantity,
       drugType: production.drugType,
     };

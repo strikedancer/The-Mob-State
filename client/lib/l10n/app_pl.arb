@@ -10161,5 +10161,30 @@
         "type": "String"
       }
     }
+  },
+  "evStreamDrugsProductionStarted": "Rozpoczęcie produkcji {drugName} — gotowe za {minutes} min",
+  "@evStreamDrugsProductionStarted": {
+    "placeholders": {
+      "drugName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsProductionCollected": "Zebrano {quantity}g {drugName} ({quality})",
+  "@evStreamDrugsProductionCollected": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugName": {
+        "type": "String"
+      },
+      "quality": {
+        "type": "String"
+      }
+    }
   }
 }

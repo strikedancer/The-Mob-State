@@ -12591,6 +12591,20 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsProductionStarted(String drugName, String minutes) {
+    return '$drugName Produktion begonnen – fertig in $minutes Min';
+  }
+
+  @override
+  String evStreamDrugsProductionCollected(
+    String quantity,
+    String drugName,
+    String quality,
+  ) {
+    return 'Gesammelt ${quantity}g $drugName ($quality)';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,

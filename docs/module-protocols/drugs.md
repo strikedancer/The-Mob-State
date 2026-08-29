@@ -33,6 +33,11 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ### Helper module
 - `backend/src/services/productionMaterialStock.ts`
 
+### Dashboard activity (Mijn activiteit)
+- Start: `drugs.production_started` (`drugName`, `minutes`, …)
+- Collect: `drugs.production_collected` (`quantity`, `drugName`, `qualityLabel`, …)
+- Emitted from `drugService` via `worldEventService` (player-scoped). Client copy: `evStreamDrugsProduction*`.
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.

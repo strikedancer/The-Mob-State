@@ -10161,5 +10161,30 @@
         "type": "String"
       }
     }
+  },
+  "evStreamDrugsProductionStarted": "Produzione iniziata {drugName} — pronto in {minutes} min",
+  "@evStreamDrugsProductionStarted": {
+    "placeholders": {
+      "drugName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsProductionCollected": "Raccolti {quantity}g {drugName} ({quality})",
+  "@evStreamDrugsProductionCollected": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugName": {
+        "type": "String"
+      },
+      "quality": {
+        "type": "String"
+      }
+    }
   }
 }

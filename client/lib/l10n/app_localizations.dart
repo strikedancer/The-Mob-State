@@ -21828,6 +21828,22 @@ abstract class AppLocalizations {
   /// **'Claimed property {name} in {country} for €{cost}'**
   String evStreamPropertyClaimed(String name, String country, String cost);
 
+  /// No description provided for @evStreamDrugsProductionStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started {drugName} production — ready in {minutes} min'**
+  String evStreamDrugsProductionStarted(String drugName, String minutes);
+
+  /// No description provided for @evStreamDrugsProductionCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected {quantity}g {drugName} ({quality})'**
+  String evStreamDrugsProductionCollected(
+    String quantity,
+    String drugName,
+    String quality,
+  );
+
   /// No description provided for @evStreamVehicleRepairCompleted.
   ///
   /// In en, this message translates to:
