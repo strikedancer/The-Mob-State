@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'responsive_modal.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
 
 const Color _resultGold = Color(0xFFFFB347);
 const Color _resultPanelDark = Color(0xFF1B1212);
 const Color _resultPanelLight = Color(0xFF2A1A1A);
 const Color _resultMoney = Color(0xFF86EFAC);
+const Color _resultFail = Color(0xFFE85D4C);
 
 class CrimeResultOverlay extends StatelessWidget {
   final String crimeName;
@@ -37,10 +39,14 @@ class CrimeResultOverlay extends StatelessWidget {
     this.intelDropped = false,
   });
 
+  String get _badgeAssetPath => isSuccess
+      ? 'assets/images/ui/result_badge_success.png'
+      : 'assets/images/ui/result_badge_fail.png';
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final accent = isSuccess ? _resultGold : const Color(0xFFE85D4C);
+    final accent = isSuccess ? _resultGold : _resultFail;
     final panelLight =
         isSuccess ? _resultPanelLight : const Color(0xFF2A1515);
     final panelDark = isSuccess ? _resultPanelDark : const Color(0xFF1B1010);
@@ -54,6 +60,7 @@ class CrimeResultOverlay extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final compactWidth = constraints.maxWidth < 430;
+          final badgeSize = compactWidth ? 56.0 : 64.0;
 
           return Container(
             padding: EdgeInsets.all(compactWidth ? 18 : 24),
@@ -72,19 +79,11 @@ class CrimeResultOverlay extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: compactWidth ? 56 : 64,
-                    height: compactWidth ? 56 : 64,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: accent.withOpacity(0.16),
-                      border: Border.all(color: accent, width: 1.4),
-                    ),
-                      child: Icon(
-                        isSuccess ? Icons.emoji_events : Icons.cancel_outlined,
-                        size: compactWidth ? 30 : 34,
-                        color: accent,
-                      ),
+                  _ResultBadge(
+                    size: badgeSize,
+                    accent: accent,
+                    isSuccess: isSuccess,
+                    assetPath: _badgeAssetPath,
                   ),
                   const SizedBox(height: 14),
                   Text(
@@ -228,6 +227,105 @@ class CrimeResultOverlay extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Circular badge: Leonardo PNG when available; CustomPaint glyph otherwise.
+/// Material Icons often render empty on Flutter web inside this modal.
+class _ResultBadge extends StatelessWidget {
+  final double size;
+  final Color accent;
+  final bool isSuccess;
+  final String assetPath;
+
+  const _ResultBadge({
+    required this.size,
+    required this.accent,
+    required this.isSuccess,
+    required this.assetPath,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final glyph = CustomPaint(
+      size: Size(size * 0.48, size * 0.48),
+      painter: isSuccess
+          ? _ResultSuccessGlyphPainter(accent)
+          : _ResultFailGlyphPainter(accent),
+    );
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: accent.withOpacity(0.16),
+        border: Border.all(color: accent, width: 1.4),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: WebAssetHelper.image(
+        assetPath,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Center(child: glyph);
+        },
+      ),
+    );
+  }
+}
+
+class _ResultFailGlyphPainter extends CustomPainter {
+  final Color color;
+  _ResultFailGlyphPainter(this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = size.shortestSide * 0.14
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    final inset = size.shortestSide * 0.12;
+    canvas.drawLine(
+      Offset(inset, inset),
+      Offset(size.width - inset, size.height - inset),
+      paint,
+    );
+    canvas.drawLine(
+      Offset(size.width - inset, inset),
+      Offset(inset, size.height - inset),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _ResultFailGlyphPainter oldDelegate) =>
+      oldDelegate.color != color;
+}
+
+class _ResultSuccessGlyphPainter extends CustomPainter {
+  final Color color;
+  _ResultSuccessGlyphPainter(this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = size.shortestSide * 0.12
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
+    final w = size.width;
+    final h = size.height;
+    final path = Path()
+      ..moveTo(w * 0.18, h * 0.52)
+      ..lineTo(w * 0.40, h * 0.74)
+      ..lineTo(w * 0.82, h * 0.28);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _ResultSuccessGlyphPainter oldDelegate) =>
+      oldDelegate.color != color;
 }
 
 class _ResultStat extends StatelessWidget {
