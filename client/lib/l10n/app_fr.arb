@@ -10103,5 +10103,63 @@
   "seasonPassClaimSuccessFree": "Free event prize claimed",
   "seasonPassClaimSuccessPremium": "Premium Event Pass reward claimed",
   "seasonPassRewardAmmoWith": "+ ammo",
-  "seasonPassRewardPartsWith": "+ parts"
+  "seasonPassRewardPartsWith": "+ parts",
+  "evStreamPropertyClaimed": "Claimed property {name} in {country} for €{cost}",
+  "@evStreamPropertyClaimed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamVehicleRepairCompleted": "{vehicleType} {vehicleName} repair completed",
+  "@evStreamVehicleRepairCompleted": {
+    "placeholders": {
+      "vehicleType": {
+        "type": "String"
+      },
+      "vehicleName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamSchoolTrackProgress": "School training: +{xp} XP ({track})",
+  "@evStreamSchoolTrackProgress": {
+    "placeholders": {
+      "xp": {
+        "type": "String"
+      },
+      "track": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamSchoolLevelUp": "School level up: {track} → level {level}",
+  "@evStreamSchoolLevelUp": {
+    "placeholders": {
+      "track": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamSchoolCertification": "School certificate earned: {cert} ({track})",
+  "@evStreamSchoolCertification": {
+    "placeholders": {
+      "cert": {
+        "type": "String"
+      },
+      "track": {
+        "type": "String"
+      }
+    }
+  }
 }

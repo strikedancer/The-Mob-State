@@ -5896,6 +5896,64 @@
       }
     }
   },
+  "evStreamPropertyClaimed": "Pand {name} geclaimd in {country} voor €{cost}",
+  "@evStreamPropertyClaimed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamVehicleRepairCompleted": "Reparatie klaar: {vehicleType} {vehicleName}",
+  "@evStreamVehicleRepairCompleted": {
+    "placeholders": {
+      "vehicleType": {
+        "type": "String"
+      },
+      "vehicleName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamSchoolTrackProgress": "Schooltraining: +{xp} XP ({track})",
+  "@evStreamSchoolTrackProgress": {
+    "placeholders": {
+      "xp": {
+        "type": "String"
+      },
+      "track": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamSchoolLevelUp": "School level-up: {track} → niveau {level}",
+  "@evStreamSchoolLevelUp": {
+    "placeholders": {
+      "track": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamSchoolCertification": "Schoolcertificaat behaald: {cert} ({track})",
+  "@evStreamSchoolCertification": {
+    "placeholders": {
+      "cert": {
+        "type": "String"
+      },
+      "track": {
+        "type": "String"
+      }
+    }
+  },
   "evStreamCrewCreated": "Crew aangemaakt: {name}",
   "evStreamCrewJoined": "Bij crew gegaan: {name}",
   "@evStreamCrewCreated": {

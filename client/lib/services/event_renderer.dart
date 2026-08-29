@@ -120,6 +120,40 @@ class EventRenderer {
           params['propertyName']?.toString() ?? '—',
           '${params['cost'] ?? 0}',
         );
+      case 'property.claimed':
+        return l10n.evStreamPropertyClaimed(
+          params['propertyName']?.toString() ?? '—',
+          CountryHelper.getLocalizedCountryName(
+            params['country']?.toString() ?? '',
+            l10n,
+            fallbackName: params['country']?.toString() ?? '—',
+          ),
+          '${params['price'] ?? params['cost'] ?? 0}',
+        );
+
+      case 'vehicle.repair.completed':
+        return l10n.evStreamVehicleRepairCompleted(
+          _vehicleTypeLabel(params['vehicleType']?.toString()),
+          params['vehicleName']?.toString() ?? '—',
+        );
+
+      case 'school.track_progress':
+        return l10n.evStreamSchoolTrackProgress(
+          '${params['xpGain'] ?? params['xp'] ?? 0}',
+          _schoolTrackLabel(params['trackId']?.toString()),
+        );
+      case 'school.level_up':
+        return l10n.evStreamSchoolLevelUp(
+          _schoolTrackLabel(params['trackId']?.toString()),
+          '${params['newLevel'] ?? params['educationLevel'] ?? 0}',
+        );
+      case 'school.certification_earned':
+        return l10n.evStreamSchoolCertification(
+          params['certificationName']?.toString() ??
+              params['certificationId']?.toString().replaceAll('_', ' ') ??
+              '—',
+          _schoolTrackLabel(params['trackId']?.toString()),
+        );
 
       case 'crew.created':
         return l10n.evStreamCrewCreated(
@@ -483,6 +517,40 @@ class EventRenderer {
     final last = names.removeLast();
     final join = names.join(', ');
     return dutch ? '$join of $last' : '$join or $last';
+  }
+
+  String _vehicleTypeLabel(String? type) {
+    switch ((type ?? '').toLowerCase()) {
+      case 'motorcycle':
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Motor' : 'Motorcycle';
+      case 'boat':
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Boot' : 'Boat';
+      case 'car':
+      default:
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Auto' : 'Car';
+    }
+  }
+
+  String _schoolTrackLabel(String? trackId) {
+    switch ((trackId ?? '').toLowerCase()) {
+      case 'aviation':
+        return l10n.aviation;
+      case 'law':
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Recht' : 'Law';
+      case 'medicine':
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Geneeskunde' : 'Medicine';
+      case 'finance':
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Financiën' : 'Finance';
+      case 'engineering':
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Techniek' : 'Engineering';
+      case 'it':
+        return 'IT';
+      case 'narcotics':
+        return l10n.localeName.toLowerCase().startsWith('nl') ? 'Narcotica' : 'Narcotics';
+      default:
+        final raw = trackId?.trim() ?? '';
+        return raw.isEmpty ? '—' : raw.replaceAll('_', ' ');
+    }
   }
 
   static double _asNumber(dynamic value) {

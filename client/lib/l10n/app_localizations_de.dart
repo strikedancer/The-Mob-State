@@ -12586,6 +12586,34 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String evStreamPropertyClaimed(String name, String country, String cost) {
+    return 'Claimed property $name in $country for €$cost';
+  }
+
+  @override
+  String evStreamVehicleRepairCompleted(
+    String vehicleType,
+    String vehicleName,
+  ) {
+    return '$vehicleType $vehicleName repair completed';
+  }
+
+  @override
+  String evStreamSchoolTrackProgress(String xp, String track) {
+    return 'School training: +$xp XP ($track)';
+  }
+
+  @override
+  String evStreamSchoolLevelUp(String track, String level) {
+    return 'School level up: $track → level $level';
+  }
+
+  @override
+  String evStreamSchoolCertification(String cert, String track) {
+    return 'School certificate earned: $cert ($track)';
+  }
+
+  @override
   String evStreamCrewCreated(String name) {
     return 'Erstellte Crew: $name';
   }

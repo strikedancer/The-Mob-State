@@ -21822,6 +21822,36 @@ abstract class AppLocalizations {
   /// **'Purchased {name} for €{cost}'**
   String evStreamPropertyBought(String name, String cost);
 
+  /// No description provided for @evStreamPropertyClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed property {name} in {country} for €{cost}'**
+  String evStreamPropertyClaimed(String name, String country, String cost);
+
+  /// No description provided for @evStreamVehicleRepairCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{vehicleType} {vehicleName} repair completed'**
+  String evStreamVehicleRepairCompleted(String vehicleType, String vehicleName);
+
+  /// No description provided for @evStreamSchoolTrackProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'School training: +{xp} XP ({track})'**
+  String evStreamSchoolTrackProgress(String xp, String track);
+
+  /// No description provided for @evStreamSchoolLevelUp.
+  ///
+  /// In en, this message translates to:
+  /// **'School level up: {track} → level {level}'**
+  String evStreamSchoolLevelUp(String track, String level);
+
+  /// No description provided for @evStreamSchoolCertification.
+  ///
+  /// In en, this message translates to:
+  /// **'School certificate earned: {cert} ({track})'**
+  String evStreamSchoolCertification(String cert, String track);
+
   /// No description provided for @evStreamCrewCreated.
   ///
   /// In en, this message translates to:
