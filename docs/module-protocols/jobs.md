@@ -5,6 +5,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 
 ## Primary Frontend Entry
 - client/lib/screens/jobs_screen.dart
+- Client loads via `GET /jobs/available` (available + education-locked jobs; includes active job `cooldown` when present).
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

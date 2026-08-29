@@ -365,7 +365,18 @@ class EducationService {
     }
 
     for (const event of educationEvents) {
-      const params = (event.params ? JSON.parse(event.params) : {}) as any;
+      let params: Record<string, unknown> = {};
+      if (event.params) {
+        try {
+          const parsed = JSON.parse(event.params);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            params = parsed as Record<string, unknown>;
+          }
+        } catch {
+          // Corrupt historical rows must not break jobs/school loads.
+          continue;
+        }
+      }
 
       if (event.eventKey === 'school.track_progress') {
         const trackId = String(params.trackId ?? '');

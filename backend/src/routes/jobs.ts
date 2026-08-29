@@ -12,31 +12,39 @@ const router = Router();
  * Get all available job types
  */
 router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
-  const playerId = req.player?.id;
-  
-  if (playerId) {
-    // Check for active cooldown
-    const cooldown = await cooldownService.getCooldown(playerId, 'job');
-    if (cooldown && cooldown.remainingSeconds > 0) {
-      return res.status(200).json({
-        event: 'jobs.list',
-        params: {},
-        jobs: [],
-        cooldown: {
-          actionType: 'job',
-          remainingSeconds: cooldown.remainingSeconds,
-        },
-      });
-    }
-  }
-  
-  const jobs = jobService.getAvailableJobs();
+  try {
+    const playerId = req.player?.id;
 
-  return res.status(200).json({
-    event: 'jobs.list',
-    params: {},
-    jobs,
-  });
+    if (playerId) {
+      // Check for active cooldown
+      const cooldown = await cooldownService.getCooldown(playerId, 'job');
+      if (cooldown && cooldown.remainingSeconds > 0) {
+        return res.status(200).json({
+          event: 'jobs.list',
+          params: {},
+          jobs: [],
+          cooldown: {
+            actionType: 'job',
+            remainingSeconds: cooldown.remainingSeconds,
+          },
+        });
+      }
+    }
+
+    const jobs = jobService.getAvailableJobs();
+
+    return res.status(200).json({
+      event: 'jobs.list',
+      params: {},
+      jobs,
+    });
+  } catch (error) {
+    console.error('[Jobs] GET / failed:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
 });
 
 /**
@@ -45,15 +53,29 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
  */
 router.get('/available', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const availability = await jobService.getJobsForPlayer(req.player!.id, req.player!.rank);
+    const playerId = req.player!.id;
+    const [availability, cooldown] = await Promise.all([
+      jobService.getJobsForPlayer(playerId, req.player!.rank),
+      cooldownService.getCooldown(playerId, 'job'),
+    ]);
 
-    return res.status(200).json({
+    const payload: Record<string, unknown> = {
       event: 'jobs.available',
       params: {},
       jobs: availability.availableJobs,
       lockedJobs: availability.lockedJobs,
-    });
-  } catch {
+    };
+
+    if (cooldown && cooldown.remainingSeconds > 0) {
+      payload.cooldown = {
+        actionType: 'job',
+        remainingSeconds: cooldown.remainingSeconds,
+      };
+    }
+
+    return res.status(200).json(payload);
+  } catch (error) {
+    console.error('[Jobs] GET /available failed:', error);
     return res.status(500).json({
       event: 'error.internal',
       params: {},

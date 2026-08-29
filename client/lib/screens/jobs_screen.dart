@@ -414,12 +414,29 @@ class _JobsScreenState extends State<JobsScreen> {
     );
   }
 
+  int? _readInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString());
+  }
+
+  Map<String, dynamic>? _asStringKeyedMap(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) {
+      return value.map((key, val) => MapEntry(key.toString(), val));
+    }
+    return null;
+  }
+
   Future<void> _checkJailStatusAndLoadJobs() async {
     final jailTime = await _jailService.checkJailStatus();
 
     if (jailTime > 0) {
+      if (!mounted) return;
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.refreshPlayer();
+      if (!mounted) return;
 
       setState(() {
         _jailTime = jailTime;
@@ -428,71 +445,76 @@ class _JobsScreenState extends State<JobsScreen> {
       return;
     }
 
-    try {
-      final response = await _apiClient.get('/jobs');
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        if (data['cooldown'] != null && data['cooldown'] is Map) {
-          final cooldownData = data['cooldown'] as Map<String, dynamic>;
-          if (cooldownData['remainingSeconds'] != null) {
-            setState(() {
-              _cooldownSeconds = cooldownData['remainingSeconds'] as int;
-              _isLoading = false;
-            });
-            return;
-          }
-        }
-
-        await _loadJobs();
-        return;
-      } else {
-        setState(() {
-          final l10n = AppLocalizations.of(context)!;
-          _error = l10n.errorLoadingJobs;
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (!mounted) return;
-      final loc = AppLocalizations.of(context)!;
-      setState(() {
-        _error = loc.connectionErrorGeneric;
-        _isLoading = false;
-      });
-    }
+    await _loadJobs();
   }
 
   Future<void> _loadJobs() async {
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
       _error = null;
     });
 
     try {
+      // Single call: player jobs + optional active job cooldown.
       final response = await _apiClient.get('/jobs/available');
 
+      if (!mounted) return;
+
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final jobsJson = (data['jobs'] as List? ?? const []);
-        final lockedJobsJson = (data['lockedJobs'] as List? ?? const []);
+        final decoded = jsonDecode(response.body);
+        final data = _asStringKeyedMap(decoded) ?? <String, dynamic>{};
+        final jobsJson = data['jobs'];
+        final lockedJobsJson = data['lockedJobs'];
+        final jobs = <Job>[];
+        if (jobsJson is List) {
+          for (final entry in jobsJson) {
+            final map = _asStringKeyedMap(entry);
+            if (map == null) continue;
+            try {
+              jobs.add(Job.fromJson(map));
+            } catch (e) {
+              debugPrint('[JobsScreen] Skip invalid job payload: $e');
+            }
+          }
+        }
+
+        final lockedJobs = <Map<String, dynamic>>[];
+        if (lockedJobsJson is List) {
+          for (final entry in lockedJobsJson) {
+            final map = _asStringKeyedMap(entry);
+            if (map != null) lockedJobs.add(map);
+          }
+        }
+
+        int? cooldownSeconds;
+        final cooldownMap = _asStringKeyedMap(data['cooldown']);
+        if (cooldownMap != null) {
+          cooldownSeconds = _readInt(cooldownMap['remainingSeconds']);
+          if (cooldownSeconds != null && cooldownSeconds <= 0) {
+            cooldownSeconds = null;
+          }
+        }
+
         setState(() {
-          _jobs = jobsJson.map((j) => Job.fromJson(j)).toList();
-          _lockedJobs = lockedJobsJson
-              .whereType<Map>()
-              .map((entry) => entry.cast<String, dynamic>())
-              .toList();
+          _jobs = jobs;
+          _lockedJobs = lockedJobs;
+          _cooldownSeconds = cooldownSeconds;
           _isLoading = false;
+          _error = null;
         });
       } else {
+        debugPrint(
+          '[JobsScreen] GET /jobs/available failed: ${response.statusCode} ${response.body}',
+        );
+        final l10n = AppLocalizations.of(context)!;
         setState(() {
-          final l10n = AppLocalizations.of(context)!;
           _error = l10n.errorLoadingJobs;
           _isLoading = false;
         });
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('[JobsScreen] Load jobs error: $e\n$st');
       if (!mounted) return;
       final loc = AppLocalizations.of(context)!;
       setState(() {
@@ -753,17 +775,17 @@ class _JobsScreenState extends State<JobsScreen> {
       }
 
       if (eventKey == 'error.cooldown') {
-        final remainingSeconds = params['remainingSeconds'] as int? ?? 0;
+        final remainingSeconds = readInt(params['remainingSeconds']);
 
         setState(() {
           _isWorking = false;
-          _cooldownSeconds = remainingSeconds;
+          _cooldownSeconds = remainingSeconds > 0 ? remainingSeconds : null;
         });
         return;
       }
 
       if (eventKey == 'error.jailed') {
-        final remainingTime = params['remainingTime'] as int? ?? 0;
+        final remainingTime = readInt(params['remainingTime']);
         final l10n = AppLocalizations.of(context)!;
         final eventRenderer = EventRenderer(l10n);
         final message = eventRenderer.renderEvent(eventKey, params);
