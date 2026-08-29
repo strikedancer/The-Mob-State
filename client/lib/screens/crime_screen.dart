@@ -841,6 +841,9 @@ class _CrimeScreenState extends State<CrimeScreen> {
       setState(() {
         _selectedCrimeWeaponId = weaponId;
       });
+      // Crime cards cache readiness (canAttempt / weapon banners). Refresh so
+      // selecting a weapon unlocks taps without requiring a full page reload.
+      await _checkJailStatusAndLoadCrimes();
     } catch (e) {
       print('[CrimeScreen] Error setting crime weapon: $e');
       if (!mounted) return;
@@ -857,8 +860,10 @@ class _CrimeScreenState extends State<CrimeScreen> {
   }
 
   void _openInventoryForWeaponSelection() {
-    Navigator.of(context).pushNamed('/inventory').then((_) {
-      _loadCrimeWeaponSelection(showLoading: false);
+    Navigator.of(context).pushNamed('/inventory').then((_) async {
+      await _loadCrimeWeaponSelection(showLoading: false);
+      if (!mounted) return;
+      await _checkJailStatusAndLoadCrimes();
     });
   }
 
