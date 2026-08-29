@@ -41,7 +41,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Worker cards: hoogte volgt content (geen bottom-clip op web/tablet/desktop).
 
 ## Empire hub IA
-- Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, collectable, housing, recruit CD), Collect → `settleEarnings`, recruit ceremony, Move menu + Work primary.
+- Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, collectable, housing, recruit CD), Collect → `settleEarnings`, recruit result via **`CrimeResultOverlay`** (same pattern as jobs/crimes; success + fail), Move menu + Work primary.
 - Tab 1 RLD: embedded `RedLightDistrictsScreen` (mobile RLD-menu and web sidebar deep-link hierheen, niet VIP Events).
 - Tab 2 Events: dark VIP event cards with participate/leave.
 - Tab 3 Social: Rivalry + Leaderboard segments (no nested chaos beyond existing period tabs).

@@ -143,6 +143,7 @@ class ProstitutionService {
         'message': data['message'] ?? 'Failed to recruit',
         'cooldownRemaining': data['cooldownRemaining'],
         'jailRemaining': data['jailRemaining'],
+        'lostProstitute': data['lostProstitute'],
       };
     } catch (e) {
       print('Error recruiting prostitute: $e');

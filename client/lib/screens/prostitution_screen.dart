@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 
@@ -7,6 +8,7 @@ import '../models/prostitute.dart';
 import '../models/achievement.dart';
 import '../services/prostitution_service.dart';
 import '../utils/achievement_notifier.dart';
+import '../widgets/crime_result_overlay.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/prostitution/empire_kpi_strip.dart';
 import '../widgets/prostitution/prostitution_empty_error.dart';
@@ -43,6 +45,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   bool _isLoading = true;
   bool _isRecruiting = false;
   bool _isWorkingAll = false;
+  bool _showRecruitResult = false;
+  bool _recruitResultSuccess = true;
+  String? _recruitResultName;
+  String? _recruitResultFlavor;
   int? _cooldownSeconds;
   int? _jailSeconds;
   int? _wantedLevel;
@@ -533,6 +539,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   Future<void> _recruitProstitute() async {
     if (_isRecruiting ||
+        _showRecruitResult ||
         (_cooldownSeconds != null && _cooldownSeconds! > 0) ||
         (_jailSeconds != null && _jailSeconds! > 0)) {
       return;
@@ -549,6 +556,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             ? newAchievements.map((json) => Achievement.fromJson(json)).toList()
             : <Achievement>[];
 
+        final recruited = result['prostitute'] is Prostitute
+            ? result['prostitute'] as Prostitute
+            : null;
+
         await _loadData();
         await _checkRecruitmentStatus();
 
@@ -558,9 +569,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         final recruitMessage =
             result['message']?.toString() ?? l10nRecruit.prostitutionRecruitedDefault;
 
-        if (!mounted) return;
-
-        _finishRecruitPresentation(recruitMessage, achievements);
+        _finishRecruitPresentation(
+          success: true,
+          name: recruited?.name ??
+              (_prostitutes.isNotEmpty ? _prostitutes.first.name : null),
+          message: recruitMessage,
+          achievements: achievements,
+        );
       } else if (mounted) {
         final jailRemaining = result['jailRemaining'] as int?;
         if (jailRemaining != null && jailRemaining > 0) {
@@ -570,15 +585,27 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
           _startCooldownTimer();
         }
 
+        final cooldownRemaining = result['cooldownRemaining'] as int?;
+        if (cooldownRemaining != null && cooldownRemaining > 0) {
+          setState(() => _cooldownSeconds = cooldownRemaining);
+          _startCooldownTimer();
+        }
+
+        await _loadData();
+        await _checkRecruitmentStatus();
+        if (!mounted) return;
+
         final l10nFail = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text(
-              result['message']?.toString() ?? l10nFail.prostitutionRecruitFailed,
-            ),
-            backgroundColor: Colors.red,
-          ),
+        final lost = result['lostProstitute'];
+        final lostName = lost is Map ? lost['name']?.toString() : null;
+        _finishRecruitPresentation(
+          success: false,
+          name: lostName?.isNotEmpty == true
+              ? lostName
+              : l10nFail.prostitutionRecruit,
+          message: result['message']?.toString() ??
+              l10nFail.prostitutionRecruitFailed,
+          achievements: const [],
         );
       }
     } catch (_) {
@@ -598,73 +625,25 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     }
   }
 
-  void _finishRecruitPresentation(
-    String? message,
-    List<Achievement> achievements,
-  ) {
+  void _finishRecruitPresentation({
+    required bool success,
+    required String? name,
+    required String? message,
+    required List<Achievement> achievements,
+  }) {
     if (!mounted) return;
 
-    final newest = _prostitutes.isNotEmpty ? _prostitutes.last : null;
-    showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (ctx) {
-        final l10n = AppLocalizations.of(ctx)!;
-        return AlertDialog(
-          backgroundColor: Colors.grey.shade900,
-          title: Text(
-            l10n.prostitutionRecruitCeremonyTitle,
-            style: const TextStyle(color: kProstitutionGold),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/prostitution/animation/recruitment_anim_frame5_success.png',
-                  height: 140,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.person_add,
-                    size: 64,
-                    color: kProstitutionGold,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (newest != null)
-                Text(
-                  newest.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-              if (message != null && message.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                Text(
-                  message,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey.shade300),
-                ),
-              ],
-            ],
-          ),
-          actions: [
-            FilledButton(
-              onPressed: () => Navigator.pop(ctx),
-              style: FilledButton.styleFrom(
-                backgroundColor: kProstitutionGold,
-                foregroundColor: Colors.black,
-              ),
-              child: Text(l10n.ok),
-            ),
-          ],
-        );
-      },
-    );
+    final l10n = AppLocalizations.of(context)!;
+    setState(() {
+      _showRecruitResult = true;
+      _recruitResultSuccess = success;
+      _recruitResultName = name?.isNotEmpty == true
+          ? name
+          : (success
+              ? l10n.prostitutionRecruitCeremonyTitle
+              : l10n.prostitutionRecruitFailed);
+      _recruitResultFlavor = message;
+    });
 
     if (achievements.isNotEmpty) {
       Future.delayed(const Duration(milliseconds: 400), () {
@@ -673,6 +652,16 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         }
       });
     }
+  }
+
+  void _dismissRecruitResult() {
+    if (!mounted) return;
+    setState(() {
+      _showRecruitResult = false;
+      _recruitResultSuccess = true;
+      _recruitResultName = null;
+      _recruitResultFlavor = null;
+    });
   }
 
   Future<void> _collectEarnings() async {
@@ -907,6 +896,17 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 _checkRecruitmentStatus();
                 _loadData();
               },
+            )
+          : _showRecruitResult
+          ? CrimeResultOverlay(
+              embedded: kIsWeb,
+              isSuccess: _recruitResultSuccess,
+              headline: _recruitResultSuccess
+                  ? l10n.prostitutionRecruitCeremonyTitle
+                  : l10n.prostitutionRecruitFailed,
+              crimeName: _recruitResultName ?? l10n.prostitutionRecruit,
+              flavorLine: _recruitResultFlavor,
+              onContinue: _dismissRecruitResult,
             )
           : NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
