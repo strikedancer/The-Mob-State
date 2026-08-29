@@ -161,6 +161,13 @@ class TickQueue {
         }
       }
 
+      try {
+        const { countryPoliceService } = await import('../services/countryPoliceService');
+        await countryPoliceService.decayAllCountries();
+      } catch (pressureDecayErr) {
+        console.error('[TickQueue] Country police decay failed:', pressureDecayErr);
+      }
+
       // Settle prostitution earnings for all players
       const prostitutionResult = await prostituteService.settleAllProstitutionEarnings();
       // Keep nightclub economy running in queue-mode ticks as well.

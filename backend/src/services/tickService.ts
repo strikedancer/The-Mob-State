@@ -133,6 +133,16 @@ class TickService {
         await fbiService.decayFBIHeat(player.id);
       }
 
+      try {
+        const { countryPoliceService } = await import('./countryPoliceService');
+        const cooled = await countryPoliceService.decayAllCountries();
+        if (cooled > 0) {
+          console.log(`🚔 Country police pressure decayed in ${cooled} countries`);
+        }
+      } catch (pressureDecayErr) {
+        console.error('[Tick] Country police decay failed:', pressureDecayErr);
+      }
+
       // Settle prostitution earnings for all players
       const prostitutionResult = await prostituteService.settleAllProstitutionEarnings();
       if (prostitutionResult.playersProcessed > 0) {

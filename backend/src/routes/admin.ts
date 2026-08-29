@@ -32,6 +32,11 @@ import {
   CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
   CREW_MISSION_RUNTIME_SETTING_KEYS,
 } from '../services/crewMissionService';
+import {
+  COUNTRY_POLICE_RUNTIME_SETTING_DEFAULTS,
+  COUNTRY_POLICE_RUNTIME_SETTING_KEYS,
+  invalidateCountryPoliceConfigCache,
+} from '../services/countryPoliceService';
 import { deletePortrait, listPortraits } from '../services/playerPortraitService';
 import { grantPlayerVipDays } from '../services/vipBenefitsService';
 import {
@@ -87,12 +92,14 @@ const RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   ...ECON_RUNTIME_SETTING_DEFAULTS,
   ...CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
   ...TERRITORY_RUNTIME_SETTING_DEFAULTS,
+  ...COUNTRY_POLICE_RUNTIME_SETTING_DEFAULTS,
 };
 const RUNTIME_SETTING_KEYS = [
   ...HITLIST_RUNTIME_SETTING_KEYS,
   ...ECON_RUNTIME_SETTING_KEYS,
   ...CREW_MISSION_RUNTIME_SETTING_KEYS,
   ...TERRITORY_RUNTIME_SETTING_KEYS,
+  ...COUNTRY_POLICE_RUNTIME_SETTING_KEYS,
 ];
 let runtimeConfigSchemaReady = false;
 
@@ -3823,6 +3830,11 @@ router.put(
 
       if (Object.keys(runtimeUpdates).length > 0) {
         await upsertRuntimeConfigValues(runtimeUpdates);
+        if (
+          Object.keys(runtimeUpdates).some((key) => key.startsWith('COUNTRY_POLICE_'))
+        ) {
+          invalidateCountryPoliceConfigCache();
+        }
       }
 
       if (Object.keys(envUpdates).length > 0) {

@@ -3869,6 +3869,17 @@ export const vehicleService = {
       ({ achievement }) => serializeAchievementForClient(achievement)
     );
 
+    try {
+      const { countryPoliceService } = await import('./countryPoliceService');
+      await countryPoliceService.recordActivityGain({
+        playerId,
+        countryCode: player.currentCountry || 'netherlands',
+        source: 'vehicle_theft',
+      });
+    } catch (err) {
+      console.error('[VehicleService] country police pressure gain failed', err);
+    }
+
     await logVehicleTheftActivity(`Succesvolle voertuigdiefstal: ${vehicleDef.name}`, {
       vehicleId,
       vehicleName: vehicleDef.name,

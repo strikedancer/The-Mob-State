@@ -16601,4 +16601,89 @@ class AppLocalizationsPl extends AppLocalizations {
   String territoryHoldDurationMinutes(int minutes) {
     return '${minutes}m';
   }
+
+  @override
+  String get countryPoliceStripTitle => 'Country police';
+
+  @override
+  String get countryPoliceBandCalm => 'Calm';
+
+  @override
+  String get countryPoliceBandWatchful => 'Watchful';
+
+  @override
+  String get countryPoliceBandHot => 'Hot';
+
+  @override
+  String get countryPoliceBandLockdown => 'Lockdown';
+
+  @override
+  String countryPolicePressureValue(int pressure) {
+    return '$pressure/100';
+  }
+
+  @override
+  String countryPoliceEffectLine(int successPenalty, int arrestBonus) {
+    return 'Crime success −$successPenalty pp · Arrest +$arrestBonus pp';
+  }
+
+  @override
+  String get countryPoliceDisruptTitle => 'Disrupt police pressure';
+
+  @override
+  String get countryPoliceDisruptHint =>
+      'Rare ops that can cool local heat. Failure raises Wanted and FBI heat.';
+
+  @override
+  String get countryPoliceDisruptButton => 'Disrupt';
+
+  @override
+  String get countryPoliceDisruptCorruption => 'Corruption';
+
+  @override
+  String get countryPoliceDisruptCorruptionDesc =>
+      'Grease palms to ease pressure.';
+
+  @override
+  String get countryPoliceDisruptDistract => 'Distract';
+
+  @override
+  String get countryPoliceDisruptDistractDesc =>
+      'Create a diversion across the city.';
+
+  @override
+  String get countryPoliceDisruptRaid => 'Counter-raid';
+
+  @override
+  String get countryPoliceDisruptRaidDesc =>
+      'Hit a depot to scramble their response.';
+
+  @override
+  String countryPoliceDisruptCost(String cost) {
+    return 'Cost €$cost';
+  }
+
+  @override
+  String countryPoliceDisruptDropHint(int drop, int minutes) {
+    return 'Pressure −$drop · Cool ~${minutes}m';
+  }
+
+  @override
+  String countryPoliceDisruptFailHint(int wanted, int fbi) {
+    return 'Fail: +$wanted Wanted, +$fbi FBI';
+  }
+
+  @override
+  String get countryPoliceDisruptSuccess =>
+      'Pressure dropped. The streets cool down for a while.';
+
+  @override
+  String get countryPoliceDisruptFailed => 'The op failed. Heat went up.';
+
+  @override
+  String get countryPoliceCoolActive => 'Cooling active';
+
+  @override
+  String get countryPoliceDisabled =>
+      'Country police pressure is currently off.';
 }

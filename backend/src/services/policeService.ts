@@ -34,7 +34,7 @@ interface ArrestResult {
 export async function checkArrest(playerId: number): Promise<ArrestResult> {
   const player = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { wantedLevel: true },
+    select: { wantedLevel: true, currentCountry: true },
   });
 
   if (!player) {
@@ -51,7 +51,20 @@ export async function checkArrest(playerId: number): Promise<ArrestResult> {
 
   // Calculate arrest chance based on wanted level
   // Formula: arrestChance = min(wantedLevel / policeRatio, 90%)
-  const arrestChance = Math.min((player.wantedLevel / config.policeRatio) * 100, 90);
+  let arrestChance = Math.min((player.wantedLevel / config.policeRatio) * 100, 90);
+
+  try {
+    const { countryPoliceService } = await import('./countryPoliceService');
+    const mods = await countryPoliceService.getModifiersForCountry(
+      player.currentCountry || 'netherlands',
+    );
+    if (mods.enabled && mods.arrestBonusPp > 0) {
+      arrestChance = Math.min(95, arrestChance + mods.arrestBonusPp);
+    }
+  } catch {
+    // Feature optional — never block arrests if pressure service fails
+  }
+
   const roll = Math.random() * 100;
 
   if (roll < arrestChance) {

@@ -2449,6 +2449,30 @@ model vehicle_tuning_upgrades {
   @@index([player_id], map: "idx_vehicle_tuning_player")
 }
 
+/// Shared police pressure per travel country (world state).
+model CountryPoliceState {
+  countryCode    String    @id @db.VarChar(50)
+  pressure       Int       @default(15)
+  updatedAt      DateTime  @updatedAt
+  lastActivityAt DateTime?
+  coolUntil      DateTime?
+
+  @@map("country_police_state")
+}
+
+/// Per-player hourly contribution cap tracking for country pressure gains.
+model CountryPolicePlayerHourly {
+  playerId    Int
+  countryCode String   @db.VarChar(50)
+  hourKey     String   @db.VarChar(16)
+  gained      Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  @@id([playerId, countryCode, hourKey])
+  @@index([hourKey], map: "idx_country_police_hourly_hour")
+  @@map("country_police_player_hourly")
+}
+
 enum CrewBuildingStyle {
   camping
   rural

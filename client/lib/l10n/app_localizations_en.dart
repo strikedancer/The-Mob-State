@@ -14932,7 +14932,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrimesHow =>
-      'Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` use your selected crime weapon. You can now choose it directly at the top of the Crimes screen or through Inventory.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.';
+      'Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` use your selected crime weapon. You can now choose it directly at the top of the Crimes screen or through Inventory.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.\nWhen country police pressure is enabled, a shared heat meter per country softens crime success and raises arrest chance where you are. Travel shows band badges; rare disrupt ops (crew/rank gated) can temporarily cool the streets.';
 
   @override
   String get helpTopicCrimesTips =>
@@ -16469,4 +16469,89 @@ class AppLocalizationsEn extends AppLocalizations {
   String territoryHoldDurationMinutes(int minutes) {
     return '${minutes}m';
   }
+
+  @override
+  String get countryPoliceStripTitle => 'Country police';
+
+  @override
+  String get countryPoliceBandCalm => 'Calm';
+
+  @override
+  String get countryPoliceBandWatchful => 'Watchful';
+
+  @override
+  String get countryPoliceBandHot => 'Hot';
+
+  @override
+  String get countryPoliceBandLockdown => 'Lockdown';
+
+  @override
+  String countryPolicePressureValue(int pressure) {
+    return '$pressure/100';
+  }
+
+  @override
+  String countryPoliceEffectLine(int successPenalty, int arrestBonus) {
+    return 'Crime success −$successPenalty pp · Arrest +$arrestBonus pp';
+  }
+
+  @override
+  String get countryPoliceDisruptTitle => 'Disrupt police pressure';
+
+  @override
+  String get countryPoliceDisruptHint =>
+      'Rare ops that can cool local heat. Failure raises Wanted and FBI heat.';
+
+  @override
+  String get countryPoliceDisruptButton => 'Disrupt';
+
+  @override
+  String get countryPoliceDisruptCorruption => 'Corruption';
+
+  @override
+  String get countryPoliceDisruptCorruptionDesc =>
+      'Grease palms to ease pressure.';
+
+  @override
+  String get countryPoliceDisruptDistract => 'Distract';
+
+  @override
+  String get countryPoliceDisruptDistractDesc =>
+      'Create a diversion across the city.';
+
+  @override
+  String get countryPoliceDisruptRaid => 'Counter-raid';
+
+  @override
+  String get countryPoliceDisruptRaidDesc =>
+      'Hit a depot to scramble their response.';
+
+  @override
+  String countryPoliceDisruptCost(String cost) {
+    return 'Cost €$cost';
+  }
+
+  @override
+  String countryPoliceDisruptDropHint(int drop, int minutes) {
+    return 'Pressure −$drop · Cool ~${minutes}m';
+  }
+
+  @override
+  String countryPoliceDisruptFailHint(int wanted, int fbi) {
+    return 'Fail: +$wanted Wanted, +$fbi FBI';
+  }
+
+  @override
+  String get countryPoliceDisruptSuccess =>
+      'Pressure dropped. The streets cool down for a while.';
+
+  @override
+  String get countryPoliceDisruptFailed => 'The op failed. Heat went up.';
+
+  @override
+  String get countryPoliceCoolActive => 'Cooling active';
+
+  @override
+  String get countryPoliceDisabled =>
+      'Country police pressure is currently off.';
 }

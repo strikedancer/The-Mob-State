@@ -1075,6 +1075,21 @@ class DrugService {
       false,
     );
 
+    try {
+      const playerCountry = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { currentCountry: true },
+      });
+      const { countryPoliceService } = await import('./countryPoliceService');
+      await countryPoliceService.recordActivityGain({
+        playerId,
+        countryCode: playerCountry?.currentCountry || 'netherlands',
+        source: 'drug_collect',
+      });
+    } catch (err) {
+      console.error('[DrugService] country police pressure gain failed', err);
+    }
+
     return {
       success: true,
       message: `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald!${raidMessage}`,

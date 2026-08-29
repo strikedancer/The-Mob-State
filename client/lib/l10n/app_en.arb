@@ -499,15 +499,21 @@
   "seasonPassTitle": "Event Pass {season}",
   "@seasonPassTitle": {
     "placeholders": {
-      "season": { "type": "String" }
+      "season": {
+        "type": "String"
+      }
     }
   },
   "seasonPassSubtitle": "50 monthly goals across crimes, vehicles, smuggling, drugs, cash earned and XP. Free event prize and Event Pass bonus (premium) per row.",
   "seasonPassGoalsProgress": "{completed} / {total} goals reached",
   "@seasonPassGoalsProgress": {
     "placeholders": {
-      "completed": { "type": "String" },
-      "total": { "type": "String" }
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
     }
   },
   "seasonPassColumnGoal": "Goal",
@@ -515,57 +521,99 @@
   "seasonPassColumnPremium": "Pass",
   "seasonPassGoalCrime": "Complete {count} crimes",
   "@seasonPassGoalCrime": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "seasonPassGoalVehicles": "Steal {count} vehicles",
   "@seasonPassGoalVehicles": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "seasonPassGoalSmuggling": "Smuggle {count} units",
   "@seasonPassGoalSmuggling": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "seasonPassGoalDrugs": "Produce {count} drugs",
   "@seasonPassGoalDrugs": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "seasonPassGoalMoney": "Earn {amount} cash",
   "@seasonPassGoalMoney": {
-    "placeholders": { "amount": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   },
   "seasonPassGoalXp": "Gain {count} XP",
   "@seasonPassGoalXp": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "seasonPassGoalGeneric": "Reach {count}",
   "@seasonPassGoalGeneric": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "seasonPassGoalProgress": "{current} done · {remaining} to go",
   "@seasonPassGoalProgress": {
     "placeholders": {
-      "current": { "type": "int" },
-      "remaining": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
     }
   },
   "seasonPassGoalRatio": "{current}/{target}",
   "@seasonPassGoalRatio": {
     "placeholders": {
-      "current": { "type": "int" },
-      "target": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
     }
   },
   "seasonPassScore": "Pass XP: {score}",
   "@seasonPassScore": {
     "placeholders": {
-      "score": { "type": "String" }
+      "score": {
+        "type": "String"
+      }
     }
   },
   "seasonPassNextLevel": "Next level {level}: {remaining} XP to go",
   "@seasonPassNextLevel": {
     "placeholders": {
-      "level": { "type": "String" },
-      "remaining": { "type": "String" }
+      "level": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
     }
   },
   "seasonPassBuyCta": "Unlock Event Pass · €7.99",
@@ -576,8 +624,12 @@
   "seasonPassLevelLabel": "Level {level} · {score} XP",
   "@seasonPassLevelLabel": {
     "placeholders": {
-      "level": { "type": "String" },
-      "score": { "type": "String" }
+      "level": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
     }
   },
   "seasonPassClaim": "Claim",
@@ -2690,7 +2742,9 @@
   "premiumUiBuyPassCta": "Buy · {price}",
   "@premiumUiBuyPassCta": {
     "placeholders": {
-      "price": { "type": "String" }
+      "price": {
+        "type": "String"
+      }
     }
   },
   "premiumUiNoCreditBundles": "There are no active credit bundles right now.",
@@ -3428,21 +3482,31 @@
   "materialsShopBackpackSlots": "Backpack slots: {used}/{capacity}",
   "@materialsShopBackpackSlots": {
     "placeholders": {
-      "used": { "type": "String" },
-      "capacity": { "type": "String" }
+      "used": {
+        "type": "String"
+      },
+      "capacity": {
+        "type": "String"
+      }
     }
   },
   "materialsShopCurrentCountry": "Current country: {country}",
   "@materialsShopCurrentCountry": {
     "placeholders": {
-      "country": { "type": "String" }
+      "country": {
+        "type": "String"
+      }
     }
   },
   "materialsShopStockLine": "Local depot: {depot} · Backpack: {carried}",
   "@materialsShopStockLine": {
     "placeholders": {
-      "depot": { "type": "int" },
-      "carried": { "type": "int" }
+      "depot": {
+        "type": "int"
+      },
+      "carried": {
+        "type": "int"
+      }
     }
   },
   "materialsShopBuy": "Buy",
@@ -3454,25 +3518,33 @@
   "materialsShopMaxQty": "Max: {max}",
   "@materialsShopMaxQty": {
     "placeholders": {
-      "max": { "type": "int" }
+      "max": {
+        "type": "int"
+      }
     }
   },
   "materialsShopPriceEach": "Price: €{price} each",
   "@materialsShopPriceEach": {
     "placeholders": {
-      "price": { "type": "String" }
+      "price": {
+        "type": "String"
+      }
     }
   },
   "materialsShopTotal": "Total: €{total}",
   "@materialsShopTotal": {
     "placeholders": {
-      "total": { "type": "String" }
+      "total": {
+        "type": "String"
+      }
     }
   },
   "materialsShopNeedMoney": "You need €{amount}",
   "@materialsShopNeedMoney": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "materialsShopBuyOk": "Materials purchased into local depot",
@@ -3482,7 +3554,9 @@
   "materialsShopLoadError": "Error while loading: {error}",
   "@materialsShopLoadError": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "materialsShopEmpty": "No materials available",
@@ -7053,40 +7127,56 @@
   "gameScreenActiveCount": "{count} live",
   "@gameScreenActiveCount": {
     "placeholders": {
-      "count": { "type": "String" }
+      "count": {
+        "type": "String"
+      }
     }
   },
   "gameScreenUpcomingCount": "{count} upcoming",
   "@gameScreenUpcomingCount": {
     "placeholders": {
-      "count": { "type": "String" }
+      "count": {
+        "type": "String"
+      }
     }
   },
   "gameScreenCountdownNow": "now",
   "gameScreenCountdownDays": "{days}d {hours}:{minutes}",
   "@gameScreenCountdownDays": {
     "placeholders": {
-      "days": { "type": "String" },
-      "hours": { "type": "String" },
-      "minutes": { "type": "String" }
+      "days": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
     }
   },
   "gameCardEndsIn": "Ends in {time}",
   "@gameCardEndsIn": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "gameCardStartsIn": "Starts in {time}",
   "@gameCardStartsIn": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "gameCardTopPrize": "1st place: {prize}",
   "@gameCardTopPrize": {
     "placeholders": {
-      "prize": { "type": "String" }
+      "prize": {
+        "type": "String"
+      }
     }
   },
   "gameCardJoinCta": "Join & view board",
@@ -7139,78 +7229,112 @@
   "gameScreenPrizeRankSingle": "Place {rank}",
   "@gameScreenPrizeRankSingle": {
     "placeholders": {
-      "rank": { "type": "String" }
+      "rank": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeRankRange": "Places {min}–{max}",
   "@gameScreenPrizeRankRange": {
     "placeholders": {
-      "min": { "type": "String" },
-      "max": { "type": "String" }
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeCredits": "{amount} credits",
   "@gameScreenPrizeCredits": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeXp": "{amount} XP",
   "@gameScreenPrizeXp": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeItemLine": "{name} ×{qty}",
   "@gameScreenPrizeItemLine": {
     "placeholders": {
-      "name": { "type": "String" },
-      "qty": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeAmmoLine": "Ammo {type} ×{qty}",
   "@gameScreenPrizeAmmoLine": {
     "placeholders": {
-      "type": { "type": "String" },
-      "qty": { "type": "String" }
+      "type": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeToolLine": "Tool: {toolId} ×{qty}",
   "@gameScreenPrizeToolLine": {
     "placeholders": {
-      "toolId": { "type": "String" },
-      "qty": { "type": "String" }
+      "toolId": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeWeaponLine": "Weapon: {weaponId} ×{qty}",
   "@gameScreenPrizeWeaponLine": {
     "placeholders": {
-      "weaponId": { "type": "String" },
-      "qty": { "type": "String" }
+      "weaponId": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeVehicleLine": "Rare vehicle: {vehicleId}",
   "@gameScreenPrizeVehicleLine": {
     "placeholders": {
-      "vehicleId": { "type": "String" }
+      "vehicleId": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeCarParts": "Car parts ×{qty}",
   "@gameScreenPrizeCarParts": {
     "placeholders": {
-      "qty": { "type": "String" }
+      "qty": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeMotorcycleParts": "Motorcycle parts ×{qty}",
   "@gameScreenPrizeMotorcycleParts": {
     "placeholders": {
-      "qty": { "type": "String" }
+      "qty": {
+        "type": "String"
+      }
     }
   },
   "gameScreenPrizeBoatParts": "Boat parts ×{qty}",
   "@gameScreenPrizeBoatParts": {
     "placeholders": {
-      "qty": { "type": "String" }
+      "qty": {
+        "type": "String"
+      }
     }
   },
   "gameScreenNoPrizes": "No prize rules configured for this event.",
@@ -7602,52 +7726,84 @@
   "evStreamPropertyClaimed": "Claimed property {name} in {country} for €{cost}",
   "@evStreamPropertyClaimed": {
     "placeholders": {
-      "name": { "type": "String" },
-      "country": { "type": "String" },
-      "cost": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
     }
   },
   "evStreamDrugsProductionStarted": "Started {drugName} production — ready in {minutes} min",
   "@evStreamDrugsProductionStarted": {
     "placeholders": {
-      "drugName": { "type": "String" },
-      "minutes": { "type": "String" }
+      "drugName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
     }
   },
   "evStreamDrugsProductionCollected": "Collected {quantity}g {drugName} ({quality})",
   "@evStreamDrugsProductionCollected": {
     "placeholders": {
-      "quantity": { "type": "String" },
-      "drugName": { "type": "String" },
-      "quality": { "type": "String" }
+      "quantity": {
+        "type": "String"
+      },
+      "drugName": {
+        "type": "String"
+      },
+      "quality": {
+        "type": "String"
+      }
     }
   },
   "evStreamVehicleRepairCompleted": "{vehicleType} {vehicleName} repair completed",
   "@evStreamVehicleRepairCompleted": {
     "placeholders": {
-      "vehicleType": { "type": "String" },
-      "vehicleName": { "type": "String" }
+      "vehicleType": {
+        "type": "String"
+      },
+      "vehicleName": {
+        "type": "String"
+      }
     }
   },
   "evStreamSchoolTrackProgress": "School training: +{xp} XP ({track})",
   "@evStreamSchoolTrackProgress": {
     "placeholders": {
-      "xp": { "type": "String" },
-      "track": { "type": "String" }
+      "xp": {
+        "type": "String"
+      },
+      "track": {
+        "type": "String"
+      }
     }
   },
   "evStreamSchoolLevelUp": "School level up: {track} → level {level}",
   "@evStreamSchoolLevelUp": {
     "placeholders": {
-      "track": { "type": "String" },
-      "level": { "type": "String" }
+      "track": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
     }
   },
   "evStreamSchoolCertification": "School certificate earned: {cert} ({track})",
   "@evStreamSchoolCertification": {
     "placeholders": {
-      "cert": { "type": "String" },
-      "track": { "type": "String" }
+      "cert": {
+        "type": "String"
+      },
+      "track": {
+        "type": "String"
+      }
     }
   },
   "evStreamCrewCreated": "Created crew: {name}",
@@ -9307,7 +9463,7 @@
   "helpTopicCrimesCategory": "Actions",
   "helpTopicCrimesTitle": "Crimes",
   "helpTopicCrimesSummary": "Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk.",
-  "helpTopicCrimesHow": "Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` use your selected crime weapon. You can now choose it directly at the top of the Crimes screen or through Inventory.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.",
+  "helpTopicCrimesHow": "Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` use your selected crime weapon. You can now choose it directly at the top of the Crimes screen or through Inventory.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.\nWhen country police pressure is enabled, a shared heat meter per country softens crime success and raises arrest chance where you are. Travel shows band badges; rare disrupt ops (crew/rank gated) can temporarily cool the streets.",
   "helpTopicCrimesTips": "Use fast beginner crimes to build XP while waiting for big cooldowns.\nAlways bail out if your Wanted Level is high — sitting in jail blocks all your loops.\nKeep HP above 30 before starting a crime run: every attempt costs HP and at 0 HP you spend 3 hours in ICU.",
   "helpTopicJobsCategory": "Actions",
   "helpTopicJobsTitle": "Jobs",
@@ -10030,5 +10186,72 @@
         "type": "int"
       }
     }
-  }
+  },
+  "countryPoliceStripTitle": "Country police",
+  "countryPoliceBandCalm": "Calm",
+  "countryPoliceBandWatchful": "Watchful",
+  "countryPoliceBandHot": "Hot",
+  "countryPoliceBandLockdown": "Lockdown",
+  "countryPolicePressureValue": "{pressure}/100",
+  "@countryPolicePressureValue": {
+    "placeholders": {
+      "pressure": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceEffectLine": "Crime success −{successPenalty} pp · Arrest +{arrestBonus} pp",
+  "@countryPoliceEffectLine": {
+    "placeholders": {
+      "successPenalty": {
+        "type": "int"
+      },
+      "arrestBonus": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceDisruptTitle": "Disrupt police pressure",
+  "countryPoliceDisruptHint": "Rare ops that can cool local heat. Failure raises Wanted and FBI heat.",
+  "countryPoliceDisruptButton": "Disrupt",
+  "countryPoliceDisruptCorruption": "Corruption",
+  "countryPoliceDisruptCorruptionDesc": "Grease palms to ease pressure.",
+  "countryPoliceDisruptDistract": "Distract",
+  "countryPoliceDisruptDistractDesc": "Create a diversion across the city.",
+  "countryPoliceDisruptRaid": "Counter-raid",
+  "countryPoliceDisruptRaidDesc": "Hit a depot to scramble their response.",
+  "countryPoliceDisruptCost": "Cost €{cost}",
+  "@countryPoliceDisruptCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "countryPoliceDisruptDropHint": "Pressure −{drop} · Cool ~{minutes}m",
+  "@countryPoliceDisruptDropHint": {
+    "placeholders": {
+      "drop": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceDisruptFailHint": "Fail: +{wanted} Wanted, +{fbi} FBI",
+  "@countryPoliceDisruptFailHint": {
+    "placeholders": {
+      "wanted": {
+        "type": "int"
+      },
+      "fbi": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceDisruptSuccess": "Pressure dropped. The streets cool down for a while.",
+  "countryPoliceDisruptFailed": "The op failed. Heat went up.",
+  "countryPoliceCoolActive": "Cooling active",
+  "countryPoliceDisabled": "Country police pressure is currently off."
 }

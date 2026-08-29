@@ -14967,7 +14967,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrimesHow =>
-      'Crime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.\nRichtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.\nEr is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.\nCrimes met `required weapon` gebruiken je geselecteerde crime-wapen. Dat kun je nu direct bovenaan het Crimes-scherm kiezen of via Inventaris.\nJe actieve sportschool- en schietbaanbonussen (tot maximaal +8% elk) staan op het Misdaden-scherm; ze verhogen je slagingskans zoals de server dat berekent (train verder via het Trainingscircuit / sportschool + schietschool).\nHeb je binnen dezelfde UTC-dag in sportschool én schietbaan getraind, dan geeft de server een kleine extra slagingskans op crimes (+0,5%). Die combo staat op het Misdaden-scherm wanneer hij actief is.\nCrimes met voertuig-eis gebruiken je geselecteerde crime-voertuig uit Garage of Marina. Alleen een voertuig dat echt in je huidige land staat en niet onderweg of te koop is, telt mee.\nDrugs-eisen bij crimes worden weergegeven in gram en volgen dezelfde hoeveelheid als je drugsinventaris en opslag.\nAls een crime niet kan starten door ontbrekend voertuig, verkeerd wapen of missende ammo, hoort de foutmelding nu de echte oorzaak te tonen in plaats van een generieke retry.\nBij elke crime poging: je neemt 5-15 HP schade en je Wanted Level stijgt 1-4 punten afhankelijk van succes of falen.\nArrestatiekans stijgt snel met Wanted Level: bij Wanted 5 is het 25%, bij Wanted 10 al 50%, bij Wanted 18+ maximaal 90%.\nBij arrestatie beland je in de gevangenis. Gevangenisstraf duurt maximaal(wanted level × 10) minuten, minimaal 5 minuten. Borg kost wanted level × €1.000. Ook als een crime eerst lijkt te slagen maar je daarna alsnog wordt gepakt, telt de uitkomst als arrestatie: gebruikte tools worden geconfisqueerd, gebruikte crime-wapens raak je kwijt en voertuigen kunnen ook in beslag worden genomen.\nSommige crimes vereisen een voertuig, tool of minimale rang. Mis je dit dan start de crime niet.\nXP die je verdient gebruik je om rang te stijgen, waardoor betere crimes en hogere beloningen vrijkomen.\nFBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen.';
+      'Crime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.\nRichtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.\nEr is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.\nCrimes met `required weapon` gebruiken je geselecteerde crime-wapen. Dat kun je nu direct bovenaan het Crimes-scherm kiezen of via Inventaris.\nJe actieve sportschool- en schietbaanbonussen (tot maximaal +8% elk) staan op het Misdaden-scherm; ze verhogen je slagingskans zoals de server dat berekent (train verder via het Trainingscircuit / sportschool + schietschool).\nHeb je binnen dezelfde UTC-dag in sportschool én schietbaan getraind, dan geeft de server een kleine extra slagingskans op crimes (+0,5%). Die combo staat op het Misdaden-scherm wanneer hij actief is.\nCrimes met voertuig-eis gebruiken je geselecteerde crime-voertuig uit Garage of Marina. Alleen een voertuig dat echt in je huidige land staat en niet onderweg of te koop is, telt mee.\nDrugs-eisen bij crimes worden weergegeven in gram en volgen dezelfde hoeveelheid als je drugsinventaris en opslag.\nAls een crime niet kan starten door ontbrekend voertuig, verkeerd wapen of missende ammo, hoort de foutmelding nu de echte oorzaak te tonen in plaats van een generieke retry.\nBij elke crime poging: je neemt 5-15 HP schade en je Wanted Level stijgt 1-4 punten afhankelijk van succes of falen.\nArrestatiekans stijgt snel met Wanted Level: bij Wanted 5 is het 25%, bij Wanted 10 al 50%, bij Wanted 18+ maximaal 90%.\nBij arrestatie beland je in de gevangenis. Gevangenisstraf duurt maximaal(wanted level × 10) minuten, minimaal 5 minuten. Borg kost wanted level × €1.000. Ook als een crime eerst lijkt te slagen maar je daarna alsnog wordt gepakt, telt de uitkomst als arrestatie: gebruikte tools worden geconfisqueerd, gebruikte crime-wapens raak je kwijt en voertuigen kunnen ook in beslag worden genomen.\nSommige crimes vereisen een voertuig, tool of minimale rang. Mis je dit dan start de crime niet.\nXP die je verdient gebruik je om rang te stijgen, waardoor betere crimes en hogere beloningen vrijkomen.\nFBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen.\nAls landelijke politiedruk aan staat, is er per land een gedeelde heat-meter die misdaadslaging iets verlaagt en arrestkans verhoogt waar je bent. Reizen toont band-badges; zeldzame disrupt-acties (crew/rank) kunnen de straat tijdelijk afkoelen.';
 
   @override
   String get helpTopicCrimesTips =>
@@ -16506,4 +16506,89 @@ class AppLocalizationsNl extends AppLocalizations {
   String territoryHoldDurationMinutes(int minutes) {
     return '${minutes}m';
   }
+
+  @override
+  String get countryPoliceStripTitle => 'Landelijke politie';
+
+  @override
+  String get countryPoliceBandCalm => 'Kalm';
+
+  @override
+  String get countryPoliceBandWatchful => 'Waakzaam';
+
+  @override
+  String get countryPoliceBandHot => 'Heet';
+
+  @override
+  String get countryPoliceBandLockdown => 'Lockdown';
+
+  @override
+  String countryPolicePressureValue(int pressure) {
+    return '$pressure/100';
+  }
+
+  @override
+  String countryPoliceEffectLine(int successPenalty, int arrestBonus) {
+    return 'Misdaadkans −$successPenalty pp · Arrestatie +$arrestBonus pp';
+  }
+
+  @override
+  String get countryPoliceDisruptTitle => 'Politiedruk verstoren';
+
+  @override
+  String get countryPoliceDisruptHint =>
+      'Zeldzame acties die lokale hitte kunnen afkoelen. Mislukken verhoogt Wanted en FBI-heat.';
+
+  @override
+  String get countryPoliceDisruptButton => 'Verstoren';
+
+  @override
+  String get countryPoliceDisruptCorruption => 'Corruptie';
+
+  @override
+  String get countryPoliceDisruptCorruptionDesc =>
+      'Smeer handen om de druk te verlagen.';
+
+  @override
+  String get countryPoliceDisruptDistract => 'Afleiden';
+
+  @override
+  String get countryPoliceDisruptDistractDesc =>
+      'Creëer afleiding door de stad.';
+
+  @override
+  String get countryPoliceDisruptRaid => 'Tegeninval';
+
+  @override
+  String get countryPoliceDisruptRaidDesc =>
+      'Val een depot aan om hun respons te verstoren.';
+
+  @override
+  String countryPoliceDisruptCost(String cost) {
+    return 'Kosten €$cost';
+  }
+
+  @override
+  String countryPoliceDisruptDropHint(int drop, int minutes) {
+    return 'Druk −$drop · Koeling ~${minutes}m';
+  }
+
+  @override
+  String countryPoliceDisruptFailHint(int wanted, int fbi) {
+    return 'Fail: +$wanted Wanted, +$fbi FBI';
+  }
+
+  @override
+  String get countryPoliceDisruptSuccess =>
+      'Druk gedaald. De straten koelen even af.';
+
+  @override
+  String get countryPoliceDisruptFailed => 'De actie mislukte. De hitte steeg.';
+
+  @override
+  String get countryPoliceCoolActive => 'Koeling actief';
+
+  @override
+  String get countryPoliceDisabled =>
+      'Landelijke politiedruk staat momenteel uit.';
 }

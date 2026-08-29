@@ -142,6 +142,7 @@ export const crimeService = {
         xp: true,
         money: true,
         health: true,
+        currentCountry: true,
       },
     });
 
@@ -331,6 +332,19 @@ export const crimeService = {
 
     const activeBoosts = await getActiveEventBoostEffects(playerId);
 
+    let successPenaltyPp = 0;
+    try {
+      const { countryPoliceService } = await import('./countryPoliceService');
+      const mods = await countryPoliceService.getModifiersForCountry(
+        player.currentCountry || 'netherlands',
+      );
+      if (mods.enabled) {
+        successPenaltyPp = mods.successPenaltyPp;
+      }
+    } catch {
+      successPenaltyPp = 0;
+    }
+
     // Normalize requirement field names for outcome engine compatibility
     const normalizedCrimeForOutcome = {
       ...crime,
@@ -347,8 +361,21 @@ export const crimeService = {
       normalizedCrimeForOutcome,
       player.rank,
       selectedVehicle || undefined,
-      primaryTool || undefined
+      primaryTool || undefined,
+      { successPenaltyPp },
     );
+
+    try {
+      const { countryPoliceService } = await import('./countryPoliceService');
+      await countryPoliceService.recordActivityGain({
+        playerId,
+        countryCode: player.currentCountry || 'netherlands',
+        source: 'crime',
+        maxReward: crime.maxReward,
+      });
+    } catch (pressureErr) {
+      console.error('[Crime] country police pressure gain failed', pressureErr);
+    }
 
     // Apply tool degradation (if used)
     if (primaryTool && primaryToolRecord && crimeResult.toolDamageSustained) {
@@ -1105,7 +1132,7 @@ export const crimeService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { rank: true },
+      select: { rank: true, currentCountry: true },
     });
 
     if (!player) {
@@ -1247,6 +1274,21 @@ export const crimeService = {
       )
     ) {
       successChance += TRAINING_COMBO_READINESS_BONUS;
+    }
+
+    try {
+      const { countryPoliceService } = await import('./countryPoliceService');
+      const mods = await countryPoliceService.getModifiersForCountry(
+        player.currentCountry || 'netherlands',
+      );
+      if (mods.enabled && mods.successPenaltyPp > 0) {
+        successChance = countryPoliceService.applySuccessPenalty(
+          successChance,
+          mods.successPenaltyPp,
+        );
+      }
+    } catch {
+      // ignore
     }
 
     // Keep realistic bounds: at least 5%, at most 95%

@@ -171,10 +171,10 @@ Vroege XP is expres wat hoger zodat spelers sneller richting rang 5 (meer conten
 
 ## Wanted Level & Politie
 
-### Country police pressure (design — not live)
-- Gepland: **gedeelde politiedruk per land** (wereld-state), los van persoonlijke wanted/FBI.
-- Beïnvloedt zacht crime-slagingskans en arrestkans in dat land; UI op misdaden/travel/dashboard.
-- Feature flag default **uit** tot balance + telemetry. Ontwerp: `docs/game-systems/COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`, protocol: `docs/module-protocols/country-police.md`.
+### Country police pressure (live behind flag)
+- Gedeelde politiedruk per land (wereld-state), los van persoonlijke wanted/FBI.
+- Beïnvloedt zacht crime-slagingskans en arrestkans; UI op misdaden/travel; disrupt-acties (Phase 3).
+- Flag: `COUNTRY_POLICE_PRESSURE_ENABLED` (default uit). Ontwerp: `docs/game-systems/COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`, protocol: `docs/module-protocols/country-police.md`.
 
 ### Arrest Mechanics
 

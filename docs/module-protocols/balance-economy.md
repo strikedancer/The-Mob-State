@@ -55,6 +55,17 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Garage **auto**- en **motor**-opslag: aparte upgrade-progressie per speler per land (eigen levels, eigen euro-kostencurve voor auto-track; motor-track gebruikt dezelfde prijsstappen als auto met +3 slots per motor-level t.o.v. basis motorplaatsen). Wijzigingen hieraan zijn economy-impact: check telemetry op storage-full en steal-fail door capaciteit.
 
 ## Runtime Keys (Leidend)
+
+Economy / progression keys blijven leidend in Admin `runtime_config`. Extra module:
+
+### Country police pressure (`COUNTRY_POLICE_*`)
+- `COUNTRY_POLICE_PRESSURE_ENABLED` (0/1, default 0)
+- Baseline / decay / crime+theft+drug gains / success & arrest max pp / hourly player cap
+- Territory gain mult + extra decay; crackdown mult when a live `crime` event is active
+- Disrupt: enable, min rank, require crew, cooldown seconds, cool minutes, success chance
+- Service defaults: `backend/src/services/countryPoliceService.ts`
+
+See also `country-police.md`.
 - `BANK_FREE_DEPOSIT_DAILY_ENABLED` / `BANK_FREE_DEPOSIT_DAILY_BASE` / `BANK_FREE_DEPOSIT_DAILY_PER_RANK`
 - `LAUNDER_ENABLED` / `LAUNDER_FEE_PERCENT` / `LAUNDER_MIN_AMOUNT` / `LAUNDER_MAX_AMOUNT` / `LAUNDER_DURATION_MINUTES` / `LAUNDER_COOLDOWN_SECONDS` / `LAUNDER_SEIZE_CHANCE_PER_HEAT` / `LAUNDER_HEAT_REDUCTION_ON_SUCCESS`
 - `STOCK_MARKET_ENABLED` / `STOCK_MARKET_TICK_SECONDS` / `STOCK_MARKET_MAX_POSITIONS`
@@ -88,6 +99,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN`
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID`
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE`
+- `COUNTRY_POLICE_PRESSURE_ENABLED` (0/1, default 0) — shared per-country police pressure; see `country-police.md` / `countryPoliceService.ts` for full `COUNTRY_POLICE_*` set (gains, decay, success/arrest pp caps, territory dampening, disrupt)
 
 ## Balance Change Workflow (Verplicht)
 1. Haal live telemetry op (minimaal 24 uur).

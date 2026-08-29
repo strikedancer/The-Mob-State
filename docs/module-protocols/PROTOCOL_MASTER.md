@@ -473,7 +473,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   ├── black-market.md (UI hub incl. contraband) → trade.md (API) → TRADE_RISK_MECHANICS.md
     │   ├── player-marketplace.md (Marktplaats P2P: voertuigen + spelersitems; `market` routes)
     │   ├── steel_voertuig.md (Vehicle Heist auto/motor/boot; boot-balans + embedded jail-overlay na stal via `vehicle_heist_screen`; server o.a. `vehicleService.stealVehicle` + `balance-economy.md`)
-    │   ├── country-police.md (design: live politiedruk per land → crimes/arrest; flag default off — `COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`)
+    │   ├── country-police.md (live behind flag: per-land politiedruk → crimes/arrest + disrupt; `COUNTRY_POLICE_PRESSURE_ENABLED`)
     │   ├── aviation.md (school Aviation 5/5 + betaalde vlieglicentie vóór vliegtuigkoop; tiers basic/commercial/cargo)
     │   ├── smuggling.md (hub-zendingen; DrugInventory unique = playerId+drugType+quality, geen country in Prisma-key)
     │   ├── prostitution.md → Game-system: NIGHTCLUB_SYSTEM.md + VIP_MANAGEMENT.md
@@ -525,7 +525,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
 | TRADE_RISK_MECHANICS.md | black-market.md, trade.md, travel.md | Contraband hub + API; volatility, spoilage, confiscation |
 | GAMEPLAY.md (economy / P2P-verkoop) | black-market.md, **player-marketplace.md**, trade.md (contraband vs. P2P) | Marktplaats-tab: voertuigen + tools/drugs/crypto/trade/event lots |
 | HITLIST_SYSTEM.md | hitlist.md, crimes.md, security.md, crew.md | Bounties, murders, detective, protection |
-| COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md | country-police.md, crimes.md, travel.md, dashboard.md, balance-economy.md | Shared per-country police pressure (design; not live) |
+| COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md | country-police.md, crimes.md, travel.md, dashboard.md, balance-economy.md | Shared per-country police pressure (flagged; default off) |
 
 **Verplicht controleren bij aanpassingen:**
 - ✅ Module-protocol lezen (spelregels)

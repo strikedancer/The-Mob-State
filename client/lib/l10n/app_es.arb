@@ -10186,5 +10186,72 @@
         "type": "String"
       }
     }
-  }
+  },
+  "countryPoliceStripTitle": "Country police",
+  "countryPoliceBandCalm": "Calm",
+  "countryPoliceBandWatchful": "Watchful",
+  "countryPoliceBandHot": "Hot",
+  "countryPoliceBandLockdown": "Lockdown",
+  "countryPolicePressureValue": "{pressure}/100",
+  "@countryPolicePressureValue": {
+    "placeholders": {
+      "pressure": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceEffectLine": "Crime success −{successPenalty} pp · Arrest +{arrestBonus} pp",
+  "@countryPoliceEffectLine": {
+    "placeholders": {
+      "successPenalty": {
+        "type": "int"
+      },
+      "arrestBonus": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceDisruptTitle": "Disrupt police pressure",
+  "countryPoliceDisruptHint": "Rare ops that can cool local heat. Failure raises Wanted and FBI heat.",
+  "countryPoliceDisruptButton": "Disrupt",
+  "countryPoliceDisruptCorruption": "Corruption",
+  "countryPoliceDisruptCorruptionDesc": "Grease palms to ease pressure.",
+  "countryPoliceDisruptDistract": "Distract",
+  "countryPoliceDisruptDistractDesc": "Create a diversion across the city.",
+  "countryPoliceDisruptRaid": "Counter-raid",
+  "countryPoliceDisruptRaidDesc": "Hit a depot to scramble their response.",
+  "countryPoliceDisruptCost": "Cost €{cost}",
+  "@countryPoliceDisruptCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "countryPoliceDisruptDropHint": "Pressure −{drop} · Cool ~{minutes}m",
+  "@countryPoliceDisruptDropHint": {
+    "placeholders": {
+      "drop": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceDisruptFailHint": "Fail: +{wanted} Wanted, +{fbi} FBI",
+  "@countryPoliceDisruptFailHint": {
+    "placeholders": {
+      "wanted": {
+        "type": "int"
+      },
+      "fbi": {
+        "type": "int"
+      }
+    }
+  },
+  "countryPoliceDisruptSuccess": "Pressure dropped. The streets cool down for a while.",
+  "countryPoliceDisruptFailed": "The op failed. Heat went up.",
+  "countryPoliceCoolActive": "Cooling active",
+  "countryPoliceDisabled": "Country police pressure is currently off."
 }

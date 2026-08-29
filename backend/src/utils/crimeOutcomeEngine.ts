@@ -158,7 +158,8 @@ export async function processCrimeAttempt(
   crime: Crime,
   playerRank: number,
   vehicle?: Vehicle,
-  tool?: Tool
+  tool?: Tool,
+  options?: { successPenaltyPp?: number },
 ): Promise<CrimeResult> {
   const result: CrimeResult = {
     outcome: CrimeOutcome.SUCCESS,
@@ -217,7 +218,10 @@ export async function processCrimeAttempt(
   }
   
   // SCENARIO 3: Calculate success chance
-  const successChance = calculateCrimeSuccessChance(crime, playerRank, vehicle, tool);
+  let successChance = calculateCrimeSuccessChance(crime, playerRank, vehicle, tool);
+  if (options?.successPenaltyPp && options.successPenaltyPp > 0) {
+    successChance = Math.max(0.05, Math.min(0.95, successChance - options.successPenaltyPp / 100));
+  }
   const roll = Math.random();
   
   if (roll <= successChance) {

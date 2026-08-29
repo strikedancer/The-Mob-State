@@ -11,6 +11,7 @@ import '../services/jail_service.dart';
 import '../utils/country_helper.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/cooldown_overlay.dart';
+import '../widgets/country_police_ui.dart';
 import '../utils/fontawesome_icons.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/trade_good_l10n.dart';
@@ -34,6 +35,9 @@ class _TravelScreenState extends State<TravelScreen> {
   String? _error;
   int? _jailTime;
   int? _cooldownSeconds; // null = not jailed, >0 = seconds remaining
+  /// countryCode -> police pressure snapshot from GET /police/countries
+  Map<String, Map<String, dynamic>> _policeByCountry = {};
+  bool _countryPoliceEnabled = false;
 
   bool _isInTransit = false;
   String? _journeyDestination;
@@ -104,6 +108,7 @@ class _TravelScreenState extends State<TravelScreen> {
           _countries = parsedCountries;
           _isLoading = false;
         });
+        await _loadCountryPoliceCountries();
       } else {
         setState(() {
           final l10n = AppLocalizations.of(context)!;
@@ -135,6 +140,52 @@ class _TravelScreenState extends State<TravelScreen> {
       }
     } catch (e) {
       // Ignore, keep previous state
+    }
+  }
+
+  Future<void> _loadCountryPoliceCountries() async {
+    try {
+      final results = await Future.wait([
+        _apiClient.get('/police/countries'),
+        _apiClient.get('/police/status'),
+      ]);
+      if (!mounted) return;
+
+      final countriesResponse = results[0];
+      final statusResponse = results[1];
+
+      var enabled = false;
+      if (statusResponse.statusCode == 200) {
+        final statusData =
+            jsonDecode(statusResponse.body) as Map<String, dynamic>;
+        final cp = statusData['countryPolice'];
+        if (cp is Map && cp['enabled'] == true) {
+          enabled = true;
+        }
+      }
+
+      final byCode = <String, Map<String, dynamic>>{};
+      if (countriesResponse.statusCode == 200) {
+        final data =
+            jsonDecode(countriesResponse.body) as Map<String, dynamic>;
+        final list = ((data['countries'] as List?) ?? const [])
+            .whereType<Map>()
+            .map((item) => Map<String, dynamic>.from(item))
+            .toList();
+        for (final row in list) {
+          final code = row['countryCode']?.toString();
+          if (code == null || code.isEmpty) continue;
+          byCode[code] = row;
+        }
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _policeByCountry = byCode;
+        _countryPoliceEnabled = enabled;
+      });
+    } catch (e) {
+      // Non-fatal: travel still works without badges.
     }
   }
 
@@ -977,13 +1028,32 @@ class _TravelScreenState extends State<TravelScreen> {
                         size: 32,
                         color: isCurrent ? Colors.green : Colors.amber.shade600,
                       ),
-                      title: Text(
-                        '$countryFlag $localizedName',
-                        style: TextStyle(
-                          fontWeight: isCurrent
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
+                      title: Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              '$countryFlag $localizedName',
+                              style: TextStyle(
+                                fontWeight: isCurrent
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          if (_countryPoliceEnabled &&
+                              _policeByCountry.containsKey(country.id)) ...[
+                            const SizedBox(width: 8),
+                            countryPoliceBandChip(
+                              l10n: l10n,
+                              band: _policeByCountry[country.id]?['band']
+                                  ?.toString(),
+                              pressure: (_policeByCountry[country.id]
+                                      ?['pressure'] as num?)
+                                  ?.toInt(),
+                              compact: true,
+                            ),
+                          ],
+                        ],
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

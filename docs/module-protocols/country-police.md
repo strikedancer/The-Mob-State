@@ -1,55 +1,60 @@
 # Country Police Presence Protocol
 
 ## Scope
-Shared **per-country police pressure** (world state) that soft-modifies crime success and arrest chance. Distinct from personal `wantedLevel` / `fbiHeat`.
+Shared **per-country police pressure** (world state) that soft-modifies crime success and arrest chance. Distinct from personal `wantedLevel` / `fbiHeat`. Phase 2: flavor floors, territory dampening, crime-event crackdown mult. Phase 3: rare disrupt ops (`corruption` / `distract` / `raid`).
 
 ## Status
-**Design only — not implemented / not live.**  
-Master design: `docs/game-systems/COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`  
-Feature flag (when built): `COUNTRY_POLICE_PRESSURE_ENABLED` default **off** (`0`).
+**Implemented** behind runtime flag `COUNTRY_POLICE_PRESSURE_ENABLED` (default **`0` / off**).  
+Design: `docs/game-systems/COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`  
+Service: `backend/src/services/countryPoliceService.ts`  
+Routes: `GET /police/status`, `GET /police/countries`, `POST /police/disrupt`  
+Client: crimes strip + travel badges + disrupt sheet (`country_police_ui.dart`)
 
-## Primary Frontend Entry (planned)
-- Crimes strip: `client/lib/screens/crime_screen.dart`
-- Travel badges: travel UI
-- Dashboard chip: dashboard risk / country row
-- Help topic under crimes / travel / police
+## Enable (production)
+Admin → runtime config: set `COUNTRY_POLICE_PRESSURE_ENABLED` to `1`. Do not flip the code default without a balance pass.
+
+## Primary Frontend Entry
+- Crimes strip + disrupt: `client/lib/screens/crime_screen.dart` + `client/lib/widgets/country_police_ui.dart`
+- Travel badges: `client/lib/screens/travel_screen.dart`
+- Dashboard: `stats.risk.countryPolice` on `GET /player/dashboard-stats` (optional UI)
 
 ## Related systems
-- `crimes.md` — success chance after personal bonuses
+- `crimes.md` — success chance (UI + outcome engine) after personal bonuses
 - `policeService` / jail — arrest chance after wanted formula
 - `travel.md` — destination pressure display
-- `dashboard.md` — chip + help coverage
-- `balance-economy.md` — runtime keys + soft caps (mandatory when implementing)
-- Later: `territory.md`, `crew.md` (dampen / disruption ops)
+- `dashboard.md` — risk payload
+- `balance-economy.md` — runtime keys
+- `territory.md` / `crew.md` — dampening / disrupt crew gate
+- `steel_voertuig.md` / `drugs.md` — optional pressure gain sources
 
 ## Change Rules
-- Do not enable the flag in production without a balance pass and telemetry review.
+- Flag off → crime/arrest math identical to pre-feature.
 - Preserve personal wanted/FBI as the primary arrest story; country pressure is a nudge.
 - No pay-to-clear world pressure.
-- Phase 3 “attack/disrupt police” ops must not become a cash/XP farm (long cooldown, fail hurts, diminishing returns).
-- Keep Dutch and English copy in sync for any player-visible strings (`countryPolice*` prefix).
+- Phase 3 disrupt must not become a cash/XP farm (cooldown, fail hurts, coolUntil diminishing returns).
+- Keep Dutch and English copy in sync (`countryPolice*` prefix).
 
 ## Check Before Editing
 - Is the feature flag still the source of truth for on/off?
-- Do success/arrest modifiers use **server-derived** pp values (no client-only guesses)?
-- Does dashboard + Help & Uitleg coverage ship in the same change?
+- Do success/arrest modifiers use **server-derived** pp values?
+- Does dashboard + Help & Uitleg coverage ship with behavior changes?
 - Are hourly contribution caps and success floors intact?
 
 ## Must Preserve
 - With flag off: crime/arrest math identical to pre-feature.
-- Absolute crime success floor must still apply.
+- Absolute crime success floor (~5%) must still apply.
 - Travel never blocked solely by pressure.
 - Arrest still scales primarily with personal wanted + `policeRatio`.
 
-## QA Checklist (when implementing)
+## QA Checklist
 - [ ] Flag off: parity with current crimes/arrests
-- [ ] Flag on: pressure gain + tick decay
-- [ ] UI bands match server pressure
+- [ ] Flag on: pressure gain (crime/theft/collect) + tick decay
+- [ ] Territory ownership dampens gain / adds decay
+- [ ] Active live `crime` event applies crackdown mult
+- [ ] UI bands match server pressure; disrupt sheet works
 - [ ] Player hourly gain cap enforced
-- [ ] NL + EN strings + help topic
-- [ ] Telemetry for pressure / success / arrest by country bucket
-- [ ] `balance-economy.md` updated with keys and numeric defaults
+- [ ] NL + EN strings
+- [ ] Telemetry logs (`[CountryPolice]`) visible
 
-## Out of scope until Phase 3 design sign-off
-- Player/crew “raid police HQ” as a repeatable loop
-- Premium item that zeros country pressure
+## Runtime keys
+See `COUNTRY_POLICE_*` in `countryPoliceService` / Admin config / `balance-economy.md`.

@@ -16,6 +16,7 @@ import '../widgets/jail_screen.dart';
 import '../widgets/cooldown_overlay.dart';
 import '../widgets/crime_card.dart';
 import '../widgets/crime_result_overlay.dart';
+import '../widgets/country_police_ui.dart';
 import '../utils/crime_localization.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
@@ -78,6 +79,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
   _CrimeListSort _listSort = _CrimeListSort.reward;
   DateTime _now = DateTime.now();
   Timer? _tickTimer;
+  Map<String, dynamic>? _countryPolice;
+  List<Map<String, dynamic>> _disruptActions = [];
 
   @override
   void initState() {
@@ -182,6 +185,41 @@ class _CrimeScreenState extends State<CrimeScreen> {
     await _loadTrainingBonuses();
     await _loadLiveCrimeEvent();
     await _loadCrimeWeaponSelection(showLoading: false);
+  }
+
+  Future<void> _loadCountryPoliceStatus() async {
+    try {
+      final response = await _apiClient.get('/police/status');
+      if (response.statusCode != 200 || !mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final countryPolice = data['countryPolice'] is Map
+          ? Map<String, dynamic>.from(data['countryPolice'] as Map)
+          : null;
+      final disruptActions = ((data['disruptActions'] as List?) ?? const [])
+          .whereType<Map>()
+          .map((item) => Map<String, dynamic>.from(item))
+          .toList();
+      if (!mounted) return;
+      setState(() {
+        _countryPolice = countryPolice;
+        _disruptActions = disruptActions;
+      });
+    } catch (e) {
+      print('[CrimeScreen] Error loading country police status: $e');
+    }
+  }
+
+  Future<void> _openCountryPoliceDisrupt() async {
+    await showCountryPoliceDisruptSheet(
+      context: context,
+      apiClient: _apiClient,
+      disruptActions: _disruptActions,
+      onCompleted: () async {
+        await _loadCountryPoliceStatus();
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        await authProvider.refreshPlayer();
+      },
+    );
   }
 
   void _openEvents() {
@@ -912,6 +950,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
           _crimes = crimes;
           _isLoading = false;
         });
+        await _loadCountryPoliceStatus();
       } else {
         setState(() {
           final l10n = AppLocalizations.of(context)!;
@@ -1362,6 +1401,15 @@ class _CrimeScreenState extends State<CrimeScreen> {
                       child: _buildPageHero(l10n, player?.rank ?? 1),
                     ),
                     SliverToBoxAdapter(child: _buildLiveEventBanner(l10n)),
+                    if (_countryPolice != null &&
+                        _countryPolice!['enabled'] == true)
+                      SliverToBoxAdapter(
+                        child: CountryPoliceStrip(
+                          countryPolice: _countryPolice!,
+                          disruptActions: _disruptActions,
+                          onDisrupt: _openCountryPoliceDisrupt,
+                        ),
+                      ),
                     SliverToBoxAdapter(child: _buildPrepStrip(l10n)),
                     SliverToBoxAdapter(child: _buildFilterSortBar(l10n)),
                     SliverPadding(

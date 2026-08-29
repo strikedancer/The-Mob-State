@@ -1,6 +1,6 @@
 # Country Police Presence — Design (2026-08-29)
 
-**Status:** design only — **not live**. Runtime default remains off until an explicit enable + balance pass.  
+**Status:** implemented behind `COUNTRY_POLICE_PRESSURE_ENABLED` (default **off**). Enable via Admin runtime config.  
 **Module protocol:** `docs/module-protocols/country-police.md`  
 **Depends on:** crimes, travel, wanted/FBI (`policeService`), dashboard, (later) territory / crew.
 

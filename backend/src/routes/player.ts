@@ -1566,6 +1566,30 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       100,
       Math.max(0, Math.round(wantedLevel * 0.6 + fbiHeat * 0.4 + activeCooldownCount * 1.5))
     );
+
+    let countryPolice: {
+      enabled: boolean;
+      countryCode: string;
+      pressure: number;
+      band: string;
+      successPenaltyPp: number;
+      arrestBonusPp: number;
+    } | null = null;
+    try {
+      const { countryPoliceService } = await import('../services/countryPoliceService');
+      const mods = await countryPoliceService.getModifiersForPlayer(playerId);
+      countryPolice = {
+        enabled: mods.enabled,
+        countryCode: mods.countryCode,
+        pressure: mods.pressure,
+        band: mods.band,
+        successPenaltyPp: mods.successPenaltyPp,
+        arrestBonusPp: mods.arrestBonusPp,
+      };
+    } catch {
+      countryPolice = null;
+    }
+
     const netWorth =
       cashBalance +
       bankBalance +
@@ -1660,6 +1684,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           wantedLevel,
           fbiHeat,
           score: riskScore,
+          countryPolice,
         },
         crewWar: {
           hasActiveWar: Boolean(currentCrewWar),
