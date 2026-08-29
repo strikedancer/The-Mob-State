@@ -923,7 +923,7 @@ class DrugService {
     playerId: number,
     productionId: number,
     options?: { skipAchievementCheck?: boolean }
-  ): Promise<{ success: boolean; message: string }> {
+  ): Promise<{ success: boolean; message: string; quantity?: number; drugType?: string }> {
     const production = await prisma.drugProduction.findUnique({
       where: { id: productionId },
     });
@@ -1025,6 +1025,8 @@ class DrugService {
     return {
       success: true,
       message: `${production.quantity}g ${drug?.displayName || production.drugType} (${qualityLabel}) opgehaald!${raidMessage}`,
+      quantity: production.quantity,
+      drugType: production.drugType,
     };
   }
 
@@ -1642,9 +1644,17 @@ class DrugService {
       select: { id: true },
     });
     let collected = 0;
+    let grams = 0;
     for (const prod of ready) {
       const result = await this.collectProduction(playerId, prod.id, { skipAchievementCheck: true });
-      if (result.success) collected++;
+      if (result.success) {
+        collected++;
+        grams += Math.floor(Number(result.quantity ?? 0));
+      }
+    }
+    if (grams > 0) {
+      const { gameEventService } = await import('./gameEventService');
+      gameEventService.recordContribution(playerId, 'drugs', grams).catch(() => {});
     }
     if (collected > 0) {
       void checkAndUnlockAchievements(playerId).catch((err) =>

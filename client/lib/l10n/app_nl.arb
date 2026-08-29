@@ -3481,7 +3481,7 @@
       }
     }
   },
-  "seasonPassGoalSmuggling": "Smuggle {count} eenheden",
+  "seasonPassGoalSmuggling": "Smokkel {count} eenheden",
   "@seasonPassGoalSmuggling": {
     "placeholders": {
       "count": {
@@ -3586,9 +3586,11 @@
   "seasonPassClaimSuccessPremium": "Premium Event Pass-beloning geclaimd",
   "seasonPassClaimFailed": "Claimen mislukt",
   "seasonPassRewardAmmo": "Munitie",
+  "seasonPassRewardAmmoWith": "+ munitie",
   "seasonPassRewardVehicle": "Zeldzaam voertuig",
   "seasonPassRewardWeapon": "Wapen",
   "seasonPassRewardParts": "Onderdelen",
+  "seasonPassRewardPartsWith": "+ onderdelen",
   "seasonPassRewardBundle": "Beloningspakket",
   "seasonPassRewardXp": "XP-bonus",
   "aviation": "Luchtvaart",

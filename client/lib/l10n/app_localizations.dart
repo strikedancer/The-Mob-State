@@ -2036,6 +2036,12 @@ abstract class AppLocalizations {
   /// **'Ammo'**
   String get seasonPassRewardAmmo;
 
+  /// No description provided for @seasonPassRewardAmmoWith.
+  ///
+  /// In en, this message translates to:
+  /// **'+ ammo'**
+  String get seasonPassRewardAmmoWith;
+
   /// No description provided for @seasonPassRewardVehicle.
   ///
   /// In en, this message translates to:
@@ -2053,6 +2059,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Parts'**
   String get seasonPassRewardParts;
+
+  /// No description provided for @seasonPassRewardPartsWith.
+  ///
+  /// In en, this message translates to:
+  /// **'+ parts'**
+  String get seasonPassRewardPartsWith;
 
   /// No description provided for @seasonPassRewardBundle.
   ///

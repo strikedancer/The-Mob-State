@@ -127,9 +127,11 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
       formatCash: formatCurrency,
       formatCredits: (n) => l10n.gameScreenPrizeCredits(n.toString()),
       ammoLabel: l10n.seasonPassRewardAmmo,
+      ammoWithLabel: l10n.seasonPassRewardAmmoWith,
       vehicleLabel: l10n.seasonPassRewardVehicle,
       weaponLabel: l10n.seasonPassRewardWeapon,
       partsLabel: l10n.seasonPassRewardParts,
+      partsWithLabel: l10n.seasonPassRewardPartsWith,
       bundleLabel: l10n.seasonPassRewardBundle,
       xpLabel: l10n.seasonPassRewardXp,
     );

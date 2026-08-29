@@ -96,6 +96,8 @@ SeasonPassRewardDisplay seasonPassRewardDisplay(
   required String partsLabel,
   required String bundleLabel,
   required String xpLabel,
+  String? ammoWithLabel,
+  String? partsWithLabel,
 }) {
   if (rewards == null || rewards.isEmpty) {
     return SeasonPassRewardDisplay(
@@ -160,12 +162,18 @@ SeasonPassRewardDisplay seasonPassRewardDisplay(
     );
   }
   if (cash > 0) {
+    String? subtitle;
+    if (xp > 0) {
+      subtitle = xpLabel;
+    } else if (hasAmmo) {
+      subtitle = ammoWithLabel ?? ammoLabel;
+    } else if (hasParts) {
+      subtitle = partsWithLabel ?? partsLabel;
+    }
     return SeasonPassRewardDisplay(
       imagePath: '$_tilesBase/shop_cash_bundle.png',
       label: formatCash(cash),
-      subtitle: xp > 0
-          ? xpLabel
-          : (hasAmmo ? ammoLabel : (hasParts ? partsLabel : null)),
+      subtitle: subtitle,
       kind: SeasonPassRewardKind.cash,
     );
   }

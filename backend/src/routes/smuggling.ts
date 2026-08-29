@@ -44,6 +44,7 @@ router.post('/send', authenticate, async (req: AuthRequest, res: Response) => {
     });
 
     if (result.success) {
+      gameEventService.recordContribution(req.player!.id, 'smuggling', Number(quantity)).catch(() => {});
       return res.json(result);
     }
 
@@ -81,7 +82,6 @@ router.post('/quote', authenticate, async (req: AuthRequest, res: Response) => {
     });
 
     if (result.success) {
-      gameEventService.recordContribution(req.player!.id, 'smuggling', Number(quantity)).catch(() => {});
       return res.json(result);
     }
 

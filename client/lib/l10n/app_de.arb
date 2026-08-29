@@ -10101,5 +10101,7 @@
   },
   "materialsShopEmpty": "No materials available",
   "seasonPassClaimSuccessFree": "Free event prize claimed",
-  "seasonPassClaimSuccessPremium": "Premium Event Pass reward claimed"
+  "seasonPassClaimSuccessPremium": "Premium Event Pass reward claimed",
+  "seasonPassRewardAmmoWith": "+ ammo",
+  "seasonPassRewardPartsWith": "+ parts"
 }

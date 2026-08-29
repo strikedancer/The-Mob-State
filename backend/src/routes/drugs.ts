@@ -201,6 +201,10 @@ router.post('/collect/:productionId', authenticate, async (req: AuthRequest, res
     );
 
     if (result.success) {
+      const qty = Math.floor(Number(result.quantity ?? 0));
+      if (qty > 0) {
+        gameEventService.recordContribution(req.player!.id, 'drugs', qty).catch(() => {});
+      }
       return res.json(result);
     } else {
       return res.status(400).json(result);
@@ -297,8 +301,7 @@ router.post('/store', authenticate, async (req: AuthRequest, res: Response) => {
     );
 
     if (result.success) {
-      const qty = typeof quantity === 'string' ? parseInt(quantity, 10) : (quantity as number);
-      gameEventService.recordContribution(req.player!.id, 'drugs', qty).catch(() => {});
+      // Storing is not production — Event Pass "drugs" counts on collect only.
       return res.json(result);
     } else {
       return res.status(400).json(result);

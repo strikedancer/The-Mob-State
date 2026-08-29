@@ -985,7 +985,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String seasonPassGoalSmuggling(int count) {
-    return 'Smuggle $count eenheden';
+    return 'Smokkel $count eenheden';
   }
 
   @override
@@ -1074,6 +1074,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get seasonPassRewardAmmo => 'Munitie';
 
   @override
+  String get seasonPassRewardAmmoWith => '+ munitie';
+
+  @override
   String get seasonPassRewardVehicle => 'Zeldzaam voertuig';
 
   @override
@@ -1081,6 +1084,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get seasonPassRewardParts => 'Onderdelen';
+
+  @override
+  String get seasonPassRewardPartsWith => '+ onderdelen';
 
   @override
   String get seasonPassRewardBundle => 'Beloningspakket';

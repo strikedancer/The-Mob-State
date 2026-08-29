@@ -1084,6 +1084,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get seasonPassRewardAmmo => 'Ammo';
 
   @override
+  String get seasonPassRewardAmmoWith => '+ ammo';
+
+  @override
   String get seasonPassRewardVehicle => 'Rare vehicle';
 
   @override
@@ -1091,6 +1094,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get seasonPassRewardParts => 'Parts';
+
+  @override
+  String get seasonPassRewardPartsWith => '+ parts';
 
   @override
   String get seasonPassRewardBundle => 'Reward pack';
