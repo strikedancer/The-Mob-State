@@ -3906,9 +3906,59 @@ class _CrewScreenState extends State<CrewScreen>
     if (type == null || style == null || level == null) return null;
     if (type == 'hq') return _getCrewHqImagePath(style, level);
 
-    final normalizedType = type.replaceAll('_storage', '').replaceAll('_', '_');
+    final normalizedType = type.replaceAll('_storage', '');
     final buildingStyle = _getCrewBuildingStyleForLevel(level);
     return 'assets/images/crew_buildings/$normalizedType/$buildingStyle/lvl_$level.png';
+  }
+
+  /// Fallback when [trade] tier art is missing on the image mount.
+  String? _getCrewBuildingImageFallbackPath(String? type, int? level) {
+    if (type != 'trade_storage' || level == null) return null;
+    final buildingStyle = _getCrewBuildingStyleForLevel(level);
+    return 'assets/images/crew_buildings/drug/$buildingStyle/lvl_$level.png';
+  }
+
+  Widget _buildCrewBuildingCardImage({
+    required String? type,
+    required String imagePath,
+    required int? level,
+  }) {
+    Widget placeholder() {
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.grey.shade800,
+              Colors.grey.shade900,
+            ],
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Icon(
+          _getCrewBuildingIcon(type),
+          color: Colors.amber.shade600,
+          size: 56,
+        ),
+      );
+    }
+
+    final fallback = _getCrewBuildingImageFallbackPath(type, level);
+    return WebAssetHelper.image(
+      imagePath,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        if (fallback != null) {
+          return WebAssetHelper.image(
+            fallback,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => placeholder(),
+          );
+        }
+        return placeholder();
+      },
+    );
   }
 
   String _getCrewBuildingStyleForLevel(int level) {
@@ -6029,29 +6079,10 @@ class _CrewScreenState extends State<CrewScreen>
                       children: [
                         if (imagePath != null)
                           Positioned.fill(
-                            child: WebAssetHelper.image(
-                              imagePath,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Colors.grey.shade800,
-                                        Colors.grey.shade900,
-                                      ],
-                                    ),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Icon(
-                                    _getCrewBuildingIcon(type),
-                                    color: Colors.amber.shade600,
-                                    size: 56,
-                                  ),
-                                );
-                              },
+                            child: _buildCrewBuildingCardImage(
+                              type: type,
+                              imagePath: imagePath,
+                              level: level,
                             ),
                           )
                         else
