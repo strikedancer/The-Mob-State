@@ -3499,7 +3499,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get crewUiAppCrews => 'Bemanningen';
+  String get crewUiAppCrews => 'Crews';
 
   @override
   String get crewUiTabMyCrew => 'Overzicht';
@@ -3517,7 +3517,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiTabWarRoom => 'Oorlogskamer';
 
   @override
-  String get crewUiTabCrewMissions => 'Bemanningsmissies';
+  String get crewUiTabCrewMissions => 'Crew-missies';
 
   @override
   String get crewUiTabCarStorage => 'Auto-/motorstalling';
@@ -3928,7 +3928,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiBuildingAmmoStorage => 'Munitie opslag';
 
   @override
-  String get crewUiBuildingDrugStorage => 'Medicijnopslag';
+  String get crewUiBuildingDrugStorage => 'Drugsopslag';
 
   @override
   String get crewUiBuildingCashStorage => 'Geldopslag';
