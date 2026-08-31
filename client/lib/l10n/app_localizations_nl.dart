@@ -8817,6 +8817,59 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeResultXpLabel => 'XP';
 
   @override
+  String crimeResultVehicleConditionLoss(int percent) {
+    return 'Voertuigconditie −$percent%';
+  }
+
+  @override
+  String crimeResultVehicleFuelUsed(int percent) {
+    return 'Brandstof verbruikt −$percent%';
+  }
+
+  @override
+  String get crewHeistsTitle => 'Crew-heists';
+
+  @override
+  String get crewHeistsSubtitle =>
+      'Plan een crew-job. Het vluchtvoertuig van de leader krijgt slijtage en verbruikt brandstof.';
+
+  @override
+  String get crewHeistsRequiresVehicle => 'Vluchtvoertuig vereist (leader)';
+
+  @override
+  String get crewHeistsNoVehicle =>
+      'Selecteer eerst een misdaadvoertuig in je garage.';
+
+  @override
+  String crewHeistsVehicleLine(String name, int condition, int fuel) {
+    return '$name · $condition% conditie · $fuel% brandstof';
+  }
+
+  @override
+  String get crewHeistsStart => 'Start heist';
+
+  @override
+  String get crewHeistsLeaderOnly =>
+      'Alleen de crew-leader kan heists starten.';
+
+  @override
+  String crewHeistsMembersRequired(int current, int required) {
+    return '$current/$required leden';
+  }
+
+  @override
+  String crewHeistsSuccessRate(int rate) {
+    return '$rate% slagingskans';
+  }
+
+  @override
+  String get crewHeistsEmpty =>
+      'Nog geen heists beschikbaar voor jullie crew-level.';
+
+  @override
+  String get crewHeistsLoadError => 'Crew-heists laden mislukt.';
+
+  @override
   String get crimeOutcomeRowReward => 'Beloning:';
 
   @override

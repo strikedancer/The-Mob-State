@@ -68,6 +68,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
   bool _showCrimeResult = false;
   int _crimeReward = 0;
   int _crimeXpGained = 0;
+  int? _crimeVehicleConditionLoss;
+  int? _crimeVehicleFuelUsed;
   bool _trainingBonusesLoaded = false;
   double _trainingStrengthBonus = 0;
   double _trainingAccuracyBonus = 0;
@@ -971,6 +973,21 @@ class _CrimeScreenState extends State<CrimeScreen> {
   Future<void> _commitCrime(Crime crime) async {
     final l10n = AppLocalizations.of(context)!;
 
+    String vehicleWearSuffix(Map<String, dynamic> params) {
+      final conditionLoss =
+          ((params['vehicleConditionLoss'] as num?)?.round() ?? 0) +
+          ((params['vehicleChaseDamage'] as num?)?.round() ?? 0);
+      final fuelUsed = (params['vehicleFuelUsed'] as num?)?.round() ?? 0;
+      final parts = <String>[];
+      if (conditionLoss > 0) {
+        parts.add(l10n.crimeResultVehicleConditionLoss(conditionLoss));
+      }
+      if (fuelUsed > 0) {
+        parts.add(l10n.crimeResultVehicleFuelUsed(fuelUsed));
+      }
+      return parts.isEmpty ? '' : '\n${parts.join('\n')}';
+    }
+
     if (crime.requiredWeapon == true && _selectedCrimeWeaponId == null) {
       showTopRightFromSnackBar(
         context,
@@ -1128,10 +1145,18 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
       // Render event
       final eventRenderer = EventRenderer(l10n);
-      final message = eventRenderer.renderEvent(eventKey, params);
+      final message =
+          eventRenderer.renderEvent(eventKey, params) + vehicleWearSuffix(params);
+      final vehicleConditionLoss =
+          readInt(params['vehicleConditionLoss']) +
+          readInt(params['vehicleChaseDamage']);
+      final vehicleFuelUsed = readInt(params['vehicleFuelUsed']);
 
       setState(() {
         _isCommittingCrime = false;
+        _crimeVehicleConditionLoss =
+            vehicleConditionLoss > 0 ? vehicleConditionLoss : null;
+        _crimeVehicleFuelUsed = vehicleFuelUsed > 0 ? vehicleFuelUsed : null;
       });
 
       // Check if cooldown info is in response
@@ -1316,12 +1341,16 @@ class _CrimeScreenState extends State<CrimeScreen> {
               crimeName: _resultCrimeName ?? l10n.crimes,
               reward: _crimeReward,
               xpGained: _crimeXpGained,
+              vehicleConditionLoss: _crimeVehicleConditionLoss,
+              vehicleFuelUsed: _crimeVehicleFuelUsed,
               onContinue: () {
                 setState(() {
                   _showCrimeResult = false;
                   _resultCrimeName = null;
                   _crimeReward = 0;
                   _crimeXpGained = 0;
+                  _crimeVehicleConditionLoss = null;
+                  _crimeVehicleFuelUsed = null;
                 });
                 // Reload vehicle after crime to get updated stats
                 _loadSelectedCrimeVehicle();

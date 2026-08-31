@@ -8864,6 +8864,57 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crimeResultXpLabel => 'XP';
 
   @override
+  String crimeResultVehicleConditionLoss(int percent) {
+    return 'Vehicle condition −$percent%';
+  }
+
+  @override
+  String crimeResultVehicleFuelUsed(int percent) {
+    return 'Fuel used −$percent%';
+  }
+
+  @override
+  String get crewHeistsTitle => 'Crew heists';
+
+  @override
+  String get crewHeistsSubtitle =>
+      'Plan a crew job. The leader\'s getaway vehicle takes wear and fuel.';
+
+  @override
+  String get crewHeistsRequiresVehicle => 'Getaway vehicle required (leader)';
+
+  @override
+  String get crewHeistsNoVehicle =>
+      'Select a crime vehicle in your garage first.';
+
+  @override
+  String crewHeistsVehicleLine(String name, int condition, int fuel) {
+    return '$name · $condition% condition · $fuel% fuel';
+  }
+
+  @override
+  String get crewHeistsStart => 'Start heist';
+
+  @override
+  String get crewHeistsLeaderOnly => 'Only the crew leader can start heists.';
+
+  @override
+  String crewHeistsMembersRequired(int current, int required) {
+    return '$current/$required members';
+  }
+
+  @override
+  String crewHeistsSuccessRate(int rate) {
+    return '$rate% success chance';
+  }
+
+  @override
+  String get crewHeistsEmpty => 'No heists available for your crew level yet.';
+
+  @override
+  String get crewHeistsLoadError => 'Could not load crew heists.';
+
+  @override
   String get crimeOutcomeRowReward => 'Ricompensa:';
 
   @override

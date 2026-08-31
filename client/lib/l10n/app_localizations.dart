@@ -15592,6 +15592,84 @@ abstract class AppLocalizations {
   /// **'XP'**
   String get crimeResultXpLabel;
 
+  /// No description provided for @crimeResultVehicleConditionLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle condition −{percent}%'**
+  String crimeResultVehicleConditionLoss(int percent);
+
+  /// No description provided for @crimeResultVehicleFuelUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel used −{percent}%'**
+  String crimeResultVehicleFuelUsed(int percent);
+
+  /// No description provided for @crewHeistsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew heists'**
+  String get crewHeistsTitle;
+
+  /// No description provided for @crewHeistsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan a crew job. The leader\'s getaway vehicle takes wear and fuel.'**
+  String get crewHeistsSubtitle;
+
+  /// No description provided for @crewHeistsRequiresVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Getaway vehicle required (leader)'**
+  String get crewHeistsRequiresVehicle;
+
+  /// No description provided for @crewHeistsNoVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a crime vehicle in your garage first.'**
+  String get crewHeistsNoVehicle;
+
+  /// No description provided for @crewHeistsVehicleLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {condition}% condition · {fuel}% fuel'**
+  String crewHeistsVehicleLine(String name, int condition, int fuel);
+
+  /// No description provided for @crewHeistsStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start heist'**
+  String get crewHeistsStart;
+
+  /// No description provided for @crewHeistsLeaderOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the crew leader can start heists.'**
+  String get crewHeistsLeaderOnly;
+
+  /// No description provided for @crewHeistsMembersRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{required} members'**
+  String crewHeistsMembersRequired(int current, int required);
+
+  /// No description provided for @crewHeistsSuccessRate.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate}% success chance'**
+  String crewHeistsSuccessRate(int rate);
+
+  /// No description provided for @crewHeistsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No heists available for your crew level yet.'**
+  String get crewHeistsEmpty;
+
+  /// No description provided for @crewHeistsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load crew heists.'**
+  String get crewHeistsLoadError;
+
   /// No description provided for @crimeOutcomeRowReward.
   ///
   /// In en, this message translates to:

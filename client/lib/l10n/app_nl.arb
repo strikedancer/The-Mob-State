@@ -6263,6 +6263,63 @@
   "toolThermalDrill": "Thermische boor",
   "crimeResultMoneyLabel": "Geld",
   "crimeResultXpLabel": "XP",
+  "crimeResultVehicleConditionLoss": "Voertuigconditie −{percent}%",
+  "@crimeResultVehicleConditionLoss": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "crimeResultVehicleFuelUsed": "Brandstof verbruikt −{percent}%",
+  "@crimeResultVehicleFuelUsed": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "crewHeistsTitle": "Crew-heists",
+  "crewHeistsSubtitle": "Plan een crew-job. Het vluchtvoertuig van de leader krijgt slijtage en verbruikt brandstof.",
+  "crewHeistsRequiresVehicle": "Vluchtvoertuig vereist (leader)",
+  "crewHeistsNoVehicle": "Selecteer eerst een misdaadvoertuig in je garage.",
+  "crewHeistsVehicleLine": "{name} · {condition}% conditie · {fuel}% brandstof",
+  "@crewHeistsVehicleLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "condition": {
+        "type": "int"
+      },
+      "fuel": {
+        "type": "int"
+      }
+    }
+  },
+  "crewHeistsStart": "Start heist",
+  "crewHeistsLeaderOnly": "Alleen de crew-leader kan heists starten.",
+  "crewHeistsMembersRequired": "{current}/{required} leden",
+  "@crewHeistsMembersRequired": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "crewHeistsSuccessRate": "{rate}% slagingskans",
+  "@crewHeistsSuccessRate": {
+    "placeholders": {
+      "rate": {
+        "type": "int"
+      }
+    }
+  },
+  "crewHeistsEmpty": "Nog geen heists beschikbaar voor jullie crew-level.",
+  "crewHeistsLoadError": "Crew-heists laden mislukt.",
   "crimeOutcomeRowReward": "Beloning:",
   "crimeOutcomeRowXp": "XP:",
   "crimeOutcomeRowTools": "Gereedschap:",

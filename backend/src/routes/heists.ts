@@ -127,6 +127,8 @@ router.post(
             sabotaged: result.sabotaged,
             sabotagedBy: result.sabotagedBy,
             reputation: newReputation,
+            vehicleConditionLoss: result.vehicleConditionLoss,
+            vehicleFuelUsed: result.vehicleFuelUsed,
           },
         });
       } else {
@@ -137,6 +139,9 @@ router.post(
             sabotaged: result.sabotaged,
             sabotagedBy: result.sabotagedBy,
             reputation: newReputation,
+            vehicleConditionLoss: result.vehicleConditionLoss,
+            vehicleFuelUsed: result.vehicleFuelUsed,
+            vehicleChaseDamage: result.vehicleChaseDamage,
           },
         });
       }
@@ -170,6 +175,24 @@ router.post(
           return res.status(400).json({
             event: 'error.not_in_crew',
             params: {},
+          });
+        }
+        if (error.message === 'VEHICLE_REQUIRED') {
+          return res.status(400).json({
+            event: 'crime.error',
+            params: { reason: 'VEHICLE_REQUIRED' },
+          });
+        }
+        if (error.message === 'VEHICLE_BROKEN') {
+          return res.status(400).json({
+            event: 'crime.error',
+            params: { reason: 'VEHICLE_BROKEN' },
+          });
+        }
+        if (error.message === 'NO_FUEL') {
+          return res.status(400).json({
+            event: 'crime.error',
+            params: { reason: 'NO_FUEL' },
           });
         }
       }

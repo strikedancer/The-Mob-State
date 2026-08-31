@@ -119,6 +119,7 @@ export const crimeService = {
     outcome?: string;
     outcomeMessage?: string;
     vehicleConditionLoss?: number;
+    vehicleFuelUsed?: number;
     toolDamageSustained?: number;
     vehicleConfiscated?: boolean;
     weaponConfiscated?: boolean;
@@ -1050,6 +1051,7 @@ export const crimeService = {
       outcome: crimeResult.outcome,
       outcomeMessage: crimeResult.message,
       vehicleConditionLoss: crimeResult.vehicleConditionLoss,
+      vehicleFuelUsed: crimeResult.vehicleFuelUsed,
       toolDamageSustained: crimeResult.toolDamageSustained,
       vehicleConfiscated: result.vehicleConfiscated,
       weaponConfiscated: result.weaponConfiscated,

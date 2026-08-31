@@ -5355,6 +5355,47 @@
   "crimeOutcomeFledNoLoot": "Fled the scene without loot",
   "crimeResultMoneyLabel": "Money",
   "crimeResultXpLabel": "XP",
+  "crimeResultVehicleConditionLoss": "Vehicle condition −{percent}%",
+  "@crimeResultVehicleConditionLoss": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "crimeResultVehicleFuelUsed": "Fuel used −{percent}%",
+  "@crimeResultVehicleFuelUsed": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "crewHeistsTitle": "Crew heists",
+  "crewHeistsSubtitle": "Plan a crew job. The leader's getaway vehicle takes wear and fuel.",
+  "crewHeistsRequiresVehicle": "Getaway vehicle required (leader)",
+  "crewHeistsNoVehicle": "Select a crime vehicle in your garage first.",
+  "crewHeistsVehicleLine": "{name} · {condition}% condition · {fuel}% fuel",
+  "@crewHeistsVehicleLine": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "condition": { "type": "int" },
+      "fuel": { "type": "int" }
+    }
+  },
+  "crewHeistsStart": "Start heist",
+  "crewHeistsLeaderOnly": "Only the crew leader can start heists.",
+  "crewHeistsMembersRequired": "{current}/{required} members",
+  "@crewHeistsMembersRequired": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "required": { "type": "int" }
+    }
+  },
+  "crewHeistsSuccessRate": "{rate}% success chance",
+  "@crewHeistsSuccessRate": {
+    "placeholders": {
+      "rate": { "type": "int" }
+    }
+  },
+  "crewHeistsEmpty": "No heists available for your crew level yet.",
+  "crewHeistsLoadError": "Could not load crew heists.",
   "crimeOutcomeRowReward": "Reward:",
   "crimeOutcomeRowXp": "XP:",
   "crimeOutcomeRowTools": "Tools:",

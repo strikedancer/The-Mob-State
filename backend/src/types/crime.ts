@@ -11,6 +11,10 @@ export interface Crime {
   maxXpReward?: number;
   jailTime: number;
   requiresVehicle?: boolean;
+  /** Overrides reward-tier vehicle wear multiplier when set. */
+  vehicleWearMultiplier?: number;
+  /** Overrides reward-tier fuel use multiplier when set. */
+  vehicleFuelMultiplier?: number;
   breakdownChance?: number;
   isFederal?: boolean;
   requiresWeapon?: boolean;

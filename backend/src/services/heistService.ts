@@ -6,11 +6,16 @@ import { activityService } from './activityService';
 import * as bankRobberyService from './bankRobberyService';
 import { playerService } from './playerService';
 import { emailService } from './emailService';
-import { notificationService } from './notificationService';
 import { translationService } from './translationService';
 import heists from '../../content/heists.json';
 import { timeProvider } from '../utils/timeProvider';
 import config from '../config';
+import { resolveSelectedCrimeVehicle } from './vehicleToolService';
+import {
+  computeVehicleConditionLoss,
+  computeVehicleFuelUse,
+  heistVehicleWearProfile,
+} from '../utils/vehicleWearProfile';
 
 interface Heist {
   id: string;
@@ -24,6 +29,9 @@ interface Heist {
   successRate: number;
   jailTimeOnFailure: number;
   difficulty: string;
+  requiresVehicle?: boolean;
+  vehicleWearMultiplier?: number;
+  vehicleFuelMultiplier?: number;
 }
 
 interface HeistResult {
@@ -35,6 +43,72 @@ interface HeistResult {
   sabotagedBy?: number;
   jailTime?: number;
   participants: number[];
+  vehicleConditionLoss?: number;
+  vehicleFuelUsed?: number;
+  vehicleChaseDamage?: number;
+}
+
+async function applyHeistLeaderVehicleWear(
+  leaderId: number,
+  heist: Heist,
+  success: boolean,
+): Promise<{
+  vehicleConditionLoss: number;
+  vehicleFuelUsed: number;
+  vehicleChaseDamage?: number;
+} | null> {
+  if (heist.requiresVehicle === false) {
+    return null;
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: leaderId },
+    select: { currentCountry: true },
+  });
+  const country = player?.currentCountry || 'netherlands';
+  const selected = await resolveSelectedCrimeVehicle(leaderId, country);
+  if (!selected) {
+    throw new Error('VEHICLE_REQUIRED');
+  }
+  if (selected.inventory.condition < 10) {
+    throw new Error('VEHICLE_BROKEN');
+  }
+  if ((selected.inventory.fuelLevel ?? 0) < 5) {
+    throw new Error('NO_FUEL');
+  }
+
+  const tier = heistVehicleWearProfile(heist.difficulty, heist.basePayout);
+  const wearMult = heist.vehicleWearMultiplier ?? tier.wearMult;
+  const fuelMult = heist.vehicleFuelMultiplier ?? tier.fuelMult;
+  const vehicleSpeed = selected.vehicle.speed ?? 50;
+
+  const routineLoss = computeVehicleConditionLoss(vehicleSpeed, wearMult);
+  const fuelUsed = computeVehicleFuelUse(fuelMult);
+  let chaseDamage = 0;
+  if (!success && Math.random() < 0.55) {
+    chaseDamage = 20 + Math.floor(Math.random() * 25);
+  }
+
+  const totalConditionLoss = routineLoss + chaseDamage;
+  const nextCondition = Math.max(
+    0,
+    selected.inventory.condition - totalConditionLoss,
+  );
+  const nextFuel = Math.max(0, (selected.inventory.fuelLevel ?? 0) - fuelUsed);
+
+  await prisma.vehicleInventory.update({
+    where: { id: selected.inventory.id },
+    data: {
+      condition: nextCondition,
+      fuelLevel: nextFuel,
+    },
+  });
+
+  return {
+    vehicleConditionLoss: totalConditionLoss,
+    vehicleFuelUsed: fuelUsed,
+    vehicleChaseDamage: chaseDamage > 0 ? chaseDamage : undefined,
+  };
 }
 
 async function notifyCrewHeistResult(
@@ -208,11 +282,16 @@ export async function startHeist(
   const roll = Math.random() * 100;
   const success = roll < finalSuccessRate;
 
+  const vehicleWear = await applyHeistLeaderVehicleWear(leaderId, heist, success);
+
   const result: HeistResult = {
     success,
     sabotaged,
     sabotagedBy,
     participants: memberIds,
+    vehicleConditionLoss: vehicleWear?.vehicleConditionLoss,
+    vehicleFuelUsed: vehicleWear?.vehicleFuelUsed,
+    vehicleChaseDamage: vehicleWear?.vehicleChaseDamage,
   };
 
   if (success) {

@@ -10,7 +10,8 @@
     "duration": 10,
     "successRate": 80,
     "jailTimeOnFailure": 30,
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "requiresVehicle": false
   },
   {
     "id": "jewelry_store_heist",
@@ -23,7 +24,8 @@
     "duration": 20,
     "successRate": 60,
     "jailTimeOnFailure": 90,
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "requiresVehicle": true
   },
   {
     "id": "armored_truck_heist",
@@ -36,7 +38,8 @@
     "duration": 30,
     "successRate": 50,
     "jailTimeOnFailure": 180,
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "requiresVehicle": true
   },
   {
     "id": "bank_heist",
@@ -49,7 +52,10 @@
     "duration": 45,
     "successRate": 40,
     "jailTimeOnFailure": 300,
-    "difficulty": "very_hard"
+    "difficulty": "very_hard",
+    "requiresVehicle": true,
+    "vehicleWearMultiplier": 1.85,
+    "vehicleFuelMultiplier": 1.45
   },
   {
     "id": "casino_heist",
@@ -62,7 +68,10 @@
     "duration": 60,
     "successRate": 30,
     "jailTimeOnFailure": 480,
-    "difficulty": "extreme"
+    "difficulty": "extreme",
+    "requiresVehicle": true,
+    "vehicleWearMultiplier": 2.1,
+    "vehicleFuelMultiplier": 1.55
   },
   {
     "id": "airport_heist",
@@ -75,7 +84,8 @@
     "duration": 75,
     "successRate": 25,
     "jailTimeOnFailure": 600,
-    "difficulty": "extreme"
+    "difficulty": "extreme",
+    "requiresVehicle": true
   },
   {
     "id": "federal_reserve_heist",
@@ -88,6 +98,9 @@
     "duration": 90,
     "successRate": 20,
     "jailTimeOnFailure": 1440,
-    "difficulty": "legendary"
+    "difficulty": "legendary",
+    "requiresVehicle": true,
+    "vehicleWearMultiplier": 2.35,
+    "vehicleFuelMultiplier": 1.7
   }
 ]

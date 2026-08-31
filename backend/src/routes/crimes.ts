@@ -327,6 +327,8 @@ router.post(
         jailed: result.jailed,
         jailTime: result.jailTime,
         vehicleBroken: result.vehicleBroken,
+        vehicleConditionLoss: result.vehicleConditionLoss,
+        vehicleFuelUsed: result.vehicleFuelUsed,
         arrested: result.arrested,
         arrestingAuthority: result.arrestingAuthority,
         wantedLevel: result.wantedLevel,

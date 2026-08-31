@@ -329,7 +329,7 @@ class EventRenderer {
         ),
       );
     }
-    return _withActor(
+    var message = _withActor(
       params,
       l10n.evStreamCrimeSuccess(
         crimeName,
@@ -337,6 +337,8 @@ class EventRenderer {
         xpGained.toString(),
       ),
     );
+    message += _vehicleWearAppend(params);
+    return message;
   }
 
   String _crimeFailed(Map<String, dynamic> params) {
@@ -366,7 +368,23 @@ class EventRenderer {
     if (weaponConfiscated) {
       message += l10n.evStreamCrimeSeizedWeapon;
     }
+    message += _vehicleWearAppend(params);
     return message;
+  }
+
+  String _vehicleWearAppend(Map<String, dynamic> params) {
+    final conditionLoss =
+        ((params['vehicleConditionLoss'] as num?)?.round() ?? 0) +
+        ((params['vehicleChaseDamage'] as num?)?.round() ?? 0);
+    final fuelUsed = (params['vehicleFuelUsed'] as num?)?.round() ?? 0;
+    final parts = <String>[];
+    if (conditionLoss > 0) {
+      parts.add(l10n.crimeResultVehicleConditionLoss(conditionLoss));
+    }
+    if (fuelUsed > 0) {
+      parts.add(l10n.crimeResultVehicleFuelUsed(fuelUsed));
+    }
+    return parts.isEmpty ? '' : parts.join(' ');
   }
 
   String _crimeJailedShort(Map<String, dynamic> params) {

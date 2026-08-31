@@ -23,6 +23,8 @@ class CrimeResultOverlay extends StatelessWidget {
   final String? flavorLine;
   final String? tipBonusLabel;
   final bool intelDropped;
+  final int? vehicleConditionLoss;
+  final int? vehicleFuelUsed;
 
   const CrimeResultOverlay({
     super.key,
@@ -37,6 +39,8 @@ class CrimeResultOverlay extends StatelessWidget {
     this.flavorLine,
     this.tipBonusLabel,
     this.intelDropped = false,
+    this.vehicleConditionLoss,
+    this.vehicleFuelUsed,
   });
 
   String get _badgeAssetPath => isSuccess
@@ -198,6 +202,34 @@ class CrimeResultOverlay extends StatelessWidget {
                         accent: accent,
                       ),
                     ),
+                  if (vehicleConditionLoss != null && vehicleConditionLoss! > 0) ...[
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: compactWidth ? double.infinity : 260,
+                      child: _ResultStat(
+                        icon: Icons.build_circle_outlined,
+                        label: l10n.vehicleCondition,
+                        value: l10n.crimeResultVehicleConditionLoss(
+                          vehicleConditionLoss!,
+                        ),
+                        valueColor: const Color(0xFFFFB74D),
+                        accent: accent,
+                      ),
+                    ),
+                  ],
+                  if (vehicleFuelUsed != null && vehicleFuelUsed! > 0) ...[
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: compactWidth ? double.infinity : 260,
+                      child: _ResultStat(
+                        icon: Icons.local_gas_station_outlined,
+                        label: l10n.vehicleFuel,
+                        value: l10n.crimeResultVehicleFuelUsed(vehicleFuelUsed!),
+                        valueColor: const Color(0xFF81D4FA),
+                        accent: accent,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,

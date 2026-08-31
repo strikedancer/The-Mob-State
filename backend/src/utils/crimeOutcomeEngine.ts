@@ -1,4 +1,9 @@
 import { Crime } from '../types/crime';
+import {
+  computeVehicleConditionLoss,
+  computeVehicleFuelUse,
+  crimeVehicleWearProfile,
+} from './vehicleWearProfile';
 
 interface Vehicle {
   id: number;
@@ -288,16 +293,20 @@ export async function processCrimeAttempt(
     result.messageKey = 'crime.outcome.caught';
   }
   
-  // Apply vehicle wear and tear (if used)
+  // Apply vehicle wear and tear (if used) — scaled by crime reward tier.
   if (vehicle && crime.requiresVehicle && result.vehicleConditionBefore) {
-    // Condition loss: 1-5% per crime depending on vehicle usage
-    const baseWear = 1 + Math.random() * 4;
-    const speedWear = (vehicle.speed / 100) * 2; // Fast driving = more wear
-    result.vehicleConditionLoss = baseWear + speedWear;
-    result.vehicleConditionAfter = Math.max(0, result.vehicleConditionBefore - result.vehicleConditionLoss);
-    
-    // Fuel usage: 10-30% depending on crime type
-    result.vehicleFuelUsed = Math.floor(10 + Math.random() * 20);
+    const tier = crimeVehicleWearProfile(crime.maxReward);
+    const wearMult = crime.vehicleWearMultiplier ?? tier.wearMult;
+    const fuelMult = crime.vehicleFuelMultiplier ?? tier.fuelMult;
+    result.vehicleConditionLoss = computeVehicleConditionLoss(
+      vehicle.speed,
+      wearMult,
+    );
+    result.vehicleConditionAfter = Math.max(
+      0,
+      result.vehicleConditionBefore - result.vehicleConditionLoss,
+    );
+    result.vehicleFuelUsed = computeVehicleFuelUse(fuelMult);
   }
   
   // Apply tool wear (if used)

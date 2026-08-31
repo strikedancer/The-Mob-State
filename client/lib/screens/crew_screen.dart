@@ -14,6 +14,7 @@ import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/trade_good_l10n.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/crew_heists_panel.dart';
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
 
@@ -4321,6 +4322,12 @@ class _CrewScreenState extends State<CrewScreen>
                             style: const TextStyle(color: Colors.grey),
                           ),
                         ],
+                        const SizedBox(height: 16),
+                        CrewHeistsPanel(
+                          crewId: _myCrew!.id,
+                          isLeader: isLeader,
+                          memberCount: _myCrew!.memberCount,
+                        ),
                         if (!isLeader) ...[
                           const SizedBox(height: 16),
                           SizedBox(

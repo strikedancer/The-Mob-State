@@ -65,6 +65,8 @@
       "xpReward": 80,
       "jailTime": 45,
       "requiredVehicle": true,
+      "vehicleWearMultiplier": 0.75,
+      "vehicleFuelMultiplier": 0.82,
       "breakdownChance": 0.2,
       "requiredTools": ["burglary_kit"]
     },
@@ -486,6 +488,8 @@
       "xpReward": 900,
       "jailTime": 280,
       "requiredVehicle": true,
+      "vehicleWearMultiplier": 1.9,
+      "vehicleFuelMultiplier": 1.5,
       "breakdownChance": 0.48,
       "isFederal": true,
       "requiredWeapon": true,
