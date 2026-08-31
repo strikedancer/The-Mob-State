@@ -4811,7 +4811,7 @@ class _CrewScreenState extends State<CrewScreen>
           ),
           buildStorageTile(
             icon: Icons.medication,
-            titleNl: 'Drugs opslag',
+            titleNl: 'Drugsopslag',
             titleEn: 'Drug Storage',
             value: '${totals?['drugs'] ?? 0} / ${capacities?['drugs'] ?? 0}',
             onPressed: (capacities?['drugs'] as int? ?? 0) > 0

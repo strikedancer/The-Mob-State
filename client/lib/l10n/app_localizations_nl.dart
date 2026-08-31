@@ -3532,7 +3532,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiTabAmmoStorage => 'Munitie opslag';
 
   @override
-  String get crewUiTabDrugStorage => 'Medicijnopslag';
+  String get crewUiTabDrugStorage => 'Drugsopslag';
 
   @override
   String get crewUiTabCashStorage => 'Geldopslag';
@@ -3599,7 +3599,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiActionAddAmmo => 'Voeg munitie toe';
 
   @override
-  String get crewUiActionAddDrugs => 'Voeg medicijnen toe';
+  String get crewUiActionAddDrugs => 'Voeg drugs toe';
 
   @override
   String get crewUiSectionMembersOverview => 'Leden overzicht';
