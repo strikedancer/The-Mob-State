@@ -377,9 +377,13 @@ export const crimeService = {
       console.error('[Crime] country police pressure gain failed', pressureErr);
     }
 
-    // Apply tool degradation (if used)
+    // Apply tool/weapon degradation outside the DB transaction — nested prisma
+    // calls inside $transaction cause MariaDB "record changed since last read".
     if (primaryTool && primaryToolRecord && crimeResult.toolDamageSustained) {
       await degradeTool(playerId, primaryTool.id, crimeResult.toolDamageSustained);
+    }
+    if (weaponUsed) {
+      await weaponService.degradeWeapon(playerId, weaponUsed.weaponId);
     }
 
     // Map outcome engine result to existing format
@@ -547,17 +551,8 @@ export const crimeService = {
         });
       }
 
-      // Degrade weapon if used
-      if (weaponUsed) {
-        await weaponService.degradeWeapon(playerId, weaponUsed.weaponId);
-      }
-
-      // Tool degradation already handled by outcome engine
-      // Tools still get confiscated when jailed
+      // Weapon/tool degradation runs before this transaction (see above).
       if (jailed) {
-        // Police confiscate all tools when caught
-        await toolService.confiscateTools(playerId, requiredToolsForCrime);
-
         if (weaponUsed) {
           const currentWeapon = await tx.weaponInventory.findUnique({
             where: {
@@ -676,6 +671,10 @@ export const crimeService = {
       };
     });
 
+    if (jailed) {
+      await toolService.confiscateTools(playerId, requiredToolsForCrime);
+    }
+
     if (result.clearCrimeWeaponSelection) {
       await weaponSelectionService.clearSelectedCrimeWeapon(playerId);
     }
@@ -777,8 +776,6 @@ export const crimeService = {
     const jailedAfterSuccessfulCrime = success && jailed;
 
     if (jailedAfterSuccessfulCrime) {
-      await toolService.confiscateTools(playerId, requiredToolsForCrime);
-
       const lateArrestResult = await prisma.$transaction(async (tx) => {
         let vehicleConfiscated = false;
         let weaponConfiscated = false;
