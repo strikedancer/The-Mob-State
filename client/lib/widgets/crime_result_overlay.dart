@@ -47,6 +47,65 @@ class CrimeResultOverlay extends StatelessWidget {
       ? 'assets/images/ui/result_badge_success.png'
       : 'assets/images/ui/result_badge_fail.png';
 
+  List<_ResultStatData> _buildResultStats(
+    AppLocalizations l10n,
+    Color accent,
+  ) {
+    final stats = <_ResultStatData>[];
+    if (isSuccess) {
+      if (reward > 0) {
+        stats.add(
+          _ResultStatData(
+            icon: Icons.payments_outlined,
+            label: l10n.crimeResultMoneyLabel,
+            value: '+${formatCurrency(reward)}',
+            valueColor: _resultMoney,
+          ),
+        );
+      }
+      if (xpGained > 0) {
+        stats.add(
+          _ResultStatData(
+            icon: Icons.auto_awesome,
+            label: l10n.crimeResultXpLabel,
+            value: l10n.jobXpRewardShort(xpGained.toString()),
+            valueColor: accent,
+          ),
+        );
+      }
+    } else if (xpLost > 0) {
+      stats.add(
+        _ResultStatData(
+          icon: Icons.trending_down,
+          label: l10n.jobResultXpLostLabel,
+          value: '−$xpLost XP',
+          valueColor: const Color(0xFFFF8A80),
+        ),
+      );
+    }
+    if (vehicleConditionLoss != null && vehicleConditionLoss! > 0) {
+      stats.add(
+        _ResultStatData(
+          icon: Icons.build_circle_outlined,
+          label: l10n.vehicleCondition,
+          value: '−${vehicleConditionLoss!}%',
+          valueColor: const Color(0xFFFFB74D),
+        ),
+      );
+    }
+    if (vehicleFuelUsed != null && vehicleFuelUsed! > 0) {
+      stats.add(
+        _ResultStatData(
+          icon: Icons.local_gas_station_outlined,
+          label: l10n.vehicleFuel,
+          value: '−${vehicleFuelUsed!}%',
+          valueColor: const Color(0xFF81D4FA),
+        ),
+      );
+    }
+    return stats;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -79,180 +138,114 @@ class CrimeResultOverlay extends StatelessWidget {
                 width: 1.2,
               ),
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _ResultBadge(
-                    size: badgeSize,
-                    accent: accent,
-                    isSuccess: isSuccess,
-                    assetPath: _badgeAssetPath,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _ResultBadge(
+                  size: badgeSize,
+                  accent: accent,
+                  isSuccess: isSuccess,
+                  assetPath: _badgeAssetPath,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  headline ??
+                      (isSuccess
+                          ? l10n.crimeOutcomeSuccess
+                          : l10n.jobOutcomeFailed),
+                  style: TextStyle(
+                    fontSize: compactWidth ? 20 : 22,
+                    fontWeight: FontWeight.w800,
+                    color: accent,
+                    letterSpacing: 0.3,
                   ),
-                  const SizedBox(height: 14),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  crimeName,
+                  style: TextStyle(
+                    fontSize: compactWidth ? 15 : 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withOpacity(0.92),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                if (flavorLine != null && flavorLine!.isNotEmpty) ...[
+                  const SizedBox(height: 8),
                   Text(
-                    headline ??
-                        (isSuccess
-                            ? l10n.crimeOutcomeSuccess
-                            : l10n.jobOutcomeFailed),
+                    l10n.jobResultFlavorLabel,
                     style: TextStyle(
-                      fontSize: compactWidth ? 20 : 22,
-                      fontWeight: FontWeight.w800,
-                      color: accent,
-                      letterSpacing: 0.3,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white.withOpacity(0.55),
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    flavorLine!,
+                    style: TextStyle(
+                      fontSize: compactWidth ? 13 : 14,
+                      height: 1.3,
+                      color: Colors.white.withOpacity(0.82),
                     ),
                     textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    crimeName,
-                    style: TextStyle(
-                      fontSize: compactWidth ? 15 : 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white.withOpacity(0.92),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  if (flavorLine != null && flavorLine!.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      l10n.jobResultFlavorLabel,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white.withOpacity(0.55),
-                        letterSpacing: 0.4,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      flavorLine!,
-                      style: TextStyle(
-                        fontSize: compactWidth ? 13 : 14,
-                        height: 1.35,
-                        color: Colors.white.withOpacity(0.82),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                  if (tipBonusLabel != null && tipBonusLabel!.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      tipBonusLabel!,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: _resultMoney,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                  if (intelDropped) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.jobResultIntelInbox,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: accent.withOpacity(0.9),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                  const SizedBox(height: 22),
-                  if (isSuccess) ...[
-                    if (reward > 0 || xpGained > 0)
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 12,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          if (reward > 0)
-                            SizedBox(
-                              width: compactWidth ? double.infinity : 220,
-                              child: _ResultStat(
-                                icon: Icons.payments_outlined,
-                                label: l10n.crimeResultMoneyLabel,
-                                value: '+${formatCurrency(reward)}',
-                                valueColor: _resultMoney,
-                                accent: accent,
-                              ),
-                            ),
-                          if (xpGained > 0)
-                            SizedBox(
-                              width: compactWidth ? double.infinity : 220,
-                              child: _ResultStat(
-                                icon: Icons.auto_awesome,
-                                label: l10n.crimeResultXpLabel,
-                                value: l10n.jobXpRewardShort(xpGained.toString()),
-                                valueColor: accent,
-                                accent: accent,
-                              ),
-                            ),
-                        ],
-                      ),
-                  ] else if (xpLost > 0)
-                    SizedBox(
-                      width: compactWidth ? double.infinity : 260,
-                      child: _ResultStat(
-                        icon: Icons.trending_down,
-                        label: l10n.jobResultXpLostLabel,
-                        value: '−$xpLost XP',
-                        valueColor: const Color(0xFFFF8A80),
-                        accent: accent,
-                      ),
-                    ),
-                  if (vehicleConditionLoss != null && vehicleConditionLoss! > 0) ...[
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: compactWidth ? double.infinity : 260,
-                      child: _ResultStat(
-                        icon: Icons.build_circle_outlined,
-                        label: l10n.vehicleCondition,
-                        value: l10n.crimeResultVehicleConditionLoss(
-                          vehicleConditionLoss!,
-                        ),
-                        valueColor: const Color(0xFFFFB74D),
-                        accent: accent,
-                      ),
-                    ),
-                  ],
-                  if (vehicleFuelUsed != null && vehicleFuelUsed! > 0) ...[
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: compactWidth ? double.infinity : 260,
-                      child: _ResultStat(
-                        icon: Icons.local_gas_station_outlined,
-                        label: l10n.vehicleFuel,
-                        value: l10n.crimeResultVehicleFuelUsed(vehicleFuelUsed!),
-                        valueColor: const Color(0xFF81D4FA),
-                        accent: accent,
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: onContinue,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: accent,
-                        foregroundColor: const Color(0xFF1B1212),
-                        disabledBackgroundColor: accent.withOpacity(0.4),
-                        elevation: 0,
-                        minimumSize: Size.fromHeight(compactWidth ? 48 : 54),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: Text(
-                        l10n.continueAction,
-                        style: const TextStyle(fontWeight: FontWeight.w800),
-                      ),
-                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
-              ),
+                if (tipBonusLabel != null && tipBonusLabel!.isNotEmpty) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    tipBonusLabel!,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: _resultMoney,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+                if (intelDropped) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.jobResultIntelInbox,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: accent.withOpacity(0.9),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+                const SizedBox(height: 14),
+                _ResultStatsGrid(
+                  accent: accent,
+                  stats: _buildResultStats(l10n, accent),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onContinue,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accent,
+                      foregroundColor: const Color(0xFF1B1212),
+                      disabledBackgroundColor: accent.withOpacity(0.4),
+                      elevation: 0,
+                      minimumSize: Size.fromHeight(compactWidth ? 44 : 48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      l10n.continueAction,
+                      style: const TextStyle(fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         },
@@ -360,14 +353,75 @@ class _ResultSuccessGlyphPainter extends CustomPainter {
       oldDelegate.color != color;
 }
 
-class _ResultStat extends StatelessWidget {
+class _ResultStatData {
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color valueColor;
+
+  const _ResultStatData({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.valueColor,
+  });
+}
+
+class _ResultStatsGrid extends StatelessWidget {
+  final List<_ResultStatData> stats;
+  final Color accent;
+
+  const _ResultStatsGrid({
+    required this.stats,
+    required this.accent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (stats.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final gap = 8.0;
+        final columns = stats.length == 1 ? 1 : 2;
+        final tileWidth = columns == 1
+            ? constraints.maxWidth
+            : (constraints.maxWidth - gap) / 2;
+
+        return Wrap(
+          spacing: gap,
+          runSpacing: gap,
+          alignment: WrapAlignment.center,
+          children: stats
+              .map(
+                (stat) => SizedBox(
+                  width: tileWidth,
+                  child: _ResultStatCompact(
+                    icon: stat.icon,
+                    label: stat.label,
+                    value: stat.value,
+                    valueColor: stat.valueColor,
+                    accent: accent,
+                  ),
+                ),
+              )
+              .toList(),
+        );
+      },
+    );
+  }
+}
+
+class _ResultStatCompact extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
   final Color valueColor;
   final Color accent;
 
-  const _ResultStat({
+  const _ResultStatCompact({
     required this.icon,
     required this.label,
     required this.value,
@@ -378,32 +432,43 @@ class _ResultStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.28),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(color: accent.withOpacity(0.35)),
       ),
-      child: Column(
+      child: Row(
         children: [
-          Icon(icon, color: valueColor),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Colors.white.withOpacity(0.7),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              color: valueColor,
+          Icon(icon, color: valueColor, size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withOpacity(0.65),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    color: valueColor,
+                    height: 1.15,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         ],
