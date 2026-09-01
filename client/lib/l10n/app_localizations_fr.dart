@@ -8859,6 +8859,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crimeOutcomeSuccess => 'Crime réussi !';
 
   @override
+  String get crimeOutcomeFailed => 'Crime échoué';
+
+  @override
   String get jobOutcomeSuccess => 'Travail terminé !';
 
   @override

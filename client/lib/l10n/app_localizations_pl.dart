@@ -8803,6 +8803,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crimeOutcomeSuccess => 'Kryminał udany!';
 
   @override
+  String get crimeOutcomeFailed => 'Kryminał nieudany';
+
+  @override
   String get jobOutcomeSuccess => 'Praca ukończona!';
 
   @override

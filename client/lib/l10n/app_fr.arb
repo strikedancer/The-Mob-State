@@ -1938,6 +1938,7 @@
   "toolBurnerPhone": "Téléphone graveur",
   "toolThermalDrill": "Perceuse thermique",
   "crimeOutcomeSuccess": "Crime réussi !",
+  "crimeOutcomeFailed": "Crime échoué",
   "crimeOutcomeCaught": "Arrêté par la police",
   "crimeOutcomeVehicleBreakdownBefore": "Votre véhicule est en panne avant d'arriver sur les lieux du crime",
   "crimeOutcomeVehicleBreakdownDuring": "Le véhicule est tombé en panne lors d'une évasion - la plupart du butin a été abandonné",

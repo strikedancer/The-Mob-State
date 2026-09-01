@@ -5346,6 +5346,7 @@
     }
   },
   "crimeOutcomeSuccess": "Crime successful!",
+  "crimeOutcomeFailed": "Crime failed",
   "jobOutcomeSuccess": "Job completed!",
   "crimeOutcomeCaught": "Caught by police",
   "crimeOutcomeVehicleBreakdownBefore": "Your vehicle broke down before reaching the crime scene",

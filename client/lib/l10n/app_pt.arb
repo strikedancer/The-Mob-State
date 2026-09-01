@@ -1938,6 +1938,7 @@
   "toolBurnerPhone": "Telefone queimador",
   "toolThermalDrill": "Broca Térmica",
   "crimeOutcomeSuccess": "Crime bem sucedido!",
+  "crimeOutcomeFailed": "Crime falhou",
   "crimeOutcomeCaught": "Pego pela polícia",
   "crimeOutcomeVehicleBreakdownBefore": "Seu veículo quebrou antes de chegar à cena do crime",
   "crimeOutcomeVehicleBreakdownDuring": "Veículo quebrou durante a fuga - abandonou a maior parte do saque",

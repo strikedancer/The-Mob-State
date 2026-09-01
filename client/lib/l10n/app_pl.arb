@@ -1938,6 +1938,7 @@
   "toolBurnerPhone": "Telefon Palnika",
   "toolThermalDrill": "Wiertarka termiczna",
   "crimeOutcomeSuccess": "Kryminał udany!",
+  "crimeOutcomeFailed": "Kryminał nieudany",
   "crimeOutcomeCaught": "Złapany przez policję",
   "crimeOutcomeVehicleBreakdownBefore": "Twój pojazd zepsuł się przed dotarciem na miejsce zbrodni",
   "crimeOutcomeVehicleBreakdownDuring": "Pojazd zepsuł się podczas ucieczki – porzucił większość łupów",

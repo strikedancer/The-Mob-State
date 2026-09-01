@@ -3538,19 +3538,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiTabCashStorage => 'Geldopslag';
 
   @override
-  String get crewUiTabAllCrews => 'Bemanningen';
+  String get crewUiTabAllCrews => 'Crews';
 
   @override
   String get crewUiTabChat => 'Chatten';
 
   @override
-  String get crewUiActionCreateCrewShort => 'Bemanning creëren (€50k)';
+  String get crewUiActionCreateCrewShort => 'Crew aanmaken (€50k)';
 
   @override
   String get crewUiStateNotInCrewYet => 'Je zit nog niet in een crew';
 
   @override
-  String get crewUiActionCreateCrew => 'Bemanning aanmaken (€ 50.000)';
+  String get crewUiActionCreateCrew => 'Crew aanmaken (€ 50.000)';
 
   @override
   String get crewUiLabelCrewBank => 'Bemanningsbank:';
@@ -3632,13 +3632,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiStateNoJoinRequests => 'Geen openstaande verzoeken';
 
   @override
-  String get crewUiStateNoCrewsFound => 'Geen bemanningen gevonden';
+  String get crewUiStateNoCrewsFound => 'Geen crews gevonden';
 
   @override
   String get crewUiLabelMemberCount => 'Leden';
 
   @override
-  String get crewUiBadgeMyCrew => 'Mijn bemanning';
+  String get crewUiBadgeMyCrew => 'Mijn crew';
 
   @override
   String get crewUiActionJoin => 'Meedoen';
@@ -3707,11 +3707,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Beheer hier het hoofdkwartier en alle bemanningsupgrades vanaf één plek.';
 
   @override
-  String get crewUiSectionCrewMissions => 'Bemanningsmissies';
+  String get crewUiSectionCrewMissions => 'Crew-missies';
 
   @override
   String get crewUiStateCrewMissionsEmpty =>
-      'Er zijn nog geen bemanningsmissies beschikbaar';
+      'Er zijn nog geen crew-missies beschikbaar';
 
   @override
   String get crewUiStateCrewMissionNoCrew =>
@@ -8784,6 +8784,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crimeOutcomeSuccess => 'Misdaad geslaagd!';
+
+  @override
+  String get crimeOutcomeFailed => 'Misdaad mislukt';
 
   @override
   String get jobOutcomeSuccess => 'Werk voltooid!';

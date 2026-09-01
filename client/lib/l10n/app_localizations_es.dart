@@ -8828,6 +8828,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeOutcomeSuccess => '¡Crimen exitoso!';
 
   @override
+  String get crimeOutcomeFailed => 'Crimen fallido';
+
+  @override
   String get jobOutcomeSuccess => '¡Trabajo completado!';
 
   @override

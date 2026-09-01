@@ -191,8 +191,6 @@ class CrimeResultOverlay extends StatelessWidget {
                       color: Colors.white.withOpacity(0.82),
                     ),
                     textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
                 if (tipBonusLabel != null && tipBonusLabel!.isNotEmpty) ...[

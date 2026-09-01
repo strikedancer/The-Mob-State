@@ -1867,6 +1867,7 @@
   "toolGpsJammer": "Bloqueador GPS",
   "toolBurnerPhone": "Teléfono quemador",
   "crimeOutcomeSuccess": "¡Crimen exitoso!",
+  "crimeOutcomeFailed": "Crimen fallido",
   "crimeOutcomeCaught": "Atrapado por la policía",
   "crimeOutcomeVehicleBreakdownBefore": "Su vehículo se averió antes de llegar a la escena del crimen.",
   "crimeOutcomeVehicleBreakdownDuring": "El vehículo se averió durante la fuga; la mayor parte del botín se abandonó",

@@ -1685,6 +1685,7 @@
   "toolGpsJammer": "GPS-stoorzender",
   "toolBurnerPhone": "Wegwerp Telefoon",
   "crimeOutcomeSuccess": "Misdaad geslaagd!",
+  "crimeOutcomeFailed": "Misdaad mislukt",
   "jobOutcomeSuccess": "Werk voltooid!",
   "crimeOutcomeCaught": "Gepakt door de politie",
   "crimeOutcomeVehicleBreakdownBefore": "Je auto is kapot gegaan voordat je de locatie bereikte",

@@ -66,8 +66,11 @@ class _CrimeScreenState extends State<CrimeScreen> {
   String? _resultCrimeName;
   String? _selectedCrimeWeaponId;
   bool _showCrimeResult = false;
+  bool _crimeResultSuccess = true;
   int _crimeReward = 0;
   int _crimeXpGained = 0;
+  int _crimeXpLost = 0;
+  String? _resultFlavorLine;
   int? _crimeVehicleConditionLoss;
   int? _crimeVehicleFuelUsed;
   bool _trainingBonusesLoaded = false;
@@ -973,21 +976,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
   Future<void> _commitCrime(Crime crime) async {
     final l10n = AppLocalizations.of(context)!;
 
-    String vehicleWearSuffix(Map<String, dynamic> params) {
-      final conditionLoss =
-          ((params['vehicleConditionLoss'] as num?)?.round() ?? 0) +
-          ((params['vehicleChaseDamage'] as num?)?.round() ?? 0);
-      final fuelUsed = (params['vehicleFuelUsed'] as num?)?.round() ?? 0;
-      final parts = <String>[];
-      if (conditionLoss > 0) {
-        parts.add(l10n.crimeResultVehicleConditionLoss(conditionLoss));
-      }
-      if (fuelUsed > 0) {
-        parts.add(l10n.crimeResultVehicleFuelUsed(fuelUsed));
-      }
-      return parts.isEmpty ? '' : '\n${parts.join('\n')}';
-    }
-
     if (crime.requiredWeapon == true && _selectedCrimeWeaponId == null) {
       showTopRightFromSnackBar(
         context,
@@ -1145,8 +1133,11 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
       // Render event
       final eventRenderer = EventRenderer(l10n);
-      final message =
-          eventRenderer.renderEvent(eventKey, params) + vehicleWearSuffix(params);
+      final message = eventRenderer.renderEvent(eventKey, params);
+      final success = eventKey.contains('success');
+      final reward = readInt(params['reward']);
+      final xpGained = readInt(params['xpGained']);
+      final xpLost = readInt(params['xpLost']);
       final vehicleConditionLoss =
           readInt(params['vehicleConditionLoss']) +
           readInt(params['vehicleChaseDamage']);
@@ -1204,74 +1195,69 @@ class _CrimeScreenState extends State<CrimeScreen> {
           print('[CrimeScreen] Error updating player stats: $e');
         }
 
-        // Check if player was jailed as part of the crime
-        bool wasJailed = false;
-        int? jailTimeMinutes;
+        var wasJailed = false;
         if (params.containsKey('jailed') && params['jailed'] == true) {
           wasJailed = true;
-          jailTimeMinutes = params['jailTime'] == null
+          final jailTimeMinutes = params['jailTime'] == null
               ? null
               : readInt(params['jailTime']);
           if (jailTimeMinutes != null && jailTimeMinutes > 0) {
             setState(() {
-              _jailTime = jailTimeMinutes! * 60;
+              _jailTime = jailTimeMinutes * 60;
             });
-            showTopRightFromSnackBar(
-              context,
-              SnackBar(
-                content: Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/cooldown_jail.png',
-                      width: 28,
-                      height: 28,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.local_police, color: Colors.white),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(child: Text(message)),
-                  ],
-                ),
-                backgroundColor: Colors.orange,
-                duration: Duration(seconds: jailTimeMinutes > 1 ? 8 : 5),
-              ),
-            );
           }
         }
 
-        // Show cooldown overlay ONLY if not jailed
-        if (!wasJailed && cooldownSeconds != null && cooldownSeconds > 0) {
-          final reward = readInt(params['reward']);
-          final xpGained = readInt(params['xpGained']);
-
-          if (eventKey.contains('success')) {
-            setState(() {
-              _resultCrimeName = CrimeLocalization.name(crime, l10n);
-              _crimeReward = reward;
-              _crimeXpGained = xpGained;
-              _showCrimeResult = reward > 0 || xpGained > 0;
+        if (success && (reward > 0 || xpGained > 0)) {
+          setState(() {
+            _crimeResultSuccess = true;
+            _resultCrimeName = CrimeLocalization.name(crime, l10n);
+            _crimeReward = reward;
+            _crimeXpGained = xpGained;
+            _crimeXpLost = 0;
+            _resultFlavorLine = null;
+            _showCrimeResult = true;
+            if (!wasJailed && cooldownSeconds != null && cooldownSeconds > 0) {
               _cooldownSeconds = cooldownSeconds;
               _cooldownResultMessage = message;
               _cooldownIsSuccess = true;
-            });
-            _loadLiveCrimeEvent();
-          } else {
-            setState(() {
+            }
+          });
+          _loadLiveCrimeEvent();
+          return;
+        }
+
+        if (!success) {
+          setState(() {
+            _crimeResultSuccess = false;
+            _resultCrimeName = CrimeLocalization.name(crime, l10n);
+            _crimeReward = 0;
+            _crimeXpGained = 0;
+            _crimeXpLost = xpLost;
+            _resultFlavorLine = message;
+            _showCrimeResult = true;
+            if (!wasJailed && cooldownSeconds != null && cooldownSeconds > 0) {
               _cooldownSeconds = cooldownSeconds;
-              _cooldownResultMessage = message;
-              _cooldownIsSuccess = eventKey.contains('success');
-            });
-          }
+              _cooldownResultMessage = null;
+              _cooldownIsSuccess = false;
+            }
+          });
+          _loadLiveCrimeEvent();
+          return;
+        }
+
+        if (!wasJailed && cooldownSeconds != null && cooldownSeconds > 0) {
+          setState(() {
+            _cooldownSeconds = cooldownSeconds;
+            _cooldownResultMessage = message;
+            _cooldownIsSuccess = success;
+          });
         } else {
-          // No cooldown, just show snackbar
           showTopRightFromSnackBar(
             context,
             SnackBar(
               content: Text(message),
-              backgroundColor: eventKey.contains('success')
-                  ? Colors.green
-                  : Colors.red,
+              backgroundColor: success ? Colors.green : Colors.red,
               duration: const Duration(seconds: 3),
             ),
           );
@@ -1338,17 +1324,26 @@ class _CrimeScreenState extends State<CrimeScreen> {
       body: _showCrimeResult
           ? CrimeResultOverlay(
               embedded: kIsWeb,
+              isSuccess: _crimeResultSuccess,
+              headline: _crimeResultSuccess
+                  ? null
+                  : l10n.crimeOutcomeFailed,
               crimeName: _resultCrimeName ?? l10n.crimes,
               reward: _crimeReward,
               xpGained: _crimeXpGained,
+              xpLost: _crimeXpLost,
+              flavorLine: _resultFlavorLine,
               vehicleConditionLoss: _crimeVehicleConditionLoss,
               vehicleFuelUsed: _crimeVehicleFuelUsed,
               onContinue: () {
                 setState(() {
                   _showCrimeResult = false;
+                  _crimeResultSuccess = true;
                   _resultCrimeName = null;
                   _crimeReward = 0;
                   _crimeXpGained = 0;
+                  _crimeXpLost = 0;
+                  _resultFlavorLine = null;
                   _crimeVehicleConditionLoss = null;
                   _crimeVehicleFuelUsed = null;
                 });

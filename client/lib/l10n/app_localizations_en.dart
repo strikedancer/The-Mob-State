@@ -8747,6 +8747,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crimeOutcomeSuccess => 'Crime successful!';
 
   @override
+  String get crimeOutcomeFailed => 'Crime failed';
+
+  @override
   String get jobOutcomeSuccess => 'Job completed!';
 
   @override

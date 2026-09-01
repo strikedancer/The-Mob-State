@@ -15538,6 +15538,12 @@ abstract class AppLocalizations {
   /// **'Crime successful!'**
   String get crimeOutcomeSuccess;
 
+  /// No description provided for @crimeOutcomeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime failed'**
+  String get crimeOutcomeFailed;
+
   /// No description provided for @jobOutcomeSuccess.
   ///
   /// In en, this message translates to:

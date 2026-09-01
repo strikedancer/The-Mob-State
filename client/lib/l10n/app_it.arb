@@ -1938,6 +1938,7 @@
   "toolBurnerPhone": "Telefono bruciato",
   "toolThermalDrill": "Trapano termico",
   "crimeOutcomeSuccess": "Crimine riuscito!",
+  "crimeOutcomeFailed": "Crimine fallito",
   "crimeOutcomeCaught": "Catturato dalla polizia",
   "crimeOutcomeVehicleBreakdownBefore": "Il tuo veicolo si è rotto prima di raggiungere la scena del crimine",
   "crimeOutcomeVehicleBreakdownDuring": "Il veicolo si è rotto durante la fuga e ha abbandonato la maggior parte del bottino",
