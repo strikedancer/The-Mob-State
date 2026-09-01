@@ -10311,5 +10311,17 @@
     }
   },
   "crewHeistsEmpty": "No heists available for your crew level yet.",
-  "crewHeistsLoadError": "Could not load crew heists."
+  "crewHeistsLoadError": "Could not load crew heists.",
+  "ammoFactoryPurchasePriceLabel": "Purchase price",
+  "ammoFactoryRequirementsTitle": "Requirements",
+  "ammoFactoryRequirementsComplete": "All requirements met",
+  "ammoFactoryGoToSchool": "Go to School",
+  "ammoFactoryBuyFor": "Buy for {price}",
+  "@ammoFactoryBuyFor": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  }
 }

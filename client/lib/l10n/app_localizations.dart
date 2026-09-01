@@ -14254,6 +14254,36 @@ abstract class AppLocalizations {
   /// **'Buy and sell ammo through the Black Market, not directly from the factory.'**
   String get ammoFactoryActionBlackMarket;
 
+  /// No description provided for @ammoFactoryPurchasePriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase price'**
+  String get ammoFactoryPurchasePriceLabel;
+
+  /// No description provided for @ammoFactoryRequirementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Requirements'**
+  String get ammoFactoryRequirementsTitle;
+
+  /// No description provided for @ammoFactoryRequirementsComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'All requirements met'**
+  String get ammoFactoryRequirementsComplete;
+
+  /// No description provided for @ammoFactoryGoToSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to School'**
+  String get ammoFactoryGoToSchool;
+
+  /// No description provided for @ammoFactoryBuyFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy for {price}'**
+  String ammoFactoryBuyFor(String price);
+
   /// No description provided for @ammoFactoryErrCountryRequired.
   ///
   /// In en, this message translates to:

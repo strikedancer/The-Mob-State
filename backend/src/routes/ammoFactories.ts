@@ -24,10 +24,15 @@ router.get('/', authenticate, async (_req: AuthRequest, res: Response) => {
  */
 router.get('/my', authenticate, async (req: AuthRequest, res: Response) => {
   const factory = await ammoFactoryService.getPlayerFactory(req.player!.id);
+  const purchase = await ammoFactoryService.getPurchaseContext(
+    req.player!.id,
+    req.player!.rank
+  );
 
   return res.status(200).json({
     success: true,
     factory,
+    purchase,
   });
 });
 

@@ -6997,6 +6997,18 @@
   "ammoFactoryBlackMarketTitle": "Munitie te koop",
   "ammoFactoryBlackMarketBody": "De munitiefabriek verkoopt geen kogels rechtstreeks vanuit dit scherm. Voor kopen en verkopen van munitie gebruik je de Zwarte Markt.",
   "ammoFactoryActionBlackMarket": "Koop en verkoop munitie via de Zwarte Markt, niet rechtstreeks via de fabriek.",
+  "ammoFactoryPurchasePriceLabel": "Aankoopprijs",
+  "ammoFactoryRequirementsTitle": "Vereisten",
+  "ammoFactoryRequirementsComplete": "Alle vereisten voldaan",
+  "ammoFactoryGoToSchool": "Naar School",
+  "ammoFactoryBuyFor": "Kopen voor {price}",
+  "@ammoFactoryBuyFor": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "ammoFactoryErrCountryRequired": "Land is verplicht",
   "ammoFactoryErrPlayerNotFound": "Speler niet gevonden",
   "ammoFactoryErrWrongCountry": "Je moet in hetzelfde land zijn om deze fabriek te kopen",

@@ -8107,6 +8107,23 @@ class AppLocalizationsEs extends AppLocalizations {
       'Compra y vende munición a través del Mercado Negro, no directamente desde la fábrica.';
 
   @override
+  String get ammoFactoryPurchasePriceLabel => 'Purchase price';
+
+  @override
+  String get ammoFactoryRequirementsTitle => 'Requirements';
+
+  @override
+  String get ammoFactoryRequirementsComplete => 'All requirements met';
+
+  @override
+  String get ammoFactoryGoToSchool => 'Go to School';
+
+  @override
+  String ammoFactoryBuyFor(String price) {
+    return 'Buy for $price';
+  }
+
+  @override
   String get ammoFactoryErrCountryRequired => 'Se requiere país';
 
   @override

@@ -8066,6 +8066,23 @@ class AppLocalizationsNl extends AppLocalizations {
       'Koop en verkoop munitie via de Zwarte Markt, niet rechtstreeks via de fabriek.';
 
   @override
+  String get ammoFactoryPurchasePriceLabel => 'Aankoopprijs';
+
+  @override
+  String get ammoFactoryRequirementsTitle => 'Vereisten';
+
+  @override
+  String get ammoFactoryRequirementsComplete => 'Alle vereisten voldaan';
+
+  @override
+  String get ammoFactoryGoToSchool => 'Naar School';
+
+  @override
+  String ammoFactoryBuyFor(String price) {
+    return 'Kopen voor $price';
+  }
+
+  @override
   String get ammoFactoryErrCountryRequired => 'Land is verplicht';
 
   @override

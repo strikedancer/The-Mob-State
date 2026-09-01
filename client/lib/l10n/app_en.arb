@@ -4969,6 +4969,18 @@
   "ammoFactoryBlackMarketTitle": "Ammo for sale",
   "ammoFactoryBlackMarketBody": "The ammo factory does not sell bullets directly from this screen. Use the Black Market for buying and selling ammo.",
   "ammoFactoryActionBlackMarket": "Buy and sell ammo through the Black Market, not directly from the factory.",
+  "ammoFactoryPurchasePriceLabel": "Purchase price",
+  "ammoFactoryRequirementsTitle": "Requirements",
+  "ammoFactoryRequirementsComplete": "All requirements met",
+  "ammoFactoryGoToSchool": "Go to School",
+  "ammoFactoryBuyFor": "Buy for {price}",
+  "@ammoFactoryBuyFor": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "ammoFactoryErrCountryRequired": "Country is required",
   "ammoFactoryErrPlayerNotFound": "Player not found",
   "ammoFactoryErrWrongCountry": "You must be in the same country to buy this factory",

@@ -8083,6 +8083,23 @@ class AppLocalizationsPl extends AppLocalizations {
       'Kupuj i sprzedawaj amunicję na Czarnym Rynku, a nie bezpośrednio z fabryki.';
 
   @override
+  String get ammoFactoryPurchasePriceLabel => 'Purchase price';
+
+  @override
+  String get ammoFactoryRequirementsTitle => 'Requirements';
+
+  @override
+  String get ammoFactoryRequirementsComplete => 'All requirements met';
+
+  @override
+  String get ammoFactoryGoToSchool => 'Go to School';
+
+  @override
+  String ammoFactoryBuyFor(String price) {
+    return 'Buy for $price';
+  }
+
+  @override
   String get ammoFactoryErrCountryRequired => 'Kraj jest wymagany';
 
   @override

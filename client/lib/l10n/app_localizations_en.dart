@@ -8027,6 +8027,23 @@ class AppLocalizationsEn extends AppLocalizations {
       'Buy and sell ammo through the Black Market, not directly from the factory.';
 
   @override
+  String get ammoFactoryPurchasePriceLabel => 'Purchase price';
+
+  @override
+  String get ammoFactoryRequirementsTitle => 'Requirements';
+
+  @override
+  String get ammoFactoryRequirementsComplete => 'All requirements met';
+
+  @override
+  String get ammoFactoryGoToSchool => 'Go to School';
+
+  @override
+  String ammoFactoryBuyFor(String price) {
+    return 'Buy for $price';
+  }
+
+  @override
   String get ammoFactoryErrCountryRequired => 'Country is required';
 
   @override

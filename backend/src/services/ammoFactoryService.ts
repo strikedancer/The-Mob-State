@@ -23,6 +23,7 @@ const MAX_LEVEL = 5;
 // Minimum rounds produced per ammo type per tick at level 1 (Aug 2026: 5 → 3).
 // Scales with outputMultiplier: level 5 → ~32 per type per tick.
 const BASE_ROUNDS_PER_TICK = 3;
+export const AMMO_FACTORY_PURCHASE_PRICE = 500000;
 
 class AmmoFactoryService {
   private countries: CountryDef[] = [];
@@ -127,6 +128,24 @@ class AmmoFactoryService {
       where: { ownerId: playerId },
       orderBy: { countryId: 'asc' },
     });
+  }
+
+  async getPurchaseContext(playerId: number, playerRank: number) {
+    const education = await educationService.checkAssetEligibility(
+      playerId,
+      'ammo_factory_purchase',
+      playerRank
+    );
+
+    return {
+      price: AMMO_FACTORY_PURCHASE_PRICE,
+      education: {
+        allowed: education.allowed,
+        missing: education.missing,
+        gateId: education.gateId,
+        gateLabelKey: education.gateLabelKey,
+      },
+    };
   }
 
   private async settleProduction(factoryId: number, enforceCooldown: boolean) {
@@ -284,7 +303,7 @@ class AmmoFactoryService {
       return { success: false, error: 'PLAYER_NOT_FOUND', cost: 0 };
     }
 
-    const cost = 500000;
+    const cost = AMMO_FACTORY_PURCHASE_PRICE;
 
     const educationEligibility = await educationService.checkAssetEligibility(
       playerId,
