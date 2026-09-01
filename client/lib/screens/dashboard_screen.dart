@@ -1821,7 +1821,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onOpenCrimes: () => _selectWebSection(_WebSection.crimes),
         );
       case _WebSection.ammoFactory:
-        return const AmmoFactoryScreen();
+        return AmmoFactoryScreen(
+          onOpenSchool: () => _selectWebSection(_WebSection.school),
+        );
       case _WebSection.school:
         return const SchoolScreen();
       case _WebSection.territory:

@@ -14,7 +14,13 @@ import 'black_market_screen.dart';
 import 'school_screen.dart';
 
 class AmmoFactoryScreen extends StatefulWidget {
-  const AmmoFactoryScreen({super.key});
+  const AmmoFactoryScreen({
+    super.key,
+    this.onOpenSchool,
+  });
+
+  /// When set (e.g. web dashboard), opens the school section in-place.
+  final VoidCallback? onOpenSchool;
 
   @override
   State<AmmoFactoryScreen> createState() => _AmmoFactoryScreenState();
@@ -638,6 +644,10 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
   }
 
   void _openSchool() {
+    if (widget.onOpenSchool != null) {
+      widget.onOpenSchool!();
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const SchoolScreen()),
     );
