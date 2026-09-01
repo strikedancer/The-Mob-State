@@ -868,7 +868,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: canBuy
+              onPressed: canBuy && countryId != null
                   ? () => _buyFactory(countryId)
                   : (!_educationAllowed
                         ? () => EducationRequirementsDialog.show(
