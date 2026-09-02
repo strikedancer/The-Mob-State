@@ -10354,5 +10354,14 @@
         "type": "String"
       }
     }
+  },
+  "drugsCardOpenAction": "Open",
+  "drugsCardStepLabel": "Step {step}",
+  "@drugsCardStepLabel": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      }
+    }
   }
 }

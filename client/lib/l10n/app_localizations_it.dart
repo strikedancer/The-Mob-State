@@ -14854,6 +14854,14 @@ class AppLocalizationsIt extends AppLocalizations {
       'Scegli un ramo del tuo impero della droga';
 
   @override
+  String get drugsCardOpenAction => 'Open';
+
+  @override
+  String drugsCardStepLabel(int step) {
+    return 'Step $step';
+  }
+
+  @override
   String get drugsCardFacilitiesEyebrow => 'Infrastrutture';
 
   @override

@@ -3800,7 +3800,16 @@
   "drugsMetricEfficiency": "Efficiëntie",
   "drugsMetricPoliceHeat": "Politiehitte",
   "drugsSectionOperations": "Operaties",
-  "drugsSectionOperationsSubtitle": "Kies een poot van je drugsimperium",
+  "drugsSectionOperationsSubtitle": "Volg deze stappen: faciliteiten → productie → voorraad",
+  "drugsCardOpenAction": "Openen",
+  "drugsCardStepLabel": "Stap {step}",
+  "@drugsCardStepLabel": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      }
+    }
+  },
   "drugsCardFacilitiesEyebrow": "Infrastructuur",
   "drugsCardFacilitiesTitle": "Faciliteiten",
   "drugsCardFacilitiesBody": "Koop en upgrade kas, drugslab, crackkeuken en darkweb-winkel voor meer slots, snelheid en kwaliteit.",

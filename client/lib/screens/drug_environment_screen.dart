@@ -238,28 +238,30 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
     int inventoryValue,
   ) {
     return [
-      _DrugEntryCard(
+      _DrugOperationCard(
+        step: 1,
         icon: Icons.factory_outlined,
         eyebrow: t.drugsCardFacilitiesEyebrow,
         title: t.drugsCardFacilitiesTitle,
         subtitle: t.drugsCardFacilitiesBody,
-        badge: _facilitiesBadge(t),
+        status: _facilitiesBadge(t),
+        actionLabel: t.drugsCardOpenAction,
         color: const Color(0xFF48B8FF),
-        duration: const Duration(milliseconds: 680),
         onTap: () => _openScreen(
           context,
           const DrugFacilityScreen(showAppBar: false),
           _DrugWebSubview.facilities,
         ),
       ),
-      _DrugEntryCard(
-        icon: Icons.precision_manufacturing,
+      _DrugOperationCard(
+        step: 2,
+        icon: Icons.precision_manufacturing_outlined,
         eyebrow: t.drugsCardProductionEyebrow,
         title: t.drugsCardProductionTitle,
         subtitle: t.drugsCardProductionBody,
-        badge: _productionBadge(t),
+        status: _productionBadge(t),
+        actionLabel: t.drugsCardOpenAction,
         color: const Color(0xFF35C46A),
-        duration: const Duration(milliseconds: 520),
         onTap: () => _openScreen(
           context,
           DrugProductionScreen(
@@ -270,14 +272,15 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
           _DrugWebSubview.production,
         ),
       ),
-      _DrugEntryCard(
-        icon: Icons.inventory_2,
+      _DrugOperationCard(
+        step: 3,
+        icon: Icons.inventory_2_outlined,
         eyebrow: t.drugsCardInventoryEyebrow,
         title: t.drugsCardInventoryTitle,
         subtitle: t.drugsCardInventoryBody,
-        badge: _inventoryBadge(t, inventoryGrams, inventoryValue),
+        status: _inventoryBadge(t, inventoryGrams, inventoryValue),
+        actionLabel: t.drugsCardOpenAction,
         color: const Color(0xFFF2B94B),
-        duration: const Duration(milliseconds: 840),
         onTap: () => _openScreen(
           context,
           const DrugInventoryScreen(),
@@ -285,6 +288,42 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         ),
       ),
     ];
+  }
+
+  Widget _buildOperationsLayout(
+    BuildContext context,
+    AppLocalizations t,
+    bool isMobile,
+    int inventoryGrams,
+    int inventoryValue,
+  ) {
+    final cards = _buildOperationCards(
+      context,
+      t,
+      inventoryGrams,
+      inventoryValue,
+    );
+
+    if (isMobile) {
+      return Column(
+        children: [
+          for (var i = 0; i < cards.length; i++) ...[
+            if (i > 0) const SizedBox(height: 12),
+            cards[i],
+          ],
+        ],
+      );
+    }
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (var i = 0; i < cards.length; i++) ...[
+          if (i > 0) const SizedBox(width: 12),
+          Expanded(child: cards[i]),
+        ],
+      ],
+    );
   }
 
   Widget _buildMetricsSection(AppLocalizations t, int usedSlots, int totalSlots,
@@ -392,7 +431,6 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         final width = constraints.maxWidth;
         final isMobile = width < 700;
         final isTablet = width >= 700 && width < 1100;
-        final crossAxisCount = isMobile ? 1 : (isTablet ? 2 : 3);
         final backgroundAsset = _backgroundAsset(width);
         final headerPadding = isMobile ? 18.0 : (isTablet ? 22.0 : 28.0);
         final titleSize = isMobile ? 28.0 : (isTablet ? 34.0 : 40.0);
@@ -559,33 +597,13 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                               subtitle: t.drugsSectionOperationsSubtitle,
                             ),
                             const SizedBox(height: 10),
-                            if (isMobile)
-                              ..._buildOperationCards(
-                                context,
-                                t,
-                                inventoryGrams,
-                                inventoryValue,
-                              ).map(
-                                (card) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: card,
-                                ),
-                              )
-                            else
-                              GridView.count(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                crossAxisCount: crossAxisCount,
-                                mainAxisSpacing: 12,
-                                crossAxisSpacing: 12,
-                                childAspectRatio: isTablet ? 1.55 : 1.35,
-                                children: _buildOperationCards(
-                                  context,
-                                  t,
-                                  inventoryGrams,
-                                  inventoryValue,
-                                ),
-                              ),
+                            _buildOperationsLayout(
+                              context,
+                              t,
+                              isMobile,
+                              inventoryGrams,
+                              inventoryValue,
+                            ),
                             const SizedBox(height: 18),
                             Text(
                               t.drugsHubStatsTitle,
@@ -716,126 +734,171 @@ class _AmbientOrb extends StatelessWidget {
   }
 }
 
-class _DrugEntryCard extends StatelessWidget {
+class _DrugOperationCard extends StatelessWidget {
+  final int step;
   final IconData icon;
   final String eyebrow;
   final String title;
   final String subtitle;
-  final String badge;
+  final String status;
+  final String actionLabel;
   final Color color;
-  final Duration duration;
   final VoidCallback onTap;
 
-  const _DrugEntryCard({
+  const _DrugOperationCard({
+    required this.step,
     required this.icon,
     required this.eyebrow,
     required this.title,
     required this.subtitle,
-    required this.badge,
+    required this.status,
+    required this.actionLabel,
     required this.color,
-    required this.duration,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: duration,
-      curve: Curves.easeOutCubic,
-      builder: (context, value, child) {
-        return Opacity(
-          opacity: value,
-          child: Transform.translate(
-            offset: Offset(0, 26 * (1 - value)),
-            child: child,
-          ),
-        );
-      },
+    final t = AppLocalizations.of(context)!;
+
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(18),
         child: Ink(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.black.withOpacity(0.52), color.withOpacity(0.12)],
-            ),
-            border: Border.all(color: color.withOpacity(0.45), width: 1.2),
-            boxShadow: [
-              BoxShadow(
-                color: color.withOpacity(0.12),
-                blurRadius: 24,
-                offset: const Offset(0, 14),
-              ),
-            ],
+            borderRadius: BorderRadius.circular(18),
+            color: Colors.black.withOpacity(0.42),
+            border: Border.all(color: color.withOpacity(0.42)),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.12),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(17),
+                  ),
+                  border: Border(
+                    bottom: BorderSide(color: color.withOpacity(0.28)),
+                  ),
+                ),
+                child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 24,
-                      backgroundColor: color.withOpacity(0.14),
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: color.withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: color.withOpacity(0.45)),
+                      ),
                       child: Icon(icon, color: color, size: 24),
                     ),
-                    const Spacer(),
-                    Icon(Icons.arrow_forward, color: color, size: 18),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            t.drugsCardStepLabel(step),
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            eyebrow,
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.62),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-                const Spacer(),
-                Text(
-                  eyebrow,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.4,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: color.withOpacity(0.14),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: color.withOpacity(0.35)),
-                  ),
-                  child: Text(
-                    badge,
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        height: 1.1,
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 8),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: color.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: color.withOpacity(0.3)),
+                      ),
+                      child: Text(
+                        status,
+                        style: TextStyle(
+                          color: color,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.72),
+                        fontSize: 13,
+                        height: 1.4,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 14),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: onTap,
+                        icon: Icon(Icons.arrow_forward, color: color, size: 18),
+                        label: Text(
+                          actionLabel,
+                          style: TextStyle(
+                            color: color,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: color.withOpacity(0.55)),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 13,
-                    height: 1.35,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

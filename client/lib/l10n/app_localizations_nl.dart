@@ -14720,7 +14720,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get drugsSectionOperationsSubtitle =>
-      'Kies een poot van je drugsimperium';
+      'Volg deze stappen: faciliteiten → productie → voorraad';
+
+  @override
+  String get drugsCardOpenAction => 'Openen';
+
+  @override
+  String drugsCardStepLabel(int step) {
+    return 'Stap $step';
+  }
 
   @override
   String get drugsCardFacilitiesEyebrow => 'Infrastructuur';

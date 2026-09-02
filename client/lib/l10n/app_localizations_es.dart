@@ -14828,6 +14828,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Elige una rama de tu imperio narco';
 
   @override
+  String get drugsCardOpenAction => 'Open';
+
+  @override
+  String drugsCardStepLabel(int step) {
+    return 'Step $step';
+  }
+
+  @override
   String get drugsCardFacilitiesEyebrow => 'Infraestructura';
 
   @override

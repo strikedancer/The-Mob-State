@@ -14876,6 +14876,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'Choisissez une branche de votre empire de la drogue';
 
   @override
+  String get drugsCardOpenAction => 'Open';
+
+  @override
+  String drugsCardStepLabel(int step) {
+    return 'Step $step';
+  }
+
+  @override
   String get drugsCardFacilitiesEyebrow => 'Infrastructure';
 
   @override

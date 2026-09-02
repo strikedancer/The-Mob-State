@@ -25593,8 +25593,20 @@ abstract class AppLocalizations {
   /// No description provided for @drugsSectionOperationsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose a branch of your drug empire'**
+  /// **'Follow these steps: facilities → production → inventory'**
   String get drugsSectionOperationsSubtitle;
+
+  /// No description provided for @drugsCardOpenAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get drugsCardOpenAction;
+
+  /// No description provided for @drugsCardStepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step}'**
+  String drugsCardStepLabel(int step);
 
   /// No description provided for @drugsCardFacilitiesEyebrow.
   ///

@@ -9307,7 +9307,16 @@
   "drugsMetricEfficiency": "Efficiency",
   "drugsMetricPoliceHeat": "Police Heat",
   "drugsSectionOperations": "Operations",
-  "drugsSectionOperationsSubtitle": "Choose a branch of your drug empire",
+  "drugsSectionOperationsSubtitle": "Follow these steps: facilities → production → inventory",
+  "drugsCardOpenAction": "Open",
+  "drugsCardStepLabel": "Step {step}",
+  "@drugsCardStepLabel": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      }
+    }
+  },
   "drugsCardFacilitiesEyebrow": "Infrastructure",
   "drugsCardFacilitiesTitle": "Facilities",
   "drugsCardFacilitiesBody": "Buy and upgrade greenhouse, drug lab, crack kitchen and darkweb storefront for more slots, speed and quality.",
