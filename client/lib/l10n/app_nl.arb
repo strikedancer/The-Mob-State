@@ -3810,6 +3810,37 @@
   "drugsCardInventoryEyebrow": "Distributie",
   "drugsCardInventoryTitle": "Voorraad",
   "drugsCardInventoryBody": "Bekijk stapels per kwaliteit en verkoop tegen de beste marktwaarde.",
+  "drugsHubStatsTitle": "Overzicht",
+  "drugsCardFacilitiesBadgeNone": "Nog geen faciliteit",
+  "drugsCardFacilitiesBadgeCount": "{count} in bezit",
+  "@drugsCardFacilitiesBadgeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsCardProductionBadgeNone": "Geen actieve batches",
+  "drugsCardProductionBadgeCount": "{count} actief",
+  "@drugsCardProductionBadgeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsCardInventoryBadgeNone": "Geen voorraad",
+  "drugsCardInventoryBadgeSummary": "{grams} g · €{value}",
+  "@drugsCardInventoryBadgeSummary": {
+    "placeholders": {
+      "grams": {
+        "type": "int"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "drugsQualityDistribution": "Kwaliteitsverdeling",
   "drugsQualityGradeSuperior": "Superieur",
   "drugsQualityGradeHigh": "Hoog",

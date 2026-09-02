@@ -10323,5 +10323,36 @@
         "type": "String"
       }
     }
+  },
+  "drugsHubStatsTitle": "Overview",
+  "drugsCardFacilitiesBadgeNone": "No facility yet",
+  "drugsCardFacilitiesBadgeCount": "{count} owned",
+  "@drugsCardFacilitiesBadgeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsCardProductionBadgeNone": "No active batches",
+  "drugsCardProductionBadgeCount": "{count} active",
+  "@drugsCardProductionBadgeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsCardInventoryBadgeNone": "No stock",
+  "drugsCardInventoryBadgeSummary": "{grams} g · €{value}",
+  "@drugsCardInventoryBadgeSummary": {
+    "placeholders": {
+      "grams": {
+        "type": "int"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
   }
 }

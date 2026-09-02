@@ -14753,6 +14753,33 @@ class AppLocalizationsNl extends AppLocalizations {
       'Bekijk stapels per kwaliteit en verkoop tegen de beste marktwaarde.';
 
   @override
+  String get drugsHubStatsTitle => 'Overzicht';
+
+  @override
+  String get drugsCardFacilitiesBadgeNone => 'Nog geen faciliteit';
+
+  @override
+  String drugsCardFacilitiesBadgeCount(int count) {
+    return '$count in bezit';
+  }
+
+  @override
+  String get drugsCardProductionBadgeNone => 'Geen actieve batches';
+
+  @override
+  String drugsCardProductionBadgeCount(int count) {
+    return '$count actief';
+  }
+
+  @override
+  String get drugsCardInventoryBadgeNone => 'Geen voorraad';
+
+  @override
+  String drugsCardInventoryBadgeSummary(int grams, String value) {
+    return '$grams g · €$value';
+  }
+
+  @override
   String get drugsQualityDistribution => 'Kwaliteitsverdeling';
 
   @override

@@ -14884,6 +14884,33 @@ class AppLocalizationsIt extends AppLocalizations {
       'Visualizza gli stack per qualità e vendi al miglior valore di mercato.';
 
   @override
+  String get drugsHubStatsTitle => 'Overview';
+
+  @override
+  String get drugsCardFacilitiesBadgeNone => 'No facility yet';
+
+  @override
+  String drugsCardFacilitiesBadgeCount(int count) {
+    return '$count owned';
+  }
+
+  @override
+  String get drugsCardProductionBadgeNone => 'No active batches';
+
+  @override
+  String drugsCardProductionBadgeCount(int count) {
+    return '$count active';
+  }
+
+  @override
+  String get drugsCardInventoryBadgeNone => 'No stock';
+
+  @override
+  String drugsCardInventoryBadgeSummary(int grams, String value) {
+    return '$grams g · €$value';
+  }
+
+  @override
   String get drugsQualityDistribution => 'Distribuzione di qualità';
 
   @override

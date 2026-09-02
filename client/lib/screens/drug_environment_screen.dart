@@ -12,7 +12,13 @@ import 'drug_inventory_screen.dart';
 import 'drug_production_screen.dart';
 
 class DrugEnvironmentScreen extends StatefulWidget {
-  const DrugEnvironmentScreen({super.key});
+  const DrugEnvironmentScreen({
+    super.key,
+    this.embedded = false,
+  });
+
+  /// When true (web dashboard), omit AppBar and keep subviews in-place.
+  final bool embedded;
 
   @override
   State<DrugEnvironmentScreen> createState() => _DrugEnvironmentScreenState();
@@ -49,7 +55,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
     Widget screen,
     _DrugWebSubview webSubview,
   ) {
-    if (kIsWeb) {
+    if (kIsWeb || widget.embedded) {
       setState(() => _webSubview = webSubview);
       return;
     }
@@ -155,9 +161,216 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
     }
   }
 
+  String _facilitiesBadge(AppLocalizations t) {
+    if (_facilities.isEmpty) {
+      return t.drugsCardFacilitiesBadgeNone;
+    }
+    return t.drugsCardFacilitiesBadgeCount(_facilities.length);
+  }
+
+  String _productionBadge(AppLocalizations t) {
+    if (_activeProductions.isEmpty) {
+      return t.drugsCardProductionBadgeNone;
+    }
+    return t.drugsCardProductionBadgeCount(_activeProductions.length);
+  }
+
+  String _inventoryBadge(AppLocalizations t, int grams, int value) {
+    if (grams <= 0) {
+      return t.drugsCardInventoryBadgeNone;
+    }
+    return t.drugsCardInventoryBadgeSummary(
+      grams,
+      _formatCompactMoney(value),
+    );
+  }
+
+  Widget _buildSubviewHeader(BuildContext context, _DrugWebSubview section) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(4, 4, 12, 4),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.45),
+        border: Border(bottom: BorderSide(color: Colors.white.withOpacity(0.08))),
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: () {
+              setState(() => _webSubview = _DrugWebSubview.hub);
+              _loadDashboardStats();
+            },
+          ),
+          Expanded(
+            child: Text(
+              _webSubviewTitle(context, section),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubviewBody(_DrugWebSubview section) {
+    return switch (section) {
+      _DrugWebSubview.production => DrugProductionScreen(
+        onOpenFacilitiesRequested: () {
+          setState(() => _webSubview = _DrugWebSubview.facilities);
+        },
+      ),
+      _DrugWebSubview.facilities =>
+        const DrugFacilityScreen(showAppBar: false),
+      _DrugWebSubview.inventory => const DrugInventoryScreen(),
+      _DrugWebSubview.hub => const SizedBox.shrink(),
+    };
+  }
+
+  List<Widget> _buildOperationCards(
+    BuildContext context,
+    AppLocalizations t,
+    int inventoryGrams,
+    int inventoryValue,
+  ) {
+    return [
+      _DrugEntryCard(
+        icon: Icons.factory_outlined,
+        eyebrow: t.drugsCardFacilitiesEyebrow,
+        title: t.drugsCardFacilitiesTitle,
+        subtitle: t.drugsCardFacilitiesBody,
+        badge: _facilitiesBadge(t),
+        color: const Color(0xFF48B8FF),
+        duration: const Duration(milliseconds: 680),
+        onTap: () => _openScreen(
+          context,
+          const DrugFacilityScreen(showAppBar: false),
+          _DrugWebSubview.facilities,
+        ),
+      ),
+      _DrugEntryCard(
+        icon: Icons.precision_manufacturing,
+        eyebrow: t.drugsCardProductionEyebrow,
+        title: t.drugsCardProductionTitle,
+        subtitle: t.drugsCardProductionBody,
+        badge: _productionBadge(t),
+        color: const Color(0xFF35C46A),
+        duration: const Duration(milliseconds: 520),
+        onTap: () => _openScreen(
+          context,
+          DrugProductionScreen(
+            onOpenFacilitiesRequested: () {
+              setState(() => _webSubview = _DrugWebSubview.facilities);
+            },
+          ),
+          _DrugWebSubview.production,
+        ),
+      ),
+      _DrugEntryCard(
+        icon: Icons.inventory_2,
+        eyebrow: t.drugsCardInventoryEyebrow,
+        title: t.drugsCardInventoryTitle,
+        subtitle: t.drugsCardInventoryBody,
+        badge: _inventoryBadge(t, inventoryGrams, inventoryValue),
+        color: const Color(0xFFF2B94B),
+        duration: const Duration(milliseconds: 840),
+        onTap: () => _openScreen(
+          context,
+          const DrugInventoryScreen(),
+          _DrugWebSubview.inventory,
+        ),
+      ),
+    ];
+  }
+
+  Widget _buildMetricsSection(AppLocalizations t, int usedSlots, int totalSlots,
+      int inventoryValue, int inventoryGrams) {
+    if (_isLoadingStats) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: LinearProgressIndicator(minHeight: 3),
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = constraints.maxWidth >= 900
+            ? (constraints.maxWidth - 50) / 6
+            : constraints.maxWidth >= 560
+            ? (constraints.maxWidth - 24) / 3
+            : (constraints.maxWidth - 12) / 2;
+
+        return Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: [
+            _DashboardMetricCard(
+              width: cardWidth.clamp(140, 220),
+              label: t.drugsMetricActiveBatches,
+              value: '${_activeProductions.length}',
+              icon: Icons.timelapse,
+              color: const Color(0xFF35C46A),
+            ),
+            _DashboardMetricCard(
+              width: cardWidth.clamp(140, 220),
+              label: t.drugsMetricSlotUsage,
+              value: totalSlots > 0 ? '$usedSlots/$totalSlots' : '0/0',
+              icon: Icons.grid_view_rounded,
+              color: const Color(0xFF48B8FF),
+            ),
+            _DashboardMetricCard(
+              width: cardWidth.clamp(140, 220),
+              label: t.drugsMetricInventoryValue,
+              value: '€${_formatCompactMoney(inventoryValue)}',
+              icon: Icons.euro,
+              color: const Color(0xFFF2B94B),
+            ),
+            _DashboardMetricCard(
+              width: cardWidth.clamp(140, 220),
+              label: t.drugsMetricInventoryGrams,
+              value: '$inventoryGrams g',
+              icon: Icons.inventory_2,
+              color: const Color(0xFFC16CFF),
+            ),
+            _DashboardMetricCard(
+              width: cardWidth.clamp(140, 220),
+              label: t.drugsMetricEfficiency,
+              value: '${_efficiencyScore().round()}%',
+              icon: Icons.auto_graph,
+              color: const Color(0xFFFF6B6B),
+            ),
+            if (_heatInfo != null)
+              _DashboardMetricCard(
+                width: cardWidth.clamp(140, 220),
+                label: t.drugsMetricPoliceHeat,
+                value:
+                    '${_heatInfo!.heat} – ${drugHeatLevelLabel(t, _heatInfo!.level)}',
+                icon: Icons.local_fire_department,
+                color: _heatInfo!.color,
+              ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb && _webSubview != _DrugWebSubview.hub) {
+    if (_webSubview != _DrugWebSubview.hub && (kIsWeb || widget.embedded)) {
+      if (widget.embedded) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildSubviewHeader(context, _webSubview),
+            Expanded(child: _buildSubviewBody(_webSubview)),
+          ],
+        );
+      }
+
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -169,17 +382,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
           ),
           title: Text(_webSubviewTitle(context, _webSubview)),
         ),
-        body: switch (_webSubview) {
-          _DrugWebSubview.production => DrugProductionScreen(
-            onOpenFacilitiesRequested: () {
-              setState(() => _webSubview = _DrugWebSubview.facilities);
-            },
-          ),
-          _DrugWebSubview.facilities =>
-            const DrugFacilityScreen(showAppBar: false),
-          _DrugWebSubview.inventory => const DrugInventoryScreen(),
-          _DrugWebSubview.hub => const SizedBox.shrink(),
-        },
+        body: _buildSubviewBody(_webSubview),
       );
     }
 
@@ -204,9 +407,18 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         final t = AppLocalizations.of(context)!;
 
         return Scaffold(
-          appBar: AppBar(
-            title: Text(t.drugsHubTitle),
-          ),
+          appBar: widget.embedded
+              ? null
+              : AppBar(
+                  title: Text(t.drugsHubTitle),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: _loadDashboardStats,
+                      tooltip: t.retry,
+                    ),
+                  ],
+                ),
           body: Stack(
             children: [
               Positioned.fill(
@@ -295,206 +507,117 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                               ),
                             ],
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  _TopTag(
-                                    label: t.drugsTagUndergroundOps,
-                                    color: const Color(0xFF35C46A),
-                                  ),
-                                  _TopTag(
-                                    label: t.drugsTagMobileOptimized,
-                                    color: const Color(0xFF48B8FF),
-                                  ),
-                                  _TopTag(
-                                    label: t.drugsTagQualityDriven,
-                                    color: const Color(0xFFF2B94B),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 14),
-                              Text(
-                                t.drugsEmpireTitle,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: titleSize,
-                                  height: 0.95,
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: -0.8,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 760,
-                                ),
-                                child: Text(
-                                  t.drugsHubIntro,
-                                  style: TextStyle(
-                                    color: Colors.white.withOpacity(0.78),
-                                    fontSize: isMobile ? 13 : 15,
-                                    height: 1.45,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 18),
-                              Wrap(
-                                spacing: 10,
-                                runSpacing: 10,
-                                children: [
-                                  _StatPill(
-                                    label: t.drugsStatMaterialFlow,
-                                    value: t.drugsStatBlackMarket,
-                                    icon: Icons.science,
-                                    color: const Color(0xFF48B8FF),
-                                  ),
-                                  _StatPill(
-                                    label: t.drugsStatProductionChain,
-                                    value: t.drugsStatProductionChainValue,
-                                    icon: Icons.factory_outlined,
-                                    color: const Color(0xFF35C46A),
-                                  ),
-                                  _StatPill(
-                                    label: t.drugsStatSalesModel,
-                                    value: t.drugsStatPerQuality,
-                                    icon: Icons.workspace_premium_outlined,
-                                    color: const Color(0xFFF2B94B),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 18),
-                              if (_isLoadingStats)
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: LinearProgressIndicator(minHeight: 3),
-                                )
-                              else
-                                Wrap(
-                                  spacing: 12,
-                                  runSpacing: 12,
-                                  children: [
-                                    _DashboardMetricCard(
-                                      label: t.drugsMetricActiveBatches,
-                                      value: '${_activeProductions.length}',
-                                      icon: Icons.timelapse,
-                                      color: const Color(0xFF35C46A),
-                                    ),
-                                    _DashboardMetricCard(
-                                      label: t.drugsMetricSlotUsage,
-                                      value: totalSlots > 0
-                                          ? '$usedSlots/$totalSlots'
-                                          : '0/0',
-                                      icon: Icons.grid_view_rounded,
-                                      color: const Color(0xFF48B8FF),
-                                    ),
-                                    _DashboardMetricCard(
-                                      label: t.drugsMetricInventoryValue,
-                                      value:
-                                          '€${_formatCompactMoney(inventoryValue)}',
-                                      icon: Icons.euro,
-                                      color: const Color(0xFFF2B94B),
-                                    ),
-                                    _DashboardMetricCard(
-                                      label: t.drugsMetricInventoryGrams,
-                                      value: '$inventoryGrams g',
-                                      icon: Icons.inventory_2,
-                                      color: const Color(0xFFC16CFF),
-                                    ),
-                                    _DashboardMetricCard(
-                                      label: t.drugsMetricEfficiency,
-                                      value: '${_efficiencyScore().round()}%',
-                                      icon: Icons.auto_graph,
-                                      color: const Color(0xFFFF6B6B),
-                                    ),
-                                    if (_heatInfo != null)
-                                      _DashboardMetricCard(
-                                        label: t.drugsMetricPoliceHeat,
-                                        value:
-                                            '${_heatInfo!.heat} – ${drugHeatLevelLabel(t, _heatInfo!.level)}',
-                                        icon: Icons.local_fire_department,
-                                        color: _heatInfo!.color,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      _TopTag(
+                                        label: t.drugsTagUndergroundOps,
+                                        color: const Color(0xFF35C46A),
                                       ),
-                                  ],
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        t.drugsEmpireTitle,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: titleSize,
+                                          height: 0.95,
+                                          fontWeight: FontWeight.w800,
+                                          letterSpacing: -0.8,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        t.drugsHubIntro,
+                                        style: TextStyle(
+                                          color:
+                                              Colors.white.withOpacity(0.78),
+                                          fontSize: isMobile ? 13 : 14,
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              if (!_isLoadingStats &&
-                                  _inventory.isNotEmpty) ...[
-                                const SizedBox(height: 14),
-                                _QualityDistributionSection(
-                                  inventory: _inventory,
-                                  gramsByGrade: _qualityGramsByGrade(),
-                                ),
+                                if (!isMobile)
+                                  IconButton(
+                                    onPressed: _loadDashboardStats,
+                                    tooltip: t.retry,
+                                    icon: Icon(
+                                      Icons.refresh,
+                                      color: Colors.white.withOpacity(0.75),
+                                    ),
+                                  ),
                               ],
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      _SectionLabel(
-                        title: t.drugsSectionOperations,
-                        subtitle: t.drugsSectionOperationsSubtitle,
-                      ),
-                      const SizedBox(height: 12),
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: crossAxisCount,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                        childAspectRatio: isMobile
-                            ? 2.2
-                            : (isTablet ? 1.45 : 1.18),
-                        children: [
-                          _DrugEntryCard(
-                            icon: Icons.factory_outlined,
-                            eyebrow: t.drugsCardFacilitiesEyebrow,
-                            title: t.drugsCardFacilitiesTitle,
-                            subtitle: t.drugsCardFacilitiesBody,
-                            color: const Color(0xFF48B8FF),
-                            duration: const Duration(milliseconds: 680),
-                            onTap: () => _openScreen(
-                              context,
-                              const DrugFacilityScreen(showAppBar: false),
-                              _DrugWebSubview.facilities,
                             ),
-                          ),
-                          _DrugEntryCard(
-                            icon: Icons.precision_manufacturing,
-                            eyebrow: t.drugsCardProductionEyebrow,
-                            title: t.drugsCardProductionTitle,
-                            subtitle: t.drugsCardProductionBody,
-                            color: const Color(0xFF35C46A),
-                            duration: const Duration(milliseconds: 520),
-                            onTap: () => _openScreen(
-                              context,
-                              DrugProductionScreen(
-                                onOpenFacilitiesRequested: () {
-                                  setState(
-                                    () =>
-                                        _webSubview = _DrugWebSubview.facilities,
-                                  );
-                                },
+                            const SizedBox(height: 18),
+                            _SectionLabel(
+                              title: t.drugsSectionOperations,
+                              subtitle: t.drugsSectionOperationsSubtitle,
+                            ),
+                            const SizedBox(height: 10),
+                            if (isMobile)
+                              ..._buildOperationCards(
+                                context,
+                                t,
+                                inventoryGrams,
+                                inventoryValue,
+                              ).map(
+                                (card) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: card,
+                                ),
+                              )
+                            else
+                              GridView.count(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                crossAxisCount: crossAxisCount,
+                                mainAxisSpacing: 12,
+                                crossAxisSpacing: 12,
+                                childAspectRatio: isTablet ? 1.55 : 1.35,
+                                children: _buildOperationCards(
+                                  context,
+                                  t,
+                                  inventoryGrams,
+                                  inventoryValue,
+                                ),
                               ),
-                              _DrugWebSubview.production,
+                            const SizedBox(height: 18),
+                            Text(
+                              t.drugsHubStatsTitle,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.82),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
-                          _DrugEntryCard(
-                            icon: Icons.inventory_2,
-                            eyebrow: t.drugsCardInventoryEyebrow,
-                            title: t.drugsCardInventoryTitle,
-                            subtitle: t.drugsCardInventoryBody,
-                            color: const Color(0xFFF2B94B),
-                            duration: const Duration(milliseconds: 840),
-                            onTap: () => _openScreen(
-                              context,
-                              const DrugInventoryScreen(),
-                              _DrugWebSubview.inventory,
+                            const SizedBox(height: 10),
+                            _buildMetricsSection(
+                              t,
+                              usedSlots,
+                              totalSlots,
+                              inventoryValue,
+                              inventoryGrams,
                             ),
-                          ),
-                        ],
+                            if (!_isLoadingStats &&
+                                _inventory.isNotEmpty) ...[
+                              const SizedBox(height: 14),
+                              _QualityDistributionSection(
+                                inventory: _inventory,
+                                gramsByGrade: _qualityGramsByGrade(),
+                              ),
+                            ],
+                          ],
+                        ),
+                        ),
                       ),
                     ],
                   ),
@@ -542,63 +665,6 @@ class _TopTag extends StatelessWidget {
           fontSize: 11,
           fontWeight: FontWeight.w700,
         ),
-      ),
-    );
-  }
-}
-
-class _StatPill extends StatelessWidget {
-  final String label;
-  final String value;
-  final IconData icon;
-  final Color color;
-
-  const _StatPill({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white12),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CircleAvatar(
-            radius: 16,
-            backgroundColor: color.withOpacity(0.16),
-            child: Icon(icon, color: color, size: 16),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.55),
-                  fontSize: 11,
-                ),
-              ),
-              Text(
-                value,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
@@ -659,6 +725,7 @@ class _DrugEntryCard extends StatelessWidget {
   final String eyebrow;
   final String title;
   final String subtitle;
+  final String badge;
   final Color color;
   final Duration duration;
   final VoidCallback onTap;
@@ -668,6 +735,7 @@ class _DrugEntryCard extends StatelessWidget {
     required this.eyebrow,
     required this.title,
     required this.subtitle,
+    required this.badge,
     required this.color,
     required this.duration,
     required this.onTap,
@@ -743,6 +811,24 @@ class _DrugEntryCard extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
+                const SizedBox(height: 6),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.14),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: color.withOpacity(0.35)),
+                  ),
+                  child: Text(
+                    badge,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Text(
                   subtitle,
@@ -766,18 +852,20 @@ class _DashboardMetricCard extends StatelessWidget {
   final String value;
   final IconData icon;
   final Color color;
+  final double width;
 
   const _DashboardMetricCard({
     required this.label,
     required this.value,
     required this.icon,
     required this.color,
+    required this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 180,
+      width: width,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.06),

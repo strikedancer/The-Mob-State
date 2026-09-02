@@ -1782,7 +1782,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.blackMarket:
         return const BlackMarketScreen();
       case _WebSection.drugs:
-        return const DrugEnvironmentScreen();
+        return const DrugEnvironmentScreen(embedded: true);
       case _WebSection.nightclub:
         return const NightclubScreen();
       case _WebSection.crypto:

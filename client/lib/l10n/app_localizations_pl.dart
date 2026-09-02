@@ -14837,6 +14837,33 @@ class AppLocalizationsPl extends AppLocalizations {
       'Przeglądaj stosy według jakości i sprzedawaj po najlepszej wartości rynkowej.';
 
   @override
+  String get drugsHubStatsTitle => 'Overview';
+
+  @override
+  String get drugsCardFacilitiesBadgeNone => 'No facility yet';
+
+  @override
+  String drugsCardFacilitiesBadgeCount(int count) {
+    return '$count owned';
+  }
+
+  @override
+  String get drugsCardProductionBadgeNone => 'No active batches';
+
+  @override
+  String drugsCardProductionBadgeCount(int count) {
+    return '$count active';
+  }
+
+  @override
+  String get drugsCardInventoryBadgeNone => 'No stock';
+
+  @override
+  String drugsCardInventoryBadgeSummary(int grams, String value) {
+    return '$grams g · €$value';
+  }
+
+  @override
   String get drugsQualityDistribution => 'Dystrybucja jakości';
 
   @override

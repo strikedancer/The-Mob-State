@@ -25650,6 +25650,48 @@ abstract class AppLocalizations {
   /// **'View stacks by quality and sell at the best market value.'**
   String get drugsCardInventoryBody;
 
+  /// No description provided for @drugsHubStatsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get drugsHubStatsTitle;
+
+  /// No description provided for @drugsCardFacilitiesBadgeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No facility yet'**
+  String get drugsCardFacilitiesBadgeNone;
+
+  /// No description provided for @drugsCardFacilitiesBadgeCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} owned'**
+  String drugsCardFacilitiesBadgeCount(int count);
+
+  /// No description provided for @drugsCardProductionBadgeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No active batches'**
+  String get drugsCardProductionBadgeNone;
+
+  /// No description provided for @drugsCardProductionBadgeCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active'**
+  String drugsCardProductionBadgeCount(int count);
+
+  /// No description provided for @drugsCardInventoryBadgeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No stock'**
+  String get drugsCardInventoryBadgeNone;
+
+  /// No description provided for @drugsCardInventoryBadgeSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{grams} g · €{value}'**
+  String drugsCardInventoryBadgeSummary(int grams, String value);
+
   /// No description provided for @drugsQualityDistribution.
   ///
   /// In en, this message translates to:

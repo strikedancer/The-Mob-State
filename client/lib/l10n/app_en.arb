@@ -9317,6 +9317,37 @@
   "drugsCardInventoryEyebrow": "Distribution",
   "drugsCardInventoryTitle": "Inventory",
   "drugsCardInventoryBody": "View stacks by quality and sell at the best market value.",
+  "drugsHubStatsTitle": "Overview",
+  "drugsCardFacilitiesBadgeNone": "No facility yet",
+  "drugsCardFacilitiesBadgeCount": "{count} owned",
+  "@drugsCardFacilitiesBadgeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsCardProductionBadgeNone": "No active batches",
+  "drugsCardProductionBadgeCount": "{count} active",
+  "@drugsCardProductionBadgeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsCardInventoryBadgeNone": "No stock",
+  "drugsCardInventoryBadgeSummary": "{grams} g · €{value}",
+  "@drugsCardInventoryBadgeSummary": {
+    "placeholders": {
+      "grams": {
+        "type": "int"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "drugsQualityDistribution": "Quality distribution",
   "drugsQualityGradeSuperior": "Superior",
   "drugsQualityGradeHigh": "High",
