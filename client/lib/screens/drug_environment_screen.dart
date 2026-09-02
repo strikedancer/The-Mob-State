@@ -397,7 +397,6 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         final headerPadding = isMobile ? 18.0 : (isTablet ? 22.0 : 28.0);
         final titleSize = isMobile ? 28.0 : (isTablet ? 34.0 : 40.0);
         final horizontalPadding = isMobile ? 12.0 : (isTablet ? 20.0 : 28.0);
-        final heroMaxWidth = isMobile ? width : 1080.0;
         final currentCountry =
             authProvider.currentPlayer?.currentCountry ?? 'netherlands';
         final inventoryValue = _inventoryValueForCountry(currentCountry);
@@ -425,9 +424,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                 child: Image.asset(
                   backgroundAsset,
                   fit: BoxFit.cover,
-                  alignment: isMobile
-                      ? Alignment.topCenter
-                      : (isTablet ? Alignment.center : Alignment.centerRight),
+                  alignment: Alignment.center,
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                     'assets/images/backgrounds/crime_background.png',
                     fit: BoxFit.cover,
@@ -469,7 +466,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                 child: SingleChildScrollView(
                   padding: EdgeInsets.all(horizontalPadding),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       TweenAnimationBuilder<double>(
                         tween: Tween(begin: 0, end: 1),
@@ -486,7 +483,6 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                         },
                         child: Container(
                           width: double.infinity,
-                          constraints: BoxConstraints(maxWidth: heroMaxWidth),
                           padding: EdgeInsets.all(headerPadding),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(22),
