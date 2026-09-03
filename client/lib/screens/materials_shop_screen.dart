@@ -6,6 +6,7 @@ import '../models/drug_models.dart';
 import '../providers/auth_provider.dart';
 import '../services/drug_service.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 import '../widgets/market_compact.dart';
 import '../widgets/responsive_modal.dart';
 
@@ -225,6 +226,28 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
     );
   }
 
+  Widget _materialThumb(String assetPath) {
+    return Container(
+      width: 44,
+      height: 44,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1F2A),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: WebAssetHelper.image(
+        assetPath,
+        width: 44,
+        height: 44,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) => const Icon(
+          Icons.science,
+          size: 22,
+        ),
+      ),
+    );
+  }
+
   String _formatMoney(int amount) {
     return amount.toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
@@ -305,19 +328,7 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
                     final busy = _busyMaterialId == material.id;
                     return MarketCompactRow(
                       tooltip: material.description,
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: Image.asset(
-                            material.getImagePath(),
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.science),
-                          ),
-                        ),
-                      ),
+                      leading: _materialThumb(material.getImagePath()),
                       info: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

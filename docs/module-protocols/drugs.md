@@ -6,6 +6,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ## Primary Frontend Entry
 - client/lib/screens/drug_environment_screen.dart
 - Materials buy / transfer: `client/lib/screens/materials_shop_screen.dart` (also via Black Market → Materials)
+- Material icons: `client/assets/images/materials/<id>.png` (filename = `drugs.json` material `id`). Generate/repair via `backend/scripts/generate_material_images_leonardo.py` (transparent PNG + rembg). Shop thumbs use `WebAssetHelper` on a dark plate so missing/white plates do not flash.
 
 ## Production materials: country depot + backpack (2026-08)
 
