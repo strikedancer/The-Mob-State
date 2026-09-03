@@ -235,11 +235,12 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
         borderRadius: BorderRadius.circular(8),
       ),
       clipBehavior: Clip.antiAlias,
-      child: WebAssetHelper.image(
+      child: WebAssetHelper.imageHttpFirst(
         assetPath,
         width: 44,
         height: 44,
         fit: BoxFit.contain,
+        cacheBust: '20260903c',
         errorBuilder: (context, error, stackTrace) => const Icon(
           Icons.science,
           size: 22,

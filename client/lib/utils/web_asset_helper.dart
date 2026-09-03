@@ -82,18 +82,30 @@ class WebAssetHelper {
     return Uri.base.resolve(_trimLeadingSlash(path)).toString();
   }
 
-  static List<String> _webImageUrlCandidates(String assetPath) {
+  static String _withCacheBust(String url, String? cacheBust) {
+    if (cacheBust == null || cacheBust.isEmpty) return url;
+    final sep = url.contains('?') ? '&' : '?';
+    return '$url${sep}v=$cacheBust';
+  }
+
+  static List<String> _webImageUrlCandidates(
+    String assetPath, {
+    String? cacheBust,
+  }) {
     final normalized = normalizeAssetPath(assetPath);
     if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
-      return [normalized];
+      return [_withCacheBust(normalized, cacheBust)];
     }
 
     final suffix = _stripAssetsImagesPrefix(assetPath);
     // Prefer nginx `/images/` (runtime mount); then bundled-style paths. See PROTOCOL_MASTER / client/docker/nginx.conf.
     return [
-      _resolveRelative('images/$suffix'),
-      _resolveRelative('assets/images/$suffix'),
-      _resolveRelative('assets/assets/images/$suffix'),
+      _withCacheBust(_resolveRelative('images/$suffix'), cacheBust),
+      _withCacheBust(_resolveRelative('assets/images/$suffix'), cacheBust),
+      _withCacheBust(
+        _resolveRelative('assets/assets/images/$suffix'),
+        cacheBust,
+      ),
     ];
   }
 
@@ -136,6 +148,7 @@ class WebAssetHelper {
     double? height,
     BoxFit fit = BoxFit.cover,
     Alignment alignment = Alignment.center,
+    String? cacheBust,
     Widget Function(BuildContext, Object, StackTrace?)? errorBuilder,
   }) {
     if (!kIsWeb) {
@@ -146,12 +159,16 @@ class WebAssetHelper {
         height: height,
         fit: fit,
         alignment: alignment,
+        cacheBust: cacheBust,
         errorBuilder: errorBuilder,
       );
     }
 
     final normalizedPath = normalizeAssetPath(assetPath);
-    final candidates = _webImageUrlCandidates(normalizedPath);
+    final candidates = _webImageUrlCandidates(
+      normalizedPath,
+      cacheBust: cacheBust,
+    );
 
     Widget chain(BuildContext context, int index) {
       if (index >= candidates.length) {
@@ -187,11 +204,24 @@ class WebAssetHelper {
     double? height,
     BoxFit fit = BoxFit.cover,
     Alignment alignment = Alignment.center,
+    String? cacheBust,
     Widget Function(BuildContext, Object, StackTrace?)? errorBuilder,
   }) {
     final normalizedPath = normalizeAssetPath(assetPath);
 
     if (kIsWeb) {
+      if (cacheBust != null && cacheBust.isNotEmpty) {
+        return imageHttpFirst(
+          assetPath,
+          key: key,
+          width: width,
+          height: height,
+          fit: fit,
+          alignment: alignment,
+          cacheBust: cacheBust,
+          errorBuilder: errorBuilder,
+        );
+      }
       return Image.asset(
         normalizedPath,
         key: key,

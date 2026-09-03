@@ -114,8 +114,15 @@ ASSETS = [
     {
         "name": "lab_chemicals",
         "prompt": (
-            f"{ICON_STYLE}, cluster of colored reagent bottles and a round flask with "
-            "glowing green liquid, underground lab chemistry"
+            f"{ICON_STYLE}, cluster of colored reagent bottles and one small flask with "
+            "green liquid, no smoke cloud, no glowing haze plate, tight crop"
+        ),
+    },
+    {
+        "name": "lab_equipment",
+        "prompt": (
+            f"{ICON_STYLE}, compact laboratory stand with two connected glass flasks, "
+            "metal clamps, green liquid, no smoke cloud, no glowing haze plate, tight crop"
         ),
     },
     {
@@ -213,7 +220,9 @@ def _save_image(url: str, out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     img = requests.get(url, timeout=90)
     img.raise_for_status()
-    out_path.write_bytes(img.content)
+    tmp_path = out_path.with_name(f".{out_path.name}.tmp")
+    tmp_path.write_bytes(img.content)
+    tmp_path.replace(out_path)
 
 
 def _reshape_to_target(path: Path, target: int) -> None:
