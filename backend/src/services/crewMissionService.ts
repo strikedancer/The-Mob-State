@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import { notificationService } from './notificationService';
 import { consumeCrewTradeGoods } from './crewStorageService';
+import * as casinoOwnershipService from './casinoOwnershipService';
 
 type CrewMissionTier = 1 | 2 | 3;
 type CrewMissionOutcome = 'success' | 'partial' | 'fail';
@@ -1286,6 +1287,11 @@ export const crewMissionService = {
     );
     const successChance = clamp(template.successChance + roleBonuses.successBonus, 0.2, 0.95);
     const endsAt = new Date(now.getTime() + computedDurationSeconds * 1000);
+    const starter = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const startCountry = (starter?.currentCountry || 'netherlands').toLowerCase();
 
     await prisma.$executeRawUnsafe(
       `
@@ -1302,6 +1308,7 @@ export const crewMissionService = {
       JSON.stringify({
         roles: validAssignments,
         roleBonus: roleBonuses,
+        startCountry,
       })
     );
 
@@ -1446,6 +1453,31 @@ export const crewMissionService = {
     );
 
     const resolvedRun = await this.getRun(playerId, run.id);
+
+    if (outcome === 'success' && template.missionKey === 'casino_ledger_raid') {
+      let startCountry = '';
+      try {
+        const meta = JSON.parse(run.metadataJson || '{}') as { startCountry?: string };
+        startCountry = String(meta.startCountry || '').toLowerCase();
+      } catch {
+        startCountry = '';
+      }
+      if (!startCountry) {
+        const starter = await prisma.player.findUnique({
+          where: { id: run.startedByPlayerId },
+          select: { currentCountry: true },
+        });
+        startCountry = (starter?.currentCountry || 'netherlands').toLowerCase();
+      }
+      try {
+        await casinoOwnershipService.applyCasinoLedgerRaid({
+          countryId: startCountry,
+          crewId: membership.crewId,
+        });
+      } catch (error) {
+        console.error('[Crew Missions] casino ledger raid drain failed', error);
+      }
+    }
 
     void sendCrewMissionResolvedNotifications(membership.crewId, resolvedRun).catch((error) => {
       console.error('[Crew Missions] Failed to send mission resolved notifications:', error);

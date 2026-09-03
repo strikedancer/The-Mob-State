@@ -34,6 +34,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
   int _casinoPrice = 0;
   bool _isOwner = false;
   Map<String, dynamic>? _casinoStats;
+  Map<String, dynamic>? _house;
   bool _gameRouteActive = false;
 
   @override
@@ -85,6 +86,9 @@ class _CasinoScreenState extends State<CasinoScreen> {
           _casinoPrice = params['price'] ?? 0;
           _isOwner =
               _isOwned && _ownerInfo != null && _ownerInfo!['id'] == playerId;
+          if (params['house'] is Map) {
+            _house = Map<String, dynamic>.from(params['house'] as Map);
+          }
         });
 
         print(
@@ -149,6 +153,9 @@ class _CasinoScreenState extends State<CasinoScreen> {
           _games = (data['params']['games'] as List)
               .map((json) => CasinoGame.fromJson(json))
               .toList();
+          if (data['params']['house'] is Map) {
+            _house = Map<String, dynamic>.from(data['params']['house'] as Map);
+          }
           _isLoading = false;
         });
         print('[CasinoScreen] Games loaded: $_games');
@@ -768,6 +775,40 @@ class _CasinoScreenState extends State<CasinoScreen> {
                                   fontSize: 13,
                                 ),
                               ),
+                              if (_house != null) ...[
+                                const SizedBox(height: 8),
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 6,
+                                  children: [
+                                    Chip(
+                                      visualDensity: VisualDensity.compact,
+                                      backgroundColor: Colors.amber.withOpacity(0.18),
+                                      label: Text(
+                                        _floorLabel(l10n, _asInt(_house!['floorLevel'])),
+                                        style: const TextStyle(
+                                          color: Colors.amber,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      l10n.casinoHouseRulesLine(
+                                        _floorLabel(
+                                          l10n,
+                                          _asInt(_house!['floorLevel']),
+                                        ),
+                                        _asInt(_house!['maxBet']).toString(),
+                                        _rakePercent(_house!['rakeBps']),
+                                      ),
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.88),
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ],
                           ),
                         ),
@@ -975,6 +1016,26 @@ class _CasinoScreenState extends State<CasinoScreen> {
         ),
       ),
     );
+  }
+
+  int _asInt(dynamic value) {
+    if (value is int) return value;
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  String _rakePercent(dynamic rakeBps) {
+    return (_asInt(rakeBps) / 100).toStringAsFixed(1);
+  }
+
+  String _floorLabel(AppLocalizations l10n, int floorLevel) {
+    switch (floorLevel) {
+      case 2:
+        return l10n.casinoFloorVip;
+      case 3:
+        return l10n.casinoFloorPrivate;
+      default:
+        return l10n.casinoFloorPublic;
+    }
   }
 
   String? _localizedGameName(String gameId, AppLocalizations l10n) {

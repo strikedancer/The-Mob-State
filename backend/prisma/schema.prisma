@@ -1113,13 +1113,51 @@ model CasinoOwnership {
   bankroll                   Int       @default(0)
   totalReceived              Int       @default(0)
   totalPaidOut               Int       @default(0)
+  floorLevel                 Int       @default(1)
+  lastRaidAt                 DateTime?
+  heatAccrued                Int       @default(0)
   lastLowBalanceNotification DateTime?
   purchasedAt                DateTime  @default(now())
   updatedAt                  DateTime  @default(now()) @updatedAt
   owner                      Player    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  staffHires                 CasinoStaffHire[]
 
   @@index([ownerId])
   @@map("casino_ownerships")
+}
+
+model CasinoStaffCatalog {
+  id              Int               @id @default(autoincrement())
+  staffKey        String            @unique @db.VarChar(60)
+  role            String            @db.VarChar(20)
+  nameNl          String            @db.VarChar(80)
+  nameEn          String            @db.VarChar(80)
+  skillLevel      Int               @default(1)
+  salaryPerTick   Int               @default(2500)
+  rakeBonusBps    Int               @default(0)
+  maxBetBonusPct  Int               @default(0)
+  raidDefenseBps  Int               @default(0)
+  payoutCutBps    Int               @default(0)
+  fbiHeatOnBet    Int               @default(0)
+  isActive        Boolean           @default(true)
+  hires           CasinoStaffHire[]
+
+  @@index([role, isActive])
+  @@map("casino_staff_catalog")
+}
+
+model CasinoStaffHire {
+  id        Int                @id @default(autoincrement())
+  casinoId  String             @db.VarChar(100)
+  role      String             @db.VarChar(20)
+  catalogId Int
+  hiredAt   DateTime           @default(now())
+  casino    CasinoOwnership    @relation(fields: [casinoId], references: [casinoId], onDelete: Cascade)
+  catalog   CasinoStaffCatalog @relation(fields: [catalogId], references: [id], onDelete: Restrict)
+
+  @@unique([casinoId, role])
+  @@index([catalogId])
+  @@map("casino_staff_hires")
 }
 
 model CasinoTransaction {

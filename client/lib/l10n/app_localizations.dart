@@ -26617,19 +26617,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCasinoSummary.
   ///
   /// In en, this message translates to:
-  /// **'Gamble with cash on slots, blackjack, roulette, dice, baccarat and video poker. High variance: you can win or lose large amounts fast.'**
+  /// **'Bet cash on slots, blackjack, roulette, dice, baccarat and video poker. The house has three floors (public/VIP/private) with a visible rake and a max bet. High variance: you can win or lose a lot quickly.'**
   String get helpTopicCasinoSummary;
 
   /// No description provided for @helpTopicCasinoHow.
   ///
   /// In en, this message translates to:
-  /// **'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.'**
+  /// **'Available games: Slots, Blackjack, Roulette, Dice, Baccarat and Video Poker.\nEach table uses the casino floor max bet and a visible rake that stays in the owner bankroll.\nPublic / VIP / Private floors raise max bets and house rake. Owners hire one dealer, one security and one promoter. Dealer slightly raises rake and can trim payouts; promoter raises max bet and heat; security lowers casino_ledger_raid drain.\nStaff salaries come from the bankroll on each game tick. If the bankroll is too low, the cheapest hire is fired.\nA successful crew casino_ledger_raid drains a percentage of the bankroll in the run start country. The crew still gets its normal cash reward; this is extra pressure on the house, not a second cash print.\nCasino uses cash only, not your bank balance. Lost bets are gone; there is no insurance.'**
   String get helpTopicCasinoHow;
 
   /// No description provided for @helpTopicCasinoTips.
   ///
   /// In en, this message translates to:
-  /// **'Always set a session bankroll limit: never more than 10% of total cash per session.\nBlackjack has the best odds for a skilled player. Learn basic strategy before betting large.\nTreat casino as entertainment, not income: the house edge ensures long-term loss.'**
+  /// **'Set a session cash limit: never more than 10% of your total cash.\nBlackjack has the best odds for a skilled player.\nOwners: keep the bankroll above €10,000 and hire security before rival crews unlock ledger raids.\nTreat the casino as entertainment — the house edge wins over time.'**
   String get helpTopicCasinoTips;
 
   /// No description provided for @helpTopicBlackMarketCategory.
@@ -29257,6 +29257,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cut all one grade down'**
   String get drugsCutAllOneGrade;
+
+  /// No description provided for @casinoErrMaxBet.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum bet is €{amount}'**
+  String casinoErrMaxBet(String amount);
+
+  /// No description provided for @casinoFloorPublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get casinoFloorPublic;
+
+  /// No description provided for @casinoFloorVip.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP'**
+  String get casinoFloorVip;
+
+  /// No description provided for @casinoFloorPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get casinoFloorPrivate;
+
+  /// No description provided for @casinoHouseRulesLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{floor} · max bet €{maxBet} · rake {rake}%'**
+  String casinoHouseRulesLine(String floor, String maxBet, String rake);
+
+  /// No description provided for @casinoUpgradeFloor.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade floor'**
+  String get casinoUpgradeFloor;
+
+  /// No description provided for @casinoUpgradeFloorTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to {floor} (€{cost})'**
+  String casinoUpgradeFloorTo(String floor, String cost);
+
+  /// No description provided for @casinoUpgradeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor upgraded'**
+  String get casinoUpgradeSuccess;
+
+  /// No description provided for @casinoUpgradeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade failed'**
+  String get casinoUpgradeFailed;
+
+  /// No description provided for @casinoStaffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get casinoStaffTitle;
+
+  /// No description provided for @casinoStaffHire.
+  ///
+  /// In en, this message translates to:
+  /// **'Hire'**
+  String get casinoStaffHire;
+
+  /// No description provided for @casinoStaffFire.
+  ///
+  /// In en, this message translates to:
+  /// **'Fire'**
+  String get casinoStaffFire;
+
+  /// No description provided for @casinoStaffDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer'**
+  String get casinoStaffDealer;
+
+  /// No description provided for @casinoStaffSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get casinoStaffSecurity;
+
+  /// No description provided for @casinoStaffPromoter.
+  ///
+  /// In en, this message translates to:
+  /// **'Promoter'**
+  String get casinoStaffPromoter;
+
+  /// No description provided for @casinoStaffSalaryPerTick.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary €{amount}/tick'**
+  String casinoStaffSalaryPerTick(String amount);
+
+  /// No description provided for @casinoStaffHireSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff hired'**
+  String get casinoStaffHireSuccess;
+
+  /// No description provided for @casinoStaffFireSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff fired'**
+  String get casinoStaffFireSuccess;
+
+  /// No description provided for @casinoStaffHireFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Hire failed'**
+  String get casinoStaffHireFailed;
+
+  /// No description provided for @casinoStaffFireFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fire failed'**
+  String get casinoStaffFireFailed;
+
+  /// No description provided for @casinoTotalRake.
+  ///
+  /// In en, this message translates to:
+  /// **'Total rake:'**
+  String get casinoTotalRake;
+
+  /// No description provided for @casinoLastRaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Last raid: {when}'**
+  String casinoLastRaid(String when);
+
+  /// No description provided for @casinoRaidDrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid drain {percent}%'**
+  String casinoRaidDrain(String percent);
+
+  /// No description provided for @casinoRaidDefense.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid defense {percent}%'**
+  String casinoRaidDefense(String percent);
+
+  /// No description provided for @casinoNoStaffHired.
+  ///
+  /// In en, this message translates to:
+  /// **'No staff hired yet'**
+  String get casinoNoStaffHired;
 }
 
 class _AppLocalizationsDelegate

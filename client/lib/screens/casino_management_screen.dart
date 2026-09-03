@@ -27,6 +27,7 @@ class CasinoManagementScreen extends StatefulWidget {
 class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
   final ApiClient _apiClient = ApiClient();
   Map<String, dynamic>? _stats;
+  List<Map<String, dynamic>> _catalog = [];
   bool _isLoading = false;
 
   @override
@@ -34,7 +35,10 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
     super.initState();
     _stats = widget.initialStats;
     // Auto-refresh stats on init to ensure latest data
-    Future.delayed(Duration.zero, () => _refreshStats());
+    Future.delayed(Duration.zero, () {
+      _refreshStats();
+      _loadCatalog();
+    });
   }
 
   @override
@@ -60,6 +64,189 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
       }
     } catch (e) {
       print('[CasinoManagement] Error loading stats: $e');
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _loadCatalog() async {
+    try {
+      final response = await _apiClient.get('/casino/staff/catalog');
+      final data = jsonDecode(response.body);
+      if (data['event'] == 'casino.staff.catalog' && data['params']?['catalog'] is List) {
+        setState(() {
+          _catalog = (data['params']['catalog'] as List)
+              .whereType<Map>()
+              .map((item) => Map<String, dynamic>.from(item))
+              .toList();
+        });
+      }
+    } catch (e) {
+      print('[CasinoManagement] Catalog error: $e');
+    }
+  }
+
+  int _asInt(dynamic value) {
+    if (value is int) return value;
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  String _floorLabel(AppLocalizations l10n, int floorLevel) {
+    switch (floorLevel) {
+      case 2:
+        return l10n.casinoFloorVip;
+      case 3:
+        return l10n.casinoFloorPrivate;
+      default:
+        return l10n.casinoFloorPublic;
+    }
+  }
+
+  String _roleLabel(AppLocalizations l10n, String role) {
+    switch (role) {
+      case 'dealer':
+        return l10n.casinoStaffDealer;
+      case 'security':
+        return l10n.casinoStaffSecurity;
+      case 'promoter':
+        return l10n.casinoStaffPromoter;
+      default:
+        return role;
+    }
+  }
+
+  String _staffName(Map<String, dynamic> item) {
+    final isNl = Localizations.localeOf(context).languageCode == 'nl';
+    final name = isNl ? item['nameNl'] : item['nameEn'];
+    return (name ?? item['staffKey'] ?? '').toString();
+  }
+
+  Future<void> _upgradeFloor() async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      setState(() => _isLoading = true);
+      final response = await _apiClient.post(
+        '/casino/upgrade-floor/${widget.countryId}',
+        {},
+      );
+      final data = jsonDecode(response.body);
+      if (data['event'] == 'casino.floor.upgraded') {
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        await authProvider.refreshPlayer();
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(l10n.casinoUpgradeSuccess),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+        await _refreshStats();
+      } else {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(data['params']?['reason'] ?? l10n.casinoUpgradeFailed),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        setState(() => _isLoading = false);
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.casinoUpgradeFailed), backgroundColor: Colors.red),
+        );
+      }
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _hireStaff(int catalogId) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      setState(() => _isLoading = true);
+      final response = await _apiClient.post(
+        '/casino/staff/hire/${widget.countryId}',
+        {'catalogId': catalogId},
+      );
+      final data = jsonDecode(response.body);
+      if (data['event'] == 'casino.staff.hired') {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(l10n.casinoStaffHireSuccess),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+        await _refreshStats();
+      } else {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(data['params']?['reason'] ?? l10n.casinoStaffHireFailed),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        setState(() => _isLoading = false);
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.casinoStaffHireFailed), backgroundColor: Colors.red),
+        );
+      }
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _fireStaff(String role) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      setState(() => _isLoading = true);
+      final response = await _apiClient.post(
+        '/casino/staff/fire/${widget.countryId}',
+        {'role': role},
+      );
+      final data = jsonDecode(response.body);
+      if (data['event'] == 'casino.staff.fired') {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(l10n.casinoStaffFireSuccess),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+        await _refreshStats();
+      } else {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(data['params']?['reason'] ?? l10n.casinoStaffFireFailed),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        setState(() => _isLoading = false);
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.casinoStaffFireFailed), backgroundColor: Colors.red),
+        );
+      }
       setState(() => _isLoading = false);
     }
   }
@@ -259,6 +446,22 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
     final netProfit = _stats?['netProfit'] ?? 0;
     final profitMargin = _stats?['profitMargin'] ?? '0.00';
     final isBankrupt = _stats?['isBankrupt'] ?? false;
+    final floorLevel = _asInt(_stats?['floorLevel']);
+    final maxBet = _asInt(_stats?['maxBet']);
+    final rakeBps = _asInt(_stats?['rakeBps']);
+    final totalRake = _asInt(_stats?['totalRake']);
+    final nextFloorCost = _stats?['nextFloorCost'];
+    final raidDrainPct = _stats?['raidDrainPct']?.toString() ?? '18';
+    final raidDefensePct = _stats?['raidDefensePct']?.toString() ?? '0';
+    final lastRaidAt = _stats?['lastRaidAt']?.toString();
+    final hiredStaff = (_stats?['staff'] as List?)
+            ?.whereType<Map>()
+            .map((item) => Map<String, dynamic>.from(item))
+            .toList() ??
+        <Map<String, dynamic>>[];
+    final hiredByRole = {
+      for (final item in hiredStaff) item['role']?.toString() ?? '': item,
+    };
 
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
@@ -370,6 +573,7 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
                           SizedBox(height: 16),
                           _buildStatRow(l10n.casinoTotalReceived, totalReceived, Colors.blue),
                           _buildStatRow(l10n.casinoTotalPaidOut, totalPaidOut, Colors.orange),
+                          _buildStatRow(l10n.casinoTotalRake, totalRake, Colors.purple),
                           Divider(),
                           _buildStatRow(
                             l10n.casinoNetProfit,
@@ -385,6 +589,137 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
                               color: Colors.grey[700],
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 16),
+
+                  Card(
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.casinoUpgradeFloor,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.casinoHouseRulesLine(
+                              _floorLabel(l10n, floorLevel),
+                              maxBet.toString(),
+                              (rakeBps / 100).toStringAsFixed(1),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(l10n.casinoRaidDrain(raidDrainPct)),
+                          Text(l10n.casinoRaidDefense(raidDefensePct)),
+                          if (lastRaidAt != null && lastRaidAt.isNotEmpty)
+                            Text(l10n.casinoLastRaid(lastRaidAt)),
+                          if (nextFloorCost != null) ...[
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: _isLoading ? null : _upgradeFloor,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.purple[800],
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: Text(
+                                  l10n.casinoUpgradeFloorTo(
+                                    _floorLabel(l10n, floorLevel + 1),
+                                    _asInt(nextFloorCost).toString(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Card(
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.casinoStaffTitle,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 12),
+                          ...['dealer', 'security', 'promoter'].map((role) {
+                            final hired = hiredByRole[role];
+                            final options = _catalog
+                                .where((item) => item['role']?.toString() == role)
+                                .toList();
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey.shade300),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _roleLabel(l10n, role),
+                                      style: const TextStyle(fontWeight: FontWeight.w700),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    if (hired != null) ...[
+                                      Text(_staffName(hired)),
+                                      Text(
+                                        l10n.casinoStaffSalaryPerTick(
+                                          _asInt(hired['salaryPerTick']).toString(),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: TextButton(
+                                          onPressed: _isLoading ? null : () => _fireStaff(role),
+                                          child: Text(l10n.casinoStaffFire),
+                                        ),
+                                      ),
+                                    ] else if (options.isEmpty)
+                                      Text(l10n.casinoNoStaffHired)
+                                    else
+                                      ...options.map((option) {
+                                        return ListTile(
+                                          dense: true,
+                                          contentPadding: EdgeInsets.zero,
+                                          title: Text(_staffName(option)),
+                                          subtitle: Text(
+                                            l10n.casinoStaffSalaryPerTick(
+                                              _asInt(option['salaryPerTick']).toString(),
+                                            ),
+                                          ),
+                                          trailing: ElevatedButton(
+                                            onPressed: _isLoading
+                                                ? null
+                                                : () => _hireStaff(_asInt(option['id'])),
+                                            child: Text(l10n.casinoStaffHire),
+                                          ),
+                                        );
+                                      }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
                         ],
                       ),
                     ),

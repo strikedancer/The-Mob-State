@@ -2,6 +2,7 @@
 
 ## Scope
 Casino hub, minigames, betting flow and casino ownership or management data.
+House loop (Casino 2.0): one casino per country, floors (public/VIP/private), visible rake, one hire per staff role (dealer/security/promoter), salaries from bankroll on the game tick, and `casino_ledger_raid` bankroll drain in the run start country.
 
 ## Primary Frontend Entry
 - client/lib/screens/casino_screen.dart
@@ -22,6 +23,14 @@ Casino hub, minigames, betting flow and casino ownership or management data.
 - Which timers, locks, rank gates or country rules affect the flow?
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
+
+## House loop
+- Floors 1–3 set `maxBet` and base rake (`CASINO_FLOOR_MAX_BET_*`, `CASINO_RAKE_BPS_*`). Upgrade costs come from player cash (`CASINO_FLOOR_UPGRADE_2/3`).
+- Dealer raises rake and can trim payouts; promoter raises max bet and FBI heat; security lowers ledger-raid drain. Max one active hire per role.
+- Staff salary is paid from `CasinoOwnership.bankroll` on the existing game tick. Too low → fire cheapest hire and run the low-balance path.
+- Successful `casino_ledger_raid` drains `%` of bankroll in the run `startCountry` (starter `currentCountry` at start; starter country at resolve as fallback). Skip if the casino owner is in the raiding crew. Crew cash reward is unchanged.
+- Admin → Casino tab edits runtime keys. Do not flip Clearing House gate defaults here.
+- Bankruptcy must clear `Property.playerId` as well as the ownership row.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.

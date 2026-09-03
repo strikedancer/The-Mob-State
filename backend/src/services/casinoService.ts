@@ -83,6 +83,136 @@ async function ensureCasinoProperty(casinoId: string) {
   return casino;
 }
 
+export async function settleCasinoBet(params: {
+  playerId: number;
+  casinoId: string;
+  gameType: string;
+  betAmount: number;
+  payout: number;
+  result: unknown;
+  seed: string;
+  skipMinBetCheck?: boolean;
+}): Promise<{
+  newBalance: number;
+  casinoBankrupt: boolean;
+  ownerCut: number;
+  payout: number;
+  maxBet: number;
+  rakeBps: number;
+}> {
+  const { playerId, casinoId, gameType, betAmount, result, seed } = params;
+  const casino = await ensureCasinoProperty(casinoId);
+  if (!casino) {
+    throw new Error('CASINO_NOT_FOUND');
+  }
+  if (casino.propertyType !== 'casino') {
+    throw new Error('NOT_A_CASINO');
+  }
+
+  const ownership = await prisma.casinoOwnership.findUnique({
+    where: { casinoId },
+    select: { bankroll: true, ownerId: true },
+  });
+  if (!ownership) {
+    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
+  }
+
+  const house = await casinoOwnershipService.getHouseSnapshot(
+    casino.countryId || casinoId.replace(/^casino_/, ''),
+  );
+  const maxBet = house?.maxBet ?? 10000;
+  const rakeBps = house?.rakeBps ?? 200;
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { money: true, fbiHeat: true },
+  });
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+  if (player.money < betAmount) {
+    throw new Error('INSUFFICIENT_FUNDS');
+  }
+  if (!params.skipMinBetCheck && betAmount < 10) {
+    throw new Error('MIN_BET_10');
+  }
+  if (betAmount > maxBet) {
+    throw new AppError('MAX_BET', `Maximum bet is €${maxBet.toLocaleString()}`);
+  }
+
+  const payoutCutBps = house?.payoutCutBps ?? 0;
+  const payout =
+    params.payout > 0 && payoutCutBps > 0
+      ? Math.floor((params.payout * (10000 - payoutCutBps)) / 10000)
+      : params.payout;
+  const ownerCut = Math.max(0, Math.floor((betAmount * rakeBps) / 10000));
+
+  if (payout > 0 && ownership.bankroll < payout) {
+    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: { decrement: betAmount } },
+    });
+    await tx.casinoOwnership.update({
+      where: { casinoId },
+      data: {
+        bankroll: { increment: betAmount },
+        totalReceived: { increment: betAmount },
+      },
+    });
+    if (payout > 0) {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { increment: payout } },
+      });
+      await tx.casinoOwnership.update({
+        where: { casinoId },
+        data: {
+          bankroll: { decrement: payout },
+          totalPaidOut: { increment: payout },
+        },
+      });
+    }
+    await tx.casinoTransaction.create({
+      data: {
+        playerId,
+        casinoId,
+        ownerId: ownership.ownerId,
+        gameType,
+        betAmount,
+        payout,
+        ownerCut,
+        result: serializeCasinoResult(result),
+        rngSeed: seed,
+      },
+    });
+  });
+
+  if (house && house.fbiHeatOnBet > 0 && house.floorLevel >= 2) {
+    await prisma.$executeRawUnsafe(
+      `UPDATE players SET fbiHeat = LEAST(100, fbiHeat + ?) WHERE id = ?`,
+      Math.min(3, house.fbiHeatOnBet),
+      playerId,
+    );
+  }
+
+  const countryId = casino.countryId || casinoId.replace(/^casino_/, '');
+  const casinoBankrupt = await casinoOwnershipService.checkBankruptcy(countryId);
+  await casinoOwnershipService.checkLowBalance(countryId);
+
+  return {
+    newBalance: player.money - betAmount + payout,
+    casinoBankrupt,
+    ownerCut,
+    payout,
+    maxBet,
+    rakeBps,
+  };
+}
+
 /**
  * Play slot machine
  * @param playerId - Player ID
@@ -113,34 +243,6 @@ export async function playSlots(
     throw new Error('NOT_A_CASINO');
   }
 
-  // Get casino ownership and bankroll
-  const ownership = await prisma.casinoOwnership.findUnique({
-    where: { casinoId: casinoId },
-    select: { bankroll: true, ownerId: true },
-  });
-
-  if (!ownership) {
-    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
-  }
-
-  // Get player balance
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { money: true },
-  });
-
-  if (!player) {
-    throw new Error('PLAYER_NOT_FOUND');
-  }
-
-  if (player.money < betAmount) {
-    throw new Error('INSUFFICIENT_FUNDS');
-  }
-
-  if (betAmount < 10) {
-    throw new Error('MIN_BET_10');
-  }
-
   // Generate slot results (crypto-secure RNG)
   const reel1 = SLOT_SYMBOLS[secureRandom(SLOT_SYMBOLS.length)];
   const reel2 = SLOT_SYMBOLS[secureRandom(SLOT_SYMBOLS.length)];
@@ -149,73 +251,21 @@ export async function playSlots(
 
   // Check for win (all 3 symbols match)
   const won = reel1 === reel2 && reel2 === reel3;
-  const payout = won ? betAmount * SLOT_MULTIPLIERS[reel1] : 0;
+  const rawPayout = won ? betAmount * SLOT_MULTIPLIERS[reel1] : 0;
   const seed = generateSeed();
 
-  // Check if casino can cover potential payout
-  if (won && ownership.bankroll < payout) {
-    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
-  }
-
-  // Execute transaction
-  let casinoBankrupt = false;
-  await prisma.$transaction(async (tx) => {
-    // Deduct bet from player
-    await tx.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: betAmount } },
-    });
-
-    // Add bet to casino bankroll
-    await tx.casinoOwnership.update({
-      where: { casinoId: casinoId },
-      data: {
-        bankroll: { increment: betAmount },
-        totalReceived: { increment: betAmount },
-      },
-    });
-
-    // Pay out winnings if player won
-    if (won) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { money: { increment: payout } },
-      });
-
-      // Deduct payout from casino bankroll
-      await tx.casinoOwnership.update({
-        where: { casinoId: casinoId },
-        data: {
-          bankroll: { decrement: payout },
-          totalPaidOut: { increment: payout },
-        },
-      });
-    }
-
-    // Log transaction
-    await tx.casinoTransaction.create({
-      data: {
-        playerId,
-        casinoId,
-        ownerId: ownership.ownerId,
-        gameType: 'slots',
-        betAmount,
-        payout,
-        ownerCut: 0, // No longer used with bankroll system
-        result: serializeCasinoResult({ reels: result }),
-        rngSeed: seed,
-      },
-    });
+  const settled = await settleCasinoBet({
+    playerId,
+    casinoId,
+    gameType: 'slots',
+    betAmount,
+    payout: rawPayout,
+    result: { reels: result },
+    seed,
   });
-
-  // Check for bankruptcy
-  casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casino.countryId);
-
-  // Check for low balance and notify owner
-  await casinoOwnershipService.checkLowBalance(casino.countryId);
-
-  // Calculate new balance
-  const newBalance = player.money - betAmount + (won ? payout : 0);
+  const payout = settled.payout;
+  const casinoBankrupt = settled.casinoBankrupt;
+  const newBalance = settled.newBalance;
 
   // Broadcast world event for big wins (100x+ multiplier)
   if (won && SLOT_MULTIPLIERS[reel1] >= 100) {
@@ -443,81 +493,20 @@ async function finalizeBlackjack(
   newBalance: number;
   casinoBankrupt: boolean;
 }> {
-  const payout = result === 'win' ? betAmount * 2 : result === 'push' ? betAmount : 0;
+  const rawPayout = result === 'win' ? betAmount * 2 : result === 'push' ? betAmount : 0;
   const seed = generateSeed();
-
-  // Get casino ownership
-  const ownership = await prisma.casinoOwnership.findUnique({
-    where: { casinoId },
-    select: { ownerId: true, bankroll: true },
+  const settled = await settleCasinoBet({
+    playerId,
+    casinoId,
+    gameType: 'blackjack',
+    betAmount,
+    payout: rawPayout,
+    result: { playerHand, dealerHand, result },
+    seed,
   });
-
-  if (!ownership) {
-    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
-  }
-
-  // Check if casino can cover payout
-  if (payout > 0 && ownership.bankroll < payout) {
-    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
-  }
-
-  // Execute transaction
-  await prisma.$transaction(async (tx) => {
-    // Deduct bet from player
-    await tx.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: betAmount } },
-    });
-
-    // Add bet to casino bankroll
-    await tx.casinoOwnership.update({
-      where: { casinoId },
-      data: {
-        bankroll: { increment: betAmount },
-        totalReceived: { increment: betAmount },
-      },
-    });
-
-    // Pay out winnings if player won or push
-    if (payout > 0) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { money: { increment: payout } },
-      });
-
-      // Deduct payout from casino bankroll
-      await tx.casinoOwnership.update({
-        where: { casinoId },
-        data: {
-          bankroll: { decrement: payout },
-          totalPaidOut: { increment: payout },
-        },
-      });
-    }
-
-    // Log transaction
-    await tx.casinoTransaction.create({
-      data: {
-        playerId,
-        casinoId,
-        ownerId: ownership.ownerId,
-        gameType: 'blackjack',
-        betAmount,
-        payout,
-        ownerCut: 0,
-        result: serializeCasinoResult({ playerHand, dealerHand, result }),
-        rngSeed: seed,
-      },
-    });
-  });
-
-  // Check for bankruptcy
-  const casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casinoId);
-
-  // Check for low balance and notify owner
-  await casinoOwnershipService.checkLowBalance(casinoId);
-
-  const newBalance = playerMoney - betAmount + payout;
+  const payout = settled.payout;
+  const casinoBankrupt = settled.casinoBankrupt;
+  const newBalance = settled.newBalance;
   const profit = payout - betAmount;
 
   return {
@@ -593,17 +582,6 @@ export async function playRoulette(
     throw new Error('NOT_A_CASINO');
   }
 
-  // Get casino ownership
-  const ownership = await prisma.casinoOwnership.findUnique({
-    where: { casinoId: casinoId },
-    select: { bankroll: true, ownerId: true },
-  });
-
-  if (!ownership) {
-    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
-  }
-
-  // Get player
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true },
@@ -668,72 +646,20 @@ export async function playRoulette(
       break;
   }
 
-  const payout = won ? betAmount * (multiplier + 1) : 0;
+  const rawPayout = won ? betAmount * (multiplier + 1) : 0;
   const seed = generateSeed();
-
-  // Check if casino can cover payout
-  if (won && ownership.bankroll < payout) {
-    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
-  }
-
-  // Execute transaction
-  let casinoBankrupt = false;
-  await prisma.$transaction(async (tx) => {
-    // Deduct bet from player
-    await tx.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: betAmount } },
-    });
-
-    // Add bet to casino bankroll
-    await tx.casinoOwnership.update({
-      where: { casinoId: casinoId },
-      data: {
-        bankroll: { increment: betAmount },
-        totalReceived: { increment: betAmount },
-      },
-    });
-
-    // Add payout to player if won
-    if (won) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { money: { increment: payout } },
-      });
-
-      // Deduct payout from casino bankroll
-      await tx.casinoOwnership.update({
-        where: { casinoId: casinoId },
-        data: {
-          bankroll: { decrement: payout },
-          totalPaidOut: { increment: payout },
-        },
-      });
-    }
-
-    // Log transaction
-    await tx.casinoTransaction.create({
-      data: {
-        playerId,
-        casinoId,
-        ownerId: ownership.ownerId,
-        gameType: 'roulette',
-        betAmount,
-        payout,
-        ownerCut: 0,
-        result: serializeCasinoResult({ number, color, betType, betValue, won }),
-        rngSeed: seed,
-      },
-    });
+  const settled = await settleCasinoBet({
+    playerId,
+    casinoId,
+    gameType: 'roulette',
+    betAmount,
+    payout: rawPayout,
+    result: { number, color, betType, betValue, won },
+    seed,
   });
-
-  // Check for bankruptcy
-  casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casino.countryId);
-
-  // Check for low balance and notify owner
-  await casinoOwnershipService.checkLowBalance(casino.countryId);
-
-  const newBalance = player.money - betAmount + payout;
+  const payout = settled.payout;
+  const casinoBankrupt = settled.casinoBankrupt;
+  const newBalance = settled.newBalance;
   const profit = payout - betAmount;
 
   // Broadcast world event for straight number wins
@@ -791,17 +717,6 @@ export async function playDice(
     throw new Error('NOT_A_CASINO');
   }
 
-  // Get casino ownership
-  const ownership = await prisma.casinoOwnership.findUnique({
-    where: { casinoId: casinoId },
-    select: { bankroll: true, ownerId: true },
-  });
-
-  if (!ownership) {
-    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
-  }
-
-  // Get player
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true },
@@ -849,72 +764,20 @@ export async function playDice(
     console.log('[DICE DEBUG] LOST - no condition matched');
   }
 
-  const payout = won ? betAmount * (multiplier + 1) : 0;
+  const rawPayout = won ? betAmount * (multiplier + 1) : 0;
   const seed = generateSeed();
-
-  // Check if casino can cover payout
-  if (won && ownership.bankroll < payout) {
-    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
-  }
-
-  // Execute transaction
-  let casinoBankrupt = false;
-  await prisma.$transaction(async (tx) => {
-    // Deduct bet from player
-    await tx.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: betAmount } },
-    });
-
-    // Add bet to casino bankroll
-    await tx.casinoOwnership.update({
-      where: { casinoId: casinoId },
-      data: {
-        bankroll: { increment: betAmount },
-        totalReceived: { increment: betAmount },
-      },
-    });
-
-    // Pay out winnings if player won
-    if (won) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { money: { increment: payout } },
-      });
-
-      // Deduct payout from casino bankroll
-      await tx.casinoOwnership.update({
-        where: { casinoId: casinoId },
-        data: {
-          bankroll: { decrement: payout },
-          totalPaidOut: { increment: payout },
-        },
-      });
-    }
-
-    // Log transaction
-    await tx.casinoTransaction.create({
-      data: {
-        playerId,
-        casinoId,
-        ownerId: ownership.ownerId,
-        gameType: 'dice',
-        betAmount,
-        payout,
-        ownerCut: 0,
-        result: serializeCasinoResult({ dice1, dice2, total, prediction, won }),
-        rngSeed: seed,
-      },
-    });
+  const settled = await settleCasinoBet({
+    playerId,
+    casinoId,
+    gameType: 'dice',
+    betAmount,
+    payout: rawPayout,
+    result: { dice1, dice2, total, prediction, won },
+    seed,
   });
-
-  // Check for bankruptcy
-  casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casino.countryId);
-
-  // Check for low balance and notify owner
-  await casinoOwnershipService.checkLowBalance(casino.countryId);
-
-  const newBalance = player.money - betAmount + payout;
+  const payout = settled.payout;
+  const casinoBankrupt = settled.casinoBankrupt;
+  const newBalance = settled.newBalance;
   const profit = payout - betAmount;
 
   return {
@@ -994,14 +857,6 @@ export async function playBaccarat(
   if (!casino) throw new Error('CASINO_NOT_FOUND');
   if (casino.propertyType !== 'casino') throw new Error('NOT_A_CASINO');
 
-  const ownership = await prisma.casinoOwnership.findUnique({
-    where: { casinoId },
-    select: { bankroll: true, ownerId: true },
-  });
-  if (!ownership) {
-    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
-  }
-
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true },
@@ -1028,70 +883,28 @@ export async function playBaccarat(
 
   const winner = determineBaccaratWinner(playerTotal, bankerTotal);
   const won = winner === betType;
-  const payout = determineBaccaratPayout(won, betAmount, betType);
+  const rawPayout = determineBaccaratPayout(won, betAmount, betType);
   const seed = generateSeed();
-
-  if (won && ownership.bankroll < payout) {
-    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
-  }
-
-  let casinoBankrupt = false;
-  await prisma.$transaction(async (tx) => {
-    await tx.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: betAmount } },
-    });
-
-    await tx.casinoOwnership.update({
-      where: { casinoId },
-      data: {
-        bankroll: { increment: betAmount },
-        totalReceived: { increment: betAmount },
-      },
-    });
-
-    if (won) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { money: { increment: payout } },
-      });
-
-      await tx.casinoOwnership.update({
-        where: { casinoId },
-        data: {
-          bankroll: { decrement: payout },
-          totalPaidOut: { increment: payout },
-        },
-      });
-    }
-
-    await tx.casinoTransaction.create({
-      data: {
-        playerId,
-        casinoId,
-        ownerId: ownership.ownerId,
-        gameType: 'baccarat',
-        betAmount,
-        payout,
-        ownerCut: 0,
-        result: serializeCasinoResult({
-          playerCards,
-          bankerCards,
-          playerTotal,
-          bankerTotal,
-          winner,
-          betType,
-          won,
-        }),
-        rngSeed: seed,
-      },
-    });
+  const settled = await settleCasinoBet({
+    playerId,
+    casinoId,
+    gameType: 'baccarat',
+    betAmount,
+    payout: rawPayout,
+    result: {
+      playerCards,
+      bankerCards,
+      playerTotal,
+      bankerTotal,
+      winner,
+      betType,
+      won,
+    },
+    seed,
   });
-
-  casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casino.countryId);
-  await casinoOwnershipService.checkLowBalance(casino.countryId);
-
-  const newBalance = player.money - betAmount + payout;
+  const payout = settled.payout;
+  const casinoBankrupt = settled.casinoBankrupt;
+  const newBalance = settled.newBalance;
   const profit = payout - betAmount;
 
   return {
@@ -1230,14 +1043,6 @@ export async function playVideoPoker(
   if (!casino) throw new Error('CASINO_NOT_FOUND');
   if (casino.propertyType !== 'casino') throw new Error('NOT_A_CASINO');
 
-  const ownership = await prisma.casinoOwnership.findUnique({
-    where: { casinoId },
-    select: { bankroll: true, ownerId: true },
-  });
-  if (!ownership) {
-    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
-  }
-
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true },
@@ -1250,62 +1055,20 @@ export async function playVideoPoker(
   const handRank = evaluateVideoPokerHand(cards);
   const multiplier = videoPokerMultiplier(handRank);
   const won = multiplier > 0;
-  const payout = won ? betAmount * (multiplier + 1) : 0;
+  const rawPayout = won ? betAmount * (multiplier + 1) : 0;
   const seed = generateSeed();
-
-  if (won && ownership.bankroll < payout) {
-    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
-  }
-
-  let casinoBankrupt = false;
-  await prisma.$transaction(async (tx) => {
-    await tx.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: betAmount } },
-    });
-
-    await tx.casinoOwnership.update({
-      where: { casinoId },
-      data: {
-        bankroll: { increment: betAmount },
-        totalReceived: { increment: betAmount },
-      },
-    });
-
-    if (won) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { money: { increment: payout } },
-      });
-
-      await tx.casinoOwnership.update({
-        where: { casinoId },
-        data: {
-          bankroll: { decrement: payout },
-          totalPaidOut: { increment: payout },
-        },
-      });
-    }
-
-    await tx.casinoTransaction.create({
-      data: {
-        playerId,
-        casinoId,
-        ownerId: ownership.ownerId,
-        gameType: 'video_poker',
-        betAmount,
-        payout,
-        ownerCut: 0,
-        result: serializeCasinoResult({ cards, handRank, won }),
-        rngSeed: seed,
-      },
-    });
+  const settled = await settleCasinoBet({
+    playerId,
+    casinoId,
+    gameType: 'video_poker',
+    betAmount,
+    payout: rawPayout,
+    result: { cards, handRank, won },
+    seed,
   });
-
-  casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casino.countryId);
-  await casinoOwnershipService.checkLowBalance(casino.countryId);
-
-  const newBalance = player.money - betAmount + payout;
+  const payout = settled.payout;
+  const casinoBankrupt = settled.casinoBankrupt;
+  const newBalance = settled.newBalance;
   const profit = payout - betAmount;
 
   return {

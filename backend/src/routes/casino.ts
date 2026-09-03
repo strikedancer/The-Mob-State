@@ -4,6 +4,7 @@ import * as casinoService from '../services/casinoService';
 import * as casinoOwnershipService from '../services/casinoOwnershipService';
 import prisma from '../lib/prisma';
 import { AppError } from '../utils/errors';
+import { effectiveRaidDrainPct } from '../services/casinoHouseConfig';
 
 const router = Router();
 
@@ -11,7 +12,15 @@ const router = Router();
  * GET /casino/games
  * Get list of available casino games
  */
-router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
+router.get('/games', authenticate, async (req: AuthRequest, res: Response) => {
+  const player = await prisma.player.findUnique({
+    where: { id: req.player!.id },
+    select: { currentCountry: true },
+  });
+  const countryId = (player?.currentCountry || 'netherlands').toLowerCase();
+  const house = await casinoOwnershipService.getHouseSnapshot(countryId);
+  const houseMaxBet = house?.maxBet ?? 10000;
+
   const games = [
     {
       id: 'slots',
@@ -19,7 +28,7 @@ router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
       description: 'Draai de rollen en win tot 100x je inzet!',
       icon: '🎰',
       minBet: 10,
-      maxBet: 10000,
+      maxBet: houseMaxBet,
       difficulty: 'easy'
     },
     {
@@ -28,7 +37,7 @@ router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
       description: 'Versla de dealer en win tot 2x je inzet!',
       icon: '🃏',
       minBet: 10,
-      maxBet: 10000,
+      maxBet: houseMaxBet,
       difficulty: 'medium'
     },
     {
@@ -37,7 +46,7 @@ router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
       description: 'Kies je nummer en win tot 35x je inzet!',
       icon: '🎡',
       minBet: 10,
-      maxBet: 10000,
+      maxBet: houseMaxBet,
       difficulty: 'medium'
     },
     {
@@ -46,7 +55,7 @@ router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
       description: 'Gooi de dobbelstenen en win tot 6x je inzet!',
       icon: '🎲',
       minBet: 10,
-      maxBet: 5000,
+      maxBet: houseMaxBet,
       difficulty: 'easy'
     },
     {
@@ -55,7 +64,7 @@ router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
       description: 'Zet in op speler, bankier of gelijkspel.',
       icon: '🃁',
       minBet: 10,
-      maxBet: 10000,
+      maxBet: houseMaxBet,
       difficulty: 'medium'
     },
     {
@@ -64,14 +73,23 @@ router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
       description: 'Trek 5 kaarten en scoor een sterke pokerhand.',
       icon: '🃍',
       minBet: 10,
-      maxBet: 10000,
+      maxBet: houseMaxBet,
       difficulty: 'medium'
     }
   ];
   
   res.json({
     event: 'casino.games.list',
-    params: { games }
+    params: {
+      games,
+      house: house
+        ? {
+            floorLevel: house.floorLevel,
+            maxBet: house.maxBet,
+            rakeBps: house.rakeBps,
+          }
+        : null,
+    }
   });
 });
 
@@ -124,7 +142,7 @@ router.post('/slots/spin', authenticate, async (req: AuthRequest, res: Response)
     if (error instanceof AppError) {
       return res.status(400).json({
         event: 'casino.error',
-        params: { reason: error.message },
+        params: { reason: error.code, message: error.message, code: error.code },
       });
     }
 
@@ -231,7 +249,7 @@ router.post('/blackjack/play', authenticate, async (req: AuthRequest, res: Respo
     if (error instanceof AppError) {
       return res.status(400).json({
         event: 'casino.error',
-        params: { reason: error.message },
+        params: { reason: error.code, message: error.message, code: error.code },
       });
     }
     console.error('Casino blackjack error:', error);
@@ -312,7 +330,7 @@ router.post('/roulette/spin', authenticate, async (req: AuthRequest, res: Respon
     if (error instanceof AppError) {
       return res.status(400).json({
         event: 'casino.error',
-        params: { reason: error.message },
+        params: { reason: error.code, message: error.message, code: error.code },
       });
     }
     console.error('Casino roulette error:', error);
@@ -368,7 +386,7 @@ router.post('/:casinoId/dice', authenticate, async (req: AuthRequest, res: Respo
     if (error instanceof AppError) {
       return res.status(400).json({
         event: 'casino.error',
-        params: { reason: error.message },
+        params: { reason: error.code, message: error.message, code: error.code },
       });
     }
     
@@ -477,7 +495,7 @@ router.post('/dice/roll', authenticate, async (req: AuthRequest, res: Response) 
     if (error instanceof AppError) {
       return res.status(400).json({
         event: 'casino.error',
-        params: { reason: error.message },
+        params: { reason: error.code, message: error.message, code: error.code },
       });
     }
     
@@ -575,7 +593,7 @@ router.post('/baccarat/play', authenticate, async (req: AuthRequest, res: Respon
     if (error instanceof AppError) {
       return res.status(400).json({
         event: 'casino.error',
-        params: { reason: error.message },
+        params: { reason: error.code, message: error.message, code: error.code },
       });
     }
 
@@ -657,7 +675,7 @@ router.post('/video-poker/play', authenticate, async (req: AuthRequest, res: Res
     if (error instanceof AppError) {
       return res.status(400).json({
         event: 'casino.error',
-        params: { reason: error.message },
+        params: { reason: error.code, message: error.message, code: error.code },
       });
     }
 
@@ -993,6 +1011,10 @@ router.get('/ownership/:countryId', authenticate, async (req: AuthRequest, res: 
     const ownership = await casinoOwnershipService.getOwnershipByCountry(countryId);
     const price = casinoOwnershipService.getCasinoPrice(countryId);
 
+    const house = ownership
+      ? await casinoOwnershipService.getHouseSnapshot(countryId)
+      : null;
+
     return res.status(200).json({
       event: 'casino.ownership.info',
       params: {
@@ -1004,7 +1026,16 @@ router.get('/ownership/:countryId', authenticate, async (req: AuthRequest, res: 
           rank: ownership.owner.rank
         } : null,
         purchasePrice: ownership?.purchasePrice || price,
-        price
+        price,
+        house: house
+          ? {
+              floorLevel: house.floorLevel,
+              maxBet: house.maxBet,
+              rakeBps: house.rakeBps,
+              raidDrainPct: Number(effectiveRaidDrainPct(house).toFixed(1)),
+              raidDefenseBps: house.raidDefenseBps,
+            }
+          : null,
       }
     });
   } catch (error) {
@@ -1252,6 +1283,93 @@ router.post('/withdraw/:countryId', authenticate, async (req: AuthRequest, res: 
       event: 'error.internal',
       params: {}
     });
+  }
+});
+
+router.post('/upgrade-floor/:countryId', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const countryId = String(req.params.countryId);
+    const stats = await casinoOwnershipService.upgradeCasinoFloor(req.player!.id, countryId);
+    return res.status(200).json({
+      event: 'casino.floor.upgraded',
+      params: stats,
+    });
+  } catch (error) {
+    if (error instanceof AppError) {
+      return res.status(400).json({
+        event: 'casino.floor.upgrade.failed',
+        params: { reason: error.message, code: error.code },
+      });
+    }
+    console.error('Casino floor upgrade error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
+router.get('/staff/catalog', authenticate, async (_req: AuthRequest, res: Response) => {
+  try {
+    const catalog = await casinoOwnershipService.listStaffCatalog();
+    return res.status(200).json({
+      event: 'casino.staff.catalog',
+      params: { catalog },
+    });
+  } catch (error) {
+    console.error('Casino staff catalog error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
+router.post('/staff/hire/:countryId', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const countryId = String(req.params.countryId);
+    const catalogId = Number(req.body?.catalogId);
+    if (!Number.isFinite(catalogId) || catalogId <= 0) {
+      return res.status(400).json({
+        event: 'casino.staff.hire.failed',
+        params: { reason: 'catalogId is required', code: 'INVALID_CATALOG' },
+      });
+    }
+    const stats = await casinoOwnershipService.hireStaff(req.player!.id, countryId, catalogId);
+    return res.status(200).json({
+      event: 'casino.staff.hired',
+      params: stats,
+    });
+  } catch (error) {
+    if (error instanceof AppError) {
+      return res.status(400).json({
+        event: 'casino.staff.hire.failed',
+        params: { reason: error.message, code: error.code },
+      });
+    }
+    console.error('Casino staff hire error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
+router.post('/staff/fire/:countryId', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const countryId = String(req.params.countryId);
+    const role = String(req.body?.role || '').toLowerCase();
+    if (role !== 'dealer' && role !== 'security' && role !== 'promoter') {
+      return res.status(400).json({
+        event: 'casino.staff.fire.failed',
+        params: { reason: 'Invalid staff role', code: 'INVALID_ROLE' },
+      });
+    }
+    const stats = await casinoOwnershipService.fireStaff(req.player!.id, countryId, role);
+    return res.status(200).json({
+      event: 'casino.staff.fired',
+      params: stats,
+    });
+  } catch (error) {
+    if (error instanceof AppError) {
+      return res.status(400).json({
+        event: 'casino.staff.fire.failed',
+        params: { reason: error.message, code: error.code },
+      });
+    }
+    console.error('Casino staff fire error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
   }
 });
 

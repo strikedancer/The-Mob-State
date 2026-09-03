@@ -5418,13 +5418,17 @@
   "crimeResultVehicleConditionLoss": "Vehicle condition −{percent}%",
   "@crimeResultVehicleConditionLoss": {
     "placeholders": {
-      "percent": { "type": "int" }
+      "percent": {
+        "type": "int"
+      }
     }
   },
   "crimeResultVehicleFuelUsed": "Fuel used −{percent}%",
   "@crimeResultVehicleFuelUsed": {
     "placeholders": {
-      "percent": { "type": "int" }
+      "percent": {
+        "type": "int"
+      }
     }
   },
   "crewHeistsTitle": "Crew heists",
@@ -5434,9 +5438,15 @@
   "crewHeistsVehicleLine": "{name} · {condition}% condition · {fuel}% fuel",
   "@crewHeistsVehicleLine": {
     "placeholders": {
-      "name": { "type": "String" },
-      "condition": { "type": "int" },
-      "fuel": { "type": "int" }
+      "name": {
+        "type": "String"
+      },
+      "condition": {
+        "type": "int"
+      },
+      "fuel": {
+        "type": "int"
+      }
     }
   },
   "crewHeistsStart": "Start heist",
@@ -5444,14 +5454,20 @@
   "crewHeistsMembersRequired": "{current}/{required} members",
   "@crewHeistsMembersRequired": {
     "placeholders": {
-      "current": { "type": "int" },
-      "required": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
     }
   },
   "crewHeistsSuccessRate": "{rate}% success chance",
   "@crewHeistsSuccessRate": {
     "placeholders": {
-      "rate": { "type": "int" }
+      "rate": {
+        "type": "int"
+      }
     }
   },
   "crewHeistsEmpty": "No heists available for your crew level yet.",
@@ -7853,9 +7869,15 @@
   "evStreamDrugsProductionReady": "{quantity}g {drugName} ({quality}) is ready to collect",
   "@evStreamDrugsProductionReady": {
     "placeholders": {
-      "quantity": { "type": "String" },
-      "drugName": { "type": "String" },
-      "quality": { "type": "String" }
+      "quantity": {
+        "type": "String"
+      },
+      "drugName": {
+        "type": "String"
+      },
+      "quality": {
+        "type": "String"
+      }
     }
   },
   "@evStreamDrugsProductionCollected": {
@@ -9683,9 +9705,9 @@
   "helpTopicBankTips": "Use the free daily deposit for small working cash so it is safe from confiscation.\nLaunder larger street cash when you accept the fee and seize risk; lower heat is safer.\nKeep a small working capital as cash for direct expenses (bail, travel, tools).",
   "helpTopicCasinoCategory": "Economy",
   "helpTopicCasinoTitle": "Casino",
-  "helpTopicCasinoSummary": "Gamble with cash on slots, blackjack, roulette, dice, baccarat and video poker. High variance: you can win or lose large amounts fast.",
-  "helpTopicCasinoHow": "Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.",
-  "helpTopicCasinoTips": "Always set a session bankroll limit: never more than 10% of total cash per session.\nBlackjack has the best odds for a skilled player. Learn basic strategy before betting large.\nTreat casino as entertainment, not income: the house edge ensures long-term loss.",
+  "helpTopicCasinoSummary": "Bet cash on slots, blackjack, roulette, dice, baccarat and video poker. The house has three floors (public/VIP/private) with a visible rake and a max bet. High variance: you can win or lose a lot quickly.",
+  "helpTopicCasinoHow": "Available games: Slots, Blackjack, Roulette, Dice, Baccarat and Video Poker.\nEach table uses the casino floor max bet and a visible rake that stays in the owner bankroll.\nPublic / VIP / Private floors raise max bets and house rake. Owners hire one dealer, one security and one promoter. Dealer slightly raises rake and can trim payouts; promoter raises max bet and heat; security lowers casino_ledger_raid drain.\nStaff salaries come from the bankroll on each game tick. If the bankroll is too low, the cheapest hire is fired.\nA successful crew casino_ledger_raid drains a percentage of the bankroll in the run start country. The crew still gets its normal cash reward; this is extra pressure on the house, not a second cash print.\nCasino uses cash only, not your bank balance. Lost bets are gone; there is no insurance.",
+  "helpTopicCasinoTips": "Set a session cash limit: never more than 10% of your total cash.\nBlackjack has the best odds for a skilled player.\nOwners: keep the bankroll above €10,000 and hire security before rival crews unlock ledger raids.\nTreat the casino as entertainment — the house edge wins over time.",
   "helpTopicBlackMarketCategory": "Economy",
   "helpTopicBlackMarketTitle": "Black Market",
   "helpTopicBlackMarketSummary": "One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles and carried tools, plus backpacks, materials, weapons market and ammo.",
@@ -10433,13 +10455,17 @@
   "drugsFacBuyFor": "Buy for {price}",
   "@drugsFacBuyFor": {
     "placeholders": {
-      "price": { "type": "String" }
+      "price": {
+        "type": "String"
+      }
     }
   },
   "drugsFacRankLocked": "You need rank {rank} for this facility.",
   "@drugsFacRankLocked": {
     "placeholders": {
-      "rank": { "type": "String" }
+      "rank": {
+        "type": "String"
+      }
     }
   },
   "drugsFacRankLockedShort": "Rank too low",
@@ -10452,14 +10478,18 @@
   "drugsHeatRaidHint": "On collect there is a {percent}% chance of a raid (you choose before loot).",
   "@drugsHeatRaidHint": {
     "placeholders": {
-      "percent": { "type": "String" }
+      "percent": {
+        "type": "String"
+      }
     }
   },
   "drugsHeatLowProfile": "Low profile",
   "drugsHeatCashCool": "Cool for {cost}",
   "@drugsHeatCashCool": {
     "placeholders": {
-      "cost": { "type": "String" }
+      "cost": {
+        "type": "String"
+      }
     }
   },
   "drugsHeatCoolDone": "Heat cooled",
@@ -10470,9 +10500,15 @@
   "drugsRaidBody": "Choose: lose {loss}% of this batch, {hours} hours of facility downtime, or a cash fine of €{fine}.",
   "@drugsRaidBody": {
     "placeholders": {
-      "loss": { "type": "String" },
-      "hours": { "type": "String" },
-      "fine": { "type": "String" }
+      "loss": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "fine": {
+        "type": "String"
+      }
     }
   },
   "drugsRaidLose": "Lose stock",
@@ -10483,18 +10519,107 @@
   "drugsBestCountryHint": "Best price: {country} ({pct}%)",
   "@drugsBestCountryHint": {
     "placeholders": {
-      "country": { "type": "String" },
-      "pct": { "type": "String" }
+      "country": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
     }
   },
   "drugsNightclubBonusHint": "Nightclub margin {pct}%",
   "@drugsNightclubBonusHint": {
     "placeholders": {
-      "pct": { "type": "String" }
+      "pct": {
+        "type": "String"
+      }
     }
   },
   "drugsCrewDepositAction": "To crew storage",
   "drugsCrewDepositDone": "Moved to crew storage",
   "drugsCrewDepositFailed": "Crew deposit failed",
-  "drugsCutAllOneGrade": "Cut all one grade down"
+  "drugsCutAllOneGrade": "Cut all one grade down",
+  "casinoErrMaxBet": "Maximum bet is €{amount}",
+  "casinoFloorPublic": "Public",
+  "casinoFloorVip": "VIP",
+  "casinoFloorPrivate": "Private",
+  "casinoHouseRulesLine": "{floor} · max bet €{maxBet} · rake {rake}%",
+  "casinoUpgradeFloor": "Upgrade floor",
+  "casinoUpgradeFloorTo": "Upgrade to {floor} (€{cost})",
+  "casinoUpgradeSuccess": "Floor upgraded",
+  "casinoUpgradeFailed": "Upgrade failed",
+  "casinoStaffTitle": "Staff",
+  "casinoStaffHire": "Hire",
+  "casinoStaffFire": "Fire",
+  "casinoStaffDealer": "Dealer",
+  "casinoStaffSecurity": "Security",
+  "casinoStaffPromoter": "Promoter",
+  "casinoStaffSalaryPerTick": "Salary €{amount}/tick",
+  "casinoStaffHireSuccess": "Staff hired",
+  "casinoStaffFireSuccess": "Staff fired",
+  "casinoStaffHireFailed": "Hire failed",
+  "casinoStaffFireFailed": "Fire failed",
+  "casinoTotalRake": "Total rake:",
+  "casinoLastRaid": "Last raid: {when}",
+  "casinoRaidDrain": "Raid drain {percent}%",
+  "casinoRaidDefense": "Raid defense {percent}%",
+  "casinoNoStaffHired": "No staff hired yet",
+  "@casinoErrMaxBet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoHouseRulesLine": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "maxBet": {
+        "type": "String"
+      },
+      "rake": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoUpgradeFloorTo": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoStaffSalaryPerTick": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoLastRaid": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDrain": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDefense": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  }
 }

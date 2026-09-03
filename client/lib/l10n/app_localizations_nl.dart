@@ -15332,15 +15332,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCasinoSummary =>
-      'Gok met contant geld op slots, blackjack, roulette, dice, baccarat en video poker. Hoge variantie: je kunt snel veel winnen of verliezen.';
+      'Gok met contant geld op slots, blackjack, roulette, dice, baccarat en video poker. Het huis heeft drie verdiepingen (public/VIP/private) met zichtbare rake en max-inzet. Hoge variantie: je kunt snel veel winnen of verliezen.';
 
   @override
   String get helpTopicCasinoHow =>
-      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).\nElke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).\nCasino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.\nEr is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.\nGrote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.\nVerloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.';
+      'Beschikbare spellen: Slots, Blackjack, Roulette, Dice, Baccarat en Video Poker.\nElke tafel gebruikt de max-inzet van de verdieping en een zichtbare rake die in de owner-bankroll blijft.\nPublic / VIP / Private verhogen max-inzet en house-rake. Eigenaren huren max één dealer, één security en één promoter. Dealer verhoogt rake licht en kan uitbetalingen korten; promoter verhoogt max-inzet en heat; security verlaagt casino_ledger_raid-drain.\nSalaris gaat van de bankroll op elke game-tick. Te laag: de goedkoopste hire vliegt eruit.\nEen geslaagde crew casino_ledger_raid haalt een percentage van de bankroll in het startland van de run. De crew-cash reward blijft; dit is extra druk op het huis, geen tweede cash-print.\nCasino gebruikt alleen contant geld, niet je banksaldo. Verloren inzetten zijn weg; er is geen verzekering.';
 
   @override
   String get helpTopicCasinoTips =>
-      'Stel altijd een maximale sessie-bankroll in: nooit meer dan 10% van je totale cash per sessie.\nBlackjack heeft de beste kansen voor een vaardige speler. Leer basis-strategie voor je grote bedragen inzet.\nZie casino als entertainment, niet als inkomstenbron: de house edge zorgt op lange termijn voor verlies.';
+      'Stel altijd een sessie-limiet in: nooit meer dan 10% van je totale cash.\nBlackjack heeft de beste kansen voor een vaardige speler.\nEigenaren: houd de bankroll boven €10.000 en huur security voordat rivalen ledger-raids unlocken.\nZie casino als entertainment — de house edge wint op termijn.';
 
   @override
   String get helpTopicBlackMarketCategory => 'Economie';
@@ -16901,4 +16901,93 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get drugsCutAllOneGrade => 'Alles één grade omlaag';
+
+  @override
+  String casinoErrMaxBet(String amount) {
+    return 'Maximum inzet is €$amount';
+  }
+
+  @override
+  String get casinoFloorPublic => 'Public';
+
+  @override
+  String get casinoFloorVip => 'VIP';
+
+  @override
+  String get casinoFloorPrivate => 'Private';
+
+  @override
+  String casinoHouseRulesLine(String floor, String maxBet, String rake) {
+    return '$floor · max. inzet €$maxBet · rake $rake%';
+  }
+
+  @override
+  String get casinoUpgradeFloor => 'Upgrade verdieping';
+
+  @override
+  String casinoUpgradeFloorTo(String floor, String cost) {
+    return 'Upgrade naar $floor (€$cost)';
+  }
+
+  @override
+  String get casinoUpgradeSuccess => 'Verdieping geüpgraded';
+
+  @override
+  String get casinoUpgradeFailed => 'Upgrade mislukt';
+
+  @override
+  String get casinoStaffTitle => 'Personeel';
+
+  @override
+  String get casinoStaffHire => 'Inhuren';
+
+  @override
+  String get casinoStaffFire => 'Ontslaan';
+
+  @override
+  String get casinoStaffDealer => 'Dealer';
+
+  @override
+  String get casinoStaffSecurity => 'Security';
+
+  @override
+  String get casinoStaffPromoter => 'Promoter';
+
+  @override
+  String casinoStaffSalaryPerTick(String amount) {
+    return 'Salaris €$amount/tick';
+  }
+
+  @override
+  String get casinoStaffHireSuccess => 'Personeel aangenomen';
+
+  @override
+  String get casinoStaffFireSuccess => 'Personeel ontslagen';
+
+  @override
+  String get casinoStaffHireFailed => 'Inhuren mislukt';
+
+  @override
+  String get casinoStaffFireFailed => 'Ontslaan mislukt';
+
+  @override
+  String get casinoTotalRake => 'Totaal rake:';
+
+  @override
+  String casinoLastRaid(String when) {
+    return 'Laatste raid: $when';
+  }
+
+  @override
+  String casinoRaidDrain(String percent) {
+    return 'Raid-drain $percent%';
+  }
+
+  @override
+  String casinoRaidDefense(String percent) {
+    return 'Raid-verdediging $percent%';
+  }
+
+  @override
+  String get casinoNoStaffHired => 'Nog niemand aangenomen';
 }

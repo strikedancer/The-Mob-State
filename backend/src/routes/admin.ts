@@ -38,6 +38,7 @@ import {
   COUNTRY_POLICE_RUNTIME_SETTING_KEYS,
   invalidateCountryPoliceConfigCache,
 } from '../services/countryPoliceService';
+import * as casinoOwnershipService from '../services/casinoOwnershipService';
 import { deletePortrait, listPortraits } from '../services/playerPortraitService';
 import { grantPlayerVipDays } from '../services/vipBenefitsService';
 import {
@@ -1439,6 +1440,42 @@ router.get('/crew-missions/runtime-config', async (_req, res) => {
   } catch (error) {
     console.error('Admin crew missions runtime config error:', error);
     return res.status(500).json({ error: 'Failed to fetch crew mission runtime config' });
+  }
+});
+
+router.get('/casino/runtime-config', async (_req, res) => {
+  try {
+    const config = await casinoOwnershipService.getRuntimeConfigView();
+    return res.json(config);
+  } catch (error) {
+    console.error('Admin casino runtime config error:', error);
+    return res.status(500).json({ error: 'Failed to fetch casino runtime config' });
+  }
+});
+
+router.put('/casino/runtime-config', async (req, res) => {
+  try {
+    const parsed = z
+      .object({
+        updates: z.record(z.union([z.string(), z.number()])),
+      })
+      .parse(req.body ?? {});
+    const updated = await casinoOwnershipService.updateRuntimeConfig(parsed.updates);
+    return res.json(updated);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation failed', details: error.flatten() });
+    }
+    if (error instanceof Error && error.message.startsWith('INVALID_RUNTIME_KEY:')) {
+      return res.status(400).json({ error: 'Invalid runtime key', details: error.message });
+    }
+    if (error instanceof Error && error.message.startsWith('RUNTIME_VALUE_NOT_NUMERIC:')) {
+      return res
+        .status(400)
+        .json({ error: 'Runtime value must be numeric', details: error.message });
+    }
+    console.error('Admin casino runtime config update error:', error);
+    return res.status(500).json({ error: 'Failed to update casino runtime config' });
   }
 });
 

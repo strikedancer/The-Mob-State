@@ -8163,9 +8163,9 @@
   "helpTopicBankTips": "Skorzystaj z bezpłatnego depozytu dziennego na niewielką gotówkę roboczą, aby była zabezpieczona przed konfiskatą.\nPraj większą gotówkę uliczną, gdy zaakceptujesz opłatę i przejmiesz ryzyko; niższa temperatura jest bezpieczniejsza.\nZachowaj niewielki kapitał obrotowy w postaci gotówki na bezpośrednie wydatki (kaucja, podróże, narzędzia).",
   "helpTopicCasinoCategory": "Gospodarka",
   "helpTopicCasinoTitle": "Kasyno",
-  "helpTopicCasinoSummary": "Graj za gotówkę na automatach, blackjacku, ruletce, kościach, bakaracie i pokerze wideo. Wysoka wariancja: możesz szybko wygrać lub przegrać duże kwoty.",
-  "helpTopicCasinoHow": "Dostępne gry: Automaty (niska stawka, losowa wypłata), Blackjack (liczy się strategia), Ruletka (zakłady zewnętrzne/wewnętrzne z własnymi kursami), Kości (wysoka wariancja), Bakarat (gracz/bankier/remis), Video Poker (wypłaty 5-kartowe według kolejności rąk). \nKażda gra ma minimalny zakład. Współczynniki wypłat różnią się w zależności od rodzaju gry (np. ruletka poza zakładem ~1,97x, pojedynczy numer 35x). \nKasyno używa wyłącznie gotówki, a nie salda bankowego. Zanim zaczniesz grać, upewnij się, że masz gotówkę. \nPomiędzy rundami nie ma czasu odnowienia: możesz grać tak szybko, jak chcesz. \nDuże wygrane powyżej progu mogą wywołać wydarzenie widoczne dla innych graczy. \nPrzegrane zakłady znikają na zawsze; nie ma ubezpieczenia ani wykupu.",
-  "helpTopicCasinoTips": "Zawsze ustalaj limit bankrolla sesji: nigdy nie więcej niż 10% całkowitej gotówki na sesję. \nBlackjack ma najlepsze szanse dla doświadczonego gracza. Naucz się podstawowej strategii, zanim obstawisz duże zakłady. \nTraktuj kasyno jako rozrywkę, a nie dochód: przewaga kasyna zapewnia długoterminową stratę.",
+  "helpTopicCasinoSummary": "Stawiaj gotówkę na automatach, blackjacku, ruletce, kościach, bakaracie i pokerze wideo. Dom ma trzy piętra (public/VIP/private) z widocznym rake i max zakładem. Wysoka wariancja.",
+  "helpTopicCasinoHow": "Gry: automaty, blackjack, ruletka, kości, bakarat i poker wideo.\nKażdy stół używa max zakładu piętra i widocznego rake, który zostaje w bankrollu właściciela.\nPublic / VIP / Private podnoszą max zakład i rake. Właściciel zatrudnia jednego krupiera, ochronę i promotora. Krupier lekko podnosi rake; promotor podnosi max zakład i heat; ochrona zmniejsza drenaż casino_ledger_raid.\nPensje idą z bankrollu co tick. Za mało: najtańszy etat wypada.\nUdany casino_ledger_raid drenuje % bankrollu w kraju startu. Nagroda gotówkowa załogi zostaje; to dodatkowa presja, nie drugi print.\nTylko gotówka. Przegrane zakłady znikają.",
+  "helpTopicCasinoTips": "Ustaw limit sesji: nigdy więcej niż 10% gotówki.\nBlackjack ma najlepsze szanse dla wprawnego gracza.\nWłaściciele: trzymaj powyżej 10 000 € i zatrudnij ochronę przed ledger raidami.\nKasyno to rozrywka — house edge wygrywa.",
   "helpTopicBlackMarketCategory": "Gospodarka",
   "helpTopicBlackMarketTitle": "Czarny rynek",
   "helpTopicBlackMarketSummary": "Jedno centrum: najpierw towary przemytnicze (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie zakładka Rynek z pojazdami między graczami, przewożonymi narzędziami, partiami narkotyków, partiami kryptowalut, stosami towarów handlowych i zbywalnymi przedmiotami wydarzeń, a także plecakami, materiałami, rynkiem broni i amunicją.",
@@ -10536,6 +10536,89 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "casinoErrMaxBet": "Maksymalny zakład to €{amount}",
+  "casinoFloorPublic": "Public",
+  "casinoFloorVip": "VIP",
+  "casinoFloorPrivate": "Private",
+  "casinoHouseRulesLine": "{floor} · max zakład €{maxBet} · rake {rake}%",
+  "casinoUpgradeFloor": "Ulepsz piętro",
+  "casinoUpgradeFloorTo": "Ulepsz do {floor} (€{cost})",
+  "casinoUpgradeSuccess": "Piętro ulepszone",
+  "casinoUpgradeFailed": "Ulepszenie nieudane",
+  "casinoStaffTitle": "Personel",
+  "casinoStaffHire": "Zatrudnij",
+  "casinoStaffFire": "Zwolnij",
+  "casinoStaffDealer": "Krupier",
+  "casinoStaffSecurity": "Ochrona",
+  "casinoStaffPromoter": "Promotor",
+  "casinoStaffSalaryPerTick": "Pensja €{amount}/tick",
+  "casinoStaffHireSuccess": "Personel zatrudniony",
+  "casinoStaffFireSuccess": "Personel zwolniony",
+  "casinoStaffHireFailed": "Zatrudnienie nieudane",
+  "casinoStaffFireFailed": "Zwolnienie nieudane",
+  "casinoTotalRake": "Łączny rake:",
+  "casinoLastRaid": "Ostatni nalot: {when}",
+  "casinoRaidDrain": "Drenaż nalotu {percent}%",
+  "casinoRaidDefense": "Obrona przed nalotem {percent}%",
+  "casinoNoStaffHired": "Brak personelu",
+  "@casinoErrMaxBet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoHouseRulesLine": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "maxBet": {
+        "type": "String"
+      },
+      "rake": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoUpgradeFloorTo": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoStaffSalaryPerTick": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoLastRaid": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDrain": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDefense": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
       }
     }
   }

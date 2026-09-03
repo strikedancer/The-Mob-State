@@ -179,6 +179,18 @@ class TickService {
       await nightclubService.processAutomagicSales();
       console.log('🏪 Nightclub auto-sales processed');
 
+      try {
+        const casinoOwnershipService = await import('./casinoOwnershipService');
+        const staffPay = await casinoOwnershipService.payCasinoStaffSalaries();
+        if (staffPay.paid > 0 || staffPay.fired > 0) {
+          console.log(
+            `🎰 Casino staff salaries: paid €${staffPay.paid.toLocaleString()}, fired ${staffPay.fired}`,
+          );
+        }
+      } catch (casinoStaffErr) {
+        console.error('[Tick] Casino staff salaries failed:', casinoStaffErr);
+      }
+
       const seasonResult = await nightclubService.processWeeklySeasonIfNeeded();
       if (seasonResult.processed) {
         console.log(

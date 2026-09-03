@@ -15419,15 +15419,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicCasinoSummary =>
-      'Graj za gotówkę na automatach, blackjacku, ruletce, kościach, bakaracie i pokerze wideo. Wysoka wariancja: możesz szybko wygrać lub przegrać duże kwoty.';
+      'Stawiaj gotówkę na automatach, blackjacku, ruletce, kościach, bakaracie i pokerze wideo. Dom ma trzy piętra (public/VIP/private) z widocznym rake i max zakładem. Wysoka wariancja.';
 
   @override
   String get helpTopicCasinoHow =>
-      'Dostępne gry: Automaty (niska stawka, losowa wypłata), Blackjack (liczy się strategia), Ruletka (zakłady zewnętrzne/wewnętrzne z własnymi kursami), Kości (wysoka wariancja), Bakarat (gracz/bankier/remis), Video Poker (wypłaty 5-kartowe według kolejności rąk). \nKażda gra ma minimalny zakład. Współczynniki wypłat różnią się w zależności od rodzaju gry (np. ruletka poza zakładem ~1,97x, pojedynczy numer 35x). \nKasyno używa wyłącznie gotówki, a nie salda bankowego. Zanim zaczniesz grać, upewnij się, że masz gotówkę. \nPomiędzy rundami nie ma czasu odnowienia: możesz grać tak szybko, jak chcesz. \nDuże wygrane powyżej progu mogą wywołać wydarzenie widoczne dla innych graczy. \nPrzegrane zakłady znikają na zawsze; nie ma ubezpieczenia ani wykupu.';
+      'Gry: automaty, blackjack, ruletka, kości, bakarat i poker wideo.\nKażdy stół używa max zakładu piętra i widocznego rake, który zostaje w bankrollu właściciela.\nPublic / VIP / Private podnoszą max zakład i rake. Właściciel zatrudnia jednego krupiera, ochronę i promotora. Krupier lekko podnosi rake; promotor podnosi max zakład i heat; ochrona zmniejsza drenaż casino_ledger_raid.\nPensje idą z bankrollu co tick. Za mało: najtańszy etat wypada.\nUdany casino_ledger_raid drenuje % bankrollu w kraju startu. Nagroda gotówkowa załogi zostaje; to dodatkowa presja, nie drugi print.\nTylko gotówka. Przegrane zakłady znikają.';
 
   @override
   String get helpTopicCasinoTips =>
-      'Zawsze ustalaj limit bankrolla sesji: nigdy nie więcej niż 10% całkowitej gotówki na sesję. \nBlackjack ma najlepsze szanse dla doświadczonego gracza. Naucz się podstawowej strategii, zanim obstawisz duże zakłady. \nTraktuj kasyno jako rozrywkę, a nie dochód: przewaga kasyna zapewnia długoterminową stratę.';
+      'Ustaw limit sesji: nigdy więcej niż 10% gotówki.\nBlackjack ma najlepsze szanse dla wprawnego gracza.\nWłaściciele: trzymaj powyżej 10 000 € i zatrudnij ochronę przed ledger raidami.\nKasyno to rozrywka — house edge wygrywa.';
 
   @override
   String get helpTopicBlackMarketCategory => 'Gospodarka';
@@ -16991,4 +16991,93 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get drugsCutAllOneGrade => 'Cut all one grade down';
+
+  @override
+  String casinoErrMaxBet(String amount) {
+    return 'Maksymalny zakład to €$amount';
+  }
+
+  @override
+  String get casinoFloorPublic => 'Public';
+
+  @override
+  String get casinoFloorVip => 'VIP';
+
+  @override
+  String get casinoFloorPrivate => 'Private';
+
+  @override
+  String casinoHouseRulesLine(String floor, String maxBet, String rake) {
+    return '$floor · max zakład €$maxBet · rake $rake%';
+  }
+
+  @override
+  String get casinoUpgradeFloor => 'Ulepsz piętro';
+
+  @override
+  String casinoUpgradeFloorTo(String floor, String cost) {
+    return 'Ulepsz do $floor (€$cost)';
+  }
+
+  @override
+  String get casinoUpgradeSuccess => 'Piętro ulepszone';
+
+  @override
+  String get casinoUpgradeFailed => 'Ulepszenie nieudane';
+
+  @override
+  String get casinoStaffTitle => 'Personel';
+
+  @override
+  String get casinoStaffHire => 'Zatrudnij';
+
+  @override
+  String get casinoStaffFire => 'Zwolnij';
+
+  @override
+  String get casinoStaffDealer => 'Krupier';
+
+  @override
+  String get casinoStaffSecurity => 'Ochrona';
+
+  @override
+  String get casinoStaffPromoter => 'Promotor';
+
+  @override
+  String casinoStaffSalaryPerTick(String amount) {
+    return 'Pensja €$amount/tick';
+  }
+
+  @override
+  String get casinoStaffHireSuccess => 'Personel zatrudniony';
+
+  @override
+  String get casinoStaffFireSuccess => 'Personel zwolniony';
+
+  @override
+  String get casinoStaffHireFailed => 'Zatrudnienie nieudane';
+
+  @override
+  String get casinoStaffFireFailed => 'Zwolnienie nieudane';
+
+  @override
+  String get casinoTotalRake => 'Łączny rake:';
+
+  @override
+  String casinoLastRaid(String when) {
+    return 'Ostatni nalot: $when';
+  }
+
+  @override
+  String casinoRaidDrain(String percent) {
+    return 'Drenaż nalotu $percent%';
+  }
+
+  @override
+  String casinoRaidDefense(String percent) {
+    return 'Obrona przed nalotem $percent%';
+  }
+
+  @override
+  String get casinoNoStaffHired => 'Brak personelu';
 }

@@ -4,6 +4,21 @@ import { NotificationService } from './notificationService';
 import { emailService } from './emailService';
 import { translationService } from './translationService';
 import { educationService } from './educationService';
+import {
+  CASINO_HOUSE_RUNTIME_SETTING_DEFAULTS,
+  CASINO_HOUSE_RUNTIME_SETTING_KEYS,
+  ensureCasinoStaffCatalog,
+  getCasinoHouseRules,
+  effectiveRaidDrainPct,
+  invalidateCasinoHouseConfigCache,
+  type CasinoStaffRole,
+} from './casinoHouseConfig';
+
+export {
+  CASINO_HOUSE_RUNTIME_SETTING_DEFAULTS,
+  CASINO_HOUSE_RUNTIME_SETTING_KEYS,
+  invalidateCasinoHouseConfigCache,
+};
 
 /**
  * Casino pricing per country (based on travel costs and property values)
@@ -199,7 +214,8 @@ export async function getCasinoStats(countryId: string) {
       totalReceived: true,
       totalPaidOut: true,
       purchasePrice: true,
-      purchasedAt: true
+      purchasedAt: true,
+      lastRaidAt: true,
     }
   });
 
@@ -207,20 +223,38 @@ export async function getCasinoStats(countryId: string) {
     throw new AppError('NOT_FOUND', 'Casino not owned');
   }
 
+  const house = await getCasinoHouseRules(casinoId);
   const netProfit = ownership.totalReceived - ownership.totalPaidOut;
   const profitMargin = ownership.totalReceived > 0 
     ? (netProfit / ownership.totalReceived) * 100 
     : 0;
 
+  const rakeTotal = await prisma.casinoTransaction.aggregate({
+    where: { casinoId },
+    _sum: { ownerCut: true },
+  });
+
   return {
     bankroll: ownership.bankroll,
     totalReceived: ownership.totalReceived,
     totalPaidOut: ownership.totalPaidOut,
+    totalRake: rakeTotal._sum.ownerCut ?? 0,
     netProfit,
     profitMargin: profitMargin.toFixed(2),
     purchasePrice: ownership.purchasePrice,
     purchasedAt: ownership.purchasedAt,
-    isBankrupt: ownership.bankroll < MIN_BANKROLL
+    lastRaidAt: ownership.lastRaidAt,
+    isBankrupt: ownership.bankroll < MIN_BANKROLL,
+    floorLevel: house?.floorLevel ?? 1,
+    maxBet: house?.maxBet ?? 500,
+    rakeBps: house?.rakeBps ?? 200,
+    raidDrainPct: house ? Number(effectiveRaidDrainPct(house).toFixed(1)) : 18,
+    raidDefenseBps: house?.raidDefenseBps ?? 0,
+    raidDefensePct: house
+      ? Number(((house.raidDefenseBps / 10000) * 100).toFixed(1))
+      : 0,
+    nextFloorCost: house?.nextFloorCost ?? null,
+    staff: house?.staff ?? [],
   };
 }
 
@@ -332,12 +366,16 @@ export async function checkBankruptcy(countryId: string) {
   if (!ownership) return false;
 
   if (ownership.bankroll < MIN_BANKROLL) {
-    // Casino is bankrupt - delete ownership
-    await prisma.casinoOwnership.delete({
-      where: { casinoId }
+    await prisma.$transaction(async (tx) => {
+      await tx.casinoOwnership.delete({
+        where: { casinoId },
+      });
+      await tx.property.updateMany({
+        where: { propertyId: casinoId, propertyType: 'casino' },
+        data: { playerId: null },
+      });
     });
-    
-    return true; // Bankrupt
+    return true;
   }
 
   return false;
@@ -477,3 +515,276 @@ export async function getAvailableCasinos() {
 
   return available;
 }
+
+export async function getHouseSnapshot(countryId: string) {
+  const normalizedCountryId = countryId.toLowerCase();
+  const casinoId = `casino_${normalizedCountryId}`;
+  await ensureCasinoStaffCatalog();
+  return getCasinoHouseRules(casinoId);
+}
+
+export async function upgradeCasinoFloor(playerId: number, countryId: string) {
+  const normalizedCountryId = countryId.toLowerCase();
+  const casinoId = `casino_${normalizedCountryId}`;
+  const ownership = await prisma.casinoOwnership.findUnique({
+    where: { casinoId },
+    select: { ownerId: true, floorLevel: true },
+  });
+  if (!ownership || ownership.ownerId !== playerId) {
+    throw new AppError('UNAUTHORIZED', 'You do not own this casino');
+  }
+  if (ownership.floorLevel >= 3) {
+    throw new AppError('MAX_FLOOR', 'Casino is already private floor');
+  }
+
+  const rules = await getCasinoHouseRules(casinoId);
+  const cost = rules?.nextFloorCost ?? 0;
+  if (cost <= 0) {
+    throw new AppError('MAX_FLOOR', 'Casino is already private floor');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { money: true },
+  });
+  if (!player || player.money < cost) {
+    throw new AppError('INSUFFICIENT_FUNDS', `You need €${cost.toLocaleString()} to upgrade`);
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: { decrement: cost } },
+    });
+    await tx.casinoOwnership.update({
+      where: { casinoId },
+      data: { floorLevel: { increment: 1 } },
+    });
+  });
+
+  return getCasinoStats(countryId);
+}
+
+export async function listStaffCatalog() {
+  await ensureCasinoStaffCatalog();
+  return prisma.casinoStaffCatalog.findMany({
+    where: { isActive: true },
+    orderBy: [{ role: 'asc' }, { skillLevel: 'asc' }],
+  });
+}
+
+export async function hireStaff(playerId: number, countryId: string, catalogId: number) {
+  const normalizedCountryId = countryId.toLowerCase();
+  const casinoId = `casino_${normalizedCountryId}`;
+  const ownership = await prisma.casinoOwnership.findUnique({
+    where: { casinoId },
+    select: { ownerId: true },
+  });
+  if (!ownership || ownership.ownerId !== playerId) {
+    throw new AppError('UNAUTHORIZED', 'You do not own this casino');
+  }
+
+  await ensureCasinoStaffCatalog();
+  const catalog = await prisma.casinoStaffCatalog.findUnique({
+    where: { id: catalogId },
+  });
+  if (!catalog || !catalog.isActive) {
+    throw new AppError('STAFF_NOT_FOUND', 'Staff member not available');
+  }
+
+  const existing = await prisma.casinoStaffHire.findUnique({
+    where: { casinoId_role: { casinoId, role: catalog.role } },
+  });
+  if (existing) {
+    throw new AppError('ROLE_FILLED', `This casino already has a ${catalog.role}`);
+  }
+
+  await prisma.casinoStaffHire.create({
+    data: {
+      casinoId,
+      role: catalog.role,
+      catalogId: catalog.id,
+    },
+  });
+
+  return getCasinoStats(countryId);
+}
+
+export async function fireStaff(playerId: number, countryId: string, role: CasinoStaffRole) {
+  const normalizedCountryId = countryId.toLowerCase();
+  const casinoId = `casino_${normalizedCountryId}`;
+  const ownership = await prisma.casinoOwnership.findUnique({
+    where: { casinoId },
+    select: { ownerId: true },
+  });
+  if (!ownership || ownership.ownerId !== playerId) {
+    throw new AppError('UNAUTHORIZED', 'You do not own this casino');
+  }
+
+  const deleted = await prisma.casinoStaffHire.deleteMany({
+    where: { casinoId, role },
+  });
+  if (deleted.count === 0) {
+    throw new AppError('STAFF_NOT_HIRED', 'No staff in that role');
+  }
+  return getCasinoStats(countryId);
+}
+
+export async function payCasinoStaffSalaries(): Promise<{
+  casinos: number;
+  paid: number;
+  fired: number;
+}> {
+  await ensureCasinoStaffCatalog();
+  const ownerships = await prisma.casinoOwnership.findMany({
+    include: {
+      staffHires: { include: { catalog: true } },
+    },
+  });
+
+  let paid = 0;
+  let fired = 0;
+  for (const ownership of ownerships) {
+    if (ownership.staffHires.length === 0) continue;
+    const salary = ownership.staffHires.reduce(
+      (sum, hire) => sum + hire.catalog.salaryPerTick,
+      0,
+    );
+    const countryId = ownership.casinoId.replace(/^casino_/, '');
+    if (ownership.bankroll - salary >= MIN_BANKROLL) {
+      await prisma.casinoOwnership.update({
+        where: { casinoId: ownership.casinoId },
+        data: { bankroll: { decrement: salary } },
+      });
+      paid += salary;
+    } else {
+      const cheapest = [...ownership.staffHires].sort(
+        (a, b) => a.catalog.salaryPerTick - b.catalog.salaryPerTick,
+      )[0];
+      if (cheapest) {
+        await prisma.casinoStaffHire.delete({ where: { id: cheapest.id } });
+        fired += 1;
+      }
+      await checkLowBalance(countryId);
+    }
+  }
+  return { casinos: ownerships.length, paid, fired };
+}
+
+export async function applyCasinoLedgerRaid(params: {
+  countryId: string;
+  crewId: number;
+}): Promise<{ drained: number; casinoId: string; ownerId: number } | null> {
+  const countryId = (params.countryId || '').toLowerCase();
+  if (!countryId) return null;
+  const casinoId = `casino_${countryId}`;
+  const ownership = await prisma.casinoOwnership.findUnique({
+    where: { casinoId },
+    select: { ownerId: true, bankroll: true },
+  });
+  if (!ownership) return null;
+
+  const ownerCrew = await prisma.crewMember.findFirst({
+    where: { playerId: ownership.ownerId, crewId: params.crewId },
+    select: { id: true },
+  });
+  if (ownerCrew) {
+    return null;
+  }
+
+  const rules = await getCasinoHouseRules(casinoId);
+  if (!rules) return null;
+  const drainPct = effectiveRaidDrainPct(rules);
+  const drained = Math.min(
+    ownership.bankroll - MIN_BANKROLL,
+    Math.floor(ownership.bankroll * (drainPct / 100)),
+  );
+  if (drained <= 0) return null;
+
+  await prisma.casinoOwnership.update({
+    where: { casinoId },
+    data: {
+      bankroll: { decrement: drained },
+      lastRaidAt: new Date(),
+    },
+  });
+
+  const owner = await prisma.player.findUnique({
+    where: { id: ownership.ownerId },
+    select: { id: true, preferredLanguage: true },
+  });
+  if (owner) {
+    const language = translationService.getPlayerLanguage(owner);
+    const casinoName = `Casino ${countryId}`;
+    const title =
+      language === 'nl' ? 'Casino ledger-raid' : 'Casino ledger raid';
+    const body =
+      language === 'nl'
+        ? `${casinoName}: €${drained.toLocaleString()} is van de bankroll gehaald.`
+        : `${casinoName}: €${drained.toLocaleString()} was taken from the bankroll.`;
+    try {
+      await NotificationService.getInstance().sendToPlayer(owner.id, title, body, {
+        type: 'casino_ledger_raid',
+        countryId,
+        drained: String(drained),
+      });
+    } catch (error) {
+      console.error('[CasinoOwnership] raid notify failed', error);
+    }
+  }
+
+  await checkLowBalance(countryId);
+  await checkBankruptcy(countryId);
+  return { drained, casinoId, ownerId: ownership.ownerId };
+}
+
+export async function getRuntimeConfigView() {
+  const keys = CASINO_HOUSE_RUNTIME_SETTING_KEYS;
+  const placeholders = keys.map(() => '?').join(', ');
+  const rows = await prisma
+    .$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+      `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+      ...keys,
+    )
+    .catch(() => [] as Array<{ configKey: string; configValue: string }>);
+
+  const values: Record<string, string> = { ...CASINO_HOUSE_RUNTIME_SETTING_DEFAULTS };
+  for (const row of rows) {
+    values[row.configKey] = String(row.configValue ?? values[row.configKey] ?? '');
+  }
+  return {
+    defaults: CASINO_HOUSE_RUNTIME_SETTING_DEFAULTS,
+    values,
+    keys,
+  };
+}
+
+export async function updateRuntimeConfig(updates: Record<string, string | number>) {
+  const normalized: Record<string, string> = {};
+  for (const [key, value] of Object.entries(updates)) {
+    if (!CASINO_HOUSE_RUNTIME_SETTING_KEYS.includes(key)) {
+      throw new Error(`INVALID_RUNTIME_KEY:${key}`);
+    }
+    const asString = String(value ?? '').trim();
+    const asNumber = Number(asString);
+    if (!Number.isFinite(asNumber)) {
+      throw new Error(`RUNTIME_VALUE_NOT_NUMERIC:${key}`);
+    }
+    normalized[key] = asString;
+  }
+
+  for (const [key, value] of Object.entries(normalized)) {
+    await prisma.$executeRawUnsafe(
+      `
+        INSERT INTO runtime_config (configKey, configValue)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE configValue = VALUES(configValue)
+      `,
+      key,
+      value,
+    );
+  }
+  invalidateCasinoHouseConfigCache();
+  return getRuntimeConfigView();
+}
+

@@ -37,6 +37,7 @@ import {
 import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
 import { CrewMissionsAdminPanel } from "./components/CrewMissionsAdminPanel";
 import { CountryPoliceAdminPanel } from "./components/CountryPoliceAdminPanel";
+import { CasinoAdminPanel } from "./components/CasinoAdminPanel";
 import { EmailVerificationAdminPanel } from "./components/EmailVerificationAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
 import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
@@ -93,6 +94,7 @@ type TabType =
   | "crew-wars"
   | "crew-missions"
   | "country-police"
+  | "casino"
   | "territory"
   | "nightclubs";
 type ConfigSection = "access" | "housing" | "combat" | "keys";
@@ -4428,6 +4430,11 @@ function App() {
       id: "country-police",
       label: l("Landelijke politie", "Country police"),
       icon: "bi-shield-exclamation",
+    },
+    {
+      id: "casino",
+      label: l("Casino", "Casino"),
+      icon: "bi-dice-5-fill",
     },
     { id: "territory", label: "Territory", icon: "bi-globe-europe-africa" },
     {
@@ -10608,6 +10615,10 @@ function App() {
 
               {activeTab === "country-police" && (
                 <CountryPoliceAdminPanel locale={language} />
+              )}
+
+              {activeTab === "casino" && (
+                <CasinoAdminPanel locale={language} />
               )}
 
               {activeTab === "territory" && (

@@ -4,6 +4,7 @@ String mapCasinoPlayError(
   AppLocalizations l10n,
   String? reason, {
   required String fallback,
+  int? maxBet,
 }) {
   switch (reason) {
     case 'CASINO_NOT_FOUND':
@@ -12,6 +13,8 @@ String mapCasinoPlayError(
       return l10n.casinoErrInsufficientFunds;
     case 'INSUFFICIENT_BANKROLL':
       return l10n.casinoErrInsufficientBankrollPayout;
+    case 'MAX_BET':
+      return l10n.casinoErrMaxBet((maxBet ?? 0).toString());
     default:
       if (reason != null && reason.isNotEmpty) return reason;
       return fallback;

@@ -646,6 +646,7 @@ export interface CrewMissionRuntimeConfigView {
 }
 
 export type CountryPoliceRuntimeConfigView = CrewMissionRuntimeConfigView;
+export type CasinoRuntimeConfigView = CrewMissionRuntimeConfigView;
 
 export interface VehicleOpsTelemetry {
   windowHours: number;
@@ -1161,6 +1162,35 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to update crew mission runtime config");
+    return response.json();
+  },
+
+  async getCasinoRuntimeConfig(): Promise<CasinoRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/casino/runtime-config`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, "Failed to fetch casino runtime config");
+    return response.json();
+  },
+
+  async updateCasinoRuntimeConfig(
+    updates: Record<string, string | number>,
+  ): Promise<CasinoRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/casino/runtime-config`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updates }),
+    });
+
+    await ensureOk(response, "Failed to update casino runtime config");
     return response.json();
   },
 

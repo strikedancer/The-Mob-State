@@ -81,6 +81,8 @@ class _DiceScreenState extends State<DiceScreen> {
             errorReason = 'Niet genoeg geld';
           } else if (errorReason == 'INSUFFICIENT_BANKROLL') {
             errorReason = 'Casino kas te laag voor deze uitbetaling';
+          } else if (errorReason == 'MAX_BET') {
+            errorReason = l10n.casinoErrMaxBet(widget.game.maxBet.toString());
           }
           _showError(errorReason);
           return;

@@ -8163,9 +8163,9 @@
   "helpTopicBankTips": "Utilice el depósito diario gratuito para pequeñas cantidades de dinero en efectivo para que esté a salvo de confiscación.\nLave dinero en efectivo en la calle cuando acepte la tarifa y aproveche el riesgo; un calor más bajo es más seguro.\nMantenga un pequeño capital de trabajo como efectivo para gastos directos (fianza, viajes, herramientas).",
   "helpTopicCasinoCategory": "Economía",
   "helpTopicCasinoTitle": "Casino",
-  "helpTopicCasinoSummary": "Apueste con dinero en efectivo en tragamonedas, blackjack, ruleta, dados, baccarat y video póquer. Variación alta: puedes ganar o perder grandes cantidades rápidamente.",
-  "helpTopicCasinoHow": "Juegos disponibles: Tragamonedas (apuesta baja, pago aleatorio), Blackjack (cuestiones de estrategia), Ruleta (apuestas externas/internas con probabilidades propias), Dados (variación alta), Baccarat (jugador/banquero/empate), Video Poker (pagos de rango de mano de 5 cartas). \nCada juego tiene una apuesta mínima. Las proporciones de pago difieren según el tipo de juego (por ejemplo, apuesta externa en la ruleta ~1,97x, número único 35x). \nEl casino sólo utiliza efectivo, no su saldo bancario. Asegúrate de tener dinero en efectivo antes de jugar. \nNo hay tiempo de reutilización entre rondas: puedes jugar tan rápido como quieras. \nLas grandes ganancias por encima de un umbral pueden desencadenar un evento visible para otros jugadores. \nLas apuestas perdidas desaparecen permanentemente; no hay seguro ni recompra.",
-  "helpTopicCasinoTips": "Establezca siempre un límite de fondos para la sesión: nunca más del 10% del efectivo total por sesión. \nEl blackjack tiene las mejores probabilidades para un jugador experto. Aprenda la estrategia básica antes de apostar en grande. \nTrate el casino como entretenimiento, no como ingreso: la ventaja de la casa garantiza pérdidas a largo plazo.",
+  "helpTopicCasinoSummary": "Apuesta efectivo en tragamonedas, blackjack, ruleta, dados, baccarat y video póquer. La casa tiene tres plantas (público/VIP/privado) con rake visible y apuesta máxima. Alta varianza.",
+  "helpTopicCasinoHow": "Juegos: tragamonedas, blackjack, ruleta, dados, baccarat y video póquer.\nCada mesa usa la apuesta máxima de la planta y un rake visible que se queda en el bankroll del dueño.\nPúblico / VIP / Privado suben apuesta máxima y rake. El dueño contrata un crupier, seguridad y promotor. El crupier sube un poco el rake; el promotor sube la apuesta máxima y el calor; la seguridad baja el drenaje de casino_ledger_raid.\nLos sueldos salen del bankroll en cada tick. Si falta dinero, se despide al más barato.\nUn casino_ledger_raid exitoso drena un % del bankroll en el país de inicio. La recompensa de crew se mantiene; es presión extra, no un segundo print.\nSolo efectivo. Las apuestas perdidas desaparecen.",
+  "helpTopicCasinoTips": "Pon un límite de sesión: nunca más del 10% de tu efectivo.\nEl blackjack tiene las mejores cuotas para un jugador hábil.\nDueños: mantén más de 10.000 € y contrata seguridad antes de las redadas de ledger.\nEl casino es entretenimiento: la ventaja de la casa gana.",
   "helpTopicBlackMarketCategory": "Economía",
   "helpTopicBlackMarketTitle": "Mercado negro",
   "helpTopicBlackMarketSummary": "Un centro: primero bienes comerciales de contrabando (flores, productos electrónicos, diamantes, armas, productos farmacéuticos), luego la pestaña Mercado para vehículos de jugador a jugador, herramientas transportadas, lotes de drogas, lotes de criptomonedas, pilas de bienes comerciales y artículos de eventos transferibles, además de mochilas, materiales, mercado de armas y municiones.",
@@ -10536,6 +10536,89 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "casinoErrMaxBet": "Apuesta máxima: €{amount}",
+  "casinoFloorPublic": "Público",
+  "casinoFloorVip": "VIP",
+  "casinoFloorPrivate": "Privado",
+  "casinoHouseRulesLine": "{floor} · apuesta máx. €{maxBet} · rake {rake}%",
+  "casinoUpgradeFloor": "Mejorar planta",
+  "casinoUpgradeFloorTo": "Mejorar a {floor} (€{cost})",
+  "casinoUpgradeSuccess": "Planta mejorada",
+  "casinoUpgradeFailed": "Mejora fallida",
+  "casinoStaffTitle": "Personal",
+  "casinoStaffHire": "Contratar",
+  "casinoStaffFire": "Despedir",
+  "casinoStaffDealer": "Crupier",
+  "casinoStaffSecurity": "Seguridad",
+  "casinoStaffPromoter": "Promotor",
+  "casinoStaffSalaryPerTick": "Salario €{amount}/tick",
+  "casinoStaffHireSuccess": "Personal contratado",
+  "casinoStaffFireSuccess": "Personal despedido",
+  "casinoStaffHireFailed": "Contratación fallida",
+  "casinoStaffFireFailed": "Despido fallido",
+  "casinoTotalRake": "Rake total:",
+  "casinoLastRaid": "Última redada: {when}",
+  "casinoRaidDrain": "Drenaje de redada {percent}%",
+  "casinoRaidDefense": "Defensa de redada {percent}%",
+  "casinoNoStaffHired": "Sin personal",
+  "@casinoErrMaxBet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoHouseRulesLine": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "maxBet": {
+        "type": "String"
+      },
+      "rake": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoUpgradeFloorTo": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoStaffSalaryPerTick": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoLastRaid": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDrain": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDefense": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
       }
     }
   }

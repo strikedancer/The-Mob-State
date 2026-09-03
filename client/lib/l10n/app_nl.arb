@@ -9326,9 +9326,9 @@
   "helpTopicBankTips": "Gebruik de gratis dagstorting voor klein werkkapitaal, zodat het veilig is voor confiscatie.\nWitwas grotere straatcash als je de fee en seize-kans accepteert; bij lage heat is dat veiliger.\nHoud altijd een klein werkkapitaal contant voor directe uitgaven (borg, reizen, tools).",
   "helpTopicCasinoCategory": "Economie",
   "helpTopicCasinoTitle": "Casino",
-  "helpTopicCasinoSummary": "Gok met contant geld op slots, blackjack, roulette, dice, baccarat en video poker. Hoge variantie: je kunt snel veel winnen of verliezen.",
-  "helpTopicCasinoHow": "Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).\nElke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).\nCasino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.\nEr is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.\nGrote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.\nVerloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.",
-  "helpTopicCasinoTips": "Stel altijd een maximale sessie-bankroll in: nooit meer dan 10% van je totale cash per sessie.\nBlackjack heeft de beste kansen voor een vaardige speler. Leer basis-strategie voor je grote bedragen inzet.\nZie casino als entertainment, niet als inkomstenbron: de house edge zorgt op lange termijn voor verlies.",
+  "helpTopicCasinoSummary": "Gok met contant geld op slots, blackjack, roulette, dice, baccarat en video poker. Het huis heeft drie verdiepingen (public/VIP/private) met zichtbare rake en max-inzet. Hoge variantie: je kunt snel veel winnen of verliezen.",
+  "helpTopicCasinoHow": "Beschikbare spellen: Slots, Blackjack, Roulette, Dice, Baccarat en Video Poker.\nElke tafel gebruikt de max-inzet van de verdieping en een zichtbare rake die in de owner-bankroll blijft.\nPublic / VIP / Private verhogen max-inzet en house-rake. Eigenaren huren max één dealer, één security en één promoter. Dealer verhoogt rake licht en kan uitbetalingen korten; promoter verhoogt max-inzet en heat; security verlaagt casino_ledger_raid-drain.\nSalaris gaat van de bankroll op elke game-tick. Te laag: de goedkoopste hire vliegt eruit.\nEen geslaagde crew casino_ledger_raid haalt een percentage van de bankroll in het startland van de run. De crew-cash reward blijft; dit is extra druk op het huis, geen tweede cash-print.\nCasino gebruikt alleen contant geld, niet je banksaldo. Verloren inzetten zijn weg; er is geen verzekering.",
+  "helpTopicCasinoTips": "Stel altijd een sessie-limiet in: nooit meer dan 10% van je totale cash.\nBlackjack heeft de beste kansen voor een vaardige speler.\nEigenaren: houd de bankroll boven €10.000 en huur security voordat rivalen ledger-raids unlocken.\nZie casino als entertainment — de house edge wint op termijn.",
   "helpTopicBlackMarketCategory": "Economie",
   "helpTopicBlackMarketTitle": "Zwarte Markt",
   "helpTopicBlackMarketSummary": "Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen en gedragen gereedschap, plus rugzakken, grondstoffen, wapenmarkt en munitie.",
@@ -10538,5 +10538,88 @@
   "drugsCrewDepositAction": "Naar crew-opslag",
   "drugsCrewDepositDone": "Naar crew-opslag verplaatst",
   "drugsCrewDepositFailed": "Crew-storting mislukt",
-  "drugsCutAllOneGrade": "Alles één grade omlaag"
+  "drugsCutAllOneGrade": "Alles één grade omlaag",
+  "casinoErrMaxBet": "Maximum inzet is €{amount}",
+  "casinoFloorPublic": "Public",
+  "casinoFloorVip": "VIP",
+  "casinoFloorPrivate": "Private",
+  "casinoHouseRulesLine": "{floor} · max. inzet €{maxBet} · rake {rake}%",
+  "casinoUpgradeFloor": "Upgrade verdieping",
+  "casinoUpgradeFloorTo": "Upgrade naar {floor} (€{cost})",
+  "casinoUpgradeSuccess": "Verdieping geüpgraded",
+  "casinoUpgradeFailed": "Upgrade mislukt",
+  "casinoStaffTitle": "Personeel",
+  "casinoStaffHire": "Inhuren",
+  "casinoStaffFire": "Ontslaan",
+  "casinoStaffDealer": "Dealer",
+  "casinoStaffSecurity": "Security",
+  "casinoStaffPromoter": "Promoter",
+  "casinoStaffSalaryPerTick": "Salaris €{amount}/tick",
+  "casinoStaffHireSuccess": "Personeel aangenomen",
+  "casinoStaffFireSuccess": "Personeel ontslagen",
+  "casinoStaffHireFailed": "Inhuren mislukt",
+  "casinoStaffFireFailed": "Ontslaan mislukt",
+  "casinoTotalRake": "Totaal rake:",
+  "casinoLastRaid": "Laatste raid: {when}",
+  "casinoRaidDrain": "Raid-drain {percent}%",
+  "casinoRaidDefense": "Raid-verdediging {percent}%",
+  "casinoNoStaffHired": "Nog niemand aangenomen",
+  "@casinoErrMaxBet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoHouseRulesLine": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "maxBet": {
+        "type": "String"
+      },
+      "rake": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoUpgradeFloorTo": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoStaffSalaryPerTick": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoLastRaid": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDrain": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDefense": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  }
 }

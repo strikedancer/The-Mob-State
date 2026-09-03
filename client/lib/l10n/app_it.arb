@@ -8163,9 +8163,9 @@
   "helpTopicBankTips": "Utilizza il deposito giornaliero gratuito per piccoli contanti lavorativi in ​​modo che sia al sicuro dalla confisca.\nRiciclare denaro contante più grande quando si accetta la commissione e si coglie il rischio; il calore più basso è più sicuro.\nConservare un piccolo capitale circolante in contanti per le spese dirette (cauzione, viaggio, attrezzi).",
   "helpTopicCasinoCategory": "Economia",
   "helpTopicCasinoTitle": "Casinò",
-  "helpTopicCasinoSummary": "Scommetti con contanti su slot, blackjack, roulette, dadi, baccarat e video poker. Varianza elevata: puoi vincere o perdere grandi somme velocemente.",
-  "helpTopicCasinoHow": "Giochi disponibili: Slot (puntata bassa, pagamento casuale), Blackjack (la strategia conta), Roulette (scommesse esterne/interne con quote proprie), Dadi (alta varianza), Baccarat (giocatore/banco/pareggio), Video Poker (vincite per valore della mano di 5 carte). \nOgni gioco ha una scommessa minima. I rapporti di pagamento differiscono in base al tipo di gioco (ad esempio, puntata esterna alla roulette ~1,97x, numero singolo 35x). \nIl casinò utilizza solo contanti, non il tuo saldo bancario. Assicurati di avere contanti prima di giocare. \nNon c'è tempo di recupero tra un round e l'altro: puoi giocare quanto velocemente vuoi. \nGrandi vincite al di sopra di una soglia possono innescare un evento visibile agli altri giocatori. \nLe scommesse perse sono perse definitivamente; non c'è assicurazione o riacquisto.",
-  "helpTopicCasinoTips": "Imposta sempre un limite di bankroll per la sessione: mai più del 10% del denaro totale per sessione. \nIl Blackjack ha le migliori probabilità per un giocatore esperto. Impara la strategia di base prima di scommettere in grande. \nTratta il casinò come intrattenimento, non come reddito: il margine del banco garantisce una perdita a lungo termine.",
+  "helpTopicCasinoSummary": "Punta contanti su slot, blackjack, roulette, dadi, baccarat e video poker. La casa ha tre piani (public/VIP/private) con rake visibile e puntata max. Alta varianza.",
+  "helpTopicCasinoHow": "Giochi: slot, blackjack, roulette, dadi, baccarat e video poker.\nOgni tavolo usa la puntata max del piano e un rake visibile che resta nel bankroll del proprietario.\nPublic / VIP / Private alzano puntata max e rake. Il proprietario assume un dealer, una security e un promoter. Il dealer alza un po' il rake; il promoter alza la puntata max e il heat; la security riduce il drain di casino_ledger_raid.\nGli stipendi escono dal bankroll a ogni tick. Troppo basso: licenzia il più economico.\nUn casino_ledger_raid riuscito drena una % del bankroll nel paese di partenza. Il premio cash della crew resta; è pressione extra, non un secondo print.\nSolo contanti. Le puntate perse spariscono.",
+  "helpTopicCasinoTips": "Imposta un limite di sessione: mai più del 10% del cash.\nIl blackjack ha le quote migliori per un giocatore abile.\nProprietari: tieni più di 10.000 € e assumi security prima dei ledger raid.\nIl casinò è intrattenimento: il house edge vince.",
   "helpTopicBlackMarketCategory": "Economia",
   "helpTopicBlackMarketTitle": "Mercato nero",
   "helpTopicBlackMarketSummary": "Un hub: prima il contrabbando di beni commerciali (fiori, elettronica, diamanti, armi, prodotti farmaceutici), poi la scheda Mercato per i veicoli da giocatore a giocatore, strumenti trasportati, lotti di droga, lotti di criptovalute, pile di beni di scambio e oggetti evento trasferibili, oltre a zaini, materiali, mercato di armi e munizioni.",
@@ -10536,6 +10536,89 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "casinoErrMaxBet": "Puntata massima: €{amount}",
+  "casinoFloorPublic": "Public",
+  "casinoFloorVip": "VIP",
+  "casinoFloorPrivate": "Private",
+  "casinoHouseRulesLine": "{floor} · puntata max €{maxBet} · rake {rake}%",
+  "casinoUpgradeFloor": "Potenzia piano",
+  "casinoUpgradeFloorTo": "Passa a {floor} (€{cost})",
+  "casinoUpgradeSuccess": "Piano potenziato",
+  "casinoUpgradeFailed": "Upgrade fallito",
+  "casinoStaffTitle": "Staff",
+  "casinoStaffHire": "Assumi",
+  "casinoStaffFire": "Licenzia",
+  "casinoStaffDealer": "Dealer",
+  "casinoStaffSecurity": "Sicurezza",
+  "casinoStaffPromoter": "Promoter",
+  "casinoStaffSalaryPerTick": "Stipendio €{amount}/tick",
+  "casinoStaffHireSuccess": "Staff assunto",
+  "casinoStaffFireSuccess": "Staff licenziato",
+  "casinoStaffHireFailed": "Assunzione fallita",
+  "casinoStaffFireFailed": "Licenziamento fallito",
+  "casinoTotalRake": "Rake totale:",
+  "casinoLastRaid": "Ultimo raid: {when}",
+  "casinoRaidDrain": "Drain raid {percent}%",
+  "casinoRaidDefense": "Difesa raid {percent}%",
+  "casinoNoStaffHired": "Nessuno assunto",
+  "@casinoErrMaxBet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoHouseRulesLine": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "maxBet": {
+        "type": "String"
+      },
+      "rake": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoUpgradeFloorTo": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoStaffSalaryPerTick": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoLastRaid": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDrain": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@casinoRaidDefense": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
       }
     }
   }

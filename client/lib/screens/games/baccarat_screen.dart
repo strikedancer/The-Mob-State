@@ -36,7 +36,18 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
   @override
   void initState() {
     super.initState();
-    _betAmount = widget.game.minBet;
+    _betAmount = widget.game.minBet.clamp(10, widget.game.maxBet);
+  }
+
+  List<int> _betChips() {
+    final maxBet = widget.game.maxBet;
+    final chips = <int>[10, 50, 100, 500, 1000, 5000, 10000]
+        .where((chip) => chip <= maxBet)
+        .toList();
+    if (!chips.contains(maxBet) && maxBet > 10) {
+      chips.add(maxBet);
+    }
+    return chips;
   }
 
   @override
@@ -381,7 +392,7 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
-                            children: [10, 50, 100, 500, 1000, 5000].map((
+                            children: _betChips().map((
                               chip,
                             ) {
                               final selected = _betAmount == chip;
