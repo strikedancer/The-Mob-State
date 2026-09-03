@@ -92,6 +92,7 @@ type TabType =
   | "todos"
   | "crew-wars"
   | "crew-missions"
+  | "country-police"
   | "territory"
   | "nightclubs";
 type ConfigSection = "access" | "housing" | "combat" | "keys";
