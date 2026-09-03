@@ -268,6 +268,25 @@
   "drinkCoffee": "Koffie",
   "drinkBeer": "Bier",
   "foodInfo3": "• Koop eten en drinken om je stats op peil te houden",
+  "foodHunger": "Honger",
+  "foodThirst": "Dorst",
+  "foodRestoresHunger": "+{value} honger",
+  "@foodRestoresHunger": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "foodRestoresThirst": "+{value} dorst",
+  "@foodRestoresThirst": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "foodNeedsHint": "Honger en dorst dalen langzaam. Eet en drink op tijd om klaar te blijven.",
   "friends": "Vrienden",
   "friendActivity": "Vriend Activiteit",
   "properties": "Eigendommen",
@@ -7142,6 +7161,7 @@
   "smugglingQuotePrompt": "Selecteer item en bestemming voor een live quote.",
   "smugglingQuoteLiveTitle": "Live quote",
   "smugglingOwnedTransportCaption": "Eigen transport: {label}",
+  "smugglingHarborBonus": "Havenbonus: snellere route en lager confiscatierisico (crew-haven in dit land).",
   "smugglingCargoSlotsLine": "Cargo-slots: {required} / {available}",
   "smugglingCooldownActive": "Cooldown actief: {duration}",
   "smugglingRecommendedChannel": "Aanbevolen kanaal: {channel}",
@@ -8865,6 +8885,26 @@
   "crewUiLabelCredits": "tegoeden",
   "crewUiStateLoadingPrice": "Prijs laden...",
   "crewUiActionCancel": "Annuleren",
+  "crewUiHintMissionUnlockCta": "Hogere missietiers gaan open als HQ en crew groeien. Upgrade HQ of werf leden voor Tier 2+.",
+  "crewUiActionGoToHqForMissions": "Open crew-HQ",
+  "crewUiActionGoToTradeMarket": "Koop handelswaren",
+  "crewUiMissionTradeHeldNeed": "{name}: {held}/{need}",
+  "@crewUiMissionTradeHeldNeed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "held": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiHintMissionPrepReady": "Lading staat klaar in de crew-opslag.",
+  "crewUiHintMissionPrepShort": "Nog te weinig lading in de crew-opslag.",
+  "crewUiHintMissionLevelProgress": "Rond missies af om het crew-missieniveau en de cashbonus te verhogen.",
   "crewUiHqUpgradeSideBuildingsMessage": "Upgrade eerst alle zijgebouwen naar minimaal niveau {level}. \n\nOntbrekend: \n{missing}",
   "@crewUiHqUpgradeSideBuildingsMessage": {
     "placeholders": {

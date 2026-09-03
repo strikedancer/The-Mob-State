@@ -127,6 +127,7 @@ Scope-afbakening:
 - `svgElementId` (id in SVG)
 - `valueTier` (economy waarde)
 - `strategicTags` (harbor, border, capital, industry, logistics)
+- `harbor` now grants a smuggling route bonus (ETA −10%, seizure −5%) when the crew owns a harbor region in the player's current country. See `smuggling.md`.
 - `neighborsJson` (adjacency)
 
 ### Control

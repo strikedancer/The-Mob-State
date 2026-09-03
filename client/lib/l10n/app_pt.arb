@@ -10490,5 +10490,45 @@
   "drugsCrewDepositAction": "To crew storage",
   "drugsCrewDepositDone": "Moved to crew storage",
   "drugsCrewDepositFailed": "Crew deposit failed",
-  "drugsCutAllOneGrade": "Cut all one grade down"
+  "drugsCutAllOneGrade": "Cut all one grade down",
+  "foodHunger": "Hunger",
+  "foodThirst": "Thirst",
+  "foodRestoresHunger": "+{value} hunger",
+  "@foodRestoresHunger": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "foodRestoresThirst": "+{value} thirst",
+  "@foodRestoresThirst": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "foodNeedsHint": "Hunger and thirst drop slowly over time. Eat and drink to stay ready.",
+  "crewUiHintMissionUnlockCta": "Higher-tier missions unlock when HQ and crew size grow. Upgrade HQ or recruit members to open Tier 2+.",
+  "crewUiActionGoToHqForMissions": "Open crew HQ",
+  "crewUiActionGoToTradeMarket": "Buy trade goods",
+  "crewUiMissionTradeHeldNeed": "{name}: {held}/{need}",
+  "@crewUiMissionTradeHeldNeed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "held": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiHintMissionPrepReady": "Cargo is ready in crew storage.",
+  "crewUiHintMissionPrepShort": "Not enough cargo in crew storage yet.",
+  "crewUiHintMissionLevelProgress": "Complete missions to raise crew mission level and cash rewards.",
+  "smugglingHarborBonus": "Harbor bonus: faster route and lower seizure risk (crew-owned harbor in this country)."
 }

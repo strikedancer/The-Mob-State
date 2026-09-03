@@ -3402,6 +3402,26 @@ class AppLocalizationsFr extends AppLocalizations {
       '• Achetez de la nourriture et des boissons pour maintenir vos statistiques à jour';
 
   @override
+  String get foodHunger => 'Hunger';
+
+  @override
+  String get foodThirst => 'Thirst';
+
+  @override
+  String foodRestoresHunger(int value) {
+    return '+$value hunger';
+  }
+
+  @override
+  String foodRestoresThirst(int value) {
+    return '+$value thirst';
+  }
+
+  @override
+  String get foodNeedsHint =>
+      'Hunger and thirst drop slowly over time. Eat and drink to stay ready.';
+
+  @override
   String get friends => 'Amies';
 
   @override
@@ -3933,6 +3953,32 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get crewUiActionCancel => 'Annuler';
+
+  @override
+  String get crewUiHintMissionUnlockCta =>
+      'Higher-tier missions unlock when HQ and crew size grow. Upgrade HQ or recruit members to open Tier 2+.';
+
+  @override
+  String get crewUiActionGoToHqForMissions => 'Open crew HQ';
+
+  @override
+  String get crewUiActionGoToTradeMarket => 'Buy trade goods';
+
+  @override
+  String crewUiMissionTradeHeldNeed(String name, int held, int need) {
+    return '$name: $held/$need';
+  }
+
+  @override
+  String get crewUiHintMissionPrepReady => 'Cargo is ready in crew storage.';
+
+  @override
+  String get crewUiHintMissionPrepShort =>
+      'Not enough cargo in crew storage yet.';
+
+  @override
+  String get crewUiHintMissionLevelProgress =>
+      'Complete missions to raise crew mission level and cash rewards.';
 
   @override
   String crewUiHqUpgradeSideBuildingsMessage(String level, String missing) {
@@ -13879,6 +13925,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String smugglingOwnedTransportCaption(String label) {
     return 'Transport en propriété : $label';
   }
+
+  @override
+  String get smugglingHarborBonus =>
+      'Harbor bonus: faster route and lower seizure risk (crew-owned harbor in this country).';
 
   @override
   String smugglingCargoSlotsLine(int required, int available) {

@@ -2107,6 +2107,25 @@
   "drinkCoffee": "Coffee",
   "drinkBeer": "Beer",
   "foodInfo3": "• Buy food and drink to keep your stats up",
+  "foodHunger": "Hunger",
+  "foodThirst": "Thirst",
+  "foodRestoresHunger": "+{value} hunger",
+  "@foodRestoresHunger": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "foodRestoresThirst": "+{value} thirst",
+  "@foodRestoresThirst": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "foodNeedsHint": "Hunger and thirst drop slowly over time. Eat and drink to stay ready.",
   "friends": "Friends",
   "friendActivity": "Friend Activity",
   "friendsUiTabActivity": "Activity",
@@ -2335,6 +2354,26 @@
   "crewUiLabelCredits": "credits",
   "crewUiStateLoadingPrice": "Loading price...",
   "crewUiActionCancel": "Cancel",
+  "crewUiHintMissionUnlockCta": "Higher-tier missions unlock when HQ and crew size grow. Upgrade HQ or recruit members to open Tier 2+.",
+  "crewUiActionGoToHqForMissions": "Open crew HQ",
+  "crewUiActionGoToTradeMarket": "Buy trade goods",
+  "crewUiMissionTradeHeldNeed": "{name}: {held}/{need}",
+  "@crewUiMissionTradeHeldNeed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "held": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiHintMissionPrepReady": "Cargo is ready in crew storage.",
+  "crewUiHintMissionPrepShort": "Not enough cargo in crew storage yet.",
+  "crewUiHintMissionLevelProgress": "Complete missions to raise crew mission level and cash rewards.",
   "crewUiHqUpgradeSideBuildingsMessage": "Upgrade all side buildings to at least level {level} first.\n\nMissing:\n{missing}",
   "@crewUiHqUpgradeSideBuildingsMessage": {
     "placeholders": {
@@ -8639,6 +8678,7 @@
   "smugglingQuotePrompt": "Select item and destination for a live quote.",
   "smugglingQuoteLiveTitle": "Live quote",
   "smugglingOwnedTransportCaption": "Owned transport: {label}",
+  "smugglingHarborBonus": "Harbor bonus: faster route and lower seizure risk (crew-owned harbor in this country).",
   "@smugglingOwnedTransportCaption": {
     "placeholders": {
       "label": {

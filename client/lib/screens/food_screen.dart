@@ -20,6 +20,8 @@ class _FoodScreenState extends State<FoodScreen> {
   bool _isLoading = true;
   List<dynamic> _foodItems = [];
   List<dynamic> _drinkItems = [];
+  double? _hunger;
+  double? _thirst;
 
   @override
   void initState() {
@@ -38,13 +40,16 @@ class _FoodScreenState extends State<FoodScreen> {
         setState(() {
           _foodItems = data['params']['food'] ?? [];
           _drinkItems = data['params']['drinks'] ?? [];
+          _hunger = (data['params']['hunger'] as num?)?.toDouble();
+          _thirst = (data['params']['thirst'] as num?)?.toDouble();
           _isLoading = false;
         });
       } else {
         setState(() => _isLoading = false);
         if (mounted) {
           final l10n = AppLocalizations.of(context)!;
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text('${l10n.unexpectedResponse}: ${data['event']}'),
             ),
@@ -62,6 +67,13 @@ class _FoodScreenState extends State<FoodScreen> {
     }
   }
 
+  void _applyNeedsFromParams(Map<String, dynamic> params) {
+    setState(() {
+      _hunger = (params['hunger'] as num?)?.toDouble() ?? _hunger;
+      _thirst = (params['thirst'] as num?)?.toDouble() ?? _thirst;
+    });
+  }
+
   Future<void> _buyFood(String itemName) async {
     try {
       final response = await _apiClient.post('/food/buy-food', {
@@ -76,12 +88,15 @@ class _FoodScreenState extends State<FoodScreen> {
             context,
             listen: false,
           );
+          final params = (data['params'] as Map?)?.cast<String, dynamic>() ?? {};
 
           authProvider.updatePlayerStats(
-            money: data['params']['newMoney'] as int?,
+            money: params['newMoney'] as int?,
           );
+          _applyNeedsFromParams(params);
 
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(l10n.purchased),
               backgroundColor: Colors.green,
@@ -98,7 +113,8 @@ class _FoodScreenState extends State<FoodScreen> {
               ? l10n.invalidItem
               : l10n.unknownError;
 
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
           );
         }
@@ -106,7 +122,8 @@ class _FoodScreenState extends State<FoodScreen> {
     } catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(l10n.unknownError),
             backgroundColor: Colors.red,
@@ -130,12 +147,15 @@ class _FoodScreenState extends State<FoodScreen> {
             context,
             listen: false,
           );
+          final params = (data['params'] as Map?)?.cast<String, dynamic>() ?? {};
 
           authProvider.updatePlayerStats(
-            money: data['params']['newMoney'] as int?,
+            money: params['newMoney'] as int?,
           );
+          _applyNeedsFromParams(params);
 
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(l10n.purchased),
               backgroundColor: Colors.green,
@@ -152,7 +172,8 @@ class _FoodScreenState extends State<FoodScreen> {
               ? l10n.invalidItem
               : l10n.unknownError;
 
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
           );
         }
@@ -160,7 +181,8 @@ class _FoodScreenState extends State<FoodScreen> {
     } catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(l10n.unknownError),
             backgroundColor: Colors.red,
@@ -200,12 +222,39 @@ class _FoodScreenState extends State<FoodScreen> {
     }
   }
 
+  Widget _buildNeedsBar({
+    required String label,
+    required double? value,
+    required Color color,
+  }) {
+    final amount = (value ?? 100).clamp(0, 100);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(child: Text(label, style: const TextStyle(fontWeight: FontWeight.w700))),
+            Text('${amount.round()} / 100'),
+          ],
+        ),
+        const SizedBox(height: 6),
+        LinearProgressIndicator(
+          value: amount / 100,
+          minHeight: 10,
+          borderRadius: BorderRadius.circular(999),
+          color: color,
+          backgroundColor: Colors.white12,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text('🍔 ${l10n.foodAndDrink}')),
+      appBar: AppBar(title: Text(l10n.foodAndDrink)),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -213,8 +262,35 @@ class _FoodScreenState extends State<FoodScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildNeedsBar(
+                            label: l10n.foodHunger,
+                            value: _hunger,
+                            color: Colors.orange,
+                          ),
+                          const SizedBox(height: 14),
+                          _buildNeedsBar(
+                            label: l10n.foodThirst,
+                            value: _thirst,
+                            color: Colors.lightBlue,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            l10n.foodNeedsHint,
+                            style: const TextStyle(color: Colors.white70, fontSize: 13),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Text(
-                    '🍔 ${l10n.food}',
+                    l10n.food,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.orange[700],
@@ -224,7 +300,7 @@ class _FoodScreenState extends State<FoodScreen> {
                   ..._foodItems.map((item) => _buildFoodCard(item)),
                   const SizedBox(height: 24),
                   Text(
-                    '💧 ${l10n.drink}',
+                    l10n.drink,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.blue[700],
@@ -243,6 +319,7 @@ class _FoodScreenState extends State<FoodScreen> {
     final l10n = AppLocalizations.of(context)!;
     final name = item['name'] ?? '';
     final cost = item['cost'] ?? 0;
+    final effect = (item['effectValue'] as num?)?.toInt() ?? 0;
     final displayName = _localizedFoodName(name, l10n);
 
     return Card(
@@ -250,16 +327,13 @@ class _FoodScreenState extends State<FoodScreen> {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.orange[100],
-          child: const Text('🍔', style: TextStyle(fontSize: 24)),
+          child: const Icon(Icons.lunch_dining, color: Colors.orange),
         ),
         title: Text(
           displayName,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(
-          'Effect uitgeschakeld',
-          style: TextStyle(color: Colors.orange[700]),
-        ),
+        subtitle: Text(l10n.foodRestoresHunger(effect)),
         trailing: ElevatedButton(
           onPressed: () => _buyFood(name),
           style: ElevatedButton.styleFrom(
@@ -276,6 +350,7 @@ class _FoodScreenState extends State<FoodScreen> {
     final l10n = AppLocalizations.of(context)!;
     final name = item['name'] ?? '';
     final cost = item['cost'] ?? 0;
+    final effect = (item['effectValue'] as num?)?.toInt() ?? 0;
     final displayName = _localizedDrinkName(name, l10n);
 
     return Card(
@@ -283,16 +358,13 @@ class _FoodScreenState extends State<FoodScreen> {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.blue[100],
-          child: const Text('💧', style: TextStyle(fontSize: 24)),
+          child: const Icon(Icons.local_drink, color: Colors.blue),
         ),
         title: Text(
           displayName,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(
-          'Effect uitgeschakeld',
-          style: TextStyle(color: Colors.blue[700]),
-        ),
+        subtitle: Text(l10n.foodRestoresThirst(effect)),
         trailing: ElevatedButton(
           onPressed: () => _buyDrink(name),
           style: ElevatedButton.styleFrom(

@@ -5,14 +5,16 @@ import { authenticate, AuthRequest } from '../middleware/authenticate';
 const router = Router();
 
 // Get food and drink menu
-router.get('/menu', authenticate, async (_req, res) => {
+router.get('/menu', authenticate, async (req: AuthRequest, res) => {
   try {
-    const menu = await foodService.getMenu();
+    const menu = await foodService.getMenu(req.player!.id);
     res.json({
       event: 'food.menu',
       params: {
         food: menu.food,
         drinks: menu.drinks,
+        hunger: menu.hunger,
+        thirst: menu.thirst,
       },
     });
   } catch (error: any) {
@@ -36,6 +38,9 @@ router.post('/buy-food', authenticate, async (req: AuthRequest, res) => {
       params: {
         itemName,
         newMoney: result.newMoney,
+        hunger: result.hunger,
+        thirst: result.thirst,
+        restored: result.restored,
         message: `Je hebt ${itemName} gekocht!`,
       },
     });
@@ -72,6 +77,9 @@ router.post('/buy-drink', authenticate, async (req: AuthRequest, res) => {
       params: {
         itemName,
         newMoney: result.newMoney,
+        hunger: result.hunger,
+        thirst: result.thirst,
+        restored: result.restored,
         message: `Je hebt ${itemName} gekocht!`,
       },
     });

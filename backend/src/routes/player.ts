@@ -1574,6 +1574,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       band: string;
       successPenaltyPp: number;
       arrestBonusPp: number;
+      coolUntil: string | null;
     } | null = null;
     try {
       const { countryPoliceService } = await import('../services/countryPoliceService');
@@ -1585,6 +1586,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         band: mods.band,
         successPenaltyPp: mods.successPenaltyPp,
         arrestBonusPp: mods.arrestBonusPp,
+        coolUntil: mods.coolUntil ? mods.coolUntil.toISOString() : null,
       };
     } catch {
       countryPolice = null;

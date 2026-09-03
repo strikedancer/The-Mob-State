@@ -38,6 +38,8 @@ import 'casino_screen.dart';
 import 'black_market_screen.dart';
 import 'court_screen.dart';
 import 'hospital_screen.dart';
+import 'food_screen.dart';
+import '../widgets/country_police_ui.dart';
 import 'vehicle_heist_screen.dart';
 import 'tune_shop_screen.dart';
 import 'direct_messages_screen.dart';
@@ -96,6 +98,7 @@ enum _WebSection {
   hitlist,
   security,
   hospital,
+  food,
   prison,
   vehicleHeist,
   tuneShop,
@@ -118,6 +121,8 @@ _WebSection _webSectionFromQueryParam(String? value) {
       return _WebSection.premium;
     case 'vault':
       return _WebSection.vault;
+    case 'food':
+      return _WebSection.food;
     default:
       return _WebSection.dashboard;
   }
@@ -301,6 +306,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return _NavGroup.assets;
       case _WebSection.help:
       case _WebSection.hospital:
+      case _WebSection.food:
       case _WebSection.prison:
       case _WebSection.security:
       case _WebSection.achievements:
@@ -1348,6 +1354,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _NavGroup.more: [
         navItem(icon: Icons.menu_book, label: l10n.helpAndGuide, section: _WebSection.help),
         navItem(icon: Icons.local_hospital, label: l10n.hospital, section: _WebSection.hospital),
+        navItem(icon: Icons.restaurant, label: l10n.foodAndDrink, section: _WebSection.food),
         navItem(icon: Icons.gpp_bad, label: l10n.jail, section: _WebSection.prison),
         navItem(icon: Icons.shield, label: l10n.security, section: _WebSection.security),
         navItem(icon: Icons.emoji_events, label: l10n.achievements, section: _WebSection.achievements),
@@ -1814,6 +1821,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const SecurityScreen();
       case _WebSection.hospital:
         return const HospitalScreen();
+      case _WebSection.food:
+        return const FoodScreen();
       case _WebSection.prison:
         return const PrisonScreen();
       case _WebSection.vehicleHeist:
@@ -2359,6 +2368,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const HospitalScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.restaurant,
+                                  label: l10n.foodAndDrink,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const FoodScreen(),
                                     ),
                                   ),
                                 ),
@@ -3945,6 +3965,12 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                                 ? Colors.orange.shade300
                                 : Colors.green.shade300,
                     ),
+                    if (_stats?.risk?.countryPolice != null)
+                      CountryPoliceStrip(
+                        countryPolice: _stats!.risk!.countryPolice!,
+                        disruptActions: const [],
+                        onDisrupt: () {},
+                      ),
                     _buildCooldownRow(l10n.dashboardTimeoutCrime, 'crime'),
                     _buildCooldownRow(l10n.dashboardTimeoutJob, 'job'),
                     _buildCooldownRow(l10n.dashboardTimeoutTravel, 'travel'),

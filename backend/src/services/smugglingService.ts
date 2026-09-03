@@ -5,6 +5,7 @@ import { getAircraftById } from './aviationService';
 import { playerService } from './playerService';
 import { gameEventService } from './gameEventService';
 import { scoreTradeSmuggleClaim } from './gameEventTradeContribution';
+import { mapTravelCountryToTerritoryCode } from './territoryService';
 
 export type SmugglingCategory = 'drug' | 'trade' | 'vehicle' | 'weapon' | 'ammo';
 export type SmugglingChannel = 'package' | 'courier' | 'container' | 'owned';
@@ -109,6 +110,7 @@ interface QuoteShipmentResult {
   transportLabel?: string;
   cargoSlotsRequired?: number;
   cargoSlotsAvailable?: number;
+  harborBonus?: boolean;
 }
 
 class SmugglingService {
@@ -469,14 +471,35 @@ class SmugglingService {
     }
   }
 
+  private async crewOwnsHarborInCountry(
+    crewId: number | null,
+    currentCountry: string | null | undefined
+  ): Promise<boolean> {
+    if (!crewId || !currentCountry) return false;
+    const countryCode = mapTravelCountryToTerritoryCode(currentCountry);
+    if (!countryCode) return false;
+
+    const rows = await prisma.$queryRaw<Array<{ cnt: bigint | number }>>`
+      SELECT COUNT(*) AS cnt
+      FROM territory_control tc
+      INNER JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+      WHERE tc.ownerCrewId = ${crewId}
+        AND tr.countryCode = ${countryCode}
+        AND tr.enabled = 1
+        AND LOWER(COALESCE(tr.strategicTagsJson, '')) LIKE ${'%harbor%'}
+    `;
+    return Number(rows[0]?.cnt ?? 0) > 0;
+  }
+
   private buildPricing(
     category: SmugglingCategory,
     quantity: number,
     wantedLevel: number,
     channel: SmugglingChannel,
     networkScope: SmugglingNetworkScope,
-    ownedTransport?: OwnedTransportOption | null
-  ): { fee: number; etaMinutes: number; seizureChance: number } {
+    ownedTransport?: OwnedTransportOption | null,
+    options?: { harborBonus?: boolean }
+  ): { fee: number; etaMinutes: number; seizureChance: number; harborBonus: boolean } {
     const baseByCategory: Record<SmugglingCategory, { fee: number; eta: number; risk: number; qtyFee: number; qtyRisk: number }> = {
       drug: { fee: 350, eta: 55, risk: 0.06, qtyFee: 4, qtyRisk: 0.00025 },
       trade: { fee: 280, eta: 50, risk: 0.04, qtyFee: 2, qtyRisk: 0.00015 },
@@ -548,7 +571,13 @@ class SmugglingService {
       seizureChance = this.clamp(seizureChance * (1 - ownedTransport.riskReduction), 0.01, 0.50);
     }
 
-    return { fee, etaMinutes, seizureChance };
+    const harborBonus = options?.harborBonus === true;
+    if (harborBonus) {
+      etaMinutes = this.clamp(Math.round(etaMinutes * 0.90), 20, 360);
+      seizureChance = this.clamp(seizureChance * 0.95, 0.01, 0.50);
+    }
+
+    return { fee, etaMinutes, seizureChance, harborBonus };
   }
 
   private validateQuantityByCategoryAndChannel(
@@ -835,7 +864,16 @@ class SmugglingService {
     }
 
     const wantedLevel = player.wantedLevel ?? 0;
-    const pricing = this.buildPricing(category, quantity, wantedLevel, channel, networkScope, ownedTransport);
+    const harborBonus = await this.crewOwnsHarborInCountry(crewId, player.currentCountry);
+    const pricing = this.buildPricing(
+      category,
+      quantity,
+      wantedLevel,
+      channel,
+      networkScope,
+      ownedTransport,
+      { harborBonus }
+    );
 
     if (player.money < pricing.fee) {
       return { success: false, message: 'Niet genoeg geld voor smokkelkosten' };
@@ -1367,7 +1405,16 @@ class SmugglingService {
     }
 
     const wantedLevel = player.wantedLevel ?? 0;
-    const pricing = this.buildPricing(category, quantity, wantedLevel, channel, networkScope, ownedTransport);
+    const harborBonus = await this.crewOwnsHarborInCountry(crewId, player.currentCountry);
+    const pricing = this.buildPricing(
+      category,
+      quantity,
+      wantedLevel,
+      channel,
+      networkScope,
+      ownedTransport,
+      { harborBonus }
+    );
 
     return {
       success: true,
@@ -1382,6 +1429,7 @@ class SmugglingService {
       transportLabel: ownedTransport?.transportLabel,
       cargoSlotsRequired,
       cargoSlotsAvailable: ownedTransport?.cargoSlots,
+      harborBonus: pricing.harborBonus,
     };
   }
 

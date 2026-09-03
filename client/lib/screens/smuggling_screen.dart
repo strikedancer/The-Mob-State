@@ -1604,6 +1604,13 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             style: const TextStyle(color: Colors.lightBlueAccent),
           ),
         ],
+        if (_quote!['harborBonus'] == true) ...[
+          const SizedBox(height: 6),
+          Text(
+            l10n.smugglingHarborBonus,
+            style: const TextStyle(color: Colors.greenAccent),
+          ),
+        ],
         if (cooldown > 0) ...[
           const SizedBox(height: 6),
           Text(

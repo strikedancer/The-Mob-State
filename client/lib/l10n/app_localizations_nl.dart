@@ -3369,6 +3369,26 @@ class AppLocalizationsNl extends AppLocalizations {
       '• Koop eten en drinken om je stats op peil te houden';
 
   @override
+  String get foodHunger => 'Honger';
+
+  @override
+  String get foodThirst => 'Dorst';
+
+  @override
+  String foodRestoresHunger(int value) {
+    return '+$value honger';
+  }
+
+  @override
+  String foodRestoresThirst(int value) {
+    return '+$value dorst';
+  }
+
+  @override
+  String get foodNeedsHint =>
+      'Honger en dorst dalen langzaam. Eet en drink op tijd om klaar te blijven.';
+
+  @override
   String get friends => 'Vrienden';
 
   @override
@@ -3895,6 +3915,33 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crewUiActionCancel => 'Annuleren';
+
+  @override
+  String get crewUiHintMissionUnlockCta =>
+      'Hogere missietiers gaan open als HQ en crew groeien. Upgrade HQ of werf leden voor Tier 2+.';
+
+  @override
+  String get crewUiActionGoToHqForMissions => 'Open crew-HQ';
+
+  @override
+  String get crewUiActionGoToTradeMarket => 'Koop handelswaren';
+
+  @override
+  String crewUiMissionTradeHeldNeed(String name, int held, int need) {
+    return '$name: $held/$need';
+  }
+
+  @override
+  String get crewUiHintMissionPrepReady =>
+      'Lading staat klaar in de crew-opslag.';
+
+  @override
+  String get crewUiHintMissionPrepShort =>
+      'Nog te weinig lading in de crew-opslag.';
+
+  @override
+  String get crewUiHintMissionLevelProgress =>
+      'Rond missies af om het crew-missieniveau en de cashbonus te verhogen.';
 
   @override
   String crewUiHqUpgradeSideBuildingsMessage(String level, String missing) {
@@ -13743,6 +13790,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String smugglingOwnedTransportCaption(String label) {
     return 'Eigen transport: $label';
   }
+
+  @override
+  String get smugglingHarborBonus =>
+      'Havenbonus: snellere route en lager confiscatierisico (crew-haven in dit land).';
 
   @override
   String smugglingCargoSlotsLine(int required, int available) {

@@ -81,10 +81,20 @@ Naast het commerciële kanaal kunnen spelers eigen voertuigen inzetten voor smok
 - `400 BOAT_CANNOT_FIT` als boot in vliegtuig-lading zit.
 - NL/EN confiscatie-melding altijd tonen in smokkelresultaat.
 
+## Territory harbor bonus
+
+If the player's crew owns a region with the `harbor` strategic tag in the current country, quote and send apply a modest route bonus:
+
+- ETA −10%
+- seizure chance −5% (still clamped)
+
+The live quote surfaces this as `harborBonus: true` so the hub can show a harbor caption. Personal shipments also receive the bonus when the player is in that crew.
+
 ## Cross-Module Dependencies
 - Smuggling → Aviation (`aviationService`, `PlayerAircraft` voor vliegtuig-smokkel)
 - Smuggling → Garage/Motor (eigen auto/motor ophalen voor smokkelkanaal)
 - Smuggling → Marina (eigen boot ophalen voor smokkelkanaal)
+- Smuggling → Territory (`territory_control` + `harbor` tag in the current country)
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

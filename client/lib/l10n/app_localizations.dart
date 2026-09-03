@@ -5995,6 +5995,36 @@ abstract class AppLocalizations {
   /// **'• Buy food and drink to keep your stats up'**
   String get foodInfo3;
 
+  /// No description provided for @foodHunger.
+  ///
+  /// In en, this message translates to:
+  /// **'Hunger'**
+  String get foodHunger;
+
+  /// No description provided for @foodThirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Thirst'**
+  String get foodThirst;
+
+  /// No description provided for @foodRestoresHunger.
+  ///
+  /// In en, this message translates to:
+  /// **'+{value} hunger'**
+  String foodRestoresHunger(int value);
+
+  /// No description provided for @foodRestoresThirst.
+  ///
+  /// In en, this message translates to:
+  /// **'+{value} thirst'**
+  String foodRestoresThirst(int value);
+
+  /// No description provided for @foodNeedsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hunger and thirst drop slowly over time. Eat and drink to stay ready.'**
+  String get foodNeedsHint;
+
   /// No description provided for @friends.
   ///
   /// In en, this message translates to:
@@ -6966,6 +6996,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get crewUiActionCancel;
+
+  /// No description provided for @crewUiHintMissionUnlockCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher-tier missions unlock when HQ and crew size grow. Upgrade HQ or recruit members to open Tier 2+.'**
+  String get crewUiHintMissionUnlockCta;
+
+  /// No description provided for @crewUiActionGoToHqForMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Open crew HQ'**
+  String get crewUiActionGoToHqForMissions;
+
+  /// No description provided for @crewUiActionGoToTradeMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy trade goods'**
+  String get crewUiActionGoToTradeMarket;
+
+  /// No description provided for @crewUiMissionTradeHeldNeed.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {held}/{need}'**
+  String crewUiMissionTradeHeldNeed(String name, int held, int need);
+
+  /// No description provided for @crewUiHintMissionPrepReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo is ready in crew storage.'**
+  String get crewUiHintMissionPrepReady;
+
+  /// No description provided for @crewUiHintMissionPrepShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough cargo in crew storage yet.'**
+  String get crewUiHintMissionPrepShort;
+
+  /// No description provided for @crewUiHintMissionLevelProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete missions to raise crew mission level and cash rewards.'**
+  String get crewUiHintMissionLevelProgress;
 
   /// No description provided for @crewUiHqUpgradeSideBuildingsMessage.
   ///
@@ -23930,6 +24002,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Owned transport: {label}'**
   String smugglingOwnedTransportCaption(String label);
+
+  /// No description provided for @smugglingHarborBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Harbor bonus: faster route and lower seizure risk (crew-owned harbor in this country).'**
+  String get smugglingHarborBonus;
 
   /// No description provided for @smugglingCargoSlotsLine.
   ///

@@ -49,7 +49,7 @@ Aanbevolen uitbreiding:
 - per type een herkenbare gameplayfunctie
 
 Voorbeelden:
-- `harbor`: bonus op smuggling, marina- of transportflows
+- `harbor`: bonus op smuggling, marina- of transportflows — **live:** crew-owned harbor in het huidige land geeft smokkel −10% ETA en −5% confiscatiekans (`smugglingService`)
 - `capital`: hogere season prestige of leaderboard weight
 - `industry`: hogere crew bank income of snellere territory project build speed
 - `border`: snellere contest prep of lagere sabotage-cost

@@ -15,6 +15,7 @@ import '../utils/web_asset_helper.dart';
 import '../utils/trade_good_l10n.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/crew_heists_panel.dart';
+import 'black_market_screen.dart';
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
 
@@ -228,6 +229,12 @@ class _CrewScreenState extends State<CrewScreen>
         case 'label.credits': return l10n.crewUiLabelCredits;
         case 'state.loadingPrice': return l10n.crewUiStateLoadingPrice;
         case 'action.cancel': return l10n.crewUiActionCancel;
+        case 'hint.missionUnlockCta': return l10n.crewUiHintMissionUnlockCta;
+        case 'action.goToHqForMissions': return l10n.crewUiActionGoToHqForMissions;
+        case 'action.goToTradeMarket': return l10n.crewUiActionGoToTradeMarket;
+        case 'hint.missionPrepReady': return l10n.crewUiHintMissionPrepReady;
+        case 'hint.missionPrepShort': return l10n.crewUiHintMissionPrepShort;
+        case 'hint.missionLevelProgress': return l10n.crewUiHintMissionLevelProgress;
         default: return key;
       }
     }
@@ -939,6 +946,36 @@ class _CrewScreenState extends State<CrewScreen>
           return goodType.isNotEmpty && quantity > 0;
         })
         .toList();
+  }
+
+  int _crewTradeHeldQuantity(String goodType) {
+    final inventory = _crewStorage?['inventory'];
+    if (inventory is! Map) return 0;
+    final trade = inventory['trade'];
+    if (trade is! List) return 0;
+    for (final row in trade) {
+      if (row is! Map) continue;
+      if ((row['goodType'] ?? '').toString() == goodType) {
+        return (row['quantity'] as num?)?.toInt() ?? 0;
+      }
+    }
+    return 0;
+  }
+
+  void _openCrewStorageTab() {
+    _tabController.animateTo(2);
+  }
+
+  void _openCrewHqTab() {
+    _tabController.animateTo(1);
+  }
+
+  void _openBlackMarketTrade() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const BlackMarketScreen(initialTabIndex: 0),
+      ),
+    );
   }
 
   String _crewMissionFallbackImagePath(String missionKey) {
@@ -6355,6 +6392,41 @@ class _CrewScreenState extends State<CrewScreen>
                   _buildCrewMissionProgressCard(crewProgress, l10n),
                   const SizedBox(height: 16),
                 ],
+                if (templates.any((template) => template['unlocked'] != true)) ...[
+                  Card(
+                    color: Colors.orange.withValues(alpha: 0.08),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _t(l10n, 'hint.missionUnlockCta'),
+                            style: const TextStyle(height: 1.35),
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              OutlinedButton.icon(
+                                onPressed: _openCrewHqTab,
+                                icon: const Icon(Icons.apartment, size: 18),
+                                label: Text(_t(l10n, 'action.goToHqForMissions')),
+                              ),
+                              OutlinedButton.icon(
+                                onPressed: _openCrewStorageTab,
+                                icon: const Icon(Icons.inventory_2_outlined, size: 18),
+                                label: Text(_t(l10n, 'action.goToStorage')),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
                 if (activeRun != null) ...[
                   Text(
                     _t(l10n, 'label.activeMission'),
@@ -6437,21 +6509,50 @@ class _CrewScreenState extends State<CrewScreen>
     final progressValue = progressPct.clamp(0, 100) / 100;
 
     return Card(
+      color: const Color(0xFF1A2332),
       child: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              _t(loc, 'label.crewMissionProgress'),
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    _t(loc, 'label.crewMissionProgress'),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD4AF37).withValues(alpha: 0.16),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: const Color(0xFFD4AF37)),
+                  ),
+                  child: Text(
+                    '${_t(loc, 'label.level')} $level',
+                    style: const TextStyle(
+                      color: Color(0xFFD4AF37),
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
+            Text(
+              _t(loc, 'hint.missionLevelProgress'),
+              style: const TextStyle(color: Colors.white70, fontSize: 13),
+            ),
+            const SizedBox(height: 10),
             Wrap(
               spacing: 12,
               runSpacing: 6,
               children: [
-                Text('${_t(loc, 'label.level')}: $level'),
                 Text('${_t(loc, 'label.crewMissionXp')}: $totalXp'),
                 Text(
                   '${_t(loc, 'label.crewMissionLevelBonus')}: +${cashRewardBonusPct.toStringAsFixed(cashRewardBonusPct % 1 == 0 ? 0 : 1)}%',
@@ -6461,17 +6562,21 @@ class _CrewScreenState extends State<CrewScreen>
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             LinearProgressIndicator(
               value: progressValue,
-              minHeight: 8,
+              minHeight: 14,
               borderRadius: BorderRadius.circular(999),
               backgroundColor: Colors.white12,
+              color: const Color(0xFFD4AF37),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             Text(
               '$xpIntoLevel / $xpForNextLevel XP',
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(
+                color: Colors.white70,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -6608,21 +6713,77 @@ class _CrewScreenState extends State<CrewScreen>
                     children: tradeRequirements.map((row) {
                       final goodType = (row['goodType'] ?? '').toString();
                       final quantity = (row['quantity'] as num?)?.toInt() ?? 0;
+                      final held = _crewTradeHeldQuantity(goodType);
+                      final ready = held >= quantity;
                       return Chip(
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         visualDensity: VisualDensity.compact,
+                        backgroundColor: ready
+                            ? Colors.green.withValues(alpha: 0.16)
+                            : Colors.orange.withValues(alpha: 0.16),
                         label: Text(
-                          '${TradeGoodL10n.name(loc, goodType)} × $quantity',
+                          loc.crewUiMissionTradeHeldNeed(
+                            TradeGoodL10n.name(loc, goodType),
+                            held,
+                            quantity,
+                          ),
                         ),
                       );
                     }).toList(),
                   ),
+                  const SizedBox(height: 6),
+                  Text(
+                    tradeRequirements.every((row) {
+                          final goodType = (row['goodType'] ?? '').toString();
+                          final quantity = (row['quantity'] as num?)?.toInt() ?? 0;
+                          return _crewTradeHeldQuantity(goodType) >= quantity;
+                        })
+                        ? _t(loc, 'hint.missionPrepReady')
+                        : _t(loc, 'hint.missionPrepShort'),
+                    style: TextStyle(
+                      color: tradeRequirements.every((row) {
+                            final goodType = (row['goodType'] ?? '').toString();
+                            final quantity = (row['quantity'] as num?)?.toInt() ?? 0;
+                            return _crewTradeHeldQuantity(goodType) >= quantity;
+                          })
+                          ? Colors.green.shade300
+                          : Colors.orange.shade300,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (tradeRequirements.any((row) {
+                    final goodType = (row['goodType'] ?? '').toString();
+                    final quantity = (row['quantity'] as num?)?.toInt() ?? 0;
+                    return _crewTradeHeldQuantity(goodType) < quantity;
+                  })) ...[
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        OutlinedButton(
+                          onPressed: _openCrewStorageTab,
+                          child: Text(_t(loc, 'action.goToStorage')),
+                        ),
+                        OutlinedButton(
+                          onPressed: _openBlackMarketTrade,
+                          child: Text(_t(loc, 'action.goToTradeMarket')),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
                 if (!unlocked) ...[
                   const SizedBox(height: 8),
                   Text(
                     '${_t(loc, 'status.missionLocked')}: ${_crewMissionLockedReason(loc, lockedReason)}',
                     style: const TextStyle(color: Colors.orange),
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton(
+                    onPressed: _openCrewHqTab,
+                    child: Text(_t(loc, 'action.goToHqForMissions')),
                   ),
                 ],
                 const SizedBox(height: 10),

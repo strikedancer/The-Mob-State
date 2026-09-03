@@ -3379,6 +3379,26 @@ class AppLocalizationsIt extends AppLocalizations {
       '• Acquista cibo e bevande per mantenere alte le tue statistiche';
 
   @override
+  String get foodHunger => 'Hunger';
+
+  @override
+  String get foodThirst => 'Thirst';
+
+  @override
+  String foodRestoresHunger(int value) {
+    return '+$value hunger';
+  }
+
+  @override
+  String foodRestoresThirst(int value) {
+    return '+$value thirst';
+  }
+
+  @override
+  String get foodNeedsHint =>
+      'Hunger and thirst drop slowly over time. Eat and drink to stay ready.';
+
+  @override
   String get friends => 'Amiche';
 
   @override
@@ -3908,6 +3928,32 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get crewUiActionCancel => 'Cancellare';
+
+  @override
+  String get crewUiHintMissionUnlockCta =>
+      'Higher-tier missions unlock when HQ and crew size grow. Upgrade HQ or recruit members to open Tier 2+.';
+
+  @override
+  String get crewUiActionGoToHqForMissions => 'Open crew HQ';
+
+  @override
+  String get crewUiActionGoToTradeMarket => 'Buy trade goods';
+
+  @override
+  String crewUiMissionTradeHeldNeed(String name, int held, int need) {
+    return '$name: $held/$need';
+  }
+
+  @override
+  String get crewUiHintMissionPrepReady => 'Cargo is ready in crew storage.';
+
+  @override
+  String get crewUiHintMissionPrepShort =>
+      'Not enough cargo in crew storage yet.';
+
+  @override
+  String get crewUiHintMissionLevelProgress =>
+      'Complete missions to raise crew mission level and cash rewards.';
 
   @override
   String crewUiHqUpgradeSideBuildingsMessage(String level, String missing) {
@@ -13860,6 +13906,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String smugglingOwnedTransportCaption(String label) {
     return 'Mezzi di proprietà: $label';
   }
+
+  @override
+  String get smugglingHarborBonus =>
+      'Harbor bonus: faster route and lower seizure risk (crew-owned harbor in this country).';
 
   @override
   String smugglingCargoSlotsLine(int required, int available) {

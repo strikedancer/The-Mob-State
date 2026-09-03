@@ -427,7 +427,7 @@ function toNumeric(value: unknown): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function mapTravelCountryToTerritoryCode(currentCountry: string | null | undefined): string | null {
+export function mapTravelCountryToTerritoryCode(currentCountry: string | null | undefined): string | null {
   if (!currentCountry) return null;
   const normalized = currentCountry.trim().toLowerCase();
   if (!normalized) return null;

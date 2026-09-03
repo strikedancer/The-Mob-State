@@ -467,11 +467,13 @@ class DashboardRiskSummary {
   final int wantedLevel;
   final int fbiHeat;
   final int score;
+  final Map<String, dynamic>? countryPolice;
 
   DashboardRiskSummary({
     required this.wantedLevel,
     required this.fbiHeat,
     required this.score,
+    this.countryPolice,
   });
 
   factory DashboardRiskSummary.fromJson(Map<String, dynamic> json) {
@@ -479,6 +481,9 @@ class DashboardRiskSummary {
       wantedLevel: json['wantedLevel'] as int? ?? 0,
       fbiHeat: json['fbiHeat'] as int? ?? 0,
       score: json['score'] as int? ?? 0,
+      countryPolice: json['countryPolice'] is Map<String, dynamic>
+          ? json['countryPolice'] as Map<String, dynamic>
+          : null,
     );
   }
 }
