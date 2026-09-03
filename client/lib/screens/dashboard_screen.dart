@@ -220,6 +220,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   _NavGroup? _expandedNavGroup;
   /// Optional product to highlight when opening Premium (e.g. season_pass_monthly).
   String? _premiumFocusProductKey;
+  int? _inventoryInitialPropertyId;
+
+  void _openInventoryStorage(int propertyId) {
+    setState(() {
+      _inventoryInitialPropertyId = propertyId;
+      _selectedWebSection = _WebSection.inventory;
+      _expandedNavGroup = _navGroupForSection(_WebSection.inventory);
+      _webSectionRefreshSeed++;
+    });
+  }
 
   void _openBlackMarket([int initialTabIndex = 0]) {
     setState(() {
@@ -253,6 +263,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
       _premiumFocusProductKey =
           section == _WebSection.premium ? focusProductKey : null;
+      if (section != _WebSection.inventory) {
+        _inventoryInitialPropertyId = null;
+      }
     });
     if (section == _WebSection.crimes ||
         section == _WebSection.jobs ||
@@ -1789,9 +1802,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.friends:
         return const FriendsScreen();
       case _WebSection.inventory:
-        return const InventoryScreen();
+        return InventoryScreen(
+          embedded: true,
+          initialPropertyId: _inventoryInitialPropertyId,
+        );
       case _WebSection.properties:
-        return PropertyScreen();
+        return PropertyScreen(onOpenInventory: _openInventoryStorage);
       case _WebSection.bank:
         return const BankScreen();
       case _WebSection.casino:

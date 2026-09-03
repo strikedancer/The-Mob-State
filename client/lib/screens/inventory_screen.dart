@@ -8,8 +8,13 @@ import 'loadouts_tab.dart';
 
 class InventoryScreen extends StatefulWidget {
   final int? initialPropertyId;
+  final bool embedded;
 
-  const InventoryScreen({super.key, this.initialPropertyId});
+  const InventoryScreen({
+    super.key,
+    this.initialPropertyId,
+    this.embedded = false,
+  });
 
   @override
   State<InventoryScreen> createState() => _InventoryScreenState();
@@ -35,31 +40,45 @@ class _InventoryScreenState extends State<InventoryScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
+    final tabs = TabBar(
+      controller: _tabController,
+      indicatorColor: Colors.amber,
+      labelColor: const Color(0xFFD4AF37),
+      unselectedLabelColor: Colors.white70,
+      tabs: [
+        Tab(icon: const Icon(Icons.person), text: l10n.inventoryPaperDoll),
+        Tab(
+          icon: const Icon(Icons.dashboard_customize),
+          text: l10n.loadouts,
+        ),
+      ],
+    );
+    final body = TabBarView(
+      controller: _tabController,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        InventoryPaperDollTab(initialPropertyId: widget.initialPropertyId),
+        LoadoutsTab(playerId: authProvider.currentPlayer?.id ?? 0),
+      ],
+    );
+
+    if (widget.embedded) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Material(color: const Color(0xFF1A1A1A), child: tabs),
+          Expanded(child: body),
+        ],
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.inventory),
         backgroundColor: Colors.grey[900],
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.amber,
-          tabs: [
-            Tab(icon: const Icon(Icons.person), text: l10n.inventoryPaperDoll),
-            Tab(
-              icon: const Icon(Icons.dashboard_customize),
-              text: l10n.loadouts,
-            ),
-          ],
-        ),
+        bottom: tabs,
       ),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          InventoryPaperDollTab(initialPropertyId: widget.initialPropertyId),
-          LoadoutsTab(playerId: authProvider.currentPlayer?.id ?? 0),
-        ],
-      ),
+      body: body,
     );
   }
 }

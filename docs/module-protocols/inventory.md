@@ -4,7 +4,7 @@
 Carried items, storage, loadouts and equipment used by multiple modules.
 
 ## Primary Frontend Entry
-- client/lib/screens/inventory_screen.dart — two tabs: paper-doll (default) and Loadouts
+- client/lib/screens/inventory_screen.dart — two tabs: paper-doll (default) and Loadouts. Dashboard web uses `embedded: true` (no own Scaffold/AppBar; stays in the dashboard content card). **Open storage** from a property switches the dashboard section instead of pushing a fullscreen route.
 - client/lib/screens/inventory_paper_doll_tab.dart
 - Same screen opens from a house/warehouse via **Open storage** (`InventoryScreen(initialPropertyId: …)`)
 

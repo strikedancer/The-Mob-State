@@ -13,7 +13,9 @@ import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 class PropertyScreen extends StatefulWidget {
-  const PropertyScreen({super.key});
+  final ValueChanged<int>? onOpenInventory;
+
+  const PropertyScreen({super.key, this.onOpenInventory});
 
   @override
   PropertyScreenState createState() => PropertyScreenState();
@@ -435,6 +437,10 @@ class PropertyScreenState extends State<PropertyScreen>
   };
 
   Future<void> _openStorage(Property property) async {
+    if (widget.onOpenInventory != null) {
+      widget.onOpenInventory!(property.id);
+      return;
+    }
     await Navigator.push(
       context,
       MaterialPageRoute(
