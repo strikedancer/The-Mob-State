@@ -60,6 +60,18 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     'safehouse',
   };
 
+  String _toolAssetPath(String toolId) {
+    // Asset naming convention is usually: <toolId>_tool.png
+    // One legacy asset is produced with an extra .png suffix.
+    if (toolId == 'thermal_drill') {
+      return 'assets/images/tools/thermal_drill_tool.png.png';
+    }
+    if (toolId.endsWith('_tool')) {
+      return 'assets/images/tools/$toolId.png';
+    }
+    return 'assets/images/tools/${toolId}_tool.png';
+  }
+
   int? get _selectedPropertyId {
     if (_contextKey.startsWith('property_')) {
       return int.tryParse(_contextKey.substring('property_'.length));
@@ -171,7 +183,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
                 ? ((t.durability / t.maxDurability) * 100).round()
                 : null,
             zone: InventoryZone.backpack,
-            imagePath: 'assets/images/tools/${t.toolId}.png',
+            imagePath: _toolAssetPath(t.toolId),
           ),
         ),
         ...weapons.map(
@@ -281,7 +293,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
               name: t.name,
               quantity: t.quantity,
               zone: InventoryZone.property,
-              imagePath: 'assets/images/tools/${t.toolId}.png',
+              imagePath: _toolAssetPath(t.toolId),
             ),
           )
           .toList();
