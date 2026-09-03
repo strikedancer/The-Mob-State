@@ -324,6 +324,8 @@ cd C:\xampp\htdocs\mafia_game
 .\scripts\vps_pull_and_build.ps1 -PuttySession "server vps"
 ```
 
+**VPS → GitHub auth (deploy pull):** `origin` op de VPS moet **SSH** zijn (`git@github.com:strikedancer/The-Mob-State.git`), niet HTTPS. Read-only deploy key: `/root/.ssh/id_ed25519_github_deploy` + `Host github.com` in `/root/.ssh/config`. Zonder key hangt `git pull` op `Username for 'https://github.com'`. Controle: `ssh -T git@github.com` (verwacht “successfully authenticated”). Deploy key staat in GitHub → repo → Settings → Deploy keys.
+
 - Standaard projectpad op de VPS: `/var/www/vhosts/themobstate.com/apps/mafia_game` (aanpasbaar met `-ProjectDir`).
 - Als `HostName` niet uit de PuTTY-registry te lezen is: `-SshHost "jouw.host.of.ip"`.
 - Script gebruikt **geen** `plink -batch`, zodat **HTTP-proxy- of andere PuTTY-prompts** beantwoord kunnen worden.

@@ -8,6 +8,10 @@
 
   Matches docs/module-protocols/PROTOCOL_MASTER.md: backup hint, pull, config validate, targeted rebuild, logs.
 
+  VPS git access: `origin` must be SSH (`git@github.com:strikedancer/The-Mob-State.git`) with a
+  **read-only deploy key** at `/root/.ssh/id_ed25519_github_deploy` (see PROTOCOL_MASTER). HTTPS
+  remotes without credentials hang on `Username for 'https://github.com'`.
+
   Run this in a normal PowerShell window on your PC (not necessarily from Cursor), with **Pageant** running and your key loaded.
 
 .PARAMETER PuttySession
