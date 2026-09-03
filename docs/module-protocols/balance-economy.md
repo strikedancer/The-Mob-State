@@ -52,6 +52,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
   - **Property development:** bank sink voor permanente income-boost per eigendom (`PROPERTY_DEVELOP_*`).
 - Voor travel geldt 60 minuten cooldown per etappe als baseline en Premium `ACTION_COOLDOWN_RESET` voor `actionType=travel` moet beschikbaar zijn wanneer de cooldown actief is.
 - **Player portraits (selfie → gangster):** elke succesvol gegenereerd custom portret kost **100 premium credits** (`PORTRAIT_SELFIE_CREDIT_COST`); mislukte generatie kost niets. Wisselen tussen bestaande portretten of presets kost geen credits. Zie [player-portraits.md](player-portraits.md).
+- **Drug production speedup:** premium credits kunnen een lopende batch vroegtijdig klaarzetten (`finishesAt = now`). Prijs = `ceil(remainingMinutes * 2)`, clamp **8–150** credits. Geen bypass van materialen/slots/heat/collect. Ledger `reasonKey=drug_production_speedup`. Zie [drugs.md](drugs.md).
 - Garage **auto**- en **motor**-opslag: aparte upgrade-progressie per speler per land (eigen levels, eigen euro-kostencurve voor auto-track; motor-track gebruikt dezelfde prijsstappen als auto met +3 slots per motor-level t.o.v. basis motorplaatsen). Wijzigingen hieraan zijn economy-impact: check telemetry op storage-full en steal-fail door capaciteit.
 
 ## Runtime Keys (Leidend)

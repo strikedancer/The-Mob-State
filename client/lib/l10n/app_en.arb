@@ -9380,6 +9380,32 @@
   "drugsProdLegendInstability": "Instability",
   "drugsProdLegendCombined": "Combined issue",
   "drugsProdCollect": "Collect",
+  "drugsProdSpeedupAction": "Speed up with credits",
+  "drugsProdSpeedupTitle": "Speed up production?",
+  "drugsProdSpeedupBody": "Spend {credits} credits to finish this batch now ({minutes} min remaining).",
+  "@drugsProdSpeedupBody": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsProdSpeedupConfirm": "Speed up",
+  "drugsProdSpeedupSuccess": "Production finished early (−{credits} credits).",
+  "@drugsProdSpeedupSuccess": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsProdSpeedupFailed": "Could not speed up production.",
+  "drugsProdSpeedupInsufficientCredits": "Not enough credits to speed up this batch.",
+  "drugsProdSpeedupAlreadyReady": "This batch is already ready to collect.",
+  "drugsProdSpeedupUnavailable": "Speed-up is not available for this batch.",
   "drugsProdAvailableDrugs": "Available Drugs",
   "drugsProdNoDrugs": "No drugs available",
   "drugsProdAutoCollectOn": "Auto-collect on (VIP)",
@@ -9612,7 +9638,7 @@
   "helpTopicDrugsCategory": "Empire",
   "helpTopicDrugsTitle": "Drugs",
   "helpTopicDrugsSummary": "Build a complete drug operation from raw materials to finished product. Run production chains, manage storage and sell for high margins but serious risks.",
-  "helpTopicDrugsHow": "The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.",
+  "helpTopicDrugsHow": "The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nYou can spend premium credits to finish an in-progress batch early (confirm dialog shows the exact credit cost); you still collect the output normally afterward.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.",
   "helpTopicDrugsTips": "Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.",
   "helpTopicNightclubCategory": "Empire",
   "helpTopicNightclubTitle": "Nightclub",

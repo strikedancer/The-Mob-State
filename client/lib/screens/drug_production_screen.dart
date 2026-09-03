@@ -35,6 +35,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   bool _togglingAutoCollect = false;
   bool _showIncidentLegend = true;
   String? _vipQuickBuyingDrugId;
+  bool _speedupBusy = false;
+  int? _speedupBusyProductionId;
 
   String _backgroundAsset(double width) {
     return 'assets/images/backgrounds/drug_production_bg.png';
@@ -604,6 +606,120 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     }
   }
 
+  String _speedupErrorMessage(AppLocalizations t, String? error) {
+    switch (error) {
+      case 'INSUFFICIENT_CREDITS':
+        return t.drugsProdSpeedupInsufficientCredits;
+      case 'PRODUCTION_ALREADY_READY':
+        return t.drugsProdSpeedupAlreadyReady;
+      case 'PRODUCTION_NOT_FOUND':
+      case 'NOT_OWNER':
+      case 'ALREADY_COLLECTED':
+        return t.drugsProdSpeedupUnavailable;
+      default:
+        return t.drugsProdSpeedupFailed;
+    }
+  }
+
+  Future<void> _confirmSpeedupProduction(DrugProduction production) async {
+    if (_speedupBusy || production.isReady) return;
+
+    setState(() {
+      _speedupBusy = true;
+      _speedupBusyProductionId = production.id;
+    });
+
+    final t = AppLocalizations.of(context)!;
+    try {
+      final quote = await _drugService.getProductionSpeedupQuote(production.id);
+      if (!mounted) return;
+
+      if (quote['success'] != true) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _speedupErrorMessage(t, quote['error']?.toString()),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      final credits = (quote['credits'] as num?)?.toInt() ?? 0;
+      final minutes = (quote['remainingMinutes'] as num?)?.toInt() ?? 0;
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: const Color(0xFF1B1212),
+          title: Text(
+            t.drugsProdSpeedupTitle,
+            style: const TextStyle(color: Colors.white),
+          ),
+          content: Text(
+            t.drugsProdSpeedupBody(credits, minutes),
+            style: TextStyle(color: Colors.white.withOpacity(0.85)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(t.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFF2B94B),
+                foregroundColor: Colors.black,
+              ),
+              child: Text(t.drugsProdSpeedupConfirm),
+            ),
+          ],
+        ),
+      );
+
+      if (confirmed != true || !mounted) return;
+
+      final result = await _drugService.speedupProduction(production.id);
+      if (!mounted) return;
+
+      if (result['success'] == true) {
+        final auth = Provider.of<AuthProvider>(context, listen: false);
+        await auth.refreshPlayer();
+        await _loadData();
+        if (!mounted) return;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              t.drugsProdSpeedupSuccess(
+                (result['creditsSpent'] as num?)?.toInt() ?? credits,
+              ),
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _speedupErrorMessage(t, result['error']?.toString()),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _speedupBusy = false;
+          _speedupBusyProductionId = null;
+        });
+      }
+    }
+  }
+
   void _applyCollectedProductionLocally(DrugProduction production) {
     setState(() {
       _activeProductions = _activeProductions
@@ -1135,18 +1251,20 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                         const SizedBox(
                                                           width: 6,
                                                         ),
-                                                        Text(
-                                                          production
-                                                              .getTimeRemainingFormatted(),
-                                                          style:
-                                                              const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .orange,
-                                                                fontSize: 15,
-                                                              ),
+                                                        Expanded(
+                                                          child: Text(
+                                                            production
+                                                                .getTimeRemainingFormatted(),
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .orange,
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -1160,6 +1278,54 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                           const AlwaysStoppedAnimation<
                                                             Color
                                                           >(Colors.green),
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    SizedBox(
+                                                      width: double.infinity,
+                                                      child: OutlinedButton.icon(
+                                                        onPressed:
+                                                            _speedupBusy &&
+                                                                _speedupBusyProductionId ==
+                                                                    production
+                                                                        .id
+                                                            ? null
+                                                            : () =>
+                                                                  _confirmSpeedupProduction(
+                                                                    production,
+                                                                  ),
+                                                        icon: _speedupBusy &&
+                                                                _speedupBusyProductionId ==
+                                                                    production
+                                                                        .id
+                                                            ? const SizedBox(
+                                                                width: 16,
+                                                                height: 16,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  strokeWidth:
+                                                                      2,
+                                                                ),
+                                                              )
+                                                            : const Icon(
+                                                                Icons.bolt,
+                                                                size: 18,
+                                                              ),
+                                                        label: Text(
+                                                          t.drugsProdSpeedupAction,
+                                                        ),
+                                                        style:
+                                                            OutlinedButton.styleFrom(
+                                                          foregroundColor:
+                                                              const Color(
+                                                                0xFFF2B94B,
+                                                              ),
+                                                          side: BorderSide(
+                                                            color: const Color(
+                                                              0xFFF2B94B,
+                                                            ).withOpacity(0.65),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ],
                                                 ],

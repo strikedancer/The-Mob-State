@@ -15012,6 +15012,40 @@ class AppLocalizationsDe extends AppLocalizations {
   String get drugsProdCollect => 'Sammeln';
 
   @override
+  String get drugsProdSpeedupAction => 'Speed up with credits';
+
+  @override
+  String get drugsProdSpeedupTitle => 'Speed up production?';
+
+  @override
+  String drugsProdSpeedupBody(int credits, int minutes) {
+    return 'Spend $credits credits to finish this batch now ($minutes min remaining).';
+  }
+
+  @override
+  String get drugsProdSpeedupConfirm => 'Speed up';
+
+  @override
+  String drugsProdSpeedupSuccess(int credits) {
+    return 'Production finished early (−$credits credits).';
+  }
+
+  @override
+  String get drugsProdSpeedupFailed => 'Could not speed up production.';
+
+  @override
+  String get drugsProdSpeedupInsufficientCredits =>
+      'Not enough credits to speed up this batch.';
+
+  @override
+  String get drugsProdSpeedupAlreadyReady =>
+      'This batch is already ready to collect.';
+
+  @override
+  String get drugsProdSpeedupUnavailable =>
+      'Speed-up is not available for this batch.';
+
+  @override
   String get drugsProdAvailableDrugs => 'Verfügbare Medikamente';
 
   @override

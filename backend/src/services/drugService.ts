@@ -1881,6 +1881,178 @@ class DrugService {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
+  // CREDIT SPEEDUP — finish an in-progress batch early (utility sink, not P2W)
+  // Pricing: ceil(remainingMinutes * rate), clamped to min/max.
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  private static readonly SPEEDUP_CREDITS_PER_MINUTE = 2;
+  private static readonly SPEEDUP_MIN_CREDITS = 8;
+  private static readonly SPEEDUP_MAX_CREDITS = 150;
+
+  private computeProductionSpeedupCost(finishesAt: Date): {
+    remainingMinutes: number;
+    credits: number;
+    creditsPerMinute: number;
+  } {
+    const remainingMs = finishesAt.getTime() - Date.now();
+    if (remainingMs <= 0) {
+      throw new Error('PRODUCTION_ALREADY_READY');
+    }
+
+    const remainingMinutes = Math.max(1, Math.ceil(remainingMs / 60000));
+    const creditsPerMinute = DrugService.SPEEDUP_CREDITS_PER_MINUTE;
+    const raw = Math.ceil(remainingMinutes * creditsPerMinute);
+    const credits = Math.min(
+      DrugService.SPEEDUP_MAX_CREDITS,
+      Math.max(DrugService.SPEEDUP_MIN_CREDITS, raw)
+    );
+
+    return { remainingMinutes, credits, creditsPerMinute };
+  }
+
+  async getProductionSpeedupQuote(playerId: number, productionId: number) {
+    const production = await prisma.drugProduction.findUnique({
+      where: { id: productionId },
+    });
+
+    if (!production) {
+      return { success: false as const, error: 'PRODUCTION_NOT_FOUND' };
+    }
+    if (production.playerId !== playerId) {
+      return { success: false as const, error: 'NOT_OWNER' };
+    }
+    if (production.collected) {
+      return { success: false as const, error: 'ALREADY_COLLECTED' };
+    }
+
+    try {
+      const quote = this.computeProductionSpeedupCost(production.finishesAt);
+      return {
+        success: true as const,
+        productionId: production.id,
+        drugType: production.drugType,
+        remainingMinutes: quote.remainingMinutes,
+        credits: quote.credits,
+        creditsPerMinute: quote.creditsPerMinute,
+        finishesAt: production.finishesAt.toISOString(),
+      };
+    } catch (error: any) {
+      if (error?.message === 'PRODUCTION_ALREADY_READY') {
+        return { success: false as const, error: 'PRODUCTION_ALREADY_READY' };
+      }
+      throw error;
+    }
+  }
+
+  async speedupProduction(playerId: number, productionId: number) {
+    const production = await prisma.drugProduction.findUnique({
+      where: { id: productionId },
+    });
+
+    if (!production) {
+      return { success: false as const, error: 'PRODUCTION_NOT_FOUND' };
+    }
+    if (production.playerId !== playerId) {
+      return { success: false as const, error: 'NOT_OWNER' };
+    }
+    if (production.collected) {
+      return { success: false as const, error: 'ALREADY_COLLECTED' };
+    }
+
+    let quote: { remainingMinutes: number; credits: number; creditsPerMinute: number };
+    try {
+      quote = this.computeProductionSpeedupCost(production.finishesAt);
+    } catch (error: any) {
+      if (error?.message === 'PRODUCTION_ALREADY_READY') {
+        return { success: false as const, error: 'PRODUCTION_ALREADY_READY' };
+      }
+      throw error;
+    }
+
+    const creditCost = quote.credits;
+    const now = new Date();
+
+    try {
+      const result = await prisma.$transaction(async (tx) => {
+        const locked = await tx.drugProduction.findUnique({
+          where: { id: productionId },
+        });
+        if (!locked || locked.playerId !== playerId) {
+          throw new Error('PRODUCTION_NOT_FOUND');
+        }
+        if (locked.collected) {
+          throw new Error('ALREADY_COLLECTED');
+        }
+        if (locked.finishesAt.getTime() <= Date.now()) {
+          throw new Error('PRODUCTION_ALREADY_READY');
+        }
+
+        const player = await tx.player.findUnique({
+          where: { id: playerId },
+          select: { premiumCredits: true },
+        });
+        if (!player) {
+          throw new Error('PLAYER_NOT_FOUND');
+        }
+        if (player.premiumCredits < creditCost) {
+          throw new Error('INSUFFICIENT_CREDITS');
+        }
+
+        const balanceAfter = player.premiumCredits - creditCost;
+        await tx.player.update({
+          where: { id: playerId },
+          data: { premiumCredits: balanceAfter },
+        });
+
+        await tx.playerCreditTransaction.create({
+          data: {
+            playerId,
+            delta: -creditCost,
+            balanceAfter,
+            reasonType: 'REDEEM',
+            reasonKey: 'drug_production_speedup',
+            metadataJson: JSON.stringify({
+              productionId: locked.id,
+              drugType: locked.drugType,
+              remainingMinutes: quote.remainingMinutes,
+              creditsPerMinute: quote.creditsPerMinute,
+              creditCost,
+            }),
+          },
+        });
+
+        const updated = await tx.drugProduction.update({
+          where: { id: locked.id },
+          data: { finishesAt: now },
+        });
+
+        return { balanceAfter, production: updated };
+      });
+
+      return {
+        success: true as const,
+        productionId: result.production.id,
+        creditsSpent: creditCost,
+        balanceAfter: result.balanceAfter,
+        finishesAt: result.production.finishesAt.toISOString(),
+        remainingMinutes: quote.remainingMinutes,
+      };
+    } catch (error: any) {
+      const code = error?.message;
+      if (
+        code === 'PRODUCTION_NOT_FOUND' ||
+        code === 'ALREADY_COLLECTED' ||
+        code === 'PRODUCTION_ALREADY_READY' ||
+        code === 'INSUFFICIENT_CREDITS' ||
+        code === 'PLAYER_NOT_FOUND'
+      ) {
+        return { success: false as const, error: code };
+      }
+      throw error;
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
   // CREW BONUS helper — called from startProduction
   // ─────────────────────────────────────────────────────────────────────────────
 

@@ -216,6 +216,108 @@ router.post('/collect/:productionId', authenticate, async (req: AuthRequest, res
 });
 
 /**
+ * @route   GET /drugs/productions/:productionId/speedup-quote
+ * @desc    Credit cost to finish an in-progress drug batch early
+ * @access  Private
+ */
+router.get(
+  '/productions/:productionId/speedup-quote',
+  authenticate,
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const productionId = parseInt(String(req.params.productionId), 10);
+      if (!Number.isFinite(productionId) || productionId < 1) {
+        return res.status(400).json({
+          success: false,
+          error: 'INVALID_PRODUCTION_ID',
+          message: 'Invalid production id',
+        });
+      }
+
+      const result = await drugService.getProductionSpeedupQuote(
+        req.player!.id,
+        productionId
+      );
+
+      if (!result.success) {
+        const status =
+          result.error === 'PRODUCTION_NOT_FOUND' || result.error === 'NOT_OWNER'
+            ? 404
+            : result.error === 'PRODUCTION_ALREADY_READY'
+              ? 409
+              : 400;
+        return res.status(status).json({
+          success: false,
+          error: result.error,
+          message: result.error,
+        });
+      }
+
+      return res.json({
+        success: true,
+        event: 'drugs.production_speedup_quote',
+        ...result,
+      });
+    } catch (error: any) {
+      console.error('Error quoting drug production speedup:', error);
+      return res.status(500).json({ success: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * @route   POST /drugs/productions/:productionId/speedup
+ * @desc    Spend premium credits to finish an in-progress drug batch now
+ * @access  Private
+ */
+router.post(
+  '/productions/:productionId/speedup',
+  authenticate,
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const productionId = parseInt(String(req.params.productionId), 10);
+      if (!Number.isFinite(productionId) || productionId < 1) {
+        return res.status(400).json({
+          success: false,
+          error: 'INVALID_PRODUCTION_ID',
+          message: 'Invalid production id',
+        });
+      }
+
+      const result = await drugService.speedupProduction(
+        req.player!.id,
+        productionId
+      );
+
+      if (!result.success) {
+        const status =
+          result.error === 'INSUFFICIENT_CREDITS'
+            ? 403
+            : result.error === 'PRODUCTION_NOT_FOUND' || result.error === 'NOT_OWNER'
+              ? 404
+              : result.error === 'PRODUCTION_ALREADY_READY'
+                ? 409
+                : 400;
+        return res.status(status).json({
+          success: false,
+          error: result.error,
+          message: result.error,
+        });
+      }
+
+      return res.json({
+        success: true,
+        event: 'drugs.production_sped_up',
+        ...result,
+      });
+    } catch (error: any) {
+      console.error('Error speeding up drug production:', error);
+      return res.status(500).json({ success: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
  * @route   GET /drugs/inventory
  * @desc    Get player's drug inventory
  * @access  Private

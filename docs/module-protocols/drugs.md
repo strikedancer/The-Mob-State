@@ -29,6 +29,14 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - `POST /drugs/materials/buy/:materialId` → depot only
 - `POST /drugs/materials/transfer` `{ materialId, quantity, direction }`
 - VIP `buy-missing` also credits the **current-country depot**
+- `GET /drugs/productions/:productionId/speedup-quote` → credit cost to finish an in-progress batch early
+- `POST /drugs/productions/:productionId/speedup` → spend premium credits; sets `finishesAt = now` (player still collects normally)
+
+### Credit speedup (production timer)
+- Utility sink only: shortens wait time, does **not** bypass materials, slots, heat, education or collect.
+- Pricing: `ceil(remainingMinutes * 2)`, clamped to **8–150** credits.
+- Ledger: `playerCreditTransaction` with `reasonKey=drug_production_speedup`.
+- Client: confirm dialog on Production cards (`Versnellen met credits` / bolt button).
 
 ### Helper module
 - `backend/src/services/productionMaterialStock.ts`
@@ -61,6 +69,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - VIP auto-collect must be backed by a real background automation path; a toggle without server-side execution is not sufficient.
 - VIP quick-buy material shortcuts in production cards must remain confirm-first (cost modal with explicit Buy/Cancel actions before purchase) and server-enforced on active VIP status.
 - Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
+- Credit speedup for an in-progress batch must quote remaining time server-side, confirm before spend, refuse when already ready/collected, and only move `finishesAt` forward (no auto-inventory grant).
 - Facility ownership or type (including darkweb storefront) must not imply silent auto-sale of finished drug output unless a dedicated sale feature explicitly exists and is documented.
 - Education-gated drug facility progression: slot/equipment upgrades that are locked behind school gates must return structured requirement details (`gateId`, `gateLabelKey`, `missing`) so the client can render the education requirements dialog instead of a generic error.
 - Materials bought into a country depot must not silently become backpack cargo; travel risk applies only to `_carried_` stock.
@@ -97,6 +106,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Verify owned facilities remain visible and upgrade options stay available after travel or refresh.
 - Verify no Prisma validation errors appear in backend logs while loading drugs screens.
 - Verify collect action removes only the collected production card without showing global loading spinner or reloading unrelated content blocks.
+- Verify credit speedup quote + confirm flow on an in-progress batch; insufficient credits and already-ready batches return clear errors; after success the batch becomes collectable without granting inventory automatically.
 - Buy materials in country A → stock only in depot A; production in A works; travel without loading backpack leaves depot A intact.
 - Transfer to backpack → slots increase; travel can confiscate/arrest carried stock; depot elsewhere untouched.
 - Unload backpack into depot of current country after travel.

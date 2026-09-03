@@ -10363,5 +10363,31 @@
         "type": "int"
       }
     }
-  }
+  },
+  "drugsProdSpeedupAction": "Speed up with credits",
+  "drugsProdSpeedupTitle": "Speed up production?",
+  "drugsProdSpeedupBody": "Spend {credits} credits to finish this batch now ({minutes} min remaining).",
+  "@drugsProdSpeedupBody": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsProdSpeedupConfirm": "Speed up",
+  "drugsProdSpeedupSuccess": "Production finished early (−{credits} credits).",
+  "@drugsProdSpeedupSuccess": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "drugsProdSpeedupFailed": "Could not speed up production.",
+  "drugsProdSpeedupInsufficientCredits": "Not enough credits to speed up this batch.",
+  "drugsProdSpeedupAlreadyReady": "This batch is already ready to collect.",
+  "drugsProdSpeedupUnavailable": "Speed-up is not available for this batch."
 }

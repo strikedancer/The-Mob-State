@@ -14821,6 +14821,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drugsProdCollect => 'Collect';
 
   @override
+  String get drugsProdSpeedupAction => 'Speed up with credits';
+
+  @override
+  String get drugsProdSpeedupTitle => 'Speed up production?';
+
+  @override
+  String drugsProdSpeedupBody(int credits, int minutes) {
+    return 'Spend $credits credits to finish this batch now ($minutes min remaining).';
+  }
+
+  @override
+  String get drugsProdSpeedupConfirm => 'Speed up';
+
+  @override
+  String drugsProdSpeedupSuccess(int credits) {
+    return 'Production finished early (−$credits credits).';
+  }
+
+  @override
+  String get drugsProdSpeedupFailed => 'Could not speed up production.';
+
+  @override
+  String get drugsProdSpeedupInsufficientCredits =>
+      'Not enough credits to speed up this batch.';
+
+  @override
+  String get drugsProdSpeedupAlreadyReady =>
+      'This batch is already ready to collect.';
+
+  @override
+  String get drugsProdSpeedupUnavailable =>
+      'Speed-up is not available for this batch.';
+
+  @override
   String get drugsProdAvailableDrugs => 'Available Drugs';
 
   @override
@@ -15236,7 +15270,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.';
+      'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nYou can spend premium credits to finish an in-progress batch early (confirm dialog shows the exact credit cost); you still collect the output normally afterward.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.';
 
   @override
   String get helpTopicDrugsTips =>

@@ -14858,6 +14858,40 @@ class AppLocalizationsNl extends AppLocalizations {
   String get drugsProdCollect => 'Ophalen';
 
   @override
+  String get drugsProdSpeedupAction => 'Versnellen met credits';
+
+  @override
+  String get drugsProdSpeedupTitle => 'Productie versnellen?';
+
+  @override
+  String drugsProdSpeedupBody(int credits, int minutes) {
+    return 'Besteed $credits credits om deze batch nu af te ronden ($minutes min resterend).';
+  }
+
+  @override
+  String get drugsProdSpeedupConfirm => 'Versnellen';
+
+  @override
+  String drugsProdSpeedupSuccess(int credits) {
+    return 'Productie vroegtijdig klaar (−$credits credits).';
+  }
+
+  @override
+  String get drugsProdSpeedupFailed => 'Productie versnellen mislukt.';
+
+  @override
+  String get drugsProdSpeedupInsufficientCredits =>
+      'Onvoldoende credits om deze batch te versnellen.';
+
+  @override
+  String get drugsProdSpeedupAlreadyReady =>
+      'Deze batch is al klaar om op te halen.';
+
+  @override
+  String get drugsProdSpeedupUnavailable =>
+      'Versnellen is niet beschikbaar voor deze batch.';
+
+  @override
   String get drugsProdAvailableDrugs => 'Beschikbare drugs';
 
   @override
@@ -15273,7 +15307,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een bliksemknop: na een bevestigingsmodal koop je in één klik alle ontbrekende materialen voor die batch.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
+      'Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden (bevestigingsdialoog toont de exacte creditkosten); daarna haal je het product nog steeds normaal op.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een bliksemknop: na een bevestigingsmodal koop je in één klik alle ontbrekende materialen voor die batch.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
 
   @override
   String get helpTopicDrugsTips =>

@@ -25842,6 +25842,60 @@ abstract class AppLocalizations {
   /// **'Collect'**
   String get drugsProdCollect;
 
+  /// No description provided for @drugsProdSpeedupAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up with credits'**
+  String get drugsProdSpeedupAction;
+
+  /// No description provided for @drugsProdSpeedupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up production?'**
+  String get drugsProdSpeedupTitle;
+
+  /// No description provided for @drugsProdSpeedupBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend {credits} credits to finish this batch now ({minutes} min remaining).'**
+  String drugsProdSpeedupBody(int credits, int minutes);
+
+  /// No description provided for @drugsProdSpeedupConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up'**
+  String get drugsProdSpeedupConfirm;
+
+  /// No description provided for @drugsProdSpeedupSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Production finished early (−{credits} credits).'**
+  String drugsProdSpeedupSuccess(int credits);
+
+  /// No description provided for @drugsProdSpeedupFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not speed up production.'**
+  String get drugsProdSpeedupFailed;
+
+  /// No description provided for @drugsProdSpeedupInsufficientCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough credits to speed up this batch.'**
+  String get drugsProdSpeedupInsufficientCredits;
+
+  /// No description provided for @drugsProdSpeedupAlreadyReady.
+  ///
+  /// In en, this message translates to:
+  /// **'This batch is already ready to collect.'**
+  String get drugsProdSpeedupAlreadyReady;
+
+  /// No description provided for @drugsProdSpeedupUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed-up is not available for this batch.'**
+  String get drugsProdSpeedupUnavailable;
+
   /// No description provided for @drugsProdAvailableDrugs.
   ///
   /// In en, this message translates to:
@@ -26535,7 +26589,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDrugsHow.
   ///
   /// In en, this message translates to:
-  /// **'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
+  /// **'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nYou can spend premium credits to finish an in-progress batch early (confirm dialog shows the exact credit cost); you still collect the output normally afterward.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
   String get helpTopicDrugsHow;
 
   /// No description provided for @helpTopicDrugsTips.

@@ -186,6 +186,49 @@ class DrugService {
     }
   }
 
+  Future<Map<String, dynamic>> getProductionSpeedupQuote(int productionId) async {
+    try {
+      final response = await _apiClient.get(
+        '/drugs/productions/$productionId/speedup-quote',
+      );
+      final data = response.body.isNotEmpty
+          ? json.decode(response.body) as Map<String, dynamic>
+          : <String, dynamic>{};
+      if (response.statusCode == 200) {
+        return data;
+      }
+      return {
+        'success': false,
+        'error': data['error']?.toString() ?? 'QUOTE_FAILED',
+        'message': data['message']?.toString() ?? 'Failed to load speedup quote',
+      };
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> speedupProduction(int productionId) async {
+    try {
+      final response = await _apiClient.post(
+        '/drugs/productions/$productionId/speedup',
+        {},
+      );
+      final data = response.body.isNotEmpty
+          ? json.decode(response.body) as Map<String, dynamic>
+          : <String, dynamic>{};
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return data;
+      }
+      return {
+        'success': false,
+        'error': data['error']?.toString() ?? 'SPEEDUP_FAILED',
+        'message': data['message']?.toString() ?? 'Failed to speed up production',
+      };
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   // Get drug inventory
   Future<List<DrugInventory>> getDrugInventory() async {
     try {
