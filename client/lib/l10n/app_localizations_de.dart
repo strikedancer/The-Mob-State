@@ -6823,6 +6823,49 @@ class AppLocalizationsDe extends AppLocalizations {
       'Keine verwendbaren Waffen im Inventar. Kaufen Sie zuerst eine Waffe oder verschieben Sie sie in getragene Gegenstände.';
 
   @override
+  String get inventoryPaperDoll => 'Ausrüstung';
+
+  @override
+  String get inventoryBackpackGrid => 'Rucksack';
+
+  @override
+  String get inventoryStorageGrid => 'Lagerung';
+
+  @override
+  String get inventoryMaterialsDepot => 'Materialdepot';
+
+  @override
+  String get inventoryEquipWeapon => 'Verbrechenswaffe';
+
+  @override
+  String get inventoryEquipArmor => 'Weste';
+
+  @override
+  String get inventoryEmptySlot => 'Leerer Steckplatz';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Ausgewählt: $name. Tippen Sie auf einen gültigen Slot, um ihn zu verschieben.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Offener Speicher';
+
+  @override
+  String get inventoryTransferOk => 'Artikel verschoben';
+
+  @override
+  String get inventoryTransferFailed => 'Der Umzug ist fehlgeschlagen';
+
+  @override
+  String get inventoryWrongDrop => 'Dieser Tropfen ist hier nicht erlaubt';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Rucksack $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'Sie tragen keine Werkzeuge, Waffen oder Munition.';
 
@@ -15567,7 +15610,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Das Inventar ist in mitgeführte Gegenstände (bei Ihnen), gelagerte Gegenstände (Lager/Besatzungslager) und aktive Ladungen unterteilt. \nDas Gewicht bestimmt Ihre Tragfähigkeit. Einige Straftaten oder Reisesperren, wenn Sie überlastet sind. \nMedikamente werden gelagert und im Inventar und in der Lagerung in Gramm ausgewiesen; 351 bedeutet 351g. \nDer Zustand des Artikels verschlechtert sich durch den Gebrauch. Waffen in schlechtem Zustand leisten schlechter und Werkzeuge können kaputt gehen. \nOben im Inventar können Sie auch Ihre Standard-Verbrechenswaffe auswählen. Für diese Auswahl zählen nur getragene, verwendbare Waffen. \nMit Loadouts können Sie schnell zwischen einem Krimi-Set (Werkzeug + Waffe) und einem Reiseset (leichte, minimale Wertsachen) wechseln. \nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Tragen Sie keine Wertgegenstände mit einem hohen Fahndungslevel. \nDrogen im Inventar erhöhen die Wahrscheinlichkeit eines Eingreifens des FBI bei internationalen Reisen. \nDie Mannschaftslagerung ist ein sicherer Ort, an dem Sie Gegenstände außerhalb Ihres persönlichen Transportrisikos aufbewahren können.';
+      'Das Inventar wird als Papierpuppenansicht geöffnet: Ihr Avatar in der Mitte, ein Kriminalwaffen-Slot und ein Westen-Slot sowie quadratische Rucksack-Slots.\nZiehen Sie ein Element (oder tippen Sie darauf und dann auf ein gültiges Ziel), um es zu verschieben. Auf Telefonen ist das Tippen zum Auswählen zuverlässiger als das Ziehen.\nDas rechte Raster stellt den aktuellen Kontext dar: ein Haus oder Lagerhaus in diesem Land oder das Materialdepot. Hier springt die Option „Lager öffnen auf einem Grundstück“ mit ausgewähltem Gebäude.\nIn Häusern werden Waffen, Munition, Westen und Bargeld aufbewahrt. Lagerhallen lagern Werkzeuge. Materialien bleiben im Landdepot, nicht in einem Haus. Bargeld verwendet Knöpfe, nicht Ziehen.\nSie können nur eine Weste tragen. Wenn Sie eine Weste auf den Avatar fallen lassen, wird dieser ausgerüstet; Wenn man es in einem Haus lagert, wird es entrüstet. Eine zweite getragene Weste wird abgelehnt.\nDer Platz für die Verbrechenswaffe bleibt mit dem Bildschirm „Verbrechen“ synchronisiert. Es zählen nur getragene, verwendbare Waffen.\nDie Kapazität des Rucksacks deckt Werkzeuge, Waffen und mitgeführte Materialien ab. Munition und die getragene Weste belegen keine Rucksackplätze. Der Server lehnt volle Pakete, falsches Land und falschen Eigenschaftstyp ab.\nLoadouts bleiben eine zweite Registerkarte für gespeicherte Kriminal- oder Reisesets.\nMedikamente werden gespeichert und in Gramm angezeigt; 351 bedeutet 351g. Der Mannschaftsraum bleibt ein separater, sicherer Versteck.\nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Drogen im Inventar erhöhen das FBI-Risiko auf internationalen Reisen.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15585,7 +15628,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Jede Immobilie hat ihre eigene Rolle: Lagerraum, Wohnkapazität oder Zugang zu einem Folgemodul wie dem Nightclub. \nLager-Upgrades erhöhen Ihre Lagerkapazität für Artikel und andere Bestände. \nHäuser und Wohnungen erhöhen die Wohnkapazität; VIP-Spieler erhalten darüber hinaus zusätzliche Slots. \nEinige Immobilien sind einzigartig oder länderspezifisch: Sie müssen sich im richtigen Land befinden, um sie zu kaufen oder zu verwalten. \nDie Verkaufsrendite beträgt 70 % des Kaufpreises. Beim Verkauf gibt es keine Abklingzeit, der Verkauf erfolgt sofort. \nEin gekaufter Nightclub öffnet den separaten Nightclub-Verwaltungsbildschirm; Dieses Modul kümmert sich um die Verwaltung und den Umsatz, nicht um die Immobilienübersicht.';
+      'Jede Immobilie hat ihre eigene Rolle: Lagerraum, Wohnkapazität oder Zugang zu einem Folgemodul wie dem Nightclub.\nLager-Upgrades erhöhen Ihre Lagerkapazität für Artikel und andere Bestände.\nHäuser lagern Waffen, Munition, Westen und Bargeld; Lagerhallen lagern Werkzeuge. Wenn Sie „Lager“ in einem Haus oder Lagerhaus öffnen, wird die Inventar-Papierpuppe mit dem ausgewählten Gebäude geöffnet. Sie müssen sich im selben Land befinden.\nHäuser und Wohnungen erhöhen die Wohnkapazität; VIP-Spieler erhalten darüber hinaus zusätzliche Slots.\nEinige Immobilien sind einzigartig oder länderspezifisch: Sie müssen sich im richtigen Land befinden, um sie zu kaufen oder zu verwalten.\nDie Verkaufsrendite beträgt 70 % des Kaufpreises. Beim Verkauf gibt es keine Abklingzeit, der Verkauf erfolgt sofort.\nEin gekaufter Nightclub öffnet den separaten Nightclub-Verwaltungsbildschirm; Dieses Modul kümmert sich um die Verwaltung und den Umsatz, nicht um die Immobilienübersicht.\n„Entwickeln“ gibt Bankgelder aus: Jede Stufe erhöht dauerhaft das passive Einkommen dieser Immobilie (maximale Stufe und Abklingzeit sind serverabhängig).';
 
   @override
   String get helpTopicPropertiesTips =>

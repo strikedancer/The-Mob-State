@@ -8149,12 +8149,12 @@
   "helpTopicInventoryCategory": "Gestione",
   "helpTopicInventoryTitle": "Inventario",
   "helpTopicInventorySummary": "Gestisci tutto ciò che trasporti, conservi ed equipaggia: armi, strumenti, veicoli, farmaci e beni commerciali.",
-  "helpTopicInventoryHow": "L'inventario è suddiviso in articoli trasportati (su di te), articoli immagazzinati (magazzino/deposito dell'Crew) e carichi attivi. \nIl peso determina la capacità di carico. Alcuni crimini o blocchi di viaggio se sei sovraccarico. \nI farmaci vengono conservati e visualizzati nell'inventario e nello stoccaggio in grammi; 351 significa 351g. \nLe condizioni dell'articolo peggiorano con l'uso. Le armi in cattive condizioni funzionano peggio e gli strumenti possono rompersi. \nNella parte superiore dell'Inventario puoi anche scegliere la tua arma del crimine predefinita. Per quella selezione contano solo le armi trasportate e utilizzabili. \nGli equipaggiamenti ti consentono di passare rapidamente da un set da crimine (strumento + arma) a un set da viaggio (oggetti di valore leggeri e minimi). \nAll'arresto la polizia può confiscare oggetti. Non trasportare oggetti di valore con un livello di ricercato elevato. \nI farmaci nell'inventario aumentano le possibilità di intervento dell'FBI durante i viaggi internazionali. \nIl deposito dell'Crew è un luogo sicuro in cui conservare gli oggetti al di fuori del rischio di trasporto personale.",
+  "helpTopicInventoryHow": "L'inventario si apre come una bambola di carta: il tuo avatar al centro, uno slot per l'arma del crimine e uno slot per il gilet, oltre a slot quadrati per lo zaino.\nTrascina un elemento (o toccalo, quindi tocca un bersaglio valido) per spostarlo. Sui telefoni, il tocco per selezionare è più affidabile del trascinamento.\nLa griglia di destra è il contesto attuale: una casa o un magazzino in questo paese, o il deposito dei materiali. Apri spazio di archiviazione su una proprietà salta qui con quell'edificio selezionato.\nLe case immagazzinano armi, munizioni, giubbotti e contanti. I magazzini immagazzinano gli strumenti. I materiali restano nel deposito di campagna, non in una casa. Cash utilizza i pulsanti, non il trascinamento.\nPuoi indossare un solo gilet. Lasciare un giubbotto sull'avatar lo equipaggia; conservarlo in una casa lo disequipaggia. Un secondo giubbotto indossato viene rifiutato.\nLo slot dell'arma del crimine rimane sincronizzato con la schermata Crimini. Contano solo le armi trasportate e utilizzabili.\nLa capacità dello zaino comprende strumenti, armi e materiali trasportati. Le munizioni e il giubbotto indossato non utilizzano gli slot dello zaino. Il server rifiuta pacchetti completi, paese sbagliato e tipo di proprietà sbagliato.\nGli equipaggiamenti rimangono una seconda scheda per i crimini salvati o i set di viaggio.\nI farmaci vengono archiviati e visualizzati in grammi; 351 significa 351g. Lo stoccaggio dell'Crew rimane una scorta sicura separata.\nAll'arresto la polizia può confiscare oggetti. I farmaci nell'inventario aumentano il rischio dell'FBI nei viaggi internazionali.",
   "helpTopicInventoryTips": "Mantieni leggero il tuo carico di trasporto quando sei in viaggio o durante un'attività criminale ad alto rischio di arresto. \nUsa gli equipaggiamenti in modo da avere sempre l'equipaggiamento giusto equipaggiato per ogni scenario. \nControlla regolarmente le condizioni degli articoli: gli strumenti rotti bloccano silenziosamente i crimini senza un chiaro messaggio di errore.",
   "helpTopicPropertiesCategory": "Economia",
   "helpTopicPropertiesTitle": "Proprietà",
   "helpTopicPropertiesSummary": "Acquista proprietà per espandere lo stoccaggio, la capacità abitativa e l'accesso a determinati sistemi come la discoteca.",
-  "helpTopicPropertiesHow": "Ogni proprietà ha il proprio ruolo: spazio di stoccaggio, capacità abitativa o accesso a un modulo successivo come la discoteca. \nGli aggiornamenti del magazzino aumentano la capacità di stoccaggio di articoli e altre scorte. \nCase e appartamenti aumentano la capacità abitativa; I giocatori VIP ricevono inoltre slot extra. \nAlcune proprietà sono uniche o bloccate nel paese: devi essere nel paese corretto per acquistarle o gestirle. \nLa vendita rende il 70% del prezzo di acquisto. Nessun tempo di recupero sulla vendita, è istantaneo. \nUna discoteca acquistata apre la schermata separata di gestione della discoteca; quel modulo gestisce la gestione e le entrate, non la panoramica delle proprietà.",
+  "helpTopicPropertiesHow": "Ogni proprietà ha il proprio ruolo: spazio di stoccaggio, capacità abitativa o accesso a un modulo successivo come la discoteca.\nGli aggiornamenti del magazzino aumentano la capacità di stoccaggio di articoli e altre scorte.\nLe case immagazzinano armi, munizioni, giubbotti e contanti; magazzini immagazzinano strumenti. L'apertura del deposito in una casa o in un magazzino apre la bambola di carta Inventario con quell'edificio selezionato. Devi essere nello stesso paese.\nCase e appartamenti aumentano la capacità abitativa; I giocatori VIP ricevono inoltre slot extra.\nAlcune proprietà sono uniche o bloccate nel paese: devi essere nel paese corretto per acquistarle o gestirle.\nLa vendita rende il 70% del prezzo di acquisto. Nessun tempo di recupero sulla vendita, è istantaneo.\nUna discoteca acquistata apre la schermata separata di gestione della discoteca; quel modulo gestisce la gestione e le entrate, non la panoramica delle proprietà.\nLo sviluppo spende denaro bancario: ogni livello aumenta in modo permanente il reddito passivo di quella proprietà (il livello massimo e il tempo di recupero sono ottimizzati dal server).",
   "helpTopicPropertiesTips": "Investi presto in un magazzino se hai bisogno di più spazio di archiviazione per gli altri tuoi sistemi. \nScegli case e appartamenti quando desideri costruire più capacità abitative per i relativi sistemi di gioco. \nNon vendere troppo in fretta: il 70% rappresenta un notevole ribasso rispetto al prezzo di acquisto.",
   "helpTopicBankCategory": "Economia",
   "helpTopicBankTitle": "Banca",
@@ -10767,6 +10767,36 @@
       },
       "status": {
         "type": "String"
+      }
+    }
+  },
+  "inventoryPaperDoll": "Attrezzatura",
+  "inventoryBackpackGrid": "Zaino",
+  "inventoryStorageGrid": "Magazzinaggio",
+  "inventoryMaterialsDepot": "Deposito materiali",
+  "inventoryEquipWeapon": "Arma del crimine",
+  "inventoryEquipArmor": "Maglia",
+  "inventoryEmptySlot": "Slot vuoto",
+  "inventorySelectHint": "Selezionato: {name}. Tocca uno slot valido per spostarlo.",
+  "@inventorySelectHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryOpenStorage": "Spazio di archiviazione aperto",
+  "inventoryTransferOk": "Articolo spostato",
+  "inventoryTransferFailed": "Spostamento fallito",
+  "inventoryWrongDrop": "Quella caduta non è consentita qui",
+  "inventorySlotUsage": "Zaino {used}/{max}",
+  "@inventorySlotUsage": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
       }
     }
   }

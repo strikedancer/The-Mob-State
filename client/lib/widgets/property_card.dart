@@ -11,6 +11,7 @@ class PropertyCard extends StatelessWidget {
   final VoidCallback? onUpgrade;
   final VoidCallback? onDevelop;
   final VoidCallback? onManage;
+  final VoidCallback? onOpenStorage;
   final bool isLoading;
   final bool playerIsVip;
   final int vipBonusPerProperty;
@@ -23,6 +24,7 @@ class PropertyCard extends StatelessWidget {
     this.onUpgrade,
     this.onDevelop,
     this.onManage,
+    this.onOpenStorage,
     this.isLoading = false,
     this.playerIsVip = false,
     this.vipBonusPerProperty = 5,
@@ -495,6 +497,17 @@ class PropertyCard extends StatelessWidget {
                       ownedProperty!.developmentLevel + 1,
                     ),
             ),
+          ),
+        ),
+      ],
+      if (onOpenStorage != null) ...[
+        SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: onOpenStorage,
+            icon: const Icon(Icons.inventory_2_outlined),
+            label: Text(l10n.inventoryOpenStorage),
           ),
         ),
       ],

@@ -23,11 +23,11 @@ interface ToolsData {
 const PROPERTY_STORAGE_RULES: Record<string, string[]> = {
   warehouse: ['tools'],
   nightclub: ['drugs'],
-  house: ['weapons', 'cash'],
-  apartment: ['weapons', 'cash'],
-  mansion: ['weapons', 'cash'],
-  penthouse: ['weapons', 'cash'],
-  safehouse: ['weapons', 'cash'],
+  house: ['weapons', 'cash', 'ammo', 'armor'],
+  apartment: ['weapons', 'cash', 'ammo', 'armor'],
+  mansion: ['weapons', 'cash', 'ammo', 'armor'],
+  penthouse: ['weapons', 'cash', 'ammo', 'armor'],
+  safehouse: ['weapons', 'cash', 'ammo', 'armor'],
 };
 
 class ToolService {

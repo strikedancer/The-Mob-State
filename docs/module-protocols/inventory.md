@@ -4,7 +4,21 @@
 Carried items, storage, loadouts and equipment used by multiple modules.
 
 ## Primary Frontend Entry
-- client/lib/screens/inventory_screen.dart
+- client/lib/screens/inventory_screen.dart — two tabs: paper-doll (default) and Loadouts
+- client/lib/screens/inventory_paper_doll_tab.dart
+- Same screen opens from a house/warehouse via **Open storage** (`InventoryScreen(initialPropertyId: …)`)
+
+## Paper-doll inventory
+- Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`) and worn vest (`GET /security/status`).
+- Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, weapons, ammo and materials.
+- Context grid (right on desktop, below on mobile): materials depot, or an owned property in the current country.
+  - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag).
+  - Warehouse: tools.
+  - Materials stay in the country depot (`POST /drugs/materials/transfer`), not in a house.
+- Drag on desktop/web; tap-select then tap-target everywhere (mobile fallback). Each drop is one API call; no optimistic client move.
+- Transfers: weapons `POST /properties/storage/:id/weapons/deposit|withdraw`, tools `POST /tools/transfer`, materials depot API, ammo/armor `POST /properties/storage/:id/ammo|armor/deposit|withdraw`.
+- Invalid drop surfaces the server reason (`INVENTORY_FULL`, `STORAGE_FULL`, `WRONG_COUNTRY`, `STORAGE_TYPE_NOT_ALLOWED`, `ARMOR_ALREADY_EQUIPPED`).
+- Out of scope here: drugs/nightclub, crew storage, garage vehicles, cash-drag.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -24,6 +38,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Shared equipment choices that other modules depend on, such as the selected crime weapon, must stay visible and must remain in sync with the consuming gameplay screen.
+- The crime-weapon slot on the paper doll is the same selection Crimes uses; changing it here must update Crimes immediately after refresh/navigation.
 - Backpack upgrade visibility stays progression-clean: after buying a better backpack, lower or equal backpack tiers should no longer be shown as selectable shop options; only real upgrades remain visible.
 
 ## i18n and Messaging
@@ -38,6 +53,8 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify the selected crime weapon shown in Inventory matches the selection used on the Crimes screen and survives refresh/navigation correctly.
+- Verify drag and tap-to-move between backpack and house/warehouse/depot, including a rejected drop (full, wrong country, wrong type).
+- Verify Open storage from a house or warehouse opens this screen with that property selected.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -6778,6 +6778,49 @@ class AppLocalizationsNl extends AppLocalizations {
       'Geen bruikbare wapens in inventory. Koop of verplaats eerst een wapen naar carried items.';
 
   @override
+  String get inventoryPaperDoll => 'Uitrusting';
+
+  @override
+  String get inventoryBackpackGrid => 'Rugzak';
+
+  @override
+  String get inventoryStorageGrid => 'Opslag';
+
+  @override
+  String get inventoryMaterialsDepot => 'Materialendepot';
+
+  @override
+  String get inventoryEquipWeapon => 'Crime-wapen';
+
+  @override
+  String get inventoryEquipArmor => 'Vest';
+
+  @override
+  String get inventoryEmptySlot => 'Leeg vakje';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Geselecteerd: $name. Tik op een geldig vakje om te verplaatsen.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Open opslag';
+
+  @override
+  String get inventoryTransferOk => 'Item verplaatst';
+
+  @override
+  String get inventoryTransferFailed => 'Verplaatsen mislukt';
+
+  @override
+  String get inventoryWrongDrop => 'Die drop is hier niet toegestaan';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Rugzak $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'Je draagt momenteel geen tools, wapens of munitie.';
 
@@ -15409,7 +15452,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.\nGewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.\nDrugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.\nItem-conditie verslechtert bij gebruik. Wapens in slechte conditie presteren minder goed en tools kunnen kapotgaan.\nBovenaan Inventaris kun je ook je vaste crime-wapen kiezen. Alleen gedragen, bruikbare wapens tellen mee voor die selectie.\nLoadouts laten je snel wisselen tussen een \"crime set\" (tool + weapon) en een \"travel set\" (licht, waardevolle goederen min).\nBij arrestatie kan de politie items confisqueren. Draag geen waardevolle goederen als je een hoog Wanted Level hebt.\nDrugs in je inventaris verhogen de kans op FBI-interventie bij internationale reizen.\nCrew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico.';
+      'Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash. Magazijnen bewaren gereedschap. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nHet crime-wapenslot blijft gelijk met het Crimes-scherm. Alleen gedragen, bruikbare wapens tellen mee.\nRugzakcapaciteit telt tools, wapens en meegenomen materialen. Munitie en het gedragen vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15427,7 +15470,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
+      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash; magazijnen bewaren gereedschap. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
 
   @override
   String get helpTopicPropertiesTips =>

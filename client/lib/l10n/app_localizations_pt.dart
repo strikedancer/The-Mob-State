@@ -6781,6 +6781,49 @@ class AppLocalizationsPt extends AppLocalizations {
       'Nenhuma arma utilizável no inventário. Compre ou mova uma arma para os itens carregados primeiro.';
 
   @override
+  String get inventoryPaperDoll => 'Equipamento';
+
+  @override
+  String get inventoryBackpackGrid => 'Mochila';
+
+  @override
+  String get inventoryStorageGrid => 'Armazenar';
+
+  @override
+  String get inventoryMaterialsDepot => 'Depósito de materiais';
+
+  @override
+  String get inventoryEquipWeapon => 'Arma do crime';
+
+  @override
+  String get inventoryEquipArmor => 'Colete';
+
+  @override
+  String get inventoryEmptySlot => 'Slot vazio';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Selecionado: $name. Toque em um slot válido para movê-lo.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Armazenamento aberto';
+
+  @override
+  String get inventoryTransferOk => 'Item movido';
+
+  @override
+  String get inventoryTransferFailed => 'Falha na movimentação';
+
+  @override
+  String get inventoryWrongDrop => 'Essa queda não é permitida aqui';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Mochila $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'Você não está carregando nenhuma ferramenta, arma ou munição.';
 
@@ -15492,7 +15535,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'O inventário é dividido em itens transportados (em você), itens armazenados (armazém/armazenamento da Crew) e carregamentos ativos. \nO peso determina sua capacidade de carga. Alguns crimes ou viagens bloqueiam se você estiver sobrecarregado. \nOs medicamentos são armazenados e apresentados no inventário e armazenamento em gramas; 351 significa 351g. \nA condição do item degrada com o uso. Armas em más condições têm pior desempenho e as ferramentas podem quebrar. \nNo topo do Inventário você também pode escolher sua arma do crime padrão. Somente armas transportadas e utilizáveis ​​contam para essa seleção. \nOs loadouts permitem que você alterne rapidamente entre um conjunto de crime (ferramenta + arma) e um conjunto de viagem (leve, objetos de valor mínimos). \nApós a prisão, a polícia pode confiscar itens. Não carregue objetos de valor com alto nível de procurado. \nAs drogas em estoque aumentam a chance de intervenção do FBI durante viagens internacionais. \nO armazenamento da Crew é um local seguro para manter itens fora do risco de transporte pessoal.';
+      'O inventário abre como uma visão de boneca de papel: seu avatar no centro, um slot para arma do crime e um slot para colete, além de slots quadrados para mochila.\nArraste um item (ou toque nele e depois toque em um alvo válido) para movê-lo. Nos telefones, tocar para selecionar é mais confiável do que arrastar.\nA grelha da direita é o contexto actual: uma casa ou armazém neste país, ou o depósito de materiais. O Open Storage em uma propriedade salta aqui com esse edifício selecionado.\nAs casas armazenam armas, munições, coletes e dinheiro. Armazéns armazenam ferramentas. Os materiais ficam no depósito rural, não em uma casa. O dinheiro usa botões, não arrasta.\nVocê pode usar apenas um colete. Colocar um colete no avatar o equipa; armazená-lo em uma casa o desequipa. Um segundo colete usado é recusado.\nO slot da arma do crime permanece sincronizado com a tela Crimes. Contam apenas armas transportadas e utilizáveis.\nA capacidade da mochila cobre ferramentas, armas e materiais transportados. Munição e colete usado não usam slots de mochila. O servidor rejeita pacotes completos, país errado e tipo de propriedade errado.\nOs carregamentos continuam sendo uma segunda guia para crimes salvos ou conjuntos de viagens.\nOs medicamentos são armazenados e apresentados em gramas; 351 significa 351g. O armazenamento da Crew permanece em um esconderijo seguro separado.\nApós a prisão, a polícia pode confiscar itens. Drogas em estoque aumentam o risco do FBI em viagens internacionais.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15510,7 +15553,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Cada imóvel tem a sua função: espaço de arrumação, capacidade habitacional ou acesso a um módulo de acompanhamento como a discoteca. \nAs atualizações do armazém aumentam sua capacidade de armazenamento de itens e outros estoques. \nCasas e apartamentos aumentam a capacidade habitacional; Além disso, os jogadores VIP recebem slots extras. \nAlgumas propriedades são exclusivas ou estão bloqueadas pelo país: você deve estar no país correto para comprá-las ou gerenciá-las. \nA venda rende 70% do preço de compra. Não há tempo de espera na venda, é instantâneo. \nUma boate comprada abre uma tela separada de gerenciamento de boate; esse módulo trata do gerenciamento e da receita, não da visão geral das propriedades.';
+      'Cada imóvel tem a sua função: espaço de arrumação, capacidade habitacional ou acesso a um módulo de acompanhamento como a discoteca.\nAs atualizações do armazém aumentam sua capacidade de armazenamento de itens e outros estoques.\nAs casas armazenam armas, munições, coletes e dinheiro; armazéns armazenam ferramentas. Abrir armazenamento em uma casa ou armazém abre o boneco de papel do Inventário com esse edifício selecionado. Você deve estar no mesmo país.\nCasas e apartamentos aumentam a capacidade habitacional; Além disso, os jogadores VIP recebem slots extras.\nAlgumas propriedades são exclusivas ou estão bloqueadas pelo país: você deve estar no país correto para comprá-las ou gerenciá-las.\nA venda rende 70% do preço de compra. Não há tempo de espera na venda, é instantâneo.\nUma boate comprada abre uma tela separada de gerenciamento de boate; esse módulo trata do gerenciamento e da receita, não da visão geral das propriedades.\nDevelop gasta dinheiro do banco: cada nível aumenta permanentemente a renda passiva daquela propriedade (o nível máximo e o tempo de espera são ajustados pelo servidor).';
 
   @override
   String get helpTopicPropertiesTips =>

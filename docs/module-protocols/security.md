@@ -14,6 +14,7 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Bodyguard upkeep must be explicit: recurring cost, next charge moment and dismissal-on-nonpayment must remain visible in both logic and UI.
 - Armor effectiveness must reflect wear: damaged armor gives less defense and disappears when fully destroyed.
 - Armor remains a single active slot: players can wear only one vest at a time, and replacement UX must make that explicit.
+- A vest may sit in residential property storage (`armor:{type}` + condition). Equipping from the house or dropping onto the avatar wears it; depositing the worn vest stores it and clears `armorType`. A second worn vest is refused (`ARMOR_ALREADY_EQUIPPED`). Without a vest, `armorType` is empty.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?
@@ -42,6 +43,7 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Verify no text overflows or clipped buttons appear.
 - Verify bodyguard upkeep deducts every 24 hours and dismisses guards when the player cannot pay.
 - Verify armor purchase succeeds, armor condition drops after an attack, and destroyed armor no longer contributes defense.
+- Verify storing the worn vest in a house unequips it, and withdrawing it equips it only when no vest is already worn.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

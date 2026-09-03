@@ -12,7 +12,9 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - client/lib/utils/web_asset_helper.dart
 - client/lib/widgets/overlay_image.dart
 - client/lib/screens/help_screen.dart
-- client/lib/screens/storage_tab.dart
+- client/lib/screens/inventory_screen.dart
+- client/lib/screens/inventory_paper_doll_tab.dart
+- client/lib/widgets/inventory_slot.dart
 
 ## Marketing web routes en taal (gast vs ingelogd)
 - **Paden (Flutter web):** `/` toont via `AuthWrapper` de `LandingScreen` zolang er geen sessie is; `/login` en `/register` (zelfde scherm met `initialRegister`) blijven beschikbaar voor deep links; op de **landing** openen **Inloggen / Account** een **dialog** met `LoginScreen` (`embeddedModal: true`) i.p.v. alleen te navigeren. Juridisch: `/privacy`, `/terms`, `/digital-goods` (named routes + `_resolveHome` op basis van `Uri.base.path`).

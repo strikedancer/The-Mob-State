@@ -274,4 +274,85 @@ class InventoryService {
       return {'success': false, 'error': 'Network error: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> depositAmmoToProperty({
+    required int propertyId,
+    required String ammoType,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/ammo/deposit',
+        {'ammoType': ammoType, 'quantity': quantity},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to deposit ammo',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> withdrawAmmoFromProperty({
+    required int propertyId,
+    required String ammoType,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/ammo/withdraw',
+        {'ammoType': ammoType, 'quantity': quantity},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to withdraw ammo',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> depositArmorToProperty({
+    required int propertyId,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/armor/deposit',
+        {},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to store vest',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> withdrawArmorFromProperty({
+    required int propertyId,
+    required String armorId,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/armor/withdraw',
+        {'armorId': armorId},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to equip vest',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
 }

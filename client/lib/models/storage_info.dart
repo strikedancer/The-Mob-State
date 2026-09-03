@@ -45,8 +45,8 @@ class StorageInfo {
       cashAmount: json['cashAmount'] as int? ?? 0,
       accessibleInCurrentCountry:
           json['accessibleInCurrentCountry'] as bool? ?? true,
-      tools: (json['tools'] as List)
-          .map((tool) => CarriedTool.fromJson(tool))
+      tools: (json['tools'] as List? ?? [])
+          .map((tool) => CarriedTool.fromJson(Map<String, dynamic>.from(tool as Map)))
           .toList(),
     );
   }

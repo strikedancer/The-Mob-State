@@ -11951,6 +11951,84 @@ abstract class AppLocalizations {
   /// **'No usable weapons in inventory. Buy or move a weapon into carried items first.'**
   String get inventoryCrimeWeaponEmpty;
 
+  /// No description provided for @inventoryPaperDoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get inventoryPaperDoll;
+
+  /// No description provided for @inventoryBackpackGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Backpack'**
+  String get inventoryBackpackGrid;
+
+  /// No description provided for @inventoryStorageGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get inventoryStorageGrid;
+
+  /// No description provided for @inventoryMaterialsDepot.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials depot'**
+  String get inventoryMaterialsDepot;
+
+  /// No description provided for @inventoryEquipWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime weapon'**
+  String get inventoryEquipWeapon;
+
+  /// No description provided for @inventoryEquipArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'Vest'**
+  String get inventoryEquipArmor;
+
+  /// No description provided for @inventoryEmptySlot.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty slot'**
+  String get inventoryEmptySlot;
+
+  /// No description provided for @inventorySelectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: {name}. Tap a valid slot to move it.'**
+  String inventorySelectHint(String name);
+
+  /// No description provided for @inventoryOpenStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Open storage'**
+  String get inventoryOpenStorage;
+
+  /// No description provided for @inventoryTransferOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Item moved'**
+  String get inventoryTransferOk;
+
+  /// No description provided for @inventoryTransferFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Move failed'**
+  String get inventoryTransferFailed;
+
+  /// No description provided for @inventoryWrongDrop.
+  ///
+  /// In en, this message translates to:
+  /// **'That drop is not allowed here'**
+  String get inventoryWrongDrop;
+
+  /// No description provided for @inventorySlotUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Backpack {used}/{max}'**
+  String inventorySlotUsage(int used, int max);
+
   /// No description provided for @inventoryCarriedEmpty.
   ///
   /// In en, this message translates to:
@@ -26722,7 +26800,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicInventoryHow.
   ///
   /// In en, this message translates to:
-  /// **'Inventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.\nWeight determines your carrying capacity. Some crimes or travel block if you are overloaded.\nDrugs are stored and shown in inventory and storage as grams; 351 means 351g.\nItem condition degrades with use. Weapons in poor condition perform worse and tools can break.\nAt the top of Inventory you can also choose your default crime weapon. Only carried, usable weapons count for that selection.\nLoadouts let you switch quickly between a crime set (tool + weapon) and a travel set (light, minimal valuables).\nOn arrest police can confiscate items. Do not carry valuables with a high Wanted Level.\nDrugs in inventory increase the chance of FBI intervention during international travel.\nCrew storage is a safe place to keep items outside your personal carrying risk.'**
+  /// **'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash. Warehouses store tools. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nThe crime-weapon slot stays in sync with the Crimes screen. Only carried, usable weapons count.\nBackpack capacity covers tools, weapons and carried materials. Ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.'**
   String get helpTopicInventoryHow;
 
   /// No description provided for @helpTopicInventoryTips.
@@ -26752,7 +26830,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPropertiesHow.
   ///
   /// In en, this message translates to:
-  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
+  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
   String get helpTopicPropertiesHow;
 
   /// No description provided for @helpTopicPropertiesTips.

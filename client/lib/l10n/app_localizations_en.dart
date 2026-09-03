@@ -6736,6 +6736,49 @@ class AppLocalizationsEn extends AppLocalizations {
       'No usable weapons in inventory. Buy or move a weapon into carried items first.';
 
   @override
+  String get inventoryPaperDoll => 'Equipment';
+
+  @override
+  String get inventoryBackpackGrid => 'Backpack';
+
+  @override
+  String get inventoryStorageGrid => 'Storage';
+
+  @override
+  String get inventoryMaterialsDepot => 'Materials depot';
+
+  @override
+  String get inventoryEquipWeapon => 'Crime weapon';
+
+  @override
+  String get inventoryEquipArmor => 'Vest';
+
+  @override
+  String get inventoryEmptySlot => 'Empty slot';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Selected: $name. Tap a valid slot to move it.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Open storage';
+
+  @override
+  String get inventoryTransferOk => 'Item moved';
+
+  @override
+  String get inventoryTransferFailed => 'Move failed';
+
+  @override
+  String get inventoryWrongDrop => 'That drop is not allowed here';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Backpack $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'You are not carrying any tools, weapons or ammo.';
 
@@ -15370,7 +15413,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Inventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.\nWeight determines your carrying capacity. Some crimes or travel block if you are overloaded.\nDrugs are stored and shown in inventory and storage as grams; 351 means 351g.\nItem condition degrades with use. Weapons in poor condition perform worse and tools can break.\nAt the top of Inventory you can also choose your default crime weapon. Only carried, usable weapons count for that selection.\nLoadouts let you switch quickly between a crime set (tool + weapon) and a travel set (light, minimal valuables).\nOn arrest police can confiscate items. Do not carry valuables with a high Wanted Level.\nDrugs in inventory increase the chance of FBI intervention during international travel.\nCrew storage is a safe place to keep items outside your personal carrying risk.';
+      'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash. Warehouses store tools. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nThe crime-weapon slot stays in sync with the Crimes screen. Only carried, usable weapons count.\nBackpack capacity covers tools, weapons and carried materials. Ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15388,7 +15431,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).';
+      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).';
 
   @override
   String get helpTopicPropertiesTips =>

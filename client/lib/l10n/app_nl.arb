@@ -8550,6 +8550,36 @@
   "inventoryCrimeWeaponHint": "Selecteer een wapen voor crimes",
   "inventoryCrimeWeaponHelp": "Kies hier je crime-wapen. Het crimes-scherm gebruikt deze selectie direct.",
   "inventoryCrimeWeaponEmpty": "Geen bruikbare wapens in inventory. Koop of verplaats eerst een wapen naar carried items.",
+  "inventoryPaperDoll": "Uitrusting",
+  "inventoryBackpackGrid": "Rugzak",
+  "inventoryStorageGrid": "Opslag",
+  "inventoryMaterialsDepot": "Materialendepot",
+  "inventoryEquipWeapon": "Crime-wapen",
+  "inventoryEquipArmor": "Vest",
+  "inventoryEmptySlot": "Leeg vakje",
+  "inventorySelectHint": "Geselecteerd: {name}. Tik op een geldig vakje om te verplaatsen.",
+  "@inventorySelectHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryOpenStorage": "Open opslag",
+  "inventoryTransferOk": "Item verplaatst",
+  "inventoryTransferFailed": "Verplaatsen mislukt",
+  "inventoryWrongDrop": "Die drop is hier niet toegestaan",
+  "inventorySlotUsage": "Rugzak {used}/{max}",
+  "@inventorySlotUsage": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
   "inventoryCarriedEmpty": "Je draagt momenteel geen tools, wapens of munitie.",
   "inventorySectionTools": "Gereedschap",
   "inventorySectionWeapons": "Wapens",
@@ -9460,12 +9490,12 @@
   "helpTopicInventoryCategory": "Beheer",
   "helpTopicInventoryTitle": "Inventaris",
   "helpTopicInventorySummary": "Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.",
-  "helpTopicInventoryHow": "Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.\nGewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.\nDrugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.\nItem-conditie verslechtert bij gebruik. Wapens in slechte conditie presteren minder goed en tools kunnen kapotgaan.\nBovenaan Inventaris kun je ook je vaste crime-wapen kiezen. Alleen gedragen, bruikbare wapens tellen mee voor die selectie.\nLoadouts laten je snel wisselen tussen een \"crime set\" (tool + weapon) en een \"travel set\" (licht, waardevolle goederen min).\nBij arrestatie kan de politie items confisqueren. Draag geen waardevolle goederen als je een hoog Wanted Level hebt.\nDrugs in je inventaris verhogen de kans op FBI-interventie bij internationale reizen.\nCrew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico.",
+  "helpTopicInventoryHow": "Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash. Magazijnen bewaren gereedschap. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nHet crime-wapenslot blijft gelijk met het Crimes-scherm. Alleen gedragen, bruikbare wapens tellen mee.\nRugzakcapaciteit telt tools, wapens en meegenomen materialen. Munitie en het gedragen vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.",
   "helpTopicInventoryTips": "Hou je carrying load licht als je gaat reizen of een hogere crime-serie plant met arrestatierisico.\nGebruik loadouts zodat je voor elk scenario snel de juiste gear aan hebt.\nCheck item-conditie regelmatig: kapotte tools blokkeren crimes stil, zonder duidelijke foutmelding.",
   "helpTopicPropertiesCategory": "Economie",
   "helpTopicPropertiesTitle": "Eigendommen",
   "helpTopicPropertiesSummary": "Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.",
-  "helpTopicPropertiesHow": "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).",
+  "helpTopicPropertiesHow": "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash; magazijnen bewaren gereedschap. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).",
   "helpTopicPropertiesTips": "Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.\nKies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.\nVerkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.\nOntwikkel eerst eigendommen met hoog basisinkomen — de procentuele boost telt harder daar.",
   "helpTopicBankCategory": "Economie",
   "helpTopicBankTitle": "Bank",

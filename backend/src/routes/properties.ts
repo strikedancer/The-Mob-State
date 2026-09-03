@@ -237,6 +237,95 @@ router.post('/storage/:propertyId/cash/withdraw', authenticate, async (req: Auth
   }
 });
 
+function storageFailStatus(reason: string): number {
+  return reason === 'WRONG_COUNTRY' || reason === 'STORAGE_TYPE_NOT_ALLOWED' ? 403 : 400;
+}
+
+router.post('/storage/:propertyId/ammo/deposit', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const ammoType = String(req.body?.ammoType || '');
+    const quantity = Number(req.body?.quantity || 1);
+    if (isNaN(propertyId) || !ammoType || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.depositAmmo(req.player!.id, propertyId, ammoType, quantity);
+    return res.status(200).json({
+      event: 'properties.ammo_deposited',
+      params: { propertyId, ammoType, quantity },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.ammo_deposit_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/ammo/withdraw', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const ammoType = String(req.body?.ammoType || '');
+    const quantity = Number(req.body?.quantity || 1);
+    if (isNaN(propertyId) || !ammoType || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.withdrawAmmo(req.player!.id, propertyId, ammoType, quantity);
+    return res.status(200).json({
+      event: 'properties.ammo_withdrawn',
+      params: { propertyId, ammoType, quantity },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.ammo_withdraw_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/armor/deposit', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    if (isNaN(propertyId)) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.depositArmor(req.player!.id, propertyId);
+    return res.status(200).json({
+      event: 'properties.armor_deposited',
+      params: { propertyId },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.armor_deposit_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/armor/withdraw', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const armorId = String(req.body?.armorId || '');
+    if (isNaN(propertyId) || !armorId) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.withdrawArmor(req.player!.id, propertyId, armorId);
+    return res.status(200).json({
+      event: 'properties.armor_withdrawn',
+      params: { propertyId, armorId },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.armor_withdraw_failed',
+      params: { reason },
+    });
+  }
+});
+
 /**
  * POST /properties/claim/:propertyId
  * Claim a property in the current country

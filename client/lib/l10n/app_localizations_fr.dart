@@ -6835,6 +6835,49 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucune arme utilisable dans l\'inventaire. Achetez ou déplacez d\'abord une arme dans les objets transportés.';
 
   @override
+  String get inventoryPaperDoll => 'Équipement';
+
+  @override
+  String get inventoryBackpackGrid => 'Sac à dos';
+
+  @override
+  String get inventoryStorageGrid => 'Stockage';
+
+  @override
+  String get inventoryMaterialsDepot => 'Dépôt de matériaux';
+
+  @override
+  String get inventoryEquipWeapon => 'Arme du crime';
+
+  @override
+  String get inventoryEquipArmor => 'Gilet';
+
+  @override
+  String get inventoryEmptySlot => 'Emplacement vide';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Sélectionné : $name. Appuyez sur un emplacement valide pour le déplacer.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Stockage ouvert';
+
+  @override
+  String get inventoryTransferOk => 'Article déplacé';
+
+  @override
+  String get inventoryTransferFailed => 'Le déplacement a échoué';
+
+  @override
+  String get inventoryWrongDrop => 'Cette chute n\'est pas autorisée ici';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Sac à dos $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'Vous ne transportez aucun outil, arme ou munition.';
 
@@ -15564,7 +15607,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'L\'inventaire est divisé en articles transportés (sur vous), articles stockés (entrepôt/stockage de l\'équipage) et chargements actifs. \nLe poids détermine votre capacité de charge. Certains délits ou blocage de voyage si vous êtes surchargé. \nLes médicaments sont stockés et indiqués dans l\'inventaire et le stockage en grammes ; 351 signifie 351g. \nL\'état de l\'article se dégrade avec l\'utilisation. Les armes en mauvais état fonctionnent moins bien et les outils peuvent se briser. \nEn haut de l\'inventaire, vous pouvez également choisir votre arme criminelle par défaut. Seules les armes portées et utilisables comptent pour cette sélection. \nLes équipements vous permettent de basculer rapidement entre un ensemble de crime (outil + arme) et un ensemble de voyage (objets de valeur légers et minimes). \nLors de son arrestation, la police peut confisquer des objets. Ne transportez pas d\'objets de valeur avec un niveau de recherche élevé. \nLes drogues en stock augmentent les risques d’intervention du FBI lors de voyages internationaux. \nLe stockage de l’équipage est un endroit sûr pour conserver les objets hors de votre risque personnel.';
+      'L\'inventaire s\'ouvre sous la forme d\'une poupée de papier : votre avatar au centre, un emplacement pour arme du crime et un emplacement pour gilet, ainsi que des emplacements carrés pour sac à dos.\nFaites glisser un élément (ou appuyez dessus, puis appuyez sur une cible valide) pour le déplacer. Sur les téléphones, appuyer pour sélectionner est plus fiable que faire glisser.\nLa grille de droite représente le contexte actuel : une maison ou un entrepôt dans ce pays, ou le dépôt de matériaux. Ouvrir le stockage sur une propriété saute ici avec ce bâtiment sélectionné.\nLes maisons stockent des armes, des munitions, des gilets et de l\'argent liquide. Les entrepôts stockent les outils. Les matériaux restent dans le dépôt de campagne, pas dans une maison. Cash utilise des boutons, pas des glisser.\nVous ne pouvez porter qu\'un seul gilet. Déposer un gilet sur l\'avatar l\'équipe ; le stocker dans une maison le désCrew. Un deuxième gilet porté est refusé.\nL\'emplacement de l\'arme du crime reste synchronisé avec l\'écran Crimes. Seules les armes transportées et utilisables comptent.\nLa capacité du sac à dos couvre les outils, les armes et le matériel transporté. Les munitions et le gilet usé n\'utilisent pas les emplacements du sac à dos. Le serveur rejette les packs complets, le mauvais pays et le mauvais type de propriété.\nLes équipements restent un deuxième onglet pour les ensembles de crime ou de voyage enregistrés.\nLes médicaments sont stockés et affichés en grammes ; 351 signifie 351g. Le stockage de l’équipage reste une cachette sécurisée distincte.\nLors de son arrestation, la police peut confisquer des objets. Les médicaments en stock augmentent le risque du FBI lors des voyages internationaux.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15582,7 +15625,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Chaque bien a son propre rôle : espace de stockage, capacité d\'accueil ou encore accès à un module de suivi comme la discothèque. \nLes mises à niveau de l\'entrepôt augmentent votre capacité de stockage pour les articles et autres stocks. \nLes maisons et les appartements augmentent la capacité d\'accueil ; Les joueurs VIP reçoivent en plus des emplacements supplémentaires. \nCertaines propriétés sont uniques ou verrouillées par pays : vous devez être dans le bon pays pour les acheter ou les gérer. \nLa vente rapporte 70% du prix d\'achat. Pas de temps de recharge pour la vente, c\'est instantané. \nUne discothèque achetée ouvre l\'écran de gestion de discothèque séparé ; ce module gère la gestion et les revenus, pas l\'aperçu des propriétés.';
+      'Chaque bien a son propre rôle : espace de stockage, capacité d\'accueil ou encore accès à un module de suivi comme la discothèque.\nLes mises à niveau de l\'entrepôt augmentent votre capacité de stockage pour les articles et autres stocks.\nLes maisons stockent des armes, des munitions, des gilets et de l’argent liquide ; les entrepôts stockent les outils. Le stockage ouvert sur une maison ou un entrepôt ouvre la poupée de papier d\'inventaire avec ce bâtiment sélectionné. Vous devez être dans le même pays.\nLes maisons et les appartements augmentent la capacité d\'accueil ; Les joueurs VIP reçoivent en plus des emplacements supplémentaires.\nCertaines propriétés sont uniques ou verrouillées par pays : vous devez être dans le bon pays pour les acheter ou les gérer.\nLa vente rapporte 70% du prix d\'achat. Pas de temps de recharge pour la vente, c\'est instantané.\nUne discothèque achetée ouvre l\'écran de gestion de discothèque séparé ; ce module gère la gestion et les revenus, pas l\'aperçu des propriétés.\nLe développement dépense de l\'argent en banque : chaque niveau augmente de façon permanente le revenu passif de cette propriété (le niveau maximum et le temps de recharge sont réglés en fonction du serveur).';
 
   @override
   String get helpTopicPropertiesTips =>

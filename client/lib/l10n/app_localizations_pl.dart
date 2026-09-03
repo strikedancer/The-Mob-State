@@ -6791,6 +6791,49 @@ class AppLocalizationsPl extends AppLocalizations {
       'Brak użytecznej broni w ekwipunku. Najpierw kup lub przenieś broń do przenoszonych przedmiotów.';
 
   @override
+  String get inventoryPaperDoll => 'Sprzęt';
+
+  @override
+  String get inventoryBackpackGrid => 'Plecak';
+
+  @override
+  String get inventoryStorageGrid => 'Składowanie';
+
+  @override
+  String get inventoryMaterialsDepot => 'Magazyn materiałów';
+
+  @override
+  String get inventoryEquipWeapon => 'Broń zbrodni';
+
+  @override
+  String get inventoryEquipArmor => 'Kamizelka';
+
+  @override
+  String get inventoryEmptySlot => 'Puste gniazdo';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Wybrano: $name. Kliknij prawidłowy slot, aby go przenieść.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Otwórz magazyn';
+
+  @override
+  String get inventoryTransferOk => 'Element przeniesiony';
+
+  @override
+  String get inventoryTransferFailed => 'Przeniesienie nie powiodło się';
+
+  @override
+  String get inventoryWrongDrop => 'Ten spadek nie jest tu dozwolony';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Plecak $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'Nie masz przy sobie żadnych narzędzi, broni ani amunicji.';
 
@@ -15495,7 +15538,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Zapasy są podzielone na przedmioty przenoszone (na tobie), przedmioty przechowywane (magazyn/przechowywanie załogi) i aktywne wyposażenie. \nWaga określa nośność. Niektóre przestępstwa lub blokady podróżne, jeśli jesteś przeciążony. \nNarkotyki są przechowywane i pokazywane w ekwipunku i magazynie w gramach; 351 oznacza 351g. \nStan przedmiotu pogarsza się wraz z użytkowaniem. Broń w złym stanie działa gorzej, a narzędzia mogą się zepsuć. \nNa górze Ekwipunku możesz także wybrać domyślną broń zbrodni. W przypadku tego wyboru liczy się tylko niesiona, użyteczna broń. \nZestawy wyposażenia pozwalają szybko przełączać się pomiędzy zestawem kryminalnym (narzędzie + broń) a zestawem podróżnym (lekkie, minimalne przedmioty wartościowe). \nPo aresztowaniu policja może skonfiskować przedmioty. Nie noś kosztowności z wysokim poziomem poszukiwanego. \nNarkotyki w inwentarzu zwiększają szansę na interwencję FBI podczas podróży międzynarodowych. \nMagazyn załogi to bezpieczne miejsce, w którym można przechowywać przedmioty, których nie ponosisz osobiście.';
+      'Ekwipunek otwiera się w widoku papierowej lalki: twój awatar pośrodku, miejsce na broń przestępczą i miejsce na kamizelkę, a także kwadratowe miejsca na plecak.\nPrzeciągnij element (lub dotknij go, a następnie dotknij prawidłowego celu), aby go przenieść. Na telefonach funkcja „dotknij, aby wybrać” jest bardziej niezawodna niż przeciąganie.\nSiatka po prawej stronie przedstawia bieżący kontekst: dom lub magazyn w tym kraju albo skład materiałów. Otwarty magazyn na nieruchomości przeskakuje tutaj z wybranym budynkiem.\nDomy przechowują broń, amunicję, kamizelki i gotówkę. Magazyny przechowują narzędzia. Materiały pozostają w wiejskim magazynie, a nie w domu. Cash używa przycisków, a nie przeciągania.\nMożna nosić tylko jedną kamizelkę. Upuszczenie kamizelki na awatara wyposaża ją; przechowywanie go w domu pozbawia go wyposażenia. Druga noszona kamizelka jest odrzucana.\nMiejsce na broń kryminalną jest zsynchronizowane z ekranem zbrodni. Liczy się tylko niesiona, użyteczna broń.\nPojemność plecaka obejmuje narzędzia, broń i przenoszone materiały. Amunicja i zużyta kamizelka nie korzystają z miejsc w plecaku. Serwer odrzuca pełne pakiety, zły kraj i zły typ właściwości.\nZestawy wyposażenia pozostają drugą zakładką dla zapisanych zestawów przestępczych lub podróżnych.\nLeki są przechowywane i wyświetlane w gramach; 351 oznacza 351g. Magazyn załogi pozostaje oddzielnym bezpiecznym schowkiem.\nPo aresztowaniu policja może skonfiskować przedmioty. Narkotyki w zapasach zwiększają ryzyko FBI podczas podróży międzynarodowych.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15513,7 +15556,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Każda nieruchomość ma swoją rolę: powierzchnię magazynową, pojemność mieszkaniową czy dostęp do modułu uzupełniającego, takiego jak Nightclub. \nUlepszenia magazynu zwiększają pojemność magazynu dla przedmiotów i innych zapasów. \nDomy i mieszkania zwiększają pojemność mieszkaniową; Oprócz tego gracze VIP otrzymują dodatkowe miejsca. \nNiektóre nieruchomości są unikalne lub mają blokadę krajową: aby je kupić lub zarządzać nimi, musisz znajdować się w odpowiednim kraju. \nSprzedaż daje 70% ceny zakupu. Sprzedaż nie wymaga czasu odnowienia, sprzedaż jest natychmiastowa. \nZakupiony Nightclub otwiera oddzielny ekran zarządzania klubem nocnym; moduł ten obsługuje zarządzanie i przychody, a nie przegląd właściwości.';
+      'Każda nieruchomość ma swoją rolę: powierzchnię magazynową, pojemność mieszkaniową czy dostęp do modułu uzupełniającego, takiego jak Nightclub.\nUlepszenia magazynu zwiększają pojemność magazynu dla przedmiotów i innych zapasów.\nDomy przechowują broń, amunicję, kamizelki i gotówkę; magazyny przechowują narzędzia. Otwarty magazyn w domu lub magazynie otwiera papierową lalkę z inwentarzem z wybranym budynkiem. Musisz być w tym samym kraju.\nDomy i mieszkania zwiększają pojemność mieszkaniową; Oprócz tego gracze VIP otrzymują dodatkowe miejsca.\nNiektóre nieruchomości są unikalne lub mają blokadę krajową: aby je kupić lub zarządzać nimi, musisz znajdować się w odpowiednim kraju.\nSprzedaż daje 70% ceny zakupu. Sprzedaż nie wymaga czasu odnowienia, sprzedaż jest natychmiastowa.\nZakupiony Nightclub otwiera oddzielny ekran zarządzania klubem nocnym; moduł ten obsługuje zarządzanie i przychody, a nie przegląd właściwości.\nDevelop wydaje pieniądze z banku: każdy poziom trwale zwiększa pasywny dochód tej właściwości (maksymalny poziom i czas odnowienia są dostosowywane do serwera).';
 
   @override
   String get helpTopicPropertiesTips =>

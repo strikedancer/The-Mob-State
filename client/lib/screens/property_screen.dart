@@ -7,6 +7,7 @@ import '../services/api_client.dart';
 import '../widgets/property_card.dart';
 import '../widgets/responsive_modal.dart';
 import './estate_lot_preview_screen.dart';
+import './inventory_screen.dart';
 import './nightclub_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
@@ -424,6 +425,24 @@ class PropertyScreenState extends State<PropertyScreen>
     }
   }
 
+  static const _storagePropertyTypes = {
+    'warehouse',
+    'house',
+    'apartment',
+    'mansion',
+    'penthouse',
+    'safehouse',
+  };
+
+  Future<void> _openStorage(Property property) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => InventoryScreen(initialPropertyId: property.id),
+      ),
+    );
+  }
+
   Future<void> _openNightclub(Property property) async {
     await Navigator.push(
       context,
@@ -586,6 +605,9 @@ class PropertyScreenState extends State<PropertyScreen>
             onUpgrade: () => _upgradeProperty(property),
             onDevelop: property.nextDevelopCost != null
                 ? () => _developProperty(property)
+                : null,
+            onOpenStorage: _storagePropertyTypes.contains(propertyType)
+                ? () => _openStorage(property)
                 : null,
             onManage: propertyType == 'nightclub'
                 ? () => _openNightclub(property)

@@ -6808,6 +6808,49 @@ class AppLocalizationsIt extends AppLocalizations {
       'Nessuna arma utilizzabile nell\'inventario. Acquista o sposta prima un\'arma negli oggetti trasportati.';
 
   @override
+  String get inventoryPaperDoll => 'Attrezzatura';
+
+  @override
+  String get inventoryBackpackGrid => 'Zaino';
+
+  @override
+  String get inventoryStorageGrid => 'Magazzinaggio';
+
+  @override
+  String get inventoryMaterialsDepot => 'Deposito materiali';
+
+  @override
+  String get inventoryEquipWeapon => 'Arma del crimine';
+
+  @override
+  String get inventoryEquipArmor => 'Maglia';
+
+  @override
+  String get inventoryEmptySlot => 'Slot vuoto';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Selezionato: $name. Tocca uno slot valido per spostarlo.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Spazio di archiviazione aperto';
+
+  @override
+  String get inventoryTransferOk => 'Articolo spostato';
+
+  @override
+  String get inventoryTransferFailed => 'Spostamento fallito';
+
+  @override
+  String get inventoryWrongDrop => 'Quella caduta non è consentita qui';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Zaino $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'Non stai trasportando strumenti, armi o munizioni.';
 
@@ -15542,7 +15585,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'L\'inventario è suddiviso in articoli trasportati (su di te), articoli immagazzinati (magazzino/deposito dell\'Crew) e carichi attivi. \nIl peso determina la capacità di carico. Alcuni crimini o blocchi di viaggio se sei sovraccarico. \nI farmaci vengono conservati e visualizzati nell\'inventario e nello stoccaggio in grammi; 351 significa 351g. \nLe condizioni dell\'articolo peggiorano con l\'uso. Le armi in cattive condizioni funzionano peggio e gli strumenti possono rompersi. \nNella parte superiore dell\'Inventario puoi anche scegliere la tua arma del crimine predefinita. Per quella selezione contano solo le armi trasportate e utilizzabili. \nGli equipaggiamenti ti consentono di passare rapidamente da un set da crimine (strumento + arma) a un set da viaggio (oggetti di valore leggeri e minimi). \nAll\'arresto la polizia può confiscare oggetti. Non trasportare oggetti di valore con un livello di ricercato elevato. \nI farmaci nell\'inventario aumentano le possibilità di intervento dell\'FBI durante i viaggi internazionali. \nIl deposito dell\'Crew è un luogo sicuro in cui conservare gli oggetti al di fuori del rischio di trasporto personale.';
+      'L\'inventario si apre come una bambola di carta: il tuo avatar al centro, uno slot per l\'arma del crimine e uno slot per il gilet, oltre a slot quadrati per lo zaino.\nTrascina un elemento (o toccalo, quindi tocca un bersaglio valido) per spostarlo. Sui telefoni, il tocco per selezionare è più affidabile del trascinamento.\nLa griglia di destra è il contesto attuale: una casa o un magazzino in questo paese, o il deposito dei materiali. Apri spazio di archiviazione su una proprietà salta qui con quell\'edificio selezionato.\nLe case immagazzinano armi, munizioni, giubbotti e contanti. I magazzini immagazzinano gli strumenti. I materiali restano nel deposito di campagna, non in una casa. Cash utilizza i pulsanti, non il trascinamento.\nPuoi indossare un solo gilet. Lasciare un giubbotto sull\'avatar lo equipaggia; conservarlo in una casa lo disequipaggia. Un secondo giubbotto indossato viene rifiutato.\nLo slot dell\'arma del crimine rimane sincronizzato con la schermata Crimini. Contano solo le armi trasportate e utilizzabili.\nLa capacità dello zaino comprende strumenti, armi e materiali trasportati. Le munizioni e il giubbotto indossato non utilizzano gli slot dello zaino. Il server rifiuta pacchetti completi, paese sbagliato e tipo di proprietà sbagliato.\nGli equipaggiamenti rimangono una seconda scheda per i crimini salvati o i set di viaggio.\nI farmaci vengono archiviati e visualizzati in grammi; 351 significa 351g. Lo stoccaggio dell\'Crew rimane una scorta sicura separata.\nAll\'arresto la polizia può confiscare oggetti. I farmaci nell\'inventario aumentano il rischio dell\'FBI nei viaggi internazionali.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15560,7 +15603,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Ogni proprietà ha il proprio ruolo: spazio di stoccaggio, capacità abitativa o accesso a un modulo successivo come la discoteca. \nGli aggiornamenti del magazzino aumentano la capacità di stoccaggio di articoli e altre scorte. \nCase e appartamenti aumentano la capacità abitativa; I giocatori VIP ricevono inoltre slot extra. \nAlcune proprietà sono uniche o bloccate nel paese: devi essere nel paese corretto per acquistarle o gestirle. \nLa vendita rende il 70% del prezzo di acquisto. Nessun tempo di recupero sulla vendita, è istantaneo. \nUna discoteca acquistata apre la schermata separata di gestione della discoteca; quel modulo gestisce la gestione e le entrate, non la panoramica delle proprietà.';
+      'Ogni proprietà ha il proprio ruolo: spazio di stoccaggio, capacità abitativa o accesso a un modulo successivo come la discoteca.\nGli aggiornamenti del magazzino aumentano la capacità di stoccaggio di articoli e altre scorte.\nLe case immagazzinano armi, munizioni, giubbotti e contanti; magazzini immagazzinano strumenti. L\'apertura del deposito in una casa o in un magazzino apre la bambola di carta Inventario con quell\'edificio selezionato. Devi essere nello stesso paese.\nCase e appartamenti aumentano la capacità abitativa; I giocatori VIP ricevono inoltre slot extra.\nAlcune proprietà sono uniche o bloccate nel paese: devi essere nel paese corretto per acquistarle o gestirle.\nLa vendita rende il 70% del prezzo di acquisto. Nessun tempo di recupero sulla vendita, è istantaneo.\nUna discoteca acquistata apre la schermata separata di gestione della discoteca; quel modulo gestisce la gestione e le entrate, non la panoramica delle proprietà.\nLo sviluppo spende denaro bancario: ogni livello aumenta in modo permanente il reddito passivo di quella proprietà (il livello massimo e il tempo di recupero sono ottimizzati dal server).';
 
   @override
   String get helpTopicPropertiesTips =>

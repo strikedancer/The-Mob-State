@@ -52,12 +52,13 @@ Acceptatie-eis:
 ## Cross-Module Dependency Map (Minimaal)
 
 - Drugs -> Facilities, Production, Inventory, Dashboard, Admin
-- Properties -> Drugs, Dashboard, Admin, Balance & Economy
+- Properties -> Drugs, Dashboard, Admin, Balance & Economy, Inventory, Security
 - Money Laundering -> Bank, Security/FBI heat, Dashboard, Balance & Economy
 - Stock Market -> Bank, Dashboard, Balance & Economy (gescheiden van Crypto)
 - Nightclub -> Drugs, Prostitution, Dashboard, Admin
 - Territory -> Crew, Crew Wars, Dashboard, Notifications, Travel, Admin
 - Crimes/Vehicle Theft -> Garage, Inventory, Prison, Security, Court, Crew, Friends, Notifications, Admin
+- Inventory -> Properties, Security, Crimes, Dashboard
 - Hitlist -> Crimes, Security, Crew, Dashboard, Admin
 - Crew Wars -> Crew, Hitlist, Crimes, Dashboard, Notifications, Payments, Achievements, Admin
   - Optional Discord transport: `CREW_WAR_DISCORD_WEBHOOK_URL` (+ enabled events / min interval). See `crew-wars.md` onboarding. Empty URL = off.

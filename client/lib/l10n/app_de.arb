@@ -8149,12 +8149,12 @@
   "helpTopicInventoryCategory": "Management",
   "helpTopicInventoryTitle": "Inventar",
   "helpTopicInventorySummary": "Verwalten Sie alles, was Sie transportieren, lagern und ausrüsten: Waffen, Werkzeuge, Fahrzeuge, Medikamente und Handelswaren.",
-  "helpTopicInventoryHow": "Das Inventar ist in mitgeführte Gegenstände (bei Ihnen), gelagerte Gegenstände (Lager/Besatzungslager) und aktive Ladungen unterteilt. \nDas Gewicht bestimmt Ihre Tragfähigkeit. Einige Straftaten oder Reisesperren, wenn Sie überlastet sind. \nMedikamente werden gelagert und im Inventar und in der Lagerung in Gramm ausgewiesen; 351 bedeutet 351g. \nDer Zustand des Artikels verschlechtert sich durch den Gebrauch. Waffen in schlechtem Zustand leisten schlechter und Werkzeuge können kaputt gehen. \nOben im Inventar können Sie auch Ihre Standard-Verbrechenswaffe auswählen. Für diese Auswahl zählen nur getragene, verwendbare Waffen. \nMit Loadouts können Sie schnell zwischen einem Krimi-Set (Werkzeug + Waffe) und einem Reiseset (leichte, minimale Wertsachen) wechseln. \nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Tragen Sie keine Wertgegenstände mit einem hohen Fahndungslevel. \nDrogen im Inventar erhöhen die Wahrscheinlichkeit eines Eingreifens des FBI bei internationalen Reisen. \nDie Mannschaftslagerung ist ein sicherer Ort, an dem Sie Gegenstände außerhalb Ihres persönlichen Transportrisikos aufbewahren können.",
+  "helpTopicInventoryHow": "Das Inventar wird als Papierpuppenansicht geöffnet: Ihr Avatar in der Mitte, ein Kriminalwaffen-Slot und ein Westen-Slot sowie quadratische Rucksack-Slots.\nZiehen Sie ein Element (oder tippen Sie darauf und dann auf ein gültiges Ziel), um es zu verschieben. Auf Telefonen ist das Tippen zum Auswählen zuverlässiger als das Ziehen.\nDas rechte Raster stellt den aktuellen Kontext dar: ein Haus oder Lagerhaus in diesem Land oder das Materialdepot. Hier springt die Option „Lager öffnen auf einem Grundstück“ mit ausgewähltem Gebäude.\nIn Häusern werden Waffen, Munition, Westen und Bargeld aufbewahrt. Lagerhallen lagern Werkzeuge. Materialien bleiben im Landdepot, nicht in einem Haus. Bargeld verwendet Knöpfe, nicht Ziehen.\nSie können nur eine Weste tragen. Wenn Sie eine Weste auf den Avatar fallen lassen, wird dieser ausgerüstet; Wenn man es in einem Haus lagert, wird es entrüstet. Eine zweite getragene Weste wird abgelehnt.\nDer Platz für die Verbrechenswaffe bleibt mit dem Bildschirm „Verbrechen“ synchronisiert. Es zählen nur getragene, verwendbare Waffen.\nDie Kapazität des Rucksacks deckt Werkzeuge, Waffen und mitgeführte Materialien ab. Munition und die getragene Weste belegen keine Rucksackplätze. Der Server lehnt volle Pakete, falsches Land und falschen Eigenschaftstyp ab.\nLoadouts bleiben eine zweite Registerkarte für gespeicherte Kriminal- oder Reisesets.\nMedikamente werden gespeichert und in Gramm angezeigt; 351 bedeutet 351g. Der Mannschaftsraum bleibt ein separater, sicherer Versteck.\nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Drogen im Inventar erhöhen das FBI-Risiko auf internationalen Reisen.",
   "helpTopicInventoryTips": "Halten Sie Ihr Gepäck leicht, wenn Sie reisen oder eine Kriminalitätstour mit hohem Festnahmerisiko durchführen. \nVerwenden Sie Loadouts, damit Sie für jedes Szenario immer die richtige Ausrüstung haben. \nÜberprüfen Sie regelmäßig den Zustand des Artikels: Defekte Werkzeuge blockieren stillschweigend Straftaten ohne eindeutige Fehlermeldung.",
   "helpTopicPropertiesCategory": "Wirtschaft",
   "helpTopicPropertiesTitle": "Eigenschaften",
   "helpTopicPropertiesSummary": "Kaufen Sie Immobilien, um den Lagerraum, die Wohnkapazität und den Zugang zu bestimmten Systemen wie dem Nightclub zu erweitern.",
-  "helpTopicPropertiesHow": "Jede Immobilie hat ihre eigene Rolle: Lagerraum, Wohnkapazität oder Zugang zu einem Folgemodul wie dem Nightclub. \nLager-Upgrades erhöhen Ihre Lagerkapazität für Artikel und andere Bestände. \nHäuser und Wohnungen erhöhen die Wohnkapazität; VIP-Spieler erhalten darüber hinaus zusätzliche Slots. \nEinige Immobilien sind einzigartig oder länderspezifisch: Sie müssen sich im richtigen Land befinden, um sie zu kaufen oder zu verwalten. \nDie Verkaufsrendite beträgt 70 % des Kaufpreises. Beim Verkauf gibt es keine Abklingzeit, der Verkauf erfolgt sofort. \nEin gekaufter Nightclub öffnet den separaten Nightclub-Verwaltungsbildschirm; Dieses Modul kümmert sich um die Verwaltung und den Umsatz, nicht um die Immobilienübersicht.",
+  "helpTopicPropertiesHow": "Jede Immobilie hat ihre eigene Rolle: Lagerraum, Wohnkapazität oder Zugang zu einem Folgemodul wie dem Nightclub.\nLager-Upgrades erhöhen Ihre Lagerkapazität für Artikel und andere Bestände.\nHäuser lagern Waffen, Munition, Westen und Bargeld; Lagerhallen lagern Werkzeuge. Wenn Sie „Lager“ in einem Haus oder Lagerhaus öffnen, wird die Inventar-Papierpuppe mit dem ausgewählten Gebäude geöffnet. Sie müssen sich im selben Land befinden.\nHäuser und Wohnungen erhöhen die Wohnkapazität; VIP-Spieler erhalten darüber hinaus zusätzliche Slots.\nEinige Immobilien sind einzigartig oder länderspezifisch: Sie müssen sich im richtigen Land befinden, um sie zu kaufen oder zu verwalten.\nDie Verkaufsrendite beträgt 70 % des Kaufpreises. Beim Verkauf gibt es keine Abklingzeit, der Verkauf erfolgt sofort.\nEin gekaufter Nightclub öffnet den separaten Nightclub-Verwaltungsbildschirm; Dieses Modul kümmert sich um die Verwaltung und den Umsatz, nicht um die Immobilienübersicht.\n„Entwickeln“ gibt Bankgelder aus: Jede Stufe erhöht dauerhaft das passive Einkommen dieser Immobilie (maximale Stufe und Abklingzeit sind serverabhängig).",
   "helpTopicPropertiesTips": "Investieren Sie frühzeitig in ein Lager, wenn Sie mehr Lagerraum für Ihre anderen Systeme benötigen. \nWählen Sie Häuser und Wohnungen, wenn Sie mehr Wohnkapazität für zugehörige Spielsysteme schaffen möchten. \nVerkaufen Sie nicht zu schnell: 70 % bedeuten einen erheblichen Abschlag vom Kaufpreis.",
   "helpTopicBankCategory": "Wirtschaft",
   "helpTopicBankTitle": "Bank",
@@ -10767,6 +10767,36 @@
       },
       "status": {
         "type": "String"
+      }
+    }
+  },
+  "inventoryPaperDoll": "Ausrüstung",
+  "inventoryBackpackGrid": "Rucksack",
+  "inventoryStorageGrid": "Lagerung",
+  "inventoryMaterialsDepot": "Materialdepot",
+  "inventoryEquipWeapon": "Verbrechenswaffe",
+  "inventoryEquipArmor": "Weste",
+  "inventoryEmptySlot": "Leerer Steckplatz",
+  "inventorySelectHint": "Ausgewählt: {name}. Tippen Sie auf einen gültigen Slot, um ihn zu verschieben.",
+  "@inventorySelectHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryOpenStorage": "Offener Speicher",
+  "inventoryTransferOk": "Artikel verschoben",
+  "inventoryTransferFailed": "Der Umzug ist fehlgeschlagen",
+  "inventoryWrongDrop": "Dieser Tropfen ist hier nicht erlaubt",
+  "inventorySlotUsage": "Rucksack {used}/{max}",
+  "@inventorySlotUsage": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
       }
     }
   }

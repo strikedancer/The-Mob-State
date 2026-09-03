@@ -6808,6 +6808,49 @@ class AppLocalizationsEs extends AppLocalizations {
       'No hay armas utilizables en el inventario. Primero compre o mueva un arma a los artículos que lleva.';
 
   @override
+  String get inventoryPaperDoll => 'Equipo';
+
+  @override
+  String get inventoryBackpackGrid => 'Mochila';
+
+  @override
+  String get inventoryStorageGrid => 'Almacenamiento';
+
+  @override
+  String get inventoryMaterialsDepot => 'Depósito de materiales';
+
+  @override
+  String get inventoryEquipWeapon => 'Arma del crimen';
+
+  @override
+  String get inventoryEquipArmor => 'Chaleco';
+
+  @override
+  String get inventoryEmptySlot => 'Ranura vacía';
+
+  @override
+  String inventorySelectHint(String name) {
+    return 'Seleccionado: $name. Toque una ranura válida para moverla.';
+  }
+
+  @override
+  String get inventoryOpenStorage => 'Almacenamiento abierto';
+
+  @override
+  String get inventoryTransferOk => 'Artículo movido';
+
+  @override
+  String get inventoryTransferFailed => 'Movimiento fallido';
+
+  @override
+  String get inventoryWrongDrop => 'Esa bajada no está permitida aquí.';
+
+  @override
+  String inventorySlotUsage(int used, int max) {
+    return 'Mochila $used/$max';
+  }
+
+  @override
   String get inventoryCarriedEmpty =>
       'No llevas herramientas, armas ni municiones.';
 
@@ -15518,7 +15561,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'El inventario se divide en artículos transportados (sobre usted), artículos almacenados (almacén/almacenamiento de la Crew) y equipamientos activos. \nEl peso determina su capacidad de carga. Algunos delitos o bloqueo de viaje si estás sobrecargado. \nLos medicamentos se almacenan y se muestran en el inventario y almacenamiento como gramos; 351 significa 351 g. \nLa condición del artículo se degrada con el uso. Las armas en mal estado funcionan peor y las herramientas pueden romperse. \nEn la parte superior del Inventario también puedes elegir tu arma criminal predeterminada. Sólo las armas utilizables y llevadas cuentan para esa selección. \nLos equipamientos te permiten cambiar rápidamente entre un conjunto de crimen (herramienta + arma) y un conjunto de viaje (ligero, con mínimos objetos de valor). \nAl ser arrestado, la policía puede confiscar artículos. No lleve objetos de valor con un nivel de búsqueda alto. \nLas drogas en el inventario aumentan las posibilidades de intervención del FBI durante los viajes internacionales. \nEl almacenamiento de la Crew es un lugar seguro para guardar artículos fuera de su riesgo de transporte personal.';
+      'El inventario se abre como una vista de muñeca de papel: tu avatar en el centro, una ranura para armas criminales y una ranura para chaleco, además de ranuras cuadradas para mochila.\nArrastre un elemento (o tóquelo y luego toque un objetivo válido) para moverlo. En los teléfonos, tocar para seleccionar es más confiable que arrastrar.\nLa cuadrícula de la derecha es el contexto actual: una casa o almacén en este país, o el depósito de materiales. Abrir almacenamiento en una propiedad salta aquí con ese edificio seleccionado.\nLas casas almacenan armas, municiones, chalecos y dinero en efectivo. Los almacenes almacenan herramientas. Los materiales permanecen en el depósito del campo, no en una casa. El efectivo usa botones, no arrastre.\nSolo puedes usar un chaleco. Colocar un chaleco sobre el avatar lo equipa; almacenarlo en una casa lo desequipa. Se rechaza un segundo chaleco usado.\nLa ranura de armas criminales permanece sincronizada con la pantalla Crímenes. Sólo cuentan las armas transportadas y utilizables.\nLa capacidad de la mochila cubre herramientas, armas y materiales transportados. La munición y el chaleco desgastado no utilizan ranuras para mochila. El servidor rechaza paquetes completos, países incorrectos y tipos de propiedad incorrectos.\nLos equipamientos siguen siendo una segunda pestaña para crímenes guardados o conjuntos de viajes.\nLos medicamentos se almacenan y se muestran en gramos; 351 significa 351 g. El almacenamiento de la Crew sigue siendo un escondite seguro separado.\nAl ser arrestado, la policía puede confiscar artículos. Las drogas en inventario aumentan el riesgo del FBI en viajes internacionales.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -15536,7 +15579,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Cada inmueble tiene su propio rol: espacio de almacenamiento, capacidad de vivienda o acceso a un módulo posterior como la discoteca. \nLas actualizaciones de almacén aumentan su capacidad de almacenamiento de artículos y otras existencias. \nCasas y departamentos aumentan la capacidad habitacional; Los jugadores VIP reciben además espacios adicionales. \nAlgunas propiedades son únicas o están bloqueadas por país: debes estar en el país correcto para comprarlas o administrarlas. \nLa venta rinde el 70% del precio de compra. No hay tiempo de reutilización para vender, es instantáneo. \nUn Nightclub comprado abre la pantalla separada de administración del Nightclub; ese módulo maneja la administración y los ingresos, no la descripción general de las propiedades.';
+      'Cada inmueble tiene su propio rol: espacio de almacenamiento, capacidad de vivienda o acceso a un módulo posterior como la discoteca.\nLas actualizaciones de almacén aumentan su capacidad de almacenamiento de artículos y otras existencias.\nLas casas almacenan armas, municiones, chalecos y dinero en efectivo; almacenes almacenan herramientas. Abrir almacenamiento en una casa o almacén abre la muñeca de papel del Inventario con ese edificio seleccionado. Debes estar en el mismo país.\nCasas y departamentos aumentan la capacidad habitacional; Los jugadores VIP reciben además espacios adicionales.\nAlgunas propiedades son únicas o están bloqueadas por país: debes estar en el país correcto para comprarlas o administrarlas.\nLa venta rinde el 70% del precio de compra. No hay tiempo de reutilización para vender, es instantáneo.\nUn Nightclub comprado abre la pantalla separada de administración del Nightclub; ese módulo maneja la administración y los ingresos, no la descripción general de las propiedades.\nDesarrollar gasta dinero del banco: cada nivel aumenta permanentemente los ingresos pasivos de esa propiedad (el nivel máximo y el tiempo de reutilización están ajustados por el servidor).';
 
   @override
   String get helpTopicPropertiesTips =>

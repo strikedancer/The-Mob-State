@@ -8,6 +8,8 @@ Scope-afbakening:
 - Nightclub is wél koopbaar via deze module (aankoop start het nachtclub-systeem); beheer van de nachtclub zelf vindt echter plaats in de aparte Nightclub-module.
 - Deze module richt zich op house/apartment/warehouse/nightclub (en eventuele toekomstige property types die expliciet aan deze flow gekoppeld zijn).
 - **Development (v1):** permanente income-boost per eigendom via bank-spend (`developmentLevel` / `lastDevelopAt`), los van warehouse capacity upgrades.
+- Residential storage (house/apartment/mansion/penthouse/safehouse): `weapons, cash, ammo, armor`. Warehouse: `tools`. Nightclub drugs stay on the nightclub module.
+- **Open storage** on a house or warehouse opens Inventory with that property selected. Access still requires the same country (`accessibleInCurrentCountry` / `WRONG_COUNTRY`).
 
 ## Primary Frontend Entry
 - client/lib/screens/property_screen.dart
@@ -58,6 +60,8 @@ Endpoint: `POST /properties/:id/develop`
 - Verify shop is not returned in properties list endpoints and cannot be claimed via properties flow.
 - Verify nightclub is visible in properties list and can be purchased (creating a nightclubVenue record).
 - Verify develop spends bank, raises `developmentLevel`, and increases passive income display/calc.
+- Verify a house can store weapons, ammo and a vest, and that a warehouse still only accepts tools.
+- Verify Open storage from a property opens Inventory with that building selected, and a property in another country stays locked.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

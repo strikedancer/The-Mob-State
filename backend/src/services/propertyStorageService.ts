@@ -1,21 +1,44 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import prisma from '../lib/prisma';
 import toolService from './toolService';
 import { weaponService } from './weaponService';
+import { ammoService } from './ammoService';
+import backpackService from './backpackService';
 
-const PROPERTY_STORAGE_RULES: Record<string, Array<'tools' | 'drugs' | 'weapons' | 'cash'>> = {
+type StorageCategory = 'tools' | 'drugs' | 'weapons' | 'cash' | 'ammo' | 'armor';
+
+const PROPERTY_STORAGE_RULES: Record<string, StorageCategory[]> = {
   warehouse: ['tools'],
   nightclub: ['drugs'],
-  house: ['weapons', 'cash'],
-  apartment: ['weapons', 'cash'],
-  mansion: ['weapons', 'cash'],
-  penthouse: ['weapons', 'cash'],
-  safehouse: ['weapons', 'cash'],
+  house: ['weapons', 'cash', 'ammo', 'armor'],
+  apartment: ['weapons', 'cash', 'ammo', 'armor'],
+  mansion: ['weapons', 'cash', 'ammo', 'armor'],
+  penthouse: ['weapons', 'cash', 'ammo', 'armor'],
+  safehouse: ['weapons', 'cash', 'ammo', 'armor'],
 };
 
 const CASH_SLOT_VALUE = 10000;
+const AMMO_ROUNDS_PER_SLOT = 50;
+
+const NON_DRUG_STORAGE_FILTER = [
+  { drugType: { startsWith: 'weapon:' } },
+  { drugType: { startsWith: 'weapon_' } },
+  { drugType: { startsWith: 'ammo:' } },
+  { drugType: { startsWith: 'armor:' } },
+  { drugType: { startsWith: 'armorcond:' } },
+  { drugType: '__cash__' },
+];
+
+type ArmorDef = { id: string; name: string; armor: number };
+
+function loadArmorDefinitions(): ArmorDef[] {
+  const raw = readFileSync(join(__dirname, '../../content/security.json'), 'utf8');
+  return JSON.parse(raw) as ArmorDef[];
+}
 
 class PropertyStorageService {
-  getAllowedCategories(propertyType: string): Array<'tools' | 'drugs' | 'weapons' | 'cash'> {
+  getAllowedCategories(propertyType: string): StorageCategory[] {
     return PROPERTY_STORAGE_RULES[propertyType] ?? [];
   }
 
@@ -120,7 +143,7 @@ class PropertyStorageService {
         const drugs = await prisma.propertyDrugStorage.findMany({
           where: {
             propertyId: property.id,
-            NOT: [{ drugType: { startsWith: 'weapon:' } }, { drugType: '__cash__' }],
+            NOT: NON_DRUG_STORAGE_FILTER,
           },
           select: { quantity: true },
         });
@@ -139,6 +162,19 @@ class PropertyStorageService {
         usage += Math.ceil(cashAmount / CASH_SLOT_VALUE);
       }
 
+      let ammoCount = 0;
+      let armorCount = 0;
+      if (allowedCategories.includes('ammo')) {
+        const ammo = await this.getAmmoStorage(property.id);
+        ammoCount = ammo.reduce((sum, row) => sum + row.quantity, 0);
+        usage += this.ammoSlotsForQuantity(ammoCount);
+      }
+      if (allowedCategories.includes('armor')) {
+        const armor = await this.getArmorStorage(property.id);
+        armorCount = armor.reduce((sum, row) => sum + row.quantity, 0);
+        usage += armorCount;
+      }
+
       const accessibleInCurrentCountry = player?.currentCountry === property.countryId;
 
       overview.push({
@@ -152,6 +188,8 @@ class PropertyStorageService {
         toolCount,
         tools,
         weaponCount,
+        ammoCount,
+        armorCount,
         drugCount,
         cashAmount,
         accessibleInCurrentCountry,
@@ -176,7 +214,7 @@ class PropertyStorageService {
       ? await prisma.propertyDrugStorage.findMany({
           where: {
             propertyId: property.id,
-            NOT: [{ drugType: { startsWith: 'weapon:' } }, { drugType: '__cash__' }],
+            NOT: NON_DRUG_STORAGE_FILTER,
           },
           select: { drugType: true, quantity: true },
           orderBy: { drugType: 'asc' },
@@ -185,6 +223,14 @@ class PropertyStorageService {
 
     const weapons = allowedCategories.includes('weapons')
       ? await this.getWeaponStorage(property.id)
+      : [];
+
+    const ammo = allowedCategories.includes('ammo')
+      ? await this.getAmmoStorage(property.id)
+      : [];
+
+    const armor = allowedCategories.includes('armor')
+      ? await this.getArmorStorage(property.id)
       : [];
 
     const cashAmount = allowedCategories.includes('cash')
@@ -196,8 +242,12 @@ class PropertyStorageService {
       : 0;
     const drugUsage = drugs.reduce((sum, row) => sum + row.quantity, 0);
     const weaponUsage = weapons.reduce((sum, row) => sum + row.quantity, 0);
+    const ammoUsage = this.ammoSlotsForQuantity(
+      ammo.reduce((sum, row) => sum + row.quantity, 0),
+    );
+    const armorUsage = armor.reduce((sum, row) => sum + row.quantity, 0);
     const cashUsage = Math.ceil(cashAmount / CASH_SLOT_VALUE);
-    const usage = toolUsage + drugUsage + weaponUsage + cashUsage;
+    const usage = toolUsage + drugUsage + weaponUsage + ammoUsage + armorUsage + cashUsage;
 
     return {
       propertyId: property.id,
@@ -209,6 +259,8 @@ class PropertyStorageService {
       percentFull: capacity > 0 ? Math.min(100, Math.round((usage / capacity) * 100)) : 0,
       tools,
       weapons,
+      ammo,
+      armor,
       drugs,
       cashAmount,
     };
@@ -301,6 +353,12 @@ class PropertyStorageService {
       throw new Error('INSUFFICIENT_WEAPON_QUANTITY');
     }
 
+    const usage = await toolService.calculateInventoryUsage(playerId);
+    const capacity = await backpackService.getPlayerCarryingCapacity(playerId);
+    if (usage + quantity > capacity) {
+      throw new Error('INVENTORY_FULL');
+    }
+
     await prisma.$transaction(async (tx) => {
       if (stored.quantity === quantity) {
         await tx.propertyDrugStorage.delete({ where: { id: stored.id } });
@@ -332,6 +390,275 @@ class PropertyStorageService {
             weaponId,
             quantity,
             condition: 100,
+          },
+        });
+      }
+    });
+
+    const newUsage = await toolService.calculateInventoryUsage(playerId);
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { inventory_slots_used: newUsage },
+    });
+  }
+
+  private ammoSlotsForQuantity(rounds: number): number {
+    if (rounds <= 0) return 0;
+    return Math.ceil(rounds / AMMO_ROUNDS_PER_SLOT);
+  }
+
+  private async getAmmoStorage(propertyId: number) {
+    const rows = await prisma.propertyDrugStorage.findMany({
+      where: { propertyId, drugType: { startsWith: 'ammo:' } },
+      orderBy: { drugType: 'asc' },
+    });
+    return rows.map((row) => {
+      const ammoType = row.drugType.slice('ammo:'.length);
+      const def = ammoService.getAmmoDefinition(ammoType);
+      return {
+        ammoType,
+        name: def?.name ?? ammoType,
+        quantity: row.quantity,
+      };
+    });
+  }
+
+  private async getArmorStorage(propertyId: number) {
+    const rows = await prisma.propertyDrugStorage.findMany({
+      where: { propertyId, drugType: { startsWith: 'armor:' } },
+      orderBy: { drugType: 'asc' },
+    });
+    const defs = loadArmorDefinitions();
+    const condRows = await prisma.propertyDrugStorage.findMany({
+      where: { propertyId, drugType: { startsWith: 'armorcond:' } },
+    });
+    const condByType = new Map(
+      condRows.map((row) => [row.drugType.slice('armorcond:'.length), row.quantity]),
+    );
+    return rows.map((row) => {
+      const armorId = row.drugType.slice('armor:'.length);
+      const def = defs.find((item) => item.id === armorId);
+      return {
+        armorId,
+        name: def?.name ?? armorId,
+        quantity: row.quantity,
+        condition: condByType.get(armorId) ?? 100,
+        armor: def?.armor ?? 0,
+      };
+    });
+  }
+
+  private async bumpStorageKey(
+    tx: any,
+    propertyId: number,
+    storageKey: string,
+    delta: number,
+  ) {
+    const existing = await tx.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: storageKey } },
+    });
+    if (delta > 0) {
+      if (existing) {
+        await tx.propertyDrugStorage.update({
+          where: { id: existing.id },
+          data: { quantity: existing.quantity + delta },
+        });
+      } else {
+        await tx.propertyDrugStorage.create({
+          data: { propertyId, drugType: storageKey, quantity: delta },
+        });
+      }
+      return;
+    }
+    if (!existing || existing.quantity + delta < 0) {
+      throw new Error('INSUFFICIENT_QUANTITY');
+    }
+    if (existing.quantity + delta === 0) {
+      await tx.propertyDrugStorage.delete({ where: { id: existing.id } });
+    } else {
+      await tx.propertyDrugStorage.update({
+        where: { id: existing.id },
+        data: { quantity: existing.quantity + delta },
+      });
+    }
+  }
+
+  async depositAmmo(playerId: number, propertyId: number, ammoType: string, quantity: number) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    if (!this.getAllowedCategories(property.propertyType).includes('ammo')) {
+      throw new Error('STORAGE_TYPE_NOT_ALLOWED');
+    }
+    if (!ammoService.getAmmoDefinition(ammoType)) {
+      throw new Error('AMMO_NOT_FOUND');
+    }
+
+    const inv = await prisma.ammoInventory.findUnique({
+      where: { playerId_ammoType: { playerId, ammoType } },
+    });
+    if (!inv || inv.quantity < quantity) {
+      throw new Error('INSUFFICIENT_AMMO_QUANTITY');
+    }
+
+    const stored = await this.getAmmoStorage(propertyId);
+    const currentRounds = stored.reduce((sum, row) => sum + row.quantity, 0);
+    const detail = await this.getPropertyStorageDetail(playerId, propertyId);
+    const deltaSlots =
+      this.ammoSlotsForQuantity(currentRounds + quantity) -
+      this.ammoSlotsForQuantity(currentRounds);
+    if (detail.usage + deltaSlots > detail.capacity) {
+      throw new Error('STORAGE_FULL');
+    }
+
+    await prisma.$transaction(async (tx) => {
+      if (inv.quantity === quantity) {
+        await tx.ammoInventory.delete({ where: { id: inv.id } });
+      } else {
+        await tx.ammoInventory.update({
+          where: { id: inv.id },
+          data: { quantity: inv.quantity - quantity },
+        });
+      }
+      await this.bumpStorageKey(tx, propertyId, `ammo:${ammoType}`, quantity);
+    });
+  }
+
+  async withdrawAmmo(playerId: number, propertyId: number, ammoType: string, quantity: number) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    if (!this.getAllowedCategories(property.propertyType).includes('ammo')) {
+      throw new Error('STORAGE_TYPE_NOT_ALLOWED');
+    }
+    const def = ammoService.getAmmoDefinition(ammoType);
+    if (!def) {
+      throw new Error('AMMO_NOT_FOUND');
+    }
+
+    const storageKey = `ammo:${ammoType}`;
+    const stored = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: storageKey } },
+    });
+    if (!stored || stored.quantity < quantity) {
+      throw new Error('INSUFFICIENT_AMMO_QUANTITY');
+    }
+
+    const inv = await prisma.ammoInventory.findUnique({
+      where: { playerId_ammoType: { playerId, ammoType } },
+    });
+    const nextQty = (inv?.quantity ?? 0) + quantity;
+    if (def.maxInventory && nextQty > def.maxInventory) {
+      throw new Error('AMMO_INVENTORY_FULL');
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await this.bumpStorageKey(tx, propertyId, storageKey, -quantity);
+      if (inv) {
+        await tx.ammoInventory.update({
+          where: { id: inv.id },
+          data: { quantity: inv.quantity + quantity },
+        });
+      } else {
+        await tx.ammoInventory.create({
+          data: { playerId, ammoType, quantity },
+        });
+      }
+    });
+  }
+
+  async depositArmor(playerId: number, propertyId: number) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    if (!this.getAllowedCategories(property.propertyType).includes('armor')) {
+      throw new Error('STORAGE_TYPE_NOT_ALLOWED');
+    }
+
+    const security = await prisma.playerSecurity.findUnique({ where: { playerId } });
+    const armorId = security?.armorType;
+    if (!security || !armorId || Number(security.armor || 0) <= 0) {
+      throw new Error('ARMOR_NOT_EQUIPPED');
+    }
+
+    const detail = await this.getPropertyStorageDetail(playerId, propertyId);
+    if (detail.usage + 1 > detail.capacity) {
+      throw new Error('STORAGE_FULL');
+    }
+
+    const condition = Math.max(1, Math.min(100, Number(security.armorCondition ?? 100)));
+
+    await prisma.$transaction(async (tx) => {
+      await this.bumpStorageKey(tx, propertyId, `armor:${armorId}`, 1);
+      const condKey = `armorcond:${armorId}`;
+      const existingCond = await tx.propertyDrugStorage.findUnique({
+        where: { propertyId_drugType: { propertyId, drugType: condKey } },
+      });
+      if (existingCond) {
+        await tx.propertyDrugStorage.update({
+          where: { id: existingCond.id },
+          data: { quantity: condition },
+        });
+      } else {
+        await tx.propertyDrugStorage.create({
+          data: { propertyId, drugType: condKey, quantity: condition },
+        });
+      }
+      await tx.playerSecurity.update({
+        where: { playerId },
+        data: { armor: 0, armorCondition: 100, armorType: null },
+      });
+    });
+  }
+
+  async withdrawArmor(playerId: number, propertyId: number, armorId: string) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    if (!this.getAllowedCategories(property.propertyType).includes('armor')) {
+      throw new Error('STORAGE_TYPE_NOT_ALLOWED');
+    }
+
+    const defs = loadArmorDefinitions();
+    const def = defs.find((item) => item.id === armorId);
+    if (!def) {
+      throw new Error('ARMOR_NOT_FOUND');
+    }
+
+    const storageKey = `armor:${armorId}`;
+    const stored = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: storageKey } },
+    });
+    if (!stored || stored.quantity < 1) {
+      throw new Error('INSUFFICIENT_ARMOR_QUANTITY');
+    }
+
+    const security = await prisma.playerSecurity.findUnique({ where: { playerId } });
+    if (security && security.armorType && Number(security.armor || 0) > 0) {
+      throw new Error('ARMOR_ALREADY_EQUIPPED');
+    }
+
+    const condRow = await prisma.propertyDrugStorage.findUnique({
+      where: {
+        propertyId_drugType: { propertyId, drugType: `armorcond:${armorId}` },
+      },
+    });
+    const condition = Math.max(1, Math.min(100, condRow?.quantity ?? 100));
+
+    await prisma.$transaction(async (tx) => {
+      await this.bumpStorageKey(tx, propertyId, storageKey, -1);
+      if (condRow && stored.quantity <= 1) {
+        await tx.propertyDrugStorage.delete({ where: { id: condRow.id } });
+      }
+      if (security) {
+        await tx.playerSecurity.update({
+          where: { playerId },
+          data: { armor: def.armor, armorCondition: condition, armorType: armorId },
+        });
+      } else {
+        await tx.playerSecurity.create({
+          data: {
+            playerId,
+            armor: def.armor,
+            armorCondition: condition,
+            armorType: armorId,
+            bodyguardUpkeepDueAt: null,
           },
         });
       }

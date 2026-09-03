@@ -144,7 +144,14 @@ class MafiaGameApp extends StatelessWidget {
             '/dashboard': (context) => const DashboardScreen(),
             '/settings': (context) => const SettingsScreen(),
             '/inventory': (context) {
-              return const InventoryScreen();
+              final args = ModalRoute.of(context)?.settings.arguments;
+              int? propertyId;
+              if (args is int) {
+                propertyId = args;
+              } else if (args is Map) {
+                propertyId = args['propertyId'] as int?;
+              }
+              return InventoryScreen(initialPropertyId: propertyId);
             },
             '/hitlist': (context) => const HitlistScreen(),
             '/security': (context) => const SecurityScreen(),
