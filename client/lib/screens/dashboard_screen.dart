@@ -206,6 +206,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _webSectionRefreshSeed = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _vehicleHeistTabIndex = 0;
+  int _blackMarketTabIndex = 0;
   List<Map<String, dynamic>> _gameEventsActive = const [];
   /// Event Pass claimable counts by goal category for live event rail badges.
   Map<String, int> _eventPassClaimableByCategory = const {};
@@ -214,6 +215,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   _NavGroup? _expandedNavGroup;
   /// Optional product to highlight when opening Premium (e.g. season_pass_monthly).
   String? _premiumFocusProductKey;
+
+  void _openBlackMarket([int initialTabIndex = 0]) {
+    setState(() {
+      _blackMarketTabIndex = initialTabIndex;
+      _selectedWebSection = _WebSection.blackMarket;
+      _expandedNavGroup = _navGroupForSection(_WebSection.blackMarket);
+    });
+    _scheduleNavCooldownRefresh();
+  }
 
   void _openVehicleHeist([int initialTabIndex = 0]) {
     setState(() {
@@ -1780,9 +1790,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.casino:
         return const CasinoScreen();
       case _WebSection.blackMarket:
-        return const BlackMarketScreen();
+        return BlackMarketScreen(initialTabIndex: _blackMarketTabIndex);
       case _WebSection.drugs:
-        return const DrugEnvironmentScreen(embedded: true);
+        return DrugEnvironmentScreen(
+          embedded: true,
+          onOpenBlackMarket: () => _openBlackMarket(4),
+        );
       case _WebSection.nightclub:
         return const NightclubScreen();
       case _WebSection.crypto:

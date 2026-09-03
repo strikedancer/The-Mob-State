@@ -2997,6 +2997,9 @@ class NightclubService {
 
     if (venueInventory.length === 0) return;
 
+    const { getDrugRuntimeConfig } = await import('./drugRuntimeConfig');
+    const drugRuntime = await getDrugRuntimeConfig();
+
     const crowdState = await this.calculateCrowdState(venueId);
     const upgradeLevels = await this.getVenueUpgradeLevels(venueId);
     const hospitality = await this.getHospitalitySnapshot(venueId);
@@ -3060,8 +3063,11 @@ class NightclubService {
       const hospitalityMultiplier =
         ((hospitality.pricingMode.drinksMargin + hospitality.pricingMode.foodMargin) / 2) *
         (1 + hospitality.serviceLevel / 400);
+      const ownProdMultiplier = inventory.ownProduction
+        ? 1 + drugRuntime.nightclubOwnProdBonusPercent / 100
+        : 1;
       const boostedUnitPrice = Math.floor(
-        unitPrice * prostitutionBoost.priceBoost * vipLoungeMultiplier * hospitalityMultiplier
+        unitPrice * prostitutionBoost.priceBoost * vipLoungeMultiplier * hospitalityMultiplier * ownProdMultiplier
       );
       const totalRevenue = boostedUnitPrice * quantitySold;
 
@@ -3256,26 +3262,37 @@ class NightclubService {
 
     // Get base price from drug definition
     const basePrice = this.getDrugBasePrice(drugType);
+    const ownProduction = Boolean(playerInventory.ownProduction);
 
-    await prisma.$transaction([
-      prisma.drugInventory.update({
+    await prisma.$transaction(async (tx) => {
+      await tx.drugInventory.update({
         where: { id: playerInventory.id },
         data: { quantity: { decrement: quantity } },
-      }),
-      prisma.nightclubDrugInventory.upsert({
+      });
+      const existing = await tx.nightclubDrugInventory.findUnique({
         where: { venueId_drugType_quality: { venueId, drugType, quality } },
-        create: {
-          venueId,
-          drugType,
-          quality,
-          quantity,
-          basePrice,
-        },
-        update: {
-          quantity: { increment: quantity },
-        },
-      }),
-    ]);
+      });
+      if (existing) {
+        await tx.nightclubDrugInventory.update({
+          where: { id: existing.id },
+          data: {
+            quantity: { increment: quantity },
+            ownProduction: existing.ownProduction || ownProduction,
+          },
+        });
+      } else {
+        await tx.nightclubDrugInventory.create({
+          data: {
+            venueId,
+            drugType,
+            quality,
+            quantity,
+            basePrice,
+            ownProduction,
+          },
+        });
+      }
+    });
 
     return {
       success: true,

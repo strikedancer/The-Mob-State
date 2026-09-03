@@ -1047,6 +1047,40 @@ export class NotificationService {
     }
   }
 
+  public async sendDrugProductionReadyNotification(
+    playerId: number,
+    drugName: string,
+    quantity: number,
+    qualityLabel: string,
+    productionId: number,
+    language?: Language
+  ): Promise<void> {
+    try {
+      const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+      const title = resolvedLanguage === 'nl' ? 'Drugspartij klaar' : 'Drug batch ready';
+      const body = resolvedLanguage === 'nl'
+        ? `${quantity}g ${drugName} (${qualityLabel}) is klaar om op te halen.`
+        : `${quantity}g ${drugName} (${qualityLabel}) is ready to collect.`;
+
+      await this.createInAppWorldEvent(playerId, 'drugs.production_ready', {
+        drugName,
+        quantity,
+        qualityLabel,
+        productionId,
+      });
+
+      await this.sendToPlayer(playerId, title, body, {
+        type: 'drugs_production_ready',
+        drugName,
+        quantity: String(quantity),
+        qualityLabel,
+        productionId: String(productionId),
+      });
+    } catch {
+      // Non-critical — never throw
+    }
+  }
+
   public async sendVehicleRepairCompletedNotification(
     playerId: number,
     vehicleName: string,

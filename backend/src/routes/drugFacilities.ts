@@ -18,8 +18,11 @@ router.get('/config', authenticate, async (_req: Request, res: Response) => {
 router.get('/', authenticate, async (req: Request, res: Response) => {
   try {
     const playerId = (req as any).player.id as number;
-    const facilities = await drugFacilityService.getPlayerFacilities(playerId);
-    res.json({ success: true, facilities });
+    const [facilities, catalog] = await Promise.all([
+      drugFacilityService.getPlayerFacilities(playerId),
+      drugFacilityService.getFacilityCatalog(playerId),
+    ]);
+    res.json({ success: true, facilities, catalog });
   } catch (err) {
     console.error('GET /drug-facilities error:', err);
     res.status(500).json({ success: false, message: 'Server fout' });
@@ -92,6 +95,27 @@ router.post('/:id/upgrade-equipment', authenticate, async (req: Request, res: Re
     res.json(result);
   } catch (err) {
     console.error('POST /drug-facilities/:id/upgrade-equipment error:', err);
+    res.status(500).json({ success: false, message: 'Server fout' });
+  }
+});
+
+router.post('/:id/auto-sale', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as any).player.id as number;
+    const facilityId = parseInt(req.params.id, 10);
+    const enabled = Boolean((req.body as { enabled?: boolean })?.enabled);
+
+    if (isNaN(facilityId)) {
+      return res.status(400).json({ success: false, message: 'Ongeldig faciliteits-ID' });
+    }
+
+    const result = await drugFacilityService.setAutoSaleEnabled(playerId, facilityId, enabled);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+    res.json(result);
+  } catch (err) {
+    console.error('POST /drug-facilities/:id/auto-sale error:', err);
     res.status(500).json({ success: false, message: 'Server fout' });
   }
 });

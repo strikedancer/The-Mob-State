@@ -21958,6 +21958,16 @@ abstract class AppLocalizations {
     String quality,
   );
 
+  /// No description provided for @evStreamDrugsProductionReady.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity}g {drugName} ({quality}) is ready to collect'**
+  String evStreamDrugsProductionReady(
+    String quantity,
+    String drugName,
+    String quality,
+  );
+
   /// No description provided for @evStreamVehicleRepairCompleted.
   ///
   /// In en, this message translates to:
@@ -26589,13 +26599,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDrugsHow.
   ///
   /// In en, this message translates to:
-  /// **'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nYou can spend premium credits to finish an in-progress batch early (confirm dialog shows the exact credit cost); you still collect the output normally afterward.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
+  /// **'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market (Materials tab, also linked from Hub/Production) or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. You get a notification when a batch is ready to collect.\nYou can spend premium credits to finish a batch early, buy a temporary extra slot, or activate a 24h heat shield (no extra yield).\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output, but skips a pending raid until you choose.\nOn collect, heat can trigger a raid: you choose stock loss, facility downtime or a cash fine before receiving loot.\nYou can cool heat with cash or go low-profile (temporarily no new production).\nA darkweb storefront never silent-sells: auto-sale is opt-in, with a fee and extra heat.\nOwn-production drugs get a small nightclub margin bonus. Quality lots can be deposited into crew drug storage.\nFacility cards show price, rank and education requirements before buy or upgrade.'**
   String get helpTopicDrugsHow;
 
   /// No description provided for @helpTopicDrugsTips.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.'**
+  /// **'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.'**
   String get helpTopicDrugsTips;
 
   /// No description provided for @helpTopicNightclubCategory.
@@ -28989,6 +28999,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Country police pressure is currently off.'**
   String get countryPoliceDisabled;
+
+  /// No description provided for @drugsFacBuyFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy for {price}'**
+  String drugsFacBuyFor(String price);
+
+  /// No description provided for @drugsFacRankLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'You need rank {rank} for this facility.'**
+  String drugsFacRankLocked(String rank);
+
+  /// No description provided for @drugsFacRankLockedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank too low'**
+  String get drugsFacRankLockedShort;
+
+  /// No description provided for @drugsFacNextUpgradeEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'The next upgrade needs more Narcotics education.'**
+  String get drugsFacNextUpgradeEducation;
+
+  /// No description provided for @drugsFacAutoSaleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Darkweb auto-sale'**
+  String get drugsFacAutoSaleTitle;
+
+  /// No description provided for @drugsFacAutoSaleBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Opt-in: periodically sells part of your storefront drugs for a fee plus heat. Off by default.'**
+  String get drugsFacAutoSaleBody;
+
+  /// No description provided for @drugsFacAutoSaleOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-sale on'**
+  String get drugsFacAutoSaleOn;
+
+  /// No description provided for @drugsFacAutoSaleOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-sale off'**
+  String get drugsFacAutoSaleOff;
+
+  /// No description provided for @drugsOpenMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy materials'**
+  String get drugsOpenMaterials;
+
+  /// No description provided for @drugsHeatRaidHint.
+  ///
+  /// In en, this message translates to:
+  /// **'On collect there is a {percent}% chance of a raid (you choose before loot).'**
+  String drugsHeatRaidHint(String percent);
+
+  /// No description provided for @drugsHeatLowProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Low profile'**
+  String get drugsHeatLowProfile;
+
+  /// No description provided for @drugsHeatCashCool.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool for {cost}'**
+  String drugsHeatCashCool(String cost);
+
+  /// No description provided for @drugsHeatCoolDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat cooled'**
+  String get drugsHeatCoolDone;
+
+  /// No description provided for @drugsHeatCoolFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooling failed'**
+  String get drugsHeatCoolFailed;
+
+  /// No description provided for @drugsHeatShieldActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat shield active'**
+  String get drugsHeatShieldActive;
+
+  /// No description provided for @drugsHeatLowProfileActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Low profile active'**
+  String get drugsHeatLowProfileActive;
+
+  /// No description provided for @drugsRaidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Police raid'**
+  String get drugsRaidTitle;
+
+  /// No description provided for @drugsRaidBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose: lose {loss}% of this batch, {hours} hours of facility downtime, or a cash fine of €{fine}.'**
+  String drugsRaidBody(String loss, String hours, String fine);
+
+  /// No description provided for @drugsRaidLose.
+  ///
+  /// In en, this message translates to:
+  /// **'Lose stock'**
+  String get drugsRaidLose;
+
+  /// No description provided for @drugsRaidDowntime.
+  ///
+  /// In en, this message translates to:
+  /// **'Shut the facility'**
+  String get drugsRaidDowntime;
+
+  /// No description provided for @drugsRaidCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay the fine'**
+  String get drugsRaidCash;
+
+  /// No description provided for @drugsRaidResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid resolved'**
+  String get drugsRaidResolved;
+
+  /// No description provided for @drugsRaidFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid choice failed'**
+  String get drugsRaidFailed;
+
+  /// No description provided for @drugsBestCountryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Best price: {country} ({pct}%)'**
+  String drugsBestCountryHint(String country, String pct);
+
+  /// No description provided for @drugsNightclubBonusHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub margin {pct}%'**
+  String drugsNightclubBonusHint(String pct);
+
+  /// No description provided for @drugsCrewDepositAction.
+  ///
+  /// In en, this message translates to:
+  /// **'To crew storage'**
+  String get drugsCrewDepositAction;
+
+  /// No description provided for @drugsCrewDepositDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved to crew storage'**
+  String get drugsCrewDepositDone;
+
+  /// No description provided for @drugsCrewDepositFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew deposit failed'**
+  String get drugsCrewDepositFailed;
+
+  /// No description provided for @drugsCutAllOneGrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Cut all one grade down'**
+  String get drugsCutAllOneGrade;
 }
 
 class _AppLocalizationsDelegate

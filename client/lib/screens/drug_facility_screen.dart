@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
 import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/education_requirements_dialog.dart';
@@ -24,6 +25,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
   bool _isLoading = true;
   Map<String, dynamic> _config = const {};
   List<DrugFacilityInfo> _facilities = const [];
+  List<DrugFacilityCatalogItem> _catalog = const [];
   List<DrugProduction> _activeProductions = const [];
 
   String _backgroundAsset(double width) {
@@ -58,17 +60,20 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
         _drugService.getFacilityConfig(),
         _drugService.getMyFacilities(),
         _drugService.getActiveProductions(),
+        _drugService.getFacilityCatalog(),
       ]);
 
       final config = results[0] as Map<String, dynamic>;
       final facilities = results[1] as List<DrugFacilityInfo>;
       final productions = results[2] as List<DrugProduction>;
+      final catalog = results[3] as List<DrugFacilityCatalogItem>;
 
       if (!mounted) return;
       setState(() {
         _config = config['config'] as Map<String, dynamic>? ?? const {};
         _facilities = facilities;
         _activeProductions = productions;
+        _catalog = catalog;
         _isLoading = false;
       });
     } catch (e) {
@@ -283,8 +288,26 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     return t.drugsFacUnknownFacility;
   }
 
+  DrugFacilityCatalogItem? _catalogFor(String facilityType) {
+    for (final item in _catalog) {
+      if (item.facilityType == facilityType) return item;
+    }
+    return null;
+  }
+
   Future<void> _buyFacility(String facilityType) async {
     final t = AppLocalizations.of(context)!;
+    final catalog = _catalogFor(facilityType);
+    if (catalog != null && !catalog.rankOk) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.drugsFacRankLocked(catalog.requiredRank.toString())),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
     final result = await _drugService.buyFacility(facilityType);
     if (!mounted) return;
     final raw = result['message'] as String?;
@@ -301,6 +324,23 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     if (result['success'] == true) {
       await _loadData();
     }
+  }
+
+  Future<void> _toggleAutoSale(DrugFacilityInfo facility, bool enabled) async {
+    final result = await _drugService.setFacilityAutoSale(facility.id, enabled);
+    if (!mounted) return;
+    final t = AppLocalizations.of(context)!;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          (result['message'] as String?) ??
+              (enabled ? t.drugsFacAutoSaleOn : t.drugsFacAutoSaleOff),
+        ),
+        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
+      ),
+    );
+    if (result['success'] == true) await _loadData();
   }
 
   Future<void> _upgradeSlots(DrugFacilityInfo facility) async {
@@ -589,8 +629,9 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     Map<String, dynamic> config,
     DrugFacilityInfo? owned,
   ) {
-    final purchasePrice = (config['purchasePrice'] ?? 0) as int;
-    final requiredRank = (config['requiredRank'] ?? 0) as int;
+    final catalog = _catalogFor(facilityType);
+    final purchasePrice = catalog?.purchasePrice ?? (config['purchasePrice'] ?? 0) as int;
+    final requiredRank = catalog?.requiredRank ?? (config['requiredRank'] ?? 0) as int;
     final drugTypes = (config['forDrugTypes'] as List<dynamic>? ?? const [])
         .map((e) => e.toString())
         .toList();
@@ -653,7 +694,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                 if (owned == null)
                   ElevatedButton(
                     onPressed: () => _buyFacility(facilityType),
-                    child: Text(t.drugsFacBuy),
+                    child: Text(t.drugsFacBuyFor(formatCurrency(purchasePrice))),
                   )
                 else
                   Container(
@@ -686,8 +727,18 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                 ),
                 _buildStatChip(t.drugsFacRank, '$requiredRank'),
                 _buildStatChip(t.drugsFacDrugTypes, drugTypes.join(', ')),
+                if (owned == null && catalog != null && !catalog.rankOk)
+                  _buildStatChip(t.drugsFacRankLockedShort, '${catalog.playerRank}/$requiredRank'),
               ],
             ),
+            if (owned?.nextSlotEducation != null &&
+                owned!.nextSlotEducation!['allowed'] != true) ...[
+              const SizedBox(height: 8),
+              Text(
+                t.drugsFacNextUpgradeEducation,
+                style: TextStyle(color: Colors.orange[200], fontSize: 12),
+              ),
+            ],
             if (owned != null) ...[
               const SizedBox(height: 16),
               Row(
@@ -721,6 +772,16 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                   ),
                 ],
               ),
+              if (facilityType == 'darkweb_storefront') ...[
+                const SizedBox(height: 12),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: owned.autoSaleEnabled,
+                  onChanged: (value) => _toggleAutoSale(owned, value),
+                  title: Text(t.drugsFacAutoSaleTitle),
+                  subtitle: Text(t.drugsFacAutoSaleBody),
+                ),
+              ],
               const SizedBox(height: 16),
               Row(
                 children: [

@@ -196,12 +196,44 @@ class DrugFacilityService {
     return { success: true, message: `${def.displayName} in ${facilityCountry} gekocht voor €${def.purchasePrice.toLocaleString()}!` };
   }
 
+  private serializeEducation(result: {
+    allowed: boolean;
+    gateId?: string;
+    gateLabelKey?: string;
+    missing: unknown[];
+  }) {
+    return {
+      allowed: result.allowed,
+      missing: result.missing,
+      gateId: result.gateId ?? null,
+      gateLabelKey: result.gateLabelKey ?? null,
+    };
+  }
+
+  async getTempSlotBonus(playerId: number): Promise<number> {
+    const now = new Date();
+    const entitlement = await prisma.playerCreditEntitlement.findFirst({
+      where: {
+        playerId,
+        effectType: 'DRUG_TEMP_SLOT',
+        status: 'ACTIVE',
+        expiresAt: { gt: now },
+      },
+      select: { id: true },
+    });
+    return entitlement ? 1 : 0;
+  }
+
+  async getEffectiveSlots(playerId: number, facilitySlots: number): Promise<number> {
+    return facilitySlots + (await this.getTempSlotBonus(playerId));
+  }
+
   // ─── Get facilities for player ──────────────────────────────────────────────
 
   async getPlayerFacilities(playerId: number, country?: string): Promise<any[]> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { currentCountry: true },
+      select: { currentCountry: true, rank: true },
     });
     // If country specified, get only that country; otherwise get ALL countries
     const query: any = { playerId };
@@ -213,6 +245,8 @@ class DrugFacilityService {
       where: query,
       include: { upgrades: true },
     });
+    const tempSlots = await this.getTempSlotBonus(playerId);
+    const playerRank = player?.rank ?? 1;
 
     return Promise.all(facilities.map(async (f) => {
       const def = this.facilities.get(f.facilityType);
@@ -221,6 +255,40 @@ class DrugFacilityService {
       f.upgrades.forEach((u) => { upgradeMap[u.upgradeType] = u.level; });
       const activeProductions = await this.getActiveProductionCount(f.id);
       const nextSlotUpgrade = def?.slotUpgrades.find((u) => u.slots === f.slots + 1);
+      let nextSlotEducation = null;
+      if (nextSlotUpgrade) {
+        const slotGateTarget = this.getSlotUpgradeGateTarget(nextSlotUpgrade.slots);
+        if (slotGateTarget) {
+          const education = await educationService.checkAssetEligibility(
+            playerId,
+            slotGateTarget,
+            playerRank
+          );
+          nextSlotEducation = this.serializeEducation(education);
+        } else {
+          nextSlotEducation = { allowed: true, missing: [], gateId: null, gateLabelKey: null };
+        }
+      }
+
+      const nextEquipment = [];
+      for (const equip of def?.equipmentUpgrades ?? []) {
+        const currentLevel = upgradeMap[equip.id] ?? 1;
+        const nextLevel = equip.levels.find((level) => level.level === currentLevel + 1);
+        if (!nextLevel) continue;
+        const equipmentGateTarget = this.getEquipmentUpgradeGateTarget(nextLevel.level);
+        const education = equipmentGateTarget
+          ? this.serializeEducation(
+              await educationService.checkAssetEligibility(playerId, equipmentGateTarget, playerRank)
+            )
+          : { allowed: true, missing: [], gateId: null, gateLabelKey: null };
+        nextEquipment.push({
+          upgradeType: equip.id,
+          name: equip.name,
+          nextLevel: nextLevel.level,
+          price: nextLevel.price,
+          education,
+        });
+      }
 
       return {
         id: f.id,
@@ -229,15 +297,89 @@ class DrugFacilityService {
         description: def?.description || '',
         icon: def?.icon || 'science',
         slots: f.slots,
+        effectiveSlots: f.slots + tempSlots,
+        tempSlotBonus: tempSlots,
         maxSlots: (def?.slotUpgrades.at(-1)?.slots) ?? f.slots,
         activeProductions,
         nextSlotCost: nextSlotUpgrade?.price ?? 0,
+        nextSlotRequiredRank: nextSlotUpgrade?.requiredRank ?? 0,
+        nextSlotEducation,
+        nextEquipment,
         forDrugTypes: def?.forDrugTypes || [],
         upgrades: upgradeMap,
         multipliers,
         purchasedAt: f.purchasedAt,
+        autoSaleEnabled: f.autoSaleEnabled,
+        downtimeUntil: f.downtimeUntil,
       };
     }));
+  }
+
+  async getFacilityCatalog(playerId: number): Promise<any[]> {
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { rank: true, currentCountry: true },
+    });
+    const playerRank = player?.rank ?? 1;
+    const country = player?.currentCountry || 'netherlands';
+    const owned = await prisma.drugFacility.findMany({
+      where: { playerId, country },
+      select: { facilityType: true },
+    });
+    const ownedTypes = new Set(owned.map((row) => row.facilityType));
+
+    return Promise.all(
+      [...this.facilities.values()].map(async (def) => {
+        const firstSlotUpgrade = def.slotUpgrades.find((upgrade) => upgrade.slots === 2);
+        let nextSlotEducation = null;
+        if (firstSlotUpgrade) {
+          const slotGateTarget = this.getSlotUpgradeGateTarget(firstSlotUpgrade.slots);
+          if (slotGateTarget) {
+            nextSlotEducation = this.serializeEducation(
+              await educationService.checkAssetEligibility(playerId, slotGateTarget, playerRank)
+            );
+          }
+        }
+
+        return {
+          facilityType: def.id,
+          displayName: def.displayName,
+          purchasePrice: def.purchasePrice,
+          requiredRank: def.requiredRank,
+          owned: ownedTypes.has(def.id),
+          playerRank,
+          rankOk: playerRank >= def.requiredRank,
+          nextSlotEducation,
+        };
+      })
+    );
+  }
+
+  async setAutoSaleEnabled(
+    playerId: number,
+    facilityId: number,
+    enabled: boolean
+  ): Promise<{ success: boolean; message: string; enabled?: boolean }> {
+    const facility = await prisma.drugFacility.findUnique({ where: { id: facilityId } });
+    if (!facility || facility.playerId !== playerId) {
+      return { success: false, message: 'Faciliteit niet gevonden' };
+    }
+    if (facility.facilityType !== 'darkweb_storefront') {
+      return { success: false, message: 'Auto-verkoop is alleen voor de darkweb-winkel' };
+    }
+
+    await prisma.drugFacility.update({
+      where: { id: facilityId },
+      data: { autoSaleEnabled: enabled },
+    });
+
+    return {
+      success: true,
+      enabled,
+      message: enabled
+        ? 'Darkweb auto-verkoop ingeschakeld (fee + heat)'
+        : 'Darkweb auto-verkoop uitgeschakeld',
+    };
   }
 
   // ─── Upgrade slots ──────────────────────────────────────────────────────────

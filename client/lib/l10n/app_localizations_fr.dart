@@ -12671,6 +12671,15 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsProductionReady(
+    String quantity,
+    String drugName,
+    String quality,
+  ) {
+    return '${quantity}g $drugName ($quality) is ready to collect';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -16894,4 +16903,107 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get countryPoliceDisabled =>
       'Country police pressure is currently off.';
+
+  @override
+  String drugsFacBuyFor(String price) {
+    return 'Buy for $price';
+  }
+
+  @override
+  String drugsFacRankLocked(String rank) {
+    return 'You need rank $rank for this facility.';
+  }
+
+  @override
+  String get drugsFacRankLockedShort => 'Rank too low';
+
+  @override
+  String get drugsFacNextUpgradeEducation =>
+      'The next upgrade needs more Narcotics education.';
+
+  @override
+  String get drugsFacAutoSaleTitle => 'Darkweb auto-sale';
+
+  @override
+  String get drugsFacAutoSaleBody =>
+      'Opt-in: periodically sells part of your storefront drugs for a fee plus heat. Off by default.';
+
+  @override
+  String get drugsFacAutoSaleOn => 'Auto-sale on';
+
+  @override
+  String get drugsFacAutoSaleOff => 'Auto-sale off';
+
+  @override
+  String get drugsOpenMaterials => 'Buy materials';
+
+  @override
+  String drugsHeatRaidHint(String percent) {
+    return 'On collect there is a $percent% chance of a raid (you choose before loot).';
+  }
+
+  @override
+  String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatCashCool(String cost) {
+    return 'Cool for $cost';
+  }
+
+  @override
+  String get drugsHeatCoolDone => 'Heat cooled';
+
+  @override
+  String get drugsHeatCoolFailed => 'Cooling failed';
+
+  @override
+  String get drugsHeatShieldActive => 'Heat shield active';
+
+  @override
+  String get drugsHeatLowProfileActive => 'Low profile active';
+
+  @override
+  String get drugsRaidTitle => 'Police raid';
+
+  @override
+  String drugsRaidBody(String loss, String hours, String fine) {
+    return 'Choose: lose $loss% of this batch, $hours hours of facility downtime, or a cash fine of €$fine.';
+  }
+
+  @override
+  String get drugsRaidLose => 'Lose stock';
+
+  @override
+  String get drugsRaidDowntime => 'Shut the facility';
+
+  @override
+  String get drugsRaidCash => 'Pay the fine';
+
+  @override
+  String get drugsRaidResolved => 'Raid resolved';
+
+  @override
+  String get drugsRaidFailed => 'Raid choice failed';
+
+  @override
+  String drugsBestCountryHint(String country, String pct) {
+    return 'Best price: $country ($pct%)';
+  }
+
+  @override
+  String drugsNightclubBonusHint(String pct) {
+    return 'Nightclub margin $pct%';
+  }
+
+  @override
+  String get drugsCrewDepositAction => 'To crew storage';
+
+  @override
+  String get drugsCrewDepositDone => 'Moved to crew storage';
+
+  @override
+  String get drugsCrewDepositFailed => 'Crew deposit failed';
+
+  @override
+  String get drugsCutAllOneGrade => 'Cut all one grade down';
 }

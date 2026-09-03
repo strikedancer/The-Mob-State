@@ -34,6 +34,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Resilient screen load: one slow/failing API call may not block the whole nightclub screen.
 - Live staffing selectors must never depend on manual seed steps alone; DJ/security availability data needs a production-safe bootstrap or fallback so empty staff tables do not leave selectors blank.
 - Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
+- Own-production lots stored in the nightclub get a capped sale-margin bonus (`DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`); this is not a credit/VIP yield boost.
 - Nightclub management UI must keep one primary vertical page scroll on mobile; do not embed fixed-height subpanels with independent scrollbars.
 - DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.

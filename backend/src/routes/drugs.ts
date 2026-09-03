@@ -206,9 +206,11 @@ router.post('/collect/:productionId', authenticate, async (req: AuthRequest, res
         gameEventService.recordContribution(req.player!.id, 'drugs', qty).catch(() => {});
       }
       return res.json(result);
-    } else {
-      return res.status(400).json(result);
     }
+    if ((result as any).error === 'RAID_PENDING') {
+      return res.status(409).json(result);
+    }
+    return res.status(400).json(result);
   } catch (error: any) {
     console.error('Error collecting production:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
@@ -465,6 +467,96 @@ router.get('/market-prices', authenticate, (_req: AuthRequest, res: Response) =>
  * @desc    Get player drug heat level
  * @access  Private
  */
+router.post('/heat/cool', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const action = String((req.body as { action?: string })?.action || '');
+    if (action !== 'cash' && action !== 'low_profile') {
+      return res.status(400).json({ success: false, message: 'Ongeldige heat-actie' });
+    }
+    const result = await drugService.coolDrugHeat(req.player!.id, action);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+    return res.json(result);
+  } catch (error: any) {
+    console.error('Error cooling drug heat:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/raids/:id/resolve', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const productionId = parseInt(String(req.params.id), 10);
+    const choice = String((req.body as { choice?: string })?.choice || '');
+    if (!Number.isFinite(productionId) || productionId < 1) {
+      return res.status(400).json({ success: false, message: 'Ongeldig productie-ID' });
+    }
+    if (choice !== 'lose' && choice !== 'downtime' && choice !== 'cash') {
+      return res.status(400).json({ success: false, message: 'Ongeldige invalkeuze' });
+    }
+    const result = await drugService.resolveRaid(req.player!.id, productionId, choice);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+    const qty = Math.floor(Number(result.quantity ?? 0));
+    if (qty > 0) {
+      gameEventService.recordContribution(req.player!.id, 'drugs', qty).catch(() => {});
+    }
+    return res.json(result);
+  } catch (error: any) {
+    console.error('Error resolving drug raid:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/crew-storage/deposit', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { drugType, quality, quantity } = req.body as {
+      drugType?: string;
+      quality?: string;
+      quantity?: number;
+    };
+    const qty = typeof quantity === 'string' ? parseInt(quantity, 10) : quantity;
+    if (!drugType || !quality || !qty || qty < 1) {
+      return res.status(400).json({ success: false, message: 'drugType, quality en quantity vereist' });
+    }
+    const result = await drugService.depositQualityDrugsToCrew(
+      req.player!.id,
+      drugType,
+      quality,
+      qty
+    );
+    return result.success ? res.json(result) : res.status(400).json(result);
+  } catch (error: any) {
+    console.error('Error depositing crew drug lots:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/crew-storage/withdraw', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { drugType, quality, quantity } = req.body as {
+      drugType?: string;
+      quality?: string;
+      quantity?: number;
+    };
+    const qty = typeof quantity === 'string' ? parseInt(quantity, 10) : quantity;
+    if (!drugType || !quality || !qty || qty < 1) {
+      return res.status(400).json({ success: false, message: 'drugType, quality en quantity vereist' });
+    }
+    const result = await drugService.withdrawQualityDrugsFromCrew(
+      req.player!.id,
+      drugType,
+      quality,
+      qty
+    );
+    return result.success ? res.json(result) : res.status(400).json(result);
+  } catch (error: any) {
+    console.error('Error withdrawing crew drug lots:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
 router.get('/heat', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const heat = await drugService.getDrugHeat(req.player!.id);

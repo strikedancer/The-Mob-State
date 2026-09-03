@@ -7,6 +7,9 @@ import '../models/drug_models.dart';
 import '../providers/auth_provider.dart';
 import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
+import '../utils/formatters.dart';
+import '../utils/top_right_notification.dart';
+import 'black_market_screen.dart';
 import 'drug_facility_screen.dart';
 import 'drug_inventory_screen.dart';
 import 'drug_production_screen.dart';
@@ -15,10 +18,12 @@ class DrugEnvironmentScreen extends StatefulWidget {
   const DrugEnvironmentScreen({
     super.key,
     this.embedded = false,
+    this.onOpenBlackMarket,
   });
 
   /// When true (web dashboard), omit AppBar and keep subviews in-place.
   final bool embedded;
+  final VoidCallback? onOpenBlackMarket;
 
   @override
   State<DrugEnvironmentScreen> createState() => _DrugEnvironmentScreenState();
@@ -223,12 +228,42 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         onOpenFacilitiesRequested: () {
           setState(() => _webSubview = _DrugWebSubview.facilities);
         },
+        onOpenBlackMarket: _openMaterials,
       ),
       _DrugWebSubview.facilities =>
         const DrugFacilityScreen(showAppBar: false),
       _DrugWebSubview.inventory => const DrugInventoryScreen(),
       _DrugWebSubview.hub => const SizedBox.shrink(),
     };
+  }
+
+  Future<void> _openMaterials() async {
+    if (widget.onOpenBlackMarket != null) {
+      widget.onOpenBlackMarket!.call();
+      return;
+    }
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const BlackMarketScreen(initialTabIndex: 4),
+      ),
+    );
+  }
+
+  Future<void> _coolHeat(String action) async {
+    final result = await _drugService.coolDrugHeat(action);
+    if (!mounted) return;
+    final t = AppLocalizations.of(context)!;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          (result['message'] as String?) ??
+              (result['success'] == true ? t.drugsHeatCoolDone : t.drugsHeatCoolFailed),
+        ),
+        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
+      ),
+    );
+    if (result['success'] == true) _loadDashboardStats();
   }
 
   List<Widget> _buildOperationCards(
@@ -268,6 +303,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
             onOpenFacilitiesRequested: () {
               setState(() => _webSubview = _DrugWebSubview.facilities);
             },
+            onOpenBlackMarket: _openMaterials,
           ),
           _DrugWebSubview.production,
         ),
@@ -394,6 +430,51 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildHeatAndMaterials(AppLocalizations t) {
+    final heat = _heatInfo;
+    final raidPct = heat == null ? 0 : (heat.raidChance * 100).round();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        OutlinedButton.icon(
+          onPressed: _openMaterials,
+          icon: const Icon(Icons.science_outlined),
+          label: Text(t.drugsOpenMaterials),
+        ),
+        if (heat != null) ...[
+          const SizedBox(height: 10),
+          Text(
+            t.drugsHeatRaidHint(raidPct.toString()),
+            style: TextStyle(color: Colors.white.withOpacity(0.78), fontSize: 13),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              OutlinedButton(
+                onPressed: () => _coolHeat('low_profile'),
+                child: Text(t.drugsHeatLowProfile),
+              ),
+              OutlinedButton(
+                onPressed: heat.cashCoolCost > 0
+                    ? () => _coolHeat('cash')
+                    : null,
+                child: Text(
+                  t.drugsHeatCashCool(formatCurrency(heat.cashCoolCost)),
+                ),
+              ),
+              if (heat.shieldActive)
+                Chip(label: Text(t.drugsHeatShieldActive)),
+              if (heat.lowProfileActive)
+                Chip(label: Text(t.drugsHeatLowProfileActive)),
+            ],
+          ),
+        ],
+      ],
     );
   }
 
@@ -604,6 +685,8 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                               inventoryGrams,
                               inventoryValue,
                             ),
+                            const SizedBox(height: 12),
+                            _buildHeatAndMaterials(t),
                             const SizedBox(height: 18),
                             Text(
                               t.drugsHubStatsTitle,

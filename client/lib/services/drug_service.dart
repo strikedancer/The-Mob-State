@@ -177,9 +177,11 @@ class DrugService {
         '/drugs/collect/$productionId',
         {},
       );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return json.decode(response.body);
+      if (response.body.isEmpty) {
+        return {'success': false, 'message': 'Failed to collect production'};
       }
+      final data = json.decode(response.body);
+      if (data is Map<String, dynamic>) return data;
       return {'success': false, 'message': 'Failed to collect production'};
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
@@ -280,6 +282,77 @@ class DrugService {
       return {};
     } catch (e) {
       return {};
+    }
+  }
+
+  Future<List<DrugFacilityCatalogItem>> getFacilityCatalog() async {
+    try {
+      final response = await _apiClient.get('/drug-facilities');
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return (data['catalog'] as List<dynamic>? ?? [])
+              .map((item) => DrugFacilityCatalogItem.fromJson(item))
+              .toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> setFacilityAutoSale(int facilityId, bool enabled) async {
+    try {
+      final response = await _apiClient.post(
+        '/drug-facilities/$facilityId/auto-sale',
+        {'enabled': enabled},
+      );
+      if (response.body.isEmpty) return {'success': false, 'message': 'Fout'};
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> coolDrugHeat(String action) async {
+    try {
+      final response = await _apiClient.post('/drugs/heat/cool', {'action': action});
+      if (response.body.isEmpty) return {'success': false, 'message': 'Fout'};
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> resolveRaid(int productionId, String choice) async {
+    try {
+      final response = await _apiClient.post(
+        '/drugs/raids/$productionId/resolve',
+        {'choice': choice},
+      );
+      if (response.body.isEmpty) return {'success': false, 'message': 'Fout'};
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> depositCrewDrugLot({
+    required String drugType,
+    required String quality,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post('/drugs/crew-storage/deposit', {
+        'drugType': drugType,
+        'quality': quality,
+        'quantity': quantity,
+      });
+      if (response.body.isEmpty) return {'success': false, 'message': 'Fout'};
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
     }
   }
 

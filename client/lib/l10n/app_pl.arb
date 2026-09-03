@@ -10389,5 +10389,106 @@
   "drugsProdSpeedupFailed": "Could not speed up production.",
   "drugsProdSpeedupInsufficientCredits": "Not enough credits to speed up this batch.",
   "drugsProdSpeedupAlreadyReady": "This batch is already ready to collect.",
-  "drugsProdSpeedupUnavailable": "Speed-up is not available for this batch."
+  "drugsProdSpeedupUnavailable": "Speed-up is not available for this batch.",
+  "evStreamDrugsProductionReady": "{quantity}g {drugName} ({quality}) is ready to collect",
+  "@evStreamDrugsProductionReady": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugName": {
+        "type": "String"
+      },
+      "quality": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFacBuyFor": "Buy for {price}",
+  "@drugsFacBuyFor": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFacRankLocked": "You need rank {rank} for this facility.",
+  "@drugsFacRankLocked": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFacRankLockedShort": "Rank too low",
+  "drugsFacNextUpgradeEducation": "The next upgrade needs more Narcotics education.",
+  "drugsFacAutoSaleTitle": "Darkweb auto-sale",
+  "drugsFacAutoSaleBody": "Opt-in: periodically sells part of your storefront drugs for a fee plus heat. Off by default.",
+  "drugsFacAutoSaleOn": "Auto-sale on",
+  "drugsFacAutoSaleOff": "Auto-sale off",
+  "drugsOpenMaterials": "Buy materials",
+  "drugsHeatRaidHint": "On collect there is a {percent}% chance of a raid (you choose before loot).",
+  "@drugsHeatRaidHint": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsHeatLowProfile": "Low profile",
+  "drugsHeatCashCool": "Cool for {cost}",
+  "@drugsHeatCashCool": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsHeatCoolDone": "Heat cooled",
+  "drugsHeatCoolFailed": "Cooling failed",
+  "drugsHeatShieldActive": "Heat shield active",
+  "drugsHeatLowProfileActive": "Low profile active",
+  "drugsRaidTitle": "Police raid",
+  "drugsRaidBody": "Choose: lose {loss}% of this batch, {hours} hours of facility downtime, or a cash fine of €{fine}.",
+  "@drugsRaidBody": {
+    "placeholders": {
+      "loss": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "fine": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsRaidLose": "Lose stock",
+  "drugsRaidDowntime": "Shut the facility",
+  "drugsRaidCash": "Pay the fine",
+  "drugsRaidResolved": "Raid resolved",
+  "drugsRaidFailed": "Raid choice failed",
+  "drugsBestCountryHint": "Best price: {country} ({pct}%)",
+  "@drugsBestCountryHint": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsNightclubBonusHint": "Nightclub margin {pct}%",
+  "@drugsNightclubBonusHint": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCrewDepositAction": "To crew storage",
+  "drugsCrewDepositDone": "Moved to crew storage",
+  "drugsCrewDepositFailed": "Crew deposit failed",
+  "drugsCutAllOneGrade": "Cut all one grade down"
 }

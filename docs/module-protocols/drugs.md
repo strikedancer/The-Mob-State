@@ -31,6 +31,11 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - VIP `buy-missing` also credits the **current-country depot**
 - `GET /drugs/productions/:productionId/speedup-quote` → credit cost to finish an in-progress batch early
 - `POST /drugs/productions/:productionId/speedup` → spend premium credits; sets `finishesAt = now` (player still collects normally)
+- `GET /drug-facilities` → owned facilities + `catalog` (price, rank, owned, next-upgrade education)
+- `POST /drugs/heat/cool` `{ action: cash | low_profile }`
+- `POST /drugs/raids/:id/resolve` `{ choice: lose | downtime | cash }`
+- `POST /drug-facilities/:id/auto-sale` `{ enabled }` (darkweb storefront only, default off)
+- `POST /drugs/crew-storage/deposit` / `withdraw` — quality `DrugInventory` lots to crew `drug_storage`
 
 ### Credit speedup (production timer)
 - Utility sink only: shortens wait time, does **not** bypass materials, slots, heat, education or collect.
@@ -70,7 +75,12 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - VIP quick-buy material shortcuts in production cards must remain confirm-first (cost modal with explicit Buy/Cancel actions before purchase) and server-enforced on active VIP status.
 - Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
 - Credit speedup for an in-progress batch must quote remaining time server-side, confirm before spend, refuse when already ready/collected, and only move `finishesAt` forward (no auto-inventory grant).
-- Facility ownership or type (including darkweb storefront) must not imply silent auto-sale of finished drug output unless a dedicated sale feature explicitly exists and is documented.
+- Facility ownership or type (including darkweb storefront) must not imply silent auto-sale of finished drug output. Darkweb auto-sale is **opt-in**, default **off**, with an explicit fee/heat disclaimer.
+- Collect raids must become a pending player choice before loot (`lose` / `downtime` / `cash`); never instant confiscation.
+- Batch-ready notifications (`drugs.production_ready`) are cron-driven and idempotent via `readyNotifiedAt`.
+- Credit temp-slot and heat shield are time/risk/utility only (no extra yield).
+- Crew quality-lot deposit uses `CrewDrugLot` (type+quality+grams) and shares `drug_storage` capacity with trade-good drug rows.
+- Nightclub own-production margin bonus is capped via `DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`.
 - Education-gated drug facility progression: slot/equipment upgrades that are locked behind school gates must return structured requirement details (`gateId`, `gateLabelKey`, `missing`) so the client can render the education requirements dialog instead of a generic error.
 - Materials bought into a country depot must not silently become backpack cargo; travel risk applies only to `_carried_` stock.
 

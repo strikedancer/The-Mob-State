@@ -18,6 +18,11 @@ import { getPlayerCarryingCapacity } from './backpackService';
 import toolService from './toolService';
 import { worldEventService } from './worldEventService';
 import { activityService } from './activityService';
+import { notificationService } from './notificationService';
+import {
+  drugCountryLabel,
+  getDrugRuntimeConfig,
+} from './drugRuntimeConfig';
 
 interface DrugDefinition {
   id: string;
@@ -469,6 +474,13 @@ class DrugService {
     let facilityCountry = 'netherlands';
     let facilityMultipliers = { qualityBonus: 0, yieldBonus: 0, speedBonus: 0 };
 
+    if (player.drugLowProfileUntil && player.drugLowProfileUntil > new Date()) {
+      return {
+        success: false,
+        message: 'Je zit low-profile: nieuwe productie is tijdelijk geblokkeerd.',
+      };
+    }
+
     if (requiredFacilityType) {
       const facility = await prisma.drugFacility.findUnique({
         where: { playerId_country_facilityType: { playerId, country: player.currentCountry || 'netherlands', facilityType: requiredFacilityType } },
@@ -483,12 +495,21 @@ class DrugService {
         };
       }
 
-      // Check slot availability
-      const activeCount = await drugFacilityService.getActiveProductionCount(facility.id);
-      if (activeCount >= facility.slots) {
+      if (facility.downtimeUntil && facility.downtimeUntil > new Date()) {
+        const hoursLeft = Math.max(1, Math.ceil((facility.downtimeUntil.getTime() - Date.now()) / 3600000));
         return {
           success: false,
-          message: `Je ${drug.type === 'WEED' ? 'kas' : 'lab'} heeft geen vrije plekken (${activeCount}/${facility.slots}). Upgrade naar meer plekken of wacht tot een productie klaar is.`,
+          message: `Deze faciliteit ligt stil na een inval (nog ${hoursLeft} uur).`,
+        };
+      }
+
+      // Check slot availability (includes credit temp-slot bonus)
+      const activeCount = await drugFacilityService.getActiveProductionCount(facility.id);
+      const effectiveSlots = await drugFacilityService.getEffectiveSlots(playerId, facility.slots);
+      if (activeCount >= effectiveSlots) {
+        return {
+          success: false,
+          message: `Je ${drug.type === 'WEED' ? 'kas' : 'lab'} heeft geen vrije plekken (${activeCount}/${effectiveSlots}). Upgrade naar meer plekken of wacht tot een productie klaar is.`,
         };
       }
 
@@ -942,16 +963,78 @@ class DrugService {
         incidentNote: incidentInfo.note ?? null,
         incidentSeverity: incidentInfo.severity ?? null,
         incidentType: incidentInfo.type ?? null,
+        raidPending: p.raidPending ?? false,
+        raid: p.raidPending
+          ? {
+              productionId: p.id,
+              lossPercent: p.raidLossPercent ?? 25,
+              cashFine: p.raidCashFine ?? 0,
+              downtimeHours: p.raidDowntimeHours ?? 4,
+            }
+          : null,
       };
     });
   }
 
   // Collect finished production
+  private async grantDrugInventory(
+    tx: any,
+    playerId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+    ownProduction: boolean
+  ): Promise<void> {
+    if (quantity <= 0) return;
+    const existingDrug = await tx.drugInventory.findUnique({
+      where: { playerId_drugType_quality: { playerId, drugType, quality } },
+    });
+    if (existingDrug) {
+      await tx.drugInventory.update({
+        where: { playerId_drugType_quality: { playerId, drugType, quality } },
+        data: {
+          quantity: existingDrug.quantity + quantity,
+          ownProduction: existingDrug.ownProduction || ownProduction,
+        },
+      });
+      return;
+    }
+    await tx.drugInventory.create({
+      data: { playerId, drugType, quality, quantity, ownProduction },
+    });
+  }
+
+  private buildRaidPayload(production: {
+    id: number;
+    quantity: number;
+    drugType: string;
+    raidLossPercent: number | null;
+    raidCashFine: number | null;
+    raidDowntimeHours: number | null;
+  }) {
+    return {
+      productionId: production.id,
+      quantity: production.quantity,
+      drugType: production.drugType,
+      lossPercent: production.raidLossPercent ?? 25,
+      cashFine: production.raidCashFine ?? 0,
+      downtimeHours: production.raidDowntimeHours ?? 4,
+    };
+  }
+
   async collectProduction(
     playerId: number,
     productionId: number,
     options?: { skipAchievementCheck?: boolean }
-  ): Promise<{ success: boolean; message: string; quantity?: number; drugType?: string }> {
+  ): Promise<{
+    success: boolean;
+    message: string;
+    quantity?: number;
+    drugType?: string;
+    raidPending?: boolean;
+    raid?: ReturnType<DrugService['buildRaidPayload']>;
+    error?: string;
+  }> {
     const production = await prisma.drugProduction.findUnique({
       where: { id: productionId },
     });
@@ -974,7 +1057,60 @@ class DrugService {
       return { success: false, message: `Productie nog niet klaar (nog ${timeLeft} minuten)` };
     }
 
+    if (production.raidPending) {
+      return {
+        success: false,
+        error: 'RAID_PENDING',
+        raidPending: true,
+        raid: this.buildRaidPayload(production),
+        message: 'Politie-inval: kies hoe je deze partij afhandelt.',
+      };
+    }
+
     const quality = (production as any).quality ?? 'C';
+    const heatInfo = await this.getDrugHeat(playerId);
+    if (heatInfo.raidChance > 0 && Math.random() < heatInfo.raidChance) {
+      const runtime = await getDrugRuntimeConfig();
+      const lossPercent = 20 + Math.round(Math.random() * 30);
+      const drug = this.drugs.get(production.drugType);
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { currentCountry: true },
+      });
+      const countryPrice = drug?.countryPricing[player?.currentCountry || 'netherlands'] ?? drug?.basePrice ?? 0;
+      const qualityMultiplier = drugFacilityService.getQualityPriceMultiplier(quality as any);
+      const cashFine = Math.max(
+        1000,
+        Math.round(production.quantity * countryPrice * qualityMultiplier * (runtime.raidCashFinePercent / 100))
+      );
+
+      await prisma.drugProduction.update({
+        where: { id: productionId },
+        data: {
+          raidPending: true,
+          raidLossPercent: lossPercent,
+          raidCashFine: cashFine,
+          raidDowntimeHours: runtime.raidDowntimeHours,
+        },
+      });
+
+      return {
+        success: false,
+        error: 'RAID_PENDING',
+        raidPending: true,
+        raid: {
+          productionId,
+          quantity: production.quantity,
+          drugType: production.drugType,
+          lossPercent,
+          cashFine,
+          downtimeHours: runtime.raidDowntimeHours,
+        },
+        message: 'Politie-inval: kies hoe je deze partij afhandelt.',
+      };
+    }
+
+    const ownProduction = Boolean(production.facilityId);
 
     // Atomic collect: never mark as collected unless inventory update succeeds.
     await prisma.$transaction(async (tx) => {
@@ -983,42 +1119,17 @@ class DrugService {
         data: {
           completed: true,
           collected: true,
+          raidPending: false,
         },
       });
-
-      const existingDrug = await tx.drugInventory.findUnique({
-        where: {
-          playerId_drugType_quality: {
-            playerId,
-            drugType: production.drugType,
-            quality,
-          },
-        },
-      });
-
-      if (existingDrug) {
-        await tx.drugInventory.update({
-          where: {
-            playerId_drugType_quality: {
-              playerId,
-              drugType: production.drugType,
-              quality,
-            },
-          },
-          data: {
-            quantity: existingDrug.quantity + production.quantity,
-          },
-        });
-      } else {
-        await tx.drugInventory.create({
-          data: {
-            playerId,
-            drugType: production.drugType,
-            quality,
-            quantity: production.quantity,
-          },
-        });
-      }
+      await this.grantDrugInventory(
+        tx,
+        playerId,
+        production.drugType,
+        quality,
+        production.quantity,
+        ownProduction
+      );
     });
 
     const drug = this.drugs.get(production.drugType);
@@ -1027,22 +1138,6 @@ class DrugService {
 
     // Collect reduces heat slightly
     await this.updateHeat(playerId, -3);
-
-    // Raid check — higher heat = higher chance of losing some product
-    const heatInfo = await this.getDrugHeat(playerId);
-    let raidMessage = '';
-    if (heatInfo.raidChance > 0 && Math.random() < heatInfo.raidChance) {
-      const confiscatePct = 0.20 + Math.random() * 0.30; // 20–50%
-      const confiscated = Math.round(production.quantity * confiscatePct);
-      if (confiscated > 0) {
-        await prisma.drugInventory.update({
-          where: { playerId_drugType_quality: { playerId, drugType: production.drugType, quality } },
-          data: { quantity: { decrement: confiscated } },
-        });
-        await this.updateHeat(playerId, -15); // Raid reduces heat
-        raidMessage = ` ⚠️ POLITIE-INVAL: ${confiscated}g geconfisqueerd! (heat: ${heatInfo.heat})`;
-      }
-    }
 
     if (!options?.skipAchievementCheck) {
       void checkAndUnlockAchievements(playerId).catch((err) =>
@@ -1092,7 +1187,7 @@ class DrugService {
 
     return {
       success: true,
-      message: `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald!${raidMessage}`,
+      message: `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald!`,
       quantity: production.quantity,
       drugType: production.drugType,
     };
@@ -1100,17 +1195,40 @@ class DrugService {
 
   // Get player drug inventory
   async getDrugInventory(playerId: number): Promise<any[]> {
-    const inventory = await prisma.drugInventory.findMany({
-      where: {
-        playerId,
-        quantity: { gt: 0 },
-      },
-      orderBy: [{ drugType: 'asc' }, { quality: 'asc' }],
-    });
+    const [inventory, player] = await Promise.all([
+      prisma.drugInventory.findMany({
+        where: {
+          playerId,
+          quantity: { gt: 0 },
+        },
+        orderBy: [{ drugType: 'asc' }, { quality: 'asc' }],
+      }),
+      prisma.player.findUnique({
+        where: { id: playerId },
+        select: { currentCountry: true },
+      }),
+    ]);
+    const currentCountry = player?.currentCountry || 'netherlands';
+    const runtime = await getDrugRuntimeConfig();
 
     return inventory.map((i) => {
       const drug = this.drugs.get(i.drugType);
       const qualityDef = drugFacilityService.getQualityTier((i.quality ?? 'C') as any);
+      const qualityMultiplier = qualityDef?.priceMultiplier ?? 1.0;
+      const currentUnit = Math.round(
+        (drug?.countryPricing[currentCountry] ?? drug?.basePrice ?? 0) * qualityMultiplier
+      );
+      let bestCountry = currentCountry;
+      let bestUnit = currentUnit;
+      for (const [country, price] of Object.entries(drug?.countryPricing ?? {})) {
+        const unit = Math.round(price * qualityMultiplier);
+        if (unit > bestUnit) {
+          bestUnit = unit;
+          bestCountry = country;
+        }
+      }
+      const bestPct = currentUnit > 0 ? Math.round(((bestUnit / currentUnit) - 1) * 100) : 0;
+
       return {
         id: i.id,
         drugType: i.drugType,
@@ -1118,10 +1236,16 @@ class DrugService {
         quality: i.quality ?? 'C',
         qualityLabel: qualityDef?.label ?? (i.quality ?? 'C'),
         qualityColor: qualityDef?.color ?? '#888888',
-        qualityMultiplier: qualityDef?.priceMultiplier ?? 1.0,
+        qualityMultiplier,
         quantity: i.quantity,
         basePrice: drug?.basePrice || 0,
-        effectivePrice: Math.round((drug?.basePrice || 0) * (qualityDef?.priceMultiplier ?? 1.0)),
+        effectivePrice: currentUnit,
+        ownProduction: i.ownProduction,
+        nightclubBonusPercent: i.ownProduction ? runtime.nightclubOwnProdBonusPercent : 0,
+        bestCountry,
+        bestCountryLabel: drugCountryLabel(bestCountry),
+        bestCountryPrice: bestUnit,
+        bestCountryPct: bestPct,
       };
     });
   }
@@ -1666,15 +1790,70 @@ class DrugService {
     return Math.max(0, heat - decay);
   }
 
-  async getDrugHeat(playerId: number): Promise<{ heat: number; level: string; raidChance: number }> {
+  async getDrugHeat(playerId: number): Promise<{
+    heat: number;
+    level: string;
+    raidChance: number;
+    shieldActive: boolean;
+    lowProfileActive: boolean;
+    lowProfileUntil: string | null;
+    cashCoolCost: number;
+    cashCoolPoints: number;
+    lowProfileHours: number;
+    lowProfileCooldownHours: number;
+    lowProfileReadyAt: string | null;
+  }> {
+    const runtime = await getDrugRuntimeConfig();
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { drugHeat: true, lastDrugActionAt: true },
+      select: {
+        drugHeat: true,
+        lastDrugActionAt: true,
+        drugHeatShieldExpiresAt: true,
+        drugLowProfileUntil: true,
+        lastDrugLowProfileAt: true,
+      },
     });
-    if (!player) return { heat: 0, level: 'Laag', raidChance: 0 };
+    if (!player) {
+      return {
+        heat: 0,
+        level: 'Laag',
+        raidChance: 0,
+        shieldActive: false,
+        lowProfileActive: false,
+        lowProfileUntil: null,
+        cashCoolCost: runtime.cashCoolCostPerPoint * runtime.cashCoolPoints,
+        cashCoolPoints: runtime.cashCoolPoints,
+        lowProfileHours: runtime.lowProfileHours,
+        lowProfileCooldownHours: runtime.lowProfileCooldownHours,
+        lowProfileReadyAt: null,
+      };
+    }
 
+    const now = new Date();
     const heat = this.calcHeatDecay(player.drugHeat ?? 0, player.lastDrugActionAt);
-    return { heat, ...this.heatLevel(heat) };
+    const heatInfo = this.heatLevel(heat);
+    const shieldActive = Boolean(player.drugHeatShieldExpiresAt && player.drugHeatShieldExpiresAt > now);
+    const lowProfileActive = Boolean(player.drugLowProfileUntil && player.drugLowProfileUntil > now);
+    const cooldownMs = runtime.lowProfileCooldownHours * 3600000;
+    const lowProfileReadyAt =
+      player.lastDrugLowProfileAt
+        ? new Date(player.lastDrugLowProfileAt.getTime() + cooldownMs)
+        : null;
+
+    return {
+      heat,
+      level: heatInfo.level,
+      raidChance: shieldActive ? 0 : heatInfo.raidChance,
+      shieldActive,
+      lowProfileActive,
+      lowProfileUntil: player.drugLowProfileUntil?.toISOString() ?? null,
+      cashCoolCost: runtime.cashCoolCostPerPoint * runtime.cashCoolPoints,
+      cashCoolPoints: runtime.cashCoolPoints,
+      lowProfileHours: runtime.lowProfileHours,
+      lowProfileCooldownHours: runtime.lowProfileCooldownHours,
+      lowProfileReadyAt: lowProfileReadyAt?.toISOString() ?? null,
+    };
   }
 
   private heatLevel(heat: number): { level: string; raidChance: number } {
@@ -1693,7 +1872,20 @@ class DrugService {
     if (!player) return 0;
 
     const decayed = this.calcHeatDecay(player.drugHeat ?? 0, player.lastDrugActionAt);
-    const newHeat = Math.min(100, Math.max(0, decayed + delta));
+    let applied = delta;
+    if (delta > 0) {
+      const now = new Date();
+      const fullPlayer = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { drugHeatShieldExpiresAt: true, drugLowProfileUntil: true },
+      });
+      const shieldActive = Boolean(fullPlayer?.drugHeatShieldExpiresAt && fullPlayer.drugHeatShieldExpiresAt > now);
+      const lowProfileActive = Boolean(fullPlayer?.drugLowProfileUntil && fullPlayer.drugLowProfileUntil > now);
+      if (shieldActive || lowProfileActive) {
+        applied = Math.round(delta / 2);
+      }
+    }
+    const newHeat = Math.min(100, Math.max(0, decayed + applied));
 
     await prisma.player.update({
       where: { id: playerId },
@@ -1708,7 +1900,7 @@ class DrugService {
 
   async autoCollectAll(playerId: number): Promise<number> {
     const ready = await prisma.drugProduction.findMany({
-      where: { playerId, collected: false, finishesAt: { lte: new Date() } },
+      where: { playerId, collected: false, raidPending: false, finishesAt: { lte: new Date() } },
       select: { id: true },
     });
     let collected = 0;
@@ -1807,11 +1999,20 @@ class DrugService {
       if (existing) {
         await tx.drugInventory.update({
           where: { playerId_drugType_quality: { playerId, drugType, quality: newQuality } },
-          data: { quantity: existing.quantity + newQuantity },
+          data: {
+            quantity: existing.quantity + newQuantity,
+            ownProduction: existing.ownProduction || inventory.ownProduction,
+          },
         });
       } else {
         await tx.drugInventory.create({
-          data: { playerId, drugType, quality: newQuality, quantity: newQuantity },
+          data: {
+            playerId,
+            drugType,
+            quality: newQuality,
+            quantity: newQuantity,
+            ownProduction: inventory.ownProduction,
+          },
         });
       }
     });
@@ -2049,6 +2250,324 @@ class DrugService {
         return { success: false as const, error: code };
       }
       throw error;
+    }
+  }
+
+  async notifyReadyProductions(): Promise<number> {
+    const now = new Date();
+    const ready = await prisma.drugProduction.findMany({
+      where: {
+        collected: false,
+        readyNotifiedAt: null,
+        finishesAt: { lte: now },
+      },
+      select: {
+        id: true,
+        playerId: true,
+        drugType: true,
+        quantity: true,
+        quality: true,
+      },
+    });
+
+    let notified = 0;
+    for (const production of ready) {
+      const marked = await prisma.drugProduction.updateMany({
+        where: { id: production.id, readyNotifiedAt: null },
+        data: { readyNotifiedAt: now },
+      });
+      if (marked.count !== 1) continue;
+
+      const drug = this.drugs.get(production.drugType);
+      const qualityDef = drugFacilityService.getQualityTier((production.quality ?? 'C') as any);
+      await notificationService.sendDrugProductionReadyNotification(
+        production.playerId,
+        drug?.displayName || production.drugType,
+        production.quantity,
+        qualityDef?.label ?? production.quality,
+        production.id
+      );
+      notified++;
+    }
+    return notified;
+  }
+
+  async coolDrugHeat(
+    playerId: number,
+    action: 'cash' | 'low_profile'
+  ): Promise<{ success: boolean; message: string; heat?: number }> {
+    const runtime = await getDrugRuntimeConfig();
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: {
+        money: true,
+        drugHeat: true,
+        lastDrugActionAt: true,
+        drugLowProfileUntil: true,
+        lastDrugLowProfileAt: true,
+      },
+    });
+    if (!player) return { success: false, message: 'Speler niet gevonden' };
+
+    if (action === 'cash') {
+      const cost = runtime.cashCoolCostPerPoint * runtime.cashCoolPoints;
+      if (player.money < cost) {
+        return { success: false, message: `Je hebt €${cost.toLocaleString()} nodig om heat te koelen` };
+      }
+      await prisma.player.update({
+        where: { id: playerId },
+        data: {
+          money: { decrement: cost },
+          lastDrugHeatCoolAt: new Date(),
+        },
+      });
+      const heat = await this.updateHeat(playerId, -runtime.cashCoolPoints);
+      return {
+        success: true,
+        heat,
+        message: `Heat −${runtime.cashCoolPoints} voor €${cost.toLocaleString()}`,
+      };
+    }
+
+    const now = new Date();
+    if (player.drugLowProfileUntil && player.drugLowProfileUntil > now) {
+      return { success: false, message: 'Je zit al low-profile' };
+    }
+    const cooldownMs = runtime.lowProfileCooldownHours * 3600000;
+    if (player.lastDrugLowProfileAt && now.getTime() - player.lastDrugLowProfileAt.getTime() < cooldownMs) {
+      const readyAt = new Date(player.lastDrugLowProfileAt.getTime() + cooldownMs);
+      const hoursLeft = Math.max(1, Math.ceil((readyAt.getTime() - now.getTime()) / 3600000));
+      return { success: false, message: `Low-profile cooldown: nog ${hoursLeft} uur` };
+    }
+
+    const until = new Date(now.getTime() + runtime.lowProfileHours * 3600000);
+    await prisma.player.update({
+      where: { id: playerId },
+      data: {
+        drugLowProfileUntil: until,
+        lastDrugLowProfileAt: now,
+      },
+    });
+
+    return {
+      success: true,
+      message: `Low-profile ${runtime.lowProfileHours} uur: geen nieuwe productie, lagere heat-gain`,
+    };
+  }
+
+  async resolveRaid(
+    playerId: number,
+    productionId: number,
+    choice: 'lose' | 'downtime' | 'cash'
+  ): Promise<{ success: boolean; message: string; quantity?: number; drugType?: string }> {
+    const production = await prisma.drugProduction.findUnique({
+      where: { id: productionId },
+    });
+    if (!production || production.playerId !== playerId) {
+      return { success: false, message: 'Productie niet gevonden' };
+    }
+    if (!production.raidPending || production.collected) {
+      return { success: false, message: 'Geen openstaande inval voor deze partij' };
+    }
+
+    const quality = production.quality ?? 'C';
+    const ownProduction = Boolean(production.facilityId);
+    let granted = production.quantity;
+    let extraMessage = '';
+
+    if (choice === 'lose') {
+      const lossPercent = production.raidLossPercent ?? 25;
+      granted = Math.max(0, Math.round(production.quantity * (1 - lossPercent / 100)));
+      extraMessage = ` −${lossPercent}% van de partij`;
+    } else if (choice === 'downtime') {
+      const hours = production.raidDowntimeHours ?? 4;
+      if (production.facilityId) {
+        await prisma.drugFacility.update({
+          where: { id: production.facilityId },
+          data: { downtimeUntil: new Date(Date.now() + hours * 3600000) },
+        });
+      }
+      extraMessage = ` faciliteit ${hours} uur stil`;
+    } else if (choice === 'cash') {
+      const fine = production.raidCashFine ?? 0;
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { money: true },
+      });
+      if (!player || player.money < fine) {
+        return { success: false, message: `Je hebt €${fine.toLocaleString()} nodig voor de boete` };
+      }
+      await prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: fine } },
+      });
+      extraMessage = ` boete €${fine.toLocaleString()}`;
+    } else {
+      return { success: false, message: 'Ongeldige keuze' };
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.drugProduction.update({
+        where: { id: productionId },
+        data: {
+          completed: true,
+          collected: true,
+          raidPending: false,
+        },
+      });
+      await this.grantDrugInventory(
+        tx,
+        playerId,
+        production.drugType,
+        quality,
+        granted,
+        ownProduction
+      );
+    });
+
+    await this.updateHeat(playerId, -15);
+    const drug = this.drugs.get(production.drugType);
+    const qualityDef = drugFacilityService.getQualityTier(quality as any);
+    const drugName = drug?.displayName || production.drugType;
+    const qualityLabel = qualityDef?.label ?? quality;
+
+    await worldEventService.createEvent(
+      'drugs.raid_resolved',
+      {
+        drugType: production.drugType,
+        drugName,
+        quantity: granted,
+        choice,
+      },
+      playerId,
+    );
+
+    void checkAndUnlockAchievements(playerId).catch(() => {});
+
+    return {
+      success: true,
+      quantity: granted,
+      drugType: production.drugType,
+      message: `Inval afgehandeld:${extraMessage}. ${granted}g ${drugName} (${qualityLabel}) behouden.`,
+    };
+  }
+
+  async processDarkwebAutoSales(): Promise<number> {
+    const runtime = await getDrugRuntimeConfig();
+    const facilities = await prisma.drugFacility.findMany({
+      where: { facilityType: 'darkweb_storefront', autoSaleEnabled: true },
+    });
+    let soldLots = 0;
+
+    for (const facility of facilities) {
+      const def = drugFacilityService.getFacilityDefinition(facility.facilityType);
+      const types = def?.forDrugTypes ?? [];
+      if (types.length === 0) continue;
+
+      const player = await prisma.player.findUnique({
+        where: { id: facility.playerId },
+        select: { currentCountry: true },
+      });
+      const country = player?.currentCountry || facility.country || 'netherlands';
+      const lots = await prisma.drugInventory.findMany({
+        where: {
+          playerId: facility.playerId,
+          drugType: { in: types },
+          quantity: { gt: 0 },
+        },
+      });
+
+      let soldValue = 0;
+      let soldGrams = 0;
+      for (const lot of lots) {
+        const share = Math.max(1, Math.floor(lot.quantity * (runtime.darkwebSharePercent / 100)));
+        if (share <= 0) continue;
+        const drug = this.drugs.get(lot.drugType);
+        if (!drug) continue;
+        const qualityMultiplier = drugFacilityService.getQualityPriceMultiplier((lot.quality ?? 'C') as any);
+        const unit = Math.round((drug.countryPricing[country] ?? drug.basePrice) * qualityMultiplier);
+        const gross = unit * share;
+        const net = Math.round(gross * (1 - runtime.darkwebFeePercent / 100));
+
+        await prisma.$transaction(async (tx) => {
+          if (lot.quantity <= share) {
+            await tx.drugInventory.delete({ where: { id: lot.id } });
+          } else {
+            await tx.drugInventory.update({
+              where: { id: lot.id },
+              data: { quantity: { decrement: share } },
+            });
+          }
+          await tx.player.update({
+            where: { id: facility.playerId },
+            data: { money: { increment: net } },
+          });
+        });
+        soldValue += net;
+        soldGrams += share;
+        soldLots++;
+      }
+
+      if (soldGrams > 0) {
+        await this.updateHeat(facility.playerId, runtime.darkwebHeat);
+        await worldEventService.createEvent(
+          'drugs.darkweb_autosale',
+          {
+            grams: soldGrams,
+            net: soldValue,
+            feePercent: runtime.darkwebFeePercent,
+          },
+          facility.playerId,
+        );
+      }
+    }
+
+    return soldLots;
+  }
+
+  async depositQualityDrugsToCrew(
+    playerId: number,
+    drugType: string,
+    quality: string,
+    quantity: number
+  ): Promise<{ success: boolean; message: string }> {
+    const membership = await prisma.crewMember.findUnique({ where: { playerId } });
+    if (!membership) return { success: false, message: 'Je zit niet in een crew' };
+
+    const { depositCrewDrugLots } = await import('./crewStorageService');
+    try {
+      await depositCrewDrugLots(membership.crewId, playerId, drugType, quality, quantity);
+      return { success: true, message: `${quantity}g naar crew-opslag verplaatst` };
+    } catch (error: any) {
+      const map: Record<string, string> = {
+        DRUG_STORAGE_NOT_OWNED: 'Je crew heeft geen drugsopslag',
+        DRUG_STORAGE_FULL: 'Crew-drugsopslag is vol',
+        INSUFFICIENT_DRUGS: 'Niet genoeg drugs',
+        INVALID_QUANTITY: 'Ongeldige hoeveelheid',
+      };
+      return { success: false, message: map[error?.message] ?? 'Crew-storting mislukt' };
+    }
+  }
+
+  async withdrawQualityDrugsFromCrew(
+    playerId: number,
+    drugType: string,
+    quality: string,
+    quantity: number
+  ): Promise<{ success: boolean; message: string }> {
+    const membership = await prisma.crewMember.findUnique({ where: { playerId } });
+    if (!membership) return { success: false, message: 'Je zit niet in een crew' };
+
+    const { withdrawCrewDrugLots } = await import('./crewStorageService');
+    try {
+      await withdrawCrewDrugLots(membership.crewId, playerId, drugType, quality, quantity);
+      return { success: true, message: `${quantity}g uit crew-opslag gehaald` };
+    } catch (error: any) {
+      const map: Record<string, string> = {
+        INSUFFICIENT_CREW_DRUGS: 'Niet genoeg in crew-opslag',
+        INVALID_QUANTITY: 'Ongeldige hoeveelheid',
+      };
+      return { success: false, message: map[error?.message] ?? 'Crew-opname mislukt' };
     }
   }
 

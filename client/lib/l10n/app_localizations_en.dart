@@ -12514,6 +12514,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsProductionReady(
+    String quantity,
+    String drugName,
+    String quality,
+  ) {
+    return '${quantity}g $drugName ($quality) is ready to collect';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -15270,11 +15279,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nYou can spend premium credits to finish an in-progress batch early (confirm dialog shows the exact credit cost); you still collect the output normally afterward.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.';
+      'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market (Materials tab, also linked from Hub/Production) or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. You get a notification when a batch is ready to collect.\nYou can spend premium credits to finish a batch early, buy a temporary extra slot, or activate a 24h heat shield (no extra yield).\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output, but skips a pending raid until you choose.\nOn collect, heat can trigger a raid: you choose stock loss, facility downtime or a cash fine before receiving loot.\nYou can cool heat with cash or go low-profile (temporarily no new production).\nA darkweb storefront never silent-sells: auto-sale is opt-in, with a fee and extra heat.\nOwn-production drugs get a small nightclub margin bonus. Quality lots can be deposited into crew drug storage.\nFacility cards show price, rank and education requirements before buy or upgrade.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.';
+      'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';
@@ -16694,4 +16703,107 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get countryPoliceDisabled =>
       'Country police pressure is currently off.';
+
+  @override
+  String drugsFacBuyFor(String price) {
+    return 'Buy for $price';
+  }
+
+  @override
+  String drugsFacRankLocked(String rank) {
+    return 'You need rank $rank for this facility.';
+  }
+
+  @override
+  String get drugsFacRankLockedShort => 'Rank too low';
+
+  @override
+  String get drugsFacNextUpgradeEducation =>
+      'The next upgrade needs more Narcotics education.';
+
+  @override
+  String get drugsFacAutoSaleTitle => 'Darkweb auto-sale';
+
+  @override
+  String get drugsFacAutoSaleBody =>
+      'Opt-in: periodically sells part of your storefront drugs for a fee plus heat. Off by default.';
+
+  @override
+  String get drugsFacAutoSaleOn => 'Auto-sale on';
+
+  @override
+  String get drugsFacAutoSaleOff => 'Auto-sale off';
+
+  @override
+  String get drugsOpenMaterials => 'Buy materials';
+
+  @override
+  String drugsHeatRaidHint(String percent) {
+    return 'On collect there is a $percent% chance of a raid (you choose before loot).';
+  }
+
+  @override
+  String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatCashCool(String cost) {
+    return 'Cool for $cost';
+  }
+
+  @override
+  String get drugsHeatCoolDone => 'Heat cooled';
+
+  @override
+  String get drugsHeatCoolFailed => 'Cooling failed';
+
+  @override
+  String get drugsHeatShieldActive => 'Heat shield active';
+
+  @override
+  String get drugsHeatLowProfileActive => 'Low profile active';
+
+  @override
+  String get drugsRaidTitle => 'Police raid';
+
+  @override
+  String drugsRaidBody(String loss, String hours, String fine) {
+    return 'Choose: lose $loss% of this batch, $hours hours of facility downtime, or a cash fine of €$fine.';
+  }
+
+  @override
+  String get drugsRaidLose => 'Lose stock';
+
+  @override
+  String get drugsRaidDowntime => 'Shut the facility';
+
+  @override
+  String get drugsRaidCash => 'Pay the fine';
+
+  @override
+  String get drugsRaidResolved => 'Raid resolved';
+
+  @override
+  String get drugsRaidFailed => 'Raid choice failed';
+
+  @override
+  String drugsBestCountryHint(String country, String pct) {
+    return 'Best price: $country ($pct%)';
+  }
+
+  @override
+  String drugsNightclubBonusHint(String pct) {
+    return 'Nightclub margin $pct%';
+  }
+
+  @override
+  String get drugsCrewDepositAction => 'To crew storage';
+
+  @override
+  String get drugsCrewDepositDone => 'Moved to crew storage';
+
+  @override
+  String get drugsCrewDepositFailed => 'Crew deposit failed';
+
+  @override
+  String get drugsCutAllOneGrade => 'Cut all one grade down';
 }

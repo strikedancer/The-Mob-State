@@ -12553,6 +12553,15 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsProductionReady(
+    String quantity,
+    String drugName,
+    String quality,
+  ) {
+    return '${quantity}g $drugName ($quality) is klaar om op te halen';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -15307,11 +15316,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden (bevestigingsdialoog toont de exacte creditkosten); daarna haal je het product nog steeds normaal op.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een bliksemknop: na een bevestigingsmodal koop je in één klik alle ontbrekende materialen voor die batch.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
+      'Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt (tab Materialen, ook via een knop in Hub/Productie) of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je krijgt een melding als een partij klaar is om op te halen.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden, een tijdelijke extra slot te kopen of 24 uur heat shield te activeren (geen extra opbrengst).\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch, maar slaat een pending inval over tot jij kiest.\nBij ophalen kan heat een inval triggeren: je kiest dan voorraadverlies, faciliteit-stilstand of een cash-boete voordat je loot krijgt.\nHeat kun je koelen met cash of low-profile (tijdelijk geen nieuwe productie).\nEen darkweb storefront verkoopt klaar product niet stil: auto-verkoop is opt-in, met fee en extra heat.\nEigen productie in de nightclub krijgt een kleine margebonus. Kwaliteitslots kun je naar crew-drugsopslag storten.\nFaciliteitkaarten tonen prijs, rank en opleidingseisen vóór koop of upgrade.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Upgrade opslag voor productie: volle opslag stopt je productie en je verliest die productietime.\nHoud FBI Heat onder 50: boven dat niveau word je actief gestalkt met zware raid-kansen die alles stilleggen.\nCombineer drugsverkoop met smokkelen voor hogere marges en verspreide risico\'s.';
+      'Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';
@@ -16733,4 +16742,107 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get countryPoliceDisabled =>
       'Landelijke politiedruk staat momenteel uit.';
+
+  @override
+  String drugsFacBuyFor(String price) {
+    return 'Kopen voor $price';
+  }
+
+  @override
+  String drugsFacRankLocked(String rank) {
+    return 'Je hebt rank $rank nodig voor deze faciliteit.';
+  }
+
+  @override
+  String get drugsFacRankLockedShort => 'Rank te laag';
+
+  @override
+  String get drugsFacNextUpgradeEducation =>
+      'Volgende upgrade vereist extra Narcotica-opleiding.';
+
+  @override
+  String get drugsFacAutoSaleTitle => 'Darkweb auto-verkoop';
+
+  @override
+  String get drugsFacAutoSaleBody =>
+      'Opt-in: verkoopt periodiek een deel van je storefront-drugs tegen fee + heat. Standaard uit.';
+
+  @override
+  String get drugsFacAutoSaleOn => 'Auto-verkoop aan';
+
+  @override
+  String get drugsFacAutoSaleOff => 'Auto-verkoop uit';
+
+  @override
+  String get drugsOpenMaterials => 'Grondstoffen kopen';
+
+  @override
+  String drugsHeatRaidHint(String percent) {
+    return 'Bij ophalen $percent% kans op een inval (keuze vóór loot).';
+  }
+
+  @override
+  String get drugsHeatLowProfile => 'Low-profile';
+
+  @override
+  String drugsHeatCashCool(String cost) {
+    return 'Koelen voor $cost';
+  }
+
+  @override
+  String get drugsHeatCoolDone => 'Heat gekoeld';
+
+  @override
+  String get drugsHeatCoolFailed => 'Koelen mislukt';
+
+  @override
+  String get drugsHeatShieldActive => 'Heat shield actief';
+
+  @override
+  String get drugsHeatLowProfileActive => 'Low-profile actief';
+
+  @override
+  String get drugsRaidTitle => 'Politie-inval';
+
+  @override
+  String drugsRaidBody(String loss, String hours, String fine) {
+    return 'Kies: verlies $loss% van deze partij, $hours uur faciliteit-stilstand, of cash-boete €$fine.';
+  }
+
+  @override
+  String get drugsRaidLose => 'Voorraad inleveren';
+
+  @override
+  String get drugsRaidDowntime => 'Faciliteit stilleggen';
+
+  @override
+  String get drugsRaidCash => 'Boete betalen';
+
+  @override
+  String get drugsRaidResolved => 'Inval afgehandeld';
+
+  @override
+  String get drugsRaidFailed => 'Invalkeuze mislukt';
+
+  @override
+  String drugsBestCountryHint(String country, String pct) {
+    return 'Beste prijs: $country ($pct%)';
+  }
+
+  @override
+  String drugsNightclubBonusHint(String pct) {
+    return 'Nightclub-marge $pct%';
+  }
+
+  @override
+  String get drugsCrewDepositAction => 'Naar crew-opslag';
+
+  @override
+  String get drugsCrewDepositDone => 'Naar crew-opslag verplaatst';
+
+  @override
+  String get drugsCrewDepositFailed => 'Crew-storting mislukt';
+
+  @override
+  String get drugsCutAllOneGrade => 'Alles één grade omlaag';
 }

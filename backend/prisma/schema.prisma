@@ -66,6 +66,10 @@ model Player {
   resetPasswordToken              String?                          @db.VarChar(255)
   resetPasswordTokenExpiry        DateTime?
   hitProtectionExpiresAt          DateTime?
+  drugHeatShieldExpiresAt         DateTime?
+  drugLowProfileUntil             DateTime?
+  lastDrugHeatCoolAt              DateTime?
+  lastDrugLowProfileAt            DateTime?
   verificationToken               String?                          @db.VarChar(255)
   verificationTokenExpiry         DateTime?
   vipExpiresAt                    DateTime?
@@ -507,6 +511,7 @@ model Crew {
   carStorageBuilding    CrewCarStorageBuilding?
   cashStorageBuilding   CrewCashStorageBuilding?
   drugInventory         CrewDrugInventory[]
+  drugLots              CrewDrugLot[]
   drugStorageBuilding   CrewDrugStorageBuilding?
   tradeInventory        CrewTradeInventory[]
   tradeStorageBuilding  CrewTradeStorageBuilding?
@@ -871,6 +876,21 @@ model CrewDrugInventory {
   @@unique([crewId, goodType])
   @@index([crewId])
   @@map("crew_drug_inventory")
+}
+
+/// Quality-aware lots from player DrugInventory (type + quality + grams).
+model CrewDrugLot {
+  id        Int      @id @default(autoincrement())
+  crewId    Int
+  drugType  String   @db.VarChar(50)
+  quality   String   @default("C") @db.VarChar(2)
+  quantity  Int      @default(0)
+  updatedAt DateTime @updatedAt
+  crew      Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, drugType, quality])
+  @@index([crewId])
+  @@map("crew_drug_lots")
 }
 
 model CrewTradeStorageBuilding {
@@ -1712,6 +1732,11 @@ model DrugProduction {
   facilityId        Int?
   quality           String    @default("C") @db.VarChar(2)
   qualityMultiplier Float     @default(1)
+  readyNotifiedAt   DateTime?
+  raidPending       Boolean   @default(false)
+  raidLossPercent   Int?
+  raidCashFine      Int?
+  raidDowntimeHours Int?
   player            Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
   property          Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   facility          DrugFacility? @relation(fields: [facilityId], references: [id], onDelete: SetNull)
@@ -1720,16 +1745,18 @@ model DrugProduction {
   @@index([finishesAt])
   @@index([completed])
   @@index([facilityId])
+  @@index([raidPending])
   @@index([propertyId], map: "drug_production_propertyId_fkey")
   @@map("drug_production")
 }
 
 model DrugInventory {
-  id       Int    @id @default(autoincrement())
-  playerId Int
-  drugType String @db.VarChar(50)
-  quantity Int    @default(0)
-  quality  String @default("C") @db.VarChar(2)
+  id            Int     @id @default(autoincrement())
+  playerId      Int
+  drugType      String  @db.VarChar(50)
+  quantity      Int     @default(0)
+  quality       String  @default("C") @db.VarChar(2)
+  ownProduction Boolean @default(false)
 
   @@unique([playerId, drugType, quality])
   @@index([playerId])
@@ -1752,14 +1779,16 @@ model ProductionMaterial {
 }
 
 model DrugFacility {
-  id           Int       @id @default(autoincrement())
-  playerId     Int
-  country      String?   @default("netherlands") @db.VarChar(50)
-  facilityType String    @db.VarChar(30)
-  slots        Int       @default(1)
-  purchasedAt  DateTime? @default(now())
-  upgrades     DrugFacilityUpgrade[]
-  productions  DrugProduction[]
+  id              Int       @id @default(autoincrement())
+  playerId        Int
+  country         String?   @default("netherlands") @db.VarChar(50)
+  facilityType    String    @db.VarChar(30)
+  slots           Int       @default(1)
+  purchasedAt     DateTime? @default(now())
+  autoSaleEnabled Boolean   @default(false)
+  downtimeUntil   DateTime?
+  upgrades        DrugFacilityUpgrade[]
+  productions     DrugProduction[]
 
   @@unique([playerId, country, facilityType])
   @@index([playerId])
@@ -2137,10 +2166,11 @@ model NightclubDrugInventory {
   id        Int            @id @default(autoincrement())
   venueId   Int
   drugType  String         @db.VarChar(50)
-  quality   String?        @default("C") @db.VarChar(2)
-  quantity  Int?           @default(0)
-  basePrice Int
-  storedAt  DateTime?      @default(now()) @db.DateTime(0)
+  quality        String?        @default("C") @db.VarChar(2)
+  quantity       Int?           @default(0)
+  basePrice      Int
+  ownProduction  Boolean        @default(false)
+  storedAt       DateTime?      @default(now()) @db.DateTime(0)
   updatedAt DateTime?      @default(now()) @updatedAt @db.DateTime(0)
   venue     NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_drug_inventory_ibfk_1")
 
@@ -2527,6 +2557,8 @@ enum CreditShopEffectType {
   VEHICLE_TUNE_RESET
   ACTION_COOLDOWN_RESET
   EVENT_BOOST
+  DRUG_TEMP_SLOT
+  DRUG_HEAT_SHIELD
 }
 
 enum CreditEntitlementStatus {

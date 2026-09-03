@@ -6,6 +6,7 @@ import '../services/drug_service.dart';
 import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'black_market_screen.dart';
 import 'drug_facility_screen.dart';
 import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
@@ -13,8 +14,13 @@ import '../utils/web_asset_helper.dart';
 
 class DrugProductionScreen extends StatefulWidget {
   final VoidCallback? onOpenFacilitiesRequested;
+  final VoidCallback? onOpenBlackMarket;
 
-  const DrugProductionScreen({super.key, this.onOpenFacilitiesRequested});
+  const DrugProductionScreen({
+    super.key,
+    this.onOpenFacilitiesRequested,
+    this.onOpenBlackMarket,
+  });
 
   @override
   State<DrugProductionScreen> createState() => _DrugProductionScreenState();
@@ -136,6 +142,65 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
       context,
     ).push(MaterialPageRoute(builder: (_) => const DrugFacilityScreen()));
     _loadData();
+  }
+
+  Future<void> _openMaterials() async {
+    if (widget.onOpenBlackMarket != null) {
+      widget.onOpenBlackMarket!.call();
+      return;
+    }
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const BlackMarketScreen(initialTabIndex: 4),
+      ),
+    );
+    _loadData();
+  }
+
+  Future<bool> _resolveRaidDialog(DrugProduction production) async {
+    final t = AppLocalizations.of(context)!;
+    final choice = await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: Text(t.drugsRaidTitle),
+        content: Text(
+          t.drugsRaidBody(
+            '${production.raidLossPercent ?? 25}',
+            '${production.raidDowntimeHours ?? 4}',
+            '${production.raidCashFine ?? 0}',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, 'lose'),
+            child: Text(t.drugsRaidLose),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, 'downtime'),
+            child: Text(t.drugsRaidDowntime),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, 'cash'),
+            child: Text(t.drugsRaidCash),
+          ),
+        ],
+      ),
+    );
+    if (choice == null) return false;
+    final result = await _drugService.resolveRaid(production.id, choice);
+    if (!mounted) return false;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          (result['message'] as String?) ??
+              (result['success'] == true ? t.drugsRaidResolved : t.drugsRaidFailed),
+        ),
+        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
+      ),
+    );
+    return result['success'] == true;
   }
 
   void _startProductionTimer() {
@@ -573,12 +638,46 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   }
 
   Future<void> _collectProduction(DrugProduction production) async {
+    if (production.raidPending) {
+      final resolved = await _resolveRaidDialog(production);
+      if (resolved && mounted) {
+        _applyCollectedProductionLocally(production);
+        unawaited(_syncProductionContextAfterCollect());
+      }
+      return;
+    }
     final result = await _drugService.collectProduction(
       production.id.toString(),
     );
 
     if (mounted) {
-      if (result['success'] == true) {
+      if (result['raidPending'] == true || result['error'] == 'RAID_PENDING') {
+        final raid = result['raid'] as Map<String, dynamic>? ?? {};
+        final pending = DrugProduction(
+          id: production.id,
+          drugType: production.drugType,
+          drugName: production.drugName,
+          quantity: production.quantity,
+          startedAt: production.startedAt,
+          finishesAt: production.finishesAt,
+          isReady: true,
+          timeRemaining: 0,
+          quality: production.quality,
+          qualityLabel: production.qualityLabel,
+          qualityColor: production.qualityColor,
+          qualityMultiplier: production.qualityMultiplier,
+          facilityId: production.facilityId,
+          raidPending: true,
+          raidLossPercent: (raid['lossPercent'] as num?)?.toInt(),
+          raidCashFine: (raid['cashFine'] as num?)?.toInt(),
+          raidDowntimeHours: (raid['downtimeHours'] as num?)?.toInt(),
+        );
+        final resolved = await _resolveRaidDialog(pending);
+        if (resolved) {
+          _applyCollectedProductionLocally(production);
+          unawaited(_syncProductionContextAfterCollect());
+        }
+      } else if (result['success'] == true) {
         _applyCollectedProductionLocally(production);
         unawaited(_syncProductionContextAfterCollect());
 
@@ -810,6 +909,11 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                 icon: const Icon(Icons.factory_outlined),
                 onPressed: _openFacilities,
               ),
+              IconButton(
+                icon: const Icon(Icons.science_outlined),
+                tooltip: t.drugsOpenMaterials,
+                onPressed: _openMaterials,
+              ),
               IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
             ],
           ),
@@ -880,6 +984,18 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                         fontSize: isMobile ? 13 : 14,
                                       ),
                                     ),
+                                    if (_stats != null) ...[
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        t.drugsHeatRaidHint(
+                                          '${(_stats!.raidChance * 100).round()}',
+                                        ),
+                                        style: TextStyle(
+                                          color: Colors.orangeAccent.withOpacity(0.9),
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),

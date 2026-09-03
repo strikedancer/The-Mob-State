@@ -233,6 +233,10 @@ class DrugProduction {
   final String? incidentNote;
   final String? incidentSeverity;
   final String? incidentType;
+  final bool raidPending;
+  final int? raidLossPercent;
+  final int? raidCashFine;
+  final int? raidDowntimeHours;
 
   DrugProduction({
     required this.id,
@@ -251,6 +255,10 @@ class DrugProduction {
     this.incidentNote,
     this.incidentSeverity,
     this.incidentType,
+    this.raidPending = false,
+    this.raidLossPercent,
+    this.raidCashFine,
+    this.raidDowntimeHours,
   });
 
   factory DrugProduction.fromJson(Map<String, dynamic> json) {
@@ -271,6 +279,16 @@ class DrugProduction {
       incidentNote: json['incidentNote'],
       incidentSeverity: json['incidentSeverity'],
       incidentType: json['incidentType'],
+      raidPending: json['raidPending'] == true,
+      raidLossPercent: (json['raid'] is Map)
+          ? (json['raid']['lossPercent'] as num?)?.toInt()
+          : null,
+      raidCashFine: (json['raid'] is Map)
+          ? (json['raid']['cashFine'] as num?)?.toInt()
+          : null,
+      raidDowntimeHours: (json['raid'] is Map)
+          ? (json['raid']['downtimeHours'] as num?)?.toInt()
+          : null,
     );
   }
 
@@ -313,6 +331,12 @@ class DrugInventory {
   final int quantity;
   final int basePrice;
   final int effectivePrice;
+  final bool ownProduction;
+  final int nightclubBonusPercent;
+  final String? bestCountry;
+  final String? bestCountryLabel;
+  final int bestCountryPrice;
+  final int bestCountryPct;
 
   DrugInventory({
     required this.id,
@@ -325,6 +349,12 @@ class DrugInventory {
     required this.quantity,
     required this.basePrice,
     int? effectivePrice,
+    this.ownProduction = false,
+    this.nightclubBonusPercent = 0,
+    this.bestCountry,
+    this.bestCountryLabel,
+    this.bestCountryPrice = 0,
+    this.bestCountryPct = 0,
   }) : effectivePrice = effectivePrice ?? basePrice;
 
   factory DrugInventory.fromJson(Map<String, dynamic> json) {
@@ -339,6 +369,12 @@ class DrugInventory {
       quantity: json['quantity'] ?? 0,
       basePrice: json['basePrice'] ?? 0,
       effectivePrice: json['effectivePrice'] ?? json['basePrice'] ?? 0,
+      ownProduction: json['ownProduction'] == true,
+      nightclubBonusPercent: json['nightclubBonusPercent'] ?? 0,
+      bestCountry: json['bestCountry'] as String?,
+      bestCountryLabel: json['bestCountryLabel'] as String?,
+      bestCountryPrice: json['bestCountryPrice'] ?? 0,
+      bestCountryPct: json['bestCountryPct'] ?? 0,
     );
   }
 
@@ -395,6 +431,9 @@ class DrugFacilityInfo {
   final double speedBonus;
   final int nextSlotCost;
   final bool isMaxSlots;
+  final bool autoSaleEnabled;
+  final DateTime? downtimeUntil;
+  final Map<String, dynamic>? nextSlotEducation;
 
   DrugFacilityInfo({
     required this.id,
@@ -409,6 +448,9 @@ class DrugFacilityInfo {
     required this.speedBonus,
     required this.nextSlotCost,
     required this.isMaxSlots,
+    this.autoSaleEnabled = false,
+    this.downtimeUntil,
+    this.nextSlotEducation,
   });
 
   factory DrugFacilityInfo.fromJson(Map<String, dynamic> json) {
@@ -428,6 +470,11 @@ class DrugFacilityInfo {
       speedBonus: (multipliers['speedBonus'] ?? 0.0).toDouble(),
       nextSlotCost: json['nextSlotCost'] ?? 0,
       isMaxSlots: slots >= maxSlots,
+      autoSaleEnabled: json['autoSaleEnabled'] == true,
+      downtimeUntil: json['downtimeUntil'] != null
+          ? DateTime.tryParse(json['downtimeUntil'].toString())
+          : null,
+      nextSlotEducation: json['nextSlotEducation'] as Map<String, dynamic>?,
     );
   }
 
@@ -464,18 +511,77 @@ class DrugMarketPrice {
 
 // ─── Drug heat ────────────────────────────────────────────────────────────────
 
+class DrugFacilityCatalogItem {
+  final String facilityType;
+  final String displayName;
+  final int purchasePrice;
+  final int requiredRank;
+  final bool owned;
+  final int playerRank;
+  final bool rankOk;
+  final Map<String, dynamic>? nextSlotEducation;
+
+  DrugFacilityCatalogItem({
+    required this.facilityType,
+    required this.displayName,
+    required this.purchasePrice,
+    required this.requiredRank,
+    required this.owned,
+    required this.playerRank,
+    required this.rankOk,
+    this.nextSlotEducation,
+  });
+
+  factory DrugFacilityCatalogItem.fromJson(Map<String, dynamic> json) {
+    return DrugFacilityCatalogItem(
+      facilityType: json['facilityType'] ?? '',
+      displayName: json['displayName'] ?? '',
+      purchasePrice: json['purchasePrice'] ?? 0,
+      requiredRank: json['requiredRank'] ?? 0,
+      owned: json['owned'] == true,
+      playerRank: json['playerRank'] ?? 0,
+      rankOk: json['rankOk'] != false,
+      nextSlotEducation: json['nextSlotEducation'] as Map<String, dynamic>?,
+    );
+  }
+}
+
 class DrugHeatInfo {
   final int heat;
   final String level;
   final double raidChance;
+  final bool shieldActive;
+  final bool lowProfileActive;
+  final int cashCoolCost;
+  final int cashCoolPoints;
+  final int lowProfileHours;
+  final DateTime? lowProfileReadyAt;
 
-  DrugHeatInfo({required this.heat, required this.level, required this.raidChance});
+  DrugHeatInfo({
+    required this.heat,
+    required this.level,
+    required this.raidChance,
+    this.shieldActive = false,
+    this.lowProfileActive = false,
+    this.cashCoolCost = 0,
+    this.cashCoolPoints = 25,
+    this.lowProfileHours = 4,
+    this.lowProfileReadyAt,
+  });
 
   factory DrugHeatInfo.fromJson(Map<String, dynamic> json) {
     return DrugHeatInfo(
       heat: json['heat'] ?? 0,
       level: json['level'] ?? 'Low',
       raidChance: (json['raidChance'] ?? 0.0).toDouble(),
+      shieldActive: json['shieldActive'] == true,
+      lowProfileActive: json['lowProfileActive'] == true,
+      cashCoolCost: json['cashCoolCost'] ?? 0,
+      cashCoolPoints: json['cashCoolPoints'] ?? 25,
+      lowProfileHours: json['lowProfileHours'] ?? 4,
+      lowProfileReadyAt: json['lowProfileReadyAt'] != null
+          ? DateTime.tryParse(json['lowProfileReadyAt'].toString())
+          : null,
     );
   }
 

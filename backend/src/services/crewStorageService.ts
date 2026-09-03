@@ -266,6 +266,104 @@ export async function depositCrewAmmo(
   });
 }
 
+async function getCrewDrugStorageUsed(crewId: number): Promise<number> {
+  const [goods, lots] = await Promise.all([
+    prisma.crewDrugInventory.aggregate({ where: { crewId }, _sum: { quantity: true } }),
+    prisma.crewDrugLot.aggregate({ where: { crewId }, _sum: { quantity: true } }),
+  ]);
+  return (goods._sum.quantity ?? 0) + (lots._sum.quantity ?? 0);
+}
+
+export async function depositCrewDrugLots(
+  crewId: number,
+  playerId: number,
+  drugType: string,
+  quality: string,
+  quantity: number
+) {
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    throw new Error('INVALID_QUANTITY');
+  }
+
+  const capacity = await getCrewStorageCapacity(crewId, 'drug_storage');
+  if (capacity <= 0) {
+    throw new Error('DRUG_STORAGE_NOT_OWNED');
+  }
+
+  const currentQuantity = await getCrewDrugStorageUsed(crewId);
+  if (currentQuantity + quantity > capacity) {
+    throw new Error('DRUG_STORAGE_FULL');
+  }
+
+  const playerItem = await prisma.drugInventory.findUnique({
+    where: { playerId_drugType_quality: { playerId, drugType, quality } },
+  });
+  if (!playerItem || playerItem.quantity < quantity) {
+    throw new Error('INSUFFICIENT_DRUGS');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    if (playerItem.quantity === quantity) {
+      await tx.drugInventory.delete({ where: { id: playerItem.id } });
+    } else {
+      await tx.drugInventory.update({
+        where: { id: playerItem.id },
+        data: { quantity: playerItem.quantity - quantity },
+      });
+    }
+
+    await tx.crewDrugLot.upsert({
+      where: { crewId_drugType_quality: { crewId, drugType, quality } },
+      create: { crewId, drugType, quality, quantity },
+      update: { quantity: { increment: quantity } },
+    });
+  });
+}
+
+export async function withdrawCrewDrugLots(
+  crewId: number,
+  playerId: number,
+  drugType: string,
+  quality: string,
+  quantity: number
+) {
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    throw new Error('INVALID_QUANTITY');
+  }
+
+  const lot = await prisma.crewDrugLot.findUnique({
+    where: { crewId_drugType_quality: { crewId, drugType, quality } },
+  });
+  if (!lot || lot.quantity < quantity) {
+    throw new Error('INSUFFICIENT_CREW_DRUGS');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    if (lot.quantity === quantity) {
+      await tx.crewDrugLot.delete({ where: { id: lot.id } });
+    } else {
+      await tx.crewDrugLot.update({
+        where: { id: lot.id },
+        data: { quantity: lot.quantity - quantity },
+      });
+    }
+
+    const existing = await tx.drugInventory.findUnique({
+      where: { playerId_drugType_quality: { playerId, drugType, quality } },
+    });
+    if (existing) {
+      await tx.drugInventory.update({
+        where: { id: existing.id },
+        data: { quantity: existing.quantity + quantity },
+      });
+    } else {
+      await tx.drugInventory.create({
+        data: { playerId, drugType, quality, quantity, ownProduction: false },
+      });
+    }
+  });
+}
+
 export async function depositCrewDrugs(
   crewId: number,
   playerId: number,
@@ -281,12 +379,7 @@ export async function depositCrewDrugs(
     throw new Error('DRUG_STORAGE_NOT_OWNED');
   }
 
-  const currentTotal = await prisma.crewDrugInventory.aggregate({
-    where: { crewId },
-    _sum: { quantity: true },
-  });
-
-  const currentQuantity = currentTotal._sum.quantity ?? 0;
+  const currentQuantity = await getCrewDrugStorageUsed(crewId);
   if (currentQuantity + quantity > capacity) {
     throw new Error('DRUG_STORAGE_FULL');
   }
@@ -492,6 +585,7 @@ export async function getCrewStorageSummary(crewId: number) {
     weapons,
     ammo,
     drugs,
+    drugLots,
     tradeGoods,
     crew,
   ] = await Promise.all([
@@ -500,13 +594,16 @@ export async function getCrewStorageSummary(crewId: number) {
     prisma.crewWeaponInventory.findMany({ where: { crewId } }),
     prisma.crewAmmoInventory.findMany({ where: { crewId } }),
     prisma.crewDrugInventory.findMany({ where: { crewId } }),
+    prisma.crewDrugLot.findMany({ where: { crewId } }),
     prisma.crewTradeInventory.findMany({ where: { crewId } }),
     prisma.crew.findUnique({ where: { id: crewId }, select: { bankBalance: true } }),
   ]);
 
   const weaponCount = weapons.reduce((sum, item) => sum + item.quantity, 0);
   const ammoCount = ammo.reduce((sum, item) => sum + item.quantity, 0);
-  const drugCount = drugs.reduce((sum, item) => sum + item.quantity, 0);
+  const drugCount =
+    drugs.reduce((sum, item) => sum + item.quantity, 0) +
+    drugLots.reduce((sum, item) => sum + item.quantity, 0);
   const tradeCount = tradeGoods.reduce((sum, item) => sum + item.quantity, 0);
   const carsWithType = cars.map((vehicle) => ({
     ...vehicle,
@@ -538,6 +635,7 @@ export async function getCrewStorageSummary(crewId: number) {
       weapons,
       ammo,
       drugs,
+      drugLots,
       trade: tradeGoods,
     },
   };

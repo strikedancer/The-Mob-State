@@ -14,7 +14,9 @@ type CreditCatalogItem = {
     | 'VEHICLE_REPAIR_FINISH'
     | 'VEHICLE_TUNE_RESET'
     | 'ACTION_COOLDOWN_RESET'
-    | 'EVENT_BOOST';
+    | 'EVENT_BOOST'
+    | 'DRUG_TEMP_SLOT'
+    | 'DRUG_HEAT_SHIELD';
   moneyAmount?: number;
   durationHours?: number;
   actionType?: string;
@@ -160,6 +162,28 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     effectType: 'ACTION_COOLDOWN_RESET',
     actionType: 'crime',
     sortOrder: 50,
+  },
+  {
+    key: 'drug_temp_slot_24h',
+    titleNl: 'Tijdelijke drugsslot 24 uur',
+    titleEn: 'Temporary drug slot 24 hours',
+    descriptionNl: 'Geeft 24 uur +1 productieslot. Geen extra opbrengst, alleen extra capaciteit.',
+    descriptionEn: 'Grants +1 production slot for 24 hours. Capacity only, no extra yield.',
+    creditCost: 100,
+    effectType: 'DRUG_TEMP_SLOT',
+    durationHours: 24,
+    sortOrder: 62,
+  },
+  {
+    key: 'drug_heat_shield_24h',
+    titleNl: 'Heat shield 24 uur',
+    titleEn: 'Heat shield 24 hours',
+    descriptionNl: 'Blokkeert drug-invalkans 24 uur en halveert heat-gain. Geen extra opbrengst.',
+    descriptionEn: 'Blocks drug raid chance for 24 hours and halves heat gains. No extra yield.',
+    creditCost: 90,
+    effectType: 'DRUG_HEAT_SHIELD',
+    durationHours: 24,
+    sortOrder: 63,
   },
   {
     key: 'job_cooldown_reset',
@@ -436,7 +460,7 @@ export async function createTimedCreditEntitlement(
   tx: any,
   playerId: number,
   key: string,
-  effectType: 'HIT_PROTECTION' | 'EVENT_BOOST',
+  effectType: 'HIT_PROTECTION' | 'EVENT_BOOST' | 'DRUG_TEMP_SLOT' | 'DRUG_HEAT_SHIELD',
   durationHours: number,
   metadata: Record<string, unknown> = {},
   expiresAtOverride?: Date
@@ -492,7 +516,7 @@ export async function getCreditOverview(playerId: number) {
   const [player, items, entitlements] = await Promise.all([
     prisma.player.findUnique({
       where: { id: playerId },
-      select: { premiumCredits: true, hitProtectionExpiresAt: true },
+      select: { premiumCredits: true, hitProtectionExpiresAt: true, drugHeatShieldExpiresAt: true },
     }),
     prisma.creditShopItem.findMany({
       where: { isActive: true },
@@ -631,7 +655,7 @@ export async function redeemCreditItem(
   return prisma.$transaction(async (tx) => {
     const player = await tx.player.findUnique({
       where: { id: playerId },
-      select: { premiumCredits: true, hitProtectionExpiresAt: true },
+      select: { premiumCredits: true, hitProtectionExpiresAt: true, drugHeatShieldExpiresAt: true },
     });
 
     if (!player) {
@@ -767,6 +791,43 @@ export async function redeemCreditItem(
 
       messageNl = 'Event boost geactiveerd';
       messageEn = 'Event boost activated';
+    } else if (item.effectType === 'DRUG_TEMP_SLOT') {
+      const durationHours = item.durationHours ?? 24;
+      await createTimedCreditEntitlement(
+        tx,
+        playerId,
+        item.key,
+        'DRUG_TEMP_SLOT',
+        durationHours,
+        { source: 'credit_redemption' }
+      );
+      messageNl = 'Tijdelijke drugsslot geactiveerd';
+      messageEn = 'Temporary drug slot activated';
+    } else if (item.effectType === 'DRUG_HEAT_SHIELD') {
+      const durationHours = item.durationHours ?? 24;
+      const base =
+        player.drugHeatShieldExpiresAt && player.drugHeatShieldExpiresAt > new Date()
+          ? player.drugHeatShieldExpiresAt
+          : new Date();
+      const expiresAt = addHours(base, durationHours);
+
+      await tx.player.update({
+        where: { id: playerId },
+        data: { drugHeatShieldExpiresAt: expiresAt },
+      });
+
+      await createTimedCreditEntitlement(
+        tx,
+        playerId,
+        item.key,
+        'DRUG_HEAT_SHIELD',
+        durationHours,
+        { source: 'credit_redemption' },
+        expiresAt
+      );
+
+      messageNl = 'Drug heat shield geactiveerd';
+      messageEn = 'Drug heat shield activated';
     } else if (player.premiumCredits < redeemCost) {
       throw new Error('INSUFFICIENT_CREDITS');
     }

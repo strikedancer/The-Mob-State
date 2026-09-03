@@ -148,6 +148,16 @@ class EventRenderer {
               params['quality']?.toString() ??
               '—',
         );
+      case 'drugs.production_ready':
+        return l10n.evStreamDrugsProductionReady(
+          '${params['quantity'] ?? 0}',
+          params['drugName']?.toString() ??
+              params['drugType']?.toString() ??
+              '—',
+          params['qualityLabel']?.toString() ??
+              params['quality']?.toString() ??
+              '—',
+        );
 
       case 'vehicle.repair.completed':
         return l10n.evStreamVehicleRepairCompleted(

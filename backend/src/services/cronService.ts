@@ -372,6 +372,10 @@ export async function runDrugProductionAutomation(): Promise<void> {
 
   try {
     await drugService.processFinishedProductions();
+    const notified = await drugService.notifyReadyProductions();
+    if (notified > 0) {
+      console.log(`[CRON JOB] drugReadyNotifications notified=${notified}`);
+    }
 
     const autoCollectPlayers = await prisma.player.findMany({
       where: {
@@ -578,6 +582,18 @@ export function initializeCronJobs(): void {
   cron.schedule('*/5 * * * *', async () => {
     console.log('[CRON JOB] Running: runEventScheduler');
     await runEventScheduler();
+  });
+
+  cron.schedule('*/5 * * * *', async () => {
+    try {
+      const sold = await drugService.processDarkwebAutoSales();
+      if (sold > 0) {
+        console.log(`[CRON JOB] darkwebAutoSale lots=${sold}`);
+      }
+      lastJobExecutions['darkwebAutoSale'] = new Date();
+    } catch (error) {
+      console.error('[CRON ERROR] darkwebAutoSale:', error);
+    }
   });
 
   console.log('[CRON] All scheduled jobs initialized successfully');

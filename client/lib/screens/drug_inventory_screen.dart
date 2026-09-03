@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
-import '../services/drug_service.dart';
 import '../providers/auth_provider.dart';
-import 'package:provider/provider.dart';
+import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
@@ -180,9 +181,35 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
     }
   }
 
+  Future<void> _depositToCrew(DrugInventory drug) async {
+    final t = AppLocalizations.of(context)!;
+    final qty = await _showSellDialog(drug);
+    if (qty == null || qty <= 0) return;
+    final result = await _drugService.depositCrewDrugLot(
+      drugType: drug.drugType,
+      quality: drug.quality,
+      quantity: qty,
+    );
+    if (!mounted) return;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          (result['message'] as String?) ??
+              (result['success'] == true ? t.drugsCrewDepositDone : t.drugsCrewDepositFailed),
+        ),
+        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
+      ),
+    );
+    if (result['success'] == true) _loadData();
+  }
+
   Future<int?> _showSellDialog(DrugInventory drug) async {
     final t = AppLocalizations.of(context)!;
-    final controller = TextEditingController(text: '1');
+    final prefs = await SharedPreferences.getInstance();
+    final lastPct = prefs.getInt('drug_sell_last_pct') ?? 100;
+    final initialQty = ((drug.quantity * lastPct) / 100).round().clamp(1, drug.quantity);
+    final controller = TextEditingController(text: '$initialQty');
     final baseCountryPrice = _getCurrentPrice(drug.drugType);
     final currentPrice = drug.effectivePrice > 0
         ? ((_getCurrentPrice(drug.drugType) * drug.qualityMultiplier).round())
@@ -267,6 +294,22 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                 ),
               ),
             ],
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              children: [25, 50, 100].map((pct) {
+                return OutlinedButton(
+                  onPressed: () {
+                    final qty = ((drug.quantity * pct) / 100).round().clamp(1, drug.quantity);
+                    controller.text = '$qty';
+                    SharedPreferences.getInstance().then(
+                      (p) => p.setInt('drug_sell_last_pct', pct),
+                    );
+                  },
+                  child: Text('$pct%'),
+                );
+              }).toList(),
+            ),
             const SizedBox(height: 16),
             TextField(
               controller: controller,
@@ -656,6 +699,33 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
+                                                  if (drug.bestCountryLabel != null &&
+                                                      drug.bestCountryPct > 0) ...[
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      t.drugsBestCountryHint(
+                                                        drug.bestCountryLabel!,
+                                                        '+${drug.bestCountryPct}',
+                                                      ),
+                                                      style: const TextStyle(
+                                                        fontSize: 11,
+                                                        color: Color(0xFFF2B94B),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  if (drug.ownProduction &&
+                                                      drug.nightclubBonusPercent > 0) ...[
+                                                    const SizedBox(height: 2),
+                                                    Text(
+                                                      t.drugsNightclubBonusHint(
+                                                        '+${drug.nightclubBonusPercent}',
+                                                      ),
+                                                      style: TextStyle(
+                                                        fontSize: 11,
+                                                        color: Colors.lightBlueAccent.withOpacity(0.9),
+                                                      ),
+                                                    ),
+                                                  ],
                                                   if (_marketPrices.containsKey(
                                                     drug.drugType,
                                                   )) ...[
@@ -764,6 +834,10 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                         ),
                                                       ],
                                                     ],
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () => _depositToCrew(drug),
+                                                    child: Text(t.drugsCrewDepositAction),
                                                   ),
                                                 ],
                                               ),
@@ -912,6 +986,31 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
                 color: Colors.orange,
               ),
             ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            children: [
+              ...[25, 50, 100].map((pct) {
+                return OutlinedButton(
+                  onPressed: () {
+                    final qty = ((widget.maxQuantity * pct) / 100)
+                        .round()
+                        .clamp(1, widget.maxQuantity);
+                    _controller.text = '$qty';
+                    setState(() {});
+                  },
+                  child: Text('$pct%'),
+                );
+              }),
+              OutlinedButton(
+                onPressed: () {
+                  _controller.text = '${widget.maxQuantity}';
+                  setState(() {});
+                },
+                child: Text(t.drugsCutAllOneGrade),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           TextField(
