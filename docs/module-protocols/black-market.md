@@ -5,7 +5,7 @@ Unified **illegal / grey economy hub**: contraband **handelswaren** (first tab),
 
 ## Primary Frontend Entry
 - `client/lib/screens/black_market_screen.dart` — outer `TabBar` / `TabBarView` (voertuigen-aanbod: tabtekst `AppLocalizations.marketplace`, o.a. NL *Marktplaats*)
-- `client/lib/screens/trade_goods_tab.dart` — eerste zwarte-markt-tab: contrabandmarkt + inventaris in **één scroll** (`/trade/*` APIs; geen aparte sub-tabs meer)
+- `client/lib/screens/trade_goods_tab.dart` — eerste zwarte-markt-tab: contrabandmarkt + inventaris in **één scroll** (`/trade/*` APIs; geen aparte sub-tabs meer). Koop/verkoop als compacte rijen (naam, risico-pills, prijs, aantal, actie); lange flavor-tekst zit in tooltip. Hub-tabs zijn één regel (icoon + label).
 - Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`
 
 ## Marktplaats (P2P)

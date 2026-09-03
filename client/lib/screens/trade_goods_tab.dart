@@ -307,32 +307,32 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     return RefreshIndicator(
       onRefresh: _loadMarketData,
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           ..._buildMarketHeaderChildren(l10n),
           ..._buildBuyableGoodCards(l10n),
           ..._buildUnavailableGoodsSection(l10n),
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
           Divider(color: Theme.of(context).colorScheme.outlineVariant),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Row(
             children: [
               Icon(
                 Icons.inventory_2_outlined,
-                size: 22,
+                size: 18,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Text(
                 l10n.inventory,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           if (_inventory.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
@@ -531,52 +531,57 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     Widget chip(_TradeMarketFilter filter, String label) {
       final selected = _marketFilter == filter;
       return Padding(
-        padding: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.only(right: 6),
         child: FilterChip(
-          label: Text(label),
+          label: Text(label, style: const TextStyle(fontSize: 12)),
           selected: selected,
           onSelected: (_) => setState(() => _marketFilter = filter),
           visualDensity: VisualDensity.compact,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          labelPadding: const EdgeInsets.symmetric(horizontal: 6),
+          padding: EdgeInsets.zero,
         ),
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.tradeMarketCatalogSummary(
-            _goods.length.toString(),
-            buyableHere.toString(),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.tradeMarketCatalogSummary(
+              _goods.length.toString(),
+              buyableHere.toString(),
+            ),
+            style: TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
-          style: TextStyle(
-            fontSize: 12,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          const SizedBox(height: 6),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                chip(_TradeMarketFilter.all, l10n.tradeCategoryAll),
+                chip(_TradeMarketFilter.here, l10n.tradeFilterAvailableHere),
+                chip(_TradeMarketFilter.starter, l10n.tradeCategoryStarter),
+                chip(_TradeMarketFilter.bulk, l10n.tradeCategoryBulk),
+                chip(_TradeMarketFilter.luxury, l10n.tradeCategoryLuxury),
+                chip(_TradeMarketFilter.dangerous, l10n.tradeCategoryDangerous),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              chip(_TradeMarketFilter.all, l10n.tradeCategoryAll),
-              chip(_TradeMarketFilter.here, l10n.tradeFilterAvailableHere),
-              chip(_TradeMarketFilter.starter, l10n.tradeCategoryStarter),
-              chip(_TradeMarketFilter.bulk, l10n.tradeCategoryBulk),
-              chip(_TradeMarketFilter.luxury, l10n.tradeCategoryLuxury),
-              chip(_TradeMarketFilter.dangerous, l10n.tradeCategoryDangerous),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-      ],
+        ],
+      ),
     );
   }
 
   List<Widget> _buildBuyableGoodCards(AppLocalizations l10n) {
     return [
       for (final good in _buyableGoods)
-        _buildGoodCard(good, _priceForGood(good.id), true),
+        _buildGoodCard(good, _priceForGood(good.id)),
     ];
   }
 
@@ -593,7 +598,9 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         child: Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
-            tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            dense: true,
+            visualDensity: VisualDensity.compact,
+            tilePadding: const EdgeInsets.symmetric(horizontal: 10),
             title: Text(
               l10n.tradeUnavailableGoodsTitle,
               style: const TextStyle(fontWeight: FontWeight.w600),
@@ -626,35 +633,37 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     final subtitleColor = scheme.onSurfaceVariant.withValues(alpha: 0.95);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 6),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          dense: true,
+          visualDensity: VisualDensity.compact,
+          tilePadding: const EdgeInsets.symmetric(horizontal: 10),
+          childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
           iconColor: scheme.onSurface,
           collapsedIconColor: scheme.onSurfaceVariant,
           title: Text(
             l10n.tradeRiskPanelTitle,
             style: TextStyle(
+              fontSize: 13,
               fontWeight: FontWeight.w600,
               color: scheme.onSurface,
             ),
           ),
-          subtitle: Text(
-            l10n.tradeRiskPanelSubtitle,
-            style: TextStyle(fontSize: 12, color: subtitleColor),
-          ),
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-              child: Text(
-                l10n.tradeRiskInsightBody,
-                style: TextStyle(
-                  fontSize: 13,
-                  height: 1.45,
-                  color: bodyColor,
-                  fontWeight: FontWeight.w500,
-                ),
+            Text(
+              l10n.tradeRiskPanelSubtitle,
+              style: TextStyle(fontSize: 12, color: subtitleColor),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              l10n.tradeRiskInsightBody,
+              style: TextStyle(
+                fontSize: 12,
+                height: 1.4,
+                color: bodyColor,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -666,77 +675,97 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
   List<Widget> _riskChipsForGood(TradableGood good, AppLocalizations l10n) {
     final chips = <Widget>[];
     if (good.spoilageHours != null && good.spoilageHours! > 0) {
+      final hours = good.spoilageHours!.round().toString();
       chips.add(
-        Chip(
-          avatar: Icon(Icons.timer, size: 16, color: Colors.orange.shade800),
-          label: Text(
-            l10n.tradeRiskSpoilageHours(good.spoilageHours!.round().toString()),
-            style: const TextStyle(fontSize: 11),
-          ),
-          visualDensity: VisualDensity.compact,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        _riskPill(
+          icon: Icons.timer,
+          label: '${hours}h',
+          color: Colors.orange.shade800,
+          tooltip: l10n.tradeRiskSpoilageHours(hours),
         ),
       );
     }
     if (good.priceVolatility != null && good.priceVolatility! > 0) {
       final pct = (good.priceVolatility! * 100).round();
       chips.add(
-        Chip(
-          avatar: Icon(Icons.show_chart, size: 16, color: Colors.purple.shade800),
-          label: Text(
-            l10n.tradeRiskVolatilityPct(pct.toString()),
-            style: const TextStyle(fontSize: 11),
-          ),
-          visualDensity: VisualDensity.compact,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        _riskPill(
+          icon: Icons.show_chart,
+          label: '±$pct%',
+          color: Colors.purple.shade700,
+          tooltip: l10n.tradeRiskVolatilityPct(pct.toString()),
         ),
       );
     }
     if (good.confiscationChance != null && good.confiscationChance! > 0) {
       final pct = (good.confiscationChance! * 100).round();
       chips.add(
-        Chip(
-          avatar: Icon(Icons.gavel, size: 16, color: Colors.red.shade800),
-          label: Text(
-            l10n.tradeRiskConfiscationPct(pct.toString()),
-            style: const TextStyle(fontSize: 11),
-          ),
-          visualDensity: VisualDensity.compact,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        _riskPill(
+          icon: Icons.gavel,
+          label: '$pct%',
+          color: Colors.red.shade700,
+          tooltip: l10n.tradeRiskConfiscationPct(pct.toString()),
         ),
       );
     }
     if (good.damageChancePerTrip != null && good.damageChancePerTrip! > 0) {
       final pct = (good.damageChancePerTrip! * 100).round();
       chips.add(
-        Chip(
-          avatar: Icon(Icons.build_circle_outlined, size: 16, color: Colors.brown.shade800),
-          label: Text(
-            l10n.tradeRiskDamageTripPct(pct.toString()),
-            style: const TextStyle(fontSize: 11),
-          ),
-          visualDensity: VisualDensity.compact,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        _riskPill(
+          icon: Icons.build_circle_outlined,
+          label: '$pct%',
+          color: Colors.brown.shade700,
+          tooltip: l10n.tradeRiskDamageTripPct(pct.toString()),
         ),
       );
     }
     if (good.weight >= 3) {
       chips.add(
-        Chip(
-          avatar: Icon(Icons.fitness_center, size: 16, color: Colors.blueGrey.shade800),
-          label: Text(
-            l10n.tradeRiskHeavyWeight(good.weight.toString()),
-            style: const TextStyle(fontSize: 11),
-          ),
-          visualDensity: VisualDensity.compact,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        _riskPill(
+          icon: Icons.fitness_center,
+          label: '${good.weight}',
+          color: Colors.blueGrey.shade700,
+          tooltip: l10n.tradeRiskHeavyWeight(good.weight.toString()),
         ),
       );
     }
     return chips;
   }
 
-  Widget _goodHeaderArt(TradableGood good) {
+  Widget _riskPill({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required String tooltip,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.14),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: color.withValues(alpha: 0.28)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 12, color: color),
+            const SizedBox(width: 3),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _goodHeaderArt(TradableGood good, {double size = 44}) {
     final colors = switch (good.id) {
       'contraband_flowers' => [Colors.pink.shade100, Colors.orange.shade200],
       'contraband_electronics' => [Colors.blue.shade100, Colors.indigo.shade200],
@@ -759,10 +788,10 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     final assetPath = 'assets/images/trade_goods/cards/${good.id}.png';
 
     Widget emojiFallback() => Container(
-          width: 52,
-          height: 52,
+          width: size,
+          height: size,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
             gradient: LinearGradient(
               colors: colors,
               begin: Alignment.topLeft,
@@ -770,14 +799,14 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
             ),
           ),
           alignment: Alignment.center,
-          child: Text(good.icon, style: const TextStyle(fontSize: 26)),
+          child: Text(good.icon, style: TextStyle(fontSize: size * 0.46)),
         );
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(8),
       child: SizedBox(
-        width: 52,
-        height: 52,
+        width: size,
+        height: size,
         child: WebAssetHelper.image(
           assetPath,
           fit: BoxFit.cover,
@@ -787,7 +816,47 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     );
   }
 
-  Widget _buildGoodCard(TradableGood good, GoodPrice price, bool isBuying) {
+  String _formatEuro(int value) {
+    return '€${value.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}';
+  }
+
+  Widget _qtyStepper({
+    required int quantity,
+    required int max,
+    required ValueChanged<int> onChanged,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.remove_circle_outline),
+          iconSize: 20,
+          visualDensity: VisualDensity.compact,
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          padding: EdgeInsets.zero,
+          onPressed: () => onChanged((quantity - 1).clamp(1, max)),
+        ),
+        SizedBox(
+          width: 22,
+          child: Text(
+            '$quantity',
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add_circle_outline),
+          iconSize: 20,
+          visualDensity: VisualDensity.compact,
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          padding: EdgeInsets.zero,
+          onPressed: () => onChanged((quantity + 1).clamp(1, max)),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGoodCard(TradableGood good, GoodPrice price) {
     final l10n = AppLocalizations.of(context)!;
     final quantity = _buyQuantities[good.id] ?? 1;
     final totalCost = price.currentPrice * quantity;
@@ -795,145 +864,130 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     final localizedDescription = TradeGoodL10n.description(l10n, good.id);
     final riskChips = _riskChipsForGood(good, l10n);
     final categoryLabel = TradeGoodL10n.categoryLabel(l10n, good.category);
+    final narrow = MediaQuery.sizeOf(context).width < 700;
+
+    final info = Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 6,
+            children: [
+              Text(
+                localizedName,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              if (good.category != null)
+                Text(
+                  categoryLabel,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+            ],
+          ),
+          if (riskChips.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Wrap(spacing: 4, runSpacing: 3, children: riskChips),
+          ],
+        ],
+      ),
+    );
+
+    final priceBlock = Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          _formatEuro(price.currentPrice),
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
+        Text(
+          '${price.multiplier.toStringAsFixed(1)}x',
+          style: TextStyle(
+            fontSize: 11,
+            color: price.multiplier > 1.0 ? Colors.red : Colors.blue,
+          ),
+        ),
+        if (quantity > 1)
+          Text(
+            '${l10n.total}: ${_formatEuro(totalCost)}',
+            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          ),
+      ],
+    );
+
+    final actions = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _qtyStepper(
+          quantity: quantity,
+          max: good.maxInventory,
+          onChanged: (next) => setState(() => _buyQuantities[good.id] = next),
+        ),
+        const SizedBox(width: 4),
+        FilledButton(
+          onPressed: () => _buyGood(good.id, quantity),
+          style: FilledButton.styleFrom(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            minimumSize: const Size(0, 34),
+          ),
+          child: Text(l10n.buy),
+        ),
+      ],
+    );
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                _goodHeaderArt(good),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        localizedName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      if (good.category != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 2),
-                          child: Text(
-                            categoryLabel,
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      Text(
-                        localizedDescription,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            if (riskChips.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 6,
-                runSpacing: 4,
-                children: riskChips,
-              ),
-            ],
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: Tooltip(
+        message: localizedDescription,
+        waitDuration: const Duration(milliseconds: 500),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+          child: narrow
+              ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${l10n.price}: €${price.currentPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
+                    Row(
+                      children: [
+                        _goodHeaderArt(good),
+                        const SizedBox(width: 10),
+                        info,
+                      ],
                     ),
-                    Text(
-                      '${l10n.multiplier}: ${price.multiplier.toStringAsFixed(1)}x',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: price.multiplier > 1.0
-                            ? Colors.red
-                            : Colors.blue,
-                      ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        priceBlock,
+                        const Spacer(),
+                        actions,
+                      ],
                     ),
                   ],
-                ),
-                Row(
+                )
+              : Row(
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle_outline),
-                      onPressed: () {
-                        setState(() {
-                          _buyQuantities[good.id] = (quantity - 1).clamp(
-                            1,
-                            999,
-                          );
-                        });
-                      },
-                    ),
-                    Text(
-                      quantity.toString(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.add_circle_outline),
-                      onPressed: () {
-                        setState(() {
-                          _buyQuantities[good.id] = (quantity + 1).clamp(
-                            1,
-                            good.maxInventory,
-                          );
-                        });
-                      },
-                    ),
+                    _goodHeaderArt(good),
+                    const SizedBox(width: 10),
+                    info,
+                    const SizedBox(width: 10),
+                    priceBlock,
+                    const SizedBox(width: 8),
+                    actions,
                   ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${l10n.total}: €${totalCost.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () => _buyGood(good.id, quantity),
-                  icon: const Icon(Icons.shopping_cart),
-                  label: Text(l10n.buy),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );
@@ -979,174 +1033,166 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       }
     }
 
+    final narrow = MediaQuery.sizeOf(context).width < 700;
+    final info = Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            localizedName,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              decoration: isSpoiled ? TextDecoration.lineThrough : null,
+            ),
+          ),
+          Wrap(
+            spacing: 8,
+            runSpacing: 2,
+            children: [
+              Text(
+                l10n.ownedQuantity(item.quantity.toString()),
+                style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+              ),
+              if (item.condition < 100)
+                Text(
+                  '${l10n.condition}: ${item.condition}%',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: item.condition < 50 ? Colors.red : Colors.orange,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              if (timeWarning != null)
+                Text(
+                  timeWarning,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              if (isSpoiled)
+                Text(
+                  l10n.spoiledWorthless,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+            ],
+          ),
+          if (!isSpoiled && riskChips.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Wrap(spacing: 4, runSpacing: 3, children: riskChips),
+          ],
+        ],
+      ),
+    );
+
+    final priceBlock = Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          _formatEuro(effectiveSellPrice),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
+        Text(
+          '${l10n.boughtFor}: ${_formatEuro(item.purchasePrice)}',
+          style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+        ),
+        if (!isSpoiled)
+          Text(
+            profit >= 0
+                ? '${l10n.profit}: €${formatMoney(profit)}'
+                : '${l10n.loss}: €${formatMoney(-profit)}',
+            style: TextStyle(
+              fontSize: 11,
+              color: profit >= 0 ? Colors.green : Colors.red,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        if (quantity > 1 && !isSpoiled)
+          Text(
+            '${l10n.total}: €${formatMoney(totalValue)}',
+            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          ),
+      ],
+    );
+
+    final actions = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _qtyStepper(
+          quantity: quantity,
+          max: maxSell,
+          onChanged: (next) => setState(() => _sellQuantities[good.id] = next),
+        ),
+        const SizedBox(width: 4),
+        FilledButton(
+          onPressed: () => _sellGood(good.id, quantity),
+          style: FilledButton.styleFrom(
+            backgroundColor: Colors.orange,
+            foregroundColor: Colors.white,
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            minimumSize: const Size(0, 34),
+          ),
+          child: Text(l10n.sell),
+        ),
+      ],
+    );
+
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 8),
       color: isSpoiled ? Colors.grey[300] : null,
       child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Opacity(
-                  opacity: isSpoiled ? 0.45 : 1,
-                  child: _goodHeaderArt(good),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        localizedName,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          decoration: isSpoiled
-                              ? TextDecoration.lineThrough
-                              : null,
-                        ),
-                      ),
-                      Text(
-                        l10n.ownedQuantity(item.quantity.toString()),
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      ),
-                      if (item.condition < 100)
-                        Text(
-                          '⚙️ ${l10n.condition}: ${item.condition}%',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: item.condition < 50
-                                ? Colors.red
-                                : Colors.orange,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      if (timeWarning != null)
-                        Text(
-                          timeWarning,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.orange,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      if (isSpoiled)
-                        Text(
-                          l10n.spoiledWorthless,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            if (!isSpoiled && riskChips.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Wrap(spacing: 8, runSpacing: 8, children: riskChips),
-            ],
-            if (!isSpoiled) ...[
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+        child: isSpoiled
+            ? Row(
                 children: [
-                  Column(
+                  Opacity(opacity: 0.45, child: _goodHeaderArt(good)),
+                  const SizedBox(width: 10),
+                  info,
+                ],
+              )
+            : narrow
+                ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${l10n.sellPrice}: €${effectiveSellPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
+                      Row(
+                        children: [
+                          _goodHeaderArt(good),
+                          const SizedBox(width: 10),
+                          info,
+                        ],
                       ),
-                      Text(
-                        '${l10n.boughtFor}: €${item.purchasePrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          priceBlock,
+                          const Spacer(),
+                          actions,
+                        ],
                       ),
                     ],
-                  ),
-                  Row(
+                  )
+                : Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        onPressed: () {
-                          setState(() {
-                            _sellQuantities[good.id] = (quantity - 1).clamp(
-                              1,
-                              maxSell,
-                            );
-                          });
-                        },
-                      ),
-                      Text(
-                        quantity.toString(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.add_circle_outline),
-                        onPressed: () {
-                          setState(() {
-                            _sellQuantities[good.id] = (quantity + 1).clamp(
-                              1,
-                              maxSell,
-                            );
-                          });
-                        },
-                      ),
+                      _goodHeaderArt(good),
+                      const SizedBox(width: 10),
+                      info,
+                      const SizedBox(width: 10),
+                      priceBlock,
+                      const SizedBox(width: 8),
+                      actions,
                     ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${l10n.total}: €${formatMoney(totalValue)}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        profit >= 0
-                            ? '${l10n.profit}: €${formatMoney(profit)}'
-                            : '${l10n.loss}: €${formatMoney(-profit)}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: profit >= 0 ? Colors.green : Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () => _sellGood(good.id, quantity),
-                    icon: const Icon(Icons.sell),
-                    label: Text(l10n.sell),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ], // Close the if (!isSpoiled) spread operator
-          ],
-        ),
       ),
     );
   }

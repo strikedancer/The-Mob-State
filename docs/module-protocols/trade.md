@@ -18,3 +18,4 @@ Player-facing **handelswaren** UI is merged into the **Zwarte markt** hub: first
 ## QA
 - Verify contraband tab + vehicles + listings still refresh after actions; partial `/trade` load errors still show the orange banner inside the first tab.
 - Risk guide expansion uses theme `onSurface` colors (readable on noir/gold cards).
+- Compact trade rows keep buy/sell, qty stepper, country availability, filters and risk tooltips; do not hide risk chips.

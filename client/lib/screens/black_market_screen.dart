@@ -46,6 +46,9 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       vsync: this,
       initialIndex: widget.initialTabIndex.clamp(0, 6),
     );
+    _tabController.addListener(() {
+      if (mounted && !_tabController.indexIsChanging) setState(() {});
+    });
     _loadData();
   }
 
@@ -107,6 +110,20 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     }).toList();
   }
 
+  Tab _compactHubTab(IconData icon, String label) {
+    return Tab(
+      height: 40,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16),
+          const SizedBox(width: 6),
+          Text(label),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final vehicleProvider = Provider.of<VehicleProvider>(context);
@@ -118,28 +135,25 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          labelPadding: const EdgeInsets.symmetric(horizontal: 12),
           tabs: [
-            Tab(
-              icon: const Icon(Icons.shopping_bag),
-              text: l10n.tradeGoods,
-            ),
-            Tab(icon: const Icon(Icons.directions_car), text: l10n.marketplace),
-            Tab(
-              icon: const Icon(Icons.directions_car_outlined),
-              text: l10n.myListings,
-            ),
-            Tab(icon: const Icon(Icons.backpack), text: l10n.backpacks),
-            Tab(icon: const Icon(Icons.science), text: l10n.materials),
-            Tab(icon: const Icon(Icons.gavel), text: l10n.weaponsMarket),
-            Tab(icon: const Icon(Icons.bolt), text: l10n.ammoMarket),
+            _compactHubTab(Icons.shopping_bag, l10n.tradeGoods),
+            _compactHubTab(Icons.directions_car, l10n.marketplace),
+            _compactHubTab(Icons.receipt_long, l10n.myListings),
+            _compactHubTab(Icons.backpack, l10n.backpacks),
+            _compactHubTab(Icons.science, l10n.materials),
+            _compactHubTab(Icons.gavel, l10n.weaponsMarket),
+            _compactHubTab(Icons.bolt, l10n.ammoMarket),
           ],
         ),
         actions: [
           IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: _showFilterDialog,
-          ),
+          if (_tabController.index == 1 || _tabController.index == 2)
+            IconButton(
+              icon: const Icon(Icons.filter_list),
+              onPressed: _showFilterDialog,
+            ),
         ],
       ),
       body: TabBarView(
