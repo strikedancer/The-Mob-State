@@ -114,6 +114,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
       'drugs' => l10n.seasonPassGoalDrugs(target),
       'money' => l10n.seasonPassGoalMoney(formatCurrency(target)),
       'xp' => l10n.seasonPassGoalXp(target),
+      'prostitution' => l10n.seasonPassGoalProstitution(target),
       _ => l10n.seasonPassGoalGeneric(target),
     };
   }

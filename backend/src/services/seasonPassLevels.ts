@@ -9,7 +9,8 @@ export type SeasonPassGoalCategory =
   | 'smuggling'
   | 'drugs'
   | 'money'
-  | 'xp';
+  | 'xp'
+  | 'prostitution';
 
 export type SeasonPassLevelDef = {
   level: number;
@@ -202,6 +203,8 @@ function premiumReward(level: number, category: SeasonPassGoalCategory): Record<
   };
 }
 
+const PROSTITUTION_TARGETS = [1, 3, 6, 10, 16, 25];
+
 function buildLevels(): SeasonPassLevelDef[] {
   const indices: Record<SeasonPassGoalCategory, number> = {
     crime: 0,
@@ -210,6 +213,7 @@ function buildLevels(): SeasonPassLevelDef[] {
     drugs: 0,
     money: 0,
     xp: 0,
+    prostitution: 0,
   };
   const levels: SeasonPassLevelDef[] = [];
 
@@ -227,6 +231,17 @@ function buildLevels(): SeasonPassLevelDef[] {
       goalTarget,
       free: freeReward(level, goalCategory),
       premium: premiumReward(level, goalCategory),
+    });
+  }
+
+  for (let i = 0; i < PROSTITUTION_TARGETS.length; i += 1) {
+    const level = 51 + i;
+    levels.push({
+      level,
+      goalCategory: 'prostitution',
+      goalTarget: PROSTITUTION_TARGETS[i],
+      free: freeReward(level, 'prostitution'),
+      premium: premiumReward(level, 'prostitution'),
     });
   }
 

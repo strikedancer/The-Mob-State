@@ -40,3 +40,16 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] Hard refresh/service worker cache check
 - [ ] Kernflows smoke-test
 - [ ] Admin logs check (geen runtime errors)
+
+## Mollie E2E (live payment)
+
+Code + webhook-route staan live (`POST /subscriptions/webhook`, `MOLLIE_API_KEY`, `MOLLIE_WEBHOOK_URL`). Een echte kaartbetaling blijft een handmatige check:
+
+1. VPS env: `MOLLIE_API_KEY` en `MOLLIE_WEBHOOK_URL=https://api.themobstate.com/subscriptions/webhook` gezet.
+2. Dashboard Mollie: webhook-URL bereikbaar (geen 401/404 op POST).
+3. In-game: Premium → Event Pass of Player VIP → checkout opent Mollie.
+4. Test/live betaling afronden; na return landt de speler op Premium & Credits.
+5. Backend-log: `[Mollie webhook]` fulfilled, geen dubbele grant bij herhaalde webhook.
+6. Admin/player: VIP of Event Pass premium_unlocked = 1.
+
+Zonder geldige key of publieke webhook blijft dit item open. Geen testkaart in git zetten.

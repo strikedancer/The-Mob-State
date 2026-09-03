@@ -995,6 +995,13 @@ export const prostituteService = {
       console.error('[Achievement Check] Error after recruit:', err);
     }
 
+    try {
+      const { gameEventService } = await import('./gameEventService');
+      void gameEventService.recordContribution(playerId, 'prostitution', 1);
+    } catch (err) {
+      console.error('[SeasonPass] prostitution recruit contribution failed:', err);
+    }
+
     await activityService.logActivity(
       playerId,
       'PROSTITUTE_RECRUIT',

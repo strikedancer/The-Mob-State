@@ -194,6 +194,23 @@ war_season
 - War notifications mogen hoofdflows niet blokkeren; failures blijven fire-and-forget.
 - Discord-integratie mag alleen een extra transportlaag zijn bovenop bestaande war events; game state mag nooit afhankelijk zijn van een Discord webhook.
 - Discord berichten moeten per event-type configureerbaar zijn, rate-limited en veilig bij webhook failure.
+
+### Discord onboarding (env)
+
+Optional fire-and-forget transport. Backend: `backend/src/services/discordWebhookService.ts`.
+
+1. Create a Discord incoming webhook in the staff/ops channel.
+2. Set on the VPS (`.env.plesk` / compose env), then recreate the backend container:
+
+```
+CREW_WAR_DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+CREW_WAR_DISCORD_ENABLED_EVENTS=war_declared,war_started,war_lockdown,war_resolved
+CREW_WAR_DISCORD_MIN_INTERVAL_MS=15000
+```
+
+3. Empty `CREW_WAR_DISCORD_WEBHOOK_URL` = transport off. Game wars still run.
+4. Templates: `backend/.env.example` and `.env.docker.example`. Compose must pass the three keys through (see `docker-compose.plesk.yml`).
+5. Do not put a real webhook URL in git.
 - Admin-gestarte wars en admin lifecycle-acties zoals `start_now` en `enter_lockdown` moeten exact dezelfde event-transports activeren als de reguliere war-flow; admin controls mogen geen stille bypass zijn voor push/inbox of Discord.
 - Bij `declared`, `started`, `lockdown` en `resolved` moeten alle betrokken crew members, inclusief leaders, een consistente push/inbox-notificatie kunnen ontvangen; automatische lifecycle-transities mogen die member-notificaties niet overslaan.
 - Relevante Discord use-cases: war declared, war started, double points hour, territory swing, war ended, season rewards.

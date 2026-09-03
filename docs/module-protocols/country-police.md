@@ -11,7 +11,7 @@ Routes: `GET /police/status`, `GET /police/countries`, `POST /police/disrupt`
 Client: crimes strip + travel badges + disrupt sheet (`country_police_ui.dart`)
 
 ## Enable (production)
-Admin → runtime config: set `COUNTRY_POLICE_PRESSURE_ENABLED` to `1`. Do not flip the code default without a balance pass.
+Admin → **Landelijke politie**: toggle `COUNTRY_POLICE_PRESSURE_ENABLED` to `1`. Do not flip the code default without a balance pass. Dashboard already renders `CountryPoliceStrip` when the flag is on.
 
 ## Primary Frontend Entry
 - Crimes strip + disrupt: `client/lib/screens/crime_screen.dart` + `client/lib/widgets/country_police_ui.dart`

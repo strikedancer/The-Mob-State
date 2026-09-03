@@ -36,6 +36,7 @@ import {
 } from "./services/adminService";
 import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
 import { CrewMissionsAdminPanel } from "./components/CrewMissionsAdminPanel";
+import { CountryPoliceAdminPanel } from "./components/CountryPoliceAdminPanel";
 import { EmailVerificationAdminPanel } from "./components/EmailVerificationAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
 import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
@@ -4421,6 +4422,11 @@ function App() {
       id: "crew-missions",
       label: l("Crew Missions", "Crew Missions"),
       icon: "bi-diagram-3-fill",
+    },
+    {
+      id: "country-police",
+      label: l("Landelijke politie", "Country police"),
+      icon: "bi-shield-exclamation",
     },
     { id: "territory", label: "Territory", icon: "bi-globe-europe-africa" },
     {
@@ -10597,6 +10603,10 @@ function App() {
 
               {activeTab === "crew-missions" && (
                 <CrewMissionsAdminPanel locale={language} />
+              )}
+
+              {activeTab === "country-police" && (
+                <CountryPoliceAdminPanel locale={language} />
               )}
 
               {activeTab === "territory" && (

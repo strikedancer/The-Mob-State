@@ -645,6 +645,8 @@ export interface CrewMissionRuntimeConfigView {
   keys: string[];
 }
 
+export type CountryPoliceRuntimeConfigView = CrewMissionRuntimeConfigView;
+
 export interface VehicleOpsTelemetry {
   windowHours: number;
   from: string;
@@ -1159,6 +1161,35 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to update crew mission runtime config");
+    return response.json();
+  },
+
+  async getCountryPoliceRuntimeConfig(): Promise<CountryPoliceRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/country-police/runtime-config`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, "Failed to fetch country police runtime config");
+    return response.json();
+  },
+
+  async updateCountryPoliceRuntimeConfig(
+    updates: Record<string, string | number>,
+  ): Promise<CountryPoliceRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/country-police/runtime-config`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updates }),
+    });
+
+    await ensureOk(response, "Failed to update country police runtime config");
     return response.json();
   },
 

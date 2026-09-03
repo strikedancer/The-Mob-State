@@ -441,19 +441,20 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 - API endpoints (6 routes)
 - DJ & Security seed data (10 each)
 
-⏳ **TODO:**
-- Flutter UI integration
-- Cron job setup for background processing
-- Police raid mechanics
-- Rival nightclub system
+✅ **Shipped since this doc was first written:**
+- Flutter nightclub screen + Ops Lab (DJ, security, events, upgrades, rivals, bar/kitchen, smuggling routes)
+- Tick/cron processing for auto-sales, contract cleanup and incidents
+- Police heat + raid risk in Ops Lab
+- Rival nightclub actions (username-first)
+- Admin telemetry: `GET /admin/nightclubs/overview` + admin panel tab
 
-✅ **Admin telemetry (read-only):** `GET /admin/nightclubs/overview` + admin panel tab — crowd, 24h sales/thefts, active events. Not a full Ops Lab duplicate.
+Canonical protocol (keep this file as history + UI addenda): `docs/module-protocols/nightclub.md`.
 
 ---
 
-**Version:** 1.0
-**Last Updated:** 2026-03-30
-**Status:** Production Ready (Backend)
+**Version:** 1.2
+**Last Updated:** 2026-09-03
+**Status:** Live (backend + client)
 
 ## UI Addendum 2026-04-24
 

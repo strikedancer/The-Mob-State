@@ -24,6 +24,7 @@ const STAT_COLUMNS: Record<SeasonPassGoalCategory, string> = {
   drugs: 'stat_drugs',
   money: 'stat_money',
   xp: 'stat_xp',
+  prostitution: 'stat_prostitution',
 };
 
 let tablesReady = false;
@@ -67,6 +68,7 @@ export async function ensureSeasonPassTables(): Promise<void> {
       stat_drugs INT NOT NULL DEFAULT 0,
       stat_money INT NOT NULL DEFAULT 0,
       stat_xp INT NOT NULL DEFAULT 0,
+      stat_prostitution INT NOT NULL DEFAULT 0,
       updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
       PRIMARY KEY (player_id, season_key),
       INDEX idx_season_pass_season (season_key)
@@ -128,6 +130,7 @@ const EVENT_CATEGORY_MAP: Record<string, SeasonPassGoalCategory | undefined> = {
   vehicles: 'vehicles',
   smuggling: 'smuggling',
   drugs: 'drugs',
+  prostitution: 'prostitution',
 };
 
 export function mapEventCategoryToSeasonPass(
@@ -160,6 +163,7 @@ type ProgressRow = {
   stat_drugs: number;
   stat_money: number;
   stat_xp: number;
+  stat_prostitution: number;
 };
 
 function statsFromRow(row: ProgressRow | undefined) {
@@ -170,6 +174,7 @@ function statsFromRow(row: ProgressRow | undefined) {
     drugs: Number(row?.stat_drugs ?? 0),
     money: Number(row?.stat_money ?? 0),
     xp: Number(row?.stat_xp ?? 0),
+    prostitution: Number(row?.stat_prostitution ?? 0),
   };
 }
 
@@ -184,7 +189,7 @@ export async function getSeasonPassStatus(playerId: number) {
 
   const rows = await prisma.$queryRawUnsafe<ProgressRow[]>(
     `SELECT score, premium_unlocked,
-            stat_crime, stat_vehicles, stat_smuggling, stat_drugs, stat_money, stat_xp
+            stat_crime, stat_vehicles, stat_smuggling, stat_drugs, stat_money, stat_xp, stat_prostitution
      FROM player_season_pass
      WHERE player_id = ? AND season_key = ? LIMIT 1`,
     playerId,

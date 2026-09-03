@@ -748,4 +748,63 @@ export const countryPoliceService = {
       coolUntil,
     };
   },
+
+  async getRuntimeConfigView() {
+    await ensureSchema();
+    const keys = COUNTRY_POLICE_RUNTIME_SETTING_KEYS;
+    const placeholders = keys.map(() => '?').join(', ');
+    const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+      `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+      ...keys,
+    ).catch(() => [] as Array<{ configKey: string; configValue: string }>);
+
+    const values: Record<string, string> = { ...COUNTRY_POLICE_RUNTIME_SETTING_DEFAULTS };
+    for (const row of rows) {
+      values[row.configKey] = String(row.configValue ?? values[row.configKey] ?? '');
+    }
+
+    return {
+      defaults: COUNTRY_POLICE_RUNTIME_SETTING_DEFAULTS,
+      values,
+      keys,
+    };
+  },
+
+  async updateRuntimeConfig(updates: Record<string, string | number>) {
+    const normalized: Record<string, string> = {};
+    for (const [key, value] of Object.entries(updates)) {
+      if (!COUNTRY_POLICE_RUNTIME_SETTING_KEYS.includes(key)) {
+        throw new Error(`INVALID_RUNTIME_KEY:${key}`);
+      }
+      const asString = String(value ?? '').trim();
+      if (key === 'COUNTRY_POLICE_PRESSURE_ENABLED' || key === 'COUNTRY_POLICE_DISRUPT_ENABLED' || key === 'COUNTRY_POLICE_DISRUPT_REQUIRE_CREW') {
+        if (!['0', '1', 'true', 'false'].includes(asString.toLowerCase())) {
+          throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+        }
+        normalized[key] = asString === 'true' ? '1' : asString === 'false' ? '0' : asString;
+        continue;
+      }
+      const asNumber = Number(asString);
+      if (!Number.isFinite(asNumber)) {
+        throw new Error(`RUNTIME_VALUE_NOT_NUMERIC:${key}`);
+      }
+      normalized[key] = asString;
+    }
+
+    if (Object.keys(normalized).length > 0) {
+      for (const [key, value] of Object.entries(normalized)) {
+        await prisma.$executeRawUnsafe(
+          `
+            INSERT INTO runtime_config (configKey, configValue)
+            VALUES (?, ?)
+            ON DUPLICATE KEY UPDATE configValue = VALUES(configValue)
+          `,
+          key,
+          value,
+        );
+      }
+      invalidateCountryPoliceConfigCache();
+    }
+    return this.getRuntimeConfigView();
+  },
 };

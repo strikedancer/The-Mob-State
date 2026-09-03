@@ -255,6 +255,122 @@ def _mission_prompts() -> List[dict]:
             ),
         },
         {
+            "key": "safehouse_supply_run",
+            "card": (
+                "Cinematic dark-mafia mobile game card art, hidden basement safehouse, crates of trade goods, "
+                "single bare bulb, duffel bags, compact centered composition, noir mood, no text"
+            ),
+            "scene": (
+                "Wide cinematic cellar, crew packing crates, steel door ajar, rain outside, "
+                "amber practical light, tense logistics mood, no text"
+            ),
+        },
+        {
+            "key": "street_intel_sweep",
+            "card": (
+                "Cinematic dark-mafia game card art, rainy alley laptop glow, informant silhouette, "
+                "neon reflection on wet asphalt, compact composition, no text"
+            ),
+            "scene": (
+                "Wide street intel sweep, rooftop watcher, police scanner lights far away, "
+                "fog, cool teal and amber, no text"
+            ),
+        },
+        {
+            "key": "armory_smuggle_chain",
+            "card": (
+                "Cinematic dark-mafia game card art, wooden crate cracked open showing rifles silhouette, "
+                "warehouse dust, warm worklamp, compact composition, no text"
+            ),
+            "scene": (
+                "Wide warehouse chain, forklift shadows, stamped crates, night rain at open dock, "
+                "gritty arms-smuggle mood, no text, no logos"
+            ),
+        },
+        {
+            "key": "port_hijack_window",
+            "card": (
+                "Cinematic dark-mafia game card art, harbor crane and cargo container at night, "
+                "gold fog lights, compact composition, no text"
+            ),
+            "scene": (
+                "Wide port hijack, crew on container stack, ship horn atmosphere, "
+                "dramatic side light, no text"
+            ),
+        },
+        {
+            "key": "casino_ledger_raid",
+            "card": (
+                "Cinematic dark-mafia game card art, back-office casino ledger desk, chips and cash tray, "
+                "green lamp, compact composition, no text"
+            ),
+            "scene": (
+                "Wide casino counting room raid, velvet and steel, scattered chips, "
+                "alarm red wash, no real-world logos, no text"
+            ),
+        },
+        {
+            "key": "federal_convoy_break",
+            "card": (
+                "Cinematic dark-mafia game card art, rural highway overpass, federal convoy headlights, "
+                "smoke, compact composition, no text"
+            ),
+            "scene": (
+                "Wide convoy intercept, blocked road, crew silhouettes, dusk sky, "
+                "cinematic contrast, no text"
+            ),
+        },
+        {
+            "key": "courier_intercept",
+            "card": (
+                "Cinematic dark-mafia game card art, motorcycle courier bag snatched in tunnel, "
+                "headlight streaks, compact composition, no text"
+            ),
+            "scene": (
+                "Wide tunnel intercept, two bikes, courier satchel in air, sodium lights, no text"
+            ),
+        },
+        {
+            "key": "city_vault_prep",
+            "card": (
+                "Cinematic dark-mafia game card art, city bank blueprint on table, tools and gloves, "
+                "low lamp, compact composition, no text"
+            ),
+            "scene": (
+                "Wide prep room, maps and radios, night city through blinds, noir suspense, no text"
+            ),
+        },
+        {
+            "key": "port_contraband_manifest",
+            "card": (
+                "Cinematic dark-mafia game card art, stamped shipping manifest and sealed crate, "
+                "harbor night, compact composition, no text"
+            ),
+            "scene": (
+                "Wide customs shed, falsified papers, flashlight beam on crate stencil, no text"
+            ),
+        },
+        {
+            "key": "warehouse_luxury_offload",
+            "card": (
+                "Cinematic dark-mafia game card art, luxury watches and bottles in open crate, "
+                "warehouse plastic wrap, compact composition, no text"
+            ),
+            "scene": (
+                "Wide luxury offload, black vans, gold goods gleam, night warehouse, no logos, no text"
+            ),
+        },
+        {
+            "key": "territory_blackout_push",
+            "card": (
+                "Cinematic dark-mafia game card art, city district blackout, one street still lit, "
+                "crew walking the dark block, compact composition, no text"
+            ),
+            "scene": (
+                "Wide blackout neighborhood, power substation sparks, crew claiming the street, no text"
+            ),
+        },
+        {
             "key": "clearing_house_vault_run",
             "card": (
                 "Cinematic dark-mafia game card art, brutalist financial tower at night, holographic settlement lines, "

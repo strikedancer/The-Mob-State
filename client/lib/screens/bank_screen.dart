@@ -1014,14 +1014,49 @@ class _BankScreenState extends State<BankScreen> {
                         style: TextStyle(color: Colors.grey.shade300, fontSize: 12.5),
                       ),
                       const SizedBox(height: 6),
-                      Text(
-                        l10n.launderSeizeChance(
-                          ((_launderStatus['estimatedSeizeChancePercent']
+                      Builder(
+                        builder: (context) {
+                          final seizePct =
+                              (_launderStatus['estimatedSeizeChancePercent']
                                       as num?)
-                                  ?.toStringAsFixed(1) ??
-                              '0'),
-                        ),
-                        style: TextStyle(color: Colors.orange.shade200, fontSize: 12.5),
+                                  ?.toDouble() ??
+                              0;
+                          final heat =
+                              (_launderStatus['fbiHeat'] as num?)?.toInt() ?? 0;
+                          final elevated = seizePct >= 8 || heat >= 25;
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: elevated
+                                  ? Colors.red.withValues(alpha: 0.16)
+                                  : Colors.orange.withValues(alpha: 0.10),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: elevated
+                                    ? Colors.red.shade300
+                                    : Colors.orange.shade200,
+                              ),
+                            ),
+                            child: Text(
+                              l10n.launderSeizeChance(
+                                seizePct.toStringAsFixed(1),
+                              ),
+                              style: TextStyle(
+                                color: elevated
+                                    ? Colors.red.shade200
+                                    : Colors.orange.shade200,
+                                fontSize: 13,
+                                fontWeight: elevated
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       if (_launderStatus['activeJob'] is Map) ...[
                         const SizedBox(height: 8),

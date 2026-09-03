@@ -956,7 +956,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get seasonPassSubtitle =>
-      'Play live events to earn pass XP. Free rewards for everyone — unlock the premium track once for €7.99 this month (not a subscription).';
+      '56 comiesięcznych celów: zbrodnie, pojazdy, przemyt, narkotyki, zarobiona kasa, XP i rekrutacja prostytucji. Darmowa nagroda eventu i bonus Event Pass (premium) w każdym wierszu.';
+
+  @override
+  String seasonPassGoalProstitution(int count) {
+    return 'Zrekrutuj $count pracownic';
+  }
 
   @override
   String seasonPassGoalsProgress(String completed, String total) {
@@ -3379,10 +3384,10 @@ class AppLocalizationsPl extends AppLocalizations {
       '• Kupuj jedzenie i napoje, aby utrzymać swoje statystyki';
 
   @override
-  String get foodHunger => 'Hunger';
+  String get foodHunger => 'Głód';
 
   @override
-  String get foodThirst => 'Thirst';
+  String get foodThirst => 'Pragnienie';
 
   @override
   String foodRestoresHunger(int value) {
@@ -3396,7 +3401,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get foodNeedsHint =>
-      'Hunger and thirst drop slowly over time. Eat and drink to stay ready.';
+      'Głód i pragnienie spadają powoli. Jedz i pij na czas.';
 
   @override
   String get friends => 'Przyjaciele';
@@ -3929,7 +3934,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get crewUiHintMissionUnlockCta =>
-      'Higher-tier missions unlock when HQ and crew size grow. Upgrade HQ or recruit members to open Tier 2+.';
+      'Wyższe misje otwierają się, gdy HQ i załoga rosną. Ulepsz HQ lub rekrutuj na Tier 2+.';
 
   @override
   String get crewUiActionGoToHqForMissions => 'Open crew HQ';
@@ -13866,7 +13871,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get smugglingHarborBonus =>
-      'Harbor bonus: faster route and lower seizure risk (crew-owned harbor in this country).';
+      'Bonus portowy: szybsza trasa i mniejsze ryzyko konfiskaty (port crew w tym kraju).';
 
   @override
   String smugglingCargoSlotsLine(int required, int available) {
@@ -16802,16 +16807,16 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get countryPoliceStripTitle => 'Country police';
+  String get countryPoliceStripTitle => 'Policja krajowa';
 
   @override
-  String get countryPoliceBandCalm => 'Calm';
+  String get countryPoliceBandCalm => 'Spokój';
 
   @override
-  String get countryPoliceBandWatchful => 'Watchful';
+  String get countryPoliceBandWatchful => 'Czujność';
 
   @override
-  String get countryPoliceBandHot => 'Hot';
+  String get countryPoliceBandHot => 'Gorąco';
 
   @override
   String get countryPoliceBandLockdown => 'Lockdown';
@@ -16823,68 +16828,66 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String countryPoliceEffectLine(int successPenalty, int arrestBonus) {
-    return 'Crime success −$successPenalty pp · Arrest +$arrestBonus pp';
+    return 'Sukces zbrodni −$successPenalty pp · Areszt +$arrestBonus pp';
   }
 
   @override
-  String get countryPoliceDisruptTitle => 'Disrupt police pressure';
+  String get countryPoliceDisruptTitle => 'Zakłóć presję policji';
 
   @override
   String get countryPoliceDisruptHint =>
-      'Rare ops that can cool local heat. Failure raises Wanted and FBI heat.';
+      'Rzadkie akcje, które studzą lokalny żar. Porażka podnosi Wanted i żar FBI.';
 
   @override
-  String get countryPoliceDisruptButton => 'Disrupt';
+  String get countryPoliceDisruptButton => 'Zakłóć';
 
   @override
-  String get countryPoliceDisruptCorruption => 'Corruption';
+  String get countryPoliceDisruptCorruption => 'Korupcja';
 
   @override
   String get countryPoliceDisruptCorruptionDesc =>
-      'Grease palms to ease pressure.';
+      'Smaruj dłonie, by obniżyć presję.';
 
   @override
-  String get countryPoliceDisruptDistract => 'Distract';
+  String get countryPoliceDisruptDistract => 'Odwróć uwagę';
 
   @override
-  String get countryPoliceDisruptDistractDesc =>
-      'Create a diversion across the city.';
+  String get countryPoliceDisruptDistractDesc => 'Zrób dywersję w mieście.';
 
   @override
-  String get countryPoliceDisruptRaid => 'Counter-raid';
+  String get countryPoliceDisruptRaid => 'Kontratak';
 
   @override
   String get countryPoliceDisruptRaidDesc =>
-      'Hit a depot to scramble their response.';
+      'Uderz w skład, by zmieszać ich reakcję.';
 
   @override
   String countryPoliceDisruptCost(String cost) {
-    return 'Cost €$cost';
+    return 'Koszt €$cost';
   }
 
   @override
   String countryPoliceDisruptDropHint(int drop, int minutes) {
-    return 'Pressure −$drop · Cool ~${minutes}m';
+    return 'Presja −$drop · Cool ~${minutes}m';
   }
 
   @override
   String countryPoliceDisruptFailHint(int wanted, int fbi) {
-    return 'Fail: +$wanted Wanted, +$fbi FBI';
+    return 'Porażka: +$wanted Wanted, +$fbi FBI';
   }
 
   @override
   String get countryPoliceDisruptSuccess =>
-      'Pressure dropped. The streets cool down for a while.';
+      'Presja spadła. Ulice ostygną na chwilę.';
 
   @override
-  String get countryPoliceDisruptFailed => 'The op failed. Heat went up.';
+  String get countryPoliceDisruptFailed => 'Akcja się nie udała. Żar wzrósł.';
 
   @override
-  String get countryPoliceCoolActive => 'Cooling active';
+  String get countryPoliceCoolActive => 'Chłodzenie aktywne';
 
   @override
-  String get countryPoliceDisabled =>
-      'Country police pressure is currently off.';
+  String get countryPoliceDisabled => 'Presja policji krajowej jest wyłączona.';
 
   @override
   String drugsFacBuyFor(String price) {

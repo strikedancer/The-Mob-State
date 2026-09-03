@@ -9864,7 +9864,7 @@
       }
     }
   },
-  "seasonPassSubtitle": "Play live events to earn pass XP. Free rewards for everyone — unlock the premium track once for €7.99 this month (not a subscription).",
+  "seasonPassSubtitle": "56 objectifs mensuels : crimes, véhicules, contrebande, drogues, argent gagné, XP et recrutement prostitution. Prix événement gratuit et bonus Event Pass (premium) par ligne.",
   "seasonPassScore": "Pass XP: {score}",
   "@seasonPassScore": {
     "placeholders": {
@@ -10188,11 +10188,11 @@
       }
     }
   },
-  "countryPoliceStripTitle": "Country police",
-  "countryPoliceBandCalm": "Calm",
-  "countryPoliceBandWatchful": "Watchful",
-  "countryPoliceBandHot": "Hot",
-  "countryPoliceBandLockdown": "Lockdown",
+  "countryPoliceStripTitle": "Police nationale",
+  "countryPoliceBandCalm": "Calme",
+  "countryPoliceBandWatchful": "Vigilante",
+  "countryPoliceBandHot": "Chaude",
+  "countryPoliceBandLockdown": "Confinement",
   "countryPolicePressureValue": "{pressure}/100",
   "@countryPolicePressureValue": {
     "placeholders": {
@@ -10201,7 +10201,7 @@
       }
     }
   },
-  "countryPoliceEffectLine": "Crime success −{successPenalty} pp · Arrest +{arrestBonus} pp",
+  "countryPoliceEffectLine": "Succès crime −{successPenalty} pp · Arrestation +{arrestBonus} pp",
   "@countryPoliceEffectLine": {
     "placeholders": {
       "successPenalty": {
@@ -10212,16 +10212,16 @@
       }
     }
   },
-  "countryPoliceDisruptTitle": "Disrupt police pressure",
-  "countryPoliceDisruptHint": "Rare ops that can cool local heat. Failure raises Wanted and FBI heat.",
-  "countryPoliceDisruptButton": "Disrupt",
+  "countryPoliceDisruptTitle": "Perturber la pression policière",
+  "countryPoliceDisruptHint": "Ops rares qui calment la chaleur locale. L’échec augmente Wanted et la chaleur FBI.",
+  "countryPoliceDisruptButton": "Perturber",
   "countryPoliceDisruptCorruption": "Corruption",
-  "countryPoliceDisruptCorruptionDesc": "Grease palms to ease pressure.",
-  "countryPoliceDisruptDistract": "Distract",
-  "countryPoliceDisruptDistractDesc": "Create a diversion across the city.",
-  "countryPoliceDisruptRaid": "Counter-raid",
-  "countryPoliceDisruptRaidDesc": "Hit a depot to scramble their response.",
-  "countryPoliceDisruptCost": "Cost €{cost}",
+  "countryPoliceDisruptCorruptionDesc": "Graisse les pattes pour baisser la pression.",
+  "countryPoliceDisruptDistract": "Distraire",
+  "countryPoliceDisruptDistractDesc": "Crée une diversion dans la ville.",
+  "countryPoliceDisruptRaid": "Contre-raid",
+  "countryPoliceDisruptRaidDesc": "Frappe un dépôt pour brouiller leur réponse.",
+  "countryPoliceDisruptCost": "Coût €{cost}",
   "@countryPoliceDisruptCost": {
     "placeholders": {
       "cost": {
@@ -10229,7 +10229,7 @@
       }
     }
   },
-  "countryPoliceDisruptDropHint": "Pressure −{drop} · Cool ~{minutes}m",
+  "countryPoliceDisruptDropHint": "Pression −{drop} · Cool ~{minutes}m",
   "@countryPoliceDisruptDropHint": {
     "placeholders": {
       "drop": {
@@ -10240,7 +10240,7 @@
       }
     }
   },
-  "countryPoliceDisruptFailHint": "Fail: +{wanted} Wanted, +{fbi} FBI",
+  "countryPoliceDisruptFailHint": "Échec : +{wanted} Wanted, +{fbi} FBI",
   "@countryPoliceDisruptFailHint": {
     "placeholders": {
       "wanted": {
@@ -10251,10 +10251,10 @@
       }
     }
   },
-  "countryPoliceDisruptSuccess": "Pressure dropped. The streets cool down for a while.",
-  "countryPoliceDisruptFailed": "The op failed. Heat went up.",
-  "countryPoliceCoolActive": "Cooling active",
-  "countryPoliceDisabled": "Country police pressure is currently off.",
+  "countryPoliceDisruptSuccess": "Pression en baisse. Les rues se calment un moment.",
+  "countryPoliceDisruptFailed": "L’op a échoué. La chaleur a monté.",
+  "countryPoliceCoolActive": "Refroidissement actif",
+  "countryPoliceDisabled": "La pression de police nationale est actuellement désactivée.",
   "crimeResultVehicleConditionLoss": "Vehicle condition −{percent}%",
   "@crimeResultVehicleConditionLoss": {
     "placeholders": {
@@ -10491,8 +10491,8 @@
   "drugsCrewDepositDone": "Moved to crew storage",
   "drugsCrewDepositFailed": "Crew deposit failed",
   "drugsCutAllOneGrade": "Cut all one grade down",
-  "foodHunger": "Hunger",
-  "foodThirst": "Thirst",
+  "foodHunger": "Faim",
+  "foodThirst": "Soif",
   "foodRestoresHunger": "+{value} hunger",
   "@foodRestoresHunger": {
     "placeholders": {
@@ -10509,8 +10509,8 @@
       }
     }
   },
-  "foodNeedsHint": "Hunger and thirst drop slowly over time. Eat and drink to stay ready.",
-  "crewUiHintMissionUnlockCta": "Higher-tier missions unlock when HQ and crew size grow. Upgrade HQ or recruit members to open Tier 2+.",
+  "foodNeedsHint": "La faim et la soif baissent lentement. Mange et bois à temps.",
+  "crewUiHintMissionUnlockCta": "Les missions de niveau supérieur s’ouvrent quand le QG et la crew grandissent. Améliore le QG ou recrute pour le Tier 2+.",
   "crewUiActionGoToHqForMissions": "Open crew HQ",
   "crewUiActionGoToTradeMarket": "Buy trade goods",
   "crewUiMissionTradeHeldNeed": "{name}: {held}/{need}",
@@ -10530,5 +10530,13 @@
   "crewUiHintMissionPrepReady": "Cargo is ready in crew storage.",
   "crewUiHintMissionPrepShort": "Not enough cargo in crew storage yet.",
   "crewUiHintMissionLevelProgress": "Complete missions to raise crew mission level and cash rewards.",
-  "smugglingHarborBonus": "Harbor bonus: faster route and lower seizure risk (crew-owned harbor in this country)."
+  "smugglingHarborBonus": "Bonus portuaire : route plus rapide et moins de saisie (port de crew dans ce pays).",
+  "seasonPassGoalProstitution": "Recrute {count} travailleuses",
+  "@seasonPassGoalProstitution": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
