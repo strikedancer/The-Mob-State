@@ -71,6 +71,7 @@ test -f .env.plesk && cp .env.plesk .env.plesk.bak-$(date +%F-%H%M) || true
 # Tracked PNGs under runtime/ can conflict with old untracked copies on the server.
 git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ runtime/client-images/avatars/ 2>/dev/null || true
 git pull origin main
+git lfs pull || true
 # Keep external image library in sync (nginx /images/* → runtime/client-images).
 mkdir -p runtime/client-images/vault runtime/client-images/avatars || true
 cp -f client/assets/images/vault/vault_banner.png runtime/client-images/vault/vault_banner.png || true
