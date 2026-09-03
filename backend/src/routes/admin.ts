@@ -39,6 +39,10 @@ import {
   invalidateCountryPoliceConfigCache,
 } from '../services/countryPoliceService';
 import * as casinoOwnershipService from '../services/casinoOwnershipService';
+import {
+  getDrugRuntimeConfigView,
+  updateDrugRuntimeConfig,
+} from '../services/drugRuntimeConfig';
 import { deletePortrait, listPortraits } from '../services/playerPortraitService';
 import { grantPlayerVipDays } from '../services/vipBenefitsService';
 import {
@@ -1476,6 +1480,42 @@ router.put('/casino/runtime-config', async (req, res) => {
     }
     console.error('Admin casino runtime config update error:', error);
     return res.status(500).json({ error: 'Failed to update casino runtime config' });
+  }
+});
+
+router.get('/drugs/runtime-config', async (_req, res) => {
+  try {
+    const config = await getDrugRuntimeConfigView();
+    return res.json(config);
+  } catch (error) {
+    console.error('Admin drugs runtime config error:', error);
+    return res.status(500).json({ error: 'Failed to fetch drugs runtime config' });
+  }
+});
+
+router.put('/drugs/runtime-config', async (req, res) => {
+  try {
+    const parsed = z
+      .object({
+        updates: z.record(z.union([z.string(), z.number()])),
+      })
+      .parse(req.body ?? {});
+    const updated = await updateDrugRuntimeConfig(parsed.updates);
+    return res.json(updated);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation failed', details: error.flatten() });
+    }
+    if (error instanceof Error && error.message.startsWith('INVALID_RUNTIME_KEY:')) {
+      return res.status(400).json({ error: 'Invalid runtime key', details: error.message });
+    }
+    if (error instanceof Error && error.message.startsWith('RUNTIME_VALUE_NOT_NUMERIC:')) {
+      return res
+        .status(400)
+        .json({ error: 'Runtime value must be numeric', details: error.message });
+    }
+    console.error('Admin drugs runtime config update error:', error);
+    return res.status(500).json({ error: 'Failed to update drugs runtime config' });
   }
 });
 

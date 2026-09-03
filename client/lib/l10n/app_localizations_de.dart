@@ -12736,6 +12736,25 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  ) {
+    return '${quantity}g $drugType in $destination verkauft (€$payout)';
+  }
+
+  @override
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  ) {
+    return '${quantity}g $drugType nach $destination abgefangen';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -14731,6 +14750,92 @@ class AppLocalizationsDe extends AppLocalizations {
   String get drugsSellAction => 'Verkaufen';
 
   @override
+  String get drugsExportAction => 'Exportieren';
+
+  @override
+  String drugsExportDialogTitle(String name) {
+    return 'Export $name';
+  }
+
+  @override
+  String get drugsExportDestLabel => 'Ziel';
+
+  @override
+  String drugsExportQuoteStreet(String amount) {
+    return 'Straßenpreis Ziel: €$amount/g';
+  }
+
+  @override
+  String drugsExportQuoteB2b(String amount) {
+    return 'Großhandel: €$amount/g';
+  }
+
+  @override
+  String drugsExportPayout(String amount) {
+    return 'Auszahlung bei Ankunft: €$amount';
+  }
+
+  @override
+  String drugsExportFee(String amount) {
+    return 'Fracht: €$amount';
+  }
+
+  @override
+  String drugsExportEta(String minutes) {
+    return 'ETA: $minutes Min';
+  }
+
+  @override
+  String drugsExportSeizure(String pct) {
+    return 'Beschlagnahme: $pct%';
+  }
+
+  @override
+  String drugsExportHeat(String heat, String fbi) {
+    return 'Heat +$heat · FBI +$fbi';
+  }
+
+  @override
+  String get drugsExportHarbor => 'Hafenbonus aktiv';
+
+  @override
+  String get drugsExportConfirm => 'Senden';
+
+  @override
+  String drugsExportMinHint(String grams) {
+    return 'Mindestens ${grams}g';
+  }
+
+  @override
+  String get drugsExportFailed => 'Export fehlgeschlagen';
+
+  @override
+  String get drugsExportStarted => 'Ladung unterwegs. Bargeld bei Ankunft.';
+
+  @override
+  String get drugsExportCannotAfford => 'Nicht genug Bargeld für die Fracht';
+
+  @override
+  String get drugsHubExportsTitle => 'Großhandels-Sendungen';
+
+  @override
+  String get drugsHubExportInTransit => 'Unterwegs';
+
+  @override
+  String get drugsHubExportSold => 'Verkauft';
+
+  @override
+  String get drugsHubExportSeized => 'Abgefangen';
+
+  @override
+  String get drugsHubExportEmpty => 'Kein offener Export';
+
+  @override
+  String drugsHubExportLine(String qty, String dest, String status) {
+    return '${qty}g → $dest · $status';
+  }
+
+  @override
   String get drugsInvEmptyTitle => 'Keine Medikamente im Inventar';
 
   @override
@@ -14742,7 +14847,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get drugsInvSectionBody =>
-      'Verkaufen Sie Medikamente nach Qualität und nutzen Sie Preisunterschiede zwischen den Ländern.';
+      'Verkaufe lokal oder exportiere eine Großhandelsladung in ein anderes Land. Straßenverkauf, Nachtclub, Darkweb und Marktplatz bleiben Einzelhandel.';
 
   @override
   String drugsInvCurrentLocation(String place) {
@@ -15530,11 +15635,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Das Arzneimittelsystem besteht aus: Hub (Übersicht und Statistiken), Einrichtungen (Produktionskapazität verbessern), Produktion (aktive Produktionslinien mit Timer) und Inventar (Fertigprodukte und Rohstoffe). \nKaufen Sie Rohstoffe auf dem Schwarzmarkt oder im Handel. Kombinieren Sie sie in einer Anlage zur Herstellung von Medikamenten. \nProduktionstimer laufen, während Sie offline sind. Kein aktives Klicken erforderlich: Überprüfen Sie es noch einmal, wenn der Timer abgelaufen ist. \nDie fertige Produktion bleibt in der Produktion sichtbar und der Anlagenplatz bleibt besetzt, bis Sie sie abholen. VIP Auto-Collect verarbeitet die fertige Ausgabe automatisch im Hintergrund. \nDie Lagerkapazität ist pro Einrichtung begrenzt. Wenn der Speicher voll ist, stoppt die Produktion automatisch. \nEine Darkweb-Storefront oder eine andere Einrichtung verkauft fertige Produkte nicht automatisch: Der Verkauf erfolgt immer noch manuell über den vorgesehenen Verkaufsablauf. \nVerkaufen Sie Medikamente mit höchster Marge über den Schwarzmarkt, Kolumbien oder andere spezielle Verkaufsstandorte. \nFBI Heat steigert jeden Produktionszyklus und bei großen Verkäufen zusätzlich. Hohe Hitze führt zu Überfällen, die Ihren Betrieb lahmlegen können. \nAnlagenmodernisierungen verkürzen die Produktionszeit, steigern die Produktion und erweitern die Lagerkapazität. \nVIP-Spieler erhalten einen Blitzknopf auf Produktionskarten: Nach einem Bestätigungsmodalitäten können Sie alle fehlenden Chargenmaterialien mit einem Klick kaufen. \nFortgeschrittene Slot- und Ausrüstungs-Upgrades sind mit dem neuen Narkotik-Ausbildungspfad (Hydroponik-Spezialist, Prozess-Elektrik-Spezialist, Geheimchemiker) verbunden. Ohne die erforderliche Stufe/Zertifizierung können Sie nicht zur nächsten Upgrade-Stufe aufsteigen. \nDrogen im Inventar erhöhen das Beschlagnahmungsrisiko bei Reisen und Polizeikontrollen.';
+      'Das Arzneimittelsystem besteht aus: Hub (Übersicht und Statistiken), Einrichtungen (Produktionskapazität verbessern), Produktion (aktive Produktionslinien mit Timer) und Inventar (Fertigprodukte und Rohstoffe). \nKaufen Sie Rohstoffe auf dem Schwarzmarkt oder im Handel. Kombinieren Sie sie in einer Anlage zur Herstellung von Medikamenten. \nProduktionstimer laufen, während Sie offline sind. Kein aktives Klicken erforderlich: Überprüfen Sie es noch einmal, wenn der Timer abgelaufen ist. \nDie fertige Produktion bleibt in der Produktion sichtbar und der Anlagenplatz bleibt besetzt, bis Sie sie abholen. VIP Auto-Collect verarbeitet die fertige Ausgabe automatisch im Hintergrund. \nDie Lagerkapazität ist pro Einrichtung begrenzt. Wenn der Speicher voll ist, stoppt die Produktion automatisch. \nEine Darkweb-Storefront oder eine andere Einrichtung verkauft fertige Produkte nicht automatisch: Der Verkauf erfolgt immer noch manuell über den vorgesehenen Verkaufsablauf. \nVerkaufen Sie Medikamente mit höchster Marge über den Schwarzmarkt, Kolumbien oder andere spezielle Verkaufsstandorte. \nFBI Heat steigert jeden Produktionszyklus und bei großen Verkäufen zusätzlich. Hohe Hitze führt zu Überfällen, die Ihren Betrieb lahmlegen können. \nAnlagenmodernisierungen verkürzen die Produktionszeit, steigern die Produktion und erweitern die Lagerkapazität. \nVIP-Spieler erhalten einen Blitzknopf auf Produktionskarten: Nach einem Bestätigungsmodalitäten können Sie alle fehlenden Chargenmaterialien mit einem Klick kaufen. \nFortgeschrittene Slot- und Ausrüstungs-Upgrades sind mit dem neuen Narkotik-Ausbildungspfad (Hydroponik-Spezialist, Prozess-Elektrik-Spezialist, Geheimchemiker) verbunden. Ohne die erforderliche Stufe/Zertifizierung können Sie nicht zur nächsten Upgrade-Stufe aufsteigen. \nDrogen im Inventar erhöhen das Beschlagnahmungsrisiko bei Reisen und Polizeikontrollen.\nÜber das Inventar kannst du eine Großhandelsladung in ein anderes Land exportieren: du bleibst, zahlst Fracht und erhältst B2B-Cash am Ziel, wenn der Container ankommt. Bei Beschlagnahme kein Geld. Straßenverkauf, Nachtclub, Darkweb und Marktplatz bleiben Einzelhandel.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Erweitern Sie den Speicher vor der Produktion: Voller Speicher stoppt die Produktion und Sie verlieren Produktionszeit. \nHalten Sie die FBI-Hitze unter 50: Oberhalb dieses Schwellenwerts werden Sie aktiv gejagt, mit hohen Angriffschancen, die alles zum Erliegen bringen. \nKombinieren Sie Arzneimittelverkäufe mit Schmuggel, um höhere Margen und eine Risikoverteilung zu erzielen.';
+      'Erweitern Sie den Speicher vor der Produktion: Voller Speicher stoppt die Produktion und Sie verlieren Produktionszeit. \nHalten Sie die FBI-Hitze unter 50: Oberhalb dieses Schwellenwerts werden Sie aktiv gejagt, mit hohen Angriffschancen, die alles zum Erliegen bringen. \nKombinieren Sie Arzneimittelverkäufe mit Schmuggel, um höhere Margen und eine Risikoverteilung zu erzielen.\nExportiere nur, wenn du Fracht und Beschlagnahme akzeptierst; Reisen plus Straßenverkauf bleibt pro Gramm mehr wert.';
 
   @override
   String get helpTopicNightclubCategory => 'Reich';

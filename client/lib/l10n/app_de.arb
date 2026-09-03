@@ -6415,7 +6415,7 @@
   "drugsInvEmptyTitle": "Keine Medikamente im Inventar",
   "drugsInvEmptySubtitle": "Beginnen Sie mit der Produktion, um Medikamente herzustellen",
   "drugsInvSectionHeader": "Inventar und Vertrieb",
-  "drugsInvSectionBody": "Verkaufen Sie Medikamente nach Qualität und nutzen Sie Preisunterschiede zwischen den Ländern.",
+  "drugsInvSectionBody": "Verkaufe lokal oder exportiere eine Großhandelsladung in ein anderes Land. Straßenverkauf, Nachtclub, Darkweb und Marktplatz bleiben Einzelhandel.",
   "drugsInvCurrentLocation": "Aktueller Standort: {place}",
   "@drugsInvCurrentLocation": {
     "placeholders": {
@@ -8174,8 +8174,8 @@
   "helpTopicDrugsCategory": "Reich",
   "helpTopicDrugsTitle": "Drogen",
   "helpTopicDrugsSummary": "Bauen Sie einen kompletten Arzneimittelbetrieb vom Rohstoff bis zum fertigen Produkt auf. Betreiben Sie Produktionsketten, verwalten Sie die Lagerung und verkaufen Sie mit hohen Margen, aber großen Risiken.",
-  "helpTopicDrugsHow": "Das Arzneimittelsystem besteht aus: Hub (Übersicht und Statistiken), Einrichtungen (Produktionskapazität verbessern), Produktion (aktive Produktionslinien mit Timer) und Inventar (Fertigprodukte und Rohstoffe). \nKaufen Sie Rohstoffe auf dem Schwarzmarkt oder im Handel. Kombinieren Sie sie in einer Anlage zur Herstellung von Medikamenten. \nProduktionstimer laufen, während Sie offline sind. Kein aktives Klicken erforderlich: Überprüfen Sie es noch einmal, wenn der Timer abgelaufen ist. \nDie fertige Produktion bleibt in der Produktion sichtbar und der Anlagenplatz bleibt besetzt, bis Sie sie abholen. VIP Auto-Collect verarbeitet die fertige Ausgabe automatisch im Hintergrund. \nDie Lagerkapazität ist pro Einrichtung begrenzt. Wenn der Speicher voll ist, stoppt die Produktion automatisch. \nEine Darkweb-Storefront oder eine andere Einrichtung verkauft fertige Produkte nicht automatisch: Der Verkauf erfolgt immer noch manuell über den vorgesehenen Verkaufsablauf. \nVerkaufen Sie Medikamente mit höchster Marge über den Schwarzmarkt, Kolumbien oder andere spezielle Verkaufsstandorte. \nFBI Heat steigert jeden Produktionszyklus und bei großen Verkäufen zusätzlich. Hohe Hitze führt zu Überfällen, die Ihren Betrieb lahmlegen können. \nAnlagenmodernisierungen verkürzen die Produktionszeit, steigern die Produktion und erweitern die Lagerkapazität. \nVIP-Spieler erhalten einen Blitzknopf auf Produktionskarten: Nach einem Bestätigungsmodalitäten können Sie alle fehlenden Chargenmaterialien mit einem Klick kaufen. \nFortgeschrittene Slot- und Ausrüstungs-Upgrades sind mit dem neuen Narkotik-Ausbildungspfad (Hydroponik-Spezialist, Prozess-Elektrik-Spezialist, Geheimchemiker) verbunden. Ohne die erforderliche Stufe/Zertifizierung können Sie nicht zur nächsten Upgrade-Stufe aufsteigen. \nDrogen im Inventar erhöhen das Beschlagnahmungsrisiko bei Reisen und Polizeikontrollen.",
-  "helpTopicDrugsTips": "Erweitern Sie den Speicher vor der Produktion: Voller Speicher stoppt die Produktion und Sie verlieren Produktionszeit. \nHalten Sie die FBI-Hitze unter 50: Oberhalb dieses Schwellenwerts werden Sie aktiv gejagt, mit hohen Angriffschancen, die alles zum Erliegen bringen. \nKombinieren Sie Arzneimittelverkäufe mit Schmuggel, um höhere Margen und eine Risikoverteilung zu erzielen.",
+  "helpTopicDrugsHow": "Das Arzneimittelsystem besteht aus: Hub (Übersicht und Statistiken), Einrichtungen (Produktionskapazität verbessern), Produktion (aktive Produktionslinien mit Timer) und Inventar (Fertigprodukte und Rohstoffe). \nKaufen Sie Rohstoffe auf dem Schwarzmarkt oder im Handel. Kombinieren Sie sie in einer Anlage zur Herstellung von Medikamenten. \nProduktionstimer laufen, während Sie offline sind. Kein aktives Klicken erforderlich: Überprüfen Sie es noch einmal, wenn der Timer abgelaufen ist. \nDie fertige Produktion bleibt in der Produktion sichtbar und der Anlagenplatz bleibt besetzt, bis Sie sie abholen. VIP Auto-Collect verarbeitet die fertige Ausgabe automatisch im Hintergrund. \nDie Lagerkapazität ist pro Einrichtung begrenzt. Wenn der Speicher voll ist, stoppt die Produktion automatisch. \nEine Darkweb-Storefront oder eine andere Einrichtung verkauft fertige Produkte nicht automatisch: Der Verkauf erfolgt immer noch manuell über den vorgesehenen Verkaufsablauf. \nVerkaufen Sie Medikamente mit höchster Marge über den Schwarzmarkt, Kolumbien oder andere spezielle Verkaufsstandorte. \nFBI Heat steigert jeden Produktionszyklus und bei großen Verkäufen zusätzlich. Hohe Hitze führt zu Überfällen, die Ihren Betrieb lahmlegen können. \nAnlagenmodernisierungen verkürzen die Produktionszeit, steigern die Produktion und erweitern die Lagerkapazität. \nVIP-Spieler erhalten einen Blitzknopf auf Produktionskarten: Nach einem Bestätigungsmodalitäten können Sie alle fehlenden Chargenmaterialien mit einem Klick kaufen. \nFortgeschrittene Slot- und Ausrüstungs-Upgrades sind mit dem neuen Narkotik-Ausbildungspfad (Hydroponik-Spezialist, Prozess-Elektrik-Spezialist, Geheimchemiker) verbunden. Ohne die erforderliche Stufe/Zertifizierung können Sie nicht zur nächsten Upgrade-Stufe aufsteigen. \nDrogen im Inventar erhöhen das Beschlagnahmungsrisiko bei Reisen und Polizeikontrollen.\nÜber das Inventar kannst du eine Großhandelsladung in ein anderes Land exportieren: du bleibst, zahlst Fracht und erhältst B2B-Cash am Ziel, wenn der Container ankommt. Bei Beschlagnahme kein Geld. Straßenverkauf, Nachtclub, Darkweb und Marktplatz bleiben Einzelhandel.",
+  "helpTopicDrugsTips": "Erweitern Sie den Speicher vor der Produktion: Voller Speicher stoppt die Produktion und Sie verlieren Produktionszeit. \nHalten Sie die FBI-Hitze unter 50: Oberhalb dieses Schwellenwerts werden Sie aktiv gejagt, mit hohen Angriffschancen, die alles zum Erliegen bringen. \nKombinieren Sie Arzneimittelverkäufe mit Schmuggel, um höhere Margen und eine Risikoverteilung zu erzielen.\nExportiere nur, wenn du Fracht und Beschlagnahme akzeptierst; Reisen plus Straßenverkauf bleibt pro Gramm mehr wert.",
   "helpTopicNightclubCategory": "Reich",
   "helpTopicNightclubTitle": "Nachtclub",
   "helpTopicNightclubSummary": "Betreiben Sie einen Nightclub als Teil Ihres kriminellen Imperiums. Verwalten Sie Personal, Sicherheit und Versorgung für passives und aktives Einkommen mit einer speziellen Saison-Rangliste.",
@@ -10618,6 +10618,138 @@
   "@casinoRaidDefense": {
     "placeholders": {
       "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsWholesaleSold": "{quantity}g {drugType} in {destination} verkauft (€{payout})",
+  "@evStreamDrugsWholesaleSold": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsWholesaleSeized": "{quantity}g {drugType} nach {destination} abgefangen",
+  "@evStreamDrugsWholesaleSeized": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportAction": "Exportieren",
+  "drugsExportDialogTitle": "Export {name}",
+  "@drugsExportDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportDestLabel": "Ziel",
+  "drugsExportQuoteStreet": "Straßenpreis Ziel: €{amount}/g",
+  "@drugsExportQuoteStreet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportQuoteB2b": "Großhandel: €{amount}/g",
+  "@drugsExportQuoteB2b": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportPayout": "Auszahlung bei Ankunft: €{amount}",
+  "@drugsExportPayout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportFee": "Fracht: €{amount}",
+  "@drugsExportFee": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportEta": "ETA: {minutes} Min",
+  "@drugsExportEta": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportSeizure": "Beschlagnahme: {pct}%",
+  "@drugsExportSeizure": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportHeat": "Heat +{heat} · FBI +{fbi}",
+  "@drugsExportHeat": {
+    "placeholders": {
+      "heat": {
+        "type": "String"
+      },
+      "fbi": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportHarbor": "Hafenbonus aktiv",
+  "drugsExportConfirm": "Senden",
+  "drugsExportMinHint": "Mindestens {grams}g",
+  "@drugsExportMinHint": {
+    "placeholders": {
+      "grams": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportFailed": "Export fehlgeschlagen",
+  "drugsExportStarted": "Ladung unterwegs. Bargeld bei Ankunft.",
+  "drugsExportCannotAfford": "Nicht genug Bargeld für die Fracht",
+  "drugsHubExportsTitle": "Großhandels-Sendungen",
+  "drugsHubExportInTransit": "Unterwegs",
+  "drugsHubExportSold": "Verkauft",
+  "drugsHubExportSeized": "Abgefangen",
+  "drugsHubExportEmpty": "Kein offener Export",
+  "drugsHubExportLine": "{qty}g → {dest} · {status}",
+  "@drugsHubExportLine": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "dest": {
+        "type": "String"
+      },
+      "status": {
         "type": "String"
       }
     }

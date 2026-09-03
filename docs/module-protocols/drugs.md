@@ -36,6 +36,19 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - `POST /drugs/raids/:id/resolve` `{ choice: lose | downtime | cash }`
 - `POST /drug-facilities/:id/auto-sale` `{ enabled }` (darkweb storefront only, default off)
 - `POST /drugs/crew-storage/deposit` / `withdraw` — quality `DrugInventory` lots to crew `drug_storage`
+- `GET /drugs/wholesale/quote` — dest street vs B2B €/g, fee, ETA, seizure, heat preview
+- `POST /drugs/wholesale/export` — container send, `networkScope=personal`, locked wholesale metadata
+- `GET /drugs/wholesale/shipments` — personal wholesale rows (settles due first)
+
+### NPC wholesale export (sell-on-arrival)
+- Player stays in the origin country. Min grams via `DRUG_WHOLESALE_MIN_GRAMS` (default 250). Other country required.
+- Price = dest street (`countryPricing × quality`) × (1 − spread) × (1 + volume bonus) × (1 − scarcity). Always below dest street.
+- Freight/ETA/seizure = existing container pricing + origin `harbor` bonus.
+- Metadata lock: `wholesale`, `unitPrice`, `payout`, `destinationCountry`, `drugType`, `quality`, `quantity`, `settledAt`.
+- Tick + quote/list settle due rows. Ready wholesale is paid immediately; seized pays nothing.
+- Heat on send (`DRUG_WHOLESALE_DRUG_HEAT`, includes smuggle +2). FBI heat per kg on successful arrival. Country police `drug_wholesale` (origin on send, dest on success) only if pressure flag is already on.
+- Admin → Drugs runtime tab. Do not flip Clearing House or `COUNTRY_POLICE_PRESSURE_ENABLED` here.
+- Client entry: Inventory **Exporteren**. Hub shows a short shipment strip. Smuggling Hub stays general cargo; do not add a second wholesale wizard.
 
 ### Credit speedup (production timer)
 - Utility sink only: shortens wait time, does **not** bypass materials, slots, heat, education or collect.
@@ -49,6 +62,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ### Dashboard activity (Mijn activiteit)
 - Start: `drugs.production_started` (`drugName`, `minutes`, …)
 - Collect: `drugs.production_collected` (`quantity`, `drugName`, `qualityLabel`, …)
+- Wholesale settle: `drugs.wholesale_sold` / `drugs.wholesale_seized` (push + inbox)
 - Emitted from `drugService` via `worldEventService` (player-scoped). Client copy: `evStreamDrugsProduction*`.
 
 ## Change Rules
@@ -81,6 +95,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Credit temp-slot and heat shield are time/risk/utility only (no extra yield).
 - Crew quality-lot deposit uses `CrewDrugLot` (type+quality+grams) and shares `drug_storage` capacity with trade-good drug rows.
 - Nightclub own-production margin bonus is capped via `DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`.
+- NPC wholesale export (sell-on-arrival) reuses `smuggling_shipments` + `metadata_json.wholesale`; cash is paid on tick/quote/list settle, never via depot claim.
 - Education-gated drug facility progression: slot/equipment upgrades that are locked behind school gates must return structured requirement details (`gateId`, `gateLabelKey`, `missing`) so the client can render the education requirements dialog instead of a generic error.
 - Materials bought into a country depot must not silently become backpack cargo; travel risk applies only to `_carried_` stock.
 
@@ -120,6 +135,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Buy materials in country A → stock only in depot A; production in A works; travel without loading backpack leaves depot A intact.
 - Transfer to backpack → slots increase; travel can confiscate/arrest carried stock; depot elsewhere untouched.
 - Unload backpack into depot of current country after travel.
+- Wholesale export: quote shows dest street vs B2B, fee, ETA, seizure; send stays in origin; tick pays locked payout or seizes with no cash.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

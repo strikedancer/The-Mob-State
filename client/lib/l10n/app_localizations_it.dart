@@ -12716,6 +12716,25 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  ) {
+    return '${quantity}g $drugType venduto a $destination (€$payout)';
+  }
+
+  @override
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  ) {
+    return '${quantity}g $drugType verso $destination sequestrato';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -14708,6 +14727,92 @@ class AppLocalizationsIt extends AppLocalizations {
   String get drugsSellAction => 'Vendere';
 
   @override
+  String get drugsExportAction => 'Esporta';
+
+  @override
+  String drugsExportDialogTitle(String name) {
+    return 'Export $name';
+  }
+
+  @override
+  String get drugsExportDestLabel => 'Destinazione';
+
+  @override
+  String drugsExportQuoteStreet(String amount) {
+    return 'Prezzo strada dest.: €$amount/g';
+  }
+
+  @override
+  String drugsExportQuoteB2b(String amount) {
+    return 'Ingrosso: €$amount/g';
+  }
+
+  @override
+  String drugsExportPayout(String amount) {
+    return 'Pagamento all\'arrivo: €$amount';
+  }
+
+  @override
+  String drugsExportFee(String amount) {
+    return 'Nolo: €$amount';
+  }
+
+  @override
+  String drugsExportEta(String minutes) {
+    return 'ETA: $minutes min';
+  }
+
+  @override
+  String drugsExportSeizure(String pct) {
+    return 'Sequestro: $pct%';
+  }
+
+  @override
+  String drugsExportHeat(String heat, String fbi) {
+    return 'Heat +$heat · FBI +$fbi';
+  }
+
+  @override
+  String get drugsExportHarbor => 'Bonus porto attivo';
+
+  @override
+  String get drugsExportConfirm => 'Invia';
+
+  @override
+  String drugsExportMinHint(String grams) {
+    return 'Minimo ${grams}g';
+  }
+
+  @override
+  String get drugsExportFailed => 'Esportazione fallita';
+
+  @override
+  String get drugsExportStarted => 'Carico in transito. Contanti all\'arrivo.';
+
+  @override
+  String get drugsExportCannotAfford => 'Contanti insufficienti per il nolo';
+
+  @override
+  String get drugsHubExportsTitle => 'Spedizioni all\'ingrosso';
+
+  @override
+  String get drugsHubExportInTransit => 'In transito';
+
+  @override
+  String get drugsHubExportSold => 'Venduto';
+
+  @override
+  String get drugsHubExportSeized => 'Sequestrato';
+
+  @override
+  String get drugsHubExportEmpty => 'Nessuna esportazione aperta';
+
+  @override
+  String drugsHubExportLine(String qty, String dest, String status) {
+    return '${qty}g → $dest · $status';
+  }
+
+  @override
   String get drugsInvEmptyTitle => 'Nessun farmaco nell\'inventario';
 
   @override
@@ -14718,7 +14823,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get drugsInvSectionBody =>
-      'Vendi farmaci in base alla qualità e sfrutta le differenze di prezzo tra i paesi.';
+      'Vendi in loco o esporta un carico all\'ingrosso in un altro paese. Vendita di strada, nightclub, darkweb e Marketplace restano al dettaglio.';
 
   @override
   String drugsInvCurrentLocation(String place) {
@@ -15505,11 +15610,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Il sistema del farmaco è composto da: Hub (panoramica e statistiche), Strutture (potenziamento della capacità produttiva), Produzione (linee di produzione attive con timer) e Inventario (prodotti finiti e materie prime). \nAcquista materie prime tramite il mercato nero o il commercio. Combinali in una struttura per produrre farmaci. \nI timer di produzione vengono eseguiti mentre sei offline. Non è necessario alcun clic attivo: ricontrolla al termine del timer. \nL\'output finito rimane visibile in Produzione e mantiene occupato lo slot della struttura finché non lo raccogli; La raccolta automatica VIP elabora l\'output pronto automaticamente in background. \nLa capacità di stoccaggio è limitata per struttura. Quando lo spazio di stoccaggio è pieno la produzione si ferma automaticamente. \nUna vetrina del darkweb o un\'altra struttura non vende automaticamente i prodotti finiti: la vendita avviene comunque manualmente attraverso il flusso di vendita previsto. \nVendi farmaci tramite il mercato nero, la Colombia o altri luoghi di vendita speciali per ottenere il margine più elevato. \nFBI Heat aumenta ogni ciclo di produzione e extra sulle grandi vendite. Il calore elevato porta a eventi di raid che possono interrompere le tue operazioni. \nGli aggiornamenti della struttura riducono i tempi di produzione, aumentano la produzione ed espandono la capacità di stoccaggio. \nI giocatori VIP ottengono un pulsante fulmineo sulle carte di produzione: dopo una modalità di conferma, puoi acquistare tutti i materiali del lotto mancanti in un clic. \nGli aggiornamenti avanzati di slot e equipaggiamento sono legati al nuovo percorso formativo sugli stupefacenti (specialista di idroponica, specialista di processi elettrici, chimico clandestino). Senza il livello/certificazione richiesto non è possibile passare al livello di aggiornamento successivo. \nLa droga nell\'inventario aumenta il rischio di confisca durante i viaggi e i controlli di polizia.';
+      'Il sistema del farmaco è composto da: Hub (panoramica e statistiche), Strutture (potenziamento della capacità produttiva), Produzione (linee di produzione attive con timer) e Inventario (prodotti finiti e materie prime). \nAcquista materie prime tramite il mercato nero o il commercio. Combinali in una struttura per produrre farmaci. \nI timer di produzione vengono eseguiti mentre sei offline. Non è necessario alcun clic attivo: ricontrolla al termine del timer. \nL\'output finito rimane visibile in Produzione e mantiene occupato lo slot della struttura finché non lo raccogli; La raccolta automatica VIP elabora l\'output pronto automaticamente in background. \nLa capacità di stoccaggio è limitata per struttura. Quando lo spazio di stoccaggio è pieno la produzione si ferma automaticamente. \nUna vetrina del darkweb o un\'altra struttura non vende automaticamente i prodotti finiti: la vendita avviene comunque manualmente attraverso il flusso di vendita previsto. \nVendi farmaci tramite il mercato nero, la Colombia o altri luoghi di vendita speciali per ottenere il margine più elevato. \nFBI Heat aumenta ogni ciclo di produzione e extra sulle grandi vendite. Il calore elevato porta a eventi di raid che possono interrompere le tue operazioni. \nGli aggiornamenti della struttura riducono i tempi di produzione, aumentano la produzione ed espandono la capacità di stoccaggio. \nI giocatori VIP ottengono un pulsante fulmineo sulle carte di produzione: dopo una modalità di conferma, puoi acquistare tutti i materiali del lotto mancanti in un clic. \nGli aggiornamenti avanzati di slot e equipaggiamento sono legati al nuovo percorso formativo sugli stupefacenti (specialista di idroponica, specialista di processi elettrici, chimico clandestino). Senza il livello/certificazione richiesto non è possibile passare al livello di aggiornamento successivo. \nLa droga nell\'inventario aumenta il rischio di confisca durante i viaggi e i controlli di polizia.\nDall\'inventario puoi esportare un carico all\'ingrosso in un altro paese: resti sul posto, paghi il nolo e ricevi il cash B2B a destinazione all\'arrivo. Il sequestro non paga. Vendita di strada, nightclub, darkweb e Marketplace restano al dettaglio.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Aggiorna lo storage prima della produzione: lo storage completo interrompe la produzione e perdi quel tempo di produzione. \nMantieni l\'FBI Heat al di sotto di 50: sopra quella soglia sei attivamente cacciato con pesanti possibilità di raid che chiudono tutto. \nCombinare le vendite di farmaci con il contrabbando per ottenere margini più elevati e rischi distribuiti.';
+      'Aggiorna lo storage prima della produzione: lo storage completo interrompe la produzione e perdi quel tempo di produzione. \nMantieni l\'FBI Heat al di sotto di 50: sopra quella soglia sei attivamente cacciato con pesanti possibilità di raid che chiudono tutto. \nCombinare le vendite di farmaci con il contrabbando per ottenere margini più elevati e rischi distribuiti.\nEsporta solo se accetti nolo e sequestro; viaggiare e vendere in strada resta più redditizio al grammo.';
 
   @override
   String get helpTopicNightclubCategory => 'Impero';

@@ -3691,10 +3691,111 @@
   },
   "drugsInvalidQuantity": "Ongeldige hoeveelheid",
   "drugsSellAction": "Verkopen",
+  "drugsExportAction": "Exporteren",
+  "drugsExportDialogTitle": "Export {name}",
+  "@drugsExportDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportDestLabel": "Bestemming",
+  "drugsExportQuoteStreet": "Straatprijs dest: €{amount}/g",
+  "@drugsExportQuoteStreet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportQuoteB2b": "Groothandel: €{amount}/g",
+  "@drugsExportQuoteB2b": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportPayout": "Uitbetaling bij aankomst: €{amount}",
+  "@drugsExportPayout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportFee": "Vracht: €{amount}",
+  "@drugsExportFee": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportEta": "ETA: {minutes} min",
+  "@drugsExportEta": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportSeizure": "Onderschepping: {pct}%",
+  "@drugsExportSeizure": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportHeat": "Heat +{heat} · FBI +{fbi}",
+  "@drugsExportHeat": {
+    "placeholders": {
+      "heat": {
+        "type": "String"
+      },
+      "fbi": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportHarbor": "Havenbonus actief",
+  "drugsExportConfirm": "Versturen",
+  "drugsExportMinHint": "Minimaal {grams}g",
+  "@drugsExportMinHint": {
+    "placeholders": {
+      "grams": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportFailed": "Export mislukt",
+  "drugsExportStarted": "Lading onderweg. Cash bij aankomst.",
+  "drugsExportCannotAfford": "Niet genoeg cash voor vracht",
+  "drugsHubExportsTitle": "Groothandel-zendingen",
+  "drugsHubExportInTransit": "Onderweg",
+  "drugsHubExportSold": "Verkocht",
+  "drugsHubExportSeized": "Onderschept",
+  "drugsHubExportEmpty": "Geen open export",
+  "drugsHubExportLine": "{qty}g → {dest} · {status}",
+  "@drugsHubExportLine": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "dest": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
   "drugsInvEmptyTitle": "Geen drugs in voorraad",
   "drugsInvEmptySubtitle": "Start productie om drugs te maken",
   "drugsInvSectionHeader": "Voorraad & distributie",
-  "drugsInvSectionBody": "Verkoop drugs per kwaliteit en gebruik prijsverschillen tussen landen.",
+  "drugsInvSectionBody": "Verkoop lokaal of exporteer een groothandelslading naar een ander land. Street-sell, nightclub, darkweb en Marktplaats blijven retail.",
   "drugsInvCurrentLocation": "Huidige locatie: {place}",
   "@drugsInvCurrentLocation": {
     "placeholders": {
@@ -6039,6 +6140,37 @@
         "type": "String"
       },
       "quality": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsWholesaleSold": "{quantity}g {drugType} verkocht in {destination} (€{payout})",
+  "@evStreamDrugsWholesaleSold": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsWholesaleSeized": "{quantity}g {drugType} naar {destination} onderschept",
+  "@evStreamDrugsWholesaleSeized": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
         "type": "String"
       }
     }
@@ -9337,8 +9469,8 @@
   "helpTopicDrugsCategory": "Empire",
   "helpTopicDrugsTitle": "Drugs",
   "helpTopicDrugsSummary": "Bouw een complete drugsoperatie van grondstoffen tot eindproduct. Draai productieketens, beheer opslag en verkoop voor hoge marges maar ook serieuze risico's.",
-  "helpTopicDrugsHow": "Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt (tab Materialen, ook via een knop in Hub/Productie) of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je krijgt een melding als een partij klaar is om op te halen.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden, een tijdelijke extra slot te kopen of 24 uur heat shield te activeren (geen extra opbrengst).\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch, maar slaat een pending inval over tot jij kiest.\nBij ophalen kan heat een inval triggeren: je kiest dan voorraadverlies, faciliteit-stilstand of een cash-boete voordat je loot krijgt.\nHeat kun je koelen met cash of low-profile (tijdelijk geen nieuwe productie).\nEen darkweb storefront verkoopt klaar product niet stil: auto-verkoop is opt-in, met fee en extra heat.\nEigen productie in de nightclub krijgt een kleine margebonus. Kwaliteitslots kun je naar crew-drugsopslag storten.\nFaciliteitkaarten tonen prijs, rank en opleidingseisen vóór koop of upgrade.",
-  "helpTopicDrugsTips": "Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.",
+  "helpTopicDrugsHow": "Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt (tab Materialen, ook via een knop in Hub/Productie) of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je krijgt een melding als een partij klaar is om op te halen.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden, een tijdelijke extra slot te kopen of 24 uur heat shield te activeren (geen extra opbrengst).\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch, maar slaat een pending inval over tot jij kiest.\nBij ophalen kan heat een inval triggeren: je kiest dan voorraadverlies, faciliteit-stilstand of een cash-boete voordat je loot krijgt.\nHeat kun je koelen met cash of low-profile (tijdelijk geen nieuwe productie).\nEen darkweb storefront verkoopt klaar product niet stil: auto-verkoop is opt-in, met fee en extra heat.\nEigen productie in de nightclub krijgt een kleine margebonus. Kwaliteitslots kun je naar crew-drugsopslag storten.\nFaciliteitkaarten tonen prijs, rank en opleidingseisen vóór koop of upgrade.\nVanaf Inventaris kun je een groothandelslading exporteren naar een ander land: je blijft waar je bent, betaalt vracht en krijgt dest-B2B-cash als de container aankomt. Bij onderschepping geen cash. Street-sell, nightclub, darkweb en Marktplaats blijven retail.",
+  "helpTopicDrugsTips": "Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.\nExporteer alleen als je vracht en onderschepping accepteert; zelf reizen en street-sell blijft per gram meer waard.",
   "helpTopicNightclubCategory": "Empire",
   "helpTopicNightclubTitle": "Nachtclub",
   "helpTopicNightclubSummary": "Run een nachtclub als onderdeel van je criminele empire. Beheer personeel, beveiliging en supply voor passief en actief inkomen met een eigen seizoensleaderboard.",

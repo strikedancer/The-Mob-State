@@ -645,3 +645,64 @@ class DrugStats {
     );
   }
 }
+
+class DrugWholesaleDestination {
+  final String id;
+  final String labelNl;
+  final String labelEn;
+  final int streetUnit;
+
+  DrugWholesaleDestination({
+    required this.id,
+    required this.labelNl,
+    required this.labelEn,
+    required this.streetUnit,
+  });
+
+  factory DrugWholesaleDestination.fromJson(Map<String, dynamic> json) {
+    return DrugWholesaleDestination(
+      id: json['id']?.toString() ?? '',
+      labelNl: json['labelNl']?.toString() ?? json['id']?.toString() ?? '',
+      labelEn: json['labelEn']?.toString() ?? json['id']?.toString() ?? '',
+      streetUnit: (json['streetUnit'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+
+class DrugWholesaleShipment {
+  final int id;
+  final String label;
+  final int quantity;
+  final String originCountry;
+  final String destinationCountry;
+  final String status;
+  final int payout;
+  final DateTime? etaAt;
+  final bool settled;
+
+  DrugWholesaleShipment({
+    required this.id,
+    required this.label,
+    required this.quantity,
+    required this.originCountry,
+    required this.destinationCountry,
+    required this.status,
+    required this.payout,
+    this.etaAt,
+    required this.settled,
+  });
+
+  factory DrugWholesaleShipment.fromJson(Map<String, dynamic> json) {
+    return DrugWholesaleShipment(
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      label: json['label']?.toString() ?? '',
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+      originCountry: json['originCountry']?.toString() ?? '',
+      destinationCountry: json['destinationCountry']?.toString() ?? '',
+      status: json['status']?.toString() ?? '',
+      payout: (json['payout'] as num?)?.toInt() ?? 0,
+      etaAt: json['etaAt'] != null ? DateTime.tryParse(json['etaAt'].toString()) : null,
+      settled: json['settled'] == true,
+    );
+  }
+}

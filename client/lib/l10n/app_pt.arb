@@ -6415,7 +6415,7 @@
   "drugsInvEmptyTitle": "Não há medicamentos em estoque",
   "drugsInvEmptySubtitle": "Inicie a produção para criar medicamentos",
   "drugsInvSectionHeader": "Estoque e distribuição",
-  "drugsInvSectionBody": "Vender medicamentos por qualidade e usar diferenças de preços entre países.",
+  "drugsInvSectionBody": "Venda localmente ou exporte um lote de atacado para outro país. Venda de rua, nightclub, darkweb e Marketplace continuam retalho.",
   "drugsInvCurrentLocation": "Localização atual: {place}",
   "@drugsInvCurrentLocation": {
     "placeholders": {
@@ -8174,8 +8174,8 @@
   "helpTopicDrugsCategory": "Império",
   "helpTopicDrugsTitle": "Drogas",
   "helpTopicDrugsSummary": "Construa uma operação completa de medicamentos, desde a matéria-prima até o produto acabado. Administre cadeias de produção, gerencie o armazenamento e venda com margens elevadas, mas com sérios riscos.",
-  "helpTopicDrugsHow": "O sistema de medicamentos consiste em: Hub (visão geral e estatísticas), Instalações (atualização da capacidade de produção), Produção (linhas de produção ativas com cronômetro) e Inventário (produtos acabados e matérias-primas). \nCompre matérias-primas através do mercado negro ou comércio. Combine-os em uma instalação para produzir drogas. \nOs cronômetros de produção são executados enquanto você está offline. Não é necessário clicar ativamente: verifique novamente quando o cronômetro terminar. \nA produção finalizada permanece visível na Produção e mantém o espaço da instalação ocupado até você coletá-la; A coleta automática VIP processa a saída automaticamente em segundo plano. \nA capacidade de armazenamento é limitada por instalação. Quando o armazenamento está cheio, a produção para automaticamente. \nUma loja darkweb ou outra instalação não vende automaticamente a produção final: a venda ainda acontece manualmente por meio do fluxo de venda pretendido. \nVenda drogas no mercado negro, na Colômbia ou em outros locais de vendas especiais pela margem mais alta. \nO FBI Heat aumenta a cada ciclo de produção e ainda mais em grandes vendas. O calor elevado leva a eventos de invasão que podem encerrar sua operação. \nAs atualizações das instalações reduzem o tempo de produção, aumentam a produção e expandem a capacidade de armazenamento. \nOs jogadores VIP recebem um botão relâmpago nas cartas de produção: após um modal de confirmação, você pode comprar todos os materiais do lote faltantes com um clique. \nAs atualizações avançadas de slots e equipamentos estão vinculadas ao novo curso de educação sobre Narcóticos (Especialista em Hidroponia, Especialista em Eletricidade de Processo, Químico Clandestino). Sem o nível/certificação exigido, você não poderá avançar para o próximo nível de atualização. \nAs drogas em inventário aumentam o risco de confisco durante viagens e verificações policiais.",
-  "helpTopicDrugsTips": "Atualize o armazenamento antes da produção: o armazenamento completo interrompe a produção e você perde esse tempo de produção. \nMantenha o FBI Heat abaixo de 50: acima desse limite você é ativamente caçado com grandes chances de ataques que fecham tudo. \nCombine a venda de drogas com o contrabando para obter margens mais altas e risco distribuído.",
+  "helpTopicDrugsHow": "O sistema de medicamentos consiste em: Hub (visão geral e estatísticas), Instalações (atualização da capacidade de produção), Produção (linhas de produção ativas com cronômetro) e Inventário (produtos acabados e matérias-primas). \nCompre matérias-primas através do mercado negro ou comércio. Combine-os em uma instalação para produzir drogas. \nOs cronômetros de produção são executados enquanto você está offline. Não é necessário clicar ativamente: verifique novamente quando o cronômetro terminar. \nA produção finalizada permanece visível na Produção e mantém o espaço da instalação ocupado até você coletá-la; A coleta automática VIP processa a saída automaticamente em segundo plano. \nA capacidade de armazenamento é limitada por instalação. Quando o armazenamento está cheio, a produção para automaticamente. \nUma loja darkweb ou outra instalação não vende automaticamente a produção final: a venda ainda acontece manualmente por meio do fluxo de venda pretendido. \nVenda drogas no mercado negro, na Colômbia ou em outros locais de vendas especiais pela margem mais alta. \nO FBI Heat aumenta a cada ciclo de produção e ainda mais em grandes vendas. O calor elevado leva a eventos de invasão que podem encerrar sua operação. \nAs atualizações das instalações reduzem o tempo de produção, aumentam a produção e expandem a capacidade de armazenamento. \nOs jogadores VIP recebem um botão relâmpago nas cartas de produção: após um modal de confirmação, você pode comprar todos os materiais do lote faltantes com um clique. \nAs atualizações avançadas de slots e equipamentos estão vinculadas ao novo curso de educação sobre Narcóticos (Especialista em Hidroponia, Especialista em Eletricidade de Processo, Químico Clandestino). Sem o nível/certificação exigido, você não poderá avançar para o próximo nível de atualização. \nAs drogas em inventário aumentam o risco de confisco durante viagens e verificações policiais.\nDo Inventário podes exportar um lote de atacado para outro país: ficas no sítio, pagas o frete e recebes o cash B2B no destino à chegada. Apreensão não paga. Venda de rua, nightclub, darkweb e Marketplace continuam retalho.",
+  "helpTopicDrugsTips": "Atualize o armazenamento antes da produção: o armazenamento completo interrompe a produção e você perde esse tempo de produção. \nMantenha o FBI Heat abaixo de 50: acima desse limite você é ativamente caçado com grandes chances de ataques que fecham tudo. \nCombine a venda de drogas com o contrabando para obter margens mais altas e risco distribuído.\nExporta só se aceitares frete e apreensão; viajar e vender na rua continua a pagar mais por grama.",
   "helpTopicNightclubCategory": "Império",
   "helpTopicNightclubTitle": "Boate",
   "helpTopicNightclubSummary": "Administre uma boate como parte de seu império criminoso. Gerencie equipe, segurança e suprimentos para obter renda passiva e ativa com um placar de temporada dedicado.",
@@ -10618,6 +10618,138 @@
   "@casinoRaidDefense": {
     "placeholders": {
       "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsWholesaleSold": "{quantity}g {drugType} vendido em {destination} (€{payout})",
+  "@evStreamDrugsWholesaleSold": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDrugsWholesaleSeized": "{quantity}g {drugType} para {destination} apreendido",
+  "@evStreamDrugsWholesaleSeized": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportAction": "Exportar",
+  "drugsExportDialogTitle": "Export {name}",
+  "@drugsExportDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportDestLabel": "Destino",
+  "drugsExportQuoteStreet": "Preço de rua dest.: €{amount}/g",
+  "@drugsExportQuoteStreet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportQuoteB2b": "Atacado: €{amount}/g",
+  "@drugsExportQuoteB2b": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportPayout": "Pagamento na chegada: €{amount}",
+  "@drugsExportPayout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportFee": "Frete: €{amount}",
+  "@drugsExportFee": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportEta": "ETA: {minutes} min",
+  "@drugsExportEta": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportSeizure": "Apreensão: {pct}%",
+  "@drugsExportSeizure": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportHeat": "Heat +{heat} · FBI +{fbi}",
+  "@drugsExportHeat": {
+    "placeholders": {
+      "heat": {
+        "type": "String"
+      },
+      "fbi": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportHarbor": "Bónus de porto ativo",
+  "drugsExportConfirm": "Enviar",
+  "drugsExportMinHint": "Mínimo {grams}g",
+  "@drugsExportMinHint": {
+    "placeholders": {
+      "grams": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportFailed": "Exportação falhou",
+  "drugsExportStarted": "Carga em trânsito. Dinheiro na chegada.",
+  "drugsExportCannotAfford": "Dinheiro insuficiente para o frete",
+  "drugsHubExportsTitle": "Envios de atacado",
+  "drugsHubExportInTransit": "Em trânsito",
+  "drugsHubExportSold": "Vendido",
+  "drugsHubExportSeized": "Apreendido",
+  "drugsHubExportEmpty": "Sem exportações abertas",
+  "drugsHubExportLine": "{qty}g → {dest} · {status}",
+  "@drugsHubExportLine": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "dest": {
+        "type": "String"
+      },
+      "status": {
         "type": "String"
       }
     }

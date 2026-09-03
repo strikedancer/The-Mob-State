@@ -12675,6 +12675,25 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  ) {
+    return '${quantity}g $drugType sprzedane w $destination (€$payout)';
+  }
+
+  @override
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  ) {
+    return '${quantity}g $drugType do $destination przejęte';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -14660,6 +14679,92 @@ class AppLocalizationsPl extends AppLocalizations {
   String get drugsSellAction => 'Sprzedać';
 
   @override
+  String get drugsExportAction => 'Eksportuj';
+
+  @override
+  String drugsExportDialogTitle(String name) {
+    return 'Export $name';
+  }
+
+  @override
+  String get drugsExportDestLabel => 'Cel';
+
+  @override
+  String drugsExportQuoteStreet(String amount) {
+    return 'Cena uliczna dest.: €$amount/g';
+  }
+
+  @override
+  String drugsExportQuoteB2b(String amount) {
+    return 'Hurt: €$amount/g';
+  }
+
+  @override
+  String drugsExportPayout(String amount) {
+    return 'Wypłata po przybyciu: €$amount';
+  }
+
+  @override
+  String drugsExportFee(String amount) {
+    return 'Fracht: €$amount';
+  }
+
+  @override
+  String drugsExportEta(String minutes) {
+    return 'ETA: $minutes min';
+  }
+
+  @override
+  String drugsExportSeizure(String pct) {
+    return 'Przejęcie: $pct%';
+  }
+
+  @override
+  String drugsExportHeat(String heat, String fbi) {
+    return 'Heat +$heat · FBI +$fbi';
+  }
+
+  @override
+  String get drugsExportHarbor => 'Bonus portowy aktywny';
+
+  @override
+  String get drugsExportConfirm => 'Wyślij';
+
+  @override
+  String drugsExportMinHint(String grams) {
+    return 'Minimum ${grams}g';
+  }
+
+  @override
+  String get drugsExportFailed => 'Eksport nie powiódł się';
+
+  @override
+  String get drugsExportStarted => 'Ładunek w drodze. Gotówka po przybyciu.';
+
+  @override
+  String get drugsExportCannotAfford => 'Za mało gotówki na fracht';
+
+  @override
+  String get drugsHubExportsTitle => 'Przesyłki hurtowe';
+
+  @override
+  String get drugsHubExportInTransit => 'W drodze';
+
+  @override
+  String get drugsHubExportSold => 'Sprzedano';
+
+  @override
+  String get drugsHubExportSeized => 'Przejęto';
+
+  @override
+  String get drugsHubExportEmpty => 'Brak otwartego eksportu';
+
+  @override
+  String drugsHubExportLine(String qty, String dest, String status) {
+    return '${qty}g → $dest · $status';
+  }
+
+  @override
   String get drugsInvEmptyTitle => 'Brak leków w magazynie';
 
   @override
@@ -14670,7 +14775,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get drugsInvSectionBody =>
-      'Sprzedawaj leki według jakości i różnic cenowych pomiędzy krajami.';
+      'Sprzedawaj lokalnie albo eksportuj ładunek hurtowy do innego kraju. Sprzedaż uliczna, nightclub, darkweb i Marketplace zostają detaliczne.';
 
   @override
   String drugsInvCurrentLocation(String place) {
@@ -15459,11 +15564,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'System leków składa się z: Hubu (przegląd i statystyki), Obiektów (ulepszenie mocy produkcyjnych), Produkcji (aktywne linie produkcyjne z timerem) i Zapasów (gotowe produkty i surowce). \nKupuj surowce na czarnym rynku lub handluj. Połącz je w zakładzie produkującym leki. \nLiczniki produkcji działają, gdy jesteś offline. Nie ma potrzeby aktywnego klikania: sprawdź ponownie, gdy skończy się czas. \nUkończony produkt pozostaje widoczny w Produkcji i zajmuje miejsce w placówce, dopóki go nie odbierzesz; Funkcja automatycznego zbierania VIP przetwarza gotowe dane wyjściowe automatycznie w tle. \nPojemność magazynu jest ograniczona w zależności od obiektu. Kiedy magazyn jest pełny, produkcja zatrzymuje się automatycznie. \nSklep w ciemnej sieci lub inny obiekt nie sprzedaje automatycznie gotowych produktów: sprzedaż nadal odbywa się ręcznie, zgodnie z zamierzonym przepływem sprzedaży. \nSprzedawaj leki na czarnym rynku, w Kolumbii lub w innych specjalnych punktach sprzedaży, aby uzyskać najwyższą marżę. \nFBI Heat zwiększa każdy cykl produkcyjny i dodatkowo w przypadku dużej sprzedaży. Wysoka temperatura prowadzi do nalotów, które mogą przerwać Twoją działalność. \nModernizacje obiektów skracają czas produkcji, zwiększają wydajność i zwiększają pojemność magazynową. \nGracze VIP otrzymują przycisk błyskawicy na kartach produkcyjnych: po potwierdzeniu możesz kupić wszystkie brakujące materiały wsadowe jednym kliknięciem. \nZaawansowane ulepszenia slotów i wyposażenia są powiązane z nową ścieżką edukacyjną Narkotyki (Specjalista w dziedzinie hydroponiki, Specjalista w dziedzinie elektryki procesowej, Tajny chemik). Bez wymaganego poziomu/certyfikatu nie można przejść do następnego poziomu uaktualnienia. \nNarkotyki znajdujące się w zapasach zwiększają ryzyko konfiskaty podczas podróży i kontroli policyjnych.';
+      'System leków składa się z: Hubu (przegląd i statystyki), Obiektów (ulepszenie mocy produkcyjnych), Produkcji (aktywne linie produkcyjne z timerem) i Zapasów (gotowe produkty i surowce). \nKupuj surowce na czarnym rynku lub handluj. Połącz je w zakładzie produkującym leki. \nLiczniki produkcji działają, gdy jesteś offline. Nie ma potrzeby aktywnego klikania: sprawdź ponownie, gdy skończy się czas. \nUkończony produkt pozostaje widoczny w Produkcji i zajmuje miejsce w placówce, dopóki go nie odbierzesz; Funkcja automatycznego zbierania VIP przetwarza gotowe dane wyjściowe automatycznie w tle. \nPojemność magazynu jest ograniczona w zależności od obiektu. Kiedy magazyn jest pełny, produkcja zatrzymuje się automatycznie. \nSklep w ciemnej sieci lub inny obiekt nie sprzedaje automatycznie gotowych produktów: sprzedaż nadal odbywa się ręcznie, zgodnie z zamierzonym przepływem sprzedaży. \nSprzedawaj leki na czarnym rynku, w Kolumbii lub w innych specjalnych punktach sprzedaży, aby uzyskać najwyższą marżę. \nFBI Heat zwiększa każdy cykl produkcyjny i dodatkowo w przypadku dużej sprzedaży. Wysoka temperatura prowadzi do nalotów, które mogą przerwać Twoją działalność. \nModernizacje obiektów skracają czas produkcji, zwiększają wydajność i zwiększają pojemność magazynową. \nGracze VIP otrzymują przycisk błyskawicy na kartach produkcyjnych: po potwierdzeniu możesz kupić wszystkie brakujące materiały wsadowe jednym kliknięciem. \nZaawansowane ulepszenia slotów i wyposażenia są powiązane z nową ścieżką edukacyjną Narkotyki (Specjalista w dziedzinie hydroponiki, Specjalista w dziedzinie elektryki procesowej, Tajny chemik). Bez wymaganego poziomu/certyfikatu nie można przejść do następnego poziomu uaktualnienia. \nNarkotyki znajdujące się w zapasach zwiększają ryzyko konfiskaty podczas podróży i kontroli policyjnych.\nZ ekwipunku możesz wyeksportować ładunek hurtowy do innego kraju: zostajesz na miejscu, płacisz fracht i dostajesz gotówkę B2B w destynacji po przybyciu. Przejęcie nie płaci. Sprzedaż uliczna, nightclub, darkweb i Marketplace zostają detaliczne.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Zmodernizuj pamięć masową przed rozpoczęciem produkcji: zapełnienie pamięci masowej wstrzymuje produkcję, a Ty tracisz czas produkcji. \nUtrzymuj FBI Heat poniżej 50: powyżej tego progu jesteś aktywnie ścigany z dużymi szansami na naloty, które wszystko zamykają. \nPołącz sprzedaż leków z przemytem, ​​aby uzyskać wyższe marże i rozproszone ryzyko.';
+      'Zmodernizuj pamięć masową przed rozpoczęciem produkcji: zapełnienie pamięci masowej wstrzymuje produkcję, a Ty tracisz czas produkcji. \nUtrzymuj FBI Heat poniżej 50: powyżej tego progu jesteś aktywnie ścigany z dużymi szansami na naloty, które wszystko zamykają. \nPołącz sprzedaż leków z przemytem, ​​aby uzyskać wyższe marże i rozproszone ryzyko.\nEksportuj tylko jeśli akceptujesz fracht i przejęcie; podróż i sprzedaż uliczna nadal dają więcej na gram.';
 
   @override
   String get helpTopicNightclubCategory => 'Imperium';

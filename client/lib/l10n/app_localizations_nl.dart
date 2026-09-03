@@ -12614,6 +12614,25 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  ) {
+    return '${quantity}g $drugType verkocht in $destination (€$payout)';
+  }
+
+  @override
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  ) {
+    return '${quantity}g $drugType naar $destination onderschept';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -14581,6 +14600,92 @@ class AppLocalizationsNl extends AppLocalizations {
   String get drugsSellAction => 'Verkopen';
 
   @override
+  String get drugsExportAction => 'Exporteren';
+
+  @override
+  String drugsExportDialogTitle(String name) {
+    return 'Export $name';
+  }
+
+  @override
+  String get drugsExportDestLabel => 'Bestemming';
+
+  @override
+  String drugsExportQuoteStreet(String amount) {
+    return 'Straatprijs dest: €$amount/g';
+  }
+
+  @override
+  String drugsExportQuoteB2b(String amount) {
+    return 'Groothandel: €$amount/g';
+  }
+
+  @override
+  String drugsExportPayout(String amount) {
+    return 'Uitbetaling bij aankomst: €$amount';
+  }
+
+  @override
+  String drugsExportFee(String amount) {
+    return 'Vracht: €$amount';
+  }
+
+  @override
+  String drugsExportEta(String minutes) {
+    return 'ETA: $minutes min';
+  }
+
+  @override
+  String drugsExportSeizure(String pct) {
+    return 'Onderschepping: $pct%';
+  }
+
+  @override
+  String drugsExportHeat(String heat, String fbi) {
+    return 'Heat +$heat · FBI +$fbi';
+  }
+
+  @override
+  String get drugsExportHarbor => 'Havenbonus actief';
+
+  @override
+  String get drugsExportConfirm => 'Versturen';
+
+  @override
+  String drugsExportMinHint(String grams) {
+    return 'Minimaal ${grams}g';
+  }
+
+  @override
+  String get drugsExportFailed => 'Export mislukt';
+
+  @override
+  String get drugsExportStarted => 'Lading onderweg. Cash bij aankomst.';
+
+  @override
+  String get drugsExportCannotAfford => 'Niet genoeg cash voor vracht';
+
+  @override
+  String get drugsHubExportsTitle => 'Groothandel-zendingen';
+
+  @override
+  String get drugsHubExportInTransit => 'Onderweg';
+
+  @override
+  String get drugsHubExportSold => 'Verkocht';
+
+  @override
+  String get drugsHubExportSeized => 'Onderschept';
+
+  @override
+  String get drugsHubExportEmpty => 'Geen open export';
+
+  @override
+  String drugsHubExportLine(String qty, String dest, String status) {
+    return '${qty}g → $dest · $status';
+  }
+
+  @override
   String get drugsInvEmptyTitle => 'Geen drugs in voorraad';
 
   @override
@@ -14591,7 +14696,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get drugsInvSectionBody =>
-      'Verkoop drugs per kwaliteit en gebruik prijsverschillen tussen landen.';
+      'Verkoop lokaal of exporteer een groothandelslading naar een ander land. Street-sell, nightclub, darkweb en Marktplaats blijven retail.';
 
   @override
   String drugsInvCurrentLocation(String place) {
@@ -15372,11 +15477,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt (tab Materialen, ook via een knop in Hub/Productie) of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je krijgt een melding als een partij klaar is om op te halen.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden, een tijdelijke extra slot te kopen of 24 uur heat shield te activeren (geen extra opbrengst).\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch, maar slaat een pending inval over tot jij kiest.\nBij ophalen kan heat een inval triggeren: je kiest dan voorraadverlies, faciliteit-stilstand of een cash-boete voordat je loot krijgt.\nHeat kun je koelen met cash of low-profile (tijdelijk geen nieuwe productie).\nEen darkweb storefront verkoopt klaar product niet stil: auto-verkoop is opt-in, met fee en extra heat.\nEigen productie in de nightclub krijgt een kleine margebonus. Kwaliteitslots kun je naar crew-drugsopslag storten.\nFaciliteitkaarten tonen prijs, rank en opleidingseisen vóór koop of upgrade.';
+      'Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt (tab Materialen, ook via een knop in Hub/Productie) of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je krijgt een melding als een partij klaar is om op te halen.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden, een tijdelijke extra slot te kopen of 24 uur heat shield te activeren (geen extra opbrengst).\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch, maar slaat een pending inval over tot jij kiest.\nBij ophalen kan heat een inval triggeren: je kiest dan voorraadverlies, faciliteit-stilstand of een cash-boete voordat je loot krijgt.\nHeat kun je koelen met cash of low-profile (tijdelijk geen nieuwe productie).\nEen darkweb storefront verkoopt klaar product niet stil: auto-verkoop is opt-in, met fee en extra heat.\nEigen productie in de nightclub krijgt een kleine margebonus. Kwaliteitslots kun je naar crew-drugsopslag storten.\nFaciliteitkaarten tonen prijs, rank en opleidingseisen vóór koop of upgrade.\nVanaf Inventaris kun je een groothandelslading exporteren naar een ander land: je blijft waar je bent, betaalt vracht en krijgt dest-B2B-cash als de container aankomt. Bij onderschepping geen cash. Street-sell, nightclub, darkweb en Marktplaats blijven retail.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.';
+      'Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.\nExporteer alleen als je vracht en onderschepping accepteert; zelf reizen en street-sell blijft per gram meer waard.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';

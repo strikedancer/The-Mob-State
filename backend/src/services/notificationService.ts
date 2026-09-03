@@ -1081,6 +1081,55 @@ export class NotificationService {
     }
   }
 
+  public async sendDrugWholesaleSettledNotification(
+    playerId: number,
+    success: boolean,
+    details: { destinationCountry: string; quantity: number; payout: number; drugType: string },
+    language?: Language
+  ): Promise<void> {
+    try {
+      const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+      const dest = details.destinationCountry;
+      const title =
+        resolvedLanguage === 'nl'
+          ? success
+            ? 'Groothandel aangekomen'
+            : 'Export onderschept'
+          : success
+            ? 'Wholesale arrived'
+            : 'Export seized';
+      const body =
+        resolvedLanguage === 'nl'
+          ? success
+            ? `${details.quantity}g ${details.drugType} in ${dest}: €${details.payout.toLocaleString()} ontvangen.`
+            : `${details.quantity}g ${details.drugType} naar ${dest} is onderschept. Geen uitbetaling.`
+          : success
+            ? `${details.quantity}g ${details.drugType} in ${dest}: €${details.payout.toLocaleString()} received.`
+            : `${details.quantity}g ${details.drugType} to ${dest} was seized. No payout.`;
+
+      await this.createInAppWorldEvent(
+        playerId,
+        success ? 'drugs.wholesale_sold' : 'drugs.wholesale_seized',
+        {
+          drugType: details.drugType,
+          quantity: details.quantity,
+          destinationCountry: details.destinationCountry,
+          payout: details.payout,
+        },
+      );
+
+      await this.sendToPlayer(playerId, title, body, {
+        type: success ? 'drug_wholesale_sold' : 'drug_wholesale_seized',
+        destinationCountry: details.destinationCountry,
+        payout: String(details.payout),
+        quantity: String(details.quantity),
+        drugType: details.drugType,
+      });
+    } catch (error) {
+      console.error('[NotificationService] wholesale notify failed', error);
+    }
+  }
+
   public async sendVehicleRepairCompletedNotification(
     playerId: number,
     vehicleName: string,

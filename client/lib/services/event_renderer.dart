@@ -158,6 +158,27 @@ class EventRenderer {
               params['quality']?.toString() ??
               '—',
         );
+      case 'drugs.wholesale_sold':
+        return l10n.evStreamDrugsWholesaleSold(
+          '${params['quantity'] ?? 0}',
+          params['drugType']?.toString() ?? '—',
+          CountryHelper.getLocalizedCountryName(
+            params['destinationCountry']?.toString() ?? '',
+            l10n,
+            fallbackName: params['destinationCountry']?.toString() ?? '—',
+          ),
+          '${params['payout'] ?? 0}',
+        );
+      case 'drugs.wholesale_seized':
+        return l10n.evStreamDrugsWholesaleSeized(
+          '${params['quantity'] ?? 0}',
+          params['drugType']?.toString() ?? '—',
+          CountryHelper.getLocalizedCountryName(
+            params['destinationCountry']?.toString() ?? '',
+            l10n,
+            fallbackName: params['destinationCountry']?.toString() ?? '—',
+          ),
+        );
 
       case 'vehicle.repair.completed':
         return l10n.evStreamVehicleRepairCompleted(

@@ -11,6 +11,7 @@ export const COUNTRY_POLICE_RUNTIME_SETTING_DEFAULTS = {
   COUNTRY_POLICE_HIGH_TIER_REWARD: '5000',
   COUNTRY_POLICE_GAIN_VEHICLE_THEFT: '1',
   COUNTRY_POLICE_GAIN_DRUG_COLLECT: '1',
+  COUNTRY_POLICE_GAIN_DRUG_WHOLESALE: '1',
   COUNTRY_POLICE_SUCCESS_PENALTY_MAX_PP: '8',
   COUNTRY_POLICE_ARREST_BONUS_MAX_PP: '12',
   COUNTRY_POLICE_PLAYER_GAIN_CAP_PER_HOUR: '10',
@@ -99,6 +100,7 @@ type RuntimeCfg = {
   highTierReward: number;
   gainVehicleTheft: number;
   gainDrugCollect: number;
+  gainDrugWholesale: number;
   successPenaltyMaxPp: number;
   arrestBonusMaxPp: number;
   playerGainCapPerHour: number;
@@ -202,6 +204,7 @@ async function loadRuntimeCfg(): Promise<RuntimeCfg> {
     highTierReward: Math.max(0, toInt(map.COUNTRY_POLICE_HIGH_TIER_REWARD, 5000)),
     gainVehicleTheft: Math.max(0, toInt(map.COUNTRY_POLICE_GAIN_VEHICLE_THEFT, 1)),
     gainDrugCollect: Math.max(0, toInt(map.COUNTRY_POLICE_GAIN_DRUG_COLLECT, 1)),
+    gainDrugWholesale: Math.max(0, toInt(map.COUNTRY_POLICE_GAIN_DRUG_WHOLESALE, 1)),
     successPenaltyMaxPp: Math.max(0, toInt(map.COUNTRY_POLICE_SUCCESS_PENALTY_MAX_PP, 8)),
     arrestBonusMaxPp: Math.max(0, toInt(map.COUNTRY_POLICE_ARREST_BONUS_MAX_PP, 12)),
     playerGainCapPerHour: Math.max(0, toInt(map.COUNTRY_POLICE_PLAYER_GAIN_CAP_PER_HOUR, 10)),
@@ -456,7 +459,7 @@ export const countryPoliceService = {
   async recordActivityGain(params: {
     playerId: number;
     countryCode: string;
-    source: 'crime' | 'vehicle_theft' | 'drug_collect';
+    source: 'crime' | 'vehicle_theft' | 'drug_collect' | 'drug_wholesale';
     maxReward?: number;
   }): Promise<{ gained: number; pressure: number }> {
     const cfg = await loadRuntimeCfg();
@@ -473,6 +476,8 @@ export const countryPoliceService = {
       }
     } else if (params.source === 'vehicle_theft') {
       gain = cfg.gainVehicleTheft;
+    } else if (params.source === 'drug_wholesale') {
+      gain = cfg.gainDrugWholesale;
     } else {
       gain = cfg.gainDrugCollect;
     }

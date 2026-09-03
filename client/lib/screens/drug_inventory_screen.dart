@@ -181,6 +181,45 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
     }
   }
 
+  Future<void> _exportDrugs(DrugInventory drug) async {
+    final choice = await showDialog<Map<String, dynamic>?>(
+      context: context,
+      builder: (ctx) => _WholesaleExportDialog(
+        drug: drug,
+        service: _drugService,
+      ),
+    );
+    if (choice == null) return;
+    final quantity = choice['quantity'] as int? ?? 0;
+    final destinationCountry = choice['destinationCountry'] as String? ?? '';
+    if (quantity <= 0 || destinationCountry.isEmpty) return;
+
+    final result = await _drugService.startWholesaleExport(
+      drugType: drug.drugType,
+      quality: drug.quality,
+      quantity: quantity,
+      destinationCountry: destinationCountry,
+    );
+    if (!mounted) return;
+    final loc = AppLocalizations.of(context)!;
+    final rawMsg = result['message'] as String?;
+    final ok = result['success'] == true;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          ok
+              ? loc.drugsExportStarted
+              : (rawMsg != null && rawMsg.isNotEmpty
+                  ? localizeDrugClientMessage(loc, rawMsg)
+                  : loc.drugsExportFailed),
+        ),
+        backgroundColor: ok ? Colors.green : Colors.red,
+      ),
+    );
+    if (ok) _loadData();
+  }
+
   Future<void> _depositToCrew(DrugInventory drug) async {
     final t = AppLocalizations.of(context)!;
     final qty = await _showSellDialog(drug);
@@ -745,54 +784,95 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                     ),
                                                   ],
                                                   const Spacer(),
-                                                  Row(
+                                                  Column(
                                                     children: [
-                                                      Expanded(
-                                                        child: ElevatedButton.icon(
-                                                          onPressed: () =>
-                                                              _sellDrugs(drug),
-                                                          icon: const Icon(
-                                                            Icons.sell,
-                                                            size: 15,
-                                                          ),
-                                                          label: Text(
-                                                            t.drugsSellAction,
-                                                            style:
-                                                                const TextStyle(
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: ElevatedButton.icon(
+                                                              onPressed: () =>
+                                                                  _sellDrugs(drug),
+                                                              icon: const Icon(
+                                                                Icons.sell,
+                                                                size: 15,
+                                                              ),
+                                                              label: Text(
+                                                                t.drugsSellAction,
+                                                                style:
+                                                                    const TextStyle(
                                                                   fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
                                                                 ),
-                                                          ),
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                Colors.green,
-                                                            foregroundColor:
-                                                                Colors.white,
-                                                            padding:
-                                                                const EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      10,
+                                                              ),
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor:
+                                                                    Colors.green,
+                                                                foregroundColor:
+                                                                    Colors.white,
+                                                                padding:
+                                                                    const EdgeInsets.symmetric(
+                                                                  horizontal: 10,
                                                                   vertical: 8,
                                                                 ),
-                                                            minimumSize:
-                                                                const Size(
+                                                                minimumSize:
+                                                                    const Size(
                                                                   0,
                                                                   36,
                                                                 ),
-                                                            tapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .shrinkWrap,
+                                                                tapTargetSize:
+                                                                    MaterialTapTargetSize
+                                                                        .shrinkWrap,
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
+                                                          const SizedBox(width: 8),
+                                                          Expanded(
+                                                            child: ElevatedButton.icon(
+                                                              onPressed: () =>
+                                                                  _exportDrugs(drug),
+                                                              icon: const Icon(
+                                                                Icons.local_shipping,
+                                                                size: 15,
+                                                              ),
+                                                              label: Text(
+                                                                t.drugsExportAction,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor:
+                                                                    const Color(0xFF1B6B93),
+                                                                foregroundColor:
+                                                                    Colors.white,
+                                                                padding:
+                                                                    const EdgeInsets.symmetric(
+                                                                  horizontal: 10,
+                                                                  vertical: 8,
+                                                                ),
+                                                                minimumSize:
+                                                                    const Size(
+                                                                  0,
+                                                                  36,
+                                                                ),
+                                                                tapTargetSize:
+                                                                    MaterialTapTargetSize
+                                                                        .shrinkWrap,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                      if (drug.quality !=
-                                                          'D') ...[
-                                                        const SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        Expanded(
+                                                      if (drug.quality != 'D') ...[
+                                                        const SizedBox(height: 8),
+                                                        SizedBox(
+                                                          width: double.infinity,
                                                           child: ElevatedButton.icon(
                                                             onPressed: () =>
                                                                 _cutDrugs(drug),
@@ -805,27 +885,21 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                               style: const TextStyle(
                                                                 fontSize: 12,
                                                                 fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
+                                                                    FontWeight.w600,
                                                               ),
                                                             ),
                                                             style: ElevatedButton.styleFrom(
                                                               backgroundColor:
-                                                                  Colors
-                                                                      .deepOrange,
+                                                                  Colors.deepOrange,
                                                               foregroundColor:
                                                                   Colors.white,
                                                               padding:
                                                                   const EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical: 8,
-                                                                  ),
+                                                                horizontal: 10,
+                                                                vertical: 8,
+                                                              ),
                                                               minimumSize:
-                                                                  const Size(
-                                                                    0,
-                                                                    36,
-                                                                  ),
+                                                                  const Size(0, 36),
                                                               tapTargetSize:
                                                                   MaterialTapTargetSize
                                                                       .shrinkWrap,
@@ -1061,6 +1135,193 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
             foregroundColor: Colors.white,
           ),
           child: Text(t.drugsCutAction),
+        ),
+      ],
+    );
+  }
+}
+
+class _WholesaleExportDialog extends StatefulWidget {
+  final DrugInventory drug;
+  final DrugService service;
+
+  const _WholesaleExportDialog({
+    required this.drug,
+    required this.service,
+  });
+
+  @override
+  State<_WholesaleExportDialog> createState() => _WholesaleExportDialogState();
+}
+
+class _WholesaleExportDialogState extends State<_WholesaleExportDialog> {
+  late final TextEditingController _controller;
+  String? _destinationCountry;
+  List<DrugWholesaleDestination> _destinations = [];
+  Map<String, dynamic>? _quote;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: '${widget.drug.quantity}');
+    _loadQuote();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  int get _quantity => int.tryParse(_controller.text.trim()) ?? 0;
+
+  Future<void> _loadQuote() async {
+    setState(() => _loading = true);
+    final qty = _quantity > 0 ? _quantity : widget.drug.quantity;
+    final result = await widget.service.quoteWholesaleExport(
+      drugType: widget.drug.drugType,
+      quality: widget.drug.quality,
+      quantity: qty,
+      destinationCountry: _destinationCountry,
+    );
+    if (!mounted) return;
+    final dests = (result['destinations'] as List<dynamic>? ?? [])
+        .map((row) => DrugWholesaleDestination.fromJson(row as Map<String, dynamic>))
+        .toList();
+    setState(() {
+      _quote = result;
+      if (dests.isNotEmpty) {
+        _destinations = dests;
+        _destinationCountry ??= dests.first.id;
+      }
+      _loading = false;
+    });
+  }
+
+  String _money(num value) {
+    return value.round().toString().replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]}.',
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    final isNl = Localizations.localeOf(context).languageCode == 'nl';
+    final quoteOk = _quote?['success'] == true;
+    final canAfford = _quote?['canAfford'] != false;
+    final seizurePct = (((_quote?['seizureChance'] as num?) ?? 0) * 100)
+        .toStringAsFixed(1);
+    final eta = '${_quote?['etaMinutes'] ?? '—'}';
+    final confirmEnabled = quoteOk && canAfford && _quantity > 0 && _destinationCountry != null;
+
+    return AlertDialog(
+      title: Text(t.drugsExportDialogTitle(widget.drug.drugName)),
+      content: SizedBox(
+        width: 420,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (_destinations.isNotEmpty) ...[
+                Text(t.drugsExportDestLabel),
+                const SizedBox(height: 6),
+                DropdownButtonFormField<String>(
+                  value: _destinations.any((d) => d.id == _destinationCountry)
+                      ? _destinationCountry
+                      : _destinations.first.id,
+                  items: _destinations
+                      .map(
+                        (d) => DropdownMenuItem(
+                          value: d.id,
+                          child: Text(
+                            '${isNl ? d.labelNl : d.labelEn} · €${d.streetUnit}/g',
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() => _destinationCountry = value);
+                    _loadQuote();
+                  },
+                ),
+                const SizedBox(height: 12),
+              ],
+              TextField(
+                controller: _controller,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: t.drugsQuantityGramsField,
+                  border: const OutlineInputBorder(),
+                  suffixText: '/ ${widget.drug.quantity}',
+                ),
+                onSubmitted: (_) => _loadQuote(),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: _loading ? null : _loadQuote,
+                  child: Text(t.retry),
+                ),
+              ),
+              if (_loading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: LinearProgressIndicator(),
+                ),
+              if (_quote != null && !quoteOk)
+                Text(
+                  localizeDrugClientMessage(
+                    t,
+                    _quote!['message']?.toString() ?? t.drugsExportFailed,
+                  ),
+                  style: const TextStyle(color: Colors.orangeAccent),
+                ),
+              if (quoteOk) ...[
+                Text(t.drugsExportQuoteStreet(_money(_quote!['destStreetUnit'] ?? 0))),
+                Text(t.drugsExportQuoteB2b(_money(_quote!['wholesaleUnit'] ?? 0))),
+                Text(t.drugsExportPayout(_money(_quote!['payout'] ?? 0))),
+                Text(t.drugsExportFee(_money(_quote!['shippingFee'] ?? 0))),
+                Text(t.drugsExportEta(eta)),
+                Text(t.drugsExportSeizure(seizurePct)),
+                Text(
+                  t.drugsExportHeat(
+                    '${_quote!['drugHeat'] ?? 0}',
+                    '${_quote!['fbiHeat'] ?? 0}',
+                  ),
+                ),
+                if (_quote!['harborBonus'] == true)
+                  Text(
+                    t.drugsExportHarbor,
+                    style: const TextStyle(color: Colors.lightGreenAccent),
+                  ),
+                if (!canAfford)
+                  Text(
+                    t.drugsExportCannotAfford,
+                    style: const TextStyle(color: Colors.redAccent),
+                  ),
+                Text(t.drugsExportMinHint('${_quote!['minGrams'] ?? 250}')),
+              ],
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(t.cancel),
+        ),
+        ElevatedButton(
+          onPressed: confirmEnabled
+              ? () => Navigator.pop(context, {
+                    'quantity': _quantity,
+                    'destinationCountry': _destinationCountry,
+                  })
+              : null,
+          child: Text(t.drugsExportConfirm),
         ),
       ],
     );

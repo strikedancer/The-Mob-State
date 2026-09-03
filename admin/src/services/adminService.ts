@@ -647,6 +647,7 @@ export interface CrewMissionRuntimeConfigView {
 
 export type CountryPoliceRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type CasinoRuntimeConfigView = CrewMissionRuntimeConfigView;
+export type DrugRuntimeConfigView = CrewMissionRuntimeConfigView;
 
 export interface VehicleOpsTelemetry {
   windowHours: number;
@@ -1191,6 +1192,35 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to update casino runtime config");
+    return response.json();
+  },
+
+  async getDrugRuntimeConfig(): Promise<DrugRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/drugs/runtime-config`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, "Failed to fetch drugs runtime config");
+    return response.json();
+  },
+
+  async updateDrugRuntimeConfig(
+    updates: Record<string, string | number>,
+  ): Promise<DrugRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/drugs/runtime-config`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updates }),
+    });
+
+    await ensureOk(response, "Failed to update drugs runtime config");
     return response.json();
   },
 

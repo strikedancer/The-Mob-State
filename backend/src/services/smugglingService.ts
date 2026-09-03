@@ -406,6 +406,10 @@ class SmugglingService {
     this.initialized = true;
   }
 
+  async ensureReady(): Promise<void> {
+    await this.ensureTable();
+  }
+
   private async getPlayerCrewId(playerId: number): Promise<number | null> {
     const membership = await prisma.crewMember.findUnique({
       where: { playerId },
@@ -444,9 +448,9 @@ class SmugglingService {
     for (const shipment of due) {
       const seized = Math.random() < Number(shipment.seizure_chance);
       const nextStatus: ShipmentStatus = seized ? 'seized' : 'ready';
+      const metadata = this.parseMetadata(shipment);
 
       if (seized) {
-        const metadata = this.parseMetadata(shipment);
         const transport = metadata.ownedTransport;
         const confiscationChance = Number(transport?.confiscationChance ?? 0);
 
@@ -463,11 +467,25 @@ class SmugglingService {
         }
       }
 
-      await prisma.$executeRaw`
+      const updated = await prisma.$executeRaw`
         UPDATE smuggling_shipments
         SET status = ${nextStatus}, delivered_at = NOW()
-        WHERE id = ${shipment.id}
+        WHERE id = ${shipment.id} AND status = 'in_transit'
       `;
+      if (Number(updated) === 0) continue;
+
+      if (metadata.wholesale === true) {
+        const { completeWholesaleArrival } = await import('./drugWholesaleService');
+        await completeWholesaleArrival({
+          id: shipment.id,
+          playerId: shipment.player_id,
+          quantity: shipment.quantity,
+          destinationCountry: shipment.destination_country,
+          itemKey: shipment.item_key,
+          metadataJson: shipment.metadata_json,
+          seized,
+        });
+      }
     }
   }
 
@@ -1533,7 +1551,34 @@ class SmugglingService {
       ORDER BY id ASC
     `;
 
-    if (ready.length === 0) {
+    const wholesaleReady = ready.filter((s) => this.parseMetadata(s).wholesale === true);
+    const claimable = ready.filter((s) => this.parseMetadata(s).wholesale !== true);
+
+    if (wholesaleReady.length > 0) {
+      const { completeWholesaleArrival } = await import('./drugWholesaleService');
+      for (const shipment of wholesaleReady) {
+        await completeWholesaleArrival({
+          id: shipment.id,
+          playerId: shipment.player_id,
+          quantity: shipment.quantity,
+          destinationCountry: shipment.destination_country,
+          itemKey: shipment.item_key,
+          metadataJson: shipment.metadata_json,
+          seized: false,
+        });
+      }
+    }
+
+    if (claimable.length === 0) {
+      if (wholesaleReady.length > 0) {
+        return {
+          success: true,
+          message: 'Groothandel-zendingen zijn uitbetaald',
+          claimedPackages: wholesaleReady.length,
+          claimedQuantity: 0,
+          xpGained: 0,
+        };
+      }
       return { success: false, message: 'Geen zendingen klaar in dit landdepot' };
     }
 
@@ -1542,7 +1587,7 @@ class SmugglingService {
     let tradeEventPoints = 0;
 
     await prisma.$transaction(async (tx) => {
-      for (const shipment of ready) {
+      for (const shipment of claimable) {
         const metadata = this.parseMetadata(shipment);
         claimXp += xpForClaimedShipment(shipment.category, shipment.quantity);
         if (shipment.category === 'trade') {
@@ -1791,8 +1836,8 @@ class SmugglingService {
     const xpSuffix = awardedXp > 0 ? ` (+${awardedXp} XP)` : '';
     return {
       success: true,
-      message: `${ready.length} ${scope === 'crew' ? 'crew-' : ''}zending(en) opgehaald in ${this.countryNameById(player.currentCountry)}${xpSuffix}`,
-      claimedPackages: ready.length,
+      message: `${claimable.length} ${scope === 'crew' ? 'crew-' : ''}zending(en) opgehaald in ${this.countryNameById(player.currentCountry)}${xpSuffix}`,
+      claimedPackages: claimable.length,
       claimedQuantity: claimedQty,
       xpGained: awardedXp,
     };

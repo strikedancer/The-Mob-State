@@ -1894,6 +1894,10 @@ class DrugService {
     return newHeat;
   }
 
+  async applyDrugHeat(playerId: number, delta: number): Promise<number> {
+    return this.updateHeat(playerId, delta);
+  }
+
   // ─────────────────────────────────────────────────────────────────────────────
   // AUTO-COLLECT — VIP feature: collect all ready productions automatically
   // ─────────────────────────────────────────────────────────────────────────────

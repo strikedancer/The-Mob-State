@@ -38,6 +38,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
   List<DrugInventory> _inventory = const [];
   List<DrugDefinition> _drugCatalog = const [];
   DrugHeatInfo? _heatInfo;
+  List<DrugWholesaleShipment> _wholesaleShipments = const [];
 
   @override
   void initState() {
@@ -84,8 +85,12 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         _drugService.getDrugCatalog(),
       ]);
       DrugHeatInfo? heatInfo;
+      List<DrugWholesaleShipment> wholesale = const [];
       try {
         heatInfo = await _drugService.getDrugHeat();
+      } catch (_) {}
+      try {
+        wholesale = await _drugService.getWholesaleShipments();
       } catch (_) {}
       if (!mounted) return;
       setState(() {
@@ -94,6 +99,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         _inventory = results[2] as List<DrugInventory>;
         _drugCatalog = results[3] as List<DrugDefinition>;
         _heatInfo = heatInfo;
+        _wholesaleShipments = wholesale;
         _isLoadingStats = false;
       });
     } catch (_) {
@@ -433,6 +439,55 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
     );
   }
 
+  Widget _buildWholesaleStrip(AppLocalizations t) {
+    final rows = _wholesaleShipments.take(5).toList();
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white24),
+        color: Colors.black.withOpacity(0.42),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            t.drugsHubExportsTitle,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 8),
+          if (rows.isEmpty)
+            Text(
+              t.drugsHubExportEmpty,
+              style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13),
+            )
+          else
+            ...rows.map((row) {
+              final dest = drugCountryDisplayName(t, row.destinationCountry);
+              final status = row.status == 'seized'
+                  ? t.drugsHubExportSeized
+                  : (row.status == 'claimed' || row.settled)
+                      ? t.drugsHubExportSold
+                      : t.drugsHubExportInTransit;
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  t.drugsHubExportLine('${row.quantity}', dest, status),
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.86),
+                    fontSize: 13,
+                  ),
+                ),
+              );
+            }),
+        ],
+      ),
+    );
+  }
+
   Widget _buildHeatAndMaterials(AppLocalizations t) {
     final heat = _heatInfo;
     final raidPct = heat == null ? 0 : (heat.raidChance * 100).round();
@@ -687,6 +742,8 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                             ),
                             const SizedBox(height: 12),
                             _buildHeatAndMaterials(t),
+                            const SizedBox(height: 12),
+                            _buildWholesaleStrip(t),
                             const SizedBox(height: 18),
                             Text(
                               t.drugsHubStatsTitle,

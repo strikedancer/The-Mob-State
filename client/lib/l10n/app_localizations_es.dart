@@ -12699,6 +12699,25 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  ) {
+    return '${quantity}g $drugType vendido en $destination (€$payout)';
+  }
+
+  @override
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  ) {
+    return '${quantity}g $drugType hacia $destination incautado';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -14681,6 +14700,93 @@ class AppLocalizationsEs extends AppLocalizations {
   String get drugsSellAction => 'Vender';
 
   @override
+  String get drugsExportAction => 'Exportar';
+
+  @override
+  String drugsExportDialogTitle(String name) {
+    return 'Export $name';
+  }
+
+  @override
+  String get drugsExportDestLabel => 'Destino';
+
+  @override
+  String drugsExportQuoteStreet(String amount) {
+    return 'Precio calle dest.: €$amount/g';
+  }
+
+  @override
+  String drugsExportQuoteB2b(String amount) {
+    return 'Mayorista: €$amount/g';
+  }
+
+  @override
+  String drugsExportPayout(String amount) {
+    return 'Pago al llegar: €$amount';
+  }
+
+  @override
+  String drugsExportFee(String amount) {
+    return 'Flete: €$amount';
+  }
+
+  @override
+  String drugsExportEta(String minutes) {
+    return 'ETA: $minutes min';
+  }
+
+  @override
+  String drugsExportSeizure(String pct) {
+    return 'Incautación: $pct%';
+  }
+
+  @override
+  String drugsExportHeat(String heat, String fbi) {
+    return 'Heat +$heat · FBI +$fbi';
+  }
+
+  @override
+  String get drugsExportHarbor => 'Bonus de puerto activo';
+
+  @override
+  String get drugsExportConfirm => 'Enviar';
+
+  @override
+  String drugsExportMinHint(String grams) {
+    return 'Mínimo ${grams}g';
+  }
+
+  @override
+  String get drugsExportFailed => 'Exportación fallida';
+
+  @override
+  String get drugsExportStarted => 'Carga en tránsito. Efectivo al llegar.';
+
+  @override
+  String get drugsExportCannotAfford =>
+      'No hay suficiente efectivo para el flete';
+
+  @override
+  String get drugsHubExportsTitle => 'Envíos mayoristas';
+
+  @override
+  String get drugsHubExportInTransit => 'En tránsito';
+
+  @override
+  String get drugsHubExportSold => 'Vendido';
+
+  @override
+  String get drugsHubExportSeized => 'Incautado';
+
+  @override
+  String get drugsHubExportEmpty => 'Sin exportaciones abiertas';
+
+  @override
+  String drugsHubExportLine(String qty, String dest, String status) {
+    return '${qty}g → $dest · $status';
+  }
+
+  @override
   String get drugsInvEmptyTitle => 'No hay medicamentos en el inventario.';
 
   @override
@@ -14692,7 +14798,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get drugsInvSectionBody =>
-      'Vender medicamentos por calidad y utilizar diferencias de precio entre países.';
+      'Vende en local o exporta un lote mayorista a otro país. Venta callejera, nightclub, darkweb y Marketplace siguen siendo minorista.';
 
   @override
   String drugsInvCurrentLocation(String place) {
@@ -15480,11 +15586,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'El sistema de medicamentos consta de: Centro (descripción general y estadísticas), Instalaciones (mejora de la capacidad de producción), Producción (líneas de producción activas con temporizador) e Inventario (productos terminados y materias primas). \nCompre materias primas a través del mercado negro o del comercio. Combínalos en una instalación para producir drogas. \nLos temporizadores de producción se ejecutan mientras estás desconectado. No es necesario hacer clic activo: vuelva a consultar cuando finalice el cronómetro. \nEl resultado terminado permanece visible en Producción y mantiene ese espacio de instalación ocupado hasta que lo recojas; La recolección automática VIP procesa la salida lista automáticamente en segundo plano. \nLa capacidad de almacenamiento es limitada por instalación. Cuando el almacenamiento está lleno, la producción se detiene automáticamente. \nUna tienda en la web oscura u otra instalación no vende automáticamente la producción terminada: la venta aún se realiza manualmente a través del flujo de venta previsto. \nVenda drogas a través del mercado negro, Colombia u otros lugares de venta especiales para obtener el mayor margen. \nFBI Heat aumenta en cada ciclo de producción y más en las grandes ventas. Las altas temperaturas provocan ataques que pueden cerrar su operación. \nLas actualizaciones de las instalaciones reducen el tiempo de producción, aumentan la producción y amplían la capacidad de almacenamiento. \nLos jugadores VIP obtienen un botón relámpago en las tarjetas de producción: después de un modo de confirmación, pueden comprar todos los materiales del lote que faltan con un solo clic. \nLas actualizaciones avanzadas de espacios y equipos están vinculadas a la nueva modalidad educativa sobre narcóticos (especialista en hidroponía, especialista en electricidad de procesos, químico clandestino). Sin el nivel/certificación requerido no podrá avanzar al siguiente nivel de actualización. \nLas drogas en el inventario aumentan el riesgo de confiscación durante los viajes y los controles policiales.';
+      'El sistema de medicamentos consta de: Centro (descripción general y estadísticas), Instalaciones (mejora de la capacidad de producción), Producción (líneas de producción activas con temporizador) e Inventario (productos terminados y materias primas). \nCompre materias primas a través del mercado negro o del comercio. Combínalos en una instalación para producir drogas. \nLos temporizadores de producción se ejecutan mientras estás desconectado. No es necesario hacer clic activo: vuelva a consultar cuando finalice el cronómetro. \nEl resultado terminado permanece visible en Producción y mantiene ese espacio de instalación ocupado hasta que lo recojas; La recolección automática VIP procesa la salida lista automáticamente en segundo plano. \nLa capacidad de almacenamiento es limitada por instalación. Cuando el almacenamiento está lleno, la producción se detiene automáticamente. \nUna tienda en la web oscura u otra instalación no vende automáticamente la producción terminada: la venta aún se realiza manualmente a través del flujo de venta previsto. \nVenda drogas a través del mercado negro, Colombia u otros lugares de venta especiales para obtener el mayor margen. \nFBI Heat aumenta en cada ciclo de producción y más en las grandes ventas. Las altas temperaturas provocan ataques que pueden cerrar su operación. \nLas actualizaciones de las instalaciones reducen el tiempo de producción, aumentan la producción y amplían la capacidad de almacenamiento. \nLos jugadores VIP obtienen un botón relámpago en las tarjetas de producción: después de un modo de confirmación, pueden comprar todos los materiales del lote que faltan con un solo clic. \nLas actualizaciones avanzadas de espacios y equipos están vinculadas a la nueva modalidad educativa sobre narcóticos (especialista en hidroponía, especialista en electricidad de procesos, químico clandestino). Sin el nivel/certificación requerido no podrá avanzar al siguiente nivel de actualización. \nLas drogas en el inventario aumentan el riesgo de confiscación durante los viajes y los controles policiales.\nDesde Inventario puedes exportar un lote mayorista a otro país: te quedas, pagas el flete y recibes el efectivo B2B de destino al llegar. Si lo incautan, no hay pago. Venta callejera, nightclub, darkweb y Marketplace siguen siendo minorista.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Actualice el almacenamiento antes de la producción: el almacenamiento completo detiene la producción y usted pierde ese tiempo de producción. \nMantenga FBI Heat por debajo de 50: por encima de ese umbral, será perseguido activamente con grandes posibilidades de incursiones que cerrarán todo. \nCombine la venta de drogas con el contrabando para obtener mayores márgenes y riesgo distribuido.';
+      'Actualice el almacenamiento antes de la producción: el almacenamiento completo detiene la producción y usted pierde ese tiempo de producción. \nMantenga FBI Heat por debajo de 50: por encima de ese umbral, será perseguido activamente con grandes posibilidades de incursiones que cerrarán todo. \nCombine la venta de drogas con el contrabando para obtener mayores márgenes y riesgo distribuido.\nExporta solo si aceptas flete e incautación; viajar y vender en la calle sigue pagando más por gramo.';
 
   @override
   String get helpTopicNightclubCategory => 'Imperio';

@@ -273,6 +273,73 @@ class DrugService {
     }
   }
 
+  Future<Map<String, dynamic>> quoteWholesaleExport({
+    required String drugType,
+    required String quality,
+    required int quantity,
+    String? destinationCountry,
+  }) async {
+    try {
+      final params = {
+        'drugType': drugType,
+        'quality': quality,
+        'quantity': '$quantity',
+        if (destinationCountry != null && destinationCountry.isNotEmpty)
+          'destinationCountry': destinationCountry,
+      };
+      final query = params.entries
+          .map((e) =>
+              '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}')
+          .join('&');
+      final response = await _apiClient.get('/drugs/wholesale/quote?$query');
+      if (response.body.isEmpty) return {'success': false, 'message': 'Fout'};
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> startWholesaleExport({
+    required String drugType,
+    required String quality,
+    required int quantity,
+    required String destinationCountry,
+  }) async {
+    try {
+      final response = await _apiClient.post('/drugs/wholesale/export', {
+        'drugType': drugType,
+        'quality': quality,
+        'quantity': quantity,
+        'destinationCountry': destinationCountry,
+      });
+      if (response.body.isEmpty) return {'success': false, 'message': 'Fout'};
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<List<DrugWholesaleShipment>> getWholesaleShipments() async {
+    try {
+      final response = await _apiClient.get('/drugs/wholesale/shipments');
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return (data['shipments'] as List<dynamic>? ?? [])
+              .map(
+                (item) => DrugWholesaleShipment.fromJson(
+                  item as Map<String, dynamic>,
+                ),
+              )
+              .toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
   // --- Drug Facility methods ---
 
   Future<Map<String, dynamic>> getFacilityConfig() async {

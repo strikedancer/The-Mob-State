@@ -3,6 +3,7 @@ import { authenticate, AuthRequest } from '../middleware/authenticate';
 import drugService from '../services/drugService';
 import { drugSmugglingService } from '../services/drugSmugglingService';
 import { gameEventService } from '../services/gameEventService';
+import * as drugWholesaleService from '../services/drugWholesaleService';
 
 const router = express.Router();
 
@@ -361,6 +362,85 @@ router.post('/sell', authenticate, async (req: AuthRequest, res: Response) => {
     }
   } catch (error: any) {
     console.error('Error selling drugs:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/**
+ * @route   GET /drugs/wholesale/quote
+ * @desc    Quote NPC wholesale export (sell-on-arrival)
+ * @access  Private
+ */
+router.get('/wholesale/quote', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const drugType = String(req.query.drugType || '');
+    const quality = String(req.query.quality || 'C');
+    const quantity = Number.parseInt(String(req.query.quantity || '0'), 10);
+    const destinationCountry = req.query.destinationCountry
+      ? String(req.query.destinationCountry)
+      : undefined;
+
+    if (!drugType || !Number.isFinite(quantity) || quantity < 1) {
+      return res.status(400).json({ success: false, message: 'Drug type en hoeveelheid vereist' });
+    }
+
+    const result = await drugWholesaleService.quoteExport({
+      playerId: req.player!.id,
+      drugType,
+      quality,
+      quantity,
+      destinationCountry,
+    });
+    return res.json(result);
+  } catch (error: any) {
+    console.error('Error quoting wholesale export:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/**
+ * @route   POST /drugs/wholesale/export
+ * @desc    Start NPC wholesale export via container smuggle
+ * @access  Private
+ */
+router.post('/wholesale/export', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { drugType, quantity, quality = 'C', destinationCountry } = req.body ?? {};
+    if (!drugType || !destinationCountry || !quantity || quantity < 1) {
+      return res.status(400).json({
+        success: false,
+        message: 'Drug type, bestemming en hoeveelheid vereist',
+      });
+    }
+
+    const result = await drugWholesaleService.startExport({
+      playerId: req.player!.id,
+      drugType: String(drugType),
+      quality: String(quality),
+      quantity: typeof quantity === 'string' ? parseInt(quantity, 10) : quantity,
+      destinationCountry: String(destinationCountry),
+    });
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+    return res.json(result);
+  } catch (error: any) {
+    console.error('Error starting wholesale export:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/**
+ * @route   GET /drugs/wholesale/shipments
+ * @desc    List personal wholesale export shipments
+ * @access  Private
+ */
+router.get('/wholesale/shipments', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const shipments = await drugWholesaleService.listExports(req.player!.id);
+    return res.json({ success: true, shipments });
+  } catch (error: any) {
+    console.error('Error listing wholesale exports:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
   }
 });

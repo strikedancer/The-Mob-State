@@ -12675,6 +12675,25 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  ) {
+    return '${quantity}g $drugType vendido em $destination (€$payout)';
+  }
+
+  @override
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  ) {
+    return '${quantity}g $drugType para $destination apreendido';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -14659,6 +14678,92 @@ class AppLocalizationsPt extends AppLocalizations {
   String get drugsSellAction => 'Vender';
 
   @override
+  String get drugsExportAction => 'Exportar';
+
+  @override
+  String drugsExportDialogTitle(String name) {
+    return 'Export $name';
+  }
+
+  @override
+  String get drugsExportDestLabel => 'Destino';
+
+  @override
+  String drugsExportQuoteStreet(String amount) {
+    return 'Preço de rua dest.: €$amount/g';
+  }
+
+  @override
+  String drugsExportQuoteB2b(String amount) {
+    return 'Atacado: €$amount/g';
+  }
+
+  @override
+  String drugsExportPayout(String amount) {
+    return 'Pagamento na chegada: €$amount';
+  }
+
+  @override
+  String drugsExportFee(String amount) {
+    return 'Frete: €$amount';
+  }
+
+  @override
+  String drugsExportEta(String minutes) {
+    return 'ETA: $minutes min';
+  }
+
+  @override
+  String drugsExportSeizure(String pct) {
+    return 'Apreensão: $pct%';
+  }
+
+  @override
+  String drugsExportHeat(String heat, String fbi) {
+    return 'Heat +$heat · FBI +$fbi';
+  }
+
+  @override
+  String get drugsExportHarbor => 'Bónus de porto ativo';
+
+  @override
+  String get drugsExportConfirm => 'Enviar';
+
+  @override
+  String drugsExportMinHint(String grams) {
+    return 'Mínimo ${grams}g';
+  }
+
+  @override
+  String get drugsExportFailed => 'Exportação falhou';
+
+  @override
+  String get drugsExportStarted => 'Carga em trânsito. Dinheiro na chegada.';
+
+  @override
+  String get drugsExportCannotAfford => 'Dinheiro insuficiente para o frete';
+
+  @override
+  String get drugsHubExportsTitle => 'Envios de atacado';
+
+  @override
+  String get drugsHubExportInTransit => 'Em trânsito';
+
+  @override
+  String get drugsHubExportSold => 'Vendido';
+
+  @override
+  String get drugsHubExportSeized => 'Apreendido';
+
+  @override
+  String get drugsHubExportEmpty => 'Sem exportações abertas';
+
+  @override
+  String drugsHubExportLine(String qty, String dest, String status) {
+    return '${qty}g → $dest · $status';
+  }
+
+  @override
   String get drugsInvEmptyTitle => 'Não há medicamentos em estoque';
 
   @override
@@ -14670,7 +14775,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get drugsInvSectionBody =>
-      'Vender medicamentos por qualidade e usar diferenças de preços entre países.';
+      'Venda localmente ou exporte um lote de atacado para outro país. Venda de rua, nightclub, darkweb e Marketplace continuam retalho.';
 
   @override
   String drugsInvCurrentLocation(String place) {
@@ -15456,11 +15561,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'O sistema de medicamentos consiste em: Hub (visão geral e estatísticas), Instalações (atualização da capacidade de produção), Produção (linhas de produção ativas com cronômetro) e Inventário (produtos acabados e matérias-primas). \nCompre matérias-primas através do mercado negro ou comércio. Combine-os em uma instalação para produzir drogas. \nOs cronômetros de produção são executados enquanto você está offline. Não é necessário clicar ativamente: verifique novamente quando o cronômetro terminar. \nA produção finalizada permanece visível na Produção e mantém o espaço da instalação ocupado até você coletá-la; A coleta automática VIP processa a saída automaticamente em segundo plano. \nA capacidade de armazenamento é limitada por instalação. Quando o armazenamento está cheio, a produção para automaticamente. \nUma loja darkweb ou outra instalação não vende automaticamente a produção final: a venda ainda acontece manualmente por meio do fluxo de venda pretendido. \nVenda drogas no mercado negro, na Colômbia ou em outros locais de vendas especiais pela margem mais alta. \nO FBI Heat aumenta a cada ciclo de produção e ainda mais em grandes vendas. O calor elevado leva a eventos de invasão que podem encerrar sua operação. \nAs atualizações das instalações reduzem o tempo de produção, aumentam a produção e expandem a capacidade de armazenamento. \nOs jogadores VIP recebem um botão relâmpago nas cartas de produção: após um modal de confirmação, você pode comprar todos os materiais do lote faltantes com um clique. \nAs atualizações avançadas de slots e equipamentos estão vinculadas ao novo curso de educação sobre Narcóticos (Especialista em Hidroponia, Especialista em Eletricidade de Processo, Químico Clandestino). Sem o nível/certificação exigido, você não poderá avançar para o próximo nível de atualização. \nAs drogas em inventário aumentam o risco de confisco durante viagens e verificações policiais.';
+      'O sistema de medicamentos consiste em: Hub (visão geral e estatísticas), Instalações (atualização da capacidade de produção), Produção (linhas de produção ativas com cronômetro) e Inventário (produtos acabados e matérias-primas). \nCompre matérias-primas através do mercado negro ou comércio. Combine-os em uma instalação para produzir drogas. \nOs cronômetros de produção são executados enquanto você está offline. Não é necessário clicar ativamente: verifique novamente quando o cronômetro terminar. \nA produção finalizada permanece visível na Produção e mantém o espaço da instalação ocupado até você coletá-la; A coleta automática VIP processa a saída automaticamente em segundo plano. \nA capacidade de armazenamento é limitada por instalação. Quando o armazenamento está cheio, a produção para automaticamente. \nUma loja darkweb ou outra instalação não vende automaticamente a produção final: a venda ainda acontece manualmente por meio do fluxo de venda pretendido. \nVenda drogas no mercado negro, na Colômbia ou em outros locais de vendas especiais pela margem mais alta. \nO FBI Heat aumenta a cada ciclo de produção e ainda mais em grandes vendas. O calor elevado leva a eventos de invasão que podem encerrar sua operação. \nAs atualizações das instalações reduzem o tempo de produção, aumentam a produção e expandem a capacidade de armazenamento. \nOs jogadores VIP recebem um botão relâmpago nas cartas de produção: após um modal de confirmação, você pode comprar todos os materiais do lote faltantes com um clique. \nAs atualizações avançadas de slots e equipamentos estão vinculadas ao novo curso de educação sobre Narcóticos (Especialista em Hidroponia, Especialista em Eletricidade de Processo, Químico Clandestino). Sem o nível/certificação exigido, você não poderá avançar para o próximo nível de atualização. \nAs drogas em inventário aumentam o risco de confisco durante viagens e verificações policiais.\nDo Inventário podes exportar um lote de atacado para outro país: ficas no sítio, pagas o frete e recebes o cash B2B no destino à chegada. Apreensão não paga. Venda de rua, nightclub, darkweb e Marketplace continuam retalho.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Atualize o armazenamento antes da produção: o armazenamento completo interrompe a produção e você perde esse tempo de produção. \nMantenha o FBI Heat abaixo de 50: acima desse limite você é ativamente caçado com grandes chances de ataques que fecham tudo. \nCombine a venda de drogas com o contrabando para obter margens mais altas e risco distribuído.';
+      'Atualize o armazenamento antes da produção: o armazenamento completo interrompe a produção e você perde esse tempo de produção. \nMantenha o FBI Heat abaixo de 50: acima desse limite você é ativamente caçado com grandes chances de ataques que fecham tudo. \nCombine a venda de drogas com o contrabando para obter margens mais altas e risco distribuído.\nExporta só se aceitares frete e apreensão; viajar e vender na rua continua a pagar mais por grama.';
 
   @override
   String get helpTopicNightclubCategory => 'Império';

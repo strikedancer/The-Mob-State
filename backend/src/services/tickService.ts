@@ -191,6 +191,18 @@ class TickService {
         console.error('[Tick] Casino staff salaries failed:', casinoStaffErr);
       }
 
+      try {
+        const wholesale = await import('./drugWholesaleService');
+        const settled = await wholesale.settleDueExports();
+        if (settled.settled > 0 || settled.seized > 0) {
+          console.log(
+            `💊 Drug wholesale settle: paid ${settled.settled}, seized ${settled.seized}`,
+          );
+        }
+      } catch (wholesaleErr) {
+        console.error('[Tick] Drug wholesale settle failed:', wholesaleErr);
+      }
+
       const seasonResult = await nightclubService.processWeeklySeasonIfNeeded();
       if (seasonResult.processed) {
         console.log(

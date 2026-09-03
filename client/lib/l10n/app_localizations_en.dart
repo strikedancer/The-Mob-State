@@ -12574,6 +12574,25 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  ) {
+    return '${quantity}g $drugType sold in $destination (€$payout)';
+  }
+
+  @override
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  ) {
+    return '${quantity}g $drugType to $destination seized';
+  }
+
+  @override
   String evStreamVehicleRepairCompleted(
     String vehicleType,
     String vehicleName,
@@ -14542,6 +14561,92 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drugsSellAction => 'Sell';
 
   @override
+  String get drugsExportAction => 'Export';
+
+  @override
+  String drugsExportDialogTitle(String name) {
+    return 'Export $name';
+  }
+
+  @override
+  String get drugsExportDestLabel => 'Destination';
+
+  @override
+  String drugsExportQuoteStreet(String amount) {
+    return 'Dest street: €$amount/g';
+  }
+
+  @override
+  String drugsExportQuoteB2b(String amount) {
+    return 'Wholesale: €$amount/g';
+  }
+
+  @override
+  String drugsExportPayout(String amount) {
+    return 'Payout on arrival: €$amount';
+  }
+
+  @override
+  String drugsExportFee(String amount) {
+    return 'Freight: €$amount';
+  }
+
+  @override
+  String drugsExportEta(String minutes) {
+    return 'ETA: $minutes min';
+  }
+
+  @override
+  String drugsExportSeizure(String pct) {
+    return 'Seizure: $pct%';
+  }
+
+  @override
+  String drugsExportHeat(String heat, String fbi) {
+    return 'Heat +$heat · FBI +$fbi';
+  }
+
+  @override
+  String get drugsExportHarbor => 'Harbor bonus active';
+
+  @override
+  String get drugsExportConfirm => 'Send';
+
+  @override
+  String drugsExportMinHint(String grams) {
+    return 'Minimum ${grams}g';
+  }
+
+  @override
+  String get drugsExportFailed => 'Export failed';
+
+  @override
+  String get drugsExportStarted => 'Load in transit. Cash on arrival.';
+
+  @override
+  String get drugsExportCannotAfford => 'Not enough cash for freight';
+
+  @override
+  String get drugsHubExportsTitle => 'Wholesale shipments';
+
+  @override
+  String get drugsHubExportInTransit => 'In transit';
+
+  @override
+  String get drugsHubExportSold => 'Sold';
+
+  @override
+  String get drugsHubExportSeized => 'Seized';
+
+  @override
+  String get drugsHubExportEmpty => 'No open exports';
+
+  @override
+  String drugsHubExportLine(String qty, String dest, String status) {
+    return '${qty}g → $dest · $status';
+  }
+
+  @override
   String get drugsInvEmptyTitle => 'No drugs in inventory';
 
   @override
@@ -14552,7 +14657,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drugsInvSectionBody =>
-      'Sell drugs by quality and use price differences between countries.';
+      'Sell locally or export a wholesale load to another country. Street-sell, nightclub, darkweb and Marketplace stay retail.';
 
   @override
   String drugsInvCurrentLocation(String place) {
@@ -15334,11 +15439,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market (Materials tab, also linked from Hub/Production) or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. You get a notification when a batch is ready to collect.\nYou can spend premium credits to finish a batch early, buy a temporary extra slot, or activate a 24h heat shield (no extra yield).\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output, but skips a pending raid until you choose.\nOn collect, heat can trigger a raid: you choose stock loss, facility downtime or a cash fine before receiving loot.\nYou can cool heat with cash or go low-profile (temporarily no new production).\nA darkweb storefront never silent-sells: auto-sale is opt-in, with a fee and extra heat.\nOwn-production drugs get a small nightclub margin bonus. Quality lots can be deposited into crew drug storage.\nFacility cards show price, rank and education requirements before buy or upgrade.';
+      'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market (Materials tab, also linked from Hub/Production) or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. You get a notification when a batch is ready to collect.\nYou can spend premium credits to finish a batch early, buy a temporary extra slot, or activate a 24h heat shield (no extra yield).\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output, but skips a pending raid until you choose.\nOn collect, heat can trigger a raid: you choose stock loss, facility downtime or a cash fine before receiving loot.\nYou can cool heat with cash or go low-profile (temporarily no new production).\nA darkweb storefront never silent-sells: auto-sale is opt-in, with a fee and extra heat.\nOwn-production drugs get a small nightclub margin bonus. Quality lots can be deposited into crew drug storage.\nFacility cards show price, rank and education requirements before buy or upgrade.\nFrom Inventory you can export a wholesale load to another country: you stay put, pay freight, and receive dest B2B cash when the container arrives. Seizure pays nothing. Street-sell, nightclub, darkweb and Marketplace stay retail.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.';
+      'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.\nExport only if you accept freight and seizure risk; travel plus street-sell still pays more per gram.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';

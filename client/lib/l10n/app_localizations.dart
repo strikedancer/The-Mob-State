@@ -22046,6 +22046,27 @@ abstract class AppLocalizations {
     String quality,
   );
 
+  /// No description provided for @evStreamDrugsWholesaleSold.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity}g {drugType} sold in {destination} (€{payout})'**
+  String evStreamDrugsWholesaleSold(
+    String quantity,
+    String drugType,
+    String destination,
+    String payout,
+  );
+
+  /// No description provided for @evStreamDrugsWholesaleSeized.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity}g {drugType} to {destination} seized'**
+  String evStreamDrugsWholesaleSeized(
+    String quantity,
+    String drugType,
+    String destination,
+  );
+
   /// No description provided for @evStreamVehicleRepairCompleted.
   ///
   /// In en, this message translates to:
@@ -25325,6 +25346,138 @@ abstract class AppLocalizations {
   /// **'Sell'**
   String get drugsSellAction;
 
+  /// No description provided for @drugsExportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get drugsExportAction;
+
+  /// No description provided for @drugsExportDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export {name}'**
+  String drugsExportDialogTitle(String name);
+
+  /// No description provided for @drugsExportDestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get drugsExportDestLabel;
+
+  /// No description provided for @drugsExportQuoteStreet.
+  ///
+  /// In en, this message translates to:
+  /// **'Dest street: €{amount}/g'**
+  String drugsExportQuoteStreet(String amount);
+
+  /// No description provided for @drugsExportQuoteB2b.
+  ///
+  /// In en, this message translates to:
+  /// **'Wholesale: €{amount}/g'**
+  String drugsExportQuoteB2b(String amount);
+
+  /// No description provided for @drugsExportPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout on arrival: €{amount}'**
+  String drugsExportPayout(String amount);
+
+  /// No description provided for @drugsExportFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Freight: €{amount}'**
+  String drugsExportFee(String amount);
+
+  /// No description provided for @drugsExportEta.
+  ///
+  /// In en, this message translates to:
+  /// **'ETA: {minutes} min'**
+  String drugsExportEta(String minutes);
+
+  /// No description provided for @drugsExportSeizure.
+  ///
+  /// In en, this message translates to:
+  /// **'Seizure: {pct}%'**
+  String drugsExportSeizure(String pct);
+
+  /// No description provided for @drugsExportHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat +{heat} · FBI +{fbi}'**
+  String drugsExportHeat(String heat, String fbi);
+
+  /// No description provided for @drugsExportHarbor.
+  ///
+  /// In en, this message translates to:
+  /// **'Harbor bonus active'**
+  String get drugsExportHarbor;
+
+  /// No description provided for @drugsExportConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get drugsExportConfirm;
+
+  /// No description provided for @drugsExportMinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum {grams}g'**
+  String drugsExportMinHint(String grams);
+
+  /// No description provided for @drugsExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed'**
+  String get drugsExportFailed;
+
+  /// No description provided for @drugsExportStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Load in transit. Cash on arrival.'**
+  String get drugsExportStarted;
+
+  /// No description provided for @drugsExportCannotAfford.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough cash for freight'**
+  String get drugsExportCannotAfford;
+
+  /// No description provided for @drugsHubExportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wholesale shipments'**
+  String get drugsHubExportsTitle;
+
+  /// No description provided for @drugsHubExportInTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'In transit'**
+  String get drugsHubExportInTransit;
+
+  /// No description provided for @drugsHubExportSold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold'**
+  String get drugsHubExportSold;
+
+  /// No description provided for @drugsHubExportSeized.
+  ///
+  /// In en, this message translates to:
+  /// **'Seized'**
+  String get drugsHubExportSeized;
+
+  /// No description provided for @drugsHubExportEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No open exports'**
+  String get drugsHubExportEmpty;
+
+  /// No description provided for @drugsHubExportLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{qty}g → {dest} · {status}'**
+  String drugsHubExportLine(String qty, String dest, String status);
+
   /// No description provided for @drugsInvEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -25346,7 +25499,7 @@ abstract class AppLocalizations {
   /// No description provided for @drugsInvSectionBody.
   ///
   /// In en, this message translates to:
-  /// **'Sell drugs by quality and use price differences between countries.'**
+  /// **'Sell locally or export a wholesale load to another country. Street-sell, nightclub, darkweb and Marketplace stay retail.'**
   String get drugsInvSectionBody;
 
   /// No description provided for @drugsInvCurrentLocation.
@@ -26683,13 +26836,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDrugsHow.
   ///
   /// In en, this message translates to:
-  /// **'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market (Materials tab, also linked from Hub/Production) or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. You get a notification when a batch is ready to collect.\nYou can spend premium credits to finish a batch early, buy a temporary extra slot, or activate a 24h heat shield (no extra yield).\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output, but skips a pending raid until you choose.\nOn collect, heat can trigger a raid: you choose stock loss, facility downtime or a cash fine before receiving loot.\nYou can cool heat with cash or go low-profile (temporarily no new production).\nA darkweb storefront never silent-sells: auto-sale is opt-in, with a fee and extra heat.\nOwn-production drugs get a small nightclub margin bonus. Quality lots can be deposited into crew drug storage.\nFacility cards show price, rank and education requirements before buy or upgrade.'**
+  /// **'The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).\nBuy raw materials via the black market (Materials tab, also linked from Hub/Production) or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. You get a notification when a batch is ready to collect.\nYou can spend premium credits to finish a batch early, buy a temporary extra slot, or activate a 24h heat shield (no extra yield).\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output, but skips a pending raid until you choose.\nOn collect, heat can trigger a raid: you choose stock loss, facility downtime or a cash fine before receiving loot.\nYou can cool heat with cash or go low-profile (temporarily no new production).\nA darkweb storefront never silent-sells: auto-sale is opt-in, with a fee and extra heat.\nOwn-production drugs get a small nightclub margin bonus. Quality lots can be deposited into crew drug storage.\nFacility cards show price, rank and education requirements before buy or upgrade.\nFrom Inventory you can export a wholesale load to another country: you stay put, pay freight, and receive dest B2B cash when the container arrives. Seizure pays nothing. Street-sell, nightclub, darkweb and Marketplace stay retail.'**
   String get helpTopicDrugsHow;
 
   /// No description provided for @helpTopicDrugsTips.
   ///
   /// In en, this message translates to:
-  /// **'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.'**
+  /// **'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.\nExport only if you accept freight and seizure risk; travel plus street-sell still pays more per gram.'**
   String get helpTopicDrugsTips;
 
   /// No description provided for @helpTopicNightclubCategory.
