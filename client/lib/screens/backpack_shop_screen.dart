@@ -6,6 +6,7 @@ import '../services/api_client.dart';
 import '../models/backpack.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/market_compact.dart';
 import '../widgets/responsive_modal.dart';
 import '../l10n/app_localizations.dart';
 
@@ -354,125 +355,105 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
     final isVip = player?.isVip == true;
     final canPurchase = canAfford && meetsRank && (!backpack.vipOnly || isVip);
 
-    return Card(
-      color: isOwned ? Colors.green.shade900.withOpacity(0.3) : null,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(backpack.icon, style: const TextStyle(fontSize: 32)),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            backpack.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          if (backpack.vipOnly)
-                            const Padding(
-                              padding: EdgeInsets.only(left: 8),
-                              child: Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                                size: 20,
-                              ),
-                            ),
-                          if (isOwned)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Chip(
-                                label: Text(
-                                  l10n.backpackOwnedBadge,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                backgroundColor: Colors.green,
-                                padding: EdgeInsets.zero,
-                              ),
-                            ),
-                        ],
-                      ),
-                      Text(
-                        backpack.type,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                    ],
-                  ),
+    return MarketCompactRow(
+      tooltip: backpack.description,
+      color: isOwned
+          ? Colors.green.shade900.withValues(alpha: 0.28)
+          : null,
+      leading: SizedBox(
+        width: 44,
+        height: 44,
+        child: Center(
+          child: Text(backpack.icon, style: const TextStyle(fontSize: 26)),
+        ),
+      ),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            backpack.name,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            backpack.type,
+            style: TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: '+${backpack.slots} ${l10n.slots}',
+                color: Colors.teal.shade700,
+                icon: Icons.inventory_2,
+              ),
+              MarketInfoPill(
+                label: l10n.rankRequired(backpack.requiredRank),
+                color: meetsRank
+                    ? Colors.blueGrey.shade700
+                    : Colors.red.shade700,
+                icon: meetsRank ? Icons.military_tech : Icons.lock,
+              ),
+              if (backpack.vipOnly)
+                MarketInfoPill(
+                  label: l10n.vipOnly,
+                  color: Colors.amber.shade800,
+                  icon: Icons.star,
                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(backpack.description),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                const Icon(Icons.inventory_2, size: 16),
-                const SizedBox(width: 4),
-                Text('+${backpack.slots} ${l10n.slots}'),
-                const Spacer(),
-                Text(
-                  formatCurrency(backpack.price),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.amber,
-                  ),
+              if (isOwned)
+                MarketInfoPill(
+                  label: l10n.backpackOwnedBadge,
+                  color: Colors.green.shade700,
+                  icon: Icons.check_circle,
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
+            ],
+          ),
+        ],
+      ),
+      meta: Text(
+        formatCurrency(backpack.price),
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.amber,
+        ),
+      ),
+      action: isOwned
+          ? null
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(l10n.rankRequired(backpack.requiredRank)),
-                if (!meetsRank)
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Icon(Icons.lock, size: 16, color: Colors.red),
-                  ),
-              ],
-            ),
-            if (!isOwned) ...[
-              const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
+                FilledButton(
                   onPressed: canPurchase
                       ? () => canUpgrade
-                            ? _upgradeBackpack(backpack)
-                            : _purchaseBackpack(backpack)
+                          ? _upgradeBackpack(backpack)
+                          : _purchaseBackpack(backpack)
                       : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: canUpgrade ? Colors.blue : Colors.green,
+                  style: marketBuyButtonStyle(
+                    background: canUpgrade ? Colors.blue : Colors.green,
                   ),
                   child: Text(
                     canUpgrade ? l10n.upgradeBackpack : l10n.buyBackpack,
                   ),
                 ),
-              ),
-              if (!canAfford)
-                Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Text(
-                    l10n.tuneShopErrorInsufficientFunds,
-                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                if (!canAfford)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      l10n.tuneShopErrorInsufficientFunds,
+                      style: const TextStyle(color: Colors.red, fontSize: 10),
+                    ),
                   ),
-                ),
-            ],
-          ],
-        ),
-      ),
+              ],
+            ),
     );
   }
 
@@ -501,48 +482,49 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
         : RefreshIndicator(
             onRefresh: _loadBackpacks,
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
               children: [
                 if (_backpacks?.owned != null) ...[
-                  Text(
-                    l10n.yourBackpack,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6, left: 2),
+                    child: Text(
+                      l10n.yourBackpack,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
                   ),
-                  const SizedBox(height: 12),
                   _buildBackpackCard(_backpacks!.owned!, isOwned: true),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 8),
                 ],
                 if (_backpacks?.canUpgradeTo.isNotEmpty ?? false) ...[
-                  Text(
-                    l10n.availableUpgrades,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
-                  ...(_backpacks!.canUpgradeTo.map(
-                    (bp) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildBackpackCard(bp, canUpgrade: true),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6, left: 2),
+                    child: Text(
+                      l10n.availableUpgrades,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
-                  )),
-                  const SizedBox(height: 24),
+                  ),
+                  ..._backpacks!.canUpgradeTo.map(
+                    (bp) => _buildBackpackCard(bp, canUpgrade: true),
+                  ),
+                  const SizedBox(height: 8),
                 ],
                 if (_backpacks?.available.isNotEmpty ?? false) ...[
-                  Text(
-                    _backpacks?.owned == null
-                        ? l10n.availableBackpacks
-                        : l10n.otherBackpacks,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6, left: 2),
+                    child: Text(
+                      _backpacks?.owned == null
+                          ? l10n.availableBackpacks
+                          : l10n.otherBackpacks,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  ...(_backpacks!.available.map(
-                    (bp) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildBackpackCard(bp),
-                    ),
-                  )),
+                  ..._backpacks!.available.map(_buildBackpackCard),
                 ],
                 if ((_backpacks?.available.isEmpty == true ||
                         _backpacks?.available == null) &&
@@ -551,18 +533,18 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
                     _backpacks?.owned != null) ...[
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(32),
+                      padding: const EdgeInsets.symmetric(vertical: 24),
                       child: Column(
                         children: [
                           const Icon(
                             Icons.check_circle,
-                            size: 64,
+                            size: 36,
                             color: Colors.green,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 8),
                           Text(
                             l10n.youHaveBestBackpack,
-                            style: const TextStyle(fontSize: 18),
+                            style: const TextStyle(fontSize: 14),
                             textAlign: TextAlign.center,
                           ),
                         ],

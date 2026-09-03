@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/market_compact.dart';
 class AmmoMarketScreen extends StatefulWidget {
   const AmmoMarketScreen({super.key});
 
@@ -274,11 +275,11 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
     final fileName = ammoType.replaceAll(RegExp(r'[^a-z0-9]'), '');
     return Image.asset(
       'assets/images/ammo/$fileName.png',
-      width: 48,
-      height: 48,
+      width: 44,
+      height: 44,
       fit: BoxFit.contain,
       errorBuilder: (context, error, stackTrace) {
-        return Icon(Icons.circle, size: 48, color: Colors.amber);
+        return const Icon(Icons.circle, size: 44, color: Colors.amber);
       },
     );
   }
@@ -324,23 +325,25 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
         children: [
           TabBar(
             controller: _tabController,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 12),
             tabs: [
-              Tab(text: l10n?.ammoShop ?? 'Market'),
-              Tab(text: l10n?.myAmmo ?? 'My Ammo'),
+              marketInnerTab(l10n?.ammoShop ?? 'Market'),
+              marketInnerTab(l10n?.myAmmo ?? 'My Ammo'),
             ],
           ),
           if (isCooldownActive)
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               color: Colors.orange[100],
               child: Row(
                 children: [
-                  Icon(Icons.timer, color: Colors.orange[900]),
+                  Icon(Icons.timer, size: 18, color: Colors.orange[900]),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       '${l10n?.nextAmmoPurchase ?? "Next purchase available in"}: $cooldownText',
                       style: TextStyle(
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.orange[900],
                       ),
@@ -355,7 +358,7 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 ListView.builder(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
                   itemCount: _marketStock.length,
                   itemBuilder: (context, index) {
                     final ammo = _marketStock[index];
@@ -364,33 +367,73 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
                     final pricePerRound = ammo['pricePerRound'] ?? 1;
                     final quality = ((ammo['quality'] as num?) ?? 1.0)
                         .toStringAsFixed(2);
-                    return Card(
-                      child: ListTile(
-                        leading: _buildAmmoImage(ammo['ammoType']),
-                        title: Text(
-                          ammo['name'] ??
-                              ammo['ammoType'] ??
-                              (l10n?.ammoGeneric ?? 'Ammo'),
+                    final name = ammo['name'] ??
+                        ammo['ammoType'] ??
+                        (l10n?.ammoGeneric ?? 'Ammo');
+                    final stockLabel =
+                        '${l10n?.ammoStock ?? 'Stock'}: $quantity ${l10n?.ammoRounds ?? 'rounds'}';
+                    return MarketCompactRow(
+                      leading: _buildAmmoImage('${ammo['ammoType']}'),
+                      info: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '$name',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Wrap(
+                            spacing: 4,
+                            runSpacing: 3,
+                            children: [
+                              MarketInfoPill(
+                                label: stockLabel,
+                                color: quantity > 0
+                                    ? Colors.teal.shade700
+                                    : Colors.red.shade700,
+                                icon: Icons.inventory_2,
+                              ),
+                              MarketInfoPill(
+                                label:
+                                    '$boxSize/${l10n?.ammoBoxesUnit ?? 'box'}',
+                                color: Colors.blueGrey.shade700,
+                              ),
+                              MarketInfoPill(
+                                label:
+                                    '${l10n?.ammoQuality ?? 'Quality'} $quality',
+                                color: Colors.purple.shade700,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      meta: Text(
+                        '€$pricePerRound',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
                         ),
-                        subtitle: Text(
-                          '${l10n?.ammoStock ?? 'Stock'}: $quantity ${l10n?.ammoRounds ?? 'rounds'} • $boxSize/${l10n?.ammoBoxesUnit ?? 'box'} • €$pricePerRound/${l10n?.ammoRounds ?? 'round'}\n${l10n?.ammoQuality ?? 'Quality'}: $quality',
-                        ),
-                        trailing: ElevatedButton(
-                          onPressed: (quantity > 0 && !isCooldownActive)
-                              ? () => _buyAmmo(
+                      ),
+                      action: FilledButton(
+                        onPressed: (quantity > 0 && !isCooldownActive)
+                            ? () => _buyAmmo(
                                   ammo['ammoType'],
                                   boxSize,
                                   pricePerRound,
                                 )
-                              : null,
-                          child: Text(l10n?.buy ?? 'Buy'),
-                        ),
+                            : null,
+                        style: marketBuyButtonStyle(),
+                        child: Text(l10n?.buy ?? 'Buy'),
                       ),
                     );
                   },
                 ),
                 ListView.builder(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
                   itemCount: _inventory.length,
                   itemBuilder: (context, index) {
                     final ammo = _inventory[index];
@@ -400,17 +443,45 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
                         .toStringAsFixed(2);
                     final boxes = (quantity / boxSize).floor();
                     final remaining = quantity % boxSize;
-                    return Card(
-                      child: ListTile(
-                        leading: _buildAmmoImage(ammo['ammoType']),
-                        title: Text(
-                          ammo['name'] ??
-                              ammo['ammoType'] ??
-                              (l10n?.ammoGeneric ?? 'Ammo'),
-                        ),
-                        subtitle: Text(
-                          '$quantity ${l10n?.ammoRounds ?? 'rounds'} ($boxes ${l10n?.ammoBoxesUnit ?? 'boxes'}${remaining > 0 ? ' + $remaining' : ''}) • ${l10n?.ammoQuality ?? 'Quality'}: $quality',
-                        ),
+                    final name = ammo['name'] ??
+                        ammo['ammoType'] ??
+                        (l10n?.ammoGeneric ?? 'Ammo');
+                    return MarketCompactRow(
+                      leading: _buildAmmoImage('${ammo['ammoType']}'),
+                      info: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '$name',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Wrap(
+                            spacing: 4,
+                            runSpacing: 3,
+                            children: [
+                              MarketInfoPill(
+                                label:
+                                    '$quantity ${l10n?.ammoRounds ?? 'rounds'}',
+                                color: Colors.teal.shade700,
+                                icon: Icons.inventory_2,
+                              ),
+                              MarketInfoPill(
+                                label:
+                                    '$boxes ${l10n?.ammoBoxesUnit ?? 'boxes'}${remaining > 0 ? ' + $remaining' : ''}',
+                                color: Colors.blueGrey.shade700,
+                              ),
+                              MarketInfoPill(
+                                label:
+                                    '${l10n?.ammoQuality ?? 'Quality'} $quality',
+                                color: Colors.purple.shade700,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     );
                   },

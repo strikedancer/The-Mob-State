@@ -6,6 +6,7 @@ import '../models/drug_models.dart';
 import '../providers/auth_provider.dart';
 import '../services/drug_service.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/market_compact.dart';
 import '../widgets/responsive_modal.dart';
 
 class MaterialsShopScreen extends StatefulWidget {
@@ -239,183 +240,172 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
         ? (authProvider.currentPlayer?.currentCountry ?? '—')
         : _snapshot.currentCountry;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.materialsShopTitle),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                '€${_formatMoney(authProvider.currentPlayer?.money ?? 0)}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : RefreshIndicator(
+            onRefresh: _loadData,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
+              children: [
+                Card(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Colors.transparent),
+                    child: ExpansionTile(
+                      dense: true,
+                      visualDensity: VisualDensity.compact,
+                      tilePadding: const EdgeInsets.symmetric(horizontal: 10),
+                      childrenPadding:
+                          const EdgeInsets.fromLTRB(12, 0, 12, 10),
+                      title: Text(
+                        l10n.materialsShopRulesTitle,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      subtitle: Text(
+                        l10n.materialsShopBackpackSlots(
+                          '${_snapshot.backpackUsed}',
+                          '${_snapshot.backpackCapacity}',
+                        ),
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                      children: [
+                        Text(
+                          l10n.materialsShopRulesBody,
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.4,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.85),
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          l10n.materialsShopCurrentCountry(country),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _loadData,
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  Card(
-                    color: const Color(0xFF151B28),
-                    child: Padding(
-                      padding: const EdgeInsets.all(14),
-                      child: Column(
+                if (_materials.isEmpty)
+                  Center(child: Text(l10n.materialsShopEmpty))
+                else
+                  ..._materials.map((material) {
+                    final depot = _snapshot.depotQty(material.id);
+                    final carried = _snapshot.carriedQty(material.id);
+                    final busy = _busyMaterialId == material.id;
+                    return MarketCompactRow(
+                      tooltip: material.description,
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Image.asset(
+                            material.getImagePath(),
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.science),
+                          ),
+                        ),
+                      ),
+                      info: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            l10n.materialsShopRulesTitle,
+                            material.name,
                             style: const TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            l10n.materialsShopRulesBody,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              height: 1.35,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            l10n.materialsShopBackpackSlots(
-                              '${_snapshot.backpackUsed}',
-                              '${_snapshot.backpackCapacity}',
-                            ),
-                            style: const TextStyle(
-                              color: Color(0xFFD4AF37),
+                              fontSize: 15,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          Text(
-                            l10n.materialsShopCurrentCountry(country),
-                            style: const TextStyle(color: Colors.white60),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  if (_materials.isEmpty)
-                    Center(child: Text(l10n.materialsShopEmpty))
-                  else
-                    ..._materials.map((material) {
-                      final depot = _snapshot.depotQty(material.id);
-                      final carried = _snapshot.carriedQty(material.id);
-                      final busy = _busyMaterialId == material.id;
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          const SizedBox(height: 4),
+                          Wrap(
+                            spacing: 4,
+                            runSpacing: 3,
                             children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 28,
-                                    backgroundColor: Colors.grey[200],
-                                    child: Image.asset(
-                                      material.getImagePath(),
-                                      width: 36,
-                                      height: 36,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          const Icon(Icons.science),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          material.name,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(material.description),
-                                        Text(
-                                          l10n.materialsShopPriceEach(
-                                            _formatMoney(material.price),
-                                          ),
-                                          style: const TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                l10n.materialsShopStockLine(depot, carried),
-                                style: TextStyle(
-                                  color: Colors.blue[700],
-                                  fontWeight: FontWeight.w700,
+                              MarketInfoPill(
+                                label: l10n.materialsShopStockLine(
+                                  depot,
+                                  carried,
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  ElevatedButton.icon(
-                                    onPressed:
-                                        busy ? null : () => _buyMaterial(material),
-                                    icon: const Icon(Icons.shopping_cart, size: 18),
-                                    label: Text(l10n.materialsShopBuy),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green,
-                                      foregroundColor: Colors.white,
-                                    ),
-                                  ),
-                                  OutlinedButton.icon(
-                                    onPressed: busy || depot <= 0
-                                        ? null
-                                        : () => _transfer(
-                                              material,
-                                              direction: 'to_backpack',
-                                              maxQty: depot,
-                                            ),
-                                    icon: const Icon(Icons.backpack, size: 18),
-                                    label: Text(l10n.materialsShopToBackpack),
-                                  ),
-                                  OutlinedButton.icon(
-                                    onPressed: busy || carried <= 0
-                                        ? null
-                                        : () => _transfer(
-                                              material,
-                                              direction: 'to_depot',
-                                              maxQty: carried,
-                                            ),
-                                    icon: const Icon(Icons.warehouse, size: 18),
-                                    label: Text(l10n.materialsShopToDepot),
-                                  ),
-                                ],
+                                color: Colors.blue.shade700,
+                                icon: Icons.inventory_2,
                               ),
                             ],
                           ),
+                        ],
+                      ),
+                      meta: Text(
+                        '€${_formatMoney(material.price)}',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
                         ),
-                      );
-                    }),
-                ],
-              ),
+                      ),
+                      action: Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        alignment: WrapAlignment.end,
+                        children: [
+                          FilledButton(
+                            onPressed:
+                                busy ? null : () => _buyMaterial(material),
+                            style: marketBuyButtonStyle(),
+                            child: Text(l10n.materialsShopBuy),
+                          ),
+                          OutlinedButton(
+                            onPressed: busy || depot <= 0
+                                ? null
+                                : () => _transfer(
+                                      material,
+                                      direction: 'to_backpack',
+                                      maxQty: depot,
+                                    ),
+                            style: OutlinedButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
+                              minimumSize: const Size(0, 34),
+                            ),
+                            child: Text(l10n.materialsShopToBackpack),
+                          ),
+                          OutlinedButton(
+                            onPressed: busy || carried <= 0
+                                ? null
+                                : () => _transfer(
+                                      material,
+                                      direction: 'to_depot',
+                                      maxQty: carried,
+                                    ),
+                            style: OutlinedButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
+                              minimumSize: const Size(0, 34),
+                            ),
+                            child: Text(l10n.materialsShopToDepot),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+              ],
             ),
-    );
+          );
   }
 }
