@@ -475,7 +475,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  t.drugsHubExportLine('${row.quantity}', dest, status),
+                  '${row.crewWholesale ? '${t.drugsHubExportCrewPrefix} · ' : ''}${t.drugsHubExportLine('${row.quantity}', dest, status)}',
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.86),
                     fontSize: 13,

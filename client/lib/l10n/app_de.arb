@@ -10735,6 +10735,22 @@
   "drugsExportFailed": "Export fehlgeschlagen",
   "drugsExportStarted": "Ladung unterwegs. Bargeld bei Ankunft.",
   "drugsExportCannotAfford": "Nicht genug Bargeld für die Fracht",
+  "drugsExportCrewFeeHint": "Crewbank zahlt die Fracht",
+  "drugsExportCrewPayout": "Auszahlung: Crew €{crew} · Läufer €{runner}",
+  "@drugsExportCrewPayout": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "runner": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportCannotAffordCrew": "Crewbank hat nicht genug für die Fracht",
+  "drugsHubExportCrewPrefix": "Crew",
+  "drugsCrewLotsTitle": "Crew-Qualitätslots",
+  "drugsCrewExportStarted": "Crew-Ladung unterwegs. Bargeld bei Ankunft auf die Crewbank.",
   "drugsHubExportsTitle": "Großhandels-Sendungen",
   "drugsHubExportInTransit": "Unterwegs",
   "drugsHubExportSold": "Verkauft",

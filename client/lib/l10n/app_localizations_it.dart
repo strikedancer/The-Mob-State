@@ -14793,6 +14793,28 @@ class AppLocalizationsIt extends AppLocalizations {
   String get drugsExportCannotAfford => 'Contanti insufficienti per il nolo';
 
   @override
+  String get drugsExportCrewFeeHint => 'La banca della crew paga il nolo';
+
+  @override
+  String drugsExportCrewPayout(String crew, String runner) {
+    return 'Pagamento: crew €$crew · corriere €$runner';
+  }
+
+  @override
+  String get drugsExportCannotAffordCrew =>
+      'La banca della crew non copre il nolo';
+
+  @override
+  String get drugsHubExportCrewPrefix => 'Crew';
+
+  @override
+  String get drugsCrewLotsTitle => 'Lotti di qualità della crew';
+
+  @override
+  String get drugsCrewExportStarted =>
+      'Carico crew in transito. Contanti all\'arrivo sulla banca della crew.';
+
+  @override
   String get drugsHubExportsTitle => 'Spedizioni all\'ingrosso';
 
   @override

@@ -8,6 +8,7 @@ import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/drug_wholesale_export_dialog.dart';
 
 class DrugInventoryScreen extends StatefulWidget {
   const DrugInventoryScreen({super.key});
@@ -184,9 +185,13 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
   Future<void> _exportDrugs(DrugInventory drug) async {
     final choice = await showDialog<Map<String, dynamic>?>(
       context: context,
-      builder: (ctx) => _WholesaleExportDialog(
-        drug: drug,
+      builder: (ctx) => DrugWholesaleExportDialog(
+        drugType: drug.drugType,
+        quality: drug.quality,
+        quantity: drug.quantity,
+        drugName: drug.drugName,
         service: _drugService,
+        scope: 'personal',
       ),
     );
     if (choice == null) return;
@@ -1141,189 +1146,3 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
   }
 }
 
-class _WholesaleExportDialog extends StatefulWidget {
-  final DrugInventory drug;
-  final DrugService service;
-
-  const _WholesaleExportDialog({
-    required this.drug,
-    required this.service,
-  });
-
-  @override
-  State<_WholesaleExportDialog> createState() => _WholesaleExportDialogState();
-}
-
-class _WholesaleExportDialogState extends State<_WholesaleExportDialog> {
-  late final TextEditingController _controller;
-  String? _destinationCountry;
-  List<DrugWholesaleDestination> _destinations = [];
-  Map<String, dynamic>? _quote;
-  bool _loading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: '${widget.drug.quantity}');
-    _loadQuote();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  int get _quantity => int.tryParse(_controller.text.trim()) ?? 0;
-
-  Future<void> _loadQuote() async {
-    setState(() => _loading = true);
-    final qty = _quantity > 0 ? _quantity : widget.drug.quantity;
-    final result = await widget.service.quoteWholesaleExport(
-      drugType: widget.drug.drugType,
-      quality: widget.drug.quality,
-      quantity: qty,
-      destinationCountry: _destinationCountry,
-    );
-    if (!mounted) return;
-    final dests = (result['destinations'] as List<dynamic>? ?? [])
-        .map((row) => DrugWholesaleDestination.fromJson(row as Map<String, dynamic>))
-        .toList();
-    setState(() {
-      _quote = result;
-      if (dests.isNotEmpty) {
-        _destinations = dests;
-        _destinationCountry ??= dests.first.id;
-      }
-      _loading = false;
-    });
-  }
-
-  String _money(num value) {
-    return value.round().toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
-    final isNl = Localizations.localeOf(context).languageCode == 'nl';
-    final quoteOk = _quote?['success'] == true;
-    final canAfford = _quote?['canAfford'] != false;
-    final seizurePct = (((_quote?['seizureChance'] as num?) ?? 0) * 100)
-        .toStringAsFixed(1);
-    final eta = '${_quote?['etaMinutes'] ?? '—'}';
-    final confirmEnabled = quoteOk && canAfford && _quantity > 0 && _destinationCountry != null;
-
-    return AlertDialog(
-      title: Text(t.drugsExportDialogTitle(widget.drug.drugName)),
-      content: SizedBox(
-        width: 420,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (_destinations.isNotEmpty) ...[
-                Text(t.drugsExportDestLabel),
-                const SizedBox(height: 6),
-                DropdownButtonFormField<String>(
-                  value: _destinations.any((d) => d.id == _destinationCountry)
-                      ? _destinationCountry
-                      : _destinations.first.id,
-                  items: _destinations
-                      .map(
-                        (d) => DropdownMenuItem(
-                          value: d.id,
-                          child: Text(
-                            '${isNl ? d.labelNl : d.labelEn} · €${d.streetUnit}/g',
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() => _destinationCountry = value);
-                    _loadQuote();
-                  },
-                ),
-                const SizedBox(height: 12),
-              ],
-              TextField(
-                controller: _controller,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: t.drugsQuantityGramsField,
-                  border: const OutlineInputBorder(),
-                  suffixText: '/ ${widget.drug.quantity}',
-                ),
-                onSubmitted: (_) => _loadQuote(),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: _loading ? null : _loadQuote,
-                  child: Text(t.retry),
-                ),
-              ),
-              if (_loading)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: LinearProgressIndicator(),
-                ),
-              if (_quote != null && !quoteOk)
-                Text(
-                  localizeDrugClientMessage(
-                    t,
-                    _quote!['message']?.toString() ?? t.drugsExportFailed,
-                  ),
-                  style: const TextStyle(color: Colors.orangeAccent),
-                ),
-              if (quoteOk) ...[
-                Text(t.drugsExportQuoteStreet(_money(_quote!['destStreetUnit'] ?? 0))),
-                Text(t.drugsExportQuoteB2b(_money(_quote!['wholesaleUnit'] ?? 0))),
-                Text(t.drugsExportPayout(_money(_quote!['payout'] ?? 0))),
-                Text(t.drugsExportFee(_money(_quote!['shippingFee'] ?? 0))),
-                Text(t.drugsExportEta(eta)),
-                Text(t.drugsExportSeizure(seizurePct)),
-                Text(
-                  t.drugsExportHeat(
-                    '${_quote!['drugHeat'] ?? 0}',
-                    '${_quote!['fbiHeat'] ?? 0}',
-                  ),
-                ),
-                if (_quote!['harborBonus'] == true)
-                  Text(
-                    t.drugsExportHarbor,
-                    style: const TextStyle(color: Colors.lightGreenAccent),
-                  ),
-                if (!canAfford)
-                  Text(
-                    t.drugsExportCannotAfford,
-                    style: const TextStyle(color: Colors.redAccent),
-                  ),
-                Text(t.drugsExportMinHint('${_quote!['minGrams'] ?? 250}')),
-              ],
-            ],
-          ),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text(t.cancel),
-        ),
-        ElevatedButton(
-          onPressed: confirmEnabled
-              ? () => Navigator.pop(context, {
-                    'quantity': _quantity,
-                    'destinationCountry': _destinationCountry,
-                  })
-              : null,
-          child: Text(t.drugsExportConfirm),
-        ),
-      ],
-    );
-  }
-}

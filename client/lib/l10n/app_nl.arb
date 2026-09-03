@@ -3773,6 +3773,22 @@
   "drugsExportFailed": "Export mislukt",
   "drugsExportStarted": "Lading onderweg. Cash bij aankomst.",
   "drugsExportCannotAfford": "Niet genoeg cash voor vracht",
+  "drugsExportCrewFeeHint": "Crewbank betaalt de vracht",
+  "drugsExportCrewPayout": "Uitbetaling: crew €{crew} · loper €{runner}",
+  "@drugsExportCrewPayout": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "runner": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportCannotAffordCrew": "Crewbank heeft niet genoeg voor vracht",
+  "drugsHubExportCrewPrefix": "Crew",
+  "drugsCrewLotsTitle": "Crew-kwaliteitslots",
+  "drugsCrewExportStarted": "Crew-lading onderweg. Cash bij aankomst naar de crewbank.",
   "drugsHubExportsTitle": "Groothandel-zendingen",
   "drugsHubExportInTransit": "Onderweg",
   "drugsHubExportSold": "Verkocht",

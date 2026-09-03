@@ -10735,6 +10735,22 @@
   "drugsExportFailed": "Exportación fallida",
   "drugsExportStarted": "Carga en tránsito. Efectivo al llegar.",
   "drugsExportCannotAfford": "No hay suficiente efectivo para el flete",
+  "drugsExportCrewFeeHint": "El banco del crew paga el flete",
+  "drugsExportCrewPayout": "Pago: crew €{crew} · corredor €{runner}",
+  "@drugsExportCrewPayout": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "runner": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportCannotAffordCrew": "El banco del crew no cubre el flete",
+  "drugsHubExportCrewPrefix": "Crew",
+  "drugsCrewLotsTitle": "Lotes de calidad del crew",
+  "drugsCrewExportStarted": "Carga del crew en tránsito. Efectivo al llegar al banco del crew.",
   "drugsHubExportsTitle": "Envíos mayoristas",
   "drugsHubExportInTransit": "En tránsito",
   "drugsHubExportSold": "Vendido",

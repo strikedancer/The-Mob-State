@@ -278,12 +278,14 @@ class DrugService {
     required String quality,
     required int quantity,
     String? destinationCountry,
+    String scope = 'personal',
   }) async {
     try {
       final params = {
         'drugType': drugType,
         'quality': quality,
         'quantity': '$quantity',
+        'scope': scope,
         if (destinationCountry != null && destinationCountry.isNotEmpty)
           'destinationCountry': destinationCountry,
       };
@@ -304,6 +306,7 @@ class DrugService {
     required String quality,
     required int quantity,
     required String destinationCountry,
+    String scope = 'personal',
   }) async {
     try {
       final response = await _apiClient.post('/drugs/wholesale/export', {
@@ -311,6 +314,7 @@ class DrugService {
         'quality': quality,
         'quantity': quantity,
         'destinationCountry': destinationCountry,
+        'scope': scope,
       });
       if (response.body.isEmpty) return {'success': false, 'message': 'Fout'};
       return json.decode(response.body) as Map<String, dynamic>;

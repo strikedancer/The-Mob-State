@@ -379,6 +379,7 @@ router.get('/wholesale/quote', authenticate, async (req: AuthRequest, res: Respo
     const destinationCountry = req.query.destinationCountry
       ? String(req.query.destinationCountry)
       : undefined;
+    const scope = String(req.query.scope || 'personal') === 'crew' ? 'crew' : 'personal';
 
     if (!drugType || !Number.isFinite(quantity) || quantity < 1) {
       return res.status(400).json({ success: false, message: 'Drug type en hoeveelheid vereist' });
@@ -390,6 +391,7 @@ router.get('/wholesale/quote', authenticate, async (req: AuthRequest, res: Respo
       quality,
       quantity,
       destinationCountry,
+      scope,
     });
     return res.json(result);
   } catch (error: any) {
@@ -405,7 +407,7 @@ router.get('/wholesale/quote', authenticate, async (req: AuthRequest, res: Respo
  */
 router.post('/wholesale/export', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const { drugType, quantity, quality = 'C', destinationCountry } = req.body ?? {};
+    const { drugType, quantity, quality = 'C', destinationCountry, scope } = req.body ?? {};
     if (!drugType || !destinationCountry || !quantity || quantity < 1) {
       return res.status(400).json({
         success: false,
@@ -419,6 +421,7 @@ router.post('/wholesale/export', authenticate, async (req: AuthRequest, res: Res
       quality: String(quality),
       quantity: typeof quantity === 'string' ? parseInt(quantity, 10) : quantity,
       destinationCountry: String(destinationCountry),
+      scope: String(scope || 'personal') === 'crew' ? 'crew' : 'personal',
     });
     if (!result.success) {
       return res.status(400).json(result);

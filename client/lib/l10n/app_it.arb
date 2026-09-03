@@ -10735,6 +10735,22 @@
   "drugsExportFailed": "Esportazione fallita",
   "drugsExportStarted": "Carico in transito. Contanti all'arrivo.",
   "drugsExportCannotAfford": "Contanti insufficienti per il nolo",
+  "drugsExportCrewFeeHint": "La banca della crew paga il nolo",
+  "drugsExportCrewPayout": "Pagamento: crew €{crew} · corriere €{runner}",
+  "@drugsExportCrewPayout": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "runner": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportCannotAffordCrew": "La banca della crew non copre il nolo",
+  "drugsHubExportCrewPrefix": "Crew",
+  "drugsCrewLotsTitle": "Lotti di qualità della crew",
+  "drugsCrewExportStarted": "Carico crew in transito. Contanti all'arrivo sulla banca della crew.",
   "drugsHubExportsTitle": "Spedizioni all'ingrosso",
   "drugsHubExportInTransit": "In transito",
   "drugsHubExportSold": "Venduto",

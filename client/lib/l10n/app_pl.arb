@@ -10735,6 +10735,22 @@
   "drugsExportFailed": "Eksport nie powiódł się",
   "drugsExportStarted": "Ładunek w drodze. Gotówka po przybyciu.",
   "drugsExportCannotAfford": "Za mało gotówki na fracht",
+  "drugsExportCrewFeeHint": "Bank załogi płaci fracht",
+  "drugsExportCrewPayout": "Wypłata: załoga €{crew} · kurier €{runner}",
+  "@drugsExportCrewPayout": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "runner": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsExportCannotAffordCrew": "Bank załogi nie pokrywa frachtu",
+  "drugsHubExportCrewPrefix": "Załoga",
+  "drugsCrewLotsTitle": "Partie jakości załogi",
+  "drugsCrewExportStarted": "Ładunek załogi w drodze. Gotówka po przybyciu na konto załogi.",
   "drugsHubExportsTitle": "Przesyłki hurtowe",
   "drugsHubExportInTransit": "W drodze",
   "drugsHubExportSold": "Sprzedano",

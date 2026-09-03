@@ -15,6 +15,9 @@ import '../utils/web_asset_helper.dart';
 import '../utils/trade_good_l10n.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/crew_heists_panel.dart';
+import '../widgets/drug_wholesale_export_dialog.dart';
+import '../services/drug_service.dart';
+import '../utils/drug_localizations.dart';
 import 'black_market_screen.dart';
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
@@ -3811,6 +3814,99 @@ class _CrewScreenState extends State<CrewScreen>
     await _depositDrugs(trade: true);
   }
 
+  List<Widget> _buildCrewDrugLotExportTiles() {
+    final inventory = _crewStorage?['inventory'];
+    if (inventory is! Map) return const [];
+    final rawLots = inventory['drugLots'];
+    if (rawLots is! List) return const [];
+    final lots = rawLots.whereType<Map>().map((row) => row.cast<String, dynamic>()).where((row) {
+      final qty = (row['quantity'] as num?)?.toInt() ?? 0;
+      final type = (row['drugType'] ?? '').toString();
+      return type.isNotEmpty && qty > 0;
+    }).toList();
+    if (lots.isEmpty) return const [];
+
+    return [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(4, 12, 4, 6),
+        child: Text(
+          l10n.drugsCrewLotsTitle,
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+      ),
+      ...lots.map((lot) {
+        final drugType = (lot['drugType'] ?? '').toString();
+        final quality = (lot['quality'] ?? 'C').toString();
+        final quantity = (lot['quantity'] as num?)?.toInt() ?? 0;
+        return Card(
+          child: ListTile(
+            leading: const Icon(Icons.local_shipping),
+            title: Text('$drugType ($quality)'),
+            subtitle: Text('${quantity}g'),
+            trailing: TextButton(
+              onPressed: () => _exportCrewDrugLot(
+                drugType: drugType,
+                quality: quality,
+                quantity: quantity,
+              ),
+              child: Text(l10n.drugsExportAction),
+            ),
+          ),
+        );
+      }),
+    ];
+  }
+
+  Future<void> _exportCrewDrugLot({
+    required String drugType,
+    required String quality,
+    required int quantity,
+  }) async {
+    final service = DrugService();
+    final choice = await showDialog<Map<String, dynamic>?>(
+      context: context,
+      builder: (ctx) => DrugWholesaleExportDialog(
+        drugType: drugType,
+        quality: quality,
+        quantity: quantity,
+        drugName: '$drugType ($quality)',
+        service: service,
+        scope: 'crew',
+      ),
+    );
+    if (choice == null) return;
+    final qty = choice['quantity'] as int? ?? 0;
+    final destinationCountry = choice['destinationCountry'] as String? ?? '';
+    if (qty <= 0 || destinationCountry.isEmpty) return;
+
+    final result = await service.startWholesaleExport(
+      drugType: drugType,
+      quality: quality,
+      quantity: qty,
+      destinationCountry: destinationCountry,
+      scope: 'crew',
+    );
+    if (!mounted) return;
+    final ok = result['success'] == true;
+    final rawMsg = result['message'] as String?;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          ok
+              ? l10n.drugsCrewExportStarted
+              : (rawMsg != null && rawMsg.isNotEmpty
+                  ? localizeDrugClientMessage(l10n, rawMsg)
+                  : l10n.drugsExportFailed),
+        ),
+        backgroundColor: ok ? Colors.green : Colors.red,
+      ),
+    );
+    if (ok) {
+      await _loadCrewStorage();
+    }
+  }
+
   Future<void> _depositDrugs({bool trade = false}) async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
@@ -4857,6 +4953,7 @@ class _CrewScreenState extends State<CrewScreen>
             actionNl: 'Toevoegen',
             actionEn: 'Add',
           ),
+          ..._buildCrewDrugLotExportTiles(),
           buildStorageTile(
             icon: Icons.inventory,
             titleNl: 'Handelswarenopslag',

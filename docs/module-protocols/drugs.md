@@ -36,9 +36,9 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - `POST /drugs/raids/:id/resolve` `{ choice: lose | downtime | cash }`
 - `POST /drug-facilities/:id/auto-sale` `{ enabled }` (darkweb storefront only, default off)
 - `POST /drugs/crew-storage/deposit` / `withdraw` — quality `DrugInventory` lots to crew `drug_storage`
-- `GET /drugs/wholesale/quote` — dest street vs B2B €/g, fee, ETA, seizure, heat preview
-- `POST /drugs/wholesale/export` — container send, `networkScope=personal`, locked wholesale metadata
-- `GET /drugs/wholesale/shipments` — personal wholesale rows (settles due first)
+- `GET /drugs/wholesale/quote` — dest street vs B2B €/g, fee, ETA, seizure, heat preview (`scope=personal|crew`)
+- `POST /drugs/wholesale/export` — container send; `scope=personal` uses personal inventory, `scope=crew` uses `CrewDrugLot` + crew smuggle network + crew bank freight
+- `GET /drugs/wholesale/shipments` — personal wholesale rows plus the player's crew wholesale rows (settles due first)
 
 ### NPC wholesale export (sell-on-arrival)
 - Player stays in the origin country. Min grams via `DRUG_WHOLESALE_MIN_GRAMS` (default 250). Other country required.
@@ -48,7 +48,12 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Tick + quote/list settle due rows. Ready wholesale is paid immediately; seized pays nothing.
 - Heat on send (`DRUG_WHOLESALE_DRUG_HEAT`, includes smuggle +2). FBI heat per kg on successful arrival. Country police `drug_wholesale` (origin on send, dest on success) only if pressure flag is already on.
 - Admin → Drugs runtime tab. Do not flip Clearing House or `COUNTRY_POLICE_PRESSURE_ENABLED` here.
-- Client entry: Inventory **Exporteren**. Hub shows a short shipment strip. Smuggling Hub stays general cargo; do not add a second wholesale wizard.
+- Client entry: Inventory **Exporteren** (personal). Crew storage tab lists quality lots with **Exporteren** (`scope=crew`). Hub shows a short shipment strip (crew rows prefixed). Smuggling Hub stays general cargo; do not add a second wholesale wizard.
+
+### Crew wholesale
+- Same sell-on-arrival loop. Source is `CrewDrugLot` (quality lots from Inventory **Naar crew-opslag**), not legacy `crewDrugInventory`.
+- Requires owned `drug_storage`. Any crew member may export. Freight is charged to the crew bank. Payout goes to the crew bank minus `DRUG_WHOLESALE_CREW_RUNNER_BPS` (default 500 = 5%) to the named runner. Cash-storage overflow also goes to the runner (proceeds are never dropped).
+- Heat/FBI/police stay on the sending player. Crew smuggling catalog/quote/send debit quality lots first, then legacy `crewDrugInventory`. Optional `feePayer: crew_bank` on smuggle send (crew network only).
 
 ### Credit speedup (production timer)
 - Utility sink only: shortens wait time, does **not** bypass materials, slots, heat, education or collect.
@@ -95,7 +100,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Credit temp-slot and heat shield are time/risk/utility only (no extra yield).
 - Crew quality-lot deposit uses `CrewDrugLot` (type+quality+grams) and shares `drug_storage` capacity with trade-good drug rows.
 - Nightclub own-production margin bonus is capped via `DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`.
-- NPC wholesale export (sell-on-arrival) reuses `smuggling_shipments` + `metadata_json.wholesale`; cash is paid on tick/quote/list settle, never via depot claim.
+- NPC wholesale export (sell-on-arrival) reuses `smuggling_shipments` + `metadata_json.wholesale`; cash is paid on tick/quote/list settle, never via depot claim. Crew wholesale uses `crewWholesale`, crew bank freight/payout, and `CrewDrugLot` debit.
 - Education-gated drug facility progression: slot/equipment upgrades that are locked behind school gates must return structured requirement details (`gateId`, `gateLabelKey`, `missing`) so the client can render the education requirements dialog instead of a generic error.
 - Materials bought into a country depot must not silently become backpack cargo; travel risk applies only to `_carried_` stock.
 

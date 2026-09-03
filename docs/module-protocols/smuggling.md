@@ -91,7 +91,7 @@ If the player's crew owns a region with the `harbor` strategic tag in the curren
 The live quote surfaces this as `harborBonus: true` so the hub can show a harbor caption. Personal shipments also receive the bonus when the player is in that crew.
 
 ## Drug wholesale (sell-on-arrival)
-NPC wholesale export from the drugs hub reuses `smuggling_shipments` with `metadata_json.wholesale = true`, channel `container`, personal network. Arrival is settled on tick (and on drugs quote/list): ready → locked `payout` cash + `claimed`; seized → no cash. Do not credit wholesale rows back into `DrugInventory` via depot claim. Player entry is Inventory **Exporteren**, not a second Smuggling wizard. See `drugs.md`.
+NPC wholesale export from the drugs hub reuses `smuggling_shipments` with `metadata_json.wholesale = true`, channel `container`. Personal export uses the personal network; crew export uses `networkScope=crew`, `CrewDrugLot` stock, and `feePayer=crew_bank`. Arrival is settled on tick (and on drugs quote/list): ready → locked `payout` cash + `claimed`; seized → no cash. Do not credit wholesale rows back into inventory via depot claim. Player entry is Inventory **Exporteren**; crew entry is the crew storage lot list. See `drugs.md`.
 
 ## Cross-Module Dependencies
 - Smuggling → Aviation (`aviationService`, `PlayerAircraft` voor vliegtuig-smokkel)

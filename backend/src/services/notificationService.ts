@@ -1084,7 +1084,15 @@ export class NotificationService {
   public async sendDrugWholesaleSettledNotification(
     playerId: number,
     success: boolean,
-    details: { destinationCountry: string; quantity: number; payout: number; drugType: string },
+    details: {
+      destinationCountry: string;
+      quantity: number;
+      payout: number;
+      drugType: string;
+      crewWholesale?: boolean;
+      crewPayout?: number;
+      runnerPayout?: number;
+    },
     language?: Language
   ): Promise<void> {
     try {
@@ -1098,13 +1106,19 @@ export class NotificationService {
           : success
             ? 'Wholesale arrived'
             : 'Export seized';
+      const crewPayout = Math.max(0, Math.floor(Number(details.crewPayout ?? 0)));
+      const runnerPayout = Math.max(0, Math.floor(Number(details.runnerPayout ?? details.payout)));
       const body =
         resolvedLanguage === 'nl'
           ? success
-            ? `${details.quantity}g ${details.drugType} in ${dest}: €${details.payout.toLocaleString()} ontvangen.`
+            ? details.crewWholesale
+              ? `${details.quantity}g ${details.drugType} in ${dest}: crewbank €${crewPayout.toLocaleString()} · loper €${runnerPayout.toLocaleString()}.`
+              : `${details.quantity}g ${details.drugType} in ${dest}: €${details.payout.toLocaleString()} ontvangen.`
             : `${details.quantity}g ${details.drugType} naar ${dest} is onderschept. Geen uitbetaling.`
           : success
-            ? `${details.quantity}g ${details.drugType} in ${dest}: €${details.payout.toLocaleString()} received.`
+            ? details.crewWholesale
+              ? `${details.quantity}g ${details.drugType} in ${dest}: crew bank €${crewPayout.toLocaleString()} · runner €${runnerPayout.toLocaleString()}.`
+              : `${details.quantity}g ${details.drugType} in ${dest}: €${details.payout.toLocaleString()} received.`
             : `${details.quantity}g ${details.drugType} to ${dest} was seized. No payout.`;
 
       await this.createInAppWorldEvent(

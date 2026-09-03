@@ -19,6 +19,7 @@ export type DrugRuntimeConfig = {
   wholesaleScarcityCapBps: number;
   wholesaleFbiHeatPerKg: number;
   wholesaleDrugHeat: number;
+  wholesaleCrewRunnerBps: number;
 };
 
 export const DRUG_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
@@ -40,6 +41,7 @@ export const DRUG_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   DRUG_WHOLESALE_SCARCITY_CAP_BPS: '1000',
   DRUG_WHOLESALE_FBI_HEAT_PER_KG: '2',
   DRUG_WHOLESALE_DRUG_HEAT: '4',
+  DRUG_WHOLESALE_CREW_RUNNER_BPS: '500',
 };
 
 export const DRUG_RUNTIME_SETTING_KEYS = Object.keys(DRUG_RUNTIME_SETTING_DEFAULTS);
@@ -86,6 +88,7 @@ export async function getDrugRuntimeConfig(): Promise<DrugRuntimeConfig> {
     wholesaleScarcityCapBps: read('DRUG_WHOLESALE_SCARCITY_CAP_BPS', 1000),
     wholesaleFbiHeatPerKg: read('DRUG_WHOLESALE_FBI_HEAT_PER_KG', 2),
     wholesaleDrugHeat: read('DRUG_WHOLESALE_DRUG_HEAT', 4),
+    wholesaleCrewRunnerBps: Math.min(2500, Math.max(0, read('DRUG_WHOLESALE_CREW_RUNNER_BPS', 500))),
   };
 }
 

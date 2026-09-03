@@ -25442,6 +25442,42 @@ abstract class AppLocalizations {
   /// **'Not enough cash for freight'**
   String get drugsExportCannotAfford;
 
+  /// No description provided for @drugsExportCrewFeeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew bank pays the freight'**
+  String get drugsExportCrewFeeHint;
+
+  /// No description provided for @drugsExportCrewPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout: crew €{crew} · runner €{runner}'**
+  String drugsExportCrewPayout(String crew, String runner);
+
+  /// No description provided for @drugsExportCannotAffordCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew bank cannot cover freight'**
+  String get drugsExportCannotAffordCrew;
+
+  /// No description provided for @drugsHubExportCrewPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get drugsHubExportCrewPrefix;
+
+  /// No description provided for @drugsCrewLotsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew quality lots'**
+  String get drugsCrewLotsTitle;
+
+  /// No description provided for @drugsCrewExportStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew load in transit. Cash on arrival to the crew bank.'**
+  String get drugsCrewExportStarted;
+
   /// No description provided for @drugsHubExportsTitle.
   ///
   /// In en, this message translates to:

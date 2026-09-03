@@ -1,4 +1,5 @@
-﻿import prisma from '../lib/prisma';
+﻿import type { Prisma } from '@prisma/client';
+import prisma from '../lib/prisma';
 import countries from '../../content/countries.json';
 import { vehicleService } from './vehicleService';
 import { getAircraftById } from './aviationService';
@@ -95,6 +96,7 @@ interface SendShipmentInput {
   transportMode?: SmugglingTransportMode;
   ownedTransportKey?: string;
   metadata?: Record<string, any>;
+  feePayer?: 'player' | 'crew_bank';
 }
 
 interface QuoteShipmentResult {
@@ -135,6 +137,122 @@ class SmugglingService {
     }
 
     return { drugType: goodType, quality: 'C' };
+  }
+
+  private parseCrewDrugItemKey(
+    itemKey: string,
+    fallbackQuality = 'C'
+  ): { drugType: string; quality: string; canonicalKey: string } {
+    const qualities = new Set(['D', 'C', 'B', 'A', 'S']);
+    if (itemKey.startsWith('drug:')) {
+      const parsed = this.parseCrewDrugGoodType(itemKey);
+      return {
+        ...parsed,
+        canonicalKey: `drug:${parsed.drugType}:${parsed.quality}`,
+      };
+    }
+    const colonIdx = itemKey.lastIndexOf(':');
+    if (colonIdx > 0) {
+      const quality = itemKey.slice(colonIdx + 1).toUpperCase();
+      if (qualities.has(quality)) {
+        const drugType = itemKey.slice(0, colonIdx);
+        return {
+          drugType,
+          quality,
+          canonicalKey: `drug:${drugType}:${quality}`,
+        };
+      }
+    }
+    const quality = (fallbackQuality || 'C').toUpperCase();
+    return {
+      drugType: itemKey,
+      quality,
+      canonicalKey: `drug:${itemKey}:${quality}`,
+    };
+  }
+
+  private async getCrewDrugAvailable(crewId: number, itemKey: string): Promise<number> {
+    const parsed = this.parseCrewDrugItemKey(itemKey);
+    const keys = Array.from(new Set([itemKey, parsed.canonicalKey]));
+    const [lot, inventories] = await Promise.all([
+      prisma.crewDrugLot.findUnique({
+        where: {
+          crewId_drugType_quality: {
+            crewId,
+            drugType: parsed.drugType,
+            quality: parsed.quality,
+          },
+        },
+        select: { quantity: true },
+      }),
+      prisma.crewDrugInventory.findMany({
+        where: { crewId, goodType: { in: keys } },
+        select: { quantity: true },
+      }),
+    ]);
+    return (lot?.quantity ?? 0) + inventories.reduce((sum, row) => sum + row.quantity, 0);
+  }
+
+  private async debitCrewDrug(
+    tx: Prisma.TransactionClient,
+    crewId: number,
+    itemKey: string,
+    quantity: number
+  ): Promise<{ ok: true; drugType: string; quality: string } | { ok: false; message: string }> {
+    const parsed = this.parseCrewDrugItemKey(itemKey);
+    const keys = Array.from(new Set([itemKey, parsed.canonicalKey]));
+    const lot = await tx.crewDrugLot.findUnique({
+      where: {
+        crewId_drugType_quality: {
+          crewId,
+          drugType: parsed.drugType,
+          quality: parsed.quality,
+        },
+      },
+    });
+    const inventories = await tx.crewDrugInventory.findMany({
+      where: { crewId, goodType: { in: keys } },
+    });
+    const available = (lot?.quantity ?? 0) + inventories.reduce((sum, row) => sum + row.quantity, 0);
+    if (available < quantity) {
+      return { ok: false, message: 'Niet genoeg drugs in crew inventory' };
+    }
+
+    let remaining = quantity;
+    if (lot && remaining > 0) {
+      const take = Math.min(lot.quantity, remaining);
+      if (take === lot.quantity) {
+        await tx.crewDrugLot.delete({ where: { id: lot.id } });
+      } else if (take > 0) {
+        await tx.crewDrugLot.update({
+          where: { id: lot.id },
+          data: { quantity: lot.quantity - take },
+        });
+      }
+      remaining -= take;
+    }
+
+    for (const inv of inventories) {
+      if (remaining <= 0) break;
+      const take = Math.min(inv.quantity, remaining);
+      if (take === inv.quantity) {
+        await tx.crewDrugInventory.delete({
+          where: { crewId_goodType: { crewId, goodType: inv.goodType } },
+        });
+      } else if (take > 0) {
+        await tx.crewDrugInventory.update({
+          where: { crewId_goodType: { crewId, goodType: inv.goodType } },
+          data: { quantity: inv.quantity - take },
+        });
+      }
+      remaining -= take;
+    }
+
+    if (remaining > 0) {
+      return { ok: false, message: 'Niet genoeg drugs in crew inventory' };
+    }
+
+    return { ok: true, drugType: parsed.drugType, quality: parsed.quality };
   }
 
   private normalizeTransportMode(value: unknown): SmugglingTransportMode {
@@ -479,6 +597,7 @@ class SmugglingService {
         await completeWholesaleArrival({
           id: shipment.id,
           playerId: shipment.player_id,
+          crewId: shipment.crew_id,
           quantity: shipment.quantity,
           destinationCountry: shipment.destination_country,
           itemKey: shipment.item_key,
@@ -693,8 +812,12 @@ class SmugglingService {
     const resolvedScope: SmugglingNetworkScope = networkScope === 'crew' && crewId ? 'crew' : 'personal';
 
     if (resolvedScope === 'crew' && crewId) {
-      const [crewDrugs, crewTrade, crewCars, crewBoats, crewWeapons, crewAmmo] = await Promise.all([
+      const [crewDrugs, crewLots, crewTrade, crewCars, crewBoats, crewWeapons, crewAmmo] = await Promise.all([
         prisma.crewDrugInventory.findMany({ where: { crewId, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
+        prisma.crewDrugLot.findMany({
+          where: { crewId, quantity: { gt: 0 } },
+          orderBy: [{ drugType: 'asc' }, { quality: 'asc' }],
+        }),
         prisma.crewTradeInventory.findMany({ where: { crewId, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
         prisma.crewCarInventory.findMany({ where: { crewId }, orderBy: { addedAt: 'desc' } }),
         prisma.crewBoatInventory.findMany({ where: { crewId }, orderBy: { addedAt: 'desc' } }),
@@ -715,17 +838,47 @@ class SmugglingService {
         selectedNetworkScope: 'crew',
         ownedTransports: [],
         categories: {
-          drug: crewDrugs.map((d) => {
-            const parsed = this.parseCrewDrugGoodType(d.goodType);
-            return {
-              itemKey: d.goodType,
-              itemLabel: `${parsed.drugType} (${parsed.quality})`,
-              quantity: d.quantity,
-              quality: parsed.quality,
-              unitTag: 'g',
-              metadata: { quality: parsed.quality, crewGoodType: d.goodType },
-            };
-          }),
+          drug: (() => {
+            const byKey = new Map<
+              string,
+              {
+                itemKey: string;
+                itemLabel: string;
+                quantity: number;
+                quality: string;
+                unitTag: string;
+                metadata: Record<string, unknown>;
+              }
+            >();
+            for (const lot of crewLots) {
+              const itemKey = `drug:${lot.drugType}:${lot.quality}`;
+              byKey.set(itemKey, {
+                itemKey,
+                itemLabel: `${lot.drugType} (${lot.quality})`,
+                quantity: lot.quantity,
+                quality: lot.quality,
+                unitTag: 'g',
+                metadata: { quality: lot.quality },
+              });
+            }
+            for (const d of crewDrugs) {
+              const parsed = this.parseCrewDrugItemKey(d.goodType);
+              const existing = byKey.get(parsed.canonicalKey);
+              if (existing) {
+                existing.quantity += d.quantity;
+              } else {
+                byKey.set(parsed.canonicalKey, {
+                  itemKey: parsed.canonicalKey,
+                  itemLabel: `${parsed.drugType} (${parsed.quality})`,
+                  quantity: d.quantity,
+                  quality: parsed.quality,
+                  unitTag: 'g',
+                  metadata: { quality: parsed.quality, crewGoodType: d.goodType },
+                });
+              }
+            }
+            return Array.from(byKey.values());
+          })(),
           trade: crewTrade.map((g) => ({
             itemKey: g.goodType,
             itemLabel: g.goodType,
@@ -833,6 +986,8 @@ class SmugglingService {
       return { success: false, message: 'Je zit niet in een crew' };
     }
 
+    const feePayer = input.feePayer === 'crew_bank' && networkScope === 'crew' ? 'crew_bank' : 'player';
+
     if (transportMode === 'owned' && networkScope !== 'personal') {
       return { success: false, message: 'Eigen voertuigen werken alleen voor persoonlijke smokkel' };
     }
@@ -893,7 +1048,15 @@ class SmugglingService {
       { harborBonus }
     );
 
-    if (player.money < pricing.fee) {
+    if (feePayer === 'crew_bank') {
+      const crewBank = await prisma.crew.findUnique({
+        where: { id: crewId! },
+        select: { bankBalance: true },
+      });
+      if (!crewBank || crewBank.bankBalance < pricing.fee) {
+        return { success: false, message: 'Crewbank heeft niet genoeg voor vracht' };
+      }
+    } else if (player.money < pricing.fee) {
       return { success: false, message: 'Niet genoeg geld voor smokkelkosten' };
     }
 
@@ -908,24 +1071,12 @@ class SmugglingService {
 
       if (category === 'drug') {
         if (networkScope === 'crew') {
-          const inv = await tx.crewDrugInventory.findUnique({
-            where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
-          });
-          if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg drugs in crew inventory' } as const;
+          const debit = await this.debitCrewDrug(tx, crewId!, itemKey, quantity);
+          if (!debit.ok) return debit;
 
-          if (inv.quantity === quantity) {
-            await tx.crewDrugInventory.delete({ where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } } });
-          } else {
-            await tx.crewDrugInventory.update({
-              where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
-              data: { quantity: inv.quantity - quantity },
-            });
-          }
-
-          const parsed = this.parseCrewDrugGoodType(itemKey);
-          itemLabel = `${parsed.drugType} (${parsed.quality})`;
+          itemLabel = `${debit.drugType} (${debit.quality})`;
           unitTag = 'g';
-          metadata = { ...metadata, quality: parsed.quality, crewGoodType: itemKey };
+          metadata = { ...metadata, quality: debit.quality, crewGoodType: itemKey };
         } else {
           const colonIdx = itemKey.lastIndexOf(':');
           const drugType = colonIdx > 0 ? itemKey.slice(0, colonIdx) : itemKey;
@@ -1157,13 +1308,33 @@ class SmugglingService {
         };
       }
 
-      await tx.player.update({
-        where: { id: playerId },
-        data: {
-          money: { decrement: pricing.fee },
-          drugHeat: category === 'drug' ? { increment: 2 } : undefined,
-        },
-      });
+      if (feePayer === 'crew_bank') {
+        const crewBank = await tx.crew.findUnique({
+          where: { id: crewId! },
+          select: { bankBalance: true },
+        });
+        if (!crewBank || crewBank.bankBalance < pricing.fee) {
+          return { ok: false, message: 'Crewbank heeft niet genoeg voor vracht' } as const;
+        }
+        await tx.crew.update({
+          where: { id: crewId! },
+          data: { bankBalance: { decrement: pricing.fee } },
+        });
+        await tx.player.update({
+          where: { id: playerId },
+          data: {
+            drugHeat: category === 'drug' ? { increment: 2 } : undefined,
+          },
+        });
+      } else {
+        await tx.player.update({
+          where: { id: playerId },
+          data: {
+            money: { decrement: pricing.fee },
+            drugHeat: category === 'drug' ? { increment: 2 } : undefined,
+          },
+        });
+      }
 
       const metadataJson = JSON.stringify(metadata ?? {});
 
@@ -1248,6 +1419,8 @@ class SmugglingService {
       return { success: false, message: 'Je zit niet in een crew' };
     }
 
+    const quoteFeePayer = input.feePayer === 'crew_bank' && networkScope === 'crew' ? 'crew_bank' : 'player';
+
     if (transportMode === 'owned' && networkScope !== 'personal') {
       return { success: false, message: 'Eigen voertuigen werken alleen voor persoonlijke smokkel' };
     }
@@ -1306,11 +1479,7 @@ class SmugglingService {
 
     if (category === 'drug') {
       if (networkScope === 'crew') {
-        const inv = await prisma.crewDrugInventory.findUnique({
-          where: { crewId_goodType: { crewId: crewId!, goodType: itemKey } },
-          select: { quantity: true },
-        });
-        availableQuantity = inv?.quantity ?? 0;
+        availableQuantity = await this.getCrewDrugAvailable(crewId!, itemKey);
       } else {
         const colonIdx = itemKey.lastIndexOf(':');
         const drugType = colonIdx > 0 ? itemKey.slice(0, colonIdx) : itemKey;
@@ -1434,6 +1603,15 @@ class SmugglingService {
       { harborBonus }
     );
 
+    let canAfford = (player.money ?? 0) >= pricing.fee;
+    if (quoteFeePayer === 'crew_bank' && crewId) {
+      const crewBank = await prisma.crew.findUnique({
+        where: { id: crewId },
+        select: { bankBalance: true },
+      });
+      canAfford = (crewBank?.bankBalance ?? 0) >= pricing.fee;
+    }
+
     return {
       success: true,
       message: 'Quote berekend',
@@ -1441,7 +1619,7 @@ class SmugglingService {
       etaMinutes: pricing.etaMinutes,
       seizureChance: pricing.seizureChance,
       availableQuantity,
-      canAfford: (player.money ?? 0) >= pricing.fee,
+      canAfford,
       cooldownRemainingSeconds,
       recommendedChannel: transportMode === 'owned' ? 'owned' : this.recommendedChannelFor(category, quantity),
       transportLabel: ownedTransport?.transportLabel,
@@ -1560,6 +1738,7 @@ class SmugglingService {
         await completeWholesaleArrival({
           id: shipment.id,
           playerId: shipment.player_id,
+          crewId: shipment.crew_id,
           quantity: shipment.quantity,
           destinationCountry: shipment.destination_country,
           itemKey: shipment.item_key,

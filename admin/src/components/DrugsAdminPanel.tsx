@@ -68,6 +68,13 @@ const KEYS: Array<{ key: string; labelNl: string; labelEn: string; hintNl: strin
     hintEn: 'Includes existing smuggle +2',
   },
   {
+    key: 'DRUG_WHOLESALE_CREW_RUNNER_BPS',
+    labelNl: 'Crew-export loper-cut (bps)',
+    labelEn: 'Crew export runner cut (bps)',
+    hintNl: '500 = 5% van payout naar de loper',
+    hintEn: '500 = 5% of payout to the runner',
+  },
+  {
     key: 'DRUG_HEAT_CASH_COOL_COST_PER_POINT',
     labelNl: 'Cash-cool kosten per heat-punt',
     labelEn: 'Cash-cool cost per heat point',

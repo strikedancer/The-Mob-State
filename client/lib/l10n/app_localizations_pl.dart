@@ -14745,6 +14745,27 @@ class AppLocalizationsPl extends AppLocalizations {
   String get drugsExportCannotAfford => 'Za mało gotówki na fracht';
 
   @override
+  String get drugsExportCrewFeeHint => 'Bank załogi płaci fracht';
+
+  @override
+  String drugsExportCrewPayout(String crew, String runner) {
+    return 'Wypłata: załoga €$crew · kurier €$runner';
+  }
+
+  @override
+  String get drugsExportCannotAffordCrew => 'Bank załogi nie pokrywa frachtu';
+
+  @override
+  String get drugsHubExportCrewPrefix => 'Załoga';
+
+  @override
+  String get drugsCrewLotsTitle => 'Partie jakości załogi';
+
+  @override
+  String get drugsCrewExportStarted =>
+      'Ładunek załogi w drodze. Gotówka po przybyciu na konto załogi.';
+
+  @override
   String get drugsHubExportsTitle => 'Przesyłki hurtowe';
 
   @override

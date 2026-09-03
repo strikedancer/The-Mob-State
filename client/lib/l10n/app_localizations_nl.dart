@@ -14666,6 +14666,28 @@ class AppLocalizationsNl extends AppLocalizations {
   String get drugsExportCannotAfford => 'Niet genoeg cash voor vracht';
 
   @override
+  String get drugsExportCrewFeeHint => 'Crewbank betaalt de vracht';
+
+  @override
+  String drugsExportCrewPayout(String crew, String runner) {
+    return 'Uitbetaling: crew €$crew · loper €$runner';
+  }
+
+  @override
+  String get drugsExportCannotAffordCrew =>
+      'Crewbank heeft niet genoeg voor vracht';
+
+  @override
+  String get drugsHubExportCrewPrefix => 'Crew';
+
+  @override
+  String get drugsCrewLotsTitle => 'Crew-kwaliteitslots';
+
+  @override
+  String get drugsCrewExportStarted =>
+      'Crew-lading onderweg. Cash bij aankomst naar de crewbank.';
+
+  @override
   String get drugsHubExportsTitle => 'Groothandel-zendingen';
 
   @override

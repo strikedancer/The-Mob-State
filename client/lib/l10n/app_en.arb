@@ -9328,6 +9328,18 @@
   "drugsExportFailed": "Export failed",
   "drugsExportStarted": "Load in transit. Cash on arrival.",
   "drugsExportCannotAfford": "Not enough cash for freight",
+  "drugsExportCrewFeeHint": "Crew bank pays the freight",
+  "drugsExportCrewPayout": "Payout: crew €{crew} · runner €{runner}",
+  "@drugsExportCrewPayout": {
+    "placeholders": {
+      "crew": { "type": "String" },
+      "runner": { "type": "String" }
+    }
+  },
+  "drugsExportCannotAffordCrew": "Crew bank cannot cover freight",
+  "drugsHubExportCrewPrefix": "Crew",
+  "drugsCrewLotsTitle": "Crew quality lots",
+  "drugsCrewExportStarted": "Crew load in transit. Cash on arrival to the crew bank.",
   "drugsHubExportsTitle": "Wholesale shipments",
   "drugsHubExportInTransit": "In transit",
   "drugsHubExportSold": "Sold",

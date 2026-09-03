@@ -679,6 +679,7 @@ class DrugWholesaleShipment {
   final int payout;
   final DateTime? etaAt;
   final bool settled;
+  final bool crewWholesale;
 
   DrugWholesaleShipment({
     required this.id,
@@ -690,6 +691,7 @@ class DrugWholesaleShipment {
     required this.payout,
     this.etaAt,
     required this.settled,
+    this.crewWholesale = false,
   });
 
   factory DrugWholesaleShipment.fromJson(Map<String, dynamic> json) {
@@ -703,6 +705,7 @@ class DrugWholesaleShipment {
       payout: (json['payout'] as num?)?.toInt() ?? 0,
       etaAt: json['etaAt'] != null ? DateTime.tryParse(json['etaAt'].toString()) : null,
       settled: json['settled'] == true,
+      crewWholesale: json['crewWholesale'] == true || json['networkScope'] == 'crew',
     );
   }
 }

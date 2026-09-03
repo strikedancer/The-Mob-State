@@ -14767,6 +14767,28 @@ class AppLocalizationsEs extends AppLocalizations {
       'No hay suficiente efectivo para el flete';
 
   @override
+  String get drugsExportCrewFeeHint => 'El banco del crew paga el flete';
+
+  @override
+  String drugsExportCrewPayout(String crew, String runner) {
+    return 'Pago: crew €$crew · corredor €$runner';
+  }
+
+  @override
+  String get drugsExportCannotAffordCrew =>
+      'El banco del crew no cubre el flete';
+
+  @override
+  String get drugsHubExportCrewPrefix => 'Crew';
+
+  @override
+  String get drugsCrewLotsTitle => 'Lotes de calidad del crew';
+
+  @override
+  String get drugsCrewExportStarted =>
+      'Carga del crew en tránsito. Efectivo al llegar al banco del crew.';
+
+  @override
   String get drugsHubExportsTitle => 'Envíos mayoristas';
 
   @override

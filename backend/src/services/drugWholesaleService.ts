@@ -7,11 +7,19 @@ import { smugglingService } from './smugglingService';
 import { countryPoliceService } from './countryPoliceService';
 import * as fbiService from './fbiService';
 import { NotificationService } from './notificationService';
+import { getCrewBuildingCost, getCrewStorageCapacity } from './crewBuildingService';
+
+type WholesaleScope = 'personal' | 'crew';
 
 type WholesaleMeta = {
   wholesale?: boolean;
+  crewWholesale?: boolean;
+  crewId?: number;
+  payoutTo?: 'player' | 'crew_bank';
   unitPrice?: number;
   payout?: number;
+  crewPayout?: number;
+  runnerPayout?: number;
   destinationCountry?: string;
   drugType?: string;
   quality?: string;
@@ -107,18 +115,26 @@ function destinationOptions(drugType: string, quality: string, originCountry: st
     .sort((a, b) => b.streetUnit - a.streetUnit);
 }
 
+function splitCrewPayout(payout: number, runnerBps: number): { crewPayout: number; runnerPayout: number } {
+  const bps = Math.min(2500, Math.max(0, Math.floor(runnerBps)));
+  const runnerPayout = Math.floor((payout * bps) / 10000);
+  return { runnerPayout, crewPayout: Math.max(0, payout - runnerPayout) };
+}
+
 export async function quoteExport(params: {
   playerId: number;
   drugType: string;
   quality: string;
   quantity: number;
   destinationCountry?: string;
+  scope?: WholesaleScope;
 }) {
   await settleDueExports();
   const runtime = await getDrugRuntimeConfig();
   const quantity = Math.floor(params.quantity);
   const quality = (params.quality || 'C').toUpperCase();
   const drugType = params.drugType;
+  const scope: WholesaleScope = params.scope === 'crew' ? 'crew' : 'personal';
 
   const drug = drugService.getDrugDefinition(drugType);
   if (!drug) {
@@ -158,28 +174,57 @@ export async function quoteExport(params: {
     };
   }
 
-  const lot = await prisma.drugInventory.findUnique({
-    where: {
-      playerId_drugType_quality: {
-        playerId: params.playerId,
-        drugType,
-        quality,
+  let crewId: number | null = null;
+  let availableQuantity = 0;
+  if (scope === 'crew') {
+    const membership = await prisma.crewMember.findUnique({
+      where: { playerId: params.playerId },
+      select: { crewId: true },
+    });
+    if (!membership) {
+      return { success: false, message: 'Je zit niet in een crew', destinations: destList };
+    }
+    crewId = membership.crewId;
+    const drugCap = await getCrewStorageCapacity(crewId, 'drug_storage');
+    if (drugCap <= 0) {
+      return { success: false, message: 'Crew heeft geen drugsopslag', destinations: destList };
+    }
+    const lot = await prisma.crewDrugLot.findUnique({
+      where: {
+        crewId_drugType_quality: { crewId, drugType, quality },
       },
-    },
-    select: { quantity: true },
-  });
-  if (!lot || lot.quantity < quantity) {
-    return { success: false, message: 'Niet genoeg voorraad', destinations: destList, minGrams: runtime.wholesaleMinGrams };
+      select: { quantity: true },
+    });
+    availableQuantity = lot?.quantity ?? 0;
+    if (availableQuantity < quantity) {
+      return { success: false, message: 'Niet genoeg voorraad', destinations: destList, minGrams: runtime.wholesaleMinGrams };
+    }
+  } else {
+    const lot = await prisma.drugInventory.findUnique({
+      where: {
+        playerId_drugType_quality: {
+          playerId: params.playerId,
+          drugType,
+          quality,
+        },
+      },
+      select: { quantity: true },
+    });
+    availableQuantity = lot?.quantity ?? 0;
+    if (availableQuantity < quantity) {
+      return { success: false, message: 'Niet genoeg voorraad', destinations: destList, minGrams: runtime.wholesaleMinGrams };
+    }
   }
 
   const smuggleQuote = await smugglingService.quoteShipment(params.playerId, {
     category: 'drug',
-    itemKey: `${drugType}:${quality}`,
+    itemKey: scope === 'crew' ? `drug:${drugType}:${quality}` : `${drugType}:${quality}`,
     quantity,
     destinationCountry,
     channel: 'container',
-    networkScope: 'personal',
+    networkScope: scope === 'crew' ? 'crew' : 'personal',
     transportMode: 'commercial',
+    feePayer: scope === 'crew' ? 'crew_bank' : 'player',
     metadata: { quality },
   });
   if (!smuggleQuote.success) {
@@ -204,9 +249,11 @@ export async function quoteExport(params: {
   });
   const payout = Math.max(0, unitPrice * quantity);
   const fbiHeat = Math.max(1, Math.ceil((quantity / 1000) * runtime.wholesaleFbiHeatPerKg));
+  const split = scope === 'crew' ? splitCrewPayout(payout, runtime.wholesaleCrewRunnerBps) : { crewPayout: 0, runnerPayout: payout };
 
   return {
     success: true,
+    scope,
     originCountry: player.currentCountry,
     destinationCountry,
     drugType,
@@ -217,13 +264,17 @@ export async function quoteExport(params: {
     originStreetUnit: originStreet,
     wholesaleUnit: unitPrice,
     payout,
+    crewPayout: split.crewPayout,
+    runnerPayout: split.runnerPayout,
+    runnerBps: scope === 'crew' ? runtime.wholesaleCrewRunnerBps : 0,
+    feePayer: scope === 'crew' ? 'crew_bank' : 'player',
     shippingFee: smuggleQuote.shippingFee ?? 0,
     etaMinutes: smuggleQuote.etaMinutes,
     seizureChance: smuggleQuote.seizureChance,
     harborBonus: smuggleQuote.harborBonus === true,
     canAfford: smuggleQuote.canAfford,
     cooldownRemainingSeconds: smuggleQuote.cooldownRemainingSeconds ?? 0,
-    availableQuantity: lot.quantity,
+    availableQuantity,
     drugHeat: runtime.wholesaleDrugHeat,
     fbiHeat,
     policeGain: 1,
@@ -237,27 +288,45 @@ export async function startExport(params: {
   quality: string;
   quantity: number;
   destinationCountry: string;
+  scope?: WholesaleScope;
 }) {
   const quoted = await quoteExport(params);
   if (!quoted.success) {
     return quoted;
   }
 
+  const scope: WholesaleScope = params.scope === 'crew' ? 'crew' : 'personal';
+  const quality = (params.quality || 'C').toUpperCase();
+  let crewId: number | undefined;
+  if (scope === 'crew') {
+    const membership = await prisma.crewMember.findUnique({
+      where: { playerId: params.playerId },
+      select: { crewId: true },
+    });
+    crewId = membership?.crewId;
+  }
+
   const send = await smugglingService.sendShipment(params.playerId, {
     category: 'drug',
-    itemKey: `${params.drugType}:${params.quality}`,
+    itemKey: scope === 'crew' ? `drug:${params.drugType}:${quality}` : `${params.drugType}:${quality}`,
     quantity: params.quantity,
     destinationCountry: params.destinationCountry,
     channel: 'container',
-    networkScope: 'personal',
+    networkScope: scope === 'crew' ? 'crew' : 'personal',
     transportMode: 'commercial',
+    feePayer: scope === 'crew' ? 'crew_bank' : 'player',
     metadata: {
       wholesale: true,
+      crewWholesale: scope === 'crew',
+      crewId,
+      payoutTo: scope === 'crew' ? 'crew_bank' : 'player',
       unitPrice: quoted.wholesaleUnit,
       payout: quoted.payout,
+      crewPayout: quoted.crewPayout,
+      runnerPayout: quoted.runnerPayout,
       destinationCountry: params.destinationCountry,
       drugType: params.drugType,
-      quality: (params.quality || 'C').toUpperCase(),
+      quality,
       quantity: Math.floor(params.quantity),
     },
   });
@@ -292,14 +361,18 @@ export async function startExport(params: {
     shippingFee: send.shippingFee,
     seizureChance: send.seizureChance,
     payout: quoted.payout,
+    crewPayout: quoted.crewPayout,
+    runnerPayout: quoted.runnerPayout,
     wholesaleUnit: quoted.wholesaleUnit,
     harborBonus: quoted.harborBonus,
+    scope,
   };
 }
 
 export async function completeWholesaleArrival(params: {
   id: number;
   playerId: number;
+  crewId?: number | null;
   quantity: number;
   destinationCountry: string;
   itemKey: string;
@@ -311,14 +384,29 @@ export async function completeWholesaleArrival(params: {
     return;
   }
 
-  const settledAt = new Date().toISOString();
-  const nextMeta = { ...meta, settledAt };
   const payout = Math.max(0, Math.floor(Number(meta.payout ?? 0)));
   const drugType = String(meta.drugType || params.itemKey);
   const quantity = Number(meta.quantity || params.quantity || 0);
-  const metadataJson = JSON.stringify(nextMeta);
+  const crewWholesale = meta.crewWholesale === true;
+  const crewId = params.crewId ?? meta.crewId ?? null;
+  const runtime = await getDrugRuntimeConfig();
+  const cashCapacity = crewWholesale && crewId
+    ? await getCrewStorageCapacity(crewId, 'cash_storage')
+    : 0;
+  const cashLimit = cashCapacity > 0 ? cashCapacity : getCrewBuildingCost('cash_storage', 0);
+
+  const settledAt = new Date().toISOString();
+  let crewPayout = 0;
+  let runnerPayout = payout;
+  if (crewWholesale) {
+    const split = splitCrewPayout(payout, runtime.wholesaleCrewRunnerBps);
+    crewPayout = split.crewPayout;
+    runnerPayout = split.runnerPayout;
+  }
 
   if (params.seized) {
+    const nextMeta = { ...meta, settledAt, crewPayout: 0, runnerPayout: 0, crewId: crewId ?? meta.crewId };
+    const metadataJson = JSON.stringify(nextMeta);
     const locked = await prisma.$executeRaw`
       UPDATE smuggling_shipments
       SET status = 'seized',
@@ -333,11 +421,43 @@ export async function completeWholesaleArrival(params: {
       quantity,
       payout: 0,
       drugType,
+      crewWholesale,
     });
     return;
   }
 
   const credited = await prisma.$transaction(async (tx) => {
+    let nextCrewPayout = 0;
+    let nextRunnerPayout = payout;
+    if (crewWholesale) {
+      const split = splitCrewPayout(payout, runtime.wholesaleCrewRunnerBps);
+      nextCrewPayout = split.crewPayout;
+      nextRunnerPayout = split.runnerPayout;
+      if (crewId) {
+        const crew = await tx.crew.findUnique({
+          where: { id: crewId },
+          select: { bankBalance: true },
+        });
+        const room = Math.max(0, cashLimit - (crew?.bankBalance ?? 0));
+        if (nextCrewPayout > room) {
+          nextRunnerPayout += nextCrewPayout - room;
+          nextCrewPayout = room;
+        }
+      } else {
+        nextCrewPayout = 0;
+        nextRunnerPayout = payout;
+      }
+    }
+
+    const nextMeta = {
+      ...meta,
+      settledAt,
+      crewPayout: nextCrewPayout,
+      runnerPayout: nextRunnerPayout,
+      crewId: crewId ?? meta.crewId,
+    };
+    const metadataJson = JSON.stringify(nextMeta);
+
     const locked = await tx.$executeRaw`
       UPDATE smuggling_shipments
       SET status = 'claimed',
@@ -349,20 +469,27 @@ export async function completeWholesaleArrival(params: {
         AND (metadata_json IS NULL OR metadata_json NOT LIKE '%"settledAt"%')
     `;
     if (Number(locked) === 0) {
-      return false;
+      return null;
     }
-    if (payout > 0) {
-      await tx.player.update({
-        where: { id: params.playerId },
-        data: { money: { increment: payout } },
+    if (crewWholesale && crewId && nextCrewPayout > 0) {
+      await tx.crew.update({
+        where: { id: crewId },
+        data: { bankBalance: { increment: nextCrewPayout } },
       });
     }
-    return true;
+    if (nextRunnerPayout > 0) {
+      await tx.player.update({
+        where: { id: params.playerId },
+        data: { money: { increment: nextRunnerPayout } },
+      });
+    }
+    return { crewPayout: nextCrewPayout, runnerPayout: nextRunnerPayout };
   });
 
   if (!credited) return;
+  crewPayout = credited.crewPayout;
+  runnerPayout = credited.runnerPayout;
 
-  const runtime = await getDrugRuntimeConfig();
   const fbiHeat = Math.max(1, Math.ceil((quantity / 1000) * runtime.wholesaleFbiHeatPerKg));
   await fbiService.increaseFBIHeat(params.playerId, fbiHeat);
   await countryPoliceService.recordActivityGain({
@@ -375,6 +502,9 @@ export async function completeWholesaleArrival(params: {
     quantity,
     payout,
     drugType,
+    crewWholesale,
+    crewPayout,
+    runnerPayout,
   });
 }
 
@@ -384,6 +514,7 @@ export async function settleDueExports(): Promise<{ settled: number; seized: num
     Array<{
       id: number;
       player_id: number;
+      crew_id: number | null;
       quantity: number;
       destination_country: string;
       item_key: string;
@@ -392,7 +523,7 @@ export async function settleDueExports(): Promise<{ settled: number; seized: num
       status: string;
     }>
   >`
-    SELECT id, player_id, quantity, destination_country, item_key, metadata_json, seizure_chance, status
+    SELECT id, player_id, crew_id, quantity, destination_country, item_key, metadata_json, seizure_chance, status
     FROM smuggling_shipments
     WHERE category = 'drug'
       AND (
@@ -425,6 +556,7 @@ export async function settleDueExports(): Promise<{ settled: number; seized: num
     await completeWholesaleArrival({
       id: row.id,
       playerId: row.player_id,
+      crewId: row.crew_id,
       quantity: row.quantity,
       destinationCountry: row.destination_country,
       itemKey: row.item_key,
@@ -439,6 +571,11 @@ export async function settleDueExports(): Promise<{ settled: number; seized: num
 
 export async function listExports(playerId: number) {
   await settleDueExports();
+  const membership = await prisma.crewMember.findUnique({
+    where: { playerId },
+    select: { crewId: true },
+  });
+  const crewId = membership?.crewId ?? -1;
   const rows = await prisma.$queryRaw<
     Array<{
       id: number;
@@ -453,21 +590,29 @@ export async function listExports(playerId: number) {
       delivered_at: Date | null;
       claimed_at: Date | null;
       metadata_json: string | null;
+      network_scope: string;
     }>
   >`
     SELECT id, item_label, quantity, origin_country, destination_country, status,
-           shipping_fee, seizure_chance, eta_at, delivered_at, claimed_at, metadata_json
+           shipping_fee, seizure_chance, eta_at, delivered_at, claimed_at, metadata_json, network_scope
     FROM smuggling_shipments
-    WHERE player_id = ${playerId}
-      AND category = 'drug'
+    WHERE category = 'drug'
+      AND (
+        player_id = ${playerId}
+        OR (crew_id = ${crewId} AND network_scope = 'crew')
+      )
     ORDER BY id DESC
-    LIMIT 40
+    LIMIT 60
   `;
 
+  const seen = new Set<number>();
   return rows
     .map((row) => {
+      if (seen.has(row.id)) return null;
+      seen.add(row.id);
       const meta = parseMeta(row.metadata_json);
       if (!isWholesale(meta)) return null;
+      const crewWholesale = meta.crewWholesale === true || row.network_scope === 'crew';
       return {
         id: row.id,
         label: row.item_label,
@@ -480,8 +625,12 @@ export async function listExports(playerId: number) {
         etaAt: row.eta_at,
         deliveredAt: row.delivered_at,
         payout: Number(meta.payout || 0),
+        crewPayout: Number(meta.crewPayout || 0),
+        runnerPayout: Number(meta.runnerPayout || 0),
         unitPrice: Number(meta.unitPrice || 0),
         settled: hasSettled(meta),
+        crewWholesale,
+        networkScope: crewWholesale ? 'crew' : 'personal',
       };
     })
     .filter(Boolean);
