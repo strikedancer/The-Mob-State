@@ -7,8 +7,7 @@ import '../models/crime_tool.dart';
 import '../models/player_tool.dart';
 import '../models/storage_info.dart';
 import '../l10n/app_localizations.dart';
-import '../widgets/shop_tool_card.dart';
-import '../widgets/inventory_tool_card.dart';
+import '../widgets/market_compact.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/tool_display_name.dart';
 String _toolsPurchaseErrorMessage(
@@ -62,9 +61,7 @@ class ToolsScreen extends StatefulWidget {
   State<ToolsScreen> createState() => _ToolsScreenState();
 }
 
-class _ToolsScreenState extends State<ToolsScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _ToolsScreenState extends State<ToolsScreen> {
   final ToolService _toolService = ToolService();
   final InventoryService _inventoryService = InventoryService();
 
@@ -79,14 +76,7 @@ class _ToolsScreenState extends State<ToolsScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
     _loadData();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -242,64 +232,164 @@ class _ToolsScreenState extends State<ToolsScreen>
     }
   }
 
-  Widget _inventoryHint(AppLocalizations l10n) {
-    if (_inventoryUsed <= 0) {
-      return const SizedBox.shrink();
-    }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          Icons.backpack,
-          color: _inventoryFull ? Colors.orange : Colors.grey[400],
-          size: 14,
-        ),
-        const SizedBox(width: 4),
-        Text(
-          '${l10n.inventory}: $_inventoryUsed/$_inventoryMax',
-          style: TextStyle(
-            fontSize: 12,
-            color: _inventoryFull ? Colors.orange : Colors.grey[400],
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ],
+  Widget _toolThumb(String toolId) {
+    return marketThumbBox(
+      child: Image.asset(
+        'assets/images/tools/${toolId}_tool.png',
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.build, size: 22),
+      ),
     );
   }
 
   Widget _toolsBody(AppLocalizations l10n) {
-    return Column(
-      children: [
-        if (widget.embedded)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 4, 0),
-            child: Row(
-              children: [
-                _inventoryHint(l10n),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  tooltip: l10n.refresh,
-                  onPressed: _loadData,
-                ),
-              ],
-            ),
-          ),
-        TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(icon: const Icon(Icons.shopping_cart), text: l10n.toolsTabBuy),
-            Tab(icon: const Icon(Icons.inventory), text: l10n.toolsTabMyTools),
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_error!),
+            const SizedBox(height: 16),
+            ElevatedButton(onPressed: _loadData, child: Text(l10n.retry)),
           ],
         ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [_buildShopTab(), _buildInventoryTab()],
+      );
+    }
+
+    final authProvider = Provider.of<AuthProvider>(context);
+    final playerMoney = authProvider.currentPlayer?.money ?? 0;
+
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: ListView(
+        padding: marketListPadding,
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          if (_inventoryUsed > 0)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: MarketInfoPill(
+                label: '${l10n.inventory}: $_inventoryUsed/$_inventoryMax',
+                color: _inventoryFull ? Colors.orange : Colors.teal.shade700,
+                icon: Icons.backpack,
+              ),
+            ),
+          if (_availableTools.isEmpty)
+            Center(child: Text(l10n.toolsNoToolsAvailable))
+          else
+            for (final tool in _availableTools)
+              _buildShopToolRow(tool, playerMoney >= tool.basePrice, l10n),
+          marketSectionHeader(context, label: l10n.toolsTabMyTools),
+          if (_myTools.isEmpty)
+            marketEmptyHint(l10n.toolsEmptyInventoryHint)
+          else
+            for (final tool in _myTools)
+              _buildOwnedToolRow(
+                tool,
+                playerMoney >= ((tool.basePrice ?? 0) * 0.5).floor(),
+                l10n,
+              ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShopToolRow(CrimeTool tool, bool canAfford, AppLocalizations l10n) {
+    final name = localizedToolName(l10n, tool.id, tool.name);
+    return MarketCompactRow(
+      tooltip: tool.requiredFor.isEmpty ? null : tool.requiredFor.join(', '),
+      leading: _toolThumb(tool.id),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
           ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              for (final crime in tool.requiredFor.take(3))
+                MarketInfoPill(label: crime, color: Colors.blueGrey.shade700),
+            ],
+          ),
+        ],
+      ),
+      meta: Text(
+        '€${tool.basePrice}',
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
         ),
-      ],
+      ),
+      action: FilledButton(
+        onPressed: canAfford && !_inventoryFull ? () => _buyTool(tool) : null,
+        style: marketBuyButtonStyle(),
+        child: Text(l10n.buy),
+      ),
+    );
+  }
+
+  Widget _buildOwnedToolRow(
+    PlayerTool tool,
+    bool canAffordRepair,
+    AppLocalizations l10n,
+  ) {
+    final name = localizedToolName(l10n, tool.toolId, tool.name);
+    final pct = tool.durabilityPercent.round();
+    final repairCost = ((tool.basePrice ?? 0) * 0.5).floor();
+    final needsRepair = tool.needsRepair == true || tool.isBroken == true;
+    return MarketCompactRow(
+      leading: _toolThumb(tool.toolId),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: '${l10n.condition} $pct%',
+                color: pct < 30
+                    ? Colors.red.shade700
+                    : pct < 70
+                    ? Colors.orange.shade800
+                    : Colors.teal.shade700,
+                icon: Icons.health_and_safety,
+              ),
+            ],
+          ),
+        ],
+      ),
+      meta: needsRepair
+          ? Text(
+              '€$repairCost',
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            )
+          : null,
+      action: needsRepair
+          ? FilledButton(
+              onPressed: canAffordRepair ? () => _repairTool(tool) : null,
+              style: marketBuyButtonStyle(background: Colors.orange),
+              child: Text(l10n.toolsBadgeRepair),
+            )
+          : null,
     );
   }
 
@@ -313,14 +403,7 @@ class _ToolsScreenState extends State<ToolsScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(l10n.toolsScreenTitle),
-            _inventoryHint(l10n),
-          ],
-        ),
+        title: Text(l10n.toolsScreenTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -330,118 +413,6 @@ class _ToolsScreenState extends State<ToolsScreen>
         ],
       ),
       body: body,
-    );
-  }
-
-  Widget _buildShopTab() {
-    final l10n = AppLocalizations.of(context)!;
-
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (_error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(_error!),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadData,
-              child: Text(l10n.retry),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (_availableTools.isEmpty) {
-      return Center(child: Text(l10n.toolsNoToolsAvailable));
-    }
-
-    final authProvider = Provider.of<AuthProvider>(context);
-    final playerMoney = authProvider.currentPlayer?.money ?? 0;
-
-    return GridView.builder(
-      padding: const EdgeInsets.all(8),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: MediaQuery.of(context).size.width < 480
-            ? 2
-            : MediaQuery.of(context).size.width < 900
-            ? 3
-            : 5,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        childAspectRatio: 0.78,
-      ),
-      itemCount: _availableTools.length,
-      itemBuilder: (context, index) {
-        final tool = _availableTools[index];
-        final canAfford = playerMoney >= tool.basePrice;
-
-        return ShopToolCard(
-          tool: tool,
-          canAfford: canAfford,
-          inventoryFull: _inventoryFull,
-          onBuy: () => _buyTool(tool),
-        );
-      },
-    );
-  }
-
-  Widget _buildInventoryTab() {
-    final l10n = AppLocalizations.of(context)!;
-
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (_myTools.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.build, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(l10n.toolsEmptyInventoryTitle),
-            const SizedBox(height: 8),
-            Text(
-              l10n.toolsEmptyInventoryHint,
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final authProvider = Provider.of<AuthProvider>(context);
-    final playerMoney = authProvider.currentPlayer?.money ?? 0;
-
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: MediaQuery.of(context).size.width < 480
-            ? 2
-            : MediaQuery.of(context).size.width < 900
-            ? 3
-            : 5,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        childAspectRatio: 0.78,
-      ),
-      itemCount: _myTools.length,
-      itemBuilder: (context, index) {
-        final tool = _myTools[index];
-        final repairCost = ((tool.basePrice ?? 0) * 0.5).floor();
-        final canAffordRepair = playerMoney >= repairCost;
-
-        return InventoryToolCard(
-          tool: tool,
-          canAffordRepair: canAffordRepair,
-          onRepair: () => _repairTool(tool),
-        );
-      },
     );
   }
 }

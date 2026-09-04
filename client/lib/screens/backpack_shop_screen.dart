@@ -485,44 +485,30 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
               children: [
                 if (_backpacks?.owned != null) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 6, left: 2),
-                    child: Text(
-                      l10n.yourBackpack,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
+                  marketSectionHeader(
+                    context,
+                    label: l10n.yourBackpack,
+                    icon: Icons.backpack,
                   ),
                   _buildBackpackCard(_backpacks!.owned!, isOwned: true),
-                  const SizedBox(height: 8),
                 ],
                 if (_backpacks?.canUpgradeTo.isNotEmpty ?? false) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 6, left: 2),
-                    child: Text(
-                      l10n.availableUpgrades,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
+                  marketSectionHeader(
+                    context,
+                    label: l10n.availableUpgrades,
+                    icon: Icons.upgrade,
                   ),
                   ..._backpacks!.canUpgradeTo.map(
                     (bp) => _buildBackpackCard(bp, canUpgrade: true),
                   ),
-                  const SizedBox(height: 8),
                 ],
                 if (_backpacks?.available.isNotEmpty ?? false) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 6, left: 2),
-                    child: Text(
-                      _backpacks?.owned == null
-                          ? l10n.availableBackpacks
-                          : l10n.otherBackpacks,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
+                  marketSectionHeader(
+                    context,
+                    label: _backpacks?.owned == null
+                        ? l10n.availableBackpacks
+                        : l10n.otherBackpacks,
+                    icon: Icons.storefront,
                   ),
                   ..._backpacks!.available.map(_buildBackpackCard),
                 ],

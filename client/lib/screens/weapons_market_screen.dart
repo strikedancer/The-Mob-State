@@ -13,9 +13,7 @@ class WeaponsMarketScreen extends StatefulWidget {
   State<WeaponsMarketScreen> createState() => _WeaponsMarketScreenState();
 }
 
-class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _WeaponsMarketScreenState extends State<WeaponsMarketScreen> {
   final ApiClient _apiClient = ApiClient();
   List<dynamic> _weapons = [];
   List<dynamic> _inventory = [];
@@ -24,14 +22,7 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
     _loadData();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -122,171 +113,177 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
     }
 
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('assets/images/backgrounds/weapon_shop_bg.png'),
+          image: AssetImage('assets/images/backgrounds/weapon_shop_bg.png'),
           fit: BoxFit.cover,
           opacity: 0.15,
         ),
       ),
-      child: Column(
+      child: RefreshIndicator(
+        onRefresh: _loadData,
+        child: ListView(
+          padding: marketListPadding,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            for (final weapon in _weapons)
+              _buildShopWeaponRow(
+                weapon,
+                authProvider: authProvider,
+                l10n: l10n,
+                unknownName: unknownName,
+                ammoLabel: ammoLabel,
+                perCrime: perCrime,
+              ),
+            marketSectionHeader(
+              context,
+              label: l10n?.inventory ?? 'Inventory',
+            ),
+            if (_inventory.isEmpty)
+              marketEmptyHint(l10n?.noItemsInInventory ?? 'No items')
+            else
+              for (final weapon in _inventory)
+                _buildOwnedWeaponRow(
+                  weapon,
+                  l10n: l10n,
+                  unknownName: unknownName,
+                  ammoLabel: ammoLabel,
+                  perCrime: perCrime,
+                ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShopWeaponRow(
+    dynamic weapon, {
+    required AuthProvider authProvider,
+    required AppLocalizations? l10n,
+    required String unknownName,
+    required String ammoLabel,
+    required String perCrime,
+  }) {
+    final canBuy = _canBuyWeapon(weapon, authProvider);
+    final vipOnly = weapon['vipOnly'] == true;
+    final requiredRank = weapon['requiredRank'] ?? 1;
+    final requiresAmmo = weapon['requiresAmmo'] == true;
+    final ammoType = weapon['ammoType']?.toString();
+    final ammoPerCrime = weapon['ammoPerCrime'];
+    final price = weapon['price'] ?? 0;
+    final rankLabel =
+        l10n?.weaponRankRequired(requiredRank.toString()) ??
+        'Rank $requiredRank';
+    final ammoHint = requiresAmmo && ammoType != null
+        ? ammoPerCrime != null
+            ? '$ammoLabel: $ammoType ($ammoPerCrime $perCrime)'
+            : '$ammoLabel: $ammoType'
+        : null;
+
+    return MarketCompactRow(
+      tooltip: weapon['description']?.toString(),
+      leading: _buildWeaponImage(weapon),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TabBar(
-            controller: _tabController,
-            labelPadding: const EdgeInsets.symmetric(horizontal: 12),
-            tabs: [
-              marketInnerTab(l10n?.weaponShop ?? 'Shop'),
-              marketInnerTab(l10n?.myWeapons ?? 'My Weapons'),
+          Text(
+            weapon['name'] ?? unknownName,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: rankLabel,
+                color: Colors.blueGrey.shade700,
+                icon: Icons.military_tech,
+              ),
+              if (vipOnly)
+                MarketInfoPill(
+                  label: l10n?.vipOnly ?? 'VIP',
+                  color: Colors.amber.shade800,
+                  icon: Icons.star,
+                ),
+              if (ammoHint != null)
+                MarketInfoPill(
+                  label: ammoType!,
+                  color: Colors.brown.shade700,
+                  icon: Icons.bolt,
+                  tooltip: ammoHint,
+                ),
             ],
           ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-                  itemCount: _weapons.length,
-                  itemBuilder: (context, index) {
-                    final weapon = _weapons[index];
-                    final canBuy = _canBuyWeapon(weapon, authProvider);
-                    final vipOnly = weapon['vipOnly'] == true;
-                    final requiredRank = weapon['requiredRank'] ?? 1;
-                    final requiresAmmo = weapon['requiresAmmo'] == true;
-                    final ammoType = weapon['ammoType']?.toString();
-                    final ammoPerCrime = weapon['ammoPerCrime'];
-                    final price = weapon['price'] ?? 0;
-                    final rankLabel =
-                        l10n?.weaponRankRequired(requiredRank.toString()) ??
-                        'Rank $requiredRank';
-                    final ammoHint = requiresAmmo && ammoType != null
-                        ? ammoPerCrime != null
-                            ? '$ammoLabel: $ammoType ($ammoPerCrime $perCrime)'
-                            : '$ammoLabel: $ammoType'
-                        : null;
+        ],
+      ),
+      meta: Text(
+        '€$price',
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
+        ),
+      ),
+      action: FilledButton(
+        onPressed: canBuy ? () => _buyWeapon(weapon['id']) : null,
+        style: marketBuyButtonStyle(),
+        child: Text(l10n?.buyWeapon ?? 'Buy'),
+      ),
+    );
+  }
 
-                    return MarketCompactRow(
-                      leading: _buildWeaponImage(weapon),
-                      info: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            weapon['name'] ?? unknownName,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Wrap(
-                            spacing: 4,
-                            runSpacing: 3,
-                            children: [
-                              MarketInfoPill(
-                                label: rankLabel,
-                                color: Colors.blueGrey.shade700,
-                                icon: Icons.military_tech,
-                              ),
-                              if (vipOnly)
-                                MarketInfoPill(
-                                  label: l10n?.vipOnly ?? 'VIP',
-                                  color: Colors.amber.shade800,
-                                  icon: Icons.star,
-                                ),
-                              if (ammoHint != null)
-                                MarketInfoPill(
-                                  label: ammoType!,
-                                  color: Colors.brown.shade700,
-                                  icon: Icons.bolt,
-                                  tooltip: ammoHint,
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      meta: Text(
-                        '€$price',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
-                      ),
-                      action: FilledButton(
-                        onPressed: canBuy
-                            ? () => _buyWeapon(weapon['id'])
-                            : null,
-                        style: marketBuyButtonStyle(),
-                        child: Text(l10n?.buyWeapon ?? 'Buy'),
-                      ),
-                    );
-                  },
-                ),
-                ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-                  itemCount: _inventory.length,
-                  itemBuilder: (context, index) {
-                    final weapon = _inventory[index];
-                    final condition = weapon['condition'] ?? 100;
-                    final quantity = weapon['quantity'] ?? 1;
-                    final requiresAmmo = weapon['requiresAmmo'] == true;
-                    final ammoType = weapon['ammoType']?.toString();
-                    final ammoPerCrime = weapon['ammoPerCrime'];
-                    final ammoHint = requiresAmmo && ammoType != null
-                        ? ammoPerCrime != null
-                            ? '$ammoLabel: $ammoType ($ammoPerCrime $perCrime)'
-                            : '$ammoLabel: $ammoType'
-                        : null;
+  Widget _buildOwnedWeaponRow(
+    dynamic weapon, {
+    required AppLocalizations? l10n,
+    required String unknownName,
+    required String ammoLabel,
+    required String perCrime,
+  }) {
+    final condition = weapon['condition'] ?? 100;
+    final quantity = weapon['quantity'] ?? 1;
+    final requiresAmmo = weapon['requiresAmmo'] == true;
+    final ammoType = weapon['ammoType']?.toString();
+    final ammoPerCrime = weapon['ammoPerCrime'];
+    final ammoHint = requiresAmmo && ammoType != null
+        ? ammoPerCrime != null
+            ? '$ammoLabel: $ammoType ($ammoPerCrime $perCrime)'
+            : '$ammoLabel: $ammoType'
+        : null;
 
-                    return MarketCompactRow(
-                      leading: _buildWeaponImage(weapon),
-                      info: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            weapon['name'] ??
-                                weapon['weaponName'] ??
-                                unknownName,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Wrap(
-                            spacing: 4,
-                            runSpacing: 3,
-                            children: [
-                              MarketInfoPill(
-                                label:
-                                    '${l10n?.condition ?? 'Condition'} $condition%',
-                                color: condition < 50
-                                    ? Colors.red.shade700
-                                    : Colors.teal.shade700,
-                                icon: Icons.health_and_safety,
-                              ),
-                              if (ammoHint != null)
-                                MarketInfoPill(
-                                  label: ammoType!,
-                                  color: Colors.brown.shade700,
-                                  icon: Icons.bolt,
-                                  tooltip: ammoHint,
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      meta: Text(
-                        'x$quantity',
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    );
-                  },
+    return MarketCompactRow(
+      leading: _buildWeaponImage(weapon),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            weapon['name'] ?? weapon['weaponName'] ?? unknownName,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: '${l10n?.condition ?? 'Condition'} $condition%',
+                color: condition < 50 ? Colors.red.shade700 : Colors.teal.shade700,
+                icon: Icons.health_and_safety,
+              ),
+              if (ammoHint != null)
+                MarketInfoPill(
+                  label: ammoType!,
+                  color: Colors.brown.shade700,
+                  icon: Icons.bolt,
+                  tooltip: ammoHint,
                 ),
-              ],
-            ),
+            ],
           ),
         ],
+      ),
+      meta: Text(
+        'x$quantity',
+        style: const TextStyle(fontWeight: FontWeight.w700),
       ),
     );
   }

@@ -4,6 +4,7 @@ import '../services/api_client.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
+import '../widgets/market_compact.dart';
 
 class SecurityScreen extends StatefulWidget {
   final bool embedded;
@@ -19,7 +20,6 @@ class _SecurityScreenState extends State<SecurityScreen> {
   static const Color _activeArmorBackground = Color(0xFF314734);
   static const Color _activeArmorBorder = Color(0xFF7EC17B);
   static const Color _activeArmorText = Color(0xFFF6F2E8);
-  static const Color _activeArmorMutedText = Color(0xFFD6E6D1);
   dynamic _securityStatus;
   bool _isLoading = false;
   List<Map<String, dynamic>> _armorCatalog = [];
@@ -333,6 +333,96 @@ class _SecurityScreenState extends State<SecurityScreen> {
     return l10n.buy;
   }
 
+  Widget _buildArmorRow(Map<String, dynamic> armor, AppLocalizations l10n) {
+    final isCurrentArmor = _securityStatus['armorType'] == armor['id'];
+    final hasActiveArmor = _hasActiveArmor();
+    final canRefreshCurrentArmor = isCurrentArmor && _isArmorDamaged();
+    return MarketCompactRow(
+      tooltip: armor['description']?.toString(),
+      color: isCurrentArmor ? _activeArmorBackground : null,
+      leading: Icon(
+        Icons.shield,
+        color: isCurrentArmor ? _activeArmorBorder : Colors.blue,
+      ),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${armor['name']}',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: isCurrentArmor ? _activeArmorText : null,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: '+${armor['armor']}',
+                color: Colors.blue.shade700,
+                icon: Icons.security,
+              ),
+              if (armor['resistsStab'] == true)
+                MarketInfoPill(
+                  label: l10n.vestProtectsStab,
+                  color: Colors.brown.shade700,
+                ),
+              if (armor['resistsBallistic'] == true)
+                MarketInfoPill(
+                  label: l10n.vestProtectsBullets,
+                  color: Colors.blueGrey.shade700,
+                ),
+              if (armor['resistsArmorPiercing'] == true)
+                MarketInfoPill(
+                  label: l10n.vestProtectsAp,
+                  color: Colors.deepOrange.shade800,
+                ),
+              if (isCurrentArmor)
+                MarketInfoPill(
+                  label: l10n.worn,
+                  color: Colors.green.shade700,
+                  icon: Icons.check_circle,
+                ),
+              if (isCurrentArmor && (_securityStatus['baseArmor'] ?? 0) > 0)
+                MarketInfoPill(
+                  label: l10n.armorDefenseNowAtCondition(
+                    '${_securityStatus['armor']}',
+                    '${_armorCondition()}',
+                  ),
+                  color: Colors.teal.shade700,
+                ),
+            ],
+          ),
+        ],
+      ),
+      meta: Text(
+        formatCurrency(armor['price']),
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
+        ),
+      ),
+      action: !isCurrentArmor || canRefreshCurrentArmor
+          ? FilledButton(
+              onPressed: () => _buyArmor(armor['id']),
+              style: marketBuyButtonStyle(),
+              child: Text(
+                _armorActionLabel(
+                  isCurrentArmor: isCurrentArmor,
+                  isCurrentArmorDamaged: canRefreshCurrentArmor,
+                  hasActiveArmor: hasActiveArmor,
+                  l10n: l10n,
+                ),
+              ),
+            )
+          : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -358,371 +448,133 @@ class _SecurityScreenState extends State<SecurityScreen> {
           : RefreshIndicator(
               onRefresh: _loadSecurityStatus,
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: marketListPadding,
+                physics: const AlwaysScrollableScrollPhysics(),
                 children: [
-                  // Status Card
-                  Card(
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.currentDefense,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            spacing: 24,
-                            runSpacing: 16,
-                            alignment: WrapAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(l10n.totalDefense),
-                                  Text(
-                                    '${_calculateDefense()}',
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(l10n.currentArmor),
-                                  Text(
-                                    '${_securityStatus['armor'] ?? 0}',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  if ((_securityStatus['baseArmor'] ?? 0) > 0)
-                                    Text(
-                                      l10n.armorConditionLine(
-                                        '${_armorCondition()}',
-                                        '${_securityStatus['baseArmor']}',
-                                      ),
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(l10n.bodyguards),
-                                  Text(
-                                    '${_securityStatus['bodyguards'] ?? 0}',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    l10n.dailyWageAmount(
-                                      formatCurrency(
-                                        _securityStatus['bodyguardDailyCost'] ??
-                                            0,
-                                      ),
-                                    ),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Bodyguards Section
-                  Text(
-                    l10n.buyBodyguards,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.protectorsFollow,
-                          ),
-                          Text(
-                            l10n.eachGivesDefense,
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            l10n.dailySystemCostLine(
-                              formatCurrency(
-                                _securityStatus['bodyguardDailyCost'] ?? 0,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            l10n.nextPayrollAt(
-                              _formatDateTime(
-                                _securityStatus['bodyguardUpkeepDueAt']
-                                    as String?,
-                              ),
-                            ),
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            l10n.bodyguardsLeaveIfUnpaid,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n.bodyguardPrice,
-                                  ),
-                                  const Text(
-                                    '€10.000',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.orange,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: _buyBodyguard,
-                                icon: const Icon(Icons.person_add),
-                                label: Text(l10n.buy),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Armor Section
-                  Text(
-                    l10n.armor,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    l10n.armorOneAtATimeHint,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 12),
-                  Column(
-                    children: armorTypes.map((armor) {
-                      final isCurrentArmor =
-                          _securityStatus['armorType'] == armor['id'];
-                      final hasActiveArmor = _hasActiveArmor();
-                      final canRefreshCurrentArmor =
-                          isCurrentArmor && _isArmorDamaged();
-                      final primaryTextColor = isCurrentArmor
-                          ? _activeArmorText
-                          : null;
-                      final secondaryTextColor = isCurrentArmor
-                          ? _activeArmorMutedText
-                          : Colors.grey;
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Card(
-                          color: isCurrentArmor ? _activeArmorBackground : null,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: isCurrentArmor
-                                  ? _activeArmorBorder
-                                  : Colors.transparent,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                              child: Text(
-                                              armor['name'],
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: primaryTextColor,
-                                              ),
-                                            ),
-                                            ),
-                                            if (isCurrentArmor)
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                  left: 8,
-                                                ),
-                                                child: Icon(
-                                                  Icons.check_circle,
-                                                  color: _activeArmorBorder,
-                                                  size: 16,
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                        Text(
-                                          armor['description'],
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: secondaryTextColor,
-                                          ),
-                                        ),
-                                        if (armor['resistsStab'] == true ||
-                                            armor['resistsBallistic'] == true ||
-                                            armor['resistsArmorPiercing'] ==
-                                                true) ...[
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            [
-                                              if (armor['resistsStab'] == true)
-                                                l10n.vestProtectsStab,
-                                              if (armor['resistsBallistic'] ==
-                                                  true)
-                                                l10n.vestProtectsBullets,
-                                              if (armor['resistsArmorPiercing'] ==
-                                                  true)
-                                                l10n.vestProtectsAp,
-                                            ].join(' · '),
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              color: secondaryTextColor,
-                                            ),
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        const Icon(
-                                          Icons.shield,
-                                          color: Colors.blue,
-                                        ),
-                                        Text(
-                                          '+${armor['armor']}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: primaryTextColor,
-                                          ),
-                                        ),
-                                        if (isCurrentArmor &&
-                                            (_securityStatus['baseArmor'] ??
-                                                    0) >
-                                                0)
-                                          Text(
-                                            l10n.armorDefenseNowAtCondition(
-                                              '${_securityStatus['armor']}',
-                                              '${_armorCondition()}',
-                                            ),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: _activeArmorMutedText,
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      formatCurrency(armor['price']),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.orange,
-                                      ),
-                                    ),
-                                    if (!isCurrentArmor ||
-                                        canRefreshCurrentArmor)
-                                      ElevatedButton(
-                                        onPressed: () => _buyArmor(armor['id']),
-                                        child: Text(
-                                          _armorActionLabel(
-                                            isCurrentArmor: isCurrentArmor,
-                                            isCurrentArmorDamaged:
-                                                canRefreshCurrentArmor,
-                                            hasActiveArmor: hasActiveArmor,
-                                            l10n: l10n,
-                                          ),
-                                        ),
-                                      )
-                                    else
-                                      Chip(
-                                        label: Text(
-                                          l10n.worn,
-                                          style: const TextStyle(
-                                            color: _activeArmorText,
-                                          ),
-                                        ),
-                                        backgroundColor: _activeArmorBorder,
-                                      ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                  MarketCompactRow(
+                    leading: const Icon(Icons.shield, color: Colors.green),
+                    info: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.currentDefense,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                      );
-                    }).toList(),
+                        const SizedBox(height: 4),
+                        Wrap(
+                          spacing: 4,
+                          runSpacing: 3,
+                          children: [
+                            MarketInfoPill(
+                              label: '${l10n.totalDefense} ${_calculateDefense()}',
+                              color: Colors.green.shade700,
+                              icon: Icons.security,
+                            ),
+                            MarketInfoPill(
+                              label: '${l10n.currentArmor} ${_securityStatus['armor'] ?? 0}',
+                              color: Colors.blueGrey.shade700,
+                              icon: Icons.health_and_safety,
+                            ),
+                            if ((_securityStatus['baseArmor'] ?? 0) > 0)
+                              MarketInfoPill(
+                                label: l10n.armorConditionLine(
+                                  '${_armorCondition()}',
+                                  '${_securityStatus['baseArmor']}',
+                                ),
+                                color: Colors.teal.shade700,
+                              ),
+                            MarketInfoPill(
+                              label:
+                                  '${l10n.bodyguards} ${_securityStatus['bodyguards'] ?? 0}',
+                              color: Colors.orange.shade800,
+                              icon: Icons.group,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 24),
+                  marketSectionHeader(
+                    context,
+                    label: l10n.buyBodyguards,
+                    icon: Icons.person_add,
+                  ),
+                  MarketCompactRow(
+                    tooltip: l10n.bodyguardsLeaveIfUnpaid,
+                    leading: const Icon(Icons.person, size: 28),
+                    info: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.bodyguardProductName,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Wrap(
+                          spacing: 4,
+                          runSpacing: 3,
+                          children: [
+                            MarketInfoPill(
+                              label: l10n.eachGivesDefense,
+                              color: Colors.teal.shade700,
+                            ),
+                            MarketInfoPill(
+                              label: l10n.dailySystemCostLine(
+                                formatCurrency(
+                                  _securityStatus['bodyguardDailyCost'] ?? 0,
+                                ),
+                              ),
+                              color: Colors.orange.shade800,
+                            ),
+                            MarketInfoPill(
+                              label: l10n.nextPayrollAt(
+                                _formatDateTime(
+                                  _securityStatus['bodyguardUpkeepDueAt']
+                                      as String?,
+                                ),
+                              ),
+                              color: Colors.blueGrey.shade700,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    meta: const Text(
+                      '€10.000',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    action: FilledButton(
+                      onPressed: _buyBodyguard,
+                      style: marketBuyButtonStyle(),
+                      child: Text(l10n.buy),
+                    ),
+                  ),
+                  marketSectionHeader(
+                    context,
+                    label: l10n.armor,
+                    icon: Icons.shield,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      l10n.armorOneAtATimeHint,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                  for (final armor in armorTypes) _buildArmorRow(armor, l10n),
                 ],
               ),
             );

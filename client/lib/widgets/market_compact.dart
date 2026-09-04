@@ -133,3 +133,69 @@ ButtonStyle marketBuyButtonStyle({Color background = Colors.green}) {
 Tab marketInnerTab(String label) {
   return Tab(height: 36, text: label);
 }
+
+const marketListPadding = EdgeInsets.fromLTRB(12, 8, 12, 16);
+
+Widget marketSectionHeader(
+  BuildContext context, {
+  required String label,
+  IconData icon = Icons.inventory_2_outlined,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 4, bottom: 8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Divider(color: Theme.of(context).colorScheme.outlineVariant),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            Icon(icon, size: 18, color: Theme.of(context).colorScheme.primary),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget marketEmptyHint(String message) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 24),
+    child: Column(
+      children: [
+        Icon(Icons.inventory_2_outlined, size: 48, color: Colors.grey.shade400),
+        const SizedBox(height: 12),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget marketThumbBox({
+  required Widget child,
+  double width = 44,
+  double height = 44,
+  Color? color,
+}) {
+  return Container(
+    width: width,
+    height: height,
+    decoration: BoxDecoration(
+      color: color ?? const Color(0xFF1A1F2A),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    clipBehavior: Clip.antiAlias,
+    child: child,
+  );
+}

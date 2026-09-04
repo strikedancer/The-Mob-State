@@ -12,9 +12,7 @@ class AmmoMarketScreen extends StatefulWidget {
   State<AmmoMarketScreen> createState() => _AmmoMarketScreenState();
 }
 
-class _AmmoMarketScreenState extends State<AmmoMarketScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _AmmoMarketScreenState extends State<AmmoMarketScreen> {
   final ApiClient _apiClient = ApiClient();
   List<dynamic> _marketStock = [];
   List<dynamic> _inventory = [];
@@ -27,13 +25,11 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
     _loadData();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     _cooldownTimer?.cancel();
     super.dispose();
   }
@@ -314,180 +310,156 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
     final isCooldownActive = cooldownText.isNotEmpty;
 
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
+          image: AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
           fit: BoxFit.cover,
           opacity: 0.15,
         ),
       ),
-      child: Column(
-        children: [
-          TabBar(
-            controller: _tabController,
-            labelPadding: const EdgeInsets.symmetric(horizontal: 12),
-            tabs: [
-              marketInnerTab(l10n?.ammoShop ?? 'Market'),
-              marketInnerTab(l10n?.myAmmo ?? 'My Ammo'),
-            ],
-          ),
-          if (isCooldownActive)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              color: Colors.orange[100],
-              child: Row(
-                children: [
-                  Icon(Icons.timer, size: 18, color: Colors.orange[900]),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      '${l10n?.nextAmmoPurchase ?? "Next purchase available in"}: $cooldownText',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange[900],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-                  itemCount: _marketStock.length,
-                  itemBuilder: (context, index) {
-                    final ammo = _marketStock[index];
-                    final quantity = ammo['quantity'] ?? 0;
-                    final boxSize = ammo['boxSize'] ?? 50;
-                    final pricePerRound = ammo['pricePerRound'] ?? 1;
-                    final quality = ((ammo['quality'] as num?) ?? 1.0)
-                        .toStringAsFixed(2);
-                    final name = ammo['name'] ??
-                        ammo['ammoType'] ??
-                        (l10n?.ammoGeneric ?? 'Ammo');
-                    final stockLabel =
-                        '${l10n?.ammoStock ?? 'Stock'}: $quantity ${l10n?.ammoRounds ?? 'rounds'}';
-                    return MarketCompactRow(
-                      leading: _buildAmmoImage('${ammo['ammoType']}'),
-                      info: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '$name',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
+      child: RefreshIndicator(
+        onRefresh: _loadData,
+        child: ListView(
+          padding: marketListPadding,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            if (isCooldownActive)
+              Card(
+                color: Colors.orange.shade50,
+                margin: const EdgeInsets.only(bottom: 8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Row(
+                    children: [
+                      Icon(Icons.timer, size: 18, color: Colors.orange[900]),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          '${l10n?.nextAmmoPurchase ?? "Next purchase available in"}: $cooldownText',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange[900],
                           ),
-                          const SizedBox(height: 4),
-                          Wrap(
-                            spacing: 4,
-                            runSpacing: 3,
-                            children: [
-                              MarketInfoPill(
-                                label: stockLabel,
-                                color: quantity > 0
-                                    ? Colors.teal.shade700
-                                    : Colors.red.shade700,
-                                icon: Icons.inventory_2,
-                              ),
-                              MarketInfoPill(
-                                label:
-                                    '$boxSize/${l10n?.ammoBoxesUnit ?? 'box'}',
-                                color: Colors.blueGrey.shade700,
-                              ),
-                              MarketInfoPill(
-                                label:
-                                    '${l10n?.ammoQuality ?? 'Quality'} $quality',
-                                color: Colors.purple.shade700,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      meta: Text(
-                        '€$pricePerRound',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
                         ),
                       ),
-                      action: FilledButton(
-                        onPressed: (quantity > 0 && !isCooldownActive)
-                            ? () => _buyAmmo(
-                                  ammo['ammoType'],
-                                  boxSize,
-                                  pricePerRound,
-                                )
-                            : null,
-                        style: marketBuyButtonStyle(),
-                        child: Text(l10n?.buy ?? 'Buy'),
-                      ),
-                    );
-                  },
+                    ],
+                  ),
                 ),
-                ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-                  itemCount: _inventory.length,
-                  itemBuilder: (context, index) {
-                    final ammo = _inventory[index];
-                    final quantity = ammo['quantity'] ?? 0;
-                    final boxSize = ammo['boxSize'] ?? 50;
-                    final quality = ((ammo['quality'] as num?) ?? 1.0)
-                        .toStringAsFixed(2);
-                    final boxes = (quantity / boxSize).floor();
-                    final remaining = quantity % boxSize;
-                    final name = ammo['name'] ??
-                        ammo['ammoType'] ??
-                        (l10n?.ammoGeneric ?? 'Ammo');
-                    return MarketCompactRow(
-                      leading: _buildAmmoImage('${ammo['ammoType']}'),
-                      info: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '$name',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Wrap(
-                            spacing: 4,
-                            runSpacing: 3,
-                            children: [
-                              MarketInfoPill(
-                                label:
-                                    '$quantity ${l10n?.ammoRounds ?? 'rounds'}',
-                                color: Colors.teal.shade700,
-                                icon: Icons.inventory_2,
-                              ),
-                              MarketInfoPill(
-                                label:
-                                    '$boxes ${l10n?.ammoBoxesUnit ?? 'boxes'}${remaining > 0 ? ' + $remaining' : ''}',
-                                color: Colors.blueGrey.shade700,
-                              ),
-                              MarketInfoPill(
-                                label:
-                                    '${l10n?.ammoQuality ?? 'Quality'} $quality',
-                                color: Colors.purple.shade700,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
+              ),
+            for (final ammo in _marketStock)
+              _buildShopAmmoRow(ammo, l10n, isCooldownActive),
+            marketSectionHeader(
+              context,
+              label: l10n?.inventory ?? 'Inventory',
             ),
+            if (_inventory.isEmpty)
+              marketEmptyHint(l10n?.noItemsInInventory ?? 'No items')
+            else
+              for (final ammo in _inventory) _buildOwnedAmmoRow(ammo, l10n),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShopAmmoRow(
+    dynamic ammo,
+    AppLocalizations? l10n,
+    bool isCooldownActive,
+  ) {
+    final quantity = ammo['quantity'] ?? 0;
+    final boxSize = ammo['boxSize'] ?? 50;
+    final pricePerRound = ammo['pricePerRound'] ?? 1;
+    final quality = ((ammo['quality'] as num?) ?? 1.0).toStringAsFixed(2);
+    final name = ammo['name'] ?? ammo['ammoType'] ?? (l10n?.ammoGeneric ?? 'Ammo');
+    final stockLabel =
+        '${l10n?.ammoStock ?? 'Stock'}: $quantity ${l10n?.ammoRounds ?? 'rounds'}';
+    return MarketCompactRow(
+      leading: _buildAmmoImage('${ammo['ammoType']}'),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$name',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: stockLabel,
+                color: quantity > 0 ? Colors.teal.shade700 : Colors.red.shade700,
+                icon: Icons.inventory_2,
+              ),
+              MarketInfoPill(
+                label: '$boxSize/${l10n?.ammoBoxesUnit ?? 'box'}',
+                color: Colors.blueGrey.shade700,
+              ),
+              MarketInfoPill(
+                label: '${l10n?.ammoQuality ?? 'Quality'} $quality',
+                color: Colors.purple.shade700,
+              ),
+            ],
+          ),
+        ],
+      ),
+      meta: Text(
+        '€$pricePerRound',
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
+        ),
+      ),
+      action: FilledButton(
+        onPressed: (quantity > 0 && !isCooldownActive)
+            ? () => _buyAmmo(ammo['ammoType'], boxSize, pricePerRound)
+            : null,
+        style: marketBuyButtonStyle(),
+        child: Text(l10n?.buy ?? 'Buy'),
+      ),
+    );
+  }
+
+  Widget _buildOwnedAmmoRow(dynamic ammo, AppLocalizations? l10n) {
+    final quantity = ammo['quantity'] ?? 0;
+    final boxSize = ammo['boxSize'] ?? 50;
+    final quality = ((ammo['quality'] as num?) ?? 1.0).toStringAsFixed(2);
+    final boxes = (quantity / boxSize).floor();
+    final remaining = quantity % boxSize;
+    final name = ammo['name'] ?? ammo['ammoType'] ?? (l10n?.ammoGeneric ?? 'Ammo');
+    return MarketCompactRow(
+      leading: _buildAmmoImage('${ammo['ammoType']}'),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$name',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: '$quantity ${l10n?.ammoRounds ?? 'rounds'}',
+                color: Colors.teal.shade700,
+                icon: Icons.inventory_2,
+              ),
+              MarketInfoPill(
+                label:
+                    '$boxes ${l10n?.ammoBoxesUnit ?? 'boxes'}${remaining > 0 ? ' + $remaining' : ''}',
+                color: Colors.blueGrey.shade700,
+              ),
+              MarketInfoPill(
+                label: '${l10n?.ammoQuality ?? 'Quality'} $quality',
+                color: Colors.purple.shade700,
+              ),
+            ],
           ),
         ],
       ),

@@ -17,6 +17,7 @@ import 'security_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/responsive_modal.dart';
+import '../widgets/market_compact.dart';
 import '../models/player_tool_market_listing.dart';
 import '../models/carried_tool.dart';
 import '../services/inventory_service.dart';
@@ -383,7 +384,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         RefreshIndicator(
           onRefresh: _loadData,
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 88),
             children: [
               ...filteredVehicles.map(_buildMarketListingCard),
               ...filteredTools.map(_buildToolMarketListingCard),
@@ -432,192 +433,108 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       );
     }
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        ...myVehicles.map(_buildMyListingCard),
-        ...myTools.map(_buildMyToolMarketListingCard),
-      ],
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: ListView(
+        padding: marketListPadding,
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          ...myVehicles.map(_buildMyListingCard),
+          ...myTools.map(_buildMyToolMarketListingCard),
+        ],
+      ),
+    );
+  }
+
+  Widget _vehicleListingThumb(VehicleInventoryItem vehicle) {
+    final selectedImage = vehicle.conditionImage;
+    final icon = vehicle.vehicleType == 'car'
+        ? Icons.directions_car
+        : Icons.directions_boat;
+    return marketThumbBox(
+      width: 56,
+      height: 40,
+      color: Colors.grey[800],
+      child: selectedImage != null
+          ? WebAssetHelper.image(
+              'assets/images/vehicles/$selectedImage',
+              fit: BoxFit.cover,
+              width: 56,
+              height: 40,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(icon, size: 22, color: Colors.grey[600]);
+              },
+            )
+          : Icon(icon, size: 22, color: Colors.grey[600]),
     );
   }
 
   Widget _buildMarketListingCard(MarketListing listing) {
     final l10n = AppLocalizations.of(context)!;
     final vehicle = listing.vehicle;
-    final selectedImage = vehicle.conditionImage;
     final askingPrice = vehicle.askingPrice ?? 0;
     final marketValue = vehicle.getMarketValue();
     final priceDifference = ((askingPrice - marketValue) / marketValue * 100);
+    final conditionColor = vehicle.getConditionColor() == 'green'
+        ? Colors.teal.shade700
+        : vehicle.getConditionColor() == 'orange'
+        ? Colors.orange.shade800
+        : Colors.red.shade700;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                // Vehicle Image
-                Container(
-                  width: 120,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: selectedImage != null
-                      ? Stack(
-                          children: [
-                            WebAssetHelper.image(
-                              'assets/images/vehicles/$selectedImage',
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Center(
-                                  child: Icon(
-                                    vehicle.vehicleType == 'car'
-                                        ? Icons.directions_car
-                                        : Icons.directions_boat,
-                                    size: 40,
-                                    color: Colors.grey[600],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        )
-                      : Center(
-                          child: Icon(
-                            vehicle.vehicleType == 'car'
-                                ? Icons.directions_car
-                                : Icons.directions_boat,
-                            size: 40,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                ),
-                const SizedBox(width: 12),
-
-                // Vehicle Details
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        vehicle.definition?.name ?? l10n.unknown,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${l10n.bmHubSellerLabel}: ${listing.sellerUsername}',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: Colors.grey),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(Icons.location_on, size: 14, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          Text(
-                            vehicle.currentLocation?.toUpperCase() ??
-                                l10n.bmHubLocationUnknown,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          const SizedBox(width: 12),
-                          Icon(
-                            Icons.build,
-                            size: 14,
-                            color: vehicle.getConditionColor() == 'green'
-                                ? Colors.green
-                                : vehicle.getConditionColor() == 'orange'
-                                ? Colors.orange
-                                : Colors.red,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${vehicle.condition}%',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Divider(height: 24),
-
-            // Pricing Info
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.bmHubAskingPriceLabel,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.grey),
-                    ),
-                    Text(
-                      '€${askingPrice.toStringAsFixed(0)}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      l10n.bmHubMarketValueShort,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.grey),
-                    ),
-                    Text(
-                      '€${marketValue.toStringAsFixed(0)}',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    if (priceDifference.abs() > 5)
-                      Text(
-                        '${priceDifference > 0 ? '+' : ''}${priceDifference.toStringAsFixed(0)}%',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: priceDifference > 0
-                              ? Colors.red
-                              : Colors.green,
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Buy Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () => _buyVehicle(listing),
-                icon: const Icon(Icons.shopping_cart),
-                label: Text(l10n.bmHubBuyNow),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
+    return MarketCompactRow(
+      leading: _vehicleListingThumb(vehicle),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            vehicle.definition?.name ?? l10n.unknown,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: listing.sellerUsername,
+                color: Colors.blueGrey.shade700,
+                icon: Icons.person,
               ),
-            ),
-          ],
+              MarketInfoPill(
+                label: vehicle.currentLocation?.toUpperCase() ??
+                    l10n.bmHubLocationUnknown,
+                color: Colors.blueGrey.shade700,
+                icon: Icons.location_on,
+              ),
+              MarketInfoPill(
+                label: '${vehicle.condition}%',
+                color: conditionColor,
+                icon: Icons.build,
+              ),
+              if (priceDifference.abs() > 5)
+                MarketInfoPill(
+                  label:
+                      '${priceDifference > 0 ? '+' : ''}${priceDifference.toStringAsFixed(0)}%',
+                  color: priceDifference > 0
+                      ? Colors.red.shade700
+                      : Colors.green.shade700,
+                ),
+            ],
+          ),
+        ],
+      ),
+      meta: Text(
+        '€${askingPrice.toStringAsFixed(0)}',
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
         ),
+      ),
+      action: FilledButton(
+        onPressed: () => _buyVehicle(listing),
+        style: marketBuyButtonStyle(),
+        child: Text(l10n.bmHubBuyNow),
       ),
     );
   }
@@ -733,114 +650,60 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         ? l10n.bmHubToolQtyDurability(pt.quantity, pct)
         : listing.subtitle;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 120,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: _buildItemListingThumbnail(listing),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${l10n.bmHubSellerLabel}: ${listing.sellerUsername}',
-                        style: Theme.of(context).textTheme.bodySmall
-                            ?.copyWith(color: Colors.grey),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(Icons.location_on, size: 14, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          Text(
-                            (listing.countryCode ?? l10n.bmHubLocationUnknown)
-                                .toUpperCase(),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          if (detailText.isNotEmpty) ...[
-                            const SizedBox(width: 12),
-                            Flexible(
-                              child: Text(
-                                detailText,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Divider(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.bmHubAskingPriceLabel,
-                      style: Theme.of(context).textTheme.bodySmall
-                          ?.copyWith(color: Colors.grey),
-                    ),
-                    Text(
-                      '€${listing.price.toString()}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                    ),
-                  ],
-                ),
-                if (listing.toolDefinition != null)
-                  Text(
-                    l10n.bmHubToolBaseValue(
-                      listing.toolDefinition!.basePrice,
-                    ),
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            if (!isSelf)
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () => _buyToolListing(listing),
-                  icon: const Icon(Icons.shopping_cart),
-                  label: Text(l10n.bmHubBuyNow),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
+    return MarketCompactRow(
+      leading: marketThumbBox(
+        width: 56,
+        height: 40,
+        color: Colors.grey[800],
+        child: _buildItemListingThumbnail(listing, iconSize: 22),
+      ),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label: listing.sellerUsername,
+                color: Colors.blueGrey.shade700,
+                icon: Icons.person,
               ),
-          ],
+              MarketInfoPill(
+                label: (listing.countryCode ?? l10n.bmHubLocationUnknown)
+                    .toUpperCase(),
+                color: Colors.blueGrey.shade700,
+                icon: Icons.location_on,
+              ),
+              if (detailText.isNotEmpty)
+                MarketInfoPill(
+                  label: detailText,
+                  color: Colors.teal.shade700,
+                ),
+            ],
+          ),
+        ],
+      ),
+      meta: Text(
+        '€${listing.price}',
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
         ),
       ),
+      action: isSelf
+          ? null
+          : FilledButton(
+              onPressed: () => _buyToolListing(listing),
+              style: marketBuyButtonStyle(),
+              child: Text(l10n.bmHubBuyNow),
+            ),
     );
   }
 
@@ -849,69 +712,38 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     final name = listing.displayName;
     final subtitle = listing.subtitle;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 100,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: _buildItemListingThumbnail(listing, iconSize: 32),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: Theme.of(context).textTheme.titleSmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      if (subtitle.isNotEmpty) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                      const SizedBox(height: 4),
-                      Text(
-                        '${l10n.bmHubListedFor}: €${listing.price}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () => _delistToolListing(listing),
-                icon: const Icon(Icons.remove_circle, size: 18),
-                label: Text(l10n.bmHubDelist),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                ),
-              ),
-            ),
+    return MarketCompactRow(
+      leading: marketThumbBox(
+        width: 56,
+        height: 40,
+        color: Colors.grey[800],
+        child: _buildItemListingThumbnail(listing, iconSize: 22),
+      ),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          if (subtitle.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            MarketInfoPill(label: subtitle, color: Colors.blueGrey.shade700),
           ],
+        ],
+      ),
+      meta: Text(
+        '€${listing.price}',
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
         ),
+      ),
+      action: FilledButton(
+        onPressed: () => _delistToolListing(listing),
+        style: marketBuyButtonStyle(background: Colors.red),
+        child: Text(l10n.bmHubDelist),
       ),
     );
   }
@@ -1979,113 +1811,57 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
 
   Widget _buildMyListingCard(VehicleInventoryItem vehicle) {
     final l10n = AppLocalizations.of(context)!;
-    final selectedImage = vehicle.conditionImage;
     final askingPrice = vehicle.askingPrice ?? 0;
     final marketValue = vehicle.getMarketValue();
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                // Vehicle Image
-                Container(
-                  width: 100,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: selectedImage != null
-                      ? WebAssetHelper.image(
-                          'assets/images/vehicles/$selectedImage',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                              child: Icon(
-                                vehicle.vehicleType == 'car'
-                                    ? Icons.directions_car
-                                    : Icons.directions_boat,
-                                size: 32,
-                                color: Colors.grey[600],
-                              ),
-                            );
-                          },
-                        )
-                      : Center(
-                          child: Icon(
-                            vehicle.vehicleType == 'car'
-                                ? Icons.directions_car
-                                : Icons.directions_boat,
-                            size: 32,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                ),
-                const SizedBox(width: 12),
-
-                // Vehicle Details
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        vehicle.definition?.name ?? l10n.unknown,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${l10n.bmHubListedFor}: €${askingPrice.toStringAsFixed(0)}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '${l10n.bmHubMarketValueShort}: €${marketValue.toStringAsFixed(0)}',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Action Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => _editPrice(vehicle),
-                    icon: const Icon(Icons.edit, size: 18),
-                    label: Text(l10n.bmHubEditPrice),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () => _delistVehicle(vehicle),
-                    icon: const Icon(Icons.remove_circle, size: 18),
-                    label: Text(l10n.bmHubDelist),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return MarketCompactRow(
+      leading: _vehicleListingThumb(vehicle),
+      info: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            vehicle.definition?.name ?? l10n.unknown,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 3,
+            children: [
+              MarketInfoPill(
+                label:
+                    '${l10n.bmHubMarketValueShort}: €${marketValue.toStringAsFixed(0)}',
+                color: Colors.blueGrey.shade700,
+              ),
+            ],
+          ),
+        ],
+      ),
+      meta: Text(
+        '€${askingPrice.toStringAsFixed(0)}',
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
         ),
+      ),
+      action: Wrap(
+        spacing: 6,
+        children: [
+          OutlinedButton(
+            onPressed: () => _editPrice(vehicle),
+            style: OutlinedButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+              minimumSize: const Size(0, 34),
+            ),
+            child: Text(l10n.bmHubEditPrice),
+          ),
+          FilledButton(
+            onPressed: () => _delistVehicle(vehicle),
+            style: marketBuyButtonStyle(background: Colors.red),
+            child: Text(l10n.bmHubDelist),
+          ),
+        ],
       ),
     );
   }
