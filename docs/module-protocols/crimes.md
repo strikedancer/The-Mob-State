@@ -15,7 +15,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
-- Web dashboard Crimes uses **one** top header panel: player status strip + page title/counts + country-police strip (when the flag is on). Do not restore a separate AppBar, dashboard status bar, hero card and police card stacked as four chrome blocks.
+- Web dashboard Crimes uses **one** top header panel: player status strip + page title/counts + country-police strip (when the flag is on) + training bonus + worn-weapon slots. Do not restore separate AppBar, dashboard status bar, hero, police, prep or weapon cards stacked as chrome blocks. The filter/sort row may stay as a slim toolbar above the grid.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - Each crime attempt still costs HP (base 5–15). A worn vest and hired bodyguards reduce that hit via `applyCrimeHealthMitigation` (cap 55%). They do not change success chance, wanted or jail.
 
@@ -56,7 +56,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
-- On web dashboard Crimes, verify the player HUD, page title and country-police line share one header (no duplicate “Misdaden” AppBar or second status bar above the content card).
+- On web dashboard Crimes, verify the player HUD, page title, country-police line, training bonus and worn weapons share one header (no duplicate AppBar, second status bar, or separate prep/weapon cards).
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.

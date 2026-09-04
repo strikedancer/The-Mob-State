@@ -247,11 +247,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
   bool get _hasWeaponCrime =>
       _crimes.any((crime) => crime.requiredWeapon == true);
 
-  bool get _hasLowTrainingBonus =>
-      _trainingBonusesLoaded &&
-      _trainingStrengthBonus <= 0 &&
-      _trainingAccuracyBonus <= 0;
-
   int _crimeSuccessPercent(Crime crime) {
     return crime.playerSuccessChance ??
         ((crime.baseSuccessChance ?? 0) * 100).round();
@@ -419,7 +414,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
             },
           ),
           if (showPolice) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             const Divider(height: 1, color: Color(0xFF2A3344)),
             const SizedBox(height: 8),
             CountryPoliceStrip(
@@ -428,6 +423,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
               onDisrupt: _openCountryPoliceDisrupt,
               embedded: true,
             ),
+          ],
+          if (_trainingBonusesLoaded || _hasWeaponCrime) ...[
+            const SizedBox(height: 10),
+            const Divider(height: 1, color: Color(0xFF2A3344)),
+            const SizedBox(height: 8),
+            _buildHeaderPrepLoadout(l10n),
           ],
         ],
       ),
@@ -540,7 +541,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
     );
   }
 
-  Widget _buildPrepStrip(AppLocalizations l10n) {
+  Widget _buildHeaderPrepLoadout(AppLocalizations l10n) {
     final strengthPct = (_trainingStrengthBonus * 100).toStringAsFixed(1);
     final accuracyPct = (_trainingAccuracyBonus * 100).toStringAsFixed(1);
     final comboPct =
@@ -550,172 +551,96 @@ class _CrimeScreenState extends State<CrimeScreen> {
       return '${weapon['name'] ?? weapon['weaponId']} (${weapon['condition']}%)';
     }
 
-    return _panel(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    final trainingRow = !_trainingBonusesLoaded
+        ? null
+        : InkWell(
+            onTap: widget.onOpenTraining,
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                children: [
+                  const Icon(Icons.trending_up, color: _gold, size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _trainingComboActive
+                          ? '${l10n.crimeTrainingBonusStrip(strengthPct, accuracyPct)} ${l10n.crimeTrainingComboStrip(comboPct)}'
+                          : l10n.crimeTrainingBonusStrip(
+                              strengthPct,
+                              accuracyPct,
+                            ),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  if (widget.onOpenTraining != null)
+                    Text(
+                      l10n.crimeScreenPrepTitle,
+                      style: TextStyle(
+                        color: _gold.withValues(alpha: 0.9),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          );
+
+    Widget? weaponRow;
+    if (_hasWeaponCrime) {
+      final slotsText = _loadingWeaponSelection
+          ? l10n.crimeWeaponSectionTitle
+          : (_equippedSlotOne == null && _equippedSlotTwo == null)
+          ? l10n.crimeWeaponNoSelectionNote
+          : l10n.crimeWeaponEquippedStatus(
+              weaponSlotLabel(_equippedSlotOne),
+              weaponSlotLabel(_equippedSlotTwo),
+            );
+      weaponRow = Row(
         children: [
-          Text(
-            l10n.crimeScreenPrepTitle,
-            style: const TextStyle(
-              color: _gold,
-              fontWeight: FontWeight.w800,
-              fontSize: 15,
+          const Icon(Icons.gps_fixed, color: _gold, size: 16),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              slotsText,
+              style: TextStyle(
+                color: (!_loadingWeaponSelection &&
+                        _equippedSlotOne == null &&
+                        _equippedSlotTwo == null)
+                    ? Colors.orange
+                    : Colors.white70,
+                fontSize: 12,
+              ),
             ),
           ),
-          const SizedBox(height: 12),
-          if (_trainingBonusesLoaded) ...[
-            Builder(
-              builder: (context) {
-                final trainingBody = Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.35),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: _gold.withValues(alpha: 0.35),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.trending_up, color: _gold, size: 18),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              l10n.crimeTrainingBonusStrip(
-                                strengthPct,
-                                accuracyPct,
-                              ),
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          if (widget.onOpenTraining != null)
-                            Icon(
-                              Icons.chevron_right,
-                              color: Colors.white.withValues(alpha: 0.45),
-                              size: 18,
-                            ),
-                        ],
-                      ),
-                      if (_trainingComboActive) ...[
-                        const SizedBox(height: 6),
-                        Text(
-                          l10n.crimeTrainingComboStrip(comboPct),
-                          style: const TextStyle(
-                            color: Colors.white60,
-                            fontSize: 11.5,
-                          ),
-                        ),
-                      ],
-                      if (_hasLowTrainingBonus &&
-                          widget.onOpenTraining != null) ...[
-                        const SizedBox(height: 6),
-                        Text(
-                          l10n.crimeScreenTrainingNudge,
-                          style: TextStyle(
-                            color: Colors.orangeAccent.withValues(alpha: 0.95),
-                            fontSize: 11,
-                          ),
-                        ),
-                      ] else if (widget.onOpenTraining != null) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.crimeTrainingOpenHub,
-                          style: TextStyle(
-                            color: _gold.withValues(alpha: 0.85),
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                );
-
-                if (widget.onOpenTraining == null) {
-                  return trainingBody;
-                }
-
-                return InkWell(
-                  onTap: widget.onOpenTraining,
-                  borderRadius: BorderRadius.circular(10),
-                  child: trainingBody,
-                );
-              },
+          TextButton.icon(
+            onPressed: _openInventoryForWeaponSelection,
+            icon: const Icon(Icons.inventory_2_outlined, size: 14),
+            label: Text(l10n.goToInventory),
+            style: TextButton.styleFrom(
+              foregroundColor: _gold,
+              visualDensity: VisualDensity.compact,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            const SizedBox(height: 12),
-          ],
-          if (_hasWeaponCrime) ...[
-            Row(
-              children: [
-                const Icon(Icons.gps_fixed, color: _gold, size: 18),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.crimeWeaponSectionTitle,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                TextButton.icon(
-                  onPressed: _openInventoryForWeaponSelection,
-                  icon: const Icon(Icons.inventory_2_outlined, size: 15),
-                  label: Text(l10n.goToInventory),
-                  style: TextButton.styleFrom(
-                    foregroundColor: _gold,
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Text(
-              l10n.crimeWeaponInstruction,
-              style: const TextStyle(color: Colors.white60, fontSize: 12),
-            ),
-            const SizedBox(height: 8),
-            if (_loadingWeaponSelection)
-              const SizedBox(
-                height: 36,
-                child: Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              )
-            else if (_equippedSlotOne == null && _equippedSlotTwo == null) ...[
-              Text(
-                l10n.crimeWeaponNoSelectionNote,
-                style: const TextStyle(color: Colors.orange, fontSize: 12),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                l10n.crimeWeaponEmptyInventoryHelp,
-                style: const TextStyle(color: Colors.white54, fontSize: 11.5),
-              ),
-            ] else ...[
-              Text(
-                l10n.crimeWeaponEquippedStatus(
-                  weaponSlotLabel(_equippedSlotOne),
-                  weaponSlotLabel(_equippedSlotTwo),
-                ),
-                style: const TextStyle(color: Colors.white70, fontSize: 12),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                l10n.crimeWeaponFooterNote,
-                style: const TextStyle(color: Colors.white54, fontSize: 11),
-              ),
-            ],
-          ],
+          ),
         ],
-      ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ?trainingRow,
+        if (trainingRow != null && weaponRow != null)
+          const SizedBox(height: 6),
+        ?weaponRow,
+      ],
     );
   }
 
@@ -1401,7 +1326,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
                       child: _buildPageHero(l10n, player?.rank ?? 1),
                     ),
                     SliverToBoxAdapter(child: _buildLiveEventBanner(l10n)),
-                    SliverToBoxAdapter(child: _buildPrepStrip(l10n)),
                     SliverToBoxAdapter(child: _buildFilterSortBar(l10n)),
                     SliverPadding(
                       padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
