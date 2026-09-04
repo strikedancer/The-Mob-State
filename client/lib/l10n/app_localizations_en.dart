@@ -9204,6 +9204,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get jailAttemptEscape => 'Attempt escape';
 
   @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Attempt escape ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Next escape in $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'No escape attempts left this sentence';
+
+  @override
   String get jailYouAreInJail => 'You are in jail';
 
   @override
@@ -15853,7 +15867,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.';
+      'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you get at most 2 self-escape attempts per sentence, with 15 minutes between them. Success chance is low. Failure adds 15 minutes. After that: pay bail, wait, or let friends/crew break you out.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.';
 
   @override
   String get helpTopicPrisonTips =>

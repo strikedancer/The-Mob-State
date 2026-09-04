@@ -5706,6 +5706,26 @@
   },
   "jailCannotActWhileIn": "You cannot commit crimes, work, or travel while serving your sentence.",
   "jailAttemptEscape": "Attempt escape",
+  "jailEscapeAttemptsLeft": "Attempt escape ({remaining}/{max})",
+  "@jailEscapeAttemptsLeft": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "jailEscapeCooldown": "Next escape in {time}",
+  "@jailEscapeCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "jailEscapeAttemptsExhausted": "No escape attempts left this sentence",
   "jailYouAreInJail": "You are in jail",
   "vehicleCondition": "Condition",
   "vehicleFuel": "Fuel",
@@ -8047,18 +8067,32 @@
   "evStreamDrugsWholesaleSold": "{quantity}g {drugType} sold in {destination} (€{payout})",
   "@evStreamDrugsWholesaleSold": {
     "placeholders": {
-      "quantity": { "type": "String" },
-      "drugType": { "type": "String" },
-      "destination": { "type": "String" },
-      "payout": { "type": "String" }
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
     }
   },
   "evStreamDrugsWholesaleSeized": "{quantity}g {drugType} to {destination} seized",
   "@evStreamDrugsWholesaleSeized": {
     "placeholders": {
-      "quantity": { "type": "String" },
-      "drugType": { "type": "String" },
-      "destination": { "type": "String" }
+      "quantity": {
+        "type": "String"
+      },
+      "drugType": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      }
     }
   },
   "@evStreamDrugsProductionCollected": {
@@ -9446,51 +9480,69 @@
   "drugsExportDialogTitle": "Export {name}",
   "@drugsExportDialogTitle": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "drugsExportDestLabel": "Destination",
   "drugsExportQuoteStreet": "Dest street: €{amount}/g",
   "@drugsExportQuoteStreet": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "drugsExportQuoteB2b": "Wholesale: €{amount}/g",
   "@drugsExportQuoteB2b": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "drugsExportPayout": "Payout on arrival: €{amount}",
   "@drugsExportPayout": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "drugsExportFee": "Freight: €{amount}",
   "@drugsExportFee": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "drugsExportEta": "ETA: {minutes} min",
   "@drugsExportEta": {
     "placeholders": {
-      "minutes": { "type": "String" }
+      "minutes": {
+        "type": "String"
+      }
     }
   },
   "drugsExportSeizure": "Seizure: {pct}%",
   "@drugsExportSeizure": {
     "placeholders": {
-      "pct": { "type": "String" }
+      "pct": {
+        "type": "String"
+      }
     }
   },
   "drugsExportHeat": "Heat +{heat} · FBI +{fbi}",
   "@drugsExportHeat": {
     "placeholders": {
-      "heat": { "type": "String" },
-      "fbi": { "type": "String" }
+      "heat": {
+        "type": "String"
+      },
+      "fbi": {
+        "type": "String"
+      }
     }
   },
   "drugsExportHarbor": "Harbor bonus active",
@@ -9498,7 +9550,9 @@
   "drugsExportMinHint": "Minimum {grams}g",
   "@drugsExportMinHint": {
     "placeholders": {
-      "grams": { "type": "String" }
+      "grams": {
+        "type": "String"
+      }
     }
   },
   "drugsExportFailed": "Export failed",
@@ -9508,8 +9562,12 @@
   "drugsExportCrewPayout": "Payout: crew €{crew} · runner €{runner}",
   "@drugsExportCrewPayout": {
     "placeholders": {
-      "crew": { "type": "String" },
-      "runner": { "type": "String" }
+      "crew": {
+        "type": "String"
+      },
+      "runner": {
+        "type": "String"
+      }
     }
   },
   "drugsExportCannotAffordCrew": "Crew bank cannot cover freight",
@@ -9524,9 +9582,15 @@
   "drugsHubExportLine": "{qty}g → {dest} · {status}",
   "@drugsHubExportLine": {
     "placeholders": {
-      "qty": { "type": "String" },
-      "dest": { "type": "String" },
-      "status": { "type": "String" }
+      "qty": {
+        "type": "String"
+      },
+      "dest": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
     }
   },
   "drugsInvEmptyTitle": "No drugs in inventory",
@@ -10041,7 +10105,7 @@
   "helpTopicPrisonCategory": "Recovery",
   "helpTopicPrisonTitle": "Prison",
   "helpTopicPrisonSummary": "Serve your prison sentence, pay bail or attempt to escape. The higher your Wanted Level the longer and more expensive your sentence.",
-  "helpTopicPrisonHow": "After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.",
+  "helpTopicPrisonHow": "After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you get at most 2 self-escape attempts per sentence, with 15 minutes between them. Success chance is low. Failure adds 15 minutes. After that: pay bail, wait, or let friends/crew break you out.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.",
   "helpTopicPrisonTips": "Check bail immediately after arrest: the button should remain visible as long as you are still jailed, even if your Wanted Level has already dropped.\nStart production timers just before doing a high-risk crime run: if you get caught production keeps running anyway.",
   "helpTopicVaultCategory": "Events",
   "helpTopicVaultTitle": "Crack the Vault",

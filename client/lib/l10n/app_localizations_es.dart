@@ -9255,15 +9255,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get jailEscapeSuccess => '🎉 ¡Fuga conseguida! Estás libre.';
+  String get jailEscapeSuccess => '¡La fuga tuvo éxito! Eres libre.';
 
   @override
   String jailEscapeFailed(String penalty) {
-    return 'Fuga fallida. Condena ampliada $penalty.';
+    return 'La fuga falló. Sentencia ampliada por $penalty.';
   }
 
   @override
-  String get jailEscapeGenericFailure => 'Fuga fallida';
+  String get jailEscapeGenericFailure => 'Escape fallido';
 
   @override
   String jailErrorPrefix(String message) {
@@ -9284,6 +9284,20 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get jailAttemptEscape => 'Intentar fuga';
+
+  @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Intento de fuga ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Próximo escape en $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'Ningún intento de fuga dejó esta frase.';
 
   @override
   String get jailYouAreInJail => 'Estás en prisión';
@@ -16002,7 +16016,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Después del arresto, se inicia un cronómetro basado en el nivel de búsqueda. Nivel de búsqueda 1 = sentencia corta (minutos), Nivel de búsqueda 5+ = horas de prisión. \nLa fianza aumenta con la sentencia restante y nunca cae por debajo del nivel de búsqueda × 1000 €. Por lo tanto, las sentencias más largas cuestan más si se compran inmediatamente. \nEscape: puedes intentar escapar de la prisión, pero las posibilidades de éxito son bajas. El fracaso extiende su sentencia por una cantidad fija. \nEn la lista de prisiones y en la superposición de cárcel, siempre puedes pagar tu propia fianza y también intentar escapar mientras estás encarcelado. \nLos miembros de la Crew pueden visitarte y brindarte pequeños beneficios (estadísticas, moral) mientras estás encerrado. \nAl ser arrestado, tus amigos y miembros de la Crew ahora reciben una notificación automática de que fuiste capturado y estás esperando ayuda. \nLas armas y armaduras se confiscan al momento del arresto si no se tiene protección legal para ellas. \nOpción judicial: acudir al tribunal para obtener una reducción de la pena a través de un abogado (ver Tribunal). \nMientras los temporizadores de producción bloqueados (drogas, fábrica de municiones) siguen funcionando. Tu imperio funciona sin ti. \nNo puedes visitar el hospital mientras estés encerrado. La recuperación de HP espera hasta que esté libre.';
+      'Después del arresto, se inicia un cronómetro basado en el nivel de búsqueda. Nivel de búsqueda 1 = sentencia corta (minutos), Nivel de búsqueda 5+ = horas de prisión. \nLa fianza aumenta con la sentencia restante y nunca cae por debajo del nivel de búsqueda × 1000 €. Por lo tanto, las sentencias más largas cuestan más si se compran inmediatamente. \nEscape: obtienes como máximo 2 intentos de escape por frase, con 15 minutos entre ellos. Las posibilidades de éxito son bajas. El fallo añade 15 minutos. Después de eso: paga la fianza, espera o deja que tus amigos/Crew te saquen. \nEn la lista de prisiones y en la superposición de cárcel, siempre puedes pagar tu propia fianza y también intentar escapar mientras estás encarcelado. \nLos miembros de la Crew pueden visitarte y brindarte pequeños beneficios (estadísticas, moral) mientras estás encerrado. \nAl ser arrestado, tus amigos y miembros de la Crew ahora reciben una notificación automática de que fuiste capturado y estás esperando ayuda. \nLas armas y armaduras se confiscan al momento del arresto si no se tiene protección legal para ellas. \nOpción judicial: acudir al tribunal para obtener una reducción de la pena a través de un abogado (ver Tribunal). \nMientras los temporizadores de producción bloqueados (drogas, fábrica de municiones) siguen funcionando. Tu imperio funciona sin ti. \nNo puedes visitar el hospital mientras estés encerrado. La recuperación de HP espera hasta que esté libre.';
 
   @override
   String get helpTopicPrisonTips =>

@@ -129,7 +129,13 @@ class _PrisonScreenState extends State<PrisonScreen> {
               final current =
                   (prisoner['remainingSeconds'] as num?)?.toInt() ?? 0;
               final next = current > 0 ? current - 1 : 0;
-              return {...prisoner, 'remainingSeconds': next};
+              final cooldown =
+                  (prisoner['escapeCooldownSeconds'] as num?)?.toInt() ?? 0;
+              return {
+                ...prisoner,
+                'remainingSeconds': next,
+                if (cooldown > 0) 'escapeCooldownSeconds': cooldown - 1,
+              };
             })
             .where(
               (prisoner) =>
@@ -405,6 +411,10 @@ class _PrisonScreenState extends State<PrisonScreen> {
         );
         backgroundColor = Colors.red.shade700;
         icon = Icons.hourglass_top;
+      } else if (event == 'error.escape_attempts_exhausted') {
+        message = l10n.jailEscapeAttemptsExhausted;
+        backgroundColor = Colors.red.shade700;
+        icon = Icons.block;
       } else {
         message = l10n.prisonEscapeGenericFailure;
         backgroundColor = Colors.red.shade700;
@@ -458,6 +468,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
         return l10n.prisonErrorCannotBuyoutSelf;
       case 'error.player_not_found':
         return l10n.prisonErrorPlayerNotFound;
+      case 'error.escape_attempts_exhausted':
+        return l10n.jailEscapeAttemptsExhausted;
       default:
         return l10n.prisonActionFailed;
     }
@@ -562,6 +574,23 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                 0;
                             final bailCost =
                                 (prisoner['bailCost'] as num?)?.toInt() ?? 0;
+                            final escapeAttempts =
+                                (prisoner['escapeAttemptsRemaining'] as num?)
+                                    ?.toInt() ??
+                                2;
+                            final escapeCooldown =
+                                (prisoner['escapeCooldownSeconds'] as num?)
+                                    ?.toInt() ??
+                                0;
+                            final maxEscapeAttempts =
+                                (prisoner['maxEscapeAttempts'] as num?)
+                                    ?.toInt() ??
+                                2;
+                            final canSelfEscape =
+                                isCurrentViewer &&
+                                !_isActing &&
+                                escapeAttempts > 0 &&
+                                escapeCooldown <= 0;
 
                             return Card(
                               child: Padding(
@@ -622,17 +651,30 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                         const SizedBox(width: 10),
                                         Expanded(
                                           child: OutlinedButton.icon(
-                                            onPressed: _isActing || playerId == 0
+                                            onPressed: playerId == 0 || _isActing
                                                 ? null
                                                 : isCurrentViewer
-                                                ? _attemptOwnEscape
+                                                ? (canSelfEscape
+                                                      ? _attemptOwnEscape
+                                                      : null)
                                                 : () => _attemptJailbreak(
                                                     playerId,
                                                   ),
                                             icon: const Icon(Icons.lock_open),
                                             label: Text(
                                               isCurrentViewer
-                                                  ? l10n.prisonAttemptEscapeButton
+                                                  ? (escapeAttempts <= 0
+                                                        ? l10n.jailEscapeAttemptsExhausted
+                                                        : escapeCooldown > 0
+                                                        ? l10n.jailEscapeCooldown(
+                                                            _formatDuration(
+                                                              escapeCooldown,
+                                                            ),
+                                                          )
+                                                        : l10n.jailEscapeAttemptsLeft(
+                                                            '$escapeAttempts',
+                                                            '$maxEscapeAttempts',
+                                                          ))
                                                   : l10n.prisonJailbreakButton,
                                             ),
                                           ),

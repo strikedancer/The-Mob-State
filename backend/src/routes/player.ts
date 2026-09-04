@@ -157,10 +157,16 @@ router.get('/jail-status', authenticate, async (req: AuthRequest, res: Response)
         ? policeService.calculateJailBail(player.wantedLevel || 0, remainingTime)
         : 0;
 
+    const escape =
+      remainingTime > 0 ? await policeService.getSelfEscapeStatus(playerId) : null;
+
     return res.status(200).json({
       jailed: remainingTime > 0,
       remainingTime,
       bailAmount,
+      escapeAttemptsRemaining: escape?.attemptsRemaining ?? 0,
+      escapeCooldownSeconds: escape?.cooldownSeconds ?? 0,
+      maxEscapeAttempts: escape?.maxAttempts ?? policeService.SELF_ESCAPE_MAX_ATTEMPTS,
     });
   } catch {
     return res.status(500).json({
@@ -589,29 +595,15 @@ router.post('/prison/escape', authenticate, async (req: AuthRequest, res: Respon
   try {
     const playerId = req.player!.id;
 
-    const cooldownRemaining = await getPrisonActionCooldownRemaining(
-      playerId,
-      'prison.cooldown.escape'
-    );
-    if (cooldownRemaining > 0) {
-      return res.status(429).json({
-        event: 'error.cooldown',
-        params: {
-          actionType: 'prison_escape',
-          remainingSeconds: cooldownRemaining,
-          message: `Wait ${cooldownRemaining} seconds before attempting another escape`,
-        },
-      });
-    }
-
     const result = await policeService.attemptSelfEscape(playerId);
-    await markPrisonActionCooldown(playerId, 'prison.cooldown.escape');
 
     return res.status(200).json({
       event: result.success ? 'prison.escape_success' : 'prison.escape_failed',
       params: {
         remainingSeconds: result.remainingSeconds,
         penaltySeconds: result.penaltySeconds,
+        escapeAttemptsRemaining: result.attemptsRemaining,
+        escapeCooldownSeconds: result.cooldownSeconds,
       },
     });
   } catch (error) {
@@ -620,6 +612,26 @@ router.post('/prison/escape', authenticate, async (req: AuthRequest, res: Respon
         return res.status(400).json({
           event: 'error.not_jailed',
           params: {},
+        });
+      }
+      if (error.message === 'ESCAPE_ATTEMPTS_EXHAUSTED') {
+        return res.status(400).json({
+          event: 'error.escape_attempts_exhausted',
+          params: {},
+        });
+      }
+      if (error.message === 'ESCAPE_COOLDOWN') {
+        const remainingSeconds = Math.max(
+          1,
+          Number((error as Error & { retryAfterSeconds?: number }).retryAfterSeconds || 900)
+        );
+        return res.status(429).json({
+          event: 'error.cooldown',
+          params: {
+            actionType: 'prison_escape',
+            remainingSeconds,
+            message: `Wait ${remainingSeconds} seconds before attempting another escape`,
+          },
         });
       }
       if (error.message === 'PLAYER_NOT_FOUND') {

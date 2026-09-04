@@ -32,6 +32,9 @@ class JailOverlay extends StatefulWidget {
 class _JailOverlayState extends State<JailOverlay> {
   late int _remainingSeconds;
   int? _bailAmount;
+  int _escapeAttemptsRemaining = 2;
+  int _escapeCooldownSeconds = 0;
+  int _maxEscapeAttempts = 2;
   Timer? _timer;
   bool _isPayingBail = false;
   bool _isEscaping = false;
@@ -94,6 +97,9 @@ class _JailOverlayState extends State<JailOverlay> {
           timer.cancel();
           widget.onReleased?.call();
         }
+        if (_escapeCooldownSeconds > 0) {
+          _escapeCooldownSeconds--;
+        }
       });
 
       if (_remainingSeconds > 0 && _remainingSeconds % 60 == 0) {
@@ -134,10 +140,46 @@ class _JailOverlayState extends State<JailOverlay> {
         if (bailAmount != null && bailAmount >= 0) {
           _bailAmount = bailAmount;
         }
+        final attempts = (data['escapeAttemptsRemaining'] as num?)?.toInt();
+        final cooldown = (data['escapeCooldownSeconds'] as num?)?.toInt();
+        final maxAttempts = (data['maxEscapeAttempts'] as num?)?.toInt();
+        if (attempts != null) {
+          _escapeAttemptsRemaining = attempts;
+        }
+        if (cooldown != null) {
+          _escapeCooldownSeconds = cooldown;
+        }
+        if (maxAttempts != null && maxAttempts > 0) {
+          _maxEscapeAttempts = maxAttempts;
+        }
       });
     } catch (_) {
       // Keep local fallback values when jail status refresh fails.
     }
+  }
+
+  bool get _canAttemptEscape =>
+      !_isEscaping &&
+      !_isPayingBail &&
+      _escapeAttemptsRemaining > 0 &&
+      _escapeCooldownSeconds <= 0;
+
+  String _escapeButtonLabel(AppLocalizations l10n) {
+    if (_escapeAttemptsRemaining <= 0) {
+      return l10n.jailEscapeAttemptsExhausted;
+    }
+    if (_escapeCooldownSeconds > 0) {
+      return l10n.jailEscapeCooldown(
+        formatAdaptiveDurationFromSeconds(
+          _escapeCooldownSeconds,
+          localeName: l10n.localeName,
+        ),
+      );
+    }
+    return l10n.jailEscapeAttemptsLeft(
+      '$_escapeAttemptsRemaining',
+      '$_maxEscapeAttempts',
+    );
   }
 
   String _formatTime() {
@@ -274,6 +316,14 @@ class _JailOverlayState extends State<JailOverlay> {
         if (nextRemaining != null && nextRemaining >= 0) {
           setState(() {
             _remainingSeconds = nextRemaining;
+            final attempts = (params['escapeAttemptsRemaining'] as num?)?.toInt();
+            final cooldown = (params['escapeCooldownSeconds'] as num?)?.toInt();
+            if (attempts != null) {
+              _escapeAttemptsRemaining = attempts;
+            }
+            if (cooldown != null) {
+              _escapeCooldownSeconds = cooldown;
+            }
           });
         }
 
@@ -289,10 +339,22 @@ class _JailOverlayState extends State<JailOverlay> {
         );
       } else if (event == 'error.cooldown') {
         final remainingSeconds = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
+        setState(() {
+          _escapeCooldownSeconds = remainingSeconds;
+        });
         _showTopRightNotification(
           l10n.jailCooldownWait(remainingSeconds),
           backgroundColor: Colors.red.shade700,
           icon: Icons.hourglass_top,
+        );
+      } else if (event == 'error.escape_attempts_exhausted') {
+        setState(() {
+          _escapeAttemptsRemaining = 0;
+        });
+        _showTopRightNotification(
+          l10n.jailEscapeAttemptsExhausted,
+          backgroundColor: Colors.red.shade700,
+          icon: Icons.block,
         );
       } else {
         _showTopRightNotification(
@@ -466,7 +528,7 @@ class _JailOverlayState extends State<JailOverlay> {
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
-                        onPressed: _isEscaping || _isPayingBail ? null : _attemptEscape,
+                        onPressed: !_canAttemptEscape ? null : _attemptEscape,
                         icon: _isEscaping
                             ? const SizedBox(
                                 width: 20,
@@ -477,7 +539,7 @@ class _JailOverlayState extends State<JailOverlay> {
                               )
                             : const Icon(Icons.lock_open),
                         label: Text(
-                          l10n.jailAttemptEscape,
+                          _escapeButtonLabel(l10n),
                           textAlign: TextAlign.center,
                         ),
                         style: OutlinedButton.styleFrom(

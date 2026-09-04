@@ -9318,6 +9318,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get jailAttemptEscape => 'Tentative d\'évasion';
 
   @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Tentative d\'évasion ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Prochaine évasion dans $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'Aucune tentative d\'évasion n\'a laissé cette phrase';
+
+  @override
   String get jailYouAreInJail => 'Tu es en prison';
 
   @override
@@ -16049,7 +16063,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Après l\'arrestation, un chronomètre démarre en fonction du niveau de recherche. Recherché niveau 1 = peine courte (minutes), Recherché niveau 5+ = heures de prison. \nLa caution évolue en fonction de votre peine restante et ne descend jamais en dessous du niveau de recherche × 1 000 €. Les peines plus longues coûtent donc plus cher à racheter immédiatement. \nÉvasion : vous pouvez tenter une évasion de prison mais les chances de réussite sont faibles. L’échec prolonge votre peine d’un montant fixe. \nDans la liste des prisons et dans la superposition des prisons, vous pouvez toujours payer votre propre caution et tenter votre propre évasion pendant que vous êtes encore en prison. \nLes membres de l\'équipage peuvent vous rendre visite et vous apporter de petits avantages (statistiques, moral) pendant que vous êtes enfermé. \nLors de votre arrestation, vos amis et membres d\'équipage reçoivent désormais une notification push indiquant que vous avez été arrêté et que vous attendez de l\'aide. \nLes armes et armures sont confisquées lors de votre arrestation si vous n\'avez aucune couverture légale pour elles. \nOption tribunal : s\'adresser au tribunal pour obtenir une réduction de peine via un avocat (voir Tribunal). \nPendant que les minuteries de production (médicaments, usine de munitions) continuent de fonctionner. Votre empire fonctionne sans vous. \nVous ne pouvez pas visiter l’hôpital en étant enfermé. La récupération HP attend que vous soyez libre.';
+      'Après l\'arrestation, un chronomètre démarre en fonction du niveau de recherche. Recherché niveau 1 = peine courte (minutes), Recherché niveau 5+ = heures de prison. \nLa caution évolue en fonction de votre peine restante et ne descend jamais en dessous du niveau de recherche × 1 000 €. Les peines plus longues coûtent donc plus cher à racheter immédiatement. \nÉvasion : vous obtenez au maximum 2 tentatives d\'auto-évasion par phrase, espacées de 15 minutes. Les chances de succès sont faibles. L\'échec ajoute 15 minutes. Après cela : payez une caution, attendez ou laissez vos amis/équipage vous évader. \nDans la liste des prisons et dans la superposition des prisons, vous pouvez toujours payer votre propre caution et tenter votre propre évasion pendant que vous êtes encore en prison. \nLes membres de l\'équipage peuvent vous rendre visite et vous apporter de petits avantages (statistiques, moral) pendant que vous êtes enfermé. \nLors de votre arrestation, vos amis et membres d\'équipage reçoivent désormais une notification push indiquant que vous avez été arrêté et que vous attendez de l\'aide. \nLes armes et armures sont confisquées lors de votre arrestation si vous n\'avez aucune couverture légale pour elles. \nOption tribunal : s\'adresser au tribunal pour obtenir une réduction de peine via un avocat (voir Tribunal). \nPendant que les minuteries de production (médicaments, usine de munitions) continuent de fonctionner. Votre empire fonctionne sans vous. \nVous ne pouvez pas visiter l’hôpital en étant enfermé. La récupération HP attend que vous soyez libre.';
 
   @override
   String get helpTopicPrisonTips =>

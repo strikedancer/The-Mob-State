@@ -9292,6 +9292,20 @@ class AppLocalizationsIt extends AppLocalizations {
   String get jailAttemptEscape => 'Tentativo di fuga';
 
   @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Tentativo di fuga ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Prossima fuga tra $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'Nessun tentativo di fuga ha lasciato questa frase';
+
+  @override
   String get jailYouAreInJail => 'Sei in prigione';
 
   @override
@@ -16027,7 +16041,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Dopo l\'arresto parte un timer basato sul livello di ricercato. Livello di ricercato 1 = pena breve (minuti), Livello di ricercato 5+ = ore di prigione. \nLa cauzione è proporzionale alla pena rimanente e non scende mai al di sotto del livello di ricercato × € 1.000. Pene più lunghe costano quindi di più per il riscatto immediato. \nFuga: puoi tentare un\'evasione ma le possibilità di successo sono basse. Il fallimento estende la pena di un importo fisso. \nNell\'elenco delle prigioni e nello schermo delle prigioni puoi sempre pagare la tua cauzione e anche tentare la fuga mentre sei ancora in prigione. \nI membri dell\'Crew possono visitarti e fornirti piccoli benefici (statistiche, morale) mentre sei rinchiuso. \nAll\'arresto i tuoi amici e i membri dell\'Crew ora ricevono una notifica push che ti informa che sei stato catturato e stai aspettando aiuto. \nArmi e armature vengono confiscate all\'arresto se non si dispone di copertura legale per esse. \nOpzione tribunale: rivolgersi al tribunale per ottenere una riduzione di pena tramite un avvocato (vedi Tribunale). \nMentre sono bloccati, i timer di produzione (farmaci, fabbrica di munizioni) continuano a funzionare. Il tuo impero funziona senza di te. \nNon puoi visitare l\'ospedale mentre sei rinchiuso. Il ripristino HP attende finché non sei libero.';
+      'Dopo l\'arresto parte un timer basato sul livello di ricercato. Livello di ricercato 1 = pena breve (minuti), Livello di ricercato 5+ = ore di prigione. \nLa cauzione è proporzionale alla pena rimanente e non scende mai al di sotto del livello di ricercato × € 1.000. Pene più lunghe costano quindi di più per il riscatto immediato. \nFuga: ottieni al massimo 2 tentativi di fuga per frase, con 15 minuti tra di loro. La probabilità di successo è bassa. Il fallimento aggiunge 15 minuti. Dopodiché: paga la cauzione, aspetta o lascia che gli amici o l\'Crew ti facciano uscire. \nNell\'elenco delle prigioni e nello schermo delle prigioni puoi sempre pagare la tua cauzione e anche tentare la fuga mentre sei ancora in prigione. \nI membri dell\'Crew possono visitarti e fornirti piccoli benefici (statistiche, morale) mentre sei rinchiuso. \nAll\'arresto i tuoi amici e i membri dell\'Crew ora ricevono una notifica push che ti informa che sei stato catturato e stai aspettando aiuto. \nArmi e armature vengono confiscate all\'arresto se non si dispone di copertura legale per esse. \nOpzione tribunale: rivolgersi al tribunale per ottenere una riduzione di pena tramite un avvocato (vedi Tribunale). \nMentre sono bloccati, i timer di produzione (farmaci, fabbrica di munizioni) continuano a funzionare. Il tuo impero funziona senza di te. \nNon puoi visitare l\'ospedale mentre sei rinchiuso. Il ripristino HP attende finché non sei libero.';
 
   @override
   String get helpTopicPrisonTips =>

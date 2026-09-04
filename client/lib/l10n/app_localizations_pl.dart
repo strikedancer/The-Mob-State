@@ -9260,6 +9260,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get jailAttemptEscape => 'Próba ucieczki';
 
   @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Próba ucieczki ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Następna ucieczka za $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'Żadna próba ucieczki nie opuściła tego zdania';
+
+  @override
   String get jailYouAreInJail => 'Jesteś w więzieniu';
 
   @override
@@ -15978,7 +15992,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Po aresztowaniu rozpoczyna się odliczanie czasu w zależności od poziomu poszukiwanego. Poszukiwany stopień 1 = krótki wyrok (w minutach), Poszukiwany stopień 5+ = godziny więzienia. \nKaucja jest skalowana wraz z pozostałym wyrokiem i nigdy nie spada poniżej poziomu poszukiwanego × 1000 EUR. Dłuższe wyroki są zatem droższe w przypadku natychmiastowego wykupienia. \nUcieczka: możesz podjąć próbę ucieczki z więzienia, ale szansa na sukces jest niska. Niepowodzenie przedłuża karę o stałą kwotę. \nNa liście więzień i nakładce więzienia możesz zawsze zapłacić własną kaucję, a także podjąć próbę własnej ucieczki, będąc jeszcze w więzieniu. \nCzłonkowie załogi mogą cię odwiedzać i zapewniać drobne korzyści (statystyki, morale), gdy jesteś zamknięty. \nPo aresztowaniu Twoi przyjaciele i członkowie załogi otrzymają teraz powiadomienie push, że zostałeś złapany i czekasz na pomoc. \nBroń i zbroje są konfiskowane w momencie aresztowania, jeśli nie masz dla nich ochrony prawnej. \nOpcja sądowa: zwrócić się do sądu o zmniejszenie kary za pośrednictwem prawnika (patrz Sąd). \nPo zablokowaniu liczniki produkcji (leki, fabryka amunicji) działają. Twoje imperium działa bez ciebie. \nW zamknięciu nie można odwiedzać szpitala. Odzyskiwanie HP czeka, aż będziesz wolny.';
+      'Po aresztowaniu rozpoczyna się odliczanie czasu w zależności od poziomu poszukiwanego. Poszukiwany stopień 1 = krótki wyrok (w minutach), Poszukiwany stopień 5+ = godziny więzienia. \nKaucja jest skalowana wraz z pozostałym wyrokiem i nigdy nie spada poniżej poziomu poszukiwanego × 1000 EUR. Dłuższe wyroki są zatem droższe w przypadku natychmiastowego wykupienia. \nUcieczka: w jednym zdaniu masz maksymalnie 2 próby ucieczki, w odstępie 15 minut między nimi. Szansa na sukces jest niska. Porażka dodaje 15 minut. Następnie: zapłać kaucję, poczekaj lub pozwól znajomym/załodze cię wyrwać. \nNa liście więzień i nakładce więzienia możesz zawsze zapłacić własną kaucję, a także podjąć próbę własnej ucieczki, będąc jeszcze w więzieniu. \nCzłonkowie załogi mogą cię odwiedzać i zapewniać drobne korzyści (statystyki, morale), gdy jesteś zamknięty. \nPo aresztowaniu Twoi przyjaciele i członkowie załogi otrzymają teraz powiadomienie push, że zostałeś złapany i czekasz na pomoc. \nBroń i zbroje są konfiskowane w momencie aresztowania, jeśli nie masz dla nich ochrony prawnej. \nOpcja sądowa: zwrócić się do sądu o zmniejszenie kary za pośrednictwem prawnika (patrz Sąd). \nPo zablokowaniu liczniki produkcji (leki, fabryka amunicji) działają. Twoje imperium działa bez ciebie. \nW zamknięciu nie można odwiedzać szpitala. Odzyskiwanie HP czeka, aż będziesz wolny.';
 
   @override
   String get helpTopicPrisonTips =>

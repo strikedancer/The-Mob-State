@@ -219,6 +219,7 @@ Voorbeelden:
   - Arrest + extra jail time (10 minuten)
 
 ### Jail Escape
+- **Zelf uitbreken**: max **2 pogingen per straf**, **15 minuten** ertussen. Mislukken = +15 minuten. Daarna borg, crew/vrienden of uitzitten.
 - **Wie kan helpen**: Andere spelers (niet in jail)
 - **Success chance**: 30-50% (afhankelijk van helper rank)
 - **Bij succes**: 

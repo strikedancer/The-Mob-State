@@ -9245,6 +9245,20 @@ class AppLocalizationsNl extends AppLocalizations {
   String get jailAttemptEscape => 'Probeer uitbraak';
 
   @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Probeer uitbraak ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Volgende uitbraak over $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'Geen uitbraakpogingen meer deze straf';
+
+  @override
   String get jailYouAreInJail => 'Je zit in de cel';
 
   @override
@@ -15891,7 +15905,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Na arrestatie start een timer op basis van Wanted Level. Wanted Level 1 = korte straf (minuten), Wanted Level 5+ = uren gevangenisstraf.\nBorgtocht schaalt met je resterende celstraf en valt nooit lager uit dan Wanted Level × €1.000. Lange straffen worden dus duurder om direct af te kopen.\nOntsnappen: je kunt een ontsnappingspoging wagen maar de slagingskans is laag. Mislukking verlengt je straftijd met een vast bedrag.\nIn de Gevangenis-list en de jail overlay kun je altijd jezelf vrijkopen met borg en ook zelf een uitbraakpoging doen zolang je nog vastzit.\nCrewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.\nBij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.\nWapen- en armor-bezit wordt geconfisceerd bij arrest als je er geen legale dekking voor hebt.\nRechtbank-optie: ga naar de rechtbank voor strafvermindering via advocaat (zie Rechtbank).\nTerwijl je vastzit lopen productie-timers (drugs, ammo-factory) gewoon door. Je empire werkt zonder je.\nJe kunt het ziekenhuis niet bezoeken terwijl je vastzit. HP-herstel wacht tot je vrij bent.';
+      'Na arrestatie start een timer op basis van Wanted Level. Wanted Level 1 = korte straf (minuten), Wanted Level 5+ = uren gevangenisstraf.\nBorgtocht schaalt met je resterende celstraf en valt nooit lager uit dan Wanted Level × €1.000. Lange straffen worden dus duurder om direct af te kopen.\nOntsnappen: je kunt per straf maximaal 2 keer zelf uitbreken, met 15 minuten ertussen. De slagingskans is laag. Mislukking verlengt je straftijd met 15 minuten. Daarna: borg, vrienden/crew of uitzitten.\nIn de Gevangenis-list en de jail overlay kun je altijd jezelf vrijkopen met borg en ook zelf een uitbraakpoging doen zolang je nog vastzit.\nCrewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.\nBij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.\nWapen- en armor-bezit wordt geconfisceerd bij arrest als je er geen legale dekking voor hebt.\nRechtbank-optie: ga naar de rechtbank voor strafvermindering via advocaat (zie Rechtbank).\nTerwijl je vastzit lopen productie-timers (drugs, ammo-factory) gewoon door. Je empire werkt zonder je.\nJe kunt het ziekenhuis niet bezoeken terwijl je vastzit. HP-herstel wacht tot je vrij bent.';
 
   @override
   String get helpTopicPrisonTips =>

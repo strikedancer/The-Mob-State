@@ -9311,6 +9311,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get jailAttemptEscape => 'Fluchtversuch';
 
   @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Fluchtversuch ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Nächste Flucht in $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'Keine Fluchtversuche hinterließen diesen Satz';
+
+  @override
   String get jailYouAreInJail => 'Du bist im Gefängnis';
 
   @override
@@ -16049,7 +16063,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Nach der Festnahme startet ein Timer basierend auf der Fahndungsstufe. Fahndungsstufe 1 = kurze Haftstrafe (Minuten), Fahndungsstufe 5+ = Stunden Gefängnis. \nDie Kaution richtet sich nach der Reststrafe und fällt niemals unter die Fahndungsgrenze × 1.000 €. Längere Haftstrafen kosten daher mehr, wenn sie sofort freigekauft werden. \nFlucht: Sie können einen Gefängnisausbruch versuchen, aber die Erfolgsaussichten sind gering. Bei Misserfolg verlängert sich Ihre Strafe um einen festen Betrag. \nIn der Gefängnisliste und dem Gefängnis-Overlay können Sie jederzeit Ihre eigene Kaution bezahlen und auch einen eigenen Fluchtversuch unternehmen, während Sie noch im Gefängnis sind. \nBesatzungsmitglieder können Sie besuchen und kleine Vorteile (Statistiken, Moral) gewähren, während Sie eingesperrt sind. \nBei Ihrer Festnahme erhalten Ihre Freunde und Besatzungsmitglieder jetzt eine Push-Benachrichtigung, dass Sie erwischt wurden und auf Hilfe warten. \nWaffen und Rüstungen werden bei der Festnahme beschlagnahmt, wenn Sie keinen Rechtsschutz dafür haben. \nGerichtliche Option: Gehen Sie für eine Strafminderung über einen Anwalt vor Gericht (siehe Gericht). \nWährend der Sperre laufen die Produktionstimer (Drogen-, Munitionsfabrik) weiter. Dein Imperium funktioniert ohne dich. \nWährend Sie eingesperrt sind, können Sie das Krankenhaus nicht besuchen. HP Recovery wartet, bis Sie frei sind.';
+      'Nach der Festnahme startet ein Timer basierend auf der Fahndungsstufe. Fahndungsstufe 1 = kurze Haftstrafe (Minuten), Fahndungsstufe 5+ = Stunden Gefängnis. \nDie Kaution richtet sich nach der Reststrafe und fällt niemals unter die Fahndungsgrenze × 1.000 €. Längere Haftstrafen kosten daher mehr, wenn sie sofort freigekauft werden. \nFlucht: Pro Satz gibt es höchstens 2 Fluchtversuche mit einem Abstand von 15 Minuten. Die Erfolgsaussichten sind gering. Bei einem Fehler werden 15 Minuten hinzugefügt. Danach: Kaution zahlen, warten oder sich von Freunden/Crew befreien lassen. \nIn der Gefängnisliste und dem Gefängnis-Overlay können Sie jederzeit Ihre eigene Kaution bezahlen und auch einen eigenen Fluchtversuch unternehmen, während Sie noch im Gefängnis sind. \nBesatzungsmitglieder können Sie besuchen und kleine Vorteile (Statistiken, Moral) gewähren, während Sie eingesperrt sind. \nBei Ihrer Festnahme erhalten Ihre Freunde und Besatzungsmitglieder jetzt eine Push-Benachrichtigung, dass Sie erwischt wurden und auf Hilfe warten. \nWaffen und Rüstungen werden bei der Festnahme beschlagnahmt, wenn Sie keinen Rechtsschutz dafür haben. \nGerichtliche Option: Gehen Sie für eine Strafminderung über einen Anwalt vor Gericht (siehe Gericht). \nWährend der Sperre laufen die Produktionstimer (Drogen-, Munitionsfabrik) weiter. Dein Imperium funktioniert ohne dich. \nWährend Sie eingesperrt sind, können Sie das Krankenhaus nicht besuchen. HP Recovery wartet, bis Sie frei sind.';
 
   @override
   String get helpTopicPrisonTips =>

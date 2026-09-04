@@ -343,7 +343,7 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
   });
 }
 
-export async function getJailedPrisoners(_viewerId: number): Promise<
+export async function getJailedPrisoners(viewerId: number): Promise<
   Array<{
     playerId: number;
     username: string;
@@ -351,6 +351,9 @@ export async function getJailedPrisoners(_viewerId: number): Promise<
     wantedLevel: number;
     remainingSeconds: number;
     bailCost: number;
+    escapeAttemptsRemaining?: number;
+    escapeCooldownSeconds?: number;
+    maxEscapeAttempts?: number;
   }>
 > {
   const rawIds = await prisma.$queryRaw<Array<{ playerId: number }>>`
@@ -386,8 +389,13 @@ export async function getJailedPrisoners(_viewerId: number): Promise<
     })
   );
 
-  return withRemaining
-    .filter((entry) => entry.remainingSeconds > 0)
+  const visible = withRemaining.filter((entry) => entry.remainingSeconds > 0);
+  const viewerEscape =
+    viewerId > 0 && visible.some((entry) => entry.player.id === viewerId)
+      ? await getSelfEscapeStatus(viewerId)
+      : null;
+
+  return visible
     .map((entry) => ({
       playerId: entry.player.id,
       username: entry.player.username,
@@ -398,6 +406,13 @@ export async function getJailedPrisoners(_viewerId: number): Promise<
         entry.player.wantedLevel,
         entry.remainingSeconds
       ),
+      ...(entry.player.id === viewerId && viewerEscape
+        ? {
+            escapeAttemptsRemaining: viewerEscape.attemptsRemaining,
+            escapeCooldownSeconds: viewerEscape.cooldownSeconds,
+            maxEscapeAttempts: viewerEscape.maxAttempts,
+          }
+        : {}),
     }))
     .sort((a, b) => a.remainingSeconds - b.remainingSeconds);
 }
@@ -634,6 +649,59 @@ export async function attemptJailbreak(
   }
 }
 
+export const SELF_ESCAPE_MAX_ATTEMPTS = 2;
+export const SELF_ESCAPE_COOLDOWN_SECONDS = 15 * 60;
+const SELF_ESCAPE_EVENT_KEYS = ['prison.escape_failed', 'prison.escape_success'] as const;
+
+export async function getSelfEscapeStatus(playerId: number): Promise<{
+  attemptsUsed: number;
+  attemptsRemaining: number;
+  cooldownSeconds: number;
+  maxAttempts: number;
+  canAttempt: boolean;
+}> {
+  const jailStart = await prisma.crimeAttempt.findFirst({
+    where: { playerId, jailed: true },
+    orderBy: { createdAt: 'desc' },
+    select: { createdAt: true },
+  });
+  const since = jailStart?.createdAt ?? new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+  const [attemptsUsed, lastAttempt] = await Promise.all([
+    prisma.worldEvent.count({
+      where: {
+        playerId,
+        eventKey: { in: [...SELF_ESCAPE_EVENT_KEYS] },
+        createdAt: { gte: since },
+      },
+    }),
+    prisma.worldEvent.findFirst({
+      where: {
+        playerId,
+        eventKey: { in: [...SELF_ESCAPE_EVENT_KEYS] },
+        createdAt: { gte: since },
+      },
+      orderBy: { createdAt: 'desc' },
+      select: { createdAt: true },
+    }),
+  ]);
+
+  let cooldownSeconds = 0;
+  if (lastAttempt) {
+    const elapsed = Math.floor((Date.now() - lastAttempt.createdAt.getTime()) / 1000);
+    cooldownSeconds = Math.max(0, SELF_ESCAPE_COOLDOWN_SECONDS - elapsed);
+  }
+
+  const attemptsRemaining = Math.max(0, SELF_ESCAPE_MAX_ATTEMPTS - attemptsUsed);
+  return {
+    attemptsUsed,
+    attemptsRemaining,
+    cooldownSeconds,
+    maxAttempts: SELF_ESCAPE_MAX_ATTEMPTS,
+    canAttempt: attemptsRemaining > 0 && cooldownSeconds <= 0,
+  };
+}
+
 /**
  * Attempt to escape from your own jail sentence.
  * On failure, sentence is extended.
@@ -643,10 +711,22 @@ export async function attemptSelfEscape(playerId: number): Promise<{
   message: string;
   remainingSeconds?: number;
   penaltySeconds?: number;
+  attemptsRemaining?: number;
+  cooldownSeconds?: number;
 }> {
   const remainingSeconds = await checkIfJailed(playerId);
   if (remainingSeconds <= 0) {
     throw new Error('NOT_JAILED');
+  }
+
+  const escapeStatus = await getSelfEscapeStatus(playerId);
+  if (escapeStatus.attemptsRemaining <= 0) {
+    throw new Error('ESCAPE_ATTEMPTS_EXHAUSTED');
+  }
+  if (escapeStatus.cooldownSeconds > 0) {
+    const error = new Error('ESCAPE_COOLDOWN') as Error & { retryAfterSeconds: number };
+    error.retryAfterSeconds = escapeStatus.cooldownSeconds;
+    throw error;
   }
 
   const player = await prisma.player.findUnique({
@@ -689,6 +769,8 @@ export async function attemptSelfEscape(playerId: number): Promise<{
       success: true,
       message: 'Escape succeeded. You are free.',
       remainingSeconds: 0,
+      attemptsRemaining: 0,
+      cooldownSeconds: 0,
     };
   }
 
@@ -724,5 +806,7 @@ export async function attemptSelfEscape(playerId: number): Promise<{
     message: 'Escape failed. Sentence extended.',
     remainingSeconds: nextRemainingSeconds,
     penaltySeconds,
+    attemptsRemaining: Math.max(0, escapeStatus.attemptsRemaining - 1),
+    cooldownSeconds: SELF_ESCAPE_COOLDOWN_SECONDS,
   };
 }

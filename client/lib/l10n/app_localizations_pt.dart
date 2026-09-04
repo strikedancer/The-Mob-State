@@ -9255,6 +9255,20 @@ class AppLocalizationsPt extends AppLocalizations {
   String get jailAttemptEscape => 'Tentativa de fuga';
 
   @override
+  String jailEscapeAttemptsLeft(String remaining, String max) {
+    return 'Tentativa de fuga ($remaining/$max)';
+  }
+
+  @override
+  String jailEscapeCooldown(String time) {
+    return 'Próxima fuga em $time';
+  }
+
+  @override
+  String get jailEscapeAttemptsExhausted =>
+      'Nenhuma tentativa de fuga deixou esta frase';
+
+  @override
   String get jailYouAreInJail => 'Você está na prisão';
 
   @override
@@ -15974,7 +15988,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Após a prisão, um cronômetro é iniciado com base no nível de procurado. Procurado Nível 1 = sentença curta (minutos), Procurado Nível 5+ = horas de prisão. \nA fiança aumenta com a sentença restante e nunca cai abaixo do Nível de Procurado × € 1.000. Portanto, sentenças mais longas custam mais para serem compradas imediatamente. \nFuga: você pode tentar fugir da prisão, mas a chance de sucesso é baixa. A falha estende sua sentença por um valor fixo. \nNa lista de prisão e sobreposição de prisão, você sempre pode pagar sua própria fiança e também tentar escapar enquanto ainda está preso. \nOs membros da Crew podem visitá-lo e fornecer pequenos benefícios (estatísticas, moral) enquanto você estiver preso. \nAo serem presos, seus amigos e membros da Crew agora recebem uma notificação push de que você foi pego e está aguardando ajuda. \nArmas e armaduras são confiscadas na prisão se você não tiver cobertura legal para elas. \nOpção judicial: recorrer ao tribunal para obter redução da pena através de um advogado (ver Tribunal). \nEnquanto os cronômetros de produção bloqueados (drogas, fábrica de munições) continuam funcionando. Seu império funciona sem você. \nVocê não pode visitar o hospital enquanto estiver trancado. A recuperação da HP espera até que você esteja livre.';
+      'Após a prisão, um cronômetro é iniciado com base no nível de procurado. Procurado Nível 1 = pena curta (minutos), Procurado Nível 5+ = horas de prisão. \nA fiança aumenta com a sentença restante e nunca cai abaixo do Nível de Procurado × € 1.000. Portanto, sentenças mais longas custam mais para serem compradas imediatamente. \nFuga: você consegue no máximo 2 tentativas de autofuga por frase, com intervalo de 15 minutos entre elas. A chance de sucesso é baixa. A falha adiciona 15 minutos. Depois disso: pague fiança, espere ou deixe amigos/equipe libertarem você. \nNa lista de prisão e sobreposição de prisão, você sempre pode pagar sua própria fiança e também tentar escapar enquanto ainda está preso. \nOs membros da Crew podem visitá-lo e fornecer pequenos benefícios (estatísticas, moral) enquanto você estiver preso. \nAo serem presos, seus amigos e membros da Crew agora recebem uma notificação push de que você foi pego e está aguardando ajuda. \nArmas e armaduras são confiscadas na prisão se você não tiver cobertura legal para elas. \nOpção judicial: recorrer ao tribunal para redução da pena através de um advogado (ver Tribunal). \nEnquanto os cronômetros de produção bloqueados (drogas, fábrica de munições) continuam funcionando. Seu império funciona sem você. \nVocê não pode visitar o hospital enquanto estiver trancado. A recuperação da HP espera até que você esteja livre.';
 
   @override
   String get helpTopicPrisonTips =>

@@ -24,6 +24,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - While jailed, self-service actions remain available from prison UI: paying your own bail and attempting your own escape may not disappear from the primary prison flow.
+- Self-escape is capped at **2 attempts per jail stay** (`SELF_ESCAPE_MAX_ATTEMPTS`) with a **15 minute** cooldown (`SELF_ESCAPE_COOLDOWN_SECONDS`). Failed attempts still add 15 minutes. After the cap, bail / crew jailbreak / serving time remain available. Jail overlay and prison list must disable the button and show remaining attempts or cooldown.
 - Na succesvolle borgbetaling moet de client opnieuw jail- en cooldown-state ophalen in plaats van alleen losse crimes-refreshes te doen.
 - Borgbedragen moeten meeschalen met resterende celstraf, niet alleen met wanted level.
 - Jail- en cooldown-overlays moeten op mobiel compacte header-typografie en zichtbare snackbar/toast feedback houden.
