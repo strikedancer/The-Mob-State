@@ -28,9 +28,17 @@ enum _CrimeListSort { reward, rank, success }
 class CrimeScreen extends StatefulWidget {
   const CrimeScreen({
     super.key,
+    this.embedded = false,
+    this.statusHeader,
     this.onOpenTraining,
     this.onOpenEvents,
   });
+
+  /// When true (web dashboard), hide the page AppBar and fold the HUD into the hero.
+  final bool embedded;
+
+  /// Optional player status strip rendered inside the unified crimes header.
+  final Widget? statusHeader;
 
   /// When set (e.g. web dashboard), opens the training hub section.
   final VoidCallback? onOpenTraining;
@@ -313,71 +321,114 @@ class _CrimeScreenState extends State<CrimeScreen> {
   Widget _buildPageHero(AppLocalizations l10n, int playerRank) {
     final availableCount =
         _crimes.where((c) => _crimeIsAvailable(c, playerRank)).length;
+    final showPolice =
+        _countryPolice != null && _countryPolice!['enabled'] == true;
+    final statusHeader = widget.statusHeader;
 
     return _panel(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: _crimeAccent.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _crimeAccent.withValues(alpha: 0.45),
+          if (statusHeader != null) ...[
+            statusHeader,
+            const SizedBox(height: 12),
+            const Divider(height: 1, color: Color(0xFF2A3344)),
+            const SizedBox(height: 12),
+          ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final wide = constraints.maxWidth >= 640;
+              final titleBlock = Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: _crimeAccent.withValues(alpha: 0.14),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: _crimeAccent.withValues(alpha: 0.45),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.warning_amber_rounded,
+                      color: _crimeAccent,
+                      size: 24,
+                    ),
                   ),
-                ),
-                child: const Icon(
-                  Icons.warning_amber_rounded,
-                  color: _crimeAccent,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.crimeScreenHeroTitle,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          l10n.crimeScreenHeroSubtitle,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            height: 1.3,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+              final chips = Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  _statChip(
+                    '${_crimes.length} ${l10n.crimes.toLowerCase()}',
+                    _gold,
+                  ),
+                  _statChip(
+                    '$availableCount ${l10n.crimeScreenFilterAvailable.toLowerCase()}',
+                    Colors.greenAccent,
+                  ),
+                ],
+              );
+              if (wide) {
+                return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      l10n.crimeScreenHeroTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.crimeScreenHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.35,
-                      ),
-                    ),
+                    Expanded(child: titleBlock),
+                    const SizedBox(width: 12),
+                    chips,
                   ],
-                ),
-              ),
-            ],
+                );
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  titleBlock,
+                  const SizedBox(height: 10),
+                  chips,
+                ],
+              );
+            },
           ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _statChip(
-                '${_crimes.length} ${l10n.crimes.toLowerCase()}',
-                _gold,
-              ),
-              _statChip(
-                '$availableCount ${l10n.crimeScreenFilterAvailable.toLowerCase()}',
-                Colors.greenAccent,
-              ),
-            ],
-          ),
+          if (showPolice) ...[
+            const SizedBox(height: 12),
+            const Divider(height: 1, color: Color(0xFF2A3344)),
+            const SizedBox(height: 8),
+            CountryPoliceStrip(
+              countryPolice: _countryPolice!,
+              disruptActions: _disruptActions,
+              onDisrupt: _openCountryPoliceDisrupt,
+              embedded: true,
+            ),
+          ],
         ],
       ),
     );
@@ -1244,7 +1295,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
     final player = authProvider.currentPlayer;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.crimes)),
+      appBar: widget.embedded ? null : AppBar(title: Text(l10n.crimes)),
+      backgroundColor: widget.embedded ? Colors.transparent : null,
       body: _showCrimeResult
           ? CrimeResultOverlay(
               embedded: kIsWeb,
@@ -1349,15 +1401,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
                       child: _buildPageHero(l10n, player?.rank ?? 1),
                     ),
                     SliverToBoxAdapter(child: _buildLiveEventBanner(l10n)),
-                    if (_countryPolice != null &&
-                        _countryPolice!['enabled'] == true)
-                      SliverToBoxAdapter(
-                        child: CountryPoliceStrip(
-                          countryPolice: _countryPolice!,
-                          disruptActions: _disruptActions,
-                          onDisrupt: _openCountryPoliceDisrupt,
-                        ),
-                      ),
                     SliverToBoxAdapter(child: _buildPrepStrip(l10n)),
                     SliverToBoxAdapter(child: _buildFilterSortBar(l10n)),
                     SliverPadding(

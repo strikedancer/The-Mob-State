@@ -1042,8 +1042,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        _buildCompactStatusBar(context, player, countryName),
-                        const SizedBox(height: 12),
+                        if (_selectedWebSection != _WebSection.crimes) ...[
+                          _buildCompactStatusBar(context, player, countryName),
+                          const SizedBox(height: 12),
+                        ],
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
@@ -1086,7 +1088,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   key: ValueKey(
                                     '${_selectedWebSection.name}-$_webSectionRefreshSeed',
                                   ),
-                                  child: _buildWebContent(context),
+                                  child: _buildWebContent(
+                                    context,
+                                    crimeStatusHeader:
+                                        _selectedWebSection ==
+                                            _WebSection.crimes
+                                        ? _buildCompactStatusBar(
+                                            context,
+                                            player,
+                                            countryName,
+                                            decorated: false,
+                                          )
+                                        : null,
+                                  ),
                                 ),
                               ),
                             ),
@@ -1578,8 +1592,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildCompactStatusBar(
     BuildContext context,
     Player player,
-    String countryName,
-  ) {
+    String countryName, {
+    bool decorated = true,
+  }) {
     // Calculate rank progress
     final xpForCurrentRank = _getXPForRank(player.rank);
     final xpForNextRank = _getXPForRank(player.rank + 1);
@@ -1595,25 +1610,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final fbiHeat = (player.fbiHeat ?? 0).toDouble();
     final fbiProgress = (fbiHeat / 100.0).clamp(0.0, 1.0);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [_dashboardPanelLight, _dashboardPanelDark],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _dashboardGold.withOpacity(0.5)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.32),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
+    final body = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // First row: 3 main progress bars
@@ -1710,7 +1707,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ],
+    );
+
+    if (!decorated) {
+      return body;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [_dashboardPanelLight, _dashboardPanelDark],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: _dashboardGold.withOpacity(0.5)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.32),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
+      child: body,
     );
   }
 
@@ -1758,7 +1779,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildWebContent(BuildContext context) {
+  Widget _buildWebContent(BuildContext context, {Widget? crimeStatusHeader}) {
     switch (_selectedWebSection) {
       case _WebSection.support:
         return SupportTicketsScreen(
@@ -1782,6 +1803,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       case _WebSection.crimes:
         return CrimeScreen(
+          embedded: true,
+          statusHeader: crimeStatusHeader,
           onOpenTraining: () =>
               _selectWebSection(_WebSection.trainingHub),
           onOpenEvents: () => _selectWebSection(_WebSection.events),

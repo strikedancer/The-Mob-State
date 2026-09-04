@@ -120,11 +120,15 @@ class CountryPoliceStrip extends StatelessWidget {
     required this.countryPolice,
     required this.disruptActions,
     required this.onDisrupt,
+    this.embedded = false,
   });
 
   final Map<String, dynamic> countryPolice;
   final List<Map<String, dynamic>> disruptActions;
   final VoidCallback onDisrupt;
+
+  /// When true, render without its own card chrome (folded into a parent header).
+  final bool embedded;
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +146,87 @@ class CountryPoliceStrip extends StatelessWidget {
     final coolActive = countryPoliceIsCoolActive(countryPolice['coolUntil']);
     final canDisrupt = disruptActions.isNotEmpty;
 
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Icon(
+              Icons.local_police_outlined,
+              color: kCountryPoliceGold,
+              size: 18,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                l10n.countryPoliceStripTitle,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: kCountryPoliceGold,
+                  fontWeight: FontWeight.w800,
+                  fontSize: embedded ? 13 : 14,
+                ),
+              ),
+            ),
+            countryPoliceBandChip(
+              l10n: l10n,
+              band: band,
+              pressure: pressure,
+              compact: embedded,
+            ),
+            if (embedded && canDisrupt)
+              TextButton.icon(
+                onPressed: onDisrupt,
+                style: TextButton.styleFrom(
+                  foregroundColor: kCountryPoliceGold,
+                  visualDensity: VisualDensity.compact,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                icon: const Icon(Icons.bolt, size: 16),
+                label: Text(l10n.countryPoliceDisruptButton),
+              ),
+          ],
+        ),
+        SizedBox(height: embedded ? 4 : 8),
+        Text(
+          l10n.countryPoliceEffectLine(successPenalty, arrestBonus),
+          style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+        ),
+        if (coolActive) ...[
+          const SizedBox(height: 6),
+          Text(
+            l10n.countryPoliceCoolActive,
+            style: TextStyle(
+              color: const Color(0xFF2ECC71).withValues(alpha: 0.9),
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+        if (!embedded && canDisrupt) ...[
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton.icon(
+              onPressed: onDisrupt,
+              style: TextButton.styleFrom(
+                foregroundColor: kCountryPoliceGold,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+              ),
+              icon: const Icon(Icons.bolt, size: 16),
+              label: Text(l10n.countryPoliceDisruptButton),
+            ),
+          ),
+        ],
+      ],
+    );
+
+    if (embedded) {
+      return content;
+    }
+
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 10),
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
@@ -150,67 +235,7 @@ class CountryPoliceStrip extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: kCountryPolicePanelBorder),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.local_police_outlined,
-                color: kCountryPoliceGold,
-                size: 18,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  l10n.countryPoliceStripTitle,
-                  style: const TextStyle(
-                    color: kCountryPoliceGold,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              countryPoliceBandChip(
-                l10n: l10n,
-                band: band,
-                pressure: pressure,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.countryPoliceEffectLine(successPenalty, arrestBonus),
-            style: const TextStyle(color: Colors.white70, fontSize: 12.5),
-          ),
-          if (coolActive) ...[
-            const SizedBox(height: 6),
-            Text(
-              l10n.countryPoliceCoolActive,
-              style: TextStyle(
-                color: const Color(0xFF2ECC71).withValues(alpha: 0.9),
-                fontSize: 11.5,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-          if (canDisrupt) ...[
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: onDisrupt,
-                style: TextButton.styleFrom(
-                  foregroundColor: kCountryPoliceGold,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                ),
-                icon: const Icon(Icons.bolt, size: 16),
-                label: Text(l10n.countryPoliceDisruptButton),
-              ),
-            ),
-          ],
-        ],
-      ),
+      child: content,
     );
   }
 }

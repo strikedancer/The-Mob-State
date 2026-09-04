@@ -14,7 +14,7 @@ Client: crimes strip + travel badges + disrupt sheet (`country_police_ui.dart`)
 Admin → **Landelijke politie**: toggle `COUNTRY_POLICE_PRESSURE_ENABLED` to `1`. Do not flip the code default without a balance pass. Dashboard already renders `CountryPoliceStrip` when the flag is on.
 
 ## Primary Frontend Entry
-- Crimes strip + disrupt: `client/lib/screens/crime_screen.dart` + `client/lib/widgets/country_police_ui.dart`
+- Crimes strip + disrupt: `client/lib/screens/crime_screen.dart` + `client/lib/widgets/country_police_ui.dart` (embedded in the crimes hero; `CountryPoliceStrip(embedded: true)` has no extra card chrome)
 - Travel badges: `client/lib/screens/travel_screen.dart`
 - Dashboard: `stats.risk.countryPolice` on `GET /player/dashboard-stats` (optional UI)
 

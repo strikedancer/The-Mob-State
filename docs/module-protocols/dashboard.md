@@ -26,6 +26,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Dashboard shell en hoofdpanelen moeten visueel aansluiten op de game-identiteit (noir/gold), met nadruk op leesbaar contrast, subtiele gradients en duidelijke scheiding tussen navigatie en content in plaats van vlakke donkere blokken.
+- Op **Misdaden** (web) verdwijnt de losse compacte statusbalk boven de contentkaart; dezelfde HUD zit in de crimes-header (`CrimeScreen.statusHeader`) zodat status, paginatitel en landelijke politie één blok vormen.
 - Dashboard statistiekblokken mogen geen hardcoded nul-placeholders tonen wanneer er al echte backendtellers of bestaande spelerstats beschikbaar zijn.
 - Dashboard moet een complete baseline blijven tonen voor: economy (cash/bank/crypto/stocks/property/vehicle portfolio/net worth), cooldown-operaties, risicosignalen, notificaties en 24u/7d trendstatistieken; nieuwe modules die deze domeinen raken moeten hierop inhaken.
 - Stock Market en Crypto horen bereikbaar te zijn via de zijbalk, het hamburger-menu en de sticky footer (niet alleen via legacy tile fallback).
