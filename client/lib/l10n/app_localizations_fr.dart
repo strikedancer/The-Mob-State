@@ -6873,6 +6873,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get inventoryWrongDrop => 'Cette chute n\'est pas autorisée ici';
 
   @override
+  String get inventoryMoveOne => 'Déplacer 1';
+
+  @override
+  String get inventoryMoveAll => 'Déplacez tout';
+
+  @override
   String inventorySlotUsage(int used, int max) {
     return 'Sac à dos $used/$max';
   }
@@ -15607,7 +15613,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'L\'inventaire s\'ouvre sous la forme d\'une poupée de papier : votre avatar au centre, un emplacement pour arme du crime et un emplacement pour gilet, ainsi que des emplacements carrés pour sac à dos.\nFaites glisser un élément (ou appuyez dessus, puis appuyez sur une cible valide) pour le déplacer. Sur les téléphones, appuyer pour sélectionner est plus fiable que faire glisser.\nLa grille de droite représente le contexte actuel : une maison ou un entrepôt dans ce pays, ou le dépôt de matériaux. Ouvrir le stockage sur une propriété saute ici avec ce bâtiment sélectionné.\nLes maisons stockent des armes, des munitions, des gilets et de l\'argent liquide. Les entrepôts stockent les outils. Les matériaux restent dans le dépôt de campagne, pas dans une maison. Cash utilise des boutons, pas des glisser.\nVous ne pouvez porter qu\'un seul gilet. Déposer un gilet sur l\'avatar l\'équipe ; le stocker dans une maison le désCrew. Un deuxième gilet porté est refusé.\nL\'emplacement de l\'arme du crime reste synchronisé avec l\'écran Crimes. Seules les armes transportées et utilisables comptent.\nLa capacité du sac à dos couvre les outils, les armes et le matériel transporté. Les munitions et le gilet usé n\'utilisent pas les emplacements du sac à dos. Le serveur rejette les packs complets, le mauvais pays et le mauvais type de propriété.\nLes équipements restent un deuxième onglet pour les ensembles de crime ou de voyage enregistrés.\nLes médicaments sont stockés et affichés en grammes ; 351 signifie 351g. Le stockage de l’équipage reste une cachette sécurisée distincte.\nLors de son arrestation, la police peut confisquer des objets. Les médicaments en stock augmentent le risque du FBI lors des voyages internationaux.';
+      'L\'inventaire s\'ouvre sous la forme d\'une poupée de papier : votre avatar au centre, un emplacement pour arme du crime et un emplacement pour gilet, ainsi que des emplacements carrés pour sac à dos.\nFaites glisser un élément (ou appuyez dessus, puis appuyez sur une cible valide) pour le déplacer. Sur les téléphones, appuyer pour sélectionner est plus fiable que faire glisser.\nSi une pile contient plus d\'une unité (munitions, matériaux, armes ou outils empilés), vous choisissez combien de déplacer : 1, toutes ou un montant personnalisé.\nLa grille de droite représente le contexte actuel : une maison ou un entrepôt dans ce pays, ou le dépôt de matériaux. Ouvrir le stockage sur une propriété saute ici avec ce bâtiment sélectionné.\nLes maisons stockent des armes, des munitions, des gilets et de l\'argent liquide. Les entrepôts stockent les outils. Les matériaux restent dans le dépôt de campagne, pas dans une maison. Cash utilise des boutons, pas des glisser.\nVous ne pouvez porter qu\'un seul gilet. Déposer un gilet sur l\'avatar l\'équipe ; le stocker dans une maison le désCrew. Un deuxième gilet porté est refusé.\nL\'emplacement de l\'arme du crime reste synchronisé avec l\'écran Crimes. Seules les armes transportées et utilisables comptent.\nLa capacité du sac à dos couvre les outils, les armes et le matériel transporté. Les munitions et le gilet usé n\'utilisent pas les emplacements du sac à dos. Le serveur rejette les packs complets, le mauvais pays et le mauvais type de propriété.\nLes équipements restent un deuxième onglet pour les ensembles de crime ou de voyage enregistrés.\nLes médicaments sont stockés et affichés en grammes ; 351 signifie 351g. Le stockage de l’équipage reste une cachette sécurisée distincte.\nLors de son arrestation, la police peut confisquer des objets. Les médicaments en stock augmentent le risque du FBI lors des voyages internationaux.';
 
   @override
   String get helpTopicInventoryTips =>

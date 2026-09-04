@@ -6861,6 +6861,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get inventoryWrongDrop => 'Dieser Tropfen ist hier nicht erlaubt';
 
   @override
+  String get inventoryMoveOne => 'Zug 1';
+
+  @override
+  String get inventoryMoveAll => 'Alles bewegen';
+
+  @override
   String inventorySlotUsage(int used, int max) {
     return 'Rucksack $used/$max';
   }
@@ -15610,7 +15616,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Das Inventar wird als Papierpuppenansicht geöffnet: Ihr Avatar in der Mitte, ein Kriminalwaffen-Slot und ein Westen-Slot sowie quadratische Rucksack-Slots.\nZiehen Sie ein Element (oder tippen Sie darauf und dann auf ein gültiges Ziel), um es zu verschieben. Auf Telefonen ist das Tippen zum Auswählen zuverlässiger als das Ziehen.\nDas rechte Raster stellt den aktuellen Kontext dar: ein Haus oder Lagerhaus in diesem Land oder das Materialdepot. Hier springt die Option „Lager öffnen auf einem Grundstück“ mit ausgewähltem Gebäude.\nIn Häusern werden Waffen, Munition, Westen und Bargeld aufbewahrt. Lagerhallen lagern Werkzeuge. Materialien bleiben im Landdepot, nicht in einem Haus. Bargeld verwendet Knöpfe, nicht Ziehen.\nSie können nur eine Weste tragen. Wenn Sie eine Weste auf den Avatar fallen lassen, wird dieser ausgerüstet; Wenn man es in einem Haus lagert, wird es entrüstet. Eine zweite getragene Weste wird abgelehnt.\nDer Platz für die Verbrechenswaffe bleibt mit dem Bildschirm „Verbrechen“ synchronisiert. Es zählen nur getragene, verwendbare Waffen.\nDie Kapazität des Rucksacks deckt Werkzeuge, Waffen und mitgeführte Materialien ab. Munition und die getragene Weste belegen keine Rucksackplätze. Der Server lehnt volle Pakete, falsches Land und falschen Eigenschaftstyp ab.\nLoadouts bleiben eine zweite Registerkarte für gespeicherte Kriminal- oder Reisesets.\nMedikamente werden gespeichert und in Gramm angezeigt; 351 bedeutet 351g. Der Mannschaftsraum bleibt ein separater, sicherer Versteck.\nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Drogen im Inventar erhöhen das FBI-Risiko auf internationalen Reisen.';
+      'Das Inventar wird als Papierpuppenansicht geöffnet: Ihr Avatar in der Mitte, ein Kriminalwaffen-Slot und ein Westen-Slot sowie quadratische Rucksack-Slots.\nZiehen Sie ein Element (oder tippen Sie darauf und dann auf ein gültiges Ziel), um es zu verschieben. Auf Telefonen ist das Tippen zum Auswählen zuverlässiger als das Ziehen.\nWenn ein Stapel mehr als eine Einheit enthält (Munition, Materialien, gestapelte Waffen oder Werkzeuge), wählen Sie, wie viele Sie verschieben möchten: 1, alle oder eine benutzerdefinierte Menge.\nDas rechte Raster stellt den aktuellen Kontext dar: ein Haus oder Lagerhaus in diesem Land oder das Materialdepot. Hier springt die Option „Lager öffnen auf einem Grundstück“ mit ausgewähltem Gebäude.\nIn Häusern werden Waffen, Munition, Westen und Bargeld aufbewahrt. Lagerhallen lagern Werkzeuge. Materialien bleiben im Landdepot, nicht in einem Haus. Bargeld verwendet Knöpfe, nicht Ziehen.\nSie können nur eine Weste tragen. Wenn Sie eine Weste auf den Avatar fallen lassen, wird dieser ausgerüstet; Wenn man es in einem Haus lagert, wird es entrüstet. Eine zweite getragene Weste wird abgelehnt.\nDer Platz für die Verbrechenswaffe bleibt mit dem Bildschirm „Verbrechen“ synchronisiert. Es zählen nur getragene, verwendbare Waffen.\nDie Kapazität des Rucksacks deckt Werkzeuge, Waffen und mitgeführte Materialien ab. Munition und die getragene Weste belegen keine Rucksackplätze. Der Server lehnt volle Pakete, falsches Land und falschen Eigenschaftstyp ab.\nLoadouts bleiben eine zweite Registerkarte für gespeicherte Kriminal- oder Reisesets.\nMedikamente werden gespeichert und in Gramm angezeigt; 351 bedeutet 351g. Der Mannschaftsraum bleibt ein separater, sicherer Versteck.\nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Drogen im Inventar erhöhen das FBI-Risiko auf internationalen Reisen.';
 
   @override
   String get helpTopicInventoryTips =>

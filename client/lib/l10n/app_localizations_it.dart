@@ -6846,6 +6846,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get inventoryWrongDrop => 'Quella caduta non è consentita qui';
 
   @override
+  String get inventoryMoveOne => 'Sposta 1';
+
+  @override
+  String get inventoryMoveAll => 'Sposta tutto';
+
+  @override
   String inventorySlotUsage(int used, int max) {
     return 'Zaino $used/$max';
   }
@@ -15585,7 +15591,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'L\'inventario si apre come una bambola di carta: il tuo avatar al centro, uno slot per l\'arma del crimine e uno slot per il gilet, oltre a slot quadrati per lo zaino.\nTrascina un elemento (o toccalo, quindi tocca un bersaglio valido) per spostarlo. Sui telefoni, il tocco per selezionare è più affidabile del trascinamento.\nLa griglia di destra è il contesto attuale: una casa o un magazzino in questo paese, o il deposito dei materiali. Apri spazio di archiviazione su una proprietà salta qui con quell\'edificio selezionato.\nLe case immagazzinano armi, munizioni, giubbotti e contanti. I magazzini immagazzinano gli strumenti. I materiali restano nel deposito di campagna, non in una casa. Cash utilizza i pulsanti, non il trascinamento.\nPuoi indossare un solo gilet. Lasciare un giubbotto sull\'avatar lo equipaggia; conservarlo in una casa lo disequipaggia. Un secondo giubbotto indossato viene rifiutato.\nLo slot dell\'arma del crimine rimane sincronizzato con la schermata Crimini. Contano solo le armi trasportate e utilizzabili.\nLa capacità dello zaino comprende strumenti, armi e materiali trasportati. Le munizioni e il giubbotto indossato non utilizzano gli slot dello zaino. Il server rifiuta pacchetti completi, paese sbagliato e tipo di proprietà sbagliato.\nGli equipaggiamenti rimangono una seconda scheda per i crimini salvati o i set di viaggio.\nI farmaci vengono archiviati e visualizzati in grammi; 351 significa 351g. Lo stoccaggio dell\'Crew rimane una scorta sicura separata.\nAll\'arresto la polizia può confiscare oggetti. I farmaci nell\'inventario aumentano il rischio dell\'FBI nei viaggi internazionali.';
+      'L\'inventario si apre come una bambola di carta: il tuo avatar al centro, uno slot per l\'arma del crimine e uno slot per il gilet, oltre a slot quadrati per lo zaino.\nTrascina un elemento (o toccalo, quindi tocca un bersaglio valido) per spostarlo. Sui telefoni, il tocco per selezionare è più affidabile del trascinamento.\nSe una pila ha più di un\'unità (munizioni, materiali, armi o strumenti impilati), scegli quante unità spostare: 1, tutte o un importo personalizzato.\nLa griglia di destra è il contesto attuale: una casa o un magazzino in questo paese, o il deposito dei materiali. Apri spazio di archiviazione su una proprietà salta qui con quell\'edificio selezionato.\nLe case immagazzinano armi, munizioni, giubbotti e contanti. I magazzini immagazzinano gli strumenti. I materiali restano nel deposito di campagna, non in una casa. Cash utilizza i pulsanti, non il trascinamento.\nPuoi indossare un solo gilet. Lasciare un giubbotto sull\'avatar lo equipaggia; conservarlo in una casa lo disequipaggia. Un secondo giubbotto indossato viene rifiutato.\nLo slot dell\'arma del crimine rimane sincronizzato con la schermata Crimini. Contano solo le armi trasportate e utilizzabili.\nLa capacità dello zaino comprende strumenti, armi e materiali trasportati. Le munizioni e il giubbotto indossato non utilizzano gli slot dello zaino. Il server rifiuta pacchetti completi, paese sbagliato e tipo di proprietà sbagliato.\nGli equipaggiamenti rimangono una seconda scheda per i crimini salvati o i set di viaggio.\nI farmaci vengono archiviati e visualizzati in grammi; 351 significa 351g. Lo stoccaggio dell\'Crew rimane una scorta sicura separata.\nAll\'arresto la polizia può confiscare oggetti. I farmaci nell\'inventario aumentano il rischio dell\'FBI nei viaggi internazionali.';
 
   @override
   String get helpTopicInventoryTips =>

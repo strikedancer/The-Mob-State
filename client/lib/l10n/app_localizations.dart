@@ -12023,6 +12023,18 @@ abstract class AppLocalizations {
   /// **'That drop is not allowed here'**
   String get inventoryWrongDrop;
 
+  /// No description provided for @inventoryMoveOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Move 1'**
+  String get inventoryMoveOne;
+
+  /// No description provided for @inventoryMoveAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Move all'**
+  String get inventoryMoveAll;
+
   /// No description provided for @inventorySlotUsage.
   ///
   /// In en, this message translates to:
@@ -26800,7 +26812,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicInventoryHow.
   ///
   /// In en, this message translates to:
-  /// **'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash. Warehouses store tools. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nThe crime-weapon slot stays in sync with the Crimes screen. Only carried, usable weapons count.\nBackpack capacity covers tools, weapons and carried materials. Ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.'**
+  /// **'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nIf a stack has more than one unit (ammo, materials, stacked weapons or tools), you choose how many to move: 1, all, or a custom amount.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash. Warehouses store tools. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nThe crime-weapon slot stays in sync with the Crimes screen. Only carried, usable weapons count.\nBackpack capacity covers tools, weapons and carried materials. Ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.'**
   String get helpTopicInventoryHow;
 
   /// No description provided for @helpTopicInventoryTips.

@@ -6829,6 +6829,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get inventoryWrongDrop => 'Ten spadek nie jest tu dozwolony';
 
   @override
+  String get inventoryMoveOne => 'Przesuń 1';
+
+  @override
+  String get inventoryMoveAll => 'Przesuń wszystko';
+
+  @override
   String inventorySlotUsage(int used, int max) {
     return 'Plecak $used/$max';
   }
@@ -15538,7 +15544,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Ekwipunek otwiera się w widoku papierowej lalki: twój awatar pośrodku, miejsce na broń przestępczą i miejsce na kamizelkę, a także kwadratowe miejsca na plecak.\nPrzeciągnij element (lub dotknij go, a następnie dotknij prawidłowego celu), aby go przenieść. Na telefonach funkcja „dotknij, aby wybrać” jest bardziej niezawodna niż przeciąganie.\nSiatka po prawej stronie przedstawia bieżący kontekst: dom lub magazyn w tym kraju albo skład materiałów. Otwarty magazyn na nieruchomości przeskakuje tutaj z wybranym budynkiem.\nDomy przechowują broń, amunicję, kamizelki i gotówkę. Magazyny przechowują narzędzia. Materiały pozostają w wiejskim magazynie, a nie w domu. Cash używa przycisków, a nie przeciągania.\nMożna nosić tylko jedną kamizelkę. Upuszczenie kamizelki na awatara wyposaża ją; przechowywanie go w domu pozbawia go wyposażenia. Druga noszona kamizelka jest odrzucana.\nMiejsce na broń kryminalną jest zsynchronizowane z ekranem zbrodni. Liczy się tylko niesiona, użyteczna broń.\nPojemność plecaka obejmuje narzędzia, broń i przenoszone materiały. Amunicja i zużyta kamizelka nie korzystają z miejsc w plecaku. Serwer odrzuca pełne pakiety, zły kraj i zły typ właściwości.\nZestawy wyposażenia pozostają drugą zakładką dla zapisanych zestawów przestępczych lub podróżnych.\nLeki są przechowywane i wyświetlane w gramach; 351 oznacza 351g. Magazyn załogi pozostaje oddzielnym bezpiecznym schowkiem.\nPo aresztowaniu policja może skonfiskować przedmioty. Narkotyki w zapasach zwiększają ryzyko FBI podczas podróży międzynarodowych.';
+      'Ekwipunek otwiera się w widoku papierowej lalki: twój awatar pośrodku, miejsce na broń przestępczą i miejsce na kamizelkę, a także kwadratowe miejsca na plecak.\nPrzeciągnij element (lub dotknij go, a następnie dotknij prawidłowego celu), aby go przenieść. Na telefonach funkcja „dotknij, aby wybrać” jest bardziej niezawodna niż przeciąganie.\nJeśli stos składa się z więcej niż jednej jednostki (amunicji, materiałów, broni lub narzędzi), możesz wybrać, ile jednostek chcesz przenieść: 1, wszystkie lub niestandardowa ilość.\nSiatka po prawej stronie przedstawia bieżący kontekst: dom lub magazyn w tym kraju albo skład materiałów. Otwarty magazyn na nieruchomości przeskakuje tutaj z wybranym budynkiem.\nDomy przechowują broń, amunicję, kamizelki i gotówkę. Magazyny przechowują narzędzia. Materiały pozostają w wiejskim magazynie, a nie w domu. Cash używa przycisków, a nie przeciągania.\nMożna nosić tylko jedną kamizelkę. Upuszczenie kamizelki na awatara wyposaża ją; przechowywanie go w domu pozbawia go wyposażenia. Druga noszona kamizelka jest odrzucana.\nMiejsce na broń kryminalną jest zsynchronizowane z ekranem zbrodni. Liczy się tylko niesiona, użyteczna broń.\nPojemność plecaka obejmuje narzędzia, broń i przenoszone materiały. Amunicja i zużyta kamizelka nie korzystają z miejsc w plecaku. Serwer odrzuca pełne pakiety, zły kraj i zły typ właściwości.\nZestawy wyposażenia pozostają drugą zakładką dla zapisanych zestawów przestępczych lub podróżnych.\nLeki są przechowywane i wyświetlane w gramach; 351 oznacza 351g. Magazyn załogi pozostaje oddzielnym bezpiecznym schowkiem.\nPo aresztowaniu policja może skonfiskować przedmioty. Narkotyki w zapasach zwiększają ryzyko FBI podczas podróży międzynarodowych.';
 
   @override
   String get helpTopicInventoryTips =>

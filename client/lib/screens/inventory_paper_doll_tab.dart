@@ -350,6 +350,81 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     _contextItems = items.where((i) => i.quantity > 0).toList();
   }
 
+  bool _isStackableMove(InventoryGridItem source, InventoryZone target) {
+    if (source.quantity <= 1) return false;
+    if (target == InventoryZone.equippedWeapon ||
+        target == InventoryZone.equippedArmor) {
+      return false;
+    }
+    switch (source.kind) {
+      case InventoryItemKind.ammo:
+      case InventoryItemKind.material:
+      case InventoryItemKind.weapon:
+      case InventoryItemKind.tool:
+        return true;
+      case InventoryItemKind.armor:
+        return false;
+    }
+  }
+
+  Future<int?> _askTransferQuantity(InventoryGridItem source) async {
+    final controller = TextEditingController(text: '${source.quantity}');
+    final result = await showDialog<int>(
+      context: context,
+      builder: (dialogContext) {
+        final dlgL10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          backgroundColor: const Color(0xFF1E1E1E),
+          title: Text(dlgL10n.selectQuantity),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: dlgL10n.quantity,
+              helperText: dlgL10n.inventoryMaxShort(source.quantity),
+              filled: true,
+              fillColor: const Color(0xFF151515),
+              border: const OutlineInputBorder(),
+            ),
+          ),
+          actionsOverflowButtonSpacing: 8,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(dlgL10n.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(1),
+              child: Text(dlgL10n.inventoryMoveOne),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(source.quantity),
+              child: Text(dlgL10n.inventoryMoveAll),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final qty = int.tryParse(controller.text.trim()) ?? 0;
+                if (qty <= 0 || qty > source.quantity) {
+                  showTopRightFromSnackBar(
+                    dialogContext,
+                    SnackBar(content: Text(dlgL10n.inventoryInvalidQuantity)),
+                  );
+                  return;
+                }
+                Navigator.of(dialogContext).pop(qty);
+              },
+              child: Text(dlgL10n.inventoryTransferOk),
+            ),
+          ],
+        );
+      },
+    );
+    controller.dispose();
+    return result;
+  }
+
   void _onTapItem(InventoryGridItem item) {
     if (_selected == null) {
       setState(() => _selected = item);
@@ -376,6 +451,17 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     if (!_storageKinds.contains(source.kind)) {
       setState(() => _selected = null);
       return;
+    }
+
+    var quantity = 1;
+    if (_isStackableMove(source, target)) {
+      final chosen = await _askTransferQuantity(source);
+      if (!mounted) return;
+      if (chosen == null) {
+        setState(() => _selected = null);
+        return;
+      }
+      quantity = chosen;
     }
 
     setState(() => _busy = true);
@@ -420,7 +506,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         result = await _inventory.depositWeaponToProperty(
           propertyId: propertyId,
           weaponId: source.id,
-          quantity: 1,
+          quantity: quantity,
         );
       } else if (source.kind == InventoryItemKind.weapon &&
           source.zone == InventoryZone.property &&
@@ -430,7 +516,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         result = await _inventory.withdrawWeaponFromProperty(
           propertyId: propertyId,
           weaponId: source.id,
-          quantity: 1,
+          quantity: target == InventoryZone.equippedWeapon ? 1 : quantity,
         );
         if (result['success'] == true &&
             target == InventoryZone.equippedWeapon) {
@@ -444,6 +530,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           toolId: source.id,
           fromLocation: 'carried',
           toLocation: 'property_$propertyId',
+          quantity: quantity,
         );
       } else if (source.kind == InventoryItemKind.tool &&
           source.zone == InventoryZone.property &&
@@ -453,6 +540,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           toolId: source.id,
           fromLocation: 'property_$propertyId',
           toLocation: 'carried',
+          quantity: quantity,
         );
       } else if (source.kind == InventoryItemKind.ammo &&
           source.zone == InventoryZone.backpack &&
@@ -461,7 +549,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         result = await _inventory.depositAmmoToProperty(
           propertyId: propertyId,
           ammoType: source.id,
-          quantity: 1,
+          quantity: quantity,
         );
       } else if (source.kind == InventoryItemKind.ammo &&
           source.zone == InventoryZone.property &&
@@ -470,14 +558,14 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         result = await _inventory.withdrawAmmoFromProperty(
           propertyId: propertyId,
           ammoType: source.id,
-          quantity: 1,
+          quantity: quantity,
         );
       } else if (source.kind == InventoryItemKind.material &&
           source.zone == InventoryZone.backpack &&
           target == InventoryZone.depot) {
         result = await _drugs.transferMaterial(
           materialId: source.id,
-          quantity: 1,
+          quantity: quantity,
           direction: 'to_depot',
         );
       } else if (source.kind == InventoryItemKind.material &&
@@ -485,7 +573,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           target == InventoryZone.backpack) {
         result = await _drugs.transferMaterial(
           materialId: source.id,
-          quantity: 1,
+          quantity: quantity,
           direction: 'to_backpack',
         );
       }

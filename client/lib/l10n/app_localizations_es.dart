@@ -6846,6 +6846,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get inventoryWrongDrop => 'Esa bajada no está permitida aquí.';
 
   @override
+  String get inventoryMoveOne => 'Mover 1';
+
+  @override
+  String get inventoryMoveAll => 'mover todo';
+
+  @override
   String inventorySlotUsage(int used, int max) {
     return 'Mochila $used/$max';
   }
@@ -15561,7 +15567,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'El inventario se abre como una vista de muñeca de papel: tu avatar en el centro, una ranura para armas criminales y una ranura para chaleco, además de ranuras cuadradas para mochila.\nArrastre un elemento (o tóquelo y luego toque un objetivo válido) para moverlo. En los teléfonos, tocar para seleccionar es más confiable que arrastrar.\nLa cuadrícula de la derecha es el contexto actual: una casa o almacén en este país, o el depósito de materiales. Abrir almacenamiento en una propiedad salta aquí con ese edificio seleccionado.\nLas casas almacenan armas, municiones, chalecos y dinero en efectivo. Los almacenes almacenan herramientas. Los materiales permanecen en el depósito del campo, no en una casa. El efectivo usa botones, no arrastre.\nSolo puedes usar un chaleco. Colocar un chaleco sobre el avatar lo equipa; almacenarlo en una casa lo desequipa. Se rechaza un segundo chaleco usado.\nLa ranura de armas criminales permanece sincronizada con la pantalla Crímenes. Sólo cuentan las armas transportadas y utilizables.\nLa capacidad de la mochila cubre herramientas, armas y materiales transportados. La munición y el chaleco desgastado no utilizan ranuras para mochila. El servidor rechaza paquetes completos, países incorrectos y tipos de propiedad incorrectos.\nLos equipamientos siguen siendo una segunda pestaña para crímenes guardados o conjuntos de viajes.\nLos medicamentos se almacenan y se muestran en gramos; 351 significa 351 g. El almacenamiento de la Crew sigue siendo un escondite seguro separado.\nAl ser arrestado, la policía puede confiscar artículos. Las drogas en inventario aumentan el riesgo del FBI en viajes internacionales.';
+      'El inventario se abre como una vista de muñeca de papel: tu avatar en el centro, una ranura para armas criminales y una ranura para chaleco, además de ranuras cuadradas para mochila.\nArrastre un elemento (o tóquelo y luego toque un objetivo válido) para moverlo. En los teléfonos, tocar para seleccionar es más confiable que arrastrar.\nSi una pila tiene más de una unidad (munición, materiales, armas o herramientas apiladas), eliges cuántas mover: 1, todas o una cantidad personalizada.\nLa cuadrícula de la derecha es el contexto actual: una casa o almacén en este país, o el depósito de materiales. Abrir almacenamiento en una propiedad salta aquí con ese edificio seleccionado.\nLas casas almacenan armas, municiones, chalecos y dinero en efectivo. Los almacenes almacenan herramientas. Los materiales permanecen en el depósito del campo, no en una casa. El efectivo usa botones, no arrastre.\nSolo puedes usar un chaleco. Colocar un chaleco sobre el avatar lo equipa; almacenarlo en una casa lo desequipa. Se rechaza un segundo chaleco usado.\nLa ranura de armas criminales permanece sincronizada con la pantalla Crímenes. Sólo cuentan las armas transportadas y utilizables.\nLa capacidad de la mochila cubre herramientas, armas y materiales transportados. La munición y el chaleco desgastado no utilizan ranuras para mochila. El servidor rechaza paquetes completos, países incorrectos y tipos de propiedad incorrectos.\nLos equipamientos siguen siendo una segunda pestaña para crímenes guardados o conjuntos de viajes.\nLos medicamentos se almacenan y se muestran en gramos; 351 significa 351 g. El almacenamiento de la Crew sigue siendo un escondite seguro separado.\nAl ser arrestado, la policía puede confiscar artículos. Las drogas en inventario aumentan el riesgo del FBI en viajes internacionales.';
 
   @override
   String get helpTopicInventoryTips =>

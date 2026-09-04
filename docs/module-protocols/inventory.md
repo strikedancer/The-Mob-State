@@ -16,6 +16,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
   - Warehouse: tools.
   - Materials stay in the country depot (`POST /drugs/materials/transfer`), not in a house.
 - Drag on desktop/web; tap-select then tap-target everywhere (mobile fallback). Each drop is one API call; no optimistic client move.
+- Stacks with quantity > 1 (ammo, materials, stacked weapons/tools) open a quantity dialog: move 1, move all, or a custom amount.
 - Transfers: weapons `POST /properties/storage/:id/weapons/deposit|withdraw`, tools `POST /tools/transfer`, materials depot API, ammo/armor `POST /properties/storage/:id/ammo|armor/deposit|withdraw`.
 - Invalid drop surfaces the server reason (`INVENTORY_FULL`, `STORAGE_FULL`, `WRONG_COUNTRY`, `STORAGE_TYPE_NOT_ALLOWED`, `ARMOR_ALREADY_EQUIPPED`).
 - Out of scope here: drugs/nightclub, crew storage, garage vehicles, cash-drag.
