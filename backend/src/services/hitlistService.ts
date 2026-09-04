@@ -1923,7 +1923,7 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
 
       const target = await prisma.player.findUnique({
         where: { id: row.targetId },
-        select: { username: true, currentCountry: true },
+        select: { username: true, currentCountry: true, lastTickAt: true },
       });
 
       const receiver = await prisma.player.findUnique({
@@ -1965,7 +1965,9 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
       const roster = rosterFromSecurity(security);
       const guardDefense = bodyguardDefense(roster);
       const armorRating = getEffectiveArmor(security);
-      const clarity = investigationClarity(guardDefense, row.tier);
+      const clarity = investigationClarity(guardDefense, row.tier, {
+        lastTickAt: target.lastTickAt,
+      });
       const reportedCountry =
         clarity === 'blocked' ? null : target.currentCountry;
       const reportedGuards = clarity === 'full' ? bodyguardTotal(roster) : null;
@@ -2147,12 +2149,21 @@ export async function processPendingMurderCaseInvestigations(limit = 100): Promi
         continue;
       }
 
+      const killer = details.killerId
+        ? await prisma.player.findUnique({
+            where: { id: details.killerId },
+            select: { lastTickAt: true },
+          })
+        : null;
       const killerSecurity = details.killerId
         ? await settleBodyguardUpkeep(prisma, details.killerId)
         : null;
       const killerGuardDefense = bodyguardDefense(rosterFromSecurity(killerSecurity));
       const solved =
-        Math.random() < murderCaseSolveChance(MURDER_CASE_SOLVE_CHANCE, killerGuardDefense);
+        Math.random() <
+        murderCaseSolveChance(MURDER_CASE_SOLVE_CHANCE, killerGuardDefense, {
+          lastTickAt: killer?.lastTickAt,
+        });
       const language: 'nl' | 'en' = activity.player?.preferredLanguage
         ?.toLowerCase()
         .startsWith('nl')

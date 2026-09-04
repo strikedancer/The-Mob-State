@@ -140,23 +140,88 @@ export const INVESTIGATION_TIER_PIERCE: Record<InvestigationTierId, number> = {
   deep: 160,
 };
 
+/** After this offline time, intel steps up one clarity level. */
+export const INVESTIGATION_OFFLINE_SOFT_MS = 48 * 60 * 60 * 1000;
+/** After this offline time, reports are always full and murder-case guards stop helping. */
+export const INVESTIGATION_OFFLINE_HARD_MS = 7 * 24 * 60 * 60 * 1000;
+
+export interface InvestigationClarityOptions {
+  lastTickAt?: Date | string | null;
+  now?: Date;
+}
+
+export function investigationOfflineDecaySteps(
+  lastTickAt?: Date | string | null,
+  now: Date = new Date()
+): number {
+  if (!lastTickAt) {
+    return 0;
+  }
+  const seen = lastTickAt instanceof Date ? lastTickAt : new Date(lastTickAt);
+  if (Number.isNaN(seen.getTime())) {
+    return 0;
+  }
+  const age = now.getTime() - seen.getTime();
+  if (age >= INVESTIGATION_OFFLINE_HARD_MS) {
+    return 2;
+  }
+  if (age >= INVESTIGATION_OFFLINE_SOFT_MS) {
+    return 1;
+  }
+  return 0;
+}
+
+function raiseInvestigationClarity(
+  clarity: InvestigationClarity,
+  steps: number
+): InvestigationClarity {
+  if (steps <= 0 || clarity === 'full') {
+    return clarity;
+  }
+  if (clarity === 'blocked') {
+    return steps >= 2 ? 'full' : 'partial';
+  }
+  return 'full';
+}
+
 export function investigationClarity(
   guardDefense: number,
-  tier: InvestigationTierId
+  tier: InvestigationTierId,
+  options?: InvestigationClarityOptions
 ): InvestigationClarity {
   const pierce = INVESTIGATION_TIER_PIERCE[tier] ?? INVESTIGATION_TIER_PIERCE.standard;
   const pressure = Math.max(0, Number(guardDefense || 0));
+  let clarity: InvestigationClarity;
   if (pressure <= pierce) {
-    return 'full';
+    clarity = 'full';
+  } else if (pressure <= pierce + 50) {
+    clarity = 'partial';
+  } else {
+    clarity = 'blocked';
   }
-  if (pressure <= pierce + 50) {
-    return 'partial';
+  // Slow detectives always leak country, even against a paid max elite stack.
+  if (tier === 'deep' && clarity === 'blocked') {
+    clarity = 'partial';
   }
-  return 'blocked';
+  return raiseInvestigationClarity(
+    clarity,
+    investigationOfflineDecaySteps(options?.lastTickAt, options?.now)
+  );
 }
 
-export function murderCaseSolveChance(baseChance: number, killerGuardDefense: number): number {
+export function murderCaseSolveChance(
+  baseChance: number,
+  killerGuardDefense: number,
+  options?: InvestigationClarityOptions
+): number {
   const base = Math.max(0, Math.min(1, Number(baseChance || 0)));
-  const penalty = Math.min(0.35, Math.max(0, Number(killerGuardDefense || 0)) / 400);
+  const steps = investigationOfflineDecaySteps(options?.lastTickAt, options?.now);
+  let defense = Math.max(0, Number(killerGuardDefense || 0));
+  if (steps >= 2) {
+    defense = 0;
+  } else if (steps >= 1) {
+    defense *= 0.5;
+  }
+  const penalty = Math.min(0.35, defense / 400);
   return Math.max(0.2, base - penalty);
 }
