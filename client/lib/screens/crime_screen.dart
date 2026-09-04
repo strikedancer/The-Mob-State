@@ -793,8 +793,11 @@ class _CrimeScreenState extends State<CrimeScreen> {
           .toList();
 
       Map<String, dynamic>? matchEquipped(dynamic payload) {
-        final weaponId = payload is Map ? payload['weapon']?['weaponId'] as String? : null;
-        if (weaponId == null) return null;
+        if (payload is! Map) return null;
+        final rawWeapon = payload['weapon'];
+        if (rawWeapon is! Map) return null;
+        final weaponId = rawWeapon['weaponId']?.toString();
+        if (weaponId == null || weaponId.isEmpty) return null;
         for (final weapon in weapons) {
           if (weapon['weaponId'] == weaponId) return weapon;
         }
