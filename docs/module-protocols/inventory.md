@@ -39,7 +39,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Shared equipment choices that other modules depend on, such as the selected crime weapon, must stay visible and must remain in sync with the consuming gameplay screen.
-- The crime-weapon slot on the paper doll is the same selection Crimes uses; changing it here must update Crimes immediately after refresh/navigation.
+- The crime-weapon slot on the paper doll is the same selection Crimes uses. Dropping a weapon from backpack or house storage onto that slot sets `POST /weapons/crime-weapon`. Taking it off the slot (to backpack or house) clears the selection with `DELETE /weapons/crime-weapon`; Crimes then has no crime weapon. Moving a weapon only between backpack and storage does not change the crime-weapon selection.
 - Backpack upgrade visibility stays progression-clean: after buying a better backpack, lower or equal backpack tiers should no longer be shown as selectable shop options; only real upgrades remain visible.
 
 ## i18n and Messaging

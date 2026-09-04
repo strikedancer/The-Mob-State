@@ -219,24 +219,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         ),
       ].where((item) => item.quantity > 0).toList();
 
-      _equippedWeapon = null;
-      if (_crimeWeaponId != null) {
-        for (final item in backpack) {
-          if (item.kind == InventoryItemKind.weapon &&
-              item.id == _crimeWeaponId) {
-            _equippedWeapon = InventoryGridItem(
-              kind: InventoryItemKind.weapon,
-              id: item.id,
-              name: item.name,
-              quantity: 1,
-              condition: item.condition,
-              zone: InventoryZone.equippedWeapon,
-              imagePath: item.imagePath,
-            );
-            break;
-          }
-        }
-      }
+      _equippedWeapon = _crimeWeaponFromBackpack(backpack);
 
       _properties = overview['success'] == true
           ? (overview['storage'] as List<StorageInfo>)
@@ -350,9 +333,48 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     _contextItems = items.where((i) => i.quantity > 0).toList();
   }
 
+  InventoryGridItem? _crimeWeaponFromBackpack(List<InventoryGridItem> backpack) {
+    if (_crimeWeaponId == null) return null;
+    for (final item in backpack) {
+      if (item.kind == InventoryItemKind.weapon && item.id == _crimeWeaponId) {
+        return InventoryGridItem(
+          kind: InventoryItemKind.weapon,
+          id: item.id,
+          name: item.name,
+          quantity: 1,
+          condition: item.condition,
+          zone: InventoryZone.equippedWeapon,
+          imagePath: item.imagePath,
+        );
+      }
+    }
+    return null;
+  }
+
+  Future<bool> _setCrimeWeapon(String weaponId) async {
+    final response = await _api.post('/weapons/crime-weapon', {
+      'weaponId': weaponId,
+    });
+    if (response.statusCode == 200) {
+      _crimeWeaponId = weaponId;
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> _clearCrimeWeapon() async {
+    final response = await _api.delete('/weapons/crime-weapon');
+    if (response.statusCode == 200) {
+      _crimeWeaponId = null;
+      return true;
+    }
+    return false;
+  }
+
   bool _isStackableMove(InventoryGridItem source, InventoryZone target) {
     if (source.quantity <= 1) return false;
-    if (target == InventoryZone.equippedWeapon ||
+    if (source.zone == InventoryZone.equippedWeapon ||
+        target == InventoryZone.equippedWeapon ||
         target == InventoryZone.equippedArmor) {
       return false;
     }
@@ -476,16 +498,31 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       if (source.kind == InventoryItemKind.weapon &&
           target == InventoryZone.equippedWeapon &&
           source.zone == InventoryZone.backpack) {
-        final response = await _api.post('/weapons/crime-weapon', {
-          'weaponId': source.id,
-        });
+        final ok = await _setCrimeWeapon(source.id);
         result = {
-          'success': response.statusCode == 200,
-          'error': response.statusCode == 200
-              ? null
-              : (jsonDecode(response.body)['params']?['reason'] ??
-                    l10n.inventoryWrongDrop),
+          'success': ok,
+          'error': ok ? null : l10n.inventoryWrongDrop,
         };
+      } else if (source.kind == InventoryItemKind.weapon &&
+          source.zone == InventoryZone.equippedWeapon &&
+          target == InventoryZone.backpack) {
+        final ok = await _clearCrimeWeapon();
+        result = {
+          'success': ok,
+          'error': ok ? null : l10n.inventoryWrongDrop,
+        };
+      } else if (source.kind == InventoryItemKind.weapon &&
+          source.zone == InventoryZone.equippedWeapon &&
+          target == InventoryZone.property &&
+          propertyId != null) {
+        result = await _inventory.depositWeaponToProperty(
+          propertyId: propertyId,
+          weaponId: source.id,
+          quantity: 1,
+        );
+        if (result['success'] == true) {
+          await _clearCrimeWeapon();
+        }
       } else if (source.kind == InventoryItemKind.armor &&
           source.zone == InventoryZone.equippedArmor &&
           target == InventoryZone.property &&
