@@ -4,7 +4,9 @@
 Armor, defense level and survivability settings for conflict-heavy gameplay.
 
 ## Primary Frontend Entry
-- client/lib/screens/security_screen.dart
+- `client/lib/screens/black_market_screen.dart` — shop **Security** (`BlackMarketScreen.tabSecurity`)
+- `client/lib/screens/security_screen.dart` — embedded vest/bodyguard body (`embedded: true`)
+- Named route `/security` opens the Black Market Security shop.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

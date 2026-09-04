@@ -10824,5 +10824,8 @@
     }
   },
   "inventoryMoveOne": "Przesuń 1",
-  "inventoryMoveAll": "Przesuń wszystko"
+  "inventoryMoveAll": "Przesuń wszystko",
+  "blackMarketShops": "Sklepy",
+  "blackMarketPlayerMarket": "Rynek graczy",
+  "blackMarketSubtitle": "Kup u dilera albo handluj z innymi graczami."
 }

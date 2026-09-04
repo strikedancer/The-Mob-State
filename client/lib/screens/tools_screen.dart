@@ -54,7 +54,9 @@ String _toolsRepairErrorMessage(
 }
 
 class ToolsScreen extends StatefulWidget {
-  const ToolsScreen({super.key});
+  final bool embedded;
+
+  const ToolsScreen({super.key, this.embedded = false});
 
   @override
   State<ToolsScreen> createState() => _ToolsScreenState();
@@ -240,9 +242,74 @@ class _ToolsScreenState extends State<ToolsScreen>
     }
   }
 
+  Widget _inventoryHint(AppLocalizations l10n) {
+    if (_inventoryUsed <= 0) {
+      return const SizedBox.shrink();
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.backpack,
+          color: _inventoryFull ? Colors.orange : Colors.grey[400],
+          size: 14,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          '${l10n.inventory}: $_inventoryUsed/$_inventoryMax',
+          style: TextStyle(
+            fontSize: 12,
+            color: _inventoryFull ? Colors.orange : Colors.grey[400],
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _toolsBody(AppLocalizations l10n) {
+    return Column(
+      children: [
+        if (widget.embedded)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 4, 0),
+            child: Row(
+              children: [
+                _inventoryHint(l10n),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  tooltip: l10n.refresh,
+                  onPressed: _loadData,
+                ),
+              ],
+            ),
+          ),
+        TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(icon: const Icon(Icons.shopping_cart), text: l10n.toolsTabBuy),
+            Tab(icon: const Icon(Icons.inventory), text: l10n.toolsTabMyTools),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [_buildShopTab(), _buildInventoryTab()],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final body = _toolsBody(l10n);
+    if (widget.embedded) {
+      return body;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -251,33 +318,7 @@ class _ToolsScreenState extends State<ToolsScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(l10n.toolsScreenTitle),
-            if (_inventoryUsed > 0)
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.backpack,
-                    color: _inventoryFull ? Colors.orange : Colors.grey[400],
-                    size: 14,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${l10n.inventory}: $_inventoryUsed/$_inventoryMax',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: _inventoryFull ? Colors.orange : Colors.grey[400],
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ],
-              ),
-          ],
-        ),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(icon: const Icon(Icons.shopping_cart), text: l10n.toolsTabBuy),
-            Tab(icon: const Icon(Icons.inventory), text: l10n.toolsTabMyTools),
+            _inventoryHint(l10n),
           ],
         ),
         actions: [
@@ -288,11 +329,7 @@ class _ToolsScreenState extends State<ToolsScreen>
           ),
         ],
       ),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [_buildShopTab(), _buildInventoryTab()],
-      ),
+      body: body,
     );
   }
 

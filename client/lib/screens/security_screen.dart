@@ -6,7 +6,9 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 
 class SecurityScreen extends StatefulWidget {
-  const SecurityScreen({super.key});
+  final bool embedded;
+
+  const SecurityScreen({super.key, this.embedded = false});
 
   @override
   State<SecurityScreen> createState() => _SecurityScreenState();
@@ -335,12 +337,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.security),
-        centerTitle: true,
-      ),
-      body: _isLoading
+    final body = _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _securityStatus == null
           ? Center(
@@ -728,7 +725,18 @@ class _SecurityScreenState extends State<SecurityScreen> {
                   const SizedBox(height: 24),
                 ],
               ),
-            ),
+            );
+
+    if (widget.embedded) {
+      return body;
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.security),
+        centerTitle: true,
+      ),
+      body: body,
     );
   }
 }

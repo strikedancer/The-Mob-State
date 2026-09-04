@@ -43,9 +43,7 @@ import '../widgets/country_police_ui.dart';
 import 'vehicle_heist_screen.dart';
 import 'tune_shop_screen.dart';
 import 'direct_messages_screen.dart';
-import 'tools_screen.dart';
 import 'hitlist_screen.dart';
-import 'security_screen.dart';
 import 'training_hub_screen.dart';
 import '../widgets/training_summary_card.dart';
 import 'ammo_factory_screen.dart';
@@ -250,6 +248,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _selectWebSection(_WebSection section, {String? focusProductKey}) {
+    if (section == _WebSection.tools) {
+      _openBlackMarket(BlackMarketScreen.tabTools);
+      return;
+    }
+    if (section == _WebSection.security) {
+      _openBlackMarket(BlackMarketScreen.tabSecurity);
+      return;
+    }
     final previous = _selectedWebSection;
     setState(() {
       if (_selectedWebSection == section) {
@@ -1348,6 +1354,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.show_chart, label: l10n.stockMarketTitle, section: _WebSection.stockMarket),
         navItem(icon: Icons.local_shipping, label: l10n.smuggling, section: _WebSection.smuggling),
         navItem(icon: Icons.workspace_premium, label: l10n.premiumAndCredits, section: _WebSection.premium),
+        if (query.isNotEmpty) ...[
+          navItem(icon: Icons.build, label: l10n.tools, section: _WebSection.tools),
+          navItem(icon: Icons.shield, label: l10n.security, section: _WebSection.security),
+        ],
       ],
       _NavGroup.empire: [
         navItem(icon: Icons.local_pharmacy, label: l10n.drugs, section: _WebSection.drugs),
@@ -1359,7 +1369,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ],
       _NavGroup.assets: [
         navItem(icon: Icons.inventory, label: l10n.inventory, section: _WebSection.inventory),
-        navItem(icon: Icons.build, label: l10n.tools, section: _WebSection.tools),
         navItem(icon: Icons.tune, label: l10n.tuneShop, section: _WebSection.tuneShop),
         navItem(icon: Icons.fitness_center, label: l10n.trainingHubMenuLabel, section: _WebSection.trainingHub),
         navItem(icon: Icons.school, label: l10n.schoolMenuLabel, section: _WebSection.school),
@@ -1369,7 +1378,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.local_hospital, label: l10n.hospital, section: _WebSection.hospital),
         navItem(icon: Icons.restaurant, label: l10n.foodAndDrink, section: _WebSection.food),
         navItem(icon: Icons.gpp_bad, label: l10n.jail, section: _WebSection.prison),
-        navItem(icon: Icons.shield, label: l10n.security, section: _WebSection.security),
         navItem(icon: Icons.emoji_events, label: l10n.achievements, section: _WebSection.achievements),
       ],
     };
@@ -1813,7 +1821,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.casino:
         return const CasinoScreen();
       case _WebSection.blackMarket:
-        return BlackMarketScreen(initialTabIndex: _blackMarketTabIndex);
+        return BlackMarketScreen(
+          key: ValueKey('black-market-$_blackMarketTabIndex-$_webSectionRefreshSeed'),
+          initialTabIndex: _blackMarketTabIndex,
+        );
       case _WebSection.drugs:
         return DrugEnvironmentScreen(
           embedded: true,
@@ -1828,13 +1839,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.smuggling:
         return const SmugglingScreen();
       case _WebSection.tools:
-        return const ToolsScreen();
+        return const BlackMarketScreen(
+          initialTabIndex: BlackMarketScreen.tabTools,
+        );
       case _WebSection.court:
         return const CourtScreen();
       case _WebSection.hitlist:
-        return const HitlistScreen();
+        return HitlistScreen(
+          onOpenSecurity: () => _openBlackMarket(BlackMarketScreen.tabSecurity),
+        );
       case _WebSection.security:
-        return const SecurityScreen();
+        return const BlackMarketScreen(
+          initialTabIndex: BlackMarketScreen.tabSecurity,
+        );
       case _WebSection.hospital:
         return const HospitalScreen();
       case _WebSection.food:
@@ -2314,17 +2331,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
-                                  icon: Icons.build,
-                                  label: l10n.tools,
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const ToolsScreen(),
-                                    ),
-                                  ),
-                                ),
-                                _buildMenuTile(
-                                  context,
                                   icon: Icons.favorite,
                                   label: l10n.prostitutionTitle,
                                   onTap: () => Navigator.pushNamed(
@@ -2362,17 +2368,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const HitlistScreen(),
-                                    ),
-                                  ),
-                                ),
-                                _buildMenuTile(
-                                  context,
-                                  icon: Icons.shield,
-                                  label: l10n.security,
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const SecurityScreen(),
                                     ),
                                   ),
                                 ),

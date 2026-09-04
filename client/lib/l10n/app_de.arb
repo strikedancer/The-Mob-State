@@ -10824,5 +10824,8 @@
     }
   },
   "inventoryMoveOne": "Zug 1",
-  "inventoryMoveAll": "Alles bewegen"
+  "inventoryMoveAll": "Alles bewegen",
+  "blackMarketShops": "Läden",
+  "blackMarketPlayerMarket": "Spielermarkt",
+  "blackMarketSubtitle": "Kaufe beim Händler oder handle mit anderen Spielern."
 }

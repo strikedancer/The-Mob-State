@@ -5089,6 +5089,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get blackMarket => 'Marché noir';
 
   @override
+  String get blackMarketShops => 'Boutiques';
+
+  @override
+  String get blackMarketPlayerMarket => 'Marché des joueurs';
+
+  @override
+  String get blackMarketSubtitle =>
+      'Achetez chez le dealer ou échangez avec d’autres joueurs.';
+
+  @override
   String get garage => 'Garage';
 
   @override

@@ -76,7 +76,9 @@ String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
 }
 
 class HitlistScreen extends StatefulWidget {
-  const HitlistScreen({super.key});
+  final VoidCallback? onOpenSecurity;
+
+  const HitlistScreen({super.key, this.onOpenSecurity});
 
   @override
   State<HitlistScreen> createState() => _HitlistScreenState();
@@ -153,6 +155,10 @@ class _HitlistScreenState extends State<HitlistScreen> {
   }
 
   void _goToSecurity() {
+    if (widget.onOpenSecurity != null) {
+      widget.onOpenSecurity!();
+      return;
+    }
     Navigator.pushNamed(context, '/security');
   }
 

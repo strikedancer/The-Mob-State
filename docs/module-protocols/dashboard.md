@@ -12,6 +12,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - Web dashboard navigation is sidebar-first: add or change module navigation via the sidebar source (`_buildWebMenuItems` + `_WebSection` content switch) and not only via the legacy tile grid. Sidebar and hamburger menu are grouped (Acties / Wereld / Sociaal / Economie / Empire / Assets / Meer) and have a search field.
+- Dealer shops live on **Economie → Zwarte Markt** (trade goods, weapons, ammo, tools, security, materials, backpacks, plus player market). Do not add separate sidebar entries for Tools or Security; search aliases may still open those shops.
 - Premium & Credits is a first-class dashboard destination when premium purchases or wallet actions are exposed to players; wire it into the sidebar and keep direct route entry (`/premium`) working for payment return flows.
 
 ## Check Before Editing

@@ -12,6 +12,8 @@ import 'materials_shop_screen.dart';
 import 'weapons_market_screen.dart';
 import 'ammo_market_screen.dart';
 import 'trade_goods_tab.dart';
+import 'tools_screen.dart';
+import 'security_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/responsive_modal.dart';
@@ -22,6 +24,17 @@ import '../services/drug_service.dart';
 import '../services/crypto_service.dart';
 import '../services/api_client.dart';
 class BlackMarketScreen extends StatefulWidget {
+  static const int tabTrade = 0;
+  static const int tabMarketplace = 1;
+  static const int tabMyListings = 2;
+  static const int tabBackpacks = 3;
+  static const int tabMaterials = 4;
+  static const int tabWeapons = 5;
+  static const int tabAmmo = 6;
+  static const int tabTools = 7;
+  static const int tabSecurity = 8;
+  static const int tabCount = 9;
+
   final int initialTabIndex;
 
   const BlackMarketScreen({super.key, this.initialTabIndex = 0});
@@ -42,14 +55,26 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 7,
+      length: BlackMarketScreen.tabCount,
       vsync: this,
-      initialIndex: widget.initialTabIndex.clamp(0, 6),
+      initialIndex: widget.initialTabIndex.clamp(0, BlackMarketScreen.tabCount - 1),
     );
     _tabController.addListener(() {
       if (mounted && !_tabController.indexIsChanging) setState(() {});
     });
     _loadData();
+  }
+
+  @override
+  void didUpdateWidget(covariant BlackMarketScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialTabIndex == widget.initialTabIndex) {
+      return;
+    }
+    final next = widget.initialTabIndex.clamp(0, BlackMarketScreen.tabCount - 1);
+    if (_tabController.index != next) {
+      _tabController.animateTo(next);
+    }
   }
 
   @override
@@ -110,15 +135,144 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     }).toList();
   }
 
-  Tab _compactHubTab(IconData icon, String label) {
-    return Tab(
-      height: 40,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+  static const Color _shopGold = Color(0xFFFFB347);
+  static const Color _shopPanel = Color(0xFF1B1212);
+  static const Color _shopChip = Color(0xFF241616);
+  static const Color _shopChipSelected = Color(0xFF3A2A14);
+  static const Color _shopChipBorder = Color(0xFF4A3030);
+
+  void _selectDepartment(int index) {
+    if (_tabController.index == index) {
+      return;
+    }
+    _tabController.animateTo(index);
+  }
+
+  Widget _departmentChip({
+    required IconData icon,
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: selected ? _shopChipSelected : _shopChip,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: selected ? _shopGold : _shopChipBorder,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 14,
+                color: selected ? _shopGold : Colors.white70,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  color: selected ? _shopGold : Colors.white70,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _departmentGroup({
+    required String title,
+    required List<(int index, IconData icon, String label)> items,
+  }) {
+    final selected = _tabController.index;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 16),
-          const SizedBox(width: 6),
-          Text(label),
+          Text(
+            title.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 11,
+              letterSpacing: 0.8,
+              fontWeight: FontWeight.w700,
+              color: _shopGold,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              for (final item in items)
+                _departmentChip(
+                  icon: item.$2,
+                  label: item.$3,
+                  selected: selected == item.$1,
+                  onTap: () => _selectDepartment(item.$1),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _departmentBar(AppLocalizations l10n) {
+    return Container(
+      width: double.infinity,
+      color: _shopPanel,
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.blackMarketSubtitle,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFFD8C4B0),
+            ),
+          ),
+          const SizedBox(height: 10),
+          _departmentGroup(
+            title: l10n.blackMarketShops,
+            items: [
+              (BlackMarketScreen.tabTrade, Icons.shopping_bag, l10n.tradeGoods),
+              (BlackMarketScreen.tabWeapons, Icons.gavel, l10n.weaponsMarket),
+              (BlackMarketScreen.tabAmmo, Icons.bolt, l10n.ammoMarket),
+              (BlackMarketScreen.tabTools, Icons.build, l10n.tools),
+              (BlackMarketScreen.tabSecurity, Icons.shield, l10n.security),
+              (BlackMarketScreen.tabMaterials, Icons.science, l10n.materials),
+              (BlackMarketScreen.tabBackpacks, Icons.backpack, l10n.backpacks),
+            ],
+          ),
+          _departmentGroup(
+            title: l10n.blackMarketPlayerMarket,
+            items: [
+              (
+                BlackMarketScreen.tabMarketplace,
+                Icons.storefront,
+                l10n.marketplace,
+              ),
+              (
+                BlackMarketScreen.tabMyListings,
+                Icons.receipt_long,
+                l10n.myListings,
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -128,45 +282,42 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   Widget build(BuildContext context) {
     final vehicleProvider = Provider.of<VehicleProvider>(context);
     final l10n = AppLocalizations.of(context)!;
+    final showMarketFilter =
+        _tabController.index == BlackMarketScreen.tabMarketplace ||
+        _tabController.index == BlackMarketScreen.tabMyListings;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.blackMarket),
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabAlignment: TabAlignment.start,
-          labelPadding: const EdgeInsets.symmetric(horizontal: 12),
-          tabs: [
-            _compactHubTab(Icons.shopping_bag, l10n.tradeGoods),
-            _compactHubTab(Icons.directions_car, l10n.marketplace),
-            _compactHubTab(Icons.receipt_long, l10n.myListings),
-            _compactHubTab(Icons.backpack, l10n.backpacks),
-            _compactHubTab(Icons.science, l10n.materials),
-            _compactHubTab(Icons.gavel, l10n.weaponsMarket),
-            _compactHubTab(Icons.bolt, l10n.ammoMarket),
-          ],
-        ),
         actions: [
           IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
-          if (_tabController.index == 1 || _tabController.index == 2)
+          if (showMarketFilter)
             IconButton(
               icon: const Icon(Icons.filter_list),
               onPressed: _showFilterDialog,
             ),
         ],
       ),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
+      body: Column(
         children: [
-          const TradeGoodsTab(),
-          _buildMarketListings(vehicleProvider),
-          _buildMyListings(vehicleProvider),
-          const BackpackShopScreen(),
-          const MaterialsShopScreen(),
-          const WeaponsMarketScreen(),
-          const AmmoMarketScreen(),
+          _departmentBar(l10n),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                const TradeGoodsTab(),
+                _buildMarketListings(vehicleProvider),
+                _buildMyListings(vehicleProvider),
+                const BackpackShopScreen(),
+                const MaterialsShopScreen(),
+                const WeaponsMarketScreen(),
+                const AmmoMarketScreen(),
+                const ToolsScreen(embedded: true),
+                const SecurityScreen(embedded: true),
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -1,10 +1,11 @@
 ﻿# Black Market Protocol
 
 ## Scope
-Unified **illegal / grey economy hub**: contraband **handelswaren** (first tab), vehicle marketplace, my listings, backpacks, raw materials, weapons market and ammo.
+Unified **illegal / grey economy hub** under **Economie → Zwarte Markt**: dealer shops (trade goods, weapons, ammo, tools, security vests, materials, backpacks) plus player marketplace and my listings.
 
 ## Primary Frontend Entry
-- `client/lib/screens/black_market_screen.dart` — outer `TabBar` / `TabBarView` (voertuigen-aanbod: tabtekst `AppLocalizations.marketplace`, o.a. NL *Marktplaats*)
+- `client/lib/screens/black_market_screen.dart` — shop department strip + `TabBarView`. Existing tab indexes 0–6 stay stable; **Tools = 7**, **Security = 8**.
+- Tools and Security are no longer separate sidebar items (Assets / Meer). Search still finds those labels and opens the matching shop. `/security` opens this hub on the Security shop.
 - `client/lib/screens/trade_goods_tab.dart` — eerste zwarte-markt-tab: contrabandmarkt + inventaris in **één scroll** (`/trade/*` APIs; geen aparte sub-tabs meer). Koop/verkoop als compacte rijen (naam, risico-pills, prijs, aantal, actie); lange flavor-tekst zit in tooltip. Hub-tabs zijn één regel (icoon + label).
 - Zelfde compacte rij-patroon (`client/lib/widgets/market_compact.dart`) op **Wapenmarkt**, **Munitiemarkt**, **Materialen** en **Rugzakken**: thumbnail, naam + info-pills, prijs, compacte actie; beschrijving in tooltip. Koop/verkoop-API’s, rank/VIP-gates en dialogen ongewijzigd.
 - Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`

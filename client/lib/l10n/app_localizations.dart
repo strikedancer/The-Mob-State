@@ -9011,6 +9011,24 @@ abstract class AppLocalizations {
   /// **'Black Market'**
   String get blackMarket;
 
+  /// No description provided for @blackMarketShops.
+  ///
+  /// In en, this message translates to:
+  /// **'Shops'**
+  String get blackMarketShops;
+
+  /// No description provided for @blackMarketPlayerMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Player market'**
+  String get blackMarketPlayerMarket;
+
+  /// No description provided for @blackMarketSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy from the dealer or trade with other players.'**
+  String get blackMarketSubtitle;
+
   /// No description provided for @garage.
   ///
   /// In en, this message translates to:
@@ -27004,19 +27022,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBlackMarketSummary.
   ///
   /// In en, this message translates to:
-  /// **'One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles and carried tools, plus backpacks, materials, weapons market and ammo.'**
+  /// **'One shop hub under Economy: dealer shops for trade goods, weapons, ammo, tools, security vests, materials and backpacks, plus a player market for vehicles and carried items.'**
   String get helpTopicBlackMarketSummary;
 
   /// No description provided for @helpTopicBlackMarketHow.
   ///
   /// In en, this message translates to:
-  /// **'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.'**
+  /// **'Open Black Market from the Economy menu. Shops sit in one strip: Trade goods, Weapons, Ammo, Tools, Security, Materials and Backpacks. Player market has Marketplace and My listings.\nTrade goods: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into shops (Trade goods, Weapons, Ammo, Tools, Security, Materials, Backpacks) and a player market (Marketplace, My listings).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.'**
   String get helpTopicBlackMarketHow;
 
   /// No description provided for @helpTopicBlackMarketTips.
   ///
   /// In en, this message translates to:
-  /// **'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; only tools in your carried inventory can be placed for sale.'**
+  /// **'Tools, vests and bodyguards are shops on this same screen (Tools / Security), not separate menu pages.\nTrade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; only tools in your carried inventory can be placed for sale.'**
   String get helpTopicBlackMarketTips;
 
   /// No description provided for @helpTopicDrugsCategory.
@@ -27154,13 +27172,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicToolsSummary.
   ///
   /// In en, this message translates to:
-  /// **'Buy and manage tools required for specific crimes. Good tools raise your success chance, worn tools lower it.'**
+  /// **'Buy and repair crime tools on Black Market → Tools. Good tools raise your success chance, worn tools lower it.'**
   String get helpTopicToolsSummary;
 
   /// No description provided for @helpTopicToolsHow.
   ///
   /// In en, this message translates to:
-  /// **'The tool shop shows all available items with price, condition rating and the crime type they are required for.\nEach crime category has preferred tools: burglary requires crowbar or picks, car theft requires a hotwire kit, robbery requires a firearm.\nTools have a condition rating (0-100%). Each successful or failed crime lowers condition by a few percent.\nBelow 20% condition the tool\'s success chance bonus drops drastically. Below 5% the tool has almost no effect.\nRepaired tools through the shop cost a fraction of the purchase price. Replacement is sometimes cheaper than repair for heavily worn tools.\nTools are visible in your inventory tab. You can keep multiple copies of the same type as backup.'**
+  /// **'Open Black Market from Economy and pick Tools. The shop shows all available items with price, condition rating and the crime type they are required for.\nEach crime category has preferred tools: burglary requires crowbar or picks, car theft requires a hotwire kit, robbery requires a firearm.\nTools have a condition rating (0-100%). Each successful or failed crime lowers condition by a few percent.\nBelow 20% condition the tool\'s success chance bonus drops drastically. Below 5% the tool has almost no effect.\nRepaired tools through the shop cost a fraction of the purchase price. Replacement is sometimes cheaper than repair for heavily worn tools.\nTools are visible in your inventory tab. You can keep multiple copies of the same type as backup.'**
   String get helpTopicToolsHow;
 
   /// No description provided for @helpTopicToolsTips.
@@ -27250,7 +27268,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSecurityHow.
   ///
   /// In en, this message translates to:
-  /// **'Buy vests on Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time; if you buy another vest it immediately replaces your current armor.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. Better match = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.'**
+  /// **'Buy vests on Black Market → Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time; if you buy another vest it immediately replaces your current armor.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. Better match = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.'**
   String get helpTopicSecurityHow;
 
   /// No description provided for @helpTopicSecurityTips.

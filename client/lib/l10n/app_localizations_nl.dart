@@ -5039,6 +5039,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get blackMarket => 'Zwarte Markt';
 
   @override
+  String get blackMarketShops => 'Winkels';
+
+  @override
+  String get blackMarketPlayerMarket => 'Spelersmarkt';
+
+  @override
+  String get blackMarketSubtitle =>
+      'Koop bij de dealer of handel met andere spelers.';
+
+  @override
   String get garage => 'Garage';
 
   @override
@@ -15571,15 +15581,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen en gedragen gereedschap, plus rugzakken, grondstoffen, wapenmarkt en munitie.';
+      'Eén shop-hub onder Economie: dealerwinkels voor handelswaren, wapens, munitie, gereedschap, veiligheidsvesten, materialen en rugzakken, plus een spelersmarkt voor voertuigen en gedragen spullen.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.';
+      'Open Zwarte Markt via het menu Economie. Winkels staan in één strook: Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen en Rugzakken. Spelersmarkt heeft Marktplaats en Mijn advertenties.\nHandelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in winkels (Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen, Rugzakken) en een spelersmarkt (Marktplaats, Mijn advertenties).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats: ververs na plaatsen; alleen gereedschap dat je bij je draagt kun je te koop zetten.';
+      'Gereedschap, vesten en lijfwachten koop je op ditzelfde scherm (Gereedschap / Beveiliging), niet via losse menupunten.\nHandelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats: ververs na plaatsen; alleen gereedschap dat je bij je draagt kun je te koop zetten.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';
@@ -15661,11 +15671,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicToolsSummary =>
-      'Koop en beheer gereedschappen die nodig zijn voor specifieke misdaden. Goede tools verhogen je slagingskans, versleten tools verlagen hem.';
+      'Koop en repareer gereedschap via Zwarte Markt → Gereedschap. Goede tools verhogen je slagingskans, versleten tools verlagen hem.';
 
   @override
   String get helpTopicToolsHow =>
-      'De tool-shop toont alle beschikbare items met prijs, conditie-rating en het type crime waarvoor ze vereist zijn.\nElke crimecategorie heeft voorkeur-tools: inbraak vereist breekijzer of picks, autodiefstal vereist hotwire-kit, beroving vereist vuurwapen.\nTools hebben een conditie (0-100%). Elke succesvolle of mislukte crime verlaagt conditie met een paar procent.\nOnder 20% conditie daalt de slagingskansbonus van de tool drastisch. Onder 5% heeft de tool nauwelijks meer effect.\nGerepareerde tools via de shop kosten een fractie van de aanschafprijs. Vervangen is soms goedkoper dan repareren bij zware slijtage.\nTools zijn zichtbaar in je inventaris-tab. Je kunt meerdere exemplaren van hetzelfde type bewaren als backup.';
+      'Open Zwarte Markt via Economie en kies Gereedschap. De shop toont alle beschikbare items met prijs, conditie-rating en het type crime waarvoor ze vereist zijn.\nElke crimecategorie heeft voorkeur-tools: inbraak vereist breekijzer of picks, autodiefstal vereist hotwire-kit, beroving vereist vuurwapen.\nTools hebben een conditie (0-100%). Elke succesvolle of mislukte crime verlaagt conditie met een paar procent.\nOnder 20% conditie daalt de slagingskansbonus van de tool drastisch. Onder 5% heeft de tool nauwelijks meer effect.\nGerepareerde tools via de shop kosten een fractie van de aanschafprijs. Vervangen is soms goedkoper dan repareren bij zware slijtage.\nTools zijn zichtbaar in je inventaris-tab. Je kunt meerdere exemplaren van hetzelfde type bewaren als backup.';
 
   @override
   String get helpTopicToolsTips =>
@@ -15719,7 +15729,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Vesten koop je bij Beveiliging: Steekvest (€7.500) → Kogelvrij vest (€50.000) → Kogelvrij vest premium (€125.000) → AP-plaatvest (€280.000). Geweerkalibers 5.56, 7.62 en .308 gaan door gewone vesten heen, tenzij je het AP-plaatvest draagt.\nJe kunt maar 1 vest tegelijk dragen; koop je een ander vest, dan vervangt dat direct je huidige armor.\nElk vesttype verlaagt inkomende schade als het bij de aanval past: steekvesten houden messen tegen, kogelvrije vesten houden gewone kogels tegen, en het AP-plaatvest houdt ook pantserdoordringende kogels tegen. Betere match = meer overleving bij PvP en raids.\nArmor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.\nBij 100% schade is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.\nLijfwachten geven elk +10 verdediging, maar kosten elke 24 uur €10.000 per lijfwacht aan systeemloon.\nKun je het dagloon van je lijfwachten niet meer betalen, dan lopen ze allemaal weg en verlies je die verdediging direct.\nInstallatiebeveiliging (voor nightclub, drugs-faciliteit, etc.) verlaagt kans op raids en incidenten bij die locatie.\nHoe hoger je Wanted Level hoe vaker je wordt aangevallen of geraided. Betere beveiliging compenseert dit direct.\nCrew-leden kunnen beveiligingsrollen verdelen zodat meerdere locaties gelijktijdig gedekt zijn.';
+      'Vesten koop je bij Zwarte Markt → Beveiliging: Steekvest (€7.500) → Kogelvrij vest (€50.000) → Kogelvrij vest premium (€125.000) → AP-plaatvest (€280.000). Geweerkalibers 5.56, 7.62 en .308 gaan door gewone vesten heen, tenzij je het AP-plaatvest draagt.\nJe kunt maar 1 vest tegelijk dragen; koop je een ander vest, dan vervangt dat direct je huidige armor.\nElk vesttype verlaagt inkomende schade als het bij de aanval past: steekvesten houden messen tegen, kogelvrije vesten houden gewone kogels tegen, en het AP-plaatvest houdt ook pantserdoordringende kogels tegen. Betere match = meer overleving bij PvP en raids.\nArmor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.\nBij 100% schade is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.\nLijfwachten geven elk +10 verdediging, maar kosten elke 24 uur €10.000 per lijfwacht aan systeemloon.\nKun je het dagloon van je lijfwachten niet meer betalen, dan lopen ze allemaal weg en verlies je die verdediging direct.\nInstallatiebeveiliging (voor nightclub, drugs-faciliteit, etc.) verlaagt kans op raids en incidenten bij die locatie.\nHoe hoger je Wanted Level hoe vaker je wordt aangevallen of geraided. Betere beveiliging compenseert dit direct.\nCrew-leden kunnen beveiligingsrollen verdelen zodat meerdere locaties gelijktijdig gedekt zijn.';
 
   @override
   String get helpTopicSecurityTips =>

@@ -10824,5 +10824,8 @@
     }
   },
   "inventoryMoveOne": "Sposta 1",
-  "inventoryMoveAll": "Sposta tutto"
+  "inventoryMoveAll": "Sposta tutto",
+  "blackMarketShops": "Negozi",
+  "blackMarketPlayerMarket": "Mercato giocatori",
+  "blackMarketSubtitle": "Compra dal trafficante o scambia con altri giocatori."
 }

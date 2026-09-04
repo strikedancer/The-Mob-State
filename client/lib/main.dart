@@ -20,7 +20,7 @@ import 'screens/reset_password_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/inventory_screen.dart';
 import 'screens/hitlist_screen.dart';
-import 'screens/security_screen.dart';
+import 'screens/black_market_screen.dart';
 import 'screens/prostitution_screen.dart';
 import 'screens/prostitution_leaderboard_screen.dart';
 import 'screens/prostitution_rivalry_screen.dart';
@@ -154,7 +154,9 @@ class MafiaGameApp extends StatelessWidget {
               return InventoryScreen(initialPropertyId: propertyId);
             },
             '/hitlist': (context) => const HitlistScreen(),
-            '/security': (context) => const SecurityScreen(),
+            '/security': (context) => const BlackMarketScreen(
+              initialTabIndex: BlackMarketScreen.tabSecurity,
+            ),
             '/prostitution': (context) {
               final args = ModalRoute.of(context)?.settings.arguments;
               int tabIndex = 0;

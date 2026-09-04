@@ -4,7 +4,8 @@
 Tool purchase, tool inventory, crime dependencies and storage constraints.
 
 ## Primary Frontend Entry
-- client/lib/screens/tools_screen.dart
+- `client/lib/screens/black_market_screen.dart` — shop **Tools** (`BlackMarketScreen.tabTools`)
+- `client/lib/screens/tools_screen.dart` — embedded shop body (`embedded: true`)
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
