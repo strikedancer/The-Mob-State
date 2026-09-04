@@ -20,7 +20,6 @@ import '../widgets/country_police_ui.dart';
 import '../utils/crime_localization.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
-import '../utils/weapon_display_name.dart';
 
 enum _CrimeListFilter { all, available }
 
@@ -54,7 +53,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
   final ToolService _toolService = ToolService();
   static const Set<String> _excludedCrimeIds = {'car_theft', 'steal_yacht'};
   List<Crime> _crimes = [];
-  List<Map<String, dynamic>> _weaponInventory = [];
   bool _isLoading = true;
   bool _isCommittingCrime = false;
   bool _loadingWeaponSelection = true;
@@ -64,7 +62,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
   String? _cooldownResultMessage;
   bool? _cooldownIsSuccess;
   String? _resultCrimeName;
-  String? _selectedCrimeWeaponId;
+  Map<String, dynamic>? _equippedSlotOne;
+  Map<String, dynamic>? _equippedSlotTwo;
   bool _showCrimeResult = false;
   bool _crimeResultSuccess = true;
   int _crimeReward = 0;
@@ -495,15 +494,10 @@ class _CrimeScreenState extends State<CrimeScreen> {
     final accuracyPct = (_trainingAccuracyBonus * 100).toStringAsFixed(1);
     final comboPct =
         (_trainingComboBonusFraction * 100).toStringAsFixed(1);
-    final selectedWeapon = _weaponInventory
-        .cast<Map<String, dynamic>?>()
-        .firstWhere(
-          (weapon) => weapon?['weaponId'] == _selectedCrimeWeaponId,
-          orElse: () => null,
-        );
-    final selectedWeaponLabel = selectedWeapon == null
-        ? null
-        : '${selectedWeapon['name'] ?? selectedWeapon['weaponId']} (${selectedWeapon['condition']}%)';
+    String weaponSlotLabel(Map<String, dynamic>? weapon) {
+      if (weapon == null) return l10n.crimeWeaponSlotEmpty;
+      return '${weapon['name'] ?? weapon['weaponId']} (${weapon['condition']}%)';
+    }
 
     return _panel(
       child: Column(
@@ -644,9 +638,9 @@ class _CrimeScreenState extends State<CrimeScreen> {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               )
-            else if (_weaponInventory.isEmpty) ...[
+            else if (_equippedSlotOne == null && _equippedSlotTwo == null) ...[
               Text(
-                l10n.noWeapons,
+                l10n.crimeWeaponNoSelectionNote,
                 style: const TextStyle(color: Colors.orange, fontSize: 12),
               ),
               const SizedBox(height: 4),
@@ -655,61 +649,14 @@ class _CrimeScreenState extends State<CrimeScreen> {
                 style: const TextStyle(color: Colors.white54, fontSize: 11.5),
               ),
             ] else ...[
-              DropdownButtonFormField<String>(
-                value: _selectedCrimeWeaponId,
-                isExpanded: true,
-                dropdownColor: const Color(0xFF2A2A2A),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color(0xFF1E1E1E),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade700),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade700),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
+              Text(
+                l10n.crimeWeaponEquippedStatus(
+                  weaponSlotLabel(_equippedSlotOne),
+                  weaponSlotLabel(_equippedSlotTwo),
                 ),
-                style: const TextStyle(color: Colors.white),
-                hint: Text(
-                  l10n.crimeWeaponSelectHint,
-                  style: const TextStyle(color: Colors.white70),
-                ),
-                items: _weaponInventory
-                    .map(
-                      (weapon) => DropdownMenuItem<String>(
-                        value: weapon['weaponId'] as String,
-                        child: Text(
-                          crimeWeaponLine(l10n, weapon),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    _setCrimeWeapon(value);
-                  }
-                },
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
               const SizedBox(height: 6),
-              Text(
-                _selectedCrimeWeaponId == null
-                    ? l10n.crimeWeaponNoSelectionNote
-                    : l10n.crimeWeaponSelectedStatus(selectedWeaponLabel!),
-                style: TextStyle(
-                  color: _selectedCrimeWeaponId == null
-                      ? Colors.orange
-                      : Colors.white54,
-                  fontSize: 11.5,
-                ),
-              ),
-              const SizedBox(height: 4),
               Text(
                 l10n.crimeWeaponFooterNote,
                 style: const TextStyle(color: Colors.white54, fontSize: 11),
@@ -832,7 +779,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
     try {
       final inventoryResponse = await _apiClient.get('/weapons/inventory');
-      final selectedResponse = await _apiClient.get('/weapons/crime-weapon');
+      final slotOneResponse = await _apiClient.get('/weapons/crime-weapon');
+      final slotTwoResponse = await _apiClient.get('/weapons/secondary-weapon');
 
       if (inventoryResponse.statusCode != 200) {
         throw Exception('WEAPON_INVENTORY_LOAD_FAILED');
@@ -844,21 +792,26 @@ class _CrimeScreenState extends State<CrimeScreen> {
           .where((w) => ((w['condition'] as num?)?.toInt() ?? 0) > 0)
           .toList();
 
-      String? selectedId;
-      if (selectedResponse.statusCode == 200) {
-        final selectedData = jsonDecode(selectedResponse.body);
-        selectedId = selectedData['weapon']?['weaponId'] as String?;
+      Map<String, dynamic>? matchEquipped(dynamic payload) {
+        final weaponId = payload is Map ? payload['weapon']?['weaponId'] as String? : null;
+        if (weaponId == null) return null;
+        for (final weapon in weapons) {
+          if (weapon['weaponId'] == weaponId) return weapon;
+        }
+        return null;
       }
 
-      if (selectedId != null &&
-          !weapons.any((weapon) => weapon['weaponId'] == selectedId)) {
-        selectedId = null;
-      }
+      final slotOne = slotOneResponse.statusCode == 200
+          ? matchEquipped(jsonDecode(slotOneResponse.body))
+          : null;
+      final slotTwo = slotTwoResponse.statusCode == 200
+          ? matchEquipped(jsonDecode(slotTwoResponse.body))
+          : null;
 
       if (!mounted) return;
       setState(() {
-        _weaponInventory = weapons;
-        _selectedCrimeWeaponId = selectedId;
+        _equippedSlotOne = slotOne;
+        _equippedSlotTwo = slotTwo;
         _loadingWeaponSelection = false;
       });
     } catch (e) {
@@ -867,38 +820,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
       setState(() {
         _loadingWeaponSelection = false;
       });
-    }
-  }
-
-  Future<void> _setCrimeWeapon(String weaponId) async {
-    try {
-      final response = await _apiClient.post('/weapons/crime-weapon', {
-        'weaponId': weaponId,
-      });
-
-      if (response.statusCode != 200) {
-        throw Exception('SET_CRIME_WEAPON_FAILED');
-      }
-
-      if (!mounted) return;
-      setState(() {
-        _selectedCrimeWeaponId = weaponId;
-      });
-      // Crime cards cache readiness (canAttempt / weapon banners). Refresh so
-      // selecting a weapon unlocks taps without requiring a full page reload.
-      await _checkJailStatusAndLoadCrimes();
-    } catch (e) {
-      print('[CrimeScreen] Error setting crime weapon: $e');
-      if (!mounted) return;
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.crimeSetWeaponFailed,
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
     }
   }
 
@@ -976,7 +897,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
   Future<void> _commitCrime(Crime crime) async {
     final l10n = AppLocalizations.of(context)!;
 
-    if (crime.requiredWeapon == true && _selectedCrimeWeaponId == null) {
+    if (crime.requiredWeapon == true && crime.weaponReady != true) {
       showTopRightFromSnackBar(
         context,
         SnackBar(

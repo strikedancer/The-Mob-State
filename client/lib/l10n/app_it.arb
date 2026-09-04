@@ -3664,6 +3664,18 @@
   "crimeWeaponEmptyInventoryHelp": "Acquista o sposta prima un'arma utilizzabile nel tuo inventario trasportato.",
   "crimeWeaponSelectHint": "Seleziona un'arma per i crimini",
   "crimeWeaponNoSelectionNote": "Senza una selezione, i crimini basati sulle armi non cominceranno.",
+  "crimeWeaponSlotEmpty": "vuoto",
+  "crimeWeaponEquippedStatus": "Slot 1: {slotOne}. Slot 2: {slotTwo}.",
+  "@crimeWeaponEquippedStatus": {
+    "placeholders": {
+      "slotOne": {
+        "type": "String"
+      },
+      "slotTwo": {
+        "type": "String"
+      }
+    }
+  },
   "crimeWeaponSelectedStatus": "Selezionato: {weaponLine}. Alcuni crimini richiedono ancora un tipo di arma corrispondente.",
   "@crimeWeaponSelectedStatus": {
     "placeholders": {

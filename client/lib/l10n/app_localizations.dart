@@ -22421,6 +22421,18 @@ abstract class AppLocalizations {
   /// **'Without a selection, weapon-based crimes will not start.'**
   String get crimeWeaponNoSelectionNote;
 
+  /// No description provided for @crimeWeaponSlotEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'empty'**
+  String get crimeWeaponSlotEmpty;
+
+  /// No description provided for @crimeWeaponEquippedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Slot 1: {slotOne}. Slot 2: {slotTwo}.'**
+  String crimeWeaponEquippedStatus(String slotOne, String slotTwo);
+
   /// No description provided for @crimeWeaponSelectedStatus.
   ///
   /// In en, this message translates to:

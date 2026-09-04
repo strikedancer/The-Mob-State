@@ -3664,6 +3664,18 @@
   "crimeWeaponEmptyInventoryHelp": "Compre ou mova primeiro uma arma utilizável para o seu inventário.",
   "crimeWeaponSelectHint": "Selecione uma arma para crimes",
   "crimeWeaponNoSelectionNote": "Sem uma seleção, os crimes baseados em armas não começarão.",
+  "crimeWeaponSlotEmpty": "vazio",
+  "crimeWeaponEquippedStatus": "Slot 1: {slotOne}. Slot 2: {slotTwo}.",
+  "@crimeWeaponEquippedStatus": {
+    "placeholders": {
+      "slotOne": {
+        "type": "String"
+      },
+      "slotTwo": {
+        "type": "String"
+      }
+    }
+  },
   "crimeWeaponSelectedStatus": "Selecionado: {weaponLine}. Alguns crimes ainda exigem um tipo de arma correspondente.",
   "@crimeWeaponSelectedStatus": {
     "placeholders": {

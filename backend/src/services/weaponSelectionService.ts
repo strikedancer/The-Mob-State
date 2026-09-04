@@ -40,6 +40,13 @@ const safeParseDetails = (value: string | null | undefined): Record<string, unkn
 const otherSlot = (slot: WeaponCarrySlot): WeaponCarrySlot =>
   slot === 'crime' ? 'secondary' : 'crime';
 
+export type EquippedWeapon = {
+  weaponId: string;
+  name: string;
+  condition: number;
+  slot: WeaponCarrySlot;
+};
+
 export const weaponSelectionService = {
   async getSelectedCrimeWeapon(playerId: number) {
     return getSelectedSlot(playerId, 'crime');
@@ -65,18 +72,27 @@ export const weaponSelectionService = {
     await clearSelectedSlot(playerId, 'secondary');
   },
 
-  async getEquippedWeaponSlotCounts(playerId: number): Promise<Map<string, number>> {
+  async getEquippedWeapons(playerId: number): Promise<EquippedWeapon[]> {
     const [crime, secondary] = await Promise.all([
       getSelectedSlot(playerId, 'crime'),
       getSelectedSlot(playerId, 'secondary'),
     ]);
+    const equipped: EquippedWeapon[] = [];
+    if (crime) {
+      equipped.push({ ...crime, slot: 'crime' });
+    }
+    if (secondary) {
+      equipped.push({ ...secondary, slot: 'secondary' });
+    }
+    return equipped;
+  },
+
+  async getEquippedWeaponSlotCounts(playerId: number): Promise<Map<string, number>> {
+    const equipped = await this.getEquippedWeapons(playerId);
     const counts = new Map<string, number>();
-    const add = (weaponId?: string) => {
-      if (!weaponId) return;
-      counts.set(weaponId, (counts.get(weaponId) ?? 0) + 1);
-    };
-    add(crime?.weaponId);
-    add(secondary?.weaponId);
+    for (const weapon of equipped) {
+      counts.set(weapon.weaponId, (counts.get(weapon.weaponId) ?? 0) + 1);
+    }
     return counts;
   },
 };

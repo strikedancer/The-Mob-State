@@ -3664,6 +3664,18 @@
   "crimeWeaponEmptyInventoryHelp": "Najpierw kup lub przenieś użyteczną broń do swojego ekwipunku.",
   "crimeWeaponSelectHint": "Wybierz broń do zbrodni",
   "crimeWeaponNoSelectionNote": "Bez selekcji przestępstwa z użyciem broni nie zostaną rozpoczęte.",
+  "crimeWeaponSlotEmpty": "puste",
+  "crimeWeaponEquippedStatus": "Slot 1: {slotOne}. Slot 2: {slotTwo}.",
+  "@crimeWeaponEquippedStatus": {
+    "placeholders": {
+      "slotOne": {
+        "type": "String"
+      },
+      "slotTwo": {
+        "type": "String"
+      }
+    }
+  },
   "crimeWeaponSelectedStatus": "Wybrano: {weaponLine}. Niektóre przestępstwa nadal wymagają dodatkowo odpowiedniego rodzaju broni.",
   "@crimeWeaponSelectedStatus": {
     "placeholders": {

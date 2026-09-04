@@ -12948,6 +12948,14 @@ class AppLocalizationsPt extends AppLocalizations {
       'Sem uma seleção, os crimes baseados em armas não começarão.';
 
   @override
+  String get crimeWeaponSlotEmpty => 'vazio';
+
+  @override
+  String crimeWeaponEquippedStatus(String slotOne, String slotTwo) {
+    return 'Slot 1: $slotOne. Slot 2: $slotTwo.';
+  }
+
+  @override
   String crimeWeaponSelectedStatus(String weaponLine) {
     return 'Selecionado: $weaponLine. Alguns crimes ainda exigem um tipo de arma correspondente.';
   }

@@ -8,7 +8,6 @@ import { getWealthStatus } from '../utils/wealthSystem';
 import { calculateReputationChange } from '../utils/rankSystem';
 import { applyReputationDelta } from '../services/reputationService';
 import { resolveSelectedCrimeVehicle } from '../services/vehicleToolService';
-import { weaponSelectionService } from '../services/weaponSelectionService';
 import { gameEventService } from '../services/gameEventService';
 import { seasonPassService } from '../services/seasonPassService';
 
@@ -99,10 +98,17 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
       crimesWithChances = await Promise.all(
         crimes.map(async (crime) => {
           const vehicleStatsForCrime = crime.requiredVehicle ? vehicleStats : undefined;
+          const bestWeapon = crime.requiredWeapon
+            ? crimeService.pickBestEquippedWeaponForCrime(
+                crime.id,
+                readinessContext.equippedWeapons,
+                readinessContext.ammoCounts,
+              ).weapon
+            : null;
           const playerSuccessChance = await crimeService.calculatePlayerSuccessChance(
             playerId,
             crime.id,
-            undefined,
+            bestWeapon ?? undefined,
             vehicleStatsForCrime,
           );
           const readiness = crimeService.evaluateCrimeReadiness(
@@ -125,8 +131,8 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
               crime.id,
               readinessContext,
             ),
-            selectedCrimeWeaponId: readinessContext.selectedWeapon?.weaponId ?? null,
-            selectedCrimeWeaponName: readinessContext.selectedWeapon?.name ?? null,
+            selectedCrimeWeaponId: bestWeapon?.weaponId ?? null,
+            selectedCrimeWeaponName: bestWeapon?.name ?? null,
           };
         }),
       );
@@ -265,15 +271,10 @@ router.post(
       });
     }
 
-    const selectedWeapon = await weaponSelectionService.getSelectedCrimeWeapon(
-      req.player!.id,
-    );
-
     const result = await crimeService.attemptCrime(
       req.player!.id,
       crimeId,
       vehicleId ? parseInt(vehicleId, 10) : undefined,
-      selectedWeapon?.weaponId,
     );
 
     // Set cooldown after attempt using reward-tier pacing

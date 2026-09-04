@@ -288,7 +288,6 @@ async function tryCrime(npcId: number, playerId: number, behavior: Behavior): Pr
   const doable: Array<{
     crime: NonNullable<ReturnType<typeof crimeService.getCrimeDefinition>>;
     vehicleId?: number;
-    selectedWeaponId?: string;
     weight: number;
   }> = [];
 
@@ -306,17 +305,28 @@ async function tryCrime(npcId: number, playerId: number, behavior: Behavior): Pr
       vehicleId = vehicle.id;
     }
 
-    let selectedWeaponId: string | undefined;
     if (crime.requiredWeapon) {
-      const selected = await weaponSelectionService.getSelectedCrimeWeapon(playerId);
-      if (!selected) continue;
-      selectedWeaponId = selected.weaponId;
+      const equipped = await weaponSelectionService.getEquippedWeapons(playerId);
+      if (equipped.length === 0) continue;
+      const ammoRows = await prisma.ammoInventory.findMany({
+        where: { playerId },
+        select: { ammoType: true, quantity: true },
+      });
+      const ammoCounts = new Map<string, number>();
+      for (const row of ammoRows) {
+        ammoCounts.set(row.ammoType, row.quantity);
+      }
+      const pickWeapon = crimeService.pickBestEquippedWeaponForCrime(
+        crime.id,
+        equipped,
+        ammoCounts,
+      );
+      if (!pickWeapon.weapon) continue;
     }
 
     doable.push({
       crime,
       vehicleId,
-      selectedWeaponId,
       weight: scoreCrime(
         crime,
         player.rank,
@@ -334,7 +344,6 @@ async function tryCrime(npcId: number, playerId: number, behavior: Behavior): Pr
       playerId,
       pick.crime.id,
       pick.vehicleId,
-      pick.selectedWeaponId,
     );
     await cooldownService.setCooldown(
       playerId,

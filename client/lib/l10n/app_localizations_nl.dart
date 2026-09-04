@@ -6771,7 +6771,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get inventoryCrimeWeaponHelp =>
-      'Kies hier je crime-wapen. Het crimes-scherm gebruikt deze selectie direct.';
+      'Zet wapens op slot 1 en slot 2. Crimes kiest per crime automatisch het beste gedragen wapen.';
 
   @override
   String get inventoryCrimeWeaponEmpty =>
@@ -12864,22 +12864,30 @@ class AppLocalizationsNl extends AppLocalizations {
   String get connectionErrorGeneric => 'Verbindingsfout';
 
   @override
-  String get crimeWeaponSectionTitle => 'Crime-wapen';
+  String get crimeWeaponSectionTitle => 'Gedragen wapens';
 
   @override
   String get crimeWeaponInstruction =>
-      'Kies hier welk gedragen wapen je standaard gebruikt voor crimes die een wapen vereisen.';
+      'Crimes kijken naar beide wapenslots en gebruiken automatisch het beste gedragen wapen voor die crime.';
 
   @override
   String get crimeWeaponEmptyInventoryHelp =>
-      'Koop of verplaats eerst een bruikbaar wapen naar je carried inventory.';
+      'Zet eerst een bruikbaar wapen op slot 1 of slot 2 in Inventaris.';
 
   @override
   String get crimeWeaponSelectHint => 'Selecteer een wapen voor crimes';
 
   @override
   String get crimeWeaponNoSelectionNote =>
-      'Zonder selectie starten gewapende crimes niet.';
+      'Geen wapen op slot 1 of 2. Gewapende crimes starten niet.';
+
+  @override
+  String get crimeWeaponSlotEmpty => 'leeg';
+
+  @override
+  String crimeWeaponEquippedStatus(String slotOne, String slotTwo) {
+    return 'Slot 1: $slotOne. Slot 2: $slotTwo.';
+  }
 
   @override
   String crimeWeaponSelectedStatus(String weaponLine) {
@@ -12891,11 +12899,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crimeChooseWeaponBeforeCommit =>
-      'Kies eerst een crime-wapen bovenaan dit scherm of via Inventaris.';
+      'Zet eerst een passend wapen op slot 1 of 2 in Inventaris.';
 
   @override
   String get crimeWeaponFooterNote =>
-      'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.';
+      'Elke crime kiest automatisch het beste gedragen wapen. Een wapen in de rugzak telt niet mee.';
 
   @override
   String crimeTrainingBonusStrip(String strengthPct, String accuracyPct) {
@@ -15353,7 +15361,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrimesHow =>
-      'Crime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.\nRichtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.\nEr is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.\nCrimes met `required weapon` gebruiken je geselecteerde crime-wapen. Dat kun je nu direct bovenaan het Crimes-scherm kiezen of via Inventaris.\nJe actieve sportschool- en schietbaanbonussen (tot maximaal +8% elk) staan op het Misdaden-scherm; ze verhogen je slagingskans zoals de server dat berekent (train verder via het Trainingscircuit / sportschool + schietschool).\nHeb je binnen dezelfde UTC-dag in sportschool én schietbaan getraind, dan geeft de server een kleine extra slagingskans op crimes (+0,5%). Die combo staat op het Misdaden-scherm wanneer hij actief is.\nCrimes met voertuig-eis gebruiken je geselecteerde crime-voertuig uit Garage of Marina. Alleen een voertuig dat echt in je huidige land staat en niet onderweg of te koop is, telt mee.\nDrugs-eisen bij crimes worden weergegeven in gram en volgen dezelfde hoeveelheid als je drugsinventaris en opslag.\nAls een crime niet kan starten door ontbrekend voertuig, verkeerd wapen of missende ammo, hoort de foutmelding nu de echte oorzaak te tonen in plaats van een generieke retry.\nBij elke crime poging: je neemt 5-15 HP schade en je Wanted Level stijgt 1-4 punten afhankelijk van succes of falen.\nArrestatiekans stijgt snel met Wanted Level: bij Wanted 5 is het 25%, bij Wanted 10 al 50%, bij Wanted 18+ maximaal 90%.\nBij arrestatie beland je in de gevangenis. Gevangenisstraf duurt maximaal(wanted level × 10) minuten, minimaal 5 minuten. Borg kost wanted level × €1.000. Ook als een crime eerst lijkt te slagen maar je daarna alsnog wordt gepakt, telt de uitkomst als arrestatie: gebruikte tools worden geconfisqueerd, gebruikte crime-wapens raak je kwijt en voertuigen kunnen ook in beslag worden genomen.\nSommige crimes vereisen een voertuig, tool of minimale rang. Mis je dit dan start de crime niet.\nXP die je verdient gebruik je om rang te stijgen, waardoor betere crimes en hogere beloningen vrijkomen.\nFBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen.\nAls landelijke politiedruk aan staat, is er per land een gedeelde heat-meter die misdaadslaging iets verlaagt en arrestkans verhoogt waar je bent. Reizen toont band-badges; zeldzame disrupt-acties (crew/rank) kunnen de straat tijdelijk afkoelen.';
+      'Crime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.\nRichtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.\nEr is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.\nCrimes met `required weapon` kijken naar beide gedragen wapenslots en gebruiken automatisch het beste wapen voor die crime. Zet de wapens in Inventaris; een wapen in de rugzak telt niet mee.\nJe actieve sportschool- en schietbaanbonussen (tot maximaal +8% elk) staan op het Misdaden-scherm; ze verhogen je slagingskans zoals de server dat berekent (train verder via het Trainingscircuit / sportschool + schietschool).\nHeb je binnen dezelfde UTC-dag in sportschool én schietbaan getraind, dan geeft de server een kleine extra slagingskans op crimes (+0,5%). Die combo staat op het Misdaden-scherm wanneer hij actief is.\nCrimes met voertuig-eis gebruiken je geselecteerde crime-voertuig uit Garage of Marina. Alleen een voertuig dat echt in je huidige land staat en niet onderweg of te koop is, telt mee.\nDrugs-eisen bij crimes worden weergegeven in gram en volgen dezelfde hoeveelheid als je drugsinventaris en opslag.\nAls een crime niet kan starten door ontbrekend voertuig, verkeerd wapen of missende ammo, hoort de foutmelding nu de echte oorzaak te tonen in plaats van een generieke retry.\nBij elke crime poging: je neemt 5-15 HP schade en je Wanted Level stijgt 1-4 punten afhankelijk van succes of falen.\nArrestatiekans stijgt snel met Wanted Level: bij Wanted 5 is het 25%, bij Wanted 10 al 50%, bij Wanted 18+ maximaal 90%.\nBij arrestatie beland je in de gevangenis. Gevangenisstraf duurt maximaal(wanted level × 10) minuten, minimaal 5 minuten. Borg kost wanted level × €1.000. Ook als een crime eerst lijkt te slagen maar je daarna alsnog wordt gepakt, telt de uitkomst als arrestatie: gebruikte tools worden geconfisqueerd, gebruikte crime-wapens raak je kwijt en voertuigen kunnen ook in beslag worden genomen.\nSommige crimes vereisen een voertuig, tool of minimale rang. Mis je dit dan start de crime niet.\nXP die je verdient gebruik je om rang te stijgen, waardoor betere crimes en hogere beloningen vrijkomen.\nFBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen.\nAls landelijke politiedruk aan staat, is er per land een gedeelde heat-meter die misdaadslaging iets verlaagt en arrestkans verhoogt waar je bent. Reizen toont band-badges; zeldzame disrupt-acties (crew/rank) kunnen de straat tijdelijk afkoelen.';
 
   @override
   String get helpTopicCrimesTips =>
@@ -15461,7 +15469,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot, een tweede wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nBij een stapel van meer dan één (munitie, materialen, gestapelde wapens of tools) kies je hoeveel je verplaatst: 1, alles, of een eigen aantal.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash. Magazijnen bewaren gereedschap. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nJe kunt twee wapens tegelijk dragen, bijvoorbeeld een handgun en een automatisch geweer. Alleen het crime-wapenslot gebruikt Crimes; een wapen op het tweede slot droppen maakt het geen crime-wapen.\nHet crime-wapenslot blijft gelijk met het Crimes-scherm. Alleen gedragen, bruikbare wapens tellen mee.\nRugzakcapaciteit telt tools, niet-gedragen wapens en meegenomen materialen. Gedragen wapens, munitie en het vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.';
+      'Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot, een tweede wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nBij een stapel van meer dan één (munitie, materialen, gestapelde wapens of tools) kies je hoeveel je verplaatst: 1, alles, of een eigen aantal.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash. Magazijnen bewaren gereedschap. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nJe kunt twee wapens tegelijk dragen, bijvoorbeeld een handgun en een automatisch geweer. Bij een crime kijkt de server naar beide gedragen slots en gebruikt automatisch het beste wapen voor die crime.\nAlleen gedragen, bruikbare wapens op slot 1 of 2 tellen mee voor crimes.\nRugzakcapaciteit telt tools, niet-gedragen wapens en meegenomen materialen. Gedragen wapens, munitie en het vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.';
 
   @override
   String get helpTopicInventoryTips =>

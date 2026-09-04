@@ -3664,6 +3664,18 @@
   "crimeWeaponEmptyInventoryHelp": "Achetez ou déplacez d’abord une arme utilisable dans votre inventaire transporté.",
   "crimeWeaponSelectHint": "Sélectionnez une arme pour les crimes",
   "crimeWeaponNoSelectionNote": "Sans sélection, les crimes basés sur les armes ne commenceront pas.",
+  "crimeWeaponSlotEmpty": "vide",
+  "crimeWeaponEquippedStatus": "Emplacement 1 : {slotOne}. Emplacement 2 : {slotTwo}.",
+  "@crimeWeaponEquippedStatus": {
+    "placeholders": {
+      "slotOne": {
+        "type": "String"
+      },
+      "slotTwo": {
+        "type": "String"
+      }
+    }
+  },
   "crimeWeaponSelectedStatus": "Sélectionné : {weaponLine}. Certains crimes nécessitent en plus un type d’arme correspondant.",
   "@crimeWeaponSelectedStatus": {
     "placeholders": {

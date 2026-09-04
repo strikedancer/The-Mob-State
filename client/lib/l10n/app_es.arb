@@ -3576,6 +3576,18 @@
   "crimeWeaponEmptyInventoryHelp": "Compra o mueve primero un arma utilizable a tu inventario portátil.",
   "crimeWeaponSelectHint": "Selecciona un arma para crímenes",
   "crimeWeaponNoSelectionNote": "Sin selección, los crímenes con arma no se pueden iniciar.",
+  "crimeWeaponSlotEmpty": "vacío",
+  "crimeWeaponEquippedStatus": "Ranura 1: {slotOne}. Ranura 2: {slotTwo}.",
+  "@crimeWeaponEquippedStatus": {
+    "placeholders": {
+      "slotOne": {
+        "type": "String"
+      },
+      "slotTwo": {
+        "type": "String"
+      }
+    }
+  },
   "crimeWeaponSelectedStatus": "Seleccionado: {weaponLine}. Algunos crímenes exigen además un tipo de arma compatible.",
   "@crimeWeaponSelectedStatus": {
     "placeholders": {

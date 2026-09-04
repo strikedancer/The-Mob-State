@@ -11,7 +11,10 @@ import { intensiveCareService } from './intensiveCareService';
 import toolService from './toolService';
 import drugService from './drugService';
 import { vehicleService } from './vehicleService';
-import { weaponSelectionService } from './weaponSelectionService';
+import {
+  weaponSelectionService,
+  type EquippedWeapon,
+} from './weaponSelectionService';
 import config from '../config';
 import { processCrimeAttempt, CrimeOutcome } from '../utils/crimeOutcomeEngine';
 import { getPlayerTool, degradeTool, resolveSelectedCrimeVehicle } from './vehicleToolService';
@@ -67,6 +70,99 @@ interface CrimeDefinition {
   requiredTools?: string[];
   requiredDrugs?: string[];
   minDrugQuantity?: number;
+}
+
+type WeaponPickReason = 'ok' | 'no_equipped' | 'no_ammo' | 'unsuitable';
+
+type WeaponPickResult = {
+  weapon: EquippedWeapon | null;
+  reason: WeaponPickReason;
+};
+
+function weaponMeetsCrimeRequirements(
+  crime: CrimeDefinition,
+  weaponId: string,
+): boolean {
+  const definition = weaponService.getWeaponDefinition(weaponId);
+  if (!definition) {
+    return false;
+  }
+
+  const suitableTypes = crime.suitableWeaponTypes || [];
+  const isTypeAllowed =
+    suitableTypes.length === 0 || suitableTypes.includes(definition.type);
+  const meetsDamage = (definition.damage ?? 0) >= (crime.minDamage || 0);
+  const meetsIntimidation =
+    (definition.intimidation ?? 0) >= (crime.minIntimidation || 0);
+  return isTypeAllowed && meetsDamage && meetsIntimidation;
+}
+
+function weaponHasRequiredAmmo(
+  weaponId: string,
+  ammoCounts: Map<string, number>,
+): boolean {
+  const definition = weaponService.getWeaponDefinition(weaponId);
+  if (!definition?.requiresAmmo || !definition.ammoType) {
+    return true;
+  }
+  const needed = definition.ammoPerCrime || 1;
+  return (ammoCounts.get(definition.ammoType) ?? 0) >= needed;
+}
+
+function scoreWeaponForCrime(crime: CrimeDefinition, weapon: EquippedWeapon): number {
+  const definition = weaponService.getWeaponDefinition(weapon.weaponId);
+  if (!definition) {
+    return 0;
+  }
+  const damageWeight = crime.minDamage ? 20 : 10;
+  const intimidationWeight = crime.minIntimidation ? 20 : 10;
+  return (
+    (definition.damage ?? 0) * damageWeight +
+    (definition.intimidation ?? 0) * intimidationWeight +
+    weapon.condition +
+    (weapon.condition > 80 ? 50 : 0)
+  );
+}
+
+async function clearWornSlotForUsedWeapon(
+  playerId: number,
+  slot?: EquippedWeapon['slot'],
+): Promise<void> {
+  if (slot === 'secondary') {
+    await weaponSelectionService.clearSelectedSecondaryWeapon(playerId);
+    return;
+  }
+  if (slot === 'crime') {
+    await weaponSelectionService.clearSelectedCrimeWeapon(playerId);
+  }
+}
+
+function pickBestEquippedWeaponForCrime(
+  crime: CrimeDefinition,
+  equipped: EquippedWeapon[],
+  ammoCounts: Map<string, number>,
+): WeaponPickResult {
+  const usable = equipped.filter((weapon) => weapon.condition > 0);
+  if (usable.length === 0) {
+    return { weapon: null, reason: 'no_equipped' };
+  }
+
+  const eligible = usable.filter(
+    (weapon) =>
+      weaponMeetsCrimeRequirements(crime, weapon.weaponId) &&
+      weaponHasRequiredAmmo(weapon.weaponId, ammoCounts),
+  );
+  if (eligible.length > 0) {
+    const best = [...eligible].sort(
+      (left, right) => scoreWeaponForCrime(crime, right) - scoreWeaponForCrime(crime, left),
+    )[0];
+    return { weapon: best, reason: 'ok' };
+  }
+
+  const statsMatch = usable.some((weapon) =>
+    weaponMeetsCrimeRequirements(crime, weapon.weaponId),
+  );
+  return { weapon: null, reason: statsMatch ? 'no_ammo' : 'unsuitable' };
 }
 
 export const crimeService = {
@@ -210,70 +306,43 @@ export const crimeService = {
       };
     }
 
-    // Check weapon requirements
+    // Check weapon requirements against both worn slots and pick the best fit.
     let weaponUsed = null;
     let pendingAmmoRequirement: { ammoType: string; amount: number } | null = null;
 
     if (crime.requiredWeapon) {
-      if (!selectedWeaponId) {
-        throw new Error('WEAPON_SELECTION_REQUIRED');
-      }
-
-      const selectedInventory = await prisma.weaponInventory.findUnique({
-        where: {
-          playerId_weaponId: {
-            playerId,
-            weaponId: selectedWeaponId,
-          },
-        },
-        select: {
-          weaponId: true,
-          condition: true,
-        },
+      const equippedWeapons = await weaponSelectionService.getEquippedWeapons(playerId);
+      const ammoInventory = await prisma.ammoInventory.findMany({
+        where: { playerId },
+        select: { ammoType: true, quantity: true },
       });
-
-      if (!selectedInventory) {
-        throw new Error('WEAPON_REQUIRED');
+      const ammoCounts = new Map<string, number>();
+      for (const row of ammoInventory) {
+        ammoCounts.set(row.ammoType, row.quantity);
       }
 
-      if (selectedInventory.condition <= 0) {
-        throw new Error('WEAPON_BROKEN');
-      }
-
-      const selectedDefinition = weaponService
-        .getAllWeapons()
-        .find((w) => w.id === selectedInventory.weaponId);
-
-      const suitableTypes = crime.suitableWeaponTypes || [];
-      const isTypeAllowed =
-        suitableTypes.length === 0 ||
-        (selectedDefinition && suitableTypes.includes(selectedDefinition.type));
-      const meetsDamage = (selectedDefinition?.damage ?? 0) >= (crime.minDamage || 0);
-      const meetsIntimidation =
-        (selectedDefinition?.intimidation ?? 0) >= (crime.minIntimidation || 0);
-
-      if (!isTypeAllowed || !meetsDamage || !meetsIntimidation) {
-        throw new Error(`WEAPON_NOT_SUITABLE:${suitableTypes.join(',')}`);
-      }
-
-      weaponUsed = selectedInventory;
-
-      // Check if weapon requires ammo
-      const weaponDef = weaponService.getAllWeapons().find(
-        (w) => w.id === weaponUsed.weaponId,
-      );
-
-      if (weaponDef?.requiresAmmo && weaponDef.ammoType) {
-        const ammoNeeded = weaponDef.ammoPerCrime || 1;
-
-        // Check if player has enough ammo
-        if (!(await ammoService.hasAmmo(playerId, weaponDef.ammoType, ammoNeeded))) {
+      const pick = pickBestEquippedWeaponForCrime(crime, equippedWeapons, ammoCounts);
+      if (!pick.weapon) {
+        if (pick.reason === 'no_ammo') {
           throw new Error('NO_AMMO');
         }
+        if (pick.reason === 'no_equipped') {
+          throw new Error('WEAPON_SELECTION_REQUIRED');
+        }
+        throw new Error(`WEAPON_NOT_SUITABLE:${(crime.suitableWeaponTypes || []).join(',')}`);
+      }
 
+      weaponUsed = {
+        weaponId: pick.weapon.weaponId,
+        condition: pick.weapon.condition,
+        slot: pick.weapon.slot,
+      };
+
+      const weaponDef = weaponService.getWeaponDefinition(weaponUsed.weaponId);
+      if (weaponDef?.requiresAmmo && weaponDef.ammoType) {
         pendingAmmoRequirement = {
           ammoType: weaponDef.ammoType,
-          amount: ammoNeeded,
+          amount: weaponDef.ammoPerCrime || 1,
         };
       }
     }
@@ -677,7 +746,7 @@ export const crimeService = {
     }
 
     if (result.clearCrimeWeaponSelection) {
-      await weaponSelectionService.clearSelectedCrimeWeapon(playerId);
+      await clearWornSlotForUsedWeapon(playerId, weaponUsed?.slot);
     }
 
     // Check if player needs ICU (health reached 0)
@@ -872,6 +941,10 @@ export const crimeService = {
           result.clearCrimeWeaponSelection ||
           lateArrestResult.clearCrimeWeaponSelection,
       };
+
+      if (lateArrestResult.clearCrimeWeaponSelection) {
+        await clearWornSlotForUsedWeapon(playerId, weaponUsed?.slot);
+      }
 
       success = false;
     }
@@ -1304,7 +1377,7 @@ export const crimeService = {
   ) {
     const [
       selectedVehicle,
-      selectedWeapon,
+      equippedWeapons,
       drugRows,
       carriedTools,
       storageTools,
@@ -1312,7 +1385,7 @@ export const crimeService = {
       criminalRecordCount,
     ] = await Promise.all([
       resolveSelectedCrimeVehicle(playerId, currentCountry),
-      weaponSelectionService.getSelectedCrimeWeapon(playerId),
+      weaponSelectionService.getEquippedWeapons(playerId),
       prisma.drugInventory.findMany({
         where: { playerId },
         select: { drugType: true, quantity: true },
@@ -1345,16 +1418,11 @@ export const crimeService = {
       ammoCounts.set(row.ammoType, row.quantity);
     }
 
-    const weaponDefinition = selectedWeapon
-      ? weaponService.getAllWeapons().find((w) => w.id === selectedWeapon.weaponId)
-      : undefined;
-
     return {
       playerRank,
       hasCriminalRecord: criminalRecordCount > 0,
       selectedVehicle,
-      selectedWeapon,
-      weaponDefinition,
+      equippedWeapons,
       ammoCounts,
       drugTotalsByType,
       carriedToolIds: new Set(carriedTools.map((t) => t.toolId)),
@@ -1362,8 +1430,20 @@ export const crimeService = {
     };
   },
 
+  pickBestEquippedWeaponForCrime(
+    crimeId: string,
+    equipped: EquippedWeapon[],
+    ammoCounts: Map<string, number>,
+  ): WeaponPickResult {
+    const crime = this.getCrimeDefinition(crimeId);
+    if (!crime) {
+      return { weapon: null, reason: 'unsuitable' };
+    }
+    return pickBestEquippedWeaponForCrime(crime, equipped, ammoCounts);
+  },
+
   /**
-   * Whether the player's selected crime weapon satisfies this crime's requirements.
+   * Whether either worn weapon slot can satisfy this crime.
    */
   isWeaponReadyForCrime(
     crimeId: string,
@@ -1374,32 +1454,13 @@ export const crimeService = {
       return true;
     }
 
-    if (!context.selectedWeapon || context.selectedWeapon.condition <= 0) {
-      return false;
-    }
-
-    const def = context.weaponDefinition;
-    const suitableTypes = crime.suitableWeaponTypes || [];
-    const isTypeAllowed =
-      suitableTypes.length === 0 ||
-      (def && suitableTypes.includes(def.type));
-    const meetsDamage = (def?.damage ?? 0) >= (crime.minDamage || 0);
-    const meetsIntimidation =
-      (def?.intimidation ?? 0) >= (crime.minIntimidation || 0);
-
-    if (!isTypeAllowed || !meetsDamage || !meetsIntimidation) {
-      return false;
-    }
-
-    if (def?.requiresAmmo && def.ammoType) {
-      const needed = def.ammoPerCrime || 1;
-      const have = context.ammoCounts.get(def.ammoType) ?? 0;
-      if (have < needed) {
-        return false;
-      }
-    }
-
-    return true;
+    return (
+      pickBestEquippedWeaponForCrime(
+        crime,
+        context.equippedWeapons,
+        context.ammoCounts,
+      ).reason === 'ok'
+    );
   },
 
   /**
@@ -1508,47 +1569,19 @@ export const crimeService = {
     }
 
     if (crime.requiredWeapon) {
-      if (!context.selectedWeapon || context.selectedWeapon.condition <= 0) {
+      const pick = pickBestEquippedWeaponForCrime(
+        crime,
+        context.equippedWeapons,
+        context.ammoCounts,
+      );
+      if (!pick.weapon) {
         return {
           canAttempt: false,
-          readinessBlocker: 'weapon',
+          readinessBlocker: pick.reason === 'no_ammo' ? 'weapon_ammo' : 'weapon',
           missingToolIds,
           toolsInStorageIds,
           toolsReady,
         };
-      }
-
-      const def = context.weaponDefinition;
-      const suitableTypes = crime.suitableWeaponTypes || [];
-      const isTypeAllowed =
-        suitableTypes.length === 0 ||
-        (def && suitableTypes.includes(def.type));
-      const meetsDamage = (def?.damage ?? 0) >= (crime.minDamage || 0);
-      const meetsIntimidation =
-        (def?.intimidation ?? 0) >= (crime.minIntimidation || 0);
-
-      if (!isTypeAllowed || !meetsDamage || !meetsIntimidation) {
-        return {
-          canAttempt: false,
-          readinessBlocker: 'weapon',
-          missingToolIds,
-          toolsInStorageIds,
-          toolsReady,
-        };
-      }
-
-      if (def?.requiresAmmo && def.ammoType) {
-        const needed = def.ammoPerCrime || 1;
-        const have = context.ammoCounts.get(def.ammoType) ?? 0;
-        if (have < needed) {
-          return {
-            canAttempt: false,
-            readinessBlocker: 'weapon_ammo',
-            missingToolIds,
-            toolsInStorageIds,
-            toolsReady,
-          };
-        }
       }
     }
 

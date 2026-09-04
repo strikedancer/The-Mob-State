@@ -10,7 +10,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 
 ## Paper-doll inventory
 - Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`), second-weapon slot (`GET/POST /weapons/secondary-weapon`) and worn vest (`GET /security/status`).
-- A player can wear two weapons at once (for example a handgun and a rifle). Only the crime-weapon slot is used by Crimes; the second slot is extra carry and does not become the crime weapon.
+- A player can wear two weapons at once (for example a handgun and a rifle). When a crime is committed, both worn slots are compared and the best eligible weapon for that crime is used automatically.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
 - Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo and materials.
 - Context grid (right on desktop, below on mobile): materials depot, or an owned property in the current country.
@@ -40,9 +40,9 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
-- Shared equipment choices that other modules depend on, such as the selected crime weapon, must stay visible and must remain in sync with the consuming gameplay screen.
-- The crime-weapon slot on the paper doll is the same selection Crimes uses. Dropping a weapon from backpack or house storage onto that slot sets `POST /weapons/crime-weapon`. Taking it off the slot (to backpack or house) clears the selection with `DELETE /weapons/crime-weapon`; Crimes then has no crime weapon. Moving a weapon only between backpack and storage does not change the crime-weapon selection.
-- The second-weapon slot uses `POST/DELETE /weapons/secondary-weapon` the same way and never sets the crime weapon. The same `weaponId` cannot occupy both body slots (moving it switches slot). Withdrawing a weapon from a house onto a body slot may send `equip: true` so a full backpack does not block wearing it.
+- Shared equipment choices that other modules depend on, such as worn weapon slots, must stay visible and must remain in sync with the consuming gameplay screen.
+- The two paper-doll weapon slots are the only weapons Crimes considers. Dropping a weapon from backpack or house storage onto a slot wears it. Taking it off (to backpack or house) unequips that slot. Moving a weapon only between backpack and storage does not change worn slots.
+- The second-weapon slot uses `POST/DELETE /weapons/secondary-weapon` the same way. Crimes compare both worn slots at attempt time and pick the best match; wearing a weapon on the second slot is enough for it to be considered. The same `weaponId` cannot occupy both body slots (moving it switches slot). Withdrawing a weapon from a house onto a body slot may send `equip: true` so a full backpack does not block wearing it.
 - Backpack upgrade visibility stays progression-clean: after buying a better backpack, lower or equal backpack tiers should no longer be shown as selectable shop options; only real upgrades remain visible.
 
 ## i18n and Messaging

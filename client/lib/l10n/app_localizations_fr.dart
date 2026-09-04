@@ -13003,6 +13003,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'Sans sélection, les crimes basés sur les armes ne commenceront pas.';
 
   @override
+  String get crimeWeaponSlotEmpty => 'vide';
+
+  @override
+  String crimeWeaponEquippedStatus(String slotOne, String slotTwo) {
+    return 'Emplacement 1 : $slotOne. Emplacement 2 : $slotTwo.';
+  }
+
+  @override
   String crimeWeaponSelectedStatus(String weaponLine) {
     return 'Sélectionné : $weaponLine. Certains crimes nécessitent en plus un type d’arme correspondant.';
   }

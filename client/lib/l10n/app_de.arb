@@ -3664,6 +3664,18 @@
   "crimeWeaponEmptyInventoryHelp": "Kaufen Sie zuerst eine verwendbare Waffe oder verschieben Sie sie in Ihr getragenes Inventar.",
   "crimeWeaponSelectHint": "Wählen Sie eine Waffe für Verbrechen",
   "crimeWeaponNoSelectionNote": "Ohne eine Selektion werden waffenbasierte Verbrechen nicht beginnen.",
+  "crimeWeaponSlotEmpty": "leer",
+  "crimeWeaponEquippedStatus": "Slot 1: {slotOne}. Slot 2: {slotTwo}.",
+  "@crimeWeaponEquippedStatus": {
+    "placeholders": {
+      "slotOne": {
+        "type": "String"
+      },
+      "slotTwo": {
+        "type": "String"
+      }
+    }
+  },
   "crimeWeaponSelectedStatus": "Ausgewählt: {weaponLine}. Für einige Verbrechen ist darüber hinaus noch ein passender Waffentyp erforderlich.",
   "@crimeWeaponSelectedStatus": {
     "placeholders": {
