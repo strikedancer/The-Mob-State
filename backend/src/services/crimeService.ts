@@ -32,6 +32,11 @@ import {
   scaleCrimeJailMinutes,
   crimeFailWantedIncrease,
 } from '../utils/crimeJailScaling';
+import {
+  applyCrimeHealthMitigation,
+  bodyguardDefense,
+  effectiveArmorRating,
+} from './securityEconomy';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 /** Minimum rank to steal cars — keep in sync with vehicleService.stealVehicle. */
@@ -536,11 +541,28 @@ export const crimeService = {
     }
 
     const requiredToolsForCrime = toolService.getRequiredToolsForCrime(crimeId);
+    const security = await prisma.playerSecurity.findUnique({
+      where: { playerId },
+    });
+    const wornArmorRating = effectiveArmorRating(
+      Number(security?.armor || 0),
+      Number(security?.armorCondition ?? 100)
+    );
+    const wornGuardDefense = bodyguardDefense({
+      street: Number(security?.bodyguardsStreet || 0),
+      standard: Number(security?.bodyguards || 0),
+      elite: Number(security?.bodyguardsElite || 0),
+    });
 
     // Execute transaction
     let result = await prisma.$transaction(async (tx) => {
-      // Calculate health damage (5-15 HP per crime)
-      const healthDamage = 5 + Math.floor(Math.random() * 11); // 5-15
+      // Calculate health damage (5-15 HP per crime), reduced by worn vest and bodyguards.
+      const rawHealthDamage = 5 + Math.floor(Math.random() * 11);
+      const healthDamage = applyCrimeHealthMitigation(
+        rawHealthDamage,
+        wornArmorRating,
+        wornGuardDefense
+      );
       const newHealth = Math.max(0, player.health - healthDamage);
 
       // Track vehicle consequences

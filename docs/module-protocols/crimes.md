@@ -16,6 +16,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
+- Each crime attempt still costs HP (base 5–15). A worn vest and hired bodyguards reduce that hit via `applyCrimeHealthMitigation` (cap 55%). They do not change success chance, wanted or jail.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?

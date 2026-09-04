@@ -98,3 +98,35 @@ export function armorTradeInCredit(price: number, condition: number): number {
 export function armorNetPrice(newPrice: number, tradeInCredit: number): number {
   return Math.max(0, Math.floor(Number(newPrice || 0)) - Math.max(0, Math.floor(Number(tradeInCredit || 0))));
 }
+
+export const CRIME_HEALTH_MITIGATION_CAP = 0.55;
+
+export function effectiveArmorRating(armor: number, condition: number): number {
+  const rating = Math.max(0, Math.floor(Number(armor || 0)));
+  const cond = Math.max(0, Math.min(100, Math.floor(Number(condition ?? 100))));
+  if (rating <= 0) {
+    return 0;
+  }
+  return Math.max(0, Math.round(rating * (cond / 100)));
+}
+
+export function crimeHealthMitigationFactor(
+  armorRating: number,
+  guardDefense: number
+): number {
+  const score = Math.max(0, Number(armorRating || 0)) + Math.max(0, Number(guardDefense || 0)) * 0.35;
+  return Math.min(CRIME_HEALTH_MITIGATION_CAP, score / 400);
+}
+
+export function applyCrimeHealthMitigation(
+  rawDamage: number,
+  armorRating: number,
+  guardDefense: number
+): number {
+  const raw = Math.max(0, Math.floor(Number(rawDamage || 0)));
+  if (raw <= 0) {
+    return 0;
+  }
+  const factor = 1 - crimeHealthMitigationFactor(armorRating, guardDefense);
+  return Math.max(1, Math.round(raw * factor));
+}

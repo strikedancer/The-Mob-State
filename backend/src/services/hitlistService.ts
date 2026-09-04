@@ -945,13 +945,13 @@ function listShopArmor(): SecurityArmorDefinition[] {
   return loadArmorDefinitions().filter((item) => item.shop !== false);
 }
 
-function getCombatArmor(
+function getCombatArmorDetail(
   security?: Pick<PlayerSecurityState, 'armor' | 'armorCondition' | 'armorType'> | null,
   options?: { weaponType?: string; ammoType?: string },
-): number {
+): { value: number; factor: number; match: 'full' | 'partial' } {
   const base = getEffectiveArmor(security);
   if (!security?.armorType || base <= 0) {
-    return 0;
+    return { value: 0, factor: 0, match: 'partial' };
   }
 
   const definition = loadArmorDefinitions().find((item) => item.id === security.armorType);
@@ -973,7 +973,18 @@ function getCombatArmor(
     factor = resistsBallistic ? 1 : 0.35;
   }
 
-  return Math.max(0, Math.round(base * factor));
+  return {
+    value: Math.max(0, Math.round(base * factor)),
+    factor,
+    match: factor >= 1 ? 'full' : 'partial',
+  };
+}
+
+function getCombatArmor(
+  security?: Pick<PlayerSecurityState, 'armor' | 'armorCondition' | 'armorType'> | null,
+  options?: { weaponType?: string; ammoType?: string },
+): number {
+  return getCombatArmorDetail(security, options).value;
 }
 
 function calculateArmorConditionLoss(attackerPower: number): number {
@@ -1438,19 +1449,32 @@ export async function attemptHit(
     ? weaponService.getWeaponDefinition(String(targetSelectedWeapon.weaponId))
     : undefined;
   const targetWeaponDamage = targetWeapon?.damage || 0;
+  const targetRoster = rosterFromSecurity(targetSecurity);
+  const armorCombat = getCombatArmorDetail(targetSecurity, {
+    weaponType: weaponData.type,
+    ammoType: weaponData.ammoType,
+  });
+  const guardsDefense = bodyguardDefense(targetRoster);
   const targetDefense =
-    (getCombatArmor(targetSecurity, {
-      weaponType: weaponData.type,
-      ammoType: weaponData.ammoType,
-    }) +
-      bodyguardDefense(rosterFromSecurity(targetSecurity))) *
-    (1 + targetBoosts.hitDefensePct);
+    (armorCombat.value + guardsDefense) * (1 + targetBoosts.hitDefensePct);
   const targetPower = targetWeaponDamage * 5 + targetDefense;
   const armorConditionLoss = calculateArmorConditionLoss(attackerPower);
 
   const rawWinChance = attackerPower / Math.max(1, attackerPower + targetPower);
   const winChance = Math.min(0.95, Math.max(0.05, rawWinChance));
   const attackerWins = Math.random() < winChance;
+  const combat = {
+    attackerPower: Math.round(attackerPower),
+    targetDefense: Math.round(targetDefense),
+    armorDefense: armorCombat.value,
+    bodyguardDefense: guardsDefense,
+    armorType: targetSecurity?.armorType ?? null,
+    armorCondition: targetSecurity
+      ? getArmorConditionValue(targetSecurity.armorCondition)
+      : 100,
+    vestMatch: armorCombat.match,
+    winChancePercent: Math.round(winChance * 100),
+  };
 
   const bounty =
     hit.counterBounty && hit.counterBounty > hit.bounty ? hit.counterBounty : hit.bounty;
@@ -1540,6 +1564,7 @@ export async function attemptHit(
       winner: playerId,
       bountyPaid: bounty,
       loot: lootSummary,
+      combat,
       message: `Hit completed! ${playerId} won €${bounty}`,
     };
   }
@@ -1569,7 +1594,9 @@ export async function attemptHit(
 
   return {
     success: false,
+    defended: true,
     winner: hit.targetId,
+    combat,
     message: 'Hit failed! Target defended successfully',
   };
 }

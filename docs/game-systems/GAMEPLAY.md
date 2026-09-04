@@ -850,6 +850,11 @@ Bob: â‚¬300K counter-hit
 - **Repareren**: 50% van de vestprijs × ontbrekende conditie.
 - **Inruil**: bij aankoop van een ander vest 40% van de oude prijs × huidige conditie, geen cash-terugbetaling.
 
+### Waar vest en lijfwachten meetellen
+- **Moordlijst**: type-match vest + lijfwacht-defense in de win-kans. Na de poging zie je vest/lijfwachten en je kans.
+- **Crimes**: elke poging doet 5–15 HP; vest en lijfwachten kappen dat tot max ~55% minder. Geen extra slagingskans.
+- **Niet**: territorium, crew-oorlog, nightclub of rosse buurt — die hebben eigen beveiliging.
+
 ### Protection Modes
 
 #### Safe House

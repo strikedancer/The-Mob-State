@@ -306,6 +306,8 @@ targetPower = weaponDefense + armorDefense;
 winChance = attackerPower / (attackerPower + targetPower);
 roll = random(0-1);
 attackerWins = roll < winChance;
+// Attempt responses include `combat` (armorDefense, bodyguardDefense, winChancePercent, vestMatch).
+// Failed hits that resolved combat set `defended: true`.
 ```
 
 ### Atomic Transactions

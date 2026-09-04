@@ -75,6 +75,15 @@ String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
   return l10n.hitError(fallback);
 }
 
+String? _hitCombatLine(dynamic combat, AppLocalizations l10n) {
+  if (combat is! Map) return null;
+  final armor = (combat['armorDefense'] as num?)?.toInt() ?? 0;
+  final guards = (combat['bodyguardDefense'] as num?)?.toInt() ?? 0;
+  final chance = (combat['winChancePercent'] as num?)?.toInt();
+  if (chance == null) return null;
+  return l10n.hitCombatBreakdown('$armor', '$guards', '$chance');
+}
+
 class HitlistScreen extends StatefulWidget {
   final VoidCallback? onOpenSecurity;
 
@@ -841,8 +850,25 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
               itemsAwarded.toString(),
             );
           }
+          final combatLine = _hitCombatLine(data['combat'], l10n);
+          if (combatLine != null) {
+            msg = '$msg\n$combatLine';
+          }
           showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
         }
+        widget.onComplete();
+      } else if (data['defended'] == true && mounted) {
+        final combatLine = _hitCombatLine(data['combat'], l10n);
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              combatLine == null
+                  ? l10n.hitDefendedBySecurity
+                  : '${l10n.hitDefendedBySecurity}\n$combatLine',
+            ),
+          ),
+        );
         widget.onComplete();
       } else if (mounted) {
         final errorMsg = _resolveHitErrorMessage(data, l10n);
