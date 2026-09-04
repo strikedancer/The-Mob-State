@@ -852,6 +852,7 @@ Bob: â‚¬300K counter-hit
 
 ### Waar vest en lijfwachten meetellen
 - **Moordlijst**: type-match vest + lijfwacht-defense in de win-kans. Na de poging zie je vest/lijfwachten en je kans.
+- **Detective-onderzoek**: lijfwachten vertroebelen of blokkeren het rapport (Snel is zwak, Langzaam prikt door). Na een moord verlagen lijfwachten van de dader de kans dat de moordzaak hen noemt.
 - **Crimes**: elke poging doet 5–15 HP; vest en lijfwachten kappen dat tot max ~55% minder. Geen extra slagingskans.
 - **Niet**: territorium, crew-oorlog, nightclub of rosse buurt — die hebben eigen beveiliging.
 

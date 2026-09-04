@@ -27,6 +27,9 @@ import {
   bodyguardDailyCost,
   bodyguardDefense,
   bodyguardTotal,
+  investigationClarity,
+  murderCaseSolveChance,
+  type InvestigationClarity,
   canHireBodyguards,
   emptyBodyguardRoster,
   isBodyguardTypeId,
@@ -1816,31 +1819,67 @@ export async function investigateHit(
 function buildInvestigationMessage(
   language: 'nl' | 'en',
   investigation: InvestigationQueueRow,
-  targetUsername: string
+  targetUsername: string,
+  clarity: InvestigationClarity,
+  armorWorn: boolean
 ): string {
   const validUntil = investigation.reportValidUntil?.toISOString() ?? '';
   const country = investigation.reportCountry ?? (language === 'nl' ? 'Onbekend' : 'Unknown');
   const bodyguards = investigation.reportBodyguards ?? 0;
   const armor = investigation.reportArmor ?? 0;
   const tierConfig = getTierConfig(investigation.tier);
+  const isNl = language === 'nl';
 
-  if (language === 'nl') {
-    return [
-      `Detective Bureau rapport gereed (${tierConfig.nlLabel}).`,
-      `Doelwit: ${targetUsername}`,
-      `Locatie: ${country}`,
-      `Bodyguards: ${bodyguards} | Armor: ${armor}`,
-      `Geldig tot: ${validUntil}`,
-    ].join('\n');
+  const lines = [
+    isNl
+      ? `Detective Bureau rapport gereed (${tierConfig.nlLabel}).`
+      : `Detective Bureau report ready (${tierConfig.enLabel}).`,
+    isNl ? `Doelwit: ${targetUsername}` : `Target: ${targetUsername}`,
+  ];
+
+  if (clarity === 'blocked') {
+    lines.push(
+      isNl
+        ? 'Locatie: afgeschermd — lijfwachten hielden de detective op afstand'
+        : 'Location: shielded — bodyguards kept the detective at bay'
+    );
+    lines.push(
+      isNl
+        ? 'Beveiliging: zwaar bewaakt. Exacte sterkte en vest onbekend.'
+        : 'Security: heavily guarded. Exact strength and vest unknown.'
+    );
+  } else if (clarity === 'partial') {
+    lines.push(isNl ? `Locatie: ${country}` : `Location: ${country}`);
+    lines.push(
+      isNl
+        ? 'Lijfwachten: aanwezig, aantal onzeker'
+        : 'Bodyguards: present, count uncertain'
+    );
+    lines.push(
+      armorWorn
+        ? isNl
+          ? 'Vest: gedragen, sterkte onzeker'
+          : 'Vest: worn, strength uncertain'
+        : isNl
+          ? 'Vest: niet gezien'
+          : 'Vest: not seen'
+    );
+    lines.push(
+      isNl
+        ? 'Lijfwachten hebben het rapport deels vertroebeld. Dieper onderzoek ziet meer.'
+        : 'Bodyguards partly clouded this report. A deeper investigation sees more.'
+    );
+  } else {
+    lines.push(isNl ? `Locatie: ${country}` : `Location: ${country}`);
+    lines.push(
+      isNl
+        ? `Lijfwachten: ${bodyguards} · Vest: ${armor}`
+        : `Bodyguards: ${bodyguards} · Vest: ${armor}`
+    );
   }
 
-  return [
-    `Detective Bureau report ready (${tierConfig.enLabel}).`,
-    `Target: ${targetUsername}`,
-    `Location: ${country}`,
-    `Bodyguards: ${bodyguards} | Armor: ${armor}`,
-    `Valid until: ${validUntil}`,
-  ].join('\n');
+  lines.push(isNl ? `Geldig tot: ${validUntil}` : `Valid until: ${validUntil}`);
+  return lines.join('\n');
 }
 
 export async function processPendingInvestigations(limit = 50): Promise<number> {
@@ -1923,17 +1962,32 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
         continue;
       }
 
+      const roster = rosterFromSecurity(security);
+      const guardDefense = bodyguardDefense(roster);
+      const armorRating = getEffectiveArmor(security);
+      const clarity = investigationClarity(guardDefense, row.tier);
+      const reportedCountry =
+        clarity === 'blocked' ? null : target.currentCountry;
+      const reportedGuards = clarity === 'full' ? bodyguardTotal(roster) : null;
+      const reportedArmor = clarity === 'full' ? armorRating : null;
+
       const updatedRow: InvestigationQueueRow = {
         ...row,
         completedAt: now,
         reportValidUntil: validUntil,
-        reportCountry: target.currentCountry,
-        reportBodyguards: bodyguardTotal(rosterFromSecurity(security)),
-        reportArmor: getEffectiveArmor(security),
+        reportCountry: reportedCountry,
+        reportBodyguards: reportedGuards,
+        reportArmor: reportedArmor,
         status: 'completed',
       };
 
-      const reportMessage = buildInvestigationMessage(language, updatedRow, target.username);
+      const reportMessage = buildInvestigationMessage(
+        language,
+        updatedRow,
+        target.username,
+        clarity,
+        armorRating > 0
+      );
 
       await directMessageService.sendSystemMessage(row.playerId, reportMessage, {
         senderName: 'Detective Bureau',
@@ -1945,9 +1999,9 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
         SET status = 'completed',
             completedAt = ${now},
             reportValidUntil = ${validUntil},
-            reportCountry = ${target.currentCountry},
-            reportBodyguards = ${bodyguardTotal(rosterFromSecurity(security))},
-            reportArmor = ${getEffectiveArmor(security)}
+            reportCountry = ${reportedCountry},
+            reportBodyguards = ${reportedGuards},
+            reportArmor = ${reportedArmor}
         WHERE id = ${row.id}
       `;
 
@@ -2093,7 +2147,12 @@ export async function processPendingMurderCaseInvestigations(limit = 100): Promi
         continue;
       }
 
-      const solved = Math.random() < MURDER_CASE_SOLVE_CHANCE;
+      const killerSecurity = details.killerId
+        ? await settleBodyguardUpkeep(prisma, details.killerId)
+        : null;
+      const killerGuardDefense = bodyguardDefense(rosterFromSecurity(killerSecurity));
+      const solved =
+        Math.random() < murderCaseSolveChance(MURDER_CASE_SOLVE_CHANCE, killerGuardDefense);
       const language: 'nl' | 'en' = activity.player?.preferredLanguage
         ?.toLowerCase()
         .startsWith('nl')

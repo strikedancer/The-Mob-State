@@ -130,3 +130,33 @@ export function applyCrimeHealthMitigation(
   const factor = 1 - crimeHealthMitigationFactor(armorRating, guardDefense);
   return Math.max(1, Math.round(raw * factor));
 }
+
+export type InvestigationTierId = 'quick' | 'standard' | 'deep';
+export type InvestigationClarity = 'full' | 'partial' | 'blocked';
+
+export const INVESTIGATION_TIER_PIERCE: Record<InvestigationTierId, number> = {
+  quick: 40,
+  standard: 90,
+  deep: 160,
+};
+
+export function investigationClarity(
+  guardDefense: number,
+  tier: InvestigationTierId
+): InvestigationClarity {
+  const pierce = INVESTIGATION_TIER_PIERCE[tier] ?? INVESTIGATION_TIER_PIERCE.standard;
+  const pressure = Math.max(0, Number(guardDefense || 0));
+  if (pressure <= pierce) {
+    return 'full';
+  }
+  if (pressure <= pierce + 50) {
+    return 'partial';
+  }
+  return 'blocked';
+}
+
+export function murderCaseSolveChance(baseChance: number, killerGuardDefense: number): number {
+  const base = Math.max(0, Math.min(1, Number(baseChance || 0)));
+  const penalty = Math.min(0.35, Math.max(0, Number(killerGuardDefense || 0)) / 400);
+  return Math.max(0.2, base - penalty);
+}

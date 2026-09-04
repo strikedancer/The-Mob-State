@@ -238,6 +238,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - ✅ No duplicate detective on same target
 - ✅ Target exists
 - ✅ Report arrives asynchronously (not instant) and expires after 3 hours post-delivery
+- ✅ Target bodyguards can cloud or block the report (Quick is weakest vs guards, Slow strongest). Killer bodyguards lower murder-case identify chance.
 
 ### Attack Attempt
 - ✅ Attacker and target in same country
