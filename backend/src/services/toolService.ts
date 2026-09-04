@@ -30,6 +30,15 @@ const PROPERTY_STORAGE_RULES: Record<string, string[]> = {
   safehouse: ['weapons', 'cash', 'ammo', 'armor'],
 };
 
+function toolConditionFlags(durability: number, maxDurability?: number) {
+  const max = Math.max(1, maxDurability ?? 100);
+  const isConsumable = max <= 1;
+  return {
+    isBroken: durability <= 0,
+    needsRepair: !isConsumable && (durability / max) * 100 < 50,
+  };
+}
+
 class ToolService {
   private tools: ToolDefinition[] = [];
 
@@ -125,8 +134,7 @@ class ToolService {
       return {
         ...definition,  // Tool definition first
         ...item,         // Player tool data (keeps numeric id)
-        isBroken: item.durability <= 0,
-        needsRepair: item.durability < 50,
+        ...toolConditionFlags(item.durability, definition?.maxDurability),
       };
     });
   }
@@ -454,8 +462,7 @@ class ToolService {
       return {
         ...definition,
         ...item,
-        isBroken: item.durability <= 0,
-        needsRepair: item.durability < 50,
+        ...toolConditionFlags(item.durability, definition?.maxDurability),
       };
     });
   }
@@ -477,8 +484,7 @@ class ToolService {
       return {
         ...definition,
         ...item,
-        isBroken: item.durability <= 0,
-        needsRepair: item.durability < 50,
+        ...toolConditionFlags(item.durability, definition?.maxDurability),
       };
     });
   }

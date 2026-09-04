@@ -40,8 +40,7 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
     final durabilityPercent = widget.tool.durabilityPercent;
     final durabilityColor = _getDurabilityColor(durabilityPercent);
     final repairCost = ((widget.tool.basePrice ?? 0) * 0.5).floor();
-    final needsRepair =
-        widget.tool.needsRepair == true || widget.tool.isBroken == true;
+    final needsRepair = widget.tool.canRepair;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -188,7 +187,7 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
                           ),
                         ),
                       // Needs repair indicator
-                      if (widget.tool.needsRepair == true &&
+                      if (widget.tool.canRepair &&
                           widget.tool.isBroken != true)
                         Positioned(
                           top: 8,

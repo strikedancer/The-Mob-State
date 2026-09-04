@@ -345,7 +345,7 @@ class _ToolsScreenState extends State<ToolsScreen> {
     final name = localizedToolName(l10n, tool.toolId, tool.name);
     final pct = tool.durabilityPercent.round();
     final repairCost = ((tool.basePrice ?? 0) * 0.5).floor();
-    final needsRepair = tool.needsRepair == true || tool.isBroken == true;
+    final needsRepair = tool.canRepair;
     return MarketCompactRow(
       leading: _toolThumb(tool.toolId),
       info: Column(

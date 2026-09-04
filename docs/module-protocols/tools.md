@@ -6,6 +6,7 @@ Tool purchase, tool inventory, crime dependencies and storage constraints.
 ## Primary Frontend Entry
 - `client/lib/screens/black_market_screen.dart` — shop **Tools** (`BlackMarketScreen.tabTools`)
 - `client/lib/screens/tools_screen.dart` — embedded shop body (`embedded: true`)
+- `needsRepair` is percentage-based (`durability / maxDurability < 50%`). Single-use tools (`maxDurability <= 1`, e.g. jerry can) never show repair.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

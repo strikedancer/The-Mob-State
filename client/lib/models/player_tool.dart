@@ -43,4 +43,9 @@ class PlayerTool {
   double get durabilityPercent => maxDurability != null && maxDurability! > 0
       ? (durability / maxDurability!) * 100
       : 0;
+
+  bool get isConsumable => (maxDurability ?? 100) <= 1;
+
+  bool get canRepair =>
+      !isConsumable && durabilityPercent < 50;
 }
