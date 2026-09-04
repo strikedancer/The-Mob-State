@@ -7900,6 +7900,110 @@ class AppLocalizationsPl extends AppLocalizations {
   String get eachGivesDefense => 'Każdy daje +10 obrony';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense obrona';
+  }
+
+  @override
+  String get repairArmor => 'Naprawa';
+
+  @override
+  String get armorRepaired => 'Kamizelka naprawiona';
+
+  @override
+  String get couldNotRepairArmor => 'Nie udało się naprawić kamizelki';
+
+  @override
+  String get couldNotDismissBodyguard => 'Nie można zwolnić ochroniarza';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Wymiana $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'Zakup kolejnej kamizelki przyznaje część aktualnej kamizelki, w zależności od stanu. Naprawa zużytej kamizelki jest tańsza niż jej wymiana.';
+
+  @override
+  String get upgradeArmor => 'Aktualizacja';
+
+  @override
+  String get vestWeakVsStab => 'Słaby kontra dźgnięcie';
+
+  @override
+  String get vestWeakVsBullets => 'Słaby kontra kule';
+
+  @override
+  String get vestWeakVsAp => 'Słaby przeciwko AP';
+
+  @override
+  String get bodyguardStreet => 'Mięsień uliczny';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Tanie dodatkowe oczy. Niższa obrona, niższa płaca dzienna.';
+
+  @override
+  String get bodyguardStandard => 'Goryl';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Standardowa ochrona. +10 obrony i 10 000 euro dziennej pensji.';
+
+  @override
+  String get bodyguardElite => 'Elitarny ochroniarz';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Utwardzony bliżej. Wyższa obrona i wyższa płaca dzienna.';
+
+  @override
+  String get bodyguardDismiss => 'Odrzucać';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap ochroniarze';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Osiągnięto limit ochroniarzy';
+
+  @override
+  String bodyguardHired(String name) {
+    return 'Zatrudniony $name';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return 'Odrzucony $name';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'Stan $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'Nie masz na sobie kamizelki';
+
+  @override
+  String get securityErrorArmorNotDamaged =>
+      'Ta kamizelka jest już w pełnym stanie';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'Masz już maksymalną liczbę ochroniarzy';
+
+  @override
+  String get securityErrorInvalidBodyguardType =>
+      'Nieprawidłowy typ ochroniarza';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'Nie masz aż tylu ochroniarzy tego typu';
+
+  @override
   String get lightArmor => 'Lekka zbroja';
 
   @override
@@ -8008,7 +8112,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'Możesz nosić tylko 1 zbroję na raz. Nowa zbroja zawsze zastępuje obecną.';
+      'Można nosić tylko 1 kamizelkę na raz. Napraw uszkodzoną kamizelkę lub kup inną i uzyskaj wymianę kamizelki na podstawie jej stanu.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15814,11 +15918,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Kamizelki kupujesz w Ochronie: Kamizelka przeciwnożowa (€7.500) → Kamizelka kuloodporna (€50.000) → Kamizelka kuloodporna premium (€125.000) → Kamizelka płyt AP (€280.000). Kalibry 5.56, 7.62 i .308 przebijają zwykłe kamizelki, chyba że nosisz kamizelkę płyt AP.\nMożesz nosić tylko 1 zbroję na raz; jeśli kupisz inną kamizelkę, natychmiast zastąpi ona twoją obecną zbroję. \nKażda klasa pancerza zmniejsza otrzymywane obrażenia przy ataku o ustalony procent. Lepszy pancerz = większe przeżycie w PvP i rajdach. \nPancerz ulega uszkodzeniu po ataku i traci skuteczność. Im niższy stan, tym mniejszą ochronę zapewnia twój obecny pancerz. \nPrzy 100% obrażeń twój pancerz ulega zniszczeniu i całkowicie znika; aby odzyskać ochronę, musisz kupić nowy zestaw. \nOchroniarze dają każdemu ochroniarzowi +10 do obrony, ale co 24 godziny pobierają 10 000 euro dziennej pensji za ochroniarza. \nJeśli nie jesteś w stanie zapłacić dziennej pensji ochroniarza, wszyscy oni odejdą, a ty natychmiast stracisz ich ochronę. \nBezpieczeństwo instalacji (Nightclub, apteka itp.) zmniejsza ryzyko nalotu i incydentu w tej konkretnej lokalizacji. \nIm wyższy poziom Poszukiwanego, tym częściej jesteś atakowany lub napadany. Lepsze bezpieczeństwo rekompensuje to bezpośrednio. \nCzłonkowie załogi mogą dzielić role zabezpieczeń, aby jednocześnie obsługiwać wiele lokalizacji.';
+      'Kup kamizelki na Czarnym rynku → Bezpieczeństwo: kamizelka pchająca (7500 euro) → kamizelka kuloodporna (50 000 euro) → kamizelka kuloodporna premium (125 000 euro) → kamizelka płytowa AP (280 000 euro). Karabiny kalibru 5,56, 7,62 i .308 przebijają zwykłe kamizelki, chyba że nosisz kamizelkę płytową AP. \nMożna nosić tylko 1 kamizelkę na raz. Uszkodzoną kamizelkę można naprawić za połowę wartości utraconego stanu. Zakup kolejnej kamizelki zastępuje obecną i zapewnia zwrot 40% ceny starej kamizelki, skalowanej według stanu. \nKażdy typ kamizelki zmniejsza otrzymywane obrażenia, gdy odpowiada atakowi: kamizelki kłujące zatrzymują noże, kamizelki kuloodporne zatrzymują zwykłe kule, a kamizelka płytowa AP zatrzymuje także pociski przeciwpancerne. Niedopasowanie utrzymuje tylko ułamek obrony kamizelki. \nPancerz ulega uszkodzeniu po ataku i traci skuteczność. Im niższy stan, tym mniejszą ochronę zapewnia twój obecny pancerz. \nPrzy stanie 0% twój pancerz ulega zniszczeniu i całkowicie znika; aby odzyskać ochronę, musisz kupić nowy zestaw. \nOchroniarzy może być łącznie maksymalnie 10 w trzech klasach: street muscle (+8 obrony, 6000 euro wynajmu, 4000 euro dziennie), standard (+10, 10 000 euro wynajmu, 10 000 euro dziennie) i elita (+22, 35 000 euro wynajmu, 18 000 euro dziennie). Możesz je odrzucić w dowolnym momencie. \nJeśli nie jesteś w stanie zapłacić łącznej stawki dziennej, wszyscy ochroniarze odchodzą, a Ty natychmiast tracisz ich ochronę. \nBezpieczeństwo instalacji (Nightclub, apteka itp.) zmniejsza ryzyko nalotu i incydentu w tej konkretnej lokalizacji. \nIm wyższy poziom Poszukiwanego, tym częściej jesteś atakowany lub napadany. Lepsze bezpieczeństwo rekompensuje to bezpośrednio. \nCzłonkowie załogi mogą dzielić role zabezpieczeń, aby jednocześnie obsługiwać wiele lokalizacji.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Zawsze noś co najmniej kamizelkę przeciwnożową, gdy poziom poszukiwania wynosi 2 lub więcej: oszczędności na rachunkach szpitalnych szybko rekompensują cenę zakupu.\nSprawdzaj stan swojego pancerza po każdym ataku: uszkodzona kamizelka zapewnia tylko część swojej pierwotnej ochrony. \nZatrzymaj tylko tylu ochroniarzy, na ilu cię jutro będzie stać; duże zespoły szybko stają się kosztowne w codziennym utrzymaniu.\nAmunicja karabinowa (5.56, 7.62, .308) przebija zwykłe kamizelki; kup kamizelkę płyt AP, jeśli te kalibry są używane przeciwko tobie.';
+      'Zawsze noś przynajmniej kamizelkę, gdy poziom poszukiwanego wynosi 2 lub więcej: oszczędności na rachunkach szpitalnych szybko rekompensują cenę zakupu. \nNapraw uszkodzoną kamizelkę zamiast kupować ponownie tę samą; sprawdzaj stan po każdym ataku. \nAmunicja karabinowa (5,56, 7,62, 0,308) przebija zwykłe kamizelki; kup kamizelkę płytową AP, jeśli te kalibry obrócą się przeciwko tobie. \nZatrzymaj tylko tylu ochroniarzy, na ilu cię jutro będzie stać; Elitarni strażnicy uderzają najbardziej, ale ich dzienna płaca szybko rośnie.';
 
   @override
   String get helpTopicHospitalCategory => 'Powrót do zdrowia';

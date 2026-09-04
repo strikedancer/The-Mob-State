@@ -7943,6 +7943,110 @@ class AppLocalizationsDe extends AppLocalizations {
   String get eachGivesDefense => 'Jeder gibt +10 Verteidigung';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense Verteidigung';
+  }
+
+  @override
+  String get repairArmor => 'Reparieren';
+
+  @override
+  String get armorRepaired => 'Weste repariert';
+
+  @override
+  String get couldNotRepairArmor => 'Weste konnte nicht repariert werden';
+
+  @override
+  String get couldNotDismissBodyguard =>
+      'Leibwächter konnte nicht entlassen werden';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Inzahlungnahme $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'Beim Kauf einer weiteren Weste erhalten Sie je nach Zustand einen Teil Ihrer aktuellen Weste gutgeschrieben. Die Reparatur einer abgenutzten Weste ist günstiger als der Austausch.';
+
+  @override
+  String get upgradeArmor => 'Upgrade';
+
+  @override
+  String get vestWeakVsStab => 'Schwach gegen Stich';
+
+  @override
+  String get vestWeakVsBullets => 'Schwach gegen Kugeln';
+
+  @override
+  String get vestWeakVsAp => 'Schwach gegen AP';
+
+  @override
+  String get bodyguardStreet => 'Straßenmuskel';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Günstige zusätzliche Augen. Geringere Verteidigung, geringerer Tageslohn.';
+
+  @override
+  String get bodyguardStandard => 'Leibwächterin';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Standardschutz. +10 Verteidigung und 10.000 € Tageslohn.';
+
+  @override
+  String get bodyguardElite => 'Elite-Leibwächter';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Näher verhärtet. Höhere Verteidigung und ein höherer Tageslohn.';
+
+  @override
+  String get bodyguardDismiss => 'Zurückweisen';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap Leibwächter';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Bodyguard-Limit erreicht';
+
+  @override
+  String bodyguardHired(String name) {
+    return 'Angestellt $name';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return 'Entlassen $name';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'Zustand $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'Du trägst keine Weste';
+
+  @override
+  String get securityErrorArmorNotDamaged =>
+      'Diese Weste ist bereits in vollem Zustand';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'Sie haben bereits die maximale Anzahl an Leibwächtern';
+
+  @override
+  String get securityErrorInvalidBodyguardType => 'Ungültiger Bodyguard-Typ';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'Es gibt nicht so viele Leibwächter dieser Art';
+
+  @override
   String get lightArmor => 'Leichte Rüstung';
 
   @override
@@ -8050,7 +8154,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'Du kannst jeweils nur 1 Rüstung tragen. Eine neue Rüstung ersetzt immer Ihre aktuelle.';
+      'Sie können jeweils nur eine Weste tragen. Reparieren Sie eine beschädigte Weste oder kaufen Sie eine neue und erhalten Sie eine zustandsabhängige Inzahlungnahme der Weste, die Sie ersetzen.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15885,11 +15989,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Westen kaufst du unter Sicherheit: Stichweste (€7.500) → Kugelsichere Weste (€50.000) → Kugelsichere Weste Premium (€125.000) → AP-Plattenweste (€280.000). Gewehrkaliber 5.56, 7.62 und .308 durchschlagen normale Westen, außer du trägst die AP-Plattenweste.\nDu kannst jeweils nur 1 Rüstung tragen; Wenn Sie eine weitere Weste kaufen, ersetzt diese sofort Ihre aktuelle Rüstung. \nJede Rüstungsklasse reduziert den eingehenden Schaden pro Angriff um einen festen Prozentsatz. Bessere Rüstung = mehr Überleben im PvP und bei Raids. \nDie Rüstung wird nach einem Angriff beschädigt und verliert an Wirksamkeit. Je niedriger der Zustand, desto weniger Schutz bietet Ihre aktuelle Rüstung. \nBei 100 % Schaden wird deine Rüstung zerstört und verschwindet vollständig; Sie müssen ein neues Set kaufen, um den Schutz wiederherzustellen. \nLeibwächter geben jeweils +10 Verteidigung, berechnen aber alle 24 Stunden einen Tageslohn von 10.000 € pro Leibwächter. \nWenn Sie den Leibwächter-Tageslohn nicht bezahlen können, gehen alle und Sie verlieren sofort ihren Schutz. \nDie Sicherheit von Installationen (für Nachtclubs, Drogeneinrichtungen usw.) verringert die Wahrscheinlichkeit von Überfällen und Zwischenfällen an diesem bestimmten Ort. \nJe höher Ihr Wanted-Level, desto häufiger werden Sie angegriffen oder überfallen. Eine bessere Sicherheit kompensiert dies direkt. \nBesatzungsmitglieder können ihre Sicherheitsrollen aufteilen, sodass mehrere Standorte gleichzeitig abgedeckt werden.';
+      'Kaufen Sie Westen auf dem Schwarzmarkt → Sicherheit: Stichweste (7.500 €) → Kugelsichere Weste (50.000 €) → Premium kugelsichere Weste (125.000 €) → AP-Plattenweste (280.000 €). Die Gewehrkaliber 5,56, 7,62 und .308 durchdringen normale Westen, es sei denn, Sie tragen die AP-Plattenweste. \nSie können jeweils nur eine Weste tragen. Eine beschädigte Weste kann für die Hälfte des fehlenden Wertes repariert werden. Beim Kauf einer weiteren Weste wird die aktuelle Weste ersetzt und 40 % des alten Westenpreises, gestaffelt nach Zustand, gutgeschrieben. \nJeder Westentyp reduziert den eingehenden Schaden, wenn er zum Angriff passt: Stichwesten halten Messer ab, kugelsichere Westen halten normale Kugeln ab und die AP-Plattenweste stoppt auch panzerbrechende Geschosse. Bei einer Nichtübereinstimmung bleibt nur ein Bruchteil der Westenverteidigung erhalten. \nDie Rüstung wird nach einem Angriff beschädigt und verliert an Wirksamkeit. Je niedriger der Zustand, desto weniger Schutz bietet Ihre aktuelle Rüstung. \nBei einem Zustand von 0 % wird Ihre Rüstung zerstört und verschwindet vollständig; Sie müssen ein neues Set kaufen, um den Schutz wiederherzustellen. \nInsgesamt gibt es maximal 10 Leibwächter in drei Qualitäten: Street Muscle (+8 Verteidigung, 6.000 € Miete, 4.000 €/Tag), Standard (+10, 10.000 € Miete, 10.000 €/Tag) und Elite (+22, 35.000 € Miete, 18.000 €/Tag). Sie können sie jederzeit abweisen. \nWenn Sie den kombinierten Tageslohn nicht bezahlen können, gehen alle Leibwächter weg und Sie verlieren sofort ihren Schutz. \nDie Sicherheit von Installationen (für Nachtclubs, Drogeneinrichtungen usw.) verringert die Wahrscheinlichkeit von Überfällen und Zwischenfällen an diesem bestimmten Ort. \nJe höher Ihr Wanted-Level, desto häufiger werden Sie angegriffen oder überfallen. Eine bessere Sicherheit kompensiert dies direkt. \nBesatzungsmitglieder können ihre Sicherheitsrollen aufteilen, sodass mehrere Standorte gleichzeitig abgedeckt werden.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Trage immer mindestens eine Stichweste, wenn die Fahndungsstufe 2 oder höher ist: Einsparungen bei den Krankenhausrechnungen gleichen den Kaufpreis schnell aus.\nÜberprüfen Sie nach jedem Angriff den Zustand Ihrer Rüstung: Eine beschädigte Weste bietet nur einen Teil ihres ursprünglichen Schutzes. \nBehalten Sie nur so viele Leibwächter, wie Sie sich morgen noch leisten können; Große Teams werden in der täglichen Wartung schnell teuer.\nGewehrmunition (5.56, 7.62, .308) durchschlägt normale Westen; kaufe die AP-Plattenweste, wenn diese Kaliber gegen dich eingesetzt werden.';
+      'Tragen Sie bei Wanted Level 2 oder höher immer mindestens eine Stichweste: Einsparungen bei den Krankenhausrechnungen gleichen den Kaufpreis schnell aus. \nReparieren Sie eine beschädigte Weste, anstatt dieselbe noch einmal zu kaufen; Überprüfen Sie den Zustand nach jedem Angriff. \nGewehrmunition (5,56, 7,62, .308) durchschlägt normale Westen; Kaufen Sie die AP-Plattenweste, wenn diese Kaliber gegen Sie auftauchen. \nBehalten Sie nur so viele Leibwächter, wie Sie sich morgen noch leisten können; Elitewächter sind am härtesten betroffen, aber ihr Tageslohn summiert sich schnell.';
 
   @override
   String get helpTopicHospitalCategory => 'Erholung';

@@ -7883,6 +7883,108 @@ class AppLocalizationsNl extends AppLocalizations {
   String get eachGivesDefense => 'Elk geeft +10 verdediging';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense verdediging';
+  }
+
+  @override
+  String get repairArmor => 'Repareren';
+
+  @override
+  String get armorRepaired => 'Vest gerepareerd';
+
+  @override
+  String get couldNotRepairArmor => 'Vest repareren mislukt';
+
+  @override
+  String get couldNotDismissBodyguard => 'Lijfwacht ontslaan mislukt';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Inruil $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'Koop je een ander vest, dan krijg je een deel van je huidige vest terug op basis van de conditie. Repareren is goedkoper dan vervangen.';
+
+  @override
+  String get upgradeArmor => 'Upgraden';
+
+  @override
+  String get vestWeakVsStab => 'Zwak tegen steek';
+
+  @override
+  String get vestWeakVsBullets => 'Zwak tegen kogels';
+
+  @override
+  String get vestWeakVsAp => 'Zwak tegen AP';
+
+  @override
+  String get bodyguardStreet => 'Straatwacht';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Goedkope extra ogen. Minder verdediging, lager dagloon.';
+
+  @override
+  String get bodyguardStandard => 'Lijfwacht';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Standaard bescherming. +10 verdediging en €10.000 dagloon.';
+
+  @override
+  String get bodyguardElite => 'Elite-lijfwacht';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Hardere bescherming. Meer verdediging en een hoger dagloon.';
+
+  @override
+  String get bodyguardDismiss => 'Ontslaan';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap lijfwachten';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Lijfwachtlimiet bereikt';
+
+  @override
+  String bodyguardHired(String name) {
+    return '$name aangenomen';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return '$name ontslagen';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'Conditie $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'Je draagt geen vest';
+
+  @override
+  String get securityErrorArmorNotDamaged => 'Dit vest is al in topconditie';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'Je hebt het maximum aantal lijfwachten bereikt';
+
+  @override
+  String get securityErrorInvalidBodyguardType => 'Ongeldig lijfwacht-type';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'Je hebt niet zoveel lijfwachten van dit type';
+
+  @override
   String get lightArmor => 'Lichte Armor';
 
   @override
@@ -7991,7 +8093,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'Je kunt maar 1 pantser tegelijk dragen. Een nieuw vest vervangt altijd je huidige vest.';
+      'Je kunt maar 1 vest tegelijk dragen. Repareer een beschadigd vest, of koop een ander vest en krijg inruil op basis van de conditie.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15729,11 +15831,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Vesten koop je bij Zwarte Markt → Beveiliging: Steekvest (€7.500) → Kogelvrij vest (€50.000) → Kogelvrij vest premium (€125.000) → AP-plaatvest (€280.000). Geweerkalibers 5.56, 7.62 en .308 gaan door gewone vesten heen, tenzij je het AP-plaatvest draagt.\nJe kunt maar 1 vest tegelijk dragen; koop je een ander vest, dan vervangt dat direct je huidige armor.\nElk vesttype verlaagt inkomende schade als het bij de aanval past: steekvesten houden messen tegen, kogelvrije vesten houden gewone kogels tegen, en het AP-plaatvest houdt ook pantserdoordringende kogels tegen. Betere match = meer overleving bij PvP en raids.\nArmor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.\nBij 100% schade is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.\nLijfwachten geven elk +10 verdediging, maar kosten elke 24 uur €10.000 per lijfwacht aan systeemloon.\nKun je het dagloon van je lijfwachten niet meer betalen, dan lopen ze allemaal weg en verlies je die verdediging direct.\nInstallatiebeveiliging (voor nightclub, drugs-faciliteit, etc.) verlaagt kans op raids en incidenten bij die locatie.\nHoe hoger je Wanted Level hoe vaker je wordt aangevallen of geraided. Betere beveiliging compenseert dit direct.\nCrew-leden kunnen beveiligingsrollen verdelen zodat meerdere locaties gelijktijdig gedekt zijn.';
+      'Vesten koop je bij Zwarte Markt → Beveiliging: Steekvest (€7.500) → Kogelvrij vest (€50.000) → Kogelvrij vest premium (€125.000) → AP-plaatvest (€280.000). Geweerkalibers 5.56, 7.62 en .308 gaan door gewone vesten heen, tenzij je het AP-plaatvest draagt.\nJe kunt maar 1 vest tegelijk dragen. Een beschadigd vest kun je repareren voor de helft van de ontbrekende conditie. Koop je een ander vest, dan vervangt dat het huidige vest en krijg je 40% van de oude vestprijs terug, geschaald naar conditie.\nElk vesttype verlaagt inkomende schade als het bij de aanval past: steekvesten houden messen tegen, kogelvrije vesten houden gewone kogels tegen, en het AP-plaatvest houdt ook pantserdoordringende kogels tegen. Bij een mismatch blijft maar een deel van de vestverdediging over.\nArmor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.\nBij 0% conditie is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.\nLijfwachten zijn beperkt tot 10 in totaal, in drie kwaliteiten: straatwacht (+8 verdediging, €6.000 aanschaf, €4.000/dag), standaard (+10, €10.000 aanschaf, €10.000/dag) en elite (+22, €35.000 aanschaf, €18.000/dag). Je kunt ze altijd ontslaan.\nKun je het gezamenlijke dagloon niet meer betalen, dan lopen ze allemaal weg en verlies je die verdediging direct.\nInstallatiebeveiliging (voor nightclub, drugs-faciliteit, etc.) verlaagt kans op raids en incidenten bij die locatie.\nHoe hoger je Wanted Level hoe vaker je wordt aangevallen of geraided. Betere beveiliging compenseert dit direct.\nCrew-leden kunnen beveiligingsrollen verdelen zodat meerdere locaties gelijktijdig gedekt zijn.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Draag altijd minimaal een steekvest als je Wanted Level 2 of hoger is: besparing op ziekenhuisrekeningen compenseert de aanschafprijs snel.\nControleer na elke aanval je armor-conditie: een beschadigd vest geeft nog maar een deel van de originele bescherming.\nGeweermunitie (5.56, 7.62, .308) gaat door gewone vesten heen; koop het AP-plaatvest als die kalibers tegen je gebruikt worden.\nNeem alleen zoveel lijfwachten als je ook morgen nog kunt betalen; hoge aantallen worden snel duur in dagelijks onderhoud.';
+      'Draag altijd minimaal een steekvest als je Wanted Level 2 of hoger is: besparing op ziekenhuisrekeningen compenseert de aanschafprijs snel.\nRepareer een beschadigd vest in plaats van hetzelfde vest opnieuw te kopen; controleer de conditie na elke aanval.\nGeweermunitie (5.56, 7.62, .308) gaat door gewone vesten heen; koop het AP-plaatvest als die kalibers tegen je gebruikt worden.\nNeem alleen zoveel lijfwachten als je ook morgen nog kunt betalen; elite-wachten slaan harder terug maar hun dagloon loopt snel op.';
 
   @override
   String get helpTopicHospitalCategory => 'Recovery';

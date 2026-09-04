@@ -19,6 +19,10 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - A vest may sit in residential property storage (`armor:{type}` + condition). Equipping from the house or dropping onto the avatar wears it; depositing the worn vest stores it and clears `armorType`. A second worn vest is refused (`ARMOR_ALREADY_EQUIPPED`). Without a vest, `armorType` is empty.
 - Shop catalog lives in `backend/content/security.json` (`shop: true`). Current buyable types: `stab_vest` (€7,500, stab only), `bulletproof_vest` (€50,000, regular bullets), `bulletproof_vest_premium` (€125,000, stronger regular bullets), `ceramic_ap_vest` (€280,000, stab + bullets + armor-piercing). Legacy IDs (`light_armor`, `heavy_armor`, `tactical_suit`) stay wearable if already owned but are not sold.
 - Combat uses type match, not only raw armor: melee checks `resistsStab`, regular ammo checks `resistsBallistic`, and `556mm` / `762mm` / `308` (`armorPiercing` in `ammo.json`) check `resistsArmorPiercing`. A mismatch keeps only a fraction of the vest defense.
+- Worn-vest **repair** is `POST /security/repair-armor`. Cost is 50% of catalog price × missing condition (`securityEconomy.armorRepairCost`). Repair restores condition to 100% and keeps the same vest. A 100% vest cannot be repaired (`ARMOR_NOT_DAMAGED`).
+- Buying a **different** vest applies a **trade-in**: 40% of the old vest price × current condition (`securityEconomy.armorTradeInCredit`). The player pays `max(0, newPrice - credit)` and does not get cash back. Buying the same damaged vest is a full-price replace; the shop shows Repair instead.
+- Bodyguards have three hire types and a shared cap of **10**: street (€6,000, +8, €4,000/day), standard (€10,000, +10, €10,000/day, stored in `bodyguards`), elite (€35,000, +22, €18,000/day). Existing counts above the cap stay, but hiring is blocked until the player is under the cap. `POST /security/dismiss-bodyguards` removes one of a type. Combined daily upkeep still dismisses **all** types on non-payment.
+- Shop thumbs live in `client/assets/images/security/<armorId>.png`. The status payload includes `bodyguardCounts`, `bodyguardDefense`, `bodyguardCatalog`, `armorRepairCost`, `armorTradeInCredit`, `armorWeaknesses` and per-catalog `netPrice` / `repairCost`.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?
@@ -48,6 +52,9 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Verify bodyguard upkeep deducts every 24 hours and dismisses guards when the player cannot pay.
 - Verify armor purchase succeeds, armor condition drops after an attack, and destroyed armor no longer contributes defense.
 - Verify storing the worn vest in a house unequips it, and withdrawing it equips it only when no vest is already worn.
+- Verify a damaged vest shows Repair (not full-price Replace) and restores 100% condition.
+- Verify buying a different vest subtracts the shown trade-in and replaces the worn vest.
+- Verify street/standard/elite hire, dismiss, and the 10-guard cap; over-cap players cannot hire more.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

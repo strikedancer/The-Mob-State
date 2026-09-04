@@ -46,6 +46,16 @@ export async function ensureSecuritySchema(): Promise<void> {
     'armorCondition',
     'ALTER TABLE player_security ADD COLUMN armorCondition INT NOT NULL DEFAULT 100 AFTER armor'
   );
+  await ensureColumn(
+    'player_security',
+    'bodyguardsStreet',
+    'ALTER TABLE player_security ADD COLUMN bodyguardsStreet INT NOT NULL DEFAULT 0 AFTER bodyguards'
+  );
+  await ensureColumn(
+    'player_security',
+    'bodyguardsElite',
+    'ALTER TABLE player_security ADD COLUMN bodyguardsElite INT NOT NULL DEFAULT 0 AFTER bodyguardsStreet'
+  );
 
   await prisma.$executeRawUnsafe(`
     UPDATE player_security

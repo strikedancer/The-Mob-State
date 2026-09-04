@@ -494,7 +494,7 @@ router.post(
         return res.status(401).json({ error: 'Not authenticated' });
       }
 
-      const { quantity } = req.body;
+      const { quantity, type } = req.body;
 
       if (!quantity || quantity < 1) {
         return res.status(400).json({
@@ -504,7 +504,7 @@ router.post(
         });
       }
 
-      const result = await hitlistService.buyBodyguards(playerId, quantity);
+      const result = await hitlistService.buyBodyguards(playerId, quantity, type || 'standard');
 
       return res.json(result);
     } catch (error: any) {
@@ -513,6 +513,70 @@ router.post(
           success: false,
           error: 'INSUFFICIENT_MONEY',
           message: 'Je hebt niet genoeg geld',
+        });
+      }
+      if (error.message === 'BODYGUARD_CAP_REACHED') {
+        return res.status(400).json({
+          success: false,
+          error: 'BODYGUARD_CAP_REACHED',
+          message: 'Je hebt het maximum aantal lijfwachten bereikt',
+        });
+      }
+      if (error.message === 'INVALID_BODYGUARD_TYPE') {
+        return res.status(400).json({
+          success: false,
+          error: 'INVALID_BODYGUARD_TYPE',
+          message: 'Ongeldig lijfwacht-type',
+        });
+      }
+
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /security/dismiss-bodyguards
+ * Dismiss hired bodyguards
+ */
+router.post(
+  '/dismiss-bodyguards',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const { quantity, type } = req.body;
+      const result = await hitlistService.dismissBodyguards(
+        playerId,
+        quantity ?? 1,
+        type || 'standard'
+      );
+
+      return res.json(result);
+    } catch (error: any) {
+      if (error.message === 'INVALID_QUANTITY') {
+        return res.status(400).json({
+          success: false,
+          error: 'INVALID_QUANTITY',
+          message: 'Hoeveelheid moet minimaal 1 zijn',
+        });
+      }
+      if (error.message === 'INVALID_BODYGUARD_TYPE') {
+        return res.status(400).json({
+          success: false,
+          error: 'INVALID_BODYGUARD_TYPE',
+          message: 'Ongeldig lijfwacht-type',
+        });
+      }
+      if (error.message === 'NOT_ENOUGH_BODYGUARDS') {
+        return res.status(400).json({
+          success: false,
+          error: 'NOT_ENOUGH_BODYGUARDS',
+          message: 'Je hebt niet zoveel lijfwachten van dit type',
         });
       }
 
@@ -561,6 +625,57 @@ router.post(
           success: false,
           error: 'ARMOR_ALREADY_EQUIPPED',
           message: 'Je draagt dit armor al',
+        });
+      }
+
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /security/repair-armor
+ * Repair the currently worn vest
+ */
+router.post(
+  '/repair-armor',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const result = await hitlistService.repairArmor(playerId);
+      return res.json(result);
+    } catch (error: any) {
+      if (error.message === 'NO_ARMOR') {
+        return res.status(400).json({
+          success: false,
+          error: 'NO_ARMOR',
+          message: 'Je draagt geen vest om te repareren',
+        });
+      }
+      if (error.message === 'ARMOR_NOT_DAMAGED') {
+        return res.status(400).json({
+          success: false,
+          error: 'ARMOR_NOT_DAMAGED',
+          message: 'Dit vest is al in topconditie',
+        });
+      }
+      if (error.message === 'INSUFFICIENT_MONEY') {
+        return res.status(400).json({
+          success: false,
+          error: 'INSUFFICIENT_MONEY',
+          message: 'Je hebt niet genoeg geld',
+        });
+      }
+      if (error.message === 'ARMOR_NOT_FOUND') {
+        return res.status(404).json({
+          success: false,
+          error: 'ARMOR_NOT_FOUND',
+          message: 'Armor niet gevonden',
         });
       }
 

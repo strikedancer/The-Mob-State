@@ -44,6 +44,7 @@ class WebAssetHelper {
         'tools',
         'travel',
         'materials',
+        'security',
       ]) {
         while (path.contains('/$dir/$dir/')) {
           path = path.replaceAll('/$dir/$dir/', '/$dir/');

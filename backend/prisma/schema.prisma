@@ -1872,6 +1872,8 @@ model PlayerSecurity {
   id                    Int       @id @default(autoincrement())
   playerId              Int       @unique
   bodyguards            Int       @default(0)
+  bodyguardsStreet      Int       @default(0)
+  bodyguardsElite       Int       @default(0)
   bodyguardUpkeepDueAt  DateTime?
   armor                 Int       @default(0)
   armorCondition        Int       @default(100)

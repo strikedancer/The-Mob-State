@@ -5256,7 +5256,7 @@
     }
   },
   "bodyguardsLeaveIfUnpaid": "Wenn Sie den Tageslohn nicht bezahlen können, gehen alle Leibwächter.",
-  "armorOneAtATimeHint": "Du kannst jeweils nur 1 Rüstung tragen. Eine neue Rüstung ersetzt immer Ihre aktuelle.",
+  "armorOneAtATimeHint": "Sie können jeweils nur eine Weste tragen. Reparieren Sie eine beschädigte Weste oder kaufen Sie eine neue und erhalten Sie eine zustandsabhängige Inzahlungnahme der Weste, die Sie ersetzen.",
   "armorDefenseNowAtCondition": "Jetzt +{defense} bei {percent} %",
   "@armorDefenseNowAtCondition": {
     "placeholders": {
@@ -8231,8 +8231,8 @@
   "helpTopicSecurityCategory": "Risiko",
   "helpTopicSecurityTitle": "Sicherheit",
   "helpTopicSecuritySummary": "Schützen Sie Ihren Charakter und Ihr Imperium mit Rüstungen, Leibwächtern und Installationssicherheit. Höhere Sicherheit bedeutet weniger Schaden bei Angriffen.",
-  "helpTopicSecurityHow": "Westen kaufst du unter Sicherheit: Stichweste (€7.500) → Kugelsichere Weste (€50.000) → Kugelsichere Weste Premium (€125.000) → AP-Plattenweste (€280.000). Gewehrkaliber 5.56, 7.62 und .308 durchschlagen normale Westen, außer du trägst die AP-Plattenweste.\nDu kannst jeweils nur 1 Rüstung tragen; Wenn Sie eine weitere Weste kaufen, ersetzt diese sofort Ihre aktuelle Rüstung. \nJede Rüstungsklasse reduziert den eingehenden Schaden pro Angriff um einen festen Prozentsatz. Bessere Rüstung = mehr Überleben im PvP und bei Raids. \nDie Rüstung wird nach einem Angriff beschädigt und verliert an Wirksamkeit. Je niedriger der Zustand, desto weniger Schutz bietet Ihre aktuelle Rüstung. \nBei 100 % Schaden wird deine Rüstung zerstört und verschwindet vollständig; Sie müssen ein neues Set kaufen, um den Schutz wiederherzustellen. \nLeibwächter geben jeweils +10 Verteidigung, berechnen aber alle 24 Stunden einen Tageslohn von 10.000 € pro Leibwächter. \nWenn Sie den Leibwächter-Tageslohn nicht bezahlen können, gehen alle und Sie verlieren sofort ihren Schutz. \nDie Sicherheit von Installationen (für Nachtclubs, Drogeneinrichtungen usw.) verringert die Wahrscheinlichkeit von Überfällen und Zwischenfällen an diesem bestimmten Ort. \nJe höher Ihr Wanted-Level, desto häufiger werden Sie angegriffen oder überfallen. Eine bessere Sicherheit kompensiert dies direkt. \nBesatzungsmitglieder können ihre Sicherheitsrollen aufteilen, sodass mehrere Standorte gleichzeitig abgedeckt werden.",
-  "helpTopicSecurityTips": "Trage immer mindestens eine Stichweste, wenn die Fahndungsstufe 2 oder höher ist: Einsparungen bei den Krankenhausrechnungen gleichen den Kaufpreis schnell aus.\nÜberprüfen Sie nach jedem Angriff den Zustand Ihrer Rüstung: Eine beschädigte Weste bietet nur einen Teil ihres ursprünglichen Schutzes. \nBehalten Sie nur so viele Leibwächter, wie Sie sich morgen noch leisten können; Große Teams werden in der täglichen Wartung schnell teuer.\nGewehrmunition (5.56, 7.62, .308) durchschlägt normale Westen; kaufe die AP-Plattenweste, wenn diese Kaliber gegen dich eingesetzt werden.",
+  "helpTopicSecurityHow": "Kaufen Sie Westen auf dem Schwarzmarkt → Sicherheit: Stichweste (7.500 €) → Kugelsichere Weste (50.000 €) → Premium kugelsichere Weste (125.000 €) → AP-Plattenweste (280.000 €). Die Gewehrkaliber 5,56, 7,62 und .308 durchdringen normale Westen, es sei denn, Sie tragen die AP-Plattenweste. \nSie können jeweils nur eine Weste tragen. Eine beschädigte Weste kann für die Hälfte des fehlenden Wertes repariert werden. Beim Kauf einer weiteren Weste wird die aktuelle Weste ersetzt und 40 % des alten Westenpreises, gestaffelt nach Zustand, gutgeschrieben. \nJeder Westentyp reduziert den eingehenden Schaden, wenn er zum Angriff passt: Stichwesten halten Messer ab, kugelsichere Westen halten normale Kugeln ab und die AP-Plattenweste stoppt auch panzerbrechende Geschosse. Bei einer Nichtübereinstimmung bleibt nur ein Bruchteil der Westenverteidigung erhalten. \nDie Rüstung wird nach einem Angriff beschädigt und verliert an Wirksamkeit. Je niedriger der Zustand, desto weniger Schutz bietet Ihre aktuelle Rüstung. \nBei einem Zustand von 0 % wird Ihre Rüstung zerstört und verschwindet vollständig; Sie müssen ein neues Set kaufen, um den Schutz wiederherzustellen. \nInsgesamt gibt es maximal 10 Leibwächter in drei Qualitäten: Street Muscle (+8 Verteidigung, 6.000 € Miete, 4.000 €/Tag), Standard (+10, 10.000 € Miete, 10.000 €/Tag) und Elite (+22, 35.000 € Miete, 18.000 €/Tag). Sie können sie jederzeit abweisen. \nWenn Sie den kombinierten Tageslohn nicht bezahlen können, gehen alle Leibwächter weg und Sie verlieren sofort ihren Schutz. \nDie Sicherheit von Installationen (für Nachtclubs, Drogeneinrichtungen usw.) verringert die Wahrscheinlichkeit von Überfällen und Zwischenfällen an diesem bestimmten Ort. \nJe höher Ihr Wanted-Level, desto häufiger werden Sie angegriffen oder überfallen. Eine bessere Sicherheit kompensiert dies direkt. \nBesatzungsmitglieder können ihre Sicherheitsrollen aufteilen, sodass mehrere Standorte gleichzeitig abgedeckt werden.",
+  "helpTopicSecurityTips": "Tragen Sie bei Wanted Level 2 oder höher immer mindestens eine Stichweste: Einsparungen bei den Krankenhausrechnungen gleichen den Kaufpreis schnell aus. \nReparieren Sie eine beschädigte Weste, anstatt dieselbe noch einmal zu kaufen; Überprüfen Sie den Zustand nach jedem Angriff. \nGewehrmunition (5,56, 7,62, .308) durchschlägt normale Westen; Kaufen Sie die AP-Plattenweste, wenn diese Kaliber gegen Sie auftauchen. \nBehalten Sie nur so viele Leibwächter, wie Sie sich morgen noch leisten können; Elitewächter sind am härtesten betroffen, aber ihr Tageslohn summiert sich schnell.",
   "helpTopicHospitalCategory": "Erholung",
   "helpTopicHospitalTitle": "Krankenhaus",
   "helpTopicHospitalSummary": "Stellen Sie HP nach Kämpfen, gescheiterten Verbrechen oder Überfällen wieder her. Das Krankenhaus bietet kostenlose Notfallversorgung und kostenpflichtige Behandlungen für eine schnellere Genesung.",
@@ -10827,5 +10827,78 @@
   "inventoryMoveAll": "Alles bewegen",
   "blackMarketShops": "Läden",
   "blackMarketPlayerMarket": "Spielermarkt",
-  "blackMarketSubtitle": "Kaufe beim Händler oder handle mit anderen Spielern."
+  "blackMarketSubtitle": "Kaufe beim Händler oder handle mit anderen Spielern.",
+  "eachGivesDefenseAmount": "+{defense} Verteidigung",
+  "@eachGivesDefenseAmount": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      }
+    }
+  },
+  "repairArmor": "Reparieren",
+  "armorRepaired": "Weste repariert",
+  "couldNotRepairArmor": "Weste konnte nicht repariert werden",
+  "couldNotDismissBodyguard": "Leibwächter konnte nicht entlassen werden",
+  "vestTradeInCredit": "Inzahlungnahme {amount}",
+  "@vestTradeInCredit": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vestTradeInHint": "Beim Kauf einer weiteren Weste erhalten Sie je nach Zustand einen Teil Ihrer aktuellen Weste gutgeschrieben. Die Reparatur einer abgenutzten Weste ist günstiger als der Austausch.",
+  "upgradeArmor": "Upgrade",
+  "vestWeakVsStab": "Schwach gegen Stich",
+  "vestWeakVsBullets": "Schwach gegen Kugeln",
+  "vestWeakVsAp": "Schwach gegen AP",
+  "bodyguardStreet": "Straßenmuskel",
+  "bodyguardStreetDesc": "Günstige zusätzliche Augen. Geringere Verteidigung, geringerer Tageslohn.",
+  "bodyguardStandard": "Leibwächterin",
+  "bodyguardStandardDesc": "Standardschutz. +10 Verteidigung und 10.000 € Tageslohn.",
+  "bodyguardElite": "Elite-Leibwächter",
+  "bodyguardEliteDesc": "Näher verhärtet. Höhere Verteidigung und ein höherer Tageslohn.",
+  "bodyguardDismiss": "Zurückweisen",
+  "bodyguardCapLine": "{used} / {cap} Leibwächter",
+  "@bodyguardCapLine": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardCapReached": "Bodyguard-Limit erreicht",
+  "bodyguardHired": "Angestellt {name}",
+  "@bodyguardHired": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardDismissed": "Entlassen {name}",
+  "@bodyguardDismissed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "armorConditionPercent": "Zustand {percent}%",
+  "@armorConditionPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "securityErrorNoArmor": "Du trägst keine Weste",
+  "securityErrorArmorNotDamaged": "Diese Weste ist bereits in vollem Zustand",
+  "securityErrorBodyguardCap": "Sie haben bereits die maximale Anzahl an Leibwächtern",
+  "securityErrorInvalidBodyguardType": "Ungültiger Bodyguard-Typ",
+  "securityErrorNotEnoughBodyguards": "Es gibt nicht so viele Leibwächter dieser Art"
 }

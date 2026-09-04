@@ -7923,6 +7923,111 @@ class AppLocalizationsEs extends AppLocalizations {
   String get eachGivesDefense => 'Cada uno da +10 de defensa.';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense defensa';
+  }
+
+  @override
+  String get repairArmor => 'Reparar';
+
+  @override
+  String get armorRepaired => 'Chaleco reparado';
+
+  @override
+  String get couldNotRepairArmor => 'No se pudo reparar el chaleco';
+
+  @override
+  String get couldNotDismissBodyguard =>
+      'No se pudo despedir al guardaespaldas.';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Intercambio $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'La compra de otro chaleco acredita parte de su chaleco actual, según el estado. Reparar un chaleco desgastado es más económico que reemplazarlo.';
+
+  @override
+  String get upgradeArmor => 'Mejora';
+
+  @override
+  String get vestWeakVsStab => 'Débil vs puñalada';
+
+  @override
+  String get vestWeakVsBullets => 'Débiles vs balas';
+
+  @override
+  String get vestWeakVsAp => 'Débil vs AP';
+
+  @override
+  String get bodyguardStreet => 'Músculo callejero';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Ojos extra baratos. Menor defensa, menor salario diario.';
+
+  @override
+  String get bodyguardStandard => 'Guardaespaldas';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Protección estándar. +10 defensa y 10.000€ de jornal.';
+
+  @override
+  String get bodyguardElite => 'guardaespaldas de élite';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Más cerca endurecido. Mayor defensa y un salario diario más elevado.';
+
+  @override
+  String get bodyguardDismiss => 'Despedir';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap guardaespaldas';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Se alcanzó el límite de guardaespaldas';
+
+  @override
+  String bodyguardHired(String name) {
+    return 'Contratada $name';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return 'Descartado $name';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'Condición $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'No llevas chaleco';
+
+  @override
+  String get securityErrorArmorNotDamaged =>
+      'Este chaleco ya está en perfectas condiciones.';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'Ya tienes el número máximo de guardaespaldas.';
+
+  @override
+  String get securityErrorInvalidBodyguardType =>
+      'Tipo de guardaespaldas no válido';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'No tienes tantos guardaespaldas de este tipo.';
+
+  @override
   String get lightArmor => 'Armadura ligera';
 
   @override
@@ -8031,7 +8136,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'Sólo puedes usar 1 armadura a la vez. Una nueva armadura siempre reemplaza a la actual.';
+      'Sólo puedes usar 1 chaleco a la vez. Repare un chaleco dañado o compre otro y obtenga un intercambio basado en el estado del chaleco que reemplaza.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15837,11 +15942,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Los chalecos se compran en Seguridad: Chaleco antiapuñaladas (€7.500) → Chaleco antibalas (€50.000) → Chaleco antibalas premium (€125.000) → Chaleco placas AP (€280.000). Los calibres de rifle 5.56, 7.62 y .308 atraviesan chalecos normales salvo que lleves el chaleco placas AP.\nSólo puedes usar 1 armadura a la vez; Si compras otro chaleco, reemplaza inmediatamente tu armadura actual. \nCada clase de armadura reduce el daño recibido por ataque en un porcentaje fijo. Mejor armadura = más supervivencia en PvP e incursiones. \nLa armadura se daña después de un ataque y pierde efectividad. Cuanto menor sea la condición, menos protección proporcionará tu armadura actual. \nCon un daño del 100%, tu armadura se destruye y desaparece por completo; necesitas comprar un juego nuevo para recuperar la protección. \nLos guardaespaldas dan +10 de defensa cada uno, pero cada 24 horas cobran un salario diario de 10.000 € por guardaespaldas. \nSi no puedes pagar ese salario diario de guardaespaldas, todos se van y pierdes su protección inmediatamente. \nLa seguridad de la instalación (para discotecas, instalaciones de drogas, etc.) reduce las posibilidades de redadas e incidentes en esa ubicación específica. \nCuanto mayor sea tu nivel de búsqueda, más a menudo serás atacado o asaltado. Una mayor seguridad compensa esto directamente. \nLos miembros de la Crew pueden dividir los roles de seguridad para cubrir múltiples ubicaciones simultáneamente.';
+      'Comprar chalecos en el Mercado Negro → Seguridad: Chaleco antipuñaladas (7.500 €) → Chaleco antibalas (50.000 €) → Chaleco antibalas premium (125.000 €) → Chaleco con placas AP (280.000 €). Los calibres de rifle 5.56, 7.62 y .308 perforan chalecos normales a menos que use el chaleco con placa AP. \nSólo puedes usar 1 chaleco a la vez. Un chaleco dañado se puede reparar por la mitad del valor en mal estado. La compra de otro chaleco reemplaza el actual y acredita el 40% del precio del chaleco anterior, escalado por condición. \nCada tipo de chaleco reduce el daño recibido cuando coincide con el ataque: los chalecos antipuñaladas detienen los cuchillos, los chalecos antibalas detienen las balas normales y el chaleco con placas AP también detiene las balas perforantes. Un desajuste mantiene sólo una fracción de la defensa del chaleco. \nLa armadura se daña después de un ataque y pierde efectividad. Cuanto menor sea la condición, menos protección proporcionará tu armadura actual. \nEn una condición del 0%, tu armadura se destruye y desaparece por completo; necesitas comprar un juego nuevo para recuperar la protección. \nLos guardaespaldas tienen un límite de 10 en total en tres calidades: músculo callejero (+8 defensa, 6.000 € de alquiler, 4.000 €/día), estándar (+10, 10.000 € de alquiler, 10.000 €/día) y élite (+22, 35.000 € de alquiler, 18.000 €/día). Puedes descartarlos en cualquier momento. \nSi no puedes pagar el salario diario combinado, todos los guardaespaldas se marchan y pierdes su protección inmediatamente. \nLa seguridad de la instalación (para discotecas, instalaciones de drogas, etc.) reduce las posibilidades de redadas e incidentes en esa ubicación específica. \nCuanto mayor sea tu nivel de búsqueda, más a menudo serás atacado o asaltado. Una mayor seguridad compensa esto directamente. \nLos miembros de la Crew pueden dividir los roles de seguridad para cubrir múltiples ubicaciones simultáneamente.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Lleva siempre al menos un chaleco antiapuñaladas cuando el nivel de búsqueda sea 2 o superior: el ahorro en facturas del hospital compensa rápidamente el precio de compra.\nComprueba el estado de tu armadura después de cada ataque: un chaleco dañado sólo proporciona parte de su protección original. \nMantén sólo tantos guardaespaldas como puedas permitirte mañana; Los equipos grandes se vuelven costosos rápidamente en mantenimiento diario.\nLa munición de rifle (5.56, 7.62, .308) atraviesa chalecos normales; compra el chaleco placas AP si esos calibres aparecen contra ti.';
+      'Utilice siempre al menos un chaleco antipuñaladas cuando el nivel de búsqueda sea 2 o superior: los ahorros en las facturas del hospital compensan rápidamente el precio de compra. \nReparar un chaleco dañado en lugar de volver a comprar el mismo; Verifique el estado después de cada ataque. \nLa munición de rifle (5.56, 7.62, .308) atraviesa chalecos normales; compre el chaleco con placa AP si esos calibres aparecen en su contra. \nMantén sólo tantos guardaespaldas como puedas permitirte mañana; Los guardias de élite son los más afectados, pero su salario diario aumenta rápidamente.';
 
   @override
   String get helpTopicHospitalCategory => 'Recuperación';

@@ -7923,6 +7923,111 @@ class AppLocalizationsIt extends AppLocalizations {
   String get eachGivesDefense => 'Ciascuno dà +10 difesa';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense difesa';
+  }
+
+  @override
+  String get repairArmor => 'Riparazione';
+
+  @override
+  String get armorRepaired => 'Gilet riparato';
+
+  @override
+  String get couldNotRepairArmor => 'Impossibile riparare il giubbotto';
+
+  @override
+  String get couldNotDismissBodyguard =>
+      'Non potevo licenziare la guardia del corpo';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Permuta $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'L\'acquisto di un altro gilet accredita parte del tuo gilet attuale, in base alle condizioni. Riparare un giubbotto usurato è più economico che sostituirlo.';
+
+  @override
+  String get upgradeArmor => 'Aggiornamento';
+
+  @override
+  String get vestWeakVsStab => 'Debole contro pugnalata';
+
+  @override
+  String get vestWeakVsBullets => 'Debole contro i proiettili';
+
+  @override
+  String get vestWeakVsAp => 'Debole contro AP';
+
+  @override
+  String get bodyguardStreet => 'Muscoli da strada';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Occhi extra economici. Difesa inferiore, salario giornaliero inferiore.';
+
+  @override
+  String get bodyguardStandard => 'Guardia del corpo';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Protezione standard. +10 difesa e una paga giornaliera di € 10.000.';
+
+  @override
+  String get bodyguardElite => 'Guardia del corpo d\'élite';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Indurito più vicino. Difesa più alta e salario giornaliero più alto.';
+
+  @override
+  String get bodyguardDismiss => 'Congedare';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap guardie del corpo';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Limite guardie del corpo raggiunto';
+
+  @override
+  String bodyguardHired(String name) {
+    return 'Assunto $name';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return 'Licenziato $name';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'Condizione $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'Non indossi un giubbotto';
+
+  @override
+  String get securityErrorArmorNotDamaged =>
+      'Questo gilet è già in condizioni complete';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'Hai già il numero massimo di guardie del corpo';
+
+  @override
+  String get securityErrorInvalidBodyguardType =>
+      'Tipo di guardia del corpo non valido';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'Non hai molte guardie del corpo di questo tipo';
+
+  @override
   String get lightArmor => 'Armatura leggera';
 
   @override
@@ -8032,7 +8137,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'Puoi indossare solo 1 armatura alla volta. Una nuova armatura sostituisce sempre quella attuale.';
+      'Puoi indossare solo 1 gilet alla volta. Ripara un giubbotto danneggiato o acquistane un altro e ottieni una permuta in base alle condizioni del giubbotto che sostituisci.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15862,11 +15967,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'I giubbotti si comprano in Sicurezza: Giubbotto antistilettata (€7.500) → Giubbotto antiproiettile (€50.000) → Giubbotto antiproiettile premium (€125.000) → Giubbotto piastre AP (€280.000). I calibri 5.56, 7.62 e .308 forano i giubbotti normali, a meno che non indossi il giubbotto piastre AP.\nPuoi indossare solo 1 armatura alla volta; se acquisti un altro giubbotto, sostituirà immediatamente la tua attuale armatura. \nOgni classe di armatura riduce il danno in arrivo per attacco di una percentuale fissa. Armatura migliore = più sopravvivenza nel PvP e nei raid. \nL\'armatura viene danneggiata dopo un attacco e perde efficacia. Più bassa è la condizione, minore è la protezione fornita dalla tua attuale armatura. \nAl 100% di danno la tua armatura viene distrutta e scompare completamente; è necessario acquistare un nuovo set per riacquistare la protezione. \nLe guardie del corpo danno +10 difesa ciascuna, ma ogni 24 ore fanno pagare una paga giornaliera di € 10.000 per guardia del corpo. \nSe non puoi pagare la paga giornaliera della guardia del corpo, se ne vanno tutti e tu perdi immediatamente la loro protezione. \nLa sicurezza dell\'installazione (per nightclub, strutture farmaceutiche, ecc.) riduce le possibilità di incursioni e incidenti in quel luogo specifico. \nPiù alto è il tuo livello di ricercato, più spesso verrai attaccato o razziato. Una migliore sicurezza compensa direttamente questo. \nI membri dell\'Crew possono dividere i ruoli di sicurezza in modo che più posizioni siano coperte contemporaneamente.';
+      'Acquista giubbotti al mercato nero → Sicurezza: giubbotto antiproiettile (€ 7.500) → Giubbotto antiproiettile (€ 50.000) → Giubbotto antiproiettile premium (€ 125.000) → Giubbotto con piastra AP (€ 280.000). I calibri dei fucili 5.56, 7.62 e .308 perforano i giubbotti normali a meno che non indossi il giubbotto a piastre AP. \nPuoi indossare solo 1 gilet alla volta. Un giubbotto danneggiato può essere riparato per la metà del valore della condizione mancante. L\'acquisto di un altro giubbotto sostituisce quello attuale e accredita il 40% del prezzo del vecchio giubbotto, ridotto in base alle condizioni. \nOgni tipo di giubbotto riduce il danno in arrivo quando corrisponde all\'attacco: i giubbotti da taglio fermano i coltelli, i giubbotti antiproiettile fermano i proiettili normali e il giubbotto a piastre AP ferma anche i colpi perforanti. Una mancata corrispondenza mantiene solo una frazione della difesa del giubbotto. \nL\'armatura viene danneggiata dopo un attacco e perde efficacia. Più bassa è la condizione, minore è la protezione fornita dalla tua attuale armatura. \nAllo 0% la tua armatura viene distrutta e scompare completamente; è necessario acquistare un nuovo set per riacquistare la protezione. \nLe guardie del corpo hanno un massimo di 10 in totale in tre qualità: muscoli di strada (+8 difesa, assunzione € 6.000, € 4.000 al giorno), standard (+10, assunzione € 10.000, 10.000 € al giorno) ed élite (+22, assunzione 35.000 €, 18.000 € al giorno). Puoi licenziarli in qualsiasi momento. \nSe non puoi pagare la paga giornaliera combinata, tutte le guardie del corpo se ne vanno e tu perdi immediatamente la loro protezione. \nLa sicurezza dell\'installazione (per nightclub, strutture farmaceutiche, ecc.) riduce le possibilità di incursioni e incidenti in quel luogo specifico. \nPiù alto è il tuo livello di ricercato, più spesso verrai attaccato o razziato. Una migliore sicurezza compensa direttamente questo. \nI membri dell\'Crew possono dividere i ruoli di sicurezza in modo che più posizioni siano coperte contemporaneamente.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Indossa sempre almeno un giubbotto antistilettata quando il livello di ricercato è 2 o superiore: i risparmi sulle bollette ospedaliere compensano rapidamente il prezzo di acquisto.\nControlla lo stato della tua armatura dopo ogni attacco: un giubbotto danneggiato fornisce solo una parte della sua protezione originale. \nMantieni solo il numero di guardie del corpo che puoi ancora permetterti domani; i team di grandi dimensioni diventano rapidamente costosi nella manutenzione quotidiana.\nLe munizioni da fucile (5.56, 7.62, .308) forano i giubbotti normali; compra il giubbotto piastre AP se quei calibri vengono usati contro di te.';
+      'Indossa sempre almeno un giubbotto antiproiettile quando il livello di ricercato è 2 o superiore: i risparmi sulle bollette ospedaliere compensano rapidamente il prezzo di acquisto. \nRiparare un giubbotto danneggiato invece di acquistarne di nuovo lo stesso; controllare le condizioni dopo ogni attacco. \nLe munizioni per fucili (5.56, 7.62, .308) perforano i normali giubbotti; acquista il giubbotto con piastra AP se quei calibri si presentano contro di te. \nMantieni solo il numero di guardie del corpo che puoi ancora permetterti domani; le guardie d’élite sono le più colpite, ma il loro salario giornaliero aumenta rapidamente.';
 
   @override
   String get helpTopicHospitalCategory => 'Recupero';

@@ -7892,6 +7892,111 @@ class AppLocalizationsPt extends AppLocalizations {
   String get eachGivesDefense => 'Cada um dá +10 de defesa';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense defesa';
+  }
+
+  @override
+  String get repairArmor => 'Reparar';
+
+  @override
+  String get armorRepaired => 'Colete consertado';
+
+  @override
+  String get couldNotRepairArmor => 'Não foi possível reparar o colete';
+
+  @override
+  String get couldNotDismissBodyguard =>
+      'Não foi possível dispensar o guarda-costas';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Troca $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'A compra de outro colete credita parte do seu colete atual, com base na condição. Consertar um colete desgastado é mais barato do que substituí-lo.';
+
+  @override
+  String get upgradeArmor => 'Atualizar';
+
+  @override
+  String get vestWeakVsStab => 'Fraco vs facada';
+
+  @override
+  String get vestWeakVsBullets => 'Fraco contra balas';
+
+  @override
+  String get vestWeakVsAp => 'Fraco vs AP';
+
+  @override
+  String get bodyguardStreet => 'Músculo de rua';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Olhos extras baratos. Menor defesa, menor salário diário.';
+
+  @override
+  String get bodyguardStandard => 'Escolta';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Proteção padrão. +10 defesa e um salário diário de 10.000€.';
+
+  @override
+  String get bodyguardElite => 'Guarda-costas de elite';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Endurecido mais perto. Maior defesa e um salário diário mais alto.';
+
+  @override
+  String get bodyguardDismiss => 'Liberar';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap guarda-costas';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Limite de guarda-costas atingido';
+
+  @override
+  String bodyguardHired(String name) {
+    return 'Contratado $name';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return 'Dispensado $name';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'Condição $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'Você não está usando colete';
+
+  @override
+  String get securityErrorArmorNotDamaged =>
+      'Este colete já está em perfeitas condições';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'Você já tem o número máximo de guarda-costas';
+
+  @override
+  String get securityErrorInvalidBodyguardType =>
+      'Tipo de guarda-costas inválido';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'Você não tem tantos guarda-costas desse tipo';
+
+  @override
   String get lightArmor => 'Armadura Leve';
 
   @override
@@ -7998,7 +8103,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'Você só pode usar 1 armadura por vez. Uma nova armadura sempre substitui a atual.';
+      'Você só pode usar 1 colete por vez. Conserte um colete danificado ou compre outro e obtenha uma troca com base nas condições do colete que você substituir.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15809,11 +15914,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Os coletes compram-se em Segurança: Colete anti-facada (€7.500) → Colete à prova de balas (€50.000) → Colete à prova de balas premium (€125.000) → Colete placas AP (€280.000). Os calibres 5.56, 7.62 e .308 atravessam coletes normais, salvo se usares o colete placas AP.\nVocê só pode usar 1 armadura por vez; se você comprar outro colete, ele substituirá imediatamente sua armadura atual. \nCada classe de armadura reduz o dano recebido por ataque em uma porcentagem fixa. Melhor armadura = mais sobrevivência em PvP e ataques. \nA armadura fica danificada após um ataque e perde eficácia. Quanto menor a condição, menos proteção sua armadura atual oferece. \nCom 100% de dano sua armadura é destruída e desaparece completamente; você precisa comprar um novo conjunto para recuperar a proteção. \nOs guarda-costas dão +10 de defesa cada, mas a cada 24 horas cobram um salário diário de € 10.000 por guarda-costas. \nSe você não puder pagar o salário diário de guarda-costas, todos eles vão embora e você perde a proteção imediatamente. \nA segurança da instalação (para boates, instalações de drogas, etc.) reduz a chance de ataques e incidentes naquele local específico. \nQuanto maior o seu nível de procurado, mais frequentemente você será atacado ou invadido. Uma melhor segurança compensa isso diretamente. \nOs membros da Crew podem dividir as funções de segurança para que vários locais sejam cobertos simultaneamente.';
+      'Compre coletes no Mercado Negro → Segurança: Colete de faca (7.500€) → Colete à prova de balas (50.000€) → Colete à prova de balas premium (125.000€) → Colete de placa AP (280.000€). Os calibres de rifle 5,56, 7,62 e .308 perfuram coletes normais, a menos que você use o colete AP. \nVocê só pode usar 1 colete por vez. Um colete danificado pode ser consertado pela metade do valor da condição faltante. A compra de outro colete substitui o atual e credita 40% do preço do colete antigo, escalonado por condição. \nCada tipo de colete reduz o dano recebido quando corresponde ao ataque: coletes de facadas param facas, coletes à prova de balas param balas normais e o colete de placa AP também impede tiros perfurantes. Uma incompatibilidade mantém apenas uma fração da defesa do colete. \nA armadura fica danificada após um ataque e perde eficácia. Quanto menor a condição, menos proteção sua armadura atual oferece. \nNa condição 0% sua armadura é destruída e desaparece completamente; você precisa comprar um novo conjunto para recuperar a proteção. \nOs guarda-costas são limitados a 10 no total em três qualidades: street muscle (+8 defesa, € 6.000 de aluguel, € 4.000/dia), padrão (+10, € 10.000 de aluguel, € 10.000/dia) e elite (+22, € 35.000 de aluguel, € 18.000/dia). Você pode dispensá-los a qualquer momento. \nSe você não puder pagar o salário diário combinado, todos os guarda-costas vão embora e você perde imediatamente a proteção deles. \nA segurança da instalação (para boates, instalações de drogas, etc.) reduz a chance de ataques e incidentes naquele local específico. \nQuanto maior o seu nível de procurado, mais frequentemente você será atacado ou invadido. Uma melhor segurança compensa isso diretamente. \nOs membros da Crew podem dividir as funções de segurança para que vários locais sejam cobertos simultaneamente.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Usa sempre pelo menos um colete anti-facada quando o nível de procurado for 2 ou superior: a poupança nas contas do hospital compensa rapidamente o preço de compra.\nVerifique o estado da sua armadura após cada ataque: um colete danificado fornece apenas parte da sua proteção original. \nMantenha apenas quantos guarda-costas você ainda puder pagar amanhã; equipes grandes tornam-se caras na manutenção diária rapidamente.\nA munição de espingarda (5.56, 7.62, .308) atravessa coletes normais; compra o colete placas AP se esses calibres forem usados contra ti.';
+      'Sempre use pelo menos um colete quando o Nível de Procurado for 2 ou superior: a economia nas contas do hospital compensa rapidamente o preço de compra. \nReparar um colete danificado em vez de comprar o mesmo novamente; verifique a condição após cada ataque. \nMunição de rifle (5,56, 7,62, 0,308) perfura coletes normais; compre o colete AP se esses calibres aparecerem contra você. \nMantenha apenas quantos guarda-costas você ainda puder pagar amanhã; os guardas de elite são os mais atingidos, mas o seu salário diário aumenta rapidamente.';
 
   @override
   String get helpTopicHospitalCategory => 'Recuperação';

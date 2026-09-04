@@ -779,15 +779,13 @@ Bob: â‚¬300K counter-hit
 
 ### Beschermingsopties
 
-**Bodyguards (â‚¬10K/stuk)**
-- +10 defense per bodyguard
-- Verhoogt win chance
+**Bodyguards (max 10, drie kwaliteiten)**
+- Straatwacht / standaard / elite: +8 / +10 / +22 defense
+- Dagloon per type; bij non-payment lopen ze allemaal weg
 
 **Armor Types**
-- Kevlar (â‚¬25K, +15 defense)
-- Combat (â‚¬50K, +30 defense, duurtste)
-- Tactical (â‚¬100K, +50 defense, rare)
-- Slijtage: -5% per 24 uur
+- Steekvest, kogelvrij, premium, AP-plaatvest (Zwarte Markt → Beveiliging)
+- Slijtage na aanvallen; repareren of inruilen bij upgrade
 
 **Premium Protection (Betaalde Dienst - â‚¬4.99 voor 24 uur)**
 - ENKEL MET ECHT GELD (niet in-game geld!)
@@ -838,33 +836,19 @@ Bob: â‚¬300K counter-hit
 ## Security & Bescherming
 
 ### Bodyguard System
-- **Kosten**: â‚¬10,000 per bodyguard
-- **Effect**: +10 defense per guard
-- **Schaal**: Unlimited (maar DIM returns)
-- **Maintenance**: Betaal maandelijks (automation)
+- **Limiet**: 10 lijfwachten in totaal (bestaande teams boven de limiet blijven, maar je kunt niet bijhuren tot je eronder zit)
+- **Straatwacht**: €6.000 aanschaf, +8 defense, €4.000/dag
+- **Standaard**: €10.000 aanschaf, +10 defense, €10.000/dag
+- **Elite**: €35.000 aanschaf, +22 defense, €18.000/dag
+- **Ontslaan**: per type, altijd mogelijk
+- **Maintenance**: gezamenlijk dagloon elke 24 uur; bij non-payment lopen alle lijfwachten weg
 
 ### Armor
-
-#### Kevlar Armor
-- **Cost**: â‚¬25,000
-- **Defense**: +15
-- **Durability**: 100%
-- **Wear rate**: -5% per 24h
-- **Repair cost**: â‚¬5,000
-
-#### Combat Armor
-- **Cost**: â‚¬50,000
-- **Defense**: +30
-- **Durability**: 100%
-- **Wear rate**: -5% per 24h
-- **Repair cost**: â‚¬10,000
-
-#### Tactical Armor
-- **Cost**: â‚¬100,000
-- **Defense**: +50
-- **Durability**: 100%
-- **Wear rate**: -7% per 24h (sneller slijt)
-- **Repair cost**: â‚¬15,000
+- Eén gedragen vest. Extra vesten liggen in huisopslag.
+- Shop: steekvest (€7.500, +22, alleen steek), kogelvrij (€50.000, +100), premium (€125.000, +155), AP-plaatvest (€280.000, +145, steek + kogels + AP).
+- Conditie daalt na aanvallen; op 0% verdwijnt het vest.
+- **Repareren**: 50% van de vestprijs × ontbrekende conditie.
+- **Inruil**: bij aankoop van een ander vest 40% van de oude prijs × huidige conditie, geen cash-terugbetaling.
 
 ### Protection Modes
 

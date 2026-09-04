@@ -7844,6 +7844,109 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eachGivesDefense => 'Each gives +10 defense';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense defense';
+  }
+
+  @override
+  String get repairArmor => 'Repair';
+
+  @override
+  String get armorRepaired => 'Vest repaired';
+
+  @override
+  String get couldNotRepairArmor => 'Could not repair vest';
+
+  @override
+  String get couldNotDismissBodyguard => 'Could not dismiss bodyguard';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Trade-in $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'Buying another vest credits part of your current vest, based on condition. Repairing a worn vest is cheaper than replacing it.';
+
+  @override
+  String get upgradeArmor => 'Upgrade';
+
+  @override
+  String get vestWeakVsStab => 'Weak vs stab';
+
+  @override
+  String get vestWeakVsBullets => 'Weak vs bullets';
+
+  @override
+  String get vestWeakVsAp => 'Weak vs AP';
+
+  @override
+  String get bodyguardStreet => 'Street muscle';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Cheap extra eyes. Lower defense, lower daily wage.';
+
+  @override
+  String get bodyguardStandard => 'Bodyguard';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Standard protection. +10 defense and a €10,000 daily wage.';
+
+  @override
+  String get bodyguardElite => 'Elite bodyguard';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Hardened closer. Higher defense and a steeper daily wage.';
+
+  @override
+  String get bodyguardDismiss => 'Dismiss';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap bodyguards';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Bodyguard limit reached';
+
+  @override
+  String bodyguardHired(String name) {
+    return 'Hired $name';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return 'Dismissed $name';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'Condition $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'You are not wearing a vest';
+
+  @override
+  String get securityErrorArmorNotDamaged =>
+      'This vest is already in full condition';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'You already have the maximum number of bodyguards';
+
+  @override
+  String get securityErrorInvalidBodyguardType => 'Invalid bodyguard type';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'You do not have that many bodyguards of this type';
+
+  @override
   String get lightArmor => 'Light Armor';
 
   @override
@@ -7952,7 +8055,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'You can only wear 1 armor at a time. A new armor always replaces your current one.';
+      'You can only wear 1 vest at a time. Repair a damaged vest, or buy another one and get a condition-based trade-in on the vest you replace.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15690,11 +15793,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Buy vests on Black Market → Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time; if you buy another vest it immediately replaces your current armor.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. Better match = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.';
+      'Buy vests on Black Market → Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time. A damaged vest can be repaired for half the missing-condition value. Buying another vest replaces the current one and credits 40% of the old vest price, scaled by condition.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. A mismatch keeps only a fraction of the vest defense.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 0% condition your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards are capped at 10 in total across three qualities: street muscle (+8 defense, €6,000 hire, €4,000/day), standard (+10, €10,000 hire, €10,000/day) and elite (+22, €35,000 hire, €18,000/day). You can dismiss them at any time.\nIf you cannot pay the combined daily wage, all bodyguards leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Always wear at least a stab vest when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nCheck your armor condition after every attack: a damaged vest only provides part of its original protection.\nRifle ammo (5.56, 7.62, .308) punches through normal vests; buy the AP plate vest if those calibers show up against you.\nOnly keep as many bodyguards as you can still afford tomorrow; large teams become expensive in daily upkeep quickly.';
+      'Always wear at least a stab vest when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nRepair a damaged vest instead of buying the same one again; check condition after every attack.\nRifle ammo (5.56, 7.62, .308) punches through normal vests; buy the AP plate vest if those calibers show up against you.\nOnly keep as many bodyguards as you can still afford tomorrow; elite guards hit hardest but their daily wage adds up fast.';
 
   @override
   String get helpTopicHospitalCategory => 'Recovery';

@@ -13924,6 +13924,174 @@ abstract class AppLocalizations {
   /// **'Each gives +10 defense'**
   String get eachGivesDefense;
 
+  /// No description provided for @eachGivesDefenseAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'+{defense} defense'**
+  String eachGivesDefenseAmount(String defense);
+
+  /// No description provided for @repairArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair'**
+  String get repairArmor;
+
+  /// No description provided for @armorRepaired.
+  ///
+  /// In en, this message translates to:
+  /// **'Vest repaired'**
+  String get armorRepaired;
+
+  /// No description provided for @couldNotRepairArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not repair vest'**
+  String get couldNotRepairArmor;
+
+  /// No description provided for @couldNotDismissBodyguard.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not dismiss bodyguard'**
+  String get couldNotDismissBodyguard;
+
+  /// No description provided for @vestTradeInCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade-in {amount}'**
+  String vestTradeInCredit(String amount);
+
+  /// No description provided for @vestTradeInHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buying another vest credits part of your current vest, based on condition. Repairing a worn vest is cheaper than replacing it.'**
+  String get vestTradeInHint;
+
+  /// No description provided for @upgradeArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get upgradeArmor;
+
+  /// No description provided for @vestWeakVsStab.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak vs stab'**
+  String get vestWeakVsStab;
+
+  /// No description provided for @vestWeakVsBullets.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak vs bullets'**
+  String get vestWeakVsBullets;
+
+  /// No description provided for @vestWeakVsAp.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak vs AP'**
+  String get vestWeakVsAp;
+
+  /// No description provided for @bodyguardStreet.
+  ///
+  /// In en, this message translates to:
+  /// **'Street muscle'**
+  String get bodyguardStreet;
+
+  /// No description provided for @bodyguardStreetDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheap extra eyes. Lower defense, lower daily wage.'**
+  String get bodyguardStreetDesc;
+
+  /// No description provided for @bodyguardStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Bodyguard'**
+  String get bodyguardStandard;
+
+  /// No description provided for @bodyguardStandardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard protection. +10 defense and a €10,000 daily wage.'**
+  String get bodyguardStandardDesc;
+
+  /// No description provided for @bodyguardElite.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite bodyguard'**
+  String get bodyguardElite;
+
+  /// No description provided for @bodyguardEliteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hardened closer. Higher defense and a steeper daily wage.'**
+  String get bodyguardEliteDesc;
+
+  /// No description provided for @bodyguardDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get bodyguardDismiss;
+
+  /// No description provided for @bodyguardCapLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} / {cap} bodyguards'**
+  String bodyguardCapLine(String used, String cap);
+
+  /// No description provided for @bodyguardCapReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Bodyguard limit reached'**
+  String get bodyguardCapReached;
+
+  /// No description provided for @bodyguardHired.
+  ///
+  /// In en, this message translates to:
+  /// **'Hired {name}'**
+  String bodyguardHired(String name);
+
+  /// No description provided for @bodyguardDismissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismissed {name}'**
+  String bodyguardDismissed(String name);
+
+  /// No description provided for @armorConditionPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition {percent}%'**
+  String armorConditionPercent(String percent);
+
+  /// No description provided for @securityErrorNoArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not wearing a vest'**
+  String get securityErrorNoArmor;
+
+  /// No description provided for @securityErrorArmorNotDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'This vest is already in full condition'**
+  String get securityErrorArmorNotDamaged;
+
+  /// No description provided for @securityErrorBodyguardCap.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have the maximum number of bodyguards'**
+  String get securityErrorBodyguardCap;
+
+  /// No description provided for @securityErrorInvalidBodyguardType.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid bodyguard type'**
+  String get securityErrorInvalidBodyguardType;
+
+  /// No description provided for @securityErrorNotEnoughBodyguards.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have that many bodyguards of this type'**
+  String get securityErrorNotEnoughBodyguards;
+
   /// No description provided for @lightArmor.
   ///
   /// In en, this message translates to:
@@ -14107,7 +14275,7 @@ abstract class AppLocalizations {
   /// No description provided for @armorOneAtATimeHint.
   ///
   /// In en, this message translates to:
-  /// **'You can only wear 1 armor at a time. A new armor always replaces your current one.'**
+  /// **'You can only wear 1 vest at a time. Repair a damaged vest, or buy another one and get a condition-based trade-in on the vest you replace.'**
   String get armorOneAtATimeHint;
 
   /// No description provided for @armorDefenseNowAtCondition.
@@ -27268,13 +27436,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSecurityHow.
   ///
   /// In en, this message translates to:
-  /// **'Buy vests on Black Market → Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time; if you buy another vest it immediately replaces your current armor.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. Better match = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.'**
+  /// **'Buy vests on Black Market → Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time. A damaged vest can be repaired for half the missing-condition value. Buying another vest replaces the current one and credits 40% of the old vest price, scaled by condition.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. A mismatch keeps only a fraction of the vest defense.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 0% condition your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards are capped at 10 in total across three qualities: street muscle (+8 defense, €6,000 hire, €4,000/day), standard (+10, €10,000 hire, €10,000/day) and elite (+22, €35,000 hire, €18,000/day). You can dismiss them at any time.\nIf you cannot pay the combined daily wage, all bodyguards leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.'**
   String get helpTopicSecurityHow;
 
   /// No description provided for @helpTopicSecurityTips.
   ///
   /// In en, this message translates to:
-  /// **'Always wear at least a stab vest when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nCheck your armor condition after every attack: a damaged vest only provides part of its original protection.\nRifle ammo (5.56, 7.62, .308) punches through normal vests; buy the AP plate vest if those calibers show up against you.\nOnly keep as many bodyguards as you can still afford tomorrow; large teams become expensive in daily upkeep quickly.'**
+  /// **'Always wear at least a stab vest when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nRepair a damaged vest instead of buying the same one again; check condition after every attack.\nRifle ammo (5.56, 7.62, .308) punches through normal vests; buy the AP plate vest if those calibers show up against you.\nOnly keep as many bodyguards as you can still afford tomorrow; elite guards hit hardest but their daily wage adds up fast.'**
   String get helpTopicSecurityTips;
 
   /// No description provided for @helpTopicHospitalCategory.

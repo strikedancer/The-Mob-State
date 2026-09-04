@@ -18,9 +18,22 @@ import { systemLogService } from './systemLogService';
 import fs from 'fs';
 import path from 'path';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
-
-const BODYGUARD_DAILY_UPKEEP = 10000;
-const BODYGUARD_DEFENSE = 10;
+import {
+  BODYGUARD_CAP,
+  BODYGUARD_TYPE_LIST,
+  armorNetPrice,
+  armorRepairCost,
+  armorTradeInCredit,
+  bodyguardDailyCost,
+  bodyguardDefense,
+  bodyguardTotal,
+  canHireBodyguards,
+  emptyBodyguardRoster,
+  isBodyguardTypeId,
+  normalizeBodyguardRoster,
+  type BodyguardRoster,
+  type BodyguardTypeId,
+} from './securityEconomy';
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 const MURDER_CASE_ACTIVITY_TYPE = 'HITLIST_MURDER_CASE';
 const MURDER_CASE_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -56,6 +69,8 @@ interface PlayerSecurityState {
   id: number;
   playerId: number;
   bodyguards: number;
+  bodyguardsStreet?: number | null;
+  bodyguardsElite?: number | null;
   bodyguardUpkeepDueAt: Date | null;
   armor: number;
   armorCondition: number;
@@ -836,6 +851,78 @@ function getArmorDefinition(armorId: string): SecurityArmorDefinition {
   return armor;
 }
 
+function rosterFromSecurity(security?: Pick<PlayerSecurityState, 'bodyguards' | 'bodyguardsStreet' | 'bodyguardsElite'> | null): BodyguardRoster {
+  return normalizeBodyguardRoster({
+    street: Number(security?.bodyguardsStreet || 0),
+    standard: Number(security?.bodyguards || 0),
+    elite: Number(security?.bodyguardsElite || 0),
+  });
+}
+
+function rosterWriteData(roster: BodyguardRoster) {
+  return {
+    bodyguards: roster.standard,
+    bodyguardsStreet: roster.street,
+    bodyguardsElite: roster.elite,
+  };
+}
+
+function wornArmorWeaknesses(definition?: SecurityArmorDefinition) {
+  return {
+    weakVsStab: definition?.resistsStab !== true,
+    weakVsBullets: definition?.resistsBallistic !== true,
+    weakVsAp: definition?.resistsArmorPiercing !== true,
+  };
+}
+
+function buildArmorCatalogQuote(
+  worn?: SecurityArmorDefinition,
+  condition = 100
+) {
+  const tradeInCredit =
+    worn && Number(worn.price || 0) > 0 ? armorTradeInCredit(worn.price, condition) : 0;
+  return listShopArmor().map((item) => {
+    const isCurrent = worn?.id === item.id;
+    const credit = !isCurrent && tradeInCredit > 0 ? tradeInCredit : 0;
+    const repairCost =
+      isCurrent && condition < 100 ? armorRepairCost(item.price, condition) : 0;
+    return {
+      ...item,
+      shopPrice: item.price,
+      tradeInCredit: credit,
+      netPrice: armorNetPrice(item.price, credit),
+      canRepair: repairCost > 0,
+      repairCost,
+    };
+  });
+}
+
+function emptySecurityStatus() {
+  return {
+    bodyguards: 0,
+    bodyguardsStreet: 0,
+    bodyguardsElite: 0,
+    bodyguardCounts: emptyBodyguardRoster(),
+    bodyguardDefense: 0,
+    bodyguardCap: BODYGUARD_CAP,
+    bodyguardSlotsUsed: 0,
+    canHireBodyguards: true,
+    armor: 0,
+    baseArmor: 0,
+    armorCondition: 100,
+    armorDamagePercent: 0,
+    armorType: null,
+    armorName: null,
+    armorRepairCost: 0,
+    armorTradeInCredit: 0,
+    armorWeaknesses: wornArmorWeaknesses(),
+    bodyguardDailyCost: 0,
+    bodyguardUpkeepDueAt: null,
+    bodyguardCatalog: BODYGUARD_TYPE_LIST,
+    armorCatalog: buildArmorCatalogQuote(),
+  };
+}
+
 function getArmorConditionValue(condition?: number | null): number {
   const normalized = typeof condition === 'number' ? condition : 100;
   return Math.max(0, Math.min(100, normalized));
@@ -906,11 +993,12 @@ async function settleBodyguardUpkeep(
   }
 
   const now = new Date();
-  let bodyguards = Number(security.bodyguards || 0);
+  let roster = rosterFromSecurity(security);
   let upkeepDueAt = security.bodyguardUpkeepDueAt ? new Date(security.bodyguardUpkeepDueAt) : null;
   let changedSecurity = false;
 
-  if (bodyguards <= 0) {
+  if (bodyguardTotal(roster) <= 0) {
+    roster = emptyBodyguardRoster();
     if (upkeepDueAt !== null) {
       upkeepDueAt = null;
       changedSecurity = true;
@@ -927,14 +1015,14 @@ async function settleBodyguardUpkeep(
     let balance = Number(player?.money || 0);
     let changedMoney = false;
 
-    while (bodyguards > 0 && upkeepDueAt && upkeepDueAt.getTime() <= now.getTime()) {
-      const cycleCost = bodyguards * BODYGUARD_DAILY_UPKEEP;
+    while (bodyguardTotal(roster) > 0 && upkeepDueAt && upkeepDueAt.getTime() <= now.getTime()) {
+      const cycleCost = bodyguardDailyCost(roster);
       if (balance >= cycleCost) {
         balance -= cycleCost;
         upkeepDueAt = new Date(upkeepDueAt.getTime() + DAY_IN_MS);
         changedMoney = true;
       } else {
-        bodyguards = 0;
+        roster = emptyBodyguardRoster();
         upkeepDueAt = null;
         changedSecurity = true;
         break;
@@ -953,16 +1041,16 @@ async function settleBodyguardUpkeep(
   if (!changedSecurity) {
     return {
       ...security,
+      ...rosterWriteData(roster),
       armorCondition: getArmorConditionValue(security.armorCondition),
       bodyguardUpkeepDueAt: upkeepDueAt,
-      bodyguards,
     };
   }
 
   return db.playerSecurity.update({
     where: { playerId },
     data: {
-      bodyguards,
+      ...rosterWriteData(roster),
       bodyguardUpkeepDueAt: upkeepDueAt,
       armorCondition: getArmorConditionValue(security.armorCondition),
     },
@@ -1355,7 +1443,7 @@ export async function attemptHit(
       weaponType: weaponData.type,
       ammoType: weaponData.ammoType,
     }) +
-      (targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE) *
+      bodyguardDefense(rosterFromSecurity(targetSecurity))) *
     (1 + targetBoosts.hitDefensePct);
   const targetPower = targetWeaponDamage * 5 + targetDefense;
   const armorConditionLoss = calculateArmorConditionLoss(attackerPower);
@@ -1813,7 +1901,7 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
         completedAt: now,
         reportValidUntil: validUntil,
         reportCountry: target.currentCountry,
-        reportBodyguards: security?.bodyguards || 0,
+        reportBodyguards: bodyguardTotal(rosterFromSecurity(security)),
         reportArmor: getEffectiveArmor(security),
         status: 'completed',
       };
@@ -1831,7 +1919,7 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
             completedAt = ${now},
             reportValidUntil = ${validUntil},
             reportCountry = ${target.currentCountry},
-            reportBodyguards = ${security?.bodyguards || 0},
+            reportBodyguards = ${bodyguardTotal(rosterFromSecurity(security))},
             reportArmor = ${getEffectiveArmor(security)}
         WHERE id = ${row.id}
       `;
@@ -2071,12 +2159,31 @@ export async function cancelHit(playerId: number, hitId: number): Promise<any> {
   return { success: true };
 }
 
-export async function buyBodyguards(playerId: number, quantity: number): Promise<any> {
-  const cost = quantity * 10000; // €10k per bodyguard
+export async function buyBodyguards(
+  playerId: number,
+  quantity: number,
+  typeId: string = 'standard'
+): Promise<any> {
+  const hireQuantity = Math.floor(Number(quantity || 0));
+  if (hireQuantity < 1) {
+    throw new Error('INVALID_QUANTITY');
+  }
+  if (!isBodyguardTypeId(typeId)) {
+    throw new Error('INVALID_BODYGUARD_TYPE');
+  }
+
+  const definition = BODYGUARD_TYPE_LIST.find((item) => item.id === typeId);
+  if (!definition) {
+    throw new Error('INVALID_BODYGUARD_TYPE');
+  }
 
   const security = await settleBodyguardUpkeep(prisma, playerId);
+  const roster = rosterFromSecurity(security);
+  if (!canHireBodyguards(roster, hireQuantity)) {
+    throw new Error('BODYGUARD_CAP_REACHED');
+  }
 
-  // Check if player can afford
+  const cost = definition.hireCost * hireQuantity;
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true },
@@ -2086,36 +2193,85 @@ export async function buyBodyguards(playerId: number, quantity: number): Promise
     throw new Error('INSUFFICIENT_MONEY');
   }
 
-  // Deduct cost
-  await prisma.player.update({
-    where: { id: playerId },
-    data: { money: player.money - cost },
-  });
+  const nextRoster = {
+    ...roster,
+    [typeId]: roster[typeId] + hireQuantity,
+  };
 
-  if (security) {
-    await prisma.playerSecurity.update({
-      where: { playerId },
-      data: {
-        bodyguards: security.bodyguards + quantity,
-        bodyguardUpkeepDueAt:
-          security.bodyguards > 0
-            ? security.bodyguardUpkeepDueAt
-            : new Date(Date.now() + DAY_IN_MS),
-      },
+  await prisma.$transaction(async (tx) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: player.money - cost },
     });
-  } else {
-    await prisma.playerSecurity.create({
-      data: {
-        playerId,
-        bodyguards: quantity,
-        bodyguardUpkeepDueAt: new Date(Date.now() + DAY_IN_MS),
-      },
-    });
-  }
+
+    if (security) {
+      await tx.playerSecurity.update({
+        where: { playerId },
+        data: {
+          ...rosterWriteData(nextRoster),
+          bodyguardUpkeepDueAt:
+            bodyguardTotal(roster) > 0
+              ? security.bodyguardUpkeepDueAt
+              : new Date(Date.now() + DAY_IN_MS),
+        },
+      });
+    } else {
+      await tx.playerSecurity.create({
+        data: {
+          playerId,
+          ...rosterWriteData(nextRoster),
+          bodyguardUpkeepDueAt: new Date(Date.now() + DAY_IN_MS),
+        },
+      });
+    }
+  });
 
   return {
     success: true,
-    message: `${quantity} bodyguards hired for €${cost}`,
+    type: typeId,
+    quantity: hireQuantity,
+    cost,
+    message: `${hireQuantity} ${typeId} bodyguards hired for €${cost}`,
+  };
+}
+
+export async function dismissBodyguards(
+  playerId: number,
+  quantity: number,
+  typeId: string
+): Promise<any> {
+  const dismissQuantity = Math.floor(Number(quantity || 0));
+  if (dismissQuantity < 1) {
+    throw new Error('INVALID_QUANTITY');
+  }
+  if (!isBodyguardTypeId(typeId)) {
+    throw new Error('INVALID_BODYGUARD_TYPE');
+  }
+
+  const security = await settleBodyguardUpkeep(prisma, playerId);
+  const roster = rosterFromSecurity(security);
+  if (!security || roster[typeId] < dismissQuantity) {
+    throw new Error('NOT_ENOUGH_BODYGUARDS');
+  }
+
+  const nextRoster = {
+    ...roster,
+    [typeId]: roster[typeId] - dismissQuantity,
+  };
+
+  await prisma.playerSecurity.update({
+    where: { playerId },
+    data: {
+      ...rosterWriteData(nextRoster),
+      bodyguardUpkeepDueAt: bodyguardTotal(nextRoster) > 0 ? security?.bodyguardUpkeepDueAt ?? null : null,
+    },
+  });
+
+  return {
+    success: true,
+    type: typeId,
+    quantity: dismissQuantity,
+    message: `${dismissQuantity} ${typeId} bodyguards dismissed`,
   };
 }
 
@@ -2142,82 +2298,150 @@ export async function buyArmor(playerId: number, armorId: string): Promise<any> 
     throw new Error('ARMOR_ALREADY_EQUIPPED');
   }
 
-  // Check if player can afford
+  const worn =
+    security?.armorType && Number(security.armor || 0) > 0
+      ? loadArmorDefinitions().find((item) => item.id === security.armorType)
+      : undefined;
+  const tradeInCredit =
+    worn && worn.id !== armorId
+      ? armorTradeInCredit(worn.price, currentArmorCondition)
+      : 0;
+  const netPrice = armorNetPrice(armor.price, tradeInCredit);
+
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true },
   });
 
-  if (!player || player.money < armor.price) {
+  if (!player || player.money < netPrice) {
     throw new Error('INSUFFICIENT_MONEY');
   }
 
-  // Deduct cost
-  await prisma.player.update({
-    where: { id: playerId },
-    data: { money: player.money - armor.price },
-  });
+  await prisma.$transaction(async (tx) => {
+    if (netPrice > 0) {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: player.money - netPrice },
+      });
+    }
 
-  // Update or create security
-  if (security) {
-    await prisma.playerSecurity.update({
-      where: { playerId },
-      data: {
-        armor: armor.armor,
-        armorCondition: 100,
-        armorType: armorId,
-      },
-    });
-  } else {
-    await prisma.playerSecurity.create({
-      data: {
-        playerId,
-        bodyguardUpkeepDueAt: null,
-        armor: armor.armor,
-        armorCondition: 100,
-        armorType: armorId,
-      },
-    });
-  }
+    const armorData = {
+      armor: armor.armor,
+      armorCondition: 100,
+      armorType: armorId,
+    };
+
+    if (security) {
+      await tx.playerSecurity.update({
+        where: { playerId },
+        data: armorData,
+      });
+    } else {
+      await tx.playerSecurity.create({
+        data: {
+          playerId,
+          bodyguardUpkeepDueAt: null,
+          ...armorData,
+        },
+      });
+    }
+  });
 
   return {
     success: true,
-    message: `${armor.name} purchased for €${armor.price}`,
+    paid: netPrice,
+    tradeInCredit,
+    replacedArmorType: worn && worn.id !== armorId ? worn.id : null,
+    message: `${armor.name} purchased for €${netPrice}`,
+  };
+}
+
+export async function repairArmor(playerId: number): Promise<any> {
+  await settleBodyguardUpkeep(prisma, playerId);
+
+  const security = await prisma.playerSecurity.findUnique({
+    where: { playerId },
+  });
+
+  if (!security || Number(security.armor || 0) <= 0 || !security.armorType) {
+    throw new Error('NO_ARMOR');
+  }
+
+  const condition = getArmorConditionValue(security.armorCondition);
+  if (condition >= 100) {
+    throw new Error('ARMOR_NOT_DAMAGED');
+  }
+
+  const definition = getArmorDefinition(security.armorType);
+  const cost = armorRepairCost(definition.price, condition);
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { money: true },
+  });
+
+  if (!player || player.money < cost) {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: player.money - cost },
+    });
+    await tx.playerSecurity.update({
+      where: { playerId },
+      data: { armorCondition: 100 },
+    });
+  });
+
+  return {
+    success: true,
+    cost,
+    armorType: security.armorType,
+    message: `${definition.name} repaired for €${cost}`,
   };
 }
 
 export async function getSecurityStatus(playerId: number): Promise<any> {
   const security = await settleBodyguardUpkeep(prisma, playerId);
-  const armorCatalog = listShopArmor();
-
   if (!security) {
-    return {
-      bodyguards: 0,
-      armor: 0,
-      baseArmor: 0,
-      armorCondition: 100,
-      armorDamagePercent: 0,
-      armorType: null,
-      armorName: null,
-      bodyguardDailyCost: 0,
-      bodyguardUpkeepDueAt: null,
-      armorCatalog,
-    };
+    return emptySecurityStatus();
   }
 
+  const roster = rosterFromSecurity(security);
   const armorCondition = security.armor > 0 ? getArmorConditionValue(security.armorCondition) : 100;
   const worn = security.armorType
     ? loadArmorDefinitions().find((item) => item.id === security.armorType)
     : undefined;
+  const tradeInCredit =
+    worn && Number(security.armor || 0) > 0
+      ? armorTradeInCredit(worn.price, armorCondition)
+      : 0;
+  const repairCost =
+    worn && Number(security.armor || 0) > 0 && armorCondition < 100
+      ? armorRepairCost(worn.price, armorCondition)
+      : 0;
+
   return {
     ...security,
+    ...rosterWriteData(roster),
     armor: getEffectiveArmor(security),
     baseArmor: security.armor,
     armorCondition,
     armorDamagePercent: security.armor > 0 ? 100 - armorCondition : 0,
+    armorType: security.armorType,
     armorName: worn?.name ?? security.armorType,
-    bodyguardDailyCost: security.bodyguards * BODYGUARD_DAILY_UPKEEP,
+    armorRepairCost: repairCost,
+    armorTradeInCredit: tradeInCredit,
+    armorWeaknesses: wornArmorWeaknesses(worn),
+    bodyguardCounts: roster,
+    bodyguardDefense: bodyguardDefense(roster),
+    bodyguardCap: BODYGUARD_CAP,
+    bodyguardSlotsUsed: bodyguardTotal(roster),
+    canHireBodyguards: canHireBodyguards(roster, 1),
+    bodyguardDailyCost: bodyguardDailyCost(roster),
     bodyguardUpkeepDueAt: security.bodyguardUpkeepDueAt?.toISOString() ?? null,
-    armorCatalog,
+    bodyguardCatalog: BODYGUARD_TYPE_LIST,
+    armorCatalog: buildArmorCatalogQuote(worn, armorCondition),
   };
 }

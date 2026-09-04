@@ -297,7 +297,8 @@ weaponDamage = weapon.damage * ammo.quality * hitChance;
 attackerPower = weaponDamage * ammoCount;
 
 // Target
-armorDefense = security.armor.rating + (security.bodyguards * 10);
+armorDefense = getCombatArmor(security, attack) + bodyguardDefense(roster);
+# roster = street/standard/elite counts; see security.md / securityEconomy.ts
 weaponDefense = target.weapon.damage * 5; // assume 5 ammo
 targetPower = weaponDefense + armorDefense;
 

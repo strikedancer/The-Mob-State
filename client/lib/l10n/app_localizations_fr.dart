@@ -7950,6 +7950,111 @@ class AppLocalizationsFr extends AppLocalizations {
   String get eachGivesDefense => 'Chacun donne +10 en défense';
 
   @override
+  String eachGivesDefenseAmount(String defense) {
+    return '+$defense défense';
+  }
+
+  @override
+  String get repairArmor => 'Réparation';
+
+  @override
+  String get armorRepaired => 'Gilet réparé';
+
+  @override
+  String get couldNotRepairArmor => 'Impossible de réparer le gilet';
+
+  @override
+  String get couldNotDismissBodyguard =>
+      'Impossible de renvoyer le garde du corps';
+
+  @override
+  String vestTradeInCredit(String amount) {
+    return 'Échange $amount';
+  }
+
+  @override
+  String get vestTradeInHint =>
+      'L’achat d’un autre gilet crédite une partie de votre gilet actuel, en fonction de son état. Réparer un gilet usé coûte moins cher que de le remplacer.';
+
+  @override
+  String get upgradeArmor => 'Mise à niveau';
+
+  @override
+  String get vestWeakVsStab => 'Faible contre coup de couteau';
+
+  @override
+  String get vestWeakVsBullets => 'Faible contre balles';
+
+  @override
+  String get vestWeakVsAp => 'Faible contre AP';
+
+  @override
+  String get bodyguardStreet => 'Muscle de la rue';
+
+  @override
+  String get bodyguardStreetDesc =>
+      'Yeux supplémentaires bon marché. Défense inférieure, salaire journalier inférieur.';
+
+  @override
+  String get bodyguardStandard => 'Garde du corps';
+
+  @override
+  String get bodyguardStandardDesc =>
+      'Protections standards. +10 de défense et 10 000 € de salaire journalier.';
+
+  @override
+  String get bodyguardElite => 'Garde du corps d\'élite';
+
+  @override
+  String get bodyguardEliteDesc =>
+      'Durci plus près. Une défense plus élevée et un salaire journalier plus élevé.';
+
+  @override
+  String get bodyguardDismiss => 'Rejeter';
+
+  @override
+  String bodyguardCapLine(String used, String cap) {
+    return '$used / $cap gardes du corps';
+  }
+
+  @override
+  String get bodyguardCapReached => 'Limite de garde du corps atteinte';
+
+  @override
+  String bodyguardHired(String name) {
+    return 'Embauché $name';
+  }
+
+  @override
+  String bodyguardDismissed(String name) {
+    return 'Rejeté $name';
+  }
+
+  @override
+  String armorConditionPercent(String percent) {
+    return 'État $percent%';
+  }
+
+  @override
+  String get securityErrorNoArmor => 'Vous ne portez pas de gilet';
+
+  @override
+  String get securityErrorArmorNotDamaged =>
+      'Ce gilet est déjà en parfait état';
+
+  @override
+  String get securityErrorBodyguardCap =>
+      'Vous disposez déjà du nombre maximum de gardes du corps';
+
+  @override
+  String get securityErrorInvalidBodyguardType =>
+      'Type de garde du corps invalide';
+
+  @override
+  String get securityErrorNotEnoughBodyguards =>
+      'Vous n\'avez pas beaucoup de gardes du corps de ce type';
+
+  @override
   String get lightArmor => 'Armure légère';
 
   @override
@@ -8059,7 +8164,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get armorOneAtATimeHint =>
-      'Vous ne pouvez porter qu’une seule armure à la fois. Une nouvelle armure remplace toujours votre armure actuelle.';
+      'Vous ne pouvez porter qu’un seul gilet à la fois. Réparez un gilet endommagé ou achetez-en un autre et obtenez un échange basé sur l\'état du gilet que vous remplacez.';
 
   @override
   String armorDefenseNowAtCondition(String defense, String percent) {
@@ -15884,11 +15989,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Les gilets s’achètent dans Sécurité : Gilet anti-coups (€7 500) → Gilet pare-balles (€50 000) → Gilet pare-balles premium (€125 000) → Gilet plaques AP (€280 000). Les calibres 5.56, 7.62 et .308 percent les gilets normaux sauf si vous portez le gilet plaques AP.\nVous ne pouvez porter qu’une seule armure à la fois ; si vous achetez un autre gilet, il remplace immédiatement votre armure actuelle. \nChaque classe d\'armure réduit les dégâts subis par attaque d\'un pourcentage fixe. Meilleure armure = plus de survie en PvP et en raids. \nL\'armure est endommagée après une attaque et perd de son efficacité. Plus la condition est basse, moins votre armure actuelle offre de protection. \nÀ 100 % de dégâts, votre armure est détruite et disparaît complètement ; vous devez acheter un nouvel ensemble pour retrouver la protection. \nLes gardes du corps donnent chacun +10 de défense, mais toutes les 24 heures, ils facturent un salaire journalier de 10 000 € par garde du corps. \nSi vous ne pouvez pas payer le salaire quotidien des gardes du corps, ils partent tous et vous perdez immédiatement leur protection. \nLa sécurité des installations (pour les discothèques, les centres de drogue, etc.) réduit les risques de raid et d\'incident à cet endroit spécifique. \nPlus votre niveau de recherche est élevé, plus vous êtes souvent attaqué ou attaqué. Une meilleure sécurité compense directement cela. \nLes membres de l\'équipage peuvent diviser les rôles de sécurité afin que plusieurs sites soient couverts simultanément.';
+      'Acheter des gilets au marché noir → Sécurité : Gilet anti-poignard (7 500 €) → Gilet pare-balles (50 000 €) → Gilet pare-balles premium (125 000 €) → Gilet plaque AP (280 000 €). Les calibres de fusil 5,56, 7,62 et .308 transpercent les gilets normaux à moins que vous ne portiez le gilet avec plaque AP. \nVous ne pouvez porter qu’un seul gilet à la fois. Un gilet endommagé peut être réparé pour la moitié de la valeur de l\'état manquant. L\'achat d\'un autre gilet remplace le gilet actuel et crédite 40 % du prix de l\'ancien gilet, échelonné selon l\'état. \nChaque type de gilet réduit les dégâts subis lorsqu\'il correspond à l\'attaque : les gilets anti-couteaux arrêtent les couteaux, les gilets pare-balles arrêtent les balles ordinaires et le gilet à plaques AP arrête également les balles perforantes. Une inadéquation ne conserve qu’une fraction de la défense du gilet. \nL\'armure est endommagée après une attaque et perd de son efficacité. Plus la condition est basse, moins votre armure actuelle offre de protection. \nÀ 0 % de condition, votre armure est détruite et disparaît complètement ; vous devez acheter un nouvel ensemble pour retrouver la protection. \nLes gardes du corps sont limités à 10 au total dans trois qualités : street muscle (+8 défense, 6 000 € d\'embauche, 4 000 €/jour), standard (+10, 10 000 € d\'embauche, 10 000 €/jour) et élite (+22, 35 000 € d\'embauche, 18 000 €/jour). Vous pouvez les révoquer à tout moment. \nSi vous ne pouvez pas payer le salaire journalier global, tous les gardes du corps partent et vous perdez immédiatement leur protection. \nLa sécurité des installations (pour les discothèques, les centres de drogue, etc.) réduit les risques de raid et d\'incident à cet endroit spécifique. \nPlus votre niveau de recherche est élevé, plus vous êtes souvent attaqué ou attaqué. Une meilleure sécurité compense directement cela. \nLes membres de l\'équipage peuvent diviser les rôles de sécurité afin que plusieurs sites soient couverts simultanément.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Portez toujours au moins un gilet anti-coups lorsque le niveau de recherche est de 2 ou plus : les économies sur les factures d’hôpital compensent rapidement le prix d’achat.\nVérifiez l\'état de votre armure après chaque attaque : un gilet endommagé n\'assure qu\'une partie de sa protection d\'origine. \nGardez seulement autant de gardes du corps que vous pouvez encore vous le permettre demain ; les grandes équipes deviennent rapidement coûteuses en entretien quotidien.\nLes munitions de fusil (5.56, 7.62, .308) percent les gilets normaux ; achetez le gilet plaques AP si ces calibres sont utilisés contre vous.';
+      'Portez toujours au moins un gilet pare-balles lorsque le niveau Wanted est de 2 ou plus : les économies sur les factures d\'hôpital compensent rapidement le prix d\'achat. \nRéparez un gilet endommagé au lieu de racheter le même ; vérifier l\'état après chaque attaque. \nLes munitions de fusil (5,56, 7,62, .308) traversent les gilets normaux ; achetez le gilet de plaque AP si ces calibres se présentent contre vous. \nGardez seulement autant de gardes du corps que vous pouvez encore vous le permettre demain ; Les gardes d\'élite sont les plus durement touchés, mais leur salaire journalier augmente rapidement.';
 
   @override
   String get helpTopicHospitalCategory => 'Récupération';
