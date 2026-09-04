@@ -7908,6 +7908,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String get veryStrongProtection => 'Bardzo silna ochrona';
 
   @override
+  String get stabVest => 'Kamizelka przeciwnożowa';
+
+  @override
+  String get stabVestDesc => 'Chroni przed nożami. Słaba przeciwko kulom.';
+
+  @override
+  String get bulletproofVestDesc =>
+      'Standardowa ochrona przed zwykłą amunicją.';
+
+  @override
+  String get bulletproofVestPremium => 'Kamizelka kuloodporna premium';
+
+  @override
+  String get bulletproofVestPremiumDesc =>
+      'Cięższe płyty przeciwko zwykłym strzałom.';
+
+  @override
+  String get ceramicApVest => 'Kamizelka płyt AP';
+
+  @override
+  String get ceramicApVestDesc =>
+      'Płyty ceramiczne przeciwko amunicji przeciwpancernej.';
+
+  @override
+  String get vestProtectsStab => 'Pchnięcie';
+
+  @override
+  String get vestProtectsBullets => 'Kule';
+
+  @override
+  String get vestProtectsAp => 'Przeciwpancerna';
+
+  @override
   String get tacticalSuit => 'Strój taktyczny';
 
   @override
@@ -15771,11 +15804,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Rodzaje zbroi o rosnącej sile: Lekki pancerz → Ciężki pancerz → Kamizelka kuloodporna → Strój taktyczny. \nMożesz nosić tylko 1 zbroję na raz; jeśli kupisz inną kamizelkę, natychmiast zastąpi ona twoją obecną zbroję. \nKażda klasa pancerza zmniejsza otrzymywane obrażenia przy ataku o ustalony procent. Lepszy pancerz = większe przeżycie w PvP i rajdach. \nPancerz ulega uszkodzeniu po ataku i traci skuteczność. Im niższy stan, tym mniejszą ochronę zapewnia twój obecny pancerz. \nPrzy 100% obrażeń twój pancerz ulega zniszczeniu i całkowicie znika; aby odzyskać ochronę, musisz kupić nowy zestaw. \nOchroniarze dają każdemu ochroniarzowi +10 do obrony, ale co 24 godziny pobierają 10 000 euro dziennej pensji za ochroniarza. \nJeśli nie jesteś w stanie zapłacić dziennej pensji ochroniarza, wszyscy oni odejdą, a ty natychmiast stracisz ich ochronę. \nBezpieczeństwo instalacji (Nightclub, apteka itp.) zmniejsza ryzyko nalotu i incydentu w tej konkretnej lokalizacji. \nIm wyższy poziom Poszukiwanego, tym częściej jesteś atakowany lub napadany. Lepsze bezpieczeństwo rekompensuje to bezpośrednio. \nCzłonkowie załogi mogą dzielić role zabezpieczeń, aby jednocześnie obsługiwać wiele lokalizacji.';
+      'Kamizelki kupujesz w Ochronie: Kamizelka przeciwnożowa (€7.500) → Kamizelka kuloodporna (€50.000) → Kamizelka kuloodporna premium (€125.000) → Kamizelka płyt AP (€280.000). Kalibry 5.56, 7.62 i .308 przebijają zwykłe kamizelki, chyba że nosisz kamizelkę płyt AP.\nMożesz nosić tylko 1 zbroję na raz; jeśli kupisz inną kamizelkę, natychmiast zastąpi ona twoją obecną zbroję. \nKażda klasa pancerza zmniejsza otrzymywane obrażenia przy ataku o ustalony procent. Lepszy pancerz = większe przeżycie w PvP i rajdach. \nPancerz ulega uszkodzeniu po ataku i traci skuteczność. Im niższy stan, tym mniejszą ochronę zapewnia twój obecny pancerz. \nPrzy 100% obrażeń twój pancerz ulega zniszczeniu i całkowicie znika; aby odzyskać ochronę, musisz kupić nowy zestaw. \nOchroniarze dają każdemu ochroniarzowi +10 do obrony, ale co 24 godziny pobierają 10 000 euro dziennej pensji za ochroniarza. \nJeśli nie jesteś w stanie zapłacić dziennej pensji ochroniarza, wszyscy oni odejdą, a ty natychmiast stracisz ich ochronę. \nBezpieczeństwo instalacji (Nightclub, apteka itp.) zmniejsza ryzyko nalotu i incydentu w tej konkretnej lokalizacji. \nIm wyższy poziom Poszukiwanego, tym częściej jesteś atakowany lub napadany. Lepsze bezpieczeństwo rekompensuje to bezpośrednio. \nCzłonkowie załogi mogą dzielić role zabezpieczeń, aby jednocześnie obsługiwać wiele lokalizacji.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Zawsze noś co najmniej lekką zbroję, gdy poziom poszukiwania wynosi 2 lub więcej: oszczędności na rachunkach szpitalnych szybko rekompensują cenę zakupu. \nSprawdzaj stan swojego pancerza po każdym ataku: uszkodzona kamizelka zapewnia tylko część swojej pierwotnej ochrony. \nZatrzymaj tylko tylu ochroniarzy, na ilu cię jutro będzie stać; duże zespoły szybko stają się kosztowne w codziennym utrzymaniu.';
+      'Zawsze noś co najmniej kamizelkę przeciwnożową, gdy poziom poszukiwania wynosi 2 lub więcej: oszczędności na rachunkach szpitalnych szybko rekompensują cenę zakupu.\nSprawdzaj stan swojego pancerza po każdym ataku: uszkodzona kamizelka zapewnia tylko część swojej pierwotnej ochrony. \nZatrzymaj tylko tylu ochroniarzy, na ilu cię jutro będzie stać; duże zespoły szybko stają się kosztowne w codziennym utrzymaniu.\nAmunicja karabinowa (5.56, 7.62, .308) przebija zwykłe kamizelki; kup kamizelkę płyt AP, jeśli te kalibry są używane przeciwko tobie.';
 
   @override
   String get helpTopicHospitalCategory => 'Powrót do zdrowia';

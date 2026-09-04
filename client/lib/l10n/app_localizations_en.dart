@@ -7846,10 +7846,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get strongProtection => 'Strong protection';
 
   @override
-  String get bulletproofVest => 'Bulletproof Vest';
+  String get bulletproofVest => 'Bulletproof vest';
 
   @override
   String get veryStrongProtection => 'Very strong protection';
+
+  @override
+  String get stabVest => 'Stab vest';
+
+  @override
+  String get stabVestDesc =>
+      'Stops knives and stab weapons. Weak against bullets.';
+
+  @override
+  String get bulletproofVestDesc =>
+      'Standard ballistic protection against regular ammo.';
+
+  @override
+  String get bulletproofVestPremium => 'Premium bulletproof vest';
+
+  @override
+  String get bulletproofVestPremiumDesc =>
+      'Heavier plates and more coverage against regular rounds.';
+
+  @override
+  String get ceramicApVest => 'AP plate vest';
+
+  @override
+  String get ceramicApVestDesc =>
+      'Ceramic plates that stop armor-piercing rounds.';
+
+  @override
+  String get vestProtectsStab => 'Stab';
+
+  @override
+  String get vestProtectsBullets => 'Bullets';
+
+  @override
+  String get vestProtectsAp => 'Armor-piercing';
 
   @override
   String get tacticalSuit => 'Tactical Outfit';
@@ -15646,11 +15680,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Armor types in ascending strength: Light Armor → Heavy Armor → Bulletproof Vest → Tactical Outfit.\nYou can only wear 1 armor at a time; if you buy another vest it immediately replaces your current armor.\nEach armor class reduces incoming damage per attack by a fixed percentage. Better armor = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.';
+      'Buy vests on Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time; if you buy another vest it immediately replaces your current armor.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. Better match = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Always carry at least Light Armor when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nCheck your armor condition after every attack: a damaged vest only provides part of its original protection.\nOnly keep as many bodyguards as you can still afford tomorrow; large teams become expensive in daily upkeep quickly.';
+      'Always wear at least a stab vest when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nCheck your armor condition after every attack: a damaged vest only provides part of its original protection.\nRifle ammo (5.56, 7.62, .308) punches through normal vests; buy the AP plate vest if those calibers show up against you.\nOnly keep as many bodyguards as you can still afford tomorrow; large teams become expensive in daily upkeep quickly.';
 
   @override
   String get helpTopicHospitalCategory => 'Recovery';

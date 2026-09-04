@@ -1,30 +1,79 @@
 [
   {
+    "id": "stab_vest",
+    "name": "Steekvest",
+    "price": 7500,
+    "armor": 22,
+    "description": "Beschermt tegen messen en steekwapens. Zwak tegen kogels.",
+    "shop": true,
+    "resistsStab": true,
+    "resistsBallistic": false,
+    "resistsArmorPiercing": false
+  },
+  {
+    "id": "bulletproof_vest",
+    "name": "Kogelvrij vest",
+    "price": 50000,
+    "armor": 100,
+    "description": "Standaard kogelwerende bescherming tegen gewone munitie.",
+    "shop": true,
+    "resistsStab": false,
+    "resistsBallistic": true,
+    "resistsArmorPiercing": false
+  },
+  {
+    "id": "bulletproof_vest_premium",
+    "name": "Kogelvrij vest premium",
+    "price": 125000,
+    "armor": 155,
+    "description": "Zwaardere platen en meer dekking tegen gewone kogels.",
+    "shop": true,
+    "resistsStab": false,
+    "resistsBallistic": true,
+    "resistsArmorPiercing": false
+  },
+  {
+    "id": "ceramic_ap_vest",
+    "name": "AP-plaatvest",
+    "price": 280000,
+    "armor": 145,
+    "description": "Keramische platen die pantserdoordringende kogels tegenhouden.",
+    "shop": true,
+    "resistsStab": true,
+    "resistsBallistic": true,
+    "resistsArmorPiercing": true
+  },
+  {
     "id": "light_armor",
     "name": "Licht Pantser",
     "price": 5000,
     "armor": 20,
-    "description": "Basis bescherming tegen kogels"
+    "description": "Oude basisbescherming",
+    "shop": false,
+    "resistsStab": true,
+    "resistsBallistic": false,
+    "resistsArmorPiercing": false
   },
   {
     "id": "heavy_armor",
     "name": "Zwaar Pantser",
     "price": 20000,
     "armor": 50,
-    "description": "Sterke bescherming tegen kogels"
-  },
-  {
-    "id": "bulletproof_vest",
-    "name": "Kogelvrij Vest",
-    "price": 50000,
-    "armor": 100,
-    "description": "Professionele kogelvrije bescherming"
+    "description": "Oude zware bescherming",
+    "shop": false,
+    "resistsStab": false,
+    "resistsBallistic": true,
+    "resistsArmorPiercing": false
   },
   {
     "id": "tactical_suit",
     "name": "Tactisch Pak",
     "price": 75000,
     "armor": 150,
-    "description": "Militair-grade bescherming"
+    "description": "Oude militaire bescherming",
+    "shop": false,
+    "resistsStab": false,
+    "resistsBallistic": true,
+    "resistsArmorPiercing": false
   }
 ]

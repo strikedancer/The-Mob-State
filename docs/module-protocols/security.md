@@ -15,6 +15,8 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Armor effectiveness must reflect wear: damaged armor gives less defense and disappears when fully destroyed.
 - Armor remains a single active slot: players can wear only one vest at a time, and replacement UX must make that explicit.
 - A vest may sit in residential property storage (`armor:{type}` + condition). Equipping from the house or dropping onto the avatar wears it; depositing the worn vest stores it and clears `armorType`. A second worn vest is refused (`ARMOR_ALREADY_EQUIPPED`). Without a vest, `armorType` is empty.
+- Shop catalog lives in `backend/content/security.json` (`shop: true`). Current buyable types: `stab_vest` (€7,500, stab only), `bulletproof_vest` (€50,000, regular bullets), `bulletproof_vest_premium` (€125,000, stronger regular bullets), `ceramic_ap_vest` (€280,000, stab + bullets + armor-piercing). Legacy IDs (`light_armor`, `heavy_armor`, `tactical_suit`) stay wearable if already owned but are not sold.
+- Combat uses type match, not only raw armor: melee checks `resistsStab`, regular ammo checks `resistsBallistic`, and `556mm` / `762mm` / `308` (`armorPiercing` in `ammo.json`) check `resistsArmorPiercing`. A mismatch keeps only a fraction of the vest defense.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?

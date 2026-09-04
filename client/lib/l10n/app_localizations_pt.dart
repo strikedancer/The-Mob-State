@@ -7900,6 +7900,37 @@ class AppLocalizationsPt extends AppLocalizations {
   String get veryStrongProtection => 'Proteção muito forte';
 
   @override
+  String get stabVest => 'Colete anti-facada';
+
+  @override
+  String get stabVestDesc => 'Protege contra facas. Fraco contra balas.';
+
+  @override
+  String get bulletproofVestDesc => 'Proteção padrão contra munição comum.';
+
+  @override
+  String get bulletproofVestPremium => 'Colete à prova de balas premium';
+
+  @override
+  String get bulletproofVestPremiumDesc =>
+      'Placas mais pesadas contra tiros comuns.';
+
+  @override
+  String get ceramicApVest => 'Colete placas AP';
+
+  @override
+  String get ceramicApVestDesc => 'Placas cerâmicas contra munição perfurante.';
+
+  @override
+  String get vestProtectsStab => 'Facada';
+
+  @override
+  String get vestProtectsBullets => 'Balas';
+
+  @override
+  String get vestProtectsAp => 'Perfurante';
+
+  @override
   String get tacticalSuit => 'Roupa Tática';
 
   @override
@@ -15768,11 +15799,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Tipos de armadura em força ascendente: Armadura Leve → Armadura Pesada → Colete à Prova de Balas → Roupa Tática. \nVocê só pode usar 1 armadura por vez; se você comprar outro colete, ele substituirá imediatamente sua armadura atual. \nCada classe de armadura reduz o dano recebido por ataque em uma porcentagem fixa. Melhor armadura = mais sobrevivência em PvP e ataques. \nA armadura fica danificada após um ataque e perde eficácia. Quanto menor a condição, menos proteção sua armadura atual oferece. \nCom 100% de dano sua armadura é destruída e desaparece completamente; você precisa comprar um novo conjunto para recuperar a proteção. \nOs guarda-costas dão +10 de defesa cada, mas a cada 24 horas cobram um salário diário de € 10.000 por guarda-costas. \nSe você não puder pagar o salário diário de guarda-costas, todos eles vão embora e você perde a proteção imediatamente. \nA segurança da instalação (para boates, instalações de drogas, etc.) reduz a chance de ataques e incidentes naquele local específico. \nQuanto maior o seu nível de procurado, mais frequentemente você será atacado ou invadido. Uma melhor segurança compensa isso diretamente. \nOs membros da Crew podem dividir as funções de segurança para que vários locais sejam cobertos simultaneamente.';
+      'Os coletes compram-se em Segurança: Colete anti-facada (€7.500) → Colete à prova de balas (€50.000) → Colete à prova de balas premium (€125.000) → Colete placas AP (€280.000). Os calibres 5.56, 7.62 e .308 atravessam coletes normais, salvo se usares o colete placas AP.\nVocê só pode usar 1 armadura por vez; se você comprar outro colete, ele substituirá imediatamente sua armadura atual. \nCada classe de armadura reduz o dano recebido por ataque em uma porcentagem fixa. Melhor armadura = mais sobrevivência em PvP e ataques. \nA armadura fica danificada após um ataque e perde eficácia. Quanto menor a condição, menos proteção sua armadura atual oferece. \nCom 100% de dano sua armadura é destruída e desaparece completamente; você precisa comprar um novo conjunto para recuperar a proteção. \nOs guarda-costas dão +10 de defesa cada, mas a cada 24 horas cobram um salário diário de € 10.000 por guarda-costas. \nSe você não puder pagar o salário diário de guarda-costas, todos eles vão embora e você perde a proteção imediatamente. \nA segurança da instalação (para boates, instalações de drogas, etc.) reduz a chance de ataques e incidentes naquele local específico. \nQuanto maior o seu nível de procurado, mais frequentemente você será atacado ou invadido. Uma melhor segurança compensa isso diretamente. \nOs membros da Crew podem dividir as funções de segurança para que vários locais sejam cobertos simultaneamente.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Sempre carregue pelo menos armadura leve quando o nível de procurado for 2 ou superior: a economia nas contas do hospital compensa rapidamente o preço de compra. \nVerifique o estado da sua armadura após cada ataque: um colete danificado fornece apenas parte da sua proteção original. \nMantenha apenas quantos guarda-costas você ainda puder pagar amanhã; equipes grandes tornam-se caras na manutenção diária rapidamente.';
+      'Usa sempre pelo menos um colete anti-facada quando o nível de procurado for 2 ou superior: a poupança nas contas do hospital compensa rapidamente o preço de compra.\nVerifique o estado da sua armadura após cada ataque: um colete danificado fornece apenas parte da sua proteção original. \nMantenha apenas quantos guarda-costas você ainda puder pagar amanhã; equipes grandes tornam-se caras na manutenção diária rapidamente.\nA munição de espingarda (5.56, 7.62, .308) atravessa coletes normais; compra o colete placas AP se esses calibres forem usados contra ti.';
 
   @override
   String get helpTopicHospitalCategory => 'Recuperação';

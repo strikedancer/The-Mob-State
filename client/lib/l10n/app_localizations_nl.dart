@@ -7885,10 +7885,44 @@ class AppLocalizationsNl extends AppLocalizations {
   String get strongProtection => 'Sterke bescherming';
 
   @override
-  String get bulletproofVest => 'Kogelvrij Vest';
+  String get bulletproofVest => 'Kogelvrij vest';
 
   @override
   String get veryStrongProtection => 'Zeer sterke bescherming';
+
+  @override
+  String get stabVest => 'Steekvest';
+
+  @override
+  String get stabVestDesc =>
+      'Houdt messen en steekwapens tegen. Zwak tegen kogels.';
+
+  @override
+  String get bulletproofVestDesc =>
+      'Standaard kogelwerende bescherming tegen gewone munitie.';
+
+  @override
+  String get bulletproofVestPremium => 'Kogelvrij vest premium';
+
+  @override
+  String get bulletproofVestPremiumDesc =>
+      'Zwaardere platen en meer dekking tegen gewone kogels.';
+
+  @override
+  String get ceramicApVest => 'AP-plaatvest';
+
+  @override
+  String get ceramicApVestDesc =>
+      'Keramische platen die pantserdoordringende kogels tegenhouden.';
+
+  @override
+  String get vestProtectsStab => 'Steek';
+
+  @override
+  String get vestProtectsBullets => 'Kogels';
+
+  @override
+  String get vestProtectsAp => 'Pantserdoordringend';
 
   @override
   String get tacticalSuit => 'Tactische Outfit';
@@ -15685,11 +15719,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Armor-types in oplopende sterkte: Lichte Armor → Zware Armor → Kogelvrij Vest → Tactische Outfit.\nJe kunt maar 1 armor tegelijk dragen; koop je een ander vest, dan vervangt dat direct je huidige armor.\nElke armor-klasse verlaagt inkomende schade per aanval met een vast percentage. Betere armor = meer overleving bij PvP en raids.\nArmor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.\nBij 100% schade is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.\nLijfwachten geven elk +10 verdediging, maar kosten elke 24 uur €10.000 per lijfwacht aan systeemloon.\nKun je het dagloon van je lijfwachten niet meer betalen, dan lopen ze allemaal weg en verlies je die verdediging direct.\nInstallatiebeveiliging (voor nightclub, drugs-faciliteit, etc.) verlaagt kans op raids en incidenten bij die locatie.\nHoe hoger je Wanted Level hoe vaker je wordt aangevallen of geraided. Betere beveiliging compenseert dit direct.\nCrew-leden kunnen beveiligingsrollen verdelen zodat meerdere locaties gelijktijdig gedekt zijn.';
+      'Vesten koop je bij Beveiliging: Steekvest (€7.500) → Kogelvrij vest (€50.000) → Kogelvrij vest premium (€125.000) → AP-plaatvest (€280.000). Geweerkalibers 5.56, 7.62 en .308 gaan door gewone vesten heen, tenzij je het AP-plaatvest draagt.\nJe kunt maar 1 vest tegelijk dragen; koop je een ander vest, dan vervangt dat direct je huidige armor.\nElk vesttype verlaagt inkomende schade als het bij de aanval past: steekvesten houden messen tegen, kogelvrije vesten houden gewone kogels tegen, en het AP-plaatvest houdt ook pantserdoordringende kogels tegen. Betere match = meer overleving bij PvP en raids.\nArmor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.\nBij 100% schade is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.\nLijfwachten geven elk +10 verdediging, maar kosten elke 24 uur €10.000 per lijfwacht aan systeemloon.\nKun je het dagloon van je lijfwachten niet meer betalen, dan lopen ze allemaal weg en verlies je die verdediging direct.\nInstallatiebeveiliging (voor nightclub, drugs-faciliteit, etc.) verlaagt kans op raids en incidenten bij die locatie.\nHoe hoger je Wanted Level hoe vaker je wordt aangevallen of geraided. Betere beveiliging compenseert dit direct.\nCrew-leden kunnen beveiligingsrollen verdelen zodat meerdere locaties gelijktijdig gedekt zijn.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Draag altijd minimaal Lichte Armor als je Wanted Level 2 of hoger is: besparing op ziekenhuisrekeningen compenseert de aanschafprijs snel.\nControleer na elke aanval je armor-conditie: een beschadigd vest geeft nog maar een deel van de originele bescherming.\nNeem alleen zoveel lijfwachten als je ook morgen nog kunt betalen; hoge aantallen worden snel duur in dagelijks onderhoud.';
+      'Draag altijd minimaal een steekvest als je Wanted Level 2 of hoger is: besparing op ziekenhuisrekeningen compenseert de aanschafprijs snel.\nControleer na elke aanval je armor-conditie: een beschadigd vest geeft nog maar een deel van de originele bescherming.\nGeweermunitie (5.56, 7.62, .308) gaat door gewone vesten heen; koop het AP-plaatvest als die kalibers tegen je gebruikt worden.\nNeem alleen zoveel lijfwachten als je ook morgen nog kunt betalen; hoge aantallen worden snel duur in dagelijks onderhoud.';
 
   @override
   String get helpTopicHospitalCategory => 'Recovery';

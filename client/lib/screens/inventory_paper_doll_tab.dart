@@ -62,6 +62,31 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     'safehouse',
   };
 
+  String _armorDisplayName(
+    AppLocalizations l10n,
+    String armorType,
+    String? fallback,
+  ) {
+    switch (armorType) {
+      case 'stab_vest':
+        return l10n.stabVest;
+      case 'bulletproof_vest':
+        return l10n.bulletproofVest;
+      case 'bulletproof_vest_premium':
+        return l10n.bulletproofVestPremium;
+      case 'ceramic_ap_vest':
+        return l10n.ceramicApVest;
+      case 'light_armor':
+        return l10n.lightArmor;
+      case 'heavy_armor':
+        return l10n.heavyArmor;
+      case 'tactical_suit':
+        return l10n.tacticalSuit;
+      default:
+        return (fallback != null && fallback.isNotEmpty) ? fallback : armorType;
+    }
+  }
+
   String _toolAssetPath(String toolId) {
     // Asset naming convention is usually: <toolId>_tool.png
     // One legacy asset is produced with an extra .png suffix.
@@ -159,6 +184,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       }
 
       InventoryGridItem? armor;
+      if (!mounted) return;
       if (securityRes.statusCode == 200) {
         final data = jsonDecode(securityRes.body);
         final security = data['security'] ?? data;
@@ -172,7 +198,11 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           armor = InventoryGridItem(
             kind: InventoryItemKind.armor,
             id: armorType,
-            name: armorType,
+            name: _armorDisplayName(
+              AppLocalizations.of(context)!,
+              armorType,
+              security['armorName']?.toString(),
+            ),
             quantity: 1,
             condition: (security['armorCondition'] as num?)?.toInt(),
             zone: InventoryZone.equippedArmor,

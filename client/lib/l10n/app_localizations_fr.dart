@@ -7958,6 +7958,40 @@ class AppLocalizationsFr extends AppLocalizations {
   String get veryStrongProtection => 'Protection très forte';
 
   @override
+  String get stabVest => 'Gilet anti-coups';
+
+  @override
+  String get stabVestDesc =>
+      'Protège contre les couteaux. Faible contre les balles.';
+
+  @override
+  String get bulletproofVestDesc =>
+      'Protection standard contre les munitions ordinaires.';
+
+  @override
+  String get bulletproofVestPremium => 'Gilet pare-balles premium';
+
+  @override
+  String get bulletproofVestPremiumDesc =>
+      'Plaques plus lourdes contre les tirs ordinaires.';
+
+  @override
+  String get ceramicApVest => 'Gilet plaques AP';
+
+  @override
+  String get ceramicApVestDesc =>
+      'Plaques céramiques contre les munitions perforantes.';
+
+  @override
+  String get vestProtectsStab => 'Coups';
+
+  @override
+  String get vestProtectsBullets => 'Balles';
+
+  @override
+  String get vestProtectsAp => 'Perforant';
+
+  @override
   String get tacticalSuit => 'Tenue tactique';
 
   @override
@@ -15840,11 +15874,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Types d\'armure par ordre croissant de force : Armure légère → Armure lourde → Gilet pare-balles → Tenue tactique. \nVous ne pouvez porter qu’une seule armure à la fois ; si vous achetez un autre gilet, il remplace immédiatement votre armure actuelle. \nChaque classe d\'armure réduit les dégâts subis par attaque d\'un pourcentage fixe. Meilleure armure = plus de survie en PvP et en raids. \nL\'armure est endommagée après une attaque et perd de son efficacité. Plus la condition est basse, moins votre armure actuelle offre de protection. \nÀ 100 % de dégâts, votre armure est détruite et disparaît complètement ; vous devez acheter un nouvel ensemble pour retrouver la protection. \nLes gardes du corps donnent chacun +10 de défense, mais toutes les 24 heures, ils facturent un salaire journalier de 10 000 € par garde du corps. \nSi vous ne pouvez pas payer le salaire quotidien des gardes du corps, ils partent tous et vous perdez immédiatement leur protection. \nLa sécurité des installations (pour les discothèques, les centres de drogue, etc.) réduit les risques de raid et d\'incident à cet endroit spécifique. \nPlus votre niveau de recherche est élevé, plus vous êtes souvent attaqué ou attaqué. Une meilleure sécurité compense directement cela. \nLes membres de l\'équipage peuvent diviser les rôles de sécurité afin que plusieurs sites soient couverts simultanément.';
+      'Les gilets s’achètent dans Sécurité : Gilet anti-coups (€7 500) → Gilet pare-balles (€50 000) → Gilet pare-balles premium (€125 000) → Gilet plaques AP (€280 000). Les calibres 5.56, 7.62 et .308 percent les gilets normaux sauf si vous portez le gilet plaques AP.\nVous ne pouvez porter qu’une seule armure à la fois ; si vous achetez un autre gilet, il remplace immédiatement votre armure actuelle. \nChaque classe d\'armure réduit les dégâts subis par attaque d\'un pourcentage fixe. Meilleure armure = plus de survie en PvP et en raids. \nL\'armure est endommagée après une attaque et perd de son efficacité. Plus la condition est basse, moins votre armure actuelle offre de protection. \nÀ 100 % de dégâts, votre armure est détruite et disparaît complètement ; vous devez acheter un nouvel ensemble pour retrouver la protection. \nLes gardes du corps donnent chacun +10 de défense, mais toutes les 24 heures, ils facturent un salaire journalier de 10 000 € par garde du corps. \nSi vous ne pouvez pas payer le salaire quotidien des gardes du corps, ils partent tous et vous perdez immédiatement leur protection. \nLa sécurité des installations (pour les discothèques, les centres de drogue, etc.) réduit les risques de raid et d\'incident à cet endroit spécifique. \nPlus votre niveau de recherche est élevé, plus vous êtes souvent attaqué ou attaqué. Une meilleure sécurité compense directement cela. \nLes membres de l\'équipage peuvent diviser les rôles de sécurité afin que plusieurs sites soient couverts simultanément.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Emportez toujours au moins une armure légère lorsque le niveau de recherche est de 2 ou plus : les économies sur les factures d\'hôpital compensent rapidement le prix d\'achat. \nVérifiez l\'état de votre armure après chaque attaque : un gilet endommagé n\'assure qu\'une partie de sa protection d\'origine. \nGardez seulement autant de gardes du corps que vous pouvez encore vous le permettre demain ; les grandes équipes deviennent rapidement coûteuses en entretien quotidien.';
+      'Portez toujours au moins un gilet anti-coups lorsque le niveau de recherche est de 2 ou plus : les économies sur les factures d’hôpital compensent rapidement le prix d’achat.\nVérifiez l\'état de votre armure après chaque attaque : un gilet endommagé n\'assure qu\'une partie de sa protection d\'origine. \nGardez seulement autant de gardes du corps que vous pouvez encore vous le permettre demain ; les grandes équipes deviennent rapidement coûteuses en entretien quotidien.\nLes munitions de fusil (5.56, 7.62, .308) percent les gilets normaux ; achetez le gilet plaques AP si ces calibres sont utilisés contre vous.';
 
   @override
   String get helpTopicHospitalCategory => 'Récupération';

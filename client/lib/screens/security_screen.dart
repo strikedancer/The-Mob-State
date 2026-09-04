@@ -20,9 +20,9 @@ class _SecurityScreenState extends State<SecurityScreen> {
   static const Color _activeArmorMutedText = Color(0xFFD6E6D1);
   dynamic _securityStatus;
   bool _isLoading = false;
+  List<Map<String, dynamic>> _armorCatalog = [];
 
-  // Armor types
-  late final List<Map<String, dynamic>> armorTypes;
+  List<Map<String, dynamic>> get armorTypes => _localizedArmorTypes();
 
   @override
   void initState() {
@@ -30,38 +30,102 @@ class _SecurityScreenState extends State<SecurityScreen> {
     _loadSecurityStatus();
   }
 
-  void _initializeArmorTypes() {
+  String _armorName(AppLocalizations l10n, String id, String fallback) {
+    switch (id) {
+      case 'stab_vest':
+        return l10n.stabVest;
+      case 'bulletproof_vest':
+        return l10n.bulletproofVest;
+      case 'bulletproof_vest_premium':
+        return l10n.bulletproofVestPremium;
+      case 'ceramic_ap_vest':
+        return l10n.ceramicApVest;
+      case 'light_armor':
+        return l10n.lightArmor;
+      case 'heavy_armor':
+        return l10n.heavyArmor;
+      case 'tactical_suit':
+        return l10n.tacticalSuit;
+      default:
+        return fallback;
+    }
+  }
+
+  String _armorDescription(AppLocalizations l10n, String id, String fallback) {
+    switch (id) {
+      case 'stab_vest':
+        return l10n.stabVestDesc;
+      case 'bulletproof_vest':
+        return l10n.bulletproofVestDesc;
+      case 'bulletproof_vest_premium':
+        return l10n.bulletproofVestPremiumDesc;
+      case 'ceramic_ap_vest':
+        return l10n.ceramicApVestDesc;
+      default:
+        return fallback;
+    }
+  }
+
+  List<Map<String, dynamic>> _localizedArmorTypes() {
     final l10n = AppLocalizations.of(context)!;
-    armorTypes = [
-      {
-        'id': 'light_armor',
-        'name': l10n.lightArmor,
-        'description': l10n.basicProtection,
-        'price': 5000,
-        'armor': 20,
-      },
-      {
-        'id': 'heavy_armor',
-        'name': l10n.heavyArmor,
-        'description': l10n.strongProtection,
-        'price': 20000,
-        'armor': 50,
-      },
-      {
-        'id': 'bulletproof_vest',
-        'name': l10n.bulletproofVest,
-        'description': l10n.veryStrongProtection,
-        'price': 50000,
-        'armor': 100,
-      },
-      {
-        'id': 'tactical_suit',
-        'name': l10n.tacticalSuit,
-        'description': l10n.premiumProtection,
-        'price': 75000,
-        'armor': 150,
-      },
-    ];
+    final source = _armorCatalog.isNotEmpty
+        ? _armorCatalog
+        : <Map<String, dynamic>>[
+            {
+              'id': 'stab_vest',
+              'name': l10n.stabVest,
+              'description': l10n.stabVestDesc,
+              'price': 7500,
+              'armor': 22,
+              'resistsStab': true,
+              'resistsBallistic': false,
+              'resistsArmorPiercing': false,
+            },
+            {
+              'id': 'bulletproof_vest',
+              'name': l10n.bulletproofVest,
+              'description': l10n.bulletproofVestDesc,
+              'price': 50000,
+              'armor': 100,
+              'resistsStab': false,
+              'resistsBallistic': true,
+              'resistsArmorPiercing': false,
+            },
+            {
+              'id': 'bulletproof_vest_premium',
+              'name': l10n.bulletproofVestPremium,
+              'description': l10n.bulletproofVestPremiumDesc,
+              'price': 125000,
+              'armor': 155,
+              'resistsStab': false,
+              'resistsBallistic': true,
+              'resistsArmorPiercing': false,
+            },
+            {
+              'id': 'ceramic_ap_vest',
+              'name': l10n.ceramicApVest,
+              'description': l10n.ceramicApVestDesc,
+              'price': 280000,
+              'armor': 145,
+              'resistsStab': true,
+              'resistsBallistic': true,
+              'resistsArmorPiercing': true,
+            },
+          ];
+    return source
+        .map((row) {
+          final id = '${row['id']}';
+          return {
+            ...row,
+            'name': _armorName(l10n, id, '${row['name'] ?? id}'),
+            'description': _armorDescription(
+              l10n,
+              id,
+              '${row['description'] ?? ''}',
+            ),
+          };
+        })
+        .toList();
   }
 
   String _securityBuyFailureMessage(
@@ -107,12 +171,6 @@ class _SecurityScreenState extends State<SecurityScreen> {
     return '$day/$month $hour:$minute';
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _initializeArmorTypes();
-  }
-
   Future<void> _loadSecurityStatus() async {
     setState(() => _isLoading = true);
     try {
@@ -121,6 +179,13 @@ class _SecurityScreenState extends State<SecurityScreen> {
       if (data['success'] == true) {
         setState(() {
           _securityStatus = data['security'];
+          final catalog = data['security']?['armorCatalog'];
+          if (catalog is List) {
+            _armorCatalog = catalog
+                .whereType<Map>()
+                .map((row) => Map<String, dynamic>.from(row))
+                .toList();
+          }
         });
       }
     } catch (e) {
@@ -519,19 +584,22 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(
+                                    Expanded(
+                                      child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
+                                            Flexible(
+                                              child: Text(
                                               armor['name'],
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
                                                 color: primaryTextColor,
                                               ),
+                                            ),
                                             ),
                                             if (isCurrentArmor)
                                               Padding(
@@ -553,7 +621,30 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                             color: secondaryTextColor,
                                           ),
                                         ),
+                                        if (armor['resistsStab'] == true ||
+                                            armor['resistsBallistic'] == true ||
+                                            armor['resistsArmorPiercing'] ==
+                                                true) ...[
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            [
+                                              if (armor['resistsStab'] == true)
+                                                l10n.vestProtectsStab,
+                                              if (armor['resistsBallistic'] ==
+                                                  true)
+                                                l10n.vestProtectsBullets,
+                                              if (armor['resistsArmorPiercing'] ==
+                                                  true)
+                                                l10n.vestProtectsAp,
+                                            ].join(' · '),
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: secondaryTextColor,
+                                            ),
+                                          ),
+                                        ],
                                       ],
+                                    ),
                                     ),
                                     Column(
                                       crossAxisAlignment:

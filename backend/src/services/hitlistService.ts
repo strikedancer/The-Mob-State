@@ -7,6 +7,7 @@
 import prisma from '../lib/prisma';
 import { getXPForRank } from '../config';
 import { ammoFactoryService } from './ammoFactoryService';
+import { ammoService } from './ammoService';
 import weaponService from './weaponService';
 import { weaponSelectionService } from './weaponSelectionService';
 import { directMessageService } from './directMessageService';
@@ -45,6 +46,10 @@ interface SecurityArmorDefinition {
   price: number;
   armor: number;
   description: string;
+  shop?: boolean;
+  resistsStab?: boolean;
+  resistsBallistic?: boolean;
+  resistsArmorPiercing?: boolean;
 }
 
 interface PlayerSecurityState {
@@ -849,6 +854,41 @@ function getEffectiveArmor(
   );
 }
 
+function listShopArmor(): SecurityArmorDefinition[] {
+  return loadArmorDefinitions().filter((item) => item.shop !== false);
+}
+
+function getCombatArmor(
+  security?: Pick<PlayerSecurityState, 'armor' | 'armorCondition' | 'armorType'> | null,
+  options?: { weaponType?: string; ammoType?: string },
+): number {
+  const base = getEffectiveArmor(security);
+  if (!security?.armorType || base <= 0) {
+    return 0;
+  }
+
+  const definition = loadArmorDefinitions().find((item) => item.id === security.armorType);
+  const resistsStab = definition?.resistsStab === true;
+  const resistsBallistic = definition?.resistsBallistic !== false;
+  const resistsAp = definition?.resistsArmorPiercing === true;
+  const isMelee = options?.weaponType === 'melee';
+  const ammoDef = options?.ammoType
+    ? ammoService.getAmmoDefinition(options.ammoType)
+    : undefined;
+  const isAp = !isMelee && ammoDef?.armorPiercing === true;
+
+  let factor = 1;
+  if (isMelee) {
+    factor = resistsStab ? 1 : 0.4;
+  } else if (isAp) {
+    factor = resistsAp ? 1 : 0.25;
+  } else {
+    factor = resistsBallistic ? 1 : 0.35;
+  }
+
+  return Math.max(0, Math.round(base * factor));
+}
+
 function calculateArmorConditionLoss(attackerPower: number): number {
   return Math.max(6, Math.min(35, Math.round(Math.sqrt(Math.max(1, attackerPower)) * 1.5)));
 }
@@ -1311,7 +1351,11 @@ export async function attemptHit(
     : undefined;
   const targetWeaponDamage = targetWeapon?.damage || 0;
   const targetDefense =
-    (getEffectiveArmor(targetSecurity) + (targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE) *
+    (getCombatArmor(targetSecurity, {
+      weaponType: weaponData.type,
+      ammoType: weaponData.ammoType,
+    }) +
+      (targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE) *
     (1 + targetBoosts.hitDefensePct);
   const targetPower = targetWeaponDamage * 5 + targetDefense;
   const armorConditionLoss = calculateArmorConditionLoss(attackerPower);
@@ -2077,6 +2121,9 @@ export async function buyBodyguards(playerId: number, quantity: number): Promise
 
 export async function buyArmor(playerId: number, armorId: string): Promise<any> {
   const armor = getArmorDefinition(armorId);
+  if (armor.shop === false) {
+    throw new Error('ARMOR_NOT_FOUND');
+  }
 
   await settleBodyguardUpkeep(prisma, playerId);
 
@@ -2141,6 +2188,7 @@ export async function buyArmor(playerId: number, armorId: string): Promise<any> 
 
 export async function getSecurityStatus(playerId: number): Promise<any> {
   const security = await settleBodyguardUpkeep(prisma, playerId);
+  const armorCatalog = listShopArmor();
 
   if (!security) {
     return {
@@ -2150,19 +2198,26 @@ export async function getSecurityStatus(playerId: number): Promise<any> {
       armorCondition: 100,
       armorDamagePercent: 0,
       armorType: null,
+      armorName: null,
       bodyguardDailyCost: 0,
       bodyguardUpkeepDueAt: null,
+      armorCatalog,
     };
   }
 
   const armorCondition = security.armor > 0 ? getArmorConditionValue(security.armorCondition) : 100;
+  const worn = security.armorType
+    ? loadArmorDefinitions().find((item) => item.id === security.armorType)
+    : undefined;
   return {
     ...security,
     armor: getEffectiveArmor(security),
     baseArmor: security.armor,
     armorCondition,
     armorDamagePercent: security.armor > 0 ? 100 - armorCondition : 0,
+    armorName: worn?.name ?? security.armorType,
     bodyguardDailyCost: security.bodyguards * BODYGUARD_DAILY_UPKEEP,
     bodyguardUpkeepDueAt: security.bodyguardUpkeepDueAt?.toISOString() ?? null,
+    armorCatalog,
   };
 }

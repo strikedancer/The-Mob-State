@@ -9,6 +9,7 @@ interface AmmoDefinition {
   pricePerRound: number;
   boxSize: number;
   maxInventory: number;
+  armorPiercing?: boolean;
 }
 
 interface AmmoData {

@@ -11942,7 +11942,7 @@ abstract class AppLocalizations {
   /// No description provided for @inventoryCrimeWeaponHelp.
   ///
   /// In en, this message translates to:
-  /// **'Choose your crime weapon here. The crimes screen uses this selection immediately.'**
+  /// **'Wear weapons on slot 1 and slot 2. Crimes automatically pick the better worn weapon for each crime.'**
   String get inventoryCrimeWeaponHelp;
 
   /// No description provided for @inventoryCrimeWeaponEmpty.
@@ -13933,7 +13933,7 @@ abstract class AppLocalizations {
   /// No description provided for @bulletproofVest.
   ///
   /// In en, this message translates to:
-  /// **'Bulletproof Vest'**
+  /// **'Bulletproof vest'**
   String get bulletproofVest;
 
   /// No description provided for @veryStrongProtection.
@@ -13941,6 +13941,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Very strong protection'**
   String get veryStrongProtection;
+
+  /// No description provided for @stabVest.
+  ///
+  /// In en, this message translates to:
+  /// **'Stab vest'**
+  String get stabVest;
+
+  /// No description provided for @stabVestDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops knives and stab weapons. Weak against bullets.'**
+  String get stabVestDesc;
+
+  /// No description provided for @bulletproofVestDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard ballistic protection against regular ammo.'**
+  String get bulletproofVestDesc;
+
+  /// No description provided for @bulletproofVestPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium bulletproof vest'**
+  String get bulletproofVestPremium;
+
+  /// No description provided for @bulletproofVestPremiumDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavier plates and more coverage against regular rounds.'**
+  String get bulletproofVestPremiumDesc;
+
+  /// No description provided for @ceramicApVest.
+  ///
+  /// In en, this message translates to:
+  /// **'AP plate vest'**
+  String get ceramicApVest;
+
+  /// No description provided for @ceramicApVestDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ceramic plates that stop armor-piercing rounds.'**
+  String get ceramicApVestDesc;
+
+  /// No description provided for @vestProtectsStab.
+  ///
+  /// In en, this message translates to:
+  /// **'Stab'**
+  String get vestProtectsStab;
+
+  /// No description provided for @vestProtectsBullets.
+  ///
+  /// In en, this message translates to:
+  /// **'Bullets'**
+  String get vestProtectsBullets;
+
+  /// No description provided for @vestProtectsAp.
+  ///
+  /// In en, this message translates to:
+  /// **'Armor-piercing'**
+  String get vestProtectsAp;
 
   /// No description provided for @tacticalSuit.
   ///
@@ -22394,19 +22454,19 @@ abstract class AppLocalizations {
   /// No description provided for @crimeWeaponSectionTitle.
   ///
   /// In en, this message translates to:
-  /// **'Crime weapon'**
+  /// **'Worn weapons'**
   String get crimeWeaponSectionTitle;
 
   /// No description provided for @crimeWeaponInstruction.
   ///
   /// In en, this message translates to:
-  /// **'Choose which carried weapon you use by default for crimes that require one.'**
+  /// **'Crimes look at both weapon slots and automatically use the best worn weapon for that crime.'**
   String get crimeWeaponInstruction;
 
   /// No description provided for @crimeWeaponEmptyInventoryHelp.
   ///
   /// In en, this message translates to:
-  /// **'Buy or move a usable weapon into your carried inventory first.'**
+  /// **'Wear a usable weapon on slot 1 or slot 2 in Inventory first.'**
   String get crimeWeaponEmptyInventoryHelp;
 
   /// No description provided for @crimeWeaponSelectHint.
@@ -22418,7 +22478,7 @@ abstract class AppLocalizations {
   /// No description provided for @crimeWeaponNoSelectionNote.
   ///
   /// In en, this message translates to:
-  /// **'Without a selection, weapon-based crimes will not start.'**
+  /// **'No weapon on slot 1 or 2. Armed crimes will not start.'**
   String get crimeWeaponNoSelectionNote;
 
   /// No description provided for @crimeWeaponSlotEmpty.
@@ -22448,13 +22508,13 @@ abstract class AppLocalizations {
   /// No description provided for @crimeChooseWeaponBeforeCommit.
   ///
   /// In en, this message translates to:
-  /// **'Choose a crime weapon at the top of this screen or via Inventory first.'**
+  /// **'Wear a suitable weapon on slot 1 or 2 in Inventory first.'**
   String get crimeChooseWeaponBeforeCommit;
 
   /// No description provided for @crimeWeaponFooterNote.
   ///
   /// In en, this message translates to:
-  /// **'Weapon-based crimes use the selected crime weapon above.'**
+  /// **'Each crime picks the better worn weapon automatically. A backpack gun does not count.'**
   String get crimeWeaponFooterNote;
 
   /// No description provided for @crimeTrainingBonusStrip.
@@ -26650,7 +26710,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCrimesHow.
   ///
   /// In en, this message translates to:
-  /// **'Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` use your selected crime weapon. You can now choose it directly at the top of the Crimes screen or through Inventory.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.\nWhen country police pressure is enabled, a shared heat meter per country softens crime success and raises arrest chance where you are. Travel shows band badges; rare disrupt ops (crew/rank gated) can temporarily cool the streets.'**
+  /// **'Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` look at both worn weapon slots and automatically use the best match for that crime. Wear the weapons in Inventory; a backpack gun does not count.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.\nWhen country police pressure is enabled, a shared heat meter per country softens crime success and raises arrest chance where you are. Travel shows band badges; rare disrupt ops (crew/rank gated) can temporarily cool the streets.'**
   String get helpTopicCrimesHow;
 
   /// No description provided for @helpTopicCrimesTips.
@@ -26830,7 +26890,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicInventoryHow.
   ///
   /// In en, this message translates to:
-  /// **'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nIf a stack has more than one unit (ammo, materials, stacked weapons or tools), you choose how many to move: 1, all, or a custom amount.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash. Warehouses store tools. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nThe crime-weapon slot stays in sync with the Crimes screen. Only carried, usable weapons count.\nBackpack capacity covers tools, weapons and carried materials. Ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.'**
+  /// **'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot, a second-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nIf a stack has more than one unit (ammo, materials, stacked weapons or tools), you choose how many to move: 1, all, or a custom amount.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash. Warehouses store tools. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nYou can carry two weapons at once, for example a handgun and a rifle. When you commit a crime, the server looks at both worn slots and automatically uses the best match for that crime.\nOnly usable weapons worn on slot 1 or 2 count for crimes.\nBackpack capacity covers tools, unequipped weapons and carried materials. Worn weapons, ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.'**
   String get helpTopicInventoryHow;
 
   /// No description provided for @helpTopicInventoryTips.
@@ -27190,13 +27250,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSecurityHow.
   ///
   /// In en, this message translates to:
-  /// **'Armor types in ascending strength: Light Armor → Heavy Armor → Bulletproof Vest → Tactical Outfit.\nYou can only wear 1 armor at a time; if you buy another vest it immediately replaces your current armor.\nEach armor class reduces incoming damage per attack by a fixed percentage. Better armor = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.'**
+  /// **'Buy vests on Security: Stab vest (€7,500) → Bulletproof vest (€50,000) → Premium bulletproof vest (€125,000) → AP plate vest (€280,000). Rifle calibers 5.56, 7.62 and .308 pierce normal vests unless you wear the AP plate vest.\nYou can only wear 1 vest at a time; if you buy another vest it immediately replaces your current armor.\nEach vest type reduces incoming damage when it matches the attack: stab vests stop knives, bulletproof vests stop regular bullets, and the AP plate vest also stops armor-piercing rounds. Better match = more survival in PvP and raids.\nArmor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.\nAt 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.\nBodyguards give +10 defense each, but every 24 hours they charge a €10,000 daily wage per bodyguard.\nIf you cannot pay that daily bodyguard wage, all of them leave and you lose their protection immediately.\nInstallation security (for nightclub, drug facility, etc.) lowers raid and incident chance at that specific location.\nThe higher your Wanted Level the more often you are attacked or raided. Better security compensates for this directly.\nCrew members can split security roles so multiple locations are covered simultaneously.'**
   String get helpTopicSecurityHow;
 
   /// No description provided for @helpTopicSecurityTips.
   ///
   /// In en, this message translates to:
-  /// **'Always carry at least Light Armor when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nCheck your armor condition after every attack: a damaged vest only provides part of its original protection.\nOnly keep as many bodyguards as you can still afford tomorrow; large teams become expensive in daily upkeep quickly.'**
+  /// **'Always wear at least a stab vest when Wanted Level is 2 or higher: savings on hospital bills quickly offset the purchase price.\nCheck your armor condition after every attack: a damaged vest only provides part of its original protection.\nRifle ammo (5.56, 7.62, .308) punches through normal vests; buy the AP plate vest if those calibers show up against you.\nOnly keep as many bodyguards as you can still afford tomorrow; large teams become expensive in daily upkeep quickly.'**
   String get helpTopicSecurityTips;
 
   /// No description provided for @helpTopicHospitalCategory.

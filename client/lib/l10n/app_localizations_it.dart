@@ -7931,6 +7931,40 @@ class AppLocalizationsIt extends AppLocalizations {
   String get veryStrongProtection => 'Protezione molto forte';
 
   @override
+  String get stabVest => 'Giubbotto antistilettata';
+
+  @override
+  String get stabVestDesc =>
+      'Protegge dai coltelli. Debole contro i proiettili.';
+
+  @override
+  String get bulletproofVestDesc =>
+      'Protezione standard contro munizioni ordinarie.';
+
+  @override
+  String get bulletproofVestPremium => 'Giubbotto antiproiettile premium';
+
+  @override
+  String get bulletproofVestPremiumDesc =>
+      'Piastre più pesanti contro i colpi normali.';
+
+  @override
+  String get ceramicApVest => 'Giubbotto piastre AP';
+
+  @override
+  String get ceramicApVestDesc =>
+      'Piastre in ceramica contro munizioni perforanti.';
+
+  @override
+  String get vestProtectsStab => 'Lama';
+
+  @override
+  String get vestProtectsBullets => 'Proiettili';
+
+  @override
+  String get vestProtectsAp => 'Perforante';
+
+  @override
   String get tacticalSuit => 'Attrezzatura tattica';
 
   @override
@@ -15818,11 +15852,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Tipi di armature con forza crescente: Armatura leggera → Armatura pesante → Giubbotto antiproiettile → Abbigliamento tattico. \nPuoi indossare solo 1 armatura alla volta; se acquisti un altro giubbotto, sostituirà immediatamente la tua attuale armatura. \nOgni classe di armatura riduce il danno in arrivo per attacco di una percentuale fissa. Armatura migliore = più sopravvivenza nel PvP e nei raid. \nL\'armatura viene danneggiata dopo un attacco e perde efficacia. Più bassa è la condizione, minore è la protezione fornita dalla tua attuale armatura. \nAl 100% di danno la tua armatura viene distrutta e scompare completamente; è necessario acquistare un nuovo set per riacquistare la protezione. \nLe guardie del corpo danno +10 difesa ciascuna, ma ogni 24 ore fanno pagare una paga giornaliera di € 10.000 per guardia del corpo. \nSe non puoi pagare la paga giornaliera della guardia del corpo, se ne vanno tutti e tu perdi immediatamente la loro protezione. \nLa sicurezza dell\'installazione (per nightclub, strutture farmaceutiche, ecc.) riduce le possibilità di incursioni e incidenti in quel luogo specifico. \nPiù alto è il tuo livello di ricercato, più spesso verrai attaccato o razziato. Una migliore sicurezza compensa direttamente questo. \nI membri dell\'Crew possono dividere i ruoli di sicurezza in modo che più posizioni siano coperte contemporaneamente.';
+      'I giubbotti si comprano in Sicurezza: Giubbotto antistilettata (€7.500) → Giubbotto antiproiettile (€50.000) → Giubbotto antiproiettile premium (€125.000) → Giubbotto piastre AP (€280.000). I calibri 5.56, 7.62 e .308 forano i giubbotti normali, a meno che non indossi il giubbotto piastre AP.\nPuoi indossare solo 1 armatura alla volta; se acquisti un altro giubbotto, sostituirà immediatamente la tua attuale armatura. \nOgni classe di armatura riduce il danno in arrivo per attacco di una percentuale fissa. Armatura migliore = più sopravvivenza nel PvP e nei raid. \nL\'armatura viene danneggiata dopo un attacco e perde efficacia. Più bassa è la condizione, minore è la protezione fornita dalla tua attuale armatura. \nAl 100% di danno la tua armatura viene distrutta e scompare completamente; è necessario acquistare un nuovo set per riacquistare la protezione. \nLe guardie del corpo danno +10 difesa ciascuna, ma ogni 24 ore fanno pagare una paga giornaliera di € 10.000 per guardia del corpo. \nSe non puoi pagare la paga giornaliera della guardia del corpo, se ne vanno tutti e tu perdi immediatamente la loro protezione. \nLa sicurezza dell\'installazione (per nightclub, strutture farmaceutiche, ecc.) riduce le possibilità di incursioni e incidenti in quel luogo specifico. \nPiù alto è il tuo livello di ricercato, più spesso verrai attaccato o razziato. Una migliore sicurezza compensa direttamente questo. \nI membri dell\'Crew possono dividere i ruoli di sicurezza in modo che più posizioni siano coperte contemporaneamente.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Porta sempre con te almeno un\'armatura leggera quando il livello di ricercato è 2 o superiore: i risparmi sulle bollette ospedaliere compensano rapidamente il prezzo di acquisto. \nControlla lo stato della tua armatura dopo ogni attacco: un giubbotto danneggiato fornisce solo una parte della sua protezione originale. \nMantieni solo il numero di guardie del corpo che puoi ancora permetterti domani; i team di grandi dimensioni diventano rapidamente costosi nella manutenzione quotidiana.';
+      'Indossa sempre almeno un giubbotto antistilettata quando il livello di ricercato è 2 o superiore: i risparmi sulle bollette ospedaliere compensano rapidamente il prezzo di acquisto.\nControlla lo stato della tua armatura dopo ogni attacco: un giubbotto danneggiato fornisce solo una parte della sua protezione originale. \nMantieni solo il numero di guardie del corpo che puoi ancora permetterti domani; i team di grandi dimensioni diventano rapidamente costosi nella manutenzione quotidiana.\nLe munizioni da fucile (5.56, 7.62, .308) forano i giubbotti normali; compra il giubbotto piastre AP se quei calibri vengono usati contro di te.';
 
   @override
   String get helpTopicHospitalCategory => 'Recupero';

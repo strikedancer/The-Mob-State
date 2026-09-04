@@ -7951,6 +7951,38 @@ class AppLocalizationsDe extends AppLocalizations {
   String get veryStrongProtection => 'Sehr starker Schutz';
 
   @override
+  String get stabVest => 'Stichweste';
+
+  @override
+  String get stabVestDesc => 'Schützt vor Messern. Schwach gegen Kugeln.';
+
+  @override
+  String get bulletproofVestDesc => 'Standardschutz gegen normale Munition.';
+
+  @override
+  String get bulletproofVestPremium => 'Kugelsichere Weste Premium';
+
+  @override
+  String get bulletproofVestPremiumDesc =>
+      'Schwerere Platten gegen normale Schüsse.';
+
+  @override
+  String get ceramicApVest => 'AP-Plattenweste';
+
+  @override
+  String get ceramicApVestDesc =>
+      'Keramikplatten gegen panzerbrechende Munition.';
+
+  @override
+  String get vestProtectsStab => 'Stich';
+
+  @override
+  String get vestProtectsBullets => 'Kugeln';
+
+  @override
+  String get vestProtectsAp => 'Panzerbrechend';
+
+  @override
   String get tacticalSuit => 'Taktisches Outfit';
 
   @override
@@ -15843,11 +15875,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicSecurityHow =>
-      'Rüstungstypen in aufsteigender Stärke: Leichte Rüstung → Schwere Rüstung → Kugelsichere Weste → Taktisches Outfit. \nDu kannst jeweils nur 1 Rüstung tragen; Wenn Sie eine weitere Weste kaufen, ersetzt diese sofort Ihre aktuelle Rüstung. \nJede Rüstungsklasse reduziert den eingehenden Schaden pro Angriff um einen festen Prozentsatz. Bessere Rüstung = mehr Überleben im PvP und bei Raids. \nDie Rüstung wird nach einem Angriff beschädigt und verliert an Wirksamkeit. Je niedriger der Zustand, desto weniger Schutz bietet Ihre aktuelle Rüstung. \nBei 100 % Schaden wird deine Rüstung zerstört und verschwindet vollständig; Sie müssen ein neues Set kaufen, um den Schutz wiederherzustellen. \nLeibwächter geben jeweils +10 Verteidigung, berechnen aber alle 24 Stunden einen Tageslohn von 10.000 € pro Leibwächter. \nWenn Sie den Leibwächter-Tageslohn nicht bezahlen können, gehen alle und Sie verlieren sofort ihren Schutz. \nDie Sicherheit von Installationen (für Nachtclubs, Drogeneinrichtungen usw.) verringert die Wahrscheinlichkeit von Überfällen und Zwischenfällen an diesem bestimmten Ort. \nJe höher Ihr Wanted-Level, desto häufiger werden Sie angegriffen oder überfallen. Eine bessere Sicherheit kompensiert dies direkt. \nBesatzungsmitglieder können ihre Sicherheitsrollen aufteilen, sodass mehrere Standorte gleichzeitig abgedeckt werden.';
+      'Westen kaufst du unter Sicherheit: Stichweste (€7.500) → Kugelsichere Weste (€50.000) → Kugelsichere Weste Premium (€125.000) → AP-Plattenweste (€280.000). Gewehrkaliber 5.56, 7.62 und .308 durchschlagen normale Westen, außer du trägst die AP-Plattenweste.\nDu kannst jeweils nur 1 Rüstung tragen; Wenn Sie eine weitere Weste kaufen, ersetzt diese sofort Ihre aktuelle Rüstung. \nJede Rüstungsklasse reduziert den eingehenden Schaden pro Angriff um einen festen Prozentsatz. Bessere Rüstung = mehr Überleben im PvP und bei Raids. \nDie Rüstung wird nach einem Angriff beschädigt und verliert an Wirksamkeit. Je niedriger der Zustand, desto weniger Schutz bietet Ihre aktuelle Rüstung. \nBei 100 % Schaden wird deine Rüstung zerstört und verschwindet vollständig; Sie müssen ein neues Set kaufen, um den Schutz wiederherzustellen. \nLeibwächter geben jeweils +10 Verteidigung, berechnen aber alle 24 Stunden einen Tageslohn von 10.000 € pro Leibwächter. \nWenn Sie den Leibwächter-Tageslohn nicht bezahlen können, gehen alle und Sie verlieren sofort ihren Schutz. \nDie Sicherheit von Installationen (für Nachtclubs, Drogeneinrichtungen usw.) verringert die Wahrscheinlichkeit von Überfällen und Zwischenfällen an diesem bestimmten Ort. \nJe höher Ihr Wanted-Level, desto häufiger werden Sie angegriffen oder überfallen. Eine bessere Sicherheit kompensiert dies direkt. \nBesatzungsmitglieder können ihre Sicherheitsrollen aufteilen, sodass mehrere Standorte gleichzeitig abgedeckt werden.';
 
   @override
   String get helpTopicSecurityTips =>
-      'Tragen Sie immer mindestens eine leichte Rüstung, wenn die Fahndungsstufe 2 oder höher ist: Einsparungen bei den Krankenhausrechnungen gleichen den Kaufpreis schnell aus. \nÜberprüfen Sie nach jedem Angriff den Zustand Ihrer Rüstung: Eine beschädigte Weste bietet nur einen Teil ihres ursprünglichen Schutzes. \nBehalten Sie nur so viele Leibwächter, wie Sie sich morgen noch leisten können; Große Teams werden in der täglichen Wartung schnell teuer.';
+      'Trage immer mindestens eine Stichweste, wenn die Fahndungsstufe 2 oder höher ist: Einsparungen bei den Krankenhausrechnungen gleichen den Kaufpreis schnell aus.\nÜberprüfen Sie nach jedem Angriff den Zustand Ihrer Rüstung: Eine beschädigte Weste bietet nur einen Teil ihres ursprünglichen Schutzes. \nBehalten Sie nur so viele Leibwächter, wie Sie sich morgen noch leisten können; Große Teams werden in der täglichen Wartung schnell teuer.\nGewehrmunition (5.56, 7.62, .308) durchschlägt normale Westen; kaufe die AP-Plattenweste, wenn diese Kaliber gegen dich eingesetzt werden.';
 
   @override
   String get helpTopicHospitalCategory => 'Erholung';

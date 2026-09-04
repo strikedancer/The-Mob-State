@@ -26,21 +26,24 @@
       "name": "5.56mm Patronen",
       "pricePerRound": 3,
       "boxSize": 60,
-      "maxInventory": 800
+      "maxInventory": 800,
+      "armorPiercing": true
     },
     {
       "type": "762mm",
       "name": "7.62mm Patronen",
       "pricePerRound": 3,
       "boxSize": 100,
-      "maxInventory": 1000
+      "maxInventory": 1000,
+      "armorPiercing": true
     },
     {
       "type": "308",
       "name": ".308 Winchester",
       "pricePerRound": 5,
       "boxSize": 20,
-      "maxInventory": 500
+      "maxInventory": 500,
+      "armorPiercing": true
     }
   ]
 }
