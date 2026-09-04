@@ -29,16 +29,12 @@ class CrimeScreen extends StatefulWidget {
   const CrimeScreen({
     super.key,
     this.embedded = false,
-    this.statusHeader,
     this.onOpenTraining,
     this.onOpenEvents,
   });
 
-  /// When true (web dashboard), hide the page AppBar and fold the HUD into the hero.
+  /// When true (web dashboard), hide the page AppBar; the shell keeps the shared status bar.
   final bool embedded;
-
-  /// Optional player status strip rendered inside the unified crimes header.
-  final Widget? statusHeader;
 
   /// When set (e.g. web dashboard), opens the training hub section.
   final VoidCallback? onOpenTraining;
@@ -318,19 +314,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
         _crimes.where((c) => _crimeIsAvailable(c, playerRank)).length;
     final showPolice =
         _countryPolice != null && _countryPolice!['enabled'] == true;
-    final statusHeader = widget.statusHeader;
 
     return _panel(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (statusHeader != null) ...[
-            statusHeader,
-            const SizedBox(height: 12),
-            const Divider(height: 1, color: Color(0xFF2A3344)),
-            const SizedBox(height: 12),
-          ],
           LayoutBuilder(
             builder: (context, constraints) {
               final wide = constraints.maxWidth >= 640;

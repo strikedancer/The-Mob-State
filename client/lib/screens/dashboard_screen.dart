@@ -1042,10 +1042,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        if (_selectedWebSection != _WebSection.crimes) ...[
-                          _buildCompactStatusBar(context, player, countryName),
-                          const SizedBox(height: 12),
-                        ],
+                        _buildCompactStatusBar(context, player, countryName),
+                        const SizedBox(height: 12),
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
@@ -1088,19 +1086,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   key: ValueKey(
                                     '${_selectedWebSection.name}-$_webSectionRefreshSeed',
                                   ),
-                                  child: _buildWebContent(
-                                    context,
-                                    crimeStatusHeader:
-                                        _selectedWebSection ==
-                                            _WebSection.crimes
-                                        ? _buildCompactStatusBar(
-                                            context,
-                                            player,
-                                            countryName,
-                                            decorated: false,
-                                          )
-                                        : null,
-                                  ),
+                                  child: _buildWebContent(context),
                                 ),
                               ),
                             ),
@@ -1779,7 +1765,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildWebContent(BuildContext context, {Widget? crimeStatusHeader}) {
+  Widget _buildWebContent(BuildContext context) {
     switch (_selectedWebSection) {
       case _WebSection.support:
         return SupportTicketsScreen(
@@ -1804,7 +1790,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.crimes:
         return CrimeScreen(
           embedded: true,
-          statusHeader: crimeStatusHeader,
           onOpenTraining: () =>
               _selectWebSection(_WebSection.trainingHub),
           onOpenEvents: () => _selectWebSection(_WebSection.events),
