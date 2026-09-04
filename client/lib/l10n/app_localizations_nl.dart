@@ -6793,6 +6793,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get inventoryEquipWeapon => 'Crime-wapen';
 
   @override
+  String get inventoryEquipSecondary => 'Tweede wapen';
+
+  @override
   String get inventoryEquipArmor => 'Vest';
 
   @override
@@ -15458,7 +15461,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nBij een stapel van meer dan één (munitie, materialen, gestapelde wapens of tools) kies je hoeveel je verplaatst: 1, alles, of een eigen aantal.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash. Magazijnen bewaren gereedschap. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nHet crime-wapenslot blijft gelijk met het Crimes-scherm. Alleen gedragen, bruikbare wapens tellen mee.\nRugzakcapaciteit telt tools, wapens en meegenomen materialen. Munitie en het gedragen vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.';
+      'Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot, een tweede wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nBij een stapel van meer dan één (munitie, materialen, gestapelde wapens of tools) kies je hoeveel je verplaatst: 1, alles, of een eigen aantal.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash. Magazijnen bewaren gereedschap. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nJe kunt twee wapens tegelijk dragen, bijvoorbeeld een handgun en een automatisch geweer. Alleen het crime-wapenslot gebruikt Crimes; een wapen op het tweede slot droppen maakt het geen crime-wapen.\nHet crime-wapenslot blijft gelijk met het Crimes-scherm. Alleen gedragen, bruikbare wapens tellen mee.\nRugzakcapaciteit telt tools, niet-gedragen wapens en meegenomen materialen. Gedragen wapens, munitie en het vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.';
 
   @override
   String get helpTopicInventoryTips =>

@@ -10775,6 +10775,7 @@
   "inventoryStorageGrid": "Magazzinaggio",
   "inventoryMaterialsDepot": "Deposito materiali",
   "inventoryEquipWeapon": "Arma del crimine",
+  "inventoryEquipSecondary": "Seconda arma",
   "inventoryEquipArmor": "Maglia",
   "inventoryEmptySlot": "Slot vuoto",
   "inventorySelectHint": "Selezionato: {name}. Tocca uno slot valido per spostarlo.",

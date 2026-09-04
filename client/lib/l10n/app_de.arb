@@ -10775,6 +10775,7 @@
   "inventoryStorageGrid": "Lagerung",
   "inventoryMaterialsDepot": "Materialdepot",
   "inventoryEquipWeapon": "Verbrechenswaffe",
+  "inventoryEquipSecondary": "Zweite Waffe",
   "inventoryEquipArmor": "Weste",
   "inventoryEmptySlot": "Leerer Steckplatz",
   "inventorySelectHint": "Ausgewählt: {name}. Tippen Sie auf einen gültigen Slot, um ihn zu verschieben.",

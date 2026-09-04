@@ -14,7 +14,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 1. **Buy** → stock goes into the **depot of the player's current country** (not the backpack).
 2. **Production** in country X consumes **depot(X) first**, then **backpack** (`_carried_`).
 3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` for the current country only.
-4. **Backpack capacity**: materials use slots (`ceil(qty / 5)` per stack) together with tools/weapons (`toolService.calculateInventoryUsage`). Upgrade backpacks to carry more.
+4. **Backpack capacity**: materials use slots (`ceil(qty / 5)` per stack) together with tools and unequipped weapons (`toolService.calculateInventoryUsage`). Worn crime/secondary weapons do not use backpack slots. Upgrade backpacks to carry more.
 5. **Travel**:
    - Country depots are **safe** (not wiped on arrest).
    - Backpack materials raise **arrest chance** and can be **partially confiscated** per leg.

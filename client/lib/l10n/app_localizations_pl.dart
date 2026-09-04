@@ -6806,6 +6806,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get inventoryEquipWeapon => 'Broń zbrodni';
 
   @override
+  String get inventoryEquipSecondary => 'Druga broń';
+
+  @override
   String get inventoryEquipArmor => 'Kamizelka';
 
   @override

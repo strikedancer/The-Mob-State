@@ -11981,6 +11981,12 @@ abstract class AppLocalizations {
   /// **'Crime weapon'**
   String get inventoryEquipWeapon;
 
+  /// No description provided for @inventoryEquipSecondary.
+  ///
+  /// In en, this message translates to:
+  /// **'Second weapon'**
+  String get inventoryEquipSecondary;
+
   /// No description provided for @inventoryEquipArmor.
   ///
   /// In en, this message translates to:

@@ -119,6 +119,91 @@ router.delete('/crime-weapon', authenticate, async (req: AuthRequest, res: Respo
 });
 
 /**
+ * GET /weapons/secondary-weapon
+ * Get the extra carried weapon (not used as crime weapon)
+ */
+router.get('/secondary-weapon', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const selectedWeapon = await weaponSelectionService.getSelectedSecondaryWeapon(req.player!.id);
+
+    return res.status(200).json({
+      event: 'weapons.secondaryWeapon',
+      params: {},
+      weapon: selectedWeapon,
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * POST /weapons/secondary-weapon
+ * Set the extra carried weapon
+ */
+router.post('/secondary-weapon', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { weaponId } = req.body as { weaponId?: string };
+
+    if (!weaponId) {
+      return res.status(400).json({
+        event: 'error.validation',
+        params: { message: 'weaponId is required' },
+      });
+    }
+
+    await weaponSelectionService.setSelectedSecondaryWeapon(req.player!.id, weaponId);
+
+    return res.status(200).json({
+      event: 'weapons.secondaryWeaponSet',
+      params: { weaponId },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'WEAPON_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.weapon',
+          params: { reason: 'WEAPON_NOT_FOUND' },
+        });
+      }
+      if (error.message === 'WEAPON_BROKEN') {
+        return res.status(400).json({
+          event: 'error.weapon',
+          params: { reason: 'WEAPON_BROKEN' },
+        });
+      }
+    }
+
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * DELETE /weapons/secondary-weapon
+ * Clear the extra carried weapon
+ */
+router.delete('/secondary-weapon', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    await weaponSelectionService.clearSelectedSecondaryWeapon(req.player!.id);
+
+    return res.status(200).json({
+      event: 'weapons.secondaryWeaponCleared',
+      params: {},
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
  * POST /weapons/buy/:weaponId
  * Buy a weapon from the black market
  */

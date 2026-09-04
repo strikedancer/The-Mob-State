@@ -1,6 +1,13 @@
 enum InventoryItemKind { weapon, tool, ammo, material, armor }
 
-enum InventoryZone { backpack, property, depot, equippedWeapon, equippedArmor }
+enum InventoryZone {
+  backpack,
+  property,
+  depot,
+  equippedWeapon,
+  equippedSecondary,
+  equippedArmor,
+}
 
 class InventoryGridItem {
   final InventoryItemKind kind;

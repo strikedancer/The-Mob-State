@@ -6796,6 +6796,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get inventoryEquipWeapon => 'Arma do crime';
 
   @override
+  String get inventoryEquipSecondary => 'Segunda arma';
+
+  @override
   String get inventoryEquipArmor => 'Colete';
 
   @override

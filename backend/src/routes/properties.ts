@@ -160,6 +160,7 @@ router.post('/storage/:propertyId/weapons/withdraw', authenticate, async (req: A
     const propertyId = parseInt(String(req.params.propertyId), 10);
     const weaponId = String(req.body?.weaponId || '');
     const quantity = Number(req.body?.quantity || 1);
+    const equip = req.body?.equip === true;
 
     if (isNaN(propertyId) || !weaponId || quantity <= 0) {
       return res.status(400).json({
@@ -168,7 +169,9 @@ router.post('/storage/:propertyId/weapons/withdraw', authenticate, async (req: A
       });
     }
 
-    await propertyStorageService.withdrawWeapon(req.player!.id, propertyId, weaponId, quantity);
+    await propertyStorageService.withdrawWeapon(req.player!.id, propertyId, weaponId, quantity, {
+      equip,
+    });
 
     return res.status(200).json({
       event: 'properties.weapon_withdrawn',

@@ -330,7 +330,13 @@ class PropertyStorageService {
     });
   }
 
-  async withdrawWeapon(playerId: number, propertyId: number, weaponId: string, quantity: number) {
+  async withdrawWeapon(
+    playerId: number,
+    propertyId: number,
+    weaponId: string,
+    quantity: number,
+    options?: { equip?: boolean },
+  ) {
     const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
     this.ensureCountryAccess(player.currentCountry, property.countryId);
 
@@ -339,6 +345,7 @@ class PropertyStorageService {
       throw new Error('STORAGE_TYPE_NOT_ALLOWED');
     }
 
+    const withdrawQty = options?.equip ? 1 : quantity;
     const storageKey = `weapon:${weaponId}`;
     const stored = await prisma.propertyDrugStorage.findUnique({
       where: {
@@ -349,23 +356,24 @@ class PropertyStorageService {
       },
     });
 
-    if (!stored || stored.quantity < quantity) {
+    if (!stored || stored.quantity < withdrawQty) {
       throw new Error('INSUFFICIENT_WEAPON_QUANTITY');
     }
 
     const usage = await toolService.calculateInventoryUsage(playerId);
     const capacity = await backpackService.getPlayerCarryingCapacity(playerId);
-    if (usage + quantity > capacity) {
+    const incomingSlots = options?.equip ? 0 : withdrawQty;
+    if (usage + incomingSlots > capacity) {
       throw new Error('INVENTORY_FULL');
     }
 
     await prisma.$transaction(async (tx) => {
-      if (stored.quantity === quantity) {
+      if (stored.quantity === withdrawQty) {
         await tx.propertyDrugStorage.delete({ where: { id: stored.id } });
       } else {
         await tx.propertyDrugStorage.update({
           where: { id: stored.id },
-          data: { quantity: stored.quantity - quantity },
+          data: { quantity: stored.quantity - withdrawQty },
         });
       }
 
@@ -381,14 +389,14 @@ class PropertyStorageService {
       if (existing) {
         await tx.weaponInventory.update({
           where: { id: existing.id },
-          data: { quantity: existing.quantity + quantity },
+          data: { quantity: existing.quantity + withdrawQty },
         });
       } else {
         await tx.weaponInventory.create({
           data: {
             playerId,
             weaponId,
-            quantity,
+            quantity: withdrawQty,
             condition: 100,
           },
         });

@@ -1,8 +1,18 @@
 import prisma from '../lib/prisma';
 import { weaponService } from './weaponService';
 
-const ACTIVITY_SELECT = 'CRIME_WEAPON_SELECTED';
-const ACTIVITY_CLEAR = 'CRIME_WEAPON_CLEARED';
+type WeaponCarrySlot = 'crime' | 'secondary';
+
+const SLOT_ACTIVITY: Record<WeaponCarrySlot, { select: string; clear: string }> = {
+  crime: {
+    select: 'CRIME_WEAPON_SELECTED',
+    clear: 'CRIME_WEAPON_CLEARED',
+  },
+  secondary: {
+    select: 'SECONDARY_WEAPON_SELECTED',
+    clear: 'SECONDARY_WEAPON_CLEARED',
+  },
+};
 
 const safeStringifyDetails = (value: unknown): string => {
   try {
@@ -27,103 +37,164 @@ const safeParseDetails = (value: string | null | undefined): Record<string, unkn
   }
 };
 
+const otherSlot = (slot: WeaponCarrySlot): WeaponCarrySlot =>
+  slot === 'crime' ? 'secondary' : 'crime';
+
 export const weaponSelectionService = {
-  async getSelectedCrimeWeapon(playerId: number): Promise<{
-    weaponId: string;
-    name: string;
-    condition: number;
-  } | null> {
-    const latestActivity = await prisma.playerActivity.findFirst({
-      where: {
-        playerId,
-        activityType: {
-          in: [ACTIVITY_SELECT, ACTIVITY_CLEAR],
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        activityType: true,
-        details: true,
-      },
-    });
-
-    if (!latestActivity || latestActivity.activityType === ACTIVITY_CLEAR) {
-      return null;
-    }
-
-    const details = safeParseDetails(latestActivity.details);
-    const weaponId = typeof details?.weaponId === 'string' ? details.weaponId : null;
-
-    if (!weaponId) return null;
-
-    const weaponInventory = await prisma.weaponInventory.findUnique({
-      where: {
-        playerId_weaponId: {
-          playerId,
-          weaponId,
-        },
-      },
-      select: {
-        weaponId: true,
-        condition: true,
-      },
-    });
-
-    if (!weaponInventory || weaponInventory.condition <= 0) {
-      return null;
-    }
-
-    const weaponDefinition = weaponService.getWeaponDefinition(weaponInventory.weaponId);
-
-    return {
-      weaponId: weaponInventory.weaponId,
-      name: weaponDefinition?.name ?? weaponInventory.weaponId,
-      condition: weaponInventory.condition,
-    };
+  async getSelectedCrimeWeapon(playerId: number) {
+    return getSelectedSlot(playerId, 'crime');
   },
 
   async setSelectedCrimeWeapon(playerId: number, weaponId: string): Promise<void> {
-    const weaponInventory = await prisma.weaponInventory.findUnique({
-      where: {
-        playerId_weaponId: {
-          playerId,
-          weaponId,
-        },
-      },
-      select: {
-        weaponId: true,
-        condition: true,
-      },
-    });
-
-    if (!weaponInventory) {
-      throw new Error('WEAPON_NOT_FOUND');
-    }
-
-    if (weaponInventory.condition <= 0) {
-      throw new Error('WEAPON_BROKEN');
-    }
-
-    await prisma.playerActivity.create({
-      data: {
-        playerId,
-        activityType: ACTIVITY_SELECT,
-        description: `Selected crime weapon: ${weaponId}`,
-        details: safeStringifyDetails({ weaponId }),
-        isPublic: false,
-      },
-    });
+    await setSelectedSlot(playerId, 'crime', weaponId);
   },
 
   async clearSelectedCrimeWeapon(playerId: number): Promise<void> {
-    await prisma.playerActivity.create({
-      data: {
-        playerId,
-        activityType: ACTIVITY_CLEAR,
-        description: 'Cleared selected crime weapon',
-        details: safeStringifyDetails({}),
-        isPublic: false,
-      },
-    });
+    await clearSelectedSlot(playerId, 'crime');
+  },
+
+  async getSelectedSecondaryWeapon(playerId: number) {
+    return getSelectedSlot(playerId, 'secondary');
+  },
+
+  async setSelectedSecondaryWeapon(playerId: number, weaponId: string): Promise<void> {
+    await setSelectedSlot(playerId, 'secondary', weaponId);
+  },
+
+  async clearSelectedSecondaryWeapon(playerId: number): Promise<void> {
+    await clearSelectedSlot(playerId, 'secondary');
+  },
+
+  async getEquippedWeaponSlotCounts(playerId: number): Promise<Map<string, number>> {
+    const [crime, secondary] = await Promise.all([
+      getSelectedSlot(playerId, 'crime'),
+      getSelectedSlot(playerId, 'secondary'),
+    ]);
+    const counts = new Map<string, number>();
+    const add = (weaponId?: string) => {
+      if (!weaponId) return;
+      counts.set(weaponId, (counts.get(weaponId) ?? 0) + 1);
+    };
+    add(crime?.weaponId);
+    add(secondary?.weaponId);
+    return counts;
   },
 };
+
+async function getSelectedSlot(
+  playerId: number,
+  slot: WeaponCarrySlot,
+): Promise<{
+  weaponId: string;
+  name: string;
+  condition: number;
+} | null> {
+  const activity = SLOT_ACTIVITY[slot];
+  const latestActivity = await prisma.playerActivity.findFirst({
+    where: {
+      playerId,
+      activityType: {
+        in: [activity.select, activity.clear],
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      activityType: true,
+      details: true,
+    },
+  });
+
+  if (!latestActivity || latestActivity.activityType === activity.clear) {
+    return null;
+  }
+
+  const details = safeParseDetails(latestActivity.details);
+  const weaponId = typeof details?.weaponId === 'string' ? details.weaponId : null;
+
+  if (!weaponId) return null;
+
+  const weaponInventory = await prisma.weaponInventory.findUnique({
+    where: {
+      playerId_weaponId: {
+        playerId,
+        weaponId,
+      },
+    },
+    select: {
+      weaponId: true,
+      condition: true,
+    },
+  });
+
+  if (!weaponInventory || weaponInventory.condition <= 0) {
+    return null;
+  }
+
+  const weaponDefinition = weaponService.getWeaponDefinition(weaponInventory.weaponId);
+
+  return {
+    weaponId: weaponInventory.weaponId,
+    name: weaponDefinition?.name ?? weaponInventory.weaponId,
+    condition: weaponInventory.condition,
+  };
+}
+
+async function setSelectedSlot(
+  playerId: number,
+  slot: WeaponCarrySlot,
+  weaponId: string,
+): Promise<void> {
+  const weaponInventory = await prisma.weaponInventory.findUnique({
+    where: {
+      playerId_weaponId: {
+        playerId,
+        weaponId,
+      },
+    },
+    select: {
+      weaponId: true,
+      condition: true,
+    },
+  });
+
+  if (!weaponInventory) {
+    throw new Error('WEAPON_NOT_FOUND');
+  }
+
+  if (weaponInventory.condition <= 0) {
+    throw new Error('WEAPON_BROKEN');
+  }
+
+  const activity = SLOT_ACTIVITY[slot];
+  await prisma.playerActivity.create({
+    data: {
+      playerId,
+      activityType: activity.select,
+      description:
+        slot === 'crime'
+          ? `Selected crime weapon: ${weaponId}`
+          : `Selected secondary weapon: ${weaponId}`,
+      details: safeStringifyDetails({ weaponId }),
+      isPublic: false,
+    },
+  });
+
+  const other = await getSelectedSlot(playerId, otherSlot(slot));
+  if (other?.weaponId === weaponId) {
+    await clearSelectedSlot(playerId, otherSlot(slot));
+  }
+}
+
+async function clearSelectedSlot(playerId: number, slot: WeaponCarrySlot): Promise<void> {
+  const activity = SLOT_ACTIVITY[slot];
+  await prisma.playerActivity.create({
+    data: {
+      playerId,
+      activityType: activity.clear,
+      description:
+        slot === 'crime' ? 'Cleared selected crime weapon' : 'Cleared selected secondary weapon',
+      details: safeStringifyDetails({}),
+      isPublic: false,
+    },
+  });
+}

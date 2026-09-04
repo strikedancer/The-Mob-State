@@ -47,7 +47,9 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   String _contextKey = 'depot';
   InventoryGridItem? _selected;
   String? _crimeWeaponId;
+  String? _secondaryWeaponId;
   InventoryGridItem? _equippedWeapon;
+  InventoryGridItem? _equippedSecondary;
   InventoryGridItem? _equippedArmor;
   bool _busy = false;
 
@@ -115,6 +117,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       final weaponsRes = await _api.get('/weapons/inventory');
       final ammoRes = await _api.get('/ammo/inventory');
       final crimeRes = await _api.get('/weapons/crime-weapon');
+      final secondaryRes = await _api.get('/weapons/secondary-weapon');
       final securityRes = await _api.get('/security/status');
       final materials = await _drugs.getPlayerMaterials();
 
@@ -144,9 +147,15 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         );
       }
 
+      _crimeWeaponId = null;
+      _secondaryWeaponId = null;
       if (crimeRes.statusCode == 200) {
         final data = jsonDecode(crimeRes.body);
         _crimeWeaponId = data['weapon']?['weaponId']?.toString();
+      }
+      if (secondaryRes.statusCode == 200) {
+        final data = jsonDecode(secondaryRes.body);
+        _secondaryWeaponId = data['weapon']?['weaponId']?.toString();
       }
 
       InventoryGridItem? armor;
@@ -219,7 +228,16 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         ),
       ].where((item) => item.quantity > 0).toList();
 
-      _equippedWeapon = _crimeWeaponFromBackpack(backpack);
+      _equippedWeapon = _weaponFromInventory(
+        backpack,
+        _crimeWeaponId,
+        InventoryZone.equippedWeapon,
+      );
+      _equippedSecondary = _weaponFromInventory(
+        backpack,
+        _secondaryWeaponId,
+        InventoryZone.equippedSecondary,
+      );
 
       _properties = overview['success'] == true
           ? (overview['storage'] as List<StorageInfo>)
@@ -333,22 +351,76 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     _contextItems = items.where((i) => i.quantity > 0).toList();
   }
 
-  InventoryGridItem? _crimeWeaponFromBackpack(List<InventoryGridItem> backpack) {
-    if (_crimeWeaponId == null) return null;
+  bool _isWeaponEquipZone(InventoryZone zone) {
+    return zone == InventoryZone.equippedWeapon ||
+        zone == InventoryZone.equippedSecondary;
+  }
+
+  InventoryGridItem? _weaponFromInventory(
+    List<InventoryGridItem> backpack,
+    String? weaponId,
+    InventoryZone zone,
+  ) {
+    if (weaponId == null) return null;
     for (final item in backpack) {
-      if (item.kind == InventoryItemKind.weapon && item.id == _crimeWeaponId) {
+      if (item.kind == InventoryItemKind.weapon && item.id == weaponId) {
         return InventoryGridItem(
           kind: InventoryItemKind.weapon,
           id: item.id,
           name: item.name,
           quantity: 1,
           condition: item.condition,
-          zone: InventoryZone.equippedWeapon,
+          zone: zone,
           imagePath: item.imagePath,
         );
       }
     }
     return null;
+  }
+
+  List<InventoryGridItem> _backpackGridItems() {
+    final hidden = <String, int>{};
+    void hide(InventoryGridItem? item) {
+      if (item == null) return;
+      hidden[item.id] = (hidden[item.id] ?? 0) + 1;
+    }
+
+    hide(_equippedWeapon);
+    hide(_equippedSecondary);
+
+    return _backpack
+        .map((item) {
+          if (item.kind != InventoryItemKind.weapon) return item;
+          final worn = hidden[item.id] ?? 0;
+          if (worn <= 0) return item;
+          final remaining = item.quantity - worn;
+          if (remaining <= 0) return null;
+          return InventoryGridItem(
+            kind: item.kind,
+            id: item.id,
+            name: item.name,
+            quantity: remaining,
+            condition: item.condition,
+            zone: item.zone,
+            imagePath: item.imagePath,
+          );
+        })
+        .whereType<InventoryGridItem>()
+        .toList();
+  }
+
+  Future<bool> _setWeaponSlot(InventoryZone zone, String weaponId) async {
+    if (zone == InventoryZone.equippedWeapon) {
+      return _setCrimeWeapon(weaponId);
+    }
+    return _setSecondaryWeapon(weaponId);
+  }
+
+  Future<bool> _clearWeaponSlot(InventoryZone zone) async {
+    if (zone == InventoryZone.equippedWeapon) {
+      return _clearCrimeWeapon();
+    }
+    return _clearSecondaryWeapon();
   }
 
   Future<bool> _setCrimeWeapon(String weaponId) async {
@@ -357,6 +429,9 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     });
     if (response.statusCode == 200) {
       _crimeWeaponId = weaponId;
+      if (_secondaryWeaponId == weaponId) {
+        _secondaryWeaponId = null;
+      }
       return true;
     }
     return false;
@@ -371,10 +446,33 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     return false;
   }
 
+  Future<bool> _setSecondaryWeapon(String weaponId) async {
+    final response = await _api.post('/weapons/secondary-weapon', {
+      'weaponId': weaponId,
+    });
+    if (response.statusCode == 200) {
+      _secondaryWeaponId = weaponId;
+      if (_crimeWeaponId == weaponId) {
+        _crimeWeaponId = null;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> _clearSecondaryWeapon() async {
+    final response = await _api.delete('/weapons/secondary-weapon');
+    if (response.statusCode == 200) {
+      _secondaryWeaponId = null;
+      return true;
+    }
+    return false;
+  }
+
   bool _isStackableMove(InventoryGridItem source, InventoryZone target) {
     if (source.quantity <= 1) return false;
-    if (source.zone == InventoryZone.equippedWeapon ||
-        target == InventoryZone.equippedWeapon ||
+    if (_isWeaponEquipZone(source.zone) ||
+        _isWeaponEquipZone(target) ||
         target == InventoryZone.equippedArmor) {
       return false;
     }
@@ -496,23 +594,31 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     try {
       final propertyId = _selectedPropertyId;
       if (source.kind == InventoryItemKind.weapon &&
-          target == InventoryZone.equippedWeapon &&
+          _isWeaponEquipZone(target) &&
           source.zone == InventoryZone.backpack) {
-        final ok = await _setCrimeWeapon(source.id);
+        final ok = await _setWeaponSlot(target, source.id);
         result = {
           'success': ok,
           'error': ok ? null : l10n.inventoryWrongDrop,
         };
       } else if (source.kind == InventoryItemKind.weapon &&
-          source.zone == InventoryZone.equippedWeapon &&
+          _isWeaponEquipZone(source.zone) &&
           target == InventoryZone.backpack) {
-        final ok = await _clearCrimeWeapon();
+        final ok = await _clearWeaponSlot(source.zone);
         result = {
           'success': ok,
           'error': ok ? null : l10n.inventoryWrongDrop,
         };
       } else if (source.kind == InventoryItemKind.weapon &&
-          source.zone == InventoryZone.equippedWeapon &&
+          _isWeaponEquipZone(source.zone) &&
+          _isWeaponEquipZone(target)) {
+        final ok = await _setWeaponSlot(target, source.id);
+        result = {
+          'success': ok,
+          'error': ok ? null : l10n.inventoryWrongDrop,
+        };
+      } else if (source.kind == InventoryItemKind.weapon &&
+          _isWeaponEquipZone(source.zone) &&
           target == InventoryZone.property &&
           propertyId != null) {
         result = await _inventory.depositWeaponToProperty(
@@ -521,7 +627,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           quantity: 1,
         );
         if (result['success'] == true) {
-          await _clearCrimeWeapon();
+          await _clearWeaponSlot(source.zone);
         }
       } else if (source.kind == InventoryItemKind.armor &&
           source.zone == InventoryZone.equippedArmor &&
@@ -547,17 +653,17 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         );
       } else if (source.kind == InventoryItemKind.weapon &&
           source.zone == InventoryZone.property &&
-          (target == InventoryZone.backpack ||
-              target == InventoryZone.equippedWeapon) &&
+          (target == InventoryZone.backpack || _isWeaponEquipZone(target)) &&
           propertyId != null) {
+        final toEquip = _isWeaponEquipZone(target);
         result = await _inventory.withdrawWeaponFromProperty(
           propertyId: propertyId,
           weaponId: source.id,
-          quantity: target == InventoryZone.equippedWeapon ? 1 : quantity,
+          quantity: toEquip ? 1 : quantity,
+          equip: toEquip,
         );
-        if (result['success'] == true &&
-            target == InventoryZone.equippedWeapon) {
-          await _api.post('/weapons/crime-weapon', {'weaponId': source.id});
+        if (result['success'] == true && toEquip) {
+          await _setWeaponSlot(target, source.id);
         }
       } else if (source.kind == InventoryItemKind.tool &&
           source.zone == InventoryZone.backpack &&
@@ -686,7 +792,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     final doll = _buildDoll(l10n, player?.avatar, player?.activePortraitPath);
     final pack = _buildGrid(
       title: l10n.inventorySlotUsage(_slots.used, _slots.max),
-      items: _backpack,
+      items: _backpackGridItems(),
       emptySlots: _slots.max,
       zone: InventoryZone.backpack,
     );
@@ -728,6 +834,43 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     );
   }
 
+  Widget _labeledEquipSlot({
+    required String label,
+    required InventoryGridItem? item,
+    required InventoryZone zone,
+  }) {
+    return Column(
+      children: [
+        SizedBox(
+          width: 64,
+          height: 64,
+          child: InventorySlot(
+            item: item,
+            selected: _selected?.zone == zone && _selected?.id == item?.id,
+            acceptDrop: true,
+            onAccept: (p) => _transfer(p.item, zone),
+            onTap: () {
+              if (item != null) {
+                _onTapItem(item);
+              } else {
+                _onTapZone(zone);
+              }
+            },
+          ),
+        ),
+        const SizedBox(height: 4),
+        SizedBox(
+          width: 76,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 10, color: Colors.white54),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildDoll(AppLocalizations l10n, String? avatar, String? portrait) {
     return Card(
       color: const Color(0xFF151515),
@@ -742,62 +885,41 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 64,
-                  height: 64,
-                  child: InventorySlot(
-                    item: _equippedWeapon,
-                    selected:
-                        _selected?.zone == InventoryZone.equippedWeapon &&
-                        _selected?.id == _equippedWeapon?.id,
-                    acceptDrop: true,
-                    onAccept: (p) =>
-                        _transfer(p.item, InventoryZone.equippedWeapon),
-                    onTap: () {
-                      if (_equippedWeapon != null) {
-                        _onTapItem(_equippedWeapon!);
-                      } else {
-                        _onTapZone(InventoryZone.equippedWeapon);
-                      }
-                    },
+                Column(
+                  children: [
+                    _labeledEquipSlot(
+                      label: l10n.inventoryEquipWeapon,
+                      item: _equippedWeapon,
+                      zone: InventoryZone.equippedWeapon,
+                    ),
+                    const SizedBox(height: 8),
+                    _labeledEquipSlot(
+                      label: l10n.inventoryEquipSecondary,
+                      item: _equippedSecondary,
+                      zone: InventoryZone.equippedSecondary,
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 12),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: CircleAvatar(
+                    radius: 48,
+                    backgroundImage: AvatarHelper.getAvatarImageProvider(
+                      avatar,
+                      activePortraitPath: portrait,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),
-                CircleAvatar(
-                  radius: 48,
-                  backgroundImage: AvatarHelper.getAvatarImageProvider(
-                    avatar,
-                    activePortraitPath: portrait,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                SizedBox(
-                  width: 64,
-                  height: 64,
-                  child: InventorySlot(
-                    item: _equippedArmor,
-                    selected:
-                        _selected?.zone == InventoryZone.equippedArmor &&
-                        _selected?.id == _equippedArmor?.id,
-                    acceptDrop: true,
-                    onAccept: (p) =>
-                        _transfer(p.item, InventoryZone.equippedArmor),
-                    onTap: () {
-                      if (_equippedArmor != null) {
-                        _onTapItem(_equippedArmor!);
-                      } else {
-                        _onTapZone(InventoryZone.equippedArmor);
-                      }
-                    },
-                  ),
+                _labeledEquipSlot(
+                  label: l10n.inventoryEquipArmor,
+                  item: _equippedArmor,
+                  zone: InventoryZone.equippedArmor,
                 ),
               ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${l10n.inventoryEquipWeapon} / ${l10n.inventoryEquipArmor}',
-              style: const TextStyle(fontSize: 11, color: Colors.white54),
             ),
           ],
         ),

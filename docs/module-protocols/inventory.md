@@ -9,15 +9,17 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Same screen opens from a house/warehouse via **Open storage** (`InventoryScreen(initialPropertyId: …)`)
 
 ## Paper-doll inventory
-- Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`) and worn vest (`GET /security/status`).
-- Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, weapons, ammo and materials.
+- Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`), second-weapon slot (`GET/POST /weapons/secondary-weapon`) and worn vest (`GET /security/status`).
+- A player can wear two weapons at once (for example a handgun and a rifle). Only the crime-weapon slot is used by Crimes; the second slot is extra carry and does not become the crime weapon.
+- Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
+- Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo and materials.
 - Context grid (right on desktop, below on mobile): materials depot, or an owned property in the current country.
   - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag).
   - Warehouse: tools.
   - Materials stay in the country depot (`POST /drugs/materials/transfer`), not in a house.
 - Drag on desktop/web; tap-select then tap-target everywhere (mobile fallback). Each drop is one API call; no optimistic client move.
 - Stacks with quantity > 1 (ammo, materials, stacked weapons/tools) open a quantity dialog: move 1, move all, or a custom amount.
-- Transfers: weapons `POST /properties/storage/:id/weapons/deposit|withdraw`, tools `POST /tools/transfer`, materials depot API, ammo/armor `POST /properties/storage/:id/ammo|armor/deposit|withdraw`.
+- Transfers: weapons `POST /properties/storage/:id/weapons/deposit|withdraw` (house-to-body may send `equip: true`), body slots `POST/DELETE /weapons/crime-weapon` and `/weapons/secondary-weapon`, tools `POST /tools/transfer`, materials depot API, ammo/armor `POST /properties/storage/:id/ammo|armor/deposit|withdraw`.
 - Invalid drop surfaces the server reason (`INVENTORY_FULL`, `STORAGE_FULL`, `WRONG_COUNTRY`, `STORAGE_TYPE_NOT_ALLOWED`, `ARMOR_ALREADY_EQUIPPED`).
 - Out of scope here: drugs/nightclub, crew storage, garage vehicles, cash-drag.
 
@@ -40,6 +42,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Responsive usability without pushing critical actions off-screen.
 - Shared equipment choices that other modules depend on, such as the selected crime weapon, must stay visible and must remain in sync with the consuming gameplay screen.
 - The crime-weapon slot on the paper doll is the same selection Crimes uses. Dropping a weapon from backpack or house storage onto that slot sets `POST /weapons/crime-weapon`. Taking it off the slot (to backpack or house) clears the selection with `DELETE /weapons/crime-weapon`; Crimes then has no crime weapon. Moving a weapon only between backpack and storage does not change the crime-weapon selection.
+- The second-weapon slot uses `POST/DELETE /weapons/secondary-weapon` the same way and never sets the crime weapon. The same `weaponId` cannot occupy both body slots (moving it switches slot). Withdrawing a weapon from a house onto a body slot may send `equip: true` so a full backpack does not block wearing it.
 - Backpack upgrade visibility stays progression-clean: after buying a better backpack, lower or equal backpack tiers should no longer be shown as selectable shop options; only real upgrades remain visible.
 
 ## i18n and Messaging
@@ -54,6 +57,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify the selected crime weapon shown in Inventory matches the selection used on the Crimes screen and survives refresh/navigation correctly.
+- Verify a player can wear two different weapons at once (crime slot + second slot) and that worn weapons do not consume backpack capacity.
 - Verify drag and tap-to-move between backpack and house/warehouse/depot, including a rejected drop (full, wrong country, wrong type).
 - Verify Open storage from a house or warehouse opens this screen with that property selected.
 

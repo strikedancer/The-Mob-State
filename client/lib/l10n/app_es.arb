@@ -10775,6 +10775,7 @@
   "inventoryStorageGrid": "Almacenamiento",
   "inventoryMaterialsDepot": "Depósito de materiales",
   "inventoryEquipWeapon": "Arma del crimen",
+  "inventoryEquipSecondary": "Segunda arma",
   "inventoryEquipArmor": "Chaleco",
   "inventoryEmptySlot": "Ranura vacía",
   "inventorySelectHint": "Seleccionado: {name}. Toque una ranura válida para moverla.",

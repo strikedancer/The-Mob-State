@@ -145,11 +145,16 @@ class InventoryService {
     required int propertyId,
     required String weaponId,
     required int quantity,
+    bool equip = false,
   }) async {
     try {
       final response = await _apiClient.post(
         '/properties/storage/$propertyId/weapons/withdraw',
-        {'weaponId': weaponId, 'quantity': quantity},
+        {
+          'weaponId': weaponId,
+          'quantity': quantity,
+          if (equip) 'equip': true,
+        },
       );
 
       if (response.statusCode == 200) {

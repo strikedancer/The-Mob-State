@@ -512,7 +512,7 @@ class ToolService {
 
     const weaponInventory = await prisma.weaponInventory.findMany({
       where: { playerId },
-      select: { quantity: true },
+      select: { weaponId: true, quantity: true },
     });
 
     let totalSlots = 0;
@@ -524,10 +524,13 @@ class ToolService {
       }
     }
 
-    const weaponSlots = weaponInventory.reduce(
-      (sum, item) => sum + (item.quantity || 0),
-      0,
-    );
+    const { weaponSelectionService } = await import('./weaponSelectionService');
+    const equippedCounts = await weaponSelectionService.getEquippedWeaponSlotCounts(playerId);
+    const weaponSlots = weaponInventory.reduce((sum, item) => {
+      const qty = item.quantity || 0;
+      const worn = equippedCounts.get(item.weaponId) ?? 0;
+      return sum + Math.max(0, qty - worn);
+    }, 0);
 
     totalSlots += weaponSlots;
 

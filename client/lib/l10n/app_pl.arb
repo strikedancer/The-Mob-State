@@ -10775,6 +10775,7 @@
   "inventoryStorageGrid": "Składowanie",
   "inventoryMaterialsDepot": "Magazyn materiałów",
   "inventoryEquipWeapon": "Broń zbrodni",
+  "inventoryEquipSecondary": "Druga broń",
   "inventoryEquipArmor": "Kamizelka",
   "inventoryEmptySlot": "Puste gniazdo",
   "inventorySelectHint": "Wybrano: {name}. Kliknij prawidłowy slot, aby go przenieść.",

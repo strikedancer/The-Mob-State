@@ -10775,6 +10775,7 @@
   "inventoryStorageGrid": "Stockage",
   "inventoryMaterialsDepot": "Dépôt de matériaux",
   "inventoryEquipWeapon": "Arme du crime",
+  "inventoryEquipSecondary": "Deuxième arme",
   "inventoryEquipArmor": "Gilet",
   "inventoryEmptySlot": "Emplacement vide",
   "inventorySelectHint": "Sélectionné : {name}. Appuyez sur un emplacement valide pour le déplacer.",
