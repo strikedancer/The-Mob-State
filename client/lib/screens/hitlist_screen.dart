@@ -88,10 +88,16 @@ String? _hitCombatLine(dynamic combat, AppLocalizations l10n) {
   final line = l10n.hitCombatBreakdown('$armor', '$guards', '$chance');
   final guardsLost = (combat['guardsLost'] as num?)?.toInt() ?? 0;
   final healthLost = (combat['healthLost'] as num?)?.toInt() ?? 0;
-  if (guardsLost <= 0 && healthLost <= 0) {
-    return line;
+  final attackerGuardsLost = (combat['attackerGuardsLost'] as num?)?.toInt() ?? 0;
+  final attackerHealthLost = (combat['attackerHealthLost'] as num?)?.toInt() ?? 0;
+  final parts = <String>[line];
+  if (guardsLost > 0 || healthLost > 0) {
+    parts.add(l10n.hitDefendedAttrition('$guardsLost', '$healthLost'));
   }
-  return '$line\n${l10n.hitDefendedAttrition('$guardsLost', '$healthLost')}';
+  if (attackerGuardsLost > 0 || attackerHealthLost > 0) {
+    parts.add(l10n.hitCombatAttackerAttrition('$attackerGuardsLost', '$attackerHealthLost'));
+  }
+  return parts.join('\n');
 }
 
 class HitlistScreen extends StatefulWidget {

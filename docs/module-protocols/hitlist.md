@@ -308,8 +308,9 @@ winChance = attackerPower / (attackerPower + targetPower);
 roll = random(0-1);
 attackerWins = roll < winChance;
 // Attempt responses include `combat` (armorDefense, bodyguardDefense, winChancePercent, vestMatch).
-// Failed hits that resolved combat set `defended: true`, stay ACTIVE, apply guard/HP attrition,
-// wear the vest, and set lastCombatAt (10 minute retry lock). They do not refund the bounty.
+// Failed hits that resolved combat set `defended: true`, stay ACTIVE, apply guard/HP/vest attrition
+// to both attacker and target, and set lastCombatAt (10 minute retry lock). They do not refund the bounty.
+// A successful kill still applies lighter attacker attrition.
 ```
 
 ### Atomic Transactions

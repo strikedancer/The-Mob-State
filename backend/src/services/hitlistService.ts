@@ -1109,6 +1109,52 @@ async function settleBodyguardUpkeep(
   });
 }
 
+function computeCombatAttrition(
+  roster: BodyguardRoster,
+  health: number,
+  armorRating: number,
+  pressure: number
+) {
+  const casualty = applyBodyguardCasualties(
+    roster,
+    hitFailGuardLoss(bodyguardTotal(roster), pressure)
+  );
+  const currentHealth = Math.max(0, Math.floor(Number(health || 0)));
+  const nextHealth = Math.max(1, currentHealth - hitFailHealthLoss(pressure, armorRating));
+  return {
+    nextRoster: casualty.roster,
+    guardsLost: casualty.lost,
+    guardsRemaining: bodyguardTotal(casualty.roster),
+    healthLost: Math.max(0, currentHealth - nextHealth),
+    nextHealth,
+  };
+}
+
+async function applySideAttritionInTransaction(
+  tx: any,
+  playerId: number,
+  security: PlayerSecurityState | null,
+  nextRoster: BodyguardRoster,
+  nextHealth: number,
+  armorLoss: number
+) {
+  await applyArmorWearInTransaction(tx, security, armorLoss);
+  if (security) {
+    await tx.playerSecurity.update({
+      where: { playerId: security.playerId },
+      data: {
+        ...rosterWriteData(nextRoster),
+        bodyguardUpkeepDueAt:
+          bodyguardTotal(nextRoster) > 0 ? security.bodyguardUpkeepDueAt : null,
+      },
+    });
+  }
+  await tx.player.update({
+    where: { id: playerId },
+    data: { health: nextHealth },
+  });
+}
+
 async function applyArmorWearInTransaction(
   tx: any,
   targetSecurity: PlayerSecurityState | null,
@@ -1387,7 +1433,7 @@ export async function attemptHit(
 
   const attacker = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { currentCountry: true, money: true, preferredLanguage: true },
+    select: { currentCountry: true, money: true, preferredLanguage: true, health: true },
   });
 
   if (!attacker) {
@@ -1477,7 +1523,10 @@ export async function attemptHit(
     ammoQuality = ammoInventory.quality || 1.0;
   }
 
-  const targetSecurity = await settleBodyguardUpkeep(prisma, hit.targetId);
+  const [targetSecurity, attackerSecurity] = await Promise.all([
+    settleBodyguardUpkeep(prisma, hit.targetId),
+    settleBodyguardUpkeep(prisma, playerId),
+  ]);
 
   const shootingStats = await prisma.shootingRangeStats.findUnique({
     where: { playerId },
@@ -1512,10 +1561,28 @@ export async function attemptHit(
     (armorCombat.value + guardsDefense) * (1 + targetBoosts.hitDefensePct);
   const targetPower = targetWeaponDamage * 5 + targetDefense;
   const armorConditionLoss = calculateArmorConditionLoss(attackerPower);
+  const attackerRoster = rosterFromSecurity(attackerSecurity);
+  const attackerArmorCombat = getCombatArmorDetail(attackerSecurity, {
+    weaponType: targetWeapon?.type,
+    ammoType: targetWeapon?.ammoType,
+  });
+  const attackerArmorLoss = calculateArmorConditionLoss(targetPower);
 
   const rawWinChance = attackerPower / Math.max(1, attackerPower + targetPower);
   const winChance = Math.min(0.95, Math.max(0.05, rawWinChance));
   const attackerWins = Math.random() < winChance;
+  const targetAttrition = computeCombatAttrition(
+    targetRoster,
+    target.health,
+    armorCombat.value,
+    rawWinChance
+  );
+  const attackerAttrition = computeCombatAttrition(
+    attackerRoster,
+    attacker.health,
+    attackerArmorCombat.value,
+    attackerWins ? Math.max(0.2, (1 - rawWinChance) * 0.6) : Math.max(0.4, 1 - rawWinChance)
+  );
   const combat = {
     attackerPower: Math.round(attackerPower),
     targetDefense: Math.round(targetDefense),
@@ -1553,6 +1620,14 @@ export async function attemptHit(
       }
 
       await applyArmorWearInTransaction(tx, targetSecurity, armorConditionLoss);
+      await applySideAttritionInTransaction(
+        tx,
+        playerId,
+        attackerSecurity,
+        attackerAttrition.nextRoster,
+        attackerAttrition.nextHealth,
+        attackerArmorLoss
+      );
 
       lootSummary = await transferHitLoot(tx, playerId, victimId, lootSettings);
 
@@ -1612,19 +1687,17 @@ export async function attemptHit(
       winner: playerId,
       bountyPaid: bounty,
       loot: lootSummary,
-      combat,
+      combat: {
+        ...combat,
+        attackerGuardsLost: attackerAttrition.guardsLost,
+        attackerHealthLost: attackerAttrition.healthLost,
+        attackerHealthRemaining: attackerAttrition.nextHealth,
+        attackerGuardsRemaining: attackerAttrition.guardsRemaining,
+      },
       message: `Hit completed! ${playerId} won €${bounty}`,
     };
   }
 
-  const pressure = rawWinChance;
-  const guardsLost = hitFailGuardLoss(bodyguardTotal(targetRoster), pressure);
-  const casualty = applyBodyguardCasualties(targetRoster, guardsLost);
-  const nextRoster = casualty.roster;
-  const healthLost = hitFailHealthLoss(pressure, armorCombat.value);
-  const currentHealth = Math.max(0, Math.floor(Number(target.health || 0)));
-  const nextHealth = Math.max(1, currentHealth - healthLost);
-  const appliedHealthLost = Math.max(0, currentHealth - nextHealth);
   const now = new Date();
 
   await prisma.$transaction(async (tx) => {
@@ -1635,23 +1708,22 @@ export async function attemptHit(
       });
     }
 
-    await applyArmorWearInTransaction(tx, targetSecurity, armorConditionLoss);
-
-    if (targetSecurity) {
-      await tx.playerSecurity.update({
-        where: { playerId: targetSecurity.playerId },
-        data: {
-          ...rosterWriteData(nextRoster),
-          bodyguardUpkeepDueAt:
-            bodyguardTotal(nextRoster) > 0 ? targetSecurity.bodyguardUpkeepDueAt : null,
-        },
-      });
-    }
-
-    await tx.player.update({
-      where: { id: hit.targetId },
-      data: { health: nextHealth },
-    });
+    await applySideAttritionInTransaction(
+      tx,
+      hit.targetId,
+      targetSecurity,
+      targetAttrition.nextRoster,
+      targetAttrition.nextHealth,
+      armorConditionLoss
+    );
+    await applySideAttritionInTransaction(
+      tx,
+      playerId,
+      attackerSecurity,
+      attackerAttrition.nextRoster,
+      attackerAttrition.nextHealth,
+      attackerArmorLoss
+    );
 
     await tx.hitList.update({
       where: { id: hitId },
@@ -1661,10 +1733,14 @@ export async function attemptHit(
 
   const failCombat = {
     ...combat,
-    guardsLost: casualty.lost,
-    guardsRemaining: bodyguardTotal(nextRoster),
-    healthLost: appliedHealthLost,
-    healthRemaining: nextHealth,
+    guardsLost: targetAttrition.guardsLost,
+    guardsRemaining: targetAttrition.guardsRemaining,
+    healthLost: targetAttrition.healthLost,
+    healthRemaining: targetAttrition.nextHealth,
+    attackerGuardsLost: attackerAttrition.guardsLost,
+    attackerHealthLost: attackerAttrition.healthLost,
+    attackerHealthRemaining: attackerAttrition.nextHealth,
+    attackerGuardsRemaining: attackerAttrition.guardsRemaining,
     retryAfterSeconds: Math.ceil(HIT_COMBAT_COOLDOWN_MS / 1000),
   };
 
@@ -1674,7 +1750,12 @@ export async function attemptHit(
       : 'en';
     await directMessageService.sendSystemMessage(
       hit.targetId,
-      buildFailedHitOnTargetMessage(language, casualty.lost, appliedHealthLost, nextHealth),
+      buildFailedHitOnTargetMessage(
+        language,
+        targetAttrition.guardsLost,
+        targetAttrition.healthLost,
+        targetAttrition.nextHealth
+      ),
       {
         senderName: language === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau',
         sendPush: true,
