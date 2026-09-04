@@ -48,6 +48,10 @@ String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
       return l10n.hitlistErrInvalidAmmoHit;
     case 'TARGET_UNDER_HIT_PROTECTION':
       return l10n.hitlistErrTargetUnderHitProtection;
+    case 'HIT_COMBAT_COOLDOWN':
+      final seconds = (map?['retryAfterSeconds'] as num?)?.toInt() ?? 600;
+      final minutes = ((seconds + 59) / 60).floor();
+      return l10n.hitlistErrCombatCooldown('$minutes');
     case 'INVALID_INVESTIGATION_TIER':
       return l10n.hitlistErrInvalidInvestigationTier;
     case 'INVESTIGATION_ALREADY_PENDING':
@@ -81,7 +85,13 @@ String? _hitCombatLine(dynamic combat, AppLocalizations l10n) {
   final guards = (combat['bodyguardDefense'] as num?)?.toInt() ?? 0;
   final chance = (combat['winChancePercent'] as num?)?.toInt();
   if (chance == null) return null;
-  return l10n.hitCombatBreakdown('$armor', '$guards', '$chance');
+  final line = l10n.hitCombatBreakdown('$armor', '$guards', '$chance');
+  final guardsLost = (combat['guardsLost'] as num?)?.toInt() ?? 0;
+  final healthLost = (combat['healthLost'] as num?)?.toInt() ?? 0;
+  if (guardsLost <= 0 && healthLost <= 0) {
+    return line;
+  }
+  return '$line\n${l10n.hitDefendedAttrition('$guardsLost', '$healthLost')}';
 }
 
 class HitlistScreen extends StatefulWidget {

@@ -21,12 +21,16 @@ import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 import {
   BODYGUARD_CAP,
   BODYGUARD_TYPE_LIST,
+  HIT_COMBAT_COOLDOWN_MS,
   armorNetPrice,
   armorRepairCost,
   armorTradeInCredit,
+  applyBodyguardCasualties,
   bodyguardDailyCost,
   bodyguardDefense,
   bodyguardTotal,
+  hitFailGuardLoss,
+  hitFailHealthLoss,
   investigationClarity,
   murderCaseSolveChance,
   type InvestigationClarity,
@@ -89,6 +93,7 @@ interface HitListItem {
   bounty: number;
   counterBounty?: number;
   status: string;
+  lastCombatAt?: Date | null;
   createdAt: Date;
   completedAt?: Date;
   completedBy?: number;
@@ -528,6 +533,39 @@ function buildHitPlacedOnMeMessage(
     `Placed by: ${placedByUsername}`,
     'Tip: consider buying extra protection or placing a counter-bounty immediately.',
   ].join('\n');
+}
+
+function buildFailedHitOnTargetMessage(
+  language: 'nl' | 'en',
+  guardsLost: number,
+  healthLost: number,
+  healthRemaining: number
+): string {
+  if (language === 'nl') {
+    return [
+      'Er is een aanslag op je gedaan. Je overleefde.',
+      guardsLost > 0
+        ? `${guardsLost} lijfwacht${guardsLost === 1 ? '' : 'en'} vielen.`
+        : 'Je lijfwachten hielden stand.',
+      `Je verloor ${healthLost} HP (nu ${healthRemaining}).`,
+      'Het contract blijft open. Laat je vest repareren, huur opnieuw of vlucht.',
+    ].join('\n');
+  }
+
+  return [
+    'Someone attempted a hit on you. You survived.',
+    guardsLost > 0
+      ? `${guardsLost} bodyguard${guardsLost === 1 ? '' : 's'} went down.`
+      : 'Your bodyguards held the line.',
+    `You lost ${healthLost} HP (now ${healthRemaining}).`,
+    'The contract stays open. Repair your vest, rehire, or run.',
+  ].join('\n');
+}
+
+function throwCombatCooldown(retryAfterSeconds: number): never {
+  const error = new Error('HIT_COMBAT_COOLDOWN') as Error & { retryAfterSeconds: number };
+  error.retryAfterSeconds = retryAfterSeconds;
+  throw error;
 }
 
 function buildHitPlacedPushContent(
@@ -1340,6 +1378,13 @@ export async function attemptHit(
     throw new Error('HIT_NOT_ACTIVE');
   }
 
+  if (hit.lastCombatAt) {
+    const elapsed = Date.now() - new Date(hit.lastCombatAt).getTime();
+    if (elapsed < HIT_COMBAT_COOLDOWN_MS) {
+      throwCombatCooldown(Math.max(1, Math.ceil((HIT_COMBAT_COOLDOWN_MS - elapsed) / 1000)));
+    }
+  }
+
   const attacker = await prisma.player.findUnique({
     where: { id: playerId },
     select: { currentCountry: true, money: true, preferredLanguage: true },
@@ -1351,7 +1396,12 @@ export async function attemptHit(
 
   const target = await prisma.player.findUnique({
     where: { id: hit.targetId },
-    select: { currentCountry: true, hitProtectionExpiresAt: true },
+    select: {
+      currentCountry: true,
+      hitProtectionExpiresAt: true,
+      health: true,
+      preferredLanguage: true,
+    },
   });
 
   if (!target) {
@@ -1483,11 +1533,6 @@ export async function attemptHit(
     hit.counterBounty && hit.counterBounty > hit.bounty ? hit.counterBounty : hit.bounty;
   const isCounterReversal = !!(hit.counterBounty && hit.counterBounty > hit.bounty);
 
-  const originalPlacer = await prisma.player.findUnique({
-    where: { id: hit.placedById },
-    select: { money: true },
-  });
-
   if (attackerWins) {
     const victimId = isCounterReversal ? hit.placedById : hit.targetId;
     const lootSettings = await getHitLootSettings();
@@ -1572,6 +1617,16 @@ export async function attemptHit(
     };
   }
 
+  const pressure = rawWinChance;
+  const guardsLost = hitFailGuardLoss(bodyguardTotal(targetRoster), pressure);
+  const casualty = applyBodyguardCasualties(targetRoster, guardsLost);
+  const nextRoster = casualty.roster;
+  const healthLost = hitFailHealthLoss(pressure, armorCombat.value);
+  const currentHealth = Math.max(0, Math.floor(Number(target.health || 0)));
+  const nextHealth = Math.max(1, currentHealth - healthLost);
+  const appliedHealthLost = Math.max(0, currentHealth - nextHealth);
+  const now = new Date();
+
   await prisma.$transaction(async (tx) => {
     if (ammoInventoryId != null) {
       await tx.ammoInventory.update({
@@ -1582,24 +1637,58 @@ export async function attemptHit(
 
     await applyArmorWearInTransaction(tx, targetSecurity, armorConditionLoss);
 
-    if (!isCounterReversal) {
-      await tx.player.update({
-        where: { id: hit.placedById },
-        data: { money: (originalPlacer?.money || 0) + hit.bounty },
-      });
-
-      await tx.hitList.update({
-        where: { id: hitId },
-        data: { status: 'CANCELLED' },
+    if (targetSecurity) {
+      await tx.playerSecurity.update({
+        where: { playerId: targetSecurity.playerId },
+        data: {
+          ...rosterWriteData(nextRoster),
+          bodyguardUpkeepDueAt:
+            bodyguardTotal(nextRoster) > 0 ? targetSecurity.bodyguardUpkeepDueAt : null,
+        },
       });
     }
+
+    await tx.player.update({
+      where: { id: hit.targetId },
+      data: { health: nextHealth },
+    });
+
+    await tx.hitList.update({
+      where: { id: hitId },
+      data: { lastCombatAt: now },
+    });
   });
+
+  const failCombat = {
+    ...combat,
+    guardsLost: casualty.lost,
+    guardsRemaining: bodyguardTotal(nextRoster),
+    healthLost: appliedHealthLost,
+    healthRemaining: nextHealth,
+    retryAfterSeconds: Math.ceil(HIT_COMBAT_COOLDOWN_MS / 1000),
+  };
+
+  try {
+    const language: 'nl' | 'en' = target.preferredLanguage?.toLowerCase().startsWith('nl')
+      ? 'nl'
+      : 'en';
+    await directMessageService.sendSystemMessage(
+      hit.targetId,
+      buildFailedHitOnTargetMessage(language, casualty.lost, appliedHealthLost, nextHealth),
+      {
+        senderName: language === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau',
+        sendPush: true,
+      }
+    );
+  } catch (error) {
+    console.error('[Hitlist] Failed to send failed-hit notification:', error);
+  }
 
   return {
     success: false,
     defended: true,
     winner: hit.targetId,
-    combat,
+    combat: failCombat,
     message: 'Hit failed! Target defended successfully',
   };
 }

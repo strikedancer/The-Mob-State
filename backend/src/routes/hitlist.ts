@@ -299,6 +299,16 @@ router.post(
         });
       }
 
+      if (error.message === 'HIT_COMBAT_COOLDOWN') {
+        const retryAfterSeconds = Math.max(1, Number(error.retryAfterSeconds || 600));
+        return res.status(400).json({
+          success: false,
+          error: 'HIT_COMBAT_COOLDOWN',
+          retryAfterSeconds,
+          message: `Het doelwit is nog onder vuur. Probeer het over ${Math.ceil(retryAfterSeconds / 60)} minuten opnieuw.`,
+        });
+      }
+
       return next(error);
     }
   }

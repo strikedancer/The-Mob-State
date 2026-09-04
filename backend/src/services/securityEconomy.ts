@@ -131,6 +131,42 @@ export function applyCrimeHealthMitigation(
   return Math.max(1, Math.round(raw * factor));
 }
 
+/** Failed hit attempts stay on the contract; next try after this pause. */
+export const HIT_COMBAT_COOLDOWN_MS = 10 * 60 * 1000;
+
+export function applyBodyguardCasualties(
+  roster: Partial<BodyguardRoster> | null | undefined,
+  lostCount: number
+): { roster: BodyguardRoster; lost: number } {
+  const next = normalizeBodyguardRoster(roster);
+  let remaining = Math.max(0, Math.floor(Number(lostCount || 0)));
+  let lost = 0;
+  for (const key of ['elite', 'standard', 'street'] as const) {
+    const take = Math.min(next[key], remaining);
+    next[key] -= take;
+    remaining -= take;
+    lost += take;
+  }
+  return { roster: next, lost };
+}
+
+export function hitFailGuardLoss(totalGuards: number, pressure: number): number {
+  const total = Math.max(0, Math.floor(Number(totalGuards || 0)));
+  if (total <= 0) {
+    return 0;
+  }
+  const clamped = Math.max(0, Math.min(1, Number(pressure || 0)));
+  const fraction = 0.25 + clamped * 0.3;
+  return Math.min(total, Math.max(1, Math.round(total * fraction)));
+}
+
+export function hitFailHealthLoss(pressure: number, armorRating: number): number {
+  const clamped = Math.max(0, Math.min(1, Number(pressure || 0)));
+  const raw = 22 + clamped * 28;
+  const vestFactor = 1 - Math.min(0.35, Math.max(0, Number(armorRating || 0)) / 400);
+  return Math.max(12, Math.round(raw * vestFactor));
+}
+
 export type InvestigationTierId = 'quick' | 'standard' | 'deep';
 export type InvestigationClarity = 'full' | 'partial' | 'blocked';
 

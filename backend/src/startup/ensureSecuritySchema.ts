@@ -74,4 +74,10 @@ export async function ensureSecuritySchema(): Promise<void> {
     SET bodyguardUpkeepDueAt = NULL
     WHERE bodyguards <= 0
   `);
+
+  await ensureColumn(
+    'hit_list',
+    'lastCombatAt',
+    'ALTER TABLE hit_list ADD COLUMN lastCombatAt DATETIME NULL AFTER status'
+  );
 }

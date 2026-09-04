@@ -172,15 +172,15 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 
 **Hit Failed:**
 ```nl
-"❌ Aanval mislukt"
-"Tegenpartij verdedigde zich succesvol"
-"-5 reputatie, €25K herstelskosten"
+"❌ Aanval mislukt — doelwit overleefde"
+"Contract blijft open"
+"Lijfwachten en HP geraakt; volgende poging over 10 minuten"
 ```
 
 ```en
-"❌ Attack failed"
-"Target defended successfully"
-"-5 reputation, €25K repair costs"
+"❌ Attack failed — target survived"
+"Contract stays open"
+"Bodyguards and HP were hit; next attempt in 10 minutes"
 ```
 
 **Counter-Bounty Reversal:**
@@ -308,7 +308,8 @@ winChance = attackerPower / (attackerPower + targetPower);
 roll = random(0-1);
 attackerWins = roll < winChance;
 // Attempt responses include `combat` (armorDefense, bodyguardDefense, winChancePercent, vestMatch).
-// Failed hits that resolved combat set `defended: true`.
+// Failed hits that resolved combat set `defended: true`, stay ACTIVE, apply guard/HP attrition,
+// wear the vest, and set lastCombatAt (10 minute retry lock). They do not refund the bounty.
 ```
 
 ### Atomic Transactions
@@ -327,7 +328,7 @@ await prisma.$transaction([
 - ✅ Place hit (€50K, €500K, €5M) - check money deducted
 - ✅ Hire detective (all 3 cost tiers) - check queue response is immediate but report delivery happens in 1h/6h/24h via Detective Bureau inbox message
 - ✅ View detective report - check 3-hour expiry countdown
-- ✅ Attempt hit (success + failure) - check bounty payout + reputation loss
+- ✅ Attempt hit (success + failure) - success pays bounty; failure keeps the contract, cuts guards/HP, wears vest, and locks retries for 10 minutes
 - ✅ Place counter-bounty - check reversal atomicity (role swap)
 - ✅ Buy bodyguards/armor - check defense bonus applies
 - ✅ Buy Premium Protection - check 24h immunity + can't be attacked

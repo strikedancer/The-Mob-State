@@ -1854,6 +1854,7 @@ model HitList {
   bounty        Int
   counterBounty Int?
   status        String    @default("ACTIVE") @db.VarChar(20)
+  lastCombatAt  DateTime?
   createdAt     DateTime  @default(now())
   completedAt   DateTime?
   completedBy   Int?
