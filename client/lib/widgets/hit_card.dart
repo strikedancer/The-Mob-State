@@ -70,6 +70,7 @@ class HitCard extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+      clipBehavior: Clip.none,
       decoration: BoxDecoration(
         color: _panelBg.withValues(alpha: 0.92),
         borderRadius: BorderRadius.circular(14),
@@ -90,7 +91,7 @@ class HitCard extends StatelessWidget {
           ),
         ),
         child: ExpansionTile(
-          tilePadding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
+          tilePadding: const EdgeInsets.fromLTRB(12, 2, 4, 2),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           title: Row(
             children: [
@@ -101,27 +102,35 @@ class HitCard extends StatelessWidget {
                         target['username']?.toString(),
                       )
                     : null,
-                borderRadius: BorderRadius.circular(16),
-                child: CircleAvatar(
-                  radius: 16,
-                  backgroundImage: AvatarHelper.getAvatarImageProvider(
-                    target?['avatar']?.toString(),
-                    activePortraitPath:
-                        target?['activePortraitPath']?.toString(),
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: _gold, width: 1.2),
                   ),
-                  child:
-                      (target?['avatar'] == null ||
-                          target?['avatar']?.toString().isEmpty == true)
-                      ? Text(
-                          (target?['username']?.toString().isNotEmpty == true)
-                              ? target['username'].toString()[0].toUpperCase()
-                              : '?',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        )
-                      : null,
+                  child: CircleAvatar(
+                    radius: 19,
+                    backgroundImage: AvatarHelper.getAvatarImageProvider(
+                      target?['avatar']?.toString(),
+                      activePortraitPath:
+                          target?['activePortraitPath']?.toString(),
+                    ),
+                    child:
+                        (target?['avatar'] == null ||
+                            target?['avatar']?.toString().isEmpty == true)
+                        ? Text(
+                            (target?['username']?.toString().isNotEmpty == true)
+                                ? target['username'].toString()[0].toUpperCase()
+                                : '?',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          )
+                        : null,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),

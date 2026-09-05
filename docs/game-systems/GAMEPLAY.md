@@ -737,7 +737,7 @@ Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-
 
 ## Hitlist & Moordslooptochten
 
-- Op web-Moordlijst blijft de statusbalk apart boven de content. In de kaart staan open contracten in een noir-header (aantal, minimale bounty, beveiliging) met donkere contractkaarten; geen extra paginatitel “Moordlijst”. Elke rij: avatar, naam, bounty, tijd, Moord, daarna de dropdown voor details.
+- Op web-Moordlijst blijft de statusbalk apart boven de content. In de kaart staan open contracten in een noir-header (aantal, minimale bounty, beveiliging) met donkere contractkaarten; geen extra paginatitel “Moordlijst”. Elke rij: grotere avatar (zelfde rijhoogte), naam, bounty, tijd, Moord, daarna de dropdown voor details.
 
 ### Basismechanica
 

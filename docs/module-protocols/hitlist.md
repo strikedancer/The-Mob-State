@@ -327,7 +327,7 @@ await prisma.$transaction([
 
 ## QA Checklist
 - ✅ Open hitlist screen on mobile, tablet, desktop widths
-- ✅ On web dashboard, verify there is no extra “Moordlijst” AppBar title, the hero shows open-count + security, and each contract stays on one row: avatar, name, bounty, age, Moord, then the expand dropdown
+- ✅ On web dashboard, verify there is no extra “Moordlijst” AppBar title, the hero shows open-count + security, and each contract stays on one row: larger avatar (same row height), name, bounty, age, Moord, then the expand dropdown
 - ✅ Place hit (€50K, €500K, €5M) - check money deducted
 - ✅ Hire detective (all 3 cost tiers) - check queue response is immediate but report delivery happens in 1h/6h/24h via Detective Bureau inbox message
 - ✅ View detective report - check 3-hour expiry countdown
