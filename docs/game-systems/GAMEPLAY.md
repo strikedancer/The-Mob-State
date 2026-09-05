@@ -609,7 +609,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - Het dashboard toont een **Markt**-tegel met het aantal actieve P2P-listings en **Mijn activiteit** (recente `GET /events` + SSE van alleen jouw speler). Geen wereldwijde feed van andere spelers. Privéberichten (`direct_message.*`) komen niet in die feed (wel live voor chat/badge). Aankomstregels tonen het land (niet een streepje).
 - Nightclub opent met een **Tonight**-kaart (crowd, stock, Restock, Boost crowd); de rest van Ops Lab zit onder Geavanceerd. Omzet blijft via de tick.
 - RLD-raids draaien op de tick bij hoge FBI-heat. Collect heet **Nu ophalen**. Er is geen PvP-districtovername.
-- Publieke profielen tonen featured achievements, een tappable crew-naam en het landgoed als je een huis/appartement hebt.
+- Publieke profielen tonen featured achievements, een tappable crew-naam en het landgoed als je een huis/appartement hebt. **Online** betekent dat die speler de laatste 5 minuten een echte sessie had; een world-tick of het openen van het profiel telt niet als inloggen.
 
 ### Trade Risk Factors (legacy / algemeen)
 Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s; details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md` / `TRADE_RISK_MECHANICS` waar van toepassing.

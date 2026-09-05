@@ -7,7 +7,7 @@ export const playerService = {
   /**
    * Get full player data by ID
    */
-  async getPlayer(playerId: number) {
+  async getPlayer(playerId: number, options?: { applyNeeds?: boolean }) {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       include: {
@@ -47,12 +47,14 @@ export const playerService = {
 
     let hunger = player.hunger;
     let thirst = player.thirst;
-    try {
-      const needs = await applyNeedsTick(playerId);
-      hunger = needs.hunger;
-      thirst = needs.thirst;
-    } catch {
-      // Keep stored values if the lazy needs tick fails.
+    if (options?.applyNeeds !== false) {
+      try {
+        const needs = await applyNeedsTick(playerId);
+        hunger = needs.hunger;
+        thirst = needs.thirst;
+      } catch {
+        // Keep stored values if the lazy needs tick fails.
+      }
     }
 
     return {

@@ -14,7 +14,7 @@ import {
   checkAndUnlockAchievements,
   serializeAchievementForClient,
 } from '../services/achievementService';
-import { existsCached } from '../services/redisClient';
+import { existsCached, getCached } from '../services/redisClient';
 import * as crewWarService from '../services/crewWarService';
 import * as territoryService from '../services/territoryService';
 import {
@@ -253,7 +253,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
 
     let player;
     try {
-      player = await playerService.getPlayer(playerId);
+      player = await playerService.getPlayer(playerId, { applyNeeds: false });
     } catch (error) {
       if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
         return res.status(404).json({
@@ -286,6 +286,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     let prostitutesCount = 0;
     let propertiesCount = 0;
     let isOnlineNow = false;
+    let lastSeenMs: number | null = null;
     try {
       const profileMeta = await Promise.all([
         prisma.profileLike.count({ where: { targetPlayerId: playerId } }),
@@ -305,6 +306,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
         prisma.prostitute.count({ where: { playerId } }),
         prisma.property.count({ where: { playerId } }),
         existsCached(`online:${playerId}`),
+        getCached<number>(`lastseen:${playerId}`),
       ]);
 
       likesCount = profileMeta[0];
@@ -313,20 +315,22 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       prostitutesCount = profileMeta[3];
       propertiesCount = profileMeta[4];
       isOnlineNow = profileMeta[5];
+      lastSeenMs = profileMeta[6];
     } catch (metaError) {
       console.error('⚠️ Profile meta fallback in /player/:playerId/profile:', metaError);
     }
 
     const nowMs = Date.now();
-    const lastSeenAt = player.lastTickAt ?? player.updatedAt ?? player.createdAt;
+    // Presence is Redis session activity only. lastTickAt/updatedAt move on
+    // world ticks and must not mark a player as "online now".
+    const lastSeenAt =
+      lastSeenMs != null && Number.isFinite(lastSeenMs)
+        ? new Date(lastSeenMs)
+        : player.createdAt;
     const secondsSinceLastSeen = Math.max(
       0,
       Math.floor((nowMs - new Date(lastSeenAt).getTime()) / 1000)
     );
-
-    if (!isOnlineNow) {
-      isOnlineNow = secondsSinceLastSeen <= 300;
-    }
 
     const isAlive = (player.health ?? 0) > 0;
 

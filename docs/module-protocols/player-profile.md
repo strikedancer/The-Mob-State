@@ -28,6 +28,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 
 ## Must Preserve
 - Publiek profiel toont featured achievements (top 6–9), tappable crew-naam en `EstateLotView` als er een huis/appartement met upgrade-levels is. Geen live landkaart.
+- **Online** op het publieke profiel is echte sessie-activiteit (`online:{playerId}` in Redis, gezet bij authenticate). Gebruik **niet** `lastTickAt` / `updatedAt` als “nu online” — die lopen door world-ticks en zouden inactieve accounts als online tonen. Last-seen komt uit `lastseen:{playerId}` (laatste authenticate); ontbreekt die key, val terug op `createdAt`. Het openen van iemands profiel mag **geen** `applyNeedsTick` op die speler doen.
 - Duidelijke profielnavigatie vanaf avatars en namen.
 - Rangtitel op het publieke profiel is gelokaliseerd vanaf het numerieke rank-veld en gelijk aan de dashboard-rang (niet de ruwe Engelse API-`rankTitle`).
 - Correcte guard op null/ongeldige `playerId` waarden.
@@ -51,6 +52,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 5. Verifieer dat publiek profiel geen live locatie-informatie toont.
 6. Controleer NL/EN copy voor profielknoppen, likes en foutmeldingen.
 7. Verifieer dat embedded/contextuele flows de hoofdmodule niet onnodig kapot navigeren.
+8. Open het profiel van een account dat lang niet inlogde: Online mag niet “Nu online” zijn; toon last-seen in dagen. Een tweede keer openen mag dat niet in “Nu online” veranderen.
 
 ## Implementation Pattern
 

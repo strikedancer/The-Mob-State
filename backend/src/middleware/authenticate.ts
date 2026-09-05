@@ -130,8 +130,10 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
       currentCountry: player.currentCountry,
     };
 
-    // Track online presence in Redis (fire-and-forget, 5-minute TTL)
+    // Track online presence in Redis (fire-and-forget).
+    // online:* = 5-minute live flag; lastseen:* = last real login/API activity.
     setCached(`online:${player.id}`, 1, 300).catch(() => {});
+    setCached(`lastseen:${player.id}`, Date.now(), 60 * 60 * 24 * 400).catch(() => {});
 
     console.log('[Auth] Authentication successful for player:', player.id, player.username);
     return next();
