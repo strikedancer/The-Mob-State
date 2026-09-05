@@ -11230,5 +11230,46 @@
   "helpTopicAviationTitle": "Aviación",
   "helpTopicAviationSummary": "Termine la escuela de aviación, compre una licencia paga, luego compre un avión para volar instantáneamente, reduzca el tiempo de viaje comercial y venda o repare su flota de hangares.",
   "helpTopicAviationHow": "Complete la escuela de aviación hasta el nivel 5 y obtenga ambos certificados de vuelo antes de poder comprar una licencia paga. \nCompra una licencia paga en la pantalla de Aviación: básica, comercial o de carga. Los niveles más altos desbloquean aviones más pesados. \nCompra un avión del catálogo de hangares. Los nuevos aviones comienzan con el tanque vacío. \nRepostar desde el hangar a 50€ el litro. Un vuelo privado consume 100 L y te traslada a otro país al instante. \nCommercial Travel todavía utiliza billetes y tramos. Ser propietario de un avión acorta esa espera: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviones de carga −30%. Sólo el mejor avión cuenta. \nVender un avión en propiedad por el 50% del precio de compra. Repara un avión averiado antes de poder repostar o volarlo.",
-  "helpTopicAviationTips": "School 5/5 no es suficiente: aún necesita la licencia paga antes de cualquier compra. \nTanque suficiente para 100 L antes de volar. Un avión vacío no puede salir del hangar. \nUn avión también acelera los viajes normales, incluso si se toma la ruta comercial. \nVender aviones no utilizados si necesita dinero en efectivo; solo obtienes la mitad de lo que pagaste."
+  "helpTopicAviationTips": "School 5/5 no es suficiente: aún necesita la licencia paga antes de cualquier compra. \nTanque suficiente para 100 L antes de volar. Un avión vacío no puede salir del hangar. \nUn avión también acelera los viajes normales, incluso si se toma la ruta comercial. \nVender aviones no utilizados si necesita dinero en efectivo; solo obtienes la mitad de lo que pagaste.",
+  "territoryErrorGarrisonNotOwner": "Sólo la Crew que controla esta región puede desplegar una guarnición.",
+  "territoryErrorGarrisonAlreadyActive": "Esta región ya cuenta con una guarnición activa.",
+  "territoryErrorGarrisonCrewLimit": "Tu Crew ya tiene el número máximo de guarniciones activas.",
+  "territoryErrorGarrisonHq": "Tu nivel de cuartel general es demasiado bajo para desplegar una guarnición.",
+  "territoryErrorGarrisonFunds": "No hay suficiente dinero en el banco de la Crew para desplegar esta guarnición.",
+  "territoryGarrisonTitle": "Guarnición / defensa aérea",
+  "territoryGarrisonDesc": "Contrata tanques y defensa aérea por unas horas. La región sigue siendo atacable, pero las acciones defensivas golpean con más fuerza y ​​los atacantes necesitan una mayor ventaja para capturarla.",
+  "territoryGarrisonDeploy": "Desplegar guarnición",
+  "territoryGarrisonActiveUntil": "Guarnición activa hasta {time}",
+  "@territoryGarrisonActiveUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryGarrisonCostHours": "{cost} del banco de Crew · {hours}h",
+  "@territoryGarrisonCostHours": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryGarrisonDialogTitle": "¿Desplegar guarnición?",
+  "territoryGarrisonDialogBody": "Paga {cost} del banco de Crew para estacionar tanques y defensa aérea aquí durante {hours} horas. La región todavía puede ser atacada, pero es más difícil de tomar.",
+  "@territoryGarrisonDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territorySnackGarrisonDeployed": "Guarnición desplegada.",
+  "territoryBonusGarrison": "Guarnición / defensa aérea"
 }

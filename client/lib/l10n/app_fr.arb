@@ -11230,5 +11230,46 @@
   "helpTopicAviationTitle": "Aviation",
   "helpTopicAviationSummary": "Terminez l'école d'aviation, achetez une licence payante, puis achetez un avion pour voler instantanément, réduisez le temps de déplacement commercial et vendez ou réparez votre flotte de hangars.",
   "helpTopicAviationHow": "Terminez l'école d'aviation jusqu'au niveau 5 et obtenez les deux certificats de vol avant de pouvoir acheter une licence payante. \nAchetez une licence payante sur l'écran Aviation : de base, commerciale ou cargo. Les niveaux supérieurs débloquent des avions plus lourds. \nAchetez un avion dans le catalogue du hangar. Les nouveaux avions démarrent avec un réservoir vide. \nFaire le plein au hangar à 50 € le litre. Un vol privé consomme 100 L et vous transporte instantanément vers un autre pays. \nLes voyages commerciaux utilisent toujours des billets et des trajets. Posséder un avion raccourcit cette attente : Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, avions cargo −30 %. Seul le meilleur avion compte. \nVendez un avion en votre possession pour 50 % du prix d'achat. Réparez un avion en panne avant de pouvoir faire le plein ou le piloter.",
-  "helpTopicAviationTips": "L'école 5/5 ne suffit pas : il faut quand même la licence payante avant tout achat. \nRéservoir suffisant pour 100 L avant de voler. Un avion vide ne peut pas quitter le hangar. \nUn avion accélère également les voyages normaux, même si vous empruntez la route commerciale. \nVendez des avions inutilisés si vous avez besoin d’argent liquide ; vous ne recevez que la moitié de ce que vous avez payé."
+  "helpTopicAviationTips": "L'école 5/5 ne suffit pas : il faut quand même la licence payante avant tout achat. \nRéservoir suffisant pour 100 L avant de voler. Un avion vide ne peut pas quitter le hangar. \nUn avion accélère également les voyages normaux, même si vous empruntez la route commerciale. \nVendez des avions inutilisés si vous avez besoin d’argent liquide ; vous ne recevez que la moitié de ce que vous avez payé.",
+  "territoryErrorGarrisonNotOwner": "Seul l'équipage qui détient cette région peut déployer une garnison.",
+  "territoryErrorGarrisonAlreadyActive": "Cette région dispose déjà d'une garnison active.",
+  "territoryErrorGarrisonCrewLimit": "Votre équipage dispose déjà du nombre maximum de garnisons actives.",
+  "territoryErrorGarrisonHq": "Votre niveau de QG est trop bas pour déployer une garnison.",
+  "territoryErrorGarrisonFunds": "Pas assez d'argent dans la banque d'équipage pour déployer cette garnison.",
+  "territoryGarrisonTitle": "Garnison / défense aérienne",
+  "territoryGarrisonDesc": "Louez des chars et de la défense aérienne pour quelques heures. La région reste attaquable, mais les actions de défense frappent plus fort et les attaquants ont besoin d'une avance plus importante pour la capturer.",
+  "territoryGarrisonDeploy": "Déployer une garnison",
+  "territoryGarrisonActiveUntil": "Garnison active jusqu'à {time}",
+  "@territoryGarrisonActiveUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryGarrisonCostHours": "{cost} de la banque d'équipage · {hours}h",
+  "@territoryGarrisonCostHours": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryGarrisonDialogTitle": "Déployer une garnison ?",
+  "territoryGarrisonDialogBody": "Payez {cost} de la banque d'équipage pour stationner les chars et la défense aérienne ici pendant {hours} heures. La région peut encore être attaquée, mais elle est plus difficile à prendre.",
+  "@territoryGarrisonDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territorySnackGarrisonDeployed": "Garnison déployée.",
+  "territoryBonusGarrison": "Garnison / défense aérienne"
 }

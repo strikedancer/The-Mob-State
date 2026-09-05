@@ -7267,6 +7267,46 @@
   "territoryErrorHqLevelRequired": "Je HQ-level is nog te laag voor deze territory-actie.",
   "territoryErrorDailyCap": "Je hebt je dagelijkse limiet voor territory-acties bereikt.",
   "territoryErrorWrongCountry": "Je kunt alle landen bekijken, maar territory-acties werken alleen in het land waar je nu bent.",
+  "territoryErrorGarrisonNotOwner": "Alleen de crew die dit gebied houdt kan hier een garnizoen zetten.",
+  "territoryErrorGarrisonAlreadyActive": "Dit gebied heeft al een actief garnizoen.",
+  "territoryErrorGarrisonCrewLimit": "Jullie crew heeft al het maximum aantal actieve garnizoenen.",
+  "territoryErrorGarrisonHq": "Jullie HQ-level is te laag om een garnizoen te zetten.",
+  "territoryErrorGarrisonFunds": "Niet genoeg geld in de crew-bank voor dit garnizoen.",
+  "territoryGarrisonTitle": "Garnizoen / luchtafweer",
+  "territoryGarrisonDesc": "Huur tanks en luchtafweer voor een paar uur. Het gebied blijft aanvalbaar, maar verdedigingsacties pakken harder uit en aanvallers hebben een grotere puntenvoorsprong nodig om het te veroveren.",
+  "territoryGarrisonDeploy": "Zet garnizoen in",
+  "territoryGarrisonActiveUntil": "Garnizoen actief tot {time}",
+  "@territoryGarrisonActiveUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryGarrisonCostHours": "{cost} uit de crew-bank · {hours}u",
+  "@territoryGarrisonCostHours": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryGarrisonDialogTitle": "Garnizoen inzetten?",
+  "territoryGarrisonDialogBody": "Betaal {cost} uit de crew-bank om hier {hours} uur tanks en luchtafweer te stationeren. Het gebied kan nog steeds worden aangevallen, maar is lastiger te veroveren.",
+  "@territoryGarrisonDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territorySnackGarrisonDeployed": "Garnizoen ingezet.",
   "territoryErrorUnknown": "Onbekende territory-fout.",
   "territoryLegendUnderContest": "In strijd",
   "territoryLegendNeutral": "Neutraal",
@@ -9898,8 +9938,8 @@
   "helpTopicTerritoryCategory": "Empire",
   "helpTopicTerritoryTitle": "Territorium",
   "helpTopicTerritorySummary": "Claim en controleer geografische regio's voor passief inkomen, crew-prestige en strategische regiovoordelen. Territory combineert kaartcontrol met contests en seizoenale beloningen.",
-  "helpTopicTerritoryHow": "Territorium overzicht toont alle beschikbare landen en regio's per land. Klik op een land om de interactieve kaart te zien.\nAlle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.\nTik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.\nBekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.\nOp mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.\nTerritorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.\nElke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.\nStart een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.\nZodra de voorbereiding klaar is, krijgen aanvallende én verdedigende crewleden een push- en inboxbericht zodat je weet dat er nu aangevallen of verdedigd kan worden. Die melding komt via de minuut-cron, ook als niemand het Territory-scherm open heeft.\nTijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.\nRegio's hebben nu ook strategische rollen zoals haven, industrie, hoofdstad, grensregio of logistiek knooppunt. Die rol bepaalt welke actions daar extra punten kunnen krijgen.\nAangrenzende regio's die al van jouw crew zijn leveren nu extra steun op bij contest-actions. De regio-modal laat zien welke strategische bonussen actief zijn en hoeveel buursteun jouw crew op dat gebied heeft.\nActiebonussen kunnen nu ook uit crew-progressie komen: HQ-level, crew missielevel en relevante bijgebouwen (wapen/munitie/auto/boot/drugs-opslag). Deze bonussen verhogen alleen contestpunten, niet de passieve cash van het gebied.\nSommige geavanceerde contest-acties zijn HQ-gated: als je HQ-level te laag is zie je direct `vereist HQ level X` op de actieknop.\nTerritory gebruikt standaard geen harde dagcap meer voor acties (runtime cap 0 = uit). Balans blijft via cooldown, anti-farm en strategische actiekeuze.\nAls een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.\nAanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.\nDe waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.\nContests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.\nGrote regio's (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.\nSeizoenale events geven bonus-beloningen en speciale challenges per regio's groep.\nPrevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.\nAnti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.",
-  "helpTopicTerritoryTips": "Begin in een uitgebalanceerd land met middelgrote regio's: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.",
+  "helpTopicTerritoryHow": "Territorium overzicht toont alle beschikbare landen en regio's per land. Klik op een land om de interactieve kaart te zien.\nAlle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.\nTik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.\nBekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.\nOp mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.\nTerritorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.\nElke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.\nStart een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.\nZodra de voorbereiding klaar is, krijgen aanvallende én verdedigende crewleden een push- en inboxbericht zodat je weet dat er nu aangevallen of verdedigd kan worden. Die melding komt via de minuut-cron, ook als niemand het Territory-scherm open heeft.\nTijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.\nRegio's hebben nu ook strategische rollen zoals haven, industrie, hoofdstad, grensregio of logistiek knooppunt. Die rol bepaalt welke actions daar extra punten kunnen krijgen.\nAangrenzende regio's die al van jouw crew zijn leveren nu extra steun op bij contest-actions. De regio-modal laat zien welke strategische bonussen actief zijn en hoeveel buursteun jouw crew op dat gebied heeft.\nActiebonussen kunnen nu ook uit crew-progressie komen: HQ-level, crew missielevel en relevante bijgebouwen (wapen/munitie/auto/boot/drugs-opslag). Deze bonussen verhogen alleen contestpunten, niet de passieve cash van het gebied.\nSommige geavanceerde contest-acties zijn HQ-gated: als je HQ-level te laag is zie je direct `vereist HQ level X` op de actieknop.\nTerritory gebruikt standaard geen harde dagcap meer voor acties (runtime cap 0 = uit). Balans blijft via cooldown, anti-farm en strategische actiekeuze.\nAls een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.\nAanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.\nDe waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.\nContests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.\nGrote regio's (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.\nSeizoenale events geven bonus-beloningen en speciale challenges per regio's groep.\nPrevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.\nAnti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.\nEen crew die een gebied houdt kan uit de crew-bank een tijdelijk garnizoen kopen (tanks en luchtafweer). Het gebied blijft aanvalbaar, maar verdedigingsacties scoren extra en aanvallers hebben een grotere voorsprong nodig om het te veroveren. Er kunnen maar een paar garnizoenen tegelijk actief zijn.",
+  "helpTopicTerritoryTips": "Begin in een uitgebalanceerd land met middelgrote regio's: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.\nKoop een garnizoen op een waardevol gebied voor een lange nacht of een bekende raid: het is geen slot, maar een slaperige verdediging is dan veel lastiger te overrompelen.",
   "helpTopicProstitutionCategory": "Empire",
   "helpTopicProstitutionTitle": "Prostitutie",
   "helpTopicProstitutionSummary": "Bouw een prostitutie-netwerk met recruits, events en VIP-klanten. Een goed gerund netwerk genereert passief geld maar vereist actief management om rivaliteit en politie-aandacht te beheersen.",
@@ -10778,6 +10818,7 @@
   "territoryProjectSurveillanceDesc": "Extra intel_scan-punten en kortere intel-cooldown (haven / luchthub / hoofdstad).",
   "territoryProjectArmsCacheDesc": "Extra raid- en defense-punten (industrie / grens).",
   "territoryBonusRegionProject": "Regioproject",
+  "territoryBonusGarrison": "Garnizoen / luchtafweer",
   "territoryErrorProjectInvalidType": "Onbekend projecttype.",
   "territoryErrorProjectTagMismatch": "Dit projecttype past niet bij de strategische tags van dit gebied.",
   "@territoryContestHudScore": {

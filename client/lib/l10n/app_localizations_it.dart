@@ -14021,6 +14021,57 @@ class AppLocalizationsIt extends AppLocalizations {
       'Puoi visualizzare tutti i paesi, ma le azioni sul territorio funzionano solo nel paese in cui ti trovi attualmente.';
 
   @override
+  String get territoryErrorGarrisonNotOwner =>
+      'Solo l\'Crew che controlla questa regione può schierare una guarnigione.';
+
+  @override
+  String get territoryErrorGarrisonAlreadyActive =>
+      'Questa regione ha già una guarnigione attiva.';
+
+  @override
+  String get territoryErrorGarrisonCrewLimit =>
+      'Il tuo Crew ha già il numero massimo di guarnigioni attive.';
+
+  @override
+  String get territoryErrorGarrisonHq =>
+      'Il tuo livello HQ è troppo basso per schierare una guarnigione.';
+
+  @override
+  String get territoryErrorGarrisonFunds =>
+      'Non ci sono abbastanza soldi nella banca dell\'Crew per schierare questa guarnigione.';
+
+  @override
+  String get territoryGarrisonTitle => 'Guarnigione/difesa aerea';
+
+  @override
+  String get territoryGarrisonDesc =>
+      'Assumi carri armati e difesa aerea per alcune ore. La regione rimane attaccabile, ma le azioni di difesa colpiscono più duramente e gli attaccanti hanno bisogno di un punto di vantaggio maggiore per catturarla.';
+
+  @override
+  String get territoryGarrisonDeploy => 'Schiera la guarnigione';
+
+  @override
+  String territoryGarrisonActiveUntil(String time) {
+    return 'Presidio attivo fino alle $time';
+  }
+
+  @override
+  String territoryGarrisonCostHours(String cost, int hours) {
+    return '$cost dalla sponda dell\'Crew · ${hours}h';
+  }
+
+  @override
+  String get territoryGarrisonDialogTitle => 'Schierare la guarnigione?';
+
+  @override
+  String territoryGarrisonDialogBody(String cost, int hours) {
+    return 'Paga $cost dalla banca dell\'Crew ai carri armati della stazione e alla difesa aerea qui per $hours ore. La regione può ancora essere attaccata, ma è più difficile da conquistare.';
+  }
+
+  @override
+  String get territorySnackGarrisonDeployed => 'La guarnigione si è schierata.';
+
+  @override
   String get territoryErrorUnknown => 'Errore territorio sconosciuto.';
 
   @override
@@ -17439,6 +17490,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get territoryBonusRegionProject => 'Progetto Regione';
+
+  @override
+  String get territoryBonusGarrison => 'Guarnigione/difesa aerea';
 
   @override
   String get territoryErrorProjectInvalidType =>

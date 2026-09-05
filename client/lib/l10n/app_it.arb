@@ -11230,5 +11230,46 @@
   "helpTopicAviationTitle": "Aviazione",
   "helpTopicAviationSummary": "Completa la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per volare immediatamente, riduci i tempi di viaggio commerciale e vendi o ripara la tua flotta di hangar.",
   "helpTopicAviationHow": "Completa la scuola di aviazione fino al livello 5 e ottieni entrambi i certificati di volo prima di poter acquistare una licenza a pagamento. \nAcquista una licenza a pagamento nella schermata Aviazione: base, commerciale o cargo. I livelli più alti sbloccano aerei più pesanti. \nAcquista un aereo dal catalogo dell'hangar. I nuovi aerei iniziano con un serbatoio vuoto. \nRifornimento dall'hangar a 50€ al litro. Un volo privato consuma 100 L e ti trasferisce istantaneamente in un altro paese. \nI viaggi commerciali utilizzano ancora biglietti e tratte. Possedere un aereo riduce l'attesa: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aerei cargo −30%. Conta solo l'aereo migliore. \nVendere un aereo di proprietà al 50% del prezzo di acquisto. Ripara un aereo rotto prima di poterlo rifornire di carburante o farlo volare.",
-  "helpTopicAviationTips": "School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l'hangar. \nUn aereo inoltre accelera il Viaggio normale anche se si prende la rotta commerciale. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato."
+  "helpTopicAviationTips": "School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l'hangar. \nUn aereo inoltre accelera il Viaggio normale anche se si prende la rotta commerciale. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato.",
+  "territoryErrorGarrisonNotOwner": "Solo l'Crew che controlla questa regione può schierare una guarnigione.",
+  "territoryErrorGarrisonAlreadyActive": "Questa regione ha già una guarnigione attiva.",
+  "territoryErrorGarrisonCrewLimit": "Il tuo Crew ha già il numero massimo di guarnigioni attive.",
+  "territoryErrorGarrisonHq": "Il tuo livello HQ è troppo basso per schierare una guarnigione.",
+  "territoryErrorGarrisonFunds": "Non ci sono abbastanza soldi nella banca dell'Crew per schierare questa guarnigione.",
+  "territoryGarrisonTitle": "Guarnigione/difesa aerea",
+  "territoryGarrisonDesc": "Assumi carri armati e difesa aerea per alcune ore. La regione rimane attaccabile, ma le azioni di difesa colpiscono più duramente e gli attaccanti hanno bisogno di un punto di vantaggio maggiore per catturarla.",
+  "territoryGarrisonDeploy": "Schiera la guarnigione",
+  "territoryGarrisonActiveUntil": "Presidio attivo fino alle {time}",
+  "@territoryGarrisonActiveUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryGarrisonCostHours": "{cost} dalla sponda dell'Crew · {hours}h",
+  "@territoryGarrisonCostHours": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryGarrisonDialogTitle": "Schierare la guarnigione?",
+  "territoryGarrisonDialogBody": "Paga {cost} dalla banca dell'Crew ai carri armati della stazione e alla difesa aerea qui per {hours} ore. La regione può ancora essere attaccata, ma è più difficile da conquistare.",
+  "@territoryGarrisonDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territorySnackGarrisonDeployed": "La guarnigione si è schierata.",
+  "territoryBonusGarrison": "Guarnigione/difesa aerea"
 }

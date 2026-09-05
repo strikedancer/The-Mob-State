@@ -13974,6 +13974,57 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você pode visualizar todos os países, mas as ações territoriais só funcionam no país onde você está atualmente.';
 
   @override
+  String get territoryErrorGarrisonNotOwner =>
+      'Somente a Crew que controla esta região pode mobilizar uma guarnição.';
+
+  @override
+  String get territoryErrorGarrisonAlreadyActive =>
+      'Esta região já possui uma guarnição ativa.';
+
+  @override
+  String get territoryErrorGarrisonCrewLimit =>
+      'Sua Crew já possui o número máximo de guarnições ativas.';
+
+  @override
+  String get territoryErrorGarrisonHq =>
+      'O nível do seu QG é muito baixo para implantar uma guarnição.';
+
+  @override
+  String get territoryErrorGarrisonFunds =>
+      'Não há dinheiro suficiente no banco da Crew para mobilizar esta guarnição.';
+
+  @override
+  String get territoryGarrisonTitle => 'Guarnição / defesa aérea';
+
+  @override
+  String get territoryGarrisonDesc =>
+      'Contrate tanques e defesa aérea por algumas horas. A região permanece atacável, mas as ações de defesa atingem com mais força e os atacantes precisam de uma vantagem maior para capturá-la.';
+
+  @override
+  String get territoryGarrisonDeploy => 'Implantar guarnição';
+
+  @override
+  String territoryGarrisonActiveUntil(String time) {
+    return 'Guarnição ativa até $time';
+  }
+
+  @override
+  String territoryGarrisonCostHours(String cost, int hours) {
+    return '$cost do banco da Crew · ${hours}h';
+  }
+
+  @override
+  String get territoryGarrisonDialogTitle => 'Implantar guarnição?';
+
+  @override
+  String territoryGarrisonDialogBody(String cost, int hours) {
+    return 'Pague $cost do banco da Crew para estacionar tanques e defesa aérea aqui por $hours horas. A região ainda pode ser atacada, mas é mais difícil de tomar.';
+  }
+
+  @override
+  String get territorySnackGarrisonDeployed => 'Guarnição implantada.';
+
+  @override
   String get territoryErrorUnknown => 'Erro de território desconhecido.';
 
   @override
@@ -17380,6 +17431,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get territoryBonusRegionProject => 'Projeto regional';
+
+  @override
+  String get territoryBonusGarrison => 'Guarnição / defesa aérea';
 
   @override
   String get territoryErrorProjectInvalidType =>

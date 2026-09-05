@@ -78,6 +78,11 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     PROJECT_CONTRIBUTE_COOLDOWN:    [429, 'territory.project_contribute_cooldown'],
     PROJECT_INVALID_TYPE:           [400, 'territory.project_invalid_type'],
     PROJECT_TAG_MISMATCH:           [403, 'territory.project_tag_mismatch'],
+    GARRISON_NOT_OWNER:             [403, 'territory.garrison_not_owner'],
+    GARRISON_ALREADY_ACTIVE:        [409, 'territory.garrison_already_active'],
+    GARRISON_CREW_LIMIT:            [429, 'territory.garrison_crew_limit'],
+    GARRISON_HQ_LEVEL_REQUIRED:     [403, 'territory.garrison_hq_level_required'],
+    INSUFFICIENT_CREW_FUNDS:        [400, 'territory.garrison_insufficient_funds'],
     SEASON_NOT_FOUND:               [404, 'territory.season_not_found'],
   };
 
@@ -239,6 +244,10 @@ const regionProjectStartSchema = z.object({
   projectType: z.enum(['safehouse_network', 'surveillance_grid', 'arms_cache']),
 });
 
+const garrisonDeploySchema = z.object({
+  regionKey: z.string().min(2).max(60),
+});
+
 /**
  * POST /territory/projects/start
  * Start a region project on an owned region (HQ + tag gated by project type).
@@ -256,6 +265,30 @@ router.post('/projects/start', authenticate, async (req: AuthRequest, res: Respo
       req.player?.currentCountry,
     );
     return res.json({ event: 'territory.project_started', params: { project } });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/garrison/deploy
+ * Buy a timed garrison / air defense on an owned region (crew bank).
+ */
+router.post('/garrison/deploy', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = garrisonDeploySchema.parse(req.body);
+    const garrison = await territoryService.deployGarrison(
+      req.player!.id,
+      crewId,
+      body.regionKey,
+      req.player?.currentCountry,
+    );
+    return res.json({ event: 'territory.garrison_deployed', params: { garrison } });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });

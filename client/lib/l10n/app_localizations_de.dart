@@ -14041,6 +14041,57 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sie können jedes Land anzeigen, Gebietsaktionen funktionieren jedoch nur in dem Land, in dem Sie sich gerade befinden.';
 
   @override
+  String get territoryErrorGarrisonNotOwner =>
+      'Nur die Crew, die diese Region kontrolliert, kann eine Garnison einsetzen.';
+
+  @override
+  String get territoryErrorGarrisonAlreadyActive =>
+      'Diese Region verfügt bereits über eine aktive Garnison.';
+
+  @override
+  String get territoryErrorGarrisonCrewLimit =>
+      'Ihre Crew verfügt bereits über die maximale Anzahl aktiver Garnisonen.';
+
+  @override
+  String get territoryErrorGarrisonHq =>
+      'Ihr HQ-Level ist zu niedrig, um eine Garnison einzusetzen.';
+
+  @override
+  String get territoryErrorGarrisonFunds =>
+      'Die Mannschaftsbank reicht nicht aus, um diese Garnison einzusetzen.';
+
+  @override
+  String get territoryGarrisonTitle => 'Garnison / Luftverteidigung';
+
+  @override
+  String get territoryGarrisonDesc =>
+      'Mieten Sie für ein paar Stunden Panzer und Luftverteidigung. Die Region bleibt angreifbar, aber Verteidigungsmaßnahmen treffen härter und Angreifer benötigen einen größeren Punktevorsprung, um sie zu erobern.';
+
+  @override
+  String get territoryGarrisonDeploy => 'Garnison aufstellen';
+
+  @override
+  String territoryGarrisonActiveUntil(String time) {
+    return 'Garnison aktiv bis $time';
+  }
+
+  @override
+  String territoryGarrisonCostHours(String cost, int hours) {
+    return '$cost von der Mannschaftsbank · ${hours}h';
+  }
+
+  @override
+  String get territoryGarrisonDialogTitle => 'Garnison einsetzen?';
+
+  @override
+  String territoryGarrisonDialogBody(String cost, int hours) {
+    return 'Zahlen Sie hier $cost von der Mannschaftsbank, um Panzer und Luftverteidigung für $hours Stunden zu stationieren. Die Region kann immer noch angegriffen werden, aber es ist schwieriger, sie einzunehmen.';
+  }
+
+  @override
+  String get territorySnackGarrisonDeployed => 'Garnison im Einsatz.';
+
+  @override
   String get territoryErrorUnknown => 'Fehler wegen unbekanntem Gebiet.';
 
   @override
@@ -17467,6 +17518,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get territoryBonusRegionProject => 'Regionsprojekt';
+
+  @override
+  String get territoryBonusGarrison => 'Garnison / Luftverteidigung';
 
   @override
   String get territoryErrorProjectInvalidType => 'Unbekannter Projekttyp.';

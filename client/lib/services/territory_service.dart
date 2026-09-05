@@ -137,6 +137,25 @@ class TerritoryService {
     }
   }
 
+  Future<Map<String, dynamic>> deployGarrison(String regionKey) async {
+    try {
+      final response = await _api.post('/territory/garrison/deploy', {
+        'regionKey': regionKey,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> contributeProject(String regionKey) async {
     try {
       final response = await _api.post('/territory/projects/contribute', {

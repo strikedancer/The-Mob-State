@@ -13975,6 +13975,57 @@ class AppLocalizationsPl extends AppLocalizations {
       'Możesz wyświetlić każdy kraj, ale działania terytorialne działają tylko w kraju, w którym się aktualnie znajdujesz.';
 
   @override
+  String get territoryErrorGarrisonNotOwner =>
+      'Tylko Crew trzymająca ten region może wystawić garnizon.';
+
+  @override
+  String get territoryErrorGarrisonAlreadyActive =>
+      'W tym regionie znajduje się już aktywny garnizon.';
+
+  @override
+  String get territoryErrorGarrisonCrewLimit =>
+      'Twoja Crew ma już maksymalną liczbę aktywnych garnizonów.';
+
+  @override
+  String get territoryErrorGarrisonHq =>
+      'Twój poziom dowództwa jest zbyt niski, aby rozmieścić garnizon.';
+
+  @override
+  String get territoryErrorGarrisonFunds =>
+      'Za mało pieniędzy w banku załogi, aby rozmieścić ten garnizon.';
+
+  @override
+  String get territoryGarrisonTitle => 'Garnizon / obrona powietrzna';
+
+  @override
+  String get territoryGarrisonDesc =>
+      'Wynajmij czołgi i obronę przeciwlotniczą na kilka godzin. Region pozostaje możliwy do ataku, ale działania obronne uderzają mocniej, a atakujący potrzebują większej przewagi punktowej, aby go zdobyć.';
+
+  @override
+  String get territoryGarrisonDeploy => 'Rozmieść garnizon';
+
+  @override
+  String territoryGarrisonActiveUntil(String time) {
+    return 'Garnizon aktywny do $time';
+  }
+
+  @override
+  String territoryGarrisonCostHours(String cost, int hours) {
+    return '$cost z banku załogi · ${hours}h';
+  }
+
+  @override
+  String get territoryGarrisonDialogTitle => 'Rozmieścić garnizon?';
+
+  @override
+  String territoryGarrisonDialogBody(String cost, int hours) {
+    return 'Zapłać $cost z banku załogi na czołgi stacyjne i obronę powietrzną tutaj na $hours godzin. Region nadal można zaatakować, ale trudniej go przejąć.';
+  }
+
+  @override
+  String get territorySnackGarrisonDeployed => 'Garnizon rozmieszczony.';
+
+  @override
   String get territoryErrorUnknown => 'Błąd nieznanego terytorium.';
 
   @override
@@ -17387,6 +17438,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get territoryBonusRegionProject => 'Projekt Regionu';
+
+  @override
+  String get territoryBonusGarrison => 'Garnizon / obrona powietrzna';
 
   @override
   String get territoryErrorProjectInvalidType => 'Nieznany typ projektu.';

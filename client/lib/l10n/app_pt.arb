@@ -11230,5 +11230,46 @@
   "helpTopicAviationTitle": "Aviação",
   "helpTopicAviationSummary": "Conclua a escola de aviação, compre uma licença paga e, em seguida, compre um avião para voar instantaneamente, reduza o tempo de viagem comercial e venda ou repare sua frota de hangares.",
   "helpTopicAviationHow": "Conclua a escola de aviação até o nível 5 e ganhe os dois certificados de voo antes de comprar uma licença paga. \nCompre uma licença paga na tela Aviação: básica, comercial ou de carga. Camadas mais altas desbloqueiam aviões mais pesados. \nCompre uma aeronave no catálogo do hangar. Novos aviões começam com o tanque vazio. \nReabasteça no hangar a 50€ por litro. Um voo privado usa 100 L e leva você para outro país instantaneamente. \nA Viagem Comercial ainda usa passagens e trechos. Possuir um avião reduz essa espera: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviões de carga −30%. Somente o melhor avião conta. \nVenda um avião próprio por 50% do preço de compra. Conserte um avião quebrado antes de poder reabastecê-lo ou pilotá-lo.",
-  "helpTopicAviationTips": "A escola 5/5 não é suficiente: você ainda precisa da licença paga antes de qualquer compra. \nTanque suficiente para 100 L antes de voar. Um avião vazio não pode sair do hangar. \nUm avião também acelera a viagem normal, mesmo se você seguir a rota comercial. \nVenda aviões não utilizados se precisar de dinheiro; você recebe apenas metade do que pagou."
+  "helpTopicAviationTips": "A escola 5/5 não é suficiente: você ainda precisa da licença paga antes de qualquer compra. \nTanque suficiente para 100 L antes de voar. Um avião vazio não pode sair do hangar. \nUm avião também acelera a viagem normal, mesmo se você seguir a rota comercial. \nVenda aviões não utilizados se precisar de dinheiro; você recebe apenas metade do que pagou.",
+  "territoryErrorGarrisonNotOwner": "Somente a Crew que controla esta região pode mobilizar uma guarnição.",
+  "territoryErrorGarrisonAlreadyActive": "Esta região já possui uma guarnição ativa.",
+  "territoryErrorGarrisonCrewLimit": "Sua Crew já possui o número máximo de guarnições ativas.",
+  "territoryErrorGarrisonHq": "O nível do seu QG é muito baixo para implantar uma guarnição.",
+  "territoryErrorGarrisonFunds": "Não há dinheiro suficiente no banco da Crew para mobilizar esta guarnição.",
+  "territoryGarrisonTitle": "Guarnição / defesa aérea",
+  "territoryGarrisonDesc": "Contrate tanques e defesa aérea por algumas horas. A região permanece atacável, mas as ações de defesa atingem com mais força e os atacantes precisam de uma vantagem maior para capturá-la.",
+  "territoryGarrisonDeploy": "Implantar guarnição",
+  "territoryGarrisonActiveUntil": "Guarnição ativa até {time}",
+  "@territoryGarrisonActiveUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryGarrisonCostHours": "{cost} do banco da Crew · {hours}h",
+  "@territoryGarrisonCostHours": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryGarrisonDialogTitle": "Implantar guarnição?",
+  "territoryGarrisonDialogBody": "Pague {cost} do banco da Crew para estacionar tanques e defesa aérea aqui por {hours} horas. A região ainda pode ser atacada, mas é mais difícil de tomar.",
+  "@territoryGarrisonDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territorySnackGarrisonDeployed": "Guarnição implantada.",
+  "territoryBonusGarrison": "Guarnição / defesa aérea"
 }

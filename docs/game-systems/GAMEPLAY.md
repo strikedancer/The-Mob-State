@@ -314,6 +314,7 @@ Voorbeelden:
 - Territory heeft standaard geen harde dagcap meer op acties (`TERRITORY_ACTION_DAILY_CAP = 0`); pacing blijft onder controle via cooldown + anti-farm.
 - Territory-passive income kan nooit meer in de crew-bank storten dan de huidige cashopslag-capaciteit. Is de crew-bank vol, dan stopt Territory met bijschrijven tot er weer ruimte is.
 - Na een gewonnen **Territory War** of **Total War** kunnen doelregio's tijdelijk **war pressure** krijgen. In de Territory-modal zie je dan extra oorlogsdruk, effectieve stabiliteit en hoe lang die tijdelijke nasleep nog actief blijft.
+- Een crew die een gebied houdt kan uit de crew-bank een tijdelijk **garnizoen / luchtafweer** kopen (tanks en afweer voor een paar uur). Het gebied blijft aanvalbaar: verdedigingsacties scoren extra punten en aanvallers hebben een grotere puntenvoorsprong nodig om het te veroveren. Er kunnen maar een paar garnizoenen tegelijk actief zijn; dit is geen nachtslot.
 - **Belangrijke regel**: bekijken mag in elk land, maar aanvallen, verdedigen en andere Territory-contestacties werken alleen in het land waar je speler zich op dat moment echt bevindt.
 - Voorbeeld: zit je in Nederland en open je de kaart van BelgiÃ«, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar BelgiÃ« reist.
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
@@ -1127,6 +1128,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - ✅ Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
 - ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / territory.md
 - ✅ Territory crew-stats (all-time + seizoen W/D/L/hold op leaderboard + crew-kaart) — see `territory.md`
+- ✅ Territory garnizoen / luchtafweer (crew-bank, tijdelijk defense + hogere capture-drempel, geen nachtslot) — see `territory.md`
 - ✅ Money laundering (cash→bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) — see `money-laundering.md` / `bank.md`
 - ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
 - ✅ Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) — see `properties.md`

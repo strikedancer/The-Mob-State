@@ -60,6 +60,7 @@
   - Territory Fase D (seizoen/meta): seizoen-close deelt exact-once awards (expansie/defense/war-frontline) via `territory_reward_log` + crew-bank (cash multiplier), rotating `region_event` effects met actiebonus + income-penalty, en drama-snapshot op dashboard + `/public/home` + Territory season-tab
   - Territory Fase E (kaart/projecten/frontline): SVG-overlays voor live contest-scores, projectstatus en regio-events + legenda-lagen; pocket/cluster via dunnere/dikkere stroke; regioproject-catalogus (`safehouse_network` / `surveillance_grid` / `arms_cache`) met HQ+tag gates en runtime keys; invasiebonus via owned neighbor + pocket-druk op raid/sabotage in dezelfde preview als `doAction`
   - Territory crew-stats: `territory_crew_stats` houdt per crew all-time én seizoen bij (gewonnen/verdedigd/verloren/contests + hold-seconden); `territory_control.ownedSince` voor huidige hold; leaderboard toont W/D/L + hold met all-time/seizoen toggle; kaarttab toont crew-statsblok
+  - Territory garnizoen / luchtafweer: owned regio's kunnen een tijdelijk `garrison`-effect kopen uit de crew-bank (`POST /territory/garrison/deploy`). Het gebied blijft aanvalbaar; defense-acties krijgen extra punten en de capture-drempel stijgt tijdelijk (cap via runtime). Max. aantal actieve garnizoenen per crew, HQ-gate, geen nachtslot/timezone-lock. Kaart toont een `G`-badge zolang het effect loopt.
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -225,6 +226,13 @@ Verplichte keys:
 - `TERRITORY_REGION_EVENT_ACTIVE_COUNT`
 - `TERRITORY_REGION_EVENT_ATTACK_BONUS_POINTS`
 - `TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT`
+- `TERRITORY_GARRISON_CASH_COST`
+- `TERRITORY_GARRISON_HOURS`
+- `TERRITORY_GARRISON_DEFENSE_BONUS_POINTS`
+- `TERRITORY_GARRISON_CAPTURE_THRESHOLD_BONUS`
+- `TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW`
+- `TERRITORY_GARRISON_MIN_HQ_LEVEL`
+- `TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP`
 
 Harde regel:
 - Nieuwe territory setting keys worden eerst in admin runtime config toegevoegd en gevalideerd, nooit als hardcoded JSON settings file.
@@ -239,6 +247,7 @@ Harde regel:
 - `POST /territory/contest/defend`
 - `POST /territory/projects/start`
 - `POST /territory/projects/contribute`
+- `POST /territory/garrison/deploy` (`{ regionKey }`) — crew-bank sink; errors: `territory.garrison_not_owner`, `territory.garrison_already_active`, `territory.garrison_crew_limit`, `territory.garrison_hq_level_required`, `territory.garrison_insufficient_funds`
 - `GET /territory/crew/:crewId`
 - `GET /territory/leaderboard`
 - `GET /player/dashboard-stats` bevat voor crewleaders ook territory economy samenvattingen uit gecontroleerde regio's en `territory_reward_log`
@@ -306,6 +315,7 @@ Admin moderation:
 17. Region events roteren via runtime_config en zijn zichtbaar op map/overview/dashboard/public home.
 18. Drama-widget toont hot contests / recente captures / rising crews / war theaters zonder PII.
 19. Prep-ready: na `preparing` → `active` ontvangen attacker- én defender-crew push + inbox (`territory_contest_active`), ook zonder open Territory-scherm (cron).
+20. Owned regio: deploy garnizoen uit crew-bank; kaart toont `G`; tweede regio mag tot `TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW`; derde wordt geblokkeerd; contest blijft startbaar; capture-drempel stijgt alleen zolang het effect loopt.
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.

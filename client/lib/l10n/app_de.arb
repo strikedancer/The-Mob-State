@@ -11230,5 +11230,46 @@
   "helpTopicAviationTitle": "Luftfahrt",
   "helpTopicAviationSummary": "Beenden Sie die Flugschule, erwerben Sie eine kostenpflichtige Lizenz, kaufen Sie dann ein Flugzeug, um sofort fliegen zu können, verkürzen Sie die kommerzielle Reisezeit und verkaufen oder reparieren Sie Ihre Hangarflotte.",
   "helpTopicAviationHow": "Absolvieren Sie die Flugschule bis zur Stufe 5 und erwerben Sie beide Flugzertifikate, bevor Sie eine kostenpflichtige Lizenz erwerben können. \nKaufen Sie eine kostenpflichtige Lizenz auf dem Luftfahrtbildschirm: Basislizenz, kommerzielle Lizenz oder Frachtlizenz. Höhere Stufen schalten schwerere Flugzeuge frei. \nKaufen Sie ein Flugzeug aus dem Hangarkatalog. Neue Flugzeuge starten mit leerem Tank. \nTanken Sie im Hangar für 50 € pro Liter. Ein Privatflug verbraucht 100 Liter und befördert Sie sofort in ein anderes Land. \nKommerzielle Reisen nutzen immer noch Tickets und Strecken. Der Besitz eines Flugzeugs verkürzt die Wartezeit: Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, Frachtflugzeuge −30 %. Nur das beste Flugzeug zählt. \nVerkaufen Sie ein eigenes Flugzeug für 50 % des Kaufpreises. Reparieren Sie ein kaputtes Flugzeug, bevor Sie es auftanken oder fliegen können.",
-  "helpTopicAviationTips": "School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nEin Flugzeug beschleunigt auch das normale Reisen, selbst wenn Sie die kommerzielle Route nehmen. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben."
+  "helpTopicAviationTips": "School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nEin Flugzeug beschleunigt auch das normale Reisen, selbst wenn Sie die kommerzielle Route nehmen. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben.",
+  "territoryErrorGarrisonNotOwner": "Nur die Crew, die diese Region kontrolliert, kann eine Garnison einsetzen.",
+  "territoryErrorGarrisonAlreadyActive": "Diese Region verfügt bereits über eine aktive Garnison.",
+  "territoryErrorGarrisonCrewLimit": "Ihre Crew verfügt bereits über die maximale Anzahl aktiver Garnisonen.",
+  "territoryErrorGarrisonHq": "Ihr HQ-Level ist zu niedrig, um eine Garnison einzusetzen.",
+  "territoryErrorGarrisonFunds": "Die Mannschaftsbank reicht nicht aus, um diese Garnison einzusetzen.",
+  "territoryGarrisonTitle": "Garnison / Luftverteidigung",
+  "territoryGarrisonDesc": "Mieten Sie für ein paar Stunden Panzer und Luftverteidigung. Die Region bleibt angreifbar, aber Verteidigungsmaßnahmen treffen härter und Angreifer benötigen einen größeren Punktevorsprung, um sie zu erobern.",
+  "territoryGarrisonDeploy": "Garnison aufstellen",
+  "territoryGarrisonActiveUntil": "Garnison aktiv bis {time}",
+  "@territoryGarrisonActiveUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryGarrisonCostHours": "{cost} von der Mannschaftsbank · {hours}h",
+  "@territoryGarrisonCostHours": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryGarrisonDialogTitle": "Garnison einsetzen?",
+  "territoryGarrisonDialogBody": "Zahlen Sie hier {cost} von der Mannschaftsbank, um Panzer und Luftverteidigung für {hours} Stunden zu stationieren. Die Region kann immer noch angegriffen werden, aber es ist schwieriger, sie einzunehmen.",
+  "@territoryGarrisonDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "territorySnackGarrisonDeployed": "Garnison im Einsatz.",
+  "territoryBonusGarrison": "Garnison / Luftverteidigung"
 }

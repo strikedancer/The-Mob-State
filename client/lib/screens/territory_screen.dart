@@ -545,6 +545,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryBonusCrewBuildings;
       case 'region-project':
         return t.territoryBonusRegionProject;
+      case 'garrison':
+        return t.territoryBonusGarrison;
       case 'region-event':
         return t.territoryBonusOther;
       default:
@@ -738,6 +740,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorProjectInvalidType;
       case 'territory.project_tag_mismatch':
         return t.territoryErrorProjectTagMismatch;
+      case 'territory.garrison_not_owner':
+        return t.territoryErrorGarrisonNotOwner;
+      case 'territory.garrison_already_active':
+        return t.territoryErrorGarrisonAlreadyActive;
+      case 'territory.garrison_crew_limit':
+        return t.territoryErrorGarrisonCrewLimit;
+      case 'territory.garrison_hq_level_required':
+        return t.territoryErrorGarrisonHq;
+      case 'territory.garrison_insufficient_funds':
+        return t.territoryErrorGarrisonFunds;
       default:
         return event.isEmpty ? t.territoryErrorUnknown : event;
     }
@@ -1323,6 +1335,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       parts.add(
         '<circle cx="${cx + 11}" cy="${cy + 10}" r="7" fill="#7C3AED" stroke="#111827" stroke-width="0.9"/>'
         '<text x="${cx + 11}" y="${cy + 13}" text-anchor="middle" font-size="9" fill="#F8FAFC" font-family="Arial,sans-serif" font-weight="700">!</text>',
+      );
+    }
+    final garrison = (region['garrison'] as Map?)?.cast<String, dynamic>();
+    if (garrison?['active'] == true) {
+      parts.add(
+        '<circle cx="${cx + 22}" cy="${cy - 10}" r="7" fill="#64748B" stroke="#111827" stroke-width="0.9"/>'
+        '<text x="${cx + 22}" y="${cy - 7}" text-anchor="middle" font-size="8" fill="#F8FAFC" font-family="Arial,sans-serif" font-weight="700">G</text>',
       );
     }
     if (parts.isEmpty) return null;
@@ -2191,6 +2210,34 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final contestDefenderPoints =
         (region['contestDefenderPoints'] as num?)?.toInt() ?? 0;
     final projectTypeKey = regionProject?['projectType'] as String?;
+    final garrison = (region['garrison'] as Map?)?.cast<String, dynamic>();
+    final garrisonOffer =
+        (region['garrisonOffer'] as Map?)?.cast<String, dynamic>();
+    final garrisonActive = garrison?['active'] == true;
+    final garrisonEndsAt = _parseApiDate(garrison?['endsAt']);
+    final garrisonDefenseBonus =
+        (garrison?['defenseBonusPoints'] as num?)?.toInt() ??
+        (garrisonOffer?['defenseBonusPoints'] as num?)?.toInt() ??
+        0;
+    final garrisonCaptureBonus =
+        (garrison?['captureThresholdBonus'] as num?)?.toInt() ??
+        (garrisonOffer?['captureThresholdBonus'] as num?)?.toInt() ??
+        0;
+    final garrisonCost = (garrisonOffer?['cashCost'] as num?)?.toInt() ?? 0;
+    final garrisonHours = (garrisonOffer?['hours'] as num?)?.toInt() ?? 8;
+    final garrisonMinHq = (garrisonOffer?['minHqLevel'] as num?)?.toInt() ?? 0;
+    final garrisonHqLocked =
+        isMyCrewRegion &&
+        _hasCrew &&
+        canActInSelectedCountry &&
+        !garrisonActive &&
+        viewerHqGlobalLevel < garrisonMinHq;
+    final canDeployGarrison =
+        isMyCrewRegion &&
+        _hasCrew &&
+        canActInSelectedCountry &&
+        !garrisonActive &&
+        !garrisonHqLocked;
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -2353,6 +2400,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 : Colors.teal.shade700,
           ),
       ],
+      if (garrisonActive)
+        _detailRow(
+          t.territoryGarrisonTitle,
+          '${t.territoryGarrisonActiveUntil(_countdownLabel(garrisonEndsAt))} · +$garrisonDefenseBonus / +$garrisonCaptureBonus',
+        ),
       if (regionEvent != null)
         _detailRow(
           t.territoryDetailRegionEvent,
@@ -2468,6 +2520,33 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             onTap: () => _contributeProject(region['regionKey'] as String),
           ),
         ],
+      ],
+      if (isMyCrewRegion && (canDeployGarrison || garrisonHqLocked)) ...[
+        const SizedBox(height: 12),
+        _buildInfoNotice(
+          t.territoryGarrisonDesc,
+          borderColor: Colors.blueGrey.shade700,
+          backgroundColor: Colors.blueGrey.withValues(alpha: 0.08),
+          icon: Icons.security,
+        ),
+        const SizedBox(height: 12),
+        _buildActionButton(
+          label: garrisonHqLocked
+              ? t.territoryHqButtonLocked(
+                  t.territoryGarrisonDeploy,
+                  garrisonMinHq,
+                )
+              : '${t.territoryGarrisonDeploy} · ${t.territoryGarrisonCostHours(formatCurrency(garrisonCost), garrisonHours)}',
+          icon: Icons.military_tech_outlined,
+          color: Colors.blueGrey[800]!,
+          onTap: garrisonHqLocked
+              ? null
+              : () => _deployGarrison(
+                  region['regionKey'] as String,
+                  cashCost: garrisonCost,
+                  hours: garrisonHours,
+                ),
+        ),
       ],
       if (contestStatus == 'preparing' &&
           isDefender &&
@@ -3297,6 +3376,61 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         ),
       );
       await _loadData();
+    } else {
+      final rawEvent = result['event'] ?? result['message'];
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(rawEvent)),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
+  }
+
+  Future<void> _deployGarrison(
+    String regionKey, {
+    required int cashCost,
+    required int hours,
+  }) async {
+    final t = _l10n;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(t.territoryGarrisonDialogTitle),
+        content: Text(
+          t.territoryGarrisonDialogBody(formatCurrency(cashCost), hours),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(t.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(t.territoryGarrisonDeploy),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    setState(() => _isActing = true);
+    final result = await _service.deployGarrison(regionKey);
+    if (!mounted) return;
+    setState(() => _isActing = false);
+
+    if (result['success'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territorySnackGarrisonDeployed),
+          backgroundColor: Colors.blueGrey,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      await _reloadRegionState(regionKey);
     } else {
       final rawEvent = result['event'] ?? result['message'];
       showTopRightFromSnackBar(

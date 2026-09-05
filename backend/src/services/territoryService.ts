@@ -95,6 +95,13 @@ async function getTerritoryConfig() {
     'TERRITORY_REGION_EVENT_ACTIVE_COUNT',
     'TERRITORY_REGION_EVENT_ATTACK_BONUS_POINTS',
     'TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT',
+    'TERRITORY_GARRISON_CASH_COST',
+    'TERRITORY_GARRISON_HOURS',
+    'TERRITORY_GARRISON_DEFENSE_BONUS_POINTS',
+    'TERRITORY_GARRISON_CAPTURE_THRESHOLD_BONUS',
+    'TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW',
+    'TERRITORY_GARRISON_MIN_HQ_LEVEL',
+    'TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP',
   ];
   const cfg = await getRuntimeConfig(keys);
   const actionUnlockHqLevels = {
@@ -172,6 +179,13 @@ async function getTerritoryConfig() {
     regionEventActiveCount: Number(cfg['TERRITORY_REGION_EVENT_ACTIVE_COUNT'] ?? 2),
     regionEventAttackBonusPoints: Number(cfg['TERRITORY_REGION_EVENT_ATTACK_BONUS_POINTS'] ?? 2),
     regionEventIncomePenaltyPercent: Number(cfg['TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT'] ?? 15),
+    garrisonCashCost: Number(cfg['TERRITORY_GARRISON_CASH_COST'] ?? 350000),
+    garrisonHours: Number(cfg['TERRITORY_GARRISON_HOURS'] ?? 8),
+    garrisonDefenseBonusPoints: Number(cfg['TERRITORY_GARRISON_DEFENSE_BONUS_POINTS'] ?? 4),
+    garrisonCaptureThresholdBonus: Number(cfg['TERRITORY_GARRISON_CAPTURE_THRESHOLD_BONUS'] ?? 12),
+    garrisonMaxActivePerCrew: Number(cfg['TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW'] ?? 2),
+    garrisonMinHqLevel: Number(cfg['TERRITORY_GARRISON_MIN_HQ_LEVEL'] ?? 2),
+    garrisonCaptureThresholdCap: Number(cfg['TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP'] ?? 85),
   };
 }
 
@@ -476,7 +490,7 @@ function buildPassiveIncomeSnapshot(
 type StrategicActionBonus = {
   actionType: string;
   bonusPoints: number;
-  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building' | 'region-event' | 'region-project';
+  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building' | 'region-event' | 'region-project' | 'garrison';
   labelNl: string;
   labelEn: string;
 };
@@ -581,6 +595,96 @@ async function getActiveWarPressureEffects(regionKeys: string[], now: Date): Pro
     }
   }
   return effectMap;
+}
+
+type ActiveGarrisonEffect = {
+  favoredCrewId: number;
+  defenseBonusPoints: number;
+  captureThresholdBonus: number;
+  endsAt: Date;
+};
+
+function parseGarrisonEffect(
+  row: RegionEffectRow,
+  defaults: { defenseBonusPoints: number; captureThresholdBonus: number },
+): ActiveGarrisonEffect | null {
+  if (row.effectType !== 'garrison' || row.favoredCrewId == null) return null;
+  const metadata = parseJson(row.metadataJson);
+  return {
+    favoredCrewId: Number(row.favoredCrewId),
+    defenseBonusPoints: Math.max(
+      0,
+      Math.floor(Number(metadata.defenseBonusPoints ?? defaults.defenseBonusPoints)),
+    ),
+    captureThresholdBonus: Math.max(
+      0,
+      Math.floor(Number(metadata.captureThresholdBonus ?? defaults.captureThresholdBonus)),
+    ),
+    endsAt: row.endsAt,
+  };
+}
+
+async function getActiveGarrisonEffects(
+  regionKeys: string[],
+  now: Date,
+  defaults: { defenseBonusPoints: number; captureThresholdBonus: number },
+): Promise<Record<string, ActiveGarrisonEffect>> {
+  if (regionKeys.length === 0) return {};
+  const placeholders = regionKeys.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<RegionEffectRow[]>(
+    `SELECT *
+     FROM territory_region_effects
+     WHERE effectType = 'garrison'
+       AND resolvedAt IS NULL
+       AND startsAt <= ?
+       AND endsAt > ?
+       AND regionKey IN (${placeholders})
+     ORDER BY createdAt DESC`,
+    now,
+    now,
+    ...regionKeys,
+  );
+  const effectMap: Record<string, ActiveGarrisonEffect> = {};
+  for (const row of rows) {
+    const effect = parseGarrisonEffect(row, defaults);
+    if (!effect || effectMap[row.regionKey]) continue;
+    effectMap[row.regionKey] = effect;
+  }
+  return effectMap;
+}
+
+function garrisonOfferFromConfig(cfg: Awaited<ReturnType<typeof getTerritoryConfig>>) {
+  return {
+    cashCost: Math.max(0, Math.floor(cfg.garrisonCashCost)),
+    hours: Math.max(1, Math.floor(cfg.garrisonHours)),
+    defenseBonusPoints: Math.max(0, Math.floor(cfg.garrisonDefenseBonusPoints)),
+    captureThresholdBonus: Math.max(0, Math.floor(cfg.garrisonCaptureThresholdBonus)),
+    maxActivePerCrew: Math.max(1, Math.floor(cfg.garrisonMaxActivePerCrew)),
+    minHqLevel: Math.max(0, Math.floor(cfg.garrisonMinHqLevel)),
+    captureThresholdCap: Math.min(95, Math.max(60, Math.floor(cfg.garrisonCaptureThresholdCap))),
+  };
+}
+
+function buildGarrisonDefenseBonuses(
+  garrison: ActiveGarrisonEffect | null,
+  defenderCrewId: number | null | undefined,
+  actorCrewId: number,
+): StrategicActionBonus[] {
+  if (!garrison || defenderCrewId == null || garrison.favoredCrewId !== actorCrewId) {
+    return [];
+  }
+  if (garrison.favoredCrewId !== defenderCrewId || garrison.defenseBonusPoints <= 0) {
+    return [];
+  }
+  return [
+    {
+      actionType: 'defense',
+      bonusPoints: garrison.defenseBonusPoints,
+      source: 'garrison',
+      labelNl: 'Garnizoen / afweer',
+      labelEn: 'Garrison / air defense',
+    },
+  ];
 }
 
 function buildWarPressureActionBonuses(effect: ActiveWarPressureEffect | null): StrategicActionBonus[] {
@@ -1224,6 +1328,14 @@ export async function getMapData(
       raid: number;
       defense: number;
     };
+    garrison: {
+      active: boolean;
+      endsAt: Date | null;
+      defenseBonusPoints: number;
+      captureThresholdBonus: number;
+      favoredCrewId: number | null;
+    };
+    garrisonOffer: ReturnType<typeof garrisonOfferFromConfig>;
   }>;
 }> {
   await syncContestLifecycle();
@@ -1231,6 +1343,7 @@ export async function getMapData(
   const cfg = await getTerritoryConfig();
   const now = new Date();
   const projectConfig = getProjectConfig(cfg);
+  const garrisonOffer = garrisonOfferFromConfig(cfg);
   const viewerCrewProgression = viewer?.viewerCrewId
     ? await getCrewTerritoryProgression(viewer.viewerCrewId)
     : null;
@@ -1269,6 +1382,14 @@ export async function getMapData(
   const activeWarPressureByRegion = await getActiveWarPressureEffects(
     regions.map((region) => region.regionKey),
     now,
+  );
+  const activeGarrisonByRegion = await getActiveGarrisonEffects(
+    regions.map((region) => region.regionKey),
+    now,
+    {
+      defenseBonusPoints: garrisonOffer.defenseBonusPoints,
+      captureThresholdBonus: garrisonOffer.captureThresholdBonus,
+    },
   );
 
   // Build owner crew name lookup from crew ids
@@ -1441,7 +1562,13 @@ export async function getMapData(
         : []),
       ...buildRegionEventActionBonuses(regionEvent),
       ...mapProjectBonusesToStrategic(regionProject, projectConfig),
+      ...buildGarrisonDefenseBonuses(
+        activeGarrisonByRegion[r.regionKey] ?? null,
+        contest?.defenderCrewId ?? ownerCrewId,
+        viewer?.viewerCrewId ?? -1,
+      ),
     ];
+    const garrison = activeGarrisonByRegion[r.regionKey] ?? null;
     const effectiveStability = Math.max(0, (ctrl?.stability ?? 100) - (activeWarPressure?.stabilityPenalty ?? 0));
     return {
       ...r,
@@ -1481,6 +1608,14 @@ export async function getMapData(
       strategicActionBonuses,
       viewerHqGlobalLevel: viewerCrewProgression?.hqGlobalLevel ?? 0,
       actionUnlockHqLevels: { ...cfg.actionUnlockHqLevels },
+      garrison: {
+        active: Boolean(garrison),
+        endsAt: garrison?.endsAt ?? null,
+        defenseBonusPoints: garrison?.defenseBonusPoints ?? garrisonOffer.defenseBonusPoints,
+        captureThresholdBonus: garrison?.captureThresholdBonus ?? garrisonOffer.captureThresholdBonus,
+        favoredCrewId: garrison?.favoredCrewId ?? null,
+      },
+      garrisonOffer,
     };
   });
 
@@ -2188,12 +2323,27 @@ export async function doAction(
   const progressionBonuses = buildProgressionActionBonuses(crewProgression, cfg);
   const regionProjects = await territoryProjectService.getProjectsByRegionKeys([contest.regionKey], projectConfig);
   const projectBonuses = mapProjectBonusesToStrategic(regionProjects[contest.regionKey] ?? null, projectConfig);
+  const garrisonOffer = garrisonOfferFromConfig(cfg);
+  const garrisonByRegion = await getActiveGarrisonEffects(
+    [contest.regionKey],
+    new Date(),
+    {
+      defenseBonusPoints: garrisonOffer.defenseBonusPoints,
+      captureThresholdBonus: garrisonOffer.captureThresholdBonus,
+    },
+  );
+  const garrisonBonuses = buildGarrisonDefenseBonuses(
+    garrisonByRegion[contest.regionKey] ?? null,
+    contest.defenderCrewId == null ? null : toNumeric(contest.defenderCrewId),
+    crewId,
+  );
   const allActionBonuses = [
     ...strategicActionBonuses,
     ...progressionBonuses,
     ...warPressureBonuses,
     ...regionEventBonuses,
     ...projectBonuses,
+    ...garrisonBonuses,
   ];
   const actionBonusPoints = getActionBonusForType(allActionBonuses, actionType);
   const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
@@ -2243,6 +2393,114 @@ export async function doAction(
     stabilityDelta,
     projectEffect,
     message: abuseFlagged ? 'ANTI_FARM_LIMITED' : 'ACTION_OK',
+  };
+}
+
+export async function deployGarrison(
+  playerId: number,
+  crewId: number,
+  regionKey: string,
+  currentCountry: string | null | undefined,
+): Promise<{
+  regionKey: string;
+  endsAt: Date;
+  cashCost: number;
+  hours: number;
+  defenseBonusPoints: number;
+  captureThresholdBonus: number;
+}> {
+  void playerId;
+  const cfg = await getTerritoryConfig();
+  if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
+  const offer = garrisonOfferFromConfig(cfg);
+  const progression = await getCrewTerritoryProgression(crewId);
+  if (progression.hqGlobalLevel < offer.minHqLevel) {
+    throw new Error('GARRISON_HQ_LEVEL_REQUIRED');
+  }
+
+  const regions = await prisma.$queryRawUnsafe<RegionRow[]>(
+    'SELECT * FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1',
+    regionKey,
+  );
+  if (!regions[0]) throw new Error('REGION_NOT_FOUND');
+  assertPlayerInTerritoryCountry(currentCountry, regions[0].countryCode);
+
+  const control = await prisma.$queryRawUnsafe<Array<{ ownerCrewId: number | null }>>(
+    'SELECT ownerCrewId FROM territory_control WHERE regionKey = ? LIMIT 1',
+    regionKey,
+  );
+  if (toNumeric(control[0]?.ownerCrewId) !== crewId) {
+    throw new Error('GARRISON_NOT_OWNER');
+  }
+
+  const now = new Date();
+  const existing = await getActiveGarrisonEffects(
+    [regionKey],
+    now,
+    {
+      defenseBonusPoints: offer.defenseBonusPoints,
+      captureThresholdBonus: offer.captureThresholdBonus,
+    },
+  );
+  if (existing[regionKey]) {
+    throw new Error('GARRISON_ALREADY_ACTIVE');
+  }
+
+  const activeCrewGarrisons = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+    `SELECT COUNT(*) AS cnt FROM territory_region_effects
+     WHERE effectType = 'garrison'
+       AND resolvedAt IS NULL
+       AND favoredCrewId = ?
+       AND startsAt <= ?
+       AND endsAt > ?`,
+    crewId,
+    now,
+    now,
+  );
+  if (Number(activeCrewGarrisons[0]?.cnt ?? 0) >= offer.maxActivePerCrew) {
+    throw new Error('GARRISON_CREW_LIMIT');
+  }
+
+  const endsAt = new Date(now.getTime() + offer.hours * 60 * 60 * 1000);
+  const metadata = JSON.stringify({
+    defenseBonusPoints: offer.defenseBonusPoints,
+    captureThresholdBonus: offer.captureThresholdBonus,
+  });
+
+  await prisma.$transaction(async (tx) => {
+    const crew = await tx.crew.findUnique({
+      where: { id: crewId },
+      select: { bankBalance: true },
+    });
+    if (!crew || crew.bankBalance < offer.cashCost) {
+      throw new Error('INSUFFICIENT_CREW_FUNDS');
+    }
+    if (offer.cashCost > 0) {
+      await tx.crew.update({
+        where: { id: crewId },
+        data: { bankBalance: { decrement: offer.cashCost } },
+      });
+    }
+    await tx.$executeRawUnsafe(
+      `INSERT INTO territory_region_effects
+         (regionKey, effectType, sourceType, sourceId, favoredCrewId, affectedCrewId, metadataJson, startsAt, endsAt)
+       VALUES (?, 'garrison', 'purchase', ?, ?, NULL, ?, ?, ?)`,
+      regionKey,
+      crewId,
+      crewId,
+      metadata,
+      now,
+      endsAt,
+    );
+  });
+
+  return {
+    regionKey,
+    endsAt,
+    cashCost: offer.cashCost,
+    hours: offer.hours,
+    defenseBonusPoints: offer.defenseBonusPoints,
+    captureThresholdBonus: offer.captureThresholdBonus,
   };
 }
 
@@ -2466,7 +2724,26 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
   const totalPoints = attackerPoints + defenderPoints;
 
   let winnerCrewId: number | null = null;
-  const captureThreshold = cfg.captureThresholdPercent;
+  const garrisonOffer = garrisonOfferFromConfig(cfg);
+  const garrisonByRegion = await getActiveGarrisonEffects(
+    [contest.regionKey],
+    new Date(),
+    {
+      defenseBonusPoints: garrisonOffer.defenseBonusPoints,
+      captureThresholdBonus: garrisonOffer.captureThresholdBonus,
+    },
+  );
+  const garrison = garrisonByRegion[contest.regionKey] ?? null;
+  const garrisonProtectsDefender =
+    garrison != null &&
+    contest.defenderCrewId != null &&
+    garrison.favoredCrewId === toNumeric(contest.defenderCrewId);
+  const captureThreshold = garrisonProtectsDefender
+    ? Math.min(
+        garrisonOffer.captureThresholdCap,
+        cfg.captureThresholdPercent + garrison.captureThresholdBonus,
+      )
+    : cfg.captureThresholdPercent;
 
   if (totalPoints > 0) {
     const attackerPct = (attackerPoints / totalPoints) * 100;
