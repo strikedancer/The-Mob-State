@@ -141,11 +141,13 @@ class _AviationScreenState extends State<AviationScreen> {
   static const _aircraftImages = <String, String>{
     'cessna_172': 'aircraft/cessna.png',
     'king_air_350': 'aircraft/king_air.png',
-    'citation_x': 'aircraft/citation_x.png',
+    'citation_x': 'aircraft/citation_x_cut.png',
     'gulfstream_g650': 'aircraft/gulfstream.png',
     'boeing_737_cargo': 'aircraft/cargo_737.png',
-    'antonov_an_225': 'aircraft/antonov.png',
+    'antonov_an_225': 'aircraft/antonov_cut.png',
   };
+
+  static const _aircraftImageCacheBust = '20260905cut';
 
   String _imageForAircraftType(String aircraftType) {
     return _aircraftImages[aircraftType.toLowerCase()] ?? 'aircraft/cessna.png';
@@ -951,9 +953,10 @@ class _AviationScreenState extends State<AviationScreen> {
               SizedBox(
                 width: 64,
                 height: 64,
-                child: WebAssetHelper.image(
+                child: WebAssetHelper.imageHttpFirst(
                   _imageForAircraftType(type),
                   fit: BoxFit.contain,
+                  cacheBust: _aircraftImageCacheBust,
                   errorBuilder: (context, error, stackTrace) =>
                       const Icon(Icons.flight, size: 32, color: _gold),
                 ),
@@ -1078,9 +1081,10 @@ class _AviationScreenState extends State<AviationScreen> {
               SizedBox(
                 width: 82,
                 height: 82,
-                child: WebAssetHelper.image(
+                child: WebAssetHelper.imageHttpFirst(
                   _imageForAircraftType(aircraftType),
                   fit: BoxFit.contain,
+                  cacheBust: _aircraftImageCacheBust,
                   errorBuilder: (context, error, stackTrace) =>
                       const Icon(Icons.flight, size: 36, color: _gold),
                 ),

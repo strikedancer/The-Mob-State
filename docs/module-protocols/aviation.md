@@ -143,7 +143,7 @@ SQL-migratiebestand: `backend/add-aviation-tables.sql`
 - Vliegtuigafbeeldingen worden gegenereerd via de Leonardo.ai API.
 - Script: `backend/scripts/generate_aircraft_images_leonardo.py`
 - Opslag: externe runtime image mount `runtime/client-images/aircraft/`
-- Cutout-bron voor Citation X en Antonov: `client/assets/images/aircraft/` (deploy kopieert naar de mount)
+- Cutout-bron voor Citation X en Antonov: `client/assets/images/aircraft/citation_x_cut.png` en `antonov_cut.png` (nieuwe URL + cache-bust zodat oude witte PNG’s niet blijven hangen)
 - Nginx route: `/images/aircraft/*` → `/mnt/external-images/aircraft/`
 - Client laadt via: `WebAssetHelper.image('aircraft/{aircraftId}.png')`
 - Bestandsnamen: `cessna.png`, `king_air.png`, `gulfstream.png`, `cargo_737.png`

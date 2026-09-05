@@ -638,7 +638,7 @@ Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-
 ### Gates (school + licentie)
 - **School:** Aviation-track level 5 + alle certificaten (`flight_basic`, `flight_commercial`) is verplicht vóór licentie- of vliegtuigkoop.
 - **Licentie:** aparte betaalde aankoop op het Aviation-scherm (`basic` €100k / `commercial` €500k / `cargo` €1M). Zonder licentie kun je geen vliegtuig kopen, ook niet met school 5/5.
-- Web dashboard Luchtvaart toont schoolniveau, brevetten en licentie in de hangar-hero; catalogusknoppen tonen waarom een toestel nog geblokkeerd is. Op grote schermen vult de hangar de contentkolom. Toestelplaatjes zijn cutouts zonder witte studio-achtergrond.
+- Web dashboard Luchtvaart toont schoolniveau, brevetten en licentie in de hangar-hero; catalogusknoppen tonen waarom een toestel nog geblokkeerd is. Op grote schermen vult de hangar de contentkolom. Citation X en Antonov gebruiken cutout-URL’s (`citation_x_cut` / `antonov_cut`) zodat oude witte studioplaten niet in de browsercache blijven.
 - Hogere licentie-tier ontgrendelt zwaardere `aircraft.type`-groepen; upgrade is mogelijk.
 
 ### Aircraft Types
