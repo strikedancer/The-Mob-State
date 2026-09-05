@@ -6455,6 +6455,77 @@ class AppLocalizationsFr extends AppLocalizations {
   String get courtFreeChip => 'Aucun dossier actif';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Crimes violents';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Crimes financiers';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Affaires liées à la drogue';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar => 'Criminalité en col blanc';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Crime organisé';
+
+  @override
+  String get courtOddsTitle => 'Qu\'est-ce qui change vos chances d\'appel';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Formation en droit $level/5 : +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'Première condamnation : +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count condamnations antérieures : $percent%';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count condamnations antérieures : pas de modificateur supplémentaire';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Recherché $level : -$percent% d\'appel';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Recherché $level : pas de pénalité d\'appel';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI heat $level : -$percent% d\'appel';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI heat $level : aucune pénalité d\'appel';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Chance d\'appel : ~$percent %';
+  }
+
+  @override
+  String get courtAppealUsed =>
+      'Vous avez déjà fait appel de cette condamnation.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted et FBI heat changent les chances d\'appel, pas ce pot-de-vin.';
+
+  @override
   String get treated => 'Traité !';
 
   @override

@@ -6431,6 +6431,76 @@ class AppLocalizationsEs extends AppLocalizations {
   String get courtFreeChip => 'Ningún caso activo';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Crímenes violentos';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Delitos financieros';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Casos relacionados con las drogas';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar => 'Crimen de cuello blanco';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Delincuencia organizada';
+
+  @override
+  String get courtOddsTitle => '¿Qué cambia sus posibilidades de apelación?';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Educación jurídica $level/5: +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'Primera condena: +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count condenas previas: $percent%';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count condenas previas: sin modificador adicional';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Se busca $level: -$percent% de apelación';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Se busca $level: sin sanción de apelación';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI heat $level: -$percent% de apelación';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI heat $level: sin sanción de apelación';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Probabilidad de apelación: ~$percent%';
+  }
+
+  @override
+  String get courtAppealUsed => 'Ya apeló esta condena.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted y FBI heat cambian las probabilidades de apelación, no este soborno.';
+
+  @override
   String get treated => '¡Tratado!';
 
   @override

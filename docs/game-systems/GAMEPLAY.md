@@ -1112,7 +1112,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Casino (blackjack, slots, roulette)
 - âœ… Weapons & ammo system
 - âœ… VIP quick-buy in Drug Production (one-click missing materials with cost confirmation modal)
-- ✅ Court & Judge (appeal / bribe, criminal record while jailed or free, noir courtroom UI)
+- ✅ Court & Judge (appeal / bribe, criminal record, visible law/wanted/FBI appeal odds, localized crime and judge names)
 - âœ… Crew Wars (War Room, seasons, territory targets)
 - âœ… Drug production facilities
 - ✅ Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`

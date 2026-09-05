@@ -6444,6 +6444,77 @@ class AppLocalizationsDe extends AppLocalizations {
   String get courtFreeChip => 'Kein aktiver Fall';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Gewaltverbrechen';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Finanzkriminalität';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Fälle im Zusammenhang mit Drogen';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar => 'Wirtschaftskriminalität';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Organisierte Kriminalität';
+
+  @override
+  String get courtOddsTitle => 'Was ändert Ihre Berufungschance?';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Juraausbildung $level/5: +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'Erste Verurteilung: +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count Vorstrafen: $percent %';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count Vorstrafen: kein zusätzlicher Modifikator';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Wanted $level: -$percent% Berufung';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Wanted $level: kein Abzug';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI-Hitze $level: -$percent% Berufung';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI-Hitze $level: kein Abzug';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Einspruchschance: ~$percent %';
+  }
+
+  @override
+  String get courtAppealUsed =>
+      'Sie haben gegen dieses Urteil bereits Berufung eingelegt.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted und FBI-Hitze ändern die Berufungschance, nicht diese Bestechung.';
+
+  @override
   String get treated => 'Behandelt!';
 
   @override

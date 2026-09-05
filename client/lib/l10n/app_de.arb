@@ -10988,5 +10988,97 @@
     }
   },
   "courtActiveChip": "Verbüßt Strafe",
-  "courtFreeChip": "Kein aktiver Fall"
+  "courtFreeChip": "Kein aktiver Fall",
+  "courtJudgeSpecialtyViolence": "Gewaltverbrechen",
+  "courtJudgeSpecialtyFinancial": "Finanzkriminalität",
+  "courtJudgeSpecialtyDrugs": "Fälle im Zusammenhang mit Drogen",
+  "courtJudgeSpecialtyWhiteCollar": "Wirtschaftskriminalität",
+  "courtJudgeSpecialtyOrganized": "Organisierte Kriminalität",
+  "courtOddsTitle": "Was ändert Ihre Berufungschance?",
+  "courtLawBonus": "Juraausbildung {level}/5: +{percent}%",
+  "@courtLawBonus": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorBonus": "Erste Verurteilung: +{percent}%",
+  "@courtPriorBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorPenalty": "{count} Vorstrafen: {percent} %",
+  "@courtPriorPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorNone": "{count} Vorstrafen: kein zusätzlicher Modifikator",
+  "@courtPriorNone": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedPenalty": "Wanted {level}: -{percent}% Berufung",
+  "@courtWantedPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedOk": "Wanted {level}: kein Abzug",
+  "@courtWantedOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiPenalty": "FBI-Hitze {level}: -{percent}% Berufung",
+  "@courtFbiPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiOk": "FBI-Hitze {level}: kein Abzug",
+  "@courtFbiOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealChance": "Einspruchschance: ~{percent} %",
+  "@courtAppealChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealUsed": "Sie haben gegen dieses Urteil bereits Berufung eingelegt.",
+  "courtBribeHeatNote": "Wanted und FBI-Hitze ändern die Berufungschance, nicht diese Bestechung."
 }

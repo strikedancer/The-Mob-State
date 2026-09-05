@@ -6416,6 +6416,77 @@ class AppLocalizationsPl extends AppLocalizations {
   String get courtFreeChip => 'Brak aktywnej sprawy';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Przestępstwa z użyciem przemocy';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Przestępstwa finansowe';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Sprawy narkotykowe';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar =>
+      'Przestępczość białych kołnierzyków';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Przestępczość zorganizowana';
+
+  @override
+  String get courtOddsTitle => 'Co zmienia szansę apelacji';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Edukacja prawnicza $level/5: +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'Pierwsze skazanie: +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count wcześniejszych skazań: $percent%';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count wcześniejszych skazań: bez dodatkowego modyfikatora';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Wanted $level: -$percent% apelacji';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Wanted $level: bez kary apelacyjnej';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI heat $level: -$percent% apelacji';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI heat $level: bez kary apelacyjnej';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Szansa apelacji: ~$percent%';
+  }
+
+  @override
+  String get courtAppealUsed => 'Ta sprawa została już zaskarżona.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted i FBI heat zmieniają szansę apelacji, nie tę łapówkę.';
+
+  @override
   String get treated => 'Leczony!';
 
   @override

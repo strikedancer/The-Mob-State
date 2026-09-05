@@ -10988,5 +10988,97 @@
     }
   },
   "courtActiveChip": "Cumpliendo condena",
-  "courtFreeChip": "Ningún caso activo"
+  "courtFreeChip": "Ningún caso activo",
+  "courtJudgeSpecialtyViolence": "Crímenes violentos",
+  "courtJudgeSpecialtyFinancial": "Delitos financieros",
+  "courtJudgeSpecialtyDrugs": "Casos relacionados con las drogas",
+  "courtJudgeSpecialtyWhiteCollar": "Crimen de cuello blanco",
+  "courtJudgeSpecialtyOrganized": "Delincuencia organizada",
+  "courtOddsTitle": "¿Qué cambia sus posibilidades de apelación?",
+  "courtLawBonus": "Educación jurídica {level}/5: +{percent}%",
+  "@courtLawBonus": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorBonus": "Primera condena: +{percent}%",
+  "@courtPriorBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorPenalty": "{count} condenas previas: {percent}%",
+  "@courtPriorPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorNone": "{count} condenas previas: sin modificador adicional",
+  "@courtPriorNone": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedPenalty": "Se busca {level}: -{percent}% de apelación",
+  "@courtWantedPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedOk": "Se busca {level}: sin sanción de apelación",
+  "@courtWantedOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiPenalty": "FBI heat {level}: -{percent}% de apelación",
+  "@courtFbiPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiOk": "FBI heat {level}: sin sanción de apelación",
+  "@courtFbiOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealChance": "Probabilidad de apelación: ~{percent}%",
+  "@courtAppealChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealUsed": "Ya apeló esta condena.",
+  "courtBribeHeatNote": "Wanted y FBI heat cambian las probabilidades de apelación, no este soborno."
 }

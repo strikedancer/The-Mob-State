@@ -6,7 +6,15 @@ class CrimeLocalization {
   CrimeLocalization._();
 
   static String name(Crime crime, AppLocalizations l10n) {
-    switch (crime.id) {
+    return nameFromId(crime.id, l10n, fallback: crime.name);
+  }
+
+  static String nameFromId(
+    String? crimeId,
+    AppLocalizations l10n, {
+    String? fallback,
+  }) {
+    switch (crimeId) {
       case 'pickpocket':
         return l10n.crimePickpocketName;
       case 'shoplift':
@@ -80,7 +88,9 @@ class CrimeLocalization {
       case 'criminal_record_wipe':
         return l10n.crimeCriminalRecordWipeName;
       default:
-        return crime.name;
+        if (fallback != null && fallback.isNotEmpty) return fallback;
+        if (crimeId != null && crimeId.isNotEmpty) return crimeId;
+        return l10n.courtUnknownCrime;
     }
   }
 

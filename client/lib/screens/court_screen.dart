@@ -8,6 +8,8 @@ import '../services/api_client.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
+import '../utils/crime_localization.dart';
+import '../utils/court_localization.dart';
 
 class CourtScreen extends StatefulWidget {
   const CourtScreen({
@@ -138,7 +140,7 @@ class _CourtScreenState extends State<CourtScreen> {
   }
 
   Future<void> _appealSentence() async {
-    if (_currentSentence == null) return;
+    if (_currentSentence == null || _currentSentence!.appealed) return;
 
     final appealCost = _calculateAppealCost(_currentSentence!.sentenceMinutes);
     final l10nRoot = AppLocalizations.of(context)!;
@@ -181,9 +183,20 @@ class _CourtScreenState extends State<CourtScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                l10n.courtJudgeNamed(_currentSentence!.judge.name),
+                CourtLocalization.judgeNamed(_currentSentence!.judge, l10n),
                 style: const TextStyle(fontSize: 14, color: Colors.white70),
               ),
+              if (CourtLocalization.judgeSpecialty(
+                _currentSentence!.judge,
+                l10n,
+              ).isNotEmpty)
+                Text(
+                  CourtLocalization.judgeSpecialty(
+                    _currentSentence!.judge,
+                    l10n,
+                  ),
+                  style: const TextStyle(fontSize: 13, color: Colors.white60),
+                ),
               Text(
                 l10n.courtCorruptibilityPercent(
                   _currentSentence!.judge.corruptibility.toString(),
@@ -203,6 +216,15 @@ class _CourtScreenState extends State<CourtScreen> {
                   fontStyle: FontStyle.italic,
                 ),
               ),
+              if (_currentSentence!.appealOdds != null) ...[
+                const SizedBox(height: 12),
+                _buildAppealOdds(
+                  l10n,
+                  _currentSentence!.appealOdds!,
+                  appealed: _currentSentence!.appealed,
+                  compact: true,
+                ),
+              ],
             ],
           ),
           actions: [
@@ -306,9 +328,20 @@ class _CourtScreenState extends State<CourtScreen> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  l10n.courtJudgeNamed(_currentSentence!.judge.name),
+                  CourtLocalization.judgeNamed(_currentSentence!.judge, l10n),
                   style: const TextStyle(fontSize: 14, color: Colors.white70),
                 ),
+                if (CourtLocalization.judgeSpecialty(
+                  _currentSentence!.judge,
+                  l10n,
+                ).isNotEmpty)
+                  Text(
+                    CourtLocalization.judgeSpecialty(
+                      _currentSentence!.judge,
+                      l10n,
+                    ),
+                    style: const TextStyle(fontSize: 13, color: Colors.white60),
+                  ),
                 Text(
                   l10n.courtCorruptibilityPercent(
                     _currentSentence!.judge.corruptibility.toString(),
@@ -350,6 +383,58 @@ class _CourtScreenState extends State<CourtScreen> {
                     fontStyle: FontStyle.italic,
                   ),
                 ),
+                if (_currentSentence!.appealOdds != null) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    _currentSentence!.appealOdds!.wantedPenaltyApplied
+                        ? l10n.courtWantedPenalty(
+                            _currentSentence!.appealOdds!.wantedLevel
+                                .toString(),
+                            _currentSentence!.appealOdds!.wantedPenaltyPercent
+                                .toString(),
+                          )
+                        : l10n.courtWantedOk(
+                            _currentSentence!.appealOdds!.wantedLevel
+                                .toString(),
+                          ),
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: _currentSentence!.appealOdds!.wantedPenaltyApplied
+                          ? const Color(0xFFE5967A)
+                          : Colors.white70,
+                    ),
+                  ),
+                  Text(
+                    _currentSentence!.appealOdds!.fbiPenaltyApplied
+                        ? l10n.courtFbiPenalty(
+                            _currentSentence!.appealOdds!.fbiHeat
+                                .round()
+                                .toString(),
+                            _currentSentence!.appealOdds!.fbiPenaltyPercent
+                                .toString(),
+                          )
+                        : l10n.courtFbiOk(
+                            _currentSentence!.appealOdds!.fbiHeat
+                                .round()
+                                .toString(),
+                          ),
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: _currentSentence!.appealOdds!.fbiPenaltyApplied
+                          ? const Color(0xFFE5967A)
+                          : Colors.white70,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.courtBribeHeatNote,
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      color: Colors.white54,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
               ],
             ),
             actions: [
@@ -443,6 +528,111 @@ class _CourtScreenState extends State<CourtScreen> {
     if (totalChance < 40) return Colors.red.shade400;
     if (totalChance < 70) return Colors.orange.shade300;
     return Colors.green.shade300;
+  }
+
+  String _localizedCrimeName(String? crimeId, String? fallback, AppLocalizations l10n) {
+    return CrimeLocalization.nameFromId(
+      crimeId,
+      l10n,
+      fallback: fallback,
+    );
+  }
+
+  String _signedPercent(int value) {
+    if (value > 0) return '+$value';
+    return '$value';
+  }
+
+  Widget _oddsLine(String text, Color color) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 13, color: color, height: 1.3),
+      ),
+    );
+  }
+
+  Widget _buildAppealOdds(
+    AppLocalizations l10n,
+    AppealOdds odds, {
+    required bool appealed,
+    bool compact = false,
+  }) {
+    final priorModifier = odds.priorConvictionModifierPercent;
+    final priorLine = priorModifier > 0
+        ? l10n.courtPriorBonus(priorModifier.toString())
+        : priorModifier < 0
+        ? l10n.courtPriorPenalty(
+            odds.priorConvictions.toString(),
+            _signedPercent(priorModifier),
+          )
+        : l10n.courtPriorNone(odds.priorConvictions.toString());
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!compact)
+          Text(
+            l10n.courtOddsTitle,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+        _oddsLine(
+          l10n.courtLawBonus(
+            odds.lawLevel.toString(),
+            odds.lawBonusPercent.toString(),
+          ),
+          odds.lawBonusPercent > 0
+              ? const Color(0xFF8AB4F8)
+              : Colors.white70,
+        ),
+        _oddsLine(
+          priorLine,
+          priorModifier > 0
+              ? const Color(0xFF72C48F)
+              : priorModifier < 0
+              ? const Color(0xFFE5967A)
+              : Colors.white70,
+        ),
+        _oddsLine(
+          odds.wantedPenaltyApplied
+              ? l10n.courtWantedPenalty(
+                  odds.wantedLevel.toString(),
+                  odds.wantedPenaltyPercent.toString(),
+                )
+              : l10n.courtWantedOk(odds.wantedLevel.toString()),
+          odds.wantedPenaltyApplied
+              ? const Color(0xFFE5967A)
+              : Colors.white70,
+        ),
+        _oddsLine(
+          odds.fbiPenaltyApplied
+              ? l10n.courtFbiPenalty(
+                  odds.fbiHeat.round().toString(),
+                  odds.fbiPenaltyPercent.toString(),
+                )
+              : l10n.courtFbiOk(odds.fbiHeat.round().toString()),
+          odds.fbiPenaltyApplied
+              ? const Color(0xFFE5967A)
+              : Colors.white70,
+        ),
+        const SizedBox(height: 6),
+        Text(
+          appealed
+              ? l10n.courtAppealUsed
+              : l10n.courtAppealChance(odds.successPercent.toString()),
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: appealed ? const Color(0xFF8AB4F8) : _gold,
+          ),
+        ),
+      ],
+    );
   }
 
   String _formatDateTime(DateTime dateTime) {
@@ -730,7 +920,7 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            '${l10n.courtDelictLabel}: ${_currentSentence!.crime}',
+            '${l10n.courtDelictLabel}: ${_localizedCrimeName(_currentSentence!.crimeId, _currentSentence!.crime, l10n)}',
             style: TextStyle(color: Colors.grey[100]),
           ),
           Text(
@@ -748,12 +938,18 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            l10n.courtJudgeNamed(_currentSentence!.judge.name),
+            CourtLocalization.judgeNamed(_currentSentence!.judge, l10n),
             style: TextStyle(color: Colors.grey[100]),
           ),
-          if (_currentSentence!.judge.specialty.isNotEmpty)
+          if (CourtLocalization.judgeSpecialty(
+            _currentSentence!.judge,
+            l10n,
+          ).isNotEmpty)
             Text(
-              _currentSentence!.judge.specialty,
+              CourtLocalization.judgeSpecialty(
+                _currentSentence!.judge,
+                l10n,
+              ),
               style: TextStyle(color: Colors.grey[400], fontSize: 13),
             ),
           Text(
@@ -770,13 +966,23 @@ class _CourtScreenState extends State<CourtScreen> {
             l10n.courtAppealCostCurrent(formatCurrency(appealCost)),
             style: TextStyle(color: Colors.grey[300], fontSize: 13),
           ),
+          if (_currentSentence!.appealOdds != null) ...[
+            const SizedBox(height: 12),
+            _buildAppealOdds(
+              l10n,
+              _currentSentence!.appealOdds!,
+              appealed: _currentSentence!.appealed,
+            ),
+          ],
           const SizedBox(height: 14),
           Wrap(
             spacing: 10,
             runSpacing: 10,
             children: [
               ElevatedButton.icon(
-                onPressed: _isProcessing ? null : _appealSentence,
+                onPressed: _isProcessing || _currentSentence!.appealed
+                    ? null
+                    : _appealSentence,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF2A4E7F),
                   foregroundColor: Colors.white,
@@ -801,9 +1007,11 @@ class _CourtScreenState extends State<CourtScreen> {
   }
 
   Widget _buildRecordItem(Map<String, dynamic> crime, AppLocalizations l10n) {
-    final crimeName =
-        crime['crimeName'] as String? ??
-        (crime['crimeId'] as String? ?? l10n.courtUnknownCrime);
+    final crimeName = _localizedCrimeName(
+      crime['crimeId'] as String?,
+      crime['crimeName'] as String?,
+      l10n,
+    );
     final jailTime = (crime['jailTime'] as num?)?.toInt() ?? 0;
     final originalJailTime =
         (crime['originalJailTime'] as num?)?.toInt() ?? jailTime;

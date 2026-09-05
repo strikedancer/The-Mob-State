@@ -6429,6 +6429,78 @@ class AppLocalizationsIt extends AppLocalizations {
   String get courtFreeChip => 'Nessun caso attivo';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Crimini violenti';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Crimini finanziari';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Casi legati alla droga';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar =>
+      'La criminalità dei colletti bianchi';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Criminalità organizzata';
+
+  @override
+  String get courtOddsTitle => 'Cosa cambia la tua possibilità di ricorso';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Formazione in diritto $level/5: +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'Prima condanna: +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count condanne precedenti: $percent%';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count condanne precedenti: nessun modificatore aggiuntivo';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Ricercato $level: -$percent% di ricorso';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Ricercato $level: nessuna penalità d\'appello';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI heat $level: -$percent% di ricorso';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI heat $level: nessuna penalità in appello';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Possibilità di ricorso: ~$percent%';
+  }
+
+  @override
+  String get courtAppealUsed =>
+      'Hai già presentato ricorso contro questa condanna.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted e FBI heat cambiano le probabilità di ricorso, non questa tangente.';
+
+  @override
   String get treated => 'Trattato!';
 
   @override

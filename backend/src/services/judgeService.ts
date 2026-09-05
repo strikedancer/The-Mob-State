@@ -4,12 +4,31 @@ import * as policeService from './policeService';
 import { educationService } from './educationService';
 import { worldEventService } from './worldEventService';
 
+type JudgeSpecialtyKey = 'violence' | 'financial' | 'drugs' | 'white_collar' | 'organized';
+
 interface JudgeProfile {
   id: number;
   name: string;
+  nameKey: string;
+  specialtyKey: JudgeSpecialtyKey;
+  specialty: JudgeSpecialtyKey;
   corruptibility: number;
   appointedYear: number;
-  specialty: string;
+}
+
+export interface AppealOddsBreakdown {
+  lawLevel: number;
+  lawBonusPercent: number;
+  priorConvictions: number;
+  priorConvictionModifierPercent: number;
+  wantedLevel: number;
+  wantedPenaltyApplied: boolean;
+  wantedPenaltyPercent: number;
+  fbiHeat: number;
+  fbiPenaltyApplied: boolean;
+  fbiPenaltyPercent: number;
+  successChance: number;
+  successPercent: number;
 }
 
 interface CriminalRecordItem {
@@ -60,37 +79,47 @@ export interface AppealResult {
 const JUDGES: JudgeProfile[] = [
   {
     id: 1,
-    name: 'Rechter van der Berg',
+    name: 'van der Berg',
+    nameKey: 'van_der_berg',
+    specialtyKey: 'violence',
+    specialty: 'violence',
     corruptibility: 35,
-    specialty: 'Geweldsmisdrijven',
     appointedYear: 2015,
   },
   {
     id: 2,
-    name: 'Rechter Jansen',
+    name: 'Jansen',
+    nameKey: 'jansen',
+    specialtyKey: 'financial',
+    specialty: 'financial',
     corruptibility: 65,
-    specialty: 'Financiele Delicten',
     appointedYear: 2018,
   },
   {
     id: 3,
-    name: 'Rechter de Vries',
+    name: 'de Vries',
+    nameKey: 'de_vries',
+    specialtyKey: 'drugs',
+    specialty: 'drugs',
     corruptibility: 20,
-    specialty: 'Drugsgerelateerde Zaken',
     appointedYear: 2010,
   },
   {
     id: 4,
-    name: 'Rechter Bakker',
+    name: 'Bakker',
+    nameKey: 'bakker',
+    specialtyKey: 'white_collar',
+    specialty: 'white_collar',
     corruptibility: 80,
-    specialty: 'Witte Boordencriminaliteit',
     appointedYear: 2020,
   },
   {
     id: 5,
-    name: 'Rechter Visser',
+    name: 'Visser',
+    nameKey: 'visser',
+    specialtyKey: 'organized',
+    specialty: 'organized',
     corruptibility: 45,
-    specialty: 'Georganiseerde Misdaad',
     appointedYear: 2012,
   },
 ];
@@ -109,6 +138,67 @@ const TRIAL_EVENT_KEYS: TrialEventKey[] = [
 
 function getJudgeForAttempt(crimeAttemptId: number): JudgeProfile {
   return JUDGES[crimeAttemptId % JUDGES.length] as JudgeProfile;
+}
+
+export function computeAppealOdds(input: {
+  lawLevel: number;
+  priorConvictions: number;
+  wantedLevel: number;
+  fbiHeat: number;
+}): AppealOddsBreakdown {
+  const lawLevel = Math.max(0, Math.min(5, Math.floor(input.lawLevel)));
+  const lawBonus = Math.min(lawLevel * 0.05, 0.25);
+  let successChance = 0.35 + lawBonus;
+
+  let priorConvictionModifier = 0;
+  if (input.priorConvictions === 0) {
+    priorConvictionModifier = 0.2;
+  } else if (input.priorConvictions >= 5) {
+    priorConvictionModifier = -0.2;
+  }
+  successChance += priorConvictionModifier;
+
+  const wantedPenaltyApplied = input.wantedLevel > 20;
+  const fbiPenaltyApplied = input.fbiHeat > 10;
+  if (wantedPenaltyApplied) {
+    successChance -= 0.1;
+  }
+  if (fbiPenaltyApplied) {
+    successChance -= 0.15;
+  }
+
+  successChance = Math.max(0.1, Math.min(0.85, successChance));
+
+  return {
+    lawLevel,
+    lawBonusPercent: Math.round(lawBonus * 100),
+    priorConvictions: input.priorConvictions,
+    priorConvictionModifierPercent: Math.round(priorConvictionModifier * 100),
+    wantedLevel: input.wantedLevel,
+    wantedPenaltyApplied,
+    wantedPenaltyPercent: wantedPenaltyApplied ? 10 : 0,
+    fbiHeat: input.fbiHeat,
+    fbiPenaltyApplied,
+    fbiPenaltyPercent: fbiPenaltyApplied ? 15 : 0,
+    successChance,
+    successPercent: Math.round(successChance * 100),
+  };
+}
+
+function serializeAppealOdds(odds: AppealOddsBreakdown) {
+  return {
+    lawLevel: odds.lawLevel,
+    lawBonusPercent: odds.lawBonusPercent,
+    priorConvictions: odds.priorConvictions,
+    priorConvictionModifierPercent: odds.priorConvictionModifierPercent,
+    wantedLevel: odds.wantedLevel,
+    wantedPenaltyApplied: odds.wantedPenaltyApplied,
+    wantedPenaltyPercent: odds.wantedPenaltyPercent,
+    fbiHeat: odds.fbiHeat,
+    fbiPenaltyApplied: odds.fbiPenaltyApplied,
+    fbiPenaltyPercent: odds.fbiPenaltyPercent,
+    successPercent: odds.successPercent,
+  };
 }
 
 function getCrimeName(crimeId: string): string {
@@ -372,7 +462,24 @@ export async function getCurrentSentence(playerId: number) {
     return null;
   }
 
-  const judge = getJudgeForAttempt(crimeAttempt.id);
+  const [educationProfile, player, prior] = await Promise.all([
+    educationService.getPlayerEducationProfile(playerId),
+    prisma.player.findUnique({
+      where: { id: playerId },
+      select: {
+        wantedLevel: true,
+        fbiHeat: true,
+      },
+    }),
+    getVisibleConvictionAttempts(playerId, crimeAttempt.id),
+  ]);
+
+  const appealOdds = computeAppealOdds({
+    lawLevel: educationProfile.tracks['law']?.level ?? 0,
+    priorConvictions: prior.visibleAttempts.length,
+    wantedLevel: Number(player?.wantedLevel ?? 0),
+    fbiHeat: Number(player?.fbiHeat ?? 0),
+  });
 
   return {
     sentence: {
@@ -381,9 +488,10 @@ export async function getCurrentSentence(playerId: number) {
       crime: getCrimeName(crimeAttempt.crimeId),
       sentenceMinutes: crimeAttempt.jailTime,
       remainingMinutes: Math.max(1, Math.ceil(remainingSeconds / 60)),
-      judge,
+      judge: getJudgeForAttempt(crimeAttempt.id),
       appealed: !!crimeAttempt.appealedAt,
       arrestedAt: crimeAttempt.createdAt.toISOString(),
+      appealOdds: serializeAppealOdds(appealOdds),
     },
   };
 }
@@ -484,26 +592,13 @@ export async function appealSentence(
   );
   const priorConvictions = priorConvictionAttempts.length;
 
-  // Law education track: every level adds +5% appeal success chance (max +25% at level 5)
-  const lawLevel = educationProfile.tracks['law']?.level ?? 0;
-  const lawBonus = Math.min(lawLevel * 0.05, 0.25);
-
-  let successChance = 0.35 + lawBonus;
-  if (priorConvictions === 0) {
-    successChance += 0.2;
-  } else if (priorConvictions >= 5) {
-    successChance -= 0.2;
-  }
-
-  if (player.wantedLevel > 20) {
-    successChance -= 0.1;
-  }
-  if (player.fbiHeat > 10) {
-    successChance -= 0.15;
-  }
-
-  successChance = Math.max(0.1, Math.min(0.85, successChance));
-  const success = Math.random() < successChance;
+  const appealOdds = computeAppealOdds({
+    lawLevel: educationProfile.tracks['law']?.level ?? 0,
+    priorConvictions,
+    wantedLevel: Number(player.wantedLevel ?? 0),
+    fbiHeat: Number(player.fbiHeat ?? 0),
+  });
+  const success = Math.random() < appealOdds.successChance;
 
   const updatedPlayer = await prisma.player.update({
     where: { id: playerId },

@@ -10988,5 +10988,97 @@
     }
   },
   "courtActiveChip": "Cumprindo pena",
-  "courtFreeChip": "Nenhum caso ativo"
+  "courtFreeChip": "Nenhum caso ativo",
+  "courtJudgeSpecialtyViolence": "Crimes violentos",
+  "courtJudgeSpecialtyFinancial": "Crimes financeiros",
+  "courtJudgeSpecialtyDrugs": "Casos relacionados com drogas",
+  "courtJudgeSpecialtyWhiteCollar": "Crime de colarinho branco",
+  "courtJudgeSpecialtyOrganized": "Crime organizado",
+  "courtOddsTitle": "O que muda a tua hipótese de recurso",
+  "courtLawBonus": "Formação jurídica {level}/5: +{percent}%",
+  "@courtLawBonus": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorBonus": "Primeira condenação: +{percent}%",
+  "@courtPriorBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorPenalty": "{count} condenações anteriores: {percent}%",
+  "@courtPriorPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorNone": "{count} condenações anteriores: sem modificador extra",
+  "@courtPriorNone": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedPenalty": "Wanted {level}: -{percent}% de recurso",
+  "@courtWantedPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedOk": "Wanted {level}: sem penalização de recurso",
+  "@courtWantedOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiPenalty": "FBI heat {level}: -{percent}% de recurso",
+  "@courtFbiPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiOk": "FBI heat {level}: sem penalização de recurso",
+  "@courtFbiOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealChance": "Hipótese de recurso: ~{percent}%",
+  "@courtAppealChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealUsed": "Já recorreste desta condenação.",
+  "courtBribeHeatNote": "Wanted e FBI heat mudam as hipóteses de recurso, não este suborno."
 }

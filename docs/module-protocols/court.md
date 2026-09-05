@@ -22,9 +22,11 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Record entries must preserve sentence changes and trial outcomes such as appeal granted, appeal denied and failed bribe attempts.
 - A successful judge bribe must clear only the linked active conviction from the criminal record, not wipe unrelated convictions.
 - If the player uses an external crime flow to wipe their full record, the court record must hide only convictions older than that expungement point and show new convictions normally afterward.
-- **Law education bonus**: the player's `law` track level (0–5) grants +5% appeal success per level (max +25% at level 5). Base appeal chance is therefore 35%–60% before prior-convictions/wanted-level/FBI-heat adjustments. Hard cap raised from 70% to 85%.
-  - Cross-dependency: `educationService.getPlayerEducationProfile` is called in parallel inside `judgeService.appealSentence`.
-  - This bonus is applied silently server-side; no UI change required in the court screen.
+- **Law education bonus**: the player's `law` track level (0–5) grants +5% appeal success per level (max +25% at level 5). Base appeal chance is therefore 35%–60% before prior-convictions/wanted-level/FBI-heat adjustments. Hard cap is 10%–85%.
+  - Cross-dependency: `educationService.getPlayerEducationProfile` is called in parallel inside `judgeService.appealSentence` and `getCurrentSentence`.
+  - `GET /trial/current-sentence` returns `appealOdds` (law level/bonus, prior-conviction modifier, wanted, FBI heat, estimated percent). The court screen shows this breakdown; odds are computed in `computeAppealOdds` so UI and roll stay aligned.
+  - Wanted above 20 subtracts 10% from appeal. FBI heat above 10 subtracts 15%. These modifiers do **not** change bribe chance (judge corruptibility + offer only). The bribe dialog still shows current Wanted/FBI so the player sees why appeal looks worse.
+- **Localized names**: judge payload uses family name + `specialtyKey` (`violence` | `financial` | `drugs` | `white_collar` | `organized`). Client localizes the judge title and specialty. Crime titles use `crimeId` via `CrimeLocalization.nameFromId` (English `crime` / `crimeName` is fallback only).
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -64,6 +66,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Verify `POST /trial/bribe` deducts balance in both success and failure paths.
 - Verify portrait/landscape switch keeps the courtroom background visible and text/cards readable.
 - **Law bonus QA**: player with law level 5 must have measurably higher appeal success rate than player with level 0; confirm `educationService` call does not break appeal for players with no education records (defaults to 0).
+- Switch UI language and confirm crime names, judge title/specialty and odds copy follow the locale. Confirm Wanted >20 and FBI heat >10 turn the appeal lines red and lower `successPercent`. Confirm an already-appealed case disables the appeal button.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

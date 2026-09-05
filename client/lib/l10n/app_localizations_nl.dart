@@ -6404,6 +6404,76 @@ class AppLocalizationsNl extends AppLocalizations {
   String get courtFreeChip => 'Geen actieve zaak';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Geweldsmisdrijven';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Financiële delicten';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Drugsgerelateerde zaken';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar => 'Witteboordencriminaliteit';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Georganiseerde misdaad';
+
+  @override
+  String get courtOddsTitle => 'Wat je beroepskans bepaalt';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Wet-opleiding $level/5: +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'Eerste veroordeling: +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count eerdere veroordelingen: $percent%';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count eerdere veroordelingen: geen extra modifier';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Wanted $level: -$percent% beroep';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Wanted $level: geen aftrek';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI-heat $level: -$percent% beroep';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI-heat $level: geen aftrek';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Kans op hoger beroep: ~$percent%';
+  }
+
+  @override
+  String get courtAppealUsed => 'Voor deze zaak is al hoger beroep ingediend.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted en FBI-heat veranderen de beroepskans, niet deze omkoping.';
+
+  @override
   String get treated => 'Behandeld!';
 
   @override
@@ -15867,11 +15937,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCourtHow =>
-      'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nWil je je volledige strafblad wissen, dan moet je dat buiten de rechtbank via de late-game crime Strafblad Wissen doen.';
+      'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, gelokaliseerde delictnaam en rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nWet-opleiding geeft +5% beroepskans per level (max +25% op level 5). Wanted boven 20 geeft -10%, FBI-heat boven 10 geeft -15%. Een eerste veroordeling geeft +20%; vijf of meer eerdere veroordelingen geven -20%. Het scherm toont deze uitsplitsing en de geschatte kans, begrensd tussen 10% en 85%.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans op basis van de omkoopbaarheid van de rechter. Wanted en FBI-heat veranderen de omkoping zelf niet. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nWil je je volledige strafblad wissen, dan moet je dat buiten de rechtbank via de late-game crime Strafblad Wissen doen.';
 
   @override
   String get helpTopicCourtTips =>
-      'Gebruik hoger beroep bij lange straffen: de verwachte tijdswinst is dan het grootst.\nGebruik omkoping alleen met voldoende buffer, omdat je in alle gevallen betaalt.';
+      'Gebruik hoger beroep bij lange straffen: de verwachte tijdswinst is dan het grootst.\nTrain Wet op school vóór je in beroep gaat, en verlaag Wanted/FBI eerst als ze boven de drempel zitten.\nGebruik omkoping alleen met voldoende buffer, omdat je in alle gevallen betaalt.';
 
   @override
   String get helpTopicHitlistCategory => 'Risico';

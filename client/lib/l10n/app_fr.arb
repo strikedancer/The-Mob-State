@@ -10988,5 +10988,97 @@
     }
   },
   "courtActiveChip": "En détention",
-  "courtFreeChip": "Aucun dossier actif"
+  "courtFreeChip": "Aucun dossier actif",
+  "courtJudgeSpecialtyViolence": "Crimes violents",
+  "courtJudgeSpecialtyFinancial": "Crimes financiers",
+  "courtJudgeSpecialtyDrugs": "Affaires liées à la drogue",
+  "courtJudgeSpecialtyWhiteCollar": "Criminalité en col blanc",
+  "courtJudgeSpecialtyOrganized": "Crime organisé",
+  "courtOddsTitle": "Qu'est-ce qui change vos chances d'appel",
+  "courtLawBonus": "Formation en droit {level}/5 : +{percent}%",
+  "@courtLawBonus": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorBonus": "Première condamnation : +{percent}%",
+  "@courtPriorBonus": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorPenalty": "{count} condamnations antérieures : {percent}%",
+  "@courtPriorPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPriorNone": "{count} condamnations antérieures : pas de modificateur supplémentaire",
+  "@courtPriorNone": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedPenalty": "Recherché {level} : -{percent}% d'appel",
+  "@courtWantedPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtWantedOk": "Recherché {level} : pas de pénalité d'appel",
+  "@courtWantedOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiPenalty": "FBI heat {level} : -{percent}% d'appel",
+  "@courtFbiPenalty": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtFbiOk": "FBI heat {level} : aucune pénalité d'appel",
+  "@courtFbiOk": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealChance": "Chance d'appel : ~{percent} %",
+  "@courtAppealChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealUsed": "Vous avez déjà fait appel de cette condamnation.",
+  "courtBribeHeatNote": "Wanted et FBI heat changent les chances d'appel, pas ce pot-de-vin."
 }

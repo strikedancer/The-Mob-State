@@ -6409,6 +6409,76 @@ class AppLocalizationsPt extends AppLocalizations {
   String get courtFreeChip => 'Nenhum caso ativo';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Crimes violentos';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Crimes financeiros';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Casos relacionados com drogas';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar => 'Crime de colarinho branco';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Crime organizado';
+
+  @override
+  String get courtOddsTitle => 'O que muda a tua hipótese de recurso';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Formação jurídica $level/5: +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'Primeira condenação: +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count condenações anteriores: $percent%';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count condenações anteriores: sem modificador extra';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Wanted $level: -$percent% de recurso';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Wanted $level: sem penalização de recurso';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI heat $level: -$percent% de recurso';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI heat $level: sem penalização de recurso';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Hipótese de recurso: ~$percent%';
+  }
+
+  @override
+  String get courtAppealUsed => 'Já recorreste desta condenação.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted e FBI heat mudam as hipóteses de recurso, não este suborno.';
+
+  @override
   String get treated => 'Tratada!';
 
   @override

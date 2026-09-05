@@ -3953,6 +3953,72 @@
   },
   "courtActiveChip": "Serving time",
   "courtFreeChip": "No active case",
+  "courtJudgeSpecialtyViolence": "Violent crimes",
+  "courtJudgeSpecialtyFinancial": "Financial crimes",
+  "courtJudgeSpecialtyDrugs": "Drug-related cases",
+  "courtJudgeSpecialtyWhiteCollar": "White-collar crime",
+  "courtJudgeSpecialtyOrganized": "Organized crime",
+  "courtOddsTitle": "What changes your appeal chance",
+  "courtLawBonus": "Law education {level}/5: +{percent}%",
+  "@courtLawBonus": {
+    "placeholders": {
+      "level": { "type": "String" },
+      "percent": { "type": "String" }
+    }
+  },
+  "courtPriorBonus": "First conviction: +{percent}%",
+  "@courtPriorBonus": {
+    "placeholders": {
+      "percent": { "type": "String" }
+    }
+  },
+  "courtPriorPenalty": "{count} prior convictions: {percent}%",
+  "@courtPriorPenalty": {
+    "placeholders": {
+      "count": { "type": "String" },
+      "percent": { "type": "String" }
+    }
+  },
+  "courtPriorNone": "{count} prior convictions: no extra modifier",
+  "@courtPriorNone": {
+    "placeholders": {
+      "count": { "type": "String" }
+    }
+  },
+  "courtWantedPenalty": "Wanted {level}: -{percent}% appeal",
+  "@courtWantedPenalty": {
+    "placeholders": {
+      "level": { "type": "String" },
+      "percent": { "type": "String" }
+    }
+  },
+  "courtWantedOk": "Wanted {level}: no appeal penalty",
+  "@courtWantedOk": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "courtFbiPenalty": "FBI heat {level}: -{percent}% appeal",
+  "@courtFbiPenalty": {
+    "placeholders": {
+      "level": { "type": "String" },
+      "percent": { "type": "String" }
+    }
+  },
+  "courtFbiOk": "FBI heat {level}: no appeal penalty",
+  "@courtFbiOk": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "courtAppealChance": "Appeal chance: ~{percent}%",
+  "@courtAppealChance": {
+    "placeholders": {
+      "percent": { "type": "String" }
+    }
+  },
+  "courtAppealUsed": "You already appealed this conviction.",
+  "courtBribeHeatNote": "Wanted and FBI heat change appeal odds, not this bribe.",
   "treated": "Treated!",
   "healthRestored": "+{hp} HP for €{cost}",
   "@healthRestored": {
@@ -10108,8 +10174,8 @@
   "helpTopicCourtCategory": "Risk",
   "helpTopicCourtTitle": "Court",
   "helpTopicCourtSummary": "During your sentence you can file an appeal or try to bribe the judge to get released sooner.",
-  "helpTopicCourtHow": "When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.",
-  "helpTopicCourtTips": "Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.",
+  "helpTopicCourtHow": "When jailed, the court screen shows your active conviction with remaining time, localized crime name and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nLaw education adds +5% appeal chance per level (max +25% at level 5). Wanted above 20 subtracts 10%, FBI heat above 10 subtracts 15%. A first conviction adds +20%; five or more prior convictions subtract 20%. The screen shows this breakdown and the estimated chance, capped between 10% and 85%.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance based on the judge's corruptibility. Wanted and FBI heat do not change the bribe itself. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.",
+  "helpTopicCourtTips": "Use appeals on long sentences first: expected time saved is highest there.\nTrain Law at school before you appeal, and drop Wanted/FBI first if they sit above the penalty thresholds.\nUse bribery only with enough cash buffer, because payment is always deducted.",
   "helpTopicHitlistCategory": "Risk",
   "helpTopicHitlistTitle": "Hitlist",
   "helpTopicHitlistSummary": "Place a bounty on an enemy or accept a hit contract. Eliminate your target in the same country for the full payout.",

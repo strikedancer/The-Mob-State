@@ -6367,6 +6367,76 @@ class AppLocalizationsEn extends AppLocalizations {
   String get courtFreeChip => 'No active case';
 
   @override
+  String get courtJudgeSpecialtyViolence => 'Violent crimes';
+
+  @override
+  String get courtJudgeSpecialtyFinancial => 'Financial crimes';
+
+  @override
+  String get courtJudgeSpecialtyDrugs => 'Drug-related cases';
+
+  @override
+  String get courtJudgeSpecialtyWhiteCollar => 'White-collar crime';
+
+  @override
+  String get courtJudgeSpecialtyOrganized => 'Organized crime';
+
+  @override
+  String get courtOddsTitle => 'What changes your appeal chance';
+
+  @override
+  String courtLawBonus(String level, String percent) {
+    return 'Law education $level/5: +$percent%';
+  }
+
+  @override
+  String courtPriorBonus(String percent) {
+    return 'First conviction: +$percent%';
+  }
+
+  @override
+  String courtPriorPenalty(String count, String percent) {
+    return '$count prior convictions: $percent%';
+  }
+
+  @override
+  String courtPriorNone(String count) {
+    return '$count prior convictions: no extra modifier';
+  }
+
+  @override
+  String courtWantedPenalty(String level, String percent) {
+    return 'Wanted $level: -$percent% appeal';
+  }
+
+  @override
+  String courtWantedOk(String level) {
+    return 'Wanted $level: no appeal penalty';
+  }
+
+  @override
+  String courtFbiPenalty(String level, String percent) {
+    return 'FBI heat $level: -$percent% appeal';
+  }
+
+  @override
+  String courtFbiOk(String level) {
+    return 'FBI heat $level: no appeal penalty';
+  }
+
+  @override
+  String courtAppealChance(String percent) {
+    return 'Appeal chance: ~$percent%';
+  }
+
+  @override
+  String get courtAppealUsed => 'You already appealed this conviction.';
+
+  @override
+  String get courtBribeHeatNote =>
+      'Wanted and FBI heat change appeal odds, not this bribe.';
+
+  @override
   String get treated => 'Treated!';
 
   @override
@@ -15829,11 +15899,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCourtHow =>
-      'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.';
+      'When jailed, the court screen shows your active conviction with remaining time, localized crime name and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nLaw education adds +5% appeal chance per level (max +25% at level 5). Wanted above 20 subtracts 10%, FBI heat above 10 subtracts 15%. A first conviction adds +20%; five or more prior convictions subtract 20%. The screen shows this breakdown and the estimated chance, capped between 10% and 85%.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance based on the judge\'s corruptibility. Wanted and FBI heat do not change the bribe itself. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.';
 
   @override
   String get helpTopicCourtTips =>
-      'Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.';
+      'Use appeals on long sentences first: expected time saved is highest there.\nTrain Law at school before you appeal, and drop Wanted/FBI first if they sit above the penalty thresholds.\nUse bribery only with enough cash buffer, because payment is always deducted.';
 
   @override
   String get helpTopicHitlistCategory => 'Risk';

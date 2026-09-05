@@ -11327,6 +11327,108 @@ abstract class AppLocalizations {
   /// **'No active case'**
   String get courtFreeChip;
 
+  /// No description provided for @courtJudgeSpecialtyViolence.
+  ///
+  /// In en, this message translates to:
+  /// **'Violent crimes'**
+  String get courtJudgeSpecialtyViolence;
+
+  /// No description provided for @courtJudgeSpecialtyFinancial.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial crimes'**
+  String get courtJudgeSpecialtyFinancial;
+
+  /// No description provided for @courtJudgeSpecialtyDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug-related cases'**
+  String get courtJudgeSpecialtyDrugs;
+
+  /// No description provided for @courtJudgeSpecialtyWhiteCollar.
+  ///
+  /// In en, this message translates to:
+  /// **'White-collar crime'**
+  String get courtJudgeSpecialtyWhiteCollar;
+
+  /// No description provided for @courtJudgeSpecialtyOrganized.
+  ///
+  /// In en, this message translates to:
+  /// **'Organized crime'**
+  String get courtJudgeSpecialtyOrganized;
+
+  /// No description provided for @courtOddsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What changes your appeal chance'**
+  String get courtOddsTitle;
+
+  /// No description provided for @courtLawBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Law education {level}/5: +{percent}%'**
+  String courtLawBonus(String level, String percent);
+
+  /// No description provided for @courtPriorBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'First conviction: +{percent}%'**
+  String courtPriorBonus(String percent);
+
+  /// No description provided for @courtPriorPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} prior convictions: {percent}%'**
+  String courtPriorPenalty(String count, String percent);
+
+  /// No description provided for @courtPriorNone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} prior convictions: no extra modifier'**
+  String courtPriorNone(String count);
+
+  /// No description provided for @courtWantedPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'Wanted {level}: -{percent}% appeal'**
+  String courtWantedPenalty(String level, String percent);
+
+  /// No description provided for @courtWantedOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Wanted {level}: no appeal penalty'**
+  String courtWantedOk(String level);
+
+  /// No description provided for @courtFbiPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'FBI heat {level}: -{percent}% appeal'**
+  String courtFbiPenalty(String level, String percent);
+
+  /// No description provided for @courtFbiOk.
+  ///
+  /// In en, this message translates to:
+  /// **'FBI heat {level}: no appeal penalty'**
+  String courtFbiOk(String level);
+
+  /// No description provided for @courtAppealChance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal chance: ~{percent}%'**
+  String courtAppealChance(String percent);
+
+  /// No description provided for @courtAppealUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'You already appealed this conviction.'**
+  String get courtAppealUsed;
+
+  /// No description provided for @courtBribeHeatNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Wanted and FBI heat change appeal odds, not this bribe.'**
+  String get courtBribeHeatNote;
+
   /// No description provided for @treated.
   ///
   /// In en, this message translates to:
@@ -27478,13 +27580,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCourtHow.
   ///
   /// In en, this message translates to:
-  /// **'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.'**
+  /// **'When jailed, the court screen shows your active conviction with remaining time, localized crime name and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nLaw education adds +5% appeal chance per level (max +25% at level 5). Wanted above 20 subtracts 10%, FBI heat above 10 subtracts 15%. A first conviction adds +20%; five or more prior convictions subtract 20%. The screen shows this breakdown and the estimated chance, capped between 10% and 85%.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance based on the judge\'s corruptibility. Wanted and FBI heat do not change the bribe itself. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.'**
   String get helpTopicCourtHow;
 
   /// No description provided for @helpTopicCourtTips.
   ///
   /// In en, this message translates to:
-  /// **'Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.'**
+  /// **'Use appeals on long sentences first: expected time saved is highest there.\nTrain Law at school before you appeal, and drop Wanted/FBI first if they sit above the penalty thresholds.\nUse bribery only with enough cash buffer, because payment is always deducted.'**
   String get helpTopicCourtTips;
 
   /// No description provided for @helpTopicHitlistCategory.
