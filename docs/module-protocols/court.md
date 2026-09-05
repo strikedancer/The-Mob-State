@@ -30,6 +30,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
+- Web dashboard Court hides the inner AppBar title; keep the shared status bar. The screen uses a noir hero (case status + conviction count + remaining time) plus sentence and record panels. Remaining time ticks locally every 30s and refreshes when the sentence ends.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing
@@ -53,6 +54,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
+- On web dashboard Court, verify there is no extra “Rechtbank” AppBar title, the hero chips match sentence/record state, and appeal/bribe dialogs stay readable on the dark panel.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.

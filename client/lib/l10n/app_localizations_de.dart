@@ -6426,6 +6426,24 @@ class AppLocalizationsDe extends AppLocalizations {
       'Es liegen noch keine Verurteilungen vor.';
 
   @override
+  String get courtHeroTitle => 'Die Verhandlung';
+
+  @override
+  String get courtHeroSubtitle =>
+      'Legen Sie Berufung ein oder bestechen Sie den Richter, während Sie Ihre Strafe absitzen. Ihr Strafregister bleibt bestehen, nachdem Sie freigelassen wurden.';
+
+  @override
+  String courtConvictionsChip(String count) {
+    return '$count Verurteilungen';
+  }
+
+  @override
+  String get courtActiveChip => 'Verbüßt Strafe';
+
+  @override
+  String get courtFreeChip => 'Kein aktiver Fall';
+
+  @override
   String get treated => 'Behandelt!';
 
   @override

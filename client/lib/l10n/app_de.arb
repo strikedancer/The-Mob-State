@@ -10976,5 +10976,17 @@
       }
     }
   },
-  "hitlistEmptyBody": "Derzeit gibt es keine öffentlichen Aufträge. Setzen Sie ein Kopfgeld von mindestens 50.000 € aus, um eine Jagd zu starten."
+  "hitlistEmptyBody": "Derzeit gibt es keine öffentlichen Aufträge. Setzen Sie ein Kopfgeld von mindestens 50.000 € aus, um eine Jagd zu starten.",
+  "courtHeroTitle": "Die Verhandlung",
+  "courtHeroSubtitle": "Legen Sie Berufung ein oder bestechen Sie den Richter, während Sie Ihre Strafe absitzen. Ihr Strafregister bleibt bestehen, nachdem Sie freigelassen wurden.",
+  "courtConvictionsChip": "{count} Verurteilungen",
+  "@courtConvictionsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtActiveChip": "Verbüßt Strafe",
+  "courtFreeChip": "Kein aktiver Fall"
 }

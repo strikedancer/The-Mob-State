@@ -6349,6 +6349,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get courtNoConvictionsYet => 'No convictions recorded yet.';
 
   @override
+  String get courtHeroTitle => 'The courtroom';
+
+  @override
+  String get courtHeroSubtitle =>
+      'Appeal or bribe the judge while you serve time. Your criminal record stays after you walk free.';
+
+  @override
+  String courtConvictionsChip(String count) {
+    return '$count convictions';
+  }
+
+  @override
+  String get courtActiveChip => 'Serving time';
+
+  @override
+  String get courtFreeChip => 'No active case';
+
+  @override
   String get treated => 'Treated!';
 
   @override

@@ -10976,5 +10976,17 @@
       }
     }
   },
-  "hitlistEmptyBody": "Pas de marchés publics pour le moment. Placez une prime d'au moins 50 000 € pour lancer une chasse."
+  "hitlistEmptyBody": "Pas de marchés publics pour le moment. Placez une prime d'au moins 50 000 € pour lancer une chasse.",
+  "courtHeroTitle": "L'audience",
+  "courtHeroSubtitle": "Faites appel ou soudoyez le juge pendant que vous purgez votre peine. Votre casier judiciaire reste après votre libération.",
+  "courtConvictionsChip": "{count} condamnations",
+  "@courtConvictionsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtActiveChip": "En détention",
+  "courtFreeChip": "Aucun dossier actif"
 }

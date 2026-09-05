@@ -3941,6 +3941,18 @@
   },
   "courtRecordBribeNote": "Past convictions stay visible. A successful judge bribe clears only that one active case.",
   "courtNoConvictionsYet": "No convictions recorded yet.",
+  "courtHeroTitle": "The courtroom",
+  "courtHeroSubtitle": "Appeal or bribe the judge while you serve time. Your criminal record stays after you walk free.",
+  "courtConvictionsChip": "{count} convictions",
+  "@courtConvictionsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtActiveChip": "Serving time",
+  "courtFreeChip": "No active case",
   "treated": "Treated!",
   "healthRestored": "+{hp} HP for €{cost}",
   "@healthRestored": {

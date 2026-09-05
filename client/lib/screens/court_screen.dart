@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,13 +10,24 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 
 class CourtScreen extends StatefulWidget {
-  const CourtScreen({super.key});
+  const CourtScreen({
+    super.key,
+    this.embedded = false,
+  });
+
+  /// When true (web dashboard), hide the page AppBar; the sidebar already names the page.
+  final bool embedded;
 
   @override
   State<CourtScreen> createState() => _CourtScreenState();
 }
 
 class _CourtScreenState extends State<CourtScreen> {
+  static const Color _gold = Color(0xFFD4AF37);
+  static const Color _panelBg = Color(0xFF151B28);
+  static const Color _panelBorder = Color(0xFF2A3344);
+  static const Color _courtAccent = Color(0xFFD7B378);
+
   static const String _backgroundAsset =
       'assets/images/backgrounds/courtroom_background.png';
   static const String _backgroundAssetMobile =
@@ -27,15 +39,39 @@ class _CourtScreenState extends State<CourtScreen> {
   bool _sentenceFailed = false;
   bool _recordFailed = false;
   JailSentence? _currentSentence;
+  DateTime? _sentenceSyncedAt;
   int _totalConvictions = 0;
   List<Map<String, dynamic>> _recentCrimes = [];
   String? _error;
   bool _isProcessing = false;
+  Timer? _tickTimer;
 
   @override
   void initState() {
     super.initState();
     _loadCourtData();
+    _tickTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (!mounted || _currentSentence == null) return;
+      if (_remainingMinutesNow <= 0) {
+        _loadCourtData();
+        return;
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _tickTimer?.cancel();
+    super.dispose();
+  }
+
+  int get _remainingMinutesNow {
+    final sentence = _currentSentence;
+    final syncedAt = _sentenceSyncedAt;
+    if (sentence == null || syncedAt == null) return 0;
+    final elapsed = DateTime.now().difference(syncedAt).inMinutes;
+    return (sentence.remainingMinutes - elapsed).clamp(0, sentence.remainingMinutes);
   }
 
   Future<void> _loadCourtData() async {
@@ -83,6 +119,7 @@ class _CourtScreenState extends State<CourtScreen> {
 
     setState(() {
       _currentSentence = sentence;
+      _sentenceSyncedAt = sentence == null ? null : DateTime.now();
       _totalConvictions = totalConvictions;
       _recentCrimes = recentCrimes;
       _isLoading = false;
@@ -111,33 +148,41 @@ class _CourtScreenState extends State<CourtScreen> {
       builder: (context) {
         final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
-          title: Text(l10n.confirmAction),
+          backgroundColor: _panelBg,
+          title: Text(
+            l10n.confirmAction,
+            style: const TextStyle(color: _gold, fontWeight: FontWeight.w800),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 l10n.appeal,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 l10n.courtAppealDialogIntro,
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 15, color: Colors.white70),
               ),
               const SizedBox(height: 12),
               Text(
                 l10n.courtCostLine(formatCurrency(appealCost)),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey[700],
+                  color: _gold,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 l10n.courtJudgeNamed(_currentSentence!.judge.name),
-                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                style: const TextStyle(fontSize: 14, color: Colors.white70),
               ),
               Text(
                 l10n.courtCorruptibilityPercent(
@@ -152,9 +197,9 @@ class _CourtScreenState extends State<CourtScreen> {
               const SizedBox(height: 8),
               Text(
                 l10n.courtAppealSuccessHint,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
-                  color: Colors.green,
+                  color: Colors.green.shade300,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -163,6 +208,7 @@ class _CourtScreenState extends State<CourtScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
+              style: TextButton.styleFrom(foregroundColor: Colors.white70),
               child: Text(l10n.cancel),
             ),
             ElevatedButton(
@@ -245,19 +291,23 @@ class _CourtScreenState extends State<CourtScreen> {
         builder: (context, setDialogState) {
           final l10n = AppLocalizations.of(context)!;
           return AlertDialog(
-            title: Text(l10n.bribeJudge),
+            backgroundColor: _panelBg,
+            title: Text(
+              l10n.bribeJudge,
+              style: const TextStyle(color: _gold, fontWeight: FontWeight.w800),
+            ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   l10n.courtBribeOfferIntro,
-                  style: TextStyle(fontSize: 15, color: Colors.grey[800]),
+                  style: const TextStyle(fontSize: 15, color: Colors.white70),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   l10n.courtJudgeNamed(_currentSentence!.judge.name),
-                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                  style: const TextStyle(fontSize: 14, color: Colors.white70),
                 ),
                 Text(
                   l10n.courtCorruptibilityPercent(
@@ -275,6 +325,7 @@ class _CourtScreenState extends State<CourtScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
                 Slider(
@@ -282,6 +333,7 @@ class _CourtScreenState extends State<CourtScreen> {
                   min: 50000,
                   max: 200000,
                   divisions: 30,
+                  activeColor: _gold,
                   label: l10n.courtBribeSliderLabel('${bribeAmount ~/ 1000}'),
                   onChanged: (value) {
                     setDialogState(() {
@@ -303,6 +355,7 @@ class _CourtScreenState extends State<CourtScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, null),
+                style: TextButton.styleFrom(foregroundColor: Colors.white70),
                 child: Text(l10n.cancel),
               ),
               ElevatedButton(
@@ -527,22 +580,105 @@ class _CourtScreenState extends State<CourtScreen> {
   Widget _buildPanel({required Widget child}) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF141923).withValues(alpha: 0.84),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFFB8894E).withValues(alpha: 0.55),
+        color: _panelBg.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: _panelBorder),
+      ),
+      child: child,
+    );
+  }
+
+  Widget _statChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
         ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x80000000),
-            blurRadius: 16,
-            offset: Offset(0, 8),
+      ),
+    );
+  }
+
+  Widget _buildPageHero(AppLocalizations l10n) {
+    final serving = _currentSentence != null;
+    return _buildPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: _courtAccent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _courtAccent.withValues(alpha: 0.45),
+                  ),
+                ),
+                child: const Icon(Icons.gavel, color: _courtAccent, size: 24),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.courtHeroTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      l10n.courtHeroSubtitle,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.3,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _statChip(
+                serving ? l10n.courtActiveChip : l10n.courtFreeChip,
+                serving ? const Color(0xFFE6B85C) : const Color(0xFF72C48F),
+              ),
+              _statChip(
+                l10n.courtConvictionsChip('$_totalConvictions'),
+                _gold,
+              ),
+              if (serving)
+                _statChip(
+                  l10n.courtRemainingMinutes('$_remainingMinutesNow'),
+                  _gold,
+                ),
+            ],
           ),
         ],
       ),
-      child: child,
     );
   }
 
@@ -604,9 +740,7 @@ class _CourtScreenState extends State<CourtScreen> {
             style: TextStyle(color: Colors.grey[100]),
           ),
           Text(
-            l10n.courtRemainingMinutes(
-              _currentSentence!.remainingMinutes.toString(),
-            ),
+            l10n.courtRemainingMinutes('$_remainingMinutesNow'),
             style: const TextStyle(
               fontWeight: FontWeight.w700,
               color: Color(0xFFFFD27A),
@@ -617,6 +751,11 @@ class _CourtScreenState extends State<CourtScreen> {
             l10n.courtJudgeNamed(_currentSentence!.judge.name),
             style: TextStyle(color: Colors.grey[100]),
           ),
+          if (_currentSentence!.judge.specialty.isNotEmpty)
+            Text(
+              _currentSentence!.judge.specialty,
+              style: TextStyle(color: Colors.grey[400], fontSize: 13),
+            ),
           Text(
             l10n.courtCorruptibilityPercent(
               _currentSentence!.judge.corruptibility.toString(),
@@ -787,7 +926,7 @@ class _CourtScreenState extends State<CourtScreen> {
               style: TextStyle(color: Colors.grey[300]),
             )
           else
-            ..._recentCrimes.take(8).map((c) => _buildRecordItem(c, l10n)),
+            ..._recentCrimes.map((c) => _buildRecordItem(c, l10n)),
         ],
       ),
     );
@@ -848,15 +987,19 @@ class _CourtScreenState extends State<CourtScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.court),
-        backgroundColor: const Color(0xFF2E2A24),
-        foregroundColor: Colors.white,
-      ),
+      appBar: widget.embedded
+          ? null
+          : AppBar(
+              title: Text(l10n.court),
+              backgroundColor: const Color(0xFF2E2A24),
+              foregroundColor: Colors.white,
+            ),
+      backgroundColor: widget.embedded ? Colors.transparent : null,
       body: Stack(
         children: [
           _buildBackgroundLayer(),
           RefreshIndicator(
+            color: _gold,
             onRefresh: _loadCourtData,
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -895,8 +1038,8 @@ class _CourtScreenState extends State<CourtScreen> {
                                 )
                               else ...[
                                 _buildLoadWarning(l10n),
+                                _buildPageHero(l10n),
                                 _buildCurrentSentenceCard(l10n),
-                                const SizedBox(height: 12),
                                 _buildRecordCard(l10n),
                               ],
                             ],

@@ -10976,5 +10976,17 @@
       }
     }
   },
-  "hitlistEmptyBody": "No hay contratos públicos en este momento. Ofrezca una recompensa de al menos 50.000 € para iniciar una cacería."
+  "hitlistEmptyBody": "No hay contratos públicos en este momento. Ofrezca una recompensa de al menos 50.000 € para iniciar una cacería.",
+  "courtHeroTitle": "La audiencia",
+  "courtHeroSubtitle": "Apelar o sobornar al juez mientras cumple condena. Tus antecedentes penales permanecen después de que salgas libre.",
+  "courtConvictionsChip": "{count} condenas",
+  "@courtConvictionsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtActiveChip": "Cumpliendo condena",
+  "courtFreeChip": "Ningún caso activo"
 }

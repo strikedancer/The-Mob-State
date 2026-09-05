@@ -6437,6 +6437,24 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucune condamnation enregistrée pour l’instant.';
 
   @override
+  String get courtHeroTitle => 'L\'audience';
+
+  @override
+  String get courtHeroSubtitle =>
+      'Faites appel ou soudoyez le juge pendant que vous purgez votre peine. Votre casier judiciaire reste après votre libération.';
+
+  @override
+  String courtConvictionsChip(String count) {
+    return '$count condamnations';
+  }
+
+  @override
+  String get courtActiveChip => 'En détention';
+
+  @override
+  String get courtFreeChip => 'Aucun dossier actif';
+
+  @override
   String get treated => 'Traité !';
 
   @override

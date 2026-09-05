@@ -6386,6 +6386,24 @@ class AppLocalizationsNl extends AppLocalizations {
   String get courtNoConvictionsYet => 'Nog geen veroordelingen geregistreerd.';
 
   @override
+  String get courtHeroTitle => 'De zitting';
+
+  @override
+  String get courtHeroSubtitle =>
+      'Dien hoger beroep in of omkoop de rechter tijdens je straf. Je strafblad blijft na vrijlating.';
+
+  @override
+  String courtConvictionsChip(String count) {
+    return '$count veroordelingen';
+  }
+
+  @override
+  String get courtActiveChip => 'Zit uit';
+
+  @override
+  String get courtFreeChip => 'Geen actieve zaak';
+
+  @override
   String get treated => 'Behandeld!';
 
   @override

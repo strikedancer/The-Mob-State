@@ -6398,6 +6398,24 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nie odnotowano jeszcze żadnych wyroków skazujących.';
 
   @override
+  String get courtHeroTitle => 'Rozprawa';
+
+  @override
+  String get courtHeroSubtitle =>
+      'Odwołaj się lub przekup sędziego podczas odbywania kary. Twoja przeszłość kryminalna pozostanie, kiedy wyjdziesz na wolność.';
+
+  @override
+  String courtConvictionsChip(String count) {
+    return '$count wyroków skazujących';
+  }
+
+  @override
+  String get courtActiveChip => 'Odbywa karę';
+
+  @override
+  String get courtFreeChip => 'Brak aktywnej sprawy';
+
+  @override
   String get treated => 'Leczony!';
 
   @override

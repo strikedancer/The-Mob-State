@@ -830,6 +830,11 @@
   },
   "courtRecordBribeNote": "Vorige veroordelingen blijven zichtbaar. Een geslaagde rechteromkoping wist alleen die ene actuele zaak.",
   "courtNoConvictionsYet": "Nog geen veroordelingen geregistreerd.",
+  "courtHeroTitle": "De zitting",
+  "courtHeroSubtitle": "Dien hoger beroep in of omkoop de rechter tijdens je straf. Je strafblad blijft na vrijlating.",
+  "courtConvictionsChip": "{count} veroordelingen",
+  "courtActiveChip": "Zit uit",
+  "courtFreeChip": "Geen actieve zaak",
   "treated": "Behandeld!",
   "healthRestored": "+{hp} HP voor €{cost}",
   "treatmentOptions": "Behandelopties",
@@ -10971,6 +10976,13 @@
     }
   },
   "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@courtConvictionsChip": {
     "placeholders": {
       "count": {
         "type": "String"

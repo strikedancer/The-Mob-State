@@ -10976,5 +10976,17 @@
       }
     }
   },
-  "hitlistEmptyBody": "Nie ma obecnie zamówień publicznych. Aby rozpocząć polowanie, wyznacz nagrodę o wartości co najmniej 50 000 EUR."
+  "hitlistEmptyBody": "Nie ma obecnie zamówień publicznych. Aby rozpocząć polowanie, wyznacz nagrodę o wartości co najmniej 50 000 EUR.",
+  "courtHeroTitle": "Rozprawa",
+  "courtHeroSubtitle": "Odwołaj się lub przekup sędziego podczas odbywania kary. Twoja przeszłość kryminalna pozostanie, kiedy wyjdziesz na wolność.",
+  "courtConvictionsChip": "{count} wyroków skazujących",
+  "@courtConvictionsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtActiveChip": "Odbywa karę",
+  "courtFreeChip": "Brak aktywnej sprawy"
 }

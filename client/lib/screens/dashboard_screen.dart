@@ -1852,7 +1852,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           initialTabIndex: BlackMarketScreen.tabTools,
         );
       case _WebSection.court:
-        return const CourtScreen();
+        return const CourtScreen(embedded: true);
       case _WebSection.hitlist:
         return HitlistScreen(
           embedded: true,

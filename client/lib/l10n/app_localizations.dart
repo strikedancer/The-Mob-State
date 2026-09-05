@@ -11297,6 +11297,36 @@ abstract class AppLocalizations {
   /// **'No convictions recorded yet.'**
   String get courtNoConvictionsYet;
 
+  /// No description provided for @courtHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The courtroom'**
+  String get courtHeroTitle;
+
+  /// No description provided for @courtHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal or bribe the judge while you serve time. Your criminal record stays after you walk free.'**
+  String get courtHeroSubtitle;
+
+  /// No description provided for @courtConvictionsChip.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} convictions'**
+  String courtConvictionsChip(String count);
+
+  /// No description provided for @courtActiveChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Serving time'**
+  String get courtActiveChip;
+
+  /// No description provided for @courtFreeChip.
+  ///
+  /// In en, this message translates to:
+  /// **'No active case'**
+  String get courtFreeChip;
+
   /// No description provided for @treated.
   ///
   /// In en, this message translates to:

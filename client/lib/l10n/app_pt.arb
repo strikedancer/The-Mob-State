@@ -10976,5 +10976,17 @@
       }
     }
   },
-  "hitlistEmptyBody": "Não há contratos públicos no momento. Coloque uma recompensa de pelo menos 50.000€ para iniciar uma caçada."
+  "hitlistEmptyBody": "Não há contratos públicos no momento. Coloque uma recompensa de pelo menos 50.000€ para iniciar uma caçada.",
+  "courtHeroTitle": "A audiência",
+  "courtHeroSubtitle": "Apelar ou subornar o juiz enquanto você cumpre pena. Seu registro criminal permanece depois que você sai em liberdade.",
+  "courtConvictionsChip": "{count} condenações",
+  "@courtConvictionsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtActiveChip": "Cumprindo pena",
+  "courtFreeChip": "Nenhum caso ativo"
 }
