@@ -90,131 +90,99 @@ class HitCard extends StatelessWidget {
           ),
         ),
         child: ExpansionTile(
-          tilePadding: const EdgeInsets.fromLTRB(14, 6, 10, 6),
+          tilePadding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          title: Row(
             children: [
-              Row(
-                children: [
-                  Icon(
-                    isCounterBounty ? Icons.swap_horiz : Icons.my_location,
-                    color: isCounterBounty ? Colors.orange : _hitAccent,
-                    size: 20,
+              InkWell(
+                onTap: (target?['id'] != null && onOpenPlayerProfile != null)
+                    ? () => onOpenPlayerProfile!(
+                        target!['id'] as int,
+                        target['username']?.toString(),
+                      )
+                    : null,
+                borderRadius: BorderRadius.circular(16),
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundImage: AvatarHelper.getAvatarImageProvider(
+                    target?['avatar']?.toString(),
+                    activePortraitPath:
+                        target?['activePortraitPath']?.toString(),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: InkWell(
-                      onTap:
-                          (target?['id'] != null &&
-                              onOpenPlayerProfile != null)
-                          ? () => onOpenPlayerProfile!(
-                              target!['id'] as int,
-                              target['username']?.toString(),
-                            )
-                          : null,
-                      borderRadius: BorderRadius.circular(14),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 2,
-                          vertical: 2,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CircleAvatar(
-                              radius: 14,
-                              backgroundImage:
-                                  AvatarHelper.getAvatarImageProvider(
-                                target?['avatar']?.toString(),
-                                activePortraitPath: target?['activePortraitPath']
-                                    ?.toString(),
-                              ),
-                              child:
-                                  (target?['avatar'] == null ||
-                                      target?['avatar']?.toString().isEmpty ==
-                                          true)
-                                  ? Text(
-                                      (target?['username']
-                                                  ?.toString()
-                                                  .isNotEmpty ==
-                                              true)
-                                          ? target['username']
-                                                .toString()[0]
-                                                .toUpperCase()
-                                          : '?',
-                                      style: const TextStyle(
-                                        fontSize: 11,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : null,
-                            ),
-                            const SizedBox(width: 8),
-                            Flexible(
-                              child: Text(
-                                target?['username'] ?? l10n.unknown,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      (target?['id'] != null &&
-                                          onOpenPlayerProfile != null)
-                                      ? _gold
-                                      : Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: (isCounterBounty ? Colors.orange : _hitAccent)
-                          .withValues(alpha: 0.18),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isCounterBounty ? Colors.orange : _hitAccent,
-                      ),
-                    ),
-                    child: Text(
-                      isCounterBounty ? l10n.counterBid : l10n.hit,
-                      style: TextStyle(
-                        color: isCounterBounty ? Colors.orange : _hitAccent,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+                  child:
+                      (target?['avatar'] == null ||
+                          target?['avatar']?.toString().isEmpty == true)
+                      ? Text(
+                          (target?['username']?.toString().isNotEmpty == true)
+                              ? target['username'].toString()[0].toUpperCase()
+                              : '?',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        )
+                      : null,
+                ),
               ),
-              const SizedBox(height: 6),
-              Row(
-                children: [
-                  const Icon(Icons.monetization_on, color: _gold, size: 14),
-                  const SizedBox(width: 4),
-                  Text(
-                    _formatMoney(isCounterBounty ? counterBounty : bounty),
+              const SizedBox(width: 10),
+              Expanded(
+                child: InkWell(
+                  onTap:
+                      (target?['id'] != null && onOpenPlayerProfile != null)
+                      ? () => onOpenPlayerProfile!(
+                          target!['id'] as int,
+                          target['username']?.toString(),
+                        )
+                      : null,
+                  child: Text(
+                    target?['username'] ?? l10n.unknown,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color:
+                          (target?['id'] != null && onOpenPlayerProfile != null)
+                          ? _gold
+                          : Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                _formatMoney(isCounterBounty ? counterBounty : bounty),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: _gold,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Text(
+                _getTimeAgo(createdAt, l10n),
+                style: const TextStyle(fontSize: 12, color: Colors.white54),
+              ),
+              if (!isPlacer) ...[
+                const SizedBox(width: 12),
+                FilledButton(
+                  onPressed: onAttemptHit,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: _hitAccent,
+                    foregroundColor: Colors.white,
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    minimumSize: const Size(0, 36),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    l10n.hit,
                     style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: _gold,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.4,
                     ),
                   ),
-                  const Spacer(),
-                  Text(
-                    _getTimeAgo(createdAt, l10n),
-                    style: const TextStyle(fontSize: 12, color: Colors.white54),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ],
           ),
           children: [
