@@ -7638,6 +7638,22 @@ class AppLocalizationsPl extends AppLocalizations {
   String get noActiveHits => 'Brak aktywnych trafień';
 
   @override
+  String get hitlistHeroTitle => 'Otwarte kontrakty';
+
+  @override
+  String get hitlistHeroSubtitle =>
+      'Złóż nagrodę lub podejmij otwarty kontrakt. Obowiązują informacje detektywistyczne, broń i kraj.';
+
+  @override
+  String hitlistOpenCount(String count) {
+    return '$count otwarte';
+  }
+
+  @override
+  String get hitlistEmptyBody =>
+      'Nie ma obecnie zamówień publicznych. Aby rozpocząć polowanie, wyznacz nagrodę o wartości co najmniej 50 000 EUR.';
+
+  @override
   String get selectTarget => 'Wybierz Cel';
 
   @override

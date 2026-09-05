@@ -7661,6 +7661,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noActiveHits => 'No se han realizado visitas activas';
 
   @override
+  String get hitlistHeroTitle => 'Contratos abiertos';
+
+  @override
+  String get hitlistHeroSubtitle =>
+      'Coloque una recompensa o acepte un contrato abierto. Se aplican información de detectives, armas y país.';
+
+  @override
+  String hitlistOpenCount(String count) {
+    return '$count abierta';
+  }
+
+  @override
+  String get hitlistEmptyBody =>
+      'No hay contratos públicos en este momento. Ofrezca una recompensa de al menos 50.000 € para iniciar una cacería.';
+
+  @override
   String get selectTarget => 'Seleccionar destino';
 
   @override

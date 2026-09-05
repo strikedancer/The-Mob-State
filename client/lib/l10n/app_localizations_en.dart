@@ -7585,6 +7585,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noActiveHits => 'No active hits placed';
 
   @override
+  String get hitlistHeroTitle => 'Open contracts';
+
+  @override
+  String get hitlistHeroSubtitle =>
+      'Place a bounty or take an open contract. Detective intel, weapons and country all apply.';
+
+  @override
+  String hitlistOpenCount(String count) {
+    return '$count open';
+  }
+
+  @override
+  String get hitlistEmptyBody =>
+      'No public contracts right now. Place a bounty of at least €50,000 to start a hunt.';
+
+  @override
   String get selectTarget => 'Select Target';
 
   @override

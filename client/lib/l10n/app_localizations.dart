@@ -13482,6 +13482,30 @@ abstract class AppLocalizations {
   /// **'No active hits placed'**
   String get noActiveHits;
 
+  /// No description provided for @hitlistHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open contracts'**
+  String get hitlistHeroTitle;
+
+  /// No description provided for @hitlistHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Place a bounty or take an open contract. Detective intel, weapons and country all apply.'**
+  String get hitlistHeroSubtitle;
+
+  /// No description provided for @hitlistOpenCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} open'**
+  String hitlistOpenCount(String count);
+
+  /// No description provided for @hitlistEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No public contracts right now. Place a bounty of at least €50,000 to start a hunt.'**
+  String get hitlistEmptyBody;
+
   /// No description provided for @selectTarget.
   ///
   /// In en, this message translates to:

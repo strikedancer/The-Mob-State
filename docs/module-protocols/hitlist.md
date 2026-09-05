@@ -30,6 +30,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - All bounty payouts must be transaction-safe
 - Keep Dutch and English copy in sync for notifications
 - Keep layout usable on mobile, tablet and desktop
+- Web dashboard Hitlist hides the inner AppBar title; the sidebar already names the page. Keep the shared status bar above the content card. The screen uses the same noir/gold header + contract cards as Crimes/Jobs.
 - Never allow permanent "hunted" without escape option
 
 ## Check Before Editing
@@ -326,6 +327,7 @@ await prisma.$transaction([
 
 ## QA Checklist
 - ✅ Open hitlist screen on mobile, tablet, desktop widths
+- ✅ On web dashboard, verify there is no extra “Moordlijst” AppBar title, the hero shows open-count + security, and hit cards stay readable on the dark panel
 - ✅ Place hit (€50K, €500K, €5M) - check money deducted
 - ✅ Hire detective (all 3 cost tiers) - check queue response is immediate but report delivery happens in 1h/6h/24h via Detective Bureau inbox message
 - ✅ View detective report - check 3-hour expiry countdown

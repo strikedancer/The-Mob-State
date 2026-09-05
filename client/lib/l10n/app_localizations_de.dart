@@ -7679,6 +7679,22 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noActiveHits => 'Keine aktiven Treffer platziert';
 
   @override
+  String get hitlistHeroTitle => 'Offene Verträge';
+
+  @override
+  String get hitlistHeroSubtitle =>
+      'Platzieren Sie ein Kopfgeld oder nehmen Sie einen offenen Vertrag an. Es gelten detektivische Informationen, Waffen und Land.';
+
+  @override
+  String hitlistOpenCount(String count) {
+    return '$count geöffnet';
+  }
+
+  @override
+  String get hitlistEmptyBody =>
+      'Derzeit gibt es keine öffentlichen Aufträge. Setzen Sie ein Kopfgeld von mindestens 50.000 € aus, um eine Jagd zu starten.';
+
+  @override
   String get selectTarget => 'Wählen Sie Ziel aus';
 
   @override

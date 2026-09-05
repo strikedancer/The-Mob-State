@@ -10965,5 +10965,16 @@
       }
     }
   },
-  "jailEscapeAttemptsExhausted": "Ningún intento de fuga dejó esta frase."
+  "jailEscapeAttemptsExhausted": "Ningún intento de fuga dejó esta frase.",
+  "hitlistHeroTitle": "Contratos abiertos",
+  "hitlistHeroSubtitle": "Coloque una recompensa o acepte un contrato abierto. Se aplican información de detectives, armas y país.",
+  "hitlistOpenCount": "{count} abierta",
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistEmptyBody": "No hay contratos públicos en este momento. Ofrezca una recompensa de al menos 50.000 € para iniciar una cacería."
 }

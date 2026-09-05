@@ -10965,5 +10965,16 @@
       }
     }
   },
-  "jailEscapeAttemptsExhausted": "Żadna próba ucieczki nie opuściła tego zdania"
+  "jailEscapeAttemptsExhausted": "Żadna próba ucieczki nie opuściła tego zdania",
+  "hitlistHeroTitle": "Otwarte kontrakty",
+  "hitlistHeroSubtitle": "Złóż nagrodę lub podejmij otwarty kontrakt. Obowiązują informacje detektywistyczne, broń i kraj.",
+  "hitlistOpenCount": "{count} otwarte",
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistEmptyBody": "Nie ma obecnie zamówień publicznych. Aby rozpocząć polowanie, wyznacz nagrodę o wartości co najmniej 50 000 EUR."
 }

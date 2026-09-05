@@ -4707,6 +4707,17 @@
     }
   },
   "noActiveHits": "No active hits placed",
+  "hitlistHeroTitle": "Open contracts",
+  "hitlistHeroSubtitle": "Place a bounty or take an open contract. Detective intel, weapons and country all apply.",
+  "hitlistOpenCount": "{count} open",
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistEmptyBody": "No public contracts right now. Place a bounty of at least €50,000 to start a hunt.",
   "selectTarget": "Select Target",
   "searchPlayer": "Search player...",
   "placeHitTitle": "Place Hit",

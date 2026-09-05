@@ -7661,6 +7661,22 @@ class AppLocalizationsIt extends AppLocalizations {
   String get noActiveHits => 'Nessun colpo attivo piazzato';
 
   @override
+  String get hitlistHeroTitle => 'Contratti aperti';
+
+  @override
+  String get hitlistHeroSubtitle =>
+      'Piazza una taglia o accetta un contratto aperto. Si applicano informazioni investigative, armi e paese.';
+
+  @override
+  String hitlistOpenCount(String count) {
+    return '$count aperto';
+  }
+
+  @override
+  String get hitlistEmptyBody =>
+      'Niente appalti pubblici per ora. Piazza una taglia di almeno 50.000€ per iniziare una caccia.';
+
+  @override
   String get selectTarget => 'Seleziona Obiettivo';
 
   @override

@@ -10965,5 +10965,16 @@
       }
     }
   },
-  "jailEscapeAttemptsExhausted": "Keine Fluchtversuche hinterließen diesen Satz"
+  "jailEscapeAttemptsExhausted": "Keine Fluchtversuche hinterließen diesen Satz",
+  "hitlistHeroTitle": "Offene Verträge",
+  "hitlistHeroSubtitle": "Platzieren Sie ein Kopfgeld oder nehmen Sie einen offenen Vertrag an. Es gelten detektivische Informationen, Waffen und Land.",
+  "hitlistOpenCount": "{count} geöffnet",
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistEmptyBody": "Derzeit gibt es keine öffentlichen Aufträge. Setzen Sie ein Kopfgeld von mindestens 50.000 € aus, um eine Jagd zu starten."
 }

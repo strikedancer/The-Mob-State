@@ -101,15 +101,25 @@ String? _hitCombatLine(dynamic combat, AppLocalizations l10n) {
 }
 
 class HitlistScreen extends StatefulWidget {
+  final bool embedded;
   final VoidCallback? onOpenSecurity;
 
-  const HitlistScreen({super.key, this.onOpenSecurity});
+  const HitlistScreen({
+    super.key,
+    this.embedded = false,
+    this.onOpenSecurity,
+  });
 
   @override
   State<HitlistScreen> createState() => _HitlistScreenState();
 }
 
 class _HitlistScreenState extends State<HitlistScreen> {
+  static const Color _gold = Color(0xFFD4AF37);
+  static const Color _panelBg = Color(0xFF151B28);
+  static const Color _panelBorder = Color(0xFF2A3344);
+  static const Color _hitAccent = Color(0xFFE85D4C);
+
   final ApiClient _apiClient = ApiClient();
   List<dynamic> _activeHits = [];
   bool _isLoading = false;
@@ -192,68 +202,225 @@ class _HitlistScreenState extends State<HitlistScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.hitlist),
-        centerTitle: true,
-        actions: [
-          if (_isHunted)
-            Tooltip(
-              message: l10n.youAreTargeted,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Icon(Icons.warning, color: Colors.red[300]),
+      appBar: widget.embedded
+          ? null
+          : AppBar(
+              title: Text(l10n.hitlist),
+              actions: [
+                if (_isHunted)
+                  Tooltip(
+                    message: l10n.youAreTargeted,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Icon(Icons.warning, color: Colors.red[300]),
+                    ),
+                  ),
+                IconButton(
+                  icon: const Icon(Icons.security),
+                  tooltip: l10n.security,
+                  onPressed: _goToSecurity,
+                ),
+              ],
+            ),
+      backgroundColor: widget.embedded ? Colors.transparent : null,
+      body: _isLoading && _activeHits.isEmpty
+          ? const Center(child: CircularProgressIndicator(color: _gold))
+          : RefreshIndicator(
+              color: _gold,
+              onRefresh: _loadActiveHits,
+              child: CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
+                  SliverToBoxAdapter(child: _buildPageHero(l10n)),
+                  if (_activeHits.isEmpty)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: _buildEmptyState(l10n),
+                    )
+                  else
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final hit = _activeHits[index];
+                          return HitCard(
+                            hit: hit,
+                            onAttemptHit: () => _attemptHit(hit['id']),
+                            onInvestigate: () =>
+                                _showInvestigateOptions(hit['id']),
+                            onOpenPlayerProfile: _openPlayerProfile,
+                            onPlaceCounterBounty: () => _placeCounterBounty(
+                              hit['id'],
+                              hit['bounty'],
+                            ),
+                            onCancelHit: () => _cancelHit(hit['id']),
+                          );
+                        },
+                        childCount: _activeHits.length,
+                      ),
+                    ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 88)),
+                ],
               ),
             ),
-          IconButton(
-            icon: const Icon(Icons.security),
-            tooltip: l10n.security,
-            onPressed: _goToSecurity,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showPlaceHitDialog,
+        tooltip: l10n.placeHitTitle,
+        backgroundColor: _hitAccent,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.add),
+        label: Text(l10n.placeHitTitle),
+      ),
+    );
+  }
+
+  Widget _panel({required Widget child, EdgeInsetsGeometry? padding}) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+      padding: padding ?? const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: _panelBg.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: _panelBorder),
+      ),
+      child: child,
+    );
+  }
+
+  Widget _buildPageHero(AppLocalizations l10n) {
+    return _panel(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: _hitAccent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _hitAccent.withValues(alpha: 0.45),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.gps_fixed,
+                  color: _hitAccent,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.hitlistHeroTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      l10n.hitlistHeroSubtitle,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.3,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              _statChip(
+                l10n.hitlistOpenCount('${_activeHits.length}'),
+                _gold,
+              ),
+              _statChip(l10n.minimumBounty, Colors.white70),
+              if (_isHunted)
+                _statChip(l10n.youAreTargeted, _hitAccent),
+              TextButton.icon(
+                onPressed: _goToSecurity,
+                style: TextButton.styleFrom(
+                  foregroundColor: _gold,
+                  visualDensity: VisualDensity.compact,
+                ),
+                icon: const Icon(Icons.security, size: 16),
+                label: Text(l10n.security),
+              ),
+            ],
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _activeHits.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.list_alt, size: 64, color: Colors.grey[400]),
-                  const SizedBox(height: 16),
-                  Text(l10n.noActiveHits),
-                  const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await _loadActiveHits();
-                      await _checkSecurityStatus();
-                    },
-                    child: Text(l10n.retry),
-                  ),
-                ],
-              ),
-            )
-          : RefreshIndicator(
-              onRefresh: _loadActiveHits,
-              child: ListView.builder(
-                itemCount: _activeHits.length,
-                itemBuilder: (context, index) {
-                  final hit = _activeHits[index];
-                  return HitCard(
-                    hit: hit,
-                    onAttemptHit: () => _attemptHit(hit['id']),
-                    onInvestigate: () => _showInvestigateOptions(hit['id']),
-                    onOpenPlayerProfile: _openPlayerProfile,
-                    onPlaceCounterBounty: () =>
-                        _placeCounterBounty(hit['id'], hit['bounty']),
-                    onCancelHit: () => _cancelHit(hit['id']),
-                  );
-                },
-              ),
+    );
+  }
+
+  Widget _statChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(AppLocalizations l10n) {
+    return _panel(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.gps_off,
+            size: 42,
+            color: Colors.white.withValues(alpha: 0.35),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            l10n.noActiveHits,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showPlaceHitDialog(),
-        tooltip: l10n.placeHitTitle,
-        child: const Icon(Icons.add),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            l10n.hitlistEmptyBody,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white70, height: 1.35),
+          ),
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed: _showPlaceHitDialog,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: _gold,
+              side: const BorderSide(color: _gold),
+            ),
+            icon: const Icon(Icons.add, size: 18),
+            label: Text(l10n.placeHitTitle),
+          ),
+        ],
       ),
     );
   }

@@ -10965,5 +10965,16 @@
       }
     }
   },
-  "jailEscapeAttemptsExhausted": "Nenhuma tentativa de fuga deixou esta frase"
+  "jailEscapeAttemptsExhausted": "Nenhuma tentativa de fuga deixou esta frase",
+  "hitlistHeroTitle": "Contratos abertos",
+  "hitlistHeroSubtitle": "Coloque uma recompensa ou aceite um contrato aberto. Informações de detetive, armas e país se aplicam.",
+  "hitlistOpenCount": "{count} aberto",
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistEmptyBody": "Não há contratos públicos no momento. Coloque uma recompensa de pelo menos 50.000€ para iniciar uma caçada."
 }

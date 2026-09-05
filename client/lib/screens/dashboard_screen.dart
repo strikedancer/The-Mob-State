@@ -1855,6 +1855,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const CourtScreen();
       case _WebSection.hitlist:
         return HitlistScreen(
+          embedded: true,
           onOpenSecurity: () => _openBlackMarket(BlackMarketScreen.tabSecurity),
         );
       case _WebSection.security:

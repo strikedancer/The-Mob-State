@@ -10965,5 +10965,16 @@
       }
     }
   },
-  "jailEscapeAttemptsExhausted": "Nessun tentativo di fuga ha lasciato questa frase"
+  "jailEscapeAttemptsExhausted": "Nessun tentativo di fuga ha lasciato questa frase",
+  "hitlistHeroTitle": "Contratti aperti",
+  "hitlistHeroSubtitle": "Piazza una taglia o accetta un contratto aperto. Si applicano informazioni investigative, armi e paese.",
+  "hitlistOpenCount": "{count} aperto",
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistEmptyBody": "Niente appalti pubblici per ora. Piazza una taglia di almeno 50.000€ per iniziare una caccia."
 }

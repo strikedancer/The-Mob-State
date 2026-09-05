@@ -10965,5 +10965,16 @@
       }
     }
   },
-  "jailEscapeAttemptsExhausted": "Aucune tentative d'évasion n'a laissé cette phrase"
+  "jailEscapeAttemptsExhausted": "Aucune tentative d'évasion n'a laissé cette phrase",
+  "hitlistHeroTitle": "Contrats ouverts",
+  "hitlistHeroSubtitle": "Placez une prime ou prenez un contrat ouvert. Les renseignements des détectives, les armes et le pays s'appliquent tous.",
+  "hitlistOpenCount": "{count} ouvert",
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistEmptyBody": "Pas de marchés publics pour le moment. Placez une prime d'au moins 50 000 € pour lancer une chasse."
 }

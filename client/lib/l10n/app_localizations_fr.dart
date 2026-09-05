@@ -7688,6 +7688,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noActiveHits => 'Aucun coup actif placé';
 
   @override
+  String get hitlistHeroTitle => 'Contrats ouverts';
+
+  @override
+  String get hitlistHeroSubtitle =>
+      'Placez une prime ou prenez un contrat ouvert. Les renseignements des détectives, les armes et le pays s\'appliquent tous.';
+
+  @override
+  String hitlistOpenCount(String count) {
+    return '$count ouvert';
+  }
+
+  @override
+  String get hitlistEmptyBody =>
+      'Pas de marchés publics pour le moment. Placez une prime d\'au moins 50 000 € pour lancer une chasse.';
+
+  @override
   String get selectTarget => 'Sélectionnez la cible';
 
   @override

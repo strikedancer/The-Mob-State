@@ -1178,6 +1178,10 @@
   "hitlist": "Moordlijst",
   "hitlistLoadError": "Fout bij laden van moordlijst: {error}",
   "noActiveHits": "Geen actieve moorden geplaatst",
+  "hitlistHeroTitle": "Open contracten",
+  "hitlistHeroSubtitle": "Plaats een bounty of voer een open contract uit. Detective, wapen en land gelden.",
+  "hitlistOpenCount": "{count} open",
+  "hitlistEmptyBody": "Er staan nu geen open contracten. Plaats een bounty van minstens €50.000 om een jacht te starten.",
   "selectTarget": "Selecteer doelwit",
   "searchPlayer": "Zoek speler...",
   "placeHitTitle": "Moord plaatsen",
@@ -10962,6 +10966,13 @@
   "@casinoRaidDefense": {
     "placeholders": {
       "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@hitlistOpenCount": {
+    "placeholders": {
+      "count": {
         "type": "String"
       }
     }
