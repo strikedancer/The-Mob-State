@@ -11080,5 +11080,33 @@
     }
   },
   "courtAppealUsed": "Ta sprawa została już zaskarżona.",
-  "courtBribeHeatNote": "Wanted i FBI heat zmieniają szansę apelacji, nie tę łapówkę."
+  "courtBribeHeatNote": "Wanted i FBI heat zmieniają szansę apelacji, nie tę łapówkę.",
+  "travelHeroTitle": "Droga",
+  "travelHeroSubtitle": "Poruszaj się między krajami w poszukiwaniu rynków, przestępstw i handlu. Każda noga kosztuje gotówkę i może spowodować przeszukanie.",
+  "travelHereChip": "Jesteś tutaj",
+  "travelDestinationsChip": "{count} miejsc docelowych",
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "travelWantedChip": "Poszukiwany {level}",
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelFbiChip": "FBI {level}",
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelCannotAfford": "Za mało gotówki"
 }

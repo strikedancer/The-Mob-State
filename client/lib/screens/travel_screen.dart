@@ -12,12 +12,17 @@ import '../utils/country_helper.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/cooldown_overlay.dart';
 import '../widgets/country_police_ui.dart';
-import '../utils/fontawesome_icons.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/trade_good_l10n.dart';
 
 class TravelScreen extends StatefulWidget {
-  const TravelScreen({super.key});
+  const TravelScreen({
+    super.key,
+    this.embedded = false,
+  });
+
+  /// When true (web dashboard), hide the page AppBar; the sidebar already names the page.
+  final bool embedded;
 
   @override
   State<TravelScreen> createState() => _TravelScreenState();
@@ -25,6 +30,9 @@ class TravelScreen extends StatefulWidget {
 
 class _TravelScreenState extends State<TravelScreen> {
   static const int _legCooldownMinutes = 60;
+  static const Color _gold = Color(0xFFD4AF37);
+  static const Color _panelBg = Color(0xFF151B28);
+  static const Color _panelBorder = Color(0xFF2A3344);
 
   final ApiClient _apiClient = ApiClient();
   final JailService _jailService = JailService();
@@ -254,6 +262,7 @@ class _TravelScreenState extends State<TravelScreen> {
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
+          backgroundColor: _panelBg,
           title: Row(
             children: [
               Image.asset(
@@ -262,18 +271,41 @@ class _TravelScreenState extends State<TravelScreen> {
                 height: 32,
               ),
               const SizedBox(width: 8),
-              Expanded(child: Text(l10n.travelJourneyTitle)),
+              Expanded(
+                child: Text(
+                  l10n.travelJourneyTitle,
+                  style: const TextStyle(
+                    color: _gold,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
             ],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${l10n.travelRouteLabel}: $routeText'),
-              Text(l10n.travelLegsLabel(totalLegs.toString())),
-              const Divider(),
-              Text(l10n.travelCostPerLeg(costPerLeg.toLocaleString())),
-              Text(l10n.travelTotalCost(totalCost.toLocaleString())),
+              Text(
+                '${l10n.travelRouteLabel}: $routeText',
+                style: const TextStyle(color: Colors.white70),
+              ),
+              Text(
+                l10n.travelLegsLabel(totalLegs.toString()),
+                style: const TextStyle(color: Colors.white70),
+              ),
+              const Divider(color: _panelBorder),
+              Text(
+                l10n.travelCostPerLeg(costPerLeg.toLocaleString()),
+                style: const TextStyle(
+                  color: _gold,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                l10n.travelTotalCost(totalCost.toLocaleString()),
+                style: const TextStyle(color: Colors.white),
+              ),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -286,6 +318,7 @@ class _TravelScreenState extends State<TravelScreen> {
                   Expanded(
                     child: Text(
                       l10n.travelCooldownPerLeg(_legCooldownMinutes.toString()),
+                      style: const TextStyle(color: Colors.white70),
                     ),
                   ),
                 ],
@@ -298,7 +331,12 @@ class _TravelScreenState extends State<TravelScreen> {
                     height: 16,
                   ),
                   const SizedBox(width: 4),
-                  Expanded(child: Text(l10n.travelRiskPerLeg)),
+                  Expanded(
+                    child: Text(
+                      l10n.travelRiskPerLeg,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -306,10 +344,15 @@ class _TravelScreenState extends State<TravelScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
+              style: TextButton.styleFrom(foregroundColor: Colors.white70),
               child: Text(l10n.cancel),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _gold,
+                foregroundColor: Colors.black,
+              ),
               child: Text(l10n.travelStart),
             ),
           ],
@@ -451,7 +494,7 @@ class _TravelScreenState extends State<TravelScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: _panelBg,
         title: Row(
           children: [
             Image.asset(
@@ -460,18 +503,33 @@ class _TravelScreenState extends State<TravelScreen> {
               height: 32,
             ),
             const SizedBox(width: 8),
-            Expanded(child: Text(l10n.travelContinueConfirmTitle)),
+            Expanded(
+              child: Text(
+                l10n.travelContinueConfirmTitle,
+                style: const TextStyle(
+                  color: _gold,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
           ],
         ),
-        content: Text(l10n.travelContinueConfirmBody),
+        content: Text(
+          l10n.travelContinueConfirmBody,
+          style: const TextStyle(color: Colors.white70),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
+            style: TextButton.styleFrom(foregroundColor: Colors.white70),
             child: Text(l10n.no),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _gold,
+              foregroundColor: Colors.black,
+            ),
             child: Text(l10n.yes),
           ),
         ],
@@ -675,7 +733,7 @@ class _TravelScreenState extends State<TravelScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: _panelBg,
         title: Row(
           children: [
             Image.asset(
@@ -684,18 +742,33 @@ class _TravelScreenState extends State<TravelScreen> {
               height: 32,
             ),
             const SizedBox(width: 8),
-            Expanded(child: Text(l10n.travelCancelJourney)),
+            Expanded(
+              child: Text(
+                l10n.travelCancelJourney,
+                style: const TextStyle(
+                  color: _gold,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
           ],
         ),
-        content: Text(l10n.confirmAction),
+        content: Text(
+          l10n.confirmAction,
+          style: const TextStyle(color: Colors.white70),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
+            style: TextButton.styleFrom(foregroundColor: Colors.white70),
             child: Text(l10n.no),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF8A2121),
+              foregroundColor: Colors.white,
+            ),
             child: Text(l10n.yes),
           ),
         ],
@@ -750,50 +823,117 @@ class _TravelScreenState extends State<TravelScreen> {
     }
   }
 
-  Widget _buildTravelHeader(AppLocalizations l10n) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
+  Widget _buildPanel({required Widget child, EdgeInsetsGeometry? padding}) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: padding ?? const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      decoration: BoxDecoration(
+        color: _panelBg.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: _panelBorder),
+      ),
+      child: child,
+    );
+  }
+
+  Widget _statChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageHero(
+    AppLocalizations l10n, {
+    required String currentName,
+    required String currentFlag,
+    required int destinationCount,
+    required int wantedLevel,
+    required int fbiHeat,
+  }) {
+    return _buildPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.4,
-              child: Image.asset(
-                'assets/images/travel/route_map.png',
-                fit: BoxFit.cover,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: _gold.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: _gold.withValues(alpha: 0.45)),
+                ),
+                child: const Icon(Icons.public, color: _gold, size: 24),
               ),
-            ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.travelHeroTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      l10n.travelHeroSubtitle,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.3,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.9),
-                ],
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _statChip(
+                '$currentFlag ${l10n.travelHereChip}',
+                const Color(0xFF72C48F),
               ),
-            ),
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/images/travel/journey_start.png',
-                  width: 28,
-                  height: 28,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  l10n.travel,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
+              _statChip(currentName, _gold),
+              _statChip(
+                l10n.travelDestinationsChip('$destinationCount'),
+                _gold,
+              ),
+              _statChip(
+                l10n.travelWantedChip('$wantedLevel'),
+                wantedLevel > 0
+                    ? const Color(0xFFE5967A)
+                    : Colors.white70,
+              ),
+              _statChip(
+                l10n.travelFbiChip('$fbiHeat'),
+                fbiHeat > 0
+                    ? const Color(0xFFE5967A)
+                    : Colors.white70,
+              ),
+            ],
           ),
         ],
       ),
@@ -817,101 +957,222 @@ class _TravelScreenState extends State<TravelScreen> {
         ? _resolveCountryNameWithFlag(_journeyRoute[nextLegIndex], l10n)
         : destinationName;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
+    return _buildPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.3,
-              child: Image.asset(
-                'assets/images/travel/en_route.png',
-                fit: BoxFit.cover,
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/travel/wanted_indicator.png',
+                width: 24,
+                height: 24,
               ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.travelInTransitTo(destinationName),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '${l10n.travelRouteLabel}: $routeText',
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
+          Text(
+            l10n.travelLegProgress(
+              _journeyCurrentLeg.toString(),
+              _journeyTotalLegs.toString(),
+            ),
+            style: const TextStyle(color: Colors.white70),
+          ),
+          Text(
+            l10n.travelNextStop(nextStop),
+            style: const TextStyle(color: _gold, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              ElevatedButton(
+                onPressed: _isTraveling ? null : _continueJourney,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _gold,
+                  foregroundColor: Colors.black,
+                ),
+                child: Text(l10n.travelContinue),
+              ),
+              OutlinedButton(
+                onPressed: _isTraveling ? null : _cancelJourney,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white70,
+                  side: const BorderSide(color: _panelBorder),
+                ),
+                child: Text(l10n.travelCancelJourney),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDestinationCard({
+    required Country country,
+    required AppLocalizations l10n,
+    required String currentCountry,
+    required int money,
+  }) {
+    final isCurrent = country.id == currentCountry;
+    final displayCost = country.totalCost ?? country.flightCost;
+    final canAfford = money >= displayCost;
+    final localizedName = CountryHelper.getLocalizedCountryName(
+      country.id,
+      l10n,
+      fallbackName: country.name,
+    );
+    final countryFlag = CountryHelper.getCountryFlag(country.id);
+
+    String routeDescription = '';
+    if (country.route != null && !isCurrent) {
+      if (country.route!.isDirect) {
+        routeDescription = l10n.travelDirect;
+      } else if (country.route!.path.length > 2) {
+        final layoverIds = country.route!.path.sublist(
+          1,
+          country.route!.path.length - 1,
+        );
+        final layoverNames = layoverIds
+            .map((id) => _resolveCountryNameWithFlag(id, l10n))
+            .join(', ');
+        routeDescription = l10n.travelVia(layoverNames);
+      }
+    }
+
+    final legsCount = country.route != null
+        ? (country.route!.path.length - 1)
+        : 0;
+    final legsInfo = legsCount > 0
+        ? l10n.travelLegsCount(legsCount.toString())
+        : '';
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
+      decoration: BoxDecoration(
+        color: isCurrent
+            ? const Color(0xFF1B2A22).withValues(alpha: 0.94)
+            : _panelBg.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isCurrent ? const Color(0xFF72C48F) : _panelBorder,
+        ),
+      ),
+      child: Row(
+        children: [
+          Text(countryFlag, style: const TextStyle(fontSize: 28)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        localizedName,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: isCurrent
+                              ? FontWeight.w800
+                              : FontWeight.w700,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    if (_countryPoliceEnabled &&
+                        _policeByCountry.containsKey(country.id)) ...[
+                      const SizedBox(width: 8),
+                      countryPoliceBandChip(
+                        l10n: l10n,
+                        band: _policeByCountry[country.id]?['band']
+                            ?.toString(),
+                        pressure: (_policeByCountry[country.id]?['pressure']
+                                as num?)
+                            ?.toInt(),
+                        compact: true,
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    if (isCurrent)
+                      _statChip(
+                        l10n.currentLocation,
+                        const Color(0xFF72C48F),
+                      )
+                    else
+                      _statChip(
+                        l10n.travelCost(displayCost.toLocaleString()),
+                        canAfford ? _gold : const Color(0xFFE5967A),
+                      ),
+                    if (routeDescription.isNotEmpty)
+                      _statChip(routeDescription, Colors.white70),
+                    if (legsInfo.isNotEmpty)
+                      _statChip(legsInfo, Colors.white70),
+                  ],
+                ),
+              ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.7),
-                  Colors.black.withOpacity(0.85),
-                ],
+          const SizedBox(width: 8),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 88, maxWidth: 128),
+            child: ElevatedButton(
+              onPressed: isCurrent ||
+                      _isTraveling ||
+                      !canAfford ||
+                      _isInTransit
+                  ? null
+                  : () => _startJourney(country),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isCurrent
+                    ? const Color(0xFF2E5A3C)
+                    : _gold,
+                foregroundColor: isCurrent ? Colors.white : Colors.black,
+                disabledBackgroundColor: isCurrent
+                    ? const Color(0xFF2E5A3C)
+                    : const Color(0xFF3A4252),
+                disabledForegroundColor: isCurrent
+                    ? Colors.white70
+                    : Colors.white38,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/travel/wanted_indicator.png',
-                        width: 24,
-                        height: 24,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          l10n.travelInTransitTo(destinationName),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${l10n.travelRouteLabel}:',
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    routeText,
-                    style: const TextStyle(color: Colors.white70, fontSize: 13),
-                  ),
-                  Text(
-                    l10n.travelLegProgress(
-                      _journeyCurrentLeg.toString(),
-                      _journeyTotalLegs.toString(),
-                    ),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  Text(
-                    l10n.travelNextStop(nextStop),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      ElevatedButton(
-                        onPressed: _isTraveling ? null : _continueJourney,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber.shade600,
-                          foregroundColor: Colors.black,
-                        ),
-                        child: Text(l10n.travelContinue),
-                      ),
-                      const SizedBox(width: 8),
-                      OutlinedButton(
-                        onPressed: _isTraveling ? null : _cancelJourney,
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                        ),
-                        child: Text(l10n.travelCancelJourney),
-                      ),
-                    ],
-                  ),
-                ],
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  isCurrent
+                      ? l10n.current
+                      : canAfford
+                      ? l10n.travelTo
+                      : l10n.travelCannotAfford,
+                ),
               ),
             ),
           ),
@@ -927,8 +1188,25 @@ class _TravelScreenState extends State<TravelScreen> {
     final player = authProvider.currentPlayer;
     final currentCountry = player?.currentCountry ?? 'netherlands';
 
+    final currentName = CountryHelper.getLocalizedCountryName(
+      currentCountry,
+      l10n,
+    );
+    final currentFlag = CountryHelper.getCountryFlag(currentCountry);
+    final destinations = [
+      ..._countries.where((country) => country.id == currentCountry),
+      ..._countries.where((country) => country.id != currentCountry),
+    ];
+
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.travel)),
+      appBar: widget.embedded
+          ? null
+          : AppBar(
+              title: Text(l10n.travel),
+              backgroundColor: const Color(0xFF2E2A24),
+              foregroundColor: Colors.white,
+            ),
+      backgroundColor: widget.embedded ? Colors.transparent : null,
       body: _cooldownSeconds != null && _cooldownSeconds! > 0
           ? CooldownOverlay(
               actionType: 'travel',
@@ -976,132 +1254,42 @@ class _TravelScreenState extends State<TravelScreen> {
                 ),
               ),
             )
-          : ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _buildTravelHeader(l10n),
-                if (_isInTransit) _buildJourneyCard(l10n),
-                ..._countries.map((country) {
-                  final isCurrent = country.id == currentCountry;
-                  final displayCost = country.totalCost ?? country.flightCost;
-                  final canAfford = (player?.money ?? 0) >= displayCost;
-                  final localizedName = CountryHelper.getLocalizedCountryName(
-                    country.id,
-                    l10n,
-                    fallbackName: country.name,
-                  );
-                  final countryFlag = CountryHelper.getCountryFlag(country.id);
-
-                  String routeDescription = '';
-                  if (country.route != null && !isCurrent) {
-                    if (country.route!.isDirect) {
-                      routeDescription = l10n.travelDirect;
-                    } else if (country.route!.path.length > 2) {
-                      final layoverIds = country.route!.path.sublist(
-                        1,
-                        country.route!.path.length - 1,
-                      );
-                      final layoverNames = layoverIds
-                          .map((id) {
-                            return _resolveCountryNameWithFlag(id, l10n);
-                          })
-                          .join(', ');
-                      routeDescription = l10n.travelVia(layoverNames);
-                    }
-                  }
-
-                  final legsCount = country.route != null
-                      ? (country.route!.path.length - 1)
-                      : 0;
-                  final legsInfo = legsCount > 0
-                      ? l10n.travelLegsCount(legsCount.toString())
-                      : '';
-
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    color: isCurrent
-                        ? Theme.of(context).colorScheme.primaryContainer
-                        : null,
-                    child: ListTile(
-                      leading: Icon(
-                        FontAwesomeIcons.planeSolid,
-                        size: 32,
-                        color: isCurrent ? Colors.green : Colors.amber.shade600,
-                      ),
-                      title: Row(
+          : RefreshIndicator(
+              color: _gold,
+              onRefresh: _checkJailStatusAndLoadCountries,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(16),
+                children: [
+                  Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 860),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Flexible(
-                            child: Text(
-                              '$countryFlag $localizedName',
-                              style: TextStyle(
-                                fontWeight: isCurrent
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
+                          _buildPageHero(
+                            l10n,
+                            currentName: currentName,
+                            currentFlag: currentFlag,
+                            destinationCount: destinations.length,
+                            wantedLevel: player?.wantedLevel ?? 0,
+                            fbiHeat: player?.fbiHeat ?? 0,
                           ),
-                          if (_countryPoliceEnabled &&
-                              _policeByCountry.containsKey(country.id)) ...[
-                            const SizedBox(width: 8),
-                            countryPoliceBandChip(
+                          if (_isInTransit) _buildJourneyCard(l10n),
+                          ...destinations.map(
+                            (country) => _buildDestinationCard(
+                              country: country,
                               l10n: l10n,
-                              band: _policeByCountry[country.id]?['band']
-                                  ?.toString(),
-                              pressure: (_policeByCountry[country.id]
-                                      ?['pressure'] as num?)
-                                  ?.toInt(),
-                              compact: true,
+                              currentCountry: currentCountry,
+                              money: player?.money ?? 0,
                             ),
-                          ],
-                        ],
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            isCurrent
-                                ? l10n.currentLocation
-                                : l10n.travelCost(displayCost.toLocaleString()),
                           ),
-                          if (routeDescription.isNotEmpty)
-                            Text(
-                              routeDescription,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          if (legsInfo.isNotEmpty)
-                            Text(
-                              legsInfo,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                              ),
-                            ),
                         ],
-                      ),
-                      trailing: ElevatedButton(
-                        onPressed:
-                            isCurrent ||
-                                _isTraveling ||
-                                !canAfford ||
-                                _isInTransit
-                            ? null
-                            : () => _startJourney(country),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isCurrent
-                              ? Colors.green
-                              : Colors.amber.shade600,
-                          foregroundColor: Colors.black,
-                        ),
-                        child: Text(isCurrent ? l10n.current : l10n.travelTo),
                       ),
                     ),
-                  );
-                }),
-              ],
+                  ),
+                ],
+              ),
             ),
     );
   }

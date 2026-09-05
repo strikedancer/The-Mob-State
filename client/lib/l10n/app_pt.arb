@@ -11080,5 +11080,33 @@
     }
   },
   "courtAppealUsed": "Já recorreste desta condenação.",
-  "courtBribeHeatNote": "Wanted e FBI heat mudam as hipóteses de recurso, não este suborno."
+  "courtBribeHeatNote": "Wanted e FBI heat mudam as hipóteses de recurso, não este suborno.",
+  "travelHeroTitle": "A estrada",
+  "travelHeroSubtitle": "Mova-se entre países em busca de mercados, crimes e comércio. Cada perna custa dinheiro e pode fazer com que você seja revistado.",
+  "travelHereChip": "Você está aqui",
+  "travelDestinationsChip": "{count} destinos",
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "travelWantedChip": "Procurado {level}",
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelFbiChip": "FBI {level}",
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelCannotAfford": "Não há dinheiro suficiente"
 }

@@ -11080,5 +11080,33 @@
     }
   },
   "courtAppealUsed": "Sie haben gegen dieses Urteil bereits Berufung eingelegt.",
-  "courtBribeHeatNote": "Wanted und FBI-Hitze ändern die Berufungschance, nicht diese Bestechung."
+  "courtBribeHeatNote": "Wanted und FBI-Hitze ändern die Berufungschance, nicht diese Bestechung.",
+  "travelHeroTitle": "Die Straße",
+  "travelHeroSubtitle": "Bewegen Sie sich zwischen Ländern für Märkte, Verbrechen und Handel. Jede Etappe kostet Bargeld und kann zu einer Durchsuchung führen.",
+  "travelHereChip": "Sie sind hier",
+  "travelDestinationsChip": "{count} Ziele",
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "travelWantedChip": "Gesucht {level}",
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelFbiChip": "FBI {level}",
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelCannotAfford": "Nicht genug Bargeld"
 }

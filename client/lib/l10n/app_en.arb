@@ -340,6 +340,28 @@
   "travelJourneyCanceled": "Journey canceled",
   "travelNotInTransit": "You are not on a journey.",
   "travelDirect": "Direct",
+  "travelHeroTitle": "The road",
+  "travelHeroSubtitle": "Move between countries for markets, crimes and trade. Each leg costs cash and can get you searched.",
+  "travelHereChip": "You are here",
+  "travelDestinationsChip": "{count} destinations",
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": { "type": "String" }
+    }
+  },
+  "travelWantedChip": "Wanted {level}",
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "travelFbiChip": "FBI {level}",
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "travelCannotAfford": "Not enough cash",
   "travelVia": "via {countries}",
   "@travelVia": {
     "placeholders": {

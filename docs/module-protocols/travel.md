@@ -10,6 +10,7 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
+- Web dashboard Travel hides the inner AppBar title; keep the shared status bar. The screen uses a noir hero (current country, destination count, Wanted/FBI) and compact destination cards. The current country is pinned to the top of the list.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing
@@ -36,6 +37,7 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
+- On web dashboard Travel, verify there is no extra “Reizen” AppBar title, the current country sits first with a green “here” treatment, and destination rows stay one compact card with cost/legs/Reis.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.

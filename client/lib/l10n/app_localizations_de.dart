@@ -702,6 +702,34 @@ class AppLocalizationsDe extends AppLocalizations {
   String get travelDirect => 'Direkt';
 
   @override
+  String get travelHeroTitle => 'Die Straße';
+
+  @override
+  String get travelHeroSubtitle =>
+      'Bewegen Sie sich zwischen Ländern für Märkte, Verbrechen und Handel. Jede Etappe kostet Bargeld und kann zu einer Durchsuchung führen.';
+
+  @override
+  String get travelHereChip => 'Sie sind hier';
+
+  @override
+  String travelDestinationsChip(String count) {
+    return '$count Ziele';
+  }
+
+  @override
+  String travelWantedChip(String level) {
+    return 'Gesucht $level';
+  }
+
+  @override
+  String travelFbiChip(String level) {
+    return 'FBI $level';
+  }
+
+  @override
+  String get travelCannotAfford => 'Nicht genug Bargeld';
+
+  @override
   String travelVia(String countries) {
     return 'über $countries';
   }

@@ -688,6 +688,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get travelDirect => 'Direct';
 
   @override
+  String get travelHeroTitle => 'The road';
+
+  @override
+  String get travelHeroSubtitle =>
+      'Move between countries for markets, crimes and trade. Each leg costs cash and can get you searched.';
+
+  @override
+  String get travelHereChip => 'You are here';
+
+  @override
+  String travelDestinationsChip(String count) {
+    return '$count destinations';
+  }
+
+  @override
+  String travelWantedChip(String level) {
+    return 'Wanted $level';
+  }
+
+  @override
+  String travelFbiChip(String level) {
+    return 'FBI $level';
+  }
+
+  @override
+  String get travelCannotAfford => 'Not enough cash';
+
+  @override
   String travelVia(String countries) {
     return 'via $countries';
   }

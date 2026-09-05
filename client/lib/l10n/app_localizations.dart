@@ -1388,6 +1388,48 @@ abstract class AppLocalizations {
   /// **'Direct'**
   String get travelDirect;
 
+  /// No description provided for @travelHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The road'**
+  String get travelHeroTitle;
+
+  /// No description provided for @travelHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Move between countries for markets, crimes and trade. Each leg costs cash and can get you searched.'**
+  String get travelHeroSubtitle;
+
+  /// No description provided for @travelHereChip.
+  ///
+  /// In en, this message translates to:
+  /// **'You are here'**
+  String get travelHereChip;
+
+  /// No description provided for @travelDestinationsChip.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} destinations'**
+  String travelDestinationsChip(String count);
+
+  /// No description provided for @travelWantedChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Wanted {level}'**
+  String travelWantedChip(String level);
+
+  /// No description provided for @travelFbiChip.
+  ///
+  /// In en, this message translates to:
+  /// **'FBI {level}'**
+  String travelFbiChip(String level);
+
+  /// No description provided for @travelCannotAfford.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough cash'**
+  String get travelCannotAfford;
+
   /// No description provided for @travelVia.
   ///
   /// In en, this message translates to:

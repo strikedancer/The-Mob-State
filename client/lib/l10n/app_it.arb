@@ -11080,5 +11080,33 @@
     }
   },
   "courtAppealUsed": "Hai già presentato ricorso contro questa condanna.",
-  "courtBribeHeatNote": "Wanted e FBI heat cambiano le probabilità di ricorso, non questa tangente."
+  "courtBribeHeatNote": "Wanted e FBI heat cambiano le probabilità di ricorso, non questa tangente.",
+  "travelHeroTitle": "La strada",
+  "travelHeroSubtitle": "Muoversi tra paesi per mercati, crimini e commercio. Ogni tratta costa in contanti e può farti perquisire.",
+  "travelHereChip": "Tu sei qui",
+  "travelDestinationsChip": "{count} destinazioni",
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "travelWantedChip": "Cercasi {level}",
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelFbiChip": "FBI {level}",
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelCannotAfford": "Non abbastanza contanti"
 }

@@ -11080,5 +11080,33 @@
     }
   },
   "courtAppealUsed": "Ya apeló esta condena.",
-  "courtBribeHeatNote": "Wanted y FBI heat cambian las probabilidades de apelación, no este soborno."
+  "courtBribeHeatNote": "Wanted y FBI heat cambian las probabilidades de apelación, no este soborno.",
+  "travelHeroTitle": "El camino",
+  "travelHeroSubtitle": "Muévete entre países en busca de mercados, delitos y comercio. Cada tramo cuesta dinero en efectivo y puede hacer que te registren.",
+  "travelHereChip": "Usted está aquí",
+  "travelDestinationsChip": "{count} destinos",
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "travelWantedChip": "Se busca {level}",
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelFbiChip": "FBI {level}",
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelCannotAfford": "No hay suficiente efectivo"
 }

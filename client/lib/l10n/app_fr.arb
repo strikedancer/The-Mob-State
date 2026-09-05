@@ -11080,5 +11080,33 @@
     }
   },
   "courtAppealUsed": "Vous avez déjà fait appel de cette condamnation.",
-  "courtBribeHeatNote": "Wanted et FBI heat changent les chances d'appel, pas ce pot-de-vin."
+  "courtBribeHeatNote": "Wanted et FBI heat changent les chances d'appel, pas ce pot-de-vin.",
+  "travelHeroTitle": "La route",
+  "travelHeroSubtitle": "Déplacez-vous entre les pays pour les marchés, les crimes et le commerce. Chaque étape coûte de l'argent et peut vous permettre d'être fouillé.",
+  "travelHereChip": "Vous êtes ici",
+  "travelDestinationsChip": "{count} destination",
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "travelWantedChip": "Recherché {level}",
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelFbiChip": "FBI {level}",
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "travelCannotAfford": "Pas assez d'argent"
 }

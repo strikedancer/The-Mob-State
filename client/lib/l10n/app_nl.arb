@@ -205,6 +205,13 @@
   "travelCancelJourney": "Reis annuleren",
   "travelJourneyCanceled": "Reis geannuleerd",
   "travelDirect": "Direct",
+  "travelHeroTitle": "De route",
+  "travelHeroSubtitle": "Reis tussen landen voor markten, misdaden en handel. Elke etappe kost geld en kan een controle geven.",
+  "travelHereChip": "Je bent hier",
+  "travelDestinationsChip": "{count} bestemmingen",
+  "travelWantedChip": "Wanted {level}",
+  "travelFbiChip": "FBI {level}",
+  "travelCannotAfford": "Te weinig cash",
   "travelVia": "via {countries}",
   "travelLegsCount": "{count} etappes",
   "jailRemainingMinutes": "Je zit nog {minutes} minuten in de cel",
@@ -11077,6 +11084,27 @@
   "@courtAppealChance": {
     "placeholders": {
       "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@travelDestinationsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@travelWantedChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "@travelFbiChip": {
+    "placeholders": {
+      "level": {
         "type": "String"
       }
     }
