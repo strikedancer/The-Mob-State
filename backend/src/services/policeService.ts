@@ -356,65 +356,48 @@ export async function getJailedPrisoners(viewerId: number): Promise<
     maxEscapeAttempts?: number;
   }>
 > {
-  const rawIds = await prisma.$queryRaw<Array<{ playerId: number }>>`
-    SELECT DISTINCT playerId
-    FROM crime_attempts
-    WHERE jailed = 1
-    ORDER BY createdAt DESC
-    LIMIT 250
-  `;
-
-  const uniqueIds = [...new Set(rawIds.map((row) => Number(row.playerId)))];
-  if (uniqueIds.length === 0) {
-    return [];
-  }
-
+  const now = new Date();
   const players = await prisma.player.findMany({
-    where: { id: { in: uniqueIds } },
+    where: {
+      jailRelease: { gt: now },
+    },
     select: {
       id: true,
       username: true,
       rank: true,
       wantedLevel: true,
+      jailRelease: true,
     },
+    orderBy: { jailRelease: 'asc' },
+    take: 100,
   });
 
-  const withRemaining = await Promise.all(
-    players.map(async (player) => {
-      const remainingSeconds = await checkIfJailed(player.id);
-      return {
-        player,
-        remainingSeconds,
-      };
-    })
-  );
-
-  const visible = withRemaining.filter((entry) => entry.remainingSeconds > 0);
   const viewerEscape =
-    viewerId > 0 && visible.some((entry) => entry.player.id === viewerId)
+    viewerId > 0 && players.some((player) => player.id === viewerId)
       ? await getSelfEscapeStatus(viewerId)
       : null;
 
-  return visible
-    .map((entry) => ({
-      playerId: entry.player.id,
-      username: entry.player.username,
-      rank: entry.player.rank,
-      wantedLevel: entry.player.wantedLevel,
-      remainingSeconds: entry.remainingSeconds,
-      bailCost: calculateJailBail(
-        entry.player.wantedLevel,
-        entry.remainingSeconds
-      ),
-      ...(entry.player.id === viewerId && viewerEscape
+  return players.map((player) => {
+    const remainingSeconds = Math.max(
+      0,
+      Math.floor((player.jailRelease!.getTime() - now.getTime()) / 1000)
+    );
+    return {
+      playerId: player.id,
+      username: player.username,
+      rank: player.rank,
+      wantedLevel: player.wantedLevel,
+      remainingSeconds,
+      bailCost: calculateJailBail(player.wantedLevel, remainingSeconds),
+      ...(player.id === viewerId && viewerEscape
         ? {
             escapeAttemptsRemaining: viewerEscape.attemptsRemaining,
             escapeCooldownSeconds: viewerEscape.cooldownSeconds,
             maxEscapeAttempts: viewerEscape.maxAttempts,
           }
         : {}),
-    }))
-    .sort((a, b) => a.remainingSeconds - b.remainingSeconds);
+    };
+  });
 }
 
 export async function buyOutPrisoner(

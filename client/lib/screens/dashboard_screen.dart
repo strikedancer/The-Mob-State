@@ -1870,7 +1870,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.food:
         return const FoodScreen();
       case _WebSection.prison:
-        return const PrisonScreen();
+        return const PrisonScreen(embedded: true);
       case _WebSection.vehicleHeist:
         return VehicleHeistScreen(
           key: ValueKey('vehicle-heist-$_vehicleHeistTabIndex'),

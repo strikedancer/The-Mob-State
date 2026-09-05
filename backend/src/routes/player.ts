@@ -658,7 +658,10 @@ router.get('/prisoners', authenticate, async (req: AuthRequest, res: Response) =
     const viewerId = req.player!.id;
 
     const [viewer, prisoners] = await Promise.all([
-      playerService.getPlayer(viewerId),
+      prisma.player.findUnique({
+        where: { id: viewerId },
+        select: { id: true, money: true },
+      }),
       policeService.getJailedPrisoners(viewerId),
     ]);
 
@@ -668,7 +671,7 @@ router.get('/prisoners', authenticate, async (req: AuthRequest, res: Response) =
         count: prisoners.length,
       },
       viewerId,
-      viewerMoney: viewer.money,
+      viewerMoney: viewer?.money ?? 0,
       prisoners,
     });
   } catch (error) {

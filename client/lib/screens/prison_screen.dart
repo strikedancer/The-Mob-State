@@ -9,7 +9,9 @@ import '../utils/formatters.dart';
 import 'player_profile_screen.dart';
 
 class PrisonScreen extends StatefulWidget {
-  const PrisonScreen({super.key});
+  const PrisonScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<PrisonScreen> createState() => _PrisonScreenState();
@@ -41,7 +43,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
   void initState() {
     super.initState();
     _startTicker();
-    _loadPrisoners();
+    _loadPrisoners(autoRetry: true);
   }
 
   @override
@@ -146,16 +148,33 @@ class _PrisonScreenState extends State<PrisonScreen> {
     });
   }
 
-  Future<void> _loadPrisoners() async {
+  Future<void> _loadPrisoners({
+    bool autoRetry = false,
+    bool showSpinner = true,
+  }) async {
+    if (!mounted) return;
     setState(() {
-      _isLoading = true;
+      if (showSpinner) {
+        _isLoading = _prisoners.isEmpty;
+      }
       _error = null;
     });
 
     try {
       final response = await _apiClient.get('/player/prisoners');
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      Map<String, dynamic> data = const {};
+      try {
+        final decoded = jsonDecode(response.body);
+        if (decoded is Map<String, dynamic>) {
+          data = decoded;
+        }
+      } catch (_) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          throw const FormatException('invalid prison payload');
+        }
+      }
 
+      if (!mounted) return;
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final prisoners = (data['prisoners'] as List? ?? [])
             .whereType<Map>()
@@ -165,6 +184,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
         setState(() {
           _viewerId = (data['viewerId'] as num?)?.toInt() ?? 0;
           _prisoners = prisoners;
+          _error = null;
         });
       } else {
         setState(() {
@@ -172,6 +192,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
         });
       }
     } catch (_) {
+      if (!mounted) return;
       setState(() {
         _error = 'error.internal';
       });
@@ -181,6 +202,12 @@ class _PrisonScreenState extends State<PrisonScreen> {
           _isLoading = false;
         });
       }
+    }
+
+    if (autoRetry && _error != null && mounted) {
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+      if (!mounted || _error == null) return;
+      await _loadPrisoners(showSpinner: _prisoners.isEmpty);
     }
   }
 
@@ -519,177 +546,198 @@ class _PrisonScreenState extends State<PrisonScreen> {
     );
   }
 
+  Widget _buildPrisonerCard(
+    Map<String, dynamic> prisoner,
+    AppLocalizations l10n,
+  ) {
+    final playerId = (prisoner['playerId'] as num?)?.toInt() ?? 0;
+    final username = prisoner['username'] as String? ?? '-';
+    final isCurrentViewer = _viewerId > 0 && playerId == _viewerId;
+    final rank = (prisoner['rank'] as num?)?.toInt() ?? 1;
+    final remainingSeconds =
+        (prisoner['remainingSeconds'] as num?)?.toInt() ?? 0;
+    final bailCost = (prisoner['bailCost'] as num?)?.toInt() ?? 0;
+    final escapeAttempts =
+        (prisoner['escapeAttemptsRemaining'] as num?)?.toInt() ?? 2;
+    final escapeCooldown =
+        (prisoner['escapeCooldownSeconds'] as num?)?.toInt() ?? 0;
+    final maxEscapeAttempts =
+        (prisoner['maxEscapeAttempts'] as num?)?.toInt() ?? 2;
+    final canSelfEscape =
+        isCurrentViewer && !_isActing && escapeAttempts > 0 && escapeCooldown <= 0;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: playerId > 0
+                  ? () => _openPlayerProfile(playerId, username)
+                  : null,
+              child: Text(
+                username,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: playerId > 0 ? Colors.lightBlue : null,
+                ),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              isCurrentViewer
+                  ? l10n.prisonRankYouLine(rank.toString())
+                  : l10n.prisonRankLine(rank.toString()),
+            ),
+            Text(
+              l10n.prisonRemainingTimeLine(_formatDuration(remainingSeconds)),
+            ),
+            Text(l10n.prisonBailLine(bailCost.toString())),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _isActing || playerId == 0
+                        ? null
+                        : isCurrentViewer
+                        ? _payOwnBail
+                        : () => _buyOut(playerId),
+                    icon: const Icon(Icons.payments),
+                    label: Text(
+                      isCurrentViewer
+                          ? l10n.prisonPayBailButton
+                          : l10n.prisonBuyOutButton,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: playerId == 0 || _isActing
+                        ? null
+                        : isCurrentViewer
+                        ? (canSelfEscape ? _attemptOwnEscape : null)
+                        : () => _attemptJailbreak(playerId),
+                    icon: const Icon(Icons.lock_open),
+                    label: Text(
+                      isCurrentViewer
+                          ? (escapeAttempts <= 0
+                                ? l10n.jailEscapeAttemptsExhausted
+                                : escapeCooldown > 0
+                                ? l10n.jailEscapeCooldown(
+                                    _formatDuration(escapeCooldown),
+                                  )
+                                : l10n.jailEscapeAttemptsLeft(
+                                    '$escapeAttempts',
+                                    '$maxEscapeAttempts',
+                                  ))
+                          : l10n.prisonJailbreakButton,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final body = _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : RefreshIndicator(
+            onRefresh: () => _loadPrisoners(showSpinner: false),
+            child: _error != null && _prisoners.isEmpty
+                ? ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(24),
+                    children: [
+                      const SizedBox(height: 48),
+                      const Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.prisonLoadFailed,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: _isActing
+                              ? null
+                              : () => _loadPrisoners(autoRetry: true),
+                          child: Text(l10n.retryAgain),
+                        ),
+                      ),
+                    ],
+                  )
+                : _prisoners.isEmpty
+                ? ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.sizeOf(context).height * 0.35,
+                        child: Center(
+                          child: Text(
+                            l10n.prisonNoPrisonersFound,
+                            style: TextStyle(color: Colors.grey.shade600),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(12),
+                    itemCount: _prisoners.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10),
+                    itemBuilder: (context, index) =>
+                        _buildPrisonerCard(_prisoners[index], l10n),
+                  ),
+          );
+
+    if (widget.embedded) {
+      return Column(
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              onPressed: _isLoading || _isActing
+                  ? null
+                  : () => _loadPrisoners(autoRetry: true),
+              icon: const Icon(Icons.refresh),
+              tooltip: l10n.retryAgain,
+            ),
+          ),
+          Expanded(child: body),
+        ],
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.prisonTitle),
         actions: [
           IconButton(
-            onPressed: _isLoading || _isActing ? null : _loadPrisoners,
+            onPressed: _isLoading || _isActing
+                ? null
+                : () => _loadPrisoners(autoRetry: true),
             icon: const Icon(Icons.refresh),
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _error != null
-          ? Center(
-              child: Text(
-                l10n.prisonLoadFailed,
-                style: const TextStyle(color: Colors.red),
-              ),
-            )
-          : Column(
-              children: [
-                Expanded(
-                  child: _prisoners.isEmpty
-                      ? Center(
-                          child: Text(
-                            l10n.prisonNoPrisonersFound,
-                            style: TextStyle(color: Colors.grey.shade600),
-                          ),
-                        )
-                      : ListView.separated(
-                          padding: const EdgeInsets.all(12),
-                          itemCount: _prisoners.length,
-                          separatorBuilder:
-                              (separatorContext, separatorIndex) =>
-                                  const SizedBox(height: 10),
-                          itemBuilder: (context, index) {
-                            final prisoner = _prisoners[index];
-                            final playerId =
-                                (prisoner['playerId'] as num?)?.toInt() ?? 0;
-                            final username =
-                                prisoner['username'] as String? ?? '-';
-                            final isCurrentViewer =
-                                _viewerId > 0 && playerId == _viewerId;
-                            final rank =
-                                (prisoner['rank'] as num?)?.toInt() ?? 1;
-                            final remainingSeconds =
-                                (prisoner['remainingSeconds'] as num?)
-                                    ?.toInt() ??
-                                0;
-                            final bailCost =
-                                (prisoner['bailCost'] as num?)?.toInt() ?? 0;
-                            final escapeAttempts =
-                                (prisoner['escapeAttemptsRemaining'] as num?)
-                                    ?.toInt() ??
-                                2;
-                            final escapeCooldown =
-                                (prisoner['escapeCooldownSeconds'] as num?)
-                                    ?.toInt() ??
-                                0;
-                            final maxEscapeAttempts =
-                                (prisoner['maxEscapeAttempts'] as num?)
-                                    ?.toInt() ??
-                                2;
-                            final canSelfEscape =
-                                isCurrentViewer &&
-                                !_isActing &&
-                                escapeAttempts > 0 &&
-                                escapeCooldown <= 0;
-
-                            return Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: playerId > 0
-                                          ? () => _openPlayerProfile(
-                                              playerId,
-                                              username,
-                                            )
-                                          : null,
-                                      child: Text(
-                                        username,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: playerId > 0
-                                              ? Colors.lightBlue
-                                              : null,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      isCurrentViewer
-                                          ? l10n.prisonRankYouLine(rank.toString())
-                                          : l10n.prisonRankLine(rank.toString()),
-                                    ),
-                                    Text(
-                                      l10n.prisonRemainingTimeLine(
-                                        _formatDuration(remainingSeconds),
-                                      ),
-                                    ),
-                                    Text(
-                                      l10n.prisonBailLine(bailCost.toString()),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: ElevatedButton.icon(
-                                            onPressed: _isActing || playerId == 0
-                                                ? null
-                                                : isCurrentViewer
-                                                ? _payOwnBail
-                                                : () => _buyOut(playerId),
-                                            icon: const Icon(Icons.payments),
-                                            label: Text(
-                                              isCurrentViewer
-                                                  ? l10n.prisonPayBailButton
-                                                  : l10n.prisonBuyOutButton,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: OutlinedButton.icon(
-                                            onPressed: playerId == 0 || _isActing
-                                                ? null
-                                                : isCurrentViewer
-                                                ? (canSelfEscape
-                                                      ? _attemptOwnEscape
-                                                      : null)
-                                                : () => _attemptJailbreak(
-                                                    playerId,
-                                                  ),
-                                            icon: const Icon(Icons.lock_open),
-                                            label: Text(
-                                              isCurrentViewer
-                                                  ? (escapeAttempts <= 0
-                                                        ? l10n.jailEscapeAttemptsExhausted
-                                                        : escapeCooldown > 0
-                                                        ? l10n.jailEscapeCooldown(
-                                                            _formatDuration(
-                                                              escapeCooldown,
-                                                            ),
-                                                          )
-                                                        : l10n.jailEscapeAttemptsLeft(
-                                                            '$escapeAttempts',
-                                                            '$maxEscapeAttempts',
-                                                          ))
-                                                  : l10n.prisonJailbreakButton,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
-              ],
-            ),
+      body: body,
     );
   }
 }

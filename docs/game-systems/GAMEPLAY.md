@@ -201,6 +201,8 @@ Voorbeelden:
 - Wanted level 10: 100 minuten
 ```
 
+De gevangenislijst toont wie nu vastzit (`jailRelease` in de toekomst). Op mobiel kun je bij een laadfout opnieuw proberen of naar beneden trekken om te verversen.
+
 #### Bail Amount
 ```
 bail = wantedLevel * â‚¬1,000

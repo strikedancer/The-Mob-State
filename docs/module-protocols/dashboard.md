@@ -27,6 +27,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Consistent formatting for money, timers, percentages and labels.
 - Dashboard shell en hoofdpanelen moeten visueel aansluiten op de game-identiteit (noir/gold), met nadruk op leesbaar contrast, subtiele gradients en duidelijke scheiding tussen navigatie en content in plaats van vlakke donkere blokken.
 - Op **Misdaden** (web) blijft de compacte statusbalk boven de contentkaart staan, hetzelfde als op andere secties. Paginatitel, landelijke politie, training en gedragen wapens zitten in één header **in** de contentkaart.
+- **Gevangenis** opent in de web-shell embedded (geen extra AppBar); de lijst moet op mobiel retry/pull-to-refresh houden.
 - Dashboard statistiekblokken mogen geen hardcoded nul-placeholders tonen wanneer er al echte backendtellers of bestaande spelerstats beschikbaar zijn.
 - Dashboard moet een complete baseline blijven tonen voor: economy (cash/bank/crypto/stocks/property/vehicle portfolio/net worth), cooldown-operaties, risicosignalen, notificaties en 24u/7d trendstatistieken; nieuwe modules die deze domeinen raken moeten hierop inhaken.
 - Stock Market en Crypto horen bereikbaar te zijn via de zijbalk, het hamburger-menu en de sticky footer (niet alleen via legacy tile fallback).
