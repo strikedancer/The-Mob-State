@@ -7,6 +7,7 @@ import '../services/smuggling_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/smuggling_result_overlay.dart';
+import '../widgets/mobile_load_error.dart';
 
 class SmugglingScreen extends StatefulWidget {
   const SmugglingScreen({super.key});
@@ -25,6 +26,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   );
 
   bool _isLoading = true;
+  String? _loadError;
   bool _isSending = false;
   bool _isClaiming = false;
 
@@ -77,8 +79,12 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   }
 
   Future<void> _loadData() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = _destinations.isEmpty && _shipments.isEmpty;
+      _loadError = null;
+    });
 
+    try {
     final catalog = await _smugglingService.getCatalog(
       networkScope: _selectedNetworkScope,
     );
@@ -164,6 +170,13 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     });
 
     await _loadQuote();
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _loadError = AppLocalizations.of(context)!.connectionErrorGeneric;
+        _isLoading = false;
+      });
+    }
   }
 
   List<dynamic> get _currentItems =>
@@ -884,6 +897,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
         color: Colors.black.withOpacity(0.58),
         child: _isLoading
             ? const Center(child: CircularProgressIndicator(color: _gold))
+            : _loadError != null && _destinations.isEmpty && _shipments.isEmpty
+            ? MobileLoadError(message: _loadError!, onRetry: _loadData)
             : RefreshIndicator(
                 color: _gold,
                 onRefresh: _loadData,

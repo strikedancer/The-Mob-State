@@ -42,6 +42,7 @@ class _InventoryScreenState extends State<InventoryScreen>
     final authProvider = Provider.of<AuthProvider>(context);
     final tabs = TabBar(
       controller: _tabController,
+      isScrollable: MediaQuery.sizeOf(context).width < 420,
       indicatorColor: Colors.amber,
       labelColor: const Color(0xFFD4AF37),
       unselectedLabelColor: Colors.white70,

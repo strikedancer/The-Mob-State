@@ -27,6 +27,7 @@ Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zen
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
+- Initial load failure must show retry (`MobileLoadError`), not an empty hub or an infinite spinner.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing

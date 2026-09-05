@@ -44,6 +44,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 ## Change Rules
 - **Material icons on Flutter web:** some `Icons.*` codepoints are not included in the default MaterialIcons font subset used by `flutter build web`; they can appear as empty boxes. Prefer long-supported icons for navigation and headers, or ship an explicit icon font / asset.
 - Houd web, mobiel, tablet en embedded dashboard-shells functioneel gelijk tenzij een verschil expliciet bedoeld is.
+- **Mobiele load-fout:** een mislukte `GET` mag geen oneindige spinner of “lege staat” tonen. Gebruik `MobileLoadError` (bericht + `l10n.retry`). TabBars met 3+ of lange labels: `isScrollable: true` (of onder ~420px) zodat tabs niet overflowen.
 - Gebruik gedeelde helpers voor assets, image fallbacks en embedded scrollgedrag; vermijd losse one-off workarounds per scherm.
 - Platform-specifieke cache-, service-worker- en asset-routes mogen bestaande deployments niet breken.
 

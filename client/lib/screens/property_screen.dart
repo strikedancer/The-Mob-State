@@ -480,6 +480,7 @@ class PropertyScreenState extends State<PropertyScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
+          isScrollable: MediaQuery.sizeOf(context).width < 420,
           tabs: [
             Tab(text: l10n.propertiesAvailable, icon: const Icon(Icons.store)),
             Tab(text: l10n.myProperties, icon: const Icon(Icons.home)),

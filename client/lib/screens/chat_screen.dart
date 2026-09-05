@@ -11,6 +11,7 @@ import '../utils/avatar_helper.dart';
 import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/mobile_load_error.dart';
 
 class ChatScreen extends StatefulWidget {
   final int friendId;
@@ -39,6 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _loading = false;
+  String? _loadError;
   bool _sending = false;
   StreamSubscription? _eventSubscription;
   int? _currentUserId;
@@ -145,7 +147,10 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _loadMessages() async {
-    setState(() => _loading = true);
+    setState(() {
+      _loading = _messages.isEmpty;
+      _loadError = null;
+    });
     try {
       final apiClient = AuthService().apiClient;
       final response = await apiClient.get(
@@ -158,29 +163,27 @@ class _ChatScreenState extends State<ChatScreen> {
         final messagesList = params['messages'] as List;
 
         setState(() {
-          _messages.clear();
-          _messages.addAll(
-            messagesList.map((m) => DirectMessage.fromJson(m)).toList(),
-          );
+          _messages
+            ..clear()
+            ..addAll(
+              messagesList.map((m) => DirectMessage.fromJson(m)).toList(),
+            );
+          _loadError = null;
         });
 
         _scrollToBottom();
         _markAsRead();
+      } else {
+        throw Exception('error.internal');
       }
     } catch (e) {
-      print('[ChatScreen] Error loading messages: $e');
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text(l10n.errorLoadingMessages(e.toString())),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      setState(() {
+        _loadError = l10n.errorLoadingMessages(e.toString());
+      });
     } finally {
-      setState(() => _loading = false);
+      if (mounted) setState(() => _loading = false);
     }
   }
 
@@ -559,6 +562,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       color: Color(0xFF1F8B24),
                     ),
                   )
+                : _loadError != null && _messages.isEmpty
+                    ? MobileLoadError(
+                        message: _loadError!,
+                        onRetry: _loadMessages,
+                      )
                 : _messages.isEmpty
                     ? Center(
                         child: Column(

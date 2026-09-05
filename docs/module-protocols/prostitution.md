@@ -20,6 +20,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
+- Leaderboard TabBar is scrollable; a failed leaderboard load shows retry, not “no data”.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - UI surfaces (Collect earnings, recruit ceremony, rivalry history labels) must not invent new gameplay rules — only present existing APIs.
 

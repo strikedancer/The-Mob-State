@@ -9,6 +9,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/market_compact.dart';
 import '../widgets/responsive_modal.dart';
+import '../widgets/mobile_load_error.dart';
 
 class MaterialsShopScreen extends StatefulWidget {
   const MaterialsShopScreen({super.key});
@@ -22,6 +23,7 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
   List<MaterialDefinition> _materials = [];
   PlayerMaterialsSnapshot _snapshot = PlayerMaterialsSnapshot.empty();
   bool _isLoading = true;
+  String? _loadError;
   String? _busyMaterialId;
 
   @override
@@ -40,15 +42,14 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
         _materials = materials;
         _snapshot = snapshot;
         _isLoading = false;
+        _loadError = null;
       });
     } catch (e) {
       if (!mounted) return;
-      setState(() => _isLoading = false);
-      final l10n = AppLocalizations.of(context)!;
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(content: Text(l10n.materialsShopLoadError('$e'))),
-      );
+      setState(() {
+        _isLoading = false;
+        _loadError = AppLocalizations.of(context)!.materialsShopLoadError('$e');
+      });
     }
   }
 
@@ -264,9 +265,13 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
         ? (authProvider.currentPlayer?.currentCountry ?? '—')
         : _snapshot.currentCountry;
 
-    return _isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : RefreshIndicator(
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_loadError != null && _materials.isEmpty) {
+      return MobileLoadError(message: _loadError!, onRetry: _loadData);
+    }
+    return RefreshIndicator(
             onRefresh: _loadData,
             child: ListView(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),

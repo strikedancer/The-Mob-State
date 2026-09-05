@@ -9,6 +9,7 @@ import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/drug_wholesale_export_dialog.dart';
+import '../widgets/mobile_load_error.dart';
 
 class DrugInventoryScreen extends StatefulWidget {
   const DrugInventoryScreen({super.key});
@@ -23,6 +24,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
   List<DrugDefinition> _drugDefinitions = [];
   Map<String, DrugMarketPrice> _marketPrices = {};
   bool _isLoading = true;
+  String? _loadError;
   String? _currentCountry;
 
   String _backgroundAsset(double width) {
@@ -68,18 +70,14 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
         _currentCountry =
             authProvider.currentPlayer?.currentCountry ?? 'netherlands';
         _isLoading = false;
+        _loadError = null;
       });
     } catch (e) {
-      setState(() => _isLoading = false);
-      if (mounted) {
-        final t = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text(t.drugsClientErrorLoading('$e')),
-          ),
-        );
-      }
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _loadError = AppLocalizations.of(context)!.drugsClientErrorLoading('$e');
+      });
     }
   }
 
@@ -488,6 +486,8 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
               ),
               _isLoading
                   ? const Center(child: CircularProgressIndicator())
+                  : _loadError != null && _inventory.isEmpty
+                  ? MobileLoadError(message: _loadError!, onRetry: _loadData)
                   : SafeArea(
                       child: RefreshIndicator(
                         onRefresh: _loadData,

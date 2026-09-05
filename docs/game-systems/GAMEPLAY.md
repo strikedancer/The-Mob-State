@@ -52,6 +52,7 @@
 - Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim. **Event Pass**-prijzen op Evenementen horen in één transactie geclaimd te worden; op mobiel staan de Claim-tegels onder het doel (niet naast, want die rij past niet).
 - **Misdaden** laadt de lijst in één server-batch. Als het scherm “kon niet laden / probeer opnieuw” toont, is dat een timeout of verbinding — Retry (en één automatische retry) hoort daarna de lijst te geven.
 - **Berichten / postvak:** een badge of push “nieuw bericht” hoort bij bestaande threads (spelers + The Mob State). De inbox mag niet leeg lijken terwijl die berichten er wél zijn; bij een laadfout zie je retry, niet “Nog geen berichten”.
+- **Mobiel:** als een scherm (territory, smokkel, RLD, hitlist, vrienden, chat, shops, Event Pass) niet laadt, hoor je **Opnieuw** te zien — geen eindeloze spinner en geen valse “leeg”-tekst. Hit-kaarten stapelen naam en bounty/Hit onder ~420px zodat de knop tappable blijft.
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
 
 ### Live spelerevents

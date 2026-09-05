@@ -7,6 +7,7 @@ import '../services/auth_service.dart';
 import '../utils/formatters.dart';
 import '../utils/season_pass_reward_assets.dart';
 import '../utils/top_right_notification.dart';
+import 'mobile_load_error.dart';
 
 /// Monthly Season Pass — compact single-line goal rows with reward tiles.
 class SeasonPassPanel extends StatefulWidget {
@@ -28,6 +29,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
   final _api = AuthService().apiClient;
   Map<String, dynamic>? _status;
   bool _loading = true;
+  bool _loadFailed = false;
   bool _claiming = false;
 
   @override
@@ -37,18 +39,29 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
   }
 
   Future<void> _load() async {
-    setState(() => _loading = true);
+    setState(() {
+      _loading = _status == null;
+      _loadFailed = false;
+    });
     try {
       final res = await _api.get('/season-pass/status');
       if (res.statusCode == 200 && mounted) {
         setState(() {
           _status = jsonDecode(res.body) as Map<String, dynamic>;
           _loading = false;
+          _loadFailed = false;
         });
         return;
       }
-    } catch (_) {}
-    if (mounted) setState(() => _loading = false);
+      throw Exception('error.internal');
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _loadFailed = _status == null;
+        });
+      }
+    }
   }
 
   Future<void> _claim(int level, String track) async {
@@ -555,7 +568,24 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
     }
 
     final status = _status;
-    if (status == null) return const SizedBox.shrink();
+    if (status == null) {
+      if (_loadFailed) {
+        return Container(
+          margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: _panelBg,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: _accent.withValues(alpha: 0.35)),
+          ),
+          child: MobileLoadError(
+            message: l10n.connectionErrorGeneric,
+            onRetry: _load,
+          ),
+        );
+      }
+      return const SizedBox.shrink();
+    }
 
     final premium = status['premiumUnlocked'] == true;
     final seasonKey = status['seasonKey']?.toString() ?? '';

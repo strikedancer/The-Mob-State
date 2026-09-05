@@ -93,9 +93,10 @@ class HitCard extends StatelessWidget {
         child: ExpansionTile(
           tilePadding: const EdgeInsets.fromLTRB(12, 2, 4, 2),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          title: Row(
-            children: [
-              InkWell(
+          title: LayoutBuilder(
+            builder: (context, constraints) {
+              final compact = constraints.maxWidth < 420;
+              final avatar = InkWell(
                 onTap: (target?['id'] != null && onOpenPlayerProfile != null)
                     ? () => onOpenPlayerProfile!(
                         target!['id'] as int,
@@ -132,67 +133,95 @@ class HitCard extends StatelessWidget {
                         : null,
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: InkWell(
-                  onTap:
-                      (target?['id'] != null && onOpenPlayerProfile != null)
-                      ? () => onOpenPlayerProfile!(
-                          target!['id'] as int,
-                          target['username']?.toString(),
-                        )
-                      : null,
-                  child: Text(
-                    target?['username'] ?? l10n.unknown,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color:
-                          (target?['id'] != null && onOpenPlayerProfile != null)
-                          ? _gold
-                          : Colors.white,
-                    ),
+              );
+              final name = InkWell(
+                onTap: (target?['id'] != null && onOpenPlayerProfile != null)
+                    ? () => onOpenPlayerProfile!(
+                        target!['id'] as int,
+                        target['username']?.toString(),
+                      )
+                    : null,
+                child: Text(
+                  target?['username'] ?? l10n.unknown,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color:
+                        (target?['id'] != null && onOpenPlayerProfile != null)
+                        ? _gold
+                        : Colors.white,
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                _formatMoney(isCounterBounty ? counterBounty : bounty),
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                  color: _gold,
-                ),
-              ),
-              const SizedBox(width: 14),
-              Text(
-                _getTimeAgo(createdAt, l10n),
-                style: const TextStyle(fontSize: 12, color: Colors.white54),
-              ),
-              if (!isPlacer) ...[
-                const SizedBox(width: 12),
-                FilledButton(
-                  onPressed: onAttemptHit,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: _hitAccent,
-                    foregroundColor: Colors.white,
-                    visualDensity: VisualDensity.compact,
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
-                    minimumSize: const Size(0, 36),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    l10n.hit,
+              );
+              final hitButton = !isPlacer
+                  ? FilledButton(
+                      onPressed: onAttemptHit,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: _hitAccent,
+                        foregroundColor: Colors.white,
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        minimumSize: const Size(0, 36),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
+                        l10n.hit,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    )
+                  : null;
+              final meta = Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _formatMoney(isCounterBounty ? counterBounty : bounty),
                     style: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w800,
-                      letterSpacing: 0.4,
+                      color: _gold,
                     ),
                   ),
-                ),
-              ],
-            ],
+                  const SizedBox(width: 8),
+                  Text(
+                    _getTimeAgo(createdAt, l10n),
+                    style: const TextStyle(fontSize: 12, color: Colors.white54),
+                  ),
+                  if (hitButton != null) ...[
+                    const SizedBox(width: 8),
+                    hitButton,
+                  ],
+                ],
+              );
+              if (compact) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        avatar,
+                        const SizedBox(width: 10),
+                        Expanded(child: name),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Align(alignment: Alignment.centerRight, child: meta),
+                  ],
+                );
+              }
+              return Row(
+                children: [
+                  avatar,
+                  const SizedBox(width: 10),
+                  Expanded(child: name),
+                  const SizedBox(width: 8),
+                  meta,
+                ],
+              );
+            },
           ),
           children: [
             const Divider(height: 1, color: _panelBorder),

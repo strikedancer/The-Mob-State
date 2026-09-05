@@ -19,6 +19,7 @@ import '../services/territory_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/mobile_load_error.dart';
 // ---------------------------------------------------------------------------
 // TerritoryScreen â€” Responsive crew territory map (NL-first)
 // Layout: desktop = split (map | side panel), tablet = stacked collapsible,
@@ -109,6 +110,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   };
 
   bool _isLoading = true;
+  String? _loadError;
   bool _isTerritoryEnabled = false;
 
   // â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -254,8 +256,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     String? countryCode,
     bool reloadCountries = false,
   }) async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = _mapData.isEmpty;
+      _loadError = null;
+    });
 
+    try {
     List<Map<String, dynamic>> countries = _countries;
     if (reloadCountries || countries.isEmpty) {
       final rawCountries = await _service.getCountries();
@@ -343,6 +349,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     });
     _resetMapTransform();
     _regionDetailNotifier.value = selectedRegion;
+    } catch (e) {
+      if (!mounted) return;
+      final t = AppLocalizations.of(context)!;
+      setState(() {
+        _loadError = t.connectionErrorGeneric;
+        _isLoading = false;
+      });
+    }
   }
 
   bool _isMyCrewRegion(Map<String, dynamic> region) {
@@ -1611,6 +1625,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
+    if (_loadError != null && _mapData.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.territory)),
+        body: MobileLoadError(
+          message: _loadError!,
+          onRetry: () => _loadData(reloadCountries: true),
+        ),
+      );
+    }
+
     if (!_isTerritoryEnabled) {
       final t = AppLocalizations.of(context)!;
       return Scaffold(
@@ -1631,6 +1655,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         title: Text(t.territory),
         bottom: TabBar(
           controller: _tabController,
+          isScrollable: true,
           tabs: [
             Tab(text: t.territoryTabMap),
             Tab(text: t.territoryTabLeaderboard),

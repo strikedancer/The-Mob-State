@@ -10,6 +10,7 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - `GET /messages/unread` is a cheap unread count (badge / “nieuwe berichten”).
 - `GET /messages/conversations` must stay a **single grouped query** over `direct_messages` (last message + unread per thread, max 80). Never N+1 per friend. The inbox lists **existing threads** (player DMs + The Mob State system inbox), not only current accepted friends.
 - A load failure on mobile must show retry — never the empty “no messages” state while unread badges are still green.
+- Chat thread (`chat_screen.dart`) follows the same rule: failed conversation load shows retry, not “no messages”.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

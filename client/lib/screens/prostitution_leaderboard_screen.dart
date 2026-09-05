@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/prostitute.dart';
 import '../services/prostitution_service.dart';
-import '../utils/top_right_notification.dart';
 import 'player_profile_screen.dart';
+import '../widgets/mobile_load_error.dart';
 
 class ProstitutionLeaderboardScreen extends StatefulWidget {
   const ProstitutionLeaderboardScreen({super.key});
@@ -20,6 +20,7 @@ class _ProstitutionLeaderboardScreenState
 
   late TabController _tabController;
   bool _isLoading = true;
+  String? _loadError;
   List<LeaderboardEntry> _weekly = [];
   List<LeaderboardEntry> _monthly = [];
   List<LeaderboardEntry> _allTime = [];
@@ -73,18 +74,15 @@ class _ProstitutionLeaderboardScreenState
         _myWeeklyRank = myRankData;
         _achievements = _parseAchievements(achievementsData['achievements']);
         _isLoading = false;
+        _loadError = null;
       });
     } catch (error) {
-      setState(() => _isLoading = false);
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text('${l10n.prostitutionLeaderboardLoadFailed}: $error'),
-          ),
-        );
-      }
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _loadError =
+            '${AppLocalizations.of(context)!.prostitutionLeaderboardLoadFailed}: $error';
+      });
     }
   }
 
@@ -113,6 +111,7 @@ class _ProstitutionLeaderboardScreenState
         if (_myWeeklyRank != null) _buildMyRankCard(),
         TabBar(
           controller: _tabController,
+          isScrollable: true,
           tabs: [
             Tab(text: l10n.prostitutionLeaderboardWeekly),
             Tab(text: l10n.prostitutionLeaderboardMonthly),
@@ -122,6 +121,11 @@ class _ProstitutionLeaderboardScreenState
         Expanded(
           child: _isLoading
               ? const Center(child: CircularProgressIndicator())
+              : _loadError != null &&
+                    _weekly.isEmpty &&
+                    _monthly.isEmpty &&
+                    _allTime.isEmpty
+              ? MobileLoadError(message: _loadError!, onRetry: _loadAllData)
               : TabBarView(
                   controller: _tabController,
                   children: [

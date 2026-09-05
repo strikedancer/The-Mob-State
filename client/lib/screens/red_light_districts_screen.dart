@@ -9,6 +9,7 @@ import 'player_profile_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
+import '../widgets/mobile_load_error.dart';
 class RedLightDistrictsScreen extends StatefulWidget {
   final bool embedded;
 
@@ -25,6 +26,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
   List<RedLightDistrict> _ownedDistricts = [];
   RedLightDistrict? _currentCountryDistrict;
   bool _isLoading = true;
+  String? _loadError;
   int? _selectedDistrictId;
   late TabController _tabController;
 
@@ -47,8 +49,12 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
   }
 
   Future<void> _loadData() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = _ownedDistricts.isEmpty && _currentCountryDistrict == null;
+      _loadError = null;
+    });
 
+    try {
     final owned = await _service.getMyDistricts();
     final playerResult = await _service.getCurrentPlayer();
 
@@ -68,11 +74,20 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
       }
     }
 
+    if (!mounted) return;
     setState(() {
       _ownedDistricts = owned;
       _currentCountryDistrict = currentCountryDistrict;
       _isLoading = false;
+      _loadError = null;
     });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _loadError = AppLocalizations.of(context)!.connectionErrorGeneric;
+        _isLoading = false;
+      });
+    }
   }
 
   void _openPlayerProfile(int playerId, String username) {
@@ -189,6 +204,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
             children: [
               TabBar(
                 controller: _tabController,
+                isScrollable: true,
                 labelColor: Theme.of(context).colorScheme.primary,
                 unselectedLabelColor: Colors.grey,
                 tabs: [
@@ -199,6 +215,11 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
               Expanded(
                 child: _isLoading
                     ? const Center(child: CircularProgressIndicator())
+                    : _loadError != null
+                    ? MobileLoadError(
+                        message: _loadError!,
+                        onRetry: _loadData,
+                      )
                     : TabBarView(
                         controller: _tabController,
                         children: [_buildAvailableTab(), _buildOwnedTab()],

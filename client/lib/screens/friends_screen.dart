@@ -13,6 +13,8 @@ import 'player_profile_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
+import '../widgets/mobile_load_error.dart';
+
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
 
@@ -32,6 +34,8 @@ class _FriendsScreenState extends State<FriendsScreen>
   List<dynamic> _activities = []; // For activity feed
 
   bool _loading = false;
+  String? _friendsError;
+  String? _activitiesError;
   bool _activitiesLoading = false;
   bool _activitiesInitialized =
       false; // Track if we've loaded activities at least once
@@ -113,7 +117,10 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 
   Future<void> _loadFriends() async {
-    setState(() => _loading = true);
+    setState(() {
+      _loading = _friends.isEmpty;
+      _friendsError = null;
+    });
     try {
       final apiClient = AuthService().apiClient;
       final response = await apiClient.get('/friends');
@@ -124,12 +131,18 @@ class _FriendsScreenState extends State<FriendsScreen>
         final friendsList = params['friends'] as List;
         setState(() {
           _friends = friendsList.map((f) => Friend.fromJson(f)).toList();
+          _friendsError = null;
         });
+      } else {
+        throw Exception('error.internal');
       }
     } catch (e) {
-      print('Error loading friends: $e');
+      if (!mounted) return;
+      setState(() {
+        _friendsError = AppLocalizations.of(context)!.connectionErrorGeneric;
+      });
     } finally {
-      setState(() => _loading = false);
+      if (mounted) setState(() => _loading = false);
     }
   }
 
@@ -552,6 +565,7 @@ class _FriendsScreenState extends State<FriendsScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
+          isScrollable: true,
           tabs: [
             Tab(text: l10n.friends),
             Tab(text: l10n.friendsUiTabActivity),
@@ -584,6 +598,13 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget _buildFriendsTab(AppLocalizations l10n) {
     if (_loading && _friends.isEmpty) {
       return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_friendsError != null && _friends.isEmpty) {
+      return MobileLoadError(
+        message: _friendsError!,
+        onRetry: _loadFriends,
+      );
     }
 
     if (_friends.isEmpty) {
@@ -973,9 +994,9 @@ class _FriendsScreenState extends State<FriendsScreen>
 
   Future<void> _loadActivities() async {
     setState(() {
-      _activitiesLoading = true;
-      _activitiesInitialized =
-          true; // Mark as initialized on first load attempt
+      _activitiesLoading = _activities.isEmpty;
+      _activitiesInitialized = true;
+      _activitiesError = null;
     });
     try {
       final apiClient = AuthService().apiClient;
@@ -986,12 +1007,18 @@ class _FriendsScreenState extends State<FriendsScreen>
         final activitiesList = data['params']['activities'] as List;
         setState(() {
           _activities = activitiesList;
+          _activitiesError = null;
         });
+      } else {
+        throw Exception('error.internal');
       }
     } catch (e) {
-      print('[ActivityFeed] Error: $e');
+      if (!mounted) return;
+      setState(() {
+        _activitiesError = AppLocalizations.of(context)!.connectionErrorGeneric;
+      });
     } finally {
-      setState(() => _activitiesLoading = false);
+      if (mounted) setState(() => _activitiesLoading = false);
     }
   }
 
@@ -1035,9 +1062,16 @@ class _FriendsScreenState extends State<FriendsScreen>
       Future.microtask(() => _loadActivities());
     }
 
-    return _activitiesLoading
-        ? const Center(child: CircularProgressIndicator())
-        : _activities.isEmpty
+    if (_activitiesLoading && _activities.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_activitiesError != null && _activities.isEmpty) {
+      return MobileLoadError(
+        message: _activitiesError!,
+        onRetry: _loadActivities,
+      );
+    }
+    return _activities.isEmpty
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

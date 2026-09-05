@@ -75,6 +75,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
+- Materials shop and drug inventory load failure must show retry (`MobileLoadError`), not an empty shop/stash.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing

@@ -11,6 +11,7 @@ District ownership, country-level expansion and prostitution territory progressi
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
+- List load failure must show retry (`MobileLoadError`); TabBar is scrollable on narrow widths.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing

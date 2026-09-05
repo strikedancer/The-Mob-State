@@ -6,6 +6,7 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/market_compact.dart';
+import '../widgets/mobile_load_error.dart';
 class WeaponsMarketScreen extends StatefulWidget {
   const WeaponsMarketScreen({super.key});
 
@@ -18,6 +19,7 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen> {
   List<dynamic> _weapons = [];
   List<dynamic> _inventory = [];
   bool _isLoading = true;
+  String? _loadError;
 
   @override
   void initState() {
@@ -37,9 +39,14 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen> {
         _weapons = (weaponsData['weapons'] as List<dynamic>? ?? []);
         _inventory = (inventoryData['weapons'] as List<dynamic>? ?? []);
         _isLoading = false;
+        _loadError = null;
       });
     } catch (e) {
-      setState(() => _isLoading = false);
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _loadError = AppLocalizations.of(context)!.connectionErrorGeneric;
+      });
     }
   }
 
@@ -110,6 +117,9 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen> {
 
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
+    }
+    if (_loadError != null && _weapons.isEmpty) {
+      return MobileLoadError(message: _loadError!, onRetry: _loadData);
     }
 
     return Container(

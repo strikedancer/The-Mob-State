@@ -114,6 +114,7 @@ Scope-afbakening:
 - Deterministische score-opbouw en resolve-regels.
 - Volledige audit trail van acties en ownership mutaties.
 - Map rendering met duidelijke fallback als SVG/region mapping deels faalt.
+- Initial `/territory` load failure must show retry (`MobileLoadError`), not an infinite spinner. TabBar is scrollable on narrow widths.
 
 ## Core Domain Model
 

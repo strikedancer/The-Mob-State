@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/market_compact.dart';
+import '../widgets/mobile_load_error.dart';
 class AmmoMarketScreen extends StatefulWidget {
   const AmmoMarketScreen({super.key});
 
@@ -17,6 +18,7 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen> {
   List<dynamic> _marketStock = [];
   List<dynamic> _inventory = [];
   bool _isLoading = true;
+  String? _loadError;
   DateTime? _lastAmmoPurchaseAt;
   Timer? _cooldownTimer;
 
@@ -57,9 +59,14 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen> {
         }
 
         _isLoading = false;
+        _loadError = null;
       });
     } catch (e) {
-      setState(() => _isLoading = false);
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _loadError = AppLocalizations.of(context)!.connectionErrorGeneric;
+      });
     }
   }
 
@@ -304,6 +311,9 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen> {
 
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
+    }
+    if (_loadError != null && _marketStock.isEmpty && _inventory.isEmpty) {
+      return MobileLoadError(message: _loadError!, onRetry: _loadData);
     }
 
     final cooldownText = _getCooldownText();

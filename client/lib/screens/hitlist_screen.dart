@@ -7,6 +7,7 @@ import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import 'player_profile_screen.dart';
 import '../utils/formatters.dart';
+import '../widgets/mobile_load_error.dart';
 
 String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
   final map = data is Map ? data : null;
@@ -123,6 +124,7 @@ class _HitlistScreenState extends State<HitlistScreen> {
   final ApiClient _apiClient = ApiClient();
   List<dynamic> _activeHits = [];
   bool _isLoading = false;
+  String? _loadError;
   bool _isHunted = false;
   final int _page = 0;
 
@@ -138,26 +140,29 @@ class _HitlistScreenState extends State<HitlistScreen> {
   }
 
   Future<void> _loadActiveHits() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = _activeHits.isEmpty;
+      _loadError = null;
+    });
     try {
       final response = await _apiClient.get('/hitlist/active?page=$_page');
       final data = jsonDecode(response.body);
       if (data['success'] == true) {
         setState(() {
           _activeHits = data['hits'] ?? [];
+          _loadError = null;
         });
         await _checkSecurityStatus();
+      } else {
+        throw Exception('error.internal');
       }
     } catch (e) {
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(content: Text(l10n.hitlistLoadError(e.toString()))),
-        );
-      }
+      if (!mounted) return;
+      setState(() {
+        _loadError = AppLocalizations.of(context)!.hitlistLoadError(e.toString());
+      });
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -232,7 +237,15 @@ class _HitlistScreenState extends State<HitlistScreen> {
                 slivers: [
                   const SliverToBoxAdapter(child: SizedBox(height: 12)),
                   SliverToBoxAdapter(child: _buildPageHero(l10n)),
-                  if (_activeHits.isEmpty)
+                  if (_loadError != null && _activeHits.isEmpty)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: MobileLoadError(
+                        message: _loadError!,
+                        onRetry: _loadActiveHits,
+                      ),
+                    )
+                  else if (_activeHits.isEmpty)
                     SliverFillRemaining(
                       hasScrollBody: false,
                       child: _buildEmptyState(l10n),
