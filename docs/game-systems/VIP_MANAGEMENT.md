@@ -36,7 +36,13 @@ docker compose exec backend npx ts-node grant-vip.ts testuser2 revoke
 docker compose exec -T mysql mariadb -uroot mafia_game -e "UPDATE players SET isVip = 1, vipExpiresAt = DATE_ADD(NOW(), INTERVAL 7 DAY) WHERE username = 'testuser2';"
 ```
 
-## ðŸŒ Via API (Admin Endpoint)
+## Admin UI (spelerbeheer)
+
+Op Admin → speler → Beheer: vink **VIP actief**, vul **VIP dagen** (1–365) en een beheerreden (min. 5 tekens). Enabling VIP vraagt daarna `CONFIRM`.
+
+Alleen gewijzigde VIP-velden gaan mee; geld/rank/land worden niet opnieuw gepost. De server verlengt via `grantPlayerVipDays` (vanaf nu of huidige expiry) en telt `vipLifetimeDays`. Max 365 dagen per grant.
+
+## Via API (Admin Endpoint)
 
 ### Grant VIP
 ```bash

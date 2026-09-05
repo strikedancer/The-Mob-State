@@ -10,7 +10,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 ## Primary Backend Entry
 - `backend/src/routes/subscriptions.ts`
 - `backend/src/services/vipBenefitsService.ts` (VIP grant helpers, prestige tiers, expiry sweep)
-- `backend/src/routes/admin.ts` voor catalogusbeheer / VIP grant
+- `backend/src/routes/admin.ts` voor catalogusbeheer / VIP grant (`POST /admin/players/vip/grant` en `POST /admin/players/manage`)
 - `backend/prisma/schema.prisma`
 - Startup: `ensureVipPrestigeSchema.ts` (`players.vipLifetimeDays`, `crews.vipLifetimeDays`)
 
@@ -21,6 +21,11 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Prestige KPI toont lifetime days + dagen tot volgende tier (bronze 30 / silver 180 / gold 365; display-only).
 - **Prestige (display-only):** lifetime VIP-dagen → tiers bronze/silver/gold (30/180/365); geen gameplay power.
 - Cron `vipExpirySweep` zet verlopen `isVip` uit (crew buildings downgraden).
+- **Admin player manage VIP:** `POST /admin/players/manage` stuurt VIP alleen mee als de admin VIP echt wijzigt (niet bij elke geld/rank-save). Max **365 dagen** per grant. Enabling VIP is een kritieke wijziging (reden ≥5 tekens + `CONFIRM`). Lege/`null` set-velden worden genegeerd. Enabling gebruikt `grantPlayerVipDays` (verlengt vanaf nu of huidige expiry, telt `vipLifetimeDays`).
+
+## Admin VIP grant (UI)
+- Admin → spelerdetail → Beheer: vink **VIP actief** en vul **VIP dagen** (1–365). Zonder reden/CONFIRM faalt enabling bewust.
+- Slaat niet meer de hele stat-formulier mee als alleen VIP wijzigt; dat voorkwam `Invalid input` (NaN/`null` money/health/country).
 - Help-topic `premium` (Help & Uitleg) dekt cancel/gift/prestige; sync via `scripts/_help_topics_extracted.json`.
 
 ## Change Rules

@@ -329,33 +329,42 @@ const editPlayerSchema = z.object({
 
 const grantVipSchema = z.object({
   username: z.string().min(1),
-  days: z.number().int().positive().max(365).default(7),
+  days: z.coerce.number().int().positive().max(365).default(7),
 });
+
+const optionalManageInt = (schema: z.ZodNumber) =>
+  z.preprocess(
+    (value) => (value === null || value === '' || Number.isNaN(value) ? undefined : value),
+    schema.optional()
+  );
 
 const playerManageSchema = z.object({
   playerId: z.number().int().positive(),
   reason: z.string().min(5).max(500).optional(),
   set: z
     .object({
-      money: z.number().int().optional(),
-      rank: z.number().int().min(1).optional(),
-      xp: z.number().int().min(0).optional(),
-      health: z.number().int().min(0).max(100).optional(),
-      premiumCredits: z.number().int().min(0).optional(),
-      currentCountry: z.string().min(2).optional(),
+      money: optionalManageInt(z.coerce.number().int()),
+      rank: optionalManageInt(z.coerce.number().int().min(1)),
+      xp: optionalManageInt(z.coerce.number().int().min(0)),
+      health: optionalManageInt(z.coerce.number().int().min(0).max(100)),
+      premiumCredits: optionalManageInt(z.coerce.number().int().min(0)),
+      currentCountry: z.preprocess(
+        (value) => (value === null || value === '' ? undefined : value),
+        z.string().min(2).optional()
+      ),
     })
     .optional(),
   add: z
     .object({
-      money: z.number().int().optional(),
-      xp: z.number().int().optional(),
-      premiumCredits: z.number().int().optional(),
+      money: optionalManageInt(z.coerce.number().int()),
+      xp: optionalManageInt(z.coerce.number().int()),
+      premiumCredits: optionalManageInt(z.coerce.number().int()),
     })
     .optional(),
   vip: z
     .object({
       enabled: z.boolean(),
-      days: z.number().int().positive().max(365).optional(),
+      days: optionalManageInt(z.coerce.number().int().positive().max(365)),
     })
     .optional(),
   ammo: z
@@ -2762,11 +2771,9 @@ router.post(
         );
       }
 
-      if (vip) {
-        playerUpdateData.isVip = vip.enabled;
-        playerUpdateData.vipExpiresAt = vip.enabled
-          ? new Date(Date.now() + (vip.days ?? 7) * 24 * 60 * 60 * 1000)
-          : null;
+      if (vip && !vip.enabled) {
+        playerUpdateData.isVip = false;
+        playerUpdateData.vipExpiresAt = null;
       }
 
       const result = await prisma.$transaction(async (tx) => {
@@ -2820,20 +2827,30 @@ router.post(
         return updatedPlayer;
       });
 
+      let finalPlayer = result;
+      if (vip?.enabled) {
+        const grant = await grantPlayerVipDays(playerId, vip.days ?? 7);
+        finalPlayer = {
+          ...result,
+          isVip: true,
+          vipExpiresAt: grant.vipExpiresAt,
+        };
+      }
+
       res.locals.auditLogDetails = {
         requestId,
         reason: reason || null,
         adminRole,
         before: beforeSnapshot,
         after: {
-          money: result.money,
-          rank: result.rank,
-          xp: result.xp,
-          health: result.health,
-          premiumCredits: result.premiumCredits,
-          currentCountry: result.currentCountry,
-          isVip: result.isVip,
-          vipExpiresAt: result.vipExpiresAt,
+          money: finalPlayer.money,
+          rank: finalPlayer.rank,
+          xp: finalPlayer.xp,
+          health: finalPlayer.health,
+          premiumCredits: finalPlayer.premiumCredits,
+          currentCountry: finalPlayer.currentCountry,
+          isVip: finalPlayer.isVip,
+          vipExpiresAt: finalPlayer.vipExpiresAt,
         },
         requestedChanges: { set, add, vip, ammo, tool },
       };
@@ -2843,21 +2860,27 @@ router.post(
         reason: reason || null,
         requestId,
         player: {
-          id: result.id,
-          username: result.username,
-          money: result.money,
-          rank: result.rank,
-          xp: result.xp,
-          health: result.health,
-          premiumCredits: result.premiumCredits,
-          currentCountry: result.currentCountry,
-          isVip: result.isVip,
-          vipExpiresAt: result.vipExpiresAt,
+          id: finalPlayer.id,
+          username: finalPlayer.username,
+          money: finalPlayer.money,
+          rank: finalPlayer.rank,
+          xp: finalPlayer.xp,
+          health: finalPlayer.health,
+          premiumCredits: finalPlayer.premiumCredits,
+          currentCountry: finalPlayer.currentCountry,
+          isVip: finalPlayer.isVip,
+          vipExpiresAt: finalPlayer.vipExpiresAt,
         },
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+        return res.status(400).json({
+          error: 'Invalid input',
+          message: error.errors
+            .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+            .join('; '),
+          details: error.errors,
+        });
       }
       console.error('Admin manage player error:', error);
       res.status(500).json({ error: 'Failed to manage player' });

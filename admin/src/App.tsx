@@ -708,6 +708,7 @@ function App() {
   );
   const [banDuration, setBanDuration] = useState("24");
   const [playerManageReason, setPlayerManageReason] = useState("");
+  const [playerVipTouched, setPlayerVipTouched] = useState(false);
   const [isSendingPlayerTestPush, setIsSendingPlayerTestPush] = useState(false);
   const [playerTestPushForm, setPlayerTestPushForm] =
     useState<PlayerTestPushForm>({
@@ -3309,6 +3310,7 @@ function App() {
     setPlayerDetailTab("overview");
     setActionsPage(1);
     setPlayerManageReason("");
+    setPlayerVipTouched(false);
     setPlayerDetailLoading(true);
     setActiveTab("player-detail");
 
@@ -3406,25 +3408,46 @@ function App() {
     }
 
     const currentPlayer = selectedPlayerOverview?.player;
-    const setMoney = Number(playerManageForm.setMoney);
-    const setRank = Number(playerManageForm.setRank);
-    const setXp = Number(playerManageForm.setXp);
-    const setPremiumCredits = Number(playerManageForm.setPremiumCredits);
-    const addMoney = Number(playerManageForm.addMoney);
-    const addXp = Number(playerManageForm.addXp);
-    const addPremiumCredits = Number(playerManageForm.addPremiumCredits);
+    const toInt = (value: string): number | null => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? Math.trunc(parsed) : null;
+    };
+    const setMoney = toInt(playerManageForm.setMoney);
+    const setRank = toInt(playerManageForm.setRank);
+    const setXp = toInt(playerManageForm.setXp);
+    const setPremiumCredits = toInt(playerManageForm.setPremiumCredits);
+    const setHealth = toInt(playerManageForm.setHealth);
+    const addMoney = toInt(playerManageForm.addMoney) ?? 0;
+    const addXp = toInt(playerManageForm.addXp) ?? 0;
+    const addPremiumCredits = toInt(playerManageForm.addPremiumCredits) ?? 0;
+    const vipDays = toInt(playerManageForm.vipDays);
+    const vipEnabledChanged =
+      !!currentPlayer && playerManageForm.vipEnabled !== currentPlayer.isVip;
+
+    if (playerVipTouched && playerManageForm.vipEnabled) {
+      if (vipDays === null || vipDays < 1 || vipDays > 365) {
+        alert(
+          l(
+            "VIP dagen moet een heel getal tussen 1 en 365 zijn.",
+            "VIP days must be a whole number between 1 and 365.",
+          ),
+        );
+        return;
+      }
+    }
 
     const isCriticalChange =
       !!currentPlayer &&
-      (Math.abs(setMoney - currentPlayer.money) >= 500000 ||
+      ((setMoney !== null && Math.abs(setMoney - currentPlayer.money) >= 500000) ||
         Math.abs(addMoney) >= 500000 ||
-        setRank !== currentPlayer.rank ||
-        Math.abs(setXp - currentPlayer.xp) >= 10000 ||
+        (setRank !== null && setRank !== currentPlayer.rank) ||
+        (setXp !== null && Math.abs(setXp - currentPlayer.xp) >= 10000) ||
         Math.abs(addXp) >= 10000 ||
-        Math.abs(setPremiumCredits - (currentPlayer.premiumCredits ?? 0)) >=
-          5000 ||
+        (setPremiumCredits !== null &&
+          Math.abs(setPremiumCredits - (currentPlayer.premiumCredits ?? 0)) >=
+            5000) ||
         Math.abs(addPremiumCredits) >= 1000 ||
-        playerManageForm.vipEnabled !== currentPlayer.isVip);
+        (playerVipTouched && vipEnabledChanged));
 
     if (isCriticalChange) {
       if (playerManageReason.trim().length < 5) {
@@ -3444,6 +3467,12 @@ function App() {
         "CONFIRM",
       );
       if (confirmation !== "CONFIRM") {
+        alert(
+          l(
+            "Kritieke wijziging geannuleerd (CONFIRM was nodig).",
+            "Critical change cancelled (CONFIRM was required).",
+          ),
+        );
         return;
       }
     }
@@ -3457,31 +3486,50 @@ function App() {
           : {}),
       };
 
-      payload.set = {
-        money: Number(playerManageForm.setMoney),
-        rank: Number(playerManageForm.setRank),
-        xp: Number(playerManageForm.setXp),
-        premiumCredits: Math.max(0, Number(playerManageForm.setPremiumCredits)),
-        health: Number(playerManageForm.setHealth),
-        currentCountry: playerManageForm.setCountry,
-      };
-
+      const setPayload: Record<string, number | string> = {};
+      if (setMoney !== null && setMoney !== currentPlayer?.money) {
+        setPayload.money = setMoney;
+      }
+      if (setRank !== null && setRank !== currentPlayer?.rank) {
+        setPayload.rank = setRank;
+      }
+      if (setXp !== null && setXp !== currentPlayer?.xp) {
+        setPayload.xp = setXp;
+      }
       if (
-        Number(playerManageForm.addMoney) !== 0 ||
-        Number(playerManageForm.addXp) !== 0 ||
-        Number(playerManageForm.addPremiumCredits) !== 0
+        setPremiumCredits !== null &&
+        setPremiumCredits !== (currentPlayer?.premiumCredits ?? 0)
       ) {
+        setPayload.premiumCredits = Math.max(0, setPremiumCredits);
+      }
+      if (setHealth !== null && setHealth !== currentPlayer?.health) {
+        setPayload.health = setHealth;
+      }
+      const nextCountry = playerManageForm.setCountry.trim();
+      if (
+        nextCountry.length >= 2 &&
+        nextCountry !== currentPlayer?.currentCountry
+      ) {
+        setPayload.currentCountry = nextCountry;
+      }
+      if (Object.keys(setPayload).length > 0) {
+        payload.set = setPayload;
+      }
+
+      if (addMoney !== 0 || addXp !== 0 || addPremiumCredits !== 0) {
         payload.add = {
-          money: Number(playerManageForm.addMoney),
-          xp: Number(playerManageForm.addXp),
-          premiumCredits: Number(playerManageForm.addPremiumCredits),
+          money: addMoney,
+          xp: addXp,
+          premiumCredits: addPremiumCredits,
         };
       }
 
-      payload.vip = {
-        enabled: playerManageForm.vipEnabled,
-        days: Number(playerManageForm.vipDays) || 7,
-      };
+      if (playerVipTouched) {
+        payload.vip = {
+          enabled: playerManageForm.vipEnabled,
+          ...(playerManageForm.vipEnabled ? { days: vipDays ?? 7 } : {}),
+        };
+      }
 
       if (
         Number(playerManageForm.ammoQuantity) > 0 &&
@@ -3520,6 +3568,7 @@ function App() {
         ammoQuantity: "0",
       }));
       setPlayerManageReason("");
+      setPlayerVipTouched(false);
       await loadPlayers();
       alert(l("Speler succesvol bijgewerkt", "Player updated successfully"));
     } catch (err) {
@@ -7727,14 +7776,22 @@ function App() {
                                       className="form-control"
                                       type="number"
                                       min={1}
+                                      max={365}
                                       value={playerManageForm.vipDays}
-                                      onChange={(e) =>
+                                      onChange={(e) => {
+                                        setPlayerVipTouched(true);
                                         setPlayerManageForm({
                                           ...playerManageForm,
                                           vipDays: e.target.value,
-                                        })
-                                      }
+                                        });
+                                      }}
                                     />
+                                    <small className="text-muted">
+                                      {l(
+                                        "1–365 dagen. Alleen meegestuurd als je VIP wijzigt.",
+                                        "1–365 days. Sent only when you change VIP.",
+                                      )}
+                                    </small>
                                   </div>
                                   <div className="col-md-4 d-flex align-items-end">
                                     <div className="form-check mb-2">
@@ -7742,12 +7799,13 @@ function App() {
                                         className="form-check-input"
                                         type="checkbox"
                                         checked={playerManageForm.vipEnabled}
-                                        onChange={(e) =>
+                                        onChange={(e) => {
+                                          setPlayerVipTouched(true);
                                           setPlayerManageForm({
                                             ...playerManageForm,
                                             vipEnabled: e.target.checked,
-                                          })
-                                        }
+                                          });
+                                        }}
                                         id="vipEnabled"
                                       />
                                       <label

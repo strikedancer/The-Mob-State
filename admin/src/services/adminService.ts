@@ -38,7 +38,18 @@ const parseErrorMessage = async (
   fallback: string,
 ): Promise<string> => {
   const payload = await response.json().catch(() => null as any);
-  return payload?.message || payload?.error || fallback;
+  const base = payload?.message || payload?.error || fallback;
+  if (Array.isArray(payload?.details) && payload.details.length > 0) {
+    const extra = payload.details
+      .map((detail: { path?: Array<string | number>; message?: string }) => {
+        const path = Array.isArray(detail?.path) ? detail.path.join(".") : "";
+        return [path, detail?.message].filter(Boolean).join(": ");
+      })
+      .filter(Boolean)
+      .join("; ");
+    return extra ? `${base} (${extra})` : base;
+  }
+  return base;
 };
 
 const ensureOk = async (
