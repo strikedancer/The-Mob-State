@@ -718,6 +718,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get travelCannotAfford => 'Za mało gotówki';
 
   @override
+  String travelAircraftBonusChip(String percent) {
+    return 'Własny samolot: −$percent% czasu podróży';
+  }
+
+  @override
   String travelVia(String countries) {
     return 'przez $countries';
   }
@@ -4234,6 +4239,89 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get aviationRankLocked => 'Zbyt niska ranga';
+
+  @override
+  String get aviationRefuel => 'Zatankować';
+
+  @override
+  String get aviationRefuelConfirmTitle => 'Zatankować samolot?';
+
+  @override
+  String aviationRefuelConfirmBody(String liters, String price) {
+    return 'Napełnić zbiornik $liters L przez $price?';
+  }
+
+  @override
+  String get aviationRefuelSuccess => 'Samolot zatankowano.';
+
+  @override
+  String get aviationRefuelFailed => 'Tankowanie nie powiodło się.';
+
+  @override
+  String get aviationRefuelFull => 'Zbiornik jest już pełny.';
+
+  @override
+  String get aviationFlyConfirmTitle => 'Latać teraz?';
+
+  @override
+  String aviationFlyConfirmBody(String name, String country) {
+    return 'Polecieć $name do $country? Zużywa 100 L i dociera natychmiast.';
+  }
+
+  @override
+  String get aviationFlyPickDestination => 'Wybierz miejsce docelowe';
+
+  @override
+  String get aviationFlySuccess => 'Wylądowałeś.';
+
+  @override
+  String get aviationFlyFailed => 'Lot nie powiódł się.';
+
+  @override
+  String get aviationFlyNeedFuel => 'Za mało paliwa. Lot zużywa 100 litrów.';
+
+  @override
+  String get aviationFlyBroken =>
+      'Ten samolot jest uszkodzony i należy go najpierw naprawić.';
+
+  @override
+  String get aviationSellConfirmTitle => 'Sprzedać samolot?';
+
+  @override
+  String aviationSellConfirmBody(String name, String price) {
+    return 'Sprzedać $name za $price? Otrzymujesz 50% ceny zakupu.';
+  }
+
+  @override
+  String get aviationSoldSuccess => 'Samolot sprzedany.';
+
+  @override
+  String get aviationSellFailed => 'Sprzedaż nie powiodła się.';
+
+  @override
+  String get aviationRepair => 'Naprawa';
+
+  @override
+  String get aviationRepairConfirmTitle => 'Naprawić samolot?';
+
+  @override
+  String aviationRepairConfirmBody(String name, String price) {
+    return 'Naprawić $name dla $price?';
+  }
+
+  @override
+  String get aviationRepairSuccess => 'Samolot naprawiony.';
+
+  @override
+  String get aviationRepairFailed => 'Naprawa nie powiodła się.';
+
+  @override
+  String get aviationBrokenBadge => 'Złamany';
+
+  @override
+  String aviationTravelBonusChip(String percent) {
+    return '−$percent% czasu podróży';
+  }
 
   @override
   String get crewUiTr0 => 'Wymagania dotyczące aktualizacji centrali';
@@ -15846,6 +15934,24 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get helpTopicTravelTips =>
       'Zawsze łącz podróż z handlem, narkotykami lub przemytem – pusta podróż to strata pieniędzy. \nObniż poziom poszukiwanej osoby przed wyjazdem: wysoka kara znacznie zwiększa ryzyko konfiskaty na trasie. \nZaplanuj podróż powrotną z wyprzedzeniem, aby wiedzieć, co zabrać ze sobą po przyjeździe.';
+
+  @override
+  String get helpTopicAviationCategory => 'Świat';
+
+  @override
+  String get helpTopicAviationTitle => 'Lotnictwo';
+
+  @override
+  String get helpTopicAviationSummary =>
+      'Ukończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby natychmiast latać, skróć czas podróży komercyjnych i sprzedaj lub napraw swoją flotę w hangarze.';
+
+  @override
+  String get helpTopicAviationHow =>
+      'Ukończ szkołę lotniczą do poziomu 5 i zdobądź oba certyfikaty lotnicze, zanim będziesz mógł kupić płatną licencję. \nKup płatną licencję na ekranie Lotnictwo: podstawową, komercyjną lub cargo. Wyższe poziomy odblokowują cięższe samoloty. \nKup samolot z katalogu hangaru. Nowe samoloty startują z pustym zbiornikiem. \nTankuj w hangarze po 50 € za litr. Prywatny lot zużywa 100 litrów i pozwala natychmiastowo przenieść się do innego kraju. \nPodróże komercyjne nadal korzystają z biletów i nóg. Posiadanie samolotu skraca czas oczekiwania: Cessna –15%, King Air –25%, Citation –30%, Gulfstream –35%, samoloty cargo –30%. Liczy się tylko najlepszy samolot. \nSprzedaj posiadany samolot za 50% ceny zakupu. Napraw zepsuty samolot, zanim będziesz mógł go zatankować lub polecieć.';
+
+  @override
+  String get helpTopicAviationTips =>
+      'Szkoła 5/5 nie wystarczy: przed zakupem nadal potrzebujesz płatnej licencji. \nZbiornik wystarczający na 100 litrów przed lotem. Pusty samolot nie może opuścić hangaru. \nSamolot przyspiesza również normalną podróż, nawet jeśli wybierasz trasę komercyjną. \nSprzedaj nieużywane samoloty, jeśli potrzebujesz gotówki; dostajesz tylko połowę tego, co zapłaciłeś.';
 
   @override
   String get helpTopicCrewCategory => 'Społeczny';

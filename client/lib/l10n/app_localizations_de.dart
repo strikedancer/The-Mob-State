@@ -730,6 +730,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get travelCannotAfford => 'Nicht genug Bargeld';
 
   @override
+  String travelAircraftBonusChip(String percent) {
+    return 'Eigenes Flugzeug: −$percent% Reisezeit';
+  }
+
+  @override
   String travelVia(String countries) {
     return 'über $countries';
   }
@@ -4249,6 +4254,90 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aviationRankLocked => 'Rang zu niedrig';
+
+  @override
+  String get aviationRefuel => 'Tanken';
+
+  @override
+  String get aviationRefuelConfirmTitle => 'Flugzeuge betanken?';
+
+  @override
+  String aviationRefuelConfirmBody(String liters, String price) {
+    return 'Füllen Sie den Tank mit $liters L für $price?';
+  }
+
+  @override
+  String get aviationRefuelSuccess => 'Flugzeuge betankt.';
+
+  @override
+  String get aviationRefuelFailed => 'Das Auftanken ist fehlgeschlagen.';
+
+  @override
+  String get aviationRefuelFull => 'Der Tank ist bereits voll.';
+
+  @override
+  String get aviationFlyConfirmTitle => 'Jetzt fliegen?';
+
+  @override
+  String aviationFlyConfirmBody(String name, String country) {
+    return 'Von $name nach $country fliegen? Verbraucht 100 l und ist sofort verfügbar.';
+  }
+
+  @override
+  String get aviationFlyPickDestination => 'Ziel auswählen';
+
+  @override
+  String get aviationFlySuccess => 'Du bist gelandet.';
+
+  @override
+  String get aviationFlyFailed => 'Flug gescheitert.';
+
+  @override
+  String get aviationFlyNeedFuel =>
+      'Nicht genug Treibstoff. Ein Flug verbraucht 100 L.';
+
+  @override
+  String get aviationFlyBroken =>
+      'Dieses Flugzeug ist kaputt und muss zuerst repariert werden.';
+
+  @override
+  String get aviationSellConfirmTitle => 'Flugzeuge verkaufen?';
+
+  @override
+  String aviationSellConfirmBody(String name, String price) {
+    return '$name für $price verkaufen? Sie erhalten 50 % des Kaufpreises.';
+  }
+
+  @override
+  String get aviationSoldSuccess => 'Flugzeuge verkauft.';
+
+  @override
+  String get aviationSellFailed => 'Der Verkauf ist fehlgeschlagen.';
+
+  @override
+  String get aviationRepair => 'Reparieren';
+
+  @override
+  String get aviationRepairConfirmTitle => 'Flugzeug reparieren?';
+
+  @override
+  String aviationRepairConfirmBody(String name, String price) {
+    return '$name für $price reparieren?';
+  }
+
+  @override
+  String get aviationRepairSuccess => 'Flugzeuge repariert.';
+
+  @override
+  String get aviationRepairFailed => 'Die Reparatur ist fehlgeschlagen.';
+
+  @override
+  String get aviationBrokenBadge => 'Gebrochen';
+
+  @override
+  String aviationTravelBonusChip(String percent) {
+    return '−$percent% Fahrzeit';
+  }
 
   @override
   String get crewUiTr0 => 'HQ-Upgrade-Anforderungen';
@@ -15917,6 +16006,24 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get helpTopicTravelTips =>
       'Kombinieren Sie Reisen immer mit Handel, Drogen oder Schmuggel – Leerreisen verschwenden Geld. \nSenken Sie Ihren Fahndungslevel vor dem Abflug: Ein hoher Fahndungsstatus erhöht das Beschlagnahmungsrisiko unterwegs erheblich. \nPlanen Sie Ihre Rückreise im Voraus, damit Sie bereits wissen, was Sie bei Ihrer Ankunft mitbringen müssen.';
+
+  @override
+  String get helpTopicAviationCategory => 'Welt';
+
+  @override
+  String get helpTopicAviationTitle => 'Luftfahrt';
+
+  @override
+  String get helpTopicAviationSummary =>
+      'Beenden Sie die Flugschule, erwerben Sie eine kostenpflichtige Lizenz, kaufen Sie dann ein Flugzeug, um sofort fliegen zu können, verkürzen Sie die kommerzielle Reisezeit und verkaufen oder reparieren Sie Ihre Hangarflotte.';
+
+  @override
+  String get helpTopicAviationHow =>
+      'Absolvieren Sie die Flugschule bis zur Stufe 5 und erwerben Sie beide Flugzertifikate, bevor Sie eine kostenpflichtige Lizenz erwerben können. \nKaufen Sie eine kostenpflichtige Lizenz auf dem Luftfahrtbildschirm: Basislizenz, kommerzielle Lizenz oder Frachtlizenz. Höhere Stufen schalten schwerere Flugzeuge frei. \nKaufen Sie ein Flugzeug aus dem Hangarkatalog. Neue Flugzeuge starten mit leerem Tank. \nTanken Sie im Hangar für 50 € pro Liter. Ein Privatflug verbraucht 100 Liter und befördert Sie sofort in ein anderes Land. \nKommerzielle Reisen nutzen immer noch Tickets und Strecken. Der Besitz eines Flugzeugs verkürzt die Wartezeit: Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, Frachtflugzeuge −30 %. Nur das beste Flugzeug zählt. \nVerkaufen Sie ein eigenes Flugzeug für 50 % des Kaufpreises. Reparieren Sie ein kaputtes Flugzeug, bevor Sie es auftanken oder fliegen können.';
+
+  @override
+  String get helpTopicAviationTips =>
+      'School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nEin Flugzeug beschleunigt auch das normale Reisen, selbst wenn Sie die kommerzielle Route nehmen. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben.';
 
   @override
   String get helpTopicCrewCategory => 'Sozial';

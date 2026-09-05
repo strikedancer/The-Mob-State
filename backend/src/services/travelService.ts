@@ -79,7 +79,7 @@ export interface JourneyStatus {
 }
 
 const TRAVEL_JAIL_TIME_MINUTES = 30;
-const LEG_COOLDOWN_MINUTES = 30;
+const LEG_COOLDOWN_MINUTES = 60;
 const BASE_ARREST_CHANCE = 0.03;
 const WANTED_LEVEL_ARREST_BONUS = 0.015;
 const MAX_ARREST_CHANCE = 0.25;
@@ -204,7 +204,19 @@ export function getAllCountries(): Country[] {
 /**
  * Get all countries with route information from a specific origin
  */
-export function getAllCountriesWithRoutes(fromCountry: string): CountryWithRoute[] {
+export function applyAircraftTravelBonus(baseMinutes: number, bonus = 0): number {
+  const safeBonus = Math.min(0.9, Math.max(0, bonus));
+  return Math.max(1, Math.round(baseMinutes * (1 - safeBonus)));
+}
+
+/**
+ * Get all countries with route information from a specific origin.
+ * `travelBonus` shortens air-route times (best owned plane). Water routes stay unchanged.
+ */
+export function getAllCountriesWithRoutes(
+  fromCountry: string,
+  travelBonus = 0
+): CountryWithRoute[] {
   return countries.map((country) => {
     const c = country as Country;
     
@@ -227,7 +239,8 @@ export function getAllCountriesWithRoutes(fromCountry: string): CountryWithRoute
     const route = calculateRoute(fromCountry, c.id);
     const totalCost = Math.round(c.travelCost * route.costMultiplier);
     const totalLegs = Math.max(route.path.length - 1, 1);
-    const totalTime = totalLegs * LEG_COOLDOWN_MINUTES;
+    const baseTime = totalLegs * LEG_COOLDOWN_MINUTES;
+    const totalTime = applyAircraftTravelBonus(baseTime, travelBonus);
     
     return {
       ...c,

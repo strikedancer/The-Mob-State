@@ -418,4 +418,118 @@ router.post(
   }
 );
 
+/**
+ * POST /aviation/sell/:aircraftId
+ * Sell aircraft for 50% of purchase price (authenticated)
+ */
+router.post(
+  '/sell/:aircraftId',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const aircraftId = parseInt(req.params.aircraftId as string, 10);
+      const result = await aviationService.sellAircraft(playerId, aircraftId);
+
+      return res.json({
+        message: `Je hebt je ${result.aircraftName} verkocht voor €${result.salePrice.toLocaleString()}.`,
+        ...result,
+      });
+    } catch (error: any) {
+      if (error.message === 'AIRCRAFT_NOT_FOUND') {
+        return res.status(404).json({
+          success: false,
+          error: 'AIRCRAFT_NOT_FOUND',
+          message: 'Vliegtuig niet gevonden.',
+        });
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /aviation/repair/:aircraftId
+ * Repair a broken aircraft (authenticated)
+ */
+router.post(
+  '/repair/:aircraftId',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const aircraftId = parseInt(req.params.aircraftId as string, 10);
+      const result = await aviationService.repairAircraft(playerId, aircraftId);
+
+      return res.json({
+        message: `Vliegtuig gerepareerd voor €${result.cost.toLocaleString()}.`,
+        ...result,
+      });
+    } catch (error: any) {
+      if (error.message === 'AIRCRAFT_NOT_FOUND') {
+        return res.status(404).json({
+          success: false,
+          error: 'AIRCRAFT_NOT_FOUND',
+          message: 'Vliegtuig niet gevonden.',
+        });
+      }
+      if (error.message === 'AIRCRAFT_NOT_BROKEN') {
+        return res.status(400).json({
+          success: false,
+          error: 'AIRCRAFT_NOT_BROKEN',
+          message: 'Dit vliegtuig is niet kapot.',
+        });
+      }
+      if (error.message === 'INSUFFICIENT_MONEY') {
+        return res.status(400).json({
+          success: false,
+          error: 'INSUFFICIENT_MONEY',
+          message: 'Je hebt niet genoeg geld voor deze reparatie.',
+        });
+      }
+      if (error.message === 'REPAIR_UNAVAILABLE') {
+        return res.status(400).json({
+          success: false,
+          error: 'REPAIR_UNAVAILABLE',
+          message: 'Reparatie is voor dit toestel niet beschikbaar.',
+        });
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * GET /aviation/travel-bonus
+ * Best owned-aircraft travel-time bonus (0 if none)
+ */
+router.get(
+  '/travel-bonus',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const bonus = await aviationService.getBestAircraftBonus(playerId);
+      return res.json({
+        success: true,
+        aircraftTravelBonus: bonus,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
 export default router;

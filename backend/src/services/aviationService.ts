@@ -26,6 +26,7 @@ export interface AircraftDefinition {
   repairCost: number;
   speedMultiplier: number;
   cargoCapacity: number;
+  travelBonus?: number;
 }
 
 export interface LicensePurchaseResult {
@@ -337,8 +338,173 @@ export async function getPlayerAircraft(playerId: number) {
       maxRange: def?.maxRange || 0,
       cargoCapacity: def?.cargoCapacity || 0,
       speedMultiplier: def?.speedMultiplier || 1,
+      travelBonus: travelBonusForDefinition(def, ac.aircraftType),
+      repairCost: def?.repairCost || 0,
     };
   });
+}
+
+const DEFAULT_TRAVEL_BONUS: Record<string, number> = {
+  cessna_172: 0.15,
+  king_air_350: 0.25,
+  citation_x: 0.3,
+  gulfstream_g650: 0.35,
+  boeing_737_cargo: 0.3,
+  antonov_an_225: 0.3,
+};
+
+function travelBonusForDefinition(
+  def: AircraftDefinition | undefined,
+  aircraftType: string
+): number {
+  const fromCatalog = def?.travelBonus;
+  if (typeof fromCatalog === 'number' && Number.isFinite(fromCatalog)) {
+    return Math.min(0.9, Math.max(0, fromCatalog));
+  }
+  return DEFAULT_TRAVEL_BONUS[aircraftType] ?? 0;
+}
+
+/**
+ * Best owned-aircraft travel-time bonus (not cumulative). Returns 0 without a plane.
+ */
+export async function getBestAircraftBonus(playerId: number): Promise<number> {
+  const owned = await prisma.aircraft.findMany({
+    where: { playerId },
+    select: { aircraftType: true },
+  });
+  if (owned.length === 0) {
+    return 0;
+  }
+
+  let best = 0;
+  for (const ac of owned) {
+    const bonus = travelBonusForDefinition(getAircraftById(ac.aircraftType), ac.aircraftType);
+    if (bonus > best) {
+      best = bonus;
+    }
+  }
+  return best;
+}
+
+export async function sellAircraft(
+  playerId: number,
+  aircraftId: number
+): Promise<{
+  success: boolean;
+  aircraftType: string;
+  aircraftName: string;
+  salePrice: number;
+  remainingMoney: number;
+}> {
+  const playerAircraft = await prisma.aircraft.findFirst({
+    where: { id: aircraftId, playerId },
+  });
+  if (!playerAircraft) {
+    throw new Error('AIRCRAFT_NOT_FOUND');
+  }
+
+  const def = getAircraftById(playerAircraft.aircraftType);
+  const purchasePrice = playerAircraft.purchasePrice || def?.price || 0;
+  const salePrice = Math.floor(purchasePrice * 0.5);
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+  });
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  const [updatedPlayer] = await prisma.$transaction([
+    prisma.player.update({
+      where: { id: playerId },
+      data: { money: player.money + salePrice },
+    }),
+    prisma.aircraft.delete({
+      where: { id: aircraftId },
+    }),
+  ]);
+
+  await worldEventService.createEvent(
+    'aviation.aircraft_sold',
+    {
+      playerId,
+      aircraftId,
+      aircraftType: playerAircraft.aircraftType,
+      salePrice,
+    },
+    playerId
+  );
+
+  return {
+    success: true,
+    aircraftType: playerAircraft.aircraftType,
+    aircraftName: def?.name || playerAircraft.aircraftType,
+    salePrice,
+    remainingMoney: updatedPlayer.money,
+  };
+}
+
+export async function repairAircraft(
+  playerId: number,
+  aircraftId: number
+): Promise<{
+  success: boolean;
+  cost: number;
+  remainingMoney: number;
+}> {
+  const playerAircraft = await prisma.aircraft.findFirst({
+    where: { id: aircraftId, playerId },
+  });
+  if (!playerAircraft) {
+    throw new Error('AIRCRAFT_NOT_FOUND');
+  }
+  if (!playerAircraft.isBroken) {
+    throw new Error('AIRCRAFT_NOT_BROKEN');
+  }
+
+  const def = getAircraftById(playerAircraft.aircraftType);
+  const cost = def?.repairCost ?? 0;
+  if (cost <= 0) {
+    throw new Error('REPAIR_UNAVAILABLE');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+  });
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+  if (player.money < cost) {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  const [updatedPlayer] = await prisma.$transaction([
+    prisma.player.update({
+      where: { id: playerId },
+      data: { money: player.money - cost },
+    }),
+    prisma.aircraft.update({
+      where: { id: aircraftId },
+      data: { isBroken: false },
+    }),
+  ]);
+
+  await worldEventService.createEvent(
+    'aviation.repaired',
+    {
+      playerId,
+      aircraftId,
+      aircraftType: playerAircraft.aircraftType,
+      cost,
+    },
+    playerId
+  );
+
+  return {
+    success: true,
+    cost,
+    remainingMoney: updatedPlayer.money,
+  };
 }
 
 /**
@@ -548,7 +714,13 @@ export async function flyToDestination(
   const [, updatedAircraft] = await prisma.$transaction([
     prisma.player.update({
       where: { id: playerId },
-      data: { currentCountry: destinationCountry },
+      data: {
+        currentCountry: destinationCountry,
+        currentTravelLeg: 0,
+        travelingTo: null,
+        travelRoute: null,
+        travelStartedAt: null,
+      },
     }),
     prisma.aircraft.update({
       where: { id: aircraftId },

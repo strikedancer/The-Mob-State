@@ -13,7 +13,8 @@
     "fuelCostPerKm": 50,
     "repairCost": 25000,
     "speedMultiplier": 1.5,
-    "cargoCapacity": 100
+    "cargoCapacity": 100,
+    "travelBonus": 0.15
   },
   {
     "id": "king_air_350",
@@ -29,7 +30,8 @@
     "fuelCostPerKm": 80,
     "repairCost": 75000,
     "speedMultiplier": 2.0,
-    "cargoCapacity": 300
+    "cargoCapacity": 300,
+    "travelBonus": 0.25
   },
   {
     "id": "citation_x",
@@ -45,7 +47,8 @@
     "fuelCostPerKm": 150,
     "repairCost": 200000,
     "speedMultiplier": 3.0,
-    "cargoCapacity": 500
+    "cargoCapacity": 500,
+    "travelBonus": 0.3
   },
   {
     "id": "gulfstream_g650",
@@ -61,7 +64,8 @@
     "fuelCostPerKm": 200,
     "repairCost": 500000,
     "speedMultiplier": 3.5,
-    "cargoCapacity": 800
+    "cargoCapacity": 800,
+    "travelBonus": 0.35
   },
   {
     "id": "boeing_737_cargo",
@@ -77,7 +81,8 @@
     "fuelCostPerKm": 250,
     "repairCost": 800000,
     "speedMultiplier": 2.5,
-    "cargoCapacity": 5000
+    "cargoCapacity": 5000,
+    "travelBonus": 0.3
   },
   {
     "id": "antonov_an_225",
@@ -93,6 +98,7 @@
     "fuelCostPerKm": 500,
     "repairCost": 2500000,
     "speedMultiplier": 2.0,
-    "cargoCapacity": 25000
+    "cargoCapacity": 25000,
+    "travelBonus": 0.3
   }
 ]

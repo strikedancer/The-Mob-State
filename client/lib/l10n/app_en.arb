@@ -362,6 +362,12 @@
     }
   },
   "travelCannotAfford": "Not enough cash",
+  "travelAircraftBonusChip": "Own aircraft: −{percent}% travel time",
+  "@travelAircraftBonusChip": {
+    "placeholders": {
+      "percent": { "type": "String" }
+    }
+  },
   "travelVia": "via {countries}",
   "@travelVia": {
     "placeholders": {
@@ -2611,6 +2617,59 @@
     }
   },
   "aviationRankLocked": "Rank too low",
+  "aviationRefuel": "Refuel",
+  "aviationRefuelConfirmTitle": "Refuel aircraft?",
+  "aviationRefuelConfirmBody": "Fill the tank with {liters} L for {price}?",
+  "@aviationRefuelConfirmBody": {
+    "placeholders": {
+      "liters": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "aviationRefuelSuccess": "Aircraft refueled.",
+  "aviationRefuelFailed": "Refuel failed.",
+  "aviationRefuelFull": "The tank is already full.",
+  "aviationFlyConfirmTitle": "Fly now?",
+  "aviationFlyConfirmBody": "Fly {name} to {country}? Uses 100 L and arrives instantly.",
+  "@aviationFlyConfirmBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "country": { "type": "String" }
+    }
+  },
+  "aviationFlyPickDestination": "Choose destination",
+  "aviationFlySuccess": "You landed.",
+  "aviationFlyFailed": "Flight failed.",
+  "aviationFlyNeedFuel": "Not enough fuel. A flight uses 100 L.",
+  "aviationFlyBroken": "This aircraft is broken and must be repaired first.",
+  "aviationSellConfirmTitle": "Sell aircraft?",
+  "aviationSellConfirmBody": "Sell {name} for {price}? You get 50% of the purchase price.",
+  "@aviationSellConfirmBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "aviationSoldSuccess": "Aircraft sold.",
+  "aviationSellFailed": "Sale failed.",
+  "aviationRepair": "Repair",
+  "aviationRepairConfirmTitle": "Repair aircraft?",
+  "aviationRepairConfirmBody": "Repair {name} for {price}?",
+  "@aviationRepairConfirmBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "aviationRepairSuccess": "Aircraft repaired.",
+  "aviationRepairFailed": "Repair failed.",
+  "aviationBrokenBadge": "Broken",
+  "aviationTravelBonusChip": "−{percent}% travel time",
+  "@aviationTravelBonusChip": {
+    "placeholders": {
+      "percent": { "type": "String" }
+    }
+  },
   "@aviationUiLoadError": {
     "placeholders": {
       "error": {
@@ -10157,7 +10216,12 @@
   "helpTopicTravelTitle": "Travel",
   "helpTopicTravelSummary": "Move between countries for better market prices, unique opportunities and access to international systems.",
   "helpTopicTravelHow": "Available countries: Netherlands (start), Belgium, Germany, France, United Kingdom, Spain, Italy, Switzerland, USA, Mexico, Colombia, Brazil.\nTravel costs: neighboring country €500-€2.000, Europe → Americas €5.000-€10.000, long distance €10.000-€20.000.\nTravel requirements: not in jail, not in ICU, minimum 20 HP, travel funds available.\nDrug quantities in your inventory count as real grams for carry weight and travel checks; 500 means 500g, not 50kg.\nEach country has different market prices (up to 300% price difference), different crime payouts and unique trade items.\nTransport risk: police can seize goods based on Wanted Level (chance = wanted × 2%, max 80%). FBI can seize everything internationally if heat is high.\nCustoms inspection has a 10% base chance. You can bribe (€1.000-€5.000) or get caught losing 50% of goods.\nAfter arrival all actions are immediately available in the new country. Markets and crime speed vary by location.",
-  "helpTopicTravelTips": "Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.",
+  "helpTopicTravelTips": "Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.\nOwn a plane in Aviation to cut commercial travel cooldown. Instant private flights still need fuel.",
+  "helpTopicAviationCategory": "World",
+  "helpTopicAviationTitle": "Aviation",
+  "helpTopicAviationSummary": "Finish Aviation school, buy a paid license, then buy a plane to fly instantly, cut commercial travel time, and sell or repair your hangar fleet.",
+  "helpTopicAviationHow": "Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. A private flight uses 100 L and moves you to another country instantly.\nCommercial Travel still uses tickets and legs. Owning a plane shortens that wait: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.",
+  "helpTopicAviationTips": "School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nA plane also speeds up normal Travel even if you take the commercial route.\nSell unused planes if you need cash; you only get half of what you paid.",
   "helpTopicCrewCategory": "Social",
   "helpTopicCrewTitle": "Crew",
   "helpTopicCrewSummary": "Start a crew or join existing players to pull off heists together, share storage and become stronger as a unit.",

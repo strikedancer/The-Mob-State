@@ -730,6 +730,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get travelCannotAfford => 'Pas assez d\'argent';
 
   @override
+  String travelAircraftBonusChip(String percent) {
+    return 'Propre avion : −$percent% du temps de trajet';
+  }
+
+  @override
   String travelVia(String countries) {
     return 'via $countries';
   }
@@ -4262,6 +4267,90 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get aviationRankLocked => 'Classement trop bas';
+
+  @override
+  String get aviationRefuel => 'Ravitailler';
+
+  @override
+  String get aviationRefuelConfirmTitle => 'Ravitaillement des avions ?';
+
+  @override
+  String aviationRefuelConfirmBody(String liters, String price) {
+    return 'Remplir le réservoir avec $liters L pour $price ?';
+  }
+
+  @override
+  String get aviationRefuelSuccess => 'Avion ravitaillé.';
+
+  @override
+  String get aviationRefuelFailed => 'Le ravitaillement a échoué.';
+
+  @override
+  String get aviationRefuelFull => 'Le réservoir est déjà plein.';
+
+  @override
+  String get aviationFlyConfirmTitle => 'Voler maintenant ?';
+
+  @override
+  String aviationFlyConfirmBody(String name, String country) {
+    return 'Voler de $name à $country ? Utilise 100 L et arrive instantanément.';
+  }
+
+  @override
+  String get aviationFlyPickDestination => 'Choisissez une destination';
+
+  @override
+  String get aviationFlySuccess => 'Vous avez atterri.';
+
+  @override
+  String get aviationFlyFailed => 'Le vol a échoué.';
+
+  @override
+  String get aviationFlyNeedFuel =>
+      'Pas assez de carburant. Un vol consomme 100 L.';
+
+  @override
+  String get aviationFlyBroken =>
+      'Cet avion est cassé et doit être réparé en premier.';
+
+  @override
+  String get aviationSellConfirmTitle => 'Vendre des avions ?';
+
+  @override
+  String aviationSellConfirmBody(String name, String price) {
+    return 'Vendre $name pour $price ? Vous recevez 50% du prix d\'achat.';
+  }
+
+  @override
+  String get aviationSoldSuccess => 'Avion vendu.';
+
+  @override
+  String get aviationSellFailed => 'La vente a échoué.';
+
+  @override
+  String get aviationRepair => 'Réparation';
+
+  @override
+  String get aviationRepairConfirmTitle => 'Réparer un avion ?';
+
+  @override
+  String aviationRepairConfirmBody(String name, String price) {
+    return 'Réparer $name pour $price ?';
+  }
+
+  @override
+  String get aviationRepairSuccess => 'Avion réparé.';
+
+  @override
+  String get aviationRepairFailed => 'La réparation a échoué.';
+
+  @override
+  String get aviationBrokenBadge => 'Cassée';
+
+  @override
+  String aviationTravelBonusChip(String percent) {
+    return '−$percent% du temps de trajet';
+  }
 
   @override
   String get crewUiTr0 => 'Exigences de mise à niveau du QG';
@@ -15917,6 +16006,24 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpTopicTravelTips =>
       'Combinez toujours les voyages avec le commerce, la drogue ou la contrebande : les voyages à vide gaspillent de l’argent. \nRéduisez votre niveau de recherche avant le départ : un niveau de recherche élevé augmente considérablement le risque de confiscation en cours de route. \nPlanifiez votre voyage de retour à l\'avance afin de savoir déjà quoi rapporter à votre arrivée.';
+
+  @override
+  String get helpTopicAviationCategory => 'Monde';
+
+  @override
+  String get helpTopicAviationTitle => 'Aviation';
+
+  @override
+  String get helpTopicAviationSummary =>
+      'Terminez l\'école d\'aviation, achetez une licence payante, puis achetez un avion pour voler instantanément, réduisez le temps de déplacement commercial et vendez ou réparez votre flotte de hangars.';
+
+  @override
+  String get helpTopicAviationHow =>
+      'Terminez l\'école d\'aviation jusqu\'au niveau 5 et obtenez les deux certificats de vol avant de pouvoir acheter une licence payante. \nAchetez une licence payante sur l\'écran Aviation : de base, commerciale ou cargo. Les niveaux supérieurs débloquent des avions plus lourds. \nAchetez un avion dans le catalogue du hangar. Les nouveaux avions démarrent avec un réservoir vide. \nFaire le plein au hangar à 50 € le litre. Un vol privé consomme 100 L et vous transporte instantanément vers un autre pays. \nLes voyages commerciaux utilisent toujours des billets et des trajets. Posséder un avion raccourcit cette attente : Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, avions cargo −30 %. Seul le meilleur avion compte. \nVendez un avion en votre possession pour 50 % du prix d\'achat. Réparez un avion en panne avant de pouvoir faire le plein ou le piloter.';
+
+  @override
+  String get helpTopicAviationTips =>
+      'L\'école 5/5 ne suffit pas : il faut quand même la licence payante avant tout achat. \nRéservoir suffisant pour 100 L avant de voler. Un avion vide ne peut pas quitter le hangar. \nUn avion accélère également les voyages normaux, même si vous empruntez la route commerciale. \nVendez des avions inutilisés si vous avez besoin d’argent liquide ; vous ne recevez que la moitié de ce que vous avez payé.';
 
   @override
   String get helpTopicCrewCategory => 'Sociale';

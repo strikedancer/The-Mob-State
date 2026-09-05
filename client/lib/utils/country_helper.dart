@@ -2,6 +2,30 @@ import '../l10n/app_localizations.dart';
 
 /// Utility class for country-related helper functions
 class CountryHelper {
+  /// Country IDs a private aircraft can fly to (`backend/content/countries.json`).
+  static const List<String> aviationDestinations = [
+    'netherlands',
+    'belgium',
+    'germany',
+    'france',
+    'spain',
+    'italy',
+    'uk',
+    'switzerland',
+    'usa',
+    'mexico',
+    'colombia',
+    'brazil',
+    'argentina',
+    'japan',
+    'china',
+    'russia',
+    'turkey',
+    'united_arab_emirates',
+    'south_africa',
+    'australia',
+  ];
+
   static const Map<String, String> _countryFlags = {
     'netherlands': '🇳🇱',
     'belgium': '🇧🇪',

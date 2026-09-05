@@ -8,23 +8,32 @@ Spelers die de school aviation-track hebben voltooid kunnen privévliegtuigen ko
 Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoerstypen (vliegtuig, auto, motor, boot). Zie ook smuggling.md en travel.md.
 
 ## Primary Frontend Entry
-- `client/lib/screens/aviation_screen.dart` (catalogus + bezit + licenties)
-- Web dashboard Aviation hides the inner AppBar title. The screen uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, and catalog cards with price/rank/speed/cargo/license chips.
+- `client/lib/screens/aviation_screen.dart` (catalogus + hangar + licenties)
+- Web dashboard Aviation hides the inner AppBar title. The screen uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, catalog cards with price/rank/speed/cargo/license/travel-bonus chips, and owned-plane actions: refuel, fly, sell (50%), repair.
 
 ## Primary Backend Entry
-- `GET  /aviation/catalog`        — beschikbare vliegtuigtypes met prijs, slots, bonus, piloot-gate status
-- `GET  /aviation/my-aircraft`    — bezeten vliegtuigen van de ingelogde speler
-- `POST /aviation/buy`            — vliegtuig kopen (gate + balance check server-side)
-- `POST /aviation/sell/:id`       — vliegtuig verkopen (50% restwaarde)
+- `GET  /aviation/aircraft`              — catalogus (`aircraft.json`)
+- `GET  /aviation/my-aircraft`           — bezeten vliegtuigen (fuel, broken, travelBonus, repairCost)
+- `GET  /aviation/travel-bonus`          — beste reistijdbonus (`0` zonder vliegtuig)
+- `POST /aviation/buy-license`           — betaalde licentie
+- `POST /aviation/buy-aircraft`          — vliegtuig kopen (school + licentie + rank + cash)
+- `POST /aviation/refuel/:aircraftId`    — tanken `{ amount }` (€50/L)
+- `POST /aviation/fly/:aircraftId`       — instant landwissel `{ destination }` (100 L)
+- `POST /aviation/sell/:aircraftId`      — verkopen (50% van `purchasePrice`)
+- `POST /aviation/repair/:aircraftId`    — repareren (`repairCost` uit catalogus)
 
 ## Aircraft Catalogus
 
-| id           | Naam                   | Prijs          | Aviation level vereist | Certif. vereist  | Cargo-slots | Reistijdbonus | Smokkelrisico-reductie |
-|--------------|------------------------|----------------|------------------------|------------------|-------------|---------------|------------------------|
-| cessna       | Cessna 172             | €250.000       | 2                      | flight_basic     | 20          | −15%          | −10%                   |
-| king_air     | Beechcraft King Air    | €750.000       | 3                      | —                | 50          | −25%          | −15%                   |
-| gulfstream   | Gulfstream G200        | €2.500.000     | 4                      | flight_commercial| 80          | −35%          | −20%                   |
-| cargo_737    | Boeing 737 Cargo       | €10.000.000    | 5                      | —                | 200         | −30%          | −25%                   |
+Live IDs staan in `backend/content/aircraft.json` (niet de korte protocol-aliassen):
+
+| id | Naam | Prijs | Reistijdbonus | `repairCost` |
+|----|------|-------|---------------|--------------|
+| `cessna_172` | Cessna 172 Skyhawk | €250.000 | −15% | €25.000 |
+| `king_air_350` | Beechcraft King Air 350 | €750.000 | −25% | €75.000 |
+| `citation_x` | Cessna Citation X | €2.000.000 | −30% | €200.000 |
+| `gulfstream_g650` | Gulfstream G650 | €5.000.000 | −35% | €500.000 |
+| `boeing_737_cargo` | Boeing 737-800F Cargo | €8.000.000 | −30% | €800.000 |
+| `antonov_an_225` | Antonov An-225 Mriya | €25.000.000 | −30% | €2.500.000 |
 
 > Heeft een speler meerdere vliegtuigen, geldt het **beste** voordeel (niet cumulatief).
 > De Boeing 737 heeft iets minder reistijdbonus dan de Gulfstream omdat vrachtrouting meer voorbereiding kost, maar compenseert met enorme cargo-capaciteit.
@@ -75,13 +84,20 @@ Elk vliegtuig heeft een vast aantal cargo-slots. Items nemen een bepaald aantal 
 
 ## Reistijdbonus (Travel Integration)
 
-- Backend haalt bij `POST /travel/start-journey` het beste vliegtuig van de speler op.
-- Reistijd wordt vermenigvuldigd met `(1 − bestAircraftBonus)`.
-  - Voorbeeld: 4 uur vlucht + Gulfstream (−35%) → `4 × 0.65 = 2.6 uur`
-- Geldt voor alle internationale luchtroutetijden.
-- Het bonus-voordeel is zichtbaar in het Travel-scherm vóór vertrek (toon: "Eigen vliegtuig: −X% reistijd").
-- Afhankelijkheid: `travelService.ts` roept `aviationService.getBestAircraftBonus(playerId)` aan.
+- `aviationService.getBestAircraftBonus(playerId)` geeft de hoogste `travelBonus` van alle bezeten toestellen, anders `0`.
+- `GET /travel` en `GET /travel/countries` passen die bonus toe op `totalTime` en sturen `aircraftTravelBonus` mee.
+- `POST /travel/:countryId` en `POST /travel/next` zetten de etappe-cooldown op `3600 × (1 − bonus)` seconden (VIP-korting blijft daarna gelden).
+- Reistijd = `baseReistijd × (1 − bonus)`. Voorbeeld: 4 uur + Gulfstream (−35%) → `4 × 0.65 = 2.6 uur`.
+- Geldt voor commerciële Travel-etappes. Privévluchten via `POST /aviation/fly/:id` zijn instant en gebruiken 100 L.
+- Het bonus-voordeel is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% reistijd".
 - Geen vliegtuig → geen bonus (reistijd ongewijzigd, geen regressie).
+
+## Hangar-acties
+
+- **Tanken:** `POST /aviation/refuel/:id` met `{ amount }`. €50/L, max tot `maxFuel`. Kapot toestel → `AIRCRAFT_BROKEN`.
+- **Vliegen:** `POST /aviation/fly/:id` met `{ destination }`. 100 L, directe `currentCountry`-wissel, annuleert een lopende Travel-reis. Publiek event `aviation.flight`.
+- **Verkoop:** 50% van `purchasePrice` (nooit meer). Toestel verdwijnt.
+- **Reparatie:** betaal `repairCost` uit de catalogus, zet `isBroken` op `false`. Niet-kapot → `AIRCRAFT_NOT_BROKEN`.
 
 ## Eigen Voertuig Smokkelkanaal
 
@@ -170,6 +186,8 @@ Catalogus staten in `backend/content/aircraft.json`:
 - Gate-status (vergrendeld/beschikbaar) altijd zichtbaar in catalogus, incl. welk level nog benodigd is.
 - Cargo-slots gebruikt/vrij zichtbaar in smokkel-manifest UI.
 - Reistijdbonus zichtbaar in Travel scherm vóór vertrek ("Eigen vliegtuig: −X% reistijd").
+- Hangar toont tanken, vliegen, verkopen en repareren op elk bezeten toestel.
+- Help-topic `aviation` staat in Help na Reizen.
 - Confiscatie-kans bij eigen voertuig smokkel altijd expliciet communiceren vóór bevestiging.
 - Correct omgaan met ontbrekende aviation track (level 0 = alles vergrendeld, geen errors).
 
@@ -192,6 +210,8 @@ Catalogus staten in `backend/content/aircraft.json`:
 10. Afbeeldingen laden via WebAssetHelper, errorBuilder toont icoon bij 404.
 11. Mobile + desktop: cataloguskaarten correct, slots-teller leesbaar.
 13. On web dashboard Aviation, verify there is no extra “Luchtvaart” AppBar title, hero chips match school/license/owned state, and buy buttons stay disabled with a reason when rank, cash or license is missing.
+14. Hangar: tanken vult tot maxFuel, vliegen met 100 L wisselt land, verkopen geeft 50%, reparatie werkt alleen als `isBroken`.
+15. Travel-hero toont “Eigen vliegtuig: −X% reistijd” zodra de speler een toestel bezit; etappe-cooldown is korter.
 12. Backend logs: geen PrismaClientValidationError.
 
 ## i18n and Messaging
@@ -205,6 +225,8 @@ Catalogus staten in `backend/content/aircraft.json`:
 - "Gesmokkeld via [naam voertuig]" / "Smuggled via [vehicle name]"
 - "Voertuig in beslag genomen!" / "Vehicle confiscated!"
 - "Eigen vliegtuig: −X% reistijd" / "Own aircraft: −X% travel time"
+- "Toestel getankt" / "Aircraft refueled"
+- "Vliegtuig gerepareerd" / "Aircraft repaired"
 
 ## When To Update This File
 Update bij: nieuw vliegtuigtype, aanpassing cargo-slots, wijziging eigen-voertuig smokkelkanaal, gating-aanpassing, confiscatie-logica of gewijzigde education gates.

@@ -721,6 +721,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get travelCannotAfford => 'Te weinig cash';
 
   @override
+  String travelAircraftBonusChip(String percent) {
+    return 'Eigen vliegtuig: −$percent% reistijd';
+  }
+
+  @override
   String travelVia(String countries) {
     return 'via $countries';
   }
@@ -4220,6 +4225,90 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get aviationRankLocked => 'Rang te laag';
+
+  @override
+  String get aviationRefuel => 'Tanken';
+
+  @override
+  String get aviationRefuelConfirmTitle => 'Toestel tanken?';
+
+  @override
+  String aviationRefuelConfirmBody(String liters, String price) {
+    return 'Tank $liters L voor $price?';
+  }
+
+  @override
+  String get aviationRefuelSuccess => 'Toestel getankt.';
+
+  @override
+  String get aviationRefuelFailed => 'Tanken mislukt.';
+
+  @override
+  String get aviationRefuelFull => 'De tank is al vol.';
+
+  @override
+  String get aviationFlyConfirmTitle => 'Nu vliegen?';
+
+  @override
+  String aviationFlyConfirmBody(String name, String country) {
+    return 'Vlieg met $name naar $country? Kost 100 L en je komt direct aan.';
+  }
+
+  @override
+  String get aviationFlyPickDestination => 'Kies bestemming';
+
+  @override
+  String get aviationFlySuccess => 'Je bent geland.';
+
+  @override
+  String get aviationFlyFailed => 'Vlucht mislukt.';
+
+  @override
+  String get aviationFlyNeedFuel =>
+      'Te weinig brandstof. Een vlucht kost 100 L.';
+
+  @override
+  String get aviationFlyBroken =>
+      'Dit toestel is kapot en moet eerst gerepareerd worden.';
+
+  @override
+  String get aviationSellConfirmTitle => 'Vliegtuig verkopen?';
+
+  @override
+  String aviationSellConfirmBody(String name, String price) {
+    return 'Verkoop $name voor $price? Je krijgt 50% van de aankoopprijs.';
+  }
+
+  @override
+  String get aviationSoldSuccess => 'Vliegtuig verkocht.';
+
+  @override
+  String get aviationSellFailed => 'Verkoop mislukt.';
+
+  @override
+  String get aviationRepair => 'Repareren';
+
+  @override
+  String get aviationRepairConfirmTitle => 'Toestel repareren?';
+
+  @override
+  String aviationRepairConfirmBody(String name, String price) {
+    return 'Repareer $name voor $price?';
+  }
+
+  @override
+  String get aviationRepairSuccess => 'Toestel gerepareerd.';
+
+  @override
+  String get aviationRepairFailed => 'Reparatie mislukt.';
+
+  @override
+  String get aviationBrokenBadge => 'Kapot';
+
+  @override
+  String aviationTravelBonusChip(String percent) {
+    return '−$percent% reistijd';
+  }
 
   @override
   String get crewUiTr0 => 'Vereisten voor hoofdkwartierupgrades';
@@ -15757,7 +15846,25 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTravelTips =>
-      'Plan reizen altijd samen met trade, drugs of smokkel — een lege reis is weggegooid geld.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie onderweg sterk.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.';
+      'Plan reizen altijd samen met trade, drugs of smokkel — een lege reis is weggegooid geld.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie onderweg sterk.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.\nMet een eigen vliegtuig in Luchtvaart wordt de commerciële reiscooldown korter. Privévluchten blijven apart en kosten brandstof.';
+
+  @override
+  String get helpTopicAviationCategory => 'Wereld';
+
+  @override
+  String get helpTopicAviationTitle => 'Luchtvaart';
+
+  @override
+  String get helpTopicAviationSummary =>
+      'Rond Luchtvaart-school af, koop een betaalde licentie en koop daarna een vliegtuig om direct te vliegen, commerciële reistijd te korten en je hangar te onderhouden.';
+
+  @override
+  String get helpTopicAviationHow =>
+      'Haal Luchtvaart-school tot level 5 en beide vliegbrevetten voordat je een betaalde licentie kunt kopen.\nKoop op het Luchtvaart-scherm een betaalde licentie: basic, commercial of cargo. Hogere tiers ontgrendelen zwaardere toestellen.\nKoop een vliegtuig uit de hangar-catalogus. Nieuwe toestellen starten met een lege tank.\nTank in de hangar voor €50 per liter. Een privévlucht kost 100 L en verplaatst je direct naar een ander land.\nGewoon Reizen blijft tickets en etappes gebruiken. Een eigen vliegtuig verkort die wachttijd: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, vrachttoestellen −30%. Alleen het beste toestel telt.\nVerkoop een toestel voor 50% van de aankoopprijs. Repareer een kapot toestel voordat je kunt tanken of vliegen.';
+
+  @override
+  String get helpTopicAviationTips =>
+      'School 5/5 is niet genoeg: je hebt nog steeds de betaalde licentie nodig voor aankoop.\nTank minstens 100 L voordat je vliegt. Een lege tank blijft aan de grond.\nEen vliegtuig versnelt ook gewoon Reizen, ook als je de commerciële route neemt.\nVerkoop ongebruikte toestellen als je cash nodig hebt; je krijgt de helft terug.';
 
   @override
   String get helpTopicCrewCategory => 'Sociaal';

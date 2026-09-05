@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
+import '../utils/country_helper.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
@@ -30,8 +31,12 @@ class _AviationScreenState extends State<AviationScreen> {
 
   final ApiClient _apiClient = ApiClient();
 
+  static const int _fuelCostPerLiter = 50;
+  static const int _fuelPerFlight = 100;
+
   bool _isLoading = true;
   bool _isBuying = false;
+  int? _busyAircraftId;
   String? _error;
   bool _hasLicense = false;
   String? _licenseType;
@@ -391,6 +396,279 @@ class _AviationScreenState extends State<AviationScreen> {
     }
   }
 
+  Future<void> _refuelAircraft(Map<String, dynamic> item) async {
+    if (_busyAircraftId != null) return;
+    final l10n = AppLocalizations.of(context)!;
+    final aircraftId = (item['id'] as num?)?.toInt();
+    if (aircraftId == null) return;
+
+    final fuel = (item['fuel'] as num?)?.toInt() ?? 0;
+    final maxFuel = (item['maxFuel'] as num?)?.toInt() ?? 0;
+    final liters = maxFuel - fuel;
+    if (liters <= 0) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(backgroundColor: Colors.orange, content: Text(l10n.aviationRefuelFull)),
+      );
+      return;
+    }
+    if (item['isBroken'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(backgroundColor: Colors.red, content: Text(l10n.aviationFlyBroken)),
+      );
+      return;
+    }
+
+    final cost = liters * _fuelCostPerLiter;
+    final confirm = await _confirmHangarAction(
+      title: l10n.aviationRefuelConfirmTitle,
+      body: l10n.aviationRefuelConfirmBody(
+        liters.toString(),
+        formatCurrency(cost),
+      ),
+      actionLabel: l10n.aviationRefuel,
+    );
+    if (confirm != true) return;
+
+    await _runAircraftAction(
+      aircraftId: aircraftId,
+      path: '/aviation/refuel/$aircraftId',
+      body: {'amount': liters},
+      successFallback: l10n.aviationRefuelSuccess,
+      failureFallback: l10n.aviationRefuelFailed,
+    );
+  }
+
+  Future<void> _flyAircraft(Map<String, dynamic> item) async {
+    if (_busyAircraftId != null) return;
+    final l10n = AppLocalizations.of(context)!;
+    final aircraftId = (item['id'] as num?)?.toInt();
+    if (aircraftId == null) return;
+
+    if (item['isBroken'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(backgroundColor: Colors.red, content: Text(l10n.aviationFlyBroken)),
+      );
+      return;
+    }
+    final fuel = (item['fuel'] as num?)?.toInt() ?? 0;
+    if (fuel < _fuelPerFlight) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(backgroundColor: Colors.orange, content: Text(l10n.aviationFlyNeedFuel)),
+      );
+      return;
+    }
+
+    final currentCountry =
+        Provider.of<AuthProvider>(context, listen: false).currentPlayer?.currentCountry ??
+        'netherlands';
+    final destinations = CountryHelper.aviationDestinations
+        .where((id) => id != currentCountry)
+        .toList(growable: false);
+
+    final destination = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: _panelBg,
+        title: Text(
+          l10n.aviationFlyPickDestination,
+          style: const TextStyle(color: _gold, fontWeight: FontWeight.w800),
+        ),
+        content: SizedBox(
+          width: 360,
+          height: 420,
+          child: ListView.builder(
+            itemCount: destinations.length,
+            itemBuilder: (context, index) {
+              final id = destinations[index];
+              final name = CountryHelper.getLocalizedCountryName(id, l10n);
+              return ListTile(
+                leading: Text(CountryHelper.getCountryFlag(id)),
+                title: Text(name, style: const TextStyle(color: Colors.white)),
+                onTap: () => Navigator.pop(context, id),
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            style: TextButton.styleFrom(foregroundColor: Colors.white70),
+            child: Text(l10n.cancel),
+          ),
+        ],
+      ),
+    );
+    if (destination == null || destination.isEmpty) return;
+
+    final countryName = CountryHelper.getLocalizedCountryName(destination, l10n);
+    final confirm = await _confirmHangarAction(
+      title: l10n.aviationFlyConfirmTitle,
+      body: l10n.aviationFlyConfirmBody(
+        _ownedDisplayName(item, l10n),
+        countryName,
+      ),
+      actionLabel: l10n.fly,
+    );
+    if (confirm != true) return;
+
+    final remainingMoney = await _runAircraftAction(
+      aircraftId: aircraftId,
+      path: '/aviation/fly/$aircraftId',
+      body: {'destination': destination},
+      successFallback: l10n.aviationFlySuccess,
+      failureFallback: l10n.aviationFlyFailed,
+    );
+    if (remainingMoney != null && mounted) {
+      Provider.of<AuthProvider>(context, listen: false)
+          .updatePlayerStats(currentCountry: destination);
+    }
+  }
+
+  Future<void> _sellAircraft(Map<String, dynamic> item) async {
+    if (_busyAircraftId != null) return;
+    final l10n = AppLocalizations.of(context)!;
+    final aircraftId = (item['id'] as num?)?.toInt();
+    if (aircraftId == null) return;
+
+    final purchasePrice = (item['purchasePrice'] as num?)?.toInt() ?? 0;
+    final salePrice = (purchasePrice / 2).floor();
+    final confirm = await _confirmHangarAction(
+      title: l10n.aviationSellConfirmTitle,
+      body: l10n.aviationSellConfirmBody(
+        _ownedDisplayName(item, l10n),
+        formatCurrency(salePrice),
+      ),
+      actionLabel: l10n.sell,
+    );
+    if (confirm != true) return;
+
+    await _runAircraftAction(
+      aircraftId: aircraftId,
+      path: '/aviation/sell/$aircraftId',
+      successFallback: l10n.aviationSoldSuccess,
+      failureFallback: l10n.aviationSellFailed,
+    );
+  }
+
+  Future<void> _repairAircraft(Map<String, dynamic> item) async {
+    if (_busyAircraftId != null) return;
+    final l10n = AppLocalizations.of(context)!;
+    final aircraftId = (item['id'] as num?)?.toInt();
+    if (aircraftId == null) return;
+
+    final cost = (item['repairCost'] as num?)?.toInt() ?? 0;
+    final confirm = await _confirmHangarAction(
+      title: l10n.aviationRepairConfirmTitle,
+      body: l10n.aviationRepairConfirmBody(
+        _ownedDisplayName(item, l10n),
+        formatCurrency(cost),
+      ),
+      actionLabel: l10n.aviationRepair,
+    );
+    if (confirm != true) return;
+
+    await _runAircraftAction(
+      aircraftId: aircraftId,
+      path: '/aviation/repair/$aircraftId',
+      successFallback: l10n.aviationRepairSuccess,
+      failureFallback: l10n.aviationRepairFailed,
+    );
+  }
+
+  Future<bool?> _confirmHangarAction({
+    required String title,
+    required String body,
+    required String actionLabel,
+  }) {
+    final l10n = AppLocalizations.of(context)!;
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: _panelBg,
+        title: Text(
+          title,
+          style: const TextStyle(color: _gold, fontWeight: FontWeight.w800),
+        ),
+        content: Text(body, style: const TextStyle(color: Colors.white70)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            style: TextButton.styleFrom(foregroundColor: Colors.white70),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _gold,
+              foregroundColor: Colors.black,
+            ),
+            child: Text(actionLabel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<int?> _runAircraftAction({
+    required int aircraftId,
+    required String path,
+    Map<String, dynamic>? body,
+    required String successFallback,
+    required String failureFallback,
+  }) async {
+    setState(() => _busyAircraftId = aircraftId);
+    try {
+      final response = await _apiClient.post(path, body ?? const <String, dynamic>{});
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode >= 400 || data['success'] == false) {
+        if (!mounted) return null;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(data['message']?.toString() ?? failureFallback),
+          ),
+        );
+        return null;
+      }
+
+      final remainingMoney = (data['remainingMoney'] as num?)?.toInt();
+      if (remainingMoney != null && mounted) {
+        Provider.of<AuthProvider>(
+          context,
+          listen: false,
+        ).updatePlayerStats(money: remainingMoney);
+      }
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(data['message']?.toString() ?? successFallback),
+          ),
+        );
+      }
+      await _loadData();
+      return remainingMoney ?? 0;
+    } catch (e) {
+      if (!mounted) return null;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(AppLocalizations.of(context)!.error(e.toString())),
+        ),
+      );
+      return null;
+    } finally {
+      if (mounted) setState(() => _busyAircraftId = null);
+    }
+  }
+
   String _requiredLicenseForAircraft(String aircraftTypeField) {
     switch (aircraftTypeField) {
       case 'business_jet':
@@ -632,46 +910,122 @@ class _AviationScreenState extends State<AviationScreen> {
     );
   }
 
+  Widget _hangarAction({
+    required String label,
+    required VoidCallback? onPressed,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: _gold,
+        foregroundColor: Colors.black,
+        disabledBackgroundColor: const Color(0xFF3A4252),
+        disabledForegroundColor: Colors.white38,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        minimumSize: const Size(0, 36),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: Text(label),
+    );
+  }
+
   Widget _buildOwnedCard(Map<String, dynamic> item, AppLocalizations l10n) {
     final name = _ownedDisplayName(item, l10n);
     final fuel = (item['fuel'] as num?)?.toInt() ?? 0;
     final maxFuel = (item['maxFuel'] as num?)?.toInt() ?? 0;
     final type = item['aircraftType']?.toString() ?? '';
+    final broken = item['isBroken'] == true;
+    final travelBonus = (item['travelBonus'] as num?)?.toDouble() ?? 0;
+    final repairCost = (item['repairCost'] as num?)?.toInt() ?? 0;
+    final aircraftId = (item['id'] as num?)?.toInt();
+    final busy = _busyAircraftId != null;
+    final canRefuel = !broken && !busy && fuel < maxFuel;
+    final canFly = !broken && !busy && fuel >= _fuelPerFlight;
+    final canRepair = broken && !busy && repairCost > 0;
     return _buildPanel(
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 64,
-            height: 64,
-            child: WebAssetHelper.image(
-              _imageForAircraftType(type),
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.flight, size: 32, color: _gold),
-            ),
+          Row(
+            children: [
+              SizedBox(
+                width: 64,
+                height: 64,
+                child: WebAssetHelper.image(
+                  _imageForAircraftType(type),
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.flight, size: 32, color: _gold),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: [
+                        _statChip(
+                          l10n.aviationUiFuelLabel(fuel, maxFuel),
+                          fuel <= 0
+                              ? const Color(0xFFE5967A)
+                              : const Color(0xFF72C48F),
+                        ),
+                        if (travelBonus > 0)
+                          _statChip(
+                            l10n.aviationTravelBonusChip(
+                              (travelBonus * 100).round().toString(),
+                            ),
+                            _gold,
+                          ),
+                        if (broken)
+                          _statChip(
+                            l10n.aviationBrokenBadge,
+                            const Color(0xFFE5967A),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 15,
-                  ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              _hangarAction(
+                label: l10n.aviationRefuel,
+                onPressed: canRefuel ? () => _refuelAircraft(item) : null,
+              ),
+              _hangarAction(
+                label: l10n.fly,
+                onPressed: canFly ? () => _flyAircraft(item) : null,
+              ),
+              if (broken)
+                _hangarAction(
+                  label: l10n.aviationRepair,
+                  onPressed: canRepair ? () => _repairAircraft(item) : null,
                 ),
-                const SizedBox(height: 6),
-                _statChip(
-                  l10n.aviationUiFuelLabel(fuel, maxFuel),
-                  fuel <= 0
-                      ? const Color(0xFFE5967A)
-                      : const Color(0xFF72C48F),
-                ),
-              ],
-            ),
+              _hangarAction(
+                label: l10n.sell,
+                onPressed: (busy || aircraftId == null)
+                    ? null
+                    : () => _sellAircraft(item),
+              ),
+            ],
           ),
         ],
       ),
@@ -694,6 +1048,7 @@ class _AviationScreenState extends State<AviationScreen> {
     final speedMultiplier =
         (item['speedMultiplier'] as num?)?.toDouble() ?? 1.0;
     final cargoCapacity = (item['cargoCapacity'] as num?)?.toInt() ?? 0;
+    final travelBonus = (item['travelBonus'] as num?)?.toDouble() ?? 0;
     final requiredLicense = _requiredLicenseForAircraft(
       item['type']?.toString() ?? '',
     );
@@ -784,6 +1139,13 @@ class _AviationScreenState extends State<AviationScreen> {
                 l10n.aviationUiCargoCapacity(cargoCapacity),
                 Colors.white70,
               ),
+              if (travelBonus > 0)
+                _statChip(
+                  l10n.aviationTravelBonusChip(
+                    (travelBonus * 100).round().toString(),
+                  ),
+                  _gold,
+                ),
               _statChip(
                 l10n.aviationRequiresLicense(
                   _licenseLabel(requiredLicense, l10n),

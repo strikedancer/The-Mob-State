@@ -662,11 +662,16 @@ Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-
 - **Range**: 10,000 km
 - **Trade bonus**: 2x inventory capacity
 
-### Flight Mechanics
-- **Ownership**: Permanently owned
-- **Free travel**: Geen ticket kosten
-- **Fuel**: Included (no separate cost)
-- **Maintenance**: Automatisch
+### Hangar
+- **Tanken:** €50/L vanaf het Aviation-scherm tot `maxFuel`.
+- **Privévlucht:** 100 L, instant landwissel, dagelijkse globale vluchtcap.
+- **Verkoop:** 50% van de aankoopprijs.
+- **Reparatie:** `repairCost` uit de catalogus als `isBroken` true is.
+
+### Reistijdbonus op Reizen
+- Beste bezeten vliegtuig verkort commerciële etappe-cooldown (`3600s × (1 − bonus)`).
+- Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo −30%. Niet cumulatief.
+- Zichtbaar op het Reizen-scherm als "Eigen vliegtuig: −X% reistijd".
 
 ---
 

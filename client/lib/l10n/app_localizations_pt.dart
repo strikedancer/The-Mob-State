@@ -721,6 +721,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get travelCannotAfford => 'Não há dinheiro suficiente';
 
   @override
+  String travelAircraftBonusChip(String percent) {
+    return 'Aeronave própria: −$percent% tempo de viagem';
+  }
+
+  @override
   String travelVia(String countries) {
     return 'através de $countries';
   }
@@ -4227,6 +4232,90 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aviationRankLocked => 'Classificação muito baixa';
+
+  @override
+  String get aviationRefuel => 'Reabastecer';
+
+  @override
+  String get aviationRefuelConfirmTitle => 'Reabastecer aeronaves?';
+
+  @override
+  String aviationRefuelConfirmBody(String liters, String price) {
+    return 'Encha o tanque com $liters L por $price?';
+  }
+
+  @override
+  String get aviationRefuelSuccess => 'Aeronave reabastecida.';
+
+  @override
+  String get aviationRefuelFailed => 'O reabastecimento falhou.';
+
+  @override
+  String get aviationRefuelFull => 'O tanque já está cheio.';
+
+  @override
+  String get aviationFlyConfirmTitle => 'Voar agora?';
+
+  @override
+  String aviationFlyConfirmBody(String name, String country) {
+    return 'Voar $name para $country? Usa 100 L e chega instantaneamente.';
+  }
+
+  @override
+  String get aviationFlyPickDestination => 'Escolha o destino';
+
+  @override
+  String get aviationFlySuccess => 'Você pousou.';
+
+  @override
+  String get aviationFlyFailed => 'O voo falhou.';
+
+  @override
+  String get aviationFlyNeedFuel =>
+      'Não há combustível suficiente. Um vôo usa 100 L.';
+
+  @override
+  String get aviationFlyBroken =>
+      'Esta aeronave está quebrada e deve ser reparada primeiro.';
+
+  @override
+  String get aviationSellConfirmTitle => 'Vender aeronaves?';
+
+  @override
+  String aviationSellConfirmBody(String name, String price) {
+    return 'Vender $name por $price? Você recebe 50% do preço de compra.';
+  }
+
+  @override
+  String get aviationSoldSuccess => 'Aeronave vendida.';
+
+  @override
+  String get aviationSellFailed => 'A venda falhou.';
+
+  @override
+  String get aviationRepair => 'Reparar';
+
+  @override
+  String get aviationRepairConfirmTitle => 'Reparar aeronaves?';
+
+  @override
+  String aviationRepairConfirmBody(String name, String price) {
+    return 'Reparar $name para $price?';
+  }
+
+  @override
+  String get aviationRepairSuccess => 'Aeronave reparada.';
+
+  @override
+  String get aviationRepairFailed => 'Falha no reparo.';
+
+  @override
+  String get aviationBrokenBadge => 'Quebrada';
+
+  @override
+  String aviationTravelBonusChip(String percent) {
+    return '−$percent% tempo de viagem';
+  }
 
   @override
   String get crewUiTr0 => 'Requisitos de atualização do QG';
@@ -15841,6 +15930,24 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get helpTopicTravelTips =>
       'Combine sempre viagens com comércio, drogas ou contrabando – viagens vazias desperdiçam dinheiro. \nReduza o seu nível de procurado antes da partida: um nível de procurado elevado aumenta muito o risco de confisco no caminho. \nPlaneje sua viagem de volta com antecedência para já saber o que levar na chegada.';
+
+  @override
+  String get helpTopicAviationCategory => 'Mundo';
+
+  @override
+  String get helpTopicAviationTitle => 'Aviação';
+
+  @override
+  String get helpTopicAviationSummary =>
+      'Conclua a escola de aviação, compre uma licença paga e, em seguida, compre um avião para voar instantaneamente, reduza o tempo de viagem comercial e venda ou repare sua frota de hangares.';
+
+  @override
+  String get helpTopicAviationHow =>
+      'Conclua a escola de aviação até o nível 5 e ganhe os dois certificados de voo antes de comprar uma licença paga. \nCompre uma licença paga na tela Aviação: básica, comercial ou de carga. Camadas mais altas desbloqueiam aviões mais pesados. \nCompre uma aeronave no catálogo do hangar. Novos aviões começam com o tanque vazio. \nReabasteça no hangar a 50€ por litro. Um voo privado usa 100 L e leva você para outro país instantaneamente. \nA Viagem Comercial ainda usa passagens e trechos. Possuir um avião reduz essa espera: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviões de carga −30%. Somente o melhor avião conta. \nVenda um avião próprio por 50% do preço de compra. Conserte um avião quebrado antes de poder reabastecê-lo ou pilotá-lo.';
+
+  @override
+  String get helpTopicAviationTips =>
+      'A escola 5/5 não é suficiente: você ainda precisa da licença paga antes de qualquer compra. \nTanque suficiente para 100 L antes de voar. Um avião vazio não pode sair do hangar. \nUm avião também acelera a viagem normal, mesmo se você seguir a rota comercial. \nVenda aviões não utilizados se precisar de dinheiro; você recebe apenas metade do que pagou.';
 
   @override
   String get helpTopicCrewCategory => 'Social';

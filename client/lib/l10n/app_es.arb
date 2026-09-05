@@ -11146,5 +11146,89 @@
       }
     }
   },
-  "aviationRankLocked": "Clasificación demasiado baja"
+  "aviationRankLocked": "Clasificación demasiado baja",
+  "travelAircraftBonusChip": "Avión propio: −{percent}% tiempo de viaje",
+  "@travelAircraftBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuel": "Repostar",
+  "aviationRefuelConfirmTitle": "¿Repostar aviones?",
+  "aviationRefuelConfirmBody": "¿Llenar el tanque con {liters} L para {price}?",
+  "@aviationRefuelConfirmBody": {
+    "placeholders": {
+      "liters": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuelSuccess": "Aviones repostados.",
+  "aviationRefuelFailed": "Falló el repostaje.",
+  "aviationRefuelFull": "El tanque ya está lleno.",
+  "aviationFlyConfirmTitle": "¿Volar ahora?",
+  "aviationFlyConfirmBody": "¿Volar {name} a {country}? Consume 100 L y llega al instante.",
+  "@aviationFlyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFlyPickDestination": "Elige destino",
+  "aviationFlySuccess": "Aterrizaste.",
+  "aviationFlyFailed": "El vuelo falló.",
+  "aviationFlyNeedFuel": "No hay suficiente combustible. Un vuelo consume 100 L.",
+  "aviationFlyBroken": "Este avión está averiado y primero debe repararse.",
+  "aviationSellConfirmTitle": "¿Vender aviones?",
+  "aviationSellConfirmBody": "¿Vender {name} por {price}? Obtienes el 50% del precio de compra.",
+  "@aviationSellConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationSoldSuccess": "Aviones vendidos.",
+  "aviationSellFailed": "La venta fracasó.",
+  "aviationRepair": "Reparar",
+  "aviationRepairConfirmTitle": "¿Reparar aviones?",
+  "aviationRepairConfirmBody": "¿Reparar {name} por {price}?",
+  "@aviationRepairConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRepairSuccess": "Aviones reparados.",
+  "aviationRepairFailed": "La reparación falló.",
+  "aviationBrokenBadge": "Rota",
+  "aviationTravelBonusChip": "−{percent}% tiempo de viaje",
+  "@aviationTravelBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "helpTopicAviationCategory": "Mundo",
+  "helpTopicAviationTitle": "Aviación",
+  "helpTopicAviationSummary": "Termine la escuela de aviación, compre una licencia paga, luego compre un avión para volar instantáneamente, reduzca el tiempo de viaje comercial y venda o repare su flota de hangares.",
+  "helpTopicAviationHow": "Complete la escuela de aviación hasta el nivel 5 y obtenga ambos certificados de vuelo antes de poder comprar una licencia paga. \nCompra una licencia paga en la pantalla de Aviación: básica, comercial o de carga. Los niveles más altos desbloquean aviones más pesados. \nCompra un avión del catálogo de hangares. Los nuevos aviones comienzan con el tanque vacío. \nRepostar desde el hangar a 50€ el litro. Un vuelo privado consume 100 L y te traslada a otro país al instante. \nCommercial Travel todavía utiliza billetes y tramos. Ser propietario de un avión acorta esa espera: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviones de carga −30%. Sólo el mejor avión cuenta. \nVender un avión en propiedad por el 50% del precio de compra. Repara un avión averiado antes de poder repostar o volarlo.",
+  "helpTopicAviationTips": "School 5/5 no es suficiente: aún necesita la licencia paga antes de cualquier compra. \nTanque suficiente para 100 L antes de volar. Un avión vacío no puede salir del hangar. \nUn avión también acelera los viajes normales, incluso si se toma la ruta comercial. \nVender aviones no utilizados si necesita dinero en efectivo; solo obtienes la mitad de lo que pagaste."
 }

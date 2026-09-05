@@ -34,6 +34,11 @@ class _TravelScreenState extends State<TravelScreen> {
   static const Color _panelBg = Color(0xFF151B28);
   static const Color _panelBorder = Color(0xFF2A3344);
 
+  int get _effectiveLegMinutes {
+    final reduced = (_legCooldownMinutes * (1 - _aircraftTravelBonus)).round();
+    return reduced < 1 ? 1 : reduced;
+  }
+
   final ApiClient _apiClient = ApiClient();
   final JailService _jailService = JailService();
 
@@ -46,6 +51,8 @@ class _TravelScreenState extends State<TravelScreen> {
   /// countryCode -> police pressure snapshot from GET /police/countries
   Map<String, Map<String, dynamic>> _policeByCountry = {};
   bool _countryPoliceEnabled = false;
+
+  double _aircraftTravelBonus = 0;
 
   bool _isInTransit = false;
   String? _journeyDestination;
@@ -114,6 +121,8 @@ class _TravelScreenState extends State<TravelScreen> {
 
         setState(() {
           _countries = parsedCountries;
+          _aircraftTravelBonus =
+              (data['aircraftTravelBonus'] as num?)?.toDouble() ?? 0;
           _isLoading = false;
         });
         await _loadCountryPoliceCountries();
@@ -317,12 +326,24 @@ class _TravelScreenState extends State<TravelScreen> {
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      l10n.travelCooldownPerLeg(_legCooldownMinutes.toString()),
+                      l10n.travelCooldownPerLeg(_effectiveLegMinutes.toString()),
                       style: const TextStyle(color: Colors.white70),
                     ),
                   ),
                 ],
               ),
+              if (_aircraftTravelBonus > 0) ...[
+                const SizedBox(height: 4),
+                Text(
+                  l10n.travelAircraftBonusChip(
+                    (_aircraftTravelBonus * 100).round().toString(),
+                  ),
+                  style: const TextStyle(
+                    color: _gold,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
               Row(
                 children: [
                   Image.asset(
@@ -933,6 +954,13 @@ class _TravelScreenState extends State<TravelScreen> {
                     ? const Color(0xFFE5967A)
                     : Colors.white70,
               ),
+              if (_aircraftTravelBonus > 0)
+                _statChip(
+                  l10n.travelAircraftBonusChip(
+                    (_aircraftTravelBonus * 100).round().toString(),
+                  ),
+                  _gold,
+                ),
             ],
           ),
         ],

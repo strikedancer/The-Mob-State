@@ -11146,5 +11146,89 @@
       }
     }
   },
-  "aviationRankLocked": "Classifica troppo bassa"
+  "aviationRankLocked": "Classifica troppo bassa",
+  "travelAircraftBonusChip": "Aereo proprio: −{percent}% tempo di viaggio",
+  "@travelAircraftBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuel": "Fare rifornimento",
+  "aviationRefuelConfirmTitle": "Fare rifornimento agli aerei?",
+  "aviationRefuelConfirmBody": "Riempire il serbatoio con {liters} L per {price}?",
+  "@aviationRefuelConfirmBody": {
+    "placeholders": {
+      "liters": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuelSuccess": "L'aereo ha fatto rifornimento.",
+  "aviationRefuelFailed": "Rifornimento fallito.",
+  "aviationRefuelFull": "Il serbatoio è già pieno.",
+  "aviationFlyConfirmTitle": "Volare adesso?",
+  "aviationFlyConfirmBody": "Volare da {name} a {country}? Utilizza 100 L e arriva immediatamente.",
+  "@aviationFlyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFlyPickDestination": "Scegli la destinazione",
+  "aviationFlySuccess": "Sei atterrato.",
+  "aviationFlyFailed": "Volo fallito.",
+  "aviationFlyNeedFuel": "Carburante insufficiente. Un volo consuma 100 L.",
+  "aviationFlyBroken": "Questo aereo è rotto e deve essere prima riparato.",
+  "aviationSellConfirmTitle": "Vendere aerei?",
+  "aviationSellConfirmBody": "Vendi {name} per {price}? Ottieni il 50% del prezzo di acquisto.",
+  "@aviationSellConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationSoldSuccess": "Aereo venduto.",
+  "aviationSellFailed": "Vendita fallita.",
+  "aviationRepair": "Riparazione",
+  "aviationRepairConfirmTitle": "Riparare gli aerei?",
+  "aviationRepairConfirmBody": "Riparare {name} per {price}?",
+  "@aviationRepairConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRepairSuccess": "Aereo riparato.",
+  "aviationRepairFailed": "La riparazione non è riuscita.",
+  "aviationBrokenBadge": "Rotta",
+  "aviationTravelBonusChip": "−{percent}% tempo di viaggio",
+  "@aviationTravelBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "helpTopicAviationCategory": "Mondo",
+  "helpTopicAviationTitle": "Aviazione",
+  "helpTopicAviationSummary": "Completa la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per volare immediatamente, riduci i tempi di viaggio commerciale e vendi o ripara la tua flotta di hangar.",
+  "helpTopicAviationHow": "Completa la scuola di aviazione fino al livello 5 e ottieni entrambi i certificati di volo prima di poter acquistare una licenza a pagamento. \nAcquista una licenza a pagamento nella schermata Aviazione: base, commerciale o cargo. I livelli più alti sbloccano aerei più pesanti. \nAcquista un aereo dal catalogo dell'hangar. I nuovi aerei iniziano con un serbatoio vuoto. \nRifornimento dall'hangar a 50€ al litro. Un volo privato consuma 100 L e ti trasferisce istantaneamente in un altro paese. \nI viaggi commerciali utilizzano ancora biglietti e tratte. Possedere un aereo riduce l'attesa: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aerei cargo −30%. Conta solo l'aereo migliore. \nVendere un aereo di proprietà al 50% del prezzo di acquisto. Ripara un aereo rotto prima di poterlo rifornire di carburante o farlo volare.",
+  "helpTopicAviationTips": "School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l'hangar. \nUn aereo inoltre accelera il Viaggio normale anche se si prende la rotta commerciale. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato."
 }

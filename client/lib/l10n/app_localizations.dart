@@ -1430,6 +1430,12 @@ abstract class AppLocalizations {
   /// **'Not enough cash'**
   String get travelCannotAfford;
 
+  /// No description provided for @travelAircraftBonusChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Own aircraft: −{percent}% travel time'**
+  String travelAircraftBonusChip(String percent);
+
   /// No description provided for @travelVia.
   ///
   /// In en, this message translates to:
@@ -7488,6 +7494,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rank too low'**
   String get aviationRankLocked;
+
+  /// No description provided for @aviationRefuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Refuel'**
+  String get aviationRefuel;
+
+  /// No description provided for @aviationRefuelConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refuel aircraft?'**
+  String get aviationRefuelConfirmTitle;
+
+  /// No description provided for @aviationRefuelConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill the tank with {liters} L for {price}?'**
+  String aviationRefuelConfirmBody(String liters, String price);
+
+  /// No description provided for @aviationRefuelSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft refueled.'**
+  String get aviationRefuelSuccess;
+
+  /// No description provided for @aviationRefuelFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Refuel failed.'**
+  String get aviationRefuelFailed;
+
+  /// No description provided for @aviationRefuelFull.
+  ///
+  /// In en, this message translates to:
+  /// **'The tank is already full.'**
+  String get aviationRefuelFull;
+
+  /// No description provided for @aviationFlyConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fly now?'**
+  String get aviationFlyConfirmTitle;
+
+  /// No description provided for @aviationFlyConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Fly {name} to {country}? Uses 100 L and arrives instantly.'**
+  String aviationFlyConfirmBody(String name, String country);
+
+  /// No description provided for @aviationFlyPickDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose destination'**
+  String get aviationFlyPickDestination;
+
+  /// No description provided for @aviationFlySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You landed.'**
+  String get aviationFlySuccess;
+
+  /// No description provided for @aviationFlyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight failed.'**
+  String get aviationFlyFailed;
+
+  /// No description provided for @aviationFlyNeedFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough fuel. A flight uses 100 L.'**
+  String get aviationFlyNeedFuel;
+
+  /// No description provided for @aviationFlyBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'This aircraft is broken and must be repaired first.'**
+  String get aviationFlyBroken;
+
+  /// No description provided for @aviationSellConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell aircraft?'**
+  String get aviationSellConfirmTitle;
+
+  /// No description provided for @aviationSellConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell {name} for {price}? You get 50% of the purchase price.'**
+  String aviationSellConfirmBody(String name, String price);
+
+  /// No description provided for @aviationSoldSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft sold.'**
+  String get aviationSoldSuccess;
+
+  /// No description provided for @aviationSellFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale failed.'**
+  String get aviationSellFailed;
+
+  /// No description provided for @aviationRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair'**
+  String get aviationRepair;
+
+  /// No description provided for @aviationRepairConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair aircraft?'**
+  String get aviationRepairConfirmTitle;
+
+  /// No description provided for @aviationRepairConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair {name} for {price}?'**
+  String aviationRepairConfirmBody(String name, String price);
+
+  /// No description provided for @aviationRepairSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft repaired.'**
+  String get aviationRepairSuccess;
+
+  /// No description provided for @aviationRepairFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair failed.'**
+  String get aviationRepairFailed;
+
+  /// No description provided for @aviationBrokenBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Broken'**
+  String get aviationBrokenBadge;
+
+  /// No description provided for @aviationTravelBonusChip.
+  ///
+  /// In en, this message translates to:
+  /// **'−{percent}% travel time'**
+  String aviationTravelBonusChip(String percent);
 
   /// No description provided for @crewUiTr0.
   ///
@@ -27268,8 +27418,38 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTravelTips.
   ///
   /// In en, this message translates to:
-  /// **'Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.'**
+  /// **'Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.\nOwn a plane in Aviation to cut commercial travel cooldown. Instant private flights still need fuel.'**
   String get helpTopicTravelTips;
+
+  /// No description provided for @helpTopicAviationCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'World'**
+  String get helpTopicAviationCategory;
+
+  /// No description provided for @helpTopicAviationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Aviation'**
+  String get helpTopicAviationTitle;
+
+  /// No description provided for @helpTopicAviationSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Aviation school, buy a paid license, then buy a plane to fly instantly, cut commercial travel time, and sell or repair your hangar fleet.'**
+  String get helpTopicAviationSummary;
+
+  /// No description provided for @helpTopicAviationHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. A private flight uses 100 L and moves you to another country instantly.\nCommercial Travel still uses tickets and legs. Owning a plane shortens that wait: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.'**
+  String get helpTopicAviationHow;
+
+  /// No description provided for @helpTopicAviationTips.
+  ///
+  /// In en, this message translates to:
+  /// **'School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nA plane also speeds up normal Travel even if you take the commercial route.\nSell unused planes if you need cash; you only get half of what you paid.'**
+  String get helpTopicAviationTips;
 
   /// No description provided for @helpTopicCrewCategory.
   ///

@@ -11146,5 +11146,89 @@
       }
     }
   },
-  "aviationRankLocked": "Rang zu niedrig"
+  "aviationRankLocked": "Rang zu niedrig",
+  "travelAircraftBonusChip": "Eigenes Flugzeug: −{percent}% Reisezeit",
+  "@travelAircraftBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuel": "Tanken",
+  "aviationRefuelConfirmTitle": "Flugzeuge betanken?",
+  "aviationRefuelConfirmBody": "Füllen Sie den Tank mit {liters} L für {price}?",
+  "@aviationRefuelConfirmBody": {
+    "placeholders": {
+      "liters": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuelSuccess": "Flugzeuge betankt.",
+  "aviationRefuelFailed": "Das Auftanken ist fehlgeschlagen.",
+  "aviationRefuelFull": "Der Tank ist bereits voll.",
+  "aviationFlyConfirmTitle": "Jetzt fliegen?",
+  "aviationFlyConfirmBody": "Von {name} nach {country} fliegen? Verbraucht 100 l und ist sofort verfügbar.",
+  "@aviationFlyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFlyPickDestination": "Ziel auswählen",
+  "aviationFlySuccess": "Du bist gelandet.",
+  "aviationFlyFailed": "Flug gescheitert.",
+  "aviationFlyNeedFuel": "Nicht genug Treibstoff. Ein Flug verbraucht 100 L.",
+  "aviationFlyBroken": "Dieses Flugzeug ist kaputt und muss zuerst repariert werden.",
+  "aviationSellConfirmTitle": "Flugzeuge verkaufen?",
+  "aviationSellConfirmBody": "{name} für {price} verkaufen? Sie erhalten 50 % des Kaufpreises.",
+  "@aviationSellConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationSoldSuccess": "Flugzeuge verkauft.",
+  "aviationSellFailed": "Der Verkauf ist fehlgeschlagen.",
+  "aviationRepair": "Reparieren",
+  "aviationRepairConfirmTitle": "Flugzeug reparieren?",
+  "aviationRepairConfirmBody": "{name} für {price} reparieren?",
+  "@aviationRepairConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRepairSuccess": "Flugzeuge repariert.",
+  "aviationRepairFailed": "Die Reparatur ist fehlgeschlagen.",
+  "aviationBrokenBadge": "Gebrochen",
+  "aviationTravelBonusChip": "−{percent}% Fahrzeit",
+  "@aviationTravelBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "helpTopicAviationCategory": "Welt",
+  "helpTopicAviationTitle": "Luftfahrt",
+  "helpTopicAviationSummary": "Beenden Sie die Flugschule, erwerben Sie eine kostenpflichtige Lizenz, kaufen Sie dann ein Flugzeug, um sofort fliegen zu können, verkürzen Sie die kommerzielle Reisezeit und verkaufen oder reparieren Sie Ihre Hangarflotte.",
+  "helpTopicAviationHow": "Absolvieren Sie die Flugschule bis zur Stufe 5 und erwerben Sie beide Flugzertifikate, bevor Sie eine kostenpflichtige Lizenz erwerben können. \nKaufen Sie eine kostenpflichtige Lizenz auf dem Luftfahrtbildschirm: Basislizenz, kommerzielle Lizenz oder Frachtlizenz. Höhere Stufen schalten schwerere Flugzeuge frei. \nKaufen Sie ein Flugzeug aus dem Hangarkatalog. Neue Flugzeuge starten mit leerem Tank. \nTanken Sie im Hangar für 50 € pro Liter. Ein Privatflug verbraucht 100 Liter und befördert Sie sofort in ein anderes Land. \nKommerzielle Reisen nutzen immer noch Tickets und Strecken. Der Besitz eines Flugzeugs verkürzt die Wartezeit: Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, Frachtflugzeuge −30 %. Nur das beste Flugzeug zählt. \nVerkaufen Sie ein eigenes Flugzeug für 50 % des Kaufpreises. Reparieren Sie ein kaputtes Flugzeug, bevor Sie es auftanken oder fliegen können.",
+  "helpTopicAviationTips": "School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nEin Flugzeug beschleunigt auch das normale Reisen, selbst wenn Sie die kommerzielle Route nehmen. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben."
 }

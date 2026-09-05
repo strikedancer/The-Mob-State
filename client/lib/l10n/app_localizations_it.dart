@@ -721,6 +721,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get travelCannotAfford => 'Non abbastanza contanti';
 
   @override
+  String travelAircraftBonusChip(String percent) {
+    return 'Aereo proprio: −$percent% tempo di viaggio';
+  }
+
+  @override
   String travelVia(String countries) {
     return 'tramite $countries';
   }
@@ -4238,6 +4243,90 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get aviationRankLocked => 'Classifica troppo bassa';
+
+  @override
+  String get aviationRefuel => 'Fare rifornimento';
+
+  @override
+  String get aviationRefuelConfirmTitle => 'Fare rifornimento agli aerei?';
+
+  @override
+  String aviationRefuelConfirmBody(String liters, String price) {
+    return 'Riempire il serbatoio con $liters L per $price?';
+  }
+
+  @override
+  String get aviationRefuelSuccess => 'L\'aereo ha fatto rifornimento.';
+
+  @override
+  String get aviationRefuelFailed => 'Rifornimento fallito.';
+
+  @override
+  String get aviationRefuelFull => 'Il serbatoio è già pieno.';
+
+  @override
+  String get aviationFlyConfirmTitle => 'Volare adesso?';
+
+  @override
+  String aviationFlyConfirmBody(String name, String country) {
+    return 'Volare da $name a $country? Utilizza 100 L e arriva immediatamente.';
+  }
+
+  @override
+  String get aviationFlyPickDestination => 'Scegli la destinazione';
+
+  @override
+  String get aviationFlySuccess => 'Sei atterrato.';
+
+  @override
+  String get aviationFlyFailed => 'Volo fallito.';
+
+  @override
+  String get aviationFlyNeedFuel =>
+      'Carburante insufficiente. Un volo consuma 100 L.';
+
+  @override
+  String get aviationFlyBroken =>
+      'Questo aereo è rotto e deve essere prima riparato.';
+
+  @override
+  String get aviationSellConfirmTitle => 'Vendere aerei?';
+
+  @override
+  String aviationSellConfirmBody(String name, String price) {
+    return 'Vendi $name per $price? Ottieni il 50% del prezzo di acquisto.';
+  }
+
+  @override
+  String get aviationSoldSuccess => 'Aereo venduto.';
+
+  @override
+  String get aviationSellFailed => 'Vendita fallita.';
+
+  @override
+  String get aviationRepair => 'Riparazione';
+
+  @override
+  String get aviationRepairConfirmTitle => 'Riparare gli aerei?';
+
+  @override
+  String aviationRepairConfirmBody(String name, String price) {
+    return 'Riparare $name per $price?';
+  }
+
+  @override
+  String get aviationRepairSuccess => 'Aereo riparato.';
+
+  @override
+  String get aviationRepairFailed => 'La riparazione non è riuscita.';
+
+  @override
+  String get aviationBrokenBadge => 'Rotta';
+
+  @override
+  String aviationTravelBonusChip(String percent) {
+    return '−$percent% tempo di viaggio';
+  }
 
   @override
   String get crewUiTr0 => 'Requisiti di aggiornamento del quartier generale';
@@ -15896,6 +15985,24 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get helpTopicTravelTips =>
       'Combina sempre il viaggio con il commercio, la droga o il contrabbando: i viaggi a vuoto sono uno spreco di denaro. \nAbbassa il tuo livello di ricercato prima della partenza: un livello elevato di ricercato aumenta notevolmente il rischio di confisca durante il viaggio. \nPianifica in anticipo il viaggio di ritorno in modo da sapere già cosa portare all\'arrivo.';
+
+  @override
+  String get helpTopicAviationCategory => 'Mondo';
+
+  @override
+  String get helpTopicAviationTitle => 'Aviazione';
+
+  @override
+  String get helpTopicAviationSummary =>
+      'Completa la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per volare immediatamente, riduci i tempi di viaggio commerciale e vendi o ripara la tua flotta di hangar.';
+
+  @override
+  String get helpTopicAviationHow =>
+      'Completa la scuola di aviazione fino al livello 5 e ottieni entrambi i certificati di volo prima di poter acquistare una licenza a pagamento. \nAcquista una licenza a pagamento nella schermata Aviazione: base, commerciale o cargo. I livelli più alti sbloccano aerei più pesanti. \nAcquista un aereo dal catalogo dell\'hangar. I nuovi aerei iniziano con un serbatoio vuoto. \nRifornimento dall\'hangar a 50€ al litro. Un volo privato consuma 100 L e ti trasferisce istantaneamente in un altro paese. \nI viaggi commerciali utilizzano ancora biglietti e tratte. Possedere un aereo riduce l\'attesa: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aerei cargo −30%. Conta solo l\'aereo migliore. \nVendere un aereo di proprietà al 50% del prezzo di acquisto. Ripara un aereo rotto prima di poterlo rifornire di carburante o farlo volare.';
+
+  @override
+  String get helpTopicAviationTips =>
+      'School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l\'hangar. \nUn aereo inoltre accelera il Viaggio normale anche se si prende la rotta commerciale. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato.';
 
   @override
   String get helpTopicCrewCategory => 'Sociale';

@@ -8,8 +8,20 @@ import express, { Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { checkCooldown } from '../middleware/checkCooldown';
 import * as travelService from '../services/travelService';
+import * as aviationService from '../services/aviationService';
 import * as policeService from '../services/policeService';
 import * as cooldownService from '../services/cooldownService';
+
+const TRAVEL_LEG_COOLDOWN_SECONDS = 3600;
+
+async function travelCooldownWithAircraftBonus(playerId: number) {
+  const bonus = await aviationService.getBestAircraftBonus(playerId);
+  const seconds = Math.max(
+    60,
+    Math.round(TRAVEL_LEG_COOLDOWN_SECONDS * (1 - Math.min(0.9, Math.max(0, bonus))))
+  );
+  return cooldownService.setCooldown(playerId, 'travel', seconds);
+}
 
 const router = express.Router();
 
@@ -41,13 +53,18 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response, next: Next
     
     // Get player's current country to calculate routes
     const currentCountry = await travelService.getPlayerCountry(playerId);
-    const countries = travelService.getAllCountriesWithRoutes(currentCountry);
+    const aircraftTravelBonus = await aviationService.getBestAircraftBonus(playerId);
+    const countries = travelService.getAllCountriesWithRoutes(
+      currentCountry,
+      aircraftTravelBonus
+    );
     
     return res.json({
       event: 'travel.list',
       params: {},
       countries,
       currentCountry,
+      aircraftTravelBonus,
     });
   } catch (error) {
     return next(error);
@@ -81,12 +98,17 @@ router.get('/countries', authenticate, async (req: AuthRequest, res: Response, n
     
     // Get player's current country to calculate routes
     const currentCountry = await travelService.getPlayerCountry(playerId);
-    const countries = travelService.getAllCountriesWithRoutes(currentCountry);
+    const aircraftTravelBonus = await aviationService.getBestAircraftBonus(playerId);
+    const countries = travelService.getAllCountriesWithRoutes(
+      currentCountry,
+      aircraftTravelBonus
+    );
     
     return res.json({
       success: true,
       countries,
       currentCountry,
+      aircraftTravelBonus,
     });
   } catch (error) {
     return next(error);
@@ -172,8 +194,8 @@ router.post(
       // Continue journey
       const result = await travelService.continueJourney(playerId);
       
-      // Set cooldown after successful travel
-      const cooldownInfo = await cooldownService.setCooldown(playerId, 'travel');
+      // Set cooldown after successful travel (own aircraft shortens the wait)
+      const cooldownInfo = await travelCooldownWithAircraftBonus(playerId);
 
       return res.json({
         ...result,
@@ -306,8 +328,8 @@ router.post(
       // Start journey
       const result = await travelService.startJourney(playerId, countryId);
       
-      // Set cooldown after successful travel
-      const cooldownInfo = await cooldownService.setCooldown(playerId, 'travel');
+      // Set cooldown after successful travel (own aircraft shortens the wait)
+      const cooldownInfo = await travelCooldownWithAircraftBonus(playerId);
 
       return res.json({
         ...result,

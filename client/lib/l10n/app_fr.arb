@@ -11146,5 +11146,89 @@
       }
     }
   },
-  "aviationRankLocked": "Classement trop bas"
+  "aviationRankLocked": "Classement trop bas",
+  "travelAircraftBonusChip": "Propre avion : −{percent}% du temps de trajet",
+  "@travelAircraftBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuel": "Ravitailler",
+  "aviationRefuelConfirmTitle": "Ravitaillement des avions ?",
+  "aviationRefuelConfirmBody": "Remplir le réservoir avec {liters} L pour {price} ?",
+  "@aviationRefuelConfirmBody": {
+    "placeholders": {
+      "liters": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuelSuccess": "Avion ravitaillé.",
+  "aviationRefuelFailed": "Le ravitaillement a échoué.",
+  "aviationRefuelFull": "Le réservoir est déjà plein.",
+  "aviationFlyConfirmTitle": "Voler maintenant ?",
+  "aviationFlyConfirmBody": "Voler de {name} à {country} ? Utilise 100 L et arrive instantanément.",
+  "@aviationFlyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFlyPickDestination": "Choisissez une destination",
+  "aviationFlySuccess": "Vous avez atterri.",
+  "aviationFlyFailed": "Le vol a échoué.",
+  "aviationFlyNeedFuel": "Pas assez de carburant. Un vol consomme 100 L.",
+  "aviationFlyBroken": "Cet avion est cassé et doit être réparé en premier.",
+  "aviationSellConfirmTitle": "Vendre des avions ?",
+  "aviationSellConfirmBody": "Vendre {name} pour {price} ? Vous recevez 50% du prix d'achat.",
+  "@aviationSellConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationSoldSuccess": "Avion vendu.",
+  "aviationSellFailed": "La vente a échoué.",
+  "aviationRepair": "Réparation",
+  "aviationRepairConfirmTitle": "Réparer un avion ?",
+  "aviationRepairConfirmBody": "Réparer {name} pour {price} ?",
+  "@aviationRepairConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRepairSuccess": "Avion réparé.",
+  "aviationRepairFailed": "La réparation a échoué.",
+  "aviationBrokenBadge": "Cassée",
+  "aviationTravelBonusChip": "−{percent}% du temps de trajet",
+  "@aviationTravelBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "helpTopicAviationCategory": "Monde",
+  "helpTopicAviationTitle": "Aviation",
+  "helpTopicAviationSummary": "Terminez l'école d'aviation, achetez une licence payante, puis achetez un avion pour voler instantanément, réduisez le temps de déplacement commercial et vendez ou réparez votre flotte de hangars.",
+  "helpTopicAviationHow": "Terminez l'école d'aviation jusqu'au niveau 5 et obtenez les deux certificats de vol avant de pouvoir acheter une licence payante. \nAchetez une licence payante sur l'écran Aviation : de base, commerciale ou cargo. Les niveaux supérieurs débloquent des avions plus lourds. \nAchetez un avion dans le catalogue du hangar. Les nouveaux avions démarrent avec un réservoir vide. \nFaire le plein au hangar à 50 € le litre. Un vol privé consomme 100 L et vous transporte instantanément vers un autre pays. \nLes voyages commerciaux utilisent toujours des billets et des trajets. Posséder un avion raccourcit cette attente : Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, avions cargo −30 %. Seul le meilleur avion compte. \nVendez un avion en votre possession pour 50 % du prix d'achat. Réparez un avion en panne avant de pouvoir faire le plein ou le piloter.",
+  "helpTopicAviationTips": "L'école 5/5 ne suffit pas : il faut quand même la licence payante avant tout achat. \nRéservoir suffisant pour 100 L avant de voler. Un avion vide ne peut pas quitter le hangar. \nUn avion accélère également les voyages normaux, même si vous empruntez la route commerciale. \nVendez des avions inutilisés si vous avez besoin d’argent liquide ; vous ne recevez que la moitié de ce que vous avez payé."
 }

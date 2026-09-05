@@ -716,6 +716,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get travelCannotAfford => 'Not enough cash';
 
   @override
+  String travelAircraftBonusChip(String percent) {
+    return 'Own aircraft: −$percent% travel time';
+  }
+
+  @override
   String travelVia(String countries) {
     return 'via $countries';
   }
@@ -4195,6 +4200,89 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aviationRankLocked => 'Rank too low';
+
+  @override
+  String get aviationRefuel => 'Refuel';
+
+  @override
+  String get aviationRefuelConfirmTitle => 'Refuel aircraft?';
+
+  @override
+  String aviationRefuelConfirmBody(String liters, String price) {
+    return 'Fill the tank with $liters L for $price?';
+  }
+
+  @override
+  String get aviationRefuelSuccess => 'Aircraft refueled.';
+
+  @override
+  String get aviationRefuelFailed => 'Refuel failed.';
+
+  @override
+  String get aviationRefuelFull => 'The tank is already full.';
+
+  @override
+  String get aviationFlyConfirmTitle => 'Fly now?';
+
+  @override
+  String aviationFlyConfirmBody(String name, String country) {
+    return 'Fly $name to $country? Uses 100 L and arrives instantly.';
+  }
+
+  @override
+  String get aviationFlyPickDestination => 'Choose destination';
+
+  @override
+  String get aviationFlySuccess => 'You landed.';
+
+  @override
+  String get aviationFlyFailed => 'Flight failed.';
+
+  @override
+  String get aviationFlyNeedFuel => 'Not enough fuel. A flight uses 100 L.';
+
+  @override
+  String get aviationFlyBroken =>
+      'This aircraft is broken and must be repaired first.';
+
+  @override
+  String get aviationSellConfirmTitle => 'Sell aircraft?';
+
+  @override
+  String aviationSellConfirmBody(String name, String price) {
+    return 'Sell $name for $price? You get 50% of the purchase price.';
+  }
+
+  @override
+  String get aviationSoldSuccess => 'Aircraft sold.';
+
+  @override
+  String get aviationSellFailed => 'Sale failed.';
+
+  @override
+  String get aviationRepair => 'Repair';
+
+  @override
+  String get aviationRepairConfirmTitle => 'Repair aircraft?';
+
+  @override
+  String aviationRepairConfirmBody(String name, String price) {
+    return 'Repair $name for $price?';
+  }
+
+  @override
+  String get aviationRepairSuccess => 'Aircraft repaired.';
+
+  @override
+  String get aviationRepairFailed => 'Repair failed.';
+
+  @override
+  String get aviationBrokenBadge => 'Broken';
+
+  @override
+  String aviationTravelBonusChip(String percent) {
+    return '−$percent% travel time';
+  }
 
   @override
   String get crewUiTr0 => 'HQ upgrade requirements';
@@ -15719,7 +15807,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicTravelTips =>
-      'Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.';
+      'Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.\nOwn a plane in Aviation to cut commercial travel cooldown. Instant private flights still need fuel.';
+
+  @override
+  String get helpTopicAviationCategory => 'World';
+
+  @override
+  String get helpTopicAviationTitle => 'Aviation';
+
+  @override
+  String get helpTopicAviationSummary =>
+      'Finish Aviation school, buy a paid license, then buy a plane to fly instantly, cut commercial travel time, and sell or repair your hangar fleet.';
+
+  @override
+  String get helpTopicAviationHow =>
+      'Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. A private flight uses 100 L and moves you to another country instantly.\nCommercial Travel still uses tickets and legs. Owning a plane shortens that wait: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.';
+
+  @override
+  String get helpTopicAviationTips =>
+      'School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nA plane also speeds up normal Travel even if you take the commercial route.\nSell unused planes if you need cash; you only get half of what you paid.';
 
   @override
   String get helpTopicCrewCategory => 'Social';

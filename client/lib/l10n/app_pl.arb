@@ -11146,5 +11146,89 @@
       }
     }
   },
-  "aviationRankLocked": "Zbyt niska ranga"
+  "aviationRankLocked": "Zbyt niska ranga",
+  "travelAircraftBonusChip": "Własny samolot: −{percent}% czasu podróży",
+  "@travelAircraftBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuel": "Zatankować",
+  "aviationRefuelConfirmTitle": "Zatankować samolot?",
+  "aviationRefuelConfirmBody": "Napełnić zbiornik {liters} L przez {price}?",
+  "@aviationRefuelConfirmBody": {
+    "placeholders": {
+      "liters": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRefuelSuccess": "Samolot zatankowano.",
+  "aviationRefuelFailed": "Tankowanie nie powiodło się.",
+  "aviationRefuelFull": "Zbiornik jest już pełny.",
+  "aviationFlyConfirmTitle": "Latać teraz?",
+  "aviationFlyConfirmBody": "Polecieć {name} do {country}? Zużywa 100 L i dociera natychmiast.",
+  "@aviationFlyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFlyPickDestination": "Wybierz miejsce docelowe",
+  "aviationFlySuccess": "Wylądowałeś.",
+  "aviationFlyFailed": "Lot nie powiódł się.",
+  "aviationFlyNeedFuel": "Za mało paliwa. Lot zużywa 100 litrów.",
+  "aviationFlyBroken": "Ten samolot jest uszkodzony i należy go najpierw naprawić.",
+  "aviationSellConfirmTitle": "Sprzedać samolot?",
+  "aviationSellConfirmBody": "Sprzedać {name} za {price}? Otrzymujesz 50% ceny zakupu.",
+  "@aviationSellConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationSoldSuccess": "Samolot sprzedany.",
+  "aviationSellFailed": "Sprzedaż nie powiodła się.",
+  "aviationRepair": "Naprawa",
+  "aviationRepairConfirmTitle": "Naprawić samolot?",
+  "aviationRepairConfirmBody": "Naprawić {name} dla {price}?",
+  "@aviationRepairConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRepairSuccess": "Samolot naprawiony.",
+  "aviationRepairFailed": "Naprawa nie powiodła się.",
+  "aviationBrokenBadge": "Złamany",
+  "aviationTravelBonusChip": "−{percent}% czasu podróży",
+  "@aviationTravelBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "helpTopicAviationCategory": "Świat",
+  "helpTopicAviationTitle": "Lotnictwo",
+  "helpTopicAviationSummary": "Ukończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby natychmiast latać, skróć czas podróży komercyjnych i sprzedaj lub napraw swoją flotę w hangarze.",
+  "helpTopicAviationHow": "Ukończ szkołę lotniczą do poziomu 5 i zdobądź oba certyfikaty lotnicze, zanim będziesz mógł kupić płatną licencję. \nKup płatną licencję na ekranie Lotnictwo: podstawową, komercyjną lub cargo. Wyższe poziomy odblokowują cięższe samoloty. \nKup samolot z katalogu hangaru. Nowe samoloty startują z pustym zbiornikiem. \nTankuj w hangarze po 50 € za litr. Prywatny lot zużywa 100 litrów i pozwala natychmiastowo przenieść się do innego kraju. \nPodróże komercyjne nadal korzystają z biletów i nóg. Posiadanie samolotu skraca czas oczekiwania: Cessna –15%, King Air –25%, Citation –30%, Gulfstream –35%, samoloty cargo –30%. Liczy się tylko najlepszy samolot. \nSprzedaj posiadany samolot za 50% ceny zakupu. Napraw zepsuty samolot, zanim będziesz mógł go zatankować lub polecieć.",
+  "helpTopicAviationTips": "Szkoła 5/5 nie wystarczy: przed zakupem nadal potrzebujesz płatnej licencji. \nZbiornik wystarczający na 100 litrów przed lotem. Pusty samolot nie może opuścić hangaru. \nSamolot przyspiesza również normalną podróż, nawet jeśli wybierasz trasę komercyjną. \nSprzedaj nieużywane samoloty, jeśli potrzebujesz gotówki; dostajesz tylko połowę tego, co zapłaciłeś."
 }

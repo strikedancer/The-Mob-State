@@ -47,18 +47,19 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 
 Als een speler een privévliegtuig bezit, wordt de internationale reistijd korter:
 
-| Vliegtuig         | Reistijdbonus |
-|-------------------|---------------|
-| Cessna 172        | −15%          |
-| Beechcraft King Air | −25%        |
-| Gulfstream G200   | −35%          |
-| Boeing 737 Cargo  | −30%          |
+| Vliegtuig (live id) | Reistijdbonus |
+|---------------------|---------------|
+| Cessna 172 (`cessna_172`) | −15% |
+| Beechcraft King Air (`king_air_350`) | −25% |
+| Citation X (`citation_x`) | −30% |
+| Gulfstream G650 (`gulfstream_g650`) | −35% |
+| Boeing 737 Cargo / Antonov | −30% |
 
-- Backend loadt het beste vliegtuig van de speler in `travelService` via `aviationService.getBestAircraftBonus(playerId)`.
+- Backend loadt het beste vliegtuig via `aviationService.getBestAircraftBonus(playerId)` (niet cumulatief).
 - Reistijd = `baseReistijd × (1 − bonus)`. Geen vliegtuig = geen bonus (geen regressie).
-- Bonus moet zichtbaar zijn in het Travel scherm vóór vertrek: "Eigen vliegtuig: −X% reistijd" / "Own aircraft: −X% travel time".
-- De bonus geldt voor alle luchtroutes. Waterroutes zijn niet beïnvloed door een vliegtuig.
-- Afhankelijkheid: `aviationService.ts` (nieuw bestand).
+- Bonus is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% reistijd" / "Own aircraft: −X% travel time".
+- De bonus geldt voor commerciële Travel-etappes (1 uur basis per etappe). Waterroutes zijn niet beïnvloed; het huidige landengraf heeft nog geen aparte waterflag.
+- Privévluchten vanaf Luchtvaart zijn instant en staan los van deze cooldown.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -34,6 +34,11 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/travel.md',
   ),
   HelpTopic(
+    id: 'aviation',
+    icon: Icons.flight_takeoff,
+    protocolPath: 'docs/module-protocols/aviation.md',
+  ),
+  HelpTopic(
     id: 'crew',
     icon: Icons.groups,
     protocolPath: 'docs/module-protocols/crew.md',
