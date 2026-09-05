@@ -323,6 +323,8 @@ Voorbeelden:
 
 ## Jobs Systeem
 
+- Op web-Banen staat geen extra paginatitel “Banen” in de contentkaart; het zijmenu toont de sectie al. De statusbalk erboven blijft.
+
 ### Jobs Balans (Sessie)
 - Er geldt geen harde dagcap op jobs.
 - Bij veel herhalingen in een kort sessieblok kan de uitbetaling per job licht afnemen (soft diminishing returns).

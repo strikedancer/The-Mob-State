@@ -29,8 +29,12 @@ enum _JobListSort { reward, rank, success }
 class JobsScreen extends StatefulWidget {
   const JobsScreen({
     super.key,
+    this.embedded = false,
     this.onOpenSchool,
   });
+
+  /// When true (web dashboard), hide the page AppBar; the sidebar already names the page.
+  final bool embedded;
 
   /// When set (e.g. web dashboard), opens the school section.
   final VoidCallback? onOpenSchool;
@@ -969,7 +973,8 @@ class _JobsScreenState extends State<JobsScreen> {
     final playerRank = player?.rank ?? 1;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.jobs)),
+      appBar: widget.embedded ? null : AppBar(title: Text(l10n.jobs)),
+      backgroundColor: widget.embedded ? Colors.transparent : null,
       body: _showJobResult
           ? CrimeResultOverlay(
               embedded: kIsWeb,

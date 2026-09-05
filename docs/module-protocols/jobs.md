@@ -11,6 +11,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
+- Web dashboard Jobs hides the inner AppBar title (“Banen” / “Jobs”); the sidebar already shows the section. Keep the AppBar on standalone / mobile push routes.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing
@@ -40,6 +41,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
+- On web dashboard Jobs, verify there is no extra “Banen”/“Jobs” title above the honest-work hero; the shared status bar stays.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.

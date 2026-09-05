@@ -1796,6 +1796,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       case _WebSection.jobs:
         return JobsScreen(
+          embedded: true,
           onOpenSchool: () => _selectWebSection(_WebSection.school),
         );
       case _WebSection.messages:
