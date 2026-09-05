@@ -19,7 +19,7 @@
   - `client/lib/screens/territory_screen.dart` — kaart-legend met crew-naam ↔ kleur voor snelle interpretatie van ownership op desktop/tablet/mobiel
 - Fase 4 (multi-country assets): ✅ geïmplementeerd
   - `client/assets/images/maps/*.svg` — batch pool van landkaarten toegevoegd (o.a. be, de, fr, us, uk)
-  - `client/lib/screens/territory_screen.dart` — map asset loading nu dynamisch per land via `country.svgAssetKey` met country-code fallback en country selector in de appbar
+  - `client/lib/screens/territory_screen.dart` — map asset loading nu dynamisch per land via `country.svgAssetKey` met country-code fallback en country selector in de appbar. **Open-default:** de kaart start op het land van `player.currentCountry` (travel-id → territory-code, o.a. `france` → `fr`), niet hard op Nederland. Handmatige landkeuze blijft; zonder die keuze volgt de kaart een reis naar een ander land.
   - `backend/src/startup/ensureTerritorySchema.ts` — country seed uitgebreid zodat meerdere landen direct zichtbaar zijn via `/territory/countries`, en regio-seed vult nu alle ondersteunde landen zodat niet-NL kaarten dezelfde interactieve regioflow hebben als Nederland
   - `backend/src/services/territoryService.ts` + `backend/src/routes/territory.ts` — map viewing blijft cross-country toegestaan, maar contest-start, verdedigen en territory-acties zijn nu expliciet beperkt tot het land waar de speler via Travel echt aanwezig is
   - NL correctie: Nederland gebruikt nu primair `netherlandsLow.svg` (backend `svgAssetKey = netherlandsLow` + frontend NL fallback naar `netherlandsLow.svg`)

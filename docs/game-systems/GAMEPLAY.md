@@ -301,6 +301,7 @@ Voorbeelden:
 
 ### Territory Kaarten & Landregels
 - Je kunt alle ondersteunde Territory-landen bekijken via de interactieve kaart, niet alleen Nederland.
+- Als je Territorium opent, start de kaart op **het land waar je nu bent** (via Reizen). Andere landen blijven zichtbaar via de landkiezer; aanvallen kan alleen in je huidige land.
 - Elke regio toont ownership, stability, control en contestinformatie zodra je de regio opent.
 - Nederlandse Territory-regio's hebben nu ook strategische rollen zoals haven, hoofdstad, industrie, grensregio of logistiek knooppunt. Die rol beÃ¯nvloedt welke contest-actions in dat gebied extra punten opleveren.
 - Als jouw crew al aangrenzende regio's bezit, krijg je in contests extra buursteun. Daardoor zijn aangesloten gebieden makkelijker te verdedigen en waardevoller als samenhangend blok dan als losse eilanden.

@@ -119,6 +119,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Map<String, dynamic>? _crewTerritory;
   bool _leaderboardShowSeason = false;
   String _selectedCountryCode = 'nl';
+  bool _userPickedCountry = false;
+  AuthProvider? _auth;
   int? _myCrewId;
   String? _myCrewName;
   String? _svgTemplate;
@@ -197,15 +199,25 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     return countryCode.toUpperCase();
   }
 
-  String _currentTerritoryCountryCode() {
-    final currentCountry = context.select<AuthProvider, String?>(
-      (auth) => auth.currentPlayer?.currentCountry,
-    );
+  String _territoryCodeForTravelCountry(String? currentCountry) {
     final normalized = currentCountry?.trim().toLowerCase();
     if (normalized == null || normalized.isEmpty) {
       return 'nl';
     }
     return _territoryCountryCodeByTravelCountry[normalized] ?? normalized;
+  }
+
+  String _territoryCodeForPlayer() {
+    return _territoryCodeForTravelCountry(
+      context.read<AuthProvider>().currentPlayer?.currentCountry,
+    );
+  }
+
+  String _currentTerritoryCountryCode() {
+    final currentCountry = context.select<AuthProvider, String?>(
+      (auth) => auth.currentPlayer?.currentCountry,
+    );
+    return _territoryCodeForTravelCountry(currentCountry);
   }
 
   bool _canActInSelectedCountry() {
@@ -216,11 +228,21 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _loadData(reloadCountries: true);
+    _auth = context.read<AuthProvider>();
+    _auth!.addListener(_onAuthChanged);
+    _loadData(reloadCountries: true, countryCode: _territoryCodeForPlayer());
+  }
+
+  void _onAuthChanged() {
+    if (!mounted || _userPickedCountry) return;
+    final playerCountry = _territoryCodeForPlayer();
+    if (playerCountry == _selectedCountryCode.toLowerCase()) return;
+    _loadData(countryCode: playerCountry);
   }
 
   @override
   void dispose() {
+    _auth?.removeListener(_onAuthChanged);
     _mapTooltipTimer?.cancel();
     _mapTransformController.dispose();
     _regionDetailNotifier.dispose();
@@ -1595,7 +1617,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
               icon: const Icon(Icons.language),
               onSelected: (countryCode) {
                 if (countryCode == _selectedCountryCode) return;
-                setState(() => _selectedRegion = null);
+                setState(() {
+                  _selectedRegion = null;
+                  _userPickedCountry = true;
+                });
                 _loadData(countryCode: countryCode);
               },
               itemBuilder: (context) => _countries
