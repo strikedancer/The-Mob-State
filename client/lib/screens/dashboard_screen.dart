@@ -1833,6 +1833,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return BlackMarketScreen(
           key: ValueKey('black-market-$_blackMarketTabIndex-$_webSectionRefreshSeed'),
           initialTabIndex: _blackMarketTabIndex,
+          embedded: true,
         );
       case _WebSection.drugs:
         return DrugEnvironmentScreen(
@@ -1850,6 +1851,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.tools:
         return const BlackMarketScreen(
           initialTabIndex: BlackMarketScreen.tabTools,
+          embedded: true,
         );
       case _WebSection.court:
         return const CourtScreen(embedded: true);
@@ -1861,6 +1863,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.security:
         return const BlackMarketScreen(
           initialTabIndex: BlackMarketScreen.tabSecurity,
+          embedded: true,
         );
       case _WebSection.hospital:
         return const HospitalScreen();

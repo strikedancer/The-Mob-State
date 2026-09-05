@@ -37,8 +37,13 @@ class BlackMarketScreen extends StatefulWidget {
   static const int tabCount = 9;
 
   final int initialTabIndex;
+  final bool embedded;
 
-  const BlackMarketScreen({super.key, this.initialTabIndex = 0});
+  const BlackMarketScreen({
+    super.key,
+    this.initialTabIndex = 0,
+    this.embedded = false,
+  });
 
   @override
   State<BlackMarketScreen> createState() => _BlackMarketScreenState();
@@ -231,7 +236,81 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     );
   }
 
-  Widget _departmentBar(AppLocalizations l10n) {
+  List<(int index, IconData icon, String label)> _shopDepartments(
+    AppLocalizations l10n,
+  ) {
+    return [
+      (BlackMarketScreen.tabTrade, Icons.shopping_bag, l10n.tradeGoods),
+      (BlackMarketScreen.tabWeapons, Icons.gavel, l10n.weaponsMarket),
+      (BlackMarketScreen.tabAmmo, Icons.bolt, l10n.ammoMarket),
+      (BlackMarketScreen.tabTools, Icons.build, l10n.tools),
+      (BlackMarketScreen.tabSecurity, Icons.shield, l10n.security),
+      (BlackMarketScreen.tabMaterials, Icons.science, l10n.materials),
+      (BlackMarketScreen.tabBackpacks, Icons.backpack, l10n.backpacks),
+    ];
+  }
+
+  List<(int index, IconData icon, String label)> _playerMarketDepartments(
+    AppLocalizations l10n,
+  ) {
+    return [
+      (BlackMarketScreen.tabMarketplace, Icons.storefront, l10n.marketplace),
+      (BlackMarketScreen.tabMyListings, Icons.receipt_long, l10n.myListings),
+    ];
+  }
+
+  Widget _departmentBar(
+    AppLocalizations l10n, {
+    required bool compact,
+    required bool showMarketFilter,
+  }) {
+    if (compact) {
+      final items = [
+        ..._shopDepartments(l10n),
+        ..._playerMarketDepartments(l10n),
+      ];
+      return Container(
+        width: double.infinity,
+        color: _shopPanel,
+        padding: const EdgeInsets.fromLTRB(8, 6, 4, 6),
+        child: Row(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    for (final item in items)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6),
+                        child: _departmentChip(
+                          icon: item.$2,
+                          label: item.$3,
+                          selected: _tabController.index == item.$1,
+                          onTap: () => _selectDepartment(item.$1),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.refresh, size: 20, color: Colors.white70),
+              tooltip: l10n.retryAgain,
+              visualDensity: VisualDensity.compact,
+              onPressed: _loadData,
+            ),
+            if (showMarketFilter)
+              IconButton(
+                icon: const Icon(Icons.filter_list, size: 20, color: Colors.white70),
+                onPressed: _showFilterDialog,
+                visualDensity: VisualDensity.compact,
+              ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       width: double.infinity,
       color: _shopPanel,
@@ -239,40 +318,41 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.blackMarketSubtitle,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Color(0xFFD8C4B0),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  l10n.blackMarketSubtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFFD8C4B0),
+                  ),
+                ),
+              ),
+              if (widget.embedded) ...[
+                IconButton(
+                  icon: const Icon(Icons.refresh, size: 20, color: Colors.white70),
+                  tooltip: l10n.retryAgain,
+                  visualDensity: VisualDensity.compact,
+                  onPressed: _loadData,
+                ),
+                if (showMarketFilter)
+                  IconButton(
+                    icon: const Icon(Icons.filter_list, size: 20, color: Colors.white70),
+                    onPressed: _showFilterDialog,
+                    visualDensity: VisualDensity.compact,
+                  ),
+              ],
+            ],
           ),
           const SizedBox(height: 10),
           _departmentGroup(
             title: l10n.blackMarketShops,
-            items: [
-              (BlackMarketScreen.tabTrade, Icons.shopping_bag, l10n.tradeGoods),
-              (BlackMarketScreen.tabWeapons, Icons.gavel, l10n.weaponsMarket),
-              (BlackMarketScreen.tabAmmo, Icons.bolt, l10n.ammoMarket),
-              (BlackMarketScreen.tabTools, Icons.build, l10n.tools),
-              (BlackMarketScreen.tabSecurity, Icons.shield, l10n.security),
-              (BlackMarketScreen.tabMaterials, Icons.science, l10n.materials),
-              (BlackMarketScreen.tabBackpacks, Icons.backpack, l10n.backpacks),
-            ],
+            items: _shopDepartments(l10n),
           ),
           _departmentGroup(
             title: l10n.blackMarketPlayerMarket,
-            items: [
-              (
-                BlackMarketScreen.tabMarketplace,
-                Icons.storefront,
-                l10n.marketplace,
-              ),
-              (
-                BlackMarketScreen.tabMyListings,
-                Icons.receipt_long,
-                l10n.myListings,
-              ),
-            ],
+            items: _playerMarketDepartments(l10n),
           ),
         ],
       ),
@@ -286,22 +366,32 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     final showMarketFilter =
         _tabController.index == BlackMarketScreen.tabMarketplace ||
         _tabController.index == BlackMarketScreen.tabMyListings;
+    final compactDepartments = MediaQuery.sizeOf(context).width < 720;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.blackMarket),
-        actions: [
-          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
-          if (showMarketFilter)
-            IconButton(
-              icon: const Icon(Icons.filter_list),
-              onPressed: _showFilterDialog,
+      backgroundColor: widget.embedded ? Colors.transparent : null,
+      appBar: widget.embedded
+          ? null
+          : AppBar(
+              title: Text(l10n.blackMarket),
+              actions: [
+                if (!compactDepartments) ...[
+                  IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
+                  if (showMarketFilter)
+                    IconButton(
+                      icon: const Icon(Icons.filter_list),
+                      onPressed: _showFilterDialog,
+                    ),
+                ],
+              ],
             ),
-        ],
-      ),
       body: Column(
         children: [
-          _departmentBar(l10n),
+          _departmentBar(
+            l10n,
+            compact: compactDepartments,
+            showMarketFilter: showMarketFilter,
+          ),
           Expanded(
             child: TabBarView(
               controller: _tabController,

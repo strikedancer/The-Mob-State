@@ -590,6 +590,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - Tijdens **Contraband Rush** tellen winstgevende verkopen en het ophalen van gesmokkelde trade-lading mee voor het live event (category `trade`).
 
 ### Client UX (zwarte markt → handelswaren-tab)
+- Op **mobiel/smalle breedte** is de afdelingenkeuze een **enkele horizontale chip-rij** (geen vaste groeptitels/subtitle). In de dashboard-shell heeft de zwarte markt geen tweede AppBar, zodat de productlijst het scherm vult.
 - **Risico-uitleg** (inklapbaar bovenaan): leesbare tekst op donkere kaarten via theme-kleuren (`onSurface`).
 - Marktdata wordt in **drie segmenten** geladen (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Faalt één segment, dan volgt een **banner** en blijft de rest bruikbaar; alleen als **alles** faalt, zie je de fatale leegtoestand.
 - Per goed tonen **chips** server-gestuurde risico’s waar aanwezig: bederfvenster (bloemen), prijsvolatiliteit (diamonds), tripschade (electronics), inbeslagnemingskans (wapens/farmaceutica). Het paneel “Travel and market risks” vat het gedrag tekstueel samen.
@@ -1138,7 +1139,7 @@ healing = 5 HP (if health > 0 && health < 100)
 
 ## Web entry (marketing)
 
-- Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren (openen een **modal** met hetzelfde formulier als `/login` en `/register`), en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
+- Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren (openen een **modal** met hetzelfde formulier als `/login` en `/register`; na succes sluit die modal **automatisch**, ook op mobiel), en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
 - **Registreren (`/register` of modal):** kies **mannelijk of vrouwelijk** via twee portretkaarten; je moet **akkoord gaan met de algemene voorwaarden** (verplicht vinkje + link naar `/terms`; zonder vinkje wordt niet geregistreerd). Er is **geen** knop om tijdens registratie terug te schakelen naar inloggen; gebruik `/login`, een andere ingang of sluit de modal op de landing. De server slaat `gender` op en zet de start-avatar op `default_1` (man) of `default_2` (vrouw). Bestaande accounts kunnen `gender` nog leeg hebben. Custom portretkunst: `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API).
 - Juridische pagina’s: `/privacy`, `/terms` en `/digital-goods` (teksten volledig uit de client-ARB’s; ook bereikbaar als **modal** vanuit de sticky footer op landing/login i.p.v. alleen full-page). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
 - Layout: hero-titel + pitch in een leesbare kolom (op desktop visueel meer naar het midden-rechts t.o.v. de achtergrond-titel), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan**. Ranglijsten: `GET /public/home` via dezelfde API-basis als de rest van de client (`AppConfig.apiBaseUrl`).

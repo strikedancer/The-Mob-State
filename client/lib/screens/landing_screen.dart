@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../config/app_config.dart';
 import '../l10n/app_localizations.dart';
+import '../providers/auth_provider.dart';
 import '../providers/locale_provider.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/guest_legal_footer.dart';
@@ -18,22 +19,66 @@ const Color _landingGold = Color(0xFFC0A060);
 void showLandingAuthDialog(BuildContext context, {required bool register}) {
   showDialog<void>(
     context: context,
+    useRootNavigator: true,
     barrierDismissible: true,
     builder: (dialogContext) {
-      return Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        child: LoginScreen(
-          embeddedModal: true,
-          initialRegister: register,
-          onEmbeddedAuthSuccess: () {
-            Navigator.of(dialogContext).pop();
-            Navigator.of(context).pushReplacementNamed('/dashboard');
-          },
-        ),
+      return _LandingAuthDialogHost(
+        register: register,
+        dialogContext: dialogContext,
       );
     },
   );
+}
+
+void _closeLandingAuthDialog(BuildContext dialogContext) {
+  if (!dialogContext.mounted) return;
+  final navigator = Navigator.of(dialogContext, rootNavigator: true);
+  if (navigator.canPop()) {
+    navigator.pop();
+  }
+}
+
+/// Closes the landing login dialog as soon as auth succeeds, even if the
+/// embedded [LoginScreen] is already rebuilding under AuthWrapper.
+class _LandingAuthDialogHost extends StatefulWidget {
+  const _LandingAuthDialogHost({
+    required this.register,
+    required this.dialogContext,
+  });
+
+  final bool register;
+  final BuildContext dialogContext;
+
+  @override
+  State<_LandingAuthDialogHost> createState() => _LandingAuthDialogHostState();
+}
+
+class _LandingAuthDialogHostState extends State<_LandingAuthDialogHost> {
+  bool _closed = false;
+
+  void _closeOnce() {
+    if (_closed) return;
+    _closed = true;
+    _closeLandingAuthDialog(widget.dialogContext);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
+    if (auth.isAuthenticated && auth.currentPlayer != null) {
+      SchedulerBinding.instance.addPostFrameCallback((_) => _closeOnce());
+    }
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: LoginScreen(
+        embeddedModal: true,
+        initialRegister: widget.register,
+        onEmbeddedAuthSuccess: _closeOnce,
+      ),
+    );
+  }
 }
 
 int? _decodeInt(dynamic v) {

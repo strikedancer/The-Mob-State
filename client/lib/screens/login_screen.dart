@@ -296,6 +296,11 @@ class _LoginScreenState extends State<LoginScreen> {
             '[LoginScreen] ✅ Login/Register successful - navigating to dashboard',
           );
 
+          if (widget.onEmbeddedAuthSuccess != null) {
+            widget.onEmbeddedAuthSuccess!();
+            return;
+          }
+
           // Load user's preferred language
           final localeProvider = Provider.of<LocaleProvider>(
             context,
@@ -303,6 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           await localeProvider.loadLocale();
 
+          if (!mounted) return;
           showTopRightFromSnackBar(
             context,
             SnackBar(
@@ -326,11 +332,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // Explicitly navigate to dashboard instead of relying on AuthWrapper rebuild
           await Future.delayed(const Duration(milliseconds: 100));
           if (!mounted) return;
-          if (widget.onEmbeddedAuthSuccess != null) {
-            widget.onEmbeddedAuthSuccess!();
-          } else {
-            Navigator.of(context).pushReplacementNamed('/dashboard');
-          }
+          Navigator.of(context).pushReplacementNamed('/dashboard');
         } else {
           showTopRightFromSnackBar(
             context,
