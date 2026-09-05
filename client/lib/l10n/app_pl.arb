@@ -11271,5 +11271,7 @@
     }
   },
   "territorySnackGarrisonDeployed": "Garnizon rozmieszczony.",
-  "territoryBonusGarrison": "Garnizon / obrona powietrzna"
+  "territoryBonusGarrison": "Garnizon / obrona powietrzna",
+  "territoryErrorRegionEncircled": "Region ten jest otoczony innymi regionami tej samej załogi. Najpierw zdobądź sąsiedni region.",
+  "territoryNoticeEncircled": "Ten wewnętrzny region jest otoczony innymi regionami tej samej załogi, więc nie można go bezpośrednio zaatakować. Najpierw weź sąsiedni region, aby otworzyć front."
 }

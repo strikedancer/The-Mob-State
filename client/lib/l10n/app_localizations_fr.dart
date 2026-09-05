@@ -14060,6 +14060,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'Pas assez d\'argent dans la banque d\'équipage pour déployer cette garnison.';
 
   @override
+  String get territoryErrorRegionEncircled =>
+      'Cette région est entourée d\'autres régions du même équipage. Capturez d’abord une région voisine.';
+
+  @override
+  String get territoryNoticeEncircled =>
+      'Cette région intérieure est entourée d’autres régions du même équipage, elle ne peut donc pas être attaquée directement. Prenez d\'abord une région voisine pour ouvrir le front.';
+
+  @override
   String get territoryGarrisonTitle => 'Garnison / défense aérienne';
 
   @override

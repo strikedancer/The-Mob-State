@@ -14061,6 +14061,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Mannschaftsbank reicht nicht aus, um diese Garnison einzusetzen.';
 
   @override
+  String get territoryErrorRegionEncircled =>
+      'Diese Region ist von anderen Regionen derselben Crew umgeben. Erobern Sie zuerst eine benachbarte Region.';
+
+  @override
+  String get territoryNoticeEncircled =>
+      'Diese innere Region ist von anderen Regionen derselben Crew umgeben und kann daher nicht direkt angegriffen werden. Nehmen Sie zuerst eine benachbarte Region, um die Front zu öffnen.';
+
+  @override
   String get territoryGarrisonTitle => 'Garnison / Luftverteidigung';
 
   @override

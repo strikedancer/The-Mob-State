@@ -45,6 +45,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Voor Territory geldt: gebruik `TERRITORY_ACTION_DAILY_CAP=0` als default om de cap uit te zetten; begrenzing loopt daar via cooldown + anti-farm.
 - Territory Fase C: actief `safehouse_network`-project verhoogt passief regio-inkomen met `TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT` (default 10%; damaged = helft). Sabotage/supply contest-acties wijzigen project-HP/voortgang via runtime keys `TERRITORY_PROJECT_*`.
 - Territory garnizoen: crew-bank sink (`TERRITORY_GARRISON_CASH_COST`, default €350.000) voor een tijdelijk defense-effect (default 8u, +4 defense-punten, +12 capture-drempel tot cap 85). Max. 2 actief per crew, min. HQ 2. Geen immuniteit en geen credit-paywall; het gebied blijft aanvalbaar.
+- Territory omsluiting: geen extra cash-sink; wel een structurele hold-bonus. Een binnengebied (alle buren eigen, min. 3) is niet startbaar als contest. Dat maakt aaneengesloten blokken waardevoller dan losse eilanden, zonder pay-to-win.
 - Territory Fase D: seizoen-awards gebruiken `TERRITORY_REWARD_CASH_MULTIPLIER_PERCENT` op crew-bank (storage-cap); region events kunnen passief inkomen verlagen via `TERRITORY_REGION_EVENT_INCOME_PENALTY_PERCENT`.
 - VIP prestige (P6) is **display-only** (lifetime days / bronze-silver-gold). No combat, payout or cooldown power from prestige tiers.
 - Deep economy P5:

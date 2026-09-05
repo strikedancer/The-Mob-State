@@ -750,6 +750,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorGarrisonHq;
       case 'territory.garrison_insufficient_funds':
         return t.territoryErrorGarrisonFunds;
+      case 'territory.region_encircled':
+        return t.territoryErrorRegionEncircled;
       default:
         return event.isEmpty ? t.territoryErrorUnknown : event;
     }
@@ -1342,6 +1344,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       parts.add(
         '<circle cx="${cx + 22}" cy="${cy - 10}" r="7" fill="#64748B" stroke="#111827" stroke-width="0.9"/>'
         '<text x="${cx + 22}" y="${cy - 7}" text-anchor="middle" font-size="8" fill="#F8FAFC" font-family="Arial,sans-serif" font-weight="700">G</text>',
+      );
+    }
+    if (region['encircled'] == true) {
+      parts.add(
+        '<circle cx="${cx - 22}" cy="${cy - 10}" r="7" fill="#0F172A" stroke="#94A3B8" stroke-width="0.9"/>'
+        '<text x="${cx - 22}" y="${cy - 7}" text-anchor="middle" font-size="8" fill="#E2E8F0" font-family="Arial,sans-serif" font-weight="700">I</text>',
       );
     }
     if (parts.isEmpty) return null;
@@ -2128,6 +2136,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         (region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
     final tier = (region['valueTier'] as num?)?.toInt() ?? 1;
     final isMyCrewRegion = _isMyCrewRegion(region);
+    final encircled = region['encircled'] == true;
     final contestHint = _contestHint(contestStatus);
     final isAttacker = contestRole == 'attacker';
     final isDefender = contestRole == 'defender';
@@ -2479,6 +2488,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         ),
         const SizedBox(height: 12),
       ],
+      if (encircled)
+        _buildInfoNotice(
+          t.territoryNoticeEncircled,
+          borderColor: Colors.blueGrey.shade800,
+          backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
+          icon: Icons.lock_outline,
+        ),
       if (contestStatus == null && isMyCrewRegion)
         _buildInfoNotice(
           t.territoryNoticeOwnRegion,
@@ -2568,7 +2584,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (contestStatus == null &&
           _hasCrew &&
           !isMyCrewRegion &&
-          canActInSelectedCountry)
+          canActInSelectedCountry &&
+          !encircled)
         _buildActionButton(
           label: t.territoryAttack,
           icon: Icons.gps_fixed,
@@ -3163,6 +3180,18 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   Future<void> _confirmStartContest(String regionKey) async {
     final t = _l10n;
+    final target = _findRegionByKey(regionKey);
+    if (target?['encircled'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territoryErrorRegionEncircled),
+          backgroundColor: Colors.orange,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+      return;
+    }
     if (!_hasCrew) {
       showTopRightFromSnackBar(
         context,

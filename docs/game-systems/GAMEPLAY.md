@@ -315,6 +315,7 @@ Voorbeelden:
 - Territory-passive income kan nooit meer in de crew-bank storten dan de huidige cashopslag-capaciteit. Is de crew-bank vol, dan stopt Territory met bijschrijven tot er weer ruimte is.
 - Na een gewonnen **Territory War** of **Total War** kunnen doelregio's tijdelijk **war pressure** krijgen. In de Territory-modal zie je dan extra oorlogsdruk, effectieve stabiliteit en hoe lang die tijdelijke nasleep nog actief blijft.
 - Een crew die een gebied houdt kan uit de crew-bank een tijdelijk **garnizoen / luchtafweer** kopen (tanks en afweer voor een paar uur). Het gebied blijft aanvalbaar: verdedigingsacties scoren extra punten en aanvallers hebben een grotere puntenvoorsprong nodig om het te veroveren. Er kunnen maar een paar garnizoenen tegelijk actief zijn; dit is geen nachtslot.
+- Als een crew in één land een blok gebieden houdt, is een **binnengebied** dat volledig omsloten is door eigen buren niet aanvalbaar. Aanvallers moeten eerst een gebied aan de buitenring veroveren; kust- of frontregio's met een open buur blijven wel te pakken.
 - **Belangrijke regel**: bekijken mag in elk land, maar aanvallen, verdedigen en andere Territory-contestacties werken alleen in het land waar je speler zich op dat moment echt bevindt.
 - Voorbeeld: zit je in Nederland en open je de kaart van BelgiÃ«, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar BelgiÃ« reist.
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.

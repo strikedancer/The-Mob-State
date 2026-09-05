@@ -13995,6 +13995,14 @@ class AppLocalizationsPl extends AppLocalizations {
       'Za mało pieniędzy w banku załogi, aby rozmieścić ten garnizon.';
 
   @override
+  String get territoryErrorRegionEncircled =>
+      'Region ten jest otoczony innymi regionami tej samej załogi. Najpierw zdobądź sąsiedni region.';
+
+  @override
+  String get territoryNoticeEncircled =>
+      'Ten wewnętrzny region jest otoczony innymi regionami tej samej załogi, więc nie można go bezpośrednio zaatakować. Najpierw weź sąsiedni region, aby otworzyć front.';
+
+  @override
   String get territoryGarrisonTitle => 'Garnizon / obrona powietrzna';
 
   @override

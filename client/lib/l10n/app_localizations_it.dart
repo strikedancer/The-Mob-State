@@ -14041,6 +14041,14 @@ class AppLocalizationsIt extends AppLocalizations {
       'Non ci sono abbastanza soldi nella banca dell\'Crew per schierare questa guarnigione.';
 
   @override
+  String get territoryErrorRegionEncircled =>
+      'Questa regione è circondata da altre regioni dello stesso Crew. Cattura prima una regione vicina.';
+
+  @override
+  String get territoryNoticeEncircled =>
+      'Questa regione interna è circondata da altre regioni dello stesso Crew, quindi non può essere attaccata direttamente. Prendi prima una regione vicina per aprire il fronte.';
+
+  @override
   String get territoryGarrisonTitle => 'Guarnigione/difesa aerea';
 
   @override

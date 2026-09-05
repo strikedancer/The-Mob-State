@@ -58,6 +58,7 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     CONTEST_ALREADY_ACTIVE:         [409, 'territory.contest_already_active'],
     CREW_CONTEST_LIMIT_REACHED:     [429, 'territory.crew_contest_limit_reached'],
     REGIONS_CAP_REACHED:            [429, 'territory.regions_cap_reached'],
+    REGION_ENCIRCLED:               [403, 'territory.region_encircled'],
     CONTEST_NOT_FOUND:              [404, 'territory.contest_not_found'],
     CONTEST_NOT_ACTIVE:             [409, 'territory.contest_not_active'],
     CONTEST_NOT_JOINABLE:           [409, 'territory.contest_not_joinable'],

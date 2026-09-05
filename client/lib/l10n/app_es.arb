@@ -11271,5 +11271,7 @@
     }
   },
   "territorySnackGarrisonDeployed": "Guarnición desplegada.",
-  "territoryBonusGarrison": "Guarnición / defensa aérea"
+  "territoryBonusGarrison": "Guarnición / defensa aérea",
+  "territoryErrorRegionEncircled": "Esta región está rodeada por otras regiones de la misma Crew. Capture primero una región vecina.",
+  "territoryNoticeEncircled": "Esta región interior está rodeada por otras regiones de la misma Crew, por lo que no puede ser atacada directamente. Tome primero una región vecina para abrir el frente."
 }

@@ -102,6 +102,8 @@ async function getTerritoryConfig() {
     'TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW',
     'TERRITORY_GARRISON_MIN_HQ_LEVEL',
     'TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP',
+    'TERRITORY_ENCIRCLED_UNATTACKABLE',
+    'TERRITORY_ENCIRCLED_MIN_NEIGHBORS',
   ];
   const cfg = await getRuntimeConfig(keys);
   const actionUnlockHqLevels = {
@@ -186,6 +188,8 @@ async function getTerritoryConfig() {
     garrisonMaxActivePerCrew: Number(cfg['TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW'] ?? 2),
     garrisonMinHqLevel: Number(cfg['TERRITORY_GARRISON_MIN_HQ_LEVEL'] ?? 2),
     garrisonCaptureThresholdCap: Number(cfg['TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP'] ?? 85),
+    encircledUnattackable: Number(cfg['TERRITORY_ENCIRCLED_UNATTACKABLE'] ?? 1) === 1,
+    encircledMinNeighbors: Number(cfg['TERRITORY_ENCIRCLED_MIN_NEIGHBORS'] ?? 3),
   };
 }
 
@@ -981,6 +985,16 @@ function buildProgressionActionBonuses(
   return bonuses;
 }
 
+function isOwnedRegionEncircled(
+  neighborCount: number,
+  ownerAdjacentOwned: number,
+  options: { enabled: boolean; minNeighbors: number },
+): boolean {
+  if (!options.enabled) return false;
+  const minNeighbors = Math.max(2, Math.floor(options.minNeighbors));
+  return neighborCount >= minNeighbors && ownerAdjacentOwned >= neighborCount;
+}
+
 async function getAdjacentOwnedRegionCount(region: RegionRow, crewId: number): Promise<number> {
   const neighbors = parseStringArray(region.neighborsJson);
   if (neighbors.length === 0) return 0;
@@ -1336,6 +1350,7 @@ export async function getMapData(
       favoredCrewId: number | null;
     };
     garrisonOffer: ReturnType<typeof garrisonOfferFromConfig>;
+    encircled: boolean;
   }>;
 }> {
   await syncContestLifecycle();
@@ -1529,6 +1544,10 @@ export async function getMapData(
     const adjacentOwnedRegions = countOwnedNeighbors(viewer?.viewerCrewId);
     const ownerCrewId = ctrl?.ownerCrewId ?? null;
     const ownerAdjacentOwnedRegions = countOwnedNeighbors(ownerCrewId);
+    const encircled = isOwnedRegionEncircled(neighbors.length, ownerAdjacentOwnedRegions, {
+      enabled: cfg.encircledUnattackable,
+      minNeighbors: cfg.encircledMinNeighbors,
+    });
     const holderCrewId = contest?.defenderCrewId ?? ownerCrewId;
     const holderAdjacentOwned = countOwnedNeighbors(holderCrewId);
     const viewerIsHolder = viewer?.viewerCrewId != null && holderCrewId === viewer.viewerCrewId;
@@ -1616,6 +1635,7 @@ export async function getMapData(
         favoredCrewId: garrison?.favoredCrewId ?? null,
       },
       garrisonOffer,
+      encircled,
     };
   });
 
@@ -2158,6 +2178,18 @@ export async function startContest(
     regionKey,
   );
   const defenderCrewId = controlRows[0]?.ownerCrewId ?? null;
+  if (defenderCrewId != null && defenderCrewId !== crewId) {
+    const neighbors = parseStringArray(regions[0].neighborsJson);
+    const ownerAdjacentOwned = await getAdjacentOwnedRegionCount(regions[0], defenderCrewId);
+    if (
+      isOwnedRegionEncircled(neighbors.length, ownerAdjacentOwned, {
+        enabled: cfg.encircledUnattackable,
+        minNeighbors: cfg.encircledMinNeighbors,
+      })
+    ) {
+      throw new Error('REGION_ENCIRCLED');
+    }
+  }
 
   const contestId = await prisma.$transaction(async (tx) => {
     await tx.$executeRawUnsafe(
