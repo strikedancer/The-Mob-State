@@ -37,6 +37,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Dashboard toont een compacte **Markt**-tegel (actieve listings + CTA) en dezelfde **EventFeed** op web als op mobiel, gehydrateerd via `GET /events?limit=50` (auth). Geen locatie-intel.
 - De feed heet **Mijn activiteit**: alleen events van de ingelogde speler (API + SSE scoped op `playerId`). Geen wereldwijde feed van andere spelers.
 - Chat-events (`direct_message.*`) komen wél via SSE (berichtenbadge/chat) maar **niet** in Mijn activiteit.
+- **Berichten / postvak:** de badge (`GET /messages/unread`) mag nooit groener zijn dan de inbox-lijst. `GET /messages/conversations` blijft één gebatchte query; bij laadfout retry, geen lege “geen berichten”-staat.
 - Travel-regels in de feed gebruiken `toCountry`/`destination` (gelokaliseerde landnaam); niet alleen het legacy-veld `country`.
 - Weekdoelen moeten claimbaar zijn wanneer ze als “klaar”/“ready” worden getoond; zorg dat weekly-claims dezelfde window/key gebruiken als de weekdoelen-status (week start maandag UTC) zodat “1 klaar om te claimen” nooit in een claim-fout resulteert.
 - Claims en beloningen mogen niet falen door DB transaction timeouts: doe alleen de noodzakelijke DB-writes in de transaction en schrijf activity/world events best-effort ná commit.

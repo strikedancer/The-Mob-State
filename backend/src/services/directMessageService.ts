@@ -340,105 +340,79 @@ export const directMessageService = {
   },
 
   /**
-   * Get all conversations for a player
+   * Get all conversations for a player.
+   * One grouped query — never N+1 over friends or crime-style per-thread counts.
+   * Threads come from actual messages (including the system inbox), not only current friends.
    */
   async getConversations(playerId: number) {
-    // Get all friends
-    const friendships = await prisma.friendship.findMany({
-      where: {
-        OR: [
-          { requesterId: playerId, status: 'accepted' },
-          { addresseeId: playerId, status: 'accepted' },
-        ],
-      },
-      include: {
-        requester: {
-          select: {
-            id: true,
-            username: true,
-            rank: true,
-            avatar: true,
-            activePortrait: { select: { imagePath: true } },
-          },
-        },
-        addressee: {
-          select: {
-            id: true,
-            username: true,
-            rank: true,
-            avatar: true,
-            activePortrait: { select: { imagePath: true } },
-          },
-        },
-      },
+    const threadRows = await prisma.$queryRaw<
+      Array<{ threadId: number | bigint; lastId: number | bigint; unreadCount: number | bigint }>
+    >`
+      SELECT
+        CASE
+          WHEN senderId = receiverId THEN 0
+          WHEN senderId = ${playerId} THEN receiverId
+          ELSE senderId
+        END AS threadId,
+        MAX(id) AS lastId,
+        SUM(CASE WHEN receiverId = ${playerId} AND \`read\` = 0 THEN 1 ELSE 0 END) AS unreadCount
+      FROM direct_messages
+      WHERE senderId = ${playerId} OR receiverId = ${playerId}
+      GROUP BY threadId
+      ORDER BY MAX(createdAt) DESC
+      LIMIT 80
+    `;
+
+    if (threadRows.length === 0) {
+      return [];
+    }
+
+    const lastIds = threadRows.map((row) => Number(row.lastId));
+    const lastMessages = await prisma.directMessage.findMany({
+      where: { id: { in: lastIds } },
     });
+    const lastById = new Map(lastMessages.map((message) => [message.id, message]));
 
-    // For each friend, get the last message and unread count
-    const conversations = await Promise.all(
-      friendships.map(async (friendship) => {
-        const friend =
-          friendship.requesterId === playerId
-            ? friendship.addressee
-            : friendship.requester;
-
-        // Get last message
-        const lastMessage = await prisma.directMessage.findFirst({
-          where: {
-            OR: [
-              { senderId: playerId, receiverId: friend.id },
-              { senderId: friend.id, receiverId: playerId },
-            ],
+    const otherPlayerIds = threadRows
+      .map((row) => Number(row.threadId))
+      .filter((id) => id > 0);
+    const players = otherPlayerIds.length
+      ? await prisma.player.findMany({
+          where: { id: { in: otherPlayerIds } },
+          select: {
+            id: true,
+            username: true,
+            rank: true,
+            avatar: true,
+            activePortrait: { select: { imagePath: true } },
           },
-          orderBy: { createdAt: 'desc' },
-        });
+        })
+      : [];
+    const playerById = new Map(players.map((player) => [player.id, player]));
 
-        // Get unread count
-        const unreadCount = await prisma.directMessage.count({
-          where: {
-            senderId: friend.id,
-            receiverId: playerId,
-            read: false,
-          },
-        });
-
+    return threadRows
+      .map((row) => {
+        const threadId = Number(row.threadId);
+        const lastMessage = lastById.get(Number(row.lastId)) ?? null;
+        const unreadCount = Number(row.unreadCount ?? 0);
+        if (threadId === SYSTEM_THREAD_ID) {
+          return {
+            friend: SYSTEM_SENDER,
+            lastMessage,
+            unreadCount,
+          };
+        }
+        const friend = playerById.get(threadId);
+        if (!friend) {
+          return null;
+        }
         return {
           friend,
           lastMessage,
           unreadCount,
         };
       })
-    );
-
-    const systemLastMessage = await prisma.directMessage.findFirst({
-      where: {
-        senderId: playerId,
-        receiverId: playerId,
-      },
-      orderBy: { createdAt: 'desc' },
-    });
-
-    if (systemLastMessage) {
-      const systemUnreadCount = await prisma.directMessage.count({
-        where: {
-          senderId: playerId,
-          receiverId: playerId,
-          read: false,
-        },
-      });
-
-      conversations.push({
-        friend: SYSTEM_SENDER,
-        lastMessage: systemLastMessage,
-        unreadCount: systemUnreadCount,
-      });
-    }
-
-    // Sort by last message timestamp (most recent first)
-    return conversations.sort((a, b) => {
-      if (!a.lastMessage) return 1;
-      if (!b.lastMessage) return -1;
-      return b.lastMessage.createdAt.getTime() - a.lastMessage.createdAt.getTime();
-    });
+      .filter((row): row is NonNullable<typeof row> => row != null);
   },
 
   /**
