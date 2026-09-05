@@ -80,7 +80,7 @@
 
 - Bij een directe route (1 etappe) wordt de reis na de cooldown meteen als afgerond behandeld. De speler krijgt dan niet alsnog een extra stap met "Verder" of "Reis annuleren".
 - Vliegen gebruikt een cooldown van 60 minuten per etappe. Deze cooldown kan tijdens een actieve timer met credits direct worden gereset.
-- Web dashboard Reizen toont geen extra paginatitel, pinnet het huidige land bovenaan en toont Wanted/FBI in de hero (alleen zichtbaarheid; reisregels ongewijzigd).
+- Web dashboard Reizen toont geen extra paginatitel, pinnet het huidige land bovenaan en toont Wanted/FBI in de hero (alleen zichtbaarheid; reisregels ongewijzigd). Op grote schermen vult de lijst de contentkolom.
 
 ---
 
@@ -638,7 +638,7 @@ Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-
 ### Gates (school + licentie)
 - **School:** Aviation-track level 5 + alle certificaten (`flight_basic`, `flight_commercial`) is verplicht vóór licentie- of vliegtuigkoop.
 - **Licentie:** aparte betaalde aankoop op het Aviation-scherm (`basic` €100k / `commercial` €500k / `cargo` €1M). Zonder licentie kun je geen vliegtuig kopen, ook niet met school 5/5.
-- Web dashboard Luchtvaart toont schoolniveau, brevetten en licentie in de hangar-hero; catalogusknoppen tonen waarom een toestel nog geblokkeerd is.
+- Web dashboard Luchtvaart toont schoolniveau, brevetten en licentie in de hangar-hero; catalogusknoppen tonen waarom een toestel nog geblokkeerd is. Op grote schermen vult de hangar de contentkolom. Toestelplaatjes zijn cutouts zonder witte studio-achtergrond.
 - Hogere licentie-tier ontgrendelt zwaardere `aircraft.type`-groepen; upgrade is mogelijk.
 
 ### Aircraft Types
@@ -1119,7 +1119,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Casino (blackjack, slots, roulette)
 - âœ… Weapons & ammo system
 - âœ… VIP quick-buy in Drug Production (one-click missing materials with cost confirmation modal)
-- ✅ Court & Judge (appeal / bribe, criminal record, visible law/wanted/FBI appeal odds, localized crime and judge names)
+- ✅ Court & Judge (appeal / bribe, criminal record, visible law/wanted/FBI appeal odds, localized crime and judge names; web panels fill the content column)
 - âœ… Crew Wars (War Room, seasons, territory targets)
 - âœ… Drug production facilities
 - ✅ Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`

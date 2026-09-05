@@ -10,7 +10,7 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
-- Web dashboard Travel hides the inner AppBar title; keep the shared status bar. The screen uses a noir hero (current country, destination count, Wanted/FBI) and compact destination cards. The current country is pinned to the top of the list.
+- Web dashboard Travel hides the inner AppBar title; keep the shared status bar. On large screens the list fills the dashboard content column (no 860px cap). The screen uses a noir hero (current country, destination count, Wanted/FBI) and compact destination cards. The current country is pinned to the top of the list.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing

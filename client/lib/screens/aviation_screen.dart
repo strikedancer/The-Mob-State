@@ -1210,12 +1210,9 @@ class _AviationScreenState extends State<AviationScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(16),
           children: [
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 860),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
                     _buildHero(l10n),
                     _sectionTitle(l10n.aviationUiLicensesTitle),
                     ..._licenseOffers.map(
@@ -1256,9 +1253,7 @@ class _AviationScreenState extends State<AviationScreen> {
                         money,
                       ),
                     ),
-                  ],
-                ),
-              ),
+              ],
             ),
           ],
         ),

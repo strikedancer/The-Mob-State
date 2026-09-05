@@ -9,7 +9,7 @@ Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoersty
 
 ## Primary Frontend Entry
 - `client/lib/screens/aviation_screen.dart` (catalogus + hangar + licenties)
-- Web dashboard Aviation hides the inner AppBar title. The screen uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, catalog cards with price/rank/speed/cargo/license/travel-bonus chips, and owned-plane actions: refuel, fly, sell (50%), repair.
+- Web dashboard Aviation hides the inner AppBar title. The hangar fills the dashboard content column on large screens (no 860px cap). It uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, catalog cards with price/rank/speed/cargo/license/travel-bonus chips, and owned-plane actions: refuel, fly, sell (50%), repair. Aircraft thumbs are cutouts (`runtime/client-images/aircraft/`); no white studio plate.
 
 ## Primary Backend Entry
 - `GET  /aviation/aircraft`              — catalogus (`aircraft.json`)
@@ -143,6 +143,7 @@ SQL-migratiebestand: `backend/add-aviation-tables.sql`
 - Vliegtuigafbeeldingen worden gegenereerd via de Leonardo.ai API.
 - Script: `backend/scripts/generate_aircraft_images_leonardo.py`
 - Opslag: externe runtime image mount `runtime/client-images/aircraft/`
+- Cutout-bron voor Citation X en Antonov: `client/assets/images/aircraft/` (deploy kopieert naar de mount)
 - Nginx route: `/images/aircraft/*` → `/mnt/external-images/aircraft/`
 - Client laadt via: `WebAssetHelper.image('aircraft/{aircraftId}.png')`
 - Bestandsnamen: `cessna.png`, `king_air.png`, `gulfstream.png`, `cargo_737.png`
@@ -209,7 +210,7 @@ Catalogus staten in `backend/content/aircraft.json`:
 9. Mislukte smokkel met eigen vliegtuig → confiscatie-kans gegooid, resultaat getoond.
 10. Afbeeldingen laden via WebAssetHelper, errorBuilder toont icoon bij 404.
 11. Mobile + desktop: cataloguskaarten correct, slots-teller leesbaar.
-13. On web dashboard Aviation, verify there is no extra “Luchtvaart” AppBar title, hero chips match school/license/owned state, and buy buttons stay disabled with a reason when rank, cash or license is missing.
+13. On web dashboard Aviation, verify there is no extra “Luchtvaart” AppBar title, hero chips match school/license/owned state, and buy buttons stay disabled with a reason when rank, cash or license is missing. Large screens: hangar uses the full content column. Citation X and Antonov thumbs have no white plate.
 14. Hangar: tanken vult tot maxFuel, vliegen met 100 L wisselt land, verkopen geeft 50%, reparatie werkt alleen als `isBroken`.
 15. Travel-hero toont “Eigen vliegtuig: −X% reistijd” zodra de speler een toestel bezit; etappe-cooldown is korter.
 12. Backend logs: geen PrismaClientValidationError.

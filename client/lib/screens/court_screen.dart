@@ -1213,10 +1213,7 @@ class _CourtScreenState extends State<CourtScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(16),
               children: [
-                Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 860),
-                    child: _isLoading
+                _isLoading
                         ? const Padding(
                             padding: EdgeInsets.only(top: 120),
                             child: Center(child: CircularProgressIndicator()),
@@ -1252,8 +1249,6 @@ class _CourtScreenState extends State<CourtScreen> {
                               ],
                             ],
                           ),
-                  ),
-                ),
               ],
             ),
           ),

@@ -1289,12 +1289,9 @@ class _TravelScreenState extends State<TravelScreen> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(16),
                 children: [
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 860),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                           _buildPageHero(
                             l10n,
                             currentName: currentName,
@@ -1312,9 +1309,7 @@ class _TravelScreenState extends State<TravelScreen> {
                               money: player?.money ?? 0,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
                 ],
               ),

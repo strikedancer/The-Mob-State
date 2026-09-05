@@ -32,7 +32,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
-- Web dashboard Court hides the inner AppBar title; keep the shared status bar. The screen uses a noir hero (case status + conviction count + remaining time) plus sentence and record panels. Remaining time ticks locally every 30s and refreshes when the sentence ends.
+- Web dashboard Court hides the inner AppBar title; keep the shared status bar. On large screens the panels fill the dashboard content column (no 860px cap). The screen uses a noir hero (case status + conviction count + remaining time) plus sentence and record panels. Remaining time ticks locally every 30s and refreshes when the sentence ends.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing
