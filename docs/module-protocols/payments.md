@@ -24,7 +24,10 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - **Admin player manage VIP:** `POST /admin/players/manage` stuurt VIP alleen mee als de admin VIP echt wijzigt (niet bij elke geld/rank-save). Max **365 dagen** per grant. Enabling VIP is een kritieke wijziging (reden ≥5 tekens + `CONFIRM`). Lege/`null` set-velden worden genegeerd. Enabling gebruikt `grantPlayerVipDays` (verlengt vanaf nu of huidige expiry, telt `vipLifetimeDays`).
 
 ## Admin VIP grant (UI)
-- Admin → spelerdetail → Beheer: vink **VIP actief** en vul **VIP dagen** (1–365). Zonder reden/CONFIRM faalt enabling bewust.
+- Admin → spelerdetail → Beheer: knop **VIP-dagen toekennen** stuurt alleen `{ vip: { enabled: true, days } }` + reden. Verlengt bestaande VIP. Geen `CONFIRM`-typeplicht; wel reden (min. 5) en een ja/nee-bevestiging.
+- **Opslaan alle wijzigingen** + vink **VIP actief** blijft de kritieke pad (reden + `CONFIRM`) voor het grote formulier.
+- Moderator mag VIP-dagen toekennen, maar niet VIP uitzetten of rank wijzigen.
+- `POST /admin/players/vip/grant` zoekt username case-insensitive.
 - Slaat niet meer de hele stat-formulier mee als alleen VIP wijzigt; dat voorkwam `Invalid input` (NaN/`null` money/health/country).
 - Help-topic `premium` (Help & Uitleg) dekt cancel/gift/prestige; sync via `scripts/_help_topics_extracted.json`.
 

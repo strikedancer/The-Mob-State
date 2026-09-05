@@ -3582,6 +3582,101 @@ function App() {
     }
   };
 
+  const handleGrantPlayerVipDays = async () => {
+    if (!selectedPlayerId) return;
+    if (isSavingPlayerManage) return;
+    if (!canManagePlayers) {
+      alert(
+        l(
+          "Je hebt geen rechten om spelers te beheren.",
+          "You do not have permission to manage players.",
+        ),
+      );
+      return;
+    }
+
+    const toInt = (value: string): number | null => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? Math.trunc(parsed) : null;
+    };
+    const vipDays = toInt(playerManageForm.vipDays);
+    if (vipDays === null || vipDays < 1 || vipDays > 365) {
+      alert(
+        l(
+          "VIP dagen moet een heel getal tussen 1 en 365 zijn.",
+          "VIP days must be a whole number between 1 and 365.",
+        ),
+      );
+      return;
+    }
+
+    let reason = playerManageReason.trim();
+    if (reason.length < 5) {
+      const typed = window.prompt(
+        l(
+          "Reden voor VIP-toekenning (min. 5 tekens):",
+          "Reason for VIP grant (min. 5 characters):",
+        ),
+        "Support VIP grant",
+      );
+      reason = typed?.trim() ?? "";
+    }
+    if (reason.length < 5) {
+      alert(
+        l(
+          "VIP toekennen geannuleerd: reden te kort.",
+          "VIP grant cancelled: reason too short.",
+        ),
+      );
+      return;
+    }
+
+    const username =
+      selectedPlayerOverview?.player.username ?? String(selectedPlayerId);
+    const confirmed = window.confirm(
+      l(
+        `${vipDays} dagen VIP toekennen aan ${username}? Bestaande VIP wordt verlengd.`,
+        `Grant ${vipDays} days of VIP to ${username}? Existing VIP will be extended.`,
+      ),
+    );
+    if (!confirmed) return;
+
+    setIsSavingPlayerManage(true);
+    try {
+      await adminService.managePlayer({
+        playerId: selectedPlayerId,
+        reason,
+        vip: { enabled: true, days: vipDays },
+      });
+      const refreshed = await adminService.getPlayerOverview(selectedPlayerId);
+      setSelectedPlayerOverview(refreshed);
+      setPlayerManageForm((prev) => ({
+        ...prev,
+        vipEnabled: refreshed.player.isVip,
+      }));
+      setPlayerManageReason("");
+      setPlayerVipTouched(false);
+      await loadPlayers();
+      const until = refreshed.player.vipExpiresAt
+        ? new Date(refreshed.player.vipExpiresAt).toLocaleDateString()
+        : l("onbekend", "unknown");
+      alert(
+        l(
+          `VIP toegekend tot ${until}.`,
+          `VIP granted until ${until}.`,
+        ),
+      );
+    } catch (err) {
+      if (handleUnauthorized(err)) return;
+      const message = err instanceof Error ? err.message : t.unknownError;
+      alert(
+        `${l("VIP toekennen mislukt", "Failed to grant VIP")}: ${message}`,
+      );
+    } finally {
+      setIsSavingPlayerManage(false);
+    }
+  };
+
   const handleResetPlayerProgress = async () => {
     if (!selectedPlayerId || !canManagePlayers || isResettingPlayerProgress)
       return;
@@ -7788,8 +7883,8 @@ function App() {
                                     />
                                     <small className="text-muted">
                                       {l(
-                                        "1–365 dagen. Alleen meegestuurd als je VIP wijzigt.",
-                                        "1–365 days. Sent only when you change VIP.",
+                                        "1–365 dagen. Gebruik de knop VIP-dagen toekennen; dat verlengt bestaande VIP.",
+                                        "1–365 days. Use Grant VIP days; this extends existing VIP.",
                                       )}
                                     </small>
                                   </div>
@@ -7919,6 +8014,28 @@ function App() {
                                 </div>
 
                                 <div className="mt-4 d-flex flex-wrap gap-2 align-items-center">
+                                  <button
+                                    className="btn btn-success fw-bold"
+                                    onClick={handleGrantPlayerVipDays}
+                                    disabled={
+                                      isSavingPlayerManage || !canManagePlayers
+                                    }
+                                  >
+                                    {isSavingPlayerManage ? (
+                                      <>
+                                        <span className="spinner-border spinner-border-sm me-2" />
+                                        {l("Bezig...", "Processing...")}
+                                      </>
+                                    ) : (
+                                      <>
+                                        <i className="ph-crown me-2" />
+                                        {l(
+                                          "VIP-dagen toekennen",
+                                          "Grant VIP days",
+                                        )}
+                                      </>
+                                    )}
+                                  </button>
                                   <button
                                     className="btn btn-warning fw-bold"
                                     onClick={handleManagePlayer}

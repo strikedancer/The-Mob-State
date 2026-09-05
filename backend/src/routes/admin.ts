@@ -2652,10 +2652,16 @@ router.post(
       }
 
       if (adminRole === AdminRole.MODERATOR) {
-        if (set?.rank !== undefined || vip !== undefined) {
+        if (set?.rank !== undefined) {
           return res
             .status(403)
-            .json({ error: 'FORBIDDEN', message: 'Moderator cannot change rank or VIP state' });
+            .json({ error: 'FORBIDDEN', message: 'Moderator cannot change rank' });
+        }
+        if (vip !== undefined && vip.enabled === false) {
+          return res.status(403).json({
+            error: 'FORBIDDEN',
+            message: 'Moderator cannot disable VIP; only SUPER_ADMIN can turn VIP off',
+          });
         }
       }
 
@@ -4659,11 +4665,13 @@ router.post(
     try {
       const { username, days } = grantVipSchema.parse(req.body);
 
-      // Find player by username
-      const player = await prisma.player.findUnique({
-        where: { username },
-        select: { id: true, username: true, isVip: true, vipExpiresAt: true },
-      });
+      const players = await prisma.$queryRawUnsafe<
+        Array<{ id: number; username: string; isVip: boolean; vipExpiresAt: Date | null }>
+      >(
+        'SELECT id, username, isVip, vipExpiresAt FROM players WHERE LOWER(username) = LOWER(?) LIMIT 1',
+        username.trim(),
+      );
+      const player = players[0];
 
       if (!player) {
         return res.status(404).json({ error: 'Player not found' });
