@@ -8,7 +8,8 @@ Spelers die de school aviation-track hebben voltooid kunnen privévliegtuigen ko
 Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoerstypen (vliegtuig, auto, motor, boot). Zie ook smuggling.md en travel.md.
 
 ## Primary Frontend Entry
-- `client/lib/screens/aviation_screen.dart` (nieuw scherm: catalogus + bezit + verkoop)
+- `client/lib/screens/aviation_screen.dart` (catalogus + bezit + licenties)
+- Web dashboard Aviation hides the inner AppBar title. The screen uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, and catalog cards with price/rank/speed/cargo/license chips.
 
 ## Primary Backend Entry
 - `GET  /aviation/catalog`        — beschikbare vliegtuigtypes met prijs, slots, bonus, piloot-gate status
@@ -190,6 +191,7 @@ Catalogus staten in `backend/content/aircraft.json`:
 9. Mislukte smokkel met eigen vliegtuig → confiscatie-kans gegooid, resultaat getoond.
 10. Afbeeldingen laden via WebAssetHelper, errorBuilder toont icoon bij 404.
 11. Mobile + desktop: cataloguskaarten correct, slots-teller leesbaar.
+13. On web dashboard Aviation, verify there is no extra “Luchtvaart” AppBar title, hero chips match school/license/owned state, and buy buttons stay disabled with a reason when rank, cash or license is missing.
 12. Backend logs: geen PrismaClientValidationError.
 
 ## i18n and Messaging

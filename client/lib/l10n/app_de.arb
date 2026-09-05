@@ -11108,5 +11108,43 @@
       }
     }
   },
-  "travelCannotAfford": "Nicht genug Bargeld"
+  "travelCannotAfford": "Nicht genug Bargeld",
+  "aviationHeroTitle": "Der Hangar",
+  "aviationHeroSubtitle": "Beenden Sie die Flugschule, kaufen Sie eine kostenpflichtige Lizenz und kaufen Sie dann ein Flugzeug, um schneller reisen und schmuggeln zu können.",
+  "aviationSchoolChip": "Schule {level}/5",
+  "@aviationSchoolChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationCertsChip": "Flugzertifikate {count}/2",
+  "@aviationCertsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationNoLicenseChip": "Keine kostenpflichtige Lizenz",
+  "aviationOwnedCountChip": "{count} Flugzeuge",
+  "@aviationOwnedCountChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationOwnedBadge": "Im Besitz",
+  "aviationHangarEmptyHint": "Kaufen Sie zuerst eine kostenpflichtige Lizenz und wählen Sie dann unten ein Flugzeug aus.",
+  "aviationRequiresLicense": "Bedürfnisse {name}",
+  "@aviationRequiresLicense": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRankLocked": "Rang zu niedrig"
 }

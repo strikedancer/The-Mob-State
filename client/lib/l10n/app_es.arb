@@ -11108,5 +11108,43 @@
       }
     }
   },
-  "travelCannotAfford": "No hay suficiente efectivo"
+  "travelCannotAfford": "No hay suficiente efectivo",
+  "aviationHeroTitle": "El hangar",
+  "aviationHeroSubtitle": "Termine la escuela de aviación, compre una licencia paga y luego compre un avión para viajar más rápido y contrabandear.",
+  "aviationSchoolChip": "Escuela {level}/5",
+  "@aviationSchoolChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationCertsChip": "Certificados de vuelo {count}/2",
+  "@aviationCertsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationNoLicenseChip": "Sin licencia paga",
+  "aviationOwnedCountChip": "{count} avión",
+  "@aviationOwnedCountChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationOwnedBadge": "Propiedad",
+  "aviationHangarEmptyHint": "Primero compre una licencia paga y luego elija un avión a continuación.",
+  "aviationRequiresLicense": "Necesidades {name}",
+  "@aviationRequiresLicense": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRankLocked": "Clasificación demasiado baja"
 }

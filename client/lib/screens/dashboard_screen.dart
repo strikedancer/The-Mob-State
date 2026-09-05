@@ -1808,7 +1808,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.travel:
         return const TravelScreen(embedded: true);
       case _WebSection.aviation:
-        return const AviationScreen();
+        return const AviationScreen(embedded: true);
       case _WebSection.crew:
         return const CrewScreen();
       case _WebSection.premium:

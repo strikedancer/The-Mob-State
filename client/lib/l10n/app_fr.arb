@@ -11108,5 +11108,43 @@
       }
     }
   },
-  "travelCannotAfford": "Pas assez d'argent"
+  "travelCannotAfford": "Pas assez d'argent",
+  "aviationHeroTitle": "Le hangar",
+  "aviationHeroSubtitle": "Terminez l'école d'aviation, achetez une licence payante, puis achetez un avion pour voyager plus rapidement et faire de la contrebande.",
+  "aviationSchoolChip": "École {level}/5",
+  "@aviationSchoolChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationCertsChip": "Certificats de vol {count}/2",
+  "@aviationCertsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationNoLicenseChip": "Pas de licence payante",
+  "aviationOwnedCountChip": "{count} avion",
+  "@aviationOwnedCountChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationOwnedBadge": "Possédée",
+  "aviationHangarEmptyHint": "Achetez d'abord une licence payante, puis choisissez un avion ci-dessous.",
+  "aviationRequiresLicense": "Besoins {name}",
+  "@aviationRequiresLicense": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRankLocked": "Classement trop bas"
 }

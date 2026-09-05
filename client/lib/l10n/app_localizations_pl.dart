@@ -4196,6 +4196,46 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get aviationHeroTitle => 'Hangar';
+
+  @override
+  String get aviationHeroSubtitle =>
+      'Skończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby szybciej podróżować i przemycać.';
+
+  @override
+  String aviationSchoolChip(String level) {
+    return 'Szkoła $level/5';
+  }
+
+  @override
+  String aviationCertsChip(String count) {
+    return 'Certyfikaty lotów $count/2';
+  }
+
+  @override
+  String get aviationNoLicenseChip => 'Brak płatnej licencji';
+
+  @override
+  String aviationOwnedCountChip(String count) {
+    return '$count samolot';
+  }
+
+  @override
+  String get aviationOwnedBadge => 'Posiadany';
+
+  @override
+  String get aviationHangarEmptyHint =>
+      'Najpierw kup płatną licencję, a następnie wybierz samolot poniżej.';
+
+  @override
+  String aviationRequiresLicense(String name) {
+    return 'Potrzebuje $name';
+  }
+
+  @override
+  String get aviationRankLocked => 'Zbyt niska ranga';
+
+  @override
   String get crewUiTr0 => 'Wymagania dotyczące aktualizacji centrali';
 
   @override

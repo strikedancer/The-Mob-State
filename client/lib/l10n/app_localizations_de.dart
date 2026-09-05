@@ -4211,6 +4211,46 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get aviationHeroTitle => 'Der Hangar';
+
+  @override
+  String get aviationHeroSubtitle =>
+      'Beenden Sie die Flugschule, kaufen Sie eine kostenpflichtige Lizenz und kaufen Sie dann ein Flugzeug, um schneller reisen und schmuggeln zu können.';
+
+  @override
+  String aviationSchoolChip(String level) {
+    return 'Schule $level/5';
+  }
+
+  @override
+  String aviationCertsChip(String count) {
+    return 'Flugzertifikate $count/2';
+  }
+
+  @override
+  String get aviationNoLicenseChip => 'Keine kostenpflichtige Lizenz';
+
+  @override
+  String aviationOwnedCountChip(String count) {
+    return '$count Flugzeuge';
+  }
+
+  @override
+  String get aviationOwnedBadge => 'Im Besitz';
+
+  @override
+  String get aviationHangarEmptyHint =>
+      'Kaufen Sie zuerst eine kostenpflichtige Lizenz und wählen Sie dann unten ein Flugzeug aus.';
+
+  @override
+  String aviationRequiresLicense(String name) {
+    return 'Bedürfnisse $name';
+  }
+
+  @override
+  String get aviationRankLocked => 'Rang zu niedrig';
+
+  @override
   String get crewUiTr0 => 'HQ-Upgrade-Anforderungen';
 
   @override

@@ -9584,6 +9584,16 @@
   },
   "aviationUiDefaultAircraftName": "Vliegtuigen",
   "aviationUiLoadError": "Kan luchtvaartgegevens niet laden: {error}",
+  "aviationHeroTitle": "De hangar",
+  "aviationHeroSubtitle": "Rond Luchtvaart-school af, koop een betaalde licentie en kies daarna een vliegtuig voor sneller reizen en smokkel.",
+  "aviationSchoolChip": "School {level}/5",
+  "aviationCertsChip": "Brevetten {count}/2",
+  "aviationNoLicenseChip": "Geen betaalde licentie",
+  "aviationOwnedCountChip": "{count} vliegtuigen",
+  "aviationOwnedBadge": "In bezit",
+  "aviationHangarEmptyHint": "Koop eerst een betaalde licentie en kies daarna hieronder een toestel.",
+  "aviationRequiresLicense": "Vereist {name}",
+  "aviationRankLocked": "Rang te laag",
   "@aviationUiLoadError": {
     "placeholders": {
       "error": {
@@ -11105,6 +11115,34 @@
   "@travelFbiChip": {
     "placeholders": {
       "level": {
+        "type": "String"
+      }
+    }
+  },
+  "@aviationSchoolChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "@aviationCertsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@aviationOwnedCountChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@aviationRequiresLicense": {
+    "placeholders": {
+      "name": {
         "type": "String"
       }
     }

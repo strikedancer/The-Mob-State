@@ -2581,6 +2581,36 @@
   },
   "aviationUiDefaultAircraftName": "Aircraft",
   "aviationUiLoadError": "Could not load aviation data: {error}",
+  "aviationHeroTitle": "The hangar",
+  "aviationHeroSubtitle": "Finish Aviation school, buy a paid license, then buy a plane for faster travel and smuggling.",
+  "aviationSchoolChip": "School {level}/5",
+  "@aviationSchoolChip": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "aviationCertsChip": "Flight certs {count}/2",
+  "@aviationCertsChip": {
+    "placeholders": {
+      "count": { "type": "String" }
+    }
+  },
+  "aviationNoLicenseChip": "No paid license",
+  "aviationOwnedCountChip": "{count} aircraft",
+  "@aviationOwnedCountChip": {
+    "placeholders": {
+      "count": { "type": "String" }
+    }
+  },
+  "aviationOwnedBadge": "Owned",
+  "aviationHangarEmptyHint": "Buy a paid license first, then pick a plane below.",
+  "aviationRequiresLicense": "Needs {name}",
+  "@aviationRequiresLicense": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "aviationRankLocked": "Rank too low",
   "@aviationUiLoadError": {
     "placeholders": {
       "error": {

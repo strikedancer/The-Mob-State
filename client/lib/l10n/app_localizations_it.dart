@@ -4200,6 +4200,46 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get aviationHeroTitle => 'L\'hangar';
+
+  @override
+  String get aviationHeroSubtitle =>
+      'Termina la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per viaggiare più velocemente e contrabbandare.';
+
+  @override
+  String aviationSchoolChip(String level) {
+    return 'Scuola $level/5';
+  }
+
+  @override
+  String aviationCertsChip(String count) {
+    return 'Certificati di volo $count/2';
+  }
+
+  @override
+  String get aviationNoLicenseChip => 'Nessuna licenza a pagamento';
+
+  @override
+  String aviationOwnedCountChip(String count) {
+    return '$count aereo';
+  }
+
+  @override
+  String get aviationOwnedBadge => 'Posseduta';
+
+  @override
+  String get aviationHangarEmptyHint =>
+      'Acquista prima una licenza a pagamento, quindi scegli un aereo di seguito.';
+
+  @override
+  String aviationRequiresLicense(String name) {
+    return 'Bisogni $name';
+  }
+
+  @override
+  String get aviationRankLocked => 'Classifica troppo bassa';
+
+  @override
   String get crewUiTr0 => 'Requisiti di aggiornamento del quartier generale';
 
   @override

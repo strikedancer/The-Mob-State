@@ -11108,5 +11108,43 @@
       }
     }
   },
-  "travelCannotAfford": "Za mało gotówki"
+  "travelCannotAfford": "Za mało gotówki",
+  "aviationHeroTitle": "Hangar",
+  "aviationHeroSubtitle": "Skończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby szybciej podróżować i przemycać.",
+  "aviationSchoolChip": "Szkoła {level}/5",
+  "@aviationSchoolChip": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationCertsChip": "Certyfikaty lotów {count}/2",
+  "@aviationCertsChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationNoLicenseChip": "Brak płatnej licencji",
+  "aviationOwnedCountChip": "{count} samolot",
+  "@aviationOwnedCountChip": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationOwnedBadge": "Posiadany",
+  "aviationHangarEmptyHint": "Najpierw kup płatną licencję, a następnie wybierz samolot poniżej.",
+  "aviationRequiresLicense": "Potrzebuje {name}",
+  "@aviationRequiresLicense": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationRankLocked": "Zbyt niska ranga"
 }

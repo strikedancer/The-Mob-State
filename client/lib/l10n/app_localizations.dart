@@ -7429,6 +7429,66 @@ abstract class AppLocalizations {
   /// **'Could not load aviation data: {error}'**
   String aviationUiLoadError(String error);
 
+  /// No description provided for @aviationHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The hangar'**
+  String get aviationHeroTitle;
+
+  /// No description provided for @aviationHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Aviation school, buy a paid license, then buy a plane for faster travel and smuggling.'**
+  String get aviationHeroSubtitle;
+
+  /// No description provided for @aviationSchoolChip.
+  ///
+  /// In en, this message translates to:
+  /// **'School {level}/5'**
+  String aviationSchoolChip(String level);
+
+  /// No description provided for @aviationCertsChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight certs {count}/2'**
+  String aviationCertsChip(String count);
+
+  /// No description provided for @aviationNoLicenseChip.
+  ///
+  /// In en, this message translates to:
+  /// **'No paid license'**
+  String get aviationNoLicenseChip;
+
+  /// No description provided for @aviationOwnedCountChip.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} aircraft'**
+  String aviationOwnedCountChip(String count);
+
+  /// No description provided for @aviationOwnedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned'**
+  String get aviationOwnedBadge;
+
+  /// No description provided for @aviationHangarEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy a paid license first, then pick a plane below.'**
+  String get aviationHangarEmptyHint;
+
+  /// No description provided for @aviationRequiresLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs {name}'**
+  String aviationRequiresLicense(String name);
+
+  /// No description provided for @aviationRankLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank too low'**
+  String get aviationRankLocked;
+
   /// No description provided for @crewUiTr0.
   ///
   /// In en, this message translates to:

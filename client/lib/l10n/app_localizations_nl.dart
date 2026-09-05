@@ -4182,6 +4182,46 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get aviationHeroTitle => 'De hangar';
+
+  @override
+  String get aviationHeroSubtitle =>
+      'Rond Luchtvaart-school af, koop een betaalde licentie en kies daarna een vliegtuig voor sneller reizen en smokkel.';
+
+  @override
+  String aviationSchoolChip(String level) {
+    return 'School $level/5';
+  }
+
+  @override
+  String aviationCertsChip(String count) {
+    return 'Brevetten $count/2';
+  }
+
+  @override
+  String get aviationNoLicenseChip => 'Geen betaalde licentie';
+
+  @override
+  String aviationOwnedCountChip(String count) {
+    return '$count vliegtuigen';
+  }
+
+  @override
+  String get aviationOwnedBadge => 'In bezit';
+
+  @override
+  String get aviationHangarEmptyHint =>
+      'Koop eerst een betaalde licentie en kies daarna hieronder een toestel.';
+
+  @override
+  String aviationRequiresLicense(String name) {
+    return 'Vereist $name';
+  }
+
+  @override
+  String get aviationRankLocked => 'Rang te laag';
+
+  @override
   String get crewUiTr0 => 'Vereisten voor hoofdkwartierupgrades';
 
   @override
