@@ -52,7 +52,7 @@ class _EventsScreenState extends State<EventsScreen> {
   @override
   void initState() {
     super.initState();
-    _loadOverview();
+    _loadOverview(autoRetry: true);
     _tickTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
       setState(() => _now = DateTime.now());
@@ -65,9 +65,9 @@ class _EventsScreenState extends State<EventsScreen> {
     super.dispose();
   }
 
-  Future<void> _loadOverview() async {
+  Future<void> _loadOverview({bool autoRetry = false}) async {
     setState(() {
-      _isLoading = true;
+      _isLoading = _active.isEmpty && _upcoming.isEmpty && _error == null;
       _error = null;
     });
 
@@ -77,7 +77,11 @@ class _EventsScreenState extends State<EventsScreen> {
         throw Exception('failed');
       }
 
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final decoded = jsonDecode(response.body);
+      if (decoded is! Map<String, dynamic>) {
+        throw const FormatException('invalid events overview');
+      }
+      final data = decoded;
       final activeList = ((data['active'] as List?) ?? const <dynamic>[])
           .whereType<Map>()
           .map((item) => Map<String, dynamic>.from(item))
@@ -130,6 +134,12 @@ class _EventsScreenState extends State<EventsScreen> {
         ),
       );
     }
+
+    if (autoRetry && _error != null && mounted) {
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+      if (!mounted || _error == null) return;
+      await _loadOverview();
+    }
   }
 
   String _formatDateTime(String? iso, AppLocalizations l10n) {
@@ -150,20 +160,29 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Future<Map<String, dynamic>?> _loadEventDetails(int eventId) async {
-    try {
-      final response = await _apiClient.get('/game-events/$eventId');
-      if (response.statusCode != 200) {
-        return null;
+    for (var attempt = 0; attempt < 2; attempt++) {
+      try {
+        final response = await _apiClient.get('/game-events/$eventId');
+        if (response.statusCode != 200) {
+          throw Exception('failed');
+        }
+        final data = jsonDecode(response.body);
+        if (data is! Map<String, dynamic>) {
+          throw const FormatException('invalid event details');
+        }
+        final raw = data['gameEvent'];
+        if (raw is! Map) {
+          return null;
+        }
+        return Map<String, dynamic>.from(raw);
+      } catch (_) {
+        if (attempt == 0) {
+          await Future<void>.delayed(const Duration(milliseconds: 500));
+          continue;
+        }
       }
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      final raw = data['gameEvent'];
-      if (raw is! Map) {
-        return null;
-      }
-      return Map<String, dynamic>.from(raw);
-    } catch (_) {
-      return null;
     }
+    return null;
   }
 
   void _openPlayerProfile(int playerId, String username) {
@@ -1210,85 +1229,94 @@ class _EventsScreenState extends State<EventsScreen> {
     final l10n = AppLocalizations.of(context)!;
     final upcomingCombined = [..._upcoming, ..._upcomingPreview];
 
-    Widget body;
+    final seasonPass = SeasonPassPanel(
+      onBuyPremium: () {
+        if (widget.onOpenPremium != null) {
+          widget.onOpenPremium!();
+          return;
+        }
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const PremiumScreen()),
+        );
+      },
+    );
+
+    Widget liveSection;
     if (_isLoading) {
-      body = const Center(child: CircularProgressIndicator(color: _gold));
-    } else if (_error != null) {
-      body = Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                _error!,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.red),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: _loadOverview,
-                icon: const Icon(Icons.refresh),
-                label: Text(l10n.retry),
-              ),
-            ],
-          ),
-        ),
+      liveSection = const Padding(
+        padding: EdgeInsets.symmetric(vertical: 28),
+        child: Center(child: CircularProgressIndicator(color: _gold)),
       );
-    } else {
-      body = RefreshIndicator(
-        color: _gold,
-        onRefresh: _loadOverview,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
+    } else if (_error != null) {
+      liveSection = Padding(
+        padding: const EdgeInsets.fromLTRB(4, 8, 4, 16),
+        child: Column(
           children: [
-            _buildPageHero(l10n),
-            SeasonPassPanel(
-              onBuyPremium: () {
-                if (widget.onOpenPremium != null) {
-                  widget.onOpenPremium!();
-                  return;
-                }
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const PremiumScreen()),
-                );
-              },
+            Text(
+              _error!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.red),
             ),
-            _sectionTitle(l10n.gameScreenSectionLive),
-            if (_active.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Text(
-                  l10n.gameScreenNoActive,
-                  style: const TextStyle(color: Colors.white70),
-                ),
-              )
-            else
-              ..._active.map(
-                (event) => _buildEventCard(l10n, event, isActive: true),
-              ),
-            _sectionTitle(l10n.gameScreenSectionUpcoming),
-            if (upcomingCombined.isEmpty)
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF151010),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white12),
-                ),
-                child: Text(
-                  l10n.gameScreenNoUpcoming,
-                  style: const TextStyle(color: Colors.white70),
-                ),
-              )
-            else
-              ...upcomingCombined.map(
-                (event) => _buildEventCard(l10n, event, isActive: false),
-              ),
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: _loadOverview,
+              icon: const Icon(Icons.refresh),
+              label: Text(l10n.retry),
+            ),
           ],
         ),
       );
+    } else {
+      liveSection = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _sectionTitle(l10n.gameScreenSectionLive),
+          if (_active.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                l10n.gameScreenNoActive,
+                style: const TextStyle(color: Colors.white70),
+              ),
+            )
+          else
+            ..._active.map(
+              (event) => _buildEventCard(l10n, event, isActive: true),
+            ),
+          _sectionTitle(l10n.gameScreenSectionUpcoming),
+          if (upcomingCombined.isEmpty)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF151010),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.white12),
+              ),
+              child: Text(
+                l10n.gameScreenNoUpcoming,
+                style: const TextStyle(color: Colors.white70),
+              ),
+            )
+          else
+            ...upcomingCombined.map(
+              (event) => _buildEventCard(l10n, event, isActive: false),
+            ),
+        ],
+      );
     }
+
+    final body = RefreshIndicator(
+      color: _gold,
+      onRefresh: _loadOverview,
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
+        children: [
+          _buildPageHero(l10n),
+          seasonPass,
+          liveSection,
+        ],
+      ),
+    );
 
     return Scaffold(
       backgroundColor: const Color(0xFF0C0A0A),

@@ -49,7 +49,8 @@
 - Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie; op desktop staat de volledige weeklijst onderaan de linker kolom. In een crew zie je daarnaast een missable **crew-weekdoel**.
 - Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
 - Het dashboard heeft een **Sessie recap** (icoon rechtsboven) met de laatste events van deze sessie (handig om beloningen en voortgang direct terug te zien).
-- Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim.
+- Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim. **Event Pass**-prijzen op Evenementen horen in één transactie geclaimd te worden; op mobiel staan de Claim-tegels onder het doel (niet naast, want die rij past niet).
+- **Misdaden** laadt de lijst in één server-batch. Als het scherm “kon niet laden / probeer opnieuw” toont, is dat een timeout of verbinding — Retry (en één automatische retry) hoort daarna de lijst te geven.
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
 
 ### Live spelerevents

@@ -60,11 +60,21 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
         'level': level,
         'track': track,
       });
+      Map<String, dynamic> data = const {};
+      try {
+        final decoded = jsonDecode(res.body);
+        if (decoded is Map<String, dynamic>) {
+          data = decoded;
+        }
+      } catch (_) {}
+
       if (res.statusCode == 200) {
-        final data = jsonDecode(res.body) as Map<String, dynamic>;
         if (mounted) {
+          final nextStatus = data['levels'] is List ? data : null;
           setState(() {
-            _status = data;
+            if (nextStatus != null) {
+              _status = nextStatus;
+            }
             _claiming = false;
           });
           showTopRightFromSnackBar(
@@ -79,17 +89,30 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
             ),
           );
         }
+        if (data['levels'] is! List) {
+          await _load();
+        }
         return;
       }
+
+      final reason = data['params'] is Map
+          ? (data['params'] as Map)['reason']?.toString()
+          : null;
+      final message = switch (reason) {
+        'ALREADY_CLAIMED' => l10n.seasonPassClaimed,
+        'LOCKED' || 'PREMIUM_REQUIRED' => l10n.seasonPassLocked,
+        _ => l10n.seasonPassClaimFailed,
+      };
       if (mounted) {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(l10n.seasonPassClaimFailed),
+            content: Text(message),
             backgroundColor: Colors.orange,
           ),
         );
       }
+      await _load();
     } catch (_) {
       if (mounted) {
         showTopRightFromSnackBar(
@@ -100,6 +123,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
           ),
         );
       }
+      await _load();
     }
     if (mounted) setState(() => _claiming = false);
   }
@@ -189,6 +213,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
     required bool locked,
     required VoidCallback onClaim,
     required AppLocalizations l10n,
+    bool expanded = false,
   }) {
     final canTap = claimable && !locked && !claimed;
     return Material(
@@ -197,7 +222,9 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
         onTap: canTap && !_claiming ? onClaim : null,
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          constraints: const BoxConstraints(minWidth: 148, maxWidth: 168),
+          constraints: expanded
+              ? const BoxConstraints(minHeight: 58)
+              : const BoxConstraints(minWidth: 148, maxWidth: 168),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.35),
@@ -211,7 +238,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
             ),
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
             children: [
               _assetTile(path: display.imagePath, accent: accent),
               const SizedBox(width: 8),
@@ -312,129 +339,196 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
 
     final ratio = target > 0 ? (progress / target).clamp(0.0, 1.0) : 0.0;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
-      decoration: BoxDecoration(
-        color: even
-            ? Colors.black.withValues(alpha: 0.18)
-            : Colors.black.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: unlocked
-              ? _accent.withValues(alpha: 0.28)
-              : Colors.white.withValues(alpha: 0.06),
+    final goalBlock = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                _goalTitle(l10n, level),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: unlocked ? Colors.white : Colors.white70,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(width: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 6,
+                vertical: 2,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                l10n.seasonPassGoalRatio(progress, target),
+                style: TextStyle(
+                  color: unlocked ? Colors.greenAccent : _gold,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w800,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        const SizedBox(height: 4),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(2),
+          child: LinearProgressIndicator(
+            value: ratio,
+            minHeight: 3,
+            backgroundColor: Colors.white10,
+            color: unlocked ? Colors.greenAccent : _accent,
+          ),
+        ),
+      ],
+    );
+
+    Widget rewardsRow({required bool expanded}) {
+      return Row(
         children: [
-          Container(
-            width: 26,
-            height: 26,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: unlocked
-                  ? _gold.withValues(alpha: 0.2)
-                  : Colors.white.withValues(alpha: 0.06),
-              border: Border.all(
-                color: unlocked ? _gold.withValues(alpha: 0.7) : Colors.white24,
-              ),
-            ),
-            child: Text(
-              '$lvl',
-              style: TextStyle(
-                color: unlocked ? _gold : Colors.white54,
-                fontWeight: FontWeight.w800,
-                fontSize: 11,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          _assetTile(
-            path: seasonPassGoalCategoryIcon(cat),
-            accent: _accent,
-            size: 36,
-          ),
-          const SizedBox(width: 10),
           Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
+            child: _rewardChip(
+              display: _display(freeRewards, l10n),
+              accent: _eventCol,
+              claimable: free['claimable'] == true,
+              claimed: free['claimed'] == true,
+              locked: !unlocked,
+              onClaim: () => _claim(lvl, 'free'),
+              l10n: l10n,
+              expanded: expanded,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: _rewardChip(
+              display: _display(premRewards, l10n),
+              accent: _premiumCol,
+              claimable: prem['claimable'] == true,
+              claimed: prem['claimed'] == true,
+              locked: !unlocked || !premium,
+              onClaim: () => _claim(lvl, 'premium'),
+              l10n: l10n,
+              expanded: expanded,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 620;
+        return Container(
+          margin: const EdgeInsets.only(bottom: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
+          decoration: BoxDecoration(
+            color: even
+                ? Colors.black.withValues(alpha: 0.18)
+                : Colors.black.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: unlocked
+                  ? _accent.withValues(alpha: 0.28)
+                  : Colors.white.withValues(alpha: 0.06),
+            ),
+          ),
+          child: compact
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
+                    Row(
+                      children: [
+                        Container(
+                          width: 26,
+                          height: 26,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: unlocked
+                                ? _gold.withValues(alpha: 0.2)
+                                : Colors.white.withValues(alpha: 0.06),
+                            border: Border.all(
+                              color: unlocked
+                                  ? _gold.withValues(alpha: 0.7)
+                                  : Colors.white24,
+                            ),
+                          ),
+                          child: Text(
+                            '$lvl',
+                            style: TextStyle(
+                              color: unlocked ? _gold : Colors.white54,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        _assetTile(
+                          path: seasonPassGoalCategoryIcon(cat),
+                          accent: _accent,
+                          size: 36,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(child: goalBlock),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    rewardsRow(expanded: true),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 26,
+                      height: 26,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: unlocked
+                            ? _gold.withValues(alpha: 0.2)
+                            : Colors.white.withValues(alpha: 0.06),
+                        border: Border.all(
+                          color: unlocked
+                              ? _gold.withValues(alpha: 0.7)
+                              : Colors.white24,
+                        ),
+                      ),
                       child: Text(
-                        _goalTitle(l10n, level),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        '$lvl',
                         style: TextStyle(
-                          color: unlocked ? Colors.white : Colors.white70,
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w700,
+                          color: unlocked ? _gold : Colors.white54,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 11,
                         ),
                       ),
                     ),
-                    const SizedBox(width: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        l10n.seasonPassGoalRatio(progress, target),
-                        style: TextStyle(
-                          color: unlocked ? Colors.greenAccent : _gold,
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w800,
-                          fontFeatures: const [FontFeature.tabularFigures()],
-                        ),
-                      ),
+                    const SizedBox(width: 8),
+                    _assetTile(
+                      path: seasonPassGoalCategoryIcon(cat),
+                      accent: _accent,
+                      size: 36,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(flex: 4, child: goalBlock),
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      width: 342,
+                      child: rewardsRow(expanded: false),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(2),
-                  child: LinearProgressIndicator(
-                    value: ratio,
-                    minHeight: 3,
-                    backgroundColor: Colors.white10,
-                    color: unlocked ? Colors.greenAccent : _accent,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          _rewardChip(
-            display: _display(freeRewards, l10n),
-            accent: _eventCol,
-            claimable: free['claimable'] == true,
-            claimed: free['claimed'] == true,
-            locked: !unlocked,
-            onClaim: () => _claim(lvl, 'free'),
-            l10n: l10n,
-          ),
-          const SizedBox(width: 6),
-          _rewardChip(
-            display: _display(premRewards, l10n),
-            accent: _premiumCol,
-            claimable: prem['claimable'] == true,
-            claimed: prem['claimed'] == true,
-            locked: !unlocked || !premium,
-            onClaim: () => _claim(lvl, 'premium'),
-            l10n: l10n,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -546,52 +640,60 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
             ),
           ],
           const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
-            child: Row(
-              children: [
-                const SizedBox(width: 70),
-                Expanded(
-                  flex: 4,
-                  child: Text(
-                    l10n.seasonPassColumnGoal,
-                    style: const TextStyle(
-                      color: Colors.white54,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.3,
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final compact = constraints.maxWidth < 620;
+              if (compact) {
+                return const SizedBox(height: 2);
+              }
+              return Padding(
+                padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 70),
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        l10n.seasonPassColumnGoal,
+                        style: const TextStyle(
+                          color: Colors.white54,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  width: 168,
-                  child: Text(
-                    l10n.seasonPassColumnEvent,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: _eventCol.withValues(alpha: 0.95),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.3,
+                    SizedBox(
+                      width: 168,
+                      child: Text(
+                        l10n.seasonPassColumnEvent,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: _eventCol.withValues(alpha: 0.95),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 6),
-                SizedBox(
-                  width: 168,
-                  child: Text(
-                    l10n.seasonPassColumnPremium,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: _premiumCol.withValues(alpha: 0.95),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.3,
+                    const SizedBox(width: 6),
+                    SizedBox(
+                      width: 168,
+                      child: Text(
+                        l10n.seasonPassColumnPremium,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: _premiumCol.withValues(alpha: 0.95),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
           ...levels.asMap().entries.map((entry) {
             return _goalRow(

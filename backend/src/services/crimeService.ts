@@ -42,6 +42,24 @@ const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 /** Minimum rank to steal cars — keep in sync with vehicleService.stealVehicle. */
 const LAND_VEHICLE_THEFT_MIN_RANK = 5;
 
+export type CrimeReadinessContext = {
+  playerRank: number;
+  hasCriminalRecord: boolean;
+  selectedVehicle: Awaited<ReturnType<typeof resolveSelectedCrimeVehicle>>;
+  equippedWeapons: EquippedWeapon[];
+  ammoCounts: Map<string, number>;
+  drugTotalsByType: Map<string, number>;
+  carriedToolIds: Set<string>;
+  carriedToolDurability: Map<string, number>;
+  storageToolIds: Set<string>;
+  attemptCounts: Map<string, number>;
+  shootingAccuracyBonus: number;
+  gymStrengthBonus: number;
+  trainingComboActive: boolean;
+  countryPoliceEnabled: boolean;
+  countryPoliceSuccessPenaltyPp: number;
+};
+
 async function runCrimeSideEffect(
   label: string,
   effect: () => Promise<void>,
@@ -1206,22 +1224,28 @@ export const crimeService = {
   },
 
   /**
-   * Calculate the success chance for a player attempting a specific crime
-   * Base model:
-   * - Always: base chance + rank bonus + mastery bonus
-   * - Tools crimes: add tool condition modifier
-   * - Vehicle crimes: add vehicle stat modifier
-   * - Tools + Vehicle crimes: both modifiers apply
+   * Calculate the success chance for a player attempting a specific crime.
+   * List path must pass a preloaded context — never call this in a per-crime loop.
    */
   async calculatePlayerSuccessChance(
     playerId: number,
     crimeId: string,
     weaponUsed?: { weaponId: string; condition: number },
-    vehicleStats?: { speed: number; armor: number; cargo: number; stealth: number; condition: number }
+    vehicleStats?: { speed: number; armor: number; cargo: number; stealth: number; condition: number },
+    context?: CrimeReadinessContext,
   ): Promise<number> {
     const crime = this.getCrimeDefinition(crimeId);
     if (!crime) {
       return 0;
+    }
+
+    if (context) {
+      return this.computePlayerSuccessChanceFromContext(
+        crimeId,
+        context,
+        weaponUsed,
+        vehicleStats,
+      );
     }
 
     const player = await prisma.player.findUnique({
@@ -1233,6 +1257,33 @@ export const crimeService = {
       return crime.baseSuccessChance;
     }
 
+    const loaded = await this.buildCrimeReadinessContext(
+      playerId,
+      player.rank,
+      player.currentCountry || 'netherlands',
+    );
+    return this.computePlayerSuccessChanceFromContext(
+      crimeId,
+      loaded,
+      weaponUsed,
+      vehicleStats,
+    );
+  },
+
+  /**
+   * Same success-chance math as calculatePlayerSuccessChance, using one preloaded context.
+   */
+  computePlayerSuccessChanceFromContext(
+    crimeId: string,
+    context: CrimeReadinessContext,
+    weaponUsed?: { weaponId: string; condition: number },
+    vehicleStats?: { speed: number; armor: number; cargo: number; stealth: number; condition: number },
+  ): number {
+    const crime = this.getCrimeDefinition(crimeId);
+    if (!crime) {
+      return 0;
+    }
+
     // Base scaling: keep early game challenging.
     // Example: easiest crime 70% base -> ~27% starting chance.
     const baseScaledChance = crime.baseSuccessChance * 0.385;
@@ -1240,32 +1291,23 @@ export const crimeService = {
 
     // 1️⃣ RANK ADVANTAGE: modest bonus only for ranks above crime minimum
     // +0.2% per level above requirement (max +8%)
-    const levelsAboveRequirement = Math.max(0, player.rank - crime.minLevel);
+    const levelsAboveRequirement = Math.max(0, context.playerRank - crime.minLevel);
     const rankBonus = Math.min(levelsAboveRequirement * 0.002, 0.08);
     successChance += rankBonus;
 
-    // 2️⃣ CRIME MASTERY: Get player's experience with this specific crime
-    // +1% success per 5 attempts (max +10% at 50 attempts)
-    const crimeAttempts = await prisma.crimeAttempt.count({
-      where: {
-        playerId: playerId,
-        crimeId: crimeId,
-      },
-    });
-    const masteryBonus = Math.min((crimeAttempts / 5) * 0.01, 0.10); // Max 10% bonus
+    // 2️⃣ CRIME MASTERY: +1% success per 5 attempts (max +10% at 50 attempts)
+    const crimeAttempts = context.attemptCounts.get(crimeId) ?? 0;
+    const masteryBonus = Math.min((crimeAttempts / 5) * 0.01, 0.10);
     successChance += masteryBonus;
 
     // 3️⃣ WEAPON BONUS: Using correct weapon type
     if (weaponUsed && crime.suitableWeaponTypes) {
       const weaponDef = weaponService.getAllWeapons().find(
-        (w) => w.id === weaponUsed.weaponId
+        (w) => w.id === weaponUsed.weaponId,
       );
 
       if (weaponDef && crime.suitableWeaponTypes.includes(weaponDef.type)) {
-        // 10% success bonus for correct weapon
         successChance += 0.1;
-
-        // Additional 5% bonus for good weapon condition (>80%)
         if (weaponUsed.condition > 80) {
           successChance += 0.05;
         }
@@ -1277,13 +1319,13 @@ export const crimeService = {
       const toolConditionPercents: number[] = [];
 
       for (const requiredToolId of crime.requiredTools) {
-        const playerTool = await getPlayerTool(playerId, requiredToolId);
+        const durability = context.carriedToolDurability.get(requiredToolId);
         const toolDef = toolService.getToolDefinition(requiredToolId);
 
-        if (playerTool && toolDef && toolDef.maxDurability > 0) {
+        if (durability != null && toolDef && toolDef.maxDurability > 0) {
           const conditionPercent = Math.max(
             0,
-            Math.min(100, (playerTool.durability / toolDef.maxDurability) * 100)
+            Math.min(100, (durability / toolDef.maxDurability) * 100),
           );
           toolConditionPercents.push(conditionPercent);
         }
@@ -1293,40 +1335,86 @@ export const crimeService = {
         const avgToolCondition =
           toolConditionPercents.reduce((sum, value) => sum + value, 0) /
           toolConditionPercents.length;
-
-        // Tool condition from 50% baseline: -8% at 0%, +8% at 100%
         const normalizedToolCondition = (avgToolCondition - 50) / 50;
-        const toolBonus = normalizedToolCondition * 0.08;
-        successChance += toolBonus;
+        successChance += normalizedToolCondition * 0.08;
       }
     }
 
     // 5️⃣ VEHICLE BONUS: Only for crimes that require a vehicle
     if (crime.requiredVehicle && vehicleStats) {
-      const conditionMultiplier = vehicleStats.condition / 100; // 0-1 based on condition %
+      const conditionMultiplier = vehicleStats.condition / 100;
       let vehicleBonus = 0;
-
-      // Speed bonus: 1% per 5 speed points (max 19%)
-      const speedBonus = Math.min((vehicleStats.speed / 5) * 0.01, 0.19);
-      vehicleBonus += speedBonus * conditionMultiplier;
-
-      // Armor bonus: 1% per 10 armor points (max 5%)
-      const armorBonus = Math.min((vehicleStats.armor / 10) * 0.01, 0.05);
-      vehicleBonus += armorBonus * conditionMultiplier;
-
-      // Cargo bonus: 1% per 20 cargo capacity (max 5%)
-      const cargoBonus = Math.min((vehicleStats.cargo / 20) * 0.01, 0.05);
-      vehicleBonus += cargoBonus * conditionMultiplier;
-
-      // Stealth bonus: 1% per 10 stealth points (max 9.5%)
-      const stealthBonus = Math.min((vehicleStats.stealth / 10) * 0.01, 0.095);
-      vehicleBonus += stealthBonus * conditionMultiplier;
-
+      vehicleBonus += Math.min((vehicleStats.speed / 5) * 0.01, 0.19) * conditionMultiplier;
+      vehicleBonus += Math.min((vehicleStats.armor / 10) * 0.01, 0.05) * conditionMultiplier;
+      vehicleBonus += Math.min((vehicleStats.cargo / 20) * 0.01, 0.05) * conditionMultiplier;
+      vehicleBonus += Math.min((vehicleStats.stealth / 10) * 0.01, 0.095) * conditionMultiplier;
       successChance += vehicleBonus;
     }
 
-    // 6️⃣–7️⃣ SHOOTING + GYM (parallel fetch; include lastTrainedAt for combo-readiness)
-    const [shootingStats, gymStats] = await Promise.all([
+    if (context.shootingAccuracyBonus) {
+      successChance += context.shootingAccuracyBonus;
+    }
+    if (context.gymStrengthBonus) {
+      successChance += context.gymStrengthBonus;
+    }
+    if (context.trainingComboActive) {
+      successChance += TRAINING_COMBO_READINESS_BONUS;
+    }
+
+    if (context.countryPoliceEnabled && context.countryPoliceSuccessPenaltyPp > 0) {
+      successChance = Math.max(
+        0.05,
+        Math.min(0.95, successChance - context.countryPoliceSuccessPenaltyPp / 100),
+      );
+    }
+
+    return Math.max(0.05, Math.min(successChance, 0.95));
+  },
+
+  /**
+   * Load player state once for crime readiness checks (GET /crimes list).
+   */
+  async buildCrimeReadinessContext(
+    playerId: number,
+    playerRank: number,
+    currentCountry: string,
+  ): Promise<CrimeReadinessContext> {
+    const [
+      selectedVehicle,
+      equippedWeapons,
+      drugRows,
+      carriedTools,
+      storageTools,
+      ammoInventory,
+      criminalRecordCount,
+      attemptGroups,
+      shootingStats,
+      gymStats,
+    ] = await Promise.all([
+      resolveSelectedCrimeVehicle(playerId, currentCountry),
+      weaponSelectionService.getEquippedWeapons(playerId),
+      prisma.drugInventory.findMany({
+        where: { playerId },
+        select: { drugType: true, quantity: true },
+      }),
+      prisma.playerTools.findMany({
+        where: { playerId, location: 'carried', durability: { gt: 0 } },
+        select: { toolId: true, durability: true },
+      }),
+      prisma.playerTools.findMany({
+        where: { playerId, location: { not: 'carried' }, durability: { gt: 0 } },
+        select: { toolId: true },
+      }),
+      prisma.ammoInventory.findMany({
+        where: { playerId },
+        select: { ammoType: true, quantity: true },
+      }),
+      judgeService.getVisibleCriminalRecordCount(playerId),
+      prisma.crimeAttempt.groupBy({
+        by: ['crimeId'],
+        where: { playerId },
+        _count: { _all: true },
+      }),
       prisma.shootingRangeStats.findUnique({
         where: { playerId },
         select: { accuracyBonus: true, lastTrainedAt: true },
@@ -1342,91 +1430,6 @@ export const crimeService = {
       }),
     ]);
 
-    // Max +10% from 100 sessions (0.1% per session) — shooting
-    if (shootingStats?.accuracyBonus) {
-      successChance += shootingStats.accuracyBonus;
-    }
-
-    // Max +8% aggregate gym bonus (strength/speed/stamina tracks; see gymService.computeAggregateGymBonus)
-    if (gymStats?.strengthBonus) {
-      successChance += gymStats.strengthBonus;
-    }
-
-    // 8️⃣ Same-UTC-day combo: both tracks trained today → small extra (see trainingComboReadiness.ts)
-    const gymLastUtc = gymStats
-      ? latestGymTrainAt({
-          lastTrainedAt: gymStats.lastTrainedAt ?? null,
-          speedLastTrainedAt: gymStats.speedLastTrainedAt ?? null,
-          staminaLastTrainedAt: gymStats.staminaLastTrainedAt ?? null,
-        })
-      : null;
-
-    if (
-      isTrainingComboReadinessActive(
-        gymLastUtc,
-        shootingStats?.lastTrainedAt ?? null,
-      )
-    ) {
-      successChance += TRAINING_COMBO_READINESS_BONUS;
-    }
-
-    try {
-      const { countryPoliceService } = await import('./countryPoliceService');
-      const mods = await countryPoliceService.getModifiersForCountry(
-        player.currentCountry || 'netherlands',
-      );
-      if (mods.enabled && mods.successPenaltyPp > 0) {
-        successChance = countryPoliceService.applySuccessPenalty(
-          successChance,
-          mods.successPenaltyPp,
-        );
-      }
-    } catch {
-      // ignore
-    }
-
-    // Keep realistic bounds: at least 5%, at most 95%
-    return Math.max(0.05, Math.min(successChance, 0.95));
-  },
-
-  /**
-   * Load player state once for crime readiness checks (GET /crimes list).
-   */
-  async buildCrimeReadinessContext(
-    playerId: number,
-    playerRank: number,
-    currentCountry: string,
-  ) {
-    const [
-      selectedVehicle,
-      equippedWeapons,
-      drugRows,
-      carriedTools,
-      storageTools,
-      ammoInventory,
-      criminalRecordCount,
-    ] = await Promise.all([
-      resolveSelectedCrimeVehicle(playerId, currentCountry),
-      weaponSelectionService.getEquippedWeapons(playerId),
-      prisma.drugInventory.findMany({
-        where: { playerId },
-        select: { drugType: true, quantity: true },
-      }),
-      prisma.playerTools.findMany({
-        where: { playerId, location: 'carried', durability: { gt: 0 } },
-        select: { toolId: true },
-      }),
-      prisma.playerTools.findMany({
-        where: { playerId, location: { not: 'carried' }, durability: { gt: 0 } },
-        select: { toolId: true },
-      }),
-      prisma.ammoInventory.findMany({
-        where: { playerId },
-        select: { ammoType: true, quantity: true },
-      }),
-      judgeService.getVisibleCriminalRecordCount(playerId),
-    ]);
-
     const drugTotalsByType = new Map<string, number>();
     for (const row of drugRows) {
       drugTotalsByType.set(
@@ -1440,6 +1443,40 @@ export const crimeService = {
       ammoCounts.set(row.ammoType, row.quantity);
     }
 
+    const carriedToolDurability = new Map<string, number>();
+    for (const tool of carriedTools) {
+      const current = carriedToolDurability.get(tool.toolId) ?? 0;
+      if (tool.durability > current) {
+        carriedToolDurability.set(tool.toolId, tool.durability);
+      }
+    }
+
+    const attemptCounts = new Map<string, number>();
+    for (const row of attemptGroups) {
+      attemptCounts.set(row.crimeId, row._count._all);
+    }
+
+    const gymLastUtc = gymStats
+      ? latestGymTrainAt({
+          lastTrainedAt: gymStats.lastTrainedAt ?? null,
+          speedLastTrainedAt: gymStats.speedLastTrainedAt ?? null,
+          staminaLastTrainedAt: gymStats.staminaLastTrainedAt ?? null,
+        })
+      : null;
+
+    let countryPoliceEnabled = false;
+    let countryPoliceSuccessPenaltyPp = 0;
+    try {
+      const { countryPoliceService } = await import('./countryPoliceService');
+      const mods = await countryPoliceService.getModifiersForCountry(
+        currentCountry || 'netherlands',
+      );
+      countryPoliceEnabled = mods.enabled;
+      countryPoliceSuccessPenaltyPp = mods.successPenaltyPp;
+    } catch {
+      // ignore
+    }
+
     return {
       playerRank,
       hasCriminalRecord: criminalRecordCount > 0,
@@ -1448,7 +1485,17 @@ export const crimeService = {
       ammoCounts,
       drugTotalsByType,
       carriedToolIds: new Set(carriedTools.map((t) => t.toolId)),
+      carriedToolDurability,
       storageToolIds: new Set(storageTools.map((t) => t.toolId)),
+      attemptCounts,
+      shootingAccuracyBonus: shootingStats?.accuracyBonus ?? 0,
+      gymStrengthBonus: gymStats?.strengthBonus ?? 0,
+      trainingComboActive: isTrainingComboReadinessActive(
+        gymLastUtc,
+        shootingStats?.lastTrainedAt ?? null,
+      ),
+      countryPoliceEnabled,
+      countryPoliceSuccessPenaltyPp,
     };
   },
 

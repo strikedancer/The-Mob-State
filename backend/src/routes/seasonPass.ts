@@ -43,13 +43,23 @@ router.post('/claim', authenticate, async (req: AuthRequest, res) => {
       });
     }
 
-    const status = await seasonPassService.getSeasonPassStatus(req.player!.id);
-    return res.status(200).json({
-      event: 'season_pass.claimed',
-      params: {},
-      rewards: result.rewards,
-      ...status,
-    });
+    try {
+      const status = await seasonPassService.getSeasonPassStatus(req.player!.id);
+      return res.status(200).json({
+        event: 'season_pass.claimed',
+        params: {},
+        rewards: result.rewards,
+        ...status,
+      });
+    } catch (statusError) {
+      console.error('[SeasonPass] claim succeeded but status reload failed', statusError);
+      return res.status(200).json({
+        event: 'season_pass.claimed',
+        params: {},
+        rewards: result.rewards,
+        claimed: true,
+      });
+    }
   } catch (error) {
     console.error('[SeasonPass] claim failed', error);
     return res.status(500).json({ event: 'error.internal', params: {} });

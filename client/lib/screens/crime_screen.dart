@@ -93,9 +93,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
   @override
   void initState() {
     super.initState();
-    _checkJailStatusAndLoadCrimes();
+    _checkJailStatusAndLoadCrimes(autoRetry: true);
     _loadTrainingBonuses();
-    _loadLiveCrimeEvent();
     _loadTools();
     _loadSelectedCrimeVehicle();
     _loadCrimeWeaponSelection();
@@ -799,7 +798,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
     });
   }
 
-  Future<void> _checkJailStatusAndLoadCrimes() async {
+  Future<void> _checkJailStatusAndLoadCrimes({bool autoRetry = false}) async {
     // First check if player is in jail
     final jailTime = await _jailService.checkJailStatus();
 
@@ -808,46 +807,62 @@ class _CrimeScreenState extends State<CrimeScreen> {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.refreshPlayer();
 
+      if (!mounted) return;
       setState(() {
         _jailTime = jailTime;
         _isLoading = false;
+        _error = null;
       });
       return; // Don't load crimes if jailed
     }
 
-    // Check for active cooldown by attempting to load crimes
     try {
       final response = await _apiClient.get('/crimes');
+      Map<String, dynamic> data = const {};
+      try {
+        final decoded = jsonDecode(response.body);
+        if (decoded is Map<String, dynamic>) {
+          data = decoded;
+        }
+      } catch (_) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          throw const FormatException('invalid crimes payload');
+        }
+      }
+
+      if (!mounted) return;
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        // Check for cooldown in response
         if (data['cooldown'] != null && data['cooldown'] is Map) {
-          final cooldownData = data['cooldown'] as Map<String, dynamic>;
-          if (cooldownData['remainingSeconds'] != null) {
+          final cooldownData = Map<String, dynamic>.from(data['cooldown'] as Map);
+          final remaining = (cooldownData['remainingSeconds'] as num?)?.toInt();
+          if (remaining != null && remaining > 0) {
             setState(() {
-              _cooldownSeconds = cooldownData['remainingSeconds'] as int;
+              _cooldownSeconds = remaining;
               _isLoading = false;
+              _error = null;
             });
-            return; // Don't load crimes if on cooldown
+            unawaited(_loadLiveCrimeEvent());
+            return;
           }
         }
 
-        // No cooldown, load crimes normally
-        final crimesJson = data['crimes'] as List;
+        final crimesJson = (data['crimes'] as List?) ?? const [];
         final crimes = crimesJson
-            .map((c) => Crime.fromJson(c))
+            .whereType<Map>()
+            .map((c) => Crime.fromJson(Map<String, dynamic>.from(c)))
             .where((crime) => !_excludedCrimeIds.contains(crime.id))
             .toList();
         setState(() {
           _crimes = crimes;
           _isLoading = false;
+          _error = null;
         });
+        unawaited(_loadLiveCrimeEvent());
         await _loadCountryPoliceStatus();
       } else {
+        final l10n = AppLocalizations.of(context)!;
         setState(() {
-          final l10n = AppLocalizations.of(context)!;
           _error = l10n.errorLoadingCrimes;
           _isLoading = false;
         });
@@ -859,6 +874,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
         _error = loc.connectionErrorGeneric;
         _isLoading = false;
       });
+    }
+
+    if (autoRetry && _error != null && mounted) {
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+      if (!mounted || _error == null) return;
+      await _checkJailStatusAndLoadCrimes();
     }
   }
 

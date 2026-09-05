@@ -144,8 +144,11 @@ export function hasExtendedEventRewards(ext: ExtendedEventRewards): boolean {
   );
 }
 
-async function getWorldCountForVehicleId(vehicleId: string): Promise<number> {
-  const rows = await prisma.$queryRaw<Array<{ total: bigint | number }>>`
+async function getWorldCountForVehicleId(
+  db: TransactionClient | typeof prisma,
+  vehicleId: string,
+): Promise<number> {
+  const rows = await db.$queryRaw<Array<{ total: bigint | number }>>`
     SELECT COUNT(*) AS total
     FROM (
       SELECT id FROM vehicle_inventory WHERE vehicleId = ${vehicleId}
@@ -349,7 +352,7 @@ async function grantVehicle(
   if (!country) return 'cash_fallback';
 
   const vehicleType = def.vehicleCategory ?? 'car';
-  const worldCount = await getWorldCountForVehicleId(grant.vehicleId);
+  const worldCount = await getWorldCountForVehicleId(tx, grant.vehicleId);
   const maxAvail = def.maxGameAvailability ?? 12;
   if (worldCount >= maxAvail) {
     const cash =

@@ -7,6 +7,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - client/lib/screens/crime_screen.dart
 
 ## Related APIs
+- **`GET /crimes`** must stay a single batched player-context load (readiness + mastery counts + training + country-police). Never re-query `crime_attempts` or player tools **per crime** on the list — that timed out the mobile crimes screen (`errorLoadingCrimes` / connection retry). Success-chance math stays identical; only the load path is batched (`computePlayerSuccessChanceFromContext`).
 - Crime success math uses gym strength and shooting-range accuracy bonuses from the server. The crime UI may call **`GET /training/status`** to show the same active bonus percentages the player has while committing crimes (transparent summary, not a second rules engine).
 - **Combo-readiness:** same UTC calendar day with at least one gym session and one shooting-range session adds a small extra success chance (`trainingComboReadiness` in `/training/status`; constant in `backend/src/lib/trainingComboReadiness.ts`).
 - **Country police pressure (flagged):** soft success/arrest modifiers from shared per-country pressure — see `country-police.md`. Flag `COUNTRY_POLICE_PRESSURE_ENABLED` default off.
@@ -66,6 +67,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Verify weapon-required crimes pick the better of the two worn slots (for example a handgun crime uses the handgun, a rifle crime uses the rifle), block cleanly when neither slot is suitable, and stay synced with Inventory after refresh/navigation.
 - Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit or market-listed.
 - Verify an arrest during a weapon-based crime confiscates the used weapon, clears the saved selection when no copy remains, and tells the player about the confiscation in the crime result feedback.
+- Opening Crimes on a slow/mobile connection must not sit on a full-page load error after one timeout; the client retries once and keeps a Retry button.
 - After pull-to-refresh, the training bonus strip (if shown) matches hub training progress for strength and accuracy.
 - When both gym and range were trained the same UTC day, the combo line appears and matches `trainingComboReadiness` from `/training/status`; crime success % from the server includes the small combo bonus.
 - Verify a crime that initially succeeds but ends in a police/FBI arrest no longer shows a success state, actually puts the player in jail, and applies the matching confiscation consequences.

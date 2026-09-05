@@ -95,8 +95,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
         req.player!.currentCountry,
       );
 
-      crimesWithChances = await Promise.all(
-        crimes.map(async (crime) => {
+      crimesWithChances = crimes.map((crime) => {
           const vehicleStatsForCrime = crime.requiredVehicle ? vehicleStats : undefined;
           const bestWeapon = crime.requiredWeapon
             ? crimeService.pickBestEquippedWeaponForCrime(
@@ -105,9 +104,9 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
                 readinessContext.ammoCounts,
               ).weapon
             : null;
-          const playerSuccessChance = await crimeService.calculatePlayerSuccessChance(
-            playerId,
+          const playerSuccessChance = crimeService.computePlayerSuccessChanceFromContext(
             crime.id,
+            readinessContext,
             bestWeapon ?? undefined,
             vehicleStatsForCrime,
           );
@@ -134,8 +133,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
             selectedCrimeWeaponId: bestWeapon?.weaponId ?? null,
             selectedCrimeWeaponName: bestWeapon?.name ?? null,
           };
-        }),
-      );
+        });
     }
 
     return res.status(200).json({

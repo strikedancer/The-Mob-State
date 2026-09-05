@@ -256,7 +256,17 @@ export async function getSeasonPassStatus(playerId: number) {
   };
 }
 
-async function deliverRewards(
+type SeasonPassTx = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
+
+class SeasonPassClaimError extends Error {
+  constructor(readonly reason: string) {
+    super(reason);
+    this.name = 'SeasonPassClaimError';
+  }
+}
+
+async function deliverRewardsInTx(
+  tx: SeasonPassTx,
   playerId: number,
   rewards: Record<string, unknown>,
   liveEventIdHint?: number | null,
@@ -265,42 +275,40 @@ async function deliverRewards(
   const xp = Number(rewards.xp ?? 0);
   const premiumCredits = Number(rewards.premiumCredits ?? 0);
 
-  await prisma.$transaction(async (tx) => {
-    if (cash > 0) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { money: { increment: Math.floor(cash) } },
-      });
-    }
-    if (xp > 0) {
-      await tx.player.update({
-        where: { id: playerId },
-        data: { xp: { increment: Math.floor(xp) } },
-      });
-    }
-    if (premiumCredits > 0) {
-      await grantPurchasedCredits(
-        tx,
-        playerId,
-        Math.floor(premiumCredits),
-        `season_pass_${currentSeasonKey()}`,
-      );
-    }
+  if (cash > 0) {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: { increment: Math.floor(cash) } },
+    });
+  }
+  if (xp > 0) {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { xp: { increment: Math.floor(xp) } },
+    });
+  }
+  if (premiumCredits > 0) {
+    await grantPurchasedCredits(
+      tx,
+      playerId,
+      Math.floor(premiumCredits),
+      `season_pass_${currentSeasonKey()}`,
+    );
+  }
 
-    const items = rewards.items;
-    if (Array.isArray(items)) {
-      for (const entry of items) {
-        if (!entry || typeof entry !== 'object') continue;
-        const row = entry as Record<string, unknown>;
-        const itemKey = String(row.itemKey ?? '').trim();
-        const quantity = Math.floor(Number(row.quantity ?? 0));
-        if (!itemKey || quantity <= 0) continue;
-        await creditEventItem(tx, playerId, itemKey, quantity, liveEventIdHint ?? null);
-      }
+  const items = rewards.items;
+  if (Array.isArray(items)) {
+    for (const entry of items) {
+      if (!entry || typeof entry !== 'object') continue;
+      const row = entry as Record<string, unknown>;
+      const itemKey = String(row.itemKey ?? '').trim();
+      const quantity = Math.floor(Number(row.quantity ?? 0));
+      if (!itemKey || quantity <= 0) continue;
+      await creditEventItem(tx, playerId, itemKey, quantity, liveEventIdHint ?? null);
     }
+  }
 
-    await fulfillExtendedEventRewards(tx, playerId, rewards);
-  });
+  await fulfillExtendedEventRewards(tx, playerId, rewards);
 }
 
 export async function claimSeasonPassReward(
@@ -326,20 +334,33 @@ export async function claimSeasonPassReward(
     }
   }
 
-  const inserted = await prisma.$executeRawUnsafe(
-    `INSERT IGNORE INTO player_season_pass_claims (player_id, season_key, level, track)
-     VALUES (?, ?, ?, ?)`,
-    playerId,
-    status.seasonKey,
-    level,
-    track,
-  );
-  if (Number(inserted) === 0) {
-    return { ok: false, reason: 'ALREADY_CLAIMED' };
+  const rewards = track === 'free' ? def.free : def.premium;
+
+  try {
+    await prisma.$transaction(
+      async (tx) => {
+        const inserted = await tx.$executeRawUnsafe(
+          `INSERT IGNORE INTO player_season_pass_claims (player_id, season_key, level, track)
+           VALUES (?, ?, ?, ?)`,
+          playerId,
+          status.seasonKey,
+          level,
+          track,
+        );
+        if (Number(inserted) === 0) {
+          throw new SeasonPassClaimError('ALREADY_CLAIMED');
+        }
+        await deliverRewardsInTx(tx, playerId, rewards);
+      },
+      { timeout: 20_000, maxWait: 5_000 },
+    );
+  } catch (error) {
+    if (error instanceof SeasonPassClaimError) {
+      return { ok: false, reason: error.reason };
+    }
+    throw error;
   }
 
-  const rewards = track === 'free' ? def.free : def.premium;
-  await deliverRewards(playerId, rewards);
   return { ok: true, rewards };
 }
 
