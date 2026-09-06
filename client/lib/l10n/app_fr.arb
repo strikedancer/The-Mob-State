@@ -1365,8 +1365,8 @@
     }
   },
   "emergencyInfo": "• 🊘 L'aide d'urgence est GRATUITE en dessous de 10 HP (+20 HP)",
-  "hospitalInfo1": "• La santé diminue lors de la commission de crimes",
-  "hospitalInfo2": "• À 0 HP, vous ne pouvez pas commettre de crimes",
+  "hospitalInfo1": "• Les crimes et les hits coûtent des PV (environ 5–15 par crime ; gilet et gardes du corps réduisent ça).",
+  "hospitalInfo2": "• Sous 70 PV le succès des crimes baisse (−4% / −8% / −12%). À 0 PV tu vas 3 heures en soins intensifs.",
   "hospitalInfo3": "• Le traitement coûte {cost} € par fois.",
   "@hospitalInfo3": {
     "placeholders": {
@@ -1384,7 +1384,7 @@
     }
   },
   "hospitalInfo5": "• ⏱️ 1 heure de récupération entre les traitements",
-  "hospitalInfo6": "• 💚 Guérison passive : +5 HP toutes les 5 minutes (si HP > 0)",
+  "hospitalInfo6": "• Soin passif : +5 PV par tick de jeu tant que tu es en vie. L’hôpital est le reset rapide et payant.",
   "medicalTreatment": "Traitement médical",
   "restoreCritical": "Restaure +20 HP (condition critique)",
   "restoreUp": "Restaurer jusqu'à {amount} HP",
@@ -5180,6 +5180,28 @@
   "hospitalCriticalStatusDetected": "État critique détecté. Soins d'urgence recommandés.",
   "hospitalStableStatus": "Écurie. Traitement régulier disponible.",
   "hospitalRefreshMedicalRecord": "Actualiser le dossier médical",
+  "hospitalStrategyTitle": "Pourquoi venir ici ?",
+  "hospitalCrimePenaltyLine": "Blessé : −{percent}% de succès criminel jusqu’à la guérison",
+  "@hospitalCrimePenaltyLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalGoHeal": "Aller à l’hôpital",
+  "hospitalBandHealthy": "En forme",
+  "hospitalBandWounded": "Blessé",
+  "hospitalBandHurt": "Gravement blessé",
+  "hospitalBandCritical": "Critique",
+  "crimesInjuredBanner": "Blessé (−{percent}% de succès). Soigne-toi à l’hôpital pour retrouver tes chances.",
+  "@crimesInjuredBanner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
   "hospitalStandardTreatmentTitle": "Traitement standard",
   "hospitalStandardTreatmentSubtitle": "Abordable • restaure jusqu'à {amount} HP",
   "@hospitalStandardTreatmentSubtitle": {
@@ -8235,9 +8257,9 @@
   "helpTopicSecurityTips": "Portez toujours au moins un gilet pare-balles lorsque le niveau Wanted est de 2 ou plus : les économies sur les factures d'hôpital compensent rapidement le prix d'achat. \nRéparez un gilet endommagé au lieu de racheter le même ; vérifier l'état après chaque attaque. \nLes munitions de fusil (5,56, 7,62, .308) traversent les gilets normaux ; achetez le gilet de plaque AP si ces calibres se présentent contre vous. \nGardez seulement autant de gardes du corps que vous pouvez encore vous le permettre demain ; Les gardes d'élite sont les plus durement touchés, mais leur salaire journalier augmente rapidement. \nLes gardes du corps ne cachent pas votre pays si vous restez hors ligne pendant une semaine ; De toute façon, le pays fuit lentement.",
   "helpTopicHospitalCategory": "Récupération",
   "helpTopicHospitalTitle": "Hôpital",
-  "helpTopicHospitalSummary": "Récupérez des HP après des combats, des crimes ratés ou des raids. L'hôpital propose des soins d'urgence gratuits et des traitements payants pour une récupération plus rapide.",
-  "helpTopicHospitalHow": "Descendez en dessous de 10 HP et vous êtes automatiquement admis aux urgences (ER). C'est gratuit mais prend plus de temps. \nLe traitement payant coûte 10 000 € par séance et restaure +30 HP. Temps de recharge : 60 minutes entre les traitements payants. \nLes soins intensifs (ICU) sont le traitement le plus lourd pour les dommages critiques. Temps de recharge : 180 minutes. Les coûts sont plus élevés mais le rétablissement est plus complet. \nAvec des HP plus élevés (50+), vous pouvez toujours effectuer des actions mais êtes plus vulnérable aux attaques. \nLes soins hospitaliers sont bloqués pendant que vous êtes en prison. Sortez d’abord, puis cherchez un traitement. \nLe certificat scolaire en médecine réduit les coûts hospitaliers et accélère les temps de récupération. \nLes médecins de l'équipage ou les compétences médicales peuvent restaurer les HP en dehors de l'hôpital en cas d'urgence.",
-  "helpTopicHospitalTips": "Ne récupérez jamais à mi-chemin : attendez d'avoir tous vos HP avant de vous lancer dans du PvP ou de commettre des crimes à haut risque. \nTraitements rémunérés en temps autour du temps de recharge : démarrez un traitement juste avant de vous déconnecter afin de revenir en ligne avec tous vos HP.",
+  "helpTopicHospitalSummary": "L’hôpital est le reset rapide quand crimes ou hits baissent tes PV. Restes blessé et le succès chute ; à 0 PV tu perds 3 heures en soins intensifs.",
+  "helpTopicHospitalHow": "Chaque tentative de crime coûte environ 5–15 PV (gilet et gardes du corps peuvent couper jusqu’à ~55%). Les hits coûtent aussi des PV.\nÀ partir de 70 PV tu es en forme. En dessous le succès baisse : −4% sous 70, −8% sous 40, −12% sous 20. Les chances affichées incluent déjà ça.\nLe soin standard coûte 10 000 € et rend jusqu’à +30 PV. L’intensif coûte 20 000 € et rend jusqu’à +75 PV. Les deux partagent 60 minutes de recharge (VIP 10% plus court).\nL’aide d’urgence est un bouton que tu appuies toi-même, seulement sous 10 PV : +20 PV gratuit, sans recharge.\nÀ 0 PV tu vas 3 heures en soins intensifs : pas de crimes ni jobs. Tu reviens à 10 PV.\nAttendre soigne +5 PV par tick tant que tu vis. C’est gratuit mais lent, et la pénalité reste jusqu’à 70+.\nPas d’urgences automatiques, pas de réduction école Médecine, pas de médic d’équipage hors de cet écran.",
+  "helpTopicHospitalTips": "Soigne-toi avant une série de crimes si tu es sous 70 PV : la pénalité est déjà dans le % de chaque carte.\nL’aide d’urgence seulement comme dernier arrêt avant les soins intensifs ; le soin payant enlève vite la pénalité.\nGilet et gardes du corps réduisent la perte de PV, donc tu vas moins souvent à l’hôpital.",
   "helpTopicPrisonCategory": "Récupération",
   "helpTopicPrisonTitle": "Prison",
   "helpTopicPrisonSummary": "Purgez votre peine de prison, payez votre caution ou tentez de vous évader. Plus votre niveau de recherche est élevé, plus votre peine est longue et coûteuse.",

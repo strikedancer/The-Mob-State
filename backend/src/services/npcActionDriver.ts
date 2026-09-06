@@ -133,7 +133,7 @@ async function tryBail(npcId: number, playerId: number): Promise<boolean> {
 
 async function tryHospital(npcId: number, playerId: number): Promise<boolean> {
   const player = await loadPlayer(playerId);
-  if (!player || player.health >= 35) return false;
+  if (!player || player.health >= 70) return false;
   try {
     if (player.health < 10) {
       await hospitalService.emergencyRoom(playerId);

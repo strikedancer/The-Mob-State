@@ -6827,10 +6827,12 @@ class AppLocalizationsEn extends AppLocalizations {
       '• 🊘 Emergency Help is FREE below 10 HP (+20 HP)';
 
   @override
-  String get hospitalInfo1 => '• Health decreases when committing crimes';
+  String get hospitalInfo1 =>
+      '• Crimes and hits cost HP (about 5–15 per crime; vest and bodyguards reduce this).';
 
   @override
-  String get hospitalInfo2 => '• At 0 HP you cannot commit crimes';
+  String get hospitalInfo2 =>
+      '• Below 70 HP crime success drops (−4% / −8% / −12%). At 0 HP you go to ICU for 3 hours.';
 
   @override
   String hospitalInfo3(String cost) {
@@ -6847,7 +6849,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hospitalInfo6 =>
-      '• 💚 Passive healing: +5 HP per 5 minutes (if HP > 0)';
+      '• Passive heal: +5 HP per game tick if you are alive. The hospital is the fast paid reset.';
 
   @override
   String get medicalTreatment => 'Medical Treatment';
@@ -6893,6 +6895,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hospitalRefreshMedicalRecord => 'Refresh medical record';
+
+  @override
+  String get hospitalStrategyTitle => 'Why come here?';
+
+  @override
+  String hospitalCrimePenaltyLine(String percent) {
+    return 'Wounded: −$percent% crime success until you heal';
+  }
+
+  @override
+  String get hospitalGoHeal => 'Go to hospital';
+
+  @override
+  String get hospitalBandHealthy => 'Fit';
+
+  @override
+  String get hospitalBandWounded => 'Wounded';
+
+  @override
+  String get hospitalBandHurt => 'Badly wounded';
+
+  @override
+  String get hospitalBandCritical => 'Critical';
+
+  @override
+  String crimesInjuredBanner(String percent) {
+    return 'Wounded (−$percent% success). Heal at the hospital to get your odds back.';
+  }
 
   @override
   String get hospitalStandardTreatmentTitle => 'Standard treatment';
@@ -16182,15 +16212,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicHospitalSummary =>
-      'Recover HP after fights, failed crimes or raids. The hospital offers free emergency care and paid treatments for faster recovery.';
+      'The hospital is the fast reset when crimes or hits drop your HP. Stay wounded and crime success falls; hit 0 HP and you lose 3 hours in ICU.';
 
   @override
   String get helpTopicHospitalHow =>
-      'Fall below 10 HP and you are automatically admitted to the Emergency Room (ER). This is free but takes longer.\nPaid treatment costs €10,000 per session and restores +30 HP. Cooldown: 60 minutes between paid treatments.\nICU (Intensive Care) is the heaviest treatment for critical damage. Cooldown: 180 minutes. Costs are higher but recovery is more complete.\nWith higher HP (50+) you can still perform actions but are more vulnerable to attacks.\nHospital treatments are blocked while you are in prison. Get out first, then seek treatment.\nSchool certificate in Medicine lowers hospital costs and speeds up recovery times.\nCrew medics or medic skills can restore HP outside the hospital as emergency recovery.';
+      'Every crime attempt costs about 5–15 HP (vest and bodyguards can cut that by up to ~55%). Hits also take HP.\nFrom 70 HP you are fit. Below that crime success drops: −4% under 70, −8% under 40, −12% under 20. The listed crime chances already include this.\nStandard treatment costs €10,000 and restores up to +30 HP. Intensive costs €20,000 and restores up to +75 HP. Both share a 60-minute cooldown (VIP 10% shorter).\nEmergency Help is a button you press yourself, only below 10 HP: free +20 HP, no cooldown.\nAt 0 HP you are sent to ICU for 3 hours: no crimes or jobs. You come back at 10 HP.\nIf you wait, ticks heal +5 HP while you are alive. That is free but slow, and you keep the crime penalty until you are back at 70+.\nThere is no automatic ER, no school-medicine discount, and no crew-medic heal outside this screen.';
 
   @override
   String get helpTopicHospitalTips =>
-      'Never recover halfway: wait for full HP before doing PvP or high-risk crimes.\nTime paid treatments around cooldown: start a treatment just before going offline so you come back online at full HP.';
+      'Heal before a crime streak if you are under 70 HP: the success penalty is already in the % on each card.\nUse Emergency Help only as a last stop before ICU; paid treatment is what clears the wounded penalty quickly.\nA vest and bodyguards reduce crime HP loss, so you visit the hospital less often.';
 
   @override
   String get helpTopicPrisonCategory => 'Recovery';

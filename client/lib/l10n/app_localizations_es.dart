@@ -6896,10 +6896,12 @@ class AppLocalizationsEs extends AppLocalizations {
       '• 🊘 La ayuda de emergencia es GRATUITA por debajo de 10 HP (+20 HP)';
 
   @override
-  String get hospitalInfo1 => '• La salud disminuye al cometer delitos';
+  String get hospitalInfo1 =>
+      '• Los crímenes y hits cuestan HP (unos 5–15 por crimen; chaleco y guardaespaldas lo reducen).';
 
   @override
-  String get hospitalInfo2 => '• Con 0 HP no puedes cometer crímenes';
+  String get hospitalInfo2 =>
+      '• Por debajo de 70 HP baja el éxito (−4% / −8% / −12%). A 0 HP vas 3 horas a la UCI.';
 
   @override
   String hospitalInfo3(String cost) {
@@ -6916,7 +6918,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get hospitalInfo6 =>
-      '• 💚 Curación pasiva: +5 HP cada 5 minutos (si HP > 0)';
+      '• Cura pasiva: +5 HP por tick de juego si sigues vivo. El hospital es el reset rápido de pago.';
 
   @override
   String get medicalTreatment => 'Tratamiento médico';
@@ -6963,6 +6965,34 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get hospitalRefreshMedicalRecord => 'Actualizar expediente médico';
+
+  @override
+  String get hospitalStrategyTitle => '¿Por qué venir aquí?';
+
+  @override
+  String hospitalCrimePenaltyLine(String percent) {
+    return 'Herido: −$percent% de éxito en crímenes hasta que te cures';
+  }
+
+  @override
+  String get hospitalGoHeal => 'Ir al hospital';
+
+  @override
+  String get hospitalBandHealthy => 'En forma';
+
+  @override
+  String get hospitalBandWounded => 'Herido';
+
+  @override
+  String get hospitalBandHurt => 'Gravemente herido';
+
+  @override
+  String get hospitalBandCritical => 'Crítico';
+
+  @override
+  String crimesInjuredBanner(String percent) {
+    return 'Herido (−$percent% de éxito). Cúrate en el hospital para recuperar tus chances.';
+  }
 
   @override
   String get hospitalStandardTreatmentTitle => 'Tratamiento estándar';
@@ -16332,15 +16362,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicHospitalSummary =>
-      'Recupera HP después de peleas, crímenes fallidos o redadas. El hospital ofrece atención de emergencia gratuita y tratamientos pagos para una recuperación más rápida.';
+      'El hospital es el reset rápido cuando crímenes o hits bajan tu HP. Si sigues herido cae el éxito; a 0 HP pierdes 3 horas en la UCI.';
 
   @override
   String get helpTopicHospitalHow =>
-      'Caiga por debajo de 10 HP y será admitido automáticamente en la Sala de Emergencias (ER). Esto es gratis pero lleva más tiempo. \nEl tratamiento pago cuesta 10.000 € por sesión y restaura +30 HP. Enfriamiento: 60 minutos entre tratamientos pagos. \nLa UCI (Cuidados Intensivos) es el tratamiento más intenso para daños críticos. Enfriamiento: 180 minutos. Los costos son mayores pero la recuperación es más completa. \nCon HP más alto (50+), aún puedes realizar acciones pero eres más vulnerable a los ataques. \nLos tratamientos hospitalarios están bloqueados mientras estás en prisión. Salga primero y luego busque tratamiento. \nEl certificado escolar en Medicina reduce los costos hospitalarios y acelera los tiempos de recuperación. \nLos médicos de la Crew o las habilidades médicas pueden restaurar HP fuera del hospital como recuperación de emergencia.';
+      'Cada intento de crimen cuesta unos 5–15 HP (chaleco y guardaespaldas pueden recortar hasta ~55%). Los hits también quitan HP.\nDesde 70 HP estás en forma. Por debajo baja el éxito: −4% bajo 70, −8% bajo 40, −12% bajo 20. Las chances de la carta ya lo incluyen.\nEl tratamiento estándar cuesta 10.000 € y recupera hasta +30 HP. El intensivo cuesta 20.000 € y hasta +75 HP. Ambos comparten 60 minutos de espera (VIP 10% menos).\nLa ayuda de emergencia es un botón que pulsas tú, solo bajo 10 HP: +20 HP gratis, sin espera.\nA 0 HP vas 3 horas a la UCI: sin crímenes ni trabajos. Vuelves con 10 HP.\nEsperar cura +5 HP por tick si sigues vivo. Es gratis pero lento, y la penalización dura hasta 70+.\nNo hay urgencias automáticas, ni descuento escolar de Medicina, ni médico de crew fuera de esta pantalla.';
 
   @override
   String get helpTopicHospitalTips =>
-      'Nunca te recuperes a mitad de camino: espera hasta tener HP completo antes de realizar PvP o crímenes de alto riesgo. \nTratamientos pagados por tiempo alrededor del tiempo de reutilización: comience un tratamiento justo antes de desconectarse para volver a conectarse con HP completo.';
+      'Cúrate antes de una racha de crímenes si estás bajo 70 HP: la penalización ya está en el % de cada carta.\nUsa la emergencia solo como último paro antes de la UCI; el tratamiento de pago quita rápido la penalización.\nChaleco y guardaespaldas reducen la pérdida de HP, así que vas menos al hospital.';
 
   @override
   String get helpTopicPrisonCategory => 'Recuperación';

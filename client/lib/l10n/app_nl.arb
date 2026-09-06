@@ -976,12 +976,12 @@
   "emergencyHelp": "Spoedeisende Hulp",
   "onlyNeedHp": "(Je hebt maar {hp} HP nodig)",
   "emergencyInfo": "• 🊘 Spoedeisende Hulp is GRATIS bij <10 HP (+20 HP)",
-  "hospitalInfo1": "• Gezondheid daalt bij het plegen van misdaden",
-  "hospitalInfo2": "• Bij 0 HP kun je geen misdaden meer plegen",
+  "hospitalInfo1": "• Misdaden en hits kosten HP (ongeveer 5–15 per misdaad; vest en lijfwachten minderen dat).",
+  "hospitalInfo2": "• Onder 70 HP daalt je slagingskans (−4% / −8% / −12%). Bij 0 HP ga je 3 uur naar de IC.",
   "hospitalInfo3": "• De behandeling kost €{cost} per keer",
   "hospitalInfo4": "• Je kunt maximaal {amount} HP herstellen per behandeling",
   "hospitalInfo5": "• ⏱️ 1 uur cooldown tussen behandelingen",
-  "hospitalInfo6": "• 💚 Passief herstel: +5 HP per 5 minuten (als HP > 0)",
+  "hospitalInfo6": "• Passief herstel: +5 HP per gametick zolang je leeft. Het ziekenhuis is de snelle, betaalde reset.",
   "medicalTreatment": "Medische Behandeling",
   "restoreCritical": "Herstel +20 HP (kritieke toestand)",
   "hospitalCooldownTitle": "Behandeling in herstelperiode",
@@ -1022,6 +1022,28 @@
   "hospitalCriticalStatusDetected": "Kritieke status gedetecteerd. Spoedhulp is aanbevolen.",
   "hospitalStableStatus": "Stabiel. Reguliere behandeling beschikbaar.",
   "hospitalRefreshMedicalRecord": "Ververs medisch dossier",
+  "hospitalStrategyTitle": "Waarom hierheen?",
+  "hospitalCrimePenaltyLine": "Gewond: −{percent}% slagingskans tot je geneest",
+  "@hospitalCrimePenaltyLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalGoHeal": "Naar het ziekenhuis",
+  "hospitalBandHealthy": "Fit",
+  "hospitalBandWounded": "Gewond",
+  "hospitalBandHurt": "Zwaar gewond",
+  "hospitalBandCritical": "Kritiek",
+  "crimesInjuredBanner": "Gewond (−{percent}% slagingskans). Genees in het ziekenhuis om je kans terug te krijgen.",
+  "@crimesInjuredBanner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
   "hospitalStandardTreatmentTitle": "Standaard behandeling",
   "hospitalStandardTreatmentSubtitle": "Betaalbaar • herstel tot {amount} HP",
   "@hospitalStandardTreatmentSubtitle": {
@@ -9889,9 +9911,9 @@
   "helpTopicSecurityTips": "Draag altijd minimaal een steekvest als je Wanted Level 2 of hoger is: besparing op ziekenhuisrekeningen compenseert de aanschafprijs snel.\nRepareer een beschadigd vest in plaats van hetzelfde vest opnieuw te kopen; controleer de conditie na elke aanval.\nGeweermunitie (5.56, 7.62, .308) gaat door gewone vesten heen; koop het AP-plaatvest als die kalibers tegen je gebruikt worden.\nNeem alleen zoveel lijfwachten als je ook morgen nog kunt betalen; elite-wachten slaan harder terug maar hun dagloon loopt snel op.\nLijfwachten verbergen je land niet als je een week weg blijft; Langzaam lekt het land sowieso.",
   "helpTopicHospitalCategory": "Recovery",
   "helpTopicHospitalTitle": "Ziekenhuis",
-  "helpTopicHospitalSummary": "Herstel HP na gevechten, mislukte crimes of raids. Het ziekenhuis biedt gratis spoedzorg en betaalde behandelingen voor sneller herstel.",
-  "helpTopicHospitalHow": "Val je onder 10 HP dan word je automatisch opgenomen op de Eerste Hulp (ER). Dit is gratis maar duurt langer.\nBetaalde behandeling kost €10.000 per sessie en herstelt +30 HP. Cooldown: 60 minuten tussen twee betaalde behandelingen.\nICU (Intensive Care) is de zwaarste behandeling voor kritieke schade. Cooldown: 180 minuten. Kosten zijn hoger maar herstel is completer.\nBij hogere HP (50+) kun je gewoon acties uitvoeren maar ben je kwetsbaarder bij aanvallen.\nHospital-behandelingen zijn geblokkeerd terwijl je in de gevangenis zit. Eerst vrijkomen, dan behandeling.\nSchool-certificaat Geneeskunde verlaagt ziekenhuiskosten en versnelt hersteltijden.\nCrew-medics of Medic-skills kunnen HP herstellen buiten het ziekenhuis om als extra noodherstel.",
-  "helpTopicHospitalTips": "Herstel nooit half: wacht tot je full HP bent voor je PvP of gevaarlijke crimes uitvoert.\nPlan betaalde behandelingen rond de cooldown: start een behandeling vlak voordat je offline gaat zodat je online komt met vol HP.",
+  "helpTopicHospitalSummary": "Het ziekenhuis is de snelle reset als misdaden of hits je HP slopen. Blijf je gewond, dan daalt je slagingskans; op 0 HP lig je 3 uur op de IC.",
+  "helpTopicHospitalHow": "Elke misdaad kost ongeveer 5–15 HP (vest en lijfwachten kunnen dat tot ~55% minderen). Hits kosten ook HP.\nVanaf 70 HP ben je fit. Daaronder daalt je slagingskans: −4% onder 70, −8% onder 40, −12% onder 20. De kans op de misdaadkaart rekent dit al mee.\nStandaard kost €10.000 en herstelt tot +30 HP. Intensief kost €20.000 en herstelt tot +75 HP. Beide delen 60 minuten cooldown (VIP 10% korter).\nSpoedeisende Hulp is een knop die jij zelf indrukt, alleen onder 10 HP: gratis +20 HP, geen cooldown.\nOp 0 HP ga je 3 uur naar de IC: geen misdaden of jobs. Je komt terug op 10 HP.\nWachten geneest +5 HP per gametick zolang je leeft. Dat is gratis maar traag, en de straf blijft tot je weer op 70+ zit.\nEr is geen automatische EHBO, geen schoolkorting Geneeskunde en geen crew-medic buiten dit scherm.",
+  "helpTopicHospitalTips": "Genees voor een misdaadreeks als je onder 70 HP zit: de straf zit al in het % op elke kaart.\nGebruik Spoedeisende Hulp alleen als laatste stop voor de IC; betaalde behandeling haalt de gewond-straf snel weg.\nEen vest en lijfwachten minderen HP-verlies bij misdaden, dus je hoeft minder vaak naar het ziekenhuis.",
   "helpTopicPrisonCategory": "Recovery",
   "helpTopicPrisonTitle": "Gevangenis",
   "helpTopicPrisonSummary": "Zit je gevangenisstraf uit, betaal borgtocht of probeer te ontsnappen. Hoe hoger je Wanted Level, hoe langer en duurder je straf.",

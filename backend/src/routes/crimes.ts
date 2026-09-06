@@ -10,6 +10,7 @@ import { applyReputationDelta } from '../services/reputationService';
 import { resolveSelectedCrimeVehicle } from '../services/vehicleToolService';
 import { gameEventService } from '../services/gameEventService';
 import { seasonPassService } from '../services/seasonPassService';
+import { crimeSuccessPenaltyPercent } from '../lib/healthInjury';
 
 const router = Router();
 
@@ -93,6 +94,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
         playerId,
         req.player!.rank,
         req.player!.currentCountry,
+        req.player!.health,
       );
 
       crimesWithChances = crimes.map((crime) => {
@@ -138,7 +140,12 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
 
     return res.status(200).json({
       event: 'crimes.list',
-      params: {},
+      params: {
+        playerHealth: req.player?.health ?? null,
+        healthPenaltyPercent: req.player
+          ? crimeSuccessPenaltyPercent(req.player.health)
+          : 0,
+      },
       crimes: crimesWithChances,
     });
   } catch (error) {

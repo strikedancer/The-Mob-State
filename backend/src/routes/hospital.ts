@@ -8,14 +8,18 @@ const router = Router();
 router.get('/info', (_req, res: Response) => {
   const info = hospitalService.getHospitalInfo();
 
-  return res.status(200).json({
-    event: 'hospital.info',
-    params: {
-      cost: info.cost,
-      healAmount: info.healAmount,
-      treatmentOptions: info.treatmentOptions,
-    },
-  });
+    return res.status(200).json({
+      event: 'hospital.info',
+      params: {
+        cost: info.cost,
+        healAmount: info.healAmount,
+        treatmentOptions: info.treatmentOptions,
+        injuryRules: info.injuryRules,
+        icuMinutes: info.icuMinutes,
+        passiveHealPerTick: info.passiveHealPerTick,
+        emergencyHealAmount: info.emergencyHealAmount,
+      },
+    });
 });
 
 // Emergency room - free healing for critically low HP

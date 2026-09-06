@@ -17,6 +17,7 @@ import '../widgets/cooldown_overlay.dart';
 import '../widgets/crime_card.dart';
 import '../widgets/crime_result_overlay.dart';
 import '../widgets/country_police_ui.dart';
+import 'hospital_screen.dart';
 import '../utils/crime_localization.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
@@ -31,6 +32,7 @@ class CrimeScreen extends StatefulWidget {
     this.embedded = false,
     this.onOpenTraining,
     this.onOpenEvents,
+    this.onOpenHospital,
   });
 
   /// When true (web dashboard), hide the page AppBar; the shell keeps the shared status bar.
@@ -41,6 +43,9 @@ class CrimeScreen extends StatefulWidget {
 
   /// When set (e.g. web dashboard), opens the live events section.
   final VoidCallback? onOpenEvents;
+
+  /// When set (e.g. web dashboard), opens the hospital section.
+  final VoidCallback? onOpenHospital;
 
   @override
   State<CrimeScreen> createState() => _CrimeScreenState();
@@ -89,6 +94,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
   Timer? _tickTimer;
   Map<String, dynamic>? _countryPolice;
   List<Map<String, dynamic>> _disruptActions = [];
+  int _healthPenaltyPercent = 0;
 
   @override
   void initState() {
@@ -308,6 +314,16 @@ class _CrimeScreenState extends State<CrimeScreen> {
     );
   }
 
+  void _openHospital() {
+    if (widget.onOpenHospital != null) {
+      widget.onOpenHospital!();
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const HospitalScreen()),
+    );
+  }
+
   Widget _buildPageHero(AppLocalizations l10n, int playerRank) {
     final availableCount =
         _crimes.where((c) => _crimeIsAvailable(c, playerRank)).length;
@@ -401,6 +417,45 @@ class _CrimeScreenState extends State<CrimeScreen> {
               );
             },
           ),
+          if (_healthPenaltyPercent > 0) ...[
+            const SizedBox(height: 10),
+            const Divider(height: 1, color: Color(0xFF2A3344)),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: _openHospital,
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.local_hospital,
+                    color: Colors.orangeAccent,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.crimesInjuredBanner(
+                        _healthPenaltyPercent.toString(),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.orangeAccent,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        height: 1.3,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    l10n.hospitalGoHeal,
+                    style: const TextStyle(
+                      color: Color(0xFFD4AF37),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           if (showPolice) ...[
             const SizedBox(height: 10),
             const Divider(height: 1, color: Color(0xFF2A3344)),
@@ -853,8 +908,13 @@ class _CrimeScreenState extends State<CrimeScreen> {
             .map((c) => Crime.fromJson(Map<String, dynamic>.from(c)))
             .where((crime) => !_excludedCrimeIds.contains(crime.id))
             .toList();
+        final params = data['params'] is Map
+            ? Map<String, dynamic>.from(data['params'] as Map)
+            : const <String, dynamic>{};
         setState(() {
           _crimes = crimes;
+          _healthPenaltyPercent =
+              (params['healthPenaltyPercent'] as num?)?.toInt() ?? 0;
           _isLoading = false;
           _error = null;
         });

@@ -1365,8 +1365,8 @@
     }
   },
   "emergencyInfo": "• 🊘 Notfallhilfe ist unter 10 HP (+20 HP) KOSTENLOS.",
-  "hospitalInfo1": "• Die Gesundheit nimmt ab, wenn man Straftaten begeht",
-  "hospitalInfo2": "• Bei 0 HP können Sie keine Verbrechen begehen",
+  "hospitalInfo1": "• Verbrechen und Hits kosten HP (etwa 5–15 pro Verbrechen; Weste und Leibwächter mindern das).",
+  "hospitalInfo2": "• Unter 70 HP sinkt die Erfolgschance (−4% / −8% / −12%). Bei 0 HP kommst du 3 Stunden auf die Intensivstation.",
   "hospitalInfo3": "• Die Behandlung kostet {cost} € pro Behandlungstermin",
   "@hospitalInfo3": {
     "placeholders": {
@@ -1384,7 +1384,7 @@
     }
   },
   "hospitalInfo5": "• ⏱️ 1 Stunde Abklingzeit zwischen den Behandlungen",
-  "hospitalInfo6": "• 💚 Passive Heilung: +5 HP alle 5 Minuten (wenn HP > 0)",
+  "hospitalInfo6": "• Passive Heilung: +5 HP pro Spiel-Tick, solange du lebst. Das Krankenhaus ist der schnelle, bezahlte Reset.",
   "medicalTreatment": "Medizinische Behandlung",
   "restoreCritical": "Stellt +20 HP wieder her (kritischer Zustand)",
   "restoreUp": "Stellen Sie bis zu {amount} HP wieder her",
@@ -5180,6 +5180,28 @@
   "hospitalCriticalStatusDetected": "Kritischer Status erkannt. Notfallversorgung empfohlen.",
   "hospitalStableStatus": "Stabil. Regelmäßige Behandlung möglich.",
   "hospitalRefreshMedicalRecord": "Krankenakte aktualisieren",
+  "hospitalStrategyTitle": "Warum hierher?",
+  "hospitalCrimePenaltyLine": "Verwundet: −{percent}% Verbrechenserfolg bis du heilst",
+  "@hospitalCrimePenaltyLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalGoHeal": "Zum Krankenhaus",
+  "hospitalBandHealthy": "Fit",
+  "hospitalBandWounded": "Verwundet",
+  "hospitalBandHurt": "Schwer verwundet",
+  "hospitalBandCritical": "Kritisch",
+  "crimesInjuredBanner": "Verwundet (−{percent}% Erfolg). Heile im Krankenhaus, um deine Chance zurückzuholen.",
+  "@crimesInjuredBanner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
   "hospitalStandardTreatmentTitle": "Standardbehandlung",
   "hospitalStandardTreatmentSubtitle": "Erschwinglich • Wiederherstellung von bis zu {amount} HP",
   "@hospitalStandardTreatmentSubtitle": {
@@ -8235,9 +8257,9 @@
   "helpTopicSecurityTips": "Tragen Sie bei Wanted Level 2 oder höher immer mindestens eine Stichweste: Einsparungen bei den Krankenhausrechnungen gleichen den Kaufpreis schnell aus. \nReparieren Sie eine beschädigte Weste, anstatt dieselbe noch einmal zu kaufen; Überprüfen Sie den Zustand nach jedem Angriff. \nGewehrmunition (5,56, 7,62, .308) durchschlägt normale Westen; Kaufen Sie die AP-Plattenweste, wenn diese Kaliber gegen Sie auftauchen. \nBehalten Sie nur so viele Leibwächter, wie Sie sich morgen noch leisten können; Elitewächter sind am härtesten betroffen, aber ihr Tageslohn summiert sich schnell. \nLeibwächter verbergen Ihr Land nicht, wenn Sie eine Woche lang offline bleiben; Langsam leckt das Land sowieso.",
   "helpTopicHospitalCategory": "Erholung",
   "helpTopicHospitalTitle": "Krankenhaus",
-  "helpTopicHospitalSummary": "Stellen Sie HP nach Kämpfen, gescheiterten Verbrechen oder Überfällen wieder her. Das Krankenhaus bietet kostenlose Notfallversorgung und kostenpflichtige Behandlungen für eine schnellere Genesung.",
-  "helpTopicHospitalHow": "Wenn Sie unter 10 HP fallen, werden Sie automatisch in die Notaufnahme (ER) eingeliefert. Dies ist kostenlos, dauert aber länger. \nDie kostenpflichtige Behandlung kostet 10.000 € pro Sitzung und stellt +30 HP wieder her. Abklingzeit: 60 Minuten zwischen den kostenpflichtigen Behandlungen. \nDie Intensivstation (Intensivstation) ist die schwerste Behandlung für kritische Schäden. Abklingzeit: 180 Minuten. Die Kosten sind höher, aber die Wiederherstellung ist vollständiger. \nMit höheren HP (50+) können Sie immer noch Aktionen ausführen, sind aber anfälliger für Angriffe. \nKrankenhausbehandlungen sind während Ihrer Haftzeit gesperrt. Gehen Sie zuerst raus und suchen Sie dann eine Behandlung auf. \nEin Schulabschluss in Medizin senkt die Krankenhauskosten und beschleunigt die Genesungszeit. \nCrew-Sanitäter oder Sanitäter-Fähigkeiten können HP außerhalb des Krankenhauses als Notfallwiederherstellung wiederherstellen.",
-  "helpTopicHospitalTips": "Erholen Sie sich niemals auf halbem Weg: Warten Sie, bis die vollen HP erreicht sind, bevor Sie PvP oder risikoreiche Verbrechen begehen. \nZeitlich bezahlte Behandlungen rund um die Abklingzeit: Starten Sie eine Behandlung kurz bevor Sie offline gehen, damit Sie mit voller HP wieder online sind.",
+  "helpTopicHospitalSummary": "Das Krankenhaus ist der schnelle Reset, wenn Verbrechen oder Hits deine HP senken. Bleibst du verwundet, fällt der Erfolg; bei 0 HP liegst du 3 Stunden auf der Intensivstation.",
+  "helpTopicHospitalHow": "Jeder Verbrechensversuch kostet etwa 5–15 HP (Weste und Leibwächter können das um bis zu ~55% senken). Hits kosten ebenfalls HP.\nAb 70 HP bist du fit. Darunter sinkt der Erfolg: −4% unter 70, −8% unter 40, −12% unter 20. Die angezeigte Chance rechnet das schon ein.\nStandard kostet 10.000 € und heilt bis +30 HP. Intensiv kostet 20.000 € und heilt bis +75 HP. Beide teilen 60 Minuten Abklingzeit (VIP 10% kürzer).\nNotfallhilfe ist ein Knopf, den du selbst drückst, nur unter 10 HP: kostenlos +20 HP, keine Abklingzeit.\nBei 0 HP gehst du 3 Stunden auf die Intensivstation: keine Verbrechen oder Jobs. Du kommst mit 10 HP zurück.\nWarten heilt +5 HP pro Spiel-Tick, solange du lebst. Das ist gratis aber langsam, und die Strafe bleibt bis 70+.\nEs gibt keine automatische Notaufnahme, keinen Schulrabatt Medizin und keinen Crew-Sanitäter außerhalb dieses Bildschirms.",
+  "helpTopicHospitalTips": "Heile vor einer Verbrechensserie, wenn du unter 70 HP bist: die Strafe steckt schon im % auf jeder Karte.\nNotfallhilfe nur als letzte Station vor der Intensivstation; bezahlte Behandlung nimmt die Verwundetenstrafe schnell weg.\nWeste und Leibwächter senken den HP-Verlust bei Verbrechen, also musst du seltener ins Krankenhaus.",
   "helpTopicPrisonCategory": "Erholung",
   "helpTopicPrisonTitle": "Gefängnis",
   "helpTopicPrisonSummary": "Verbüßen Sie Ihre Gefängnisstrafe, zahlen Sie eine Kaution oder versuchen Sie zu fliehen. Je höher Ihr Wanted-Level, desto länger und teurer ist Ihre Strafe.",

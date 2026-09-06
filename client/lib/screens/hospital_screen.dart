@@ -7,6 +7,7 @@ import '../services/api_client.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/mobile_load_error.dart';
 
 class HospitalScreen extends StatefulWidget {
   const HospitalScreen({super.key});
@@ -18,6 +19,7 @@ class HospitalScreen extends StatefulWidget {
 class _HospitalScreenState extends State<HospitalScreen> {
   final ApiClient _apiClient = ApiClient();
   bool _isLoading = false;
+  String? _loadError;
   Map<String, dynamic>? _hospitalInfo;
   bool _isInICU = false;
   int _icuRemainingSeconds = 0;
@@ -163,16 +165,32 @@ class _HospitalScreenState extends State<HospitalScreen> {
         final data = jsonDecode(response.body);
         setState(() {
           _hospitalInfo = data['params'];
+          _loadError = null;
         });
+      } else {
+        throw Exception('error.internal');
       }
     } catch (e) {
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.error(e.toString()))));
-      }
+      if (!mounted) return;
+      setState(() {
+        _loadError = AppLocalizations.of(context)!.connectionErrorGeneric;
+      });
     }
+  }
+
+  int _crimePenaltyPercent(int health) {
+    if (health <= 0 || health >= 70) return 0;
+    if (health < 20) return 12;
+    if (health < 40) return 8;
+    return 4;
+  }
+
+  String _injuryBandLabel(AppLocalizations l10n, int health) {
+    if (health <= 0) return l10n.hospitalBandCritical;
+    if (health < 20) return l10n.hospitalBandCritical;
+    if (health < 40) return l10n.hospitalBandHurt;
+    if (health < 70) return l10n.hospitalBandWounded;
+    return l10n.hospitalBandHealthy;
   }
 
   Future<void> _heal({String treatmentType = 'standard'}) async {
@@ -320,7 +338,9 @@ class _HospitalScreenState extends State<HospitalScreen> {
           child: Divider(height: 1, color: goldColor),
         ),
       ),
-      body: _hospitalInfo == null
+      body: _loadError != null && _hospitalInfo == null
+          ? MobileLoadError(message: _loadError!, onRetry: _loadHospitalInfo)
+          : _hospitalInfo == null
           ? const Center(child: CircularProgressIndicator())
           : Consumer<AuthProvider>(
               builder: (context, authProvider, _) {
@@ -439,8 +459,57 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                     ),
                                   ),
                                 ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: (player.health >= 70
+                                            ? Colors.green
+                                            : player.health >= 40
+                                            ? Colors.orange
+                                            : Colors.red)
+                                        .withValues(alpha: 0.18),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: player.health >= 70
+                                          ? Colors.green
+                                          : player.health >= 40
+                                          ? Colors.orange
+                                          : Colors.red,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    _injuryBandLabel(l10n, player.health),
+                                    style: TextStyle(
+                                      color: player.health >= 70
+                                          ? Colors.greenAccent
+                                          : player.health >= 40
+                                          ? Colors.orange
+                                          : Colors.redAccent,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
+                            if (_crimePenaltyPercent(player.health) > 0) ...[
+                              const SizedBox(height: 8),
+                              Text(
+                                l10n.hospitalCrimePenaltyLine(
+                                  _crimePenaltyPercent(
+                                    player.health,
+                                  ).toString(),
+                                ),
+                                style: const TextStyle(
+                                  color: Colors.orangeAccent,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                             const SizedBox(height: 8),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(4),
@@ -534,7 +603,9 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    l10n.hospitalIcuTriageTitle,
+                                    _isInICU
+                                        ? l10n.hospitalIcuTriageTitle
+                                        : l10n.hospitalStrategyTitle,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -550,6 +621,12 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                       )
                                     : isCritical
                                     ? l10n.hospitalCriticalStatusDetected
+                                    : player.health < 70
+                                    ? l10n.hospitalCrimePenaltyLine(
+                                        _crimePenaltyPercent(
+                                          player.health,
+                                        ).toString(),
+                                      )
                                     : l10n.hospitalStableStatus,
                                 style: const TextStyle(
                                   color: Colors.white70,
@@ -584,7 +661,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                       // Emergency Room - only when HP < 10
                       if (player.health < 10) ...[
                         Card(
-                          color: Colors.orange[50],
+                          color: const Color(0xFF3A2410),
                           child: InkWell(
                             onTap: !_isLoading ? _emergencyRoom : null,
                             child: Padding(
@@ -616,6 +693,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                               style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
+                                                color: Colors.white,
                                               ),
                                             ),
                                             const SizedBox(width: 8),
@@ -649,7 +727,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                           )!.restoreCritical,
                                           style: const TextStyle(
                                             fontSize: 13,
-                                            color: Colors.black87,
+                                            color: Colors.white70,
                                           ),
                                         ),
                                       ],
@@ -672,6 +750,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
 
                       // Standard treatment
                       Card(
+                        color: const Color(0xFF1E1E1E),
                         child: InkWell(
                           onTap:
                               needsHealing &&
@@ -707,15 +786,16 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                                         ),
                                       ),
                                       Text(
                                         l10n.hospitalStandardTreatmentSubtitle(
                                           standardHealAmount.toString(),
                                         ),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 13,
-                                          color: Colors.grey[600],
+                                          color: Colors.white54,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -766,6 +846,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
 
                       // Intensive treatment
                       Card(
+                        color: const Color(0xFF1E1E1E),
                         child: InkWell(
                           onTap:
                               needsHealing &&
@@ -801,15 +882,16 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                                         ),
                                       ),
                                       Text(
                                         l10n.hospitalIntensiveTreatmentSubtitle(
                                           intensiveHealAmount.toString(),
                                         ),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 13,
-                                          color: Colors.grey[600],
+                                          color: Colors.white54,
                                         ),
                                       ),
                                       const SizedBox(height: 4),

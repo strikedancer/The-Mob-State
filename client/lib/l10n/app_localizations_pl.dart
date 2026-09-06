@@ -6878,10 +6878,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get hospitalInfo1 =>
-      '• Zdrowie spada w przypadku popełniania przestępstw';
+      '• Przestępstwa i hitlist kosztują HP (ok. 5–15 na przestępstwo; kamizelka i ochroniarze to zmniejszają).';
 
   @override
-  String get hospitalInfo2 => '• Przy 0 HP nie możesz popełniać przestępstw';
+  String get hospitalInfo2 =>
+      '• Poniżej 70 HP spada szansa (−4% / −8% / −12%). Przy 0 HP idziesz na 3 godziny na OIOM.';
 
   @override
   String hospitalInfo3(String cost) {
@@ -6898,7 +6899,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get hospitalInfo6 =>
-      '• 💚 Leczenie pasywne: +5 HP na 5 minut (jeśli HP > 0)';
+      '• Pasywne leczenie: +5 HP na tick gry, jeśli żyjesz. Szpital to szybki, płatny reset.';
 
   @override
   String get medicalTreatment => 'Leczenie medyczne';
@@ -6945,6 +6946,34 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get hospitalRefreshMedicalRecord => 'Odśwież dokumentację medyczną';
+
+  @override
+  String get hospitalStrategyTitle => 'Po co tu przychodzić?';
+
+  @override
+  String hospitalCrimePenaltyLine(String percent) {
+    return 'Ranny: −$percent% szansy na przestępstwo, dopóki się nie wyleczysz';
+  }
+
+  @override
+  String get hospitalGoHeal => 'Idź do szpitala';
+
+  @override
+  String get hospitalBandHealthy => 'W formie';
+
+  @override
+  String get hospitalBandWounded => 'Ranny';
+
+  @override
+  String get hospitalBandHurt => 'Ciężko ranny';
+
+  @override
+  String get hospitalBandCritical => 'Krytyczny';
+
+  @override
+  String crimesInjuredBanner(String percent) {
+    return 'Ranny (−$percent% szansy). Wylecz się w szpitalu, żeby odzyskać szanse.';
+  }
 
   @override
   String get hospitalStandardTreatmentTitle => 'Standardowe leczenie';
@@ -16308,15 +16337,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicHospitalSummary =>
-      'Odzyskuj HP po walkach, nieudanych przestępstwach lub najazdach. Szpital oferuje bezpłatną opiekę w nagłych przypadkach i płatne zabiegi umożliwiające szybszy powrót do zdrowia.';
+      'Szpital to szybki reset, gdy przestępstwa lub hity zdejmują HP. Zostań ranny i spada szansa; przy 0 HP tracisz 3 godziny na OIOM-ie.';
 
   @override
   String get helpTopicHospitalHow =>
-      'Jeśli spadniesz poniżej 10 HP, zostaniesz automatycznie przyjęty na pogotowie (ER). Jest to bezpłatne, ale trwa dłużej. \nPłatne leczenie kosztuje 10 000 € za sesję i przywraca +30 HP. Czas odnowienia: 60 minut pomiędzy płatnymi zabiegami. \nOIOM (Intensywna Terapia) to najcięższa metoda leczenia krytycznych uszkodzeń. Czas odnowienia: 180 minut. Koszty są wyższe, ale powrót do zdrowia jest pełniejszy. \nMając wyższe HP (50+) nadal możesz wykonywać akcje, ale jesteś bardziej podatny na ataki. \nPodczas Twojego pobytu w więzieniu leczenie szpitalne jest zablokowane. Najpierw wyjdź, a potem szukaj leczenia. \nŚwiadectwo ukończenia szkoły medycznej obniża koszty leczenia w szpitalu i przyspiesza czas rekonwalescencji. \nMedycy załogi lub umiejętności medyczne mogą przywrócić HP poza szpitalem w ramach awaryjnego odzyskiwania.';
+      'Każda próba przestępstwa kosztuje ok. 5–15 HP (kamizelka i ochroniarze mogą ściąć to do ~55%). Hity też zabierają HP.\nOd 70 HP jesteś w formie. Poniżej spada szansa: −4% poniżej 70, −8% poniżej 40, −12% poniżej 20. Szansa na karcie już to liczy.\nStandard kosztuje 10 000 € i leczy do +30 HP. Intensywny kosztuje 20 000 € i do +75 HP. Oba dzielą 60 minut odnowienia (VIP 10% krócej).\nPomoc nagła to przycisk, który sam wciskasz, tylko poniżej 10 HP: +20 HP za darmo, bez odnowienia.\nPrzy 0 HP idziesz na 3 godziny na OIOM: bez przestępstw i prac. Wracasz z 10 HP.\nCzekanie leczy +5 HP na tick, jeśli żyjesz. To darmowe, ale wolne, a kara zostaje do 70+.\nNie ma automatycznego SOR, zniżki szkolnej Medycyna ani medyka załogi poza tym ekranem.';
 
   @override
   String get helpTopicHospitalTips =>
-      'Nigdy nie wracaj do zdrowia w połowie drogi: poczekaj na pełne HP, zanim podejmiesz PvP lub przestępstwa wysokiego ryzyka. \nZabiegi płatne czasowo w okresie odnowienia: rozpocznij leczenie tuż przed przejściem w tryb offline, aby wrócić do trybu online z pełnym HP.';
+      'Wylecz się przed serią przestępstw, jeśli masz poniżej 70 HP: kara jest już w % na każdej karcie.\nPomoc nagła tylko jako ostatni przystanek przed OIOM-em; płatne leczenie szybko zdejmuje karę.\nKamizelka i ochroniarze zmniejszają utratę HP, więc rzadziej idziesz do szpitala.';
 
   @override
   String get helpTopicPrisonCategory => 'Powrót do zdrowia';

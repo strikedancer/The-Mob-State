@@ -3,6 +3,21 @@
 ## Scope
 Health recovery, ICU state, heal cooldowns and medical lock handling.
 
+The hospital is the **paid, immediate reset** when crimes or hits drop HP. Waiting is free (+5 HP per game tick) but you keep a crime-success penalty until 70+ HP. Hitting 0 HP is ICU (3 hours, no crimes/jobs, release at 10 HP).
+
+## Strategy (player loop)
+- Crimes cost ~5–15 HP (vest/bodyguards cut up to ~55%). Hits also cost HP.
+- **Fit (≥70):** no crime penalty.
+- **Wounded (<70 / <40 / <20):** −4% / −8% / −12% crime success (already in the listed % on crime cards).
+- **Paid heal:** standard €10k / +30 HP, intensive €20k / +75 HP, shared 60 min cooldown (VIP −10%).
+- **Emergency Help:** player-pressed button only below 10 HP, free +20 HP, no cooldown. Not automatic.
+- **ICU:** automatic at 0 HP for 180 minutes. `checkICUStatus` returns remaining **minutes**.
+- There is no school-medicine discount and no crew-medic heal outside this screen.
+
+## Related APIs
+- `GET /hospital/info` includes `injuryRules`, `icuMinutes`, `passiveHealPerTick`, `emergencyHealAmount`.
+- Crime list `GET /crimes` `params.healthPenaltyPercent` drives the wounded banner.
+
 ## Primary Frontend Entry
 - client/lib/screens/hospital_screen.dart
 

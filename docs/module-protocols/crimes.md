@@ -19,6 +19,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Web dashboard Crimes keeps the **shared dashboard status bar** above the content card, same as other sections. Inside the card, use **one** header panel: page title/counts + country-police strip (when the flag is on) + training bonus + worn-weapon slots. Do not restore a separate AppBar, hero, police, prep or weapon cards stacked as chrome blocks. The filter/sort row may stay as a slim toolbar above the grid.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - Each crime attempt still costs HP (base 5–15). A worn vest and hired bodyguards reduce that hit via `applyCrimeHealthMitigation` (cap 55%). They do not change success chance, wanted or jail.
+- **Low HP does change success chance:** below 70 / 40 / 20 HP the server subtracts 4 / 8 / 12 percentage points (`crimeSuccessPenaltyFromHealth` in `healthInjury.ts`). The listed `playerSuccessChance` already includes this. Hospital is the paid reset; ticks heal slowly. At 0 HP the player is in ICU (crimes blocked).
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?

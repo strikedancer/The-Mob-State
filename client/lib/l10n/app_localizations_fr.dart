@@ -6920,11 +6920,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get hospitalInfo1 =>
-      '• La santé diminue lors de la commission de crimes';
+      '• Les crimes et les hits coûtent des PV (environ 5–15 par crime ; gilet et gardes du corps réduisent ça).';
 
   @override
   String get hospitalInfo2 =>
-      '• À 0 HP, vous ne pouvez pas commettre de crimes';
+      '• Sous 70 PV le succès des crimes baisse (−4% / −8% / −12%). À 0 PV tu vas 3 heures en soins intensifs.';
 
   @override
   String hospitalInfo3(String cost) {
@@ -6942,7 +6942,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get hospitalInfo6 =>
-      '• 💚 Guérison passive : +5 HP toutes les 5 minutes (si HP > 0)';
+      '• Soin passif : +5 PV par tick de jeu tant que tu es en vie. L’hôpital est le reset rapide et payant.';
 
   @override
   String get medicalTreatment => 'Traitement médical';
@@ -6989,6 +6989,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get hospitalRefreshMedicalRecord => 'Actualiser le dossier médical';
+
+  @override
+  String get hospitalStrategyTitle => 'Pourquoi venir ici ?';
+
+  @override
+  String hospitalCrimePenaltyLine(String percent) {
+    return 'Blessé : −$percent% de succès criminel jusqu’à la guérison';
+  }
+
+  @override
+  String get hospitalGoHeal => 'Aller à l’hôpital';
+
+  @override
+  String get hospitalBandHealthy => 'En forme';
+
+  @override
+  String get hospitalBandWounded => 'Blessé';
+
+  @override
+  String get hospitalBandHurt => 'Gravement blessé';
+
+  @override
+  String get hospitalBandCritical => 'Critique';
+
+  @override
+  String crimesInjuredBanner(String percent) {
+    return 'Blessé (−$percent% de succès). Soigne-toi à l’hôpital pour retrouver tes chances.';
+  }
 
   @override
   String get hospitalStandardTreatmentTitle => 'Traitement standard';
@@ -16380,15 +16408,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicHospitalSummary =>
-      'Récupérez des HP après des combats, des crimes ratés ou des raids. L\'hôpital propose des soins d\'urgence gratuits et des traitements payants pour une récupération plus rapide.';
+      'L’hôpital est le reset rapide quand crimes ou hits baissent tes PV. Restes blessé et le succès chute ; à 0 PV tu perds 3 heures en soins intensifs.';
 
   @override
   String get helpTopicHospitalHow =>
-      'Descendez en dessous de 10 HP et vous êtes automatiquement admis aux urgences (ER). C\'est gratuit mais prend plus de temps. \nLe traitement payant coûte 10 000 € par séance et restaure +30 HP. Temps de recharge : 60 minutes entre les traitements payants. \nLes soins intensifs (ICU) sont le traitement le plus lourd pour les dommages critiques. Temps de recharge : 180 minutes. Les coûts sont plus élevés mais le rétablissement est plus complet. \nAvec des HP plus élevés (50+), vous pouvez toujours effectuer des actions mais êtes plus vulnérable aux attaques. \nLes soins hospitaliers sont bloqués pendant que vous êtes en prison. Sortez d’abord, puis cherchez un traitement. \nLe certificat scolaire en médecine réduit les coûts hospitaliers et accélère les temps de récupération. \nLes médecins de l\'équipage ou les compétences médicales peuvent restaurer les HP en dehors de l\'hôpital en cas d\'urgence.';
+      'Chaque tentative de crime coûte environ 5–15 PV (gilet et gardes du corps peuvent couper jusqu’à ~55%). Les hits coûtent aussi des PV.\nÀ partir de 70 PV tu es en forme. En dessous le succès baisse : −4% sous 70, −8% sous 40, −12% sous 20. Les chances affichées incluent déjà ça.\nLe soin standard coûte 10 000 € et rend jusqu’à +30 PV. L’intensif coûte 20 000 € et rend jusqu’à +75 PV. Les deux partagent 60 minutes de recharge (VIP 10% plus court).\nL’aide d’urgence est un bouton que tu appuies toi-même, seulement sous 10 PV : +20 PV gratuit, sans recharge.\nÀ 0 PV tu vas 3 heures en soins intensifs : pas de crimes ni jobs. Tu reviens à 10 PV.\nAttendre soigne +5 PV par tick tant que tu vis. C’est gratuit mais lent, et la pénalité reste jusqu’à 70+.\nPas d’urgences automatiques, pas de réduction école Médecine, pas de médic d’équipage hors de cet écran.';
 
   @override
   String get helpTopicHospitalTips =>
-      'Ne récupérez jamais à mi-chemin : attendez d\'avoir tous vos HP avant de vous lancer dans du PvP ou de commettre des crimes à haut risque. \nTraitements rémunérés en temps autour du temps de recharge : démarrez un traitement juste avant de vous déconnecter afin de revenir en ligne avec tous vos HP.';
+      'Soigne-toi avant une série de crimes si tu es sous 70 PV : la pénalité est déjà dans le % de chaque carte.\nL’aide d’urgence seulement comme dernier arrêt avant les soins intensifs ; le soin payant enlève vite la pénalité.\nGilet et gardes du corps réduisent la perte de PV, donc tu vas moins souvent à l’hôpital.';
 
   @override
   String get helpTopicPrisonCategory => 'Récupération';

@@ -1365,8 +1365,8 @@
     }
   },
   "emergencyInfo": "• 🊘 Pomoc w nagłych wypadkach jest BEZPŁATNA poniżej 10 KM (+20 KM)",
-  "hospitalInfo1": "• Zdrowie spada w przypadku popełniania przestępstw",
-  "hospitalInfo2": "• Przy 0 HP nie możesz popełniać przestępstw",
+  "hospitalInfo1": "• Przestępstwa i hitlist kosztują HP (ok. 5–15 na przestępstwo; kamizelka i ochroniarze to zmniejszają).",
+  "hospitalInfo2": "• Poniżej 70 HP spada szansa (−4% / −8% / −12%). Przy 0 HP idziesz na 3 godziny na OIOM.",
   "hospitalInfo3": "• Koszt leczenia wynosi {cost} € za czas",
   "@hospitalInfo3": {
     "placeholders": {
@@ -1384,7 +1384,7 @@
     }
   },
   "hospitalInfo5": "• ⏱️ 1 godzina przerwy pomiędzy zabiegami",
-  "hospitalInfo6": "• 💚 Leczenie pasywne: +5 HP na 5 minut (jeśli HP > 0)",
+  "hospitalInfo6": "• Pasywne leczenie: +5 HP na tick gry, jeśli żyjesz. Szpital to szybki, płatny reset.",
   "medicalTreatment": "Leczenie medyczne",
   "restoreCritical": "Przywróć +20 HP (stan krytyczny)",
   "restoreUp": "Przywróć do {amount} HP",
@@ -5180,6 +5180,28 @@
   "hospitalCriticalStatusDetected": "Wykryto stan krytyczny. Zalecana opieka w nagłych przypadkach.",
   "hospitalStableStatus": "Stabilny. Możliwość regularnego leczenia.",
   "hospitalRefreshMedicalRecord": "Odśwież dokumentację medyczną",
+  "hospitalStrategyTitle": "Po co tu przychodzić?",
+  "hospitalCrimePenaltyLine": "Ranny: −{percent}% szansy na przestępstwo, dopóki się nie wyleczysz",
+  "@hospitalCrimePenaltyLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalGoHeal": "Idź do szpitala",
+  "hospitalBandHealthy": "W formie",
+  "hospitalBandWounded": "Ranny",
+  "hospitalBandHurt": "Ciężko ranny",
+  "hospitalBandCritical": "Krytyczny",
+  "crimesInjuredBanner": "Ranny (−{percent}% szansy). Wylecz się w szpitalu, żeby odzyskać szanse.",
+  "@crimesInjuredBanner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
   "hospitalStandardTreatmentTitle": "Standardowe leczenie",
   "hospitalStandardTreatmentSubtitle": "Niedrogi • przywraca do {amount} HP",
   "@hospitalStandardTreatmentSubtitle": {
@@ -8235,9 +8257,9 @@
   "helpTopicSecurityTips": "Zawsze noś przynajmniej kamizelkę, gdy poziom poszukiwanego wynosi 2 lub więcej: oszczędności na rachunkach szpitalnych szybko rekompensują cenę zakupu. \nNapraw uszkodzoną kamizelkę zamiast kupować ponownie tę samą; sprawdzaj stan po każdym ataku. \nAmunicja karabinowa (5,56, 7,62, 0,308) przebija zwykłe kamizelki; kup kamizelkę płytową AP, jeśli te kalibry obrócą się przeciwko tobie. \nZatrzymaj tylko tylu ochroniarzy, na ilu cię jutro będzie stać; Elitarni strażnicy uderzają najbardziej, ale ich dzienna płaca szybko rośnie. \nOchroniarze nie ukrywają Twojego kraju, jeśli przez tydzień pozostaniesz offline; I tak powoli przecieka kraj.",
   "helpTopicHospitalCategory": "Powrót do zdrowia",
   "helpTopicHospitalTitle": "Szpital",
-  "helpTopicHospitalSummary": "Odzyskuj HP po walkach, nieudanych przestępstwach lub najazdach. Szpital oferuje bezpłatną opiekę w nagłych przypadkach i płatne zabiegi umożliwiające szybszy powrót do zdrowia.",
-  "helpTopicHospitalHow": "Jeśli spadniesz poniżej 10 HP, zostaniesz automatycznie przyjęty na pogotowie (ER). Jest to bezpłatne, ale trwa dłużej. \nPłatne leczenie kosztuje 10 000 € za sesję i przywraca +30 HP. Czas odnowienia: 60 minut pomiędzy płatnymi zabiegami. \nOIOM (Intensywna Terapia) to najcięższa metoda leczenia krytycznych uszkodzeń. Czas odnowienia: 180 minut. Koszty są wyższe, ale powrót do zdrowia jest pełniejszy. \nMając wyższe HP (50+) nadal możesz wykonywać akcje, ale jesteś bardziej podatny na ataki. \nPodczas Twojego pobytu w więzieniu leczenie szpitalne jest zablokowane. Najpierw wyjdź, a potem szukaj leczenia. \nŚwiadectwo ukończenia szkoły medycznej obniża koszty leczenia w szpitalu i przyspiesza czas rekonwalescencji. \nMedycy załogi lub umiejętności medyczne mogą przywrócić HP poza szpitalem w ramach awaryjnego odzyskiwania.",
-  "helpTopicHospitalTips": "Nigdy nie wracaj do zdrowia w połowie drogi: poczekaj na pełne HP, zanim podejmiesz PvP lub przestępstwa wysokiego ryzyka. \nZabiegi płatne czasowo w okresie odnowienia: rozpocznij leczenie tuż przed przejściem w tryb offline, aby wrócić do trybu online z pełnym HP.",
+  "helpTopicHospitalSummary": "Szpital to szybki reset, gdy przestępstwa lub hity zdejmują HP. Zostań ranny i spada szansa; przy 0 HP tracisz 3 godziny na OIOM-ie.",
+  "helpTopicHospitalHow": "Każda próba przestępstwa kosztuje ok. 5–15 HP (kamizelka i ochroniarze mogą ściąć to do ~55%). Hity też zabierają HP.\nOd 70 HP jesteś w formie. Poniżej spada szansa: −4% poniżej 70, −8% poniżej 40, −12% poniżej 20. Szansa na karcie już to liczy.\nStandard kosztuje 10 000 € i leczy do +30 HP. Intensywny kosztuje 20 000 € i do +75 HP. Oba dzielą 60 minut odnowienia (VIP 10% krócej).\nPomoc nagła to przycisk, który sam wciskasz, tylko poniżej 10 HP: +20 HP za darmo, bez odnowienia.\nPrzy 0 HP idziesz na 3 godziny na OIOM: bez przestępstw i prac. Wracasz z 10 HP.\nCzekanie leczy +5 HP na tick, jeśli żyjesz. To darmowe, ale wolne, a kara zostaje do 70+.\nNie ma automatycznego SOR, zniżki szkolnej Medycyna ani medyka załogi poza tym ekranem.",
+  "helpTopicHospitalTips": "Wylecz się przed serią przestępstw, jeśli masz poniżej 70 HP: kara jest już w % na każdej karcie.\nPomoc nagła tylko jako ostatni przystanek przed OIOM-em; płatne leczenie szybko zdejmuje karę.\nKamizelka i ochroniarze zmniejszają utratę HP, więc rzadziej idziesz do szpitala.",
   "helpTopicPrisonCategory": "Powrót do zdrowia",
   "helpTopicPrisonTitle": "Więzienie",
   "helpTopicPrisonSummary": "Odbądź karę pozbawienia wolności, zapłać kaucję lub spróbuj uciec. Im wyższy poziom Wanted, tym dłuższy i droższy wyrok.",

@@ -262,43 +262,41 @@ Voorbeelden:
 
 ## Health & Hospital Systeem
 
+Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, en zolang je onder 70 HP zit daalt je misdaad-slagingskans.
+
 ### Health Mechanics
 - **Maximum HP**: 100
-- **Health damage**: 5-15 HP per crime
-- **Passive healing**: +5 HP per 5 minuten (alleen als HP > 0)
-- **Death**: Bij 0 HP â†’ Intensive Care (ICU)
+- **Health damage**: 5–15 HP per crime (vest + lijfwachten minderen tot ~55%); hits kosten ook HP
+- **Wounded penalty** (zit al in het % op de misdaadkaart): ≥70 geen straf; <70 −4%; <40 −8%; <20 −12%
+- **Passive healing**: +5 HP per **gametick** (niet per 5 minuten), alleen als HP > 0
+- **Death**: bij 0 HP → Intensive Care (ICU)
 
 ### Hospital Behandeling
 
-#### Normale Behandeling
-- **Kosten**: â‚¬10,000
-- **Healing**: +30 HP (max 100)
-- **Cooldown**: 60 minuten
-- **Beschikbaar**: Altijd (ook bij 0 HP)
+#### Standaard / Intensief
+- **Standaard**: €10.000, tot +30 HP
+- **Intensief**: €20.000, tot +75 HP
+- **Cooldown**: 60 minuten (VIP 10% korter), gedeeld
+- **Doel**: de wounded-straf eraf krijgen zodat je weer kunt grinden
 
 #### Emergency Room (EHBO)
 - **Kosten**: GRATIS
 - **Healing**: +20 HP
-- **Cooldown**: Geen
-- **Beschikbaar**: Alleen als HP < 10
+- **Cooldown**: geen
+- **Beschikbaar**: alleen als HP < 10, **jij drukt zelf** (niet automatisch)
 
 ### Intensive Care (ICU)
-- **Trigger**: Health bereikt 0 HP
+- **Trigger**: health bereikt 0 HP
 - **Duur**: 180 minuten (3 uur)
-- **Effect**: 
-  - Alle acties geblokkeerd
-  - Full-screen overlay met countdown timer
-  - Automatisch vrijgelaten na 3 uur
-  - Start met 10 HP na vrijlating
-- **Info**: Je ligt bewusteloos, kan niks doen
-- **Recovery**: Na 3 uur kan je direct emergency room gebruiken
+- **Effect**: geen misdaden of jobs; overlay met countdown; na 3 uur 10 HP
+- **Recovery**: daarna kun je EHBO of een betaalde behandeling gebruiken
 
 ### Health Management Tips
-1. **Preventie**: Monitor je HP constant
-2. **Emergency Room**: Gebruik gratis EHBO bij < 10 HP
-3. **Passive Healing**: Wacht 5 minuten tussen crimes voor +5 HP
-4. **Paid Treatment**: â‚¬10k voor +30 HP (1x per uur)
-5. **Vermijd ICU**: 3 uur lockout is lang!
+1. Genees vóór een misdaadreeks als je onder 70 HP zit
+2. EHBO alleen als laatste stop vóór de IC
+3. Vest + lijfwachten minderen HP-verlies, dus minder ziekenhuisbezoek
+4. Passief wachten is gratis maar je houdt de slagingskans-straf
+5. ICU is 3 uur lockout — vermijd 0 HP
 
 ---
 
@@ -935,7 +933,7 @@ Bob: â‚¬300K counter-hit
 1. **Eerste misdaad**: volg de Start-kaart; cash en XP komen meteen
 2. **Claim je dagdoel** of doe 1 job; houd je UTC-streak vast
 3. **Join of maak een crew** via de open wervingslijst (auto-accept = één klik)
-4. **Monitor health**: Gebruik emergency room bij < 10 HP
+4. **Monitor health**: onder 70 HP daalt je misdaad-slagingskans; ziekenhuis is de snelle reset. Emergency room alleen bij < 10 HP (zelf indrukken). Bij 0 HP lig je 3 uur op de IC.
 5. **Avoid jail**: Laag wanted level houden
 6. **Property/auto** pas vanaf rang 5; niet het eerste-uur pad
 
@@ -1076,10 +1074,17 @@ finalChance = min(baseChance + rankBonus + vehicleBonus, 0.95)
 ### Health Damage
 ```javascript
 // Per crime attempt
-damage = random(5, 15) HP
+damage = random(5, 15) HP  // vest + bodyguards can cut up to ~55%
 
-// Passive healing per tick
+// Crime success penalty while wounded (already in listed %)
+// HP 70+: 0    HP <70: -4%    HP <40: -8%    HP <20: -12%
+
+// Passive healing per game tick
 healing = 5 HP (if health > 0 && health < 100)
+
+// Hospital: €10k / +30 HP or €20k / +75 HP, 60 min cooldown
+// Emergency Help: player button, only <10 HP, free +20
+// ICU at 0 HP: 180 minutes, then 10 HP
 ```
 
 ---

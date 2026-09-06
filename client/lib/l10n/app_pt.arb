@@ -1365,8 +1365,8 @@
     }
   },
   "emergencyInfo": "• 🊘 A Ajuda de Emergência é GRATUITA abaixo de 10 HP (+20 HP)",
-  "hospitalInfo1": "• A saúde diminui ao cometer crimes",
-  "hospitalInfo2": "• Com 0 HP você não pode cometer crimes",
+  "hospitalInfo1": "• Crimes e hits custam HP (cerca de 5–15 por crime; colete e guarda-costas reduzem isso).",
+  "hospitalInfo2": "• Abaixo de 70 HP o sucesso cai (−4% / −8% / −12%). Em 0 HP vais 3 horas para a UCI.",
   "hospitalInfo3": "• O tratamento custa €{cost} por vez",
   "@hospitalInfo3": {
     "placeholders": {
@@ -1384,7 +1384,7 @@
     }
   },
   "hospitalInfo5": "• ⏱️ 1 hora de espera entre tratamentos",
-  "hospitalInfo6": "• 💚 Cura passiva: +5 HP por 5 minutos (se HP > 0)",
+  "hospitalInfo6": "• Cura passiva: +5 HP por tick de jogo se estiveres vivo. O hospital é o reset rápido pago.",
   "medicalTreatment": "Tratamento Médico",
   "restoreCritical": "Restaurar +20 HP (condição crítica)",
   "restoreUp": "Restaure até {amount} HP",
@@ -5180,6 +5180,28 @@
   "hospitalCriticalStatusDetected": "Status crítico detectado. Atendimento de emergência recomendado.",
   "hospitalStableStatus": "Estável. Tratamento regular disponível.",
   "hospitalRefreshMedicalRecord": "Atualizar prontuário médico",
+  "hospitalStrategyTitle": "Porque vir aqui?",
+  "hospitalCrimePenaltyLine": "Ferido: −{percent}% de sucesso em crimes até te tratares",
+  "@hospitalCrimePenaltyLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalGoHeal": "Ir ao hospital",
+  "hospitalBandHealthy": "Em forma",
+  "hospitalBandWounded": "Ferido",
+  "hospitalBandHurt": "Gravemente ferido",
+  "hospitalBandCritical": "Crítico",
+  "crimesInjuredBanner": "Ferido (−{percent}% de sucesso). Trata-te no hospital para recuperar as hipóteses.",
+  "@crimesInjuredBanner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
   "hospitalStandardTreatmentTitle": "Tratamento padrão",
   "hospitalStandardTreatmentSubtitle": "Acessível • restaura até {amount} HP",
   "@hospitalStandardTreatmentSubtitle": {
@@ -8235,9 +8257,9 @@
   "helpTopicSecurityTips": "Sempre use pelo menos um colete quando o Nível de Procurado for 2 ou superior: a economia nas contas do hospital compensa rapidamente o preço de compra. \nReparar um colete danificado em vez de comprar o mesmo novamente; verifique a condição após cada ataque. \nMunição de rifle (5,56, 7,62, 0,308) perfura coletes normais; compre o colete AP se esses calibres aparecerem contra você. \nMantenha apenas quantos guarda-costas você ainda puder pagar amanhã; os guardas de elite são os mais atingidos, mas o seu salário diário aumenta rapidamente. \nOs guarda-costas não escondem o seu país se você ficar offline por uma semana; Lentamente vaza o país de qualquer maneira.",
   "helpTopicHospitalCategory": "Recuperação",
   "helpTopicHospitalTitle": "Hospital",
-  "helpTopicHospitalSummary": "Recupere HP após brigas, crimes fracassados ​​ou ataques. O hospital oferece atendimento de emergência gratuito e tratamentos pagos para uma recuperação mais rápida.",
-  "helpTopicHospitalHow": "Cair abaixo de 10 HP e você será automaticamente internado no Pronto Socorro (ER). Isso é gratuito, mas leva mais tempo. \nO tratamento pago custa 10.000€ por sessão e restaura +30 HP. Cooldown: 60 minutos entre tratamentos pagos. \nA UTI (Terapia Intensiva) é o tratamento mais pesado para danos críticos. Tempo de espera: 180 minutos. Os custos são mais elevados, mas a recuperação é mais completa. \nCom HP mais alto (50+) você ainda pode realizar ações, mas fica mais vulnerável a ataques. \nOs tratamentos hospitalares são bloqueados enquanto você está na prisão. Saia primeiro e depois procure tratamento. \nCertificado escolar em Medicina reduz custos hospitalares e acelera tempos de recuperação. \nMédicos da Crew ou habilidades médicas podem restaurar HP fora do hospital como recuperação de emergência.",
-  "helpTopicHospitalTips": "Nunca se recupere no meio do caminho: espere o HP total antes de praticar PvP ou crimes de alto risco. \nTratamentos pagos por tempo próximo ao tempo de espera: inicie um tratamento logo antes de ficar off-line para voltar a ficar on-line com HP total.",
+  "helpTopicHospitalSummary": "O hospital é o reset rápido quando crimes ou hits baixam o teu HP. Ficares ferido baixa o sucesso; a 0 HP perdes 3 horas na UCI.",
+  "helpTopicHospitalHow": "Cada tentativa de crime custa cerca de 5–15 HP (colete e guarda-costas podem cortar até ~55%). Hits também tiram HP.\nA partir de 70 HP estás em forma. Abaixo disso o sucesso cai: −4% abaixo de 70, −8% abaixo de 40, −12% abaixo de 20. As chances no cartão já incluem isto.\nO tratamento padrão custa 10.000 € e recupera até +30 HP. O intensivo custa 20.000 € e até +75 HP. Ambos partilham 60 minutos de espera (VIP 10% mais curto).\nA ajuda de emergência é um botão que tu carregas, só abaixo de 10 HP: +20 HP grátis, sem espera.\nA 0 HP vais 3 horas para a UCI: sem crimes nem trabalhos. Voltas com 10 HP.\nEsperar cura +5 HP por tick se estiveres vivo. É grátis mas lento, e a penalização fica até 70+.\nNão há urgência automática, desconto escolar de Medicina nem médico de crew fora deste ecrã.",
+  "helpTopicHospitalTips": "Trata-te antes de uma série de crimes se estiveres abaixo de 70 HP: a penalização já está no % de cada cartão.\nUsa a emergência só como última paragem antes da UCI; o tratamento pago tira a penalização depressa.\nColete e guarda-costas reduzem a perda de HP, por isso vais menos ao hospital.",
   "helpTopicPrisonCategory": "Recuperação",
   "helpTopicPrisonTitle": "Prisão",
   "helpTopicPrisonSummary": "Cumpra sua sentença de prisão, pague fiança ou tente escapar. Quanto maior o seu Nível de Procurado, mais longa e mais cara será a sua sentença.",

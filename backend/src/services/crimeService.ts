@@ -37,6 +37,7 @@ import {
   bodyguardDefense,
   effectiveArmorRating,
 } from './securityEconomy';
+import { crimeSuccessPenaltyFromHealth } from '../lib/healthInjury';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 /** Minimum rank to steal cars — keep in sync with vehicleService.stealVehicle. */
@@ -44,6 +45,7 @@ const LAND_VEHICLE_THEFT_MIN_RANK = 5;
 
 export type CrimeReadinessContext = {
   playerRank: number;
+  playerHealth: number;
   hasCriminalRecord: boolean;
   selectedVehicle: Awaited<ReturnType<typeof resolveSelectedCrimeVehicle>>;
   equippedWeapons: EquippedWeapon[];
@@ -1250,7 +1252,7 @@ export const crimeService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { rank: true, currentCountry: true },
+      select: { rank: true, currentCountry: true, health: true },
     });
 
     if (!player) {
@@ -1261,6 +1263,7 @@ export const crimeService = {
       playerId,
       player.rank,
       player.currentCountry || 'netherlands',
+      player.health,
     );
     return this.computePlayerSuccessChanceFromContext(
       crimeId,
@@ -1368,6 +1371,11 @@ export const crimeService = {
       );
     }
 
+    const healthPenalty = crimeSuccessPenaltyFromHealth(context.playerHealth);
+    if (healthPenalty > 0) {
+      successChance -= healthPenalty;
+    }
+
     return Math.max(0.05, Math.min(successChance, 0.95));
   },
 
@@ -1378,6 +1386,7 @@ export const crimeService = {
     playerId: number,
     playerRank: number,
     currentCountry: string,
+    playerHealth?: number,
   ): Promise<CrimeReadinessContext> {
     const [
       selectedVehicle,
@@ -1477,8 +1486,18 @@ export const crimeService = {
       // ignore
     }
 
+    let resolvedHealth = playerHealth;
+    if (resolvedHealth == null) {
+      const row = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { health: true },
+      });
+      resolvedHealth = row?.health ?? 100;
+    }
+
     return {
       playerRank,
+      playerHealth: resolvedHealth,
       hasCriminalRecord: criminalRecordCount > 0,
       selectedVehicle,
       equippedWeapons,

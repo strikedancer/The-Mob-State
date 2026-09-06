@@ -53,9 +53,8 @@ export const intensiveCareService = {
       return 0;
     }
 
-    // Calculate remaining seconds
     const remainingMs = icuRelease.getTime() - now.getTime();
-    return Math.floor(remainingMs / 1000);
+    return Math.max(1, Math.ceil(remainingMs / 60000));
   },
 
   /**

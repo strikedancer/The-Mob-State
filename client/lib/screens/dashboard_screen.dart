@@ -1614,14 +1614,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  AppLocalizations.of(context)!.health,
-                  healthProgress,
-                  '${player.health}%',
-                  player.health > 50
-                      ? Colors.green
-                      : (player.health > 25 ? Colors.orange : Colors.red),
+                child: InkWell(
+                  onTap: () => _selectWebSection(_WebSection.hospital),
+                  child: _buildLargeProgressBar(
+                    context,
+                    AppLocalizations.of(context)!.health,
+                    healthProgress,
+                    '${player.health}%',
+                    player.health > 50
+                        ? Colors.green
+                        : (player.health > 25 ? Colors.orange : Colors.red),
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -1793,6 +1796,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onOpenTraining: () =>
               _selectWebSection(_WebSection.trainingHub),
           onOpenEvents: () => _selectWebSection(_WebSection.events),
+          onOpenHospital: () => _selectWebSection(_WebSection.hospital),
         );
       case _WebSection.jobs:
         return JobsScreen(

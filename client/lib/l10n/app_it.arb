@@ -1365,8 +1365,8 @@
     }
   },
   "emergencyInfo": "• 🊘 L'aiuto di emergenza è GRATUITO sotto i 10 HP (+20 HP)",
-  "hospitalInfo1": "• La salute diminuisce quando si commettono crimini",
-  "hospitalInfo2": "• A 0 HP non puoi commettere crimini",
+  "hospitalInfo1": "• Crimini e hit costano HP (circa 5–15 per crimine; giubbotto e bodyguard lo riducono).",
+  "hospitalInfo2": "• Sotto 70 HP il successo cala (−4% / −8% / −12%). A 0 HP vai 3 ore in terapia intensiva.",
   "hospitalInfo3": "• Il trattamento costa €{cost} a volta",
   "@hospitalInfo3": {
     "placeholders": {
@@ -1384,7 +1384,7 @@
     }
   },
   "hospitalInfo5": "• ⏱️ 1 ora di recupero tra i trattamenti",
-  "hospitalInfo6": "• 💚 Guarigione passiva: +5 HP ogni 5 minuti (se HP > 0)",
+  "hospitalInfo6": "• Cura passiva: +5 HP per tick di gioco se sei vivo. L’ospedale è il reset veloce a pagamento.",
   "medicalTreatment": "Trattamento medico",
   "restoreCritical": "Ripristina +20 HP (condizione critica)",
   "restoreUp": "Ripristina fino a {amount} HP",
@@ -5180,6 +5180,28 @@
   "hospitalCriticalStatusDetected": "Stato critico rilevato. Si consiglia il pronto soccorso.",
   "hospitalStableStatus": "Stabile. Trattamento regolare disponibile.",
   "hospitalRefreshMedicalRecord": "Aggiorna la cartella clinica",
+  "hospitalStrategyTitle": "Perché venire qui?",
+  "hospitalCrimePenaltyLine": "Ferito: −{percent}% di successo nei crimini finché non ti curi",
+  "@hospitalCrimePenaltyLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalGoHeal": "Vai in ospedale",
+  "hospitalBandHealthy": "In forma",
+  "hospitalBandWounded": "Ferito",
+  "hospitalBandHurt": "Gravemente ferito",
+  "hospitalBandCritical": "Critico",
+  "crimesInjuredBanner": "Ferito (−{percent}% di successo). Curati in ospedale per riavere le probabilità.",
+  "@crimesInjuredBanner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
   "hospitalStandardTreatmentTitle": "Trattamento standard",
   "hospitalStandardTreatmentSubtitle": "Conveniente • ripristina fino a {amount} HP",
   "@hospitalStandardTreatmentSubtitle": {
@@ -8235,9 +8257,9 @@
   "helpTopicSecurityTips": "Indossa sempre almeno un giubbotto antiproiettile quando il livello di ricercato è 2 o superiore: i risparmi sulle bollette ospedaliere compensano rapidamente il prezzo di acquisto. \nRiparare un giubbotto danneggiato invece di acquistarne di nuovo lo stesso; controllare le condizioni dopo ogni attacco. \nLe munizioni per fucili (5.56, 7.62, .308) perforano i normali giubbotti; acquista il giubbotto con piastra AP se quei calibri si presentano contro di te. \nMantieni solo il numero di guardie del corpo che puoi ancora permetterti domani; le guardie d’élite sono le più colpite, ma il loro salario giornaliero aumenta rapidamente. \nLe guardie del corpo non nascondono il tuo paese se rimani offline per una settimana; In ogni caso, il paese perde lentamente.",
   "helpTopicHospitalCategory": "Recupero",
   "helpTopicHospitalTitle": "Ospedale",
-  "helpTopicHospitalSummary": "Recupera HP dopo combattimenti, crimini falliti o raid. L’ospedale offre cure d’emergenza gratuite e trattamenti a pagamento per un recupero più rapido.",
-  "helpTopicHospitalHow": "Se scendi sotto i 10 HP verrai automaticamente ammesso al pronto soccorso (ER). Questo è gratuito ma richiede più tempo. \nIl trattamento a pagamento costa 10.000 € a sessione e ripristina +30 HP. Cooldown: 60 minuti tra i trattamenti a pagamento. \nL'ICU (terapia intensiva) è il trattamento più pesante per i danni critici. Recupero: 180 minuti. I costi sono più alti ma il recupero è più completo. \nCon HP più alti (50+) puoi comunque eseguire azioni ma sei più vulnerabile agli attacchi. \nLe cure ospedaliere sono bloccate mentre sei in carcere. Prima esci e poi fatti curare. \nIl diploma di scuola in Medicina abbatte i costi ospedalieri e accelera i tempi di recupero. \nI medici dell'Crew o le abilità mediche possono ripristinare gli HP fuori dall'ospedale come recupero di emergenza.",
-  "helpTopicHospitalTips": "Non recuperare mai a metà strada: attendi i pieni HP prima di affrontare PvP o crimini ad alto rischio. \nTrattamenti a tempo pagati intorno al tempo di recupero: inizia un trattamento appena prima di andare offline in modo da tornare online al massimo dei HP.",
+  "helpTopicHospitalSummary": "L’ospedale è il reset veloce quando crimini o hit ti tolgono HP. Restare feriti fa calare il successo; a 0 HP perdi 3 ore in terapia intensiva.",
+  "helpTopicHospitalHow": "Ogni tentativo di crimine costa circa 5–15 HP (giubbotto e bodyguard possono tagliare fino a ~55%). Anche le hit tolgono HP.\nDa 70 HP sei in forma. Sotto, il successo cala: −4% sotto 70, −8% sotto 40, −12% sotto 20. Le chance in carta lo includono già.\nIl trattamento standard costa 10.000 € e cura fino a +30 HP. Quello intensivo costa 20.000 € e fino a +75 HP. Entrambi condividono 60 minuti di attesa (VIP 10% più corto).\nIl Pronto soccorso è un pulsante che premi tu, solo sotto 10 HP: +20 HP gratis, senza attesa.\nA 0 HP vai 3 ore in terapia intensiva: niente crimini né lavori. Torni con 10 HP.\nAspettare cura +5 HP per tick se sei vivo. È gratis ma lento, e la penalità resta fino a 70+.\nNiente pronto soccorso automatico, niente sconto scuola Medicina, niente medico di crew fuori da questa schermata.",
+  "helpTopicHospitalTips": "Curati prima di una serie di crimini se sei sotto 70 HP: la penalità è già nel % di ogni carta.\nUsa il pronto soccorso solo come ultima sosta prima della terapia intensiva; il trattamento a pagamento toglie in fretta la penalità.\nGiubbotto e bodyguard riducono la perdita di HP, quindi vai meno in ospedale.",
   "helpTopicPrisonCategory": "Recupero",
   "helpTopicPrisonTitle": "Prigione",
   "helpTopicPrisonSummary": "Sconta la tua pena detentiva, paga la cauzione o tenta di fuggire. Più alto è il tuo livello di ricercato, più lunga e costosa sarà la tua condanna.",

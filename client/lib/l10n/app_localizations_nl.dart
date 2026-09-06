@@ -6867,10 +6867,12 @@ class AppLocalizationsNl extends AppLocalizations {
       '• 🊘 Spoedeisende Hulp is GRATIS bij <10 HP (+20 HP)';
 
   @override
-  String get hospitalInfo1 => '• Gezondheid daalt bij het plegen van misdaden';
+  String get hospitalInfo1 =>
+      '• Misdaden en hits kosten HP (ongeveer 5–15 per misdaad; vest en lijfwachten minderen dat).';
 
   @override
-  String get hospitalInfo2 => '• Bij 0 HP kun je geen misdaden meer plegen';
+  String get hospitalInfo2 =>
+      '• Onder 70 HP daalt je slagingskans (−4% / −8% / −12%). Bij 0 HP ga je 3 uur naar de IC.';
 
   @override
   String hospitalInfo3(String cost) {
@@ -6887,7 +6889,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get hospitalInfo6 =>
-      '• 💚 Passief herstel: +5 HP per 5 minuten (als HP > 0)';
+      '• Passief herstel: +5 HP per gametick zolang je leeft. Het ziekenhuis is de snelle, betaalde reset.';
 
   @override
   String get medicalTreatment => 'Medische Behandeling';
@@ -6934,6 +6936,34 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get hospitalRefreshMedicalRecord => 'Ververs medisch dossier';
+
+  @override
+  String get hospitalStrategyTitle => 'Waarom hierheen?';
+
+  @override
+  String hospitalCrimePenaltyLine(String percent) {
+    return 'Gewond: −$percent% slagingskans tot je geneest';
+  }
+
+  @override
+  String get hospitalGoHeal => 'Naar het ziekenhuis';
+
+  @override
+  String get hospitalBandHealthy => 'Fit';
+
+  @override
+  String get hospitalBandWounded => 'Gewond';
+
+  @override
+  String get hospitalBandHurt => 'Zwaar gewond';
+
+  @override
+  String get hospitalBandCritical => 'Kritiek';
+
+  @override
+  String crimesInjuredBanner(String percent) {
+    return 'Gewond (−$percent% slagingskans). Genees in het ziekenhuis om je kans terug te krijgen.';
+  }
 
   @override
   String get hospitalStandardTreatmentTitle => 'Standaard behandeling';
@@ -16221,15 +16251,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicHospitalSummary =>
-      'Herstel HP na gevechten, mislukte crimes of raids. Het ziekenhuis biedt gratis spoedzorg en betaalde behandelingen voor sneller herstel.';
+      'Het ziekenhuis is de snelle reset als misdaden of hits je HP slopen. Blijf je gewond, dan daalt je slagingskans; op 0 HP lig je 3 uur op de IC.';
 
   @override
   String get helpTopicHospitalHow =>
-      'Val je onder 10 HP dan word je automatisch opgenomen op de Eerste Hulp (ER). Dit is gratis maar duurt langer.\nBetaalde behandeling kost €10.000 per sessie en herstelt +30 HP. Cooldown: 60 minuten tussen twee betaalde behandelingen.\nICU (Intensive Care) is de zwaarste behandeling voor kritieke schade. Cooldown: 180 minuten. Kosten zijn hoger maar herstel is completer.\nBij hogere HP (50+) kun je gewoon acties uitvoeren maar ben je kwetsbaarder bij aanvallen.\nHospital-behandelingen zijn geblokkeerd terwijl je in de gevangenis zit. Eerst vrijkomen, dan behandeling.\nSchool-certificaat Geneeskunde verlaagt ziekenhuiskosten en versnelt hersteltijden.\nCrew-medics of Medic-skills kunnen HP herstellen buiten het ziekenhuis om als extra noodherstel.';
+      'Elke misdaad kost ongeveer 5–15 HP (vest en lijfwachten kunnen dat tot ~55% minderen). Hits kosten ook HP.\nVanaf 70 HP ben je fit. Daaronder daalt je slagingskans: −4% onder 70, −8% onder 40, −12% onder 20. De kans op de misdaadkaart rekent dit al mee.\nStandaard kost €10.000 en herstelt tot +30 HP. Intensief kost €20.000 en herstelt tot +75 HP. Beide delen 60 minuten cooldown (VIP 10% korter).\nSpoedeisende Hulp is een knop die jij zelf indrukt, alleen onder 10 HP: gratis +20 HP, geen cooldown.\nOp 0 HP ga je 3 uur naar de IC: geen misdaden of jobs. Je komt terug op 10 HP.\nWachten geneest +5 HP per gametick zolang je leeft. Dat is gratis maar traag, en de straf blijft tot je weer op 70+ zit.\nEr is geen automatische EHBO, geen schoolkorting Geneeskunde en geen crew-medic buiten dit scherm.';
 
   @override
   String get helpTopicHospitalTips =>
-      'Herstel nooit half: wacht tot je full HP bent voor je PvP of gevaarlijke crimes uitvoert.\nPlan betaalde behandelingen rond de cooldown: start een behandeling vlak voordat je offline gaat zodat je online komt met vol HP.';
+      'Genees voor een misdaadreeks als je onder 70 HP zit: de straf zit al in het % op elke kaart.\nGebruik Spoedeisende Hulp alleen als laatste stop voor de IC; betaalde behandeling haalt de gewond-straf snel weg.\nEen vest en lijfwachten minderen HP-verlies bij misdaden, dus je hoeft minder vaak naar het ziekenhuis.';
 
   @override
   String get helpTopicPrisonCategory => 'Recovery';

@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import config from '../config';
 import { applyVipTimeoutReductionMs, isVipStatusActive } from './vipBenefitsService';
+import { hospitalInjuryRules } from '../lib/healthInjury';
 
 export const hospitalService = {
   /**
@@ -181,6 +182,10 @@ export const hospitalService = {
       standard: { cost: number; healAmount: number };
       intensive: { cost: number; healAmount: number };
     };
+    injuryRules: ReturnType<typeof hospitalInjuryRules>;
+    icuMinutes: number;
+    passiveHealPerTick: number;
+    emergencyHealAmount: number;
   } {
     return {
       cost: config.hospitalHealCost,
@@ -195,6 +200,10 @@ export const hospitalService = {
           healAmount: Math.round(config.hospitalHealAmount * 2.5),
         },
       },
+      injuryRules: hospitalInjuryRules(),
+      icuMinutes: 180,
+      passiveHealPerTick: config.passiveHealingPerTick,
+      emergencyHealAmount: 20,
     };
   },
 };

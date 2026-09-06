@@ -6910,10 +6910,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hospitalInfo1 =>
-      '• Die Gesundheit nimmt ab, wenn man Straftaten begeht';
+      '• Verbrechen und Hits kosten HP (etwa 5–15 pro Verbrechen; Weste und Leibwächter mindern das).';
 
   @override
-  String get hospitalInfo2 => '• Bei 0 HP können Sie keine Verbrechen begehen';
+  String get hospitalInfo2 =>
+      '• Unter 70 HP sinkt die Erfolgschance (−4% / −8% / −12%). Bei 0 HP kommst du 3 Stunden auf die Intensivstation.';
 
   @override
   String hospitalInfo3(String cost) {
@@ -6931,7 +6932,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hospitalInfo6 =>
-      '• 💚 Passive Heilung: +5 HP alle 5 Minuten (wenn HP > 0)';
+      '• Passive Heilung: +5 HP pro Spiel-Tick, solange du lebst. Das Krankenhaus ist der schnelle, bezahlte Reset.';
 
   @override
   String get medicalTreatment => 'Medizinische Behandlung';
@@ -6978,6 +6979,34 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hospitalRefreshMedicalRecord => 'Krankenakte aktualisieren';
+
+  @override
+  String get hospitalStrategyTitle => 'Warum hierher?';
+
+  @override
+  String hospitalCrimePenaltyLine(String percent) {
+    return 'Verwundet: −$percent% Verbrechenserfolg bis du heilst';
+  }
+
+  @override
+  String get hospitalGoHeal => 'Zum Krankenhaus';
+
+  @override
+  String get hospitalBandHealthy => 'Fit';
+
+  @override
+  String get hospitalBandWounded => 'Verwundet';
+
+  @override
+  String get hospitalBandHurt => 'Schwer verwundet';
+
+  @override
+  String get hospitalBandCritical => 'Kritisch';
+
+  @override
+  String crimesInjuredBanner(String percent) {
+    return 'Verwundet (−$percent% Erfolg). Heile im Krankenhaus, um deine Chance zurückzuholen.';
+  }
 
   @override
   String get hospitalStandardTreatmentTitle => 'Standardbehandlung';
@@ -16380,15 +16409,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicHospitalSummary =>
-      'Stellen Sie HP nach Kämpfen, gescheiterten Verbrechen oder Überfällen wieder her. Das Krankenhaus bietet kostenlose Notfallversorgung und kostenpflichtige Behandlungen für eine schnellere Genesung.';
+      'Das Krankenhaus ist der schnelle Reset, wenn Verbrechen oder Hits deine HP senken. Bleibst du verwundet, fällt der Erfolg; bei 0 HP liegst du 3 Stunden auf der Intensivstation.';
 
   @override
   String get helpTopicHospitalHow =>
-      'Wenn Sie unter 10 HP fallen, werden Sie automatisch in die Notaufnahme (ER) eingeliefert. Dies ist kostenlos, dauert aber länger. \nDie kostenpflichtige Behandlung kostet 10.000 € pro Sitzung und stellt +30 HP wieder her. Abklingzeit: 60 Minuten zwischen den kostenpflichtigen Behandlungen. \nDie Intensivstation (Intensivstation) ist die schwerste Behandlung für kritische Schäden. Abklingzeit: 180 Minuten. Die Kosten sind höher, aber die Wiederherstellung ist vollständiger. \nMit höheren HP (50+) können Sie immer noch Aktionen ausführen, sind aber anfälliger für Angriffe. \nKrankenhausbehandlungen sind während Ihrer Haftzeit gesperrt. Gehen Sie zuerst raus und suchen Sie dann eine Behandlung auf. \nEin Schulabschluss in Medizin senkt die Krankenhauskosten und beschleunigt die Genesungszeit. \nCrew-Sanitäter oder Sanitäter-Fähigkeiten können HP außerhalb des Krankenhauses als Notfallwiederherstellung wiederherstellen.';
+      'Jeder Verbrechensversuch kostet etwa 5–15 HP (Weste und Leibwächter können das um bis zu ~55% senken). Hits kosten ebenfalls HP.\nAb 70 HP bist du fit. Darunter sinkt der Erfolg: −4% unter 70, −8% unter 40, −12% unter 20. Die angezeigte Chance rechnet das schon ein.\nStandard kostet 10.000 € und heilt bis +30 HP. Intensiv kostet 20.000 € und heilt bis +75 HP. Beide teilen 60 Minuten Abklingzeit (VIP 10% kürzer).\nNotfallhilfe ist ein Knopf, den du selbst drückst, nur unter 10 HP: kostenlos +20 HP, keine Abklingzeit.\nBei 0 HP gehst du 3 Stunden auf die Intensivstation: keine Verbrechen oder Jobs. Du kommst mit 10 HP zurück.\nWarten heilt +5 HP pro Spiel-Tick, solange du lebst. Das ist gratis aber langsam, und die Strafe bleibt bis 70+.\nEs gibt keine automatische Notaufnahme, keinen Schulrabatt Medizin und keinen Crew-Sanitäter außerhalb dieses Bildschirms.';
 
   @override
   String get helpTopicHospitalTips =>
-      'Erholen Sie sich niemals auf halbem Weg: Warten Sie, bis die vollen HP erreicht sind, bevor Sie PvP oder risikoreiche Verbrechen begehen. \nZeitlich bezahlte Behandlungen rund um die Abklingzeit: Starten Sie eine Behandlung kurz bevor Sie offline gehen, damit Sie mit voller HP wieder online sind.';
+      'Heile vor einer Verbrechensserie, wenn du unter 70 HP bist: die Strafe steckt schon im % auf jeder Karte.\nNotfallhilfe nur als letzte Station vor der Intensivstation; bezahlte Behandlung nimmt die Verwundetenstrafe schnell weg.\nWeste und Leibwächter senken den HP-Verlust bei Verbrechen, also musst du seltener ins Krankenhaus.';
 
   @override
   String get helpTopicPrisonCategory => 'Erholung';
