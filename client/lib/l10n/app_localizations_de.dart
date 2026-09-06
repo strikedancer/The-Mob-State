@@ -1125,6 +1125,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get seasonPassNoClaimables => 'Noch keine Event-Preise zum Abholen.';
 
   @override
+  String get seasonPassPrizesToWin => 'Zu gewinnende Preise';
+
+  @override
   String get seasonPassRewardAmmo => 'Ammo';
 
   @override

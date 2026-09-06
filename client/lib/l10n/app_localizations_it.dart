@@ -1116,6 +1116,9 @@ class AppLocalizationsIt extends AppLocalizations {
       'Nessun premio evento da ritirare al momento.';
 
   @override
+  String get seasonPassPrizesToWin => 'Premi da vincere';
+
+  @override
   String get seasonPassRewardAmmo => 'Ammo';
 
   @override

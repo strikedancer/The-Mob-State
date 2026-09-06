@@ -1116,6 +1116,9 @@ class AppLocalizationsNl extends AppLocalizations {
       'Nog geen eventprijzen klaar om te claimen.';
 
   @override
+  String get seasonPassPrizesToWin => 'Prijzen om te winnen';
+
+  @override
   String get seasonPassRewardAmmo => 'Munitie';
 
   @override

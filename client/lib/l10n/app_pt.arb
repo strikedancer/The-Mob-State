@@ -11297,5 +11297,6 @@
   "territoryErrorRegionEncircled": "Esta região é cercada por outras regiões da mesma Crew. Capture primeiro uma região vizinha.",
   "territoryNoticeEncircled": "Esta região interna é cercada por outras regiões da mesma Crew, portanto não pode ser atacada diretamente. Pegue primeiro uma região vizinha para abrir a frente.",
   "seasonPassClaimablesTitle": "Pronto a reivindicar",
-  "seasonPassNoClaimables": "Ainda sem prémios de evento para reivindicar."
+  "seasonPassNoClaimables": "Ainda sem prémios de evento para reivindicar.",
+  "seasonPassPrizesToWin": "Prémios a ganhar"
 }

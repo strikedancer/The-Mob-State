@@ -1117,6 +1117,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ainda sem prémios de evento para reivindicar.';
 
   @override
+  String get seasonPassPrizesToWin => 'Prémios a ganhar';
+
+  @override
   String get seasonPassRewardAmmo => 'Ammo';
 
   @override

@@ -677,6 +677,7 @@
   "seasonPassClaimFailed": "Could not claim reward",
   "seasonPassClaimablesTitle": "Ready to claim",
   "seasonPassNoClaimables": "No event prizes ready to claim yet.",
+  "seasonPassPrizesToWin": "Prizes to win",
   "seasonPassRewardAmmo": "Ammo",
   "seasonPassRewardAmmoWith": "+ ammo",
   "seasonPassRewardVehicle": "Rare vehicle",

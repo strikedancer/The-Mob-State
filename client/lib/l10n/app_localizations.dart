@@ -2096,6 +2096,12 @@ abstract class AppLocalizations {
   /// **'No event prizes ready to claim yet.'**
   String get seasonPassNoClaimables;
 
+  /// No description provided for @seasonPassPrizesToWin.
+  ///
+  /// In en, this message translates to:
+  /// **'Prizes to win'**
+  String get seasonPassPrizesToWin;
+
   /// No description provided for @seasonPassRewardAmmo.
   ///
   /// In en, this message translates to:
