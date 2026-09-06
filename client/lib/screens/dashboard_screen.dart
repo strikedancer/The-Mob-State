@@ -212,8 +212,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _vehicleHeistTabIndex = 0;
   int _blackMarketTabIndex = 0;
   List<Map<String, dynamic>> _gameEventsActive = const [];
-  /// Event Pass claimable counts by goal category for live event rail badges.
-  Map<String, int> _eventPassClaimableByCategory = const {};
+  /// Event Pass claimable reward count for the monthly Empire rail avatar only.
+  int _eventPassClaimableCount = 0;
   Timer? _gameEventsRefreshTimer;
   /// Accordion: only one side-menu category open at a time (null = all collapsed).
   _NavGroup? _expandedNavGroup;
@@ -391,10 +391,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       }
 
-      Map<String, int> claimableByCategory = const {};
+      var eventPassClaimableCount = 0;
       final passRes = results[1];
       if (passRes.statusCode == 200) {
-        claimableByCategory = _claimableByCategoryFromSeasonPass(
+        eventPassClaimableCount = _eventPassClaimableCountFromStatus(
           jsonDecode(passRes.body) as Map<String, dynamic>,
         );
       }
@@ -402,34 +402,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (!mounted) return;
       setState(() {
         _gameEventsActive = active;
-        _eventPassClaimableByCategory = claimableByCategory;
+        _eventPassClaimableCount = eventPassClaimableCount;
       });
     } catch (_) {
       // Non-blocking — rail simply stays empty / without badges.
     }
   }
 
-  /// Counts claimable free + premium Event Pass rewards per goal category.
-  Map<String, int> _claimableByCategoryFromSeasonPass(
-    Map<String, dynamic> status,
-  ) {
+  /// Counts claimable free + premium Event Pass rewards (monthly popup only).
+  int _eventPassClaimableCountFromStatus(Map<String, dynamic> status) {
     final levels = (status['levels'] as List?) ?? const [];
-    final counts = <String, int>{};
+    var count = 0;
     for (final raw in levels) {
       if (raw is! Map) continue;
       final level = Map<String, dynamic>.from(raw);
-      final cat = level['goalCategory']?.toString() ?? '';
-      if (cat.isEmpty) continue;
-      var n = 0;
       final free = level['free'];
       final premium = level['premium'];
-      if (free is Map && free['claimable'] == true) n += 1;
-      if (premium is Map && premium['claimable'] == true) n += 1;
-      if (n > 0) {
-        counts[cat] = (counts[cat] ?? 0) + n;
-      }
+      if (free is Map && free['claimable'] == true) count += 1;
+      if (premium is Map && premium['claimable'] == true) count += 1;
     }
-    return counts;
+    return count;
   }
 
   @override
@@ -1113,7 +1105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (_selectedWebSection != _WebSection.events)
             LiveEventRail(
               activeEvents: _gameEventsActive,
-              claimableByCategory: _eventPassClaimableByCategory,
+              eventPassClaimableCount: _eventPassClaimableCount,
               onOpenEvents: () => _selectWebSection(_WebSection.events),
               topOffset: showLeftSidebar ? 96 : 128,
               maxVisible: 6,

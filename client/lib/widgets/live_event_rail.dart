@@ -58,67 +58,19 @@ class LiveEventRail extends StatelessWidget {
     super.key,
     required this.activeEvents,
     required this.onOpenEvents,
-    this.claimableByCategory = const {},
+    this.eventPassClaimableCount = 0,
     this.maxVisible = 6,
     this.topOffset = 120,
   });
 
   final List<Map<String, dynamic>> activeEvents;
   final VoidCallback onOpenEvents;
-  /// Event Pass claimable reward counts keyed by goal category
-  /// (`crime`, `vehicles`, `smuggling`, `drugs`, `money`, `xp`).
-  final Map<String, int> claimableByCategory;
+  /// Claimable Event Pass rewards. Shown only on the monthly Empire avatar
+  /// (that popup is the Event Pass list). Weekly event avatars and
+  /// dashboard daily/weekly goals stay separate.
+  final int eventPassClaimableCount;
   final int maxVisible;
   final double topOffset;
-
-  static int claimablesForEventCategory(
-    String? eventCategory,
-    Map<String, int> claimableByCategory,
-  ) {
-    final cat = (eventCategory ?? '').toLowerCase();
-    switch (cat) {
-      case 'crime':
-        return claimableByCategory['crime'] ?? 0;
-      case 'vehicles':
-        return claimableByCategory['vehicles'] ?? 0;
-      case 'smuggling':
-        return claimableByCategory['smuggling'] ?? 0;
-      case 'drugs':
-        return claimableByCategory['drugs'] ?? 0;
-      case 'trade':
-        return claimableByCategory['money'] ?? 0;
-      case 'allround':
-        return (claimableByCategory['money'] ?? 0) +
-            (claimableByCategory['xp'] ?? 0);
-      default:
-        return 0;
-    }
-  }
-
-  /// Money/XP claimables with no matching allround/trade avatar still need a home.
-  static int orphanClaimables(
-    List<Map<String, dynamic>> events,
-    Map<String, int> claimableByCategory,
-  ) {
-    var hasMoneyHome = false;
-    var hasXpHome = false;
-    for (final event in events) {
-      final template = event['template'] is Map
-          ? Map<String, dynamic>.from(event['template'] as Map)
-          : null;
-      final cat = (template?['category']?.toString() ?? '').toLowerCase();
-      if (cat == 'allround') {
-        hasMoneyHome = true;
-        hasXpHome = true;
-      } else if (cat == 'trade') {
-        hasMoneyHome = true;
-      }
-    }
-    var orphan = 0;
-    if (!hasMoneyHome) orphan += claimableByCategory['money'] ?? 0;
-    if (!hasXpHome) orphan += claimableByCategory['xp'] ?? 0;
-    return orphan;
-  }
 
   static GameEventTheme categoryStyle(String? category) {
     return gameEventThemeForCategory(category);
@@ -130,7 +82,6 @@ class LiveEventRail extends StatelessWidget {
 
     final visible = activeEvents.take(maxVisible).toList();
     final overflow = activeEvents.length - visible.length;
-    final orphans = orphanClaimables(visible, claimableByCategory);
 
     return Positioned(
       right: 8,
@@ -142,16 +93,9 @@ class LiveEventRail extends StatelessWidget {
             if (i > 0) const SizedBox(height: 8),
             _EventAvatarButton(
               event: visible[i],
-              claimableCount: claimablesForEventCategory(
-                    (visible[i]['template'] is Map
-                            ? Map<String, dynamic>.from(
-                                visible[i]['template'] as Map,
-                              )
-                            : null)?['category']
-                        ?.toString(),
-                    claimableByCategory,
-                  ) +
-                  (i == 0 ? orphans : 0),
+              claimableCount: isMonthlyEmpireEvent(visible[i])
+                  ? eventPassClaimableCount
+                  : 0,
               onTap: () => showGameEventDetailsDialog(
                 context: context,
                 event: visible[i],
