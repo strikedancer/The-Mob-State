@@ -1,13 +1,11 @@
 import prisma from '../lib/prisma';
 import { getWealthStatus, getWealthTitle, getWealthIcon } from '../utils/wealthSystem';
 import { serializePlayerAvatarFields } from './playerPortraitService';
-import { applyNeedsTick } from './foodService';
-
 export const playerService = {
   /**
    * Get full player data by ID
    */
-  async getPlayer(playerId: number, options?: { applyNeeds?: boolean }) {
+  async getPlayer(playerId: number) {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       include: {
@@ -45,25 +43,11 @@ export const playerService = {
       premiumCredits: player.premiumCredits,
     });
 
-    let hunger = player.hunger;
-    let thirst = player.thirst;
-    if (options?.applyNeeds !== false) {
-      try {
-        const needs = await applyNeedsTick(playerId);
-        hunger = needs.hunger;
-        thirst = needs.thirst;
-      } catch {
-        // Keep stored values if the lazy needs tick fails.
-      }
-    }
-
     return {
       id: player.id,
       username: player.username,
       money: player.money,
       health: player.health,
-      hunger,
-      thirst,
       rank,
       xp: player.xp,
       wantedLevel: player.wantedLevel,

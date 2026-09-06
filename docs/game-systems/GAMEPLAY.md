@@ -93,8 +93,6 @@
 ### Speler Stats
 - **Money**: Je huidige contant geld
 - **Health**: Je gezondheid (0-100 HP)
-- **Hunger**: Je honger level (0-100)
-- **Thirst**: Je dorst level (0-100)
 - **Rank**: Je ervaring rank
 - **XP**: Experience points
 - **Wanted Level**: Hoe graag de politie je wil pakken (0-100)
@@ -103,12 +101,10 @@
 
 ### Tick Systeem
 Elke **5 minuten** gebeurt er automatisch:
-- **Hunger**: -2 punten
-- **Thirst**: -3 punten
 - **Passive Healing**: +5 HP (alleen als HP > 0 en < 100)
-- **Death**: Als hunger of thirst 0 bereikt, ga je dood
 - **FBI Heat Decay**: -1 punt per tick (alleen als FBI Heat < 10)
 - **Bank Interest**: Momenteel uitgeschakeld (geen passieve rente per tick)
+- **Eten & Drinken** is uit het spel: geen honger/dorst-meters, geen food-shop, geen dood door honger/dorst.
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
@@ -352,8 +348,6 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ### Job Requirements
 - **Health**: Minimum 10 HP
-- **Hunger**: Minimum 20
-- **Thirst**: Minimum 20
 - **Not in Jail**: Geen active jail sentence
 - **Not in ICU**: Niet op intensive care
 - **Cooldown**: 10 minuten tussen jobs
@@ -1127,7 +1121,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Crime system with health damage
 - âœ… Wanted level & police arrests
 - âœ… FBI heat system
-- âœ… Health, hunger, thirst mechanics
+- âœ… Health mechanics (eten & drinken / honger / dorst zijn verwijderd)
 - âœ… Hospital with emergency room
 - âœ… Intensive Care (ICU) system
 - âœ… Jobs system

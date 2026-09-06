@@ -253,7 +253,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
 
     let player;
     try {
-      player = await playerService.getPlayer(playerId, { applyNeeds: false });
+      player = await playerService.getPlayer(playerId);
     } catch (error) {
       if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
         return res.status(404).json({
