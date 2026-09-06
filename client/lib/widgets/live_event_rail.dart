@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
-import '../utils/game_event_rewards.dart';
+import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
-import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
+import 'game_event_details_dialog.dart';
 
 String formatLiveEventRemaining(Duration remaining, AppLocalizations l10n) {
   if (remaining.inSeconds <= 0) {
@@ -50,17 +51,6 @@ String formatLiveEventRemainingBadge(Duration remaining, AppLocalizations l10n) 
   return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 }
 
-String _formatEventDateTime(String? raw) {
-  final parsed = DateTime.tryParse(raw ?? '');
-  if (parsed == null) return '';
-  final local = parsed.toLocal();
-  final dd = local.day.toString().padLeft(2, '0');
-  final mm = local.month.toString().padLeft(2, '0');
-  final yy = local.year.toString();
-  final hh = local.hour.toString().padLeft(2, '0');
-  final min = local.minute.toString().padLeft(2, '0');
-  return '$dd-$mm-$yy $hh:$min';
-}
 
 /// Right-edge circular avatars for active live events (Clash-style quick access).
 class LiveEventRail extends StatelessWidget {
@@ -69,7 +59,7 @@ class LiveEventRail extends StatelessWidget {
     required this.activeEvents,
     required this.onOpenEvents,
     this.claimableByCategory = const {},
-    this.maxVisible = 4,
+    this.maxVisible = 6,
     this.topOffset = 120,
   });
 
@@ -130,23 +120,8 @@ class LiveEventRail extends StatelessWidget {
     return orphan;
   }
 
-  static ({IconData icon, Color accent}) categoryStyle(String? category) {
-    switch ((category ?? '').toLowerCase()) {
-      case 'crime':
-        return (icon: Icons.warning_amber_rounded, accent: const Color(0xFFE85D4C));
-      case 'drugs':
-        return (icon: Icons.science, accent: const Color(0xFF5CC8A0));
-      case 'smuggling':
-        return (icon: Icons.local_shipping, accent: const Color(0xFF5B9BD5));
-      case 'vehicles':
-        return (icon: Icons.directions_car, accent: const Color(0xFFF0A04B));
-      case 'trade':
-        return (icon: Icons.storefront, accent: const Color(0xFFD4AF37));
-      case 'allround':
-        return (icon: Icons.emoji_events, accent: const Color(0xFFB388FF));
-      default:
-        return (icon: Icons.event, accent: const Color(0xFFD4AF37));
-    }
+  static GameEventTheme categoryStyle(String? category) {
+    return gameEventThemeForCategory(category);
   }
 
   @override
@@ -177,7 +152,10 @@ class LiveEventRail extends StatelessWidget {
                     claimableByCategory,
                   ) +
                   (i == 0 ? orphans : 0),
-              onTap: () => _showEventPopup(context, visible[i]),
+              onTap: () => showGameEventDetailsDialog(
+                context: context,
+                event: visible[i],
+              ),
             ),
           ],
           if (overflow > 0) ...[
@@ -210,198 +188,6 @@ class LiveEventRail extends StatelessWidget {
           ],
         ],
       ),
-    );
-  }
-
-  void _showEventPopup(BuildContext context, Map<String, dynamic> event) {
-    final l10n = AppLocalizations.of(context)!;
-    final template = event['template'] is Map
-        ? Map<String, dynamic>.from(event['template'] as Map)
-        : null;
-    final style = categoryStyle(template?['category']?.toString());
-    final title = localizedGameEventTitle(l10n, template);
-    final desc = localizedGameEventShortDescription(l10n, template);
-    final endsAt =
-        DateTime.tryParse(event['endsAt']?.toString() ?? '')?.toLocal();
-    final startedAtRaw = _formatEventDateTime(event['startedAt']?.toString());
-    final endsAtRaw = _formatEventDateTime(event['endsAt']?.toString());
-    final statusLabel = localizedGameEventLiveStatus(
-      l10n,
-      event['status']?.toString() ?? 'active',
-    );
-    final tiers = parseGameEventPrizeTiers(
-      (event['rewardRules'] as List?) ?? const <dynamic>[],
-    );
-    String? prizeHint;
-    if (tiers.isNotEmpty) {
-      final top = tiers.first;
-      final parts = <String>[];
-      if (top.cash > 0) parts.add(formatCurrency(top.cash));
-      final extras = top.extendedPrizeLines(l10n);
-      if (extras.isNotEmpty) parts.add(extras.first);
-      if (parts.isNotEmpty) {
-        prizeHint = l10n.gameCardTopPrize(parts.join(' · '));
-      }
-    }
-
-    showDialog<void>(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.62),
-      builder: (dialogContext) {
-        final dialogL10n = AppLocalizations.of(dialogContext)!;
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 420),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Color(0xFF1A2233), Color(0xFF0E1219)],
-                ),
-                border: Border.all(color: style.accent.withValues(alpha: 0.55)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.55),
-                    blurRadius: 24,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(18, 16, 12, 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: style.accent.withValues(alpha: 0.18),
-                            border: Border.all(color: style.accent),
-                          ),
-                          child: Icon(style.icon, color: style.accent, size: 24),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                title,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 3,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.green.withValues(alpha: 0.18),
-                                  borderRadius: BorderRadius.circular(999),
-                                  border: Border.all(color: Colors.greenAccent),
-                                ),
-                                child: Text(
-                                  statusLabel,
-                                  style: const TextStyle(
-                                    color: Colors.greenAccent,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () => Navigator.of(dialogContext).pop(),
-                          icon: const Icon(Icons.close, color: Colors.white54),
-                        ),
-                      ],
-                    ),
-                    if (endsAt != null) ...[
-                      const SizedBox(height: 12),
-                      _EventRemainingLine(
-                        endsAt: endsAt,
-                        color: style.accent,
-                        compact: false,
-                      ),
-                    ],
-                    if (startedAtRaw.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        dialogL10n.gameScreenStartLine(startedAtRaw),
-                        style: const TextStyle(color: Colors.white70, fontSize: 13),
-                      ),
-                    ],
-                    if (endsAtRaw.isNotEmpty)
-                      Text(
-                        dialogL10n.gameScreenEndLine(endsAtRaw),
-                        style: const TextStyle(color: Colors.white70, fontSize: 13),
-                      ),
-                    if (desc.isNotEmpty) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        desc,
-                        style: const TextStyle(color: Colors.white70, height: 1.35),
-                      ),
-                    ],
-                    if (prizeHint != null) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        prizeHint,
-                        style: TextStyle(
-                          color: style.accent,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(dialogContext).pop(),
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.white70,
-                          ),
-                          child: Text(dialogL10n.close),
-                        ),
-                        const Spacer(),
-                        FilledButton.icon(
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                            onOpenEvents();
-                          },
-                          icon: const Icon(Icons.event),
-                          label: Text(dialogL10n.liveEventRailOpenEvents),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: style.accent,
-                            foregroundColor: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
@@ -448,8 +234,16 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
     final style = LiveEventRail.categoryStyle(template?['category']?.toString());
     final l10n = AppLocalizations.of(context)!;
     final title = localizedGameEventTitle(l10n, template);
-    final endsAt =
-        DateTime.tryParse(widget.event['endsAt']?.toString() ?? '')?.toLocal();
+    final isActive = widget.event['status']?.toString() == 'active' ||
+        widget.event['preview'] != true &&
+            widget.event['status']?.toString() != 'scheduled';
+    final countdownAt = DateTime.tryParse(
+      ((isActive
+                  ? widget.event['endsAt']
+                  : widget.event['startedAt'] ?? widget.event['endsAt'])
+              ?.toString() ??
+          ''),
+    )?.toLocal();
 
     final badge = widget.claimableCount > 0
         ? (widget.claimableCount > 99 ? '99+' : '${widget.claimableCount}')
@@ -494,7 +288,23 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
                             ),
                           ],
                         ),
-                        child: Icon(style.icon, color: style.accent, size: 22),
+                        clipBehavior: Clip.antiAlias,
+                        child: WebAssetHelper.imageHttpFirst(
+                          style.asset,
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                          errorBuilder: (context, error, stackTrace) =>
+                              ColoredBox(
+                            color: const Color(0xFF0F1420),
+                            child: Icon(
+                              style.icon,
+                              color: style.accent,
+                              size: 22,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     if (badge != null)
@@ -533,7 +343,7 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
                           ),
                         ),
                       ),
-                    if (endsAt != null)
+                    if (countdownAt != null)
                       Positioned(
                         left: 0,
                         right: 0,
@@ -542,7 +352,7 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
                         top: 41,
                         child: Center(
                           child: _EventRemainingBadge(
-                            endsAt: endsAt,
+                            endsAt: countdownAt,
                             accent: style.accent,
                           ),
                         ),

@@ -21,6 +21,7 @@ import '../widgets/daily_goals_card.dart';
 import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
 import '../widgets/live_event_rail.dart';
+import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/localized_api_message.dart';
@@ -376,10 +377,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final eventsRes = results[0];
       if (eventsRes.statusCode == 200) {
         final data = jsonDecode(eventsRes.body) as Map<String, dynamic>;
-        active = ((data['active'] as List?) ?? const <dynamic>[])
-            .whereType<Map>()
-            .map((e) => Map<String, dynamic>.from(e))
-            .toList();
+        List<Map<String, dynamic>> parseList(String key) {
+          return ((data[key] as List?) ?? const <dynamic>[])
+              .whereType<Map>()
+              .map((e) => Map<String, dynamic>.from(e))
+              .toList();
+        }
+
+        active = buildLiveEventRailItems(
+          active: parseList('active'),
+          upcoming: parseList('upcoming'),
+          upcomingPreview: parseList('upcomingPreview'),
+        );
       }
 
       Map<String, int> claimableByCategory = const {};
@@ -1107,6 +1116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               claimableByCategory: _eventPassClaimableByCategory,
               onOpenEvents: () => _selectWebSection(_WebSection.events),
               topOffset: showLeftSidebar ? 96 : 128,
+              maxVisible: 6,
             ),
         ],
       ),
