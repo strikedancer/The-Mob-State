@@ -4,7 +4,7 @@
 Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedrag, image loading, cache/service worker gedrag en platformgevoelige UI-patronen.
 
 ## Primary Frontend Entry
-- client/lib/config/app_config.dart (`apiBaseUrl`: web gebruikt `WEB_API_BASE_URL` uit dart-define wanneer gezet; zonder override mappen apex `themobstate.com` / `www.themobstate.com` → `https://api.themobstate.com`, anders `${scheme}://${host}:3000` voor lokale dev)
+- client/lib/config/app_config.dart (`apiBaseUrl`: web gebruikt `WEB_API_BASE_URL` uit dart-define wanneer gezet; zonder override mappen apex `themobstate.com` / `themobstate.nl` (en `www`) → `https://api.themobstate.com`, anders `${scheme}://${host}:3000` voor lokale dev)
 - client/lib/config/supported_languages.dart (centrale player-UI-taalcodes; synchroon met `backend/src/config/supportedLanguages.ts` en `client/lib/l10n/app_*.arb`)
 - client/lib/screens/landing_screen.dart (marketing home voor niet-ingelogde gebruikers; `GET /public/home`)
 - client/lib/screens/legal_privacy_screen.dart, `legal_terms_screen.dart` en `legal_digital_goods_screen.dart` (juridische teksten volledig uit ARB)

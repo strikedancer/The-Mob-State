@@ -64,6 +64,24 @@ plesk bin domain -u api.themobstate.com -ssl true -certificate-name "Lets Encryp
 plesk bin domain -u admin.themobstate.com -ssl true -certificate-name "Lets Encrypt admin.themobstate.com" -ssl-redirect true
 ```
 
+### Tweede domein: themobstate.nl
+
+Zelfde Flutter-app als `.com`. API en admin blijven op `api.` / `admin.themobstate.com`. Canonical/SEO blijft `.com`.
+
+1. **DNS bij de registrar** (naar het VPS-IP van `themobstate.com`):
+   - `A` / `AAAA` voor `@` en `www`
+   - `MX` naar de Plesk-mailhost (meestal hetzelfde als `.com`)
+   - `TXT` SPF: `v=spf1 a mx include:_spf.themobstate.com ~all` of Plesk’s eigen SPF
+   - DKIM/DMARC TXT zodra Plesk DKIM aan zet (`default._domainkey`, `_dmarc`)
+2. **Plesk:** alias van `themobstate.com` **of** extra subscription met dezelfde Apache-proxy naar `127.0.0.1:8080` (zelfde ACME `ProxyPass !` als hierboven).
+   ```bash
+   plesk bin domain_alias --create themobstate.nl -domain themobstate.com -mail true -seo-redirect false
+   plesk bin extension --exec letsencrypt cli.php -d themobstate.nl -d www.themobstate.nl -m info@themobstate.nl
+   ```
+3. **Mailbox** `noreply@themobstate.nl` in Plesk Mail. Zet in `.env.plesk`:
+   `SMTP_USER=noreply@themobstate.nl`, `SMTP_FROM=noreply@themobstate.nl`, `SMTP_PASS=…` (niet in git). Daarna alleen backend herstarten. From moet alignment hebben met SPF/DKIM van `.nl` — alleen de From-header wijzigen zonder mailbox/DNS maakt blokkades erger, niet beter.
+4. CORS/Flutter kennen `.nl` al in code (`config/index.ts`, `app_config.dart`).
+
 ## PuTTY Update Flow (Standard)
 
 Als je mij later vraagt om een PuTTY update-command, dan is dit de vaste veilige volgorde voor productie:
@@ -267,7 +285,9 @@ MAX_FLIGHTS_PER_DAY=100
 # (MATIG 2.5h / GEMIDDELD 5h / CONTINU 8h); the rest is sleep for jail/cooldowns.
 SMTP_HOST="themobstate.com"
 SMTP_PORT="465"
-SMTP_USER="noreply@themobstate.com"
+SMTP_USER="noreply@themobstate.nl"
+SMTP_FROM="noreply@themobstate.nl"
+SMTP_FROM_NAME="The Mob State"
 SMTP_PASS=""
 ```
 

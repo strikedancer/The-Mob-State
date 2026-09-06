@@ -4,7 +4,7 @@ Doel: beter vindbaar zijn voor zoekopdrachten zoals **“mafia game”** en **�
 
 ## Canonical domeinen
 
-- **App (public)**: `https://themobstate.com/`
+- **App (public)**: `https://themobstate.com/` (canonical). `https://themobstate.nl/` serves the same Flutter shell; keep Search Console / sitemap on `.com`.
 - **API**: `https://api.themobstate.com/`
 - **Admin**: `https://admin.themobstate.com/`
 

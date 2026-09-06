@@ -74,6 +74,8 @@ services:
       SMTP_PORT: ${SMTP_PORT:-465}
       SMTP_USER: ${SMTP_USER:-noreply@themobstate.com}
       SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-The Mob State}
     volumes:
       - ${CLIENT_EXTERNAL_IMAGES_PATH:-/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images}:/client/images
     ports:

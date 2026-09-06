@@ -11,6 +11,10 @@ const apiBaseUrl = normalizeBaseUrl(config.apiBaseUrl);
 // SMTP credentials come from env (never commit the mailbox password).
 const smtpUser = process.env.SMTP_USER || 'noreply@themobstate.com';
 const smtpPass = process.env.SMTP_PASS || '';
+const smtpFromAddress =
+  process.env.SMTP_FROM?.trim() || smtpUser || 'noreply@themobstate.com';
+const smtpFromName = process.env.SMTP_FROM_NAME?.trim() || 'The Mob State';
+const smtpFromHeader = `"${smtpFromName}" <${smtpFromAddress}>`;
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'themobstate.com',
   port: Number(process.env.SMTP_PORT || 465),
@@ -202,7 +206,7 @@ export const emailService = {
     `;
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: email,
       subject: v.subject,
       html: htmlContent,
@@ -295,7 +299,7 @@ export const emailService = {
     `;
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: email,
       subject: p.subject,
       html: htmlContent,
@@ -374,7 +378,7 @@ export const emailService = {
     `;
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.friendRequest.subject,
       html: htmlContent,
@@ -453,7 +457,7 @@ export const emailService = {
     `;
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.friendAccepted.subject,
       html: htmlContent,
@@ -481,7 +485,7 @@ export const emailService = {
     });
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.crewJoinRequest.subject,
       html: htmlContent,
@@ -506,7 +510,7 @@ export const emailService = {
     });
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.crewJoinApproved.subject,
       html: htmlContent,
@@ -531,7 +535,7 @@ export const emailService = {
     });
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.crewJoinRejected.subject,
       html: htmlContent,
@@ -556,7 +560,7 @@ export const emailService = {
     });
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.crewKicked.subject,
       html: htmlContent,
@@ -582,7 +586,7 @@ export const emailService = {
     });
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.crewRoleChanged.subject,
       html: htmlContent,
@@ -609,7 +613,7 @@ export const emailService = {
     });
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.crewHeistResult.subject(success),
       html: htmlContent,
@@ -640,7 +644,7 @@ export const emailService = {
     });
 
     await transporter.sendMail({
-      from: '"The Mob State" <noreply@themobstate.com>',
+      from: smtpFromHeader,
       to: recipientEmail,
       subject: t.email.casinoLowBalance.subject,
       html: htmlContent,

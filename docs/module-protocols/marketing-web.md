@@ -5,7 +5,7 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 
 ## Client
 - `client/lib/screens/landing_screen.dart` — hero = **ARB-titel** + **ondertitel** (tekst gecentreerd in een **smalle kolom** die op brede schermen **naar rechts inspringt**, zodat copy niet over de grote titel in de achtergrond valt); op smalle breedte een **semi-transparant paneel** rond de copy voor leesbaarheid. **Inloggen / Account** rechtsboven naast elkaar (`FittedBox`): ze openen een **modal dialog** met het gedeelde auth-scherm (`LoginScreen`, `embeddedModal`) i.p.v. naar `/login` of `/register` te pushen. Na geslaagde login sluit die dialog automatisch (ook op mobiel); het kruisje is alleen nodig om te annuleren. **footer vast onderaan**. Geen Flutter-logo-image in de hero.
-- **Publieke rankings:** `GET /public/home` met basis-URL `AppConfig.apiBaseUrl` (apex `themobstate.com` → `api.themobstate.com` zonder dart-define; zie `app_config.dart` + Docker `WEB_API_BASE_URL`).
+- **Publieke rankings:** `GET /public/home` met basis-URL `AppConfig.apiBaseUrl` (apex `themobstate.com` / `themobstate.nl` → `api.themobstate.com` zonder dart-define; zie `app_config.dart` + Docker `WEB_API_BASE_URL`).
 - `client/lib/main.dart` — `_resolveHome` + `routes` voor `/`, `/login`, `/register`, `/privacy`, `/terms`, `/digital-goods`; `AuthWrapper` toont `LandingScreen` zonder sessie.
 - `client/lib/providers/locale_provider.dart` — `initGuestLocale`, `persistGuestLocale` (geen `PUT /player/language` voor gasten).
 
@@ -20,4 +20,4 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 ## QA (kort)
 - Footer-links privacy / terms / digital goods openen een **modal** (zelfde ARB-tekst als de routes). Deep links `/privacy`, `/terms`, `/digital-goods` laden nog steeds **volledige** juridische schermen; gasttaal wisselt mee.
 - Zonder token: `/public/home` retourneert JSON; geen e-mail of andere PII in het payload.
-- Cross-origin van `themobstate.com` → `api.themobstate.com`: backend **CORS** (shell-origins + `.env` union in `config/index.ts`; `cors` vóór Prisma in `app.ts` zodat 503’s nog leesbare CORS-headers hebben).
+- Cross-origin van `themobstate.com` of `themobstate.nl` → `api.themobstate.com`: backend **CORS** (shell-origins + `.env` union in `config/index.ts`; `cors` vóór Prisma in `app.ts` zodat 503’s nog leesbare CORS-headers hebben).
