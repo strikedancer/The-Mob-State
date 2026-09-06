@@ -90,7 +90,7 @@ export async function checkArrest(playerId: number): Promise<ArrestResult> {
  * Calculate jail time based on wanted level
  * Formula: jailTime (minutes) = wantedLevel * 10
  */
-function calculateJailTime(wantedLevel: number): number {
+export function calculateJailTime(wantedLevel: number): number {
   return Math.max(wantedLevel * 10, 5); // Minimum 5 minutes
 }
 

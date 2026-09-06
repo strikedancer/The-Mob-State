@@ -478,7 +478,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   ├── nightclub.md → Game-systems: NIGHTCLUB_SYSTEM.md + TRADE_RISK_MECHANICS.md
     │   ├── black-market.md (UI hub incl. contraband) → trade.md (API) → TRADE_RISK_MECHANICS.md
     │   ├── player-marketplace.md (Marktplaats P2P: voertuigen + spelersitems; `market` routes)
-    │   ├── steel_voertuig.md (Vehicle Heist auto/motor/boot; boot-balans + embedded jail-overlay na stal via `vehicle_heist_screen`; server o.a. `vehicleService.stealVehicle` + `balance-economy.md`)
+    │   ├── steel_voertuig.md (Vehicle Heist auto/motor/boot; boot-balans + fail-catch/arrest 0–100 wanted; embedded jail-overlay na stal via `vehicle_heist_screen`; server o.a. `vehicleService.stealVehicle` + `balance-economy.md`)
     │   ├── country-police.md (live behind flag: per-land politiedruk → crimes/arrest + disrupt; `COUNTRY_POLICE_PRESSURE_ENABLED`)
     │   ├── aviation.md (school Aviation 5/5 + betaalde vlieglicentie vóór vliegtuigkoop; tiers basic/commercial/cargo)
     │   ├── smuggling.md (hub-zendingen; DrugInventory unique = playerId+drugType+quality, geen country in Prisma-key)

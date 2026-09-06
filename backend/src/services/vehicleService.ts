@@ -8,7 +8,13 @@ import { Prisma } from '@prisma/client';
 import { getRankFromXP } from '../config';
 import vehiclesData from '../../content/vehicles.json';
 import { checkCooldown, setCooldown } from './cooldownService';
-import { checkArrest, checkIfJailed } from './policeService';
+import { calculateBail, checkArrest, checkIfJailed } from './policeService';
+import {
+  capWantedLevel,
+  vehicleTheftFailCatchChance,
+  vehicleTheftFailJailMinutes,
+  vehicleTheftWantedBump,
+} from '../utils/vehicleTheftRisk';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { applyReputationAction } from './reputationService';
@@ -3667,21 +3673,28 @@ export const vehicleService = {
           },
         });
       }
-      // Failed steal - increase wanted level
-      const updatedPlayer = await prisma.player.update({
-        where: { id: playerId },
-        data: {
-          money: insurancePayout > 0 ? { increment: insurancePayout } : undefined,
-          wantedLevel: Math.min(5, (player.wantedLevel || 0) + 1),
-        },
-        select: { wantedLevel: true, money: true },
-      });
+      // Failed steal: insurance first. Arrest uses wanted from *before* this bump so
+      // a first attempt at wanted 0 is not an instant 30–50% police roll.
+      if (insurancePayout > 0) {
+        await prisma.player.update({
+          where: { id: playerId },
+          data: { money: { increment: insurancePayout } },
+        });
+      }
 
-      // Set cooldown even on failed theft
       const failTheftCooldown = await setCooldown(playerId, cooldownType);
-
-      // Check if player gets arrested after failed steal
-      const arrestResult = await checkArrest(playerId);
+      const priorWanted = player.wantedLevel || 0;
+      const failCaught =
+        Math.random() <
+        vehicleTheftFailCatchChance(successChance, heatPenalty, patternPenalty);
+      const arrestResult = failCaught
+        ? {
+            arrested: true,
+            wantedLevel: priorWanted,
+            jailTime: vehicleTheftFailJailMinutes(vehicleDef.baseValue as number, priorWanted),
+            bail: calculateBail(Math.max(priorWanted, 1)),
+          }
+        : await checkArrest(playerId);
 
       if (arrestResult.arrested) {
         await applyVehicleArrest(arrestResult.jailTime!);
@@ -3713,6 +3726,17 @@ export const vehicleService = {
         };
       }
 
+      const updatedWanted = await prisma.player.update({
+        where: { id: playerId },
+        data: {
+          wantedLevel: capWantedLevel(
+            priorWanted,
+            vehicleTheftWantedBump(false, vehicleDef.baseValue as number)
+          ),
+        },
+        select: { wantedLevel: true },
+      });
+
       const newReputation = await applyReputationAction(playerId, 'vehicle_theft', false);
 
       await logVehicleTheftActivity(
@@ -3723,7 +3747,7 @@ export const vehicleService = {
           vehicleType,
           success: false,
           arrested: false,
-          wantedLevel: updatedPlayer.wantedLevel,
+          wantedLevel: updatedWanted.wantedLevel,
         }
       );
       await activityService.logActivity(
@@ -3747,7 +3771,7 @@ export const vehicleService = {
             ? `Je werd gesnapt tijdens de poging! Wanted level verhoogd. Insurance payout: €${insurancePayout}.`
             : 'Je werd gesnapt tijdens de poging! Wanted level verhoogd.',
         arrested: false,
-        wantedLevel: updatedPlayer.wantedLevel,
+        wantedLevel: updatedWanted.wantedLevel,
         reputation: newReputation,
         cooldownRemainingSeconds: failTheftCooldown.remainingSeconds,
       };
@@ -3772,7 +3796,10 @@ export const vehicleService = {
     const postSuccessPlayer = await prisma.player.update({
       where: { id: playerId },
       data: {
-        wantedLevel: Math.min(5, (player.wantedLevel || 0) + 1),
+        wantedLevel: capWantedLevel(
+          player.wantedLevel || 0,
+          vehicleTheftWantedBump(true, vehicleDef.baseValue as number)
+        ),
       },
       select: { wantedLevel: true },
     });

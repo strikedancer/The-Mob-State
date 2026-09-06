@@ -25,7 +25,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 
 - **Content:** alle boten in `vehicles.json` hebben relatief hoge `baseValue` (bv. goedkoopste vaak €35k+), waardoor dezelfde succes-tier-tabel als auto’s boten structureel **moeilijker** maakte dan een goedkope auto.
 - **Server (`vehicleService.stealVehicle`):** na heat/patroon/rep wordt voor `vehicleType === 'boat'` een **+6%** succesbonus toegepast (cap 95%). **Haven lockdown** (UTC 04:00–09:00, dynamisch patroon `port_lockdown`) gebruikt voor boten multiplier **1.10** i.p.v. een zwaardere waarde, zodat vroege havencontroles merkbaar blijven maar niet frusterend.
-- **Arrest na poging:** bij mislukte stal stijgt wanted; `checkArrest` (`policeService`) kan daarna alsnog gevangenis geven — dat is **los** van de “gesnapt”-mislukking en schaalt met wanted × `POLICE_RATIO`.
+- **Arrest na poging:** wanted is 0–100 (niet het oude 5-sterrenplafond). Bij mislukte stal: eerst een eigen catch-worp (`vehicleTheftFailCatchChance`, ~18–50% naar hoe zwaar/heet de poging was, 10–45 min cel), anders `checkArrest` op het **eerdere** wanted. Alleen als je vrijkomt stijgt wanted (`vehicleTheftWantedBump`). Succes: +1 wanted (cap 100) en daarna `checkArrest` voor de ontsnapping. “Gesnapt” zonder cel blijft mogelijk, maar herhaald stelen moet naar de gevangenis kunnen.
 
 ## Core Rules
 
