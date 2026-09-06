@@ -238,66 +238,6 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
     );
   }
 
-  Widget _prizesToWinRow(AppLocalizations l10n, List<GameEventPrizeTier> tiers) {
-    final lines = <String>[];
-    for (final tier in tiers) {
-      if (tier.cash > 0) lines.add(formatCurrency(tier.cash));
-      if (tier.premiumCredits > 0) {
-        lines.add(l10n.gameScreenPrizeCredits(tier.premiumCredits.toString()));
-      }
-      if (tier.xp > 0) {
-        lines.add(l10n.gameScreenPrizeXp(tier.xp.toString()));
-      }
-      for (final item in tier.items) {
-        lines.add(
-          l10n.gameScreenPrizeItemLine(
-            eventItemDisplayName(l10n, item.itemKey),
-            item.quantity.toString(),
-          ),
-        );
-      }
-      lines.addAll(tier.extendedPrizeLines(l10n));
-    }
-    if (lines.isEmpty) return const SizedBox.shrink();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          l10n.seasonPassPrizesToWin,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: lines.map((line) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.28),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: _gold.withValues(alpha: 0.35)),
-              ),
-              child: Text(
-                line,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
   void _openPlayerProfile(int playerId, String username) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -449,7 +389,7 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 560, maxHeight: 720),
+        constraints: const BoxConstraints(maxWidth: 720, maxHeight: 720),
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -530,7 +470,6 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
                         if (isMonthly) ...[
                           SeasonPassPanel(
                             embedded: true,
-                            showGoalList: false,
                             onBuyPremium: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute<void>(
@@ -539,10 +478,6 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
                               );
                             },
                           ),
-                          if (prizeTiers.isNotEmpty) ...[
-                            const SizedBox(height: 12),
-                            _prizesToWinRow(l10n, prizeTiers),
-                          ],
                           const SizedBox(height: 12),
                         ],
                         _panel(

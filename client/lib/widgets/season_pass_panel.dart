@@ -23,7 +23,7 @@ class SeasonPassPanel extends StatefulWidget {
   /// Tighter chrome for the monthly event details dialog.
   final bool embedded;
 
-  /// When false, only the ready-to-claim strip is shown (monthly popup).
+  /// When false, only the ready-to-claim strip is shown.
   final bool showGoalList;
 
   @override
@@ -214,99 +214,6 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
       }
     }
     return out;
-  }
-
-  List<({SeasonPassRewardDisplay display, Color accent})> _prizesToWin(
-    List<Map<String, dynamic>> levels,
-    AppLocalizations l10n,
-  ) {
-    final out = <({SeasonPassRewardDisplay display, Color accent})>[];
-    final seen = <String>{};
-    for (final level in levels) {
-      final free = level['free'] is Map
-          ? Map<String, dynamic>.from(level['free'] as Map)
-          : <String, dynamic>{};
-      final prem = level['premium'] is Map
-          ? Map<String, dynamic>.from(level['premium'] as Map)
-          : <String, dynamic>{};
-      void addTrack(Map<String, dynamic> track, Color accent) {
-        if (track['claimed'] == true || track['claimable'] == true) return;
-        final rewards = track['rewards'] is Map
-            ? Map<String, dynamic>.from(track['rewards'] as Map)
-            : <String, dynamic>{};
-        if (rewards.isEmpty) return;
-        final display = _display(rewards, l10n);
-        final key = '${display.imagePath}|${display.label}';
-        if (!seen.add(key)) return;
-        out.add((display: display, accent: accent));
-      }
-
-      addTrack(free, _eventCol);
-      addTrack(prem, _premiumCol);
-      if (out.length >= 12) break;
-    }
-    return out;
-  }
-
-  Widget _prizesToWinBlock({
-    required AppLocalizations l10n,
-    required List<({SeasonPassRewardDisplay display, Color accent})> prizes,
-  }) {
-    if (prizes.isEmpty) return const SizedBox.shrink();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            l10n.seasonPassPrizesToWin,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w800,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: prizes.map((item) {
-              return Container(
-                width: 118,
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.28),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: item.accent.withValues(alpha: 0.4)),
-                ),
-                child: Column(
-                  children: [
-                    _assetTile(
-                      path: item.display.imagePath,
-                      accent: item.accent,
-                      size: 40,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      item.display.label,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        height: 1.15,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _claimablesBlock({
@@ -831,8 +738,6 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
       l10n,
       premium: premium,
     );
-    final prizesToWin = _prizesToWin(levels, l10n);
-
     return Container(
       margin: widget.embedded
           ? EdgeInsets.zero
@@ -912,11 +817,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
           _claimablesBlock(
             l10n: l10n,
             claimables: claimables,
-            showEmpty: widget.embedded || !widget.showGoalList,
-          ),
-          _prizesToWinBlock(
-            l10n: l10n,
-            prizes: prizesToWin,
+            showEmpty: !widget.showGoalList,
           ),
           if (widget.showGoalList) ...[
             LayoutBuilder(
