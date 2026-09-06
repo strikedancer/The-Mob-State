@@ -226,6 +226,11 @@ Voorbeelden:
   - Geld verloren
   - Arrest + extra jail time (10 minuten)
 
+### Rechtbank (rechter omkopen)
+- Bij succes: directe vrijlating (`jailRelease` leeg + alle actieve `jailed`-rijen uit), hetzelfde als borg/ontsnapping.
+- Alleen de omgekochte veroordeling verdwijnt van het strafblad; oudere veroordelingen blijven staan.
+- Een mislukte omkoping kost het geboden bedrag en laat de straf doorlopen.
+
 ### Jail Escape
 - **Zelf uitbreken**: max **2 pogingen per straf**, **15 minuten** ertussen. Mislukken = +15 minuten. Daarna borg, crew/vrienden of uitzitten.
 - **Wie kan helpen**: Andere spelers (niet in jail)

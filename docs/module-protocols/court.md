@@ -17,6 +17,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Active sentence state must show: crime, total sentence, remaining time, judge profile and action buttons.
 - Appeal can be submitted once per crime attempt and follows appeal cooldown rules.
 - Bribe always deducts offered money and can either release player immediately or fail without release.
+- A successful judge bribe must clear the physical jail lock the same way as bail/escape: all active `jailed = true` rows for that player plus `jailRelease = null`. `checkIfJailed` must not reconstruct a sentence from an older leftover row when the newest `jailTime > 0` attempt is already `jailed = false`.
 - Criminal record must remain visible both while jailed and while free.
 - Criminal record must be based on the player's conviction history, not only rows that are currently `jailed = true`.
 - Record entries must preserve sentence changes and trial outcomes such as appeal granted, appeal denied and failed bribe attempts.
@@ -64,6 +65,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Verify `/trial/current-sentence` and `/trial/record` both return stable payloads and client handles `sentence: null`.
 - Verify `POST /trial/appeal` returns cooldown block on rapid retry and updates remaining sentence on success.
 - Verify `POST /trial/bribe` deducts balance in both success and failure paths.
+- Verify a successful bribe leaves `GET /trial/current-sentence` at `sentence: null` and `GET /player/jail-status` at 0 remaining seconds, even when the crime also wrote a duplicate `police_arrest` / `federal_arrest` row.
 - Verify portrait/landscape switch keeps the courtroom background visible and text/cards readable.
 - **Law bonus QA**: player with law level 5 must have measurably higher appeal success rate than player with level 0; confirm `educationService` call does not break appeal for players with no education records (defaults to 0).
 - Switch UI language and confirm crime names, judge title/specialty and odds copy follow the locale. Confirm Wanted >20 and FBI heat >10 turn the appeal lines red and lower `successPercent`. Confirm an already-appealed case disables the appeal button.

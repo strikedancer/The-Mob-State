@@ -239,6 +239,32 @@ export async function checkIfJailed(playerId: number): Promise<number> {
     select: { jailRelease: true },
   });
 
+  // Newest sentence row wins. If it was already released (bribe/bail/escape)
+  // do not resurrect jail from an older leftover jailed=true row or a
+  // reconstructed jailRelease clock.
+  const latestSentenceAttempt = await prisma.crimeAttempt.findFirst({
+    where: {
+      playerId,
+      jailTime: { gt: 0 },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      jailed: true,
+    },
+  });
+
+  if (latestSentenceAttempt && !latestSentenceAttempt.jailed) {
+    if (player?.jailRelease) {
+      await prisma.player.update({
+        where: { id: playerId },
+        data: { jailRelease: null },
+      });
+    }
+    return 0;
+  }
+
   if (player?.jailRelease && player.jailRelease > new Date()) {
     const remainingMs = player.jailRelease.getTime() - Date.now();
     return Math.max(0, Math.floor(remainingMs / 1000));
@@ -291,6 +317,22 @@ export async function checkIfJailed(playerId: number): Promise<number> {
   }
 
   return 0; // Jail time expired
+}
+
+/**
+ * Set the player jail clock without creating another crime_attempt row.
+ * Use when the sentence is already recorded on the originating attempt.
+ */
+export async function setJailReleaseClock(
+  playerId: number,
+  jailTimeMinutes: number
+): Promise<Date> {
+  const jailRelease = new Date(Date.now() + jailTimeMinutes * 60 * 1000);
+  await prisma.player.update({
+    where: { id: playerId },
+    data: { jailRelease },
+  });
+  return jailRelease;
 }
 
 /**

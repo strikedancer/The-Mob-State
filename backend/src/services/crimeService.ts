@@ -870,14 +870,16 @@ export const crimeService = {
     }
 
     if (jailed && !arrested && jailTime > 0) {
+      // Sentence is already on this crime_attempt. Do not create a second
+      // police_arrest / federal_arrest row — bribing the latest row used to
+      // leave the original attempt jailed and checkIfJailed re-locked the player.
+      await policeService.setJailReleaseClock(playerId, jailTime);
       if (crime.isFederal) {
-        await fbiService.jailPlayerFederal(playerId, jailTime);
         const fbiArrestResult = await fbiService.checkFBIArrest(playerId);
         arrestingAuthority = 'FBI';
         heatLevel = fbiArrestResult.fbiHeat;
         bailAmount = fbiArrestResult.federalBail || bailAmount;
       } else {
-        await policeService.jailPlayer(playerId, jailTime);
         const policeArrestResult = await policeService.checkArrest(playerId);
         arrestingAuthority = 'Police';
         heatLevel = policeArrestResult.wantedLevel;

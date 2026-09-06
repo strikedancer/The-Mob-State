@@ -730,9 +730,17 @@ export async function bribeJudgeForAttempt(
   });
 
   if (success) {
+    // Same physical release as bail/escape: clear every active jail row.
+    // checkIfJailed reconstructs from leftover jailed=true attempts and would
+    // immediately re-lock the player (crime outcomes also write a duplicate
+    // police_arrest / federal_arrest row). Criminal-record wipe stays scoped
+    // to this attempt via trial.bribe_success.
     await prisma.$transaction(async (tx) => {
-      await tx.crimeAttempt.update({
-        where: { id: crimeAttemptId },
+      await tx.crimeAttempt.updateMany({
+        where: {
+          playerId,
+          jailed: true,
+        },
         data: {
           jailed: false,
         },
