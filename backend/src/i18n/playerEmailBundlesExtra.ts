@@ -14,8 +14,8 @@ export type EmailBundleExtra = {
 
 const emailDE: Translations['email'] = {
   verification: {
-    subject: '✅ E-Mail bestätigen - The Mob State',
-    title: '✅ E-Mail bestätigen',
+    subject: 'E-Mail bestätigen - The Mob State',
+    title: 'E-Mail bestätigen',
     greeting: (username) => `Hey <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Willkommen bei The Mob State! Bevor du dein kriminelles Imperium aufbauen kannst, müssen wir deine E-Mail-Adresse bestätigen. Klicke auf die Schaltfläche unten, um dein Konto zu aktivieren:',
     buttonText: 'E-MAIL BESTÄTIGEN',
@@ -25,8 +25,8 @@ const emailDE: Translations['email'] = {
     copyLinkHint: 'Oder kopiere diesen Link und füge ihn in deinen Browser ein:',
   },
   passwordReset: {
-    subject: '🔐 Passwort zurücksetzen - The Mob State',
-    title: '🔐 Passwort zurücksetzen',
+    subject: 'Passwort zurücksetzen - The Mob State',
+    title: 'Passwort zurücksetzen',
     greeting: (username) => `Hey <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Wir haben eine Anfrage erhalten, dein Passwort zurückzusetzen. Klicke auf die Schaltfläche unten, um ein neues Passwort festzulegen:',
     buttonText: 'PASSWORT ZURÜCKSETZEN',
@@ -126,8 +126,8 @@ const commonDE: EmailCommonOverride = {
 
 const emailFR: Translations['email'] = {
   verification: {
-    subject: '✅ Confirmez votre e-mail - The Mob State',
-    title: '✅ Confirmez votre e-mail',
+    subject: 'Confirmez votre e-mail - The Mob State',
+    title: 'Confirmez votre e-mail',
     greeting: (username) => `Salut <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Bienvenue sur The Mob State ! Avant de bâtir ton empire, nous devons vérifier ton adresse e-mail. Clique sur le bouton ci-dessous pour confirmer ton compte :',
     buttonText: 'VÉRIFIER L’E-MAIL',
@@ -137,8 +137,8 @@ const emailFR: Translations['email'] = {
     copyLinkHint: 'Ou copie-colle ce lien dans ton navigateur :',
   },
   passwordReset: {
-    subject: '🔐 Réinitialiser le mot de passe - The Mob State',
-    title: '🔐 Réinitialiser le mot de passe',
+    subject: 'Réinitialiser le mot de passe - The Mob State',
+    title: 'Réinitialiser le mot de passe',
     greeting: (username) => `Salut <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Nous avons reçu une demande de réinitialisation de ton mot de passe. Clique sur le bouton ci-dessous pour en créer un nouveau :',
     buttonText: 'RÉINITIALISER',
@@ -238,8 +238,8 @@ const commonFR: EmailCommonOverride = {
 
 const emailES: Translations['email'] = {
   verification: {
-    subject: '✅ Verifica tu correo - The Mob State',
-    title: '✅ Verifica tu correo',
+    subject: 'Verifica tu correo - The Mob State',
+    title: 'Verifica tu correo',
     greeting: (username) => `Hola <strong style="color: #D4A574;">${username}</strong>,`,
     body: '¡Bienvenido a The Mob State! Antes de empezar a construir tu imperio, debemos verificar tu correo. Pulsa el botón de abajo para confirmar tu cuenta:',
     buttonText: 'VERIFICAR CORREO',
@@ -249,8 +249,8 @@ const emailES: Translations['email'] = {
     copyLinkHint: 'O copia y pega este enlace en tu navegador:',
   },
   passwordReset: {
-    subject: '🔐 Restablecer contraseña - The Mob State',
-    title: '🔐 Restablecer contraseña',
+    subject: 'Restablecer contraseña - The Mob State',
+    title: 'Restablecer contraseña',
     greeting: (username) => `Hola <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Hemos recibido una solicitud para restablecer tu contraseña. Pulsa el botón de abajo para crear una nueva:',
     buttonText: 'RESTABLECER',
@@ -350,8 +350,8 @@ const commonES: EmailCommonOverride = {
 
 const emailIT: Translations['email'] = {
   verification: {
-    subject: '✅ Verifica la tua email - The Mob State',
-    title: '✅ Verifica la tua email',
+    subject: 'Verifica la tua email - The Mob State',
+    title: 'Verifica la tua email',
     greeting: (username) => `Ciao <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Benvenuto in The Mob State! Prima di costruire il tuo impero dobbiamo verificare il tuo indirizzo email. Clicca il pulsante qui sotto per confermare l’account:',
     buttonText: 'VERIFICA EMAIL',
@@ -361,8 +361,8 @@ const emailIT: Translations['email'] = {
     copyLinkHint: 'Oppure copia e incolla questo link nel browser:',
   },
   passwordReset: {
-    subject: '🔐 Reimposta password - The Mob State',
-    title: '🔐 Reimposta password',
+    subject: 'Reimposta password - The Mob State',
+    title: 'Reimposta password',
     greeting: (username) => `Ciao <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Abbiamo ricevuto una richiesta di reimpostazione password. Clicca il pulsante qui sotto per crearne una nuova:',
     buttonText: 'REIMPOSTA PASSWORD',
@@ -462,8 +462,8 @@ const commonIT: EmailCommonOverride = {
 
 const emailPL: Translations['email'] = {
   verification: {
-    subject: '✅ Potwierdź e-mail - The Mob State',
-    title: '✅ Potwierdź e-mail',
+    subject: 'Potwierdź e-mail - The Mob State',
+    title: 'Potwierdź e-mail',
     greeting: (username) => `Cześć <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Witaj w The Mob State! Zanim zaczniesz budować imperium, musimy zweryfikować Twój adres e-mail. Kliknij przycisk poniżej, aby potwierdzić konto:',
     buttonText: 'POTWIERDŹ E-MAIL',
@@ -473,8 +473,8 @@ const emailPL: Translations['email'] = {
     copyLinkHint: 'Lub skopiuj link i wklej go w przeglądarce:',
   },
   passwordReset: {
-    subject: '🔐 Reset hasła - The Mob State',
-    title: '🔐 Reset hasła',
+    subject: 'Reset hasła - The Mob State',
+    title: 'Reset hasła',
     greeting: (username) => `Cześć <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Otrzymaliśmy prośbę o zresetowanie hasła. Kliknij przycisk poniżej, aby ustawić nowe:',
     buttonText: 'RESETUJ HASŁO',
@@ -574,8 +574,8 @@ const commonPL: EmailCommonOverride = {
 
 const emailPT: Translations['email'] = {
   verification: {
-    subject: '✅ Confirma o teu email - The Mob State',
-    title: '✅ Confirma o teu email',
+    subject: 'Confirma o teu email - The Mob State',
+    title: 'Confirma o teu email',
     greeting: (username) => `Olá <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Bem-vindo ao The Mob State! Antes de construíres o teu império, precisamos de verificar o teu email. Clica no botão abaixo para confirmares a conta:',
     buttonText: 'VERIFICAR EMAIL',
@@ -585,8 +585,8 @@ const emailPT: Translations['email'] = {
     copyLinkHint: 'Ou copia e cola este link no teu browser:',
   },
   passwordReset: {
-    subject: '🔐 Repor palavra-passe - The Mob State',
-    title: '🔐 Repor palavra-passe',
+    subject: 'Repor palavra-passe - The Mob State',
+    title: 'Repor palavra-passe',
     greeting: (username) => `Olá <strong style="color: #D4A574;">${username}</strong>,`,
     body: 'Recebemos um pedido para repor a tua palavra-passe. Clica no botão abaixo para criares uma nova:',
     buttonText: 'REPOR PALAVRA-PASSE',

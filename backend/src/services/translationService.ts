@@ -244,8 +244,8 @@ const translations: Record<'en' | 'nl', Translations> = {
   en: {
     email: {
       verification: {
-        subject: '✅ Verify Your Email - The Mob State',
-        title: '✅ Verify Your Email',
+        subject: 'Verify Your Email - The Mob State',
+        title: 'Verify Your Email',
         greeting: (username) => `Hey <strong style="color: #D4A574;">${username}</strong>,`,
         body: 'Welcome to The Mob State! Before you can start building your criminal empire, we need to verify your email address. Click the button below to confirm your account:',
         buttonText: 'VERIFY EMAIL',
@@ -255,8 +255,8 @@ const translations: Record<'en' | 'nl', Translations> = {
         copyLinkHint: 'Or copy and paste this link into your browser:',
       },
       passwordReset: {
-        subject: '🔐 Reset Your Password - The Mob State',
-        title: '🔐 Reset Your Password',
+        subject: 'Reset Your Password - The Mob State',
+        title: 'Reset Your Password',
         greeting: (username) => `Hey <strong style="color: #D4A574;">${username}</strong>,`,
         body: 'We received a request to reset your password. Click the button below to create a new password:',
         buttonText: 'RESET PASSWORD',
@@ -519,8 +519,8 @@ const translations: Record<'en' | 'nl', Translations> = {
   nl: {
     email: {
       verification: {
-        subject: '✅ Verifieer Je Email - The Mob State',
-        title: '✅ Verifieer Je Email',
+        subject: 'Verifieer Je Email - The Mob State',
+        title: 'Verifieer Je Email',
         greeting: (username) => `Hé <strong style="color: #D4A574;">${username}</strong>,`,
         body: 'Welkom bij The Mob State! Voordat je kunt beginnen met het bouwen van je criminele imperium, moeten we je e-mailadres verifiëren. Klik op de knop hieronder om je account te bevestigen:',
         buttonText: 'VERIFIEER EMAIL',
@@ -530,8 +530,8 @@ const translations: Record<'en' | 'nl', Translations> = {
         copyLinkHint: 'Of kopieer en plak deze link in je browser:',
       },
       passwordReset: {
-        subject: '🔐 Reset Je Wachtwoord - The Mob State',
-        title: '🔐 Reset Je Wachtwoord',
+        subject: 'Reset Je Wachtwoord - The Mob State',
+        title: 'Reset Je Wachtwoord',
         greeting: (username) => `Hé <strong style="color: #D4A574;">${username}</strong>,`,
         body: 'We hebben een verzoek ontvangen om je wachtwoord te resetten. Klik op de knop hieronder om een nieuw wachtwoord aan te maken:',
         buttonText: 'RESET WACHTWOORD',

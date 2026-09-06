@@ -80,8 +80,7 @@ Zelfde Flutter-app als `.com`. API en admin blijven op `api.` / `admin.themobsta
    plesk bin extension --exec letsencrypt cli.php -d themobstate.com -d www.themobstate.com -d themobstate.nl -d www.themobstate.nl -m administratie@themobstate.com
    ```
    `www.themobstate.nl` is een CNAME in de alias-zone, geen aparte alias.
-3. **Mailbox** `noreply@themobstate.nl` in Plesk Mail **nadat** publieke DNS + SPF/DKIM staan. Zet in `.env.plesk`:
-   `SMTP_USER=noreply@themobstate.nl`, `SMTP_FROM=noreply@themobstate.nl`, `SMTP_PASS=…` (niet in git). Daarna alleen backend herstarten. From moet alignment hebben met SPF/DKIM van `.nl` — alleen de From-header wijzigen zonder mailbox/DNS maakt blokkades erger, niet beter. Zelfde VPS-IP kan nog steeds op blocklists staan.
+3. **Mailbox:** een Plesk-alias (`themobstate.nl`) heeft geen eigen mailbox. Auth blijft `SMTP_USER=noreply@themobstate.com`; From-header is `SMTP_FROM=noreply@themobstate.nl` + `SMTP_FROM_NAME=The Mob State` (wachtwoord alleen in `.env.plesk`). Plesk levert mail naar `noreply@themobstate.nl` af op de `.com`-mailbox. Gmail kan een korte testmail accepteren en een wachtwoord-reset (HTML + reset-URL) alsnog met **550 5.7.1 low reputation** weigeren — bounce landt op `noreply@themobstate.com`. Auth-mails zijn daarom bewust eenvoudig (geen emoji-onderwerp, text + lichte HTML). Zelfde VPS-IP kan nog op blocklists staan.
 4. CORS/Flutter kennen `.nl` al in code (`config/index.ts`, `app_config.dart`). Alias `themobstate.nl` staat op de VPS (mail+web aan, geen 301).
 
 ## PuTTY Update Flow (Standard)
@@ -287,7 +286,7 @@ MAX_FLIGHTS_PER_DAY=100
 # (MATIG 2.5h / GEMIDDELD 5h / CONTINU 8h); the rest is sleep for jail/cooldowns.
 SMTP_HOST="themobstate.com"
 SMTP_PORT="465"
-SMTP_USER="noreply@themobstate.nl"
+SMTP_USER="noreply@themobstate.com"
 SMTP_FROM="noreply@themobstate.nl"
 SMTP_FROM_NAME="The Mob State"
 SMTP_PASS=""
