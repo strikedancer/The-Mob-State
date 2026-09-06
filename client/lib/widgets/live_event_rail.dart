@@ -468,7 +468,7 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
               borderRadius: BorderRadius.circular(28),
               child: SizedBox(
                 width: 58,
-                height: 68,
+                height: 62,
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -537,7 +537,9 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
                       Positioned(
                         left: 0,
                         right: 0,
-                        bottom: 0,
+                        // Avatar bottom (top 2 + 48) sits on the vertical
+                        // midpoint of this ~18px pill.
+                        top: 41,
                         child: Center(
                           child: _EventRemainingBadge(
                             endsAt: endsAt,
@@ -579,12 +581,17 @@ class _EventRemainingBadge extends StatelessWidget {
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        child: _EventRemainingLine(
-          endsAt: endsAt,
-          color: accent,
-          compact: true,
+      child: SizedBox(
+        height: 18,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          child: Center(
+            child: _EventRemainingLine(
+              endsAt: endsAt,
+              color: accent,
+              compact: true,
+            ),
+          ),
         ),
       ),
     );
