@@ -11295,5 +11295,7 @@
   "territorySnackGarrisonDeployed": "Garnison déployée.",
   "territoryBonusGarrison": "Garnison / défense aérienne",
   "territoryErrorRegionEncircled": "Cette région est entourée d'autres régions du même équipage. Capturez d’abord une région voisine.",
-  "territoryNoticeEncircled": "Cette région intérieure est entourée d’autres régions du même équipage, elle ne peut donc pas être attaquée directement. Prenez d'abord une région voisine pour ouvrir le front."
+  "territoryNoticeEncircled": "Cette région intérieure est entourée d’autres régions du même équipage, elle ne peut donc pas être attaquée directement. Prenez d'abord une région voisine pour ouvrir le front.",
+  "seasonPassClaimablesTitle": "Prêt à récupérer",
+  "seasonPassNoClaimables": "Aucun prix d'événement à récupérer pour le moment."
 }

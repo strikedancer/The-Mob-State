@@ -7,11 +7,14 @@ import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../screens/player_profile_screen.dart';
 import '../services/auth_service.dart';
+import '../screens/premium_screen.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/formatters.dart';
 import '../utils/game_event_rewards.dart';
+import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
+import 'season_pass_panel.dart';
 
 const Color _gold = Color(0xFFD4AF37);
 const Color _panelBg = Color(0xFF151B28);
@@ -377,9 +380,12 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
         : (myProgressRaw is Map
               ? Map<String, dynamic>.from(myProgressRaw)
               : null);
-    final prizeTiers = parseGameEventPrizeTiers(
-      (eventDetails['rewardRules'] as List?) ?? const <dynamic>[],
-    );
+    final isMonthly = isMonthlyEmpireEvent(eventDetails);
+    final prizeTiers = isMonthly
+        ? const <GameEventPrizeTier>[]
+        : parseGameEventPrizeTiers(
+            (eventDetails['rewardRules'] as List?) ?? const <dynamic>[],
+          );
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -463,6 +469,20 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        if (isMonthly) ...[
+                          SeasonPassPanel(
+                            embedded: true,
+                            showGoalList: false,
+                            onBuyPremium: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => const PremiumScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                        ],
                         _panel(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -578,35 +598,37 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
                             ),
                           ),
                         ],
-                        const SizedBox(height: 12),
-                        Text(
-                          l10n.gameScreenPrizePool,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.gameScreenPrizePoolHint,
-                          style: const TextStyle(
-                            color: Colors.white54,
-                            fontSize: 12,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        if (prizeTiers.isEmpty)
-                          _panel(
-                            child: Text(
-                              l10n.gameScreenNoPrizes,
-                              style: const TextStyle(color: Colors.white60),
+                        if (!isMonthly) ...[
+                          const SizedBox(height: 12),
+                          Text(
+                            l10n.gameScreenPrizePool,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
-                          )
-                        else
-                          ...prizeTiers.map(
-                            (tier) => _prizeTierRow(l10n, tier),
                           ),
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.gameScreenPrizePoolHint,
+                            style: const TextStyle(
+                              color: Colors.white54,
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          if (prizeTiers.isEmpty)
+                            _panel(
+                              child: Text(
+                                l10n.gameScreenNoPrizes,
+                                style: const TextStyle(color: Colors.white60),
+                              ),
+                            )
+                          else
+                            ...prizeTiers.map(
+                              (tier) => _prizeTierRow(l10n, tier),
+                            ),
+                        ],
                         if (!isPreview) ...[
                           const SizedBox(height: 12),
                           Text(

@@ -11,9 +11,20 @@ import 'mobile_load_error.dart';
 
 /// Monthly Season Pass — compact single-line goal rows with reward tiles.
 class SeasonPassPanel extends StatefulWidget {
-  const SeasonPassPanel({super.key, this.onBuyPremium});
+  const SeasonPassPanel({
+    super.key,
+    this.onBuyPremium,
+    this.embedded = false,
+    this.showGoalList = true,
+  });
 
   final VoidCallback? onBuyPremium;
+
+  /// Tighter chrome for the monthly event details dialog.
+  final bool embedded;
+
+  /// When false, only the ready-to-claim strip is shown (monthly popup).
+  final bool showGoalList;
 
   @override
   State<SeasonPassPanel> createState() => _SeasonPassPanelState();
@@ -154,6 +165,133 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
       'prostitution' => l10n.seasonPassGoalProstitution(target),
       _ => l10n.seasonPassGoalGeneric(target),
     };
+  }
+
+  List<({int level, String track, Map<String, dynamic> rewards, String goalTitle})>
+      _readyClaimables(
+    List<Map<String, dynamic>> levels,
+    AppLocalizations l10n, {
+    required bool premium,
+  }) {
+    final out = <({
+      int level,
+      String track,
+      Map<String, dynamic> rewards,
+      String goalTitle,
+    })>[];
+    for (final level in levels) {
+      final lvl = (level['level'] as num?)?.toInt() ?? 0;
+      final goalTitle = _goalTitle(l10n, level);
+      final free = level['free'] is Map
+          ? Map<String, dynamic>.from(level['free'] as Map)
+          : <String, dynamic>{};
+      final prem = level['premium'] is Map
+          ? Map<String, dynamic>.from(level['premium'] as Map)
+          : <String, dynamic>{};
+      if (free['claimable'] == true && free['claimed'] != true) {
+        final rewards = free['rewards'] is Map
+            ? Map<String, dynamic>.from(free['rewards'] as Map)
+            : <String, dynamic>{};
+        out.add((
+          level: lvl,
+          track: 'free',
+          rewards: rewards,
+          goalTitle: goalTitle,
+        ));
+      }
+      if (premium &&
+          prem['claimable'] == true &&
+          prem['claimed'] != true) {
+        final rewards = prem['rewards'] is Map
+            ? Map<String, dynamic>.from(prem['rewards'] as Map)
+            : <String, dynamic>{};
+        out.add((
+          level: lvl,
+          track: 'premium',
+          rewards: rewards,
+          goalTitle: goalTitle,
+        ));
+      }
+    }
+    return out;
+  }
+
+  Widget _claimablesBlock({
+    required AppLocalizations l10n,
+    required List<
+            ({
+              int level,
+              String track,
+              Map<String, dynamic> rewards,
+              String goalTitle,
+            })>
+        claimables,
+    required bool showEmpty,
+  }) {
+    if (claimables.isEmpty) {
+      if (!showEmpty) return const SizedBox.shrink();
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Text(
+          l10n.seasonPassNoClaimables,
+          style: const TextStyle(color: Colors.white60, fontSize: 13),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.seasonPassClaimablesTitle,
+            style: const TextStyle(
+              color: _gold,
+              fontWeight: FontWeight.w800,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: claimables.map((item) {
+              final premiumTrack = item.track == 'premium';
+              return SizedBox(
+                width: 220,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      '${item.level} · ${item.goalTitle}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    _rewardChip(
+                      display: _display(item.rewards, l10n),
+                      accent: premiumTrack ? _premiumCol : _eventCol,
+                      claimable: true,
+                      claimed: false,
+                      locked: false,
+                      onClaim: () => _claim(item.level, item.track),
+                      l10n: l10n,
+                      expanded: true,
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
   }
 
   SeasonPassRewardDisplay _display(
@@ -595,10 +733,17 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
         .map((e) => Map<String, dynamic>.from(e))
         .toList();
     final completed = levels.where((l) => l['unlocked'] == true).length;
+    final claimables = _readyClaimables(
+      levels,
+      l10n,
+      premium: premium,
+    );
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-      padding: const EdgeInsets.all(14),
+      margin: widget.embedded
+          ? EdgeInsets.zero
+          : const EdgeInsets.fromLTRB(12, 0, 12, 12),
+      padding: EdgeInsets.all(widget.embedded ? 12 : 14),
       decoration: BoxDecoration(
         color: _panelBg,
         borderRadius: BorderRadius.circular(14),
@@ -670,7 +815,13 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
             ),
           ],
           const SizedBox(height: 10),
-          LayoutBuilder(
+          _claimablesBlock(
+            l10n: l10n,
+            claimables: claimables,
+            showEmpty: widget.embedded || !widget.showGoalList,
+          ),
+          if (widget.showGoalList) ...[
+            LayoutBuilder(
             builder: (context, constraints) {
               final compact = constraints.maxWidth < 620;
               if (compact) {
@@ -725,14 +876,15 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
               );
             },
           ),
-          ...levels.asMap().entries.map((entry) {
-            return _goalRow(
-              level: entry.value,
-              l10n: l10n,
-              premium: premium,
-              even: entry.key.isEven,
-            );
-          }),
+            ...levels.asMap().entries.map((entry) {
+              return _goalRow(
+                level: entry.value,
+                l10n: l10n,
+                premium: premium,
+                even: entry.key.isEven,
+              );
+            }),
+          ],
         ],
       ),
     );

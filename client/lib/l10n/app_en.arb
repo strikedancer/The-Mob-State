@@ -675,6 +675,8 @@
   "seasonPassClaimSuccessFree": "Free event prize claimed",
   "seasonPassClaimSuccessPremium": "Premium Event Pass reward claimed",
   "seasonPassClaimFailed": "Could not claim reward",
+  "seasonPassClaimablesTitle": "Ready to claim",
+  "seasonPassNoClaimables": "No event prizes ready to claim yet.",
   "seasonPassRewardAmmo": "Ammo",
   "seasonPassRewardAmmoWith": "+ ammo",
   "seasonPassRewardVehicle": "Rare vehicle",

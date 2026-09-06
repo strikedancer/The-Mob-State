@@ -1118,6 +1118,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get seasonPassClaimFailed => 'Could not claim reward';
 
   @override
+  String get seasonPassClaimablesTitle => 'Listo para reclamar';
+
+  @override
+  String get seasonPassNoClaimables =>
+      'Aún no hay premios de evento para reclamar.';
+
+  @override
   String get seasonPassRewardAmmo => 'Ammo';
 
   @override

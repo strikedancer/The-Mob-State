@@ -207,7 +207,9 @@ class _EventsScreenState extends State<EventsScreen> {
     final endsAt = DateTime.tryParse(event['endsAt']?.toString() ?? '')?.toLocal();
     final startsAt =
         DateTime.tryParse(event['startedAt']?.toString() ?? '')?.toLocal();
-    final prizeTeaser = _topPrizeTeaser(l10n, event);
+    final prizeTeaser = isMonthlyEmpireEvent(event)
+        ? null
+        : _topPrizeTeaser(l10n, event);
     final title = localizedGameEventTitle(l10n, template);
     final desc = localizedGameEventShortDescription(l10n, template);
 

@@ -3807,6 +3807,8 @@
   "seasonPassClaimSuccessFree": "Gratis eventprijs geclaimd",
   "seasonPassClaimSuccessPremium": "Premium Event Pass-beloning geclaimd",
   "seasonPassClaimFailed": "Claimen mislukt",
+  "seasonPassClaimablesTitle": "Klaar om te claimen",
+  "seasonPassNoClaimables": "Nog geen eventprijzen klaar om te claimen.",
   "seasonPassRewardAmmo": "Munitie",
   "seasonPassRewardAmmoWith": "+ munitie",
   "seasonPassRewardVehicle": "Zeldzaam voertuig",

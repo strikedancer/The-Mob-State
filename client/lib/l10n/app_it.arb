@@ -11295,5 +11295,7 @@
   "territorySnackGarrisonDeployed": "La guarnigione si è schierata.",
   "territoryBonusGarrison": "Guarnigione/difesa aerea",
   "territoryErrorRegionEncircled": "Questa regione è circondata da altre regioni dello stesso Crew. Cattura prima una regione vicina.",
-  "territoryNoticeEncircled": "Questa regione interna è circondata da altre regioni dello stesso Crew, quindi non può essere attaccata direttamente. Prendi prima una regione vicina per aprire il fronte."
+  "territoryNoticeEncircled": "Questa regione interna è circondata da altre regioni dello stesso Crew, quindi non può essere attaccata direttamente. Prendi prima una regione vicina per aprire il fronte.",
+  "seasonPassClaimablesTitle": "Pronto da ritirare",
+  "seasonPassNoClaimables": "Nessun premio evento da ritirare al momento."
 }

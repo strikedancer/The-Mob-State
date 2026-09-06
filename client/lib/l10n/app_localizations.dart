@@ -2084,6 +2084,18 @@ abstract class AppLocalizations {
   /// **'Could not claim reward'**
   String get seasonPassClaimFailed;
 
+  /// No description provided for @seasonPassClaimablesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to claim'**
+  String get seasonPassClaimablesTitle;
+
+  /// No description provided for @seasonPassNoClaimables.
+  ///
+  /// In en, this message translates to:
+  /// **'No event prizes ready to claim yet.'**
+  String get seasonPassNoClaimables;
+
   /// No description provided for @seasonPassRewardAmmo.
   ///
   /// In en, this message translates to:
