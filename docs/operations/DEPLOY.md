@@ -68,19 +68,21 @@ plesk bin domain -u admin.themobstate.com -ssl true -certificate-name "Lets Encr
 
 Zelfde Flutter-app als `.com`. API en admin blijven op `api.` / `admin.themobstate.com`. Canonical/SEO blijft `.com`.
 
-1. **DNS bij de registrar** (naar het VPS-IP van `themobstate.com`):
-   - `A` / `AAAA` voor `@` en `www`
-   - `MX` naar de Plesk-mailhost (meestal hetzelfde als `.com`)
-   - `TXT` SPF: `v=spf1 a mx include:_spf.themobstate.com ~all` of Plesk’s eigen SPF
-   - DKIM/DMARC TXT zodra Plesk DKIM aan zet (`default._domainkey`, `_dmarc`)
-2. **Plesk:** alias van `themobstate.com` **of** extra subscription met dezelfde Apache-proxy naar `127.0.0.1:8080` (zelfde ACME `ProxyPass !` als hierboven).
+1. **DNS bij de registrar** — `themobstate.nl` is NXDOMAIN tot de nameservers staan.
+   Zet bij de registrar dezelfde nameservers als `.com` (Plesk heeft de zone + SPF/DKIM/DMARC/MX al):
+   - `ns1.themobstate.com`
+   - `ns2.themobstate.com`
+   Alternatief: registrar-DNS met `A` `@`/`www` → `87.106.78.33`, plus de MX/SPF/DKIM/DMARC uit `plesk bin dns --info themobstate.nl`.
+2. **Plesk:** alias van `themobstate.com` (geen SEO-301; zelfde Flutter-shell). Utility is `domalias`, niet `domain_alias`.
    ```bash
-   plesk bin domain_alias --create themobstate.nl -domain themobstate.com -mail true -seo-redirect false
-   plesk bin extension --exec letsencrypt cli.php -d themobstate.nl -d www.themobstate.nl -m info@themobstate.nl
+   plesk bin domalias --create themobstate.nl -domain themobstate.com -mail true -web true -dns true -seo-redirect false
+   # pas ná publieke A-records:
+   plesk bin extension --exec letsencrypt cli.php -d themobstate.com -d www.themobstate.com -d themobstate.nl -d www.themobstate.nl -m administratie@themobstate.com
    ```
-3. **Mailbox** `noreply@themobstate.nl` in Plesk Mail. Zet in `.env.plesk`:
-   `SMTP_USER=noreply@themobstate.nl`, `SMTP_FROM=noreply@themobstate.nl`, `SMTP_PASS=…` (niet in git). Daarna alleen backend herstarten. From moet alignment hebben met SPF/DKIM van `.nl` — alleen de From-header wijzigen zonder mailbox/DNS maakt blokkades erger, niet beter.
-4. CORS/Flutter kennen `.nl` al in code (`config/index.ts`, `app_config.dart`).
+   `www.themobstate.nl` is een CNAME in de alias-zone, geen aparte alias.
+3. **Mailbox** `noreply@themobstate.nl` in Plesk Mail **nadat** publieke DNS + SPF/DKIM staan. Zet in `.env.plesk`:
+   `SMTP_USER=noreply@themobstate.nl`, `SMTP_FROM=noreply@themobstate.nl`, `SMTP_PASS=…` (niet in git). Daarna alleen backend herstarten. From moet alignment hebben met SPF/DKIM van `.nl` — alleen de From-header wijzigen zonder mailbox/DNS maakt blokkades erger, niet beter. Zelfde VPS-IP kan nog steeds op blocklists staan.
+4. CORS/Flutter kennen `.nl` al in code (`config/index.ts`, `app_config.dart`). Alias `themobstate.nl` staat op de VPS (mail+web aan, geen 301).
 
 ## PuTTY Update Flow (Standard)
 
