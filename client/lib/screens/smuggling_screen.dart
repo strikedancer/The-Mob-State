@@ -57,6 +57,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   List<dynamic> _depots = [];
   Map<String, dynamic>? _quote;
   bool _isQuoteLoading = false;
+  int _quoteSeq = 0;
 
   Timer? _etaTicker;
   DateTime _now = DateTime.now();
@@ -275,6 +276,13 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
     if (s == 'Shipment failed') return l10n.smugglingClientShipmentFailed;
     if (s == 'Quote failed') return l10n.smugglingClientQuoteFailed;
+    if (s == 'auth.unauthorized' ||
+        s == 'MISSING_TOKEN' ||
+        s == 'INVALID_TOKEN' ||
+        s == 'TOKEN_EXPIRED' ||
+        s == 'SESSION_REPLACED') {
+      return l10n.notLoggedIn;
+    }
     if (s == 'Claim failed') return l10n.smugglingClientClaimFailed;
     if (s.startsWith('Error: ')) {
       return l10n.smugglingClientErrorPrefix(s.substring(7));
@@ -550,6 +558,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     }
 
     setState(() => _isQuoteLoading = true);
+    final seq = ++_quoteSeq;
 
     final result = await _smugglingService.getQuote(
       category: _selectedCategory,
@@ -563,7 +572,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       metadata: metadata,
     );
 
-    if (!mounted) return;
+    if (!mounted || seq != _quoteSeq) return;
 
     setState(() {
       _isQuoteLoading = false;
@@ -1132,6 +1141,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
               else
                 ElevatedButton.icon(
                   onPressed: _isSending ||
+                          _isQuoteLoading ||
+                          _quote?['success'] != true ||
                           (_selectedTransportMode == 'owned' &&
                               _selectedOwnedTransportKey == null)
                       ? null
@@ -1563,7 +1574,10 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
     if (_quote!['success'] != true) {
       return Text(
-        _quoteMessage(l10n, _quote!['message']?.toString()),
+        _localizeSmugglingApiMessage(
+          l10n,
+          _quoteMessage(l10n, _quote!['message']?.toString()),
+        ),
         style: const TextStyle(color: Colors.orangeAccent),
       );
     }

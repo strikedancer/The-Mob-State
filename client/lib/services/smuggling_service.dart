@@ -5,6 +5,25 @@ import './api_client.dart';
 class SmugglingService {
   final ApiClient _apiClient = ApiClient();
 
+  String _failureMessage(Map<String, dynamic> data, String fallback) {
+    final message = data['message']?.toString();
+    if (message != null && message.trim().isNotEmpty) return message;
+    final params = data['params'];
+    if (params is Map && params['reason'] != null) {
+      return params['reason'].toString();
+    }
+    final event = data['event']?.toString();
+    if (event != null && event.isNotEmpty) return event;
+    final error = data['error']?.toString();
+    if (error != null && error.isNotEmpty) return error;
+    return fallback;
+  }
+
+  String _categoryForItem(String category, String itemKey) {
+    if (itemKey.startsWith('contraband_')) return 'trade';
+    return category;
+  }
+
   Future<Map<String, dynamic>> getCatalog({String networkScope = 'personal'}) async {
     try {
       final response = await _apiClient.get('/smuggling/catalog?networkScope=$networkScope');
@@ -30,7 +49,7 @@ class SmugglingService {
   }) async {
     try {
       final response = await _apiClient.post('/smuggling/send', {
-        'category': category,
+        'category': _categoryForItem(category, itemKey),
         'itemKey': itemKey,
         'quantity': quantity,
         'destinationCountry': destinationCountry,
@@ -48,7 +67,7 @@ class SmugglingService {
       final data = json.decode(response.body) as Map<String, dynamic>;
       return {
         'success': false,
-        'message': data['message'] ?? 'Shipment failed',
+        'message': _failureMessage(data, 'Shipment failed'),
       };
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
@@ -68,7 +87,7 @@ class SmugglingService {
   }) async {
     try {
       final response = await _apiClient.post('/smuggling/quote', {
-        'category': category,
+        'category': _categoryForItem(category, itemKey),
         'itemKey': itemKey,
         'quantity': quantity,
         'destinationCountry': destinationCountry,
@@ -86,7 +105,7 @@ class SmugglingService {
       final data = json.decode(response.body) as Map<String, dynamic>;
       return {
         'success': false,
-        'message': data['message'] ?? 'Quote failed',
+        'message': _failureMessage(data, 'Quote failed'),
       };
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};

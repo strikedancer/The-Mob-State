@@ -1582,6 +1582,26 @@ class SmugglingService {
     }
 
     if (availableQuantity < quantity) {
+      if (category === 'trade' && networkScope === 'personal') {
+        const elsewhere = await prisma.inventory.findFirst({
+          where: {
+            playerId,
+            goodType: itemKey,
+            country: { not: player.currentCountry },
+            quantity: { gt: 0 },
+          },
+          select: { country: true, quantity: true },
+        });
+        if (elsewhere) {
+          return {
+            success: false,
+            message: `Deze handelswaren liggen in ${this.countryNameById(elsewhere.country)} (${elsewhere.quantity}). Reis ernaartoe om te smokkelen.`,
+            availableQuantity,
+            cooldownRemainingSeconds,
+            recommendedChannel: this.recommendedChannelFor(category, quantity),
+          };
+        }
+      }
       return {
         success: false,
         message: 'Onvoldoende voorraad voor deze zending',

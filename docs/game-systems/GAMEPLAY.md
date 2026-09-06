@@ -611,7 +611,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
 ### Smokkel-hub (drugs-zendingen)
-- Hub-UX: noir/gold panels, 4-staps send (vracht → route → transport → bevestigen), ETA-countdown en result-overlay bij succesvolle send/claim.
+- Hub-UX: noir/gold panels, 4-staps send (vracht → route → transport → bevestigen), ETA-countdown en result-overlay bij succesvolle send/claim. Start smokkel blijft uit tot de quote slaagt; `contraband_*` telt altijd als handelswaar.
 - Persoonlijke drugsinventaris is **niet per land** in `DrugInventory` (unique: `playerId` + `drugType` + `quality`). Quote/send mag geen oude country-compound Prisma-key gebruiken — dat gaf 500 Server error.
 - **Productiematerialen** liggen wél per land in `production_materials.country` (depot) of in de rugzak (`country = _carried_`). Kopen → huidig-land depot; meenemen → expliciet transfer naar rugzak (slots); travel kan rugzak-materiaal afpakken/aanhouding verhogen; landdepots blijven veilig. Details: `docs/module-protocols/drugs.md`.
 - Crew-smokkel van **handelswaren** gebruikt gedeelde `CrewTradeInventory`. Stort eerst via crew-opslag; daarna catalog/send/claim op het crew-netwerk.
