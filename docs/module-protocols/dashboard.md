@@ -36,6 +36,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Voor reward-gevoel en transparantie mag het dashboard een compacte **sessie recap** tonen (laatste events in deze sessie) zodat spelers direct zien wat acties opleverden. Dit mag de primaire loop niet onderbreken en moet optioneel/openklapbaar blijven.
 - Plaats de **Start-kaart** (alleen nieuwe spelers) bovenaan. **Dagdoelen** staan **één keer** in de gestylede paneelkaart (progress + cash/XP), op web bij het speler/economie-blok en op mobiel onder Start. Niet nog een tweede platte lijst bovenaan. Na Claim verschijnt rechtsboven wat je kreeg. De weekdoelen-minikaart mag naast/onder die kaart blijven. Featured daily mag `vehicle_theft_1` niet pushen onder rank 5.
 - Dashboard toont een compacte **Markt**-tegel (actieve listings + CTA) en dezelfde **EventFeed** op web als op mobiel, gehydrateerd via `GET /events?limit=50` (auth). Geen locatie-intel.
+- **Live event rail** (rechts, niet op Events-sectie): avatar + resterende-tijd-badge; tap opent event-popup (niet alleen tooltip). Zie `events.md`.
 - De feed heet **Mijn activiteit**: alleen events van de ingelogde speler (API + SSE scoped op `playerId`). Geen wereldwijde feed van andere spelers.
 - Chat-events (`direct_message.*`) komen wél via SSE (berichtenbadge/chat) maar **niet** in Mijn activiteit.
 - **Berichten / postvak:** de badge (`GET /messages/unread`) mag nooit groener zijn dan de inbox-lijst. `GET /messages/conversations` blijft één gebatchte query; bij laadfout retry, geen lege “geen berichten”-staat.

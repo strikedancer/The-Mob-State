@@ -7,6 +7,61 @@ import '../utils/game_event_rewards.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/formatters.dart';
 
+String formatLiveEventRemaining(Duration remaining, AppLocalizations l10n) {
+  if (remaining.inSeconds <= 0) {
+    return l10n.gameScreenCountdownNow;
+  }
+  final days = remaining.inDays;
+  final hours = remaining.inHours.remainder(24);
+  final minutes = remaining.inMinutes.remainder(60);
+  final seconds = remaining.inSeconds.remainder(60);
+  if (days > 0) {
+    return l10n.gameScreenCountdownDays(
+      days.toString(),
+      hours.toString().padLeft(2, '0'),
+      minutes.toString().padLeft(2, '0'),
+    );
+  }
+  if (hours > 0) {
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+  return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+}
+
+/// Compact badge text so it fits under a 48px avatar.
+String formatLiveEventRemainingBadge(Duration remaining, AppLocalizations l10n) {
+  if (remaining.inSeconds <= 0) {
+    return l10n.gameScreenCountdownNow;
+  }
+  final days = remaining.inDays;
+  final hours = remaining.inHours;
+  final minutes = remaining.inMinutes.remainder(60);
+  final seconds = remaining.inSeconds.remainder(60);
+  if (days > 0) {
+    return l10n.gameScreenCountdownDays(
+      days.toString(),
+      hours.remainder(24).toString().padLeft(2, '0'),
+      minutes.toString().padLeft(2, '0'),
+    );
+  }
+  if (hours > 0) {
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  }
+  return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+}
+
+String _formatEventDateTime(String? raw) {
+  final parsed = DateTime.tryParse(raw ?? '');
+  if (parsed == null) return '';
+  final local = parsed.toLocal();
+  final dd = local.day.toString().padLeft(2, '0');
+  final mm = local.month.toString().padLeft(2, '0');
+  final yy = local.year.toString();
+  final hh = local.hour.toString().padLeft(2, '0');
+  final min = local.minute.toString().padLeft(2, '0');
+  return '$dd-$mm-$yy $hh:$min';
+}
+
 /// Right-edge circular avatars for active live events (Clash-style quick access).
 class LiveEventRail extends StatelessWidget {
   const LiveEventRail({
@@ -109,7 +164,7 @@ class LiveEventRail extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           for (var i = 0; i < visible.length; i++) ...[
-            if (i > 0) const SizedBox(height: 10),
+            if (i > 0) const SizedBox(height: 8),
             _EventAvatarButton(
               event: visible[i],
               claimableCount: claimablesForEventCategory(
@@ -122,11 +177,11 @@ class LiveEventRail extends StatelessWidget {
                     claimableByCategory,
                   ) +
                   (i == 0 ? orphans : 0),
-              onTap: () => _showEventSheet(context, visible[i]),
+              onTap: () => _showEventPopup(context, visible[i]),
             ),
           ],
           if (overflow > 0) ...[
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -158,7 +213,7 @@ class LiveEventRail extends StatelessWidget {
     );
   }
 
-  void _showEventSheet(BuildContext context, Map<String, dynamic> event) {
+  void _showEventPopup(BuildContext context, Map<String, dynamic> event) {
     final l10n = AppLocalizations.of(context)!;
     final template = event['template'] is Map
         ? Map<String, dynamic>.from(event['template'] as Map)
@@ -168,6 +223,12 @@ class LiveEventRail extends StatelessWidget {
     final desc = localizedGameEventShortDescription(l10n, template);
     final endsAt =
         DateTime.tryParse(event['endsAt']?.toString() ?? '')?.toLocal();
+    final startedAtRaw = _formatEventDateTime(event['startedAt']?.toString());
+    final endsAtRaw = _formatEventDateTime(event['endsAt']?.toString());
+    final statusLabel = localizedGameEventLiveStatus(
+      l10n,
+      event['status']?.toString() ?? 'active',
+    );
     final tiers = parseGameEventPrizeTiers(
       (event['rewardRules'] as List?) ?? const <dynamic>[],
     );
@@ -183,87 +244,160 @@ class LiveEventRail extends StatelessWidget {
       }
     }
 
-    showModalBottomSheet<void>(
+    showDialog<void>(
       context: context,
-      backgroundColor: const Color(0xFF151B28),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (ctx) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+      barrierColor: Colors.black.withValues(alpha: 0.62),
+      builder: (dialogContext) {
+        final dialogL10n = AppLocalizations.of(dialogContext)!;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF1A2233), Color(0xFF0E1219)],
+                ),
+                border: Border.all(color: style.accent.withValues(alpha: 0.55)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.55),
+                    blurRadius: 24,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(18, 16, 12, 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: style.accent.withValues(alpha: 0.2),
-                        border: Border.all(color: style.accent),
-                      ),
-                      child: Icon(style.icon, color: style.accent, size: 22),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 16,
-                            ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: style.accent.withValues(alpha: 0.18),
+                            border: Border.all(color: style.accent),
                           ),
-                          if (endsAt != null)
-                            _CountdownLine(endsAt: endsAt, color: style.accent),
-                        ],
+                          child: Icon(style.icon, color: style.accent, size: 24),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.green.withValues(alpha: 0.18),
+                                  borderRadius: BorderRadius.circular(999),
+                                  border: Border.all(color: Colors.greenAccent),
+                                ),
+                                child: Text(
+                                  statusLabel,
+                                  style: const TextStyle(
+                                    color: Colors.greenAccent,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          icon: const Icon(Icons.close, color: Colors.white54),
+                        ),
+                      ],
+                    ),
+                    if (endsAt != null) ...[
+                      const SizedBox(height: 12),
+                      _EventRemainingLine(
+                        endsAt: endsAt,
+                        color: style.accent,
+                        compact: false,
                       ),
+                    ],
+                    if (startedAtRaw.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        dialogL10n.gameScreenStartLine(startedAtRaw),
+                        style: const TextStyle(color: Colors.white70, fontSize: 13),
+                      ),
+                    ],
+                    if (endsAtRaw.isNotEmpty)
+                      Text(
+                        dialogL10n.gameScreenEndLine(endsAtRaw),
+                        style: const TextStyle(color: Colors.white70, fontSize: 13),
+                      ),
+                    if (desc.isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        desc,
+                        style: const TextStyle(color: Colors.white70, height: 1.35),
+                      ),
+                    ],
+                    if (prizeHint != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        prizeHint,
+                        style: TextStyle(
+                          color: style.accent,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white70,
+                          ),
+                          child: Text(dialogL10n.close),
+                        ),
+                        const Spacer(),
+                        FilledButton.icon(
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                            onOpenEvents();
+                          },
+                          icon: const Icon(Icons.event),
+                          label: Text(dialogL10n.liveEventRailOpenEvents),
+                          style: FilledButton.styleFrom(
+                            backgroundColor: style.accent,
+                            foregroundColor: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                if (desc.isNotEmpty) ...[
-                  const SizedBox(height: 12),
-                  Text(
-                    desc,
-                    style: const TextStyle(color: Colors.white70, height: 1.35),
-                  ),
-                ],
-                if (prizeHint != null) ...[
-                  const SizedBox(height: 10),
-                  Text(
-                    prizeHint,
-                    style: TextStyle(
-                      color: style.accent,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton.icon(
-                    onPressed: () {
-                      Navigator.of(ctx).pop();
-                      onOpenEvents();
-                    },
-                    icon: const Icon(Icons.event),
-                    label: Text(l10n.liveEventRailOpenEvents),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: style.accent,
-                      foregroundColor: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         );
@@ -314,6 +448,8 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
     final style = LiveEventRail.categoryStyle(template?['category']?.toString());
     final l10n = AppLocalizations.of(context)!;
     final title = localizedGameEventTitle(l10n, template);
+    final endsAt =
+        DateTime.tryParse(widget.event['endsAt']?.toString() ?? '')?.toLocal();
 
     final badge = widget.claimableCount > 0
         ? (widget.claimableCount > 99 ? '99+' : '${widget.claimableCount}')
@@ -329,15 +465,15 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
             color: Colors.transparent,
             child: InkWell(
               onTap: widget.onTap,
-              customBorder: const CircleBorder(),
+              borderRadius: BorderRadius.circular(28),
               child: SizedBox(
-                width: 52,
-                height: 52,
+                width: 58,
+                height: 68,
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
                     Positioned(
-                      left: 2,
+                      left: 5,
                       top: 2,
                       child: Container(
                         width: 48,
@@ -363,8 +499,8 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
                     ),
                     if (badge != null)
                       Positioned(
-                        right: -2,
-                        top: -2,
+                        right: 0,
+                        top: 0,
                         child: Container(
                           constraints: const BoxConstraints(
                             minWidth: 18,
@@ -397,6 +533,18 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
                           ),
                         ),
                       ),
+                    if (endsAt != null)
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Center(
+                          child: _EventRemainingBadge(
+                            endsAt: endsAt,
+                            accent: style.accent,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -408,17 +556,57 @@ class _EventAvatarButtonState extends State<_EventAvatarButton>
   }
 }
 
-class _CountdownLine extends StatefulWidget {
-  const _CountdownLine({required this.endsAt, required this.color});
+class _EventRemainingBadge extends StatelessWidget {
+  const _EventRemainingBadge({
+    required this.endsAt,
+    required this.accent,
+  });
+
+  final DateTime endsAt;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xFF0B0F18).withValues(alpha: 0.94),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: accent.withValues(alpha: 0.75)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.45),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        child: _EventRemainingLine(
+          endsAt: endsAt,
+          color: accent,
+          compact: true,
+        ),
+      ),
+    );
+  }
+}
+
+class _EventRemainingLine extends StatefulWidget {
+  const _EventRemainingLine({
+    required this.endsAt,
+    required this.color,
+    required this.compact,
+  });
 
   final DateTime endsAt;
   final Color color;
+  final bool compact;
 
   @override
-  State<_CountdownLine> createState() => _CountdownLineState();
+  State<_EventRemainingLine> createState() => _EventRemainingLineState();
 }
 
-class _CountdownLineState extends State<_CountdownLine> {
+class _EventRemainingLineState extends State<_EventRemainingLine> {
   Timer? _timer;
   late Duration _remaining;
 
@@ -435,6 +623,14 @@ class _CountdownLineState extends State<_CountdownLine> {
   }
 
   @override
+  void didUpdateWidget(covariant _EventRemainingLine oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.endsAt != widget.endsAt) {
+      _remaining = widget.endsAt.difference(DateTime.now());
+    }
+  }
+
+  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
@@ -443,24 +639,20 @@ class _CountdownLineState extends State<_CountdownLine> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_remaining.inSeconds <= 0) {
-      return Text(
-        l10n.gameScreenCountdownNow,
-        style: TextStyle(color: widget.color, fontSize: 12),
-      );
-    }
-    final h = _remaining.inHours;
-    final m = _remaining.inMinutes.remainder(60);
-    final s = _remaining.inSeconds.remainder(60);
-    final text = h > 0
-        ? '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}'
-        : '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+    final text = widget.compact
+        ? formatLiveEventRemainingBadge(_remaining, l10n)
+        : formatLiveEventRemaining(_remaining, l10n);
     return Text(
       text,
+      textAlign: TextAlign.center,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: widget.color,
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
+        fontSize: widget.compact ? 9 : 14,
+        fontWeight: FontWeight.w800,
+        height: 1.1,
+        letterSpacing: widget.compact ? -0.2 : 0,
       ),
     );
   }
