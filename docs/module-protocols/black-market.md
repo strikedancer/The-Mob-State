@@ -6,7 +6,7 @@ Unified **illegal / grey economy hub** under **Economie → Zwarte Markt**: deal
 ## Primary Frontend Entry
 - `client/lib/screens/black_market_screen.dart` — shop department strip + `TabBarView`. Existing tab indexes 0–6 stay stable; **Tools = 7**, **Security = 8**. In de dashboard-shell: `embedded: true` (geen eigen AppBar). Op smalle breedte (`< 720`) is de afdelingenbalk **één horizontale chip-rij** zonder groeptitels/subtitle, zodat de productlijst de hoogte krijgt.
 - Tools and Security are no longer separate sidebar items (Assets / Meer). Search still finds those labels and opens the matching shop. `/security` opens this hub on the Security shop.
-- `client/lib/screens/trade_goods_tab.dart` — eerste zwarte-markt-tab: contrabandmarkt + inventaris in **één scroll** (`/trade/*` APIs; geen aparte sub-tabs meer). Koop/verkoop als compacte rijen (naam, risico-pills, prijs, aantal, actie); lange flavor-tekst zit in tooltip.
+- `client/lib/screens/trade_goods_tab.dart` — eerste zwarte-markt-tab: **voorraad hier** bovenaan, daarna andere landen (read-only), daarna catalogus in **één scroll** (`/trade/*` APIs; geen aparte sub-tabs meer). Koop/verkoop als compacte rijen (naam, risico-pills, prijs, aantal, actie); lange flavor-tekst zit in tooltip. Handelswaren blijven in het land van koop/claim; verkopen kan alleen daar.
 - Alle dealer- en P2P-shops volgen datzelfde patroon: **één scroll**, geen inner Shop/Mijn-tabs, compacte rijen via `client/lib/widgets/market_compact.dart` (`MarketCompactRow`, `marketSectionHeader`). Wapens, munitie, gereedschap, beveiliging, materialen, rugzakken, marktplaats en mijn advertenties. Koop/verkoop-API’s, rank/VIP-gates en dialogen ongewijzigd.
 - Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`
 

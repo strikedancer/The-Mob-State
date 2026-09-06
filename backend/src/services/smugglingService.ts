@@ -912,7 +912,7 @@ class SmugglingService {
 
     const [drugs, tradeGoods, vehicles, weapons, ammo] = await Promise.all([
       prisma.drugInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: [{ drugType: 'asc' }, { quality: 'asc' }] }),
-      prisma.inventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
+      prisma.inventory.findMany({ where: { playerId, country: player.currentCountry, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
       prisma.vehicleInventory.findMany({ where: { playerId, currentLocation: player.currentCountry, transportStatus: null, marketListing: false }, orderBy: { stolenAt: 'desc' } }),
       prisma.weaponInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: { weaponId: 'asc' } }),
       prisma.ammoInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: { ammoType: 'asc' } }),
@@ -1125,9 +1125,9 @@ class SmugglingService {
           }
         } else {
           const inv = await tx.inventory.findUnique({
-            where: { playerId_goodType: { playerId, goodType: itemKey } },
+            where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } },
           });
-          if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg handelswaar in inventory' } as const;
+          if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg handelswaar in dit land' } as const;
 
           metadata = {
             ...metadata,
@@ -1135,10 +1135,10 @@ class SmugglingService {
             condition: inv.condition ?? 100,
           };
           if (inv.quantity === quantity) {
-            await tx.inventory.delete({ where: { playerId_goodType: { playerId, goodType: itemKey } } });
+            await tx.inventory.delete({ where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } } });
           } else {
             await tx.inventory.update({
-              where: { playerId_goodType: { playerId, goodType: itemKey } },
+              where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } },
               data: { quantity: inv.quantity - quantity },
             });
           }
@@ -1499,7 +1499,7 @@ class SmugglingService {
         availableQuantity = inv?.quantity ?? 0;
       } else {
         const inv = await prisma.inventory.findUnique({
-          where: { playerId_goodType: { playerId, goodType: itemKey } },
+          where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } },
           select: { quantity: true },
         });
         availableQuantity = inv?.quantity ?? 0;
@@ -1851,11 +1851,14 @@ class SmugglingService {
             100,
             Math.max(0, Math.floor(Number(metadata.condition ?? 100)))
           );
-          const existing = await tx.inventory.findUnique({ where: { playerId_goodType: { playerId, goodType: shipment.item_key } } });
+          const claimCountry = shipment.destination_country;
+          const existing = await tx.inventory.findUnique({
+            where: { playerId_goodType_country: { playerId, goodType: shipment.item_key, country: claimCountry } },
+          });
           if (existing) {
             const newQty = existing.quantity + shipment.quantity;
             await tx.inventory.update({
-              where: { playerId_goodType: { playerId, goodType: shipment.item_key } },
+              where: { playerId_goodType_country: { playerId, goodType: shipment.item_key, country: claimCountry } },
               data: {
                 quantity: newQty,
                 purchasePrice: blendInventoryAverage(
@@ -1877,6 +1880,7 @@ class SmugglingService {
               data: {
                 playerId,
                 goodType: shipment.item_key,
+                country: claimCountry,
                 quantity: shipment.quantity,
                 purchasePrice: arrivingPrice,
                 condition: arrivingCondition,

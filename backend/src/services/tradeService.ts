@@ -25,7 +25,7 @@ export interface TradableGood {
   damageChancePerTrip?: number;
   confiscationChance?: number;
   priceVolatility?: number;
-  /** Countries where this good can be purchased (sell remains allowed everywhere). */
+  /** Countries where this good can be purchased. Sell is only allowed from the same-country warehouse. */
   availableInCountries?: string[];
   /** UI grouping: starter | bulk | luxury | dangerous */
   category?: string;
@@ -127,61 +127,79 @@ export function calculatePrice(goodType: string, countryId: string): number {
   return Math.floor(price);
 }
 
+export function tradeLotWhere(playerId: number, goodType: string, country: string) {
+  return { playerId_goodType_country: { playerId, goodType, country } };
+}
+
+function mapInventoryLot(item: {
+  id: number;
+  goodType: string;
+  country: string;
+  quantity: number;
+  purchasePrice: number;
+  condition: number | null;
+  purchasedAt: Date | null;
+}) {
+  const good = getGoodById(item.goodType);
+  let quantity = item.quantity;
+  let condition = item.condition || 100;
+  let spoiled = false;
+
+  if (good?.spoilageHours && item.purchasedAt) {
+    const hoursSincePurchase =
+      (Date.now() - new Date(item.purchasedAt).getTime()) / (1000 * 60 * 60);
+    if (hoursSincePurchase > good.spoilageHours) {
+      spoiled = true;
+      quantity = 0;
+    }
+  }
+
+  return {
+    id: item.id,
+    goodType: item.goodType,
+    country: item.country,
+    goodName: good?.name || item.goodType,
+    name: good?.name || item.goodType,
+    quantity,
+    purchasePrice: item.purchasePrice || 0,
+    basePrice: good?.basePrice || 0,
+    condition,
+    spoiled,
+    purchasedAt: item.purchasedAt,
+  };
+}
+
 /**
- * Get player's inventory for a specific good
+ * Get player's warehouse quantity for a good in a country (defaults to current country).
  */
-export async function getInventoryItem(playerId: number, goodType: string): Promise<number> {
+export async function getInventoryItem(
+  playerId: number,
+  goodType: string,
+  country?: string
+): Promise<number> {
+  const lotCountry = country ?? (await getPlayerCountry(playerId));
   const item = await prisma.inventory.findUnique({
-    where: {
-      playerId_goodType: {
-        playerId,
-        goodType,
-      },
-    },
+    where: tradeLotWhere(playerId, goodType, lotCountry),
   });
 
   return item?.quantity || 0;
 }
 
 /**
- * Get player's full inventory with spoilage/damage checks
+ * Current-country stock plus read-only lots stored in other countries.
  */
 export async function getFullInventory(playerId: number) {
+  const currentCountry = await getPlayerCountry(playerId);
   const inventory = await prisma.inventory.findMany({
-    where: { playerId },
+    where: { playerId, quantity: { gt: 0 } },
   });
 
-  const now = new Date();
-
-  // Map to include good details and check for spoilage/damage
-  return inventory.map((item) => {
-    const good = getGoodById(item.goodType);
-    let quantity = item.quantity;
-    let condition = item.condition || 100;
-    let spoiled = false;
-
-    // Check if flowers are spoiled
-    if (good?.spoilageHours && item.purchasedAt) {
-      const hoursSincePurchase = (now.getTime() - new Date(item.purchasedAt).getTime()) / (1000 * 60 * 60);
-      if (hoursSincePurchase > good.spoilageHours) {
-        spoiled = true;
-        quantity = 0; // Flowers are worthless when spoiled
-      }
-    }
-
-    return {
-      id: item.id,
-      goodType: item.goodType,
-      goodName: good?.name || item.goodType,
-      name: good?.name || item.goodType,
-      quantity,
-      purchasePrice: item.purchasePrice || 0,
-      basePrice: good?.basePrice || 0,
-      condition,
-      spoiled,
-      purchasedAt: item.purchasedAt,
-    };
-  });
+  const mapped = inventory.map(mapInventoryLot);
+  return {
+    currentCountry,
+    inventory: mapped.filter((item) => item.country === currentCountry),
+    storedElsewhere: mapped.filter((item) => item.country !== currentCountry),
+  };
 }
 
 /**
@@ -231,8 +249,8 @@ export async function buyGoods(
     throw new Error('INSUFFICIENT_MONEY');
   }
 
-  // Check inventory limits
-  const currentQuantity = await getInventoryItem(playerId, goodType);
+  // Check inventory limits (per-country warehouse)
+  const currentQuantity = await getInventoryItem(playerId, goodType, currentCountry);
   const newQuantity = currentQuantity + quantity;
 
   if (newQuantity > good.maxInventory) {
@@ -241,12 +259,7 @@ export async function buyGoods(
 
   // Get existing inventory to calculate weighted average purchase price
   const existingInventory = await prisma.inventory.findUnique({
-    where: {
-      playerId_goodType: {
-        playerId,
-        goodType,
-      },
-    },
+    where: tradeLotWhere(playerId, goodType, currentCountry),
   });
 
   // Calculate weighted average purchase price
@@ -263,15 +276,11 @@ export async function buyGoods(
     }),
     // Update inventory
     prisma.inventory.upsert({
-      where: {
-        playerId_goodType: {
-          playerId,
-          goodType,
-        },
-      },
+      where: tradeLotWhere(playerId, goodType, currentCountry),
       create: {
         playerId,
         goodType,
+        country: currentCountry,
         quantity,
         purchasePrice: pricePerUnit,
       },
@@ -331,17 +340,25 @@ export async function sellGoods(
     throw new Error('GOOD_NOT_FOUND');
   }
 
-  // Check if player has enough in inventory
+  const currentCountry = await getPlayerCountry(playerId);
+
+  // Sell only from the warehouse in the player's current country.
   const inventoryItem = await prisma.inventory.findUnique({
-    where: {
-      playerId_goodType: {
-        playerId,
-        goodType,
-      },
-    },
+    where: tradeLotWhere(playerId, goodType, currentCountry),
   });
 
   if (!inventoryItem || inventoryItem.quantity < quantity) {
+    const storedElsewhere = await prisma.inventory.findFirst({
+      where: {
+        playerId,
+        goodType,
+        country: { not: currentCountry },
+        quantity: { gt: 0 },
+      },
+    });
+    if (storedElsewhere) {
+      throw new Error('GOODS_STORED_ELSEWHERE');
+    }
     throw new Error('INSUFFICIENT_INVENTORY');
   }
 
@@ -353,9 +370,6 @@ export async function sellGoods(
       throw new Error('GOODS_SPOILED');
     }
   }
-
-  // Get player's current country
-  const currentCountry = await getPlayerCountry(playerId);
 
   // Calculate price in current country
   // Sell price is 90% of buy price (10% spread)
@@ -394,20 +408,10 @@ export async function sellGoods(
     // Update inventory (or delete if 0)
     newQuantity === 0
       ? prisma.inventory.delete({
-          where: {
-            playerId_goodType: {
-              playerId,
-              goodType,
-            },
-          },
+          where: tradeLotWhere(playerId, goodType, currentCountry),
         })
       : prisma.inventory.update({
-          where: {
-            playerId_goodType: {
-              playerId,
-              goodType,
-            },
-          },
+          where: tradeLotWhere(playerId, goodType, currentCountry),
           data: {
             quantity: newQuantity,
           },

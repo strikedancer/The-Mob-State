@@ -2,6 +2,14 @@ import prisma from '../lib/prisma';
 import { getCrewStorageCapacity } from './crewBuildingService';
 import { vehicleService } from './vehicleService';
 
+async function playerCountry(playerId: number): Promise<string> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
+  return player?.currentCountry?.trim() || 'netherlands';
+}
+
 function resolveCrewLandVehicleType(vehicleId: string): 'car' | 'motorcycle' {
   return vehicleService.getVehicleById(vehicleId)?.vehicleCategory === 'motorcycle'
     ? 'motorcycle'
@@ -384,11 +392,13 @@ export async function depositCrewDrugs(
     throw new Error('DRUG_STORAGE_FULL');
   }
 
+  const country = await playerCountry(playerId);
   const playerItem = await prisma.inventory.findUnique({
     where: {
-      playerId_goodType: {
+      playerId_goodType_country: {
         playerId,
         goodType,
+        country,
       },
     },
   });
@@ -472,8 +482,9 @@ export async function depositCrewTradeGoods(
     throw new Error('TRADE_STORAGE_FULL');
   }
 
+  const country = await playerCountry(playerId);
   const playerItem = await prisma.inventory.findUnique({
-    where: { playerId_goodType: { playerId, goodType } },
+    where: { playerId_goodType_country: { playerId, goodType, country } },
   });
   if (!playerItem || playerItem.quantity < quantity) {
     throw new Error('INSUFFICIENT_TRADE_GOODS');

@@ -6410,6 +6410,32 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tradeFilterAvailableHere => 'Hier käuflich';
 
   @override
+  String get tradeSellHereTitle => 'Verkaufe hier';
+
+  @override
+  String get tradeSellHereSubtitle =>
+      'Lagerbestand hierzulande. Verkaufen Sie zu lokalen Preisen.';
+
+  @override
+  String get tradeNoStockHere => 'Noch keine Handelsware in diesem Land.';
+
+  @override
+  String get tradeStoredElsewhereTitle => 'In anderen Ländern gespeichert';
+
+  @override
+  String get tradeStoredElsewhereHint =>
+      'Reisen oder schmuggeln Sie in dieses Land, um es zu verkaufen. Im gewerblichen Reiseverkehr werden diese Güter nicht befördert.';
+
+  @override
+  String get tradeGoodsCountryLockedHint =>
+      'Gekaufte oder reklamierte Waren bleiben in diesem Land. Durch Reisen werden sie nicht bewegt – verwenden Sie Schmuggel, um Vorräte zu versenden.';
+
+  @override
+  String tradeStoredInCountry(String country) {
+    return 'Gespeichert in $country';
+  }
+
+  @override
   String tradeMarketCatalogSummary(String total, String here) {
     return '$total Produkte · $here hier käuflich';
   }

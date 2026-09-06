@@ -6396,6 +6396,33 @@ class AppLocalizationsIt extends AppLocalizations {
   String get tradeFilterAvailableHere => 'In vendita qui';
 
   @override
+  String get tradeSellHereTitle => 'Vendi qui';
+
+  @override
+  String get tradeSellHereSubtitle =>
+      'Stock in questo paese. Vendi a prezzi locali.';
+
+  @override
+  String get tradeNoStockHere =>
+      'Ancora nessuna merce commerciale in questo paese.';
+
+  @override
+  String get tradeStoredElsewhereTitle => 'Conservato in altri paesi';
+
+  @override
+  String get tradeStoredElsewhereHint =>
+      'Viaggia o contrabbanda in quel paese per venderlo. I viaggi commerciali non spostano queste merci.';
+
+  @override
+  String get tradeGoodsCountryLockedHint =>
+      'Le merci acquistate o reclamate rimangono in quel paese. Il viaggio non li sposta: usa il contrabbando per spedire le scorte.';
+
+  @override
+  String tradeStoredInCountry(String country) {
+    return 'Memorizzato in $country';
+  }
+
+  @override
   String tradeMarketCatalogSummary(String total, String here) {
     return '$total prodotti · $here in vendita qui';
   }

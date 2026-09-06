@@ -11298,5 +11298,19 @@
   "territoryNoticeEncircled": "Ten wewnętrzny region jest otoczony innymi regionami tej samej załogi, więc nie można go bezpośrednio zaatakować. Najpierw weź sąsiedni region, aby otworzyć front.",
   "seasonPassClaimablesTitle": "Gotowe do odbioru",
   "seasonPassNoClaimables": "Brak nagród eventu do odbioru.",
-  "seasonPassPrizesToWin": "Nagrody do wygrania"
+  "seasonPassPrizesToWin": "Nagrody do wygrania",
+  "tradeSellHereTitle": "Sprzedaj tutaj",
+  "tradeSellHereSubtitle": "Zapas w tym kraju. Sprzedawaj po cenach lokalnych.",
+  "tradeNoStockHere": "Nie ma jeszcze żadnych towarów handlowych w tym kraju.",
+  "tradeStoredElsewhereTitle": "Przechowywane w innych krajach",
+  "tradeStoredElsewhereHint": "Podróżuj lub przemycaj do tego kraju w celu sprzedaży. Podróże komercyjne nie powodują transportu tych towarów.",
+  "tradeGoodsCountryLockedHint": "Zakupiony lub odebrany towar pozostaje w tym kraju. Podróż ich nie porusza — użyj przemytu, aby wysłać zapasy.",
+  "tradeStoredInCountry": "Przechowywane w {country}",
+  "@tradeStoredInCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  }
 }

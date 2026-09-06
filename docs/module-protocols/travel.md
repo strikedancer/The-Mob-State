@@ -3,6 +3,8 @@
 ## Scope
 Country movement, route costs, legs, confiscation risk and travel cooldowns.
 
+Commercial travel does **not** move or confiscate personal trade-good warehouses (`inventory.country`). Those lots stay in the country where they were bought or claimed; smuggling is the move path. Carried production materials can still be confiscated.
+
 ## Primary Frontend Entry
 - client/lib/screens/travel_screen.dart
 

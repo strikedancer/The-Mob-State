@@ -19,6 +19,8 @@ Vehicle movement between countries also belongs here when cars or boats are relo
 
 Crew-netwerk + handelswaren gebruikt `CrewTradeInventory` + `CrewTradeStorageBuilding` (spiegel van drugsopslag). Catalog/send/claim lezen en schrijven crew-trade rows. Stort vanuit persoonlijke handelswaren via `POST /crews/:id/storage/trade/deposit`. De trade-chip blijft aan bij crew-netwerk.
 
+Persoonlijke handelswaren liggen per land (`inventory.country`). Catalog/send debit alleen het **huidige land**; claim crediteert het **bestemmingsland**. Crew-handelswaren blijven gedeeld (`CrewTradeInventory`, geen landkolom).
+
 Persoonlijke én crew-handelswaren behouden bij smokkel hun **inkoopprijs** (`purchasePrice` / `averagePurchasePrice`) en **conditie** in shipment-metadata; claim merge’t die gewogen terug in inventory zodat winst = verkoop − inkoop klopt.
 
 Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zending, max 60 per actie).

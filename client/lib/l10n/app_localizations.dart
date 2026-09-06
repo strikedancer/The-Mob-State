@@ -11198,7 +11198,7 @@ abstract class AppLocalizations {
   /// No description provided for @tradeRiskInsightBody.
   ///
   /// In en, this message translates to:
-  /// **'16 CONTRABAND LINES in 4 categories (starter, bulk, luxury, dangerous). Not every country sells everything — travel to buy cheap and sell where demand is high.\nSTARTER/BULK: spoilage or low margin — great for learning routes.\nLUXURY: diamonds, gold, watches, art — high value, plan your sell country.\nDANGEROUS: weapons and counterfeit cash — high seizure risk; keep Wanted low.\nUse the filters at the top to browse quickly.'**
+  /// **'16 CONTRABAND LINES in 4 categories (starter, bulk, luxury, dangerous). Not every country sells everything — travel to buy cheap, then smuggle stock to sell where demand is high.\nGoods stay in the country where you buy or claim them. Commercial travel does not move warehouses.\nSTARTER/BULK: spoilage or low margin — great for learning routes.\nLUXURY: diamonds, gold, watches, art — high value, plan your sell country.\nDANGEROUS: weapons and counterfeit cash — high seizure risk; keep Wanted low.\nUse the filters at the top to browse quickly.'**
   String get tradeRiskInsightBody;
 
   /// No description provided for @tradeRiskSpoilageHours.
@@ -11296,6 +11296,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'For sale here'**
   String get tradeFilterAvailableHere;
+
+  /// No description provided for @tradeSellHereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell here'**
+  String get tradeSellHereTitle;
+
+  /// No description provided for @tradeSellHereSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock in this country. Sell at local prices.'**
+  String get tradeSellHereSubtitle;
+
+  /// No description provided for @tradeNoStockHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No trade goods in this country yet.'**
+  String get tradeNoStockHere;
+
+  /// No description provided for @tradeStoredElsewhereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored in other countries'**
+  String get tradeStoredElsewhereTitle;
+
+  /// No description provided for @tradeStoredElsewhereHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel or smuggle to that country to sell. Commercial travel does not move these goods.'**
+  String get tradeStoredElsewhereHint;
+
+  /// No description provided for @tradeGoodsCountryLockedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Bought or claimed goods stay in that country. Travel does not move them — use Smuggling to ship stock.'**
+  String get tradeGoodsCountryLockedHint;
+
+  /// No description provided for @tradeStoredInCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored in {country}'**
+  String tradeStoredInCountry(String country);
 
   /// No description provided for @tradeMarketCatalogSummary.
   ///
@@ -27574,7 +27616,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTravelTips.
   ///
   /// In en, this message translates to:
-  /// **'Always combine travel with trade, drugs or smuggling — empty travel wastes money.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.\nPlan your return trip in advance so you already know what to bring back on arrival.\nOwn a plane in Aviation to cut commercial travel cooldown. Instant private flights still need fuel.'**
+  /// **'Commercial travel does not move trade goods — smuggle stock to the country where you want to sell.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk for carried materials and smuggling runs.\nPlan your return trip in advance so you already know what to bring back on arrival.\nOwn a plane in Aviation to cut commercial travel cooldown. Instant private flights still need fuel.'**
   String get helpTopicTravelTips;
 
   /// No description provided for @helpTopicAviationCategory.
@@ -27838,7 +27880,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBlackMarketHow.
   ///
   /// In en, this message translates to:
-  /// **'Open Black Market from the Economy menu. Shops sit in one strip: Trade goods, Weapons, Ammo, Tools, Security, Materials and Backpacks. Player market has Marketplace and My listings.\nTrade goods: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into shops (Trade goods, Weapons, Ammo, Tools, Security, Materials, Backpacks) and a player market (Marketplace, My listings).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.'**
+  /// **'Open Black Market from the Economy menu. Shops sit in one strip: Trade goods, Weapons, Ammo, Tools, Security, Materials and Backpacks. Player market has Marketplace and My listings.\nTrade goods: stock you can sell here sits at the top. Goods bought or claimed in another country stay there until you smuggle them. Then the catalog (pricing, caps, risk chips). Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into shops (Trade goods, Weapons, Ammo, Tools, Security, Materials, Backpacks) and a player market (Marketplace, My listings).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.'**
   String get helpTopicBlackMarketHow;
 
   /// No description provided for @helpTopicBlackMarketTips.

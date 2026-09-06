@@ -725,15 +725,16 @@ async function transferHitLoot(
 
   const victim = await tx.player.findUnique({
     where: { id: victimId },
-    select: { money: true },
+    select: { money: true, currentCountry: true },
   });
 
   const victimCash = Math.max(0, Number(victim?.money || 0));
   summary.cashTaken = victimCash;
   summary.cashAwarded = Math.floor(victimCash * lootSettings.cashShare);
 
+  const lootCountry = String(victim?.currentCountry || '').trim() || 'netherlands';
   const victimGoods = await tx.inventory.findMany({
-    where: { playerId: victimId, quantity: { gt: 0 } },
+    where: { playerId: victimId, country: lootCountry, quantity: { gt: 0 } },
   });
   for (const row of victimGoods) {
     const transferQty = calculateLootAmount(Number(row.quantity || 0), lootSettings.itemShare);
@@ -742,9 +743,10 @@ async function transferHitLoot(
     if (transferQty > 0) {
       await tx.inventory.upsert({
         where: {
-          playerId_goodType: {
+          playerId_goodType_country: {
             playerId: killerId,
             goodType: row.goodType,
+            country: lootCountry,
           },
         },
         update: {
@@ -753,6 +755,7 @@ async function transferHitLoot(
         create: {
           playerId: killerId,
           goodType: row.goodType,
+          country: lootCountry,
           quantity: transferQty,
           condition: row.condition,
           purchasePrice: row.purchasePrice,
@@ -761,7 +764,7 @@ async function transferHitLoot(
     }
   }
   if (victimGoods.length > 0) {
-    await tx.inventory.deleteMany({ where: { playerId: victimId } });
+    await tx.inventory.deleteMany({ where: { playerId: victimId, country: lootCountry } });
   }
 
   const victimAmmo = await tx.ammoInventory.findMany({

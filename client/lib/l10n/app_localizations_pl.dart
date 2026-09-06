@@ -6380,6 +6380,33 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tradeFilterAvailableHere => 'Na sprzedaż tutaj';
 
   @override
+  String get tradeSellHereTitle => 'Sprzedaj tutaj';
+
+  @override
+  String get tradeSellHereSubtitle =>
+      'Zapas w tym kraju. Sprzedawaj po cenach lokalnych.';
+
+  @override
+  String get tradeNoStockHere =>
+      'Nie ma jeszcze żadnych towarów handlowych w tym kraju.';
+
+  @override
+  String get tradeStoredElsewhereTitle => 'Przechowywane w innych krajach';
+
+  @override
+  String get tradeStoredElsewhereHint =>
+      'Podróżuj lub przemycaj do tego kraju w celu sprzedaży. Podróże komercyjne nie powodują transportu tych towarów.';
+
+  @override
+  String get tradeGoodsCountryLockedHint =>
+      'Zakupiony lub odebrany towar pozostaje w tym kraju. Podróż ich nie porusza — użyj przemytu, aby wysłać zapasy.';
+
+  @override
+  String tradeStoredInCountry(String country) {
+    return 'Przechowywane w $country';
+  }
+
+  @override
   String tradeMarketCatalogSummary(String total, String here) {
     return '$total produktów · $here na sprzedaż tutaj';
   }

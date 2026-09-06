@@ -10,6 +10,7 @@ import '../config/app_config.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/trade_good_l10n.dart';
+import '../utils/country_helper.dart';
 
 enum _TradeMarketFilter { all, here, starter, bulk, luxury, dangerous }
 
@@ -26,6 +27,8 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
   List<TradableGood> _goods = [];
   List<GoodPrice> _prices = [];
   List<InventoryItem> _inventory = [];
+  List<InventoryItem> _storedElsewhere = [];
+  String _currentCountry = '';
   String? _errorMessage;
   String? _goodsLoadError;
   String? _pricesLoadError;
@@ -74,6 +77,8 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     List<TradableGood> nextGoods = _goods;
     List<GoodPrice> nextPrices = _prices;
     List<InventoryItem> nextInventory = _inventory;
+    List<InventoryItem> nextElsewhere = _storedElsewhere;
+    var nextCountry = _currentCountry;
     String? goodsErr;
     String? pricesErr;
     String? invErr;
@@ -119,9 +124,13 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       if (inventoryResponse.statusCode == 200) {
         final inventoryData =
             jsonDecode(inventoryResponse.body) as Map<String, dynamic>;
-        nextInventory = (inventoryData['inventory'] as List)
+        nextInventory = (inventoryData['inventory'] as List? ?? const [])
             .map((i) => InventoryItem.fromJson(i as Map<String, dynamic>))
             .toList();
+        nextElsewhere = (inventoryData['storedElsewhere'] as List? ?? const [])
+            .map((i) => InventoryItem.fromJson(i as Map<String, dynamic>))
+            .toList();
+        nextCountry = inventoryData['currentCountry'] as String? ?? nextCountry;
       } else {
         invErr = l10n.tradeLoadInventoryFailed;
       }
@@ -138,6 +147,8 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       _goods = nextGoods;
       _prices = nextPrices;
       _inventory = nextInventory;
+      _storedElsewhere = nextElsewhere;
+      _currentCountry = nextCountry;
       _goodsLoadError = goodsErr;
       _pricesLoadError = pricesErr;
       _inventoryLoadError = invErr;
@@ -313,66 +324,6 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
           ..._buildMarketHeaderChildren(l10n),
           ..._buildBuyableGoodCards(l10n),
           ..._buildUnavailableGoodsSection(l10n),
-          const SizedBox(height: 12),
-          Divider(color: Theme.of(context).colorScheme.outlineVariant),
-          const SizedBox(height: 6),
-          Row(
-            children: [
-              Icon(
-                Icons.inventory_2_outlined,
-                size: 18,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                l10n.inventory,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          if (_inventory.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.inventory_2_outlined,
-                    size: 48,
-                    color: Colors.grey.shade400,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    l10n.noItemsInInventory,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          else
-            for (final item in _inventory)
-              _buildInventoryCard(
-                _resolveGood(item.goodType),
-                _prices.firstWhere(
-                  (p) => p.goodType == item.goodType,
-                  orElse: () {
-                    final g = _resolveGood(item.goodType);
-                    return GoodPrice(
-                      goodType: item.goodType,
-                      currentPrice: g.basePrice,
-                      sellPrice: (g.basePrice * 0.9).floor(),
-                      multiplier: 1.0,
-                    );
-                  },
-                ),
-                item,
-              ),
         ],
       ),
     );
@@ -421,6 +372,19 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
             ),
           ),
         ),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Text(
+          l10n.tradeGoodsCountryLockedHint,
+          style: TextStyle(
+            fontSize: 13,
+            height: 1.35,
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
+          ),
+        ),
+      ),
+      ..._buildLocalStockSection(l10n),
+      ..._buildStoredElsewhereSection(l10n),
       _buildTradeRiskGuide(l10n),
       _buildMarketFilterBar(l10n),
       if (_buyableGoods.isEmpty && _goods.isNotEmpty)
@@ -460,6 +424,162 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       else
         const SizedBox(height: 8),
     ];
+  }
+
+  List<Widget> _buildLocalStockSection(AppLocalizations l10n) {
+    return [
+      const SizedBox(height: 4),
+      Row(
+        children: [
+          Icon(
+            Icons.storefront_outlined,
+            size: 18,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.tradeSellHereTitle,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  _currentCountry.isEmpty
+                      ? l10n.tradeSellHereSubtitle
+                      : '${l10n.tradeSellHereSubtitle} (${CountryHelper.getLocalizedCountryName(_currentCountry, l10n)})',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.65),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 8),
+      if (_inventory.isEmpty)
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
+          child: Text(
+            l10n.tradeNoStockHere,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade700,
+            ),
+          ),
+        )
+      else
+        for (final item in _inventory)
+          _buildInventoryCard(
+            _resolveGood(item.goodType),
+            _priceForGood(item.goodType),
+            item,
+          ),
+    ];
+  }
+
+  List<Widget> _buildStoredElsewhereSection(AppLocalizations l10n) {
+    if (_storedElsewhere.isEmpty) return const [];
+
+    final byCountry = <String, List<InventoryItem>>{};
+    for (final item in _storedElsewhere) {
+      final key = item.country.isEmpty ? 'unknown' : item.country;
+      byCountry.putIfAbsent(key, () => []).add(item);
+    }
+    final countries = byCountry.keys.toList()..sort();
+
+    return [
+      const SizedBox(height: 4),
+      Divider(color: Theme.of(context).colorScheme.outlineVariant),
+      const SizedBox(height: 6),
+      Row(
+        children: [
+          Icon(
+            Icons.public,
+            size: 18,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.tradeStoredElsewhereTitle,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  l10n.tradeStoredElsewhereHint,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.65),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 8),
+      for (final countryId in countries) ...[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6, top: 4),
+          child: Text(
+            l10n.tradeStoredInCountry(
+              CountryHelper.getLocalizedCountryName(countryId, l10n),
+            ),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+        ),
+        for (final item in byCountry[countryId]!)
+          _buildStoredElsewhereCard(item, l10n),
+      ],
+      const SizedBox(height: 8),
+    ];
+  }
+
+  Widget _buildStoredElsewhereCard(InventoryItem item, AppLocalizations l10n) {
+    final good = _resolveGood(item.goodType);
+    final localizedName = TradeGoodL10n.name(l10n, good.id);
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+        child: Row(
+          children: [
+            Opacity(opacity: 0.85, child: _goodHeaderArt(good, size: 40)),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    localizedName,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    l10n.ownedQuantity(item.quantity.toString()),
+                    style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   GoodPrice _priceForGood(String goodId) {

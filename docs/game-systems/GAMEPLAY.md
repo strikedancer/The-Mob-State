@@ -592,18 +592,19 @@ interest = 0
 Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Flowers**, **electronics**, **diamonds**, **weapons**, **pharmaceuticals**
 - Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via de **handelswaren-tab** op de zwarte markt en gekoppelde inventory.
-- **16 contraband-lijnen** in vier categorieën (**starter**, **bulk**, **luxe**, **gevaarlijk**), elk met eigen risico's en **bronlanden** (`availableInCountries`); **verkopen** kan overal tegen de lokale multiplier. Filters en tier-sortering op de handelswaren-tab.
+- **16 contraband-lijnen** in vier categorieën (**starter**, **bulk**, **luxe**, **gevaarlijk**), elk met eigen risico's en **bronlanden** (`availableInCountries`). **Voorraad blijft in het land** waar je koopt of claimt; **verkopen** kan alleen daar, tegen de lokale multiplier. Smokkel verplaatst stacks naar een ander land. Filters en tier-sortering op de handelswaren-tab.
 - Tijdens **Contraband Rush** tellen winstgevende verkopen en het ophalen van gesmokkelde trade-lading mee voor het live event (category `trade`).
 
 ### Client UX (zwarte markt → handelswaren-tab)
 - Op **mobiel/smalle breedte** is de afdelingenkeuze een **enkele horizontale chip-rij** (geen vaste groeptitels/subtitle). In de dashboard-shell heeft de zwarte markt geen tweede AppBar, zodat de productlijst het scherm vult.
-- **Risico-uitleg** (inklapbaar bovenaan): leesbare tekst op donkere kaarten via theme-kleuren (`onSurface`).
+- **Te verkopen hier** staat bovenaan; stacks in andere landen staan daaronder (geen verkoopknop). Daarna risico-uitleg, filters en de koopcatalogus.
+- **Risico-uitleg** (inklapbaar): leesbare tekst op donkere kaarten via theme-kleuren (`onSurface`).
 - Marktdata wordt in **drie segmenten** geladen (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Faalt één segment, dan volgt een **banner** en blijft de rest bruikbaar; alleen als **alles** faalt, zie je de fatale leegtoestand.
 - Per goed tonen **chips** server-gestuurde risico’s waar aanwezig: bederfvenster (bloemen), prijsvolatiliteit (diamonds), tripschade (electronics), inbeslagnemingskans (wapens/farmaceutica). Het paneel “Travel and market risks” vat het gedrag tekstueel samen.
 - **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/…` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).
 
 ### Trade Mechanics (samenvatting)
-- **Kopen/verkopen**: live prijzen en inventory; elektronica-verkoop hangt af van **conditie**. Winst = verkoopprijs − inkoopprijs (`purchasePrice` op inventory).
+- **Kopen/verkopen**: live prijzen en **landvoorraad**; elektronica-verkoop hangt af van **conditie**. Winst = verkoopprijs − inkoopprijs (`purchasePrice` op inventory). Gewone reizen verplaatst of confisqueert handelswaren niet.
 - **XP bij verkoop**: klein (max 30), gebaseerd op omzet + winst — misdaden blijven de hoofd-XP-bron.
 - **Smokkel van handelswaren** bewaart inkoopprijs en conditie in de zending en zet die bij claim terug (gewogen gemiddelde bij samenvoegen); anders leek winst gelijk aan het hele verkoopbedrag.
 - **XP bij smokkel-claim**: klein per zending (max 60 per claim-actie), afhankelijk van categorie/hoeveelheid.
@@ -620,7 +621,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - Publieke profielen tonen featured achievements, een tappable crew-naam en het landgoed als je een huis/appartement hebt. **Online** betekent dat die speler de laatste 5 minuten een echte sessie had; een world-tick of het openen van het profiel telt niet als inloggen.
 
 ### Trade Risk Factors (legacy / algemeen)
-Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s; details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md` / `TRADE_RISK_MECHANICS` waar van toepassing.
+Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-risico’s voor **smokkelzendingen** en **gedragen materialen**. Persoonlijke handelswaren-magazijnen blijven in het land en worden bij commerciële reizen niet meegenomen of geconfisqueerd. Details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md`.
 
 #### Police Seizure
 - **Chance**: Based on wanted level

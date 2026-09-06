@@ -69,6 +69,7 @@ interface CryptoLotMeta {
 
 interface TradeGoodLotMeta {
   goodType: string;
+  country?: string;
   condition: number;
   unitPurchasePrice: number;
   purchasedAt: string | null;
@@ -707,8 +708,12 @@ export const playerMarketplaceService = {
     if (rejected) return rejected;
 
     const countryCode = await getSellerCountry(playerId);
+    if (!countryCode || row.country !== countryCode) {
+      throw new Error('TRADE_GOOD_NOT_IN_COUNTRY');
+    }
     const meta: TradeGoodLotMeta = {
       goodType: row.goodType,
+      country: row.country,
       condition: row.condition ?? 100,
       unitPurchasePrice: row.purchasePrice ?? 0,
       purchasedAt: row.purchasedAt ? new Date(row.purchasedAt).toISOString() : null,
@@ -997,8 +1002,19 @@ export const playerMarketplaceService = {
     const unitPaid = Math.max(0, Math.floor(listing.price / Math.max(1, lotQuantity)));
 
     return prisma.$transaction(async (tx) => {
+      const buyer = await tx.player.findUnique({
+        where: { id: buyerId },
+        select: { currentCountry: true },
+      });
+      const lotCountry = buyer?.currentCountry?.trim() || 'netherlands';
       const existing = await tx.inventory.findUnique({
-        where: { playerId_goodType: { playerId: buyerId, goodType: meta.goodType } },
+        where: {
+          playerId_goodType_country: {
+            playerId: buyerId,
+            goodType: meta.goodType,
+            country: lotCountry,
+          },
+        },
       });
       const currentQuantity = existing?.quantity ?? 0;
       if (currentQuantity + lotQuantity > good.maxInventory) {
@@ -1027,6 +1043,7 @@ export const playerMarketplaceService = {
           data: {
             playerId: buyerId,
             goodType: meta.goodType,
+            country: lotCountry,
             quantity: lotQuantity,
             purchasePrice: unitPaid,
             condition: meta.condition ?? 100,
@@ -1101,9 +1118,15 @@ async function restoreEscrow(tx: TransactionClient, listing: ListingRow): Promis
     case MARKET_LISTING_KIND_TRADE_GOOD_LOT: {
       const meta = parseMeta<TradeGoodLotMeta>(listing.meta);
       if (!meta) return;
+      const returnCountry =
+        meta.country?.trim() || listing.countryCode?.trim() || 'netherlands';
       const existing = await tx.inventory.findUnique({
         where: {
-          playerId_goodType: { playerId: listing.sellerId, goodType: meta.goodType },
+          playerId_goodType_country: {
+            playerId: listing.sellerId,
+            goodType: meta.goodType,
+            country: returnCountry,
+          },
         },
       });
       if (existing) {
@@ -1119,6 +1142,7 @@ async function restoreEscrow(tx: TransactionClient, listing: ListingRow): Promis
           data: {
             playerId: listing.sellerId,
             goodType: meta.goodType,
+            country: returnCountry,
             quantity: listing.quantity,
             purchasePrice: meta.unitPurchasePrice ?? 0,
             condition: meta.condition ?? 100,

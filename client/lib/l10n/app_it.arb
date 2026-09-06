@@ -11298,5 +11298,19 @@
   "territoryNoticeEncircled": "Questa regione interna è circondata da altre regioni dello stesso Crew, quindi non può essere attaccata direttamente. Prendi prima una regione vicina per aprire il fronte.",
   "seasonPassClaimablesTitle": "Pronto da ritirare",
   "seasonPassNoClaimables": "Nessun premio evento da ritirare al momento.",
-  "seasonPassPrizesToWin": "Premi da vincere"
+  "seasonPassPrizesToWin": "Premi da vincere",
+  "tradeSellHereTitle": "Vendi qui",
+  "tradeSellHereSubtitle": "Stock in questo paese. Vendi a prezzi locali.",
+  "tradeNoStockHere": "Ancora nessuna merce commerciale in questo paese.",
+  "tradeStoredElsewhereTitle": "Conservato in altri paesi",
+  "tradeStoredElsewhereHint": "Viaggia o contrabbanda in quel paese per venderlo. I viaggi commerciali non spostano queste merci.",
+  "tradeGoodsCountryLockedHint": "Le merci acquistate o reclamate rimangono in quel paese. Il viaggio non li sposta: usa il contrabbando per spedire le scorte.",
+  "tradeStoredInCountry": "Memorizzato in {country}",
+  "@tradeStoredInCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  }
 }

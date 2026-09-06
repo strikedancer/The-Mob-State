@@ -1047,6 +1047,7 @@ model Inventory {
   id            Int      @id @default(autoincrement())
   playerId      Int
   goodType      String   @db.VarChar(50)
+  country       String   @default("netherlands") @db.VarChar(50)
   quantity      Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -1055,8 +1056,9 @@ model Inventory {
   purchasedAt   DateTime @default(now())
   player        Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
-  @@unique([playerId, goodType])
+  @@unique([playerId, goodType, country])
   @@index([playerId])
+  @@index([playerId, country])
   @@map("inventory")
 }
 

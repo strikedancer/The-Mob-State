@@ -11,7 +11,6 @@ import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { clearPlayerCrimeVehicle } from './vehicleToolService';
 import countries from '../../content/countries.json';
-import tradableGoods from '../../content/tradableGoods.json';
 import travelRoutes from '../../content/travelRoutes.json';
 import {
   CARRIED_MATERIAL_LOCATION,
@@ -650,76 +649,13 @@ export async function travelToCountry(playerId: number, countryId: string): Prom
   // Clear selected crime vehicle when player moves to different country
   await clearPlayerCrimeVehicle(playerId);
 
-  // Process inventory risks during travel
+  // Trade warehouses stay in-country; commercial travel does not move or seize them.
   const confiscatedGoods: Array<{ goodType: string; quantity: number }> = [];
   const damagedGoods: Array<{ goodType: string; damagePercent: number }> = [];
   const confiscatedMaterials = await confiscateCarriedMaterials(
     playerId,
     player.wantedLevel,
   );
-
-  const inventory = await prisma.inventory.findMany({
-    where: { playerId },
-  });
-
-  for (const item of inventory) {
-    const good = tradableGoods.find((g: any) => g.id === item.goodType);
-    if (!good) continue;
-
-    let quantityLost = 0;
-    let conditionLoss = 0;
-
-    // Check for confiscation (weapons, pharmaceuticals)
-    if ((good as any).confiscationChance) {
-      const confiscationRoll = Math.random();
-      if (confiscationRoll < (good as any).confiscationChance) {
-        // Confiscate 30-70% of the goods, minimum 1 item
-        const confiscationPercent = 0.3 + Math.random() * 0.4;
-        quantityLost = Math.max(1, Math.floor(item.quantity * confiscationPercent));
-        confiscatedGoods.push({ goodType: item.goodType, quantity: quantityLost });
-      }
-    }
-
-    // Check for damage (electronics)
-    if ((good as any).damageChancePerTrip) {
-      const damageRoll = Math.random();
-      if (damageRoll < (good as any).damageChancePerTrip) {
-        // Reduce condition by 20-40%
-        conditionLoss = 20 + Math.floor(Math.random() * 20);
-        damagedGoods.push({ goodType: item.goodType, damagePercent: conditionLoss });
-      }
-    }
-
-    // Update inventory if needed
-    if (quantityLost > 0 || conditionLoss > 0) {
-      const newQuantity = item.quantity - quantityLost;
-      const newCondition = Math.max(0, (item.condition || 100) - conditionLoss);
-
-      if (newQuantity <= 0) {
-        await prisma.inventory.delete({
-          where: {
-            playerId_goodType: {
-              playerId,
-              goodType: item.goodType,
-            },
-          },
-        });
-      } else {
-        await prisma.inventory.update({
-          where: {
-            playerId_goodType: {
-              playerId,
-              goodType: item.goodType,
-            },
-          },
-          data: {
-            quantity: newQuantity,
-            condition: newCondition,
-          },
-        });
-      }
-    }
-  }
 
   // Create world event
   await worldEventService.createEvent(
@@ -907,76 +843,13 @@ export async function continueJourney(playerId: number): Promise<TravelResult> {
     throw error;
   }
 
-  // Process inventory risks on this leg
+  // Trade warehouses stay in-country; commercial travel does not move or seize them.
   const confiscatedGoods: Array<{ goodType: string; quantity: number }> = [];
   const damagedGoods: Array<{ goodType: string; damagePercent: number }> = [];
   const confiscatedMaterials = await confiscateCarriedMaterials(
     playerId,
     player.wantedLevel,
   );
-
-  const inventory = await prisma.inventory.findMany({
-    where: { playerId },
-  });
-
-  for (const item of inventory) {
-    const good = tradableGoods.find((g: any) => g.id === item.goodType);
-    if (!good) continue;
-
-    let quantityLost = 0;
-    let conditionLoss = 0;
-
-    // Check for confiscation (weapons, pharmaceuticals, drugs)
-    if ((good as any).confiscationChance) {
-      const confiscationRoll = Math.random();
-      if (confiscationRoll < (good as any).confiscationChance) {
-        // Confiscate 30-70% of the goods, minimum 1 item
-        const confiscationPercent = 0.3 + Math.random() * 0.4;
-        quantityLost = Math.max(1, Math.floor(item.quantity * confiscationPercent));
-        confiscatedGoods.push({ goodType: item.goodType, quantity: quantityLost });
-      }
-    }
-
-    // Check for damage (electronics)
-    if ((good as any).damageChancePerTrip) {
-      const damageRoll = Math.random();
-      if (damageRoll < (good as any).damageChancePerTrip) {
-        // Reduce condition by 20-40%
-        conditionLoss = 20 + Math.floor(Math.random() * 20);
-        damagedGoods.push({ goodType: item.goodType, damagePercent: conditionLoss });
-      }
-    }
-
-    // Update inventory if needed
-    if (quantityLost > 0 || conditionLoss > 0) {
-      const newQuantity = item.quantity - quantityLost;
-      const newCondition = Math.max(0, (item.condition || 100) - conditionLoss);
-
-      if (newQuantity <= 0) {
-        await prisma.inventory.delete({
-          where: {
-            playerId_goodType: {
-              playerId,
-              goodType: item.goodType,
-            },
-          },
-        });
-      } else {
-        await prisma.inventory.update({
-          where: {
-            playerId_goodType: {
-              playerId,
-              goodType: item.goodType,
-            },
-          },
-          data: {
-            quantity: newQuantity,
-            condition: newCondition,
-          },
-        });
-      }
-    }
-  }
 
   // Determine if journey is complete
   const isJourneyComplete = nextLegIndex === route.length - 1;

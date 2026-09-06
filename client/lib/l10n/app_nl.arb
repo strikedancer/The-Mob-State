@@ -9826,7 +9826,7 @@
   "helpTopicTravelTitle": "Reizen",
   "helpTopicTravelSummary": "Verplaats je tussen landen voor betere marktprijzen, unieke kansen en toegang tot internationale systemen.",
   "helpTopicTravelHow": "Beschikbare landen: Nederland (startland), België, Duitsland, Frankrijk, Verenigd Koninkrijk, Spanje, Italië, Zwitserland, USA, Mexico, Colombia, Brazilië.\nReiskosten: buurland €500-€2.000, Europa → Amerika €5.000-€10.000, lange afstand €10.000-€20.000.\nVereisten voor reizen: niet in de cel, niet in ICU, minimaal 20 HP, reiskosten beschikbaar.\nDrugshoeveelheden in je inventaris tellen hierbij als echte gram voor draaggewicht en reischecks; 500 betekent dus 500g en niet 50kg.\nElk land heeft andere marktprijzen voor handelsgoederen (tot 300% prijsverschil), andere crime-opbrengsten en unieke trade items.\nRisico tijdens transport: politie kan goederen confisqueren op basis van je Wanted Level (kans = wanted × 2%, max 80%). FBI kan internationaal alles in beslag nemen als heat hoog is.\nDouane-inspectie heeft 10% basiskans. Je kunt steekpenningen betalen (€1.000-€5.000) of gepakt worden voor 50% goederen-verlies.\nNa aankomst zijn al je acties direct beschikbaar in het nieuwe land. Markten en crimesnelheid variëren per locatie.",
-  "helpTopicTravelTips": "Plan reizen altijd samen met trade, drugs of smokkel — een lege reis is weggegooid geld.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie onderweg sterk.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.\nMet een eigen vliegtuig in Luchtvaart wordt de commerciële reiscooldown korter. Privévluchten blijven apart en kosten brandstof.",
+  "helpTopicTravelTips": "Gewone reizen verplaatst geen handelswaren — smokkel voorraad naar het land waar je wilt verkopen.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie van rugzak-materiaal en smokkelzendingen.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.\nMet een eigen vliegtuig in Luchtvaart wordt de commerciële reiscooldown korter. Privévluchten blijven apart en kosten brandstof.",
   "helpTopicAviationCategory": "Wereld",
   "helpTopicAviationTitle": "Luchtvaart",
   "helpTopicAviationSummary": "Rond Luchtvaart-school af, koop een betaalde licentie en koop daarna een vliegtuig om direct te vliegen, commerciële reistijd te korten en je hangar te onderhouden.",
@@ -9870,7 +9870,7 @@
   "helpTopicBlackMarketCategory": "Economie",
   "helpTopicBlackMarketTitle": "Zwarte Markt",
   "helpTopicBlackMarketSummary": "Eén shop-hub onder Economie: dealerwinkels voor handelswaren, wapens, munitie, gereedschap, veiligheidsvesten, materialen en rugzakken, plus een spelersmarkt voor voertuigen en gedragen spullen.",
-  "helpTopicBlackMarketHow": "Open Zwarte Markt via het menu Economie. Winkels staan in één strook: Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen en Rugzakken. Spelersmarkt heeft Marktplaats en Mijn advertenties.\nHandelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in winkels (Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen, Rugzakken) en een spelersmarkt (Marktplaats, Mijn advertenties).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.",
+  "helpTopicBlackMarketHow": "Open Zwarte Markt via het menu Economie. Winkels staan in één strook: Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen en Rugzakken. Spelersmarkt heeft Marktplaats en Mijn advertenties.\nHandelswaren: bovenaan staat wat je hier kunt verkopen. Goederen die je in een ander land koopt of claimt blijven daar tot je ze smokkelt. Daaronder de catalogus (prijs, limiet, risicochips). Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in winkels (Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen, Rugzakken) en een spelersmarkt (Marktplaats, Mijn advertenties).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.",
   "helpTopicBlackMarketTips": "Gereedschap, vesten en lijfwachten koop je op ditzelfde scherm (Gereedschap / Beveiliging), niet via losse menupunten.\nHandelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats: ververs na plaatsen; alleen gereedschap dat je bij je draagt kun je te koop zetten.",
   "helpTopicDrugsCategory": "Empire",
   "helpTopicDrugsTitle": "Drugs",
@@ -10374,7 +10374,7 @@
   "tradeNoGoodsLoaded": "Er zijn momenteel geen goederen beschikbaar.",
   "tradeRiskPanelTitle": "Reis- en marktrisico's",
   "tradeRiskPanelSubtitle": "Elk goed vertoont waar van toepassing bederf, prijsschommelingen, reisschade of inbeslagname.",
-  "tradeRiskInsightBody": "16 CONTRABAND-LIJNEN in 4 categorieën (starter, bulk, luxe, gevaarlijk). Niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nSTARTER/BULK: bederf of lage marge — ideaal om te leren.\nLUXE: diamanten, goud, horloges, kunst — hoge waarde, plan je verkoopland.\nGEVAARLIJK: wapens en nepgeld — hoge inbeslagneming; houd Wanted laag.\nGebruik filters bovenaan om snel te zoeken.",
+  "tradeRiskInsightBody": "16 CONTRABAND-LIJNEN in 4 categorieën (starter, bulk, luxe, gevaarlijk). Niet elk land verkoopt alles — reis om goedkoop in te kopen, smokkel daarna om duurder te verkopen.\nGoederen blijven in het land waar je ze koopt of claimt. Gewone reizen verplaatst geen magazijnvoorraad.\nSTARTER/BULK: bederf of lage marge — ideaal om te leren.\nLUXE: diamanten, goud, horloges, kunst — hoge waarde, plan je verkoopland.\nGEVAARLIJK: wapens en nepgeld — hoge inbeslagneming; houd Wanted laag.\nGebruik filters bovenaan om snel te zoeken.",
   "tradeRiskSpoilageHours": "{hours}h bederfvenster",
   "@tradeRiskSpoilageHours": {
     "placeholders": {
@@ -10433,6 +10433,20 @@
   "tradeCategoryLuxury": "Luxe",
   "tradeCategoryDangerous": "Gevaarlijk",
   "tradeFilterAvailableHere": "Te koop hier",
+  "tradeSellHereTitle": "Te verkopen hier",
+  "tradeSellHereSubtitle": "Voorraad in dit land. Verkoop tegen lokale prijzen.",
+  "tradeNoStockHere": "Nog geen handelswaren in dit land.",
+  "tradeStoredElsewhereTitle": "Opgeslagen in andere landen",
+  "tradeStoredElsewhereHint": "Reis of smokkel naar dat land om te verkopen. Gewone reizen verplaatst deze goederen niet.",
+  "tradeGoodsCountryLockedHint": "Gekocht of geclaimd blijft in dat land. Reizen verplaatst niets — gebruik Smokkel om voorraad te verschepen.",
+  "tradeStoredInCountry": "Opgeslagen in {country}",
+  "@tradeStoredInCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
   "tradeMarketCatalogSummary": "{total} producten · {here} te koop in dit land",
   "@tradeMarketCatalogSummary": {
     "placeholders": {

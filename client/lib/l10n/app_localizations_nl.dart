@@ -6305,7 +6305,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get tradeRiskInsightBody =>
-      '16 CONTRABAND-LIJNEN in 4 categorieën (starter, bulk, luxe, gevaarlijk). Niet elk land verkoopt alles — reis om goedkoop in te kopen en duurder te verkopen.\nSTARTER/BULK: bederf of lage marge — ideaal om te leren.\nLUXE: diamanten, goud, horloges, kunst — hoge waarde, plan je verkoopland.\nGEVAARLIJK: wapens en nepgeld — hoge inbeslagneming; houd Wanted laag.\nGebruik filters bovenaan om snel te zoeken.';
+      '16 CONTRABAND-LIJNEN in 4 categorieën (starter, bulk, luxe, gevaarlijk). Niet elk land verkoopt alles — reis om goedkoop in te kopen, smokkel daarna om duurder te verkopen.\nGoederen blijven in het land waar je ze koopt of claimt. Gewone reizen verplaatst geen magazijnvoorraad.\nSTARTER/BULK: bederf of lage marge — ideaal om te leren.\nLUXE: diamanten, goud, horloges, kunst — hoge waarde, plan je verkoopland.\nGEVAARLIJK: wapens en nepgeld — hoge inbeslagneming; houd Wanted laag.\nGebruik filters bovenaan om snel te zoeken.';
 
   @override
   String tradeRiskSpoilageHours(String hours) {
@@ -6369,6 +6369,32 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get tradeFilterAvailableHere => 'Te koop hier';
+
+  @override
+  String get tradeSellHereTitle => 'Te verkopen hier';
+
+  @override
+  String get tradeSellHereSubtitle =>
+      'Voorraad in dit land. Verkoop tegen lokale prijzen.';
+
+  @override
+  String get tradeNoStockHere => 'Nog geen handelswaren in dit land.';
+
+  @override
+  String get tradeStoredElsewhereTitle => 'Opgeslagen in andere landen';
+
+  @override
+  String get tradeStoredElsewhereHint =>
+      'Reis of smokkel naar dat land om te verkopen. Gewone reizen verplaatst deze goederen niet.';
+
+  @override
+  String get tradeGoodsCountryLockedHint =>
+      'Gekocht of geclaimd blijft in dat land. Reizen verplaatst niets — gebruik Smokkel om voorraad te verschepen.';
+
+  @override
+  String tradeStoredInCountry(String country) {
+    return 'Opgeslagen in $country';
+  }
 
   @override
   String tradeMarketCatalogSummary(String total, String here) {
@@ -15945,7 +15971,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTravelTips =>
-      'Plan reizen altijd samen met trade, drugs of smokkel — een lege reis is weggegooid geld.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie onderweg sterk.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.\nMet een eigen vliegtuig in Luchtvaart wordt de commerciële reiscooldown korter. Privévluchten blijven apart en kosten brandstof.';
+      'Gewone reizen verplaatst geen handelswaren — smokkel voorraad naar het land waar je wilt verkopen.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie van rugzak-materiaal en smokkelzendingen.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.\nMet een eigen vliegtuig in Luchtvaart wordt de commerciële reiscooldown korter. Privévluchten blijven apart en kosten brandstof.';
 
   @override
   String get helpTopicAviationCategory => 'Wereld';
@@ -16103,7 +16129,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Open Zwarte Markt via het menu Economie. Winkels staan in één strook: Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen en Rugzakken. Spelersmarkt heeft Marktplaats en Mijn advertenties.\nHandelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in winkels (Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen, Rugzakken) en een spelersmarkt (Marktplaats, Mijn advertenties).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.';
+      'Open Zwarte Markt via het menu Economie. Winkels staan in één strook: Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen en Rugzakken. Spelersmarkt heeft Marktplaats en Mijn advertenties.\nHandelswaren: bovenaan staat wat je hier kunt verkopen. Goederen die je in een ander land koopt of claimt blijven daar tot je ze smokkelt. Daaronder de catalogus (prijs, limiet, risicochips). Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.\nDe zwarte markt is onderverdeeld in winkels (Handelswaren, Wapens, Munitie, Gereedschap, Beveiliging, Materialen, Rugzakken) en een spelersmarkt (Marktplaats, Mijn advertenties).\nPrijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.\nZwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.\nWapens die je hier koopt kun je inzetten bij crimes, PvP en beveiliging. Betere wapens geven hogere beschadiging en succes-kans.\nFilters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.\nJe kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.\nListings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.\nTab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.';
 
   @override
   String get helpTopicBlackMarketTips =>

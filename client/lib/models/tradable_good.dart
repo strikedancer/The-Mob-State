@@ -151,6 +151,7 @@ class GoodPrice {
 
 class InventoryItem {
   final String goodType;
+  final String country;
   final int quantity;
   final int purchasePrice;
   final int condition;
@@ -159,6 +160,7 @@ class InventoryItem {
 
   InventoryItem({
     required this.goodType,
+    this.country = '',
     required this.quantity,
     required this.purchasePrice,
     this.condition = 100,
@@ -169,6 +171,7 @@ class InventoryItem {
   factory InventoryItem.fromJson(Map<String, dynamic> json) {
     return InventoryItem(
       goodType: json['goodType'] as String? ?? '',
+      country: json['country'] as String? ?? '',
       quantity: (json['quantity'] as num?)?.toInt() ?? 0,
       purchasePrice: (json['purchasePrice'] as num?)?.toInt() ?? 0,
       condition: (json['condition'] as num?)?.toInt() ?? 100,

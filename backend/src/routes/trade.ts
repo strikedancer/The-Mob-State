@@ -62,10 +62,10 @@ router.get(
         return res.status(401).json({ error: 'Not authenticated' });
       }
 
-      const inventory = await tradeService.getFullInventory(playerId);
+      const result = await tradeService.getFullInventory(playerId);
       return res.json({
         success: true,
-        inventory,
+        ...result,
       });
     } catch (error) {
       return next(error);
@@ -207,7 +207,23 @@ router.post('/sell', authenticate, async (req: AuthRequest, res: Response, next:
       return res.status(400).json({
         success: false,
         error: 'INSUFFICIENT_INVENTORY',
-        message: 'Je hebt niet genoeg van dit product in je inventaris.',
+        message: 'Je hebt niet genoeg van dit product in dit land.',
+      });
+    }
+
+    if (error.message === 'GOODS_STORED_ELSEWHERE') {
+      return res.status(400).json({
+        success: false,
+        error: 'GOODS_STORED_ELSEWHERE',
+        message: 'Deze handelswaren liggen in een ander land. Smokkel of reis ernaartoe om te verkopen.',
+      });
+    }
+
+    if (error.message === 'GOODS_SPOILED') {
+      return res.status(400).json({
+        success: false,
+        error: 'GOODS_SPOILED',
+        message: 'Deze goederen zijn bedorven en waardeloos.',
       });
     }
 
