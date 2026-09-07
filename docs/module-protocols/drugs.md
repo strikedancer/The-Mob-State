@@ -102,6 +102,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Credit temp-slot and heat shield are time/risk/utility only (no extra yield).
 - Crew quality-lot deposit uses `CrewDrugLot` (type+quality+grams) and shares `drug_storage` capacity with trade-good drug rows.
 - Nightclub own-production margin bonus is capped via `DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`.
+- Players can sell finished lots to a nightclub owner in the same country when that owner enabled player supply (`GET/POST /nightclub/player-supply/*`). This is local B2B, not wholesale export and not the P2P market.
 - NPC wholesale export (sell-on-arrival) reuses `smuggling_shipments` + `metadata_json.wholesale`; cash is paid on tick/quote/list settle, never via depot claim. Crew wholesale uses `crewWholesale`, crew bank freight/payout, and `CrewDrugLot` debit.
 - Education-gated drug facility progression: slot/equipment upgrades that are locked behind school gates must return structured requirement details (`gateId`, `gateLabelKey`, `missing`) so the client can render the education requirements dialog instead of a generic error.
 - Materials bought into a country depot must not silently become backpack cargo; travel risk applies only to `_carried_` stock.

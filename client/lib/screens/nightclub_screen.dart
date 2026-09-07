@@ -1006,6 +1006,16 @@ class _NightclubScreenState extends State<NightclubScreen> {
     await _load();
   }
 
+  Future<void> _setPlayerSupplyEnabled(bool enabled) async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.setPlayerSupplyEnabled(
+      venueId: _venueId!,
+      enabled: enabled,
+    );
+    _showResultMessage(result, _t.nightclubPlayerSupplyToggleFailed);
+    await _load(silent: true);
+  }
+
   Future<void> _activateSupplierContract() async {
     if (_venueId == null) return;
     final result = await _nightclubService.activateSupplierContract(
@@ -2549,6 +2559,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
               _t.nightclubSectionSupplierPromoter,
               Icons.local_shipping,
             ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              value: data['playerSupplyEnabled'] == true,
+              onChanged: _setPlayerSupplyEnabled,
+              title: Text(_t.nightclubPlayerSupplyToggleTitle),
+              subtitle: Text(_t.nightclubPlayerSupplyToggleHint),
+            ),
+            const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _selectedSupplierContract,
               items:

@@ -12379,6 +12379,56 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nightclubActivateSupplier => 'Lieferant aktivieren';
 
   @override
+  String get nightclubPlayerSupplyAction => 'An Verein verkaufen';
+
+  @override
+  String get nightclubPlayerSupplySellTitle => 'An einen Nightclub verkaufen';
+
+  @override
+  String nightclubPlayerSupplySellHint(String drug) {
+    return 'Verkaufe $drug an einen Clubbesitzer in diesem Land. Beim Preis handelt es sich um einen Großhandelspreis, so dass der Club an der Tür immer noch Geld verdient.';
+  }
+
+  @override
+  String get nightclubPlayerSupplyNoneOpen =>
+      'Kein Verein in diesem Land kauft von Spielern. Clubbesitzer müssen den Spielervorrat im Ops Lab öffnen.';
+
+  @override
+  String get nightclubPlayerSupplyClubLabel => 'Clubbesitzer';
+
+  @override
+  String get nightclubPlayerSupplyGramsLabel => 'Gramm';
+
+  @override
+  String get nightclubPlayerSupplyRefreshQuote => 'Preis aktualisieren';
+
+  @override
+  String nightclubPlayerSupplyQuote(String unit, String total, String owner) {
+    return '$unit € pro Gramm · $total bis $owner';
+  }
+
+  @override
+  String get nightclubPlayerSupplyConfirm => 'An Verein verkaufen';
+
+  @override
+  String get nightclubPlayerSupplySold => 'An den Verein verkauft.';
+
+  @override
+  String get nightclubPlayerSupplyFailed =>
+      'Konnte nicht an den Verein verkauft werden.';
+
+  @override
+  String get nightclubPlayerSupplyToggleTitle => 'Kaufen Sie von Spielern';
+
+  @override
+  String get nightclubPlayerSupplyToggleHint =>
+      'Spieler in diesem Land können Ihnen Aktien zum Großhandelspreis verkaufen. Sie zahlen bar; das Los geht ins Vereinslager.';
+
+  @override
+  String get nightclubPlayerSupplyToggleFailed =>
+      'Der Spielervorrat konnte nicht aktualisiert werden.';
+
+  @override
   String get nightclubPromoterProfile => 'Promoterprofil';
 
   @override
@@ -16505,7 +16555,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicDrugsTips =>
-      'Erweitern Sie den Speicher vor der Produktion: Voller Speicher stoppt die Produktion und Sie verlieren Produktionszeit. \nHalten Sie die FBI-Hitze unter 50: Oberhalb dieses Schwellenwerts werden Sie aktiv gejagt, mit hohen Angriffschancen, die alles zum Erliegen bringen. \nKombinieren Sie Arzneimittelverkäufe mit Schmuggel, um höhere Margen und eine Risikoverteilung zu erzielen.\nExportiere nur, wenn du Fracht und Beschlagnahme akzeptierst; Reisen plus Straßenverkauf bleibt pro Gramm mehr wert.';
+      'Kaufen Sie Materialien auf der Registerkarte „Materialien“, bevor Sie mit der Charge beginnen. \nHalten Sie den Drogenkonsum mit Low-Profile oder Cash-Cool niedrig, wenn Sie viel sammeln. \nBei einer Razzia: Wählen Sie Ausfallzeiten, wenn Sie die Charge behalten möchten, oder Bargeld, wenn die Anlage weiterlaufen muss. \nAktivieren Sie den automatischen Darkweb-Verkauf nur, wenn Sie die Gebühr und den Preis akzeptieren. \nDie im Nightclub gelagerte Eigenproduktion bringt eine kleine Extramarge ein. \nAn einen Klub mit Aan-Klub verkaufen / An Klub verkaufen, als ein lokaler Eigentümer das Spielerangebot eröffnete; Der Großhandelsexport bleibt die Fernoption. \nExportieren Sie nur, wenn Sie das Fracht- und Pfändungsrisiko übernehmen; Reisen plus Straßenverkauf zahlt immer noch mehr pro Gramm.';
 
   @override
   String get helpTopicNightclubCategory => 'Reich';
@@ -16519,7 +16569,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicNightclubHow =>
-      'Unten nutzen Sie jetzt ein Nightclub-Management-Kommandozentrum mit Zonen für Crew, Drogenlager, DJ-Kommando, Sicherheitseinheit und Operationslabor; Alle Zonen werden in einem kontinuierlichen Seitenfluss ohne zusätzlichen inneren Bildlauf ausgeführt. \nDer Nightclub-Bildschirm enthält jetzt einen zentralen Intelligence-Bereich, der Übersicht, Umsatztrends und Risikoprotokolle ohne Tab-Wechsel vereint. \nOps Lab umfasst jetzt 11 Systeme: Resident-DJ, dynamischer Veranstaltungskalender, Upgrade-Baum, polizeiliche Reaktion auf Hitze und Vorfälle, Lieferantenverträge, Veranstalterprofile, VIP-Kundschaft + Personalmerkmale, Schmuggelrouten, Bar- und Küchenmanagement (Getränke/Essen) mit Preisen, Konkurrenzsabotage + Gegenspionage und einen Betriebszeitplan. \nSchmuggelrouten haben jetzt eine Abklingzeit (Hafen 60 Min., Landebahn 90 Min., Grenzlinie 120 Min.), was eine Risiko-/Zeitplanung anstelle von unendlichem Spam erzwingt. \nDer Upgrade-Baum ist interaktiv: Wählen Sie explizit Sound Rig, VIP Lounge oder Surveillance und kaufen Sie direkt das nächste Level mit sichtbaren Upgrade-Kosten. \nDer Umsatz wird pro Tick basierend auf DJ-Qualität, Auslastung und Verfügbarkeit generiert. Fehlendes Angebot schmälert direkt das Einkommen. \nDJ-Verträge enden automatisch zum konfigurierten Endzeitpunkt; Danach müssen Sie für neue Boosts erneut buchen. \nBei unzureichender Sicherheit kann es zu Zwischenfällen (Kämpfe, Diebstähle) kommen. Dies beeinträchtigt den Besucher-Score und das Einkommen. \nJede Saison hat eine Bestenliste. Spieler mit den höchsten Gesamteinnahmen im Nightclub gewinnen Saisonbelohnungen. \nSynergie mit Arzneimitteln: Die eigene Arzneimittelproduktion kann als Versorgung dienen und die Margen erhöhen. \nDie Medikamentenlagerung erfolgt grammbasiert: Bei jeder Auswahl werden die verfügbaren Gramm angezeigt, bevor Sie den Bestand in den Nachtclubbestand verschieben. \nRivalisierende Aktionen basieren auf Namen: Sie suchen rivalisierende Vereine nach Spielernamen, bevor Sie eine Aktion auswählen (keine Spieler-ID erforderlich). \nSynergie mit Prostitution: Kombinierte Veranstaltungsorte sorgen für mehr Besucher und höhere Einnahmen. \nUpgrades verbessern die Kapazität, den Vorratsspeicher und die maximale Anzahl an DJs und Wachen, die Sie einsetzen können.';
+      'Unten nutzen Sie jetzt ein Nightclub-Management-Kommandozentrum mit Zonen für Crew, Drogenlager, DJ-Kommando, Sicherheitseinheit und Operationslabor; Alle Zonen werden in einem kontinuierlichen Seitenfluss ohne zusätzlichen inneren Bildlauf ausgeführt. \nDer Nightclub-Bildschirm enthält jetzt einen zentralen Intelligence-Bereich, der Übersicht, Umsatztrends und Risikoprotokolle ohne Tab-Wechsel vereint. \nOps Lab umfasst jetzt 11 Systeme: Resident-DJ, dynamischer Veranstaltungskalender, Upgrade-Baum, polizeiliche Reaktion auf Hitze und Vorfälle, Lieferantenverträge, Promoterprofile, VIP-Kundschaft + Personalmerkmale, Schmuggelrouten, Bar- und Küchenmanagement (Getränke/Essen) mit Preisen, Sabotage von Rivalen + Spionageabwehr und eine Betriebszeitleiste. \nAktivieren Sie „Von Spielern kaufen“, damit Produzenten in Ihrem Land Ihre Lagerbestände zum Großhandelspreis verkaufen können. Sie zahlen bar und das Los landet im Clublager. \nSchmuggelrouten haben jetzt eine Abklingzeit (Hafen 60 Min., Landebahn 90 Min., Grenzlinie 120 Min.), was eine Risiko-/Zeitplanung anstelle von unendlichem Spam erzwingt. \nDer Upgrade-Baum ist interaktiv: Wählen Sie explizit Sound Rig, VIP Lounge oder Surveillance und kaufen Sie direkt das nächste Level mit sichtbaren Upgrade-Kosten. \nDer Umsatz wird pro Tick basierend auf DJ-Qualität, Auslastung und Verfügbarkeit generiert. Fehlendes Angebot schmälert direkt das Einkommen. \nDJ-Verträge enden automatisch zum konfigurierten Endzeitpunkt; Danach müssen Sie für neue Boosts erneut buchen. \nBei unzureichender Sicherheit kann es zu Zwischenfällen (Kämpfe, Diebstähle) kommen. Dies beeinträchtigt den Besucher-Score und das Einkommen. \nJede Saison hat eine Bestenliste. Spieler mit den höchsten Gesamteinnahmen im Nightclub gewinnen Saisonbelohnungen. \nSynergie mit Arzneimitteln: Die eigene Arzneimittelproduktion kann als Versorgung dienen und die Margen erhöhen. \nDie Medikamentenlagerung erfolgt grammbasiert: Bei jeder Auswahl werden die verfügbaren Gramm angezeigt, bevor Sie den Bestand in den Nachtclubbestand verschieben. \nRivalisierende Aktionen basieren auf Namen: Sie suchen rivalisierende Vereine nach Spielernamen, bevor Sie eine Aktion auswählen (keine Spieler-ID erforderlich). \nSynergie mit Prostitution: Kombinierte Veranstaltungsorte sorgen für mehr Besucher und höhere Einnahmen. \nUpgrades verbessern die Kapazität, den Vorratsspeicher und die maximale Anzahl an DJs und Wachen, die Sie einsetzen können.';
 
   @override
   String get helpTopicNightclubTips =>

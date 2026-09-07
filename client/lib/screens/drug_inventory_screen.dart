@@ -10,6 +10,8 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/drug_wholesale_export_dialog.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/nightclub_player_supply_dialog.dart';
+import '../services/nightclub_service.dart';
 
 class DrugInventoryScreen extends StatefulWidget {
   const DrugInventoryScreen({super.key});
@@ -20,6 +22,7 @@ class DrugInventoryScreen extends StatefulWidget {
 
 class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
   final DrugService _drugService = DrugService();
+  final NightclubService _nightclubService = NightclubService();
   List<DrugInventory> _inventory = [];
   List<DrugDefinition> _drugDefinitions = [];
   Map<String, DrugMarketPrice> _marketPrices = {};
@@ -216,6 +219,50 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
               : (rawMsg != null && rawMsg.isNotEmpty
                   ? localizeDrugClientMessage(loc, rawMsg)
                   : loc.drugsExportFailed),
+        ),
+        backgroundColor: ok ? Colors.green : Colors.red,
+      ),
+    );
+    if (ok) _loadData();
+  }
+
+  Future<void> _sellToClub(DrugInventory drug) async {
+    final choice = await showDialog<Map<String, dynamic>?>(
+      context: context,
+      builder: (ctx) => NightclubPlayerSupplyDialog(
+        drugType: drug.drugType,
+        quality: drug.quality,
+        quantity: drug.quantity,
+        drugName: drug.drugName,
+        service: _nightclubService,
+      ),
+    );
+    if (choice == null) return;
+    final quantity = choice['quantity'] as int? ?? 0;
+    final venueId = choice['venueId'] as int?;
+    if (quantity <= 0 || venueId == null) return;
+
+    final result = await _nightclubService.sellToNightclub(
+      venueId: venueId,
+      drugType: drug.drugType,
+      quality: drug.quality,
+      quantity: quantity,
+    );
+    if (!mounted) return;
+    final loc = AppLocalizations.of(context)!;
+    final rawMsg = result['message'] as String?;
+    final ok = result['success'] == true;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          ok
+              ? (rawMsg != null && rawMsg.isNotEmpty
+                  ? rawMsg
+                  : loc.nightclubPlayerSupplySold)
+              : (rawMsg != null && rawMsg.isNotEmpty
+                  ? localizeDrugClientMessage(loc, rawMsg)
+                  : loc.nightclubPlayerSupplyFailed),
         ),
         backgroundColor: ok ? Colors.green : Colors.red,
       ),
@@ -873,6 +920,42 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                             ),
                                                           ),
                                                         ],
+                                                      ),
+                                                      const SizedBox(height: 8),
+                                                      SizedBox(
+                                                        width: double.infinity,
+                                                        child: ElevatedButton.icon(
+                                                          onPressed: () =>
+                                                              _sellToClub(drug),
+                                                          icon: const Icon(
+                                                            Icons.nightlife,
+                                                            size: 15,
+                                                          ),
+                                                          label: Text(
+                                                            t.nightclubPlayerSupplyAction,
+                                                            style: const TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                const Color(0xFF5C2D91),
+                                                            foregroundColor:
+                                                                Colors.white,
+                                                            padding:
+                                                                const EdgeInsets.symmetric(
+                                                              horizontal: 10,
+                                                              vertical: 8,
+                                                            ),
+                                                            minimumSize:
+                                                                const Size(0, 36),
+                                                            tapTargetSize:
+                                                                MaterialTapTargetSize
+                                                                    .shrinkWrap,
+                                                          ),
+                                                        ),
                                                       ),
                                                       if (drug.quality != 'D') ...[
                                                         const SizedBox(height: 8),

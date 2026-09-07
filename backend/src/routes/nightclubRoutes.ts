@@ -60,6 +60,62 @@ router.get('/leaderboard', authenticate, async (req: Request, res: Response) => 
  * GET /season
  * Current weekly season summary and recent rewards
  */
+router.get('/player-supply/venues', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const result = await nightclubService.listPlayerSupplyVenues(playerId);
+    if (!result.success) return res.status(400).json(result);
+    return res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+router.get('/player-supply/quote', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(String(req.query.venueId ?? ''), 10);
+    const drugType = String(req.query.drugType ?? '');
+    const quality = String(req.query.quality ?? '');
+    const quantity = parseInt(String(req.query.quantity ?? ''), 10);
+    if (!venueId || !drugType || !quality || !quantity) {
+      return res.status(400).json({ success: false, message: 'Missing quote fields' });
+    }
+    const result = await nightclubService.quotePlayerSupply(
+      playerId,
+      venueId,
+      drugType,
+      quality,
+      quantity,
+    );
+    if (!result.success) return res.status(400).json(result);
+    return res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+router.post('/player-supply/sell', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const { venueId, drugType, quality, quantity } = req.body ?? {};
+    const result = await nightclubService.sellToNightclubOwner(
+      playerId,
+      Number(venueId),
+      String(drugType ?? ''),
+      String(quality ?? ''),
+      Number(quantity),
+    );
+    if (!result.success) return res.status(400).json(result);
+    return res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
 router.get('/season', authenticate, async (req: Request, res: Response) => {
   try {
     const playerId = (req as AuthRequest).player?.id;
@@ -292,6 +348,24 @@ router.post('/:venueId/upgrades/marketing', authenticate, async (req: Request, r
     }
 
     const result = await nightclubService.investInMarketing(playerId, venueId, Number(amount));
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/ops/player-supply
+ * Body: { enabled: boolean }
+ */
+router.post('/:venueId/ops/player-supply', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const enabled = Boolean(req.body?.enabled);
+    const result = await nightclubService.setPlayerSupplyEnabled(playerId, venueId, enabled);
     if (result.success) return res.json(result);
     return res.status(400).json(result);
   } catch (err) {

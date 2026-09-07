@@ -12308,6 +12308,55 @@ class AppLocalizationsPl extends AppLocalizations {
   String get nightclubActivateSupplier => 'Aktywuj dostawcę';
 
   @override
+  String get nightclubPlayerSupplyAction => 'Sprzedaj klubowi';
+
+  @override
+  String get nightclubPlayerSupplySellTitle => 'Sprzedaj do klubu nocnego';
+
+  @override
+  String nightclubPlayerSupplySellHint(String drug) {
+    return 'Sprzedaj $drug właścicielowi klubu w tym kraju. Cena jest obniżką hurtową, więc klub nadal zarabia na drzwiach.';
+  }
+
+  @override
+  String get nightclubPlayerSupplyNoneOpen =>
+      'Żaden klub w tym kraju nie kupuje od zawodników. Właściciele klubów muszą otworzyć zasoby graczy w Ops Lab.';
+
+  @override
+  String get nightclubPlayerSupplyClubLabel => 'Właściciel klubu';
+
+  @override
+  String get nightclubPlayerSupplyGramsLabel => 'Gramów';
+
+  @override
+  String get nightclubPlayerSupplyRefreshQuote => 'Zaktualizuj cenę';
+
+  @override
+  String nightclubPlayerSupplyQuote(String unit, String total, String owner) {
+    return '$unit € za gram · $total € do $owner';
+  }
+
+  @override
+  String get nightclubPlayerSupplyConfirm => 'Sprzedaj klubowi';
+
+  @override
+  String get nightclubPlayerSupplySold => 'Sprzedany klubowi.';
+
+  @override
+  String get nightclubPlayerSupplyFailed => 'Nie udało się sprzedać klubowi.';
+
+  @override
+  String get nightclubPlayerSupplyToggleTitle => 'Kupuj od graczy';
+
+  @override
+  String get nightclubPlayerSupplyToggleHint =>
+      'Gracze w tym kraju mogą sprzedać Ci akcje po cenie hurtowej. Płacisz gotówką; większość trafia do magazynów klubowych.';
+
+  @override
+  String get nightclubPlayerSupplyToggleFailed =>
+      'Nie można zaktualizować zasobów odtwarzacza.';
+
+  @override
   String get nightclubPromoterProfile => 'Profil promotora';
 
   @override
@@ -16430,7 +16479,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsTips =>
-      'Zmodernizuj pamięć masową przed rozpoczęciem produkcji: zapełnienie pamięci masowej wstrzymuje produkcję, a Ty tracisz czas produkcji. \nUtrzymuj FBI Heat poniżej 50: powyżej tego progu jesteś aktywnie ścigany z dużymi szansami na naloty, które wszystko zamykają. \nPołącz sprzedaż leków z przemytem, ​​aby uzyskać wyższe marże i rozproszone ryzyko.\nEksportuj tylko jeśli akceptujesz fracht i przejęcie; podróż i sprzedaż uliczna nadal dają więcej na gram.';
+      'Kup materiały w zakładce Materiały przed rozpoczęciem partii. \nUtrzymuj niską temperaturę narkotyków dzięki dyskretnemu lub chłodnemu wpływowi, gdy zbierzesz dużo. \nPodczas nalotu: wybierz przestój, jeśli chcesz zachować partię, lub gotówkę, jeśli obiekt musi nadal działać. \nWłącz automatyczną sprzedaż w Darkweb tylko wtedy, gdy zaakceptujesz opłatę i ciepło. \nWłasna produkcja przechowywana w nocnym klubie zapewnia niewielką dodatkową marżę. \nSprzedaj klubowi z klubem Aan / Sprzedaj klubowi, gdy lokalny właściciel otworzył zapasy zawodników; eksport hurtowy pozostaje opcją na duże odległości. \nEksportuj tylko wtedy, gdy akceptujesz ryzyko frachtu i zajęcia; podróże i sprzedaż uliczna nadal płacą więcej za gram.';
 
   @override
   String get helpTopicNightclubCategory => 'Imperium';
@@ -16444,7 +16493,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicNightclubHow =>
-      'Na dole znajduje się teraz Centrum Dowodzenia Zarządzaniem Klubem Nocnym ze strefami dla załogi, przechowywania leków, dowództwa DJ-a, jednostki ochrony i laboratorium operacyjnego; wszystkie strefy działają w ramach jednego, ciągłego przepływu stron, bez dodatkowego przewijania wewnętrznego. \nEkran klubu nocnego zawiera teraz jedną centralną sekcję Intelligence, łączącą przegląd, trendy przychodów i dzienniki ryzyka bez konieczności przełączania zakładek. \nOps Lab obejmuje teraz 11 systemów: DJ-ów-rezydentów, dynamiczny kalendarz wydarzeń, drzewo ulepszeń, policyjna reakcja na upały/incydenty, kontrakty z dostawcami, profile promotorów, klientela VIP + cechy personelu, trasy przemytu, zarządzanie barem i kuchnią (napoje/jedzenie) z cenami, sabotażem konkurencji + kontrwywiadem oraz harmonogramem operacji. \nTrasy przemytu mają teraz czas odnowienia (port 60 min, lądowisko 90 min, granica 120 min), wymuszając planowanie ryzyka/czasu zamiast nieskończonego spamu. \nDrzewo ulepszeń jest interaktywne: wybierz Sound Rig, VIP Lounge lub Surveillance i kup bezpośrednio następny poziom z widocznymi kosztami ulepszeń. \nPrzychód generowany jest na każdy tick w oparciu o jakość DJ-a, obłożenie i dostępność dostaw. Brakująca podaż bezpośrednio zmniejsza dochód. \nUmowy z DJ-ami kończą się automatycznie o skonfigurowanej godzinie zakończenia; po tym czasie musisz zarezerwować ponownie, aby uzyskać nowe wzmocnienia. \nW przypadku niewystarczającego bezpieczeństwa mogą wystąpić zdarzenia (bójki, kradzieże). To szkodzi punktacji i dochodom odwiedzających. \nKażdy sezon ma tabelę liderów. Gracze z najwyższymi łącznymi przychodami z klubu nocnego wygrywają nagrody sezonowe. \nSynergia z lekami: własna produkcja leków może służyć jako podaż, podnosząc marże. \nPrzechowywanie leków opiera się na gramach: przy każdym wyborze wyświetlana jest dostępna gramatura przed przeniesieniem zapasów do magazynu klubu nocnego. \nDziałania rywali opierają się na nazwie: przed wybraniem akcji wyszukujesz rywalizujące kluby według nazwy gracza (nie jest wymagany identyfikator gracza). \nSynergia z prostytucją: połączone wydarzenia zapewniają dodatkową odwiedzalność i wyższe przychody. \nUlepszenia zwiększają pojemność, miejsce do przechowywania zapasów oraz maksymalną liczbę DJ-ów i strażników, których możesz rozmieścić.';
+      'Na dole znajduje się teraz Centrum Dowodzenia Zarządzaniem Klubem Nocnym ze strefami dla załogi, przechowywania leków, dowództwa DJ-a, jednostki ochrony i laboratorium operacyjnego; wszystkie strefy działają w ramach jednego, ciągłego przepływu stron, bez dodatkowego przewijania wewnętrznego. \nEkran klubu nocnego zawiera teraz jedną centralną sekcję Intelligence, łączącą przegląd, trendy przychodów i dzienniki ryzyka bez konieczności przełączania zakładek. \nOps Lab obejmuje teraz 11 systemów: DJ- rezydent, dynamiczny kalendarz wydarzeń, drzewo ulepszeń, policyjna reakcja na upały/incydenty, kontrakty z dostawcami, profile promotorów, klientela VIP + cechy personelu, trasy przemytu, zarządzanie barem i kuchnią (napoje/jedzenie) z cenami, sabotażem konkurencji + kontrwywiadem oraz harmonogramem operacji. \nWłącz Kup od graczy, aby producenci w Twoim kraju sprzedawali Ci akcje po cenie hurtowej; płacisz gotówką, a część trafia do magazynu klubu. \nTrasy przemytu mają teraz czas odnowienia (port 60 min, lądowisko 90 min, granica 120 min), wymuszając planowanie ryzyka/czasu zamiast nieskończonego spamu. \nDrzewo ulepszeń jest interaktywne: wybierz Sound Rig, VIP Lounge lub Surveillance i kup bezpośrednio następny poziom z widocznymi kosztami ulepszeń. \nPrzychód generowany jest na każdy tick w oparciu o jakość DJ-a, obłożenie i dostępność dostaw. Brakująca podaż bezpośrednio zmniejsza dochód. \nUmowy z DJ-ami kończą się automatycznie o skonfigurowanej godzinie zakończenia; po tym czasie musisz zarezerwować ponownie, aby uzyskać nowe wzmocnienia. \nW przypadku niewystarczającego bezpieczeństwa mogą wystąpić zdarzenia (bójki, kradzieże). To szkodzi punktacji i dochodom odwiedzających. \nKażdy sezon ma tabelę liderów. Gracze z najwyższymi łącznymi przychodami z klubu nocnego wygrywają nagrody sezonowe. \nSynergia z lekami: własna produkcja leków może służyć jako podaż, podnosząc marże. \nPrzechowywanie leków opiera się na gramach: przy każdym wyborze wyświetlana jest dostępna gramatura przed przeniesieniem zapasów do magazynu klubu nocnego. \nDziałania rywali opierają się na nazwie: przed wybraniem akcji wyszukujesz rywalizujące kluby według nazwy gracza (nie jest wymagany identyfikator gracza). \nSynergia z prostytucją: połączone wydarzenia zapewniają dodatkową odwiedzalność i wyższe przychody. \nUlepszenia zwiększają pojemność, miejsce do przechowywania zapasów oraz maksymalną liczbę DJ-ów i strażników, których możesz rozmieścić.';
 
   @override
   String get helpTopicNightclubTips =>

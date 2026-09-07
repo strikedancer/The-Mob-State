@@ -210,6 +210,65 @@ class NightclubService {
     }
   }
 
+  Future<Map<String, dynamic>> listPlayerSupplyVenues() async {
+    try {
+      final response = await _apiClient.get('/nightclub/player-supply/venues');
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> quotePlayerSupply({
+    required int venueId,
+    required String drugType,
+    required String quality,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.get(
+        '/nightclub/player-supply/quote?venueId=$venueId&drugType=$drugType&quality=$quality&quantity=$quantity',
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> sellToNightclub({
+    required int venueId,
+    required String drugType,
+    required String quality,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post('/nightclub/player-supply/sell', {
+        'venueId': venueId,
+        'drugType': drugType,
+        'quality': quality,
+        'quantity': quantity,
+      });
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> setPlayerSupplyEnabled({
+    required int venueId,
+    required bool enabled,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/player-supply',
+        {'enabled': enabled},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> activateSupplierContract({
     required int venueId,
     required String contractType,

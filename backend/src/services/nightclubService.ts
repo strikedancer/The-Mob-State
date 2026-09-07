@@ -3624,6 +3624,9 @@ class NightclubService {
       crowdSize: crowdState.size,
       crowdVibe: crowdState.vibe,
       isOpen: venue.isOpen,
+      playerSupplyEnabled: Boolean(
+        (venue as { playerSupplyEnabled?: boolean }).playerSupplyEnabled,
+      ),
       inventoryValue: totalInventoryValue,
       itemsInStock: venue.inventory.length,
       revenueAllTime: Number(venue.totalRevenueAllTime ?? 0),
@@ -4109,6 +4112,487 @@ class NightclubService {
         `${prostitute.name} sent back to the street`
       ),
       newlyUnlockedAchievements: await this.buildAchievementPayloads(playerId),
+    };
+  }
+
+  private qualityPriceMultiplier(quality: string): number {
+    const multipliers: Record<string, number> = {
+      D: 1.0,
+      C: 1.2,
+      B: 1.5,
+      A: 2.0,
+      S: 2.8,
+    };
+    return multipliers[quality] ?? 1;
+  }
+
+  private async loadPlayerSupplyRuntime() {
+    const { getDrugRuntimeConfig } = await import('./drugRuntimeConfig');
+    return getDrugRuntimeConfig();
+  }
+
+  async listPlayerSupplyVenues(playerId: number): Promise<{
+    success: boolean;
+    message?: string;
+    venues?: Array<{
+      venueId: number;
+      ownerName: string;
+      country: string;
+      unitPriceHint: number;
+    }>;
+    minGrams?: number;
+    maxGrams?: number;
+    pricePercent?: number;
+  }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const runtime = await this.loadPlayerSupplyRuntime();
+    if (runtime.playerSupplyEnabled !== 1) {
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          'Spelerlevering aan clubs is uitgeschakeld',
+          'Player supply to clubs is disabled',
+        ),
+      };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    if (!player?.currentCountry) {
+      return {
+        success: false,
+        message: this.localize(language, 'Speler niet gevonden', 'Player not found'),
+      };
+    }
+
+    const venues = await prisma.nightclubVenue.findMany({
+      where: {
+        country: player.currentCountry,
+        isOpen: true,
+        playerId: { not: playerId },
+      },
+      include: { player: { select: { username: true } } },
+    });
+
+    const open = venues.filter((venue) =>
+      Boolean((venue as { playerSupplyEnabled?: boolean }).playerSupplyEnabled),
+    );
+
+    return {
+      success: true,
+      minGrams: runtime.playerSupplyMinGrams,
+      maxGrams: runtime.playerSupplyMaxGrams,
+      pricePercent: runtime.playerSupplyPricePercent,
+      venues: open.map((venue) => ({
+        venueId: venue.id,
+        ownerName: venue.player.username,
+        country: venue.country,
+        unitPriceHint: Math.floor(
+          100 * (runtime.playerSupplyPricePercent / 100),
+        ),
+      })),
+    };
+  }
+
+  async quotePlayerSupply(
+    playerId: number,
+    venueId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+  ): Promise<{
+    success: boolean;
+    message?: string;
+    unitPrice?: number;
+    totalPrice?: number;
+    quantity?: number;
+    ownerName?: string;
+    minGrams?: number;
+    maxGrams?: number;
+  }> {
+    const prepared = await this.preparePlayerSupplyDeal(
+      playerId,
+      venueId,
+      drugType,
+      quality,
+      quantity,
+    );
+    if (!prepared.ok) {
+      return { success: false, message: prepared.message };
+    }
+    return {
+      success: true,
+      unitPrice: prepared.unitPrice,
+      totalPrice: prepared.totalPrice,
+      quantity: prepared.quantity,
+      ownerName: prepared.ownerName,
+      minGrams: prepared.minGrams,
+      maxGrams: prepared.maxGrams,
+    };
+  }
+
+  async sellToNightclubOwner(
+    playerId: number,
+    venueId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+  ): Promise<{ success: boolean; message: string; totalPrice?: number }> {
+    const prepared = await this.preparePlayerSupplyDeal(
+      playerId,
+      venueId,
+      drugType,
+      quality,
+      quantity,
+    );
+    if (!prepared.ok) {
+      return { success: false, message: prepared.message };
+    }
+
+    const language = prepared.language;
+    try {
+      await prisma.$transaction(async (tx) => {
+        const sellerLot = await tx.drugInventory.findFirst({
+          where: { playerId, drugType, quality },
+        });
+        if (!sellerLot || sellerLot.quantity < prepared.quantity) {
+          throw new Error('INSUFFICIENT_STOCK');
+        }
+        const owner = await tx.player.findUnique({
+          where: { id: prepared.ownerId },
+          select: { money: true },
+        });
+        if (!owner || owner.money < prepared.totalPrice) {
+          throw new Error('OWNER_BROKE');
+        }
+
+        if (sellerLot.quantity === prepared.quantity) {
+          await tx.drugInventory.delete({ where: { id: sellerLot.id } });
+        } else {
+          await tx.drugInventory.update({
+            where: { id: sellerLot.id },
+            data: { quantity: { decrement: prepared.quantity } },
+          });
+        }
+
+        const existing = await tx.nightclubDrugInventory.findUnique({
+          where: {
+            venueId_drugType_quality: { venueId, drugType, quality },
+          },
+        });
+        if (existing) {
+          await tx.nightclubDrugInventory.update({
+            where: { id: existing.id },
+            data: { quantity: { increment: prepared.quantity } },
+          });
+        } else {
+          await tx.nightclubDrugInventory.create({
+            data: {
+              venueId,
+              drugType,
+              quality,
+              quantity: prepared.quantity,
+              basePrice: prepared.basePrice,
+              ownProduction: false,
+            },
+          });
+        }
+
+        await tx.player.update({
+          where: { id: prepared.ownerId },
+          data: { money: { decrement: prepared.totalPrice } },
+        });
+        await tx.player.update({
+          where: { id: playerId },
+          data: { money: { increment: prepared.totalPrice } },
+        });
+      });
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : '';
+      if (reason === 'OWNER_BROKE') {
+        return {
+          success: false,
+          message: this.localize(
+            language,
+            'De clubbaas heeft niet genoeg cash',
+            'The club owner does not have enough cash',
+          ),
+        };
+      }
+      if (reason === 'INSUFFICIENT_STOCK') {
+        return {
+          success: false,
+          message: this.localize(
+            language,
+            'Je hebt niet genoeg van dit product',
+            'You do not have enough of this product',
+          ),
+        };
+      }
+      throw error;
+    }
+
+    await activityService.logActivity(
+      playerId,
+      'SALE',
+      `Sold ${prepared.quantity}g ${drugType} (${quality}) to nightclub ${prepared.ownerName}`,
+      {
+        venueId,
+        drugType,
+        quality,
+        quantity: prepared.quantity,
+        totalPrice: prepared.totalPrice,
+      },
+      true,
+    );
+    await activityService.logActivity(
+      prepared.ownerId,
+      'PURCHASE',
+      `Bought ${prepared.quantity}g ${drugType} (${quality}) from a player for the nightclub`,
+      {
+        venueId,
+        sellerId: playerId,
+        drugType,
+        quality,
+        quantity: prepared.quantity,
+        totalPrice: prepared.totalPrice,
+      },
+      true,
+    );
+
+    void this.directMessageOwnerSupply(
+      prepared.ownerId,
+      prepared.quantity,
+      drugType,
+      quality,
+      prepared.totalPrice,
+    );
+
+    return {
+      success: true,
+      totalPrice: prepared.totalPrice,
+      message: this.localize(
+        language,
+        `Verkocht ${prepared.quantity}g aan ${prepared.ownerName} voor €${prepared.totalPrice}`,
+        `Sold ${prepared.quantity}g to ${prepared.ownerName} for €${prepared.totalPrice}`,
+      ),
+    };
+  }
+
+  async setPlayerSupplyEnabled(
+    playerId: number,
+    venueId: number,
+    enabled: boolean,
+  ): Promise<{ success: boolean; message: string; playerSupplyEnabled?: boolean }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await prisma.nightclubVenue.findUnique({ where: { id: venueId } });
+    if (!venue || venue.playerId !== playerId) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    await prisma.nightclubVenue.update({
+      where: { id: venueId },
+      data: { playerSupplyEnabled: enabled },
+    });
+
+    return {
+      success: true,
+      playerSupplyEnabled: enabled,
+      message: this.localize(
+        language,
+        enabled
+          ? 'Spelers in dit land kunnen nu aan jouw club verkopen'
+          : 'Spelerlevering is gesloten',
+        enabled
+          ? 'Players in this country can now sell to your club'
+          : 'Player supply is closed',
+      ),
+    };
+  }
+
+  private async directMessageOwnerSupply(
+    ownerId: number,
+    quantity: number,
+    drugType: string,
+    quality: string,
+    totalPrice: number,
+  ): Promise<void> {
+    try {
+      const language = await this.getPlayerLanguage(ownerId);
+      await directMessageService.sendSystemMessage(
+        ownerId,
+        this.localize(
+          language,
+          `Een speler verkocht ${quantity}g ${drugType} (${quality}) aan je nachtclub voor €${totalPrice}.`,
+          `A player sold ${quantity}g ${drugType} (${quality}) to your nightclub for €${totalPrice}.`,
+        ),
+        { sendPush: false },
+      );
+    } catch (error) {
+      console.error('[Nightclub] player-supply owner inbox failed', error);
+    }
+  }
+
+  private async preparePlayerSupplyDeal(
+    playerId: number,
+    venueId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+  ): Promise<
+    | {
+        ok: true;
+        language: string;
+        ownerId: number;
+        ownerName: string;
+        quantity: number;
+        unitPrice: number;
+        totalPrice: number;
+        basePrice: number;
+        minGrams: number;
+        maxGrams: number;
+      }
+    | { ok: false; message: string }
+  > {
+    const language = await this.getPlayerLanguage(playerId);
+    const runtime = await this.loadPlayerSupplyRuntime();
+    if (runtime.playerSupplyEnabled !== 1) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          'Spelerlevering aan clubs is uitgeschakeld',
+          'Player supply to clubs is disabled',
+        ),
+      };
+    }
+
+    const qty = Math.floor(Number(quantity));
+    if (!Number.isFinite(qty) || qty < runtime.playerSupplyMinGrams) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          `Minimaal ${runtime.playerSupplyMinGrams}g`,
+          `Minimum ${runtime.playerSupplyMinGrams}g`,
+        ),
+      };
+    }
+    if (qty > runtime.playerSupplyMaxGrams) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          `Maximaal ${runtime.playerSupplyMaxGrams}g per deal`,
+          `Maximum ${runtime.playerSupplyMaxGrams}g per deal`,
+        ),
+      };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    if (!player) {
+      return {
+        ok: false,
+        message: this.localize(language, 'Speler niet gevonden', 'Player not found'),
+      };
+    }
+
+    const venue = await prisma.nightclubVenue.findUnique({
+      where: { id: venueId },
+      include: { player: { select: { id: true, username: true, money: true } } },
+    });
+    if (!venue || !venue.isOpen) {
+      return {
+        ok: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+    if (venue.playerId === playerId) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          'Zet eigen voorraad via Opslag in je club',
+          'Store your own stock via Storage in your club',
+        ),
+      };
+    }
+    if (venue.country !== player.currentCountry) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          'Je moet in hetzelfde land zijn als de club',
+          'You must be in the same country as the club',
+        ),
+      };
+    }
+    if (!Boolean((venue as { playerSupplyEnabled?: boolean }).playerSupplyEnabled)) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          'Deze club koopt nu niet van spelers',
+          'This club is not buying from players',
+        ),
+      };
+    }
+
+    const lot = await prisma.drugInventory.findFirst({
+      where: { playerId, drugType, quality },
+    });
+    if (!lot || lot.quantity < qty) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          'Je hebt niet genoeg van dit product',
+          'You do not have enough of this product',
+        ),
+      };
+    }
+
+    const basePrice = this.getDrugBasePrice(drugType);
+    const unitPrice = Math.max(
+      1,
+      Math.floor(
+        basePrice *
+          this.qualityPriceMultiplier(quality) *
+          (runtime.playerSupplyPricePercent / 100),
+      ),
+    );
+    const totalPrice = unitPrice * qty;
+    if (venue.player.money < totalPrice) {
+      return {
+        ok: false,
+        message: this.localize(
+          language,
+          'De clubbaas heeft niet genoeg cash',
+          'The club owner does not have enough cash',
+        ),
+      };
+    }
+
+    return {
+      ok: true,
+      language,
+      ownerId: venue.player.id,
+      ownerName: venue.player.username,
+      quantity: qty,
+      unitPrice,
+      totalPrice,
+      basePrice,
+      minGrams: runtime.playerSupplyMinGrams,
+      maxGrams: runtime.playerSupplyMaxGrams,
     };
   }
 

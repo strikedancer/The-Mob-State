@@ -19,6 +19,7 @@ import { ensureGarageUpgradeTrackSchema } from './startup/ensureGarageUpgradeTra
 import { ensureGarageMotorcycleTrackBackfill } from './startup/ensureGarageMotorcycleTrackBackfill';
 import { ensureVaultSchema } from './startup/ensureVaultSchema';
 import { ensureDeepEconomySchema } from './startup/ensureDeepEconomySchema';
+import { ensureNightclubPlayerSupplySchema } from './startup/ensureNightclubPlayerSupplySchema';
 import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
@@ -63,6 +64,7 @@ async function startServer() {
   await ensureCrewMissionSchema();
   await ensureVaultSchema();
   await ensureDeepEconomySchema();
+  await ensureNightclubPlayerSupplySchema();
   await ensureVipPrestigeSchema();
   await ensureDailyGoalsSchema();
   await ensureCrewRecruitingSchema();

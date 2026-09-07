@@ -12314,6 +12314,56 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nightclubActivateSupplier => 'Ativar fornecedor';
 
   @override
+  String get nightclubPlayerSupplyAction => 'Vender para o clube';
+
+  @override
+  String get nightclubPlayerSupplySellTitle => 'Vender para uma boate';
+
+  @override
+  String nightclubPlayerSupplySellHint(String drug) {
+    return 'Venda $drug para o dono de um clube neste país. O preço é uma redução no atacado, então o clube ainda ganha dinheiro na porta.';
+  }
+
+  @override
+  String get nightclubPlayerSupplyNoneOpen =>
+      'Nenhum clube deste país compra jogadores. Os proprietários de clubes devem abrir o fornecimento de jogadores no Ops Lab.';
+
+  @override
+  String get nightclubPlayerSupplyClubLabel => 'Proprietário do clube';
+
+  @override
+  String get nightclubPlayerSupplyGramsLabel => 'Gramas';
+
+  @override
+  String get nightclubPlayerSupplyRefreshQuote => 'Atualizar preço';
+
+  @override
+  String nightclubPlayerSupplyQuote(String unit, String total, String owner) {
+    return '€$unit por grama · €$total a $owner';
+  }
+
+  @override
+  String get nightclubPlayerSupplyConfirm => 'Vender para o clube';
+
+  @override
+  String get nightclubPlayerSupplySold => 'Vendido para o clube.';
+
+  @override
+  String get nightclubPlayerSupplyFailed =>
+      'Não foi possível vender para o clube.';
+
+  @override
+  String get nightclubPlayerSupplyToggleTitle => 'Compre de jogadores';
+
+  @override
+  String get nightclubPlayerSupplyToggleHint =>
+      'Os jogadores deste país podem vender ações a preço de atacado. Você paga em dinheiro; o lote vai para o armazenamento do clube.';
+
+  @override
+  String get nightclubPlayerSupplyToggleFailed =>
+      'Não foi possível atualizar o fornecimento do jogador.';
+
+  @override
   String get nightclubPromoterProfile => 'Perfil do promotor';
 
   @override
@@ -16425,7 +16475,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicDrugsTips =>
-      'Atualize o armazenamento antes da produção: o armazenamento completo interrompe a produção e você perde esse tempo de produção. \nMantenha o FBI Heat abaixo de 50: acima desse limite você é ativamente caçado com grandes chances de ataques que fecham tudo. \nCombine a venda de drogas com o contrabando para obter margens mais altas e risco distribuído.\nExporta só se aceitares frete e apreensão; viajar e vender na rua continua a pagar mais por grama.';
+      'Compre materiais na guia Materiais antes de iniciar os lotes. \nMantenha o calor da droga baixo com baixo perfil ou com dinheiro fresco quando você coleta muito. \nEm uma invasão: escolha o tempo de inatividade se quiser manter o lote ou o dinheiro se a instalação precisar continuar funcionando. \nAtive a venda automática darkweb apenas se você aceitar a taxa e o calor. \nA produção própria armazenada na boate ganha uma pequena margem extra. \nVender para um clube com Aan club / Vender para um clube quando um proprietário local abriu o fornecimento de jogadores; a exportação por atacado continua sendo a opção de longa distância. \nExporte somente se aceitar o risco de frete e apreensão; viagens mais vendas nas ruas ainda pagam mais por grama.';
 
   @override
   String get helpTopicNightclubCategory => 'Império';
@@ -16439,7 +16489,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicNightclubHow =>
-      'Na parte inferior você agora usa um Centro de Comando de Gerenciamento de Boate com zonas para Crew, Armazenamento de Drogas, Comando de DJ, Unidade de Segurança e Laboratório de Operações; todas as zonas são executadas em um fluxo de página contínuo sem rolagem interna extra. \nA tela da boate agora inclui uma seção central de Inteligência que combina visão geral, tendências de receita e registros de risco sem alternar entre guias. \nO Ops Lab agora inclui 11 sistemas: DJ residente, calendário de eventos dinâmico, árvore de atualização, resposta policial a incidentes/calor, contratos de fornecedores, perfis de promotores, clientela VIP + características da equipe, rotas de contrabando, gerenciamento de bar e cozinha (bebidas/comida) com preços, sabotagem rival + contra-inteligência e um cronograma de operações. \nAs rotas de contrabando agora têm um tempo de espera de execução (Porto 60 min, Pista de pouso 90 min, Borderline 120 min), forçando o planejamento de risco/tempo em vez de spam infinito. \nA árvore de atualização é interativa: escolha explicitamente Sound Rig, VIP Lounge ou Surveillance e compre o próximo nível diretamente com custos de atualização visíveis. \nA receita é gerada por tick com base na qualidade do DJ, ocupação e disponibilidade de fornecimento. A falta de oferta reduz diretamente a renda. \nOs contratos de DJ terminam automaticamente no horário de término configurado; depois disso, você deve reservar novamente para novos reforços. \nIncidentes (brigas, roubos) podem ocorrer quando a segurança é insuficiente. Isso prejudica a pontuação e a receita do visitante. \nCada temporada tem uma tabela de classificação. Os jogadores com maior receita total em casas noturnas ganham recompensas da temporada. \nSinergia com medicamentos: a produção própria de medicamentos pode servir de abastecimento, aumentando as margens. \nO armazenamento de medicamentos é baseado em gramas: cada seleção mostra os gramas disponíveis antes de você transferir o estoque para o inventário da boate. \nAs ações rivais são baseadas em nomes: você pesquisa clubes rivais pelo nome do jogador antes de selecionar uma ação (não é necessário ID do jogador). \nSinergia com a prostituição: eventos em locais combinados proporcionam visitantes extras e receitas maiores. \nAs atualizações melhoram a capacidade, o armazenamento de suprimentos e o número máximo de DJs e guardas que você pode implantar.';
+      'Na parte inferior você agora usa um Centro de Comando de Gerenciamento de Boate com zonas para Crew, Armazenamento de Drogas, Comando de DJ, Unidade de Segurança e Laboratório de Operações; todas as zonas são executadas em um fluxo de página contínuo sem rolagem interna extra. \nA tela da boate agora inclui uma seção central de Inteligência que combina visão geral, tendências de receita e registros de risco sem alternar entre guias. \nO Ops Lab agora inclui 11 sistemas: DJ residente, calendário de eventos dinâmico, árvore de atualização, resposta policial a incidentes/calor, contratos de fornecedores, perfis de promotores, clientela VIP + características da equipe, rotas de contrabando, gerenciamento de bar e cozinha (bebidas/comida) com preços, sabotagem rival + contra-inteligência e um cronograma de operações. \nAtive Comprar dos jogadores para permitir que os produtores do seu país vendam ações a preço de atacado; você paga em dinheiro e o lote vai para o armazenamento do clube. \nAs rotas de contrabando agora têm um tempo de espera de execução (Porto 60 min, Pista de pouso 90 min, Borderline 120 min), forçando o planejamento de risco/tempo em vez de spam infinito. \nA árvore de atualização é interativa: escolha explicitamente Sound Rig, VIP Lounge ou Surveillance e compre o próximo nível diretamente com custos de atualização visíveis. \nA receita é gerada por tick com base na qualidade do DJ, ocupação e disponibilidade de fornecimento. A falta de oferta reduz diretamente a renda. \nOs contratos de DJ terminam automaticamente no horário de término configurado; depois disso, você deve reservar novamente para novos reforços. \nIncidentes (brigas, roubos) podem ocorrer quando a segurança é insuficiente. Isso prejudica a pontuação e a receita do visitante. \nCada temporada tem uma tabela de classificação. Os jogadores com maior receita total em casas noturnas ganham recompensas da temporada. \nSinergia com medicamentos: a produção própria de medicamentos pode servir de abastecimento, aumentando as margens. \nO armazenamento de medicamentos é baseado em gramas: cada seleção mostra os gramas disponíveis antes de você transferir o estoque para o inventário da boate. \nAs ações rivais são baseadas em nomes: você pesquisa clubes rivais pelo nome do jogador antes de selecionar uma ação (não é necessário ID do jogador). \nSinergia com a prostituição: eventos em locais combinados proporcionam visitantes extras e receitas maiores. \nAs atualizações melhoram a capacidade, o armazenamento de suprimentos e o número máximo de DJs e guardas que você pode implantar.';
 
   @override
   String get helpTopicNightclubTips =>

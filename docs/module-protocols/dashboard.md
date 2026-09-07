@@ -86,6 +86,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 ## Dashboard Completeness Gate
 - Elke modulewijziging die nieuwe cooldowns, payouts, risico-indicatoren, notificatie-events of operationele loops toevoegt/verandert, moet in dezelfde PR ook het dashboardcontract (`/player/dashboard-stats`), dashboardweergave en `Help & Uitleg` controleren en indien nodig bijwerken.
 - Warehouse arrest-search is geen extra dashboard-meter: het hangt aan bestaande arrestatie-events. Help & Uitleg (Eigendommen + Inventaris) moet het risico noemen.
+- Nightclub player-supply is geen extra dashboard-meter: het hangt aan Inventaris (Aan club) + Nightclub Ops Lab + inbox naar de clubbaas. Help & Uitleg (Drugs + Nightclub) moet de flow noemen.
 - "Done" is pas geldig als de nieuwe module-impact zichtbaar of expliciet gemotiveerd afwezig is in dashboard-economy, dashboard-operaties en dashboard-notificaties.
 
 ## When To Update This File

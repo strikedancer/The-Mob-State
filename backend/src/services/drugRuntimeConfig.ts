@@ -20,6 +20,10 @@ export type DrugRuntimeConfig = {
   wholesaleFbiHeatPerKg: number;
   wholesaleDrugHeat: number;
   wholesaleCrewRunnerBps: number;
+  playerSupplyEnabled: number;
+  playerSupplyPricePercent: number;
+  playerSupplyMinGrams: number;
+  playerSupplyMaxGrams: number;
 };
 
 export const DRUG_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
@@ -42,6 +46,10 @@ export const DRUG_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   DRUG_WHOLESALE_FBI_HEAT_PER_KG: '2',
   DRUG_WHOLESALE_DRUG_HEAT: '4',
   DRUG_WHOLESALE_CREW_RUNNER_BPS: '500',
+  NIGHTCLUB_PLAYER_SUPPLY_ENABLED: '1',
+  NIGHTCLUB_PLAYER_SUPPLY_PRICE_PERCENT: '55',
+  NIGHTCLUB_PLAYER_SUPPLY_MIN_GRAMS: '50',
+  NIGHTCLUB_PLAYER_SUPPLY_MAX_GRAMS: '5000',
 };
 
 export const DRUG_RUNTIME_SETTING_KEYS = Object.keys(DRUG_RUNTIME_SETTING_DEFAULTS);
@@ -89,6 +97,10 @@ export async function getDrugRuntimeConfig(): Promise<DrugRuntimeConfig> {
     wholesaleFbiHeatPerKg: read('DRUG_WHOLESALE_FBI_HEAT_PER_KG', 2),
     wholesaleDrugHeat: read('DRUG_WHOLESALE_DRUG_HEAT', 4),
     wholesaleCrewRunnerBps: Math.min(2500, Math.max(0, read('DRUG_WHOLESALE_CREW_RUNNER_BPS', 500))),
+    playerSupplyEnabled: read('NIGHTCLUB_PLAYER_SUPPLY_ENABLED', 1),
+    playerSupplyPricePercent: Math.min(90, Math.max(20, read('NIGHTCLUB_PLAYER_SUPPLY_PRICE_PERCENT', 55))),
+    playerSupplyMinGrams: Math.max(1, read('NIGHTCLUB_PLAYER_SUPPLY_MIN_GRAMS', 50)),
+    playerSupplyMaxGrams: Math.max(1, read('NIGHTCLUB_PLAYER_SUPPLY_MAX_GRAMS', 5000)),
   };
 }
 

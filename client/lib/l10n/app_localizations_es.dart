@@ -12342,6 +12342,55 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubActivateSupplier => 'Activar proveedor';
 
   @override
+  String get nightclubPlayerSupplyAction => 'vender al club';
+
+  @override
+  String get nightclubPlayerSupplySellTitle => 'Vender a una discoteca';
+
+  @override
+  String nightclubPlayerSupplySellHint(String drug) {
+    return 'Vender $drug al propietario de un club en este país. El precio es un recorte mayorista, por lo que el club aún gana dinero con la entrada.';
+  }
+
+  @override
+  String get nightclubPlayerSupplyNoneOpen =>
+      'Ningún club de este país compra jugadores. Los propietarios de clubes deben abrir el suministro de jugadores en Ops Lab.';
+
+  @override
+  String get nightclubPlayerSupplyClubLabel => 'Dueño del club';
+
+  @override
+  String get nightclubPlayerSupplyGramsLabel => 'gramos';
+
+  @override
+  String get nightclubPlayerSupplyRefreshQuote => 'Precio de actualización';
+
+  @override
+  String nightclubPlayerSupplyQuote(String unit, String total, String owner) {
+    return '€$unit por gramo · €$total a $owner';
+  }
+
+  @override
+  String get nightclubPlayerSupplyConfirm => 'vender al club';
+
+  @override
+  String get nightclubPlayerSupplySold => 'Vendido al club.';
+
+  @override
+  String get nightclubPlayerSupplyFailed => 'No se pudo vender al club.';
+
+  @override
+  String get nightclubPlayerSupplyToggleTitle => 'Comprar a las jugadoras';
+
+  @override
+  String get nightclubPlayerSupplyToggleHint =>
+      'Los jugadores de este país pueden venderle acciones a precio mayorista. Pagas en efectivo; el lote se destina al almacén del club.';
+
+  @override
+  String get nightclubPlayerSupplyToggleFailed =>
+      'No se pudo actualizar el suministro del reproductor.';
+
+  @override
   String get nightclubPromoterProfile => 'Perfil del promotor';
 
   @override
@@ -16454,7 +16503,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicDrugsTips =>
-      'Actualice el almacenamiento antes de la producción: el almacenamiento completo detiene la producción y usted pierde ese tiempo de producción. \nMantenga FBI Heat por debajo de 50: por encima de ese umbral, será perseguido activamente con grandes posibilidades de incursiones que cerrarán todo. \nCombine la venta de drogas con el contrabando para obtener mayores márgenes y riesgo distribuido.\nExporta solo si aceptas flete e incautación; viajar y vender en la calle sigue pagando más por gramo.';
+      'Compre materiales en la pestaña Materiales antes de comenzar los lotes. \nMantenga el calor de las drogas bajo con perfil bajo o efectivo cuando recolecte mucho. \nEn una redada: elija tiempo de inactividad si desea conservar el lote o dinero en efectivo si las instalaciones deben seguir funcionando. \nHabilite la venta automática en darkweb solo si acepta la tarifa y la calefacción. \nLa producción propia almacenada en la discoteca obtiene un pequeño margen adicional. \nVender a un club con Aan club / Vender a un club cuando un propietario local abrió la oferta de jugadores; la exportación al por mayor sigue siendo la opción a larga distancia. \nExporte sólo si acepta el riesgo de flete e incautación; Los viajes y la venta callejera siguen pagando más por gramo.';
 
   @override
   String get helpTopicNightclubCategory => 'Imperio';
@@ -16468,7 +16517,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicNightclubHow =>
-      'En la parte inferior, ahora utilizas un Centro de Comando de Gestión de Nightclub con zonas para Crew, Almacenamiento de Drogas, Comando de DJ, Unidad de Seguridad y Laboratorio de Operaciones; Todas las zonas se ejecutan en un flujo de página continuo sin desplazamiento interno adicional. \nLa pantalla del Nightclub ahora incluye una sección central de Inteligencia que combina descripción general, tendencias de ingresos y registros de riesgos sin cambiar de pestaña. \nOps Lab ahora incluye 11 sistemas: DJ residente, calendario de eventos dinámico, árbol de mejoras, respuesta policial/incidente, contratos de proveedores, perfiles de promotores, clientela VIP + características del personal, rutas de contrabando, gestión de bar y cocina (bebidas/comida) con precios, sabotaje rival + contrainteligencia y un cronograma de operaciones. \nLas rutas de contrabando ahora tienen un tiempo de reutilización (Puerto 60 min, Pista de aterrizaje 90 min, Límite 120 min), lo que obliga a planificar el riesgo y el tiempo en lugar de spam infinito. \nEl árbol de actualización es interactivo: elija explícitamente Sound Rig, VIP Lounge o Surveillance y compre el siguiente nivel directamente con costos de actualización visibles. \nLos ingresos se generan por tick en función de la calidad, la ocupación y la disponibilidad de suministros del DJ. La falta de oferta reduce directamente los ingresos. \nLos contratos de DJ finalizan automáticamente a la hora de finalización configurada; después de eso debes reservar nuevamente para obtener nuevos impulsos. \nPueden producirse incidentes (peleas, robos) cuando la seguridad es insuficiente. Esto perjudica la puntuación y los ingresos de los visitantes. \nCada temporada tiene una tabla de clasificación. Los jugadores con los ingresos totales más altos del Nightclub ganan recompensas de temporada. \nSinergia con las drogas: la producción propia de drogas puede servir como suministro, elevando los márgenes. \nEl almacenamiento de medicamentos se basa en gramos: cada selección muestra los gramos disponibles antes de pasar el stock al inventario del Nightclub. \nLas acciones rivales se basan en nombres: buscas clubes rivales por nombre de jugador antes de seleccionar una acción (no se requiere identificación de jugador). \nSinergia con la prostitución: los eventos combinados en lugares generan visitantes adicionales y mayores ingresos. \nLas actualizaciones mejoran la capacidad, el almacenamiento de suministros y la cantidad máxima de DJ y guardias que puedes implementar.';
+      'En la parte inferior, ahora utilizas un Centro de Comando de Gestión de Nightclub con zonas para Crew, Almacenamiento de Drogas, Comando de DJ, Unidad de Seguridad y Laboratorio de Operaciones; Todas las zonas se ejecutan en un flujo de página continuo sin desplazamiento interno adicional. \nLa pantalla del Nightclub ahora incluye una sección central de Inteligencia que combina descripción general, tendencias de ingresos y registros de riesgos sin cambiar de pestaña. \nOps Lab ahora incluye 11 sistemas: DJ residente, calendario de eventos dinámico, árbol de mejoras, respuesta policial/incidentes, contratos de proveedores, perfiles de promotores, clientela VIP + características del personal, rutas de contrabando, gestión de bares y cocinas (bebidas/comidas) con precios, sabotaje rival + contrainteligencia y un cronograma de operaciones. \nActive Comprar a jugadores para permitir que los productores de su país le vendan acciones a precio mayorista; pagas en efectivo y el lote va al almacén del club. \nLas rutas de contrabando ahora tienen un tiempo de reutilización (Puerto 60 min, Pista de aterrizaje 90 min, Límite 120 min), lo que obliga a planificar el riesgo y el tiempo en lugar de spam infinito. \nEl árbol de actualización es interactivo: elija explícitamente Sound Rig, VIP Lounge o Surveillance y compre el siguiente nivel directamente con costos de actualización visibles. \nLos ingresos se generan por tick en función de la calidad, la ocupación y la disponibilidad de suministros del DJ. La falta de oferta reduce directamente los ingresos. \nLos contratos de DJ finalizan automáticamente a la hora de finalización configurada; después de eso debes reservar nuevamente para obtener nuevos impulsos. \nPueden producirse incidentes (peleas, robos) cuando la seguridad es insuficiente. Esto perjudica la puntuación y los ingresos de los visitantes. \nCada temporada tiene una tabla de clasificación. Los jugadores con los ingresos totales más altos del Nightclub ganan recompensas de temporada. \nSinergia con las drogas: la producción propia de drogas puede servir como suministro, elevando los márgenes. \nEl almacenamiento de medicamentos se basa en gramos: cada selección muestra los gramos disponibles antes de pasar el stock al inventario del Nightclub. \nLas acciones rivales se basan en nombres: buscas clubes rivales por nombre de jugador antes de seleccionar una acción (no se requiere identificación de jugador). \nSinergia con la prostitución: los eventos combinados en lugares generan visitantes adicionales y mayores ingresos. \nLas actualizaciones mejoran la capacidad, el almacenamiento de suministros y la cantidad máxima de DJ y guardias que puedes implementar.';
 
   @override
   String get helpTopicNightclubTips =>

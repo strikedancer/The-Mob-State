@@ -130,6 +130,7 @@ See also `country-police.md`.
   - hogere attempts mogen geen hogere multiplier krijgen.
 - Houd economy tuning server-side (runtime_config), niet hardcoded in client.
 - Drugs heat/raid/darkweb/nightclub keys (defaults): `DRUG_HEAT_CASH_COOL_COST_PER_POINT` (5000), `DRUG_HEAT_CASH_COOL_POINTS` (25), `DRUG_HEAT_LOW_PROFILE_HOURS` (4), `DRUG_HEAT_LOW_PROFILE_COOLDOWN_HOURS` (8), `DRUG_RAID_DOWNTIME_HOURS` (4), `DRUG_RAID_CASH_FINE_PERCENT` (35), `DRUG_DARKWEB_AUTOSALE_FEE_PERCENT` (12), `DRUG_DARKWEB_AUTOSALE_HEAT` (4), `DRUG_DARKWEB_AUTOSALE_SHARE_PERCENT` (10), `DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT` (8).
+- Nightclub player-supply B2B: `NIGHTCLUB_PLAYER_SUPPLY_ENABLED` (1), `NIGHTCLUB_PLAYER_SUPPLY_PRICE_PERCENT` (55), `NIGHTCLUB_PLAYER_SUPPLY_MIN_GRAMS` (50), `NIGHTCLUB_PLAYER_SUPPLY_MAX_GRAMS` (5000). Owner opt-in; no extra heat on this local deal.
 
 ## QA Checklist
 1. `GET /api/admin/economy/balance-telemetry?hours=24` geeft geldige data.

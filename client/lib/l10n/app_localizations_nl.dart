@@ -12261,6 +12261,55 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubActivateSupplier => 'Activeer supplier';
 
   @override
+  String get nightclubPlayerSupplyAction => 'Aan club';
+
+  @override
+  String get nightclubPlayerSupplySellTitle => 'Verkopen aan een nachtclub';
+
+  @override
+  String nightclubPlayerSupplySellHint(String drug) {
+    return 'Verkoop $drug aan een clubbaas in dit land. De prijs is groothandel, zodat de club nog winst maakt aan de deur.';
+  }
+
+  @override
+  String get nightclubPlayerSupplyNoneOpen =>
+      'Geen club in dit land koopt van spelers. Clubbazen moeten spelerlevering aanzetten in Ops Lab.';
+
+  @override
+  String get nightclubPlayerSupplyClubLabel => 'Clubbaas';
+
+  @override
+  String get nightclubPlayerSupplyGramsLabel => 'Gram';
+
+  @override
+  String get nightclubPlayerSupplyRefreshQuote => 'Prijs vernieuwen';
+
+  @override
+  String nightclubPlayerSupplyQuote(String unit, String total, String owner) {
+    return '€$unit per gram · €$total aan $owner';
+  }
+
+  @override
+  String get nightclubPlayerSupplyConfirm => 'Verkopen aan club';
+
+  @override
+  String get nightclubPlayerSupplySold => 'Verkocht aan de club.';
+
+  @override
+  String get nightclubPlayerSupplyFailed => 'Verkoop aan de club mislukt.';
+
+  @override
+  String get nightclubPlayerSupplyToggleTitle => 'Koop van spelers';
+
+  @override
+  String get nightclubPlayerSupplyToggleHint =>
+      'Spelers in dit land kunnen je voorraad verkopen tegen groothandelsprijs. Jij betaalt cash; de partij gaat in de clubopslag.';
+
+  @override
+  String get nightclubPlayerSupplyToggleFailed =>
+      'Spelerlevering bijwerken mislukt.';
+
+  @override
   String get nightclubPromoterProfile => 'Promoter profiel';
 
   @override
@@ -16342,7 +16391,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsTips =>
-      'Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.\nExporteer alleen als je vracht en onderschepping accepteert; zelf reizen en street-sell blijft per gram meer waard.';
+      'Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.\nVerkoop aan een club via Aan club als een lokale clubbaas spelerlevering open heeft; export blijft de lange-afstandsroute.\nExporteer alleen als je vracht en onderschepping accepteert; zelf reizen en street-sell blijft per gram meer waard.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';
@@ -16356,7 +16405,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicNightclubHow =>
-      'Onderaan gebruik je nu een Nightclub Management Command Center met zones voor Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab; alle zones draaien in één doorlopende paginaflow zonder extra inner-scroll.\nIn het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.\nIn Ops Lab gebruik je nu 11 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drank/food) met pricing, rival sabotage + counter-intel en operations timeline.\nSmuggling routes hebben nu een cooldown per run (Harbor 60 min, Airstrip 90 min, Borderline 120 min) zodat je risico en timing moet plannen in plaats van oneindig spammen.\nDe upgrade-tree is interactief: kies expliciet Sound Rig, VIP Lounge of Surveillance en koop direct het volgende level met zichtbare upgrade-kosten.\nRevenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.\nDJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.\nIncidenten (vechtpartijen, diefstal) kunnen optreden als je beveiliging tekortschiet. Dit schaadt bezoekers-score en inkomst.\nElk seizoen heeft een leaderboard. Spelers met de hoogste totale nachtclub-revenue winnen seizoensbeloningen.\nSynergie met drugs: eigen drugs-productie kan als supply dienen, wat margins verhoogt.\nDrugs-opslag werkt in gram: je ziet per selectie direct hoeveel gram beschikbaar is voordat je toevoegt aan je nightclub voorraad.\nRival acties werken op spelersnaam: je zoekt rival clubs op naam en kiest daarna pas je actie (geen player-id nodig).\nSynergie met prostitution: gecombineerde venue events geven extra bezoekers en hogere revenue.\nUpgrades verbeteren capaciteit, supply-opslag en het maximale aantal DJs en bewakers dat je kunt inzetten.';
+      'Onderaan gebruik je nu een Nightclub Management Command Center met zones voor Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab; alle zones draaien in één doorlopende paginaflow zonder extra inner-scroll.\nIn het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.\nIn Ops Lab gebruik je nu 11 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drank/food) met pricing, rival sabotage + counter-intel en operations timeline.\nZet Koop van spelers aan zodat producenten in jouw land je voorraad kunnen verkopen tegen groothandelsprijs; jij betaalt cash en de partij gaat in de clubopslag.\nSmuggling routes hebben nu een cooldown per run (Harbor 60 min, Airstrip 90 min, Borderline 120 min) zodat je risico en timing moet plannen in plaats van oneindig spammen.\nDe upgrade-tree is interactief: kies expliciet Sound Rig, VIP Lounge of Surveillance en koop direct het volgende level met zichtbare upgrade-kosten.\nRevenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.\nDJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.\nIncidenten (vechtpartijen, diefstal) kunnen optreden als je beveiliging tekortschiet. Dit schaadt bezoekers-score en inkomst.\nElk seizoen heeft een leaderboard. Spelers met de hoogste totale nachtclub-revenue winnen seizoensbeloningen.\nSynergie met drugs: eigen drugs-productie kan als supply dienen, wat margins verhoogt.\nDrugs-opslag werkt in gram: je ziet per selectie direct hoeveel gram beschikbaar is voordat je toevoegt aan je nightclub voorraad.\nRival acties werken op spelersnaam: je zoekt rival clubs op naam en kiest daarna pas je actie (geen player-id nodig).\nSynergie met prostitution: gecombineerde venue events geven extra bezoekers en hogere revenue.\nUpgrades verbeteren capaciteit, supply-opslag en het maximale aantal DJs en bewakers dat je kunt inzetten.';
 
   @override
   String get helpTopicNightclubTips =>

@@ -2102,6 +2102,7 @@ model NightclubVenue {
   lastRevenueCalc       DateTime?                       @default(now()) @db.DateTime(0)
   marketingSpend        Int?                            @default(0)
   isOpen                Boolean?                        @default(true)
+  playerSupplyEnabled   Boolean                         @default(false)
   createdAt             DateTime?                       @default(now()) @db.DateTime(0)
   updatedAt             DateTime?                       @default(now()) @updatedAt @db.DateTime(0)
   djShifts              NightclubDJShift[]

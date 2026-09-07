@@ -2976,6 +2976,40 @@
   "nightclubSectionSupplierPromoter": "6) Supplier & promoter",
   "nightclubSupplierContract": "Supplier contract",
   "nightclubActivateSupplier": "Activeer supplier",
+  "nightclubPlayerSupplyAction": "Aan club",
+  "nightclubPlayerSupplySellTitle": "Verkopen aan een nachtclub",
+  "nightclubPlayerSupplySellHint": "Verkoop {drug} aan een clubbaas in dit land. De prijs is groothandel, zodat de club nog winst maakt aan de deur.",
+  "@nightclubPlayerSupplySellHint": {
+    "placeholders": {
+      "drug": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubPlayerSupplyNoneOpen": "Geen club in dit land koopt van spelers. Clubbazen moeten spelerlevering aanzetten in Ops Lab.",
+  "nightclubPlayerSupplyClubLabel": "Clubbaas",
+  "nightclubPlayerSupplyGramsLabel": "Gram",
+  "nightclubPlayerSupplyRefreshQuote": "Prijs vernieuwen",
+  "nightclubPlayerSupplyQuote": "€{unit} per gram · €{total} aan {owner}",
+  "@nightclubPlayerSupplyQuote": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "owner": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubPlayerSupplyConfirm": "Verkopen aan club",
+  "nightclubPlayerSupplySold": "Verkocht aan de club.",
+  "nightclubPlayerSupplyFailed": "Verkoop aan de club mislukt.",
+  "nightclubPlayerSupplyToggleTitle": "Koop van spelers",
+  "nightclubPlayerSupplyToggleHint": "Spelers in dit land kunnen je voorraad verkopen tegen groothandelsprijs. Jij betaalt cash; de partij gaat in de clubopslag.",
+  "nightclubPlayerSupplyToggleFailed": "Spelerlevering bijwerken mislukt.",
   "nightclubPromoterProfile": "Promoter profiel",
   "nightclubHirePromoter": "Huur promoter",
   "nightclubSectionVipClientele": "7) VIP clientele & staff traits",
@@ -10014,11 +10048,11 @@
   "helpTopicDrugsTitle": "Drugs",
   "helpTopicDrugsSummary": "Bouw een complete drugsoperatie van grondstoffen tot eindproduct. Draai productieketens, beheer opslag en verkoop voor hoge marges maar ook serieuze risico's.",
   "helpTopicDrugsHow": "Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).\nGrondstoffen koop je via de zwarte markt (tab Materialen, ook via een knop in Hub/Productie) of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je krijgt een melding als een partij klaar is om op te halen.\nJe kunt premium credits uitgeven om een lopende batch vroegtijdig af te ronden, een tijdelijke extra slot te kopen of 24 uur heat shield te activeren (geen extra opbrengst).\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch, maar slaat een pending inval over tot jij kiest.\nBij ophalen kan heat een inval triggeren: je kiest dan voorraadverlies, faciliteit-stilstand of een cash-boete voordat je loot krijgt.\nHeat kun je koelen met cash of low-profile (tijdelijk geen nieuwe productie).\nEen darkweb storefront verkoopt klaar product niet stil: auto-verkoop is opt-in, met fee en extra heat.\nEigen productie in de nightclub krijgt een kleine margebonus. Kwaliteitslots kun je naar crew-drugsopslag storten.\nFaciliteitkaarten tonen prijs, rank en opleidingseisen vóór koop of upgrade.\nVanaf Inventaris kun je een groothandelslading exporteren naar een ander land: je blijft waar je bent, betaalt vracht en krijgt dest-B2B-cash als de container aankomt. Bij onderschepping geen cash. Street-sell, nightclub, darkweb en Marktplaats blijven retail.",
-  "helpTopicDrugsTips": "Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.\nExporteer alleen als je vracht en onderschepping accepteert; zelf reizen en street-sell blijft per gram meer waard.",
+  "helpTopicDrugsTips": "Koop grondstoffen via de materialen-tab voordat je batches start.\nHoud drug-heat laag met low-profile of cash-cool als je veel ophaalt.\nBij een inval: kies stilstand als je de partij wilt houden, of cash als je faciliteit moet blijven draaien.\nZet darkweb auto-verkoop alleen aan als je fee en heat accepteert.\nEigen productie in de nightclub levert een kleine extra marge.\nVerkoop aan een club via Aan club als een lokale clubbaas spelerlevering open heeft; export blijft de lange-afstandsroute.\nExporteer alleen als je vracht en onderschepping accepteert; zelf reizen en street-sell blijft per gram meer waard.",
   "helpTopicNightclubCategory": "Empire",
   "helpTopicNightclubTitle": "Nachtclub",
   "helpTopicNightclubSummary": "Run een nachtclub als onderdeel van je criminele empire. Beheer personeel, beveiliging en supply voor passief en actief inkomen met een eigen seizoensleaderboard.",
-  "helpTopicNightclubHow": "Onderaan gebruik je nu een Nightclub Management Command Center met zones voor Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab; alle zones draaien in één doorlopende paginaflow zonder extra inner-scroll.\nIn het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.\nIn Ops Lab gebruik je nu 11 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drank/food) met pricing, rival sabotage + counter-intel en operations timeline.\nSmuggling routes hebben nu een cooldown per run (Harbor 60 min, Airstrip 90 min, Borderline 120 min) zodat je risico en timing moet plannen in plaats van oneindig spammen.\nDe upgrade-tree is interactief: kies expliciet Sound Rig, VIP Lounge of Surveillance en koop direct het volgende level met zichtbare upgrade-kosten.\nRevenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.\nDJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.\nIncidenten (vechtpartijen, diefstal) kunnen optreden als je beveiliging tekortschiet. Dit schaadt bezoekers-score en inkomst.\nElk seizoen heeft een leaderboard. Spelers met de hoogste totale nachtclub-revenue winnen seizoensbeloningen.\nSynergie met drugs: eigen drugs-productie kan als supply dienen, wat margins verhoogt.\nDrugs-opslag werkt in gram: je ziet per selectie direct hoeveel gram beschikbaar is voordat je toevoegt aan je nightclub voorraad.\nRival acties werken op spelersnaam: je zoekt rival clubs op naam en kiest daarna pas je actie (geen player-id nodig).\nSynergie met prostitution: gecombineerde venue events geven extra bezoekers en hogere revenue.\nUpgrades verbeteren capaciteit, supply-opslag en het maximale aantal DJs en bewakers dat je kunt inzetten.",
+  "helpTopicNightclubHow": "Onderaan gebruik je nu een Nightclub Management Command Center met zones voor Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab; alle zones draaien in één doorlopende paginaflow zonder extra inner-scroll.\nIn het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.\nIn Ops Lab gebruik je nu 11 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drank/food) met pricing, rival sabotage + counter-intel en operations timeline.\nZet Koop van spelers aan zodat producenten in jouw land je voorraad kunnen verkopen tegen groothandelsprijs; jij betaalt cash en de partij gaat in de clubopslag.\nSmuggling routes hebben nu een cooldown per run (Harbor 60 min, Airstrip 90 min, Borderline 120 min) zodat je risico en timing moet plannen in plaats van oneindig spammen.\nDe upgrade-tree is interactief: kies expliciet Sound Rig, VIP Lounge of Surveillance en koop direct het volgende level met zichtbare upgrade-kosten.\nRevenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.\nDJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.\nIncidenten (vechtpartijen, diefstal) kunnen optreden als je beveiliging tekortschiet. Dit schaadt bezoekers-score en inkomst.\nElk seizoen heeft een leaderboard. Spelers met de hoogste totale nachtclub-revenue winnen seizoensbeloningen.\nSynergie met drugs: eigen drugs-productie kan als supply dienen, wat margins verhoogt.\nDrugs-opslag werkt in gram: je ziet per selectie direct hoeveel gram beschikbaar is voordat je toevoegt aan je nightclub voorraad.\nRival acties werken op spelersnaam: je zoekt rival clubs op naam en kiest daarna pas je actie (geen player-id nodig).\nSynergie met prostitution: gecombineerde venue events geven extra bezoekers en hogere revenue.\nUpgrades verbeteren capaciteit, supply-opslag en het maximale aantal DJs en bewakers dat je kunt inzetten.",
   "helpTopicNightclubTips": "Zorg altijd dat supply niet leeg raakt: één tick zonder supply kan een bezoekersdip veroorzaken die moeilijk te herstellen is.\nBoek de beste DJ die je je kunt veroorloven: DJ-kwaliteit heeft de grootste directe impact op revenue per tick.\nCheck het seizoensleaderboard elke dag en schaal supply en DJs op als je in top-10 wilt eindigen.",
   "helpTopicCryptoCategory": "Economie",
   "helpTopicCryptoTitle": "Crypto",

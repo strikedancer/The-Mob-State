@@ -35,6 +35,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Live staffing selectors must never depend on manual seed steps alone; DJ/security availability data needs a production-safe bootstrap or fallback so empty staff tables do not leave selectors blank.
 - Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
 - Own-production lots stored in the nightclub get a capped sale-margin bonus (`DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`); this is not a credit/VIP yield boost.
+- **Player supply (opt-in):** owner toggles `playerSupplyEnabled`. Same-country players sell grams at a server wholesale quote (`NIGHTCLUB_PLAYER_SUPPLY_PRICE_PERCENT`, default 55% of base×quality). Owner pays cash; stock is not marked `ownProduction`. Min/max grams via runtime keys. Self-sale is blocked (use Store).
 - Nightclub management UI must keep one primary vertical page scroll on mobile; do not embed fixed-height subpanels with independent scrollbars.
 - DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
@@ -65,6 +66,8 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Verify expired DJ contracts clear automatically and a new DJ can be hired immediately after shift end.
 - Verify rival actions can be triggered by searching/selecting player name and never require playerId entry.
 - Verify Operations Timeline shows mixed event types (sales, thefts, staffing, events) with clear severity labels.
+- Verify Buy from players toggle is off by default, and Inventory Aan club lists no clubs until an owner enables it.
+- Verify a same-country sale moves grams into club stock, pays the seller, and leaves ownProduction false.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -21502,6 +21502,90 @@ abstract class AppLocalizations {
   /// **'Activate supplier'**
   String get nightclubActivateSupplier;
 
+  /// No description provided for @nightclubPlayerSupplyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell to club'**
+  String get nightclubPlayerSupplyAction;
+
+  /// No description provided for @nightclubPlayerSupplySellTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell to a nightclub'**
+  String get nightclubPlayerSupplySellTitle;
+
+  /// No description provided for @nightclubPlayerSupplySellHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell {drug} to a club owner in this country. Price is a wholesale cut so the club still makes money on the door.'**
+  String nightclubPlayerSupplySellHint(String drug);
+
+  /// No description provided for @nightclubPlayerSupplyNoneOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'No club in this country is buying from players. Club owners must open player supply in Ops Lab.'**
+  String get nightclubPlayerSupplyNoneOpen;
+
+  /// No description provided for @nightclubPlayerSupplyClubLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Club owner'**
+  String get nightclubPlayerSupplyClubLabel;
+
+  /// No description provided for @nightclubPlayerSupplyGramsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Grams'**
+  String get nightclubPlayerSupplyGramsLabel;
+
+  /// No description provided for @nightclubPlayerSupplyRefreshQuote.
+  ///
+  /// In en, this message translates to:
+  /// **'Update price'**
+  String get nightclubPlayerSupplyRefreshQuote;
+
+  /// No description provided for @nightclubPlayerSupplyQuote.
+  ///
+  /// In en, this message translates to:
+  /// **'€{unit} per gram · €{total} to {owner}'**
+  String nightclubPlayerSupplyQuote(String unit, String total, String owner);
+
+  /// No description provided for @nightclubPlayerSupplyConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell to club'**
+  String get nightclubPlayerSupplyConfirm;
+
+  /// No description provided for @nightclubPlayerSupplySold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold to the club.'**
+  String get nightclubPlayerSupplySold;
+
+  /// No description provided for @nightclubPlayerSupplyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not sell to the club.'**
+  String get nightclubPlayerSupplyFailed;
+
+  /// No description provided for @nightclubPlayerSupplyToggleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy from players'**
+  String get nightclubPlayerSupplyToggleTitle;
+
+  /// No description provided for @nightclubPlayerSupplyToggleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Players in this country can sell you stock at a wholesale price. You pay cash; the lot goes into club storage.'**
+  String get nightclubPlayerSupplyToggleHint;
+
+  /// No description provided for @nightclubPlayerSupplyToggleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update player supply.'**
+  String get nightclubPlayerSupplyToggleFailed;
+
   /// No description provided for @nightclubPromoterProfile.
   ///
   /// In en, this message translates to:
@@ -28216,7 +28300,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDrugsTips.
   ///
   /// In en, this message translates to:
-  /// **'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.\nExport only if you accept freight and seizure risk; travel plus street-sell still pays more per gram.'**
+  /// **'Buy materials from the Materials tab before starting batches.\nKeep drug heat low with low-profile or cash-cool when you collect a lot.\nOn a raid: pick downtime if you want to keep the batch, or cash if the facility must keep running.\nOnly enable darkweb auto-sale if you accept the fee and heat.\nOwn production stored in the nightclub earns a small extra margin.\nSell to a club with Aan club / Sell to club when a local owner opened player supply; wholesale export stays the long-distance option.\nExport only if you accept freight and seizure risk; travel plus street-sell still pays more per gram.'**
   String get helpTopicDrugsTips;
 
   /// No description provided for @helpTopicNightclubCategory.
@@ -28240,7 +28324,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicNightclubHow.
   ///
   /// In en, this message translates to:
-  /// **'At the bottom you now use a Nightclub Management Command Center with zones for Crew, Drug Storage, DJ Command, Security Unit and Ops Lab; all zones run in one continuous page flow without extra inner-scroll.\nThe nightclub screen now includes one central Intelligence section combining overview, revenue trends and risk logs without tab switching.\nOps Lab now includes 11 systems: resident DJ, dynamic event calendar, upgrade tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drinks/food) with pricing, rival sabotage + counter-intel, and an operations timeline.\nSmuggling routes now have a run cooldown (Harbor 60 min, Airstrip 90 min, Borderline 120 min), forcing risk/timing planning instead of infinite spam.\nThe upgrade tree is interactive: explicitly choose Sound Rig, VIP Lounge or Surveillance and buy the next level directly with visible upgrade costs.\nRevenue is generated per tick based on DJ quality, occupancy and supply availability. Missing supply directly reduces income.\nDJ contracts end automatically at the configured end time; after that you must book again for new boosts.\nIncidents (fights, theft) can occur when security is insufficient. This damages visitor score and income.\nEach season has a leaderboard. Players with the highest total nightclub revenue win season rewards.\nSynergy with drugs: own drug production can serve as supply, raising margins.\nDrug storage is gram-based: each selection shows the available grams before you move stock into nightclub inventory.\nRival actions are name-based: you search rival clubs by player name before selecting an action (no player-id required).\nSynergy with prostitution: combined venue events give extra visitors and higher revenue.\nUpgrades improve capacity, supply storage and the maximum number of DJs and guards you can deploy.'**
+  /// **'At the bottom you now use a Nightclub Management Command Center with zones for Crew, Drug Storage, DJ Command, Security Unit and Ops Lab; all zones run in one continuous page flow without extra inner-scroll.\nThe nightclub screen now includes one central Intelligence section combining overview, revenue trends and risk logs without tab switching.\nOps Lab now includes 11 systems: resident DJ, dynamic event calendar, upgrade tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drinks/food) with pricing, rival sabotage + counter-intel, and an operations timeline.\nTurn on Buy from players to let producers in your country sell you stock at a wholesale price; you pay cash and the lot goes into club storage.\nSmuggling routes now have a run cooldown (Harbor 60 min, Airstrip 90 min, Borderline 120 min), forcing risk/timing planning instead of infinite spam.\nThe upgrade tree is interactive: explicitly choose Sound Rig, VIP Lounge or Surveillance and buy the next level directly with visible upgrade costs.\nRevenue is generated per tick based on DJ quality, occupancy and supply availability. Missing supply directly reduces income.\nDJ contracts end automatically at the configured end time; after that you must book again for new boosts.\nIncidents (fights, theft) can occur when security is insufficient. This damages visitor score and income.\nEach season has a leaderboard. Players with the highest total nightclub revenue win season rewards.\nSynergy with drugs: own drug production can serve as supply, raising margins.\nDrug storage is gram-based: each selection shows the available grams before you move stock into nightclub inventory.\nRival actions are name-based: you search rival clubs by player name before selecting an action (no player-id required).\nSynergy with prostitution: combined venue events give extra visitors and higher revenue.\nUpgrades improve capacity, supply storage and the maximum number of DJs and guards you can deploy.'**
   String get helpTopicNightclubHow;
 
   /// No description provided for @helpTopicNightclubTips.
