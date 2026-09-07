@@ -866,7 +866,7 @@
   "noAvailableProperties": "Aucune propriété disponible",
   "noOwnedProperties": "Vous n'êtes pas encore propriétaire de propriétés",
   "buyFirstPropertyHint": "Achetez votre première propriété dans l'onglet \"Disponible\"",
-  "buyPropertyConfirm": "Voulez-vous acheter 0{name} pour 1⟧€ ?",
+  "buyPropertyConfirm": "Voulez-vous acheter {name} pour {price} ?",
   "@buyPropertyConfirm": {
     "placeholders": {
       "name": {
@@ -11324,5 +11324,48 @@
   "facebookNotConfigured": "La connexion à Facebook n'est pas encore disponible.",
   "facebookBanned": "Ce compte est banni.",
   "facebookPendingExpired": "Votre connexion Facebook a expiré. Recommencer.",
-  "facebookUsePasswordInstead": "Utilisez plutôt le nom d'utilisateur et le mot de passe"
+  "facebookUsePasswordInstead": "Utilisez plutôt le nom d'utilisateur et le mot de passe",
+  "propertyBrowseAvailableAction": "Voir les propriétés disponibles",
+  "propertyUpgradeConfirmTitle": "Mettre à niveau cette propriété ?",
+  "propertyUpgradeConfirmBody": "Dépensez {cost} cash pour élever cette propriété au niveau {level}.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Besoin de {amount} cash",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Nécessite le rang {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Acheter · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "Toute",
+  "propertyFilterEmpty": "Aucune propriété de ce type dans ce pays.",
+  "propertyRoleHouse": "Un logement plus une réserve pour les armes, les munitions, les gilets et l'argent.",
+  "propertyRoleApartment": "Un logement plus une réserve pour les armes, les munitions, les gilets et l'argent.",
+  "propertyRoleWarehouse": "Rangement des outils. Les mises à niveau ajoutent plus d'emplacements.",
+  "propertyRoleNightclub": "Ouvre la gestion de la discothèque après l'avoir acheté."
 }

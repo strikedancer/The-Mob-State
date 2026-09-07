@@ -5256,6 +5256,54 @@ class AppLocalizationsPl extends AppLocalizations {
   String get propertyManageNightclub => 'Zarządzaj klubem nocnym';
 
   @override
+  String get propertyBrowseAvailableAction => 'Zobacz dostępne nieruchomości';
+
+  @override
+  String get propertyUpgradeConfirmTitle => 'Ulepszyć tę usługę?';
+
+  @override
+  String propertyUpgradeConfirmBody(String cost, int level) {
+    return 'Wydaj $cost gotówki, aby podnieść tę nieruchomość do poziomu $level.';
+  }
+
+  @override
+  String propertyBuyNeedsCash(String amount) {
+    return 'Potrzebujesz $amount gotówki';
+  }
+
+  @override
+  String propertyBuyNeedsRank(int rank) {
+    return 'Wymaga rangi $rank';
+  }
+
+  @override
+  String propertyBuyActionCost(String price) {
+    return 'Kup · $price';
+  }
+
+  @override
+  String get propertyFilterAll => 'Wszystko';
+
+  @override
+  String get propertyFilterEmpty => 'Brak obiektów tego typu w tym kraju.';
+
+  @override
+  String get propertyRoleHouse =>
+      'Mieszkanie plus schowek na broń, amunicję, kamizelki i gotówkę.';
+
+  @override
+  String get propertyRoleApartment =>
+      'Mieszkanie plus schowek na broń, amunicję, kamizelki i gotówkę.';
+
+  @override
+  String get propertyRoleWarehouse =>
+      'Przechowywanie narzędzi. Ulepszenia dodają więcej miejsc.';
+
+  @override
+  String get propertyRoleNightclub =>
+      'Otwiera zarządzanie klubem nocnym po zakupie.';
+
+  @override
   String get blackMarket => 'Czarny rynek';
 
   @override

@@ -6,12 +6,12 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../widgets/property_card.dart';
 import '../widgets/responsive_modal.dart';
-import './estate_lot_preview_screen.dart';
 import './inventory_screen.dart';
 import './nightclub_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+
 class PropertyScreen extends StatefulWidget {
   final ValueChanged<int>? onOpenInventory;
 
@@ -35,12 +35,14 @@ class PropertyScreenState extends State<PropertyScreen>
 
   bool _isLoadingAvailable = false;
   bool _isLoadingMine = false;
-  String? _error;
+  String? _availableError;
+  String? _ownedError;
+  String? _availableTypeFilter;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, initialIndex: 1, vsync: this);
     _loadData();
   }
 
@@ -57,7 +59,7 @@ class PropertyScreenState extends State<PropertyScreen>
   Future<void> _loadAvailableProperties() async {
     setState(() {
       _isLoadingAvailable = true;
-      _error = null;
+      _availableError = null;
     });
 
     try {
@@ -101,14 +103,14 @@ class PropertyScreenState extends State<PropertyScreen>
       } else {
         final l10n = AppLocalizations.of(context)!;
         setState(() {
-          _error = data['message'] ?? l10n.errorLoadingProperties;
+          _availableError = data['message'] ?? l10n.errorLoadingProperties;
           _isLoadingAvailable = false;
         });
       }
     } catch (e) {
       final l10n = AppLocalizations.of(context)!;
       setState(() {
-        _error = l10n.networkError(e.toString());
+        _availableError = l10n.networkError(e.toString());
         _isLoadingAvailable = false;
       });
     }
@@ -117,7 +119,7 @@ class PropertyScreenState extends State<PropertyScreen>
   Future<void> _loadMyProperties() async {
     setState(() {
       _isLoadingMine = true;
-      _error = null;
+      _ownedError = null;
     });
 
     try {
@@ -155,25 +157,57 @@ class PropertyScreenState extends State<PropertyScreen>
       } else {
         final l10n = AppLocalizations.of(context)!;
         setState(() {
-          _error = data['message'] ?? l10n.errorLoadingMyProperties;
+          _ownedError = data['message'] ?? l10n.errorLoadingMyProperties;
           _isLoadingMine = false;
         });
       }
     } catch (e) {
       final l10n = AppLocalizations.of(context)!;
       setState(() {
-        _error = l10n.networkError(e.toString());
+        _ownedError = l10n.networkError(e.toString());
         _isLoadingMine = false;
       });
     }
   }
 
+  String _localizedPropertyName(PropertyDefinition property, AppLocalizations l10n) {
+    switch (property.id) {
+      case 'warehouse':
+        return l10n.propertyWarehouseName;
+      case 'nightclub':
+        return l10n.propertyNightclubName;
+      case 'house':
+        return l10n.propertyHouseName;
+      case 'apartment':
+        return l10n.propertyApartmentName;
+      default:
+        return property.name;
+    }
+  }
+
+  String? _buyLockedReason(
+    PropertyDefinition property,
+    AppLocalizations l10n,
+    AuthProvider auth,
+  ) {
+    final player = auth.currentPlayer;
+    final rank = player?.rank ?? 0;
+    final money = player?.money ?? 0;
+    if (property.minLevel > 0 && rank < property.minLevel) {
+      return l10n.propertyBuyNeedsRank(property.minLevel);
+    }
+    if (money < property.basePrice) {
+      return l10n.propertyBuyNeedsCash(formatCurrency(property.basePrice));
+    }
+    return null;
+  }
+
   Future<void> _buyProperty(PropertyDefinition property) async {
-    // Confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
         final l10n = AppLocalizations.of(dialogContext)!;
+        final displayName = _localizedPropertyName(property, l10n);
         return AlertDialog(
           title: Text(l10n.propertiesConfirmPurchaseTitle),
           content: ResponsiveDialogContent(
@@ -185,14 +219,14 @@ class PropertyScreenState extends State<PropertyScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  l10n.buyProperty,
+                  displayName,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   l10n.buyPropertyConfirm(
-                    property.name,
-                    property.basePrice.toString(),
+                    displayName,
+                    formatCurrency(property.basePrice),
                   ),
                 ),
               ],
@@ -228,11 +262,17 @@ class PropertyScreenState extends State<PropertyScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(l10n.propertyBought(property.name)),
+            content: Text(
+              l10n.propertyBought(_localizedPropertyName(property, l10n)),
+            ),
             backgroundColor: Colors.green,
           ),
         );
-        _loadData(); // Reload both tabs
+        if (mounted) {
+          await context.read<AuthProvider>().refreshPlayer();
+          _tabController.animateTo(1);
+        }
+        await _loadData();
       } else if (data['event'] == 'property.claim_failed') {
         final l10n = AppLocalizations.of(context)!;
         final message = data['params']?['message'] ?? l10n.errorBuyingProperty;
@@ -379,6 +419,42 @@ class PropertyScreenState extends State<PropertyScreen>
   }
 
   Future<void> _upgradeProperty(Property property) async {
+    final cost = property.nextUpgradeCost;
+    if (cost == null) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(l10n.propertyUpgradeConfirmTitle),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 320,
+            tabletMaxWidth: 380,
+            desktopMaxWidth: 440,
+            child: Text(
+              l10n.propertyUpgradeConfirmBody(
+                formatCurrency(cost),
+                property.level + 1,
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(l10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              child: Text(l10n.propertyUpgradeAction),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed != true) return;
+
     try {
       final response = await _apiClient.post(
         '/properties/${property.id}/upgrade',
@@ -397,7 +473,10 @@ class PropertyScreenState extends State<PropertyScreen>
             backgroundColor: Colors.green,
           ),
         );
-        _loadMyProperties();
+        if (mounted) {
+          await context.read<AuthProvider>().refreshPlayer();
+        }
+        await _loadMyProperties();
       } else if (data['event'] == 'property.upgrade_failed') {
         final l10n = AppLocalizations.of(context)!;
         final message = data['params']?['message'] ?? l10n.errorUpgrading;
@@ -465,19 +544,6 @@ class PropertyScreenState extends State<PropertyScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.properties),
-        actions: [
-          IconButton(
-            tooltip: 'Estate lot preview',
-            icon: const Icon(Icons.cottage_outlined),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const EstateLotPreviewScreen(),
-                ),
-              );
-            },
-          ),
-        ],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: MediaQuery.sizeOf(context).width < 420,
@@ -489,38 +555,22 @@ class PropertyScreenState extends State<PropertyScreen>
       ),
       body: TabBarView(
         controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
         children: [_buildAvailablePropertiesTab(), _buildMyPropertiesTab()],
       ),
     );
   }
 
   Widget _buildAvailablePropertiesTab() {
-    if (_isLoadingAvailable) {
+    final l10n = AppLocalizations.of(context)!;
+    if (_isLoadingAvailable && _availableProperties.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (_error != null) {
-      final l10n = AppLocalizations.of(context)!;
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.red),
-            const SizedBox(height: 16),
-            Text(_error!),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadAvailableProperties,
-              child: Text(l10n.retryAgain),
-            ),
-          ],
-        ),
-      );
+    if (_availableError != null && _availableProperties.isEmpty) {
+      return _buildErrorState(_availableError!, _loadAvailableProperties);
     }
 
     if (_availableProperties.isEmpty) {
-      final l10n = AppLocalizations.of(context)!;
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -533,94 +583,212 @@ class PropertyScreenState extends State<PropertyScreen>
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadAvailableProperties,
-      child: ListView.builder(
-        itemCount: _availableProperties.length,
-        itemBuilder: (context, index) {
-          final property = _availableProperties[index];
-          return PropertyCard(
-            definition: property,
-            onBuy: () => _buyProperty(property),
-          );
-        },
+    final typeIds = _availableProperties.map((p) => p.id).toSet().toList()
+      ..sort();
+    final visible = _availableTypeFilter == null
+        ? _availableProperties
+        : _availableProperties
+              .where((p) => p.id == _availableTypeFilter)
+              .toList();
+    final auth = context.watch<AuthProvider>();
+
+    return Column(
+      children: [
+        if (_isLoadingAvailable) const LinearProgressIndicator(minHeight: 2),
+        if (_availableError != null)
+          _buildInlineError(_availableError!, _loadAvailableProperties),
+        _buildTypeFilterRow(typeIds, l10n),
+        Expanded(
+          child: visible.isEmpty
+              ? Center(child: Text(l10n.propertyFilterEmpty))
+              : RefreshIndicator(
+                  onRefresh: _loadAvailableProperties,
+                  child: ListView.builder(
+                    itemCount: visible.length,
+                    itemBuilder: (context, index) {
+                      final property = visible[index];
+                      return PropertyCard(
+                        definition: property,
+                        buyLockedReason: _buyLockedReason(
+                          property,
+                          l10n,
+                          auth,
+                        ),
+                        onBuy: () => _buyProperty(property),
+                      );
+                    },
+                  ),
+                ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTypeFilterRow(List<String> typeIds, AppLocalizations l10n) {
+    if (typeIds.length < 2) return const SizedBox.shrink();
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: ChoiceChip(
+              label: Text(l10n.propertyFilterAll),
+              selected: _availableTypeFilter == null,
+              onSelected: (_) => setState(() => _availableTypeFilter = null),
+            ),
+          ),
+          ...typeIds.map((id) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: ChoiceChip(
+                label: Text(_filterLabel(id, l10n)),
+                selected: _availableTypeFilter == id,
+                onSelected: (_) => setState(() => _availableTypeFilter = id),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
 
+  String _filterLabel(String propertyId, AppLocalizations l10n) {
+    switch (propertyId) {
+      case 'house':
+        return l10n.propertyTypeHouse;
+      case 'apartment':
+        return l10n.propertyTypeApartment;
+      case 'warehouse':
+        return l10n.propertyTypeWarehouse;
+      case 'nightclub':
+        return l10n.propertyTypeNightclub;
+      default:
+        return propertyId;
+    }
+  }
+
   Widget _buildMyPropertiesTab() {
-    if (_isLoadingMine) {
+    final l10n = AppLocalizations.of(context)!;
+    if (_isLoadingMine && _myProperties.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (_error != null) {
-      final l10n = AppLocalizations.of(context)!;
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.red),
-            const SizedBox(height: 16),
-            Text(_error!),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadMyProperties,
-              child: Text(l10n.retryAgain),
-            ),
-          ],
-        ),
-      );
+    if (_ownedError != null && _myProperties.isEmpty) {
+      return _buildErrorState(_ownedError!, _loadMyProperties);
     }
 
     if (_myProperties.isEmpty) {
-      final l10n = AppLocalizations.of(context)!;
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.home, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(l10n.noOwnedProperties),
-            const SizedBox(height: 8),
-            Text(
-              l10n.buyFirstPropertyHint,
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.home, size: 64, color: Colors.grey),
+              const SizedBox(height: 16),
+              Text(
+                l10n.noOwnedProperties,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.buyFirstPropertyHint,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                onPressed: () => _tabController.animateTo(0),
+                icon: const Icon(Icons.storefront),
+                label: Text(l10n.propertyBrowseAvailableAction),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadMyProperties,
-      child: ListView.builder(
-        itemCount: _myProperties.length,
-        itemBuilder: (context, index) {
-          final property = _myProperties[index];
-          final propertyType = property.type ?? property.propertyId;
-          final matchingDefs = _availableProperties
-              .where((d) => d.id == propertyType)
-              .toList();
-          final definition = matchingDefs.isNotEmpty
-              ? matchingDefs.first
-              : null;
-          return PropertyCard(
-            ownedProperty: property,
-            definition: definition,
-            playerIsVip: _playerIsVip,
-            vipBonusPerProperty: _vipHousingBonusPerProperty,
-            onUpgrade: () => _upgradeProperty(property),
-            onDevelop: property.nextDevelopCost != null
-                ? () => _developProperty(property)
-                : null,
-            onOpenStorage: _storagePropertyTypes.contains(propertyType)
-                ? () => _openStorage(property)
-                : null,
-            onManage: propertyType == 'nightclub'
-                ? () => _openNightclub(property)
-                : null,
-          );
-        },
+    return Column(
+      children: [
+        if (_isLoadingMine) const LinearProgressIndicator(minHeight: 2),
+        if (_ownedError != null)
+          _buildInlineError(_ownedError!, _loadMyProperties),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _loadMyProperties,
+            child: ListView.builder(
+              itemCount: _myProperties.length,
+              itemBuilder: (context, index) {
+                final property = _myProperties[index];
+                final propertyType = property.type ?? property.propertyId;
+                final matchingDefs = _availableProperties
+                    .where((d) => d.id == propertyType)
+                    .toList();
+                final definition = matchingDefs.isNotEmpty
+                    ? matchingDefs.first
+                    : null;
+                return PropertyCard(
+                  ownedProperty: property,
+                  definition: definition,
+                  playerIsVip: _playerIsVip,
+                  vipBonusPerProperty: _vipHousingBonusPerProperty,
+                  onUpgrade: () => _upgradeProperty(property),
+                  onDevelop: property.nextDevelopCost != null
+                      ? () => _developProperty(property)
+                      : null,
+                  onOpenStorage: _storagePropertyTypes.contains(propertyType)
+                      ? () => _openStorage(property)
+                      : null,
+                  onManage: propertyType == 'nightclub'
+                      ? () => _openNightclub(property)
+                      : null,
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildErrorState(String message, Future<void> Function() onRetry) {
+    final l10n = AppLocalizations.of(context)!;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 64, color: Colors.red),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Text(message, textAlign: TextAlign.center),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: onRetry,
+            child: Text(l10n.retryAgain),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInlineError(String message, Future<void> Function() onRetry) {
+    final l10n = AppLocalizations.of(context)!;
+    return Material(
+      color: Colors.red.shade50,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.red),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+            TextButton(onPressed: onRetry, child: Text(l10n.retryAgain)),
+          ],
+        ),
       ),
     );
   }

@@ -5066,7 +5066,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String buyPropertyConfirm(String name, String price) {
-    return 'Do you want to buy $name for €$price?';
+    return 'Do you want to buy $name for $price?';
   }
 
   @override
@@ -5205,6 +5205,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get propertyManageNightclub => 'Manage nightclub';
+
+  @override
+  String get propertyBrowseAvailableAction => 'See available properties';
+
+  @override
+  String get propertyUpgradeConfirmTitle => 'Upgrade this property?';
+
+  @override
+  String propertyUpgradeConfirmBody(String cost, int level) {
+    return 'Spend $cost cash to raise this property to level $level.';
+  }
+
+  @override
+  String propertyBuyNeedsCash(String amount) {
+    return 'Need $amount cash';
+  }
+
+  @override
+  String propertyBuyNeedsRank(int rank) {
+    return 'Requires rank $rank';
+  }
+
+  @override
+  String propertyBuyActionCost(String price) {
+    return 'Buy · $price';
+  }
+
+  @override
+  String get propertyFilterAll => 'All';
+
+  @override
+  String get propertyFilterEmpty =>
+      'No properties of this type in this country.';
+
+  @override
+  String get propertyRoleHouse =>
+      'Housing plus a stash for weapons, ammo, vests and cash.';
+
+  @override
+  String get propertyRoleApartment =>
+      'Housing plus a stash for weapons, ammo, vests and cash.';
+
+  @override
+  String get propertyRoleWarehouse => 'Tool storage. Upgrades add more slots.';
+
+  @override
+  String get propertyRoleNightclub =>
+      'Opens nightclub management after you buy it.';
 
   @override
   String get blackMarket => 'Black Market';

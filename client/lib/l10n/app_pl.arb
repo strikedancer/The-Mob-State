@@ -11324,5 +11324,48 @@
   "facebookNotConfigured": "Logowanie przez Facebooka nie jest jeszcze dostępne.",
   "facebookBanned": "To konto zostało zbanowane.",
   "facebookPendingExpired": "Twoja rejestracja na Facebooku wygasła. Zacznij od nowa.",
-  "facebookUsePasswordInstead": "Zamiast tego użyj nazwy użytkownika i hasła"
+  "facebookUsePasswordInstead": "Zamiast tego użyj nazwy użytkownika i hasła",
+  "propertyBrowseAvailableAction": "Zobacz dostępne nieruchomości",
+  "propertyUpgradeConfirmTitle": "Ulepszyć tę usługę?",
+  "propertyUpgradeConfirmBody": "Wydaj {cost} gotówki, aby podnieść tę nieruchomość do poziomu {level}.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Potrzebujesz {amount} gotówki",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Wymaga rangi {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Kup · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "Wszystko",
+  "propertyFilterEmpty": "Brak obiektów tego typu w tym kraju.",
+  "propertyRoleHouse": "Mieszkanie plus schowek na broń, amunicję, kamizelki i gotówkę.",
+  "propertyRoleApartment": "Mieszkanie plus schowek na broń, amunicję, kamizelki i gotówkę.",
+  "propertyRoleWarehouse": "Przechowywanie narzędzi. Ulepszenia dodają więcej miejsc.",
+  "propertyRoleNightclub": "Otwiera zarządzanie klubem nocnym po zakupie."
 }

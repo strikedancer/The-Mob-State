@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/property.dart';
 import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
 import '../l10n/app_localizations.dart';
 import 'estate_lot_view.dart';
 
@@ -15,6 +16,7 @@ class PropertyCard extends StatelessWidget {
   final bool isLoading;
   final bool playerIsVip;
   final int vipBonusPerProperty;
+  final String? buyLockedReason;
 
   const PropertyCard({
     super.key,
@@ -28,6 +30,7 @@ class PropertyCard extends StatelessWidget {
     this.isLoading = false,
     this.playerIsVip = false,
     this.vipBonusPerProperty = 5,
+    this.buyLockedReason,
   });
 
   @override
@@ -140,6 +143,17 @@ class PropertyCard extends StatelessWidget {
                         _getPropertyTypeLabel(propertyId, l10n),
                         style: TextStyle(color: Colors.grey[600]),
                       ),
+                      if (_propertyRole(propertyId, l10n) != null) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          _propertyRole(propertyId, l10n)!,
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 13,
+                            height: 1.35,
+                          ),
+                        ),
+                      ],
                       SizedBox(height: 12),
 
                       // Stats
@@ -169,7 +183,7 @@ class PropertyCard extends StatelessWidget {
         ? path
         : 'assets/images/properties/$path';
 
-    return Image.asset(
+    return WebAssetHelper.image(
       fullPath,
       fit: BoxFit.cover,
       width: double.infinity,
@@ -203,7 +217,7 @@ class PropertyCard extends StatelessWidget {
           alignment: alignment,
           child: Padding(
             padding: EdgeInsets.all(8),
-            child: Image.asset(
+            child: WebAssetHelper.image(
               overlayPath,
               width: 50,
               height: 50,
@@ -399,15 +413,22 @@ class PropertyCard extends StatelessWidget {
       ],
       if (currentStorage > 0) ...[
         SizedBox(height: 8),
-        _buildStatRow('📦 Opslag', '$currentStorage slots'),
+        _buildStatRow(
+          l10n.propertyStatStorageLabel,
+          l10n.propertyStatStorageAmountSlots(currentStorage),
+        ),
       ],
       if (effectiveCapacity > 0) ...[
         SizedBox(height: 8),
         _buildStatRow(
-          '👩 Wooncapaciteit',
+          l10n.propertyStatHousingCapacityLabel,
           effectiveCapacity < effectiveMax
-              ? '$effectiveCapacity hoeren  (max $effectiveMax bij lvl ${definition!.maxLevel})'
-              : '$effectiveCapacity hoeren  ✅ max',
+              ? l10n.propertyHousingCapacityWithMax(
+                  effectiveCapacity,
+                  effectiveMax,
+                  definition!.maxLevel,
+                )
+              : l10n.propertyHousingCapacityMaxReached(effectiveCapacity),
         ),
       ],
     ];
@@ -424,19 +445,34 @@ class PropertyCard extends StatelessWidget {
   }
 
   List<Widget> _buildAvailablePropertyActions(AppLocalizations l10n) {
+    final locked = buyLockedReason != null;
+    final priceLabel = definition != null
+        ? l10n.propertyBuyActionCost(formatCurrency(definition!.basePrice))
+        : l10n.propertyBuyAction;
     return [
       SizedBox(
         width: double.infinity,
         child: ElevatedButton.icon(
-          onPressed: onBuy,
-          icon: Icon(Icons.shopping_cart),
-          label: Text(l10n.propertyBuyAction),
+          onPressed: locked ? null : onBuy,
+          icon: const Icon(Icons.shopping_cart),
+          label: Text(priceLabel),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
           ),
         ),
       ),
+      if (locked) ...[
+        const SizedBox(height: 6),
+        Text(
+          buyLockedReason!,
+          style: TextStyle(
+            color: Colors.orange[800],
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
     ];
   }
 
@@ -445,6 +481,36 @@ class PropertyCard extends StatelessWidget {
     final canUpgrade = upgradeCost != null;
 
     return [
+      if (onOpenStorage != null) ...[
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: onOpenStorage,
+            icon: const Icon(Icons.inventory_2_outlined),
+            label: Text(l10n.inventoryOpenStorage),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigo,
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
+      if (onManage != null) ...[
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: onManage,
+            icon: const Icon(Icons.nightlife),
+            label: Text(l10n.propertyManageNightclub),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.purple[700],
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
       SizedBox(
         width: double.infinity,
         child: ElevatedButton(
@@ -466,7 +532,7 @@ class PropertyCard extends StatelessWidget {
               ),
               if (canUpgrade)
                 Text(
-                  '€${formatCompactNumber(upgradeCost)}',
+                  formatCurrency(upgradeCost),
                   style: TextStyle(fontSize: 11),
                 )
               else
@@ -500,28 +566,6 @@ class PropertyCard extends StatelessWidget {
           ),
         ),
       ],
-      if (onOpenStorage != null) ...[
-        SizedBox(height: 8),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: onOpenStorage,
-            icon: const Icon(Icons.inventory_2_outlined),
-            label: Text(l10n.inventoryOpenStorage),
-          ),
-        ),
-      ],
-      if (ownedProperty?.propertyId == 'nightclub') ...[
-        SizedBox(height: 8),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: onManage,
-            icon: Icon(Icons.nightlife),
-            label: Text(l10n.propertyManageNightclub),
-          ),
-        ),
-      ],
     ];
   }
 
@@ -544,6 +588,21 @@ class PropertyCard extends StatelessWidget {
         return l10n.propertyApartmentName;
       case 'shop':
         return l10n.propertyShopName;
+      default:
+        return null;
+    }
+  }
+
+  String? _propertyRole(String? propertyId, AppLocalizations l10n) {
+    switch (propertyId) {
+      case 'house':
+        return l10n.propertyRoleHouse;
+      case 'apartment':
+        return l10n.propertyRoleApartment;
+      case 'warehouse':
+        return l10n.propertyRoleWarehouse;
+      case 'nightclub':
+        return l10n.propertyRoleNightclub;
       default:
         return null;
     }

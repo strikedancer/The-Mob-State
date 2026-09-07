@@ -5101,7 +5101,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String buyPropertyConfirm(String name, String price) {
-    return 'Wil je $name kopen voor €$price?';
+    return 'Wil je $name kopen voor $price?';
   }
 
   @override
@@ -5240,6 +5240,54 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get propertyManageNightclub => 'Beheer nachtclub';
+
+  @override
+  String get propertyBrowseAvailableAction => 'Bekijk beschikbare eigendommen';
+
+  @override
+  String get propertyUpgradeConfirmTitle => 'Dit eigendom upgraden?';
+
+  @override
+  String propertyUpgradeConfirmBody(String cost, int level) {
+    return 'Betaal $cost contant om dit eigendom naar level $level te brengen.';
+  }
+
+  @override
+  String propertyBuyNeedsCash(String amount) {
+    return 'Je hebt $amount contant nodig';
+  }
+
+  @override
+  String propertyBuyNeedsRank(int rank) {
+    return 'Vereist rang $rank';
+  }
+
+  @override
+  String propertyBuyActionCost(String price) {
+    return 'Koop · $price';
+  }
+
+  @override
+  String get propertyFilterAll => 'Alles';
+
+  @override
+  String get propertyFilterEmpty =>
+      'Geen eigendommen van dit type in dit land.';
+
+  @override
+  String get propertyRoleHouse =>
+      'Woonruimte plus opslag voor wapens, munitie, vesten en contant geld.';
+
+  @override
+  String get propertyRoleApartment =>
+      'Woonruimte plus opslag voor wapens, munitie, vesten en contant geld.';
+
+  @override
+  String get propertyRoleWarehouse =>
+      'Opslag voor gereedschap. Upgrades geven meer plekken.';
+
+  @override
+  String get propertyRoleNightclub => 'Opent het nachtclubbeheer na aankoop.';
 
   @override
   String get blackMarket => 'Zwarte Markt';

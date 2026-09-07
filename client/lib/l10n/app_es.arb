@@ -796,7 +796,7 @@
   "noAvailableProperties": "No hay propiedades disponibles",
   "noOwnedProperties": "Aún no posees ninguna propiedad",
   "buyFirstPropertyHint": "Compra tu primera propiedad en la pestaña \"Disponible\"",
-  "buyPropertyConfirm": "¿Quieres comprar {name} por {price}€?",
+  "buyPropertyConfirm": "¿Quieres comprar {name} por {price}?",
   "@buyPropertyConfirm": {
     "placeholders": {
       "name": {
@@ -11324,5 +11324,48 @@
   "facebookNotConfigured": "El inicio de sesión en Facebook aún no está disponible.",
   "facebookBanned": "Esta cuenta está prohibida.",
   "facebookPendingExpired": "Su inicio de sesión en Facebook expiró. Empezar de nuevo.",
-  "facebookUsePasswordInstead": "Utilice nombre de usuario y contraseña en su lugar"
+  "facebookUsePasswordInstead": "Utilice nombre de usuario y contraseña en su lugar",
+  "propertyBrowseAvailableAction": "Ver propiedades disponibles",
+  "propertyUpgradeConfirmTitle": "¿Actualizar esta propiedad?",
+  "propertyUpgradeConfirmBody": "Gaste {cost} efectivo para elevar esta propiedad al nivel {level}.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Necesita {amount} efectivo",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Requiere rango {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Comprar · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "Toda",
+  "propertyFilterEmpty": "No hay propiedades de este tipo en este país.",
+  "propertyRoleHouse": "Vivienda y un alijo de armas, municiones, chalecos y dinero en efectivo.",
+  "propertyRoleApartment": "Vivienda y un alijo de armas, municiones, chalecos y dinero en efectivo.",
+  "propertyRoleWarehouse": "Almacenamiento de herramientas. Las actualizaciones agregan más espacios.",
+  "propertyRoleNightclub": "Abre la gestión del Nightclub después de comprarlo."
 }

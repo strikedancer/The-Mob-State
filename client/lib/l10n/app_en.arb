@@ -2998,7 +2998,7 @@
   "noAvailableProperties": "No available properties",
   "noOwnedProperties": "You don't own any properties yet",
   "buyFirstPropertyHint": "Buy your first property in the \"Available\" tab",
-  "buyPropertyConfirm": "Do you want to buy {name} for €{price}?",
+  "buyPropertyConfirm": "Do you want to buy {name} for {price}?",
   "@buyPropertyConfirm": {
     "placeholders": {
       "name": {
@@ -3133,6 +3133,49 @@
     }
   },
   "propertyManageNightclub": "Manage nightclub",
+  "propertyBrowseAvailableAction": "See available properties",
+  "propertyUpgradeConfirmTitle": "Upgrade this property?",
+  "propertyUpgradeConfirmBody": "Spend {cost} cash to raise this property to level {level}.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Need {amount} cash",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Requires rank {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Buy · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "All",
+  "propertyFilterEmpty": "No properties of this type in this country.",
+  "propertyRoleHouse": "Housing plus a stash for weapons, ammo, vests and cash.",
+  "propertyRoleApartment": "Housing plus a stash for weapons, ammo, vests and cash.",
+  "propertyRoleWarehouse": "Tool storage. Upgrades add more slots.",
+  "propertyRoleNightclub": "Opens nightclub management after you buy it.",
   "blackMarket": "Black Market",
   "blackMarketShops": "Shops",
   "blackMarketPlayerMarket": "Player market",

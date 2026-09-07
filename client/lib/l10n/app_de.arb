@@ -866,7 +866,7 @@
   "noAvailableProperties": "Keine verfügbaren Eigenschaften",
   "noOwnedProperties": "Sie besitzen noch keine Immobilien",
   "buyFirstPropertyHint": "Kaufen Sie Ihre erste Immobilie im Reiter „Verfügbar“.",
-  "buyPropertyConfirm": "Möchten Sie {name} für {price} € kaufen?",
+  "buyPropertyConfirm": "Möchten Sie {name} für {price} kaufen?",
   "@buyPropertyConfirm": {
     "placeholders": {
       "name": {
@@ -11324,5 +11324,48 @@
   "facebookNotConfigured": "Die Facebook-Anmeldung ist noch nicht verfügbar.",
   "facebookBanned": "Dieses Konto ist gesperrt.",
   "facebookPendingExpired": "Ihre Facebook-Anmeldung ist abgelaufen. Beginnen Sie erneut.",
-  "facebookUsePasswordInstead": "Verwenden Sie stattdessen Benutzername und Passwort"
+  "facebookUsePasswordInstead": "Verwenden Sie stattdessen Benutzername und Passwort",
+  "propertyBrowseAvailableAction": "Verfügbare Eigenschaften anzeigen",
+  "propertyUpgradeConfirmTitle": "Diese Immobilie upgraden?",
+  "propertyUpgradeConfirmBody": "Geben Sie {cost} Bargeld aus, um diese Immobilie auf Level {level} zu bringen.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Benötigen Sie {amount} Bargeld",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Erfordert Rang {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Kaufen · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "Alle",
+  "propertyFilterEmpty": "Keine Immobilien dieser Art in diesem Land.",
+  "propertyRoleHouse": "Wohnraum sowie ein Lager für Waffen, Munition, Westen und Bargeld.",
+  "propertyRoleApartment": "Wohnraum sowie ein Lager für Waffen, Munition, Westen und Bargeld.",
+  "propertyRoleWarehouse": "Werkzeugaufbewahrung. Durch Upgrades werden weitere Slots hinzugefügt.",
+  "propertyRoleNightclub": "Öffnet die Nachtclubverwaltung, nachdem Sie es gekauft haben."
 }

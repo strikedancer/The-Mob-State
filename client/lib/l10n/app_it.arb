@@ -866,7 +866,7 @@
   "noAvailableProperties": "Nessuna proprietà disponibile",
   "noOwnedProperties": "Non possiedi ancora alcuna proprietà",
   "buyFirstPropertyHint": "Acquista il tuo primo immobile nella scheda \"Disponibili\".",
-  "buyPropertyConfirm": "Vuoi acquistare {name} per €{price}?",
+  "buyPropertyConfirm": "Vuoi acquistare {name} per {price}?",
   "@buyPropertyConfirm": {
     "placeholders": {
       "name": {
@@ -11324,5 +11324,48 @@
   "facebookNotConfigured": "L'accesso a Facebook non è ancora disponibile.",
   "facebookBanned": "Questo account è stato bannato.",
   "facebookPendingExpired": "Il tuo accesso a Facebook è scaduto. Ricominciare.",
-  "facebookUsePasswordInstead": "Utilizza invece nome utente e password"
+  "facebookUsePasswordInstead": "Utilizza invece nome utente e password",
+  "propertyBrowseAvailableAction": "Vedi le proprietà disponibili",
+  "propertyUpgradeConfirmTitle": "Aggiornare questa proprietà?",
+  "propertyUpgradeConfirmBody": "Spendi {cost} contanti per portare questa proprietà al livello {level}.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Hai bisogno di {amount} contanti",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Richiede il grado {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Acquista · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "Tutto",
+  "propertyFilterEmpty": "Nessuna proprietà di questo tipo in questo paese.",
+  "propertyRoleHouse": "Alloggio più una scorta per armi, munizioni, giubbotti e contanti.",
+  "propertyRoleApartment": "Alloggio più una scorta per armi, munizioni, giubbotti e contanti.",
+  "propertyRoleWarehouse": "Deposito attrezzi. Gli aggiornamenti aggiungono più slot.",
+  "propertyRoleNightclub": "Apre la gestione del nightclub dopo averlo acquistato."
 }

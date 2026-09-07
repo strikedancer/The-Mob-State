@@ -866,7 +866,7 @@
   "noAvailableProperties": "Não há propriedades disponíveis",
   "noOwnedProperties": "Você ainda não possui nenhuma propriedade",
   "buyFirstPropertyHint": "Compre seu primeiro imóvel na aba “Disponíveis”",
-  "buyPropertyConfirm": "Quer comprar {name} por €{price}?",
+  "buyPropertyConfirm": "Quer comprar {name} por {price}?",
   "@buyPropertyConfirm": {
     "placeholders": {
       "name": {
@@ -11324,5 +11324,48 @@
   "facebookNotConfigured": "O login do Facebook ainda não está disponível.",
   "facebookBanned": "Esta conta foi banida.",
   "facebookPendingExpired": "Seu login no Facebook expirou. Comece de novo.",
-  "facebookUsePasswordInstead": "Use nome de usuário e senha"
+  "facebookUsePasswordInstead": "Use nome de usuário e senha",
+  "propertyBrowseAvailableAction": "Veja os imóveis disponíveis",
+  "propertyUpgradeConfirmTitle": "Atualizar esta propriedade?",
+  "propertyUpgradeConfirmBody": "Gaste {cost} em dinheiro para elevar esta propriedade ao nível {level}.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Precisa de {amount} dinheiro",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Requer classificação {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Comprar · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "Todos",
+  "propertyFilterEmpty": "Não há propriedades deste tipo neste país.",
+  "propertyRoleHouse": "Moradia e um esconderijo para armas, munições, coletes e dinheiro.",
+  "propertyRoleApartment": "Moradia e um esconderijo para armas, munições, coletes e dinheiro.",
+  "propertyRoleWarehouse": "Armazenamento de ferramentas. As atualizações adicionam mais slots.",
+  "propertyRoleNightclub": "Abre o gerenciamento da boate depois de comprá-lo."
 }

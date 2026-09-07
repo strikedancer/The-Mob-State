@@ -363,8 +363,9 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ## Properties
 
-- Huis en appartement tonen een **landgoed-lot** (`EstateLotView`) waarvan house/shed/garage/hek meeschalen met de residential upgrade-level. Preview-sliders blijven beschikbaar. Compose-pad: `scripts/compose_estate_grid_12x12.py`.
+- Huis en appartement tonen een **landgoed-lot** (`EstateLotView`) waarvan house/shed/garage/hek meeschalen met de residential upgrade-level. Preview-route `/estate-lot-preview` blijft beschikbaar, niet in de player-AppBar. Compose-pad: `scripts/compose_estate_grid_12x12.py`.
 - Cosmetisch **gouden hek** is een credit-sink zonder combat-power (`estate_gold_fence`).
+- Player-UI (Eigendommen): opent op **Mijn eigendommen**. Lege staat heeft een knop naar Beschikbaar. Kaarten tonen een korte rolregel. Kopen en upgraden vragen bevestiging met geformatteerd bedrag; kopen is uit als rang of cash tekort is. Opslag of nachtclubbeheer staat als eerste actie. Beschikbaar heeft type-chips. Fouten blijven per tab.
 
 ### Property Types
 
@@ -391,9 +392,9 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **ROI**: Verschillende return on investment per property
 
 ### Property Liquidation
-- **Sell price**: 70% van aankoopprijs
+- **Sell price**: 70% van aankoopprijs (ontwerp; nog geen player-sell-UI of API)
 - **Example**: Casino kopen â‚¬3M â†’ verkopen â‚¬2.1M
-- **No cooldown**: Direct verkopen mogelijk
+- **No cooldown**: Direct verkopen mogelijk zodra sell bestaat
 
 ---
 

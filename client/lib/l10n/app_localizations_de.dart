@@ -5135,7 +5135,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String buyPropertyConfirm(String name, String price) {
-    return 'Möchten Sie $name für $price € kaufen?';
+    return 'Möchten Sie $name für $price kaufen?';
   }
 
   @override
@@ -5274,6 +5274,56 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get propertyManageNightclub => 'Nightclub verwalten';
+
+  @override
+  String get propertyBrowseAvailableAction =>
+      'Verfügbare Eigenschaften anzeigen';
+
+  @override
+  String get propertyUpgradeConfirmTitle => 'Diese Immobilie upgraden?';
+
+  @override
+  String propertyUpgradeConfirmBody(String cost, int level) {
+    return 'Geben Sie $cost Bargeld aus, um diese Immobilie auf Level $level zu bringen.';
+  }
+
+  @override
+  String propertyBuyNeedsCash(String amount) {
+    return 'Benötigen Sie $amount Bargeld';
+  }
+
+  @override
+  String propertyBuyNeedsRank(int rank) {
+    return 'Erfordert Rang $rank';
+  }
+
+  @override
+  String propertyBuyActionCost(String price) {
+    return 'Kaufen · $price';
+  }
+
+  @override
+  String get propertyFilterAll => 'Alle';
+
+  @override
+  String get propertyFilterEmpty =>
+      'Keine Immobilien dieser Art in diesem Land.';
+
+  @override
+  String get propertyRoleHouse =>
+      'Wohnraum sowie ein Lager für Waffen, Munition, Westen und Bargeld.';
+
+  @override
+  String get propertyRoleApartment =>
+      'Wohnraum sowie ein Lager für Waffen, Munition, Westen und Bargeld.';
+
+  @override
+  String get propertyRoleWarehouse =>
+      'Werkzeugaufbewahrung. Durch Upgrades werden weitere Slots hinzugefügt.';
+
+  @override
+  String get propertyRoleNightclub =>
+      'Öffnet die Nachtclubverwaltung, nachdem Sie es gekauft haben.';
 
   @override
   String get blackMarket => 'Schwarzmarkt';

@@ -5151,7 +5151,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String buyPropertyConfirm(String name, String price) {
-    return 'Voulez-vous acheter 0$name pour 1⟧€ ?';
+    return 'Voulez-vous acheter $name pour $price ?';
   }
 
   @override
@@ -5290,6 +5290,54 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get propertyManageNightclub => 'Gérer une discothèque';
+
+  @override
+  String get propertyBrowseAvailableAction => 'Voir les propriétés disponibles';
+
+  @override
+  String get propertyUpgradeConfirmTitle => 'Mettre à niveau cette propriété ?';
+
+  @override
+  String propertyUpgradeConfirmBody(String cost, int level) {
+    return 'Dépensez $cost cash pour élever cette propriété au niveau $level.';
+  }
+
+  @override
+  String propertyBuyNeedsCash(String amount) {
+    return 'Besoin de $amount cash';
+  }
+
+  @override
+  String propertyBuyNeedsRank(int rank) {
+    return 'Nécessite le rang $rank';
+  }
+
+  @override
+  String propertyBuyActionCost(String price) {
+    return 'Acheter · $price';
+  }
+
+  @override
+  String get propertyFilterAll => 'Toute';
+
+  @override
+  String get propertyFilterEmpty => 'Aucune propriété de ce type dans ce pays.';
+
+  @override
+  String get propertyRoleHouse =>
+      'Un logement plus une réserve pour les armes, les munitions, les gilets et l\'argent.';
+
+  @override
+  String get propertyRoleApartment =>
+      'Un logement plus une réserve pour les armes, les munitions, les gilets et l\'argent.';
+
+  @override
+  String get propertyRoleWarehouse =>
+      'Rangement des outils. Les mises à niveau ajoutent plus d\'emplacements.';
+
+  @override
+  String get propertyRoleNightclub =>
+      'Ouvre la gestion de la discothèque après l\'avoir acheté.';
 
   @override
   String get blackMarket => 'Marché noir';

@@ -29,7 +29,8 @@ Scope-afbakening:
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
-- Residential house/apartment kaarten gebruiken `EstateLotView` gekoppeld aan `upgradeLevel` (house/parking/shed/hek). Preview-route blijft beschikbaar. Compose-pad: `scripts/compose_estate_grid_12x12.py`.
+- Residential house/apartment kaarten gebruiken `EstateLotView` gekoppeld aan `upgradeLevel` (house/parking/shed/hek). Preview-route (`/estate-lot-preview`) blijft beschikbaar, niet in de player-AppBar. Compose-pad: `scripts/compose_estate_grid_12x12.py`.
+- Default tab is **My properties**. Lege owned-staat heeft een CTA naar Available. Available heeft type-chips, cash/rank-lock op kopen, en geformatteerde confirm voor buy + upgrade. Fouten zijn per tab; een refresh wist geen bestaande lijst.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.

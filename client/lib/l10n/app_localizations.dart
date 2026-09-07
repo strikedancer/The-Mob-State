@@ -9104,7 +9104,7 @@ abstract class AppLocalizations {
   /// No description provided for @buyPropertyConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Do you want to buy {name} for €{price}?'**
+  /// **'Do you want to buy {name} for {price}?'**
   String buyPropertyConfirm(String name, String price);
 
   /// No description provided for @propertyPrice.
@@ -9340,6 +9340,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage nightclub'**
   String get propertyManageNightclub;
+
+  /// No description provided for @propertyBrowseAvailableAction.
+  ///
+  /// In en, this message translates to:
+  /// **'See available properties'**
+  String get propertyBrowseAvailableAction;
+
+  /// No description provided for @propertyUpgradeConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade this property?'**
+  String get propertyUpgradeConfirmTitle;
+
+  /// No description provided for @propertyUpgradeConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend {cost} cash to raise this property to level {level}.'**
+  String propertyUpgradeConfirmBody(String cost, int level);
+
+  /// No description provided for @propertyBuyNeedsCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Need {amount} cash'**
+  String propertyBuyNeedsCash(String amount);
+
+  /// No description provided for @propertyBuyNeedsRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires rank {rank}'**
+  String propertyBuyNeedsRank(int rank);
+
+  /// No description provided for @propertyBuyActionCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy · {price}'**
+  String propertyBuyActionCost(String price);
+
+  /// No description provided for @propertyFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get propertyFilterAll;
+
+  /// No description provided for @propertyFilterEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No properties of this type in this country.'**
+  String get propertyFilterEmpty;
+
+  /// No description provided for @propertyRoleHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing plus a stash for weapons, ammo, vests and cash.'**
+  String get propertyRoleHouse;
+
+  /// No description provided for @propertyRoleApartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing plus a stash for weapons, ammo, vests and cash.'**
+  String get propertyRoleApartment;
+
+  /// No description provided for @propertyRoleWarehouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Tool storage. Upgrades add more slots.'**
+  String get propertyRoleWarehouse;
+
+  /// No description provided for @propertyRoleNightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens nightclub management after you buy it.'**
+  String get propertyRoleNightclub;
 
   /// No description provided for @blackMarket.
   ///

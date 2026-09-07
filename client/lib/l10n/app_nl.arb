@@ -324,7 +324,7 @@
   "noAvailableProperties": "Geen beschikbare eigendommen",
   "noOwnedProperties": "Je hebt nog geen eigendommen",
   "buyFirstPropertyHint": "Koop je eerste eigendom in de \"Beschikbaar\" tab",
-  "buyPropertyConfirm": "Wil je {name} kopen voor €{price}?",
+  "buyPropertyConfirm": "Wil je {name} kopen voor {price}?",
   "propertyPrice": "Prijs",
   "propertyMinLevel": "Vereist level",
   "propertyIncomePerHour": "Inkomen/uur",
@@ -8828,6 +8828,49 @@
     }
   },
   "propertyManageNightclub": "Beheer nachtclub",
+  "propertyBrowseAvailableAction": "Bekijk beschikbare eigendommen",
+  "propertyUpgradeConfirmTitle": "Dit eigendom upgraden?",
+  "propertyUpgradeConfirmBody": "Betaal {cost} contant om dit eigendom naar level {level} te brengen.",
+  "@propertyUpgradeConfirmBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyNeedsCash": "Je hebt {amount} contant nodig",
+  "@propertyBuyNeedsCash": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyBuyNeedsRank": "Vereist rang {rank}",
+  "@propertyBuyNeedsRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyBuyActionCost": "Koop · {price}",
+  "@propertyBuyActionCost": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyFilterAll": "Alles",
+  "propertyFilterEmpty": "Geen eigendommen van dit type in dit land.",
+  "propertyRoleHouse": "Woonruimte plus opslag voor wapens, munitie, vesten en contant geld.",
+  "propertyRoleApartment": "Woonruimte plus opslag voor wapens, munitie, vesten en contant geld.",
+  "propertyRoleWarehouse": "Opslag voor gereedschap. Upgrades geven meer plekken.",
+  "propertyRoleNightclub": "Opent het nachtclubbeheer na aankoop.",
   "inventoryCrimeWeaponTitle": "Geselecteerd crime-wapen",
   "inventoryCrimeWeaponHint": "Selecteer een wapen voor crimes",
   "inventoryCrimeWeaponHelp": "Zet wapens op slot 1 en slot 2. Crimes kiest per crime automatisch het beste gedragen wapen.",
