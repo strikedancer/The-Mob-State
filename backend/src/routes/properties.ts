@@ -3,6 +3,7 @@ import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { propertyService } from '../services/propertyService';
 import { propertyStorageService } from '../services/propertyStorageService';
 import { prostituteService } from '../services/prostituteService';
+import { showroomService } from '../services/showroomService';
 
 const router = Router();
 
@@ -526,6 +527,94 @@ router.post('/:id/collect', authenticate, async (req: AuthRequest, res: Response
 });
 
 /**
+ * GET /properties/:id/showroom
+ * Collection state for a car/motorcycle/boat showroom.
+ */
+router.get('/:id/showroom', authenticate, async (req: AuthRequest, res: Response) => {
+  const propertyId = parseInt(String(req.params.id), 10);
+  if (isNaN(propertyId)) {
+    return res.status(400).json({
+      event: 'error.invalid_property_id',
+      params: {},
+    });
+  }
+
+  const result = await showroomService.getShowroom(req.player!.id, propertyId);
+  if (!result.success) {
+    return res.status(400).json({
+      event: 'showroom.load_failed',
+      params: { reason: result.error },
+    });
+  }
+
+  return res.status(200).json({
+    event: 'showroom.loaded',
+    params: {},
+    showroom: result.showroom,
+  });
+});
+
+router.post('/:id/showroom/place', authenticate, async (req: AuthRequest, res: Response) => {
+  const propertyId = parseInt(String(req.params.id), 10);
+  const vehicleInventoryId = parseInt(String(req.body?.vehicleInventoryId ?? ''), 10);
+  if (isNaN(propertyId) || isNaN(vehicleInventoryId)) {
+    return res.status(400).json({
+      event: 'showroom.place_failed',
+      params: { reason: 'INVALID_INPUT' },
+    });
+  }
+
+  const result = await showroomService.placeVehicle(
+    req.player!.id,
+    propertyId,
+    vehicleInventoryId,
+  );
+  if (!result.success) {
+    return res.status(400).json({
+      event: 'showroom.place_failed',
+      params: { reason: result.error },
+    });
+  }
+
+  const showroom = await showroomService.getShowroom(req.player!.id, propertyId);
+  return res.status(200).json({
+    event: 'showroom.placed',
+    params: {},
+    showroom: showroom.success ? showroom.showroom : null,
+  });
+});
+
+router.post('/:id/showroom/remove', authenticate, async (req: AuthRequest, res: Response) => {
+  const propertyId = parseInt(String(req.params.id), 10);
+  const vehicleInventoryId = parseInt(String(req.body?.vehicleInventoryId ?? ''), 10);
+  if (isNaN(propertyId) || isNaN(vehicleInventoryId)) {
+    return res.status(400).json({
+      event: 'showroom.remove_failed',
+      params: { reason: 'INVALID_INPUT' },
+    });
+  }
+
+  const result = await showroomService.removeVehicle(
+    req.player!.id,
+    propertyId,
+    vehicleInventoryId,
+  );
+  if (!result.success) {
+    return res.status(400).json({
+      event: 'showroom.remove_failed',
+      params: { reason: result.error },
+    });
+  }
+
+  const showroom = await showroomService.getShowroom(req.player!.id, propertyId);
+  return res.status(200).json({
+    event: 'showroom.removed',
+    params: {},
+    showroom: showroom.success ? showroom.showroom : null,
+  });
+});
+
+/**
  * POST /properties/:id/sell
  * Sell a property for 70% of purchase price. Storage must be empty.
  */
@@ -549,6 +638,7 @@ router.post('/:id/sell', authenticate, async (req: AuthRequest, res: Response) =
         WRONG_COUNTRY: [403, 'property.sell_failed'],
         STORAGE_NOT_EMPTY: [400, 'property.sell_failed'],
         NIGHTCLUB_NOT_EMPTY: [400, 'property.sell_failed'],
+        SHOWROOM_NOT_EMPTY: [400, 'property.sell_failed'],
       };
       const entry = map[result.error ?? ''] ?? [400, 'property.sell_failed'];
       return res.status(entry[0]).json({

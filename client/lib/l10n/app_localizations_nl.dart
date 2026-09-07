@@ -5191,6 +5191,138 @@ class AppLocalizationsNl extends AppLocalizations {
   String get propertyShopName => 'Winkel';
 
   @override
+  String get propertyCarShowroomName => 'Auto-showroom';
+
+  @override
+  String get propertyMotorcycleShowroomName => 'Motorzaak';
+
+  @override
+  String get propertyBoatHarborName => 'Boothaven';
+
+  @override
+  String get propertyTypeCarShowroom => 'Auto-showroom';
+
+  @override
+  String get propertyTypeMotorcycleShowroom => 'Motorzaak';
+
+  @override
+  String get propertyTypeBoatHarbor => 'Boothaven';
+
+  @override
+  String get propertyUniqueWorldwide => '⚠️ Uniek — 1 per speler wereldwijd';
+
+  @override
+  String get propertyAlreadyOwnedWorldwide =>
+      'Je hebt dit al (één per account)';
+
+  @override
+  String get propertyStatShowroomSlotsLabel => '🚘 Vitrine';
+
+  @override
+  String get propertyManageShowroom => 'Beheer collectie';
+
+  @override
+  String get propertySellErrorShowroom =>
+      'Haal eerst alle voertuigen uit de vitrine.';
+
+  @override
+  String get propertyRoleCarShowroom =>
+      'Wereldwijde autocollectie. Geen tweede garage: getoonde auto\'s zijn vergrendeld.';
+
+  @override
+  String get propertyRoleMotorcycleShowroom =>
+      'Wereldwijde motorcollectie. Getoonde motoren zijn vergrendeld tot je ze terugzet.';
+
+  @override
+  String get propertyRoleBoatHarbor =>
+      'Wereldwijde bootcollectie. Getoonde boten zijn vergrendeld tot je ze terugzet.';
+
+  @override
+  String get propertyInfoCarShowroom =>
+      'Eén auto-showroom per account, te koop in elk land maar gebonden aan het land van aankoop. Zet alleen auto\'s uit dat land in de vitrine, op 100% conditie, één model tegelijk. Upgrades vergroten de vitrine in stappen tot alle autotypes. Geen tweede garage: tentoongestelde auto\'s tellen niet in je garage en kun je niet gebruiken, verkopen of smokkelen. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per auto). Verkopen kan pas als de collectie leeg is.';
+
+  @override
+  String get propertyInfoMotorcycleShowroom =>
+      'Eén motorzaak per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen motoren in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle motortypes. Getoonde motoren zijn vergrendeld en tellen niet in je stalling. Bij aanhouding in dat land ~40% kans per motor op inbeslagname.';
+
+  @override
+  String get propertyInfoBoatHarbor =>
+      'Eén boothaven per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen boten in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle boottypes. Getoonde boten zijn vergrendeld en tellen niet in je haven. Bij aanhouding in dat land ~40% kans per boot op inbeslagname.';
+
+  @override
+  String get showroomTitle => 'Collectie';
+
+  @override
+  String get showroomCollectionTab => 'Vitrine';
+
+  @override
+  String get showroomPlaceTab => 'Plaatsen';
+
+  @override
+  String showroomSlots(String used, String max) {
+    return '$used / $max vitrineplekken';
+  }
+
+  @override
+  String get showroomEmptyCollection => 'Nog geen voertuigen in de vitrine.';
+
+  @override
+  String get showroomEmptyEligible =>
+      'Geen voertuig klaar om te plaatsen. Het moet in dit land staan, 100% conditie hebben en dat model mag nog niet in de vitrine staan.';
+
+  @override
+  String get showroomPlaceAction => 'Plaats';
+
+  @override
+  String get showroomRemoveAction => 'Haal weg';
+
+  @override
+  String get showroomNeedPerfectCondition =>
+      'Alleen voertuigen met 100% conditie mogen in de vitrine.';
+
+  @override
+  String get showroomNeedSameCountry =>
+      'Reis naar het land van dit pand om de collectie te beheren.';
+
+  @override
+  String get showroomNeedGarageSpace =>
+      'Je garage of haven is vol. Maak eerst een plek vrij.';
+
+  @override
+  String get showroomDuplicateModel => 'Dit model staat al in de vitrine.';
+
+  @override
+  String get showroomFull =>
+      'De vitrine is vol. Upgrade het pand voor meer plekken.';
+
+  @override
+  String get showroomWrongType => 'Dit voertuig hoort niet in dit pand.';
+
+  @override
+  String get showroomVehicleBusy =>
+      'Dit voertuig is onderweg, te koop of al tentoongesteld.';
+
+  @override
+  String get showroomPlaced => 'Voertuig staat in de collectie.';
+
+  @override
+  String get showroomRemoved => 'Voertuig is terug in je stalling.';
+
+  @override
+  String get showroomRules =>
+      'Collectie, geen extra garage. 100% conditie, zelfde land, één per model. Politie kan bij aanhouding hier voertuigen afpakken.';
+
+  @override
+  String get showroomWrongCountryManage =>
+      'Je moet in het land van dit pand zijn om voertuigen te plaatsen of terug te zetten.';
+
+  @override
+  String get showroomLoadError => 'Kon de collectie niet laden.';
+
+  @override
+  String get showroomRefresh => 'Opnieuw laden';
+
+  @override
   String get propertiesConfirmPurchaseTitle => 'Weet je het zeker?';
 
   @override
@@ -16315,11 +16447,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesSummary =>
-      'Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.';
+      'Koop eigendommen om opslag, wooncapaciteit, voertuigcollecties en toegang tot systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.';
 
   @override
   String get helpTopicPropertiesHow =>
-      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash en zijn veiliger bij aanhouding. Magazijnen bewaren hetzelfde plus gereedschap, met meer plekken. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Je kunt één magazijn per land hebben (geen landelijk plafond). Nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
+      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit, voertuigcollectie of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash en zijn veiliger bij aanhouding. Magazijnen bewaren hetzelfde plus gereedschap, met meer plekken. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Je kunt één magazijn per land hebben (geen landelijk plafond). Nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nAuto-showroom, motorzaak en boothaven zijn collecties: één van elk per account wereldwijd, gekocht in een land en daaraan gebonden. Zet alleen voertuigen uit dat land in de vitrine, op 100% conditie, één per model. Upgrades vergroten de vitrine in stappen tot alle types van die categorie. Getoonde voertuigen zijn vergrendeld (geen crimes, smokkel, verkoop) en tellen niet in garage of haven. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per voertuig). Haal de collectie leeg voor je het pand verkoopt.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad of showroomcollectie) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
 
   @override
   String get helpTopicPropertiesTips =>

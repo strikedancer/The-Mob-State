@@ -124,6 +124,7 @@ export const garageService = {
         playerId,
         currentLocation: location,
         vehicleType: { in: ['car', 'motorcycle'] },
+        showroomPropertyId: null,
       },
     });
 
@@ -303,6 +304,7 @@ export const garageService = {
         playerId,
         currentLocation: location,
         vehicleType: 'boat',
+        showroomPropertyId: null,
       },
     });
 

@@ -5225,6 +5225,141 @@ class AppLocalizationsDe extends AppLocalizations {
   String get propertyShopName => 'Geschäft';
 
   @override
+  String get propertyCarShowroomName => 'Auto-Showroom';
+
+  @override
+  String get propertyMotorcycleShowroomName => 'Motorradladen';
+
+  @override
+  String get propertyBoatHarborName => 'Bootshafen';
+
+  @override
+  String get propertyTypeCarShowroom => 'Auto-Showroom';
+
+  @override
+  String get propertyTypeMotorcycleShowroom => 'Motorradladen';
+
+  @override
+  String get propertyTypeBoatHarbor => 'Bootshafen';
+
+  @override
+  String get propertyUniqueWorldwide =>
+      '⚠️ Einzigartig — 1 pro Spieler weltweit';
+
+  @override
+  String get propertyAlreadyOwnedWorldwide =>
+      'Du besitzt das bereits (eines pro Konto)';
+
+  @override
+  String get propertyStatShowroomSlotsLabel => '🚘 Vitrine';
+
+  @override
+  String get propertyManageShowroom => 'Sammlung verwalten';
+
+  @override
+  String get propertySellErrorShowroom =>
+      'Nimm zuerst alle Fahrzeuge aus der Vitrine.';
+
+  @override
+  String get propertyRoleCarShowroom =>
+      'Weltweite Autosammlung. Keine zweite Garage: ausgestellte Autos sind gesperrt.';
+
+  @override
+  String get propertyRoleMotorcycleShowroom =>
+      'Weltweite Motorradsammlung. Ausgestellte Bikes bleiben gesperrt.';
+
+  @override
+  String get propertyRoleBoatHarbor =>
+      'Weltweite Bootssammlung. Ausgestellte Boote bleiben gesperrt.';
+
+  @override
+  String get propertyInfoCarShowroom =>
+      'Ein Auto-Showroom pro Konto, im Kaufland gebunden. Nur Autos in diesem Land, 100% Zustand, ein Modell. Upgrades füllen die Vitrine schrittweise bis alle Autotypen. Ausgestellte Autos sind gesperrt und zählen nicht in der Garage. Bei Festnahme dort durchsucht die Polizei die Vitrine (~40% je Auto).';
+
+  @override
+  String get propertyInfoMotorcycleShowroom =>
+      'Ein Motorradladen pro Konto, im Kaufland gebunden. Nur Motorräder in diesem Land, 100% Zustand, ein Modell. Ausgestellte Bikes sind gesperrt. Bei Festnahme ~40% je Bike.';
+
+  @override
+  String get propertyInfoBoatHarbor =>
+      'Ein Bootshafen pro Konto, im Kaufland gebunden. Nur Boote in diesem Land, 100% Zustand, ein Modell. Ausgestellte Boote sind gesperrt. Bei Festnahme ~40% je Boot.';
+
+  @override
+  String get showroomTitle => 'Sammlung';
+
+  @override
+  String get showroomCollectionTab => 'Vitrine';
+
+  @override
+  String get showroomPlaceTab => 'Platzieren';
+
+  @override
+  String showroomSlots(String used, String max) {
+    return '$used / $max Vitrinenplätze';
+  }
+
+  @override
+  String get showroomEmptyCollection => 'Noch keine Fahrzeuge in der Vitrine.';
+
+  @override
+  String get showroomEmptyEligible =>
+      'Kein Fahrzeug bereit. Es muss in diesem Land stehen, 100% Zustand haben und das Modell darf noch nicht ausgestellt sein.';
+
+  @override
+  String get showroomPlaceAction => 'Platzieren';
+
+  @override
+  String get showroomRemoveAction => 'Herausnehmen';
+
+  @override
+  String get showroomNeedPerfectCondition =>
+      'Nur Fahrzeuge mit 100% Zustand dürfen in die Vitrine.';
+
+  @override
+  String get showroomNeedSameCountry =>
+      'Reise ins Land dieser Immobilie, um die Sammlung zu verwalten.';
+
+  @override
+  String get showroomNeedGarageSpace =>
+      'Garage oder Hafen ist voll. Mach zuerst Platz frei.';
+
+  @override
+  String get showroomDuplicateModel =>
+      'Dieses Modell steht schon in der Vitrine.';
+
+  @override
+  String get showroomFull =>
+      'Die Vitrine ist voll. Upgrade die Immobilie für mehr Plätze.';
+
+  @override
+  String get showroomWrongType =>
+      'Dieses Fahrzeug gehört nicht in dieses Gebäude.';
+
+  @override
+  String get showroomVehicleBusy =>
+      'Dieses Fahrzeug ist unterwegs, zum Verkauf oder schon ausgestellt.';
+
+  @override
+  String get showroomPlaced => 'Fahrzeug steht in der Sammlung.';
+
+  @override
+  String get showroomRemoved => 'Fahrzeug ist zurück im Stellplatz.';
+
+  @override
+  String get showroomRules =>
+      'Sammlung, keine Extra-Garage. 100% Zustand, gleiches Land, ein Modell. Die Polizei kann ausgestellte Fahrzeuge bei Festnahme beschlagnahmen.';
+
+  @override
+  String get showroomWrongCountryManage =>
+      'Du musst im Land dieser Immobilie sein, um Fahrzeuge zu platzieren oder zurückzunehmen.';
+
+  @override
+  String get showroomLoadError => 'Sammlung konnte nicht geladen werden.';
+
+  @override
+  String get showroomRefresh => 'Neu laden';
+
+  @override
   String get propertiesConfirmPurchaseTitle => 'Bist du sicher?';
 
   @override

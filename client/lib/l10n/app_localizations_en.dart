@@ -5156,6 +5156,139 @@ class AppLocalizationsEn extends AppLocalizations {
   String get propertyShopName => 'Shop';
 
   @override
+  String get propertyCarShowroomName => 'Car showroom';
+
+  @override
+  String get propertyMotorcycleShowroomName => 'Motorcycle shop';
+
+  @override
+  String get propertyBoatHarborName => 'Boat harbor';
+
+  @override
+  String get propertyTypeCarShowroom => 'Car showroom';
+
+  @override
+  String get propertyTypeMotorcycleShowroom => 'Motorcycle shop';
+
+  @override
+  String get propertyTypeBoatHarbor => 'Boat harbor';
+
+  @override
+  String get propertyUniqueWorldwide => '⚠️ Unique — 1 per player worldwide';
+
+  @override
+  String get propertyAlreadyOwnedWorldwide =>
+      'You already own this (one per account)';
+
+  @override
+  String get propertyStatShowroomSlotsLabel => '🚘 Showroom';
+
+  @override
+  String get propertyManageShowroom => 'Manage collection';
+
+  @override
+  String get propertySellErrorShowroom =>
+      'Remove all vehicles from the showroom first.';
+
+  @override
+  String get propertyRoleCarShowroom =>
+      'Worldwide car collection. Not a second garage: displayed cars are locked.';
+
+  @override
+  String get propertyRoleMotorcycleShowroom =>
+      'Worldwide motorcycle collection. Displayed bikes stay locked until you take them out.';
+
+  @override
+  String get propertyRoleBoatHarbor =>
+      'Worldwide boat collection. Displayed boats stay locked until you take them out.';
+
+  @override
+  String get propertyInfoCarShowroom =>
+      'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per car). Sell only after the collection is empty.';
+
+  @override
+  String get propertyInfoMotorcycleShowroom =>
+      'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per bike to seize it.';
+
+  @override
+  String get propertyInfoBoatHarbor =>
+      'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per boat to seize it.';
+
+  @override
+  String get showroomTitle => 'Collection';
+
+  @override
+  String get showroomCollectionTab => 'On display';
+
+  @override
+  String get showroomPlaceTab => 'Place';
+
+  @override
+  String showroomSlots(String used, String max) {
+    return '$used / $max display slots';
+  }
+
+  @override
+  String get showroomEmptyCollection => 'No vehicles on display yet.';
+
+  @override
+  String get showroomEmptyEligible =>
+      'No vehicle is ready to place. It must be in this country, at 100% condition, and that model cannot already be on display.';
+
+  @override
+  String get showroomPlaceAction => 'Place';
+
+  @override
+  String get showroomRemoveAction => 'Take out';
+
+  @override
+  String get showroomNeedPerfectCondition =>
+      'Only vehicles at 100% condition can go on display.';
+
+  @override
+  String get showroomNeedSameCountry =>
+      'Travel to this property\'s country to manage the collection.';
+
+  @override
+  String get showroomNeedGarageSpace =>
+      'Your garage or marina is full. Free a slot first.';
+
+  @override
+  String get showroomDuplicateModel => 'That model is already on display.';
+
+  @override
+  String get showroomFull =>
+      'The showroom is full. Upgrade the property for more slots.';
+
+  @override
+  String get showroomWrongType =>
+      'This vehicle does not belong in this building.';
+
+  @override
+  String get showroomVehicleBusy =>
+      'This vehicle is in transit, listed for sale, or already on display.';
+
+  @override
+  String get showroomPlaced => 'Vehicle added to the collection.';
+
+  @override
+  String get showroomRemoved => 'Vehicle returned to storage.';
+
+  @override
+  String get showroomRules =>
+      'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize displayed vehicles on arrest here.';
+
+  @override
+  String get showroomWrongCountryManage =>
+      'You must be in this property\'s country to place or remove vehicles.';
+
+  @override
+  String get showroomLoadError => 'Could not load the collection.';
+
+  @override
+  String get showroomRefresh => 'Reload';
+
+  @override
   String get propertiesConfirmPurchaseTitle => 'Are you sure?';
 
   @override
@@ -16275,11 +16408,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesSummary =>
-      'Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost.';
+      'Buy properties to expand storage, housing capacity, vehicle collections and access to systems such as the nightclub. Develop properties for a permanent income boost.';
 
   @override
   String get helpTopicPropertiesHow =>
-      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store the same plus tools, with more slots. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. You can own one warehouse per country (no global cap). Nightclub slots per country are shown in the shop. The casino is unique per country.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).';
+      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store the same plus tools, with more slots. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. You can own one warehouse per country (no global cap). Nightclub slots per country are shown in the shop. The casino is unique per country.\nThe car showroom, motorcycle shop and boat harbor are collections: one of each per account worldwide, bought in a country and bound there. Only vehicles in that country, at 100% condition, one per model. Upgrades grow the vitrine in steps until every type in that category fits. Displayed vehicles are locked (no crimes, smuggling or sales) and do not use garage or marina slots. An arrest in that country searches the vitrine (~40% chance per vehicle). Empty the collection before selling.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock or showroom collection) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).';
 
   @override
   String get helpTopicPropertiesTips =>

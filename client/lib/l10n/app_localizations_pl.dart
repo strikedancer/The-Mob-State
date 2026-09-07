@@ -5205,6 +5205,138 @@ class AppLocalizationsPl extends AppLocalizations {
   String get propertyShopName => 'Sklep';
 
   @override
+  String get propertyCarShowroomName => 'Salon samochodowy';
+
+  @override
+  String get propertyMotorcycleShowroomName => 'Sklep motocyklowy';
+
+  @override
+  String get propertyBoatHarborName => 'Przystań';
+
+  @override
+  String get propertyTypeCarShowroom => 'Salon samochodowy';
+
+  @override
+  String get propertyTypeMotorcycleShowroom => 'Sklep motocyklowy';
+
+  @override
+  String get propertyTypeBoatHarbor => 'Przystań';
+
+  @override
+  String get propertyUniqueWorldwide => '⚠️ Unikat — 1 na gracza na świecie';
+
+  @override
+  String get propertyAlreadyOwnedWorldwide =>
+      'Już to posiadasz (jedno na konto)';
+
+  @override
+  String get propertyStatShowroomSlotsLabel => '🚘 Witryna';
+
+  @override
+  String get propertyManageShowroom => 'Zarządzaj kolekcją';
+
+  @override
+  String get propertySellErrorShowroom =>
+      'Najpierw wyjmij wszystkie pojazdy z witryny.';
+
+  @override
+  String get propertyRoleCarShowroom =>
+      'Światowa kolekcja aut. To nie drugi garaż: wystawione auta są zablokowane.';
+
+  @override
+  String get propertyRoleMotorcycleShowroom =>
+      'Światowa kolekcja motocykli. Wystawione motocykle są zablokowane.';
+
+  @override
+  String get propertyRoleBoatHarbor =>
+      'Światowa kolekcja łodzi. Wystawione łodzie są zablokowane.';
+
+  @override
+  String get propertyInfoCarShowroom =>
+      'Jeden salon na konto, przypisany do kraju zakupu. Tylko auta w tym kraju, 100% stanu, jeden model. Ulepszenia powiększają witrynę aż do wszystkich typów. Wystawione auta nie zajmują garażu. Areszt w tym kraju przeszukuje witrynę (~40% na auto).';
+
+  @override
+  String get propertyInfoMotorcycleShowroom =>
+      'Jeden sklep motocyklowy na konto, przypisany do kraju zakupu. Motocykle z tego kraju, 100%, jeden model. ~40% konfiskaty na motocykl przy areszcie.';
+
+  @override
+  String get propertyInfoBoatHarbor =>
+      'Jedna przystań na konto, przypisana do kraju zakupu. Łodzie z tego kraju, 100%, jeden model. ~40% konfiskaty na łódź przy areszcie.';
+
+  @override
+  String get showroomTitle => 'Kolekcja';
+
+  @override
+  String get showroomCollectionTab => 'Witryna';
+
+  @override
+  String get showroomPlaceTab => 'Wstaw';
+
+  @override
+  String showroomSlots(String used, String max) {
+    return '$used / $max miejsc';
+  }
+
+  @override
+  String get showroomEmptyCollection => 'Brak pojazdów w witrynie.';
+
+  @override
+  String get showroomEmptyEligible =>
+      'Brak gotowego pojazdu. Musi być w tym kraju, w 100% stanie, a ten model nie może już stać w witrynie.';
+
+  @override
+  String get showroomPlaceAction => 'Wstaw';
+
+  @override
+  String get showroomRemoveAction => 'Wyjmij';
+
+  @override
+  String get showroomNeedPerfectCondition =>
+      'Tylko pojazdy w 100% stanie mogą trafić do witryny.';
+
+  @override
+  String get showroomNeedSameCountry =>
+      'Jedź do kraju tej nieruchomości, aby zarządzać kolekcją.';
+
+  @override
+  String get showroomNeedGarageSpace =>
+      'Garaż lub marina pełne. Zwolnij najpierw miejsce.';
+
+  @override
+  String get showroomDuplicateModel => 'Ten model już stoi w witrynie.';
+
+  @override
+  String get showroomFull =>
+      'Witryna jest pełna. Ulepsz nieruchomość, aby mieć więcej miejsc.';
+
+  @override
+  String get showroomWrongType => 'Ten pojazd nie pasuje do tego budynku.';
+
+  @override
+  String get showroomVehicleBusy =>
+      'Ten pojazd jest w transporcie, na sprzedaż albo już wystawiony.';
+
+  @override
+  String get showroomPlaced => 'Pojazd dodany do kolekcji.';
+
+  @override
+  String get showroomRemoved => 'Pojazd wrócił do przechowalni.';
+
+  @override
+  String get showroomRules =>
+      'Kolekcja, nie dodatkowy garaż. 100%, ten sam kraj, jeden na model. Policja może zająć wystawione pojazdy przy areszcie tutaj.';
+
+  @override
+  String get showroomWrongCountryManage =>
+      'Musisz być w kraju tej nieruchomości, aby wstawiać lub wyjmować pojazdy.';
+
+  @override
+  String get showroomLoadError => 'Nie udało się wczytać kolekcji.';
+
+  @override
+  String get showroomRefresh => 'Odśwież';
+
+  @override
   String get propertiesConfirmPurchaseTitle => 'Czy jesteś pewien?';
 
   @override

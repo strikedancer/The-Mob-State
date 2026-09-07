@@ -313,6 +313,10 @@ export const crimeService = {
         throw new Error('NOT_VEHICLE_OWNER');
       }
 
+      if (vehicleInventory.showroomPropertyId) {
+        throw new Error('VEHICLE_IN_SHOWROOM');
+      }
+
       if (vehicleInventory.fuelLevel <= 0) {
         throw new Error('NO_FUEL');
       }

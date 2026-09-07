@@ -383,7 +383,7 @@ async function grantVehicle(
     const capacity =
       vehicleType === 'motorcycle' ? motorcycleTotalCapacity : carTotalCapacity;
     const currentCount = await tx.vehicleInventory.count({
-      where: { playerId, currentLocation: country, vehicleType },
+      where: { playerId, currentLocation: country, vehicleType, showroomPropertyId: null },
     });
     if (currentCount >= capacity) {
       const cash =
@@ -415,7 +415,7 @@ async function grantVehicle(
     );
     const capacity = marina.capacity + upgradeBonus;
     const currentBoats = await tx.vehicleInventory.count({
-      where: { playerId, currentLocation: country, vehicleType: 'boat' },
+      where: { playerId, currentLocation: country, vehicleType: 'boat', showroomPropertyId: null },
     });
     if (currentBoats >= capacity) {
       const cash =

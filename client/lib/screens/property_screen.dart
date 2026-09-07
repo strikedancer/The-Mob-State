@@ -8,6 +8,7 @@ import '../widgets/property_card.dart';
 import '../widgets/responsive_modal.dart';
 import './inventory_screen.dart';
 import './nightclub_screen.dart';
+import './showroom_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
@@ -189,6 +190,12 @@ class PropertyScreenState extends State<PropertyScreen>
         return l10n.propertyApartmentName;
       case 'casino':
         return l10n.propertyCasinoName;
+      case 'car_showroom':
+        return l10n.propertyCarShowroomName;
+      case 'motorcycle_showroom':
+        return l10n.propertyMotorcycleShowroomName;
+      case 'boat_harbor':
+        return l10n.propertyBoatHarborName;
       default:
         return property.name;
     }
@@ -203,7 +210,9 @@ class PropertyScreenState extends State<PropertyScreen>
     final rank = player?.rank ?? 0;
     final money = player?.money ?? 0;
     if (property.alreadyOwned) {
-      return l10n.propertyAlreadyOwnedInCountry;
+      return property.type == 'unique_per_player'
+          ? l10n.propertyAlreadyOwnedWorldwide
+          : l10n.propertyAlreadyOwnedInCountry;
     }
     if (!property.countryAvailable) {
       return property.unique
@@ -617,6 +626,8 @@ class PropertyScreenState extends State<PropertyScreen>
         return l10n.propertySellErrorCountry;
       case 'NIGHTCLUB_NOT_EMPTY':
         return l10n.propertySellErrorNightclub;
+      case 'SHOWROOM_NOT_EMPTY':
+        return l10n.propertySellErrorShowroom;
       default:
         return l10n.propertySellErrorUnknown;
     }
@@ -648,6 +659,22 @@ class PropertyScreenState extends State<PropertyScreen>
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => NightclubScreen(property: property)),
+    );
+    if (mounted) {
+      _loadMyProperties();
+    }
+  }
+
+  bool _isShowroom(String? propertyType) {
+    return propertyType == 'car_showroom' ||
+        propertyType == 'motorcycle_showroom' ||
+        propertyType == 'boat_harbor';
+  }
+
+  Future<void> _openShowroom(Property property) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => ShowroomScreen(property: property)),
     );
     if (mounted) {
       _loadMyProperties();
@@ -781,6 +808,12 @@ class PropertyScreenState extends State<PropertyScreen>
         return l10n.propertyTypeNightclub;
       case 'casino':
         return l10n.propertyTypeCasino;
+      case 'car_showroom':
+        return l10n.propertyTypeCarShowroom;
+      case 'motorcycle_showroom':
+        return l10n.propertyTypeMotorcycleShowroom;
+      case 'boat_harbor':
+        return l10n.propertyTypeBoatHarbor;
       default:
         return propertyId;
     }
@@ -894,7 +927,19 @@ class PropertyScreenState extends State<PropertyScreen>
                     : null,
                 onManage: propertyType == 'nightclub'
                     ? () => _openNightclub(property)
-                    : null,
+                    : _isShowroom(propertyType)
+                        ? () => _openShowroom(property)
+                        : null,
+                manageLabel: propertyType == 'nightclub'
+                    ? l10n.propertyManageNightclub
+                    : _isShowroom(propertyType)
+                        ? l10n.propertyManageShowroom
+                        : null,
+                manageIcon: propertyType == 'nightclub'
+                    ? Icons.nightlife
+                    : _isShowroom(propertyType)
+                        ? Icons.garage_outlined
+                        : null,
               );
             },
           ),

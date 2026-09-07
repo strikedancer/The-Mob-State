@@ -6,13 +6,17 @@ import { timeProvider } from '../utils/timeProvider';
 import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
 import { propertyStorageService } from './propertyStorageService';
+import {
+  isShowroomProperty,
+  resolveShowroomSlotCaps,
+} from './showroomCatalog';
 
 interface PropertyDefinition {
   id: string;
   name: string;
   description: string;
   image: string;
-  type: 'unique_per_country' | 'limited_per_country' | 'unlimited';
+  type: 'unique_per_country' | 'limited_per_country' | 'unlimited' | 'unique_per_player';
   maxOwners?: number;
   basePrice: number;
   baseIncome: number;
@@ -37,6 +41,11 @@ class PropertyService {
   private readonly hiddenPropertyIds = new Set(['shop']);
   private readonly scaledResidentialTypes = new Set(['house', 'apartment']);
   private readonly onePerPlayerPerCountry = new Set(['warehouse']);
+  private readonly onePerPlayerWorldwide = new Set([
+    'car_showroom',
+    'motorcycle_showroom',
+    'boat_harbor',
+  ]);
 
   constructor() {
     this.loadProperties();
@@ -46,7 +55,13 @@ class PropertyService {
     const propertiesPath = join(__dirname, '../../content/properties.json');
     const propertiesData = readFileSync(propertiesPath, 'utf-8');
     const data: PropertiesData = JSON.parse(propertiesData);
-    this.properties = data.properties;
+    this.properties = data.properties.map((property) => {
+      if (!isShowroomProperty(property.id)) return property;
+      return {
+        ...property,
+        storageCapacity: resolveShowroomSlotCaps(property.id),
+      };
+    });
   }
 
   /**
@@ -179,6 +194,20 @@ class PropertyService {
           ownedCount,
           slotsAvailable,
         });
+      } else if (property.type === 'unique_per_player') {
+        let alreadyOwned = false;
+        if (typeof playerId === 'number' && playerId > 0) {
+          const ownedAnywhere = await prisma.property.count({
+            where: { playerId, propertyType: property.id },
+          });
+          alreadyOwned = ownedAnywhere > 0;
+        }
+
+        result.push({
+          property,
+          available: !alreadyOwned,
+          alreadyOwned,
+        });
       } else {
         // Unlimited: Always available, except one-per-player types like warehouse
         const adjustedProperty = this.isScaledResidentialProperty(property.id)
@@ -217,7 +246,8 @@ class PropertyService {
   async checkAvailability(
     propertyId: string,
     countryId: string,
-    slotNumber?: number
+    slotNumber?: number,
+    playerId?: number,
   ): Promise<{ available: boolean; reason?: string }> {
     const property = this.getPropertyDefinition(propertyId);
 
@@ -261,6 +291,18 @@ class PropertyService {
       return {
         available: ownedCount < maxOwners,
         reason: ownedCount >= maxOwners ? 'ALL_SLOTS_TAKEN' : undefined,
+      };
+    } else if (property.type === 'unique_per_player') {
+      if (typeof playerId !== 'number' || playerId <= 0) {
+        return { available: true };
+      }
+      const existing = await prisma.property.findFirst({
+        where: { playerId, propertyType: propertyId },
+        select: { id: true },
+      });
+      return {
+        available: !existing,
+        reason: existing ? 'ALREADY_OWNED' : undefined,
       };
     }
 
@@ -339,10 +381,21 @@ class PropertyService {
       }
     }
 
+    if (this.onePerPlayerWorldwide.has(propertyId) || property.type === 'unique_per_player') {
+      const ownedAnywhere = await prisma.property.count({
+        where: { playerId, propertyType: propertyId },
+      });
+      if (ownedAnywhere > 0) {
+        return { success: false, error: 'ALREADY_OWNED' };
+      }
+    }
+
     // Generate full property ID
     let fullPropertyId: string;
     if (property.type === 'unique_per_country') {
       fullPropertyId = `${propertyId}_${countryId}`;
+    } else if (property.type === 'unique_per_player') {
+      fullPropertyId = `${propertyId}_${playerId}`;
     } else if (property.type === 'limited_per_country') {
       if (slotNumber === undefined) {
         // Find first available slot
@@ -370,7 +423,7 @@ class PropertyService {
     }
 
     // Check availability one more time (race condition protection)
-    const availability = await this.checkAvailability(propertyId, countryId, slotNumber);
+    const availability = await this.checkAvailability(propertyId, countryId, slotNumber, playerId);
     if (!availability.available && property.type !== 'unlimited') {
       return { success: false, error: availability.reason };
     }
@@ -671,6 +724,15 @@ class PropertyService {
         return { success: false, error: 'WRONG_COUNTRY' };
       }
       throw error;
+    }
+
+    if (isShowroomProperty(property.propertyType)) {
+      const exhibits = await prisma.vehicleInventory.count({
+        where: { showroomPropertyId: property.id },
+      });
+      if (exhibits > 0) {
+        return { success: false, error: 'SHOWROOM_NOT_EMPTY' };
+      }
     }
 
     if (property.propertyType === 'nightclub') {

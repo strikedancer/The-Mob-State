@@ -52,6 +52,10 @@ export async function depositCrewCar(
     throw new Error('VEHICLE_IN_TRANSIT');
   }
 
+  if (vehicle.showroomPropertyId) {
+    throw new Error('VEHICLE_IN_SHOWROOM');
+  }
+
   await prisma.$transaction(async (tx) => {
     await tx.crewCarInventory.create({
       data: {
@@ -101,6 +105,10 @@ export async function depositCrewBoat(
 
   if (vehicle.transportStatus) {
     throw new Error('VEHICLE_IN_TRANSIT');
+  }
+
+  if (vehicle.showroomPropertyId) {
+    throw new Error('VEHICLE_IN_SHOWROOM');
   }
 
   await prisma.$transaction(async (tx) => {

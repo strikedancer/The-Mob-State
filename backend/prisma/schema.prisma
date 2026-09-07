@@ -468,9 +468,10 @@ model Property {
   countryId         String                @db.VarChar(50)
   propertyId        String                @unique @db.VarChar(100)
   drugProductions DrugProduction[]
-  nightclub       NightclubVenue?
-  player          Player?               @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  drugStorage     PropertyDrugStorage[]
+  nightclub         NightclubVenue?
+  player            Player?               @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  drugStorage       PropertyDrugStorage[]
+  showroomVehicles  VehicleInventory[]
 
   @@index([playerId])
   @@index([propertyType])
@@ -1472,12 +1473,16 @@ model VehicleInventory {
   transportStatus      String?   @db.VarChar(20)
   transportArrivalTime DateTime?
   transportDestination String?   @db.VarChar(50)
+  showroomPropertyId   Int?
+  showroomPlacedAt     DateTime?
   player               Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  showroomProperty     Property? @relation(fields: [showroomPropertyId], references: [id], onDelete: SetNull)
 
   @@index([playerId])
   @@index([vehicleType])
   @@index([currentLocation])
   @@index([marketListing])
+  @@index([showroomPropertyId])
   @@map("vehicle_inventory")
 }
 

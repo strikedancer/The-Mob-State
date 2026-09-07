@@ -34,6 +34,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 
 ## Core Rules
 
+- Showroomcollecties (Eigendommen) zijn geen tweede garage: tentoongestelde voertuigen blijven van de speler maar zijn vergrendeld en tellen niet mee voor garage-/haven-capaciteit. World-cap per model telt ze wél.
 - Behoud één consistente spelersloop over alle tabs: stelen -> beheren -> repareren/verkoop/sloop.
 - Tuning-loop blijft gekoppeld: sloop -> onderdelen -> TuneShop upgrades -> hogere voertuigwaarde en performance.
 - Onderdelen zijn categorie-gepoold (auto/motor/boot): gesloopte onderdelen mogen op elk voertuig binnen dezelfde categorie worden besteed.

@@ -3,6 +3,7 @@ import config from '../config';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { propertyStorageService } from './propertyStorageService';
+import { showroomService } from './showroomService';
 
 async function searchWarehousesAfterArrest(playerId: number): Promise<void> {
   await runPoliceSideEffect('warehouse search', async () => {
@@ -12,6 +13,17 @@ async function searchWarehousesAfterArrest(playerId: number): Promise<void> {
       playerId,
       'ARREST',
       'Police searched your warehouse and seized part of the stock',
+      result,
+      true,
+    );
+  });
+  await runPoliceSideEffect('showroom search', async () => {
+    const result = await showroomService.searchShowroomsOnArrest(playerId);
+    if (result.vehiclesSeized <= 0) return;
+    await activityService.logActivity(
+      playerId,
+      'ARREST',
+      `Police searched your showroom and seized ${result.vehiclesSeized} vehicle(s)`,
       result,
       true,
     );

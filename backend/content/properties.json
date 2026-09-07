@@ -123,6 +123,66 @@
         { "level": 3, "cost": 50000, "incomeBonus": 700 },
         { "level": 4, "cost": 100000, "incomeBonus": 1200 }
       ]
+    },
+    {
+      "id": "car_showroom",
+      "name": "Auto-showroom",
+      "description": "Wereldwijde collectie voor auto's. Eén per speler, gebonden aan het land van aankoop.",
+      "image": "car_showroom.png",
+      "type": "unique_per_player",
+      "basePrice": 2500000,
+      "baseIncome": 3200,
+      "incomeInterval": 90,
+      "minLevel": 18,
+      "storageCapacity": [8, 20, 40, 80, 201],
+      "maxLevel": 5,
+      "features": ["collection", "showroom"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 400000, "incomeBonus": 800 },
+        { "level": 3, "cost": 800000, "incomeBonus": 1400 },
+        { "level": 4, "cost": 1500000, "incomeBonus": 2200 },
+        { "level": 5, "cost": 2500000, "incomeBonus": 3000 }
+      ]
+    },
+    {
+      "id": "motorcycle_showroom",
+      "name": "Motorzaak",
+      "description": "Wereldwijde collectie voor motoren. Eén per speler, gebonden aan het land van aankoop.",
+      "image": "motorcycle_showroom.png",
+      "type": "unique_per_player",
+      "basePrice": 1200000,
+      "baseIncome": 1800,
+      "incomeInterval": 90,
+      "minLevel": 16,
+      "storageCapacity": [8, 20, 40, 61, 61],
+      "maxLevel": 5,
+      "features": ["collection", "showroom"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 200000, "incomeBonus": 500 },
+        { "level": 3, "cost": 400000, "incomeBonus": 800 },
+        { "level": 4, "cost": 750000, "incomeBonus": 1200 },
+        { "level": 5, "cost": 1200000, "incomeBonus": 1600 }
+      ]
+    },
+    {
+      "id": "boat_harbor",
+      "name": "Boothaven",
+      "description": "Wereldwijde collectie voor boten. Eén per speler, gebonden aan het land van aankoop.",
+      "image": "boat_harbor.png",
+      "type": "unique_per_player",
+      "basePrice": 2000000,
+      "baseIncome": 2500,
+      "incomeInterval": 90,
+      "minLevel": 17,
+      "storageCapacity": [8, 20, 31, 31, 31],
+      "maxLevel": 5,
+      "features": ["collection", "showroom"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 320000, "incomeBonus": 650 },
+        { "level": 3, "cost": 650000, "incomeBonus": 1100 },
+        { "level": 4, "cost": 1200000, "incomeBonus": 1700 },
+        { "level": 5, "cost": 2000000, "incomeBonus": 2300 }
+      ]
     }
   ]
 }

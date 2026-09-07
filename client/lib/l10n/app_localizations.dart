@@ -9263,6 +9263,234 @@ abstract class AppLocalizations {
   /// **'Shop'**
   String get propertyShopName;
 
+  /// No description provided for @propertyCarShowroomName.
+  ///
+  /// In en, this message translates to:
+  /// **'Car showroom'**
+  String get propertyCarShowroomName;
+
+  /// No description provided for @propertyMotorcycleShowroomName.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle shop'**
+  String get propertyMotorcycleShowroomName;
+
+  /// No description provided for @propertyBoatHarborName.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat harbor'**
+  String get propertyBoatHarborName;
+
+  /// No description provided for @propertyTypeCarShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Car showroom'**
+  String get propertyTypeCarShowroom;
+
+  /// No description provided for @propertyTypeMotorcycleShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle shop'**
+  String get propertyTypeMotorcycleShowroom;
+
+  /// No description provided for @propertyTypeBoatHarbor.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat harbor'**
+  String get propertyTypeBoatHarbor;
+
+  /// No description provided for @propertyUniqueWorldwide.
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ Unique — 1 per player worldwide'**
+  String get propertyUniqueWorldwide;
+
+  /// No description provided for @propertyAlreadyOwnedWorldwide.
+  ///
+  /// In en, this message translates to:
+  /// **'You already own this (one per account)'**
+  String get propertyAlreadyOwnedWorldwide;
+
+  /// No description provided for @propertyStatShowroomSlotsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'🚘 Showroom'**
+  String get propertyStatShowroomSlotsLabel;
+
+  /// No description provided for @propertyManageShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage collection'**
+  String get propertyManageShowroom;
+
+  /// No description provided for @propertySellErrorShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all vehicles from the showroom first.'**
+  String get propertySellErrorShowroom;
+
+  /// No description provided for @propertyRoleCarShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Worldwide car collection. Not a second garage: displayed cars are locked.'**
+  String get propertyRoleCarShowroom;
+
+  /// No description provided for @propertyRoleMotorcycleShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Worldwide motorcycle collection. Displayed bikes stay locked until you take them out.'**
+  String get propertyRoleMotorcycleShowroom;
+
+  /// No description provided for @propertyRoleBoatHarbor.
+  ///
+  /// In en, this message translates to:
+  /// **'Worldwide boat collection. Displayed boats stay locked until you take them out.'**
+  String get propertyRoleBoatHarbor;
+
+  /// No description provided for @propertyInfoCarShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per car). Sell only after the collection is empty.'**
+  String get propertyInfoCarShowroom;
+
+  /// No description provided for @propertyInfoMotorcycleShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per bike to seize it.'**
+  String get propertyInfoMotorcycleShowroom;
+
+  /// No description provided for @propertyInfoBoatHarbor.
+  ///
+  /// In en, this message translates to:
+  /// **'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per boat to seize it.'**
+  String get propertyInfoBoatHarbor;
+
+  /// No description provided for @showroomTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection'**
+  String get showroomTitle;
+
+  /// No description provided for @showroomCollectionTab.
+  ///
+  /// In en, this message translates to:
+  /// **'On display'**
+  String get showroomCollectionTab;
+
+  /// No description provided for @showroomPlaceTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get showroomPlaceTab;
+
+  /// No description provided for @showroomSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} / {max} display slots'**
+  String showroomSlots(String used, String max);
+
+  /// No description provided for @showroomEmptyCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicles on display yet.'**
+  String get showroomEmptyCollection;
+
+  /// No description provided for @showroomEmptyEligible.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicle is ready to place. It must be in this country, at 100% condition, and that model cannot already be on display.'**
+  String get showroomEmptyEligible;
+
+  /// No description provided for @showroomPlaceAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get showroomPlaceAction;
+
+  /// No description provided for @showroomRemoveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Take out'**
+  String get showroomRemoveAction;
+
+  /// No description provided for @showroomNeedPerfectCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Only vehicles at 100% condition can go on display.'**
+  String get showroomNeedPerfectCondition;
+
+  /// No description provided for @showroomNeedSameCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel to this property\'s country to manage the collection.'**
+  String get showroomNeedSameCountry;
+
+  /// No description provided for @showroomNeedGarageSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Your garage or marina is full. Free a slot first.'**
+  String get showroomNeedGarageSpace;
+
+  /// No description provided for @showroomDuplicateModel.
+  ///
+  /// In en, this message translates to:
+  /// **'That model is already on display.'**
+  String get showroomDuplicateModel;
+
+  /// No description provided for @showroomFull.
+  ///
+  /// In en, this message translates to:
+  /// **'The showroom is full. Upgrade the property for more slots.'**
+  String get showroomFull;
+
+  /// No description provided for @showroomWrongType.
+  ///
+  /// In en, this message translates to:
+  /// **'This vehicle does not belong in this building.'**
+  String get showroomWrongType;
+
+  /// No description provided for @showroomVehicleBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'This vehicle is in transit, listed for sale, or already on display.'**
+  String get showroomVehicleBusy;
+
+  /// No description provided for @showroomPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle added to the collection.'**
+  String get showroomPlaced;
+
+  /// No description provided for @showroomRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle returned to storage.'**
+  String get showroomRemoved;
+
+  /// No description provided for @showroomRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize displayed vehicles on arrest here.'**
+  String get showroomRules;
+
+  /// No description provided for @showroomWrongCountryManage.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be in this property\'s country to place or remove vehicles.'**
+  String get showroomWrongCountryManage;
+
+  /// No description provided for @showroomLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the collection.'**
+  String get showroomLoadError;
+
+  /// No description provided for @showroomRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload'**
+  String get showroomRefresh;
+
   /// No description provided for @propertiesConfirmPurchaseTitle.
   ///
   /// In en, this message translates to:
@@ -28174,13 +28402,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPropertiesSummary.
   ///
   /// In en, this message translates to:
-  /// **'Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost.'**
+  /// **'Buy properties to expand storage, housing capacity, vehicle collections and access to systems such as the nightclub. Develop properties for a permanent income boost.'**
   String get helpTopicPropertiesSummary;
 
   /// No description provided for @helpTopicPropertiesHow.
   ///
   /// In en, this message translates to:
-  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store the same plus tools, with more slots. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. You can own one warehouse per country (no global cap). Nightclub slots per country are shown in the shop. The casino is unique per country.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
+  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store the same plus tools, with more slots. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. You can own one warehouse per country (no global cap). Nightclub slots per country are shown in the shop. The casino is unique per country.\nThe car showroom, motorcycle shop and boat harbor are collections: one of each per account worldwide, bought in a country and bound there. Only vehicles in that country, at 100% condition, one per model. Upgrades grow the vitrine in steps until every type in that category fits. Displayed vehicles are locked (no crimes, smuggling or sales) and do not use garage or marina slots. An arrest in that country searches the vitrine (~40% chance per vehicle). Empty the collection before selling.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock or showroom collection) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
   String get helpTopicPropertiesHow;
 
   /// No description provided for @helpTopicPropertiesTips.

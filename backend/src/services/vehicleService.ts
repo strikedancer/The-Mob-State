@@ -21,6 +21,7 @@ import { applyReputationAction } from './reputationService';
 import { economyBalanceService } from './economyBalanceService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
 import { computeGarageSlotTotals, pickLatestUpgradeForTrack } from './garageService';
+import { assertNotExhibited, notInShowroomWhere } from './showroomCatalog';
 
 const COUNTRY_ALIASES: Record<string, string> = {
   united_kingdom: 'uk',
@@ -3802,6 +3803,7 @@ export const vehicleService = {
           playerId,
           currentLocation: player.currentCountry!,
           vehicleType,
+          ...notInShowroomWhere,
         },
       });
 
@@ -3846,6 +3848,7 @@ export const vehicleService = {
           playerId,
           currentLocation: player.currentCountry!,
           vehicleType: 'boat',
+          ...notInShowroomWhere,
         },
       });
 
@@ -4183,7 +4186,7 @@ export const vehicleService = {
     const activeRepairJobs = await getActiveRepairJobs(playerId);
 
     const inventory = await prisma.vehicleInventory.findMany({
-      where: { playerId },
+      where: { playerId, ...notInShowroomWhere },
       orderBy: {
         stolenAt: 'desc',
       },
@@ -4305,6 +4308,8 @@ export const vehicleService = {
       throw new Error('NOT_OWNER');
     }
 
+    assertNotExhibited(inventoryItem);
+
     if (await hasRepairInProgress(playerId, inventoryId)) {
       throw new Error('VEHICLE_REPAIR_IN_PROGRESS');
     }
@@ -4398,6 +4403,8 @@ export const vehicleService = {
     if (inventoryItem.playerId !== playerId) {
       throw new Error('NOT_OWNER');
     }
+
+    assertNotExhibited(inventoryItem);
 
     if (await hasRepairInProgress(playerId, inventoryId)) {
       throw new Error('VEHICLE_REPAIR_IN_PROGRESS');
@@ -4627,6 +4634,8 @@ export const vehicleService = {
       throw new Error('VEHICLE_NOT_FOUND');
     }
 
+    assertNotExhibited(vehicle);
+
     if (await hasRepairInProgress(playerId, vehicleId)) {
       throw new Error('VEHICLE_REPAIR_IN_PROGRESS');
     }
@@ -4736,6 +4745,8 @@ export const vehicleService = {
     if (!vehicle) {
       throw new Error('VEHICLE_NOT_FOUND');
     }
+
+    assertNotExhibited(vehicle);
 
     if (await hasRepairInProgress(playerId, vehicleId)) {
       throw new Error('VEHICLE_REPAIR_IN_PROGRESS');
@@ -4885,7 +4896,7 @@ export const vehicleService = {
     await ensureTuneTables();
     const parts = await getPlayerPartsInventory(playerId);
     const inventory = await prisma.vehicleInventory.findMany({
-      where: { playerId },
+      where: { playerId, ...notInShowroomWhere },
       orderBy: { stolenAt: 'desc' },
     });
     const activeRepairJobs = await getActiveRepairJobs(playerId);
@@ -5014,6 +5025,7 @@ export const vehicleService = {
 
     if (!inventoryItem) throw new Error('VEHICLE_NOT_FOUND');
     if (inventoryItem.playerId !== playerId) throw new Error('NOT_OWNER');
+    assertNotExhibited(inventoryItem);
     if (inventoryItem.transportStatus) throw new Error('VEHICLE_IN_TRANSIT');
     if (await hasRepairInProgress(playerId, inventoryId))
       throw new Error('VEHICLE_REPAIR_IN_PROGRESS');

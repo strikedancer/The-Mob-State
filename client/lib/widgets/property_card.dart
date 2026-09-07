@@ -12,6 +12,8 @@ class PropertyCard extends StatelessWidget {
   final VoidCallback? onUpgrade;
   final VoidCallback? onDevelop;
   final VoidCallback? onManage;
+  final String? manageLabel;
+  final IconData? manageIcon;
   final VoidCallback? onSell;
   final VoidCallback? onOpenStorage;
   final bool isLoading;
@@ -29,6 +31,8 @@ class PropertyCard extends StatelessWidget {
     this.onUpgrade,
     this.onDevelop,
     this.onManage,
+    this.manageLabel,
+    this.manageIcon,
     this.onSell,
     this.onOpenStorage,
     this.isLoading = false,
@@ -155,6 +159,12 @@ class PropertyCard extends StatelessWidget {
     );
   }
 
+  bool _isShowroom(String? propertyId) {
+    return propertyId == 'car_showroom' ||
+        propertyId == 'motorcycle_showroom' ||
+        propertyId == 'boat_harbor';
+  }
+
   String? _resolvedImagePath(String? propertyId) {
     final ownedPath = ownedProperty?.imagePath;
     if (ownedPath != null && ownedPath.isNotEmpty) return ownedPath;
@@ -168,6 +178,9 @@ class PropertyCard extends StatelessWidget {
       case 'warehouse':
       case 'nightclub':
       case 'casino':
+      case 'car_showroom':
+      case 'motorcycle_showroom':
+      case 'boat_harbor':
         return '$propertyId.png';
       default:
         return null;
@@ -187,7 +200,9 @@ class PropertyCard extends StatelessWidget {
       height: expandToFill ? 140 : 150,
       errorBuilder: (context, error, stackTrace) {
         return Icon(
-          _getPropertyIcon(ownedProperty?.type ?? definition?.type),
+          _getPropertyIcon(
+            ownedProperty?.type ?? ownedProperty?.propertyId ?? definition?.id,
+          ),
           size: 64,
           color: Colors.grey[600],
         );
@@ -239,6 +254,12 @@ class PropertyCard extends StatelessWidget {
         return Icons.nightlife;
       case 'casino':
         return Icons.casino;
+      case 'car_showroom':
+        return Icons.directions_car;
+      case 'motorcycle_showroom':
+        return Icons.two_wheeler;
+      case 'boat_harbor':
+        return Icons.sailing;
       case 'shop':
         return Icons.store;
       case 'hotel':
@@ -262,6 +283,12 @@ class PropertyCard extends StatelessWidget {
         return '🎵 ${l10n.propertyTypeNightclub}';
       case 'casino':
         return '🎰 ${l10n.propertyTypeCasino}';
+      case 'car_showroom':
+        return '🚗 ${l10n.propertyTypeCarShowroom}';
+      case 'motorcycle_showroom':
+        return '🏍️ ${l10n.propertyTypeMotorcycleShowroom}';
+      case 'boat_harbor':
+        return '🛥️ ${l10n.propertyTypeBoatHarbor}';
       case 'shop':
         return '🛒 ${l10n.propertyTypeShop}';
       case 'hotel':
@@ -286,7 +313,9 @@ class PropertyCard extends StatelessWidget {
           definition!.storageCapacity[0] > 0) ...[
         SizedBox(height: 8),
         _buildStatRow(
-          l10n.propertyStatStorageLabel,
+          _isShowroom(definition!.id)
+              ? l10n.propertyStatShowroomSlotsLabel
+              : l10n.propertyStatStorageLabel,
           l10n.propertyStatStorageSlotsRange(
             definition!.storageCapacity[0],
             definition!.storageCapacity.last,
@@ -306,6 +335,17 @@ class PropertyCard extends StatelessWidget {
       ],
       SizedBox(height: 8),
       _buildStatRow(l10n.propertyMaxLevel, '${definition!.maxLevel}'),
+      if (definition!.type == 'unique_per_player') ...[
+        SizedBox(height: 8),
+        Text(
+          l10n.propertyUniqueWorldwide,
+          style: TextStyle(
+            color: Colors.orange,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+        ),
+      ],
       if (definition!.unique) ...[
         SizedBox(height: 8),
         Text(
@@ -429,7 +469,9 @@ class PropertyCard extends StatelessWidget {
       if (currentStorage > 0) ...[
         SizedBox(height: 8),
         _buildStatRow(
-          l10n.propertyStatStorageLabel,
+          _isShowroom(ownedPropertyType)
+              ? l10n.propertyStatShowroomSlotsLabel
+              : l10n.propertyStatStorageLabel,
           l10n.propertyStatStorageAmountSlots(currentStorage),
         ),
       ],
@@ -533,8 +575,8 @@ class PropertyCard extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: onManage,
-            icon: const Icon(Icons.nightlife),
-            label: Text(l10n.propertyManageNightclub),
+            icon: Icon(manageIcon ?? Icons.nightlife),
+            label: Text(manageLabel ?? l10n.propertyManageNightclub),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.purple[700],
               foregroundColor: Colors.white,
@@ -650,6 +692,12 @@ class PropertyCard extends StatelessWidget {
         return l10n.propertyApartmentName;
       case 'casino':
         return l10n.propertyCasinoName;
+      case 'car_showroom':
+        return l10n.propertyCarShowroomName;
+      case 'motorcycle_showroom':
+        return l10n.propertyMotorcycleShowroomName;
+      case 'boat_harbor':
+        return l10n.propertyBoatHarborName;
       case 'shop':
         return l10n.propertyShopName;
       default:
@@ -669,6 +717,12 @@ class PropertyCard extends StatelessWidget {
         return l10n.propertyRoleNightclub;
       case 'casino':
         return l10n.propertyRoleCasino;
+      case 'car_showroom':
+        return l10n.propertyRoleCarShowroom;
+      case 'motorcycle_showroom':
+        return l10n.propertyRoleMotorcycleShowroom;
+      case 'boat_harbor':
+        return l10n.propertyRoleBoatHarbor;
       default:
         return null;
     }
@@ -686,6 +740,12 @@ class PropertyCard extends StatelessWidget {
         return l10n.propertyInfoNightclub;
       case 'casino':
         return l10n.propertyInfoCasino;
+      case 'car_showroom':
+        return l10n.propertyInfoCarShowroom;
+      case 'motorcycle_showroom':
+        return l10n.propertyInfoMotorcycleShowroom;
+      case 'boat_harbor':
+        return l10n.propertyInfoBoatHarbor;
       default:
         return _propertyRole(propertyId, l10n) ??
             (definition?.description ?? l10n.propertyInfoGeneric);

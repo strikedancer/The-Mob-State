@@ -8,6 +8,7 @@ import config from '../config';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { propertyStorageService } from './propertyStorageService';
+import { showroomService } from './showroomService';
 
 async function runFbiSideEffect(
   label: string,
@@ -220,6 +221,18 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
       playerId,
       'ARREST',
       'FBI searched your warehouse and seized part of the stock',
+      result,
+      true,
+    );
+  });
+
+  void runFbiSideEffect('showroom search', async () => {
+    const result = await showroomService.searchShowroomsOnArrest(playerId);
+    if (result.vehiclesSeized <= 0) return;
+    await activityService.logActivity(
+      playerId,
+      'ARREST',
+      `FBI searched your showroom and seized ${result.vehiclesSeized} vehicle(s)`,
       result,
       true,
     );

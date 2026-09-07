@@ -62,6 +62,10 @@ export const blackMarketService = {
       throw new Error('NOT_OWNER');
     }
 
+    if (vehicle.showroomPropertyId) {
+      throw new Error('VEHICLE_IN_SHOWROOM');
+    }
+
     if (vehicle.marketListing) {
       throw new Error('ALREADY_LISTED');
     }

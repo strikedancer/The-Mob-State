@@ -293,6 +293,13 @@ router.get(
         });
       }
 
+      if (vehicle.showroomPropertyId) {
+        return res.status(400).json({
+          event: 'transport.error',
+          params: { reason: 'VEHICLE_IN_SHOWROOM' },
+        });
+      }
+
       const calculation = transportService.calculateArbitrageProfit(
         vehicle,
         vehicle.currentLocation,
