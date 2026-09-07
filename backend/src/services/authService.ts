@@ -217,15 +217,21 @@ export const authService = {
     }
 
     const correctedRank = getRankFromXP(player.xp);
-    if (correctedRank !== player.rank) {
-      await prisma.player.update({
-        where: { id: player.id },
-        data: { rank: correctedRank },
-      });
-    }
-
     const token = jwt.sign({ playerId: player.id, username: player.username }, config.jwtSecret, {
       expiresIn: config.jwtExpiresIn,
+    });
+    const tokenPayload = jwt.decode(token) as { iat?: number } | null;
+    const sessionAt =
+      tokenPayload && typeof tokenPayload.iat === 'number'
+        ? new Date(tokenPayload.iat * 1000)
+        : new Date();
+
+    await prisma.player.update({
+      where: { id: player.id },
+      data: {
+        lastSessionAt: sessionAt,
+        ...(correctedRank !== player.rank ? { rank: correctedRank } : {}),
+      },
     });
 
     await prisma.worldEvent.create({

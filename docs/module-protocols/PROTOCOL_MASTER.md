@@ -107,6 +107,7 @@ Als een wijziging meerdere modules raakt, lees en combineer je nog steeds alle r
 - Log auth-401 redenen met routecontext op sessie-kritieke endpoints zoals `/player/me`, zodat spontane logout-meldingen achteraf herleidbaar zijn naar `TOKEN_EXPIRED`, `SESSION_REPLACED`, `INVALID_TOKEN` of ontbrekende credentials.
 - Auth recovery-flows zijn pas done als zowel de aanvraagstap als de vervolgroute echt werken: een `forgot password` scherm mag geen fake succes simuleren, moet de echte backend-endpoint aanroepen, en reset-/verify-links uit e-mail moeten op web/mobile naar een afhandelbaar scherm of route landen.
 - Auth/session handling mag spelers alleen lokaal uitloggen bij expliciete auth-redenen zoals `TOKEN_EXPIRED`, `INVALID_TOKEN`, `SESSION_REPLACED` of ontbrekende credentials; tijdelijke `/player/me` netwerk- of backendfouten mogen een geldige sessie niet stil weggooien.
+- Single-session (`SESSION_REPLACED`) vergelijkt JWT `iat` met `players.lastSessionAt` (gezet in `issueSession`). **Niet** op elke request `world_events` scannen naar `auth.session.login` — die tabel groeit hard en heeft geen hot-path index; dat laat de API vastlopen zodra twee spelers tegelijk pollen. Feed-event `auth.session.login` blijft wel bestaan; lookups op `world_events` gebruiken index `(playerId, eventKey, createdAt)`.
 - Draai Prisma checks:
   - `npx prisma validate`
   - `npx prisma generate`

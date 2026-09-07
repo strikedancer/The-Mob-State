@@ -185,6 +185,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _supportBadgeCount = 0;
   Map<String, int> _navCooldowns = const {};
   bool _navCooldownsLoaded = false;
+  bool _navCooldownsLoading = false;
   Timer? _navCooldownTick;
   Timer? _navCooldownRefresh;
   final TextEditingController _menuSearchController = TextEditingController();
@@ -508,6 +509,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _loadNavCooldowns() async {
+    if (_navCooldownsLoading) return;
+    _navCooldownsLoading = true;
     try {
       final response = await AuthService().apiClient.get(
         '/player/action-cooldowns',
@@ -528,7 +531,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _navCooldowns = parsed;
         _navCooldownsLoaded = true;
       });
-    } catch (_) {}
+    } catch (_) {
+    } finally {
+      _navCooldownsLoading = false;
+    }
   }
 
   Future<void> _loadUnreadCount() async {

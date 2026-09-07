@@ -33,7 +33,8 @@
 
 ## Dashboard
 
-- Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie en status. Zijbalk en hamburger-menu zijn gegroepeerd en doorzoekbaar.
+- Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie en status. Zijbalk en hamburger-menu zijn gegroepeerd en doorzoekbaar. Cooldown-stippen pollen licht (`GET /player/action-cooldowns`); de API mag daarbij niet de hele eventlog scannen, zodat het spel met meerdere actieve sessies soepel blijft.
+- **Eén sessie per account:** een nieuwe login maakt de vorige JWT ongeldig (`SESSION_REPLACED`). Op het dashboard zie je dat als uitloggen, niet als een vastgelopen scherm.
 - Op mobiel staat onderin een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew; een gouden stip betekent dat die cooldown klaar is. Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
 - Op web-Misdaden blijft de statusbalk (rang/HP/beveiliging, geld, gezocht/FBI) **apart** boven de content staan, zoals op de andere pagina’s. In de contentkaart zitten straatmisdaden, landelijke politie, trainingsbonus en gedragen wapens in **één** header. Filter/sorteer blijft een dunne balk boven het grid.

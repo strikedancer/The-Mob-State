@@ -58,6 +58,8 @@ model Player {
   lastAvatarChange                DateTime?
   lastHospitalVisit               DateTime?
   lastUsernameChange              DateTime?
+  /// Latest JWT session issue time. Auth compares this to token `iat` (single-session).
+  lastSessionAt                   DateTime?
   max_inventory_slots             Int                              @default(5)
   notifyFriendAccepted            Boolean                          @default(true)
   notifyFriendRequest             Boolean                          @default(true)
@@ -205,6 +207,7 @@ model WorldEvent {
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+  @@index([playerId, eventKey, createdAt])
   @@map("world_events")
 }
 

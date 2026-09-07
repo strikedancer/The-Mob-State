@@ -34,7 +34,9 @@ function logAuthFailure(req: Request, reason: string, context?: Record<string, u
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authReq = req as AuthRequest;
-    console.log('[Auth] Authenticating request:', req.method, req.path);
+    if (req.method !== 'GET') {
+      console.log('[Auth] Authenticating request:', req.method, req.path);
+    }
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -50,7 +52,8 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     // Verify JWT
     const decoded = jwt.verify(token, config.jwtSecret) as JwtPayload;
 
-    // Optional: Verify player still exists in database
+    // Verify player still exists. Single-session uses players.lastSessionAt
+    // (set at login) — do not scan world_events on this hot path.
     const player = await prisma.player.findUnique({
       where: { id: decoded.playerId },
       select: { 
@@ -62,6 +65,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         isBanned: true,
         bannedUntil: true,
         banReason: true,
+        lastSessionAt: true,
       },
     });
 
@@ -73,18 +77,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
       });
     }
 
-    const latestSessionLogin = await prisma.worldEvent.findFirst({
-      where: {
-        playerId: decoded.playerId,
-        eventKey: 'auth.session.login',
-      },
-      orderBy: { createdAt: 'desc' },
-      select: { createdAt: true },
-    });
-
-    if (latestSessionLogin && typeof decoded.iat === 'number') {
+    if (player.lastSessionAt && typeof decoded.iat === 'number') {
       const tokenIssuedAtMs = decoded.iat * 1000;
-      const latestLoginMs = latestSessionLogin.createdAt.getTime();
+      const latestLoginMs = player.lastSessionAt.getTime();
 
       if (latestLoginMs - tokenIssuedAtMs > 1000) {
         logAuthFailure(req, 'SESSION_REPLACED', {
@@ -135,7 +130,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     setCached(`online:${player.id}`, 1, 300).catch(() => {});
     setCached(`lastseen:${player.id}`, Date.now(), 60 * 60 * 24 * 400).catch(() => {});
 
-    console.log('[Auth] Authentication successful for player:', player.id, player.username);
+    if (req.method !== 'GET') {
+      console.log('[Auth] Authentication successful for player:', player.id, player.username);
+    }
     return next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
