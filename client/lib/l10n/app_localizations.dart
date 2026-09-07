@@ -12665,6 +12665,12 @@ abstract class AppLocalizations {
   /// **'Materials depot'**
   String get inventoryMaterialsDepot;
 
+  /// No description provided for @inventoryNoOwnedStorageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy a house, apartment or warehouse to unlock extra storage here.'**
+  String get inventoryNoOwnedStorageHint;
+
   /// No description provided for @inventoryEquipWeapon.
   ///
   /// In en, this message translates to:

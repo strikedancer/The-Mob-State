@@ -13,7 +13,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - A player can wear two weapons at once (for example a handgun and a rifle). When a crime is committed, both worn slots are compared and the best eligible weapon for that crime is used automatically.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
 - Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo and materials.
-- Context grid (right on desktop, below on mobile): materials depot, or an owned property in the current country.
+- Context grid (right on desktop, below on mobile): materials depot, or an owned property in the current country. Depot pads only to items + one drop cell. Property grids use that building's real capacity. No fake warehouse slots when the player owns none; show `inventoryNoOwnedStorageHint` instead. Backpack squares match `GET /tools/carried` capacity (no 8-slot floor).
   - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag).
   - Warehouse: tools.
   - Materials stay in the country depot (`POST /drugs/materials/transfer`), not in a house.

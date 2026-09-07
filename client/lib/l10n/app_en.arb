@@ -4540,6 +4540,7 @@
   "inventoryBackpackGrid": "Backpack",
   "inventoryStorageGrid": "Storage",
   "inventoryMaterialsDepot": "Materials depot",
+  "inventoryNoOwnedStorageHint": "Buy a house, apartment or warehouse to unlock extra storage here.",
   "inventoryEquipWeapon": "Crime weapon",
   "inventoryEquipSecondary": "Second weapon",
   "inventoryEquipArmor": "Vest",

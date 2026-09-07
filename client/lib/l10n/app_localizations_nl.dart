@@ -7224,6 +7224,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get inventoryMaterialsDepot => 'Materialendepot';
 
   @override
+  String get inventoryNoOwnedStorageHint =>
+      'Koop een huis, appartement of magazijn om hier extra opslag te krijgen.';
+
+  @override
   String get inventoryEquipWeapon => 'Crime-wapen';
 
   @override

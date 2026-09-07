@@ -7270,6 +7270,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get inventoryMaterialsDepot => 'Materialdepot';
 
   @override
+  String get inventoryNoOwnedStorageHint =>
+      'Kaufen Sie hier ein Haus, eine Wohnung oder ein Lagerhaus, um zusätzlichen Lagerraum freizuschalten.';
+
+  @override
   String get inventoryEquipWeapon => 'Verbrechenswaffe';
 
   @override

@@ -8885,6 +8885,7 @@
   "inventoryBackpackGrid": "Rugzak",
   "inventoryStorageGrid": "Opslag",
   "inventoryMaterialsDepot": "Materialendepot",
+  "inventoryNoOwnedStorageHint": "Koop een huis, appartement of magazijn om hier extra opslag te krijgen.",
   "inventoryEquipWeapon": "Crime-wapen",
   "inventoryEquipSecondary": "Tweede wapen",
   "inventoryEquipArmor": "Vest",

@@ -987,7 +987,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
                 value: 'property_${p.propertyId}',
                 enabled: p.accessibleInCurrentCountry,
                 child: Text(
-                  '${p.propertyType} #${p.propertyId}'
+                  '${_storageTypeLabel(p.propertyType, l10n)}'
                   '${p.accessibleInCurrentCountry ? '' : ' ✕'}',
                 ),
               ),
@@ -1022,12 +1022,20 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
               style: const TextStyle(color: Colors.white54, fontSize: 12),
             ),
           ),
+        if (_selectableProperties.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              l10n.inventoryNoOwnedStorageHint,
+              style: const TextStyle(color: Colors.white54, fontSize: 12),
+            ),
+          ),
         _buildGrid(
           title: _contextKey == 'depot'
               ? l10n.inventoryMaterialsDepot
               : l10n.inventoryStorageGrid,
           items: _contextItems,
-          emptySlots: storage?.capacity ?? 12,
+          emptySlots: _contextEmptySlots(),
           zone: _contextKey == 'depot'
               ? InventoryZone.depot
               : InventoryZone.property,
@@ -1088,6 +1096,28 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     );
   }
 
+  int _contextEmptySlots() {
+    if (_contextKey == 'depot') {
+      return _contextItems.length + 1;
+    }
+    final capacity = _selectedStorage?.capacity ?? 0;
+    if (capacity > 0) return capacity;
+    return _contextItems.isEmpty ? 0 : _contextItems.length;
+  }
+
+  String _storageTypeLabel(String propertyType, AppLocalizations l10n) {
+    switch (propertyType) {
+      case 'house':
+        return l10n.propertyTypeHouse;
+      case 'apartment':
+        return l10n.propertyTypeApartment;
+      case 'warehouse':
+        return l10n.propertyTypeWarehouse;
+      default:
+        return propertyType;
+    }
+  }
+
   Widget _buildGrid({
     required String title,
     required List<InventoryGridItem> items,
@@ -1095,8 +1125,8 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     required InventoryZone zone,
   }) {
     final cells = <InventoryGridItem?>[...items];
-    final minSlots = emptySlots < 8 ? 8 : emptySlots;
-    while (cells.length < minSlots) {
+    final targetSlots = emptySlots < 0 ? 0 : emptySlots;
+    while (cells.length < targetSlots) {
       cells.add(null);
     }
     return Card(
