@@ -6602,6 +6602,7 @@
   "evStreamJailbreakCaught": "Uitbraak mislukt! Je bent gepakt: {mins} minuten cel.",
   "evStreamBailPaid": "Borg betaald: €{amount}. Je bent vrij.",
   "evStreamErrInternal": "Er ging iets mis. Probeer opnieuw.",
+  "evStreamErrRateLimit": "Te veel verzoeken. Wacht even en probeer opnieuw.",
   "evStreamTest": "Test: {msg}",
   "@evStreamErrJailed": {
     "placeholders": {

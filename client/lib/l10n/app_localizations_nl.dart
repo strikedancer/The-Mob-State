@@ -13588,6 +13588,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get evStreamErrInternal => 'Er ging iets mis. Probeer opnieuw.';
 
   @override
+  String get evStreamErrRateLimit =>
+      'Te veel verzoeken. Wacht even en probeer opnieuw.';
+
+  @override
   String evStreamTest(String msg) {
     return 'Test: $msg';
   }

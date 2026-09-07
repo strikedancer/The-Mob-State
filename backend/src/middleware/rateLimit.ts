@@ -4,6 +4,8 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import config from '../config';
 import { incrementCounter, isRedisConnected } from '../services/redisClient';
 
 interface RateLimitOptions {
@@ -12,6 +14,7 @@ interface RateLimitOptions {
   message?: string; // Custom error message
   skipSuccessfulRequests?: boolean; // Don't count successful requests
   keyGenerator?: (req: Request) => string; // Custom key generator
+  skip?: (req: Request) => boolean;
 }
 
 const DEFAULT_OPTIONS: RateLimitOptions = {
@@ -21,6 +24,42 @@ const DEFAULT_OPTIONS: RateLimitOptions = {
   skipSuccessfulRequests: false,
 };
 
+const POLL_GET_PATHS = new Set([
+  '/health',
+  '/player/action-cooldowns',
+  '/messages/unread',
+  '/friends/pending',
+  '/player/jail-status',
+]);
+
+function playerIdFromJwt(req: Request): number | null {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) {
+    return null;
+  }
+  try {
+    const decoded = jwt.verify(auth.substring(7), config.jwtSecret) as {
+      playerId?: number;
+    };
+    return typeof decoded.playerId === 'number' ? decoded.playerId : null;
+  } catch {
+    return null;
+  }
+}
+
+function shouldSkipGlobalLimit(req: Request): boolean {
+  if (req.method === 'OPTIONS') {
+    return true;
+  }
+  if (req.path === '/health' || req.path.startsWith('/health/')) {
+    return true;
+  }
+  if (req.method === 'GET' && POLL_GET_PATHS.has(req.path)) {
+    return true;
+  }
+  return false;
+}
+
 /**
  * Create rate limiter middleware
  */
@@ -29,6 +68,10 @@ export function createRateLimiter(options: Partial<RateLimitOptions> = {}) {
   const windowSeconds = Math.ceil(opts.windowMs / 1000);
 
   return async (req: Request, res: Response, next: NextFunction) => {
+    if (opts.skip?.(req)) {
+      return next();
+    }
+
     // If Redis is not connected, bypass rate limiting (fallback gracefully)
     if (!isRedisConnected()) {
       console.warn('⚠️  Rate limiting disabled (Redis not connected)');
@@ -91,16 +134,16 @@ export function createRateLimiter(options: Partial<RateLimitOptions> = {}) {
  * Uses IP address + user ID (if authenticated)
  */
 function generateDefaultKey(req: Request): string {
-  const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  
-  // If authenticated, include user ID
   // @ts-expect-error - player may exist from auth middleware
-  const userId = req.player?.id;
-  
-  if (userId) {
-    return `user:${userId}`;
+  const attachedId = req.player?.id;
+  if (typeof attachedId === 'number') {
+    return `user:${attachedId}`;
   }
-  
+  const jwtPlayerId = playerIdFromJwt(req);
+  if (jwtPlayerId != null) {
+    return `user:${jwtPlayerId}`;
+  }
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
   return `ip:${ip}`;
 }
 
@@ -127,12 +170,14 @@ async function decrementCounter(key: string): Promise<void> {
  */
 
 /**
- * Global rate limiter (100 requests per minute per IP)
+ * Global rate limiter — per player when a JWT is present.
+ * 100/min shared on the proxy IP blocked two people playing from one house.
  */
 export const globalRateLimiter = createRateLimiter({
   windowMs: 60 * 1000,
-  maxRequests: 100,
+  maxRequests: 400,
   message: 'GLOBAL_RATE_LIMIT_EXCEEDED',
+  skip: shouldSkipGlobalLimit,
 });
 
 /**

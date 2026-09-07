@@ -76,6 +76,10 @@ import path from 'path';
 
 const app: Application = express();
 
+// Nginx/Plesk sits in front of Express. Without this, req.ip is the proxy and
+// every player shares one global rate-limit bucket.
+app.set('trust proxy', 1);
+
 // CORS must run before any middleware that can end the response (e.g. Prisma 503); otherwise
 // browsers report "No Access-Control-Allow-Origin" on failures and hide the real status body.
 app.use(

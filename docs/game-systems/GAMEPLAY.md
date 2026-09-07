@@ -34,6 +34,7 @@
 ## Dashboard
 
 - Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie en status. Zijbalk en hamburger-menu zijn gegroepeerd en doorzoekbaar. Cooldown-stippen tikken **lokaal per seconde** (geen volledige dashboard-rebuild); de serverpoll is alleen sync (`GET /player/action-cooldowns`). Event-badges tonen seconden zodra de resterende tijd onder 24 uur komt, zodat je ziet dat ze aflopen. Trage `dashboard-stats`-polls mogen een lokaal aftellende timer niet terugzetten.
+- **Te veel verzoeken:** de API-limiet is per account (niet per huis-IP). Normaal spelen met meerdere mensen tegelijk hoort geen `rate_limit`-fout te geven; als het tóch gebeurt, wacht even en probeer opnieuw.
 - **Eén sessie per account:** een nieuwe login maakt de vorige JWT ongeldig (`SESSION_REPLACED`). Op het dashboard zie je dat als uitloggen, niet als een vastgelopen scherm.
 - Op mobiel staat onderin een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew; een gouden stip betekent dat die cooldown klaar is. Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.

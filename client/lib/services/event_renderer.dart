@@ -309,6 +309,8 @@ class EventRenderer {
         return l10n.evStreamBailPaid('${params['amount'] ?? 0}');
       case 'error.internal':
         return l10n.evStreamErrInternal;
+      case 'error.rate_limit':
+        return l10n.evStreamErrRateLimit;
       case 'test.broadcast':
         return l10n.evStreamTest(
           params['message']?.toString() ?? '—',

@@ -13721,6 +13721,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.';
 
   @override
+  String get evStreamErrRateLimit =>
+      'Zu viele Anfragen. Warte kurz und versuche es erneut.';
+
+  @override
   String evStreamTest(String msg) {
     return 'Test: $msg';
   }

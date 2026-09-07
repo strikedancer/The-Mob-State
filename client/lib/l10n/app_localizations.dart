@@ -23543,6 +23543,12 @@ abstract class AppLocalizations {
   /// **'Something went wrong. Please try again.'**
   String get evStreamErrInternal;
 
+  /// No description provided for @evStreamErrRateLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests. Wait a moment and try again.'**
+  String get evStreamErrRateLimit;
+
   /// No description provided for @evStreamTest.
   ///
   /// In en, this message translates to:

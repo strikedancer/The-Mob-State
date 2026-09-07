@@ -8661,6 +8661,7 @@
   "evStreamJailbreakCaught": "Jailbreak failed! You were caught and jailed for {mins} minutes.",
   "evStreamBailPaid": "Bail paid: €{amount}. You are free.",
   "evStreamErrInternal": "Something went wrong. Please try again.",
+  "evStreamErrRateLimit": "Too many requests. Wait a moment and try again.",
   "evStreamTest": "Test: {msg}",
   "@evStreamErrJailed": {
     "placeholders": {

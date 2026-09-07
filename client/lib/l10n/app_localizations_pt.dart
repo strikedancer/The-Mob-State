@@ -13653,6 +13653,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Algo deu errado. Por favor, tente novamente.';
 
   @override
+  String get evStreamErrRateLimit =>
+      'Demasiados pedidos. Espera um momento e tenta novamente.';
+
+  @override
   String evStreamTest(String msg) {
     return 'Teste: $msg';
   }

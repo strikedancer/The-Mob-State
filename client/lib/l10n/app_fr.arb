@@ -3606,6 +3606,7 @@
   "evStreamJailbreakCaught": "Le jailbreak a échoué ! Vous avez été arrêté et emprisonné pendant {mins} minutes.",
   "evStreamBailPaid": "Caution payée : {amount}€. Vous êtes libre.",
   "evStreamErrInternal": "Quelque chose s'est mal passé. Veuillez réessayer.",
+  "evStreamErrRateLimit": "Trop de requêtes. Attends un instant et réessaie.",
   "evStreamTest": "Test : {msg}",
   "@evStreamErrJailed": {
     "placeholders": {
