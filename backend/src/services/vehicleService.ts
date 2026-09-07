@@ -854,6 +854,49 @@ const rarityForVehicle = (vehicle: Vehicle): string => {
   return 'legendary';
 };
 
+/** Street-theft attempt weights. Catalog count is NOT the drop rate. */
+export const STREET_THEFT_RARITY_WEIGHTS: Record<string, number> = {
+  common: 50,
+  uncommon: 30,
+  rare: 15,
+  epic: 4,
+  legendary: 1,
+};
+
+export const pickStreetVehicleFromPool = (
+  vehicles: Vehicle[],
+  rng: () => number = Math.random
+): Vehicle | null => {
+  if (vehicles.length === 0) return null;
+
+  const byRarity = new Map<string, Vehicle[]>();
+  for (const vehicle of vehicles) {
+    const rarity = rarityForVehicle(vehicle);
+    const bucket = byRarity.get(rarity) ?? [];
+    bucket.push(vehicle);
+    byRarity.set(rarity, bucket);
+  }
+
+  const weighted = [...byRarity.keys()].map((rarity) => ({
+    rarity,
+    weight: STREET_THEFT_RARITY_WEIGHTS[rarity] ?? 8,
+  }));
+  const total = weighted.reduce((sum, entry) => sum + entry.weight, 0);
+  let roll = rng() * total;
+  let chosenRarity = weighted[weighted.length - 1]?.rarity ?? 'common';
+  for (const entry of weighted) {
+    roll -= entry.weight;
+    if (roll <= 0) {
+      chosenRarity = entry.rarity;
+      break;
+    }
+  }
+
+  const bucket = byRarity.get(chosenRarity) ?? vehicles;
+  const index = Math.min(bucket.length - 1, Math.floor(rng() * bucket.length));
+  return bucket[index] ?? null;
+};
+
 const maxAvailabilityForVehicle = (vehicle: Vehicle): number => {
   if (vehicle.maxGameAvailability) return vehicle.maxGameAvailability;
 
@@ -3236,6 +3279,68 @@ export const vehicleService = {
   },
 
   /**
+   * Pick a street target from the player's country pool (rarity-weighted + rank-gated),
+   * then run the normal steal resolution.
+   */
+  async stealFromStreet(
+    playerId: number,
+    requestedType: string
+  ): Promise<{
+    success: boolean;
+    message: string;
+    vehicle?: any;
+    arrested?: boolean;
+    jailTime?: number;
+    bail?: number;
+    wantedLevel?: number;
+    xpGained?: number;
+    newXp?: number;
+    newRank?: number;
+    reputation?: number;
+    newlyUnlockedAchievements?: any[];
+    arrestedAfterTheft?: boolean;
+    vehicleConfiscated?: boolean;
+    cooldownRemainingSeconds?: number;
+    sessionPayoutMultiplier?: number;
+    sessionAttemptsInWindow?: number;
+    sessionWindowMinutes?: number;
+  }> {
+    const vehicleType = normalizeVehicleType(requestedType);
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { id: true, rank: true, currentCountry: true },
+    });
+    if (!player) {
+      throw new Error('PLAYER_NOT_FOUND');
+    }
+
+    const pool = (await this.getVehiclesInCountry(player.currentCountry ?? '')).filter((vehicle) => {
+      const category = vehicle.vehicleCategory ?? 'car';
+      if (category !== vehicleType) return false;
+      return (vehicle.requiredRank ?? 1) <= (player.rank ?? 1);
+    });
+
+    if (pool.length === 0) {
+      const typeName =
+        vehicleType === 'car' ? "auto's" : vehicleType === 'boat' ? 'boten' : 'motoren';
+      return {
+        success: false,
+        message: `Geen ${typeName} beschikbaar om te stelen.`,
+      };
+    }
+
+    const picked = pickStreetVehicleFromPool(pool);
+    if (!picked) {
+      return {
+        success: false,
+        message: 'Geen voertuig beschikbaar om te stelen.',
+      };
+    }
+
+    return this.stealVehicle(playerId, picked.id);
+  },
+
+  /**
    * Steal a vehicle
    */
   async stealVehicle(
@@ -3465,6 +3570,16 @@ export const vehicleService = {
       return {
         success: false,
         message: 'Je moet minimaal rank 7 zijn om motoren te stelen',
+      };
+    }
+
+    const modelRequiredRank = Number(vehicleDef.requiredRank ?? 1);
+    if (player.rank < modelRequiredRank) {
+      const typeName =
+        vehicleType === 'car' ? 'auto' : vehicleType === 'boat' ? 'boot' : 'motor';
+      return {
+        success: false,
+        message: `Je hebt rank ${modelRequiredRank} nodig om deze ${typeName} te stelen.`,
       };
     }
 

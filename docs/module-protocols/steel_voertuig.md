@@ -27,6 +27,11 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - **Server (`vehicleService.stealVehicle`):** na heat/patroon/rep wordt voor `vehicleType === 'boat'` een **+6%** succesbonus toegepast (cap 95%). **Haven lockdown** (UTC 04:00–09:00, dynamisch patroon `port_lockdown`) gebruikt voor boten multiplier **1.10** i.p.v. een zwaardere waarde, zodat vroege havencontroles merkbaar blijven maar niet frusterend.
 - **Arrest na poging:** wanted is 0–100 (niet het oude 5-sterrenplafond). Bij mislukte stal: eerst een eigen catch-worp (`vehicleTheftFailCatchChance`, ~18–50% naar hoe zwaar/heet de poging was, 10–45 min cel), anders `checkArrest` op het **eerdere** wanted. Alleen als je vrijkomt stijgt wanted (`vehicleTheftWantedBump`). Succes: +1 wanted (cap 100) en daarna `checkArrest` voor de ontsnapping. “Gesnapt” zonder cel blijft mogelijk, maar herhaald stelen moet naar de gevangenis kunnen.
 
+## Street theft targeting
+
+- Spelers hebben **geen modelkeuze**. `POST /vehicles/steal` (`vehicleType`: car/motorcycle/boat) laat de server een doel trekken uit de landpool: alleen `requiredRank <= player.rank`, daarna rarity-gewichten (common 50 / uncommon 30 / rare 15 / epic 4 / legendary 1). Succes blijft daarna prijs/heat/politie.
+- Extra knoppen per zeldzaamheid zijn niet de bedoeling: dat zou luxury-spam terugbrengen. De catalogus is mid/high-heavy; zonder gewichten voelt één knop als “steeds een Lambo”.
+
 ## Core Rules
 
 - Behoud één consistente spelersloop over alle tabs: stelen -> beheren -> repareren/verkoop/sloop.

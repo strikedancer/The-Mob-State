@@ -605,115 +605,12 @@ class VehicleProvider with ChangeNotifier {
       _lastStealBailAmount = null;
       _lastStealXpGained = 0;
 
-      // Fetch available vehicles in the country from backend
       final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/vehicles/available/$country'),
-        headers: headers,
-      );
-
-      if (response.statusCode != 200) {
-        _error = 'Kon beschikbare voertuigen niet ophalen';
-        notifyListeners();
-        return false;
-      }
-
-      final data = json.decode(response.body);
-      _policeVehicleEvent = data['policeVehicleEvent'] is Map<String, dynamic>
-          ? data['policeVehicleEvent'] as Map<String, dynamic>
-          : _policeVehicleEvent;
-      _regionalBlacklistByType =
-          data['regionalBlacklistByType'] is Map<String, dynamic>
-              ? data['regionalBlacklistByType'] as Map<String, dynamic>
-              : _regionalBlacklistByType;
-      final vehiclesData = data['vehicles'];
-
-      if (vehiclesData == null) {
-        _error = 'Geen voertuigen data ontvangen';
-        notifyListeners();
-        return false;
-      }
-
-      // Convert to list if needed
-      List<dynamic> allVehicles;
-      if (vehiclesData is List) {
-        allVehicles = vehiclesData;
-      } else {
-        _error = 'Ongeldig voertuigen formaat';
-        notifyListeners();
-        return false;
-      }
-
-      if (allVehicles.isEmpty) {
-        _error = 'Geen voertuigen beschikbaar in $country';
-        notifyListeners();
-        return false;
-      }
-
-      // Filter by exact vehicle category; do not mix car/motorcycle selections.
-      final List<dynamic> availableVehicles = allVehicles.where((v) {
-        if (v == null || v['id'] == null) return false;
-
-        if (v['vehicleCategory'] != null) {
-          final category = v['vehicleCategory'].toString().toLowerCase();
-          final matches = category == vehicleType;
-          print(
-            '[VehicleProvider] Filter - id=${v['id']}, category=$category, want=$vehicleType, matches=$matches',
-          );
-          return matches;
-        }
-
-        // Fallback: old id-based detection for payloads without vehicleCategory.
-        final id = v['id'].toString().toLowerCase();
-        final isBoat =
-            id.contains('boat') || id.contains('yacht') || id.contains('ship');
-        final isMotorcycle =
-            id.contains('moto') ||
-            id.contains('bike') ||
-            id.contains('motorcycle');
-
-        if (vehicleType == 'boat') return isBoat;
-        if (vehicleType == 'motorcycle') return isMotorcycle;
-        return !isBoat && !isMotorcycle;
-      }).toList();
-
-      if (availableVehicles.isEmpty) {
-        final lock = regionalBlacklistForType(vehicleType);
-        final isLocked = lock?['active'] == true;
-        if (isLocked) {
-          final reasonNl = lock?['reasonNl']?.toString();
-          _error = (reasonNl != null && reasonNl.trim().isNotEmpty)
-              ? reasonNl
-              : 'Regionale blokkade actief voor dit voertuigtype.';
-        } else {
-          final typeLabel = vehicleType == 'car'
-              ? 'auto\'s'
-              : (vehicleType == 'boat' ? 'boten' : 'motoren');
-          _error = 'Geen $typeLabel beschikbaar in $country';
-        }
-        notifyListeners();
-        return false;
-      }
-
-      // Pick random vehicle
-      final randomIndex = DateTime.now().millisecond % availableVehicles.length;
-      final vehicle = availableVehicles[randomIndex];
-      final vehicleId = vehicle['id']?.toString() ?? '';
-
-      print(
-        '[VehicleProvider] Random vehicle selected: $vehicleId (${vehicle['name']})',
-      );
-
-      if (vehicleId.isEmpty) {
-        _error = 'Ongeldig voertuig ID';
-        notifyListeners();
-        return false;
-      }
-
-      // Steal it
+      print('[VehicleProvider] Street steal $vehicleType in $country');
       final stealResponse = await http.post(
-        Uri.parse('$baseUrl/vehicles/steal/$vehicleId'),
+        Uri.parse('$baseUrl/vehicles/steal'),
         headers: headers,
+        body: json.encode({'vehicleType': vehicleType}),
       );
 
       final stealData = json.decode(stealResponse.body);

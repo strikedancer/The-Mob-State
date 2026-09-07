@@ -38,6 +38,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Numeric voertuigstatussen (zoals condition/fuel) moeten 0 als geldige waarde behandelen; gebruik null-safe fallbacks zodat 0 niet stil als 100 of een andere default wordt geïnterpreteerd.
 - Concurrent repair slots are shared across car/motorcycle/boat: non-VIP max 1 active repair, VIP max 2 active repairs.
 - When a timed repair completes, the owner must receive a repair-ready push notification.
+- Player street theft is **one button per category**. The client must call `POST /vehicles/steal` with `{ vehicleType }`; the server picks the target. Do not let the client choose a model. Weights: common 50, uncommon 30, rare 15, epic 4, legendary 1, among rank-eligible models in the current country (`requiredRank` is enforced). `POST /vehicles/steal/:vehicleId` stays for NPC/targeted calls and still enforces that rank gate.
 - Available car and motorcycle catalog entries must expose country availability, value, rarity and world-cap information.
 - Owned vehicle cards in Garage/Marina should visibly show **rarity tiers** (common→legendary) as a small badge/pill on the vehicle image (top-left), so players can quickly spot rare drops.
 - Country availability lists must be robust: normalize country ids to lowercase, and avoid accidental “empty catalog” failures. For boats, an empty/missing `availableInCountries` list is treated as global availability (unless a regional blacklist event blocks it).

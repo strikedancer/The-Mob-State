@@ -332,8 +332,8 @@ router.post('/:id/repair', authenticate, async (req: AuthRequest, res: Response)
 
 /**
  * GET /vehicles/available/:country
- * Get vehicles available in a specific country for stealing
- * Returns all vehicles - success is based on rarity/price, not rank
+ * Get vehicles available in a specific country (catalog).
+ * Street theft targeting is server-side (`POST /vehicles/steal`) with rank + rarity weights.
  */
 router.get('/available/:country', authenticate, async (req: AuthRequest, res: Response) => {
   try {
@@ -588,9 +588,118 @@ router.post(
   }
 );
 
+const sendStealResult = (
+  res: Response,
+  playerId: number,
+  result: Awaited<ReturnType<typeof vehicleService.stealVehicle>>,
+  vehicleId: string
+) => {
+  if (!result.success) {
+    return res.status(200).json({
+      event: 'vehicles.steal_failed',
+      params: {
+        vehicleId,
+        reason: result.message,
+        message: result.message,
+        arrested: result.arrested ?? false,
+        jailTime: result.jailTime ?? 0,
+        bail: result.bail ?? 0,
+        wantedLevel: result.wantedLevel ?? 0,
+        reputation: result.reputation ?? null,
+        cooldownRemainingSeconds: result.cooldownRemainingSeconds ?? 0,
+        sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
+        sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
+        sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
+      },
+    });
+  }
+
+  gameEventService.recordContribution(playerId, 'vehicles', 1).catch(() => {});
+
+  return res.status(200).json({
+    event: 'vehicles.stolen',
+    params: {
+      vehicleId,
+      message: result.message,
+      arrested: result.arrested ?? false,
+      arrestedAfterTheft: result.arrestedAfterTheft ?? false,
+      jailTime: result.jailTime ?? 0,
+      bail: result.bail ?? 0,
+      wantedLevel: result.wantedLevel ?? 0,
+      xpGained: result.xpGained ?? 0,
+      reputation: result.reputation ?? null,
+      sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
+      sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
+      sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
+      cooldownRemainingSeconds: result.cooldownRemainingSeconds ?? 0,
+    },
+    player: {
+      xp: result.newXp ?? null,
+      rank: result.newRank ?? null,
+      wantedLevel: result.wantedLevel ?? 0,
+      reputation: result.reputation ?? null,
+    },
+    newlyUnlockedAchievements: result.newlyUnlockedAchievements ?? [],
+    vehicle: result.vehicle,
+  });
+};
+
+const handleStealError = (res: Response, error: unknown) => {
+  if (error instanceof Error) {
+    if (error.message === 'PLAYER_NOT_FOUND') {
+      return res.status(404).json({
+        event: 'vehicles.error',
+        params: { reason: 'PLAYER_NOT_FOUND' },
+      });
+    }
+
+    if (error.message === 'INVALID_VEHICLE') {
+      return res.status(400).json({
+        event: 'vehicles.error',
+        params: { reason: 'INVALID_VEHICLE' },
+      });
+    }
+
+    return res.status(500).json({
+      event: 'vehicles.error',
+      params: { reason: error.message || 'STEAL_FAILED' },
+    });
+  }
+
+  return res.status(500).json({
+    event: 'vehicles.error',
+    params: { reason: 'UNKNOWN_ERROR' },
+  });
+};
+
+/**
+ * POST /vehicles/steal
+ * Player street theft: server picks a rank-eligible target with rarity weights.
+ */
+router.post('/steal', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const remainingJailTime = await checkIfJailed(req.player!.id);
+    if (remainingJailTime > 0) {
+      return res.status(403).json({
+        event: 'error.jailed',
+        params: {
+          remainingTime: remainingJailTime,
+        },
+      });
+    }
+
+    const vehicleType = (req.body?.vehicleType ?? req.body?.type ?? 'car').toString();
+    const result = await vehicleService.stealFromStreet(req.player!.id, vehicleType);
+    const vehicleId = result.vehicle?.vehicleId ?? result.vehicle?.id ?? '';
+    return sendStealResult(res, req.player!.id, result, String(vehicleId));
+  } catch (error) {
+    return handleStealError(res, error);
+  }
+});
+
 /**
  * POST /vehicles/steal/:vehicleId
- * Steal a vehicle from the streets
+ * Steal a specific vehicle (NPC / targeted). Still enforces per-model requiredRank.
  */
 router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Response) => {
   try {
@@ -607,82 +716,9 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
     }
 
     const result = await vehicleService.stealVehicle(req.player!.id, vehicleId as string);
-
-    if (!result.success) {
-      return res.status(200).json({
-        event: 'vehicles.steal_failed',
-        params: {
-          vehicleId,
-          reason: result.message,
-          message: result.message,
-          arrested: result.arrested ?? false,
-          jailTime: result.jailTime ?? 0,
-          bail: result.bail ?? 0,
-          wantedLevel: result.wantedLevel ?? 0,
-          reputation: result.reputation ?? null,
-          cooldownRemainingSeconds: result.cooldownRemainingSeconds ?? 0,
-          sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
-          sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
-          sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
-        },
-      });
-    }
-
-    // Record event contribution (fire-and-forget)
-    gameEventService.recordContribution(req.player!.id, 'vehicles', 1).catch(() => {});
-
-    return res.status(200).json({
-      event: 'vehicles.stolen',
-      params: {
-        vehicleId,
-        message: result.message,
-        arrested: result.arrested ?? false,
-        arrestedAfterTheft: result.arrestedAfterTheft ?? false,
-        jailTime: result.jailTime ?? 0,
-        bail: result.bail ?? 0,
-        wantedLevel: result.wantedLevel ?? 0,
-        xpGained: result.xpGained ?? 0,
-        reputation: result.reputation ?? null,
-        sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
-        sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
-        sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
-        cooldownRemainingSeconds: result.cooldownRemainingSeconds ?? 0,
-      },
-      player: {
-        xp: result.newXp ?? null,
-        rank: result.newRank ?? null,
-        wantedLevel: result.wantedLevel ?? 0,
-        reputation: result.reputation ?? null,
-      },
-      newlyUnlockedAchievements: result.newlyUnlockedAchievements ?? [],
-      vehicle: result.vehicle,
-    });
+    return sendStealResult(res, req.player!.id, result, vehicleId as string);
   } catch (error) {
-    if (error instanceof Error) {
-      if (error.message === 'PLAYER_NOT_FOUND') {
-        return res.status(404).json({
-          event: 'vehicles.error',
-          params: { reason: 'PLAYER_NOT_FOUND' },
-        });
-      }
-
-      if (error.message === 'INVALID_VEHICLE') {
-        return res.status(400).json({
-          event: 'vehicles.error',
-          params: { reason: 'INVALID_VEHICLE' },
-        });
-      }
-
-      return res.status(500).json({
-        event: 'vehicles.error',
-        params: { reason: error.message || 'SCRAP_FAILED' },
-      });
-    }
-
-    return res.status(500).json({
-      event: 'vehicles.error',
-      params: { reason: 'UNKNOWN_ERROR' },
-    });
+    return handleStealError(res, error);
   }
 });
 
