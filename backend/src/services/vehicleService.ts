@@ -854,18 +854,59 @@ const rarityForVehicle = (vehicle: Vehicle): string => {
   return 'legendary';
 };
 
-/** Street-theft attempt weights. Catalog count is NOT the drop rate. */
-export const STREET_THEFT_RARITY_WEIGHTS: Record<string, number> = {
-  common: 50,
-  uncommon: 30,
-  rare: 15,
-  epic: 4,
-  legendary: 1,
+/** Soft rarity unlocks for street theft. Legendary stays a hard late gate. */
+export const STREET_THEFT_UNLOCK_RANK = {
+  rare: 7,
+  epic: 13,
+  legendary: 22,
+} as const;
+
+export const streetTheftRarityWeights = (rank: number): Record<string, number> => {
+  const r = Math.max(1, rank);
+  if (r < STREET_THEFT_UNLOCK_RANK.rare) {
+    return { common: 72, uncommon: 28, rare: 0, epic: 0, legendary: 0 };
+  }
+  if (r < 10) {
+    return { common: 70, uncommon: 28, rare: 2, epic: 0, legendary: 0 };
+  }
+  if (r < STREET_THEFT_UNLOCK_RANK.epic) {
+    return { common: 55, uncommon: 32, rare: 13, epic: 0, legendary: 0 };
+  }
+  if (r < STREET_THEFT_UNLOCK_RANK.legendary) {
+    return { common: 48, uncommon: 30, rare: 16, epic: 6, legendary: 0 };
+  }
+  return { common: 42, uncommon: 28, rare: 18, epic: 9, legendary: 3 };
+};
+
+export const isStreetTheftRarityUnlocked = (rarity: string, rank: number): boolean => {
+  if (rarity === 'legendary') return rank >= STREET_THEFT_UNLOCK_RANK.legendary;
+  if (rarity === 'epic') return rank >= STREET_THEFT_UNLOCK_RANK.epic;
+  if (rarity === 'rare') return rank >= STREET_THEFT_UNLOCK_RANK.rare;
+  return true;
+};
+
+const pickWeightedRarity = (
+  weights: Record<string, number>,
+  available: string[],
+  rng: () => number = Math.random
+): string | null => {
+  const weighted = available
+    .map((rarity) => ({ rarity, weight: Math.max(0, weights[rarity] ?? 0) }))
+    .filter((entry) => entry.weight > 0);
+  if (weighted.length === 0) return available[0] ?? null;
+  const total = weighted.reduce((sum, entry) => sum + entry.weight, 0);
+  let roll = rng() * total;
+  for (const entry of weighted) {
+    roll -= entry.weight;
+    if (roll <= 0) return entry.rarity;
+  }
+  return weighted[weighted.length - 1]?.rarity ?? null;
 };
 
 export const pickStreetVehicleFromPool = (
   vehicles: Vehicle[],
-  rng: () => number = Math.random
+  rng: () => number = Math.random,
+  weights: Record<string, number> = streetTheftRarityWeights(99)
 ): Vehicle | null => {
   if (vehicles.length === 0) return null;
 
@@ -877,24 +918,24 @@ export const pickStreetVehicleFromPool = (
     byRarity.set(rarity, bucket);
   }
 
-  const weighted = [...byRarity.keys()].map((rarity) => ({
-    rarity,
-    weight: STREET_THEFT_RARITY_WEIGHTS[rarity] ?? 8,
-  }));
-  const total = weighted.reduce((sum, entry) => sum + entry.weight, 0);
-  let roll = rng() * total;
-  let chosenRarity = weighted[weighted.length - 1]?.rarity ?? 'common';
-  for (const entry of weighted) {
-    roll -= entry.weight;
-    if (roll <= 0) {
-      chosenRarity = entry.rarity;
-      break;
-    }
-  }
-
+  const chosenRarity =
+    pickWeightedRarity(weights, [...byRarity.keys()], rng) ?? [...byRarity.keys()][0];
   const bucket = byRarity.get(chosenRarity) ?? vehicles;
   const index = Math.min(bucket.length - 1, Math.floor(rng() * bucket.length));
   return bucket[index] ?? null;
+};
+
+const priceBandSuccessChance = (baseValue: number, rng: () => number = Math.random): number => {
+  if (baseValue < 10000) return 0.75 + rng() * 0.1;
+  if (baseValue < 30000) return 0.6 + rng() * 0.15;
+  if (baseValue < 75000) return 0.45 + rng() * 0.15;
+  if (baseValue < 150000) return 0.3 + rng() * 0.15;
+  if (baseValue < 300000) return 0.2 + rng() * 0.1;
+  if (baseValue < 500000) return 0.1 + rng() * 0.08;
+  if (baseValue < 700000) return 0.05 + rng() * 0.05;
+  if (baseValue < 1000000) return 0.03 + rng() * 0.04;
+  if (baseValue < 2000000) return 0.015 + rng() * 0.025;
+  return 0.001 + rng() * 0.014;
 };
 
 const maxAvailabilityForVehicle = (vehicle: Vehicle): number => {
@@ -3314,13 +3355,11 @@ export const vehicleService = {
       throw new Error('PLAYER_NOT_FOUND');
     }
 
-    const pool = (await this.getVehiclesInCountry(player.currentCountry ?? '')).filter((vehicle) => {
-      const category = vehicle.vehicleCategory ?? 'car';
-      if (category !== vehicleType) return false;
-      return (vehicle.requiredRank ?? 1) <= (player.rank ?? 1);
-    });
+    const countryPool = (await this.getVehiclesInCountry(player.currentCountry ?? '')).filter(
+      (vehicle) => (vehicle.vehicleCategory ?? 'car') === vehicleType
+    );
 
-    if (pool.length === 0) {
+    if (countryPool.length === 0) {
       const typeName =
         vehicleType === 'car' ? "auto's" : vehicleType === 'boat' ? 'boten' : 'motoren';
       return {
@@ -3329,15 +3368,127 @@ export const vehicleService = {
       };
     }
 
-    const picked = pickStreetVehicleFromPool(pool);
-    if (!picked) {
+    const rank = player.rank ?? 1;
+    const weights = streetTheftRarityWeights(rank);
+    let streetPool = countryPool.filter((vehicle) => {
+      const rarity = rarityForVehicle(vehicle);
+      return rarity === 'common' || rarity === 'uncommon';
+    });
+    if (streetPool.length === 0) {
+      const cheapest = [...countryPool].sort((a, b) => a.baseValue - b.baseValue);
+      streetPool = cheapest.slice(0, Math.max(3, Math.ceil(cheapest.length * 0.35)));
+    }
+
+    const streetCar = pickStreetVehicleFromPool(streetPool, Math.random, {
+      common: weights.common,
+      uncommon: weights.uncommon,
+    });
+    if (!streetCar) {
       return {
         success: false,
         message: 'Geen voertuig beschikbaar om te stelen.',
       };
     }
 
-    return this.stealVehicle(playerId, picked.id);
+    const result = await this.stealVehicle(playerId, streetCar.id, { enforceModelRank: false });
+    if (!result.success || !result.vehicle?.id) {
+      return result;
+    }
+
+    const availableRarities = [...new Set(countryPool.map((vehicle) => rarityForVehicle(vehicle)))]
+      .filter((rarity) => isStreetTheftRarityUnlocked(rarity, rank) && (weights[rarity] ?? 0) > 0);
+    const rolledRarity = pickWeightedRarity(weights, availableRarities);
+    if (!rolledRarity || rolledRarity === 'common' || rolledRarity === 'uncommon') {
+      return result;
+    }
+
+    const jackpotPool = countryPool.filter(
+      (vehicle) =>
+        rarityForVehicle(vehicle) === rolledRarity &&
+        vehicle.id !== streetCar.id &&
+        (vehicle.remainingWorldAvailability ?? 1) > 0
+    );
+    if (jackpotPool.length === 0) {
+      return result;
+    }
+
+    const jackpot = jackpotPool[Math.floor(Math.random() * jackpotPool.length)];
+    const heatSnapshot = await getPlayerVehicleHeatSnapshot(playerId);
+    const selectedHeat =
+      vehicleType === 'motorcycle'
+        ? heatSnapshot.motorcycle
+        : vehicleType === 'boat'
+          ? heatSnapshot.boat
+          : heatSnapshot.car;
+    const policePattern = getDynamicPolicePatternForTime(new Date());
+    const opsProfile = await getPlayerVehicleOpsProfile(playerId);
+    const opsRepValue =
+      vehicleType === 'motorcycle'
+        ? opsProfile.motorcycleRep
+        : vehicleType === 'boat'
+          ? opsProfile.boatRep
+          : opsProfile.carRep;
+    const theftRepBonus = getVehicleOpsRepLevel(opsRepValue) >= 4 ? 0.04 : 0;
+    let upgradeChance = priceBandSuccessChance(jackpot.baseValue);
+    upgradeChance = Math.min(0.95, upgradeChance + Math.min(0.1, rank * 0.005));
+    upgradeChance = Math.max(
+      0.01,
+      upgradeChance -
+        getHeatSuccessPenalty(selectedHeat) -
+        Math.max(0, (policePattern.riskMultiplierByType[vehicleType] - 1) * 0.18) +
+        theftRepBonus
+    );
+    if (vehicleType === 'boat') {
+      upgradeChance = Math.min(0.95, upgradeChance + 0.06);
+    }
+
+    if (Math.random() >= upgradeChance) {
+      return result;
+    }
+
+    const upgraded = await prisma.vehicleInventory.update({
+      where: { id: result.vehicle.id },
+      data: { vehicleId: jackpot.id },
+    });
+    const jackpotMeta = withVehicleMeta(jackpot, vehicleType);
+    const extraXp = Math.max(
+      0,
+      calculateVehicleTheftXp(jackpotMeta, vehicleType) -
+        calculateVehicleTheftXp(withVehicleMeta(streetCar, vehicleType), vehicleType)
+    );
+    let xpGained = result.xpGained ?? 0;
+    let newXp = result.newXp;
+    let newRank = result.newRank;
+    if (extraXp > 0) {
+      const xpUpdate = await prisma.player.update({
+        where: { id: playerId },
+        data: { xp: { increment: extraXp } },
+        select: { xp: true, rank: true },
+      });
+      xpGained += extraXp;
+      newXp = xpUpdate.xp;
+      const computedRank = getRankFromXP(xpUpdate.xp);
+      if (computedRank > xpUpdate.rank) {
+        const rankUpdate = await prisma.player.update({
+          where: { id: playerId },
+          data: { rank: computedRank },
+          select: { rank: true },
+        });
+        newRank = rankUpdate.rank;
+      }
+    }
+
+    return {
+      ...result,
+      message: `Je hebt succesvol een ${jackpot.name} gestolen!`,
+      xpGained,
+      newXp,
+      newRank,
+      vehicle: {
+        ...upgraded,
+        definition: jackpot,
+      },
+    };
   },
 
   /**
@@ -3345,7 +3496,8 @@ export const vehicleService = {
    */
   async stealVehicle(
     playerId: number,
-    vehicleId: string
+    vehicleId: string,
+    options?: { enforceModelRank?: boolean }
   ): Promise<{
     success: boolean;
     message: string;
@@ -3573,8 +3725,9 @@ export const vehicleService = {
       };
     }
 
+    const enforceModelRank = options?.enforceModelRank !== false;
     const modelRequiredRank = Number(vehicleDef.requiredRank ?? 1);
-    if (player.rank < modelRequiredRank) {
+    if (enforceModelRank && player.rank < modelRequiredRank) {
       const typeName =
         vehicleType === 'car' ? 'auto' : vehicleType === 'boat' ? 'boot' : 'motor';
       return {
@@ -3704,41 +3857,8 @@ export const vehicleService = {
       }
     }
 
-    // Calculate success chance based on vehicle rarity/price
-    // Cheaper vehicles = easier to steal, expensive vehicles = harder
-    let successChance = 0.7; // Base 70% for average vehicles
-
-    if (vehicleDef.baseValue < 10000) {
-      // Very cheap vehicles (< €10k): 75-85% success
-      successChance = 0.75 + Math.random() * 0.1;
-    } else if (vehicleDef.baseValue < 30000) {
-      // Cheap vehicles (€10k-30k): 60-75% success
-      successChance = 0.6 + Math.random() * 0.15;
-    } else if (vehicleDef.baseValue < 75000) {
-      // Mid-range vehicles (€30k-75k): 45-60% success
-      successChance = 0.45 + Math.random() * 0.15;
-    } else if (vehicleDef.baseValue < 150000) {
-      // Expensive vehicles (€75k-150k): 30-45% success
-      successChance = 0.3 + Math.random() * 0.15;
-    } else if (vehicleDef.baseValue < 300000) {
-      // Very expensive vehicles (€150k-300k): 20-30% success
-      successChance = 0.2 + Math.random() * 0.1;
-    } else if (vehicleDef.baseValue < 500000) {
-      // Ultra rare supercars (€300k-500k): 10-18% success
-      successChance = 0.1 + Math.random() * 0.08;
-    } else if (vehicleDef.baseValue < 700000) {
-      // Exotic supercars (€500k-700k): 5-10% success
-      successChance = 0.05 + Math.random() * 0.05;
-    } else if (vehicleDef.baseValue < 1000000) {
-      // Rare hypercars (€700k-1M): 3-7% success
-      successChance = 0.03 + Math.random() * 0.04;
-    } else if (vehicleDef.baseValue < 2000000) {
-      // Extreme hypercars (€1M-2M): 1.5-4% success
-      successChance = 0.015 + Math.random() * 0.025;
-    } else {
-      // Legendary vehicles (€2M+): 0.1-1.5% success
-      successChance = 0.001 + Math.random() * 0.014;
-    }
+    // Street risk uses the attempted (usually cheap) car. Jackpot upgrades roll separately.
+    let successChance = priceBandSuccessChance(Number(vehicleDef.baseValue) || 0);
 
     // Small rank bonus (max +10%)
     const rankBonus = Math.min(0.1, player.rank * 0.005);

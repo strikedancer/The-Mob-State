@@ -29,8 +29,8 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 
 ## Street theft targeting
 
-- Spelers hebben **geen modelkeuze**. `POST /vehicles/steal` (`vehicleType`: car/motorcycle/boat) laat de server een doel trekken uit de landpool: alleen `requiredRank <= player.rank`, daarna rarity-gewichten (common 50 / uncommon 30 / rare 15 / epic 4 / legendary 1). Succes blijft daarna prijs/heat/politie.
-- Extra knoppen per zeldzaamheid zijn niet de bedoeling: dat zou luxury-spam terugbrengen. De catalogus is mid/high-heavy; zonder gewichten voelt één knop als “steeds een Lambo”.
+- Spelers hebben **geen modelkeuze**. `POST /vehicles/steal` doet eerst een **straatpoging** (common/uncommon). Fails tonen die straatauto, niet een Ferrari. Bij succes kan de server upgraden: rare vanaf rank 7 (klein tot 10), epic vanaf 13, legendary pas vanaf **22**. Upgrade gebruikt nog een prijs/heat-worp, dus een epic blijft zeldzaam.
+- Extra knoppen per zeldzaamheid zijn niet de bedoeling: dat zou luxury-spam terugbrengen.
 
 ## Core Rules
 

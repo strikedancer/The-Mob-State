@@ -12,7 +12,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 
 ## Documented static modifiers (vehicle theft → boats)
 - **Boat theft ease:** in `vehicleService.stealVehicle`, after heat / dynamic police pattern / ops-rep, **+0.06** success chance for `vehicleType === 'boat'` (max 0.95). **Port lockdown** window uses boat risk multiplier **1.10** (not 1.18). Rationale: boat `baseValue` bands in content skew harder than starter cars; see `steel_voertuig.md`.
-- **Street target weights:** `STREET_THEFT_RARITY_WEIGHTS` in `vehicleService.ts` (common 50, uncommon 30, rare 15, epic 4, legendary 1) plus per-model `requiredRank`. Catalog count is not the attempt rate. See `garage.md` / `steel_voertuig.md`.
+- **Street target weights:** `streetTheftRarityWeights(rank)` in `vehicleService.ts`. Risk is always a street (common/uncommon) attempt; rare/epic/legendary are post-success upgrades. Unlocks: rare 7, epic 13, legendary 22. Rank 7 ≈ 70/28/2; rank 13–21 ≈ 48/30/16/6; rank 22+ ≈ 42/28/18/9/3. Catalog count is not the drop rate. See `garage.md` / `steel_voertuig.md`.
 
 ## Documented static modifiers (training → crimes)
 - **Combo-readiness:** when the player has **at least one gym train (any track; `gymLastTrainedAt` = latest of strength/speed/stamina `lastTrainedAt`) and one shooting-range train** on the **same UTC calendar day**, `crimeService` adds **`TRAINING_COMBO_READINESS_BONUS`** (**+0.5%** success chance as a fraction, see `backend/src/lib/trainingComboReadiness.ts`) on top of existing gym aggregate + shooting-range training bonuses. Still clamped with all other modifiers to **5–95%** final success chance. Exposed for UI as `trainingComboReadiness` on **`GET /training/status`**.
