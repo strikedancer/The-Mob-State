@@ -188,7 +188,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _navCooldownsLoaded = false;
   bool _navCooldownsLoading = false;
   Timer? _navCooldownTick;
-  Timer? _navCooldownRefresh;
   final TextEditingController _menuSearchController = TextEditingController();
 
   void _openPlayerProfile(Player player) {
@@ -202,7 +201,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   StreamSubscription? _eventSubscription;
-  Timer? _playerRefreshTimer;
   bool _checkedPremiumPopup = false;
   _WebSection _selectedWebSection = _WebSection.dashboard;
   int _webSectionRefreshSeed = 0;
@@ -212,7 +210,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<Map<String, dynamic>> _gameEventsActive = const [];
   /// Event Pass claimable reward count for the monthly Empire rail avatar only.
   int _eventPassClaimableCount = 0;
-  Timer? _gameEventsRefreshTimer;
   /// Accordion: only one side-menu category open at a time (null = all collapsed).
   _NavGroup? _expandedNavGroup;
   /// Optional product to highlight when opening Premium (e.g. season_pass_monthly).
@@ -226,6 +223,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _expandedNavGroup = _navGroupForSection(_WebSection.inventory);
       _webSectionRefreshSeed++;
     });
+    _syncOnNavigate();
   }
 
   void _openBlackMarket([int initialTabIndex = 0]) {
@@ -234,7 +232,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _selectedWebSection = _WebSection.blackMarket;
       _expandedNavGroup = _navGroupForSection(_WebSection.blackMarket);
     });
-    _scheduleNavCooldownRefresh();
+    _syncOnNavigate();
   }
 
   void _openVehicleHeist([int initialTabIndex = 0]) {
@@ -243,7 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _selectedWebSection = _WebSection.vehicleHeist;
       _expandedNavGroup = _navGroupForSection(_WebSection.vehicleHeist);
     });
-    _scheduleNavCooldownRefresh();
+    _syncOnNavigate();
   }
 
   void _selectWebSection(_WebSection section, {String? focusProductKey}) {
@@ -255,7 +253,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _openBlackMarket(BlackMarketScreen.tabSecurity);
       return;
     }
-    final previous = _selectedWebSection;
     setState(() {
       if (_selectedWebSection == section) {
         _webSectionRefreshSeed++;
@@ -272,15 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _inventoryInitialPropertyId = null;
       }
     });
-    if (section == _WebSection.crimes ||
-        section == _WebSection.jobs ||
-        section == _WebSection.vehicleHeist) {
-      _scheduleNavCooldownRefresh();
-    }
-    // Refresh claimable badges after leaving Events (claims happen there).
-    if (previous == _WebSection.events && section != _WebSection.events) {
-      _loadActiveGameEventsForRail();
-    }
+    _syncOnNavigate();
   }
 
   _NavGroup? _navGroupForSection(_WebSection section) {
@@ -350,14 +339,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       eventProvider.connect();
       _refreshDashboardBadges();
       _setupSSEListener();
-      _startPlayerRefreshTimer();
       _startNavCooldownTimers();
       _checkPremiumPopupOnOpen();
       _loadActiveGameEventsForRail();
-      _gameEventsRefreshTimer = Timer.periodic(
-        const Duration(seconds: 60),
-        (_) => _loadActiveGameEventsForRail(),
-      );
     });
   }
 
@@ -424,32 +408,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void dispose() {
     _eventSubscription?.cancel();
-    _playerRefreshTimer?.cancel();
-    _gameEventsRefreshTimer?.cancel();
     _navCooldownTick?.cancel();
-    _navCooldownRefresh?.cancel();
     _navCooldowns.dispose();
     _menuSearchController.dispose();
     super.dispose();
   }
 
-  void _startPlayerRefreshTimer() {
-    _playerRefreshTimer?.cancel();
-    _playerRefreshTimer = Timer.periodic(const Duration(seconds: 30), (
-      _,
-    ) async {
-      if (!mounted) {
-        return;
-      }
-
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      if (!authProvider.isAuthenticated) {
-        return;
-      }
-
-      await authProvider.refreshPlayer();
-      await _refreshDashboardBadges();
-    });
+  void _syncOnNavigate() {
+    if (!mounted) return;
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (authProvider.isAuthenticated) {
+      unawaited(authProvider.refreshPlayer());
+    }
+    unawaited(_refreshDashboardBadges());
+    unawaited(_loadActiveGameEventsForRail());
   }
 
   void _setupSSEListener() {
@@ -476,7 +448,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _startNavCooldownTimers() {
     _navCooldownTick?.cancel();
-    _navCooldownRefresh?.cancel();
     _navCooldownTick = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted || !_navCooldownsLoaded) return;
       final current = _navCooldowns.value;
@@ -492,9 +463,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         // Do not setState the whole dashboard — that freezes event/crime timers.
         _navCooldowns.value = next;
       }
-    });
-    _navCooldownRefresh = Timer.periodic(const Duration(seconds: 30), (_) {
-      _loadNavCooldowns();
     });
     _loadNavCooldowns();
   }
@@ -2657,7 +2625,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   Map<String, dynamic>? _weeklyGoals;
   bool _weeklyGoalsLoading = false;
   Timer? _cooldownTimer;
-  Timer? _refreshTimer;
   int _statsLoadGen = 0;
 
   String _dailyGoalTitle(AppLocalizations l10n, String key) {
@@ -2898,15 +2865,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       }
     });
 
-    // Refresh stats every 30 seconds (local 1s tick owns the countdown).
-    _refreshTimer = Timer.periodic(const Duration(seconds: 30), (_) {
-      if (mounted) {
-        _loadStats();
-        _loadGameEventsOverview();
-        _loadWeeklyGoals();
-      }
-    });
-
     // Listen to events for immediate refresh
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
@@ -2941,7 +2899,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   @override
   void dispose() {
     _cooldownTimer?.cancel();
-    _refreshTimer?.cancel();
     // Remove event listener
     try {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
