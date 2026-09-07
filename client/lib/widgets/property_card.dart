@@ -46,9 +46,7 @@ class PropertyCard extends StatelessWidget {
     final name =
         _localizedPropertyName(propertyId, l10n) ??
         (isOwned ? ownedProperty!.name : definition?.name);
-    final imagePath = isOwned
-        ? ownedProperty!.imagePath
-        : definition?.imagePath;
+    final imagePath = _resolvedImagePath(propertyId);
 
     final imageHeight = expandToFill ? 140.0 : 150.0;
     final lotHeight = expandToFill ? 176.0 : 220.0;
@@ -127,11 +125,18 @@ class PropertyCard extends StatelessWidget {
                   SizedBox(
                     height: lotHeight,
                     width: double.infinity,
-                    child: EstateLotView(
-                      houseLevel: ownedProperty!.level,
-                      parkingLevel: ownedProperty!.level,
-                      shedLevel: (ownedProperty!.level - 1).clamp(1, 10),
-                      fenceLevel: ownedProperty!.level,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        if (imagePath != null) _buildPropertyImage(imagePath),
+                        EstateLotView(
+                          houseLevel: ownedProperty!.level,
+                          parkingLevel: ownedProperty!.level,
+                          shedLevel: (ownedProperty!.level - 1).clamp(1, 10),
+                          fenceLevel: ownedProperty!.level,
+                          fit: BoxFit.cover,
+                        ),
+                      ],
                     ),
                   )
                 else if (imagePath != null)
@@ -165,6 +170,24 @@ class PropertyCard extends StatelessWidget {
               ],
             ),
     );
+  }
+
+  String? _resolvedImagePath(String? propertyId) {
+    final ownedPath = ownedProperty?.imagePath;
+    if (ownedPath != null && ownedPath.isNotEmpty) return ownedPath;
+    final definitionPath = definition?.imagePath;
+    if (definitionPath != null && definitionPath.isNotEmpty) {
+      return definitionPath;
+    }
+    switch (propertyId) {
+      case 'house':
+      case 'apartment':
+      case 'warehouse':
+      case 'nightclub':
+        return '$propertyId.png';
+      default:
+        return null;
+    }
   }
 
   Widget _buildPropertyImage(String path) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/web_asset_helper.dart';
 
 /// Composites one estate lot image from independently upgradeable layers.
 ///
@@ -65,19 +66,19 @@ class EstateLotView extends StatelessWidget {
                   Color(0xFFD4AF37),
                   BlendMode.modulate,
                 ),
-                child: Image.asset(
+                child: WebAssetHelper.image(
                   asset,
                   fit: fit,
-                  filterQuality: FilterQuality.medium,
-                  errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const SizedBox.shrink(),
                 ),
               )
             else
-              Image.asset(
+              WebAssetHelper.image(
                 asset,
                 fit: fit,
-                filterQuality: FilterQuality.medium,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
               ),
         ],
       ),
