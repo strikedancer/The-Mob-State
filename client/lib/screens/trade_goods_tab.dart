@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -35,6 +36,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
   String? _inventoryLoadError;
   final Map<String, int> _buyQuantities = {};
   final Map<String, int> _sellQuantities = {};
+  final Map<String, TextEditingController> _qtyControllers = {};
   _TradeMarketFilter _marketFilter = _TradeMarketFilter.all;
   late final ApiClient _apiClient;
 
@@ -43,6 +45,14 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     super.initState();
     _apiClient = ApiClient();
     _loadMarketData();
+  }
+
+  @override
+  void dispose() {
+    for (final controller in _qtyControllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   Future<void> _loadMarketData() async {
@@ -154,6 +164,14 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       _inventoryLoadError = invErr;
       _isLoading = false;
       _errorMessage = fatal ? l10n.tradeMarketLoadAllFailed : null;
+      for (final item in nextInventory) {
+        final current = _sellQuantities[item.goodType];
+        if (current != null && current > item.quantity) {
+          final next = item.quantity.clamp(1, 999);
+          _sellQuantities[item.goodType] = next;
+          _syncQtyController('sell:${item.goodType}', next);
+        }
+      }
     });
   }
 
@@ -197,6 +215,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         _loadMarketData();
         setState(() {
           _buyQuantities[goodType] = 1;
+          _syncQtyController('buy:$goodType', 1);
         });
       } else {
         if (mounted) {
@@ -264,6 +283,7 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
         _loadMarketData();
         setState(() {
           _sellQuantities[goodType] = 1;
+          _syncQtyController('sell:$goodType', 1);
         });
       } else {
         if (mounted) {
@@ -940,11 +960,58 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
     return '€${value.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}';
   }
 
+  TextEditingController _qtyController(String id, int quantity) {
+    final existing = _qtyControllers[id];
+    if (existing == null) {
+      final created = TextEditingController(text: '$quantity');
+      _qtyControllers[id] = created;
+      return created;
+    }
+    return existing;
+  }
+
+  void _syncQtyController(String id, int quantity) {
+    final controller = _qtyControllers[id];
+    if (controller != null && controller.text != '$quantity') {
+      controller.value = TextEditingValue(
+        text: '$quantity',
+        selection: TextSelection.collapsed(offset: '$quantity'.length),
+      );
+    }
+  }
+
+  void _commitQty(
+    String id,
+    String raw,
+    int max,
+    ValueChanged<int> onChanged,
+  ) {
+    final parsed = int.tryParse(raw.trim());
+    final next = (parsed == null || parsed < 1) ? 1 : parsed.clamp(1, max);
+    _syncQtyController(id, next);
+    onChanged(next);
+  }
+
+  int _ownedHere(String goodType) {
+    for (final item in _inventory) {
+      if (item.goodType == goodType) return item.quantity;
+    }
+    return 0;
+  }
+
+  int _buyMax(TradableGood good) {
+    final remaining = good.maxInventory - _ownedHere(good.id);
+    return remaining.clamp(1, good.maxInventory);
+  }
+
   Widget _qtyStepper({
+    required String id,
     required int quantity,
     required int max,
     required ValueChanged<int> onChanged,
   }) {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = _qtyController(id, quantity);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -954,14 +1021,51 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
           visualDensity: VisualDensity.compact,
           constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
           padding: EdgeInsets.zero,
-          onPressed: () => onChanged((quantity - 1).clamp(1, max)),
+          onPressed: quantity > 1
+              ? () {
+                  final next = (quantity - 1).clamp(1, max);
+                  _syncQtyController(id, next);
+                  onChanged(next);
+                }
+              : null,
+          onLongPress: quantity > 1
+              ? () {
+                  final next = (quantity - 10).clamp(1, max);
+                  _syncQtyController(id, next);
+                  onChanged(next);
+                }
+              : null,
         ),
         SizedBox(
-          width: 22,
-          child: Text(
-            '$quantity',
+          width: 52,
+          height: 34,
+          child: TextField(
+            controller: controller,
             textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(4),
+            ],
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            decoration: const InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (raw) {
+              if (raw.isEmpty) return;
+              final parsed = int.tryParse(raw);
+              if (parsed == null) return;
+              final next = parsed.clamp(1, max);
+              if (next != parsed) {
+                _syncQtyController(id, next);
+              }
+              onChanged(next);
+            },
+            onSubmitted: (raw) => _commitQty(id, raw, max, onChanged),
+            onTapOutside: (_) =>
+                _commitQty(id, controller.text, max, onChanged),
           ),
         ),
         IconButton(
@@ -970,7 +1074,35 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
           visualDensity: VisualDensity.compact,
           constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
           padding: EdgeInsets.zero,
-          onPressed: () => onChanged((quantity + 1).clamp(1, max)),
+          onPressed: quantity < max
+              ? () {
+                  final next = (quantity + 1).clamp(1, max);
+                  _syncQtyController(id, next);
+                  onChanged(next);
+                }
+              : null,
+          onLongPress: quantity < max
+              ? () {
+                  final next = (quantity + 10).clamp(1, max);
+                  _syncQtyController(id, next);
+                  onChanged(next);
+                }
+              : null,
+        ),
+        TextButton(
+          onPressed: quantity != max
+              ? () {
+                  _syncQtyController(id, max);
+                  onChanged(max);
+                }
+              : null,
+          style: TextButton.styleFrom(
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            minimumSize: const Size(0, 32),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(l10n.tradeQtyMax),
         ),
       ],
     );
@@ -1046,15 +1178,17 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       ],
     );
 
-    final actions = Row(
-      mainAxisSize: MainAxisSize.min,
+    final actions = Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         _qtyStepper(
+          id: 'buy:${good.id}',
           quantity: quantity,
-          max: good.maxInventory,
+          max: _buyMax(good),
           onChanged: (next) => setState(() => _buyQuantities[good.id] = next),
         ),
-        const SizedBox(width: 4),
         FilledButton(
           onPressed: () => _buyGood(good.id, quantity),
           style: FilledButton.styleFrom(
@@ -1091,8 +1225,13 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
                     Row(
                       children: [
                         priceBlock,
-                        const Spacer(),
-                        actions,
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: actions,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -1245,15 +1384,17 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
       ],
     );
 
-    final actions = Row(
-      mainAxisSize: MainAxisSize.min,
+    final actions = Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         _qtyStepper(
+          id: 'sell:${good.id}',
           quantity: quantity,
           max: maxSell,
           onChanged: (next) => setState(() => _sellQuantities[good.id] = next),
         ),
-        const SizedBox(width: 4),
         FilledButton(
           onPressed: () => _sellGood(good.id, quantity),
           style: FilledButton.styleFrom(
@@ -1296,8 +1437,13 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
                       Row(
                         children: [
                           priceBlock,
-                          const Spacer(),
-                          actions,
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: actions,
+                            ),
+                          ),
                         ],
                       ),
                     ],

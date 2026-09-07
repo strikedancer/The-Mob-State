@@ -6407,6 +6407,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tradeCategoryDangerous => 'Gefährlich';
 
   @override
+  String get tradeQtyMax => 'Max';
+
+  @override
   String get tradeFilterAvailableHere => 'Hier käuflich';
 
   @override

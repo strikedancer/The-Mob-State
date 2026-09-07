@@ -6377,6 +6377,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tradeCategoryDangerous => 'Niebezpieczne';
 
   @override
+  String get tradeQtyMax => 'Max';
+
+  @override
   String get tradeFilterAvailableHere => 'Na sprzedaż tutaj';
 
   @override

@@ -6418,6 +6418,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tradeCategoryDangerous => 'Dangereux';
 
   @override
+  String get tradeQtyMax => 'Max';
+
+  @override
   String get tradeFilterAvailableHere => 'En vente ici';
 
   @override

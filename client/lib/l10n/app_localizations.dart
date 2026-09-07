@@ -11291,6 +11291,12 @@ abstract class AppLocalizations {
   /// **'Dangerous'**
   String get tradeCategoryDangerous;
 
+  /// No description provided for @tradeQtyMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get tradeQtyMax;
+
   /// No description provided for @tradeFilterAvailableHere.
   ///
   /// In en, this message translates to:
@@ -27880,7 +27886,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBlackMarketHow.
   ///
   /// In en, this message translates to:
-  /// **'Open Black Market from the Economy menu. Shops sit in one strip: Trade goods, Weapons, Ammo, Tools, Security, Materials and Backpacks. Player market has Marketplace and My listings.\nTrade goods: stock you can sell here sits at the top. Goods bought or claimed in another country stay there until you smuggle them. Then the catalog (pricing, caps, risk chips). Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into shops (Trade goods, Weapons, Ammo, Tools, Security, Materials, Backpacks) and a player market (Marketplace, My listings).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.'**
+  /// **'Open Black Market from the Economy menu. Shops sit in one strip: Trade goods, Weapons, Ammo, Tools, Security, Materials and Backpacks. Player market has Marketplace and My listings.\nTrade goods: stock you can sell here sits at the top. Goods bought or claimed in another country stay there until you smuggle them. Then the catalog (pricing, caps, risk chips). Type a quantity or tap Max for large stacks. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into shops (Trade goods, Weapons, Ammo, Tools, Security, Materials, Backpacks) and a player market (Marketplace, My listings).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.'**
   String get helpTopicBlackMarketHow;
 
   /// No description provided for @helpTopicBlackMarketTips.

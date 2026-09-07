@@ -6395,6 +6395,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tradeCategoryDangerous => 'Peligroso';
 
   @override
+  String get tradeQtyMax => 'Max';
+
+  @override
   String get tradeFilterAvailableHere => 'A la venta aquí';
 
   @override

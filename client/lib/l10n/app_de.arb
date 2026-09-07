@@ -11312,5 +11312,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "tradeQtyMax": "Max"
 }
