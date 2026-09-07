@@ -5326,6 +5326,29 @@ class AppLocalizationsDe extends AppLocalizations {
       'Öffnet die Nachtclubverwaltung, nachdem Sie es gekauft haben.';
 
   @override
+  String get propertyInfoTooltip => 'Über diese Immobilie';
+
+  @override
+  String get propertyInfoGeneric =>
+      'Dieses Gebäude kann in dem Land, in dem Sie sich befinden, gekauft, modernisiert und entwickelt werden.';
+
+  @override
+  String get propertyInfoHouse =>
+      'Ein Haus bietet zusätzliche Wohnkapazität und einen persönlichen Vorrat. Bewahren Sie hier Waffen, Munition, Westen und Bargeld auf. Öffnen Sie den Lagerraum, um Inventar für dieses Gebäude zu verwenden. Sie müssen sich im selben Land befinden. Upgrades erhöhen die Lagergröße und den Wohnraum. Develop gibt Bankgelder für einen dauerhaften passiven Einkommensbonus aus.';
+
+  @override
+  String get propertyInfoApartment =>
+      'Eine Wohnung erhöht die Wohnkapazität und einen persönlichen Vorrat. Bewahren Sie hier Waffen, Munition, Westen und Bargeld auf. Öffnen Sie den Lagerraum, um Inventar für dieses Gebäude zu verwenden. Sie müssen sich im selben Land befinden. Upgrades erhöhen die Lagergröße und den Wohnraum. Develop gibt Bankgelder für einen dauerhaften passiven Einkommensbonus aus.';
+
+  @override
+  String get propertyInfoWarehouse =>
+      'In einem Lager werden ausschließlich Werkzeuge gelagert. Durch Upgrades werden weitere Slots hinzugefügt. Öffnen Sie den Speicher, um Werkzeuge für dieses Gebäude zu verwalten – Sie müssen sich im selben Land befinden. Develop gibt Bankgelder für einen dauerhaften passiven Einkommensbonus aus.';
+
+  @override
+  String get propertyInfoNightclub =>
+      'Durch den Kauf eines Nachtclubs wird der Nightclub-Verwaltungsbildschirm freigeschaltet. Menschenmenge, Verkauf und Drogen werden dort behandelt, nicht auf dieser Übersicht. Sie können diese Immobilie hier noch upgraden und weiterentwickeln, um zusätzliche Kapazität und passives Einkommen zu erzielen.';
+
+  @override
   String get blackMarket => 'Schwarzmarkt';
 
   @override

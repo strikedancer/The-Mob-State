@@ -5290,6 +5290,29 @@ class AppLocalizationsNl extends AppLocalizations {
   String get propertyRoleNightclub => 'Opent het nachtclubbeheer na aankoop.';
 
   @override
+  String get propertyInfoTooltip => 'Over dit eigendom';
+
+  @override
+  String get propertyInfoGeneric =>
+      'Dit gebouw kun je kopen, upgraden en ontwikkelen in het land waar je bent.';
+
+  @override
+  String get propertyInfoHouse =>
+      'Een huis geeft wooncapaciteit en een eigen stash. Hier bewaar je wapens, munitie, vesten en contant geld. Open opslag om de inventaris van dit pand te gebruiken — je moet in hetzelfde land zijn. Upgrades vergroten stash en woonruimte. Ontwikkelen betaal je van de bank voor een permanente bonus op passief inkomen.';
+
+  @override
+  String get propertyInfoApartment =>
+      'Een appartement geeft wooncapaciteit en een eigen stash. Hier bewaar je wapens, munitie, vesten en contant geld. Open opslag om de inventaris van dit pand te gebruiken — je moet in hetzelfde land zijn. Upgrades vergroten stash en woonruimte. Ontwikkelen betaal je van de bank voor een permanente bonus op passief inkomen.';
+
+  @override
+  String get propertyInfoWarehouse =>
+      'Een magazijn slaat alleen gereedschap op. Upgrades geven meer plekken. Open opslag om gereedschap van dit pand te beheren — je moet in hetzelfde land zijn. Ontwikkelen betaal je van de bank voor een permanente bonus op passief inkomen.';
+
+  @override
+  String get propertyInfoNightclub =>
+      'Als je een nachtclub koopt, opent het nachtclubbeheer. Publiek, verkoop en drugs lopen via dat scherm, niet via dit overzicht. Hier kun je het pand nog wel upgraden en ontwikkelen voor extra capaciteit en passief inkomen.';
+
+  @override
   String get blackMarket => 'Zwarte Markt';
 
   @override

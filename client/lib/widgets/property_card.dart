@@ -4,6 +4,7 @@ import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../l10n/app_localizations.dart';
 import 'estate_lot_view.dart';
+import 'responsive_modal.dart';
 
 class PropertyCard extends StatelessWidget {
   final PropertyDefinition? definition;
@@ -17,6 +18,7 @@ class PropertyCard extends StatelessWidget {
   final bool playerIsVip;
   final int vipBonusPerProperty;
   final String? buyLockedReason;
+  final bool expandToFill;
 
   const PropertyCard({
     super.key,
@@ -31,6 +33,7 @@ class PropertyCard extends StatelessWidget {
     this.playerIsVip = false,
     this.vipBonusPerProperty = 5,
     this.buyLockedReason,
+    this.expandToFill = false,
   });
 
   @override
@@ -47,9 +50,73 @@ class PropertyCard extends StatelessWidget {
         ? ownedProperty!.imagePath
         : definition?.imagePath;
 
+    final imageHeight = expandToFill ? 140.0 : 150.0;
+    final lotHeight = expandToFill ? 176.0 : 220.0;
+    final infoBody = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                name ?? l10n.unknown,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            IconButton(
+              tooltip: l10n.propertyInfoTooltip,
+              icon: const Icon(Icons.info_outline),
+              visualDensity: VisualDensity.compact,
+              onPressed: () => _showPropertyInfo(
+                context,
+                l10n,
+                propertyId,
+                name ?? l10n.unknown,
+              ),
+            ),
+            if (isOwned)
+              Chip(
+                label: Text(
+                  l10n.propertyLevel(ownedProperty!.level.toString()),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                backgroundColor: Colors.blue[700],
+                side: BorderSide(color: Colors.blue[900]!),
+              ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          _getPropertyTypeLabel(propertyId, l10n),
+          style: TextStyle(color: Colors.grey[600]),
+        ),
+        const SizedBox(height: 12),
+        if (isOwned)
+          ..._buildOwnedPropertyStats(l10n)
+        else
+          ..._buildAvailablePropertyStats(l10n),
+        const SizedBox(height: 16),
+        if (isOwned)
+          ..._buildOwnedPropertyActions(l10n)
+        else
+          ..._buildAvailablePropertyActions(l10n),
+      ],
+    );
+
     return Card(
       elevation: 4,
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      clipBehavior: Clip.antiAlias,
+      margin: expandToFill
+          ? EdgeInsets.zero
+          : const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: isLoading
           ? _buildLoadingState()
           : Column(
@@ -58,7 +125,7 @@ class PropertyCard extends StatelessWidget {
                 if (isOwned &&
                     (propertyId == 'house' || propertyId == 'apartment'))
                   SizedBox(
-                    height: 220,
+                    height: lotHeight,
                     width: double.infinity,
                     child: EstateLotView(
                       houseLevel: ownedProperty!.level,
@@ -69,19 +136,12 @@ class PropertyCard extends StatelessWidget {
                   )
                 else if (imagePath != null)
                   Container(
-                    height: 150,
+                    height: imageHeight,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(4),
-                      ),
-                    ),
+                    color: Colors.grey[300],
                     child: Stack(
                       children: [
-                        // Base image
                         _buildPropertyImage(imagePath),
-                        // Overlays
                         if (isOwned && ownedProperty!.overlayKeys != null)
                           ..._buildOverlays(ownedProperty!.overlayKeys!),
                       ],
@@ -89,88 +149,18 @@ class PropertyCard extends StatelessWidget {
                   )
                 else
                   Container(
-                    height: 150,
+                    height: imageHeight,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(4),
-                      ),
-                    ),
+                    color: Colors.grey[300],
                     child: Icon(
                       _getPropertyIcon(propertyId),
                       size: 64,
                       color: Colors.grey[600],
                     ),
                   ),
-
-                // Property Info
                 Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Name and Type
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              name ?? l10n.unknown,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          if (isOwned)
-                            Chip(
-                              label: Text(
-                                l10n.propertyLevel(
-                                  ownedProperty!.level.toString(),
-                                ),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              backgroundColor: Colors.blue[700],
-                              side: BorderSide(color: Colors.blue[900]!),
-                            ),
-                        ],
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        _getPropertyTypeLabel(propertyId, l10n),
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                      if (_propertyRole(propertyId, l10n) != null) ...[
-                        const SizedBox(height: 6),
-                        Text(
-                          _propertyRole(propertyId, l10n)!,
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 13,
-                            height: 1.35,
-                          ),
-                        ),
-                      ],
-                      SizedBox(height: 12),
-
-                      // Stats
-                      if (isOwned)
-                        ..._buildOwnedPropertyStats(l10n)
-                      else
-                        ..._buildAvailablePropertyStats(l10n),
-
-                      SizedBox(height: 16),
-
-                      // Actions
-                      if (isOwned)
-                        ..._buildOwnedPropertyActions(l10n)
-                      else
-                        ..._buildAvailablePropertyActions(l10n),
-                    ],
-                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: infoBody,
                 ),
               ],
             ),
@@ -187,7 +177,7 @@ class PropertyCard extends StatelessWidget {
       fullPath,
       fit: BoxFit.cover,
       width: double.infinity,
-      height: 150,
+      height: expandToFill ? 140 : 150,
       errorBuilder: (context, error, stackTrace) {
         return Icon(
           _getPropertyIcon(ownedProperty?.type ?? definition?.type),
@@ -606,5 +596,61 @@ class PropertyCard extends StatelessWidget {
       default:
         return null;
     }
+  }
+
+  String _propertyInfoBody(String? propertyId, AppLocalizations l10n) {
+    switch (propertyId) {
+      case 'house':
+        return l10n.propertyInfoHouse;
+      case 'apartment':
+        return l10n.propertyInfoApartment;
+      case 'warehouse':
+        return l10n.propertyInfoWarehouse;
+      case 'nightclub':
+        return l10n.propertyInfoNightclub;
+      default:
+        return _propertyRole(propertyId, l10n) ??
+            (definition?.description ?? l10n.propertyInfoGeneric);
+    }
+  }
+
+  void _showPropertyInfo(
+    BuildContext context,
+    AppLocalizations l10n,
+    String? propertyId,
+    String name,
+  ) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        final dialogL10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(name),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 340,
+            tabletMaxWidth: 420,
+            desktopMaxWidth: 480,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(_propertyInfoBody(propertyId, dialogL10n)),
+                const SizedBox(height: 16),
+                if (ownedProperty != null)
+                  ..._buildOwnedPropertyStats(dialogL10n)
+                else
+                  ..._buildAvailablePropertyStats(dialogL10n),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(dialogL10n.close),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

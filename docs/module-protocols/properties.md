@@ -31,6 +31,7 @@ Scope-afbakening:
 ## Must Preserve
 - Residential house/apartment kaarten gebruiken `EstateLotView` gekoppeld aan `upgradeLevel` (house/parking/shed/hek). Preview-route (`/estate-lot-preview`) blijft beschikbaar, niet in de player-AppBar. Compose-pad: `scripts/compose_estate_grid_12x12.py`.
 - Default tab is **My properties**. Lege owned-staat heeft een CTA naar Available. Available heeft type-chips, cash/rank-lock op kopen, en geformatteerde confirm voor buy + upgrade. Fouten zijn per tab; een refresh wist geen bestaande lijst.
+- Brede schermen (≥720px twee kolommen, ≥1180px drie). Mobiel blijft één kolom. Elke kaart heeft een info-knop met type-uitleg + stats.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
@@ -54,7 +55,7 @@ Scope-afbakening:
 Endpoint: `POST /properties/:id/develop`
 
 ## QA Checklist
-- Open the module on mobile width, tablet width and desktop width.
+- Open the module on mobile width, tablet width and desktop width. Confirm 1 / 2 / 3 columns and that the info popup opens per property type.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.

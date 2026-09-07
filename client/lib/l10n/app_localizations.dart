@@ -9413,6 +9413,42 @@ abstract class AppLocalizations {
   /// **'Opens nightclub management after you buy it.'**
   String get propertyRoleNightclub;
 
+  /// No description provided for @propertyInfoTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'About this property'**
+  String get propertyInfoTooltip;
+
+  /// No description provided for @propertyInfoGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'This building can be bought, upgraded and developed in the country you are in.'**
+  String get propertyInfoGeneric;
+
+  /// No description provided for @propertyInfoHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'A house adds housing capacity and a personal stash. Store weapons, ammo, vests and cash here. Open storage to use inventory for this building — you must be in the same country. Upgrades raise stash size and housing. Develop spends bank money for a permanent passive-income bonus.'**
+  String get propertyInfoHouse;
+
+  /// No description provided for @propertyInfoApartment.
+  ///
+  /// In en, this message translates to:
+  /// **'An apartment adds housing capacity and a personal stash. Store weapons, ammo, vests and cash here. Open storage to use inventory for this building — you must be in the same country. Upgrades raise stash size and housing. Develop spends bank money for a permanent passive-income bonus.'**
+  String get propertyInfoApartment;
+
+  /// No description provided for @propertyInfoWarehouse.
+  ///
+  /// In en, this message translates to:
+  /// **'A warehouse stores tools only. Upgrades add more slots. Open storage to manage tools for this building — you must be in the same country. Develop spends bank money for a permanent passive-income bonus.'**
+  String get propertyInfoWarehouse;
+
+  /// No description provided for @propertyInfoNightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Buying a nightclub unlocks the nightclub management screen. Crowd, sales and drugs are handled there, not on this overview. You can still upgrade and develop this property here for extra capacity and passive income.'**
+  String get propertyInfoNightclub;
+
   /// No description provided for @blackMarket.
   ///
   /// In en, this message translates to:

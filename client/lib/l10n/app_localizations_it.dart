@@ -5316,6 +5316,29 @@ class AppLocalizationsIt extends AppLocalizations {
       'Apre la gestione del nightclub dopo averlo acquistato.';
 
   @override
+  String get propertyInfoTooltip => 'Informazioni su questa proprietà';
+
+  @override
+  String get propertyInfoGeneric =>
+      'Questo edificio può essere acquistato, aggiornato e sviluppato nel paese in cui ti trovi.';
+
+  @override
+  String get propertyInfoHouse =>
+      'Una casa aggiunge capacità abitativa e una scorta personale. Conserva qui armi, munizioni, giubbotti e contanti. Apri il deposito per utilizzare l\'inventario per questo edificio: devi trovarti nello stesso Paese. Gli aggiornamenti aumentano le dimensioni della scorta e l\'alloggiamento. Develop spende denaro bancario per un bonus permanente di reddito passivo.';
+
+  @override
+  String get propertyInfoApartment =>
+      'Un appartamento aggiunge capacità abitativa e una scorta personale. Conserva qui armi, munizioni, giubbotti e contanti. Apri il deposito per utilizzare l\'inventario per questo edificio: devi trovarti nello stesso Paese. Gli aggiornamenti aumentano le dimensioni della scorta e l\'alloggiamento. Develop spende denaro bancario per un bonus permanente di reddito passivo.';
+
+  @override
+  String get propertyInfoWarehouse =>
+      'Un magazzino conserva solo strumenti. Gli aggiornamenti aggiungono più slot. Apri il deposito per gestire gli strumenti per questo edificio: devi trovarti nello stesso Paese. Develop spende denaro bancario per un bonus permanente di reddito passivo.';
+
+  @override
+  String get propertyInfoNightclub =>
+      'L\'acquisto di una discoteca sblocca la schermata di gestione della discoteca. La folla, le vendite e i farmaci vengono gestiti lì, non in questa panoramica. Puoi ancora aggiornare e sviluppare questa proprietà qui per capacità extra e reddito passivo.';
+
+  @override
   String get blackMarket => 'Mercato nero';
 
   @override

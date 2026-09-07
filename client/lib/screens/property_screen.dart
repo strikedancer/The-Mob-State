@@ -601,23 +601,22 @@ class PropertyScreenState extends State<PropertyScreen>
         Expanded(
           child: visible.isEmpty
               ? Center(child: Text(l10n.propertyFilterEmpty))
-              : RefreshIndicator(
+              : _buildResponsivePropertyList(
+                  itemCount: visible.length,
                   onRefresh: _loadAvailableProperties,
-                  child: ListView.builder(
-                    itemCount: visible.length,
-                    itemBuilder: (context, index) {
-                      final property = visible[index];
-                      return PropertyCard(
-                        definition: property,
-                        buyLockedReason: _buyLockedReason(
-                          property,
-                          l10n,
-                          auth,
-                        ),
-                        onBuy: () => _buyProperty(property),
-                      );
-                    },
-                  ),
+                  itemBuilder: (context, index, expandToFill) {
+                    final property = visible[index];
+                    return PropertyCard(
+                      definition: property,
+                      expandToFill: expandToFill,
+                      buyLockedReason: _buyLockedReason(
+                        property,
+                        l10n,
+                        auth,
+                      ),
+                      onBuy: () => _buyProperty(property),
+                    );
+                  },
                 ),
         ),
       ],
@@ -716,40 +715,107 @@ class PropertyScreenState extends State<PropertyScreen>
         if (_ownedError != null)
           _buildInlineError(_ownedError!, _loadMyProperties),
         Expanded(
-          child: RefreshIndicator(
+          child: _buildResponsivePropertyList(
+            itemCount: _myProperties.length,
             onRefresh: _loadMyProperties,
-            child: ListView.builder(
-              itemCount: _myProperties.length,
-              itemBuilder: (context, index) {
-                final property = _myProperties[index];
-                final propertyType = property.type ?? property.propertyId;
-                final matchingDefs = _availableProperties
-                    .where((d) => d.id == propertyType)
-                    .toList();
-                final definition = matchingDefs.isNotEmpty
-                    ? matchingDefs.first
-                    : null;
-                return PropertyCard(
-                  ownedProperty: property,
-                  definition: definition,
-                  playerIsVip: _playerIsVip,
-                  vipBonusPerProperty: _vipHousingBonusPerProperty,
-                  onUpgrade: () => _upgradeProperty(property),
-                  onDevelop: property.nextDevelopCost != null
-                      ? () => _developProperty(property)
-                      : null,
-                  onOpenStorage: _storagePropertyTypes.contains(propertyType)
-                      ? () => _openStorage(property)
-                      : null,
-                  onManage: propertyType == 'nightclub'
-                      ? () => _openNightclub(property)
-                      : null,
-                );
-              },
-            ),
+            itemBuilder: (context, index, expandToFill) {
+              final property = _myProperties[index];
+              final propertyType = property.type ?? property.propertyId;
+              final matchingDefs = _availableProperties
+                  .where((d) => d.id == propertyType)
+                  .toList();
+              final definition = matchingDefs.isNotEmpty
+                  ? matchingDefs.first
+                  : null;
+              return PropertyCard(
+                ownedProperty: property,
+                definition: definition,
+                expandToFill: expandToFill,
+                playerIsVip: _playerIsVip,
+                vipBonusPerProperty: _vipHousingBonusPerProperty,
+                onUpgrade: () => _upgradeProperty(property),
+                onDevelop: property.nextDevelopCost != null
+                    ? () => _developProperty(property)
+                    : null,
+                onOpenStorage: _storagePropertyTypes.contains(propertyType)
+                    ? () => _openStorage(property)
+                    : null,
+                onManage: propertyType == 'nightclub'
+                    ? () => _openNightclub(property)
+                    : null,
+              );
+            },
           ),
         ),
       ],
+    );
+  }
+
+  int _propertyColumnCount(double width) {
+    if (width >= 1180) return 3;
+    if (width >= 720) return 2;
+    return 1;
+  }
+
+  Widget _buildResponsivePropertyList({
+    required int itemCount,
+    required Future<void> Function() onRefresh,
+    required Widget Function(BuildContext context, int index, bool expandToFill)
+        itemBuilder,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = _propertyColumnCount(constraints.maxWidth);
+        final expandToFill = columns > 1;
+        const gap = 12.0;
+        const pad = 12.0;
+        if (columns == 1) {
+          return RefreshIndicator(
+            onRefresh: onRefresh,
+            child: ListView.builder(
+              itemCount: itemCount,
+              itemBuilder: (context, index) =>
+                  itemBuilder(context, index, false),
+            ),
+          );
+        }
+
+        final innerWidth = constraints.maxWidth - (pad * 2);
+        final cardWidth = (innerWidth - gap * (columns - 1)) / columns;
+        final rowCount = (itemCount / columns).ceil();
+
+        return RefreshIndicator(
+          onRefresh: onRefresh,
+          child: ListView.builder(
+            padding: const EdgeInsets.fromLTRB(pad, 8, pad, 16),
+            itemCount: rowCount,
+            itemBuilder: (context, rowIndex) {
+              final start = rowIndex * columns;
+              return Padding(
+                padding: const EdgeInsets.only(bottom: gap),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var i = 0; i < columns; i++) ...[
+                      if (i > 0) const SizedBox(width: gap),
+                      SizedBox(
+                        width: cardWidth,
+                        child: start + i < itemCount
+                            ? itemBuilder(
+                                context,
+                                start + i,
+                                expandToFill,
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                    ],
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 

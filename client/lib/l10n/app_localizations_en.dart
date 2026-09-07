@@ -5255,6 +5255,29 @@ class AppLocalizationsEn extends AppLocalizations {
       'Opens nightclub management after you buy it.';
 
   @override
+  String get propertyInfoTooltip => 'About this property';
+
+  @override
+  String get propertyInfoGeneric =>
+      'This building can be bought, upgraded and developed in the country you are in.';
+
+  @override
+  String get propertyInfoHouse =>
+      'A house adds housing capacity and a personal stash. Store weapons, ammo, vests and cash here. Open storage to use inventory for this building — you must be in the same country. Upgrades raise stash size and housing. Develop spends bank money for a permanent passive-income bonus.';
+
+  @override
+  String get propertyInfoApartment =>
+      'An apartment adds housing capacity and a personal stash. Store weapons, ammo, vests and cash here. Open storage to use inventory for this building — you must be in the same country. Upgrades raise stash size and housing. Develop spends bank money for a permanent passive-income bonus.';
+
+  @override
+  String get propertyInfoWarehouse =>
+      'A warehouse stores tools only. Upgrades add more slots. Open storage to manage tools for this building — you must be in the same country. Develop spends bank money for a permanent passive-income bonus.';
+
+  @override
+  String get propertyInfoNightclub =>
+      'Buying a nightclub unlocks the nightclub management screen. Crowd, sales and drugs are handled there, not on this overview. You can still upgrade and develop this property here for extra capacity and passive income.';
+
+  @override
   String get blackMarket => 'Black Market';
 
   @override

@@ -5299,6 +5299,29 @@ class AppLocalizationsPt extends AppLocalizations {
       'Abre o gerenciamento da boate depois de comprá-lo.';
 
   @override
+  String get propertyInfoTooltip => 'Sobre esta propriedade';
+
+  @override
+  String get propertyInfoGeneric =>
+      'Este edifício pode ser comprado, atualizado e desenvolvido no país em que você se encontra.';
+
+  @override
+  String get propertyInfoHouse =>
+      'Uma casa acrescenta capacidade habitacional e um estoque pessoal. Armazene armas, munições, coletes e dinheiro aqui. Abra o armazenamento para usar o inventário deste edifício – você deve estar no mesmo país. As atualizações aumentam o tamanho do estoque e do alojamento. A Develop gasta dinheiro do banco para obter um bônus permanente de renda passiva.';
+
+  @override
+  String get propertyInfoApartment =>
+      'Um apartamento acrescenta capacidade habitacional e um estoque pessoal. Armazene armas, munições, coletes e dinheiro aqui. Abra o armazenamento para usar o inventário deste edifício – você deve estar no mesmo país. As atualizações aumentam o tamanho do estoque e do alojamento. A Develop gasta dinheiro do banco para obter um bônus permanente de renda passiva.';
+
+  @override
+  String get propertyInfoWarehouse =>
+      'Um armazém armazena apenas ferramentas. As atualizações adicionam mais slots. Abra o armazenamento para gerenciar ferramentas para este edifício — você deve estar no mesmo país. A Develop gasta dinheiro do banco para obter um bônus permanente de renda passiva.';
+
+  @override
+  String get propertyInfoNightclub =>
+      'Comprar uma boate desbloqueia a tela de gerenciamento da boate. Multidão, vendas e drogas são tratadas lá, não nesta visão geral. Você ainda pode atualizar e desenvolver esta propriedade aqui para obter capacidade extra e renda passiva.';
+
+  @override
   String get blackMarket => 'Mercado negro';
 
   @override

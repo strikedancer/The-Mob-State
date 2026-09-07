@@ -5304,6 +5304,29 @@ class AppLocalizationsPl extends AppLocalizations {
       'Otwiera zarządzanie klubem nocnym po zakupie.';
 
   @override
+  String get propertyInfoTooltip => 'O tej nieruchomości';
+
+  @override
+  String get propertyInfoGeneric =>
+      'Budynek ten można kupić, ulepszyć i rozwinąć w kraju, w którym się znajdujesz.';
+
+  @override
+  String get propertyInfoHouse =>
+      'Dom zwiększa pojemność mieszkaniową i osobistą skrytkę. Przechowuj tutaj broń, amunicję, kamizelki i gotówkę. Otwórz magazyn, aby skorzystać z zapasów dla tego budynku — musisz znajdować się w tym samym kraju. Ulepszenia zwiększają rozmiar skrytki i obudowy. Develop wydaje pieniądze banku na stałą premię za dochód pasywny.';
+
+  @override
+  String get propertyInfoApartment =>
+      'Mieszkanie zwiększa pojemność mieszkaniową i osobistą skrytkę. Przechowuj tutaj broń, amunicję, kamizelki i gotówkę. Otwórz magazyn, aby skorzystać z zapasów dla tego budynku — musisz znajdować się w tym samym kraju. Ulepszenia zwiększają rozmiar skrytki i obudowy. Develop wydaje pieniądze banku na stałą premię za dochód pasywny.';
+
+  @override
+  String get propertyInfoWarehouse =>
+      'Magazyn przechowuje wyłącznie narzędzia. Ulepszenia dodają więcej miejsc. Otwórz magazyn, aby zarządzać narzędziami dla tego budynku — musisz znajdować się w tym samym kraju. Develop wydaje pieniądze banku na stałą premię za dochód pasywny.';
+
+  @override
+  String get propertyInfoNightclub =>
+      'Zakup klubu nocnego odblokowuje ekran zarządzania klubem nocnym. Tłum, sprzedaż i narkotyki są rozpatrywane tam, a nie w tym przeglądzie. Nadal możesz ulepszać i rozwijać tę nieruchomość, aby uzyskać dodatkową pojemność i pasywny dochód.';
+
+  @override
   String get blackMarket => 'Czarny rynek';
 
   @override
