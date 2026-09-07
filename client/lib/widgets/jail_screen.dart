@@ -53,6 +53,22 @@ class _JailOverlayState extends State<JailOverlay> {
   }
 
   @override
+  void didUpdateWidget(covariant JailOverlay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.remainingSeconds <= 0) return;
+    if (_remainingSeconds <= 1 && widget.remainingSeconds > 5) {
+      setState(() => _remainingSeconds = widget.remainingSeconds);
+      return;
+    }
+    if (widget.remainingSeconds > _remainingSeconds + 2) {
+      return;
+    }
+    if ((widget.remainingSeconds - _remainingSeconds).abs() >= 2) {
+      setState(() => _remainingSeconds = widget.remainingSeconds);
+    }
+  }
+
+  @override
   void dispose() {
     _timer?.cancel();
     _notificationTimer?.cancel();
@@ -135,7 +151,9 @@ class _JailOverlayState extends State<JailOverlay> {
         final remainingTime = (data['remainingTime'] as num?)?.toInt();
         final bailAmount = (data['bailAmount'] as num?)?.toInt();
         if (remainingTime != null && remainingTime >= 0) {
-          _remainingSeconds = remainingTime;
+          if (_remainingSeconds <= 0 || remainingTime <= _remainingSeconds + 2) {
+            _remainingSeconds = remainingTime;
+          }
         }
         if (bailAmount != null && bailAmount >= 0) {
           _bailAmount = bailAmount;

@@ -103,6 +103,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Voeg geen extra `ScrollConfiguration` toe aan child-content als parent embedded gedrag al afhandelt.
 - Nieuwe en aangepaste overlays/dialogs/modals moeten `SafeArea`, clamped breedte/hoogte en een scrollfallback voor kleine viewports hebben; kritieke CTA's mogen op mobiel of embedded layouts niet buiten beeld vallen.
 - Geef gedeelde overlay- en dialogcomponenten de voorkeur boven scherm-specifieke fixed-width `AlertDialog` implementaties wanneer hetzelfde patroon op meerdere screens terugkomt.
+- **Timers in de dashboard-shell:** geen `setState` op `DashboardScreen` elke seconde voor footer-dots. Tick lokale remaining in een `ValueNotifier` / klein child-widget. Polls (`dashboard-stats`, `action-cooldowns`) mogen een verder afgetelde lokale waarde niet overschrijven met een hogere stale remaining; nieuwe acties (lokaal 0 → server > 0) wél overnemen. Overlay-countdowns (`CooldownOverlay`, `JailOverlay`) negeren parent-rebuilds die de timer terugzetten.
 
 ## QA Checklist
 1. Controleer web, mobiel en embedded dashboard-weergave.

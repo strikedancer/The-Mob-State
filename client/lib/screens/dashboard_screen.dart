@@ -183,7 +183,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _unreadCount = 0;
   int _pendingFriendRequestCount = 0;
   int _supportBadgeCount = 0;
-  Map<String, int> _navCooldowns = const {};
+  final ValueNotifier<Map<String, int>> _navCooldowns =
+      ValueNotifier<Map<String, int>>(const {});
   bool _navCooldownsLoaded = false;
   bool _navCooldownsLoading = false;
   Timer? _navCooldownTick;
@@ -427,6 +428,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _gameEventsRefreshTimer?.cancel();
     _navCooldownTick?.cancel();
     _navCooldownRefresh?.cancel();
+    _navCooldowns.dispose();
     _menuSearchController.dispose();
     super.dispose();
   }
@@ -477,19 +479,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _navCooldownRefresh?.cancel();
     _navCooldownTick = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted || !_navCooldownsLoaded) return;
+      final current = _navCooldowns.value;
       var changed = false;
       final next = <String, int>{};
-      for (final entry in _navCooldowns.entries) {
+      for (final entry in current.entries) {
         if (entry.value > 0) {
           next[entry.key] = entry.value - 1;
           changed = true;
         }
       }
       if (changed) {
-        setState(() => _navCooldowns = next);
+        // Do not setState the whole dashboard — that freezes event/crime timers.
+        _navCooldowns.value = next;
       }
     });
-    _navCooldownRefresh = Timer.periodic(const Duration(seconds: 10), (_) {
+    _navCooldownRefresh = Timer.periodic(const Duration(seconds: 30), (_) {
       _loadNavCooldowns();
     });
     _loadNavCooldowns();
@@ -505,7 +509,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   bool _navActionReady(List<String> actionTypes) {
     if (!_navCooldownsLoaded) return false;
-    return actionTypes.any((type) => (_navCooldowns[type] ?? 0) <= 0);
+    final cooldowns = _navCooldowns.value;
+    return actionTypes.any((type) => (cooldowns[type] ?? 0) <= 0);
   }
 
   Future<void> _loadNavCooldowns() async {
@@ -527,10 +532,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             : int.tryParse(value.toString()) ?? 0;
       }
       if (!mounted) return;
-      setState(() {
-        _navCooldowns = parsed;
-        _navCooldownsLoaded = true;
-      });
+      _navCooldownsLoaded = true;
+      _navCooldowns.value = parsed;
     } catch (_) {
     } finally {
       _navCooldownsLoading = false;
@@ -777,8 +780,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: !showLeftSidebar ? _buildDrawer(context, l10n) : null,
-      bottomNavigationBar:
-          !showLeftSidebar ? _buildMobileQuickNavBar(l10n) : null,
+      bottomNavigationBar: !showLeftSidebar
+          ? ValueListenableBuilder<Map<String, int>>(
+              valueListenable: _navCooldowns,
+              builder: (_, __, ___) => _buildMobileQuickNavBar(l10n),
+            )
+          : null,
       body: Stack(
         children: [
           Column(
@@ -2651,6 +2658,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   bool _weeklyGoalsLoading = false;
   Timer? _cooldownTimer;
   Timer? _refreshTimer;
+  int _statsLoadGen = 0;
 
   String _dailyGoalTitle(AppLocalizations l10n, String key) {
     switch (key) {
@@ -2890,8 +2898,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       }
     });
 
-    // Refresh stats every 15 seconds
-    _refreshTimer = Timer.periodic(const Duration(seconds: 15), (_) {
+    // Refresh stats every 30 seconds (local 1s tick owns the countdown).
+    _refreshTimer = Timer.periodic(const Duration(seconds: 30), (_) {
       if (mounted) {
         _loadStats();
         _loadGameEventsOverview();
@@ -2945,21 +2953,110 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   }
 
   Future<void> _loadStats() async {
+    final gen = ++_statsLoadGen;
     try {
       final stats = await DashboardService.getDashboardStats();
-      if (mounted) {
-        setState(() {
-          _stats = stats;
-          _loading = false;
-        });
-      }
+      if (!mounted || gen != _statsLoadGen) return;
+      setState(() {
+        _stats = _mergeLiveDashboardStats(_stats, stats);
+        _loading = false;
+      });
     } catch (e) {
-      if (mounted) {
+      if (mounted && gen == _statsLoadGen) {
         setState(() {
           _loading = false;
         });
       }
     }
+  }
+
+  int _preferLiveRemaining(int local, int incoming) {
+    if (local <= 0) return incoming;
+    if (incoming > local + 2) return local;
+    return incoming;
+  }
+
+  Map<String, int> _mergeCooldownMap(
+    Map<String, int> local,
+    Map<String, int> incoming,
+  ) {
+    final keys = {...local.keys, ...incoming.keys};
+    return {
+      for (final key in keys)
+        key: _preferLiveRemaining(local[key] ?? 0, incoming[key] ?? 0),
+    };
+  }
+
+  DashboardStats _mergeLiveDashboardStats(
+    DashboardStats? local,
+    DashboardStats incoming,
+  ) {
+    if (local == null) return incoming;
+    return DashboardStats(
+      crimeAttempts: incoming.crimeAttempts,
+      breakoutCount: incoming.breakoutCount,
+      killCount: incoming.killCount,
+      hitsPlacedCount: incoming.hitsPlacedCount,
+      successfulCrimes: incoming.successfulCrimes,
+      jobAttempts: incoming.jobAttempts,
+      vehicleThieves: incoming.vehicleThieves,
+      boatThieves: incoming.boatThieves,
+      streetProstitutes: incoming.streetProstitutes,
+      redLightProstitutes: incoming.redLightProstitutes,
+      totalAmmo: incoming.totalAmmo,
+      drugsTotalQuantity: incoming.drugsTotalQuantity,
+      nightclubVenues: incoming.nightclubVenues,
+      nightclubRevenueAllTime: incoming.nightclubRevenueAllTime,
+      travelCount: incoming.travelCount,
+      weapons: incoming.weapons,
+      selectedWeaponName: incoming.selectedWeaponName,
+      activeVehicle: incoming.activeVehicle,
+      jailed: incoming.jailed,
+      jailTimeRemaining: _preferLiveRemaining(
+        local.jailTimeRemaining,
+        incoming.jailTimeRemaining,
+      ),
+      bankBalance: incoming.bankBalance,
+      economy: incoming.economy,
+      economy24h: incoming.economy24h,
+      activity7d: incoming.activity7d,
+      operations: incoming.operations == null
+          ? local.operations
+          : DashboardOperationsSummary(
+              activeCooldownCount: incoming.operations!.activeCooldownCount,
+              longestCooldownSeconds: _preferLiveRemaining(
+                local.operations?.longestCooldownSeconds ?? 0,
+                incoming.operations!.longestCooldownSeconds,
+              ),
+              activeDrugProductionsCount:
+                  incoming.operations!.activeDrugProductionsCount,
+              nextDrugProductionEndsInSeconds: _preferLiveRemaining(
+                local.operations?.nextDrugProductionEndsInSeconds ?? 0,
+                incoming.operations!.nextDrugProductionEndsInSeconds,
+              ),
+              activeNightclubEventsCount:
+                  incoming.operations!.activeNightclubEventsCount,
+              nextNightclubEventStartsInSeconds: _preferLiveRemaining(
+                local.operations?.nextNightclubEventStartsInSeconds ?? 0,
+                incoming.operations!.nextNightclubEventStartsInSeconds,
+              ),
+              activeVehicleCount: incoming.operations!.activeVehicleCount,
+              listedVehicleCount: incoming.operations!.listedVehicleCount,
+              inTransitVehicleCount: incoming.operations!.inTransitVehicleCount,
+            ),
+      notifications: incoming.notifications,
+      risk: incoming.risk,
+      crewWar: incoming.crewWar?.copyWith(
+        phaseEndsInSeconds: _preferLiveRemaining(
+          local.crewWar?.phaseEndsInSeconds ?? 0,
+          incoming.crewWar?.phaseEndsInSeconds ?? 0,
+        ),
+      ),
+      territoryLeaderStats: incoming.territoryLeaderStats,
+      territoryDrama: incoming.territoryDrama,
+      vehicleOps: incoming.vehicleOps,
+      cooldowns: _mergeCooldownMap(local.cooldowns, incoming.cooldowns),
+    );
   }
 
   Future<void> _loadWeeklyGoals() async {

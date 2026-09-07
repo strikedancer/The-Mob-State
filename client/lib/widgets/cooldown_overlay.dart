@@ -61,6 +61,22 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     _loadCooldownCreditAction();
   }
 
+  @override
+  void didUpdateWidget(covariant CooldownOverlay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.remainingSeconds <= 0) return;
+    if (_secondsLeft <= 1 && widget.remainingSeconds > 5) {
+      setState(() => _secondsLeft = widget.remainingSeconds);
+      return;
+    }
+    if (widget.remainingSeconds > _secondsLeft + 2) {
+      return;
+    }
+    if ((widget.remainingSeconds - _secondsLeft).abs() >= 2) {
+      setState(() => _secondsLeft = widget.remainingSeconds);
+    }
+  }
+
   void _startCountdown() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_secondsLeft <= 0) {
