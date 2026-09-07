@@ -81,6 +81,45 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wählen Sie männlich oder weiblich, um fortzufahren.';
 
   @override
+  String get facebookContinue => 'Weiter mit Facebook';
+
+  @override
+  String get facebookOrDivider => 'oder';
+
+  @override
+  String get facebookCompleteTitle => 'Beende deinen Charakter';
+
+  @override
+  String get facebookCompleteHint =>
+      'Wählen Sie einen Benutzernamen und einen Charakter. Das nächste Mal können Sie sich mit Facebook anmelden.';
+
+  @override
+  String get facebookCompleteButton => 'BETRETEN SIE DEN MOB';
+
+  @override
+  String get facebookEmailInUse =>
+      'Diese Facebook-E-Mail gehört bereits zu einem anderen Konto. Melden Sie sich mit Ihrem Benutzernamen und Passwort an.';
+
+  @override
+  String get facebookAuthFailed =>
+      'Die Facebook-Anmeldung ist fehlgeschlagen. Versuchen Sie es erneut oder verwenden Sie Ihren Benutzernamen und Ihr Passwort.';
+
+  @override
+  String get facebookNotConfigured =>
+      'Die Facebook-Anmeldung ist noch nicht verfügbar.';
+
+  @override
+  String get facebookBanned => 'Dieses Konto ist gesperrt.';
+
+  @override
+  String get facebookPendingExpired =>
+      'Ihre Facebook-Anmeldung ist abgelaufen. Beginnen Sie erneut.';
+
+  @override
+  String get facebookUsePasswordInstead =>
+      'Verwenden Sie stattdessen Benutzername und Passwort';
+
+  @override
   String get loginFailed => 'Fehler bei der Anmeldung';
 
   @override

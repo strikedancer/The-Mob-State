@@ -158,41 +158,7 @@ export const authService = {
       };
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ playerId: player.id, username: player.username }, config.jwtSecret, {
-      expiresIn: config.jwtExpiresIn,
-    });
-
-    await prisma.worldEvent.create({
-      data: {
-        eventKey: 'auth.session.login',
-        playerId: player.id,
-        params: JSON.stringify({
-          username: player.username,
-        }),
-      },
-    });
-
-    return {
-      token,
-      player: {
-        id: player.id,
-        username: player.username,
-        money: player.money,
-        health: player.health,
-        rank: player.rank,
-        xp: player.xp,
-        currentCountry: player.currentCountry,
-        preferredLanguage: player.preferredLanguage,
-        gender: player.gender,
-        ...serializePlayerAvatarFields({
-          avatar: player.avatar,
-          activePortraitId: null,
-          activePortrait: null,
-          premiumCredits: player.premiumCredits,
-        }),
-      },
-    };
+    return this.issueSession(player.id);
   },
 
   async login(input: LoginInput): Promise<AuthResponse> {
@@ -221,17 +187,28 @@ export const authService = {
       throw new Error('EMAIL_NOT_VERIFIED');
     }
 
-    // Check if player is banned
+    return this.issueSession(player.id);
+  },
+
+  async issueSession(playerId: number): Promise<AuthResponse> {
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      include: {
+        activePortrait: { select: { imagePath: true } },
+      },
+    });
+
+    if (!player) {
+      throw new Error('INVALID_CREDENTIALS');
+    }
+
     if (player.isBanned) {
-      // Check if temporary ban has expired
       if (player.bannedUntil && new Date() > player.bannedUntil) {
-        // Ban expired, automatically unban
         await prisma.player.update({
           where: { id: player.id },
           data: { isBanned: false, bannedUntil: null, banReason: null },
         });
       } else {
-        // Player is still banned
         const banError = new Error('PLAYER_BANNED') as any;
         banError.banReason = player.banReason;
         banError.bannedUntil = player.bannedUntil;
@@ -247,7 +224,6 @@ export const authService = {
       });
     }
 
-    // Generate JWT token
     const token = jwt.sign({ playerId: player.id, username: player.username }, config.jwtSecret, {
       expiresIn: config.jwtExpiresIn,
     });

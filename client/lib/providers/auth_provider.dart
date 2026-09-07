@@ -174,6 +174,80 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> loginWithToken(String token) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final result = await _authService.loginWithToken(token);
+      if (result.success && result.player != null) {
+        _currentPlayer = result.player;
+        _isAuthenticated = true;
+        _error = null;
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      }
+      _error = result.error;
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = e.toString();
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> completeFacebook({
+    required String pendingToken,
+    required String username,
+    required String gender,
+    required bool acceptedTerms,
+    String? language,
+  }) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final result = await _authService.completeFacebook(
+        pendingToken: pendingToken,
+        username: username,
+        gender: gender,
+        acceptedTerms: acceptedTerms,
+        language: language,
+      );
+      if (result.success && result.player != null) {
+        _currentPlayer = result.player;
+        _isAuthenticated = true;
+        _error = null;
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      }
+      _error = result.error;
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = e.toString();
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<void> logout() async {
     await _authService.logout();
     _currentPlayer = null;

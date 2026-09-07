@@ -79,6 +79,44 @@ class AppLocalizationsPt extends AppLocalizations {
   String get genderRequired => 'Choose male or female to continue.';
 
   @override
+  String get facebookContinue => 'Continuar com o Facebook';
+
+  @override
+  String get facebookOrDivider => 'ou';
+
+  @override
+  String get facebookCompleteTitle => 'Termine seu personagem';
+
+  @override
+  String get facebookCompleteHint =>
+      'Escolha um nome de usuário e personagem. Da próxima vez, você pode entrar com o Facebook.';
+
+  @override
+  String get facebookCompleteButton => 'ENTRE NA MÚLTIPLA';
+
+  @override
+  String get facebookEmailInUse =>
+      'Este e-mail do Facebook já pertence a outra conta. Faça login com seu nome de usuário e senha.';
+
+  @override
+  String get facebookAuthFailed =>
+      'Falha no login do Facebook. Tente novamente ou use seu nome de usuário e senha.';
+
+  @override
+  String get facebookNotConfigured =>
+      'O login do Facebook ainda não está disponível.';
+
+  @override
+  String get facebookBanned => 'Esta conta foi banida.';
+
+  @override
+  String get facebookPendingExpired =>
+      'Seu login no Facebook expirou. Comece de novo.';
+
+  @override
+  String get facebookUsePasswordInstead => 'Use nome de usuário e senha';
+
+  @override
   String get loginFailed => 'falha no login';
 
   @override

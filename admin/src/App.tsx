@@ -40,6 +40,7 @@ import { CountryPoliceAdminPanel } from "./components/CountryPoliceAdminPanel";
 import { CasinoAdminPanel } from "./components/CasinoAdminPanel";
 import { DrugsAdminPanel } from "./components/DrugsAdminPanel";
 import { EmailVerificationAdminPanel } from "./components/EmailVerificationAdminPanel";
+import { FacebookPageAdminPanel } from "./components/FacebookPageAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
 import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
 import {
@@ -12739,7 +12740,10 @@ function App() {
                     ))}
                   </div>
                   {configSection === "access" && (
-                    <EmailVerificationAdminPanel locale={language} />
+                    <>
+                      <EmailVerificationAdminPanel locale={language} />
+                      <FacebookPageAdminPanel locale={language} />
+                    </>
                   )}
                   {configSection === "housing" && (
                     <>

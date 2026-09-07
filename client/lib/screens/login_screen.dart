@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../providers/locale_provider.dart';
@@ -10,7 +11,9 @@ import 'forgot_password_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/avatar_helper.dart';
+import '../services/auth_service.dart';
 import '../services/notification_service.dart';
+import '../config/app_config.dart';
 import '../config/supported_languages.dart';
 import '../widgets/guest_legal_footer.dart';
 import '../widgets/guest_legal_document_modal.dart';
@@ -46,11 +49,16 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _acceptedTerms = false;
   /// `male` | `female` during registration.
   String? _selectedGender;
+  bool _facebookEnabled = false;
+  String? _facebookPendingToken;
 
   String _registerLanguageCode(LocaleProvider localeProvider) {
     final code = localeProvider.locale.languageCode;
     return SupportedLanguages.isSupportedCode(code) ? code : 'nl';
   }
+
+  bool get _isFacebookComplete =>
+      _facebookPendingToken != null && _facebookPendingToken!.isNotEmpty;
 
   @override
   void initState() {
@@ -62,7 +70,80 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!auth.isAuthenticated) {
         Provider.of<LocaleProvider>(context, listen: false).initGuestLocale();
       }
+      _loadFacebookStatus();
+      _consumeFacebookReturn();
     });
+  }
+
+  Future<void> _loadFacebookStatus() async {
+    if (!kIsWeb) return;
+    final status = await AuthService().facebookStatus();
+    if (!mounted) return;
+    setState(() => _facebookEnabled = status.loginEnabled);
+  }
+
+  Future<void> _consumeFacebookReturn() async {
+    if (!kIsWeb) return;
+    final params = Uri.base.queryParameters;
+    final fb = params['fb'];
+    if (fb == null || fb.isEmpty) return;
+
+    if (fb == 'pending') {
+      final pending = params['pending']?.trim() ?? '';
+      final suggested = params['suggested']?.trim() ?? '';
+      if (pending.isEmpty) return;
+      setState(() {
+        _facebookPendingToken = pending;
+        _isLogin = false;
+        if (suggested.isNotEmpty) {
+          _usernameController.text = suggested;
+        }
+      });
+      return;
+    }
+
+    if (fb == 'error') {
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      auth.clearError();
+      final reason = params['reason'] ?? 'FACEBOOK_AUTH_FAILED';
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_localizeAuthError(l10n, reason)),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+      return;
+    }
+
+    if (fb == 'ok') {
+      final token = params['token']?.trim() ?? '';
+      if (token.isEmpty) return;
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      final success = await auth.loginWithToken(token);
+      if (!mounted) return;
+      if (success) {
+        await _afterAuthSuccess(loginFlow: true);
+      } else {
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_localizeAuthError(l10n, auth.error)),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _startFacebookLogin() async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/auth/facebook/start');
+    await launchUrl(uri, webOnlyWindowName: '_self');
   }
 
   @override
@@ -92,6 +173,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (normalized == 'GENDER_REQUIRED') {
       return l10n.genderRequired;
+    }
+
+    if (normalized == 'FACEBOOK_EMAIL_IN_USE') {
+      return l10n.facebookEmailInUse;
+    }
+    if (normalized == 'FACEBOOK_PENDING_INVALID') {
+      return l10n.facebookPendingExpired;
+    }
+    if (normalized == 'FACEBOOK_NOT_CONFIGURED') {
+      return l10n.facebookNotConfigured;
+    }
+    if (normalized == 'PLAYER_BANNED') {
+      return l10n.facebookBanned;
+    }
+    if (normalized == 'FACEBOOK_AUTH_FAILED') {
+      return l10n.facebookAuthFailed;
     }
 
     return normalized;
@@ -246,7 +343,8 @@ class _LoginScreenState extends State<LoginScreen> {
       '[LoginScreen] Starting ${_isLogin ? 'login' : 'register'} for: $username',
     );
 
-    if (!_isLogin && (_selectedGender == null || _selectedGender!.isEmpty)) {
+    if ((!_isLogin || _isFacebookComplete) &&
+        (_selectedGender == null || _selectedGender!.isEmpty)) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -258,7 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    if (!_isLogin && !_acceptedTerms) {
+    if ((!_isLogin || _isFacebookComplete) && !_acceptedTerms) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -271,7 +369,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     bool success;
-    if (_isLogin) {
+    if (_isFacebookComplete) {
+      final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+      success = await authProvider.completeFacebook(
+        pendingToken: _facebookPendingToken!,
+        username: username,
+        gender: _selectedGender!,
+        acceptedTerms: _acceptedTerms,
+        language: _registerLanguageCode(localeProvider),
+      );
+    } else if (_isLogin) {
       success = await authProvider.login(username, password);
     } else {
       final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
@@ -291,48 +398,8 @@ class _LoginScreenState extends State<LoginScreen> {
     // Show feedback and navigate
     if (mounted) {
       if (success) {
-        if (_isLogin || authProvider.isAuthenticated) {
-          print(
-            '[LoginScreen] ✅ Login/Register successful - navigating to dashboard',
-          );
-
-          if (widget.onEmbeddedAuthSuccess != null) {
-            widget.onEmbeddedAuthSuccess!();
-            return;
-          }
-
-          // Load user's preferred language
-          final localeProvider = Provider.of<LocaleProvider>(
-            context,
-            listen: false,
-          );
-          await localeProvider.loadLocale();
-
-          if (!mounted) return;
-          showTopRightFromSnackBar(
-            context,
-            SnackBar(
-              content: Text(
-                _isLogin ? l10n.loginSuccessful : l10n.registrationSuccessful,
-              ),
-              backgroundColor: Colors.green,
-              duration: const Duration(seconds: 1),
-            ),
-          );
-          // On web: ask for push permission if not yet granted
-          if (kIsWeb && mounted) {
-            final settings = await NotificationService()
-                .getNotificationSettings();
-            if (settings.authorizationStatus ==
-                AuthorizationStatus.notDetermined) {
-              await _showPushPermissionDialog();
-            }
-          }
-
-          // Explicitly navigate to dashboard instead of relying on AuthWrapper rebuild
-          await Future.delayed(const Duration(milliseconds: 100));
-          if (!mounted) return;
-          Navigator.of(context).pushReplacementNamed('/dashboard');
+        if (_isLogin || authProvider.isAuthenticated || _isFacebookComplete) {
+          await _afterAuthSuccess(loginFlow: _isLogin && !_isFacebookComplete);
         } else {
           showTopRightFromSnackBar(
             context,
@@ -363,6 +430,42 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     }
+  }
+
+  Future<void> _afterAuthSuccess({required bool loginFlow}) async {
+    if (widget.onEmbeddedAuthSuccess != null) {
+      widget.onEmbeddedAuthSuccess!();
+      return;
+    }
+
+    final localeProvider = Provider.of<LocaleProvider>(
+      context,
+      listen: false,
+    );
+    await localeProvider.loadLocale();
+
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          loginFlow ? l10n.loginSuccessful : l10n.registrationSuccessful,
+        ),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 1),
+      ),
+    );
+    if (kIsWeb && mounted) {
+      final settings = await NotificationService().getNotificationSettings();
+      if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+        await _showPushPermissionDialog();
+      }
+    }
+
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (!mounted) return;
+    Navigator.of(context).pushReplacementNamed('/dashboard');
   }
 
   @override
@@ -475,6 +578,26 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                if (_isFacebookComplete) ...[
+                  Text(
+                    l10n.facebookCompleteTitle,
+                    style: TextStyle(
+                      color: Color(0xFFD4A574),
+                      fontWeight: FontWeight.bold,
+                      fontSize: isMobile ? 16 : 18,
+                    ),
+                  ),
+                  SizedBox(height: isMobile ? 8 : 10),
+                  Text(
+                    l10n.facebookCompleteHint,
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: isMobile ? 12 : 13,
+                      height: 1.35,
+                    ),
+                  ),
+                  SizedBox(height: isMobile ? 16 : 20),
+                ],
                 // Username field
                 TextFormField(
                   controller: _usernameController,
@@ -523,7 +646,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: isMobile ? 16 : 20),
 
-                // Password field
+                if (!_isFacebookComplete)
                 TextFormField(
                   controller: _passwordController,
                   onChanged: (_) => _clearAuthError(),
@@ -595,9 +718,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
 
-                // Gender + starter portrait (registration only)
-                if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
-                if (!_isLogin)
+                // Gender + starter portrait (registration / Facebook complete)
+                if (!_isLogin || _isFacebookComplete) SizedBox(height: isMobile ? 16 : 20),
+                if (!_isLogin || _isFacebookComplete)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -657,9 +780,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
 
-                // Email field (only for registration)
-                if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
-                if (!_isLogin)
+                // Email field (only for password registration)
+                if (!_isLogin && !_isFacebookComplete) SizedBox(height: isMobile ? 16 : 20),
+                if (!_isLogin && !_isFacebookComplete)
                   TextFormField(
                     controller: _emailController,
                     onChanged: (_) => _clearAuthError(),
@@ -946,7 +1069,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               )
                             : Text(
-                                _isLogin
+                                _isFacebookComplete
+                                    ? l10n.facebookCompleteButton
+                                    : _isLogin
                                     ? l10n.loginButton
                                     : l10n.registerButton,
                                 style: TextStyle(
@@ -961,8 +1086,69 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: isMobile ? 16 : 20),
 
+                if (_facebookEnabled && !_isFacebookComplete) ...[
+                  Row(
+                    children: [
+                      const Expanded(child: Divider(color: Colors.white24)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          l10n.facebookOrDivider,
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontSize: isMobile ? 12 : 13,
+                          ),
+                        ),
+                      ),
+                      const Expanded(child: Divider(color: Colors.white24)),
+                    ],
+                  ),
+                  SizedBox(height: isMobile ? 12 : 14),
+                  SizedBox(
+                    height: isMobile ? 46 : 50,
+                    child: OutlinedButton(
+                      onPressed: _startFacebookLogin,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        side: const BorderSide(color: Color(0xFF1877F2)),
+                        backgroundColor: const Color(0xFF1877F2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      child: Text(
+                        l10n.facebookContinue,
+                        style: TextStyle(
+                          fontSize: isMobile ? 14 : 15,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: isMobile ? 16 : 20),
+                ],
+
+                if (_isFacebookComplete)
+                  TextButton(
+                    onPressed: () {
+                      _clearAuthError();
+                      setState(() {
+                        _facebookPendingToken = null;
+                        _isLogin = true;
+                      });
+                    },
+                    child: Text(
+                      l10n.facebookUsePasswordInstead,
+                      style: TextStyle(
+                        color: Color(0xFFD4A574),
+                        fontSize: isMobile ? 13 : 14,
+                      ),
+                    ),
+                  ),
+
                 // Login only: link naar registratie + wachtwoord vergeten (geen "Inloggen"-knop op registratieformulier)
-                if (_isLogin)
+                if (_isLogin && !_isFacebookComplete)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

@@ -80,6 +80,45 @@ class AppLocalizationsNl extends AppLocalizations {
       'Kies mannelijk of vrouwelijk om verder te gaan.';
 
   @override
+  String get facebookContinue => 'Doorgaan met Facebook';
+
+  @override
+  String get facebookOrDivider => 'of';
+
+  @override
+  String get facebookCompleteTitle => 'Maak je personage af';
+
+  @override
+  String get facebookCompleteHint =>
+      'Kies een gebruikersnaam en personage. De volgende keer kun je inloggen met Facebook.';
+
+  @override
+  String get facebookCompleteButton => 'NAAR HET SPEL';
+
+  @override
+  String get facebookEmailInUse =>
+      'Dit Facebook-e-mailadres hoort al bij een ander account. Log in met je gebruikersnaam en wachtwoord.';
+
+  @override
+  String get facebookAuthFailed =>
+      'Inloggen via Facebook is mislukt. Probeer het opnieuw of gebruik je gebruikersnaam en wachtwoord.';
+
+  @override
+  String get facebookNotConfigured =>
+      'Inloggen via Facebook is nog niet beschikbaar.';
+
+  @override
+  String get facebookBanned => 'Dit account is verbannen.';
+
+  @override
+  String get facebookPendingExpired =>
+      'Je Facebook-aanmelding is verlopen. Begin opnieuw.';
+
+  @override
+  String get facebookUsePasswordInstead =>
+      'Liever gebruikersnaam en wachtwoord';
+
+  @override
   String get loginFailed => 'Inloggen mislukt';
 
   @override

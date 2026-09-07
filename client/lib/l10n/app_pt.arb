@@ -11313,5 +11313,16 @@
       }
     }
   },
-  "tradeQtyMax": "Max"
+  "tradeQtyMax": "Max",
+  "facebookContinue": "Continuar com o Facebook",
+  "facebookOrDivider": "ou",
+  "facebookCompleteTitle": "Termine seu personagem",
+  "facebookCompleteHint": "Escolha um nome de usuário e personagem. Da próxima vez, você pode entrar com o Facebook.",
+  "facebookCompleteButton": "ENTRE NA MÚLTIPLA",
+  "facebookEmailInUse": "Este e-mail do Facebook já pertence a outra conta. Faça login com seu nome de usuário e senha.",
+  "facebookAuthFailed": "Falha no login do Facebook. Tente novamente ou use seu nome de usuário e senha.",
+  "facebookNotConfigured": "O login do Facebook ainda não está disponível.",
+  "facebookBanned": "Esta conta foi banida.",
+  "facebookPendingExpired": "Seu login no Facebook expirou. Comece de novo.",
+  "facebookUsePasswordInstead": "Use nome de usuário e senha"
 }

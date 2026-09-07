@@ -21,6 +21,16 @@ class AuthSessionException implements Exception {
   String toString() => 'AuthSessionException(reason: $reason, unauthorized: $unauthorized, statusCode: $statusCode)';
 }
 
+class FacebookAuthStatus {
+  final bool loginEnabled;
+  final bool pageEnabled;
+
+  const FacebookAuthStatus({
+    required this.loginEnabled,
+    required this.pageEnabled,
+  });
+}
+
 class AuthService {
   final ApiClient _apiClient;
   static const Set<String> _terminalAuthReasons = {
@@ -216,6 +226,110 @@ class AuthService {
       }
     } catch (e) {
       print('[AuthService] Register exception: $e');
+      return AuthResult(success: false, error: 'Connection error: $e');
+    }
+  }
+
+  Future<FacebookAuthStatus> facebookStatus() async {
+    try {
+      final response = await _apiClient.get(
+        '/auth/facebook/status',
+        includeAuth: false,
+      );
+      if (response.statusCode != 200) {
+        return const FacebookAuthStatus(loginEnabled: false, pageEnabled: false);
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] is Map<String, dynamic>
+          ? data['params'] as Map<String, dynamic>
+          : data;
+      return FacebookAuthStatus(
+        loginEnabled: params['loginEnabled'] == true,
+        pageEnabled: params['pageEnabled'] == true,
+      );
+    } catch (e) {
+      print('[AuthService] Facebook status exception: $e');
+      return const FacebookAuthStatus(loginEnabled: false, pageEnabled: false);
+    }
+  }
+
+  Future<AuthResult> loginWithToken(String token) async {
+    try {
+      await _apiClient.setToken(token);
+      final player = await getCurrentPlayer();
+      if (player == null) {
+        await _apiClient.clearToken();
+        return AuthResult(success: false, error: 'FACEBOOK_AUTH_FAILED');
+      }
+      try {
+        if (!kIsWeb) {
+          await NotificationService().initialize();
+        } else {
+          await NotificationService().syncAuthorizedSession();
+        }
+      } catch (e) {
+        print('⚠️ Push notifications failed after Facebook login: $e');
+      }
+      return AuthResult(success: true, player: player);
+    } catch (e) {
+      print('[AuthService] Facebook token login exception: $e');
+      await _apiClient.clearToken();
+      return AuthResult(success: false, error: 'FACEBOOK_AUTH_FAILED');
+    }
+  }
+
+  Future<AuthResult> completeFacebook({
+    required String pendingToken,
+    required String username,
+    required String gender,
+    required bool acceptedTerms,
+    String? language,
+  }) async {
+    try {
+      final selectedLanguage = language ?? _getDeviceLanguage();
+      final response = await _apiClient.post(
+        '/auth/facebook/complete',
+        {
+          'pendingToken': pendingToken,
+          'username': username,
+          'gender': gender,
+          'preferredLanguage': selectedLanguage,
+          'acceptedTerms': acceptedTerms,
+        },
+        includeAuth: false,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        final token = data['token'] as String;
+        final playerData = data['player'] as Map<String, dynamic>;
+        await _apiClient.setToken(token);
+        try {
+          final player = Player.fromJson(playerData);
+          try {
+            if (kIsWeb) {
+              await NotificationService().syncAuthorizedSession();
+            }
+          } catch (e) {
+            print('⚠️ Push notifications failed after Facebook register: $e');
+          }
+          return AuthResult(success: true, player: player);
+        } catch (e) {
+          return AuthResult(
+            success: false,
+            error: 'Failed to parse player data: $e',
+          );
+        }
+      }
+
+      final data = jsonDecode(response.body);
+      String errorMessage = 'FACEBOOK_AUTH_FAILED';
+      if (data['event'] == 'auth.error' && data['params'] != null) {
+        errorMessage = (data['params']['reason'] as String?) ?? errorMessage;
+      }
+      return AuthResult(success: false, error: errorMessage);
+    } catch (e) {
+      print('[AuthService] Facebook complete exception: $e');
       return AuthResult(success: false, error: 'Connection error: $e');
     }
   }

@@ -11313,5 +11313,16 @@
       }
     }
   },
-  "tradeQtyMax": "Max"
+  "tradeQtyMax": "Max",
+  "facebookContinue": "Weiter mit Facebook",
+  "facebookOrDivider": "oder",
+  "facebookCompleteTitle": "Beende deinen Charakter",
+  "facebookCompleteHint": "Wählen Sie einen Benutzernamen und einen Charakter. Das nächste Mal können Sie sich mit Facebook anmelden.",
+  "facebookCompleteButton": "BETRETEN SIE DEN MOB",
+  "facebookEmailInUse": "Diese Facebook-E-Mail gehört bereits zu einem anderen Konto. Melden Sie sich mit Ihrem Benutzernamen und Passwort an.",
+  "facebookAuthFailed": "Die Facebook-Anmeldung ist fehlgeschlagen. Versuchen Sie es erneut oder verwenden Sie Ihren Benutzernamen und Ihr Passwort.",
+  "facebookNotConfigured": "Die Facebook-Anmeldung ist noch nicht verfügbar.",
+  "facebookBanned": "Dieses Konto ist gesperrt.",
+  "facebookPendingExpired": "Ihre Facebook-Anmeldung ist abgelaufen. Beginnen Sie erneut.",
+  "facebookUsePasswordInstead": "Verwenden Sie stattdessen Benutzername und Passwort"
 }

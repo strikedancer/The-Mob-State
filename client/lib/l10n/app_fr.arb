@@ -11313,5 +11313,16 @@
       }
     }
   },
-  "tradeQtyMax": "Max"
+  "tradeQtyMax": "Max",
+  "facebookContinue": "Continuer avec Facebook",
+  "facebookOrDivider": "ou",
+  "facebookCompleteTitle": "Terminez votre personnage",
+  "facebookCompleteHint": "Choisissez un nom d'utilisateur et un personnage. La prochaine fois, vous pourrez vous connecter avec Facebook.",
+  "facebookCompleteButton": "ENTREZ DANS LA MOB",
+  "facebookEmailInUse": "Cet e-mail Facebook appartient déjà à un autre compte. Connectez-vous avec votre nom d'utilisateur et votre mot de passe.",
+  "facebookAuthFailed": "La connexion à Facebook a échoué. Réessayez ou utilisez votre nom d'utilisateur et votre mot de passe.",
+  "facebookNotConfigured": "La connexion à Facebook n'est pas encore disponible.",
+  "facebookBanned": "Ce compte est banni.",
+  "facebookPendingExpired": "Votre connexion Facebook a expiré. Recommencer.",
+  "facebookUsePasswordInstead": "Utilisez plutôt le nom d'utilisateur et le mot de passe"
 }

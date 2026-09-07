@@ -1999,6 +1999,43 @@ export const adminService = {
     return response.json();
   },
 
+  async getFacebookStatus(): Promise<{
+    loginEnabled: boolean;
+    pageEnabled: boolean;
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/facebook/status`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    await ensureOk(response, "Failed to fetch Facebook status");
+    return response.json();
+  },
+
+  async publishFacebookPost(input: {
+    message: string;
+    link?: string;
+  }): Promise<{ postId: string | null }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/facebook/publish`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        message: input.message,
+        link: input.link?.trim() ? input.link.trim() : undefined,
+      }),
+    });
+    await ensureOk(response, "Failed to publish Facebook post");
+    const data = await response.json();
+    return {
+      postId: data?.params?.postId ?? data?.postId ?? null,
+    };
+  },
+
   async getConfig() {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/config`, {

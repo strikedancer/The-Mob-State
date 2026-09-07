@@ -53,6 +53,7 @@ import {
   authService,
   AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
 } from '../services/authService';
+import { facebookAuthService } from '../services/facebookAuthService';
 
 const router = express.Router();
 
@@ -1442,6 +1443,49 @@ router.put(
       }
       console.error('Admin update email-verification gate error:', error);
       return res.status(500).json({ error: 'Failed to update email verification setting' });
+    }
+  },
+);
+
+router.get('/facebook/status', (_req, res) => {
+  return res.json(facebookAuthService.status());
+});
+
+router.post(
+  '/facebook/publish',
+  auditLog({ action: 'PUBLISH_FACEBOOK_PAGE_POST', targetType: 'FacebookPage' }),
+  async (req, res) => {
+    try {
+      const parsed = z
+        .object({
+          message: z.string().trim().min(1).max(5000),
+          link: z.string().trim().max(500).optional(),
+        })
+        .parse(req.body ?? {});
+      const published = await facebookAuthService.publishPagePost({
+        message: parsed.message,
+        link: parsed.link,
+      });
+      return res.json({
+        event: 'admin.facebook.published',
+        params: published,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Validation failed', details: error.flatten() });
+      }
+      if (error instanceof Error) {
+        if (error.message === 'FACEBOOK_PAGE_NOT_CONFIGURED') {
+          return res.status(400).json({ error: error.message });
+        }
+        if (error.message === 'FACEBOOK_MESSAGE_INVALID') {
+          return res.status(400).json({ error: error.message });
+        }
+        console.error('Admin Facebook publish error:', error);
+        return res.status(502).json({ error: error.message || 'FACEBOOK_PUBLISH_FAILED' });
+      }
+      console.error('Admin Facebook publish error:', error);
+      return res.status(500).json({ error: 'Failed to publish Facebook post' });
     }
   },
 );

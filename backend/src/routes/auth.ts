@@ -1,11 +1,84 @@
 import { Router, Request, Response } from 'express';
 import { authService } from '../services/authService';
+import { facebookAuthService } from '../services/facebookAuthService';
 import { emailService } from '../services/emailService';
 import prisma from '../lib/prisma';
 import bcrypt from 'bcrypt';
 import { normalizePlayerLanguage } from '../config/supportedLanguages';
 
 const router = Router();
+
+router.get('/facebook/status', (_req: Request, res: Response) => {
+  return res.json({
+    event: 'auth.facebook.status',
+    params: facebookAuthService.status(),
+  });
+});
+
+router.get('/facebook/start', (_req: Request, res: Response) => {
+  try {
+    return res.redirect(facebookAuthService.startUrl());
+  } catch (error) {
+    console.error('[AUTH] Facebook start error:', error);
+    return res.redirect(facebookAuthService.errorRedirect('FACEBOOK_NOT_CONFIGURED'));
+  }
+});
+
+router.get('/facebook/callback', async (req: Request, res: Response) => {
+  try {
+    if (typeof req.query.error === 'string' && req.query.error) {
+      return res.redirect(facebookAuthService.errorRedirect('FACEBOOK_AUTH_FAILED'));
+    }
+    const code = typeof req.query.code === 'string' ? req.query.code : undefined;
+    const state = typeof req.query.state === 'string' ? req.query.state : undefined;
+    return res.redirect(await facebookAuthService.handleCallback(code, state));
+  } catch (error) {
+    console.error('[AUTH] Facebook callback error:', error);
+    return res.redirect(facebookAuthService.errorRedirect('FACEBOOK_AUTH_FAILED'));
+  }
+});
+
+router.post('/facebook/complete', async (req: Request, res: Response) => {
+  try {
+    const { pendingToken, username, gender, preferredLanguage, acceptedTerms } = req.body ?? {};
+    const result = await facebookAuthService.completeRegistration({
+      pendingToken: String(pendingToken ?? ''),
+      username: String(username ?? ''),
+      gender,
+      preferredLanguage,
+      acceptedTerms: Boolean(acceptedTerms),
+    });
+
+    return res.status(201).json({
+      event: 'auth.registered',
+      params: {},
+      token: result.token,
+      player: result.player,
+    });
+  } catch (error) {
+    console.error('[AUTH] Facebook complete error:', error);
+    if (error instanceof Error) {
+      const reason = error.message;
+      if (
+        reason === 'TERMS_REQUIRED' ||
+        reason === 'USERNAME_INVALID' ||
+        reason === 'USERNAME_TAKEN' ||
+        reason === 'GENDER_REQUIRED' ||
+        reason === 'FACEBOOK_PENDING_INVALID' ||
+        reason === 'PLAYER_BANNED'
+      ) {
+        return res.status(400).json({
+          event: 'auth.error',
+          params: { reason },
+        });
+      }
+    }
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
 
 router.post('/register', async (req: Request, res: Response) => {
   try {

@@ -248,6 +248,72 @@ abstract class AppLocalizations {
   /// **'Choose male or female to continue.'**
   String get genderRequired;
 
+  /// No description provided for @facebookContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Facebook'**
+  String get facebookContinue;
+
+  /// No description provided for @facebookOrDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get facebookOrDivider;
+
+  /// No description provided for @facebookCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish your character'**
+  String get facebookCompleteTitle;
+
+  /// No description provided for @facebookCompleteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a username and character. Next time you can sign in with Facebook.'**
+  String get facebookCompleteHint;
+
+  /// No description provided for @facebookCompleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'ENTER THE MOB'**
+  String get facebookCompleteButton;
+
+  /// No description provided for @facebookEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This Facebook email already belongs to another account. Log in with your username and password.'**
+  String get facebookEmailInUse;
+
+  /// No description provided for @facebookAuthFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook sign-in failed. Try again or use your username and password.'**
+  String get facebookAuthFailed;
+
+  /// No description provided for @facebookNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook sign-in is not available yet.'**
+  String get facebookNotConfigured;
+
+  /// No description provided for @facebookBanned.
+  ///
+  /// In en, this message translates to:
+  /// **'This account is banned.'**
+  String get facebookBanned;
+
+  /// No description provided for @facebookPendingExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Facebook sign-in expired. Start again.'**
+  String get facebookPendingExpired;
+
+  /// No description provided for @facebookUsePasswordInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Use username and password instead'**
+  String get facebookUsePasswordInstead;
+
   /// No description provided for @loginFailed.
   ///
   /// In en, this message translates to:
