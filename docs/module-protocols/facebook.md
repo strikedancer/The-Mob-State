@@ -5,7 +5,7 @@ Koppeling met Meta voor **speler-login via Facebook** (web OAuth) en **handmatig
 
 ## Primary Frontend Entry
 - `client/lib/screens/login_screen.dart` — knop **Doorgaan met Facebook** (alleen web, alleen als de API `loginEnabled` teruggeeft)
-- `admin/src/components/FacebookPageAdminPanel.tsx` — Admin → Config → Toegang
+- `admin/src/components/FacebookPageAdminPanel.tsx` — Admin → Config → Toegang (Vite `verbatimModuleSyntax`: type-only React imports such as `FormEvent`)
 
 ## Primary Backend Entry
 - `GET /auth/facebook/status` — `{ loginEnabled, pageEnabled }` (geen auth)

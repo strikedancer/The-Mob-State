@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
 import { adminService } from '../services/adminService'
 import type { AdminLanguage } from '../i18n/translations'
 import { getAdminTr } from '../i18n/inlineMessages'
