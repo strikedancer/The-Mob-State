@@ -12,11 +12,13 @@ class PropertyCard extends StatelessWidget {
   final VoidCallback? onUpgrade;
   final VoidCallback? onDevelop;
   final VoidCallback? onManage;
+  final VoidCallback? onSell;
   final VoidCallback? onOpenStorage;
   final bool isLoading;
   final bool playerIsVip;
   final int vipBonusPerProperty;
   final String? buyLockedReason;
+  final String? upgradeLockedReason;
   final bool expandToFill;
 
   const PropertyCard({
@@ -27,11 +29,13 @@ class PropertyCard extends StatelessWidget {
     this.onUpgrade,
     this.onDevelop,
     this.onManage,
+    this.onSell,
     this.onOpenStorage,
     this.isLoading = false,
     this.playerIsVip = false,
     this.vipBonusPerProperty = 5,
     this.buyLockedReason,
+    this.upgradeLockedReason,
     this.expandToFill = false,
   });
 
@@ -163,6 +167,7 @@ class PropertyCard extends StatelessWidget {
       case 'apartment':
       case 'warehouse':
       case 'nightclub':
+      case 'casino':
         return '$propertyId.png';
       default:
         return null;
@@ -232,6 +237,8 @@ class PropertyCard extends StatelessWidget {
         return Icons.warehouse;
       case 'nightclub':
         return Icons.nightlife;
+      case 'casino':
+        return Icons.casino;
       case 'shop':
         return Icons.store;
       case 'hotel':
@@ -253,6 +260,8 @@ class PropertyCard extends StatelessWidget {
         return '🏪 ${l10n.propertyTypeWarehouse}';
       case 'nightclub':
         return '🎵 ${l10n.propertyTypeNightclub}';
+      case 'casino':
+        return '🎰 ${l10n.propertyTypeCasino}';
       case 'shop':
         return '🛒 ${l10n.propertyTypeShop}';
       case 'hotel':
@@ -300,12 +309,26 @@ class PropertyCard extends StatelessWidget {
       if (definition!.unique) ...[
         SizedBox(height: 8),
         Text(
-          l10n.propertyUniquePerCountry,
+          definition!.countryAvailable
+              ? l10n.propertyUniquePerCountry
+              : l10n.propertyUniqueTaken,
           style: TextStyle(
             color: Colors.orange,
             fontWeight: FontWeight.bold,
             fontSize: 12,
           ),
+        ),
+      ],
+      if (definition!.maxOwners != null && definition!.maxOwners! > 0) ...[
+        SizedBox(height: 8),
+        _buildStatRow(
+          l10n.propertySlotsLabel,
+          definition!.slotsAvailable != null
+              ? l10n.propertySlotsInCountry(
+                  definition!.slotsAvailable!,
+                  definition!.maxOwners!,
+                )
+              : '${definition!.maxOwners}',
         ),
       ],
     ];
@@ -468,9 +491,26 @@ class PropertyCard extends StatelessWidget {
     ];
   }
 
+  String? _upgradeBenefitSummary(AppLocalizations l10n) {
+    final owned = ownedProperty;
+    if (owned == null) return null;
+    final fromSlots = owned.nextUpgradeStorageFrom;
+    final toSlots = owned.nextUpgradeStorageTo;
+    if (fromSlots != null && toSlots != null && toSlots > fromSlots) {
+      return l10n.propertyUpgradeNextStorage(fromSlots, toSlots);
+    }
+    final incomeBonus = owned.nextUpgradeIncomeBonus ?? 0;
+    if (incomeBonus > 0) {
+      return l10n.propertyUpgradeNextIncome(formatCurrency(incomeBonus));
+    }
+    return null;
+  }
+
   List<Widget> _buildOwnedPropertyActions(AppLocalizations l10n) {
     final upgradeCost = ownedProperty?.nextUpgradeCost;
     final canUpgrade = upgradeCost != null;
+    final upgradeLocked = upgradeLockedReason != null;
+    final benefit = _upgradeBenefitSummary(l10n);
 
     return [
       if (onOpenStorage != null) ...[
@@ -506,7 +546,7 @@ class PropertyCard extends StatelessWidget {
       SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: canUpgrade ? onUpgrade : null,
+          onPressed: canUpgrade && !upgradeLocked ? onUpgrade : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
@@ -524,8 +564,11 @@ class PropertyCard extends StatelessWidget {
               ),
               if (canUpgrade)
                 Text(
-                  formatCurrency(upgradeCost),
-                  style: TextStyle(fontSize: 11),
+                  benefit == null
+                      ? formatCurrency(upgradeCost)
+                      : '${formatCurrency(upgradeCost)} · $benefit',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 11),
                 )
               else
                 Text(l10n.propertyMax, style: TextStyle(fontSize: 11)),
@@ -533,7 +576,19 @@ class PropertyCard extends StatelessWidget {
           ),
         ),
       ),
-      if (ownedProperty?.nextDevelopCost != null) ...[
+      if (upgradeLocked) ...[
+        const SizedBox(height: 6),
+        Text(
+          upgradeLockedReason!,
+          style: TextStyle(
+            color: Colors.orange[800],
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+      if (ownedProperty?.canDevelop == true &&
+          ownedProperty?.nextDevelopCost != null) ...[
         SizedBox(height: 8),
         SizedBox(
           width: double.infinity,
@@ -558,6 +613,21 @@ class PropertyCard extends StatelessWidget {
           ),
         ),
       ],
+      if (onSell != null && ownedProperty?.sellPrice != null) ...[
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: TextButton.icon(
+            onPressed: onSell,
+            icon: const Icon(Icons.attach_money, size: 18),
+            label: Text(
+              l10n.propertySellActionPrice(
+                formatCurrency(ownedProperty!.sellPrice!),
+              ),
+            ),
+          ),
+        ),
+      ],
     ];
   }
 
@@ -578,6 +648,8 @@ class PropertyCard extends StatelessWidget {
         return l10n.propertyHouseName;
       case 'apartment':
         return l10n.propertyApartmentName;
+      case 'casino':
+        return l10n.propertyCasinoName;
       case 'shop':
         return l10n.propertyShopName;
       default:
@@ -595,6 +667,8 @@ class PropertyCard extends StatelessWidget {
         return l10n.propertyRoleWarehouse;
       case 'nightclub':
         return l10n.propertyRoleNightclub;
+      case 'casino':
+        return l10n.propertyRoleCasino;
       default:
         return null;
     }
@@ -610,6 +684,8 @@ class PropertyCard extends StatelessWidget {
         return l10n.propertyInfoWarehouse;
       case 'nightclub':
         return l10n.propertyInfoNightclub;
+      case 'casino':
+        return l10n.propertyInfoCasino;
       default:
         return _propertyRole(propertyId, l10n) ??
             (definition?.description ?? l10n.propertyInfoGeneric);

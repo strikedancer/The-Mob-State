@@ -5349,6 +5349,80 @@ class AppLocalizationsDe extends AppLocalizations {
       'Durch den Kauf eines Nachtclubs wird der Nightclub-Verwaltungsbildschirm freigeschaltet. Menschenmenge, Verkauf und Drogen werden dort behandelt, nicht auf dieser Übersicht. Sie können diese Immobilie hier noch upgraden und weiterentwickeln, um zusätzliche Kapazität und passives Einkommen zu erzielen.';
 
   @override
+  String get propertyRoleCasino =>
+      'Ein Casino pro Land. Hohes passives Einkommen; Verbessern und entwickeln Sie es, um es zu erhöhen.';
+
+  @override
+  String get propertyInfoCasino =>
+      'Das Casino ist pro Land einzigartig. Es zahlt passives Einkommen und kann aufgerüstet oder ausgebaut werden. In diesem Gebäude gibt es keine persönlichen Verstecke.';
+
+  @override
+  String propertyUpgradeNextStorage(int from, int to) {
+    return '$from → $to Steckplätze';
+  }
+
+  @override
+  String propertyUpgradeNextHousing(int from, int to) {
+    return '$from → $to Arbeiter';
+  }
+
+  @override
+  String propertyUpgradeNextIncome(String amount) {
+    return '+$amount Einkommen';
+  }
+
+  @override
+  String get propertySlotsLabel => 'Länderslots';
+
+  @override
+  String propertySlotsInCountry(int available, int max) {
+    return '$available / $max übrig';
+  }
+
+  @override
+  String get propertySlotsGone =>
+      'In diesem Land sind keine Slots mehr verfügbar';
+
+  @override
+  String get propertyUniqueTaken => 'Hierzulande bereits beansprucht';
+
+  @override
+  String get propertySellAction => 'Verkaufen';
+
+  @override
+  String propertySellActionPrice(String price) {
+    return 'Verkaufen · $price';
+  }
+
+  @override
+  String get propertySellConfirmTitle => 'Diese Immobilie verkaufen?';
+
+  @override
+  String propertySellConfirmBody(String price) {
+    return 'Sie erhalten $price Bargeld (70 % des Kaufpreises). Leeren Sie zuerst den Speicher.';
+  }
+
+  @override
+  String propertySold(String price) {
+    return 'Sold for $price';
+  }
+
+  @override
+  String get propertySellErrorStorage => 'Leeren Sie zuerst dieses Gebäude.';
+
+  @override
+  String get propertySellErrorCountry =>
+      'Reisen Sie in dieses Land, um zu verkaufen.';
+
+  @override
+  String get propertySellErrorNightclub =>
+      'Räumen Sie Nachtclubbestände auf, bevor Sie sie verkaufen.';
+
+  @override
+  String get propertySellErrorUnknown =>
+      'Diese Immobilie konnte nicht verkauft werden.';
+
+  @override
   String get blackMarket => 'Schwarzmarkt';
 
   @override

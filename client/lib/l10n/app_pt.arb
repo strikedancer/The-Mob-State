@@ -11374,5 +11374,81 @@
   "propertyInfoApartment": "Um apartamento acrescenta capacidade habitacional e um estoque pessoal. Armazene armas, munições, coletes e dinheiro aqui. Abra o armazenamento para usar o inventário deste edifício – você deve estar no mesmo país. As atualizações aumentam o tamanho do estoque e do alojamento. A Develop gasta dinheiro do banco para obter um bônus permanente de renda passiva.",
   "propertyInfoWarehouse": "Um armazém armazena apenas ferramentas. As atualizações adicionam mais slots. Abra o armazenamento para gerenciar ferramentas para este edifício — você deve estar no mesmo país. A Develop gasta dinheiro do banco para obter um bônus permanente de renda passiva.",
   "propertyInfoNightclub": "Comprar uma boate desbloqueia a tela de gerenciamento da boate. Multidão, vendas e drogas são tratadas lá, não nesta visão geral. Você ainda pode atualizar e desenvolver esta propriedade aqui para obter capacidade extra e renda passiva.",
-  "inventoryNoOwnedStorageHint": "Compre uma casa, apartamento ou armazém para desbloquear armazenamento extra aqui."
+  "inventoryNoOwnedStorageHint": "Compre uma casa, apartamento ou armazém para desbloquear armazenamento extra aqui.",
+  "propertyRoleCasino": "Um cassino por país. Alta renda passiva; atualizar e desenvolver para aumentá-lo.",
+  "propertyInfoCasino": "O cassino é único por país. Paga renda passiva e pode ser atualizado ou desenvolvido. Não há nenhum esconderijo pessoal neste edifício.",
+  "propertyUpgradeNextStorage": "{from} → {to} vagas",
+  "@propertyUpgradeNextStorage": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextHousing": "{from} → {to} trabalhadores",
+  "@propertyUpgradeNextHousing": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextIncome": "+{amount} renda",
+  "@propertyUpgradeNextIncome": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySlotsLabel": "Slots de país",
+  "propertySlotsInCountry": "{available} / {max} restantes",
+  "@propertySlotsInCountry": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "propertySlotsGone": "Não há mais vagas neste país",
+  "propertyUniqueTaken": "Já reivindicado neste país",
+  "propertySellAction": "Vender",
+  "propertySellActionPrice": "Vender · {price}",
+  "@propertySellActionPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellConfirmTitle": "Vender este imóvel?",
+  "propertySellConfirmBody": "Você recebe {price} em dinheiro (70% do preço de compra). Esvazie o armazenamento primeiro.",
+  "@propertySellConfirmBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySold": "Sold for {price}",
+  "@propertySold": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellErrorStorage": "Esvazie este prédio primeiro.",
+  "propertySellErrorCountry": "Viaje para este país para vender.",
+  "propertySellErrorNightclub": "Limpe o estoque da boate antes de vender.",
+  "propertySellErrorUnknown": "Não foi possível vender este imóvel."
 }

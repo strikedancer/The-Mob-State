@@ -365,7 +365,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 - Eigendommen-kaarten (te koop en in bezit) gebruiken dezelfde catalogusfoto per type. Het oude landgoed-composiet zit niet meer in dit scherm.
 - Cosmetisch **gouden hek** is een credit-sink zonder combat-power (`estate_gold_fence`).
-- Player-UI (Eigendommen): opent op **Mijn eigendommen**. Lege staat heeft een knop naar Beschikbaar. Op tablet/desktop staan kaarten naast elkaar (2–3 kolommen). Elke kaart heeft een info-knop met uitleg over dat gebouw. Kopen en upgraden vragen bevestiging met geformatteerd bedrag; kopen is uit als rang of cash tekort is. Opslag of nachtclubbeheer staat als eerste actie. Beschikbaar heeft type-chips. Fouten blijven per tab.
+- Player-UI (Eigendommen): opent op **Mijn eigendommen**. Lege staat heeft een knop naar Beschikbaar. Op tablet/desktop staan kaarten naast elkaar (2–3 kolommen). Elke kaart heeft een info-knop met uitleg over dat gebouw. Kopen en upgraden vragen bevestiging met geformatteerd bedrag; kopen/upgraden is uit als rang of cash tekort is. Upgrade toont wat je krijgt (plekken/wonen/inkomen). Ontwikkelen alleen bij panden met inkomen. Verkopen = 70% van aankoop, opslag moet leeg. Casino is uniek per land; magazijn/nachtclub tonen vrije landslots. Opslag of nachtclubbeheer staat als eerste actie. Beschikbaar heeft type-chips. Fouten blijven per tab.
 - Inventory toont geen magazijn-/pand-hokjes tot de speler zo’n eigendom heeft. Zonder opslagpand zie je alleen het materialendepot plus een hint om een huis, appartement of magazijn te kopen.
 
 ### Property Types
@@ -393,9 +393,9 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **ROI**: Verschillende return on investment per property
 
 ### Property Liquidation
-- **Sell price**: 70% van aankoopprijs (ontwerp; nog geen player-sell-UI of API)
-- **Example**: Casino kopen â‚¬3M â†’ verkopen â‚¬2.1M
-- **No cooldown**: Direct verkopen mogelijk zodra sell bestaat
+- **Sell price**: 70% van aankoopprijs, contant, via `POST /properties/:id/sell`
+- **Voorwaarde**: zelfde land + lege opslag (nachtclub: ook voorraad leeg)
+- **No cooldown**: Direct
 
 ---
 

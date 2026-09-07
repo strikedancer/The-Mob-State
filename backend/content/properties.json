@@ -6,17 +6,20 @@
       "description": "Groot magazijn voor opslag en handel",
       "image": "warehouse.png",
       "type": "limited_per_country",
-      "maxOwners": 5,
+      "maxOwners": 6,
       "basePrice": 150000,
       "baseIncome": 2000,
       "incomeInterval": 90,
       "minLevel": 12,
-      "storageCapacity": [100, 200, 350, 500],
+      "storageCapacity": [100, 200, 350, 500, 700, 950],
+      "maxLevel": 6,
       "features": ["storage", "trade_bonus"],
       "upgradeOptions": [
         { "level": 2, "cost": 30000, "incomeBonus": 800 },
         { "level": 3, "cost": 60000, "incomeBonus": 1200 },
-        { "level": 4, "cost": 120000, "incomeBonus": 2000 }
+        { "level": 4, "cost": 120000, "incomeBonus": 2000 },
+        { "level": 5, "cost": 220000, "incomeBonus": 2800 },
+        { "level": 6, "cost": 380000, "incomeBonus": 3600 }
       ]
     },
     {
@@ -30,12 +33,15 @@
       "baseIncome": 3000,
       "incomeInterval": 100,
       "minLevel": 15,
-      "storageCapacity": [0, 0, 0, 0],
+      "storageCapacity": [0, 0, 0, 0, 0, 0],
+      "maxLevel": 6,
       "features": ["events", "reputation"],
       "upgradeOptions": [
         { "level": 2, "cost": 60000, "incomeBonus": 1200 },
         { "level": 3, "cost": 120000, "incomeBonus": 1800 },
-        { "level": 4, "cost": 240000, "incomeBonus": 3000 }
+        { "level": 4, "cost": 240000, "incomeBonus": 3000 },
+        { "level": 5, "cost": 420000, "incomeBonus": 4200 },
+        { "level": 6, "cost": 700000, "incomeBonus": 5500 }
       ]
     },
     {
@@ -48,13 +54,15 @@
       "baseIncome": 0,
       "incomeInterval": 60,
       "minLevel": 8,
-      "storageCapacity": [10, 20, 35, 50],
-      "maxLevel": 4,
+      "storageCapacity": [10, 20, 35, 50, 70, 95],
+      "maxLevel": 6,
       "features": ["residential"],
       "upgradeOptions": [
         { "level": 2, "cost": 10000, "incomeBonus": 0 },
         { "level": 3, "cost": 20000, "incomeBonus": 0 },
-        { "level": 4, "cost": 40000, "incomeBonus": 0 }
+        { "level": 4, "cost": 40000, "incomeBonus": 0 },
+        { "level": 5, "cost": 75000, "incomeBonus": 0 },
+        { "level": 6, "cost": 130000, "incomeBonus": 0 }
       ]
     },
     {
@@ -67,13 +75,36 @@
       "baseIncome": 0,
       "incomeInterval": 75,
       "minLevel": 5,
-      "storageCapacity": [5, 10, 15, 20],
-      "maxLevel": 4,
+      "storageCapacity": [5, 10, 15, 20, 28, 38],
+      "maxLevel": 6,
       "features": ["residential"],
       "upgradeOptions": [
         { "level": 2, "cost": 20000, "incomeBonus": 0 },
         { "level": 3, "cost": 40000, "incomeBonus": 0 },
-        { "level": 4, "cost": 80000, "incomeBonus": 0 }
+        { "level": 4, "cost": 80000, "incomeBonus": 0 },
+        { "level": 5, "cost": 140000, "incomeBonus": 0 },
+        { "level": 6, "cost": 240000, "incomeBonus": 0 }
+      ]
+    },
+    {
+      "id": "casino",
+      "name": "Casino",
+      "description": "Uniek casino per land met hoog passief inkomen",
+      "image": "casino.png",
+      "type": "unique_per_country",
+      "basePrice": 5000000,
+      "baseIncome": 8000,
+      "incomeInterval": 60,
+      "minLevel": 20,
+      "storageCapacity": [0, 0, 0, 0, 0, 0],
+      "maxLevel": 6,
+      "features": ["passive_income", "unique"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 400000, "incomeBonus": 2500 },
+        { "level": 3, "cost": 800000, "incomeBonus": 4000 },
+        { "level": 4, "cost": 1500000, "incomeBonus": 6000 },
+        { "level": 5, "cost": 2600000, "incomeBonus": 8500 },
+        { "level": 6, "cost": 4200000, "incomeBonus": 11000 }
       ]
     },
     {

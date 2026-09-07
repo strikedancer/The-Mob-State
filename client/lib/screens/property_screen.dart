@@ -78,7 +78,13 @@ class PropertyScreenState extends State<PropertyScreen>
               final mapEntry = entry.cast<String, dynamic>();
               final nested = mapEntry['property'];
               if (nested is Map) {
-                return nested.cast<String, dynamic>();
+                return {
+                  ...nested.cast<String, dynamic>(),
+                  'countryAvailable': mapEntry['available'],
+                  'slotsAvailable': mapEntry['slotsAvailable'],
+                  'ownedCount': mapEntry['ownedCount'],
+                  'maxOwners': nested['maxOwners'] ?? mapEntry['maxOwners'],
+                };
               }
               return mapEntry;
             })
@@ -180,6 +186,8 @@ class PropertyScreenState extends State<PropertyScreen>
         return l10n.propertyHouseName;
       case 'apartment':
         return l10n.propertyApartmentName;
+      case 'casino':
+        return l10n.propertyCasinoName;
       default:
         return property.name;
     }
@@ -193,6 +201,11 @@ class PropertyScreenState extends State<PropertyScreen>
     final player = auth.currentPlayer;
     final rank = player?.rank ?? 0;
     final money = player?.money ?? 0;
+    if (!property.countryAvailable) {
+      return property.unique
+          ? l10n.propertyUniqueTaken
+          : l10n.propertySlotsGone;
+    }
     if (property.minLevel > 0 && rank < property.minLevel) {
       return l10n.propertyBuyNeedsRank(property.minLevel);
     }
@@ -432,11 +445,21 @@ class PropertyScreenState extends State<PropertyScreen>
             phoneMaxWidth: 320,
             tabletMaxWidth: 380,
             desktopMaxWidth: 440,
-            child: Text(
-              l10n.propertyUpgradeConfirmBody(
-                formatCurrency(cost),
-                property.level + 1,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.propertyUpgradeConfirmBody(
+                    formatCurrency(cost),
+                    property.level + 1,
+                  ),
+                ),
+                if (_upgradeBenefitLines(property, l10n).isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  ..._upgradeBenefitLines(property, l10n).map(Text.new),
+                ],
+              ],
             ),
           ),
           actions: [
@@ -503,6 +526,95 @@ class PropertyScreenState extends State<PropertyScreen>
           backgroundColor: Colors.red,
         ),
       );
+    }
+  }
+
+  Future<void> _sellProperty(Property property) async {
+    final price = property.sellPrice;
+    if (price == null) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(l10n.propertySellConfirmTitle),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 320,
+            tabletMaxWidth: 380,
+            desktopMaxWidth: 440,
+            child: Text(
+              l10n.propertySellConfirmBody(formatCurrency(price)),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(l10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red[700]),
+              child: Text(l10n.propertySellAction),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed != true) return;
+
+    try {
+      final response = await _apiClient.post(
+        '/properties/${property.id}/sell',
+        {},
+      );
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final l10n = AppLocalizations.of(context)!;
+      if (data['event'] == 'property.sold') {
+        final soldFor =
+            (data['params']?['sellPrice'] as num?)?.toInt() ?? price;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.propertySold(formatCurrency(soldFor))),
+            backgroundColor: Colors.green,
+          ),
+        );
+        if (mounted) {
+          await context.read<AuthProvider>().refreshPlayer();
+        }
+        await _loadData();
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_sellErrorMessage(data['params']?['reason']?.toString(), l10n)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      final l10n = AppLocalizations.of(context)!;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.networkError(e.toString())),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  String _sellErrorMessage(String? reason, AppLocalizations l10n) {
+    switch (reason) {
+      case 'STORAGE_NOT_EMPTY':
+        return l10n.propertySellErrorStorage;
+      case 'WRONG_COUNTRY':
+        return l10n.propertySellErrorCountry;
+      case 'NIGHTCLUB_NOT_EMPTY':
+        return l10n.propertySellErrorNightclub;
+      default:
+        return l10n.propertySellErrorUnknown;
     }
   }
 
@@ -663,9 +775,34 @@ class PropertyScreenState extends State<PropertyScreen>
         return l10n.propertyTypeWarehouse;
       case 'nightclub':
         return l10n.propertyTypeNightclub;
+      case 'casino':
+        return l10n.propertyTypeCasino;
       default:
         return propertyId;
     }
+  }
+
+  List<String> _upgradeBenefitLines(Property property, AppLocalizations l10n) {
+    final lines = <String>[];
+    final fromSlots = property.nextUpgradeStorageFrom;
+    final toSlots = property.nextUpgradeStorageTo;
+    if (fromSlots != null && toSlots != null && toSlots > fromSlots) {
+      lines.add(l10n.propertyUpgradeNextStorage(fromSlots, toSlots));
+      final type = property.type ?? property.propertyId;
+      if (type == 'house' || type == 'apartment') {
+        lines.add(
+          l10n.propertyUpgradeNextHousing(
+            (fromSlots / 5).floor().clamp(1, 999),
+            (toSlots / 5).floor().clamp(1, 999),
+          ),
+        );
+      }
+    }
+    final incomeBonus = property.nextUpgradeIncomeBonus ?? 0;
+    if (incomeBonus > 0) {
+      lines.add(l10n.propertyUpgradeNextIncome(formatCurrency(incomeBonus)));
+    }
+    return lines;
   }
 
   Widget _buildMyPropertiesTab() {
@@ -734,8 +871,19 @@ class PropertyScreenState extends State<PropertyScreen>
                 playerIsVip: _playerIsVip,
                 vipBonusPerProperty: _vipHousingBonusPerProperty,
                 onUpgrade: () => _upgradeProperty(property),
-                onDevelop: property.nextDevelopCost != null
+                upgradeLockedReason: () {
+                  final cost = property.nextUpgradeCost;
+                  final money = context.read<AuthProvider>().currentPlayer?.money ?? 0;
+                  if (cost != null && money < cost) {
+                    return l10n.propertyBuyNeedsCash(formatCurrency(cost));
+                  }
+                  return null;
+                }(),
+                onDevelop: property.canDevelop && property.nextDevelopCost != null
                     ? () => _developProperty(property)
+                    : null,
+                onSell: property.sellPrice != null
+                    ? () => _sellProperty(property)
                     : null,
                 onOpenStorage: _storagePropertyTypes.contains(propertyType)
                     ? () => _openStorage(property)

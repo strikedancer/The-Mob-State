@@ -11374,5 +11374,81 @@
   "propertyInfoApartment": "Un appartement ajoute une capacité d’hébergement et une réserve personnelle. Rangez ici des armes, des munitions, des gilets et de l’argent. Stockage ouvert pour utiliser l'inventaire de ce bâtiment : vous devez être dans le même pays. Les mises à niveau augmentent la taille de la cachette et du logement. Develop dépense de l’argent en banque pour un bonus de revenu passif permanent.",
   "propertyInfoWarehouse": "Un entrepôt stocke uniquement des outils. Les mises à niveau ajoutent plus d'emplacements. Stockage ouvert pour gérer les outils de ce bâtiment : vous devez être dans le même pays. Develop dépense de l’argent en banque pour un bonus de revenu passif permanent.",
   "propertyInfoNightclub": "L'achat d'une discothèque déverrouille l'écran de gestion de la discothèque. La foule, les ventes et les médicaments y sont gérés, pas sur cet aperçu. Vous pouvez toujours améliorer et développer cette propriété ici pour une capacité supplémentaire et un revenu passif.",
-  "inventoryNoOwnedStorageHint": "Achetez une maison, un appartement ou un entrepôt pour débloquer un espace de stockage supplémentaire ici."
+  "inventoryNoOwnedStorageHint": "Achetez une maison, un appartement ou un entrepôt pour débloquer un espace de stockage supplémentaire ici.",
+  "propertyRoleCasino": "Un casino par pays. Revenu passif élevé ; mettre à niveau et développer pour l'élever.",
+  "propertyInfoCasino": "Le casino est unique par pays. Il rapporte un revenu passif et peut être amélioré ou développé. Il n'y a aucune cachette personnelle sur ce bâtiment.",
+  "propertyUpgradeNextStorage": "{from} → {to} emplacements",
+  "@propertyUpgradeNextStorage": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextHousing": "{from} → {to} travailleurs",
+  "@propertyUpgradeNextHousing": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextIncome": "+{amount} revenus",
+  "@propertyUpgradeNextIncome": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySlotsLabel": "Machines à sous pays",
+  "propertySlotsInCountry": "{available} / {max} reste",
+  "@propertySlotsInCountry": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "propertySlotsGone": "Plus de créneaux disponibles dans ce pays",
+  "propertyUniqueTaken": "Déjà revendiqué dans ce pays",
+  "propertySellAction": "Vendre",
+  "propertySellActionPrice": "Vendre · {price}",
+  "@propertySellActionPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellConfirmTitle": "Vendre ce bien ?",
+  "propertySellConfirmBody": "Vous recevez {price} cash (70% du prix d'achat). Videz d’abord le stockage.",
+  "@propertySellConfirmBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySold": "Sold for {price}",
+  "@propertySold": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellErrorStorage": "Videz d'abord ce bâtiment.",
+  "propertySellErrorCountry": "Voyagez dans ce pays pour vendre.",
+  "propertySellErrorNightclub": "Videz le stock de la discothèque avant de le vendre.",
+  "propertySellErrorUnknown": "Impossible de vendre cette propriété."
 }

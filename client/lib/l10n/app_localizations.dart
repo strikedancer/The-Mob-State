@@ -9449,6 +9449,114 @@ abstract class AppLocalizations {
   /// **'Buying a nightclub unlocks the nightclub management screen. Crowd, sales and drugs are handled there, not on this overview. You can still upgrade and develop this property here for extra capacity and passive income.'**
   String get propertyInfoNightclub;
 
+  /// No description provided for @propertyRoleCasino.
+  ///
+  /// In en, this message translates to:
+  /// **'One casino per country. High passive income; upgrade and develop to raise it.'**
+  String get propertyRoleCasino;
+
+  /// No description provided for @propertyInfoCasino.
+  ///
+  /// In en, this message translates to:
+  /// **'The casino is unique per country. It pays passive income and can be upgraded or developed. There is no personal stash on this building.'**
+  String get propertyInfoCasino;
+
+  /// No description provided for @propertyUpgradeNextStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to} slots'**
+  String propertyUpgradeNextStorage(int from, int to);
+
+  /// No description provided for @propertyUpgradeNextHousing.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to} workers'**
+  String propertyUpgradeNextHousing(int from, int to);
+
+  /// No description provided for @propertyUpgradeNextIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'+{amount} income'**
+  String propertyUpgradeNextIncome(String amount);
+
+  /// No description provided for @propertySlotsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country slots'**
+  String get propertySlotsLabel;
+
+  /// No description provided for @propertySlotsInCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'{available} / {max} left'**
+  String propertySlotsInCountry(int available, int max);
+
+  /// No description provided for @propertySlotsGone.
+  ///
+  /// In en, this message translates to:
+  /// **'No slots left in this country'**
+  String get propertySlotsGone;
+
+  /// No description provided for @propertyUniqueTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Already claimed in this country'**
+  String get propertyUniqueTaken;
+
+  /// No description provided for @propertySellAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell'**
+  String get propertySellAction;
+
+  /// No description provided for @propertySellActionPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell · {price}'**
+  String propertySellActionPrice(String price);
+
+  /// No description provided for @propertySellConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell this property?'**
+  String get propertySellConfirmTitle;
+
+  /// No description provided for @propertySellConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You receive {price} cash (70% of the purchase price). Empty the storage first.'**
+  String propertySellConfirmBody(String price);
+
+  /// No description provided for @propertySold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold for {price}'**
+  String propertySold(String price);
+
+  /// No description provided for @propertySellErrorStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty this building first.'**
+  String get propertySellErrorStorage;
+
+  /// No description provided for @propertySellErrorCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel to this country to sell.'**
+  String get propertySellErrorCountry;
+
+  /// No description provided for @propertySellErrorNightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear nightclub stock before selling.'**
+  String get propertySellErrorNightclub;
+
+  /// No description provided for @propertySellErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not sell this property.'**
+  String get propertySellErrorUnknown;
+
   /// No description provided for @blackMarket.
   ///
   /// In en, this message translates to:
@@ -27976,7 +28084,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPropertiesHow.
   ///
   /// In en, this message translates to:
-  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
+  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. Warehouse and nightclub slots per country are shown in the shop. The casino is unique per country.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
   String get helpTopicPropertiesHow;
 
   /// No description provided for @helpTopicPropertiesTips.

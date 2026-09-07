@@ -6,8 +6,9 @@ Property buying, upgrading, utility and ownership rules.
 Scope-afbakening:
 - Shop valt buiten deze module en wordt hier niet getoond of geclaimd.
 - Nightclub is wél koopbaar via deze module (aankoop start het nachtclub-systeem); beheer van de nachtclub zelf vindt echter plaats in de aparte Nightclub-module.
-- Deze module richt zich op house/apartment/warehouse/nightclub (en eventuele toekomstige property types die expliciet aan deze flow gekoppeld zijn).
-- **Development (v1):** permanente income-boost per eigendom via bank-spend (`developmentLevel` / `lastDevelopAt`), los van warehouse capacity upgrades.
+- Deze module richt zich op house/apartment/warehouse/nightclub/casino (shop blijft verborgen). Casino is unique per land. Warehouse heeft beperkte landslots (UI toont vrij/max). Upgrade-max is 6.
+- **Development (v1):** permanente income-boost per eigendom via bank-spend (`developmentLevel` / `lastDevelopAt`), los van warehouse capacity upgrades. Alleen op panden met passief inkomen (magazijn, nachtclub, casino) — niet op huis/appartement.
+- **Sell:** `POST /properties/:id/sell` keert 70% van `purchasePrice` contant uit. Vereist hetzelfde land, lege property-storage (en lege nachtclubvoorraad). Direct, geen cooldown.
 - Residential storage (house/apartment/mansion/penthouse/safehouse): `weapons, cash, ammo, armor`. Warehouse: `tools`. Nightclub drugs stay on the nightclub module.
 - **Open storage** on a house or warehouse opens Inventory with that property selected. Access still requires the same country (`accessibleInCurrentCountry` / `WRONG_COUNTRY`).
 
@@ -38,7 +39,9 @@ Scope-afbakening:
 - Responsive usability without pushing critical actions off-screen.
 - Backend en frontend moeten dezelfde zichtbaarheid hanteren voor property types (geen verborgen type dat toch via API claimbaar blijft).
 - Property development: bank-only cost, max level + cooldown via runtime keys, income multiplier applies consistently in passive income calc.
-- Develop UI: confirm dialog, mapped errors, cooldown remaining on `/properties/mine` + 429 params, and card stats for level/bonus/income.
+- Develop UI: confirm dialog, mapped errors, cooldown remaining on `/properties/mine` + 429 params, and card stats for level/bonus/income. Hide Develop when `canDevelop` is false.
+- Upgrade UI: confirm + next storage/housing/income preview; cash-lock like buy.
+- Sell UI: confirm with 70% cash, mapped empty-storage / wrong-country / nightclub-stock errors.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -64,6 +67,8 @@ Endpoint: `POST /properties/:id/develop`
 - Verify nightclub is visible in properties list and can be purchased (creating a nightclubVenue record).
 - Verify develop spends bank, raises `developmentLevel`, and increases passive income display/calc.
 - Verify a house can store weapons, ammo and a vest, and that a warehouse still only accepts tools.
+- Verify sell pays 70% cash, blocks when storage or nightclub stock is not empty, and frees a country slot.
+- Verify casino is unique per country and warehouse/nightclub show remaining country slots.
 - Verify Open storage from a property opens Inventory with that building selected, and a property in another country stays locked.
 
 ## When To Update This File

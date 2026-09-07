@@ -11374,5 +11374,81 @@
   "propertyInfoApartment": "Mieszkanie zwiększa pojemność mieszkaniową i osobistą skrytkę. Przechowuj tutaj broń, amunicję, kamizelki i gotówkę. Otwórz magazyn, aby skorzystać z zapasów dla tego budynku — musisz znajdować się w tym samym kraju. Ulepszenia zwiększają rozmiar skrytki i obudowy. Develop wydaje pieniądze banku na stałą premię za dochód pasywny.",
   "propertyInfoWarehouse": "Magazyn przechowuje wyłącznie narzędzia. Ulepszenia dodają więcej miejsc. Otwórz magazyn, aby zarządzać narzędziami dla tego budynku — musisz znajdować się w tym samym kraju. Develop wydaje pieniądze banku na stałą premię za dochód pasywny.",
   "propertyInfoNightclub": "Zakup klubu nocnego odblokowuje ekran zarządzania klubem nocnym. Tłum, sprzedaż i narkotyki są rozpatrywane tam, a nie w tym przeglądzie. Nadal możesz ulepszać i rozwijać tę nieruchomość, aby uzyskać dodatkową pojemność i pasywny dochód.",
-  "inventoryNoOwnedStorageHint": "Kup dom, mieszkanie lub magazyn, aby odblokować tutaj dodatkowe miejsce."
+  "inventoryNoOwnedStorageHint": "Kup dom, mieszkanie lub magazyn, aby odblokować tutaj dodatkowe miejsce.",
+  "propertyRoleCasino": "Jedno kasyno na kraj. Wysoki dochód pasywny; ulepszaj i rozwijaj, aby go podnieść.",
+  "propertyInfoCasino": "Kasyno jest unikalne w każdym kraju. Daje dochód pasywny i można go ulepszać lub rozwijać. W tym budynku nie ma skrytki osobistej.",
+  "propertyUpgradeNextStorage": "{from} → {to} slotów",
+  "@propertyUpgradeNextStorage": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextHousing": "{from} → {to} pracowników",
+  "@propertyUpgradeNextHousing": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextIncome": "+{amount} dochodu",
+  "@propertyUpgradeNextIncome": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySlotsLabel": "Krajowe automaty",
+  "propertySlotsInCountry": "{available} / {max} pozostało",
+  "@propertySlotsInCountry": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "propertySlotsGone": "Brak wolnych miejsc w tym kraju",
+  "propertyUniqueTaken": "Już zgłoszono roszczenia w tym kraju",
+  "propertySellAction": "Sprzedać",
+  "propertySellActionPrice": "Sprzedaj · {price}",
+  "@propertySellActionPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellConfirmTitle": "Sprzedać tę nieruchomość?",
+  "propertySellConfirmBody": "Otrzymujesz {price} gotówki (70% ceny zakupu). Najpierw opróżnij magazyn.",
+  "@propertySellConfirmBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySold": "Sold for {price}",
+  "@propertySold": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellErrorStorage": "Najpierw opróżnij ten budynek.",
+  "propertySellErrorCountry": "Podróżuj do tego kraju, aby sprzedawać.",
+  "propertySellErrorNightclub": "Przed sprzedażą wyczyść zapasy klubu nocnego.",
+  "propertySellErrorUnknown": "Nie udało się sprzedać tej nieruchomości."
 }

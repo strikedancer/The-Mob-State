@@ -5,6 +5,7 @@ import { worldEventService } from './worldEventService';
 import { timeProvider } from '../utils/timeProvider';
 import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
+import { propertyStorageService } from './propertyStorageService';
 
 interface PropertyDefinition {
   id: string;
@@ -17,6 +18,8 @@ interface PropertyDefinition {
   baseIncome: number;
   incomeInterval: number;
   minLevel: number;
+  storageCapacity?: number[];
+  maxLevel?: number;
   features: string[];
   upgradeOptions: Array<{
     level: number;
@@ -64,6 +67,22 @@ class PropertyService {
     const safeCount = Math.max(0, Math.floor(existingCountInCountry));
     const multiplier = 1 + (safeCount * 0.2);
     return Math.max(basePrice, Math.round(basePrice * multiplier));
+  }
+
+  private storageAtLevel(
+    definition: PropertyDefinition | undefined,
+    level: number,
+  ): number {
+    const caps = definition?.storageCapacity ?? [];
+    if (caps.length === 0) return 0;
+    const index = Math.max(0, Math.min(caps.length - 1, level - 1));
+    return Number(caps[index] ?? 0);
+  }
+
+  private definitionHasIncome(definition: PropertyDefinition | undefined): boolean {
+    if (!definition) return false;
+    if ((definition.baseIncome ?? 0) > 0) return true;
+    return (definition.upgradeOptions ?? []).some((opt) => (opt.incomeBonus ?? 0) > 0);
   }
 
   private getScaledUpgradeCost(baseCost: number, ownedCountInCountry: number): number {
@@ -479,16 +498,18 @@ class PropertyService {
 
       // Find next upgrade cost
       let nextUpgradeCost = null;
-      if (definition && definition.upgradeOptions) {
-        const nextUpgrade = definition.upgradeOptions.find(
-          (opt: any) => opt.level === prop.upgradeLevel + 1
-        );
-        const baseNextCost = nextUpgrade?.cost || null;
-        if (baseNextCost && this.isScaledResidentialProperty(prop.propertyType)) {
+      const nextUpgradeFromDef = definition?.upgradeOptions?.find(
+        (opt) => opt.level === prop.upgradeLevel + 1,
+      );
+      if (nextUpgradeFromDef?.cost) {
+        if (this.isScaledResidentialProperty(prop.propertyType)) {
           const ownedCountInCountry = residentialRankByPropertyId[prop.id] ?? 1;
-          nextUpgradeCost = this.getScaledUpgradeCost(baseNextCost, ownedCountInCountry);
+          nextUpgradeCost = this.getScaledUpgradeCost(
+            nextUpgradeFromDef.cost,
+            ownedCountInCountry,
+          );
         } else {
-          nextUpgradeCost = baseNextCost;
+          nextUpgradeCost = nextUpgradeFromDef.cost;
         }
       }
       
@@ -501,6 +522,13 @@ class PropertyService {
         imagePath: definition?.image || null,
         overlayKeys,
         nextUpgradeCost,
+        nextUpgradeIncomeBonus: nextUpgradeFromDef?.incomeBonus ?? 0,
+        nextUpgradeStorageFrom: this.storageAtLevel(definition, prop.upgradeLevel),
+        nextUpgradeStorageTo: nextUpgradeFromDef
+          ? this.storageAtLevel(definition, prop.upgradeLevel + 1)
+          : null,
+        sellPrice: Math.floor(prop.purchasePrice * 0.7),
+        canDevelop: this.definitionHasIncome(definition),
         developmentLevel,
         nextDevelopCost,
         developMaxLevel: developCfg.maxLevel,
@@ -572,6 +600,123 @@ class PropertyService {
     );
 
     return true;
+  }
+
+  async sellProperty(
+    playerId: number,
+    propertyDatabaseId: number,
+  ): Promise<{
+    success: boolean;
+    sellPrice?: number;
+    error?: string;
+  }> {
+    const property = await prisma.property.findUnique({
+      where: { id: propertyDatabaseId },
+    });
+    if (!property) {
+      return { success: false, error: 'PROPERTY_NOT_FOUND' };
+    }
+    if (property.playerId !== playerId) {
+      return { success: false, error: 'NOT_PROPERTY_OWNER' };
+    }
+    if (!this.isPropertyVisibleInPropertiesModule(property.propertyType)) {
+      return { success: false, error: 'PROPERTY_DISABLED' };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    if (!player) {
+      return { success: false, error: 'PLAYER_NOT_FOUND' };
+    }
+    if (player.currentCountry !== property.countryId) {
+      return { success: false, error: 'WRONG_COUNTRY' };
+    }
+
+    try {
+      const detail = await propertyStorageService.getPropertyStorageDetail(
+        playerId,
+        property.id,
+      );
+      if (detail.usage > 0 || (detail.cashAmount ?? 0) > 0) {
+        return { success: false, error: 'STORAGE_NOT_EMPTY' };
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message === 'WRONG_COUNTRY') {
+        return { success: false, error: 'WRONG_COUNTRY' };
+      }
+      throw error;
+    }
+
+    if (property.propertyType === 'nightclub') {
+      const venue = await prisma.nightclubVenue.findUnique({
+        where: { propertyId: property.id },
+        select: { id: true },
+      });
+      if (venue) {
+        const drugs = await prisma.nightclubDrugInventory.findMany({
+          where: { venueId: venue.id },
+          select: { quantity: true },
+        });
+        const leftover = drugs.reduce((sum, row) => sum + (row.quantity ?? 0), 0);
+        if (leftover > 0) {
+          return { success: false, error: 'NIGHTCLUB_NOT_EMPTY' };
+        }
+      }
+    }
+
+    const sellPrice = Math.max(0, Math.floor(property.purchasePrice * 0.7));
+
+    await prisma.$transaction(async (tx) => {
+      if (property.propertyType === 'nightclub') {
+        const venue = await tx.nightclubVenue.findUnique({
+          where: { propertyId: property.id },
+          select: { id: true },
+        });
+        if (venue) {
+          await tx.prostitute.updateMany({
+            where: { nightclubVenueId: venue.id },
+            data: {
+              location: 'street',
+              nightclubVenueId: null,
+              nightclubAssignedAt: null,
+            },
+          });
+          await tx.nightclubVenue.update({
+            where: { id: venue.id },
+            data: { currentDJId: null },
+          });
+        }
+      }
+
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { increment: sellPrice } },
+      });
+      await tx.property.delete({
+        where: { id: property.id },
+      });
+    });
+
+    await worldEventService.createEvent(
+      'property.sold',
+      {
+        propertyType: property.propertyType,
+        country: property.countryId,
+        sellPrice,
+        purchasePrice: property.purchasePrice,
+      },
+      playerId,
+    );
+
+    await activityService.logActivity(
+      playerId,
+      'SALE',
+      `Verkocht eigendom: ${property.propertyType} in ${property.countryId} voor ${sellPrice}`,
+    );
+
+    return { success: true, sellPrice };
   }
 
   /**
@@ -982,6 +1127,11 @@ class PropertyService {
     });
     if (!property) return { success: false, error: 'PROPERTY_NOT_FOUND' };
     if (property.playerId !== playerId) return { success: false, error: 'NOT_PROPERTY_OWNER' };
+
+    const definition = this.getPropertyDefinition(property.propertyType);
+    if (!this.definitionHasIncome(definition)) {
+      return { success: false, error: 'PROPERTY_DEVELOP_DISABLED' };
+    }
 
     const developmentLevel = Math.max(
       0,

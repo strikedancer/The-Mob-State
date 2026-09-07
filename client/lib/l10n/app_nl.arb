@@ -8877,6 +8877,82 @@
   "propertyInfoApartment": "Een appartement geeft wooncapaciteit en een eigen stash. Hier bewaar je wapens, munitie, vesten en contant geld. Open opslag om de inventaris van dit pand te gebruiken — je moet in hetzelfde land zijn. Upgrades vergroten stash en woonruimte. Ontwikkelen betaal je van de bank voor een permanente bonus op passief inkomen.",
   "propertyInfoWarehouse": "Een magazijn slaat alleen gereedschap op. Upgrades geven meer plekken. Open opslag om gereedschap van dit pand te beheren — je moet in hetzelfde land zijn. Ontwikkelen betaal je van de bank voor een permanente bonus op passief inkomen.",
   "propertyInfoNightclub": "Als je een nachtclub koopt, opent het nachtclubbeheer. Publiek, verkoop en drugs lopen via dat scherm, niet via dit overzicht. Hier kun je het pand nog wel upgraden en ontwikkelen voor extra capaciteit en passief inkomen.",
+  "propertyRoleCasino": "Eén casino per land. Hoog passief inkomen; upgrade en ontwikkel om het te verhogen.",
+  "propertyInfoCasino": "Het casino is uniek per land. Het levert passief inkomen en kan worden geüpgraded of ontwikkeld. Dit pand heeft geen eigen stash.",
+  "propertyUpgradeNextStorage": "{from} → {to} plekken",
+  "@propertyUpgradeNextStorage": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextHousing": "{from} → {to} hoeren",
+  "@propertyUpgradeNextHousing": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextIncome": "+{amount} inkomen",
+  "@propertyUpgradeNextIncome": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySlotsLabel": "Landslots",
+  "propertySlotsInCountry": "{available} / {max} vrij",
+  "@propertySlotsInCountry": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "propertySlotsGone": "Geen slots meer in dit land",
+  "propertyUniqueTaken": "Al geclaimd in dit land",
+  "propertySellAction": "Verkopen",
+  "propertySellActionPrice": "Verkoop · {price}",
+  "@propertySellActionPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellConfirmTitle": "Dit eigendom verkopen?",
+  "propertySellConfirmBody": "Je krijgt {price} contant (70% van de aankoopprijs). Maak de opslag eerst leeg.",
+  "@propertySellConfirmBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySold": "Verkocht voor {price}",
+  "@propertySold": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellErrorStorage": "Maak dit pand eerst leeg.",
+  "propertySellErrorCountry": "Reis naar dit land om te verkopen.",
+  "propertySellErrorNightclub": "Ruim eerst de nachtclubvoorraad op.",
+  "propertySellErrorUnknown": "Kon dit eigendom niet verkopen.",
   "inventoryCrimeWeaponTitle": "Geselecteerd crime-wapen",
   "inventoryCrimeWeaponHint": "Selecteer een wapen voor crimes",
   "inventoryCrimeWeaponHelp": "Zet wapens op slot 1 en slot 2. Crimes kiest per crime automatisch het beste gedragen wapen.",
@@ -9916,7 +9992,7 @@
   "helpTopicPropertiesCategory": "Economie",
   "helpTopicPropertiesTitle": "Eigendommen",
   "helpTopicPropertiesSummary": "Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.",
-  "helpTopicPropertiesHow": "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash; magazijnen bewaren gereedschap. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).",
+  "helpTopicPropertiesHow": "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash; magazijnen bewaren gereedschap. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Magazijn- en nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).",
   "helpTopicPropertiesTips": "Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.\nKies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.\nVerkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.\nOntwikkel eerst eigendommen met hoog basisinkomen — de procentuele boost telt harder daar.",
   "helpTopicBankCategory": "Economie",
   "helpTopicBankTitle": "Bank",

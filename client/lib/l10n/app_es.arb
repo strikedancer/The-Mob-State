@@ -11374,5 +11374,81 @@
   "propertyInfoApartment": "Un apartamento añade capacidad de vivienda y un alijo personal. Guarda armas, municiones, chalecos y dinero en efectivo aquí. Almacenamiento abierto para usar el inventario de este edificio; debes estar en el mismo país. Las mejoras aumentan el tamaño del alijo y la vivienda. Develop gasta dinero del banco para obtener un bono permanente de ingresos pasivos.",
   "propertyInfoWarehouse": "Un almacén almacena únicamente herramientas. Las actualizaciones agregan más espacios. Almacenamiento abierto para administrar herramientas para este edificio; debes estar en el mismo país. Develop gasta dinero del banco para obtener un bono permanente de ingresos pasivos.",
   "propertyInfoNightclub": "Comprar una discoteca desbloquea la pantalla de gestión de la discoteca. Las multitudes, las ventas y las drogas se tratan allí, no en esta visión general. Aún puede actualizar y desarrollar esta propiedad aquí para obtener capacidad adicional e ingresos pasivos.",
-  "inventoryNoOwnedStorageHint": "Compre una casa, apartamento o almacén para desbloquear almacenamiento adicional aquí."
+  "inventoryNoOwnedStorageHint": "Compre una casa, apartamento o almacén para desbloquear almacenamiento adicional aquí.",
+  "propertyRoleCasino": "Un casino por país. Altos ingresos pasivos; actualizar y desarrollar para elevarlo.",
+  "propertyInfoCasino": "El casino es único por país. Paga ingresos pasivos y puede actualizarse o desarrollarse. No hay ningún tesoro personal en este edificio.",
+  "propertyUpgradeNextStorage": "{from} → {to} espacios",
+  "@propertyUpgradeNextStorage": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextHousing": "{from} → {to} trabajadoras",
+  "@propertyUpgradeNextHousing": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextIncome": "+{amount} ingresos",
+  "@propertyUpgradeNextIncome": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySlotsLabel": "tragamonedas de pais",
+  "propertySlotsInCountry": "{available} / {max} izquierda",
+  "@propertySlotsInCountry": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "propertySlotsGone": "No quedan espacios en este país",
+  "propertyUniqueTaken": "Ya reclamado en este país.",
+  "propertySellAction": "Vender",
+  "propertySellActionPrice": "Vender · {price}",
+  "@propertySellActionPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellConfirmTitle": "¿Vender esta propiedad?",
+  "propertySellConfirmBody": "Recibes {price} en efectivo (70% del precio de compra). Primero vacíe el almacenamiento.",
+  "@propertySellConfirmBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySold": "Sold for {price}",
+  "@propertySold": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellErrorStorage": "Primero vacíe este edificio.",
+  "propertySellErrorCountry": "Viaja a este país para vender.",
+  "propertySellErrorNightclub": "Limpiar las existencias del Nightclub antes de vender.",
+  "propertySellErrorUnknown": "No se pudo vender esta propiedad."
 }

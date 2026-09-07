@@ -526,6 +526,51 @@ router.post('/:id/collect', authenticate, async (req: AuthRequest, res: Response
 });
 
 /**
+ * POST /properties/:id/sell
+ * Sell a property for 70% of purchase price. Storage must be empty.
+ */
+router.post('/:id/sell', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.id), 10);
+    if (isNaN(propertyId)) {
+      return res.status(400).json({
+        event: 'error.invalid_property_id',
+        params: {},
+      });
+    }
+
+    const result = await propertyService.sellProperty(req.player!.id, propertyId);
+    if (!result.success) {
+      const map: Record<string, [number, string]> = {
+        PROPERTY_NOT_FOUND: [404, 'property.sell_failed'],
+        NOT_PROPERTY_OWNER: [403, 'property.sell_failed'],
+        PROPERTY_DISABLED: [403, 'property.sell_failed'],
+        PLAYER_NOT_FOUND: [404, 'property.sell_failed'],
+        WRONG_COUNTRY: [403, 'property.sell_failed'],
+        STORAGE_NOT_EMPTY: [400, 'property.sell_failed'],
+        NIGHTCLUB_NOT_EMPTY: [400, 'property.sell_failed'],
+      };
+      const entry = map[result.error ?? ''] ?? [400, 'property.sell_failed'];
+      return res.status(entry[0]).json({
+        event: entry[1],
+        params: { reason: result.error },
+      });
+    }
+
+    return res.status(200).json({
+      event: 'property.sold',
+      params: { sellPrice: result.sellPrice, propertyId },
+    });
+  } catch (error: any) {
+    console.error('Error selling property:', error);
+    return res.status(500).json({
+      event: 'error.server',
+      params: { message: error.message },
+    });
+  }
+});
+
+/**
  * POST /properties/:id/upgrade
  * Upgrade a property to the next level
  */

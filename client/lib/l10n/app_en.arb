@@ -3182,6 +3182,62 @@
   "propertyInfoApartment": "An apartment adds housing capacity and a personal stash. Store weapons, ammo, vests and cash here. Open storage to use inventory for this building — you must be in the same country. Upgrades raise stash size and housing. Develop spends bank money for a permanent passive-income bonus.",
   "propertyInfoWarehouse": "A warehouse stores tools only. Upgrades add more slots. Open storage to manage tools for this building — you must be in the same country. Develop spends bank money for a permanent passive-income bonus.",
   "propertyInfoNightclub": "Buying a nightclub unlocks the nightclub management screen. Crowd, sales and drugs are handled there, not on this overview. You can still upgrade and develop this property here for extra capacity and passive income.",
+  "propertyRoleCasino": "One casino per country. High passive income; upgrade and develop to raise it.",
+  "propertyInfoCasino": "The casino is unique per country. It pays passive income and can be upgraded or developed. There is no personal stash on this building.",
+  "propertyUpgradeNextStorage": "{from} → {to} slots",
+  "@propertyUpgradeNextStorage": {
+    "placeholders": {
+      "from": { "type": "int" },
+      "to": { "type": "int" }
+    }
+  },
+  "propertyUpgradeNextHousing": "{from} → {to} workers",
+  "@propertyUpgradeNextHousing": {
+    "placeholders": {
+      "from": { "type": "int" },
+      "to": { "type": "int" }
+    }
+  },
+  "propertyUpgradeNextIncome": "+{amount} income",
+  "@propertyUpgradeNextIncome": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "propertySlotsLabel": "Country slots",
+  "propertySlotsInCountry": "{available} / {max} left",
+  "@propertySlotsInCountry": {
+    "placeholders": {
+      "available": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "propertySlotsGone": "No slots left in this country",
+  "propertyUniqueTaken": "Already claimed in this country",
+  "propertySellAction": "Sell",
+  "propertySellActionPrice": "Sell · {price}",
+  "@propertySellActionPrice": {
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+  "propertySellConfirmTitle": "Sell this property?",
+  "propertySellConfirmBody": "You receive {price} cash (70% of the purchase price). Empty the storage first.",
+  "@propertySellConfirmBody": {
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+  "propertySold": "Sold for {price}",
+  "@propertySold": {
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+  "propertySellErrorStorage": "Empty this building first.",
+  "propertySellErrorCountry": "Travel to this country to sell.",
+  "propertySellErrorNightclub": "Clear nightclub stock before selling.",
+  "propertySellErrorUnknown": "Could not sell this property.",
   "blackMarket": "Black Market",
   "blackMarketShops": "Shops",
   "blackMarketPlayerMarket": "Player market",
@@ -10388,7 +10444,7 @@
   "helpTopicPropertiesCategory": "Economy",
   "helpTopicPropertiesTitle": "Properties",
   "helpTopicPropertiesSummary": "Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost.",
-  "helpTopicPropertiesHow": "Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property's passive income (max level and cooldown are server-tuned).",
+  "helpTopicPropertiesHow": "Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. Warehouse and nightclub slots per country are shown in the shop. The casino is unique per country.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property's passive income (max level and cooldown are server-tuned).",
   "helpTopicPropertiesTips": "Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nDevelop high base-income properties first — the percentage boost matters more there.",
   "helpTopicBankCategory": "Economy",
   "helpTopicBankTitle": "Bank",

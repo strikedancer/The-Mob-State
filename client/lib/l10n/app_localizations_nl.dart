@@ -5313,6 +5313,77 @@ class AppLocalizationsNl extends AppLocalizations {
       'Als je een nachtclub koopt, opent het nachtclubbeheer. Publiek, verkoop en drugs lopen via dat scherm, niet via dit overzicht. Hier kun je het pand nog wel upgraden en ontwikkelen voor extra capaciteit en passief inkomen.';
 
   @override
+  String get propertyRoleCasino =>
+      'Eén casino per land. Hoog passief inkomen; upgrade en ontwikkel om het te verhogen.';
+
+  @override
+  String get propertyInfoCasino =>
+      'Het casino is uniek per land. Het levert passief inkomen en kan worden geüpgraded of ontwikkeld. Dit pand heeft geen eigen stash.';
+
+  @override
+  String propertyUpgradeNextStorage(int from, int to) {
+    return '$from → $to plekken';
+  }
+
+  @override
+  String propertyUpgradeNextHousing(int from, int to) {
+    return '$from → $to hoeren';
+  }
+
+  @override
+  String propertyUpgradeNextIncome(String amount) {
+    return '+$amount inkomen';
+  }
+
+  @override
+  String get propertySlotsLabel => 'Landslots';
+
+  @override
+  String propertySlotsInCountry(int available, int max) {
+    return '$available / $max vrij';
+  }
+
+  @override
+  String get propertySlotsGone => 'Geen slots meer in dit land';
+
+  @override
+  String get propertyUniqueTaken => 'Al geclaimd in dit land';
+
+  @override
+  String get propertySellAction => 'Verkopen';
+
+  @override
+  String propertySellActionPrice(String price) {
+    return 'Verkoop · $price';
+  }
+
+  @override
+  String get propertySellConfirmTitle => 'Dit eigendom verkopen?';
+
+  @override
+  String propertySellConfirmBody(String price) {
+    return 'Je krijgt $price contant (70% van de aankoopprijs). Maak de opslag eerst leeg.';
+  }
+
+  @override
+  String propertySold(String price) {
+    return 'Verkocht voor $price';
+  }
+
+  @override
+  String get propertySellErrorStorage => 'Maak dit pand eerst leeg.';
+
+  @override
+  String get propertySellErrorCountry => 'Reis naar dit land om te verkopen.';
+
+  @override
+  String get propertySellErrorNightclub =>
+      'Ruim eerst de nachtclubvoorraad op.';
+
+  @override
+  String get propertySellErrorUnknown => 'Kon dit eigendom niet verkopen.';
+
+  @override
   String get blackMarket => 'Zwarte Markt';
 
   @override
@@ -16192,7 +16263,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash; magazijnen bewaren gereedschap. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.\nVerkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
+      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash; magazijnen bewaren gereedschap. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Magazijn- en nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
 
   @override
   String get helpTopicPropertiesTips =>

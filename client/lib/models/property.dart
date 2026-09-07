@@ -11,6 +11,10 @@ class PropertyDefinition {
   final bool unique; // Casino = true (1 per country)
   final List<int> storageCapacity; // Tool storage slots per level (0 = no storage)
   final String? imagePath;
+  final bool countryAvailable;
+  final int? slotsAvailable;
+  final int? ownedCount;
+  final int? maxOwners;
 
   PropertyDefinition({
     required this.id,
@@ -25,6 +29,10 @@ class PropertyDefinition {
     this.unique = false,
     this.storageCapacity = const [0],
     this.imagePath,
+    this.countryAvailable = true,
+    this.slotsAvailable,
+    this.ownedCount,
+    this.maxOwners,
   });
 
   factory PropertyDefinition.fromJson(Map<String, dynamic> json) {
@@ -38,11 +46,16 @@ class PropertyDefinition {
       minLevel: json['minLevel'] as int? ?? 1,
       maxLevel: json['maxLevel'] as int? ?? 3,
       upgradeMultiplier: json['upgradeMultiplier'] as int? ?? 2,
-      unique: json['unique'] as bool? ?? false,
+      unique:
+          json['unique'] as bool? ?? json['type'] == 'unique_per_country',
       storageCapacity: (json['storageCapacity'] is List)
           ? List<int>.from(json['storageCapacity'])
           : [json['storageCapacity'] as int? ?? 0],
-      imagePath: json['imagePath'] as String?,
+      imagePath: json['imagePath'] as String? ?? json['image'] as String?,
+      countryAvailable: json['countryAvailable'] as bool? ?? true,
+      slotsAvailable: (json['slotsAvailable'] as num?)?.toInt(),
+      ownedCount: (json['ownedCount'] as num?)?.toInt(),
+      maxOwners: (json['maxOwners'] as num?)?.toInt(),
     );
   }
 
@@ -86,6 +99,11 @@ class Property {
   final int developMaxLevel;
   final int developIncomeBonusPercentPerLevel;
   final int developCooldownRemainingSeconds;
+  final int? nextUpgradeIncomeBonus;
+  final int? nextUpgradeStorageFrom;
+  final int? nextUpgradeStorageTo;
+  final int? sellPrice;
+  final bool canDevelop;
 
   Property({
     required this.id,
@@ -107,10 +125,17 @@ class Property {
     this.developMaxLevel = 5,
     this.developIncomeBonusPercentPerLevel = 0,
     this.developCooldownRemainingSeconds = 0,
+    this.nextUpgradeIncomeBonus,
+    this.nextUpgradeStorageFrom,
+    this.nextUpgradeStorageTo,
+    this.sellPrice,
+    this.canDevelop = false,
   });
 
   bool get canDevelopNow =>
-      nextDevelopCost != null && developCooldownRemainingSeconds <= 0;
+      canDevelop &&
+      nextDevelopCost != null &&
+      developCooldownRemainingSeconds <= 0;
 
   factory Property.fromJson(Map<String, dynamic> json) {
     return Property(
@@ -141,6 +166,11 @@ class Property {
           (json['developIncomeBonusPercentPerLevel'] as num?)?.toInt() ?? 0,
       developCooldownRemainingSeconds:
           (json['developCooldownRemainingSeconds'] as num?)?.toInt() ?? 0,
+      nextUpgradeIncomeBonus: (json['nextUpgradeIncomeBonus'] as num?)?.toInt(),
+      nextUpgradeStorageFrom: (json['nextUpgradeStorageFrom'] as num?)?.toInt(),
+      nextUpgradeStorageTo: (json['nextUpgradeStorageTo'] as num?)?.toInt(),
+      sellPrice: (json['sellPrice'] as num?)?.toInt(),
+      canDevelop: json['canDevelop'] as bool? ?? false,
     );
   }
 

@@ -5278,6 +5278,77 @@ class AppLocalizationsEn extends AppLocalizations {
       'Buying a nightclub unlocks the nightclub management screen. Crowd, sales and drugs are handled there, not on this overview. You can still upgrade and develop this property here for extra capacity and passive income.';
 
   @override
+  String get propertyRoleCasino =>
+      'One casino per country. High passive income; upgrade and develop to raise it.';
+
+  @override
+  String get propertyInfoCasino =>
+      'The casino is unique per country. It pays passive income and can be upgraded or developed. There is no personal stash on this building.';
+
+  @override
+  String propertyUpgradeNextStorage(int from, int to) {
+    return '$from → $to slots';
+  }
+
+  @override
+  String propertyUpgradeNextHousing(int from, int to) {
+    return '$from → $to workers';
+  }
+
+  @override
+  String propertyUpgradeNextIncome(String amount) {
+    return '+$amount income';
+  }
+
+  @override
+  String get propertySlotsLabel => 'Country slots';
+
+  @override
+  String propertySlotsInCountry(int available, int max) {
+    return '$available / $max left';
+  }
+
+  @override
+  String get propertySlotsGone => 'No slots left in this country';
+
+  @override
+  String get propertyUniqueTaken => 'Already claimed in this country';
+
+  @override
+  String get propertySellAction => 'Sell';
+
+  @override
+  String propertySellActionPrice(String price) {
+    return 'Sell · $price';
+  }
+
+  @override
+  String get propertySellConfirmTitle => 'Sell this property?';
+
+  @override
+  String propertySellConfirmBody(String price) {
+    return 'You receive $price cash (70% of the purchase price). Empty the storage first.';
+  }
+
+  @override
+  String propertySold(String price) {
+    return 'Sold for $price';
+  }
+
+  @override
+  String get propertySellErrorStorage => 'Empty this building first.';
+
+  @override
+  String get propertySellErrorCountry => 'Travel to this country to sell.';
+
+  @override
+  String get propertySellErrorNightclub =>
+      'Clear nightclub stock before selling.';
+
+  @override
+  String get propertySellErrorUnknown => 'Could not sell this property.';
+
+  @override
   String get blackMarket => 'Black Market';
 
   @override
@@ -16150,7 +16221,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).';
+      'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. Warehouse and nightclub slots per country are shown in the shop. The casino is unique per country.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).';
 
   @override
   String get helpTopicPropertiesTips =>

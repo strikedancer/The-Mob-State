@@ -11374,5 +11374,81 @@
   "propertyInfoApartment": "Eine Wohnung erhöht die Wohnkapazität und einen persönlichen Vorrat. Bewahren Sie hier Waffen, Munition, Westen und Bargeld auf. Öffnen Sie den Lagerraum, um Inventar für dieses Gebäude zu verwenden. Sie müssen sich im selben Land befinden. Upgrades erhöhen die Lagergröße und den Wohnraum. Develop gibt Bankgelder für einen dauerhaften passiven Einkommensbonus aus.",
   "propertyInfoWarehouse": "In einem Lager werden ausschließlich Werkzeuge gelagert. Durch Upgrades werden weitere Slots hinzugefügt. Öffnen Sie den Speicher, um Werkzeuge für dieses Gebäude zu verwalten – Sie müssen sich im selben Land befinden. Develop gibt Bankgelder für einen dauerhaften passiven Einkommensbonus aus.",
   "propertyInfoNightclub": "Durch den Kauf eines Nachtclubs wird der Nightclub-Verwaltungsbildschirm freigeschaltet. Menschenmenge, Verkauf und Drogen werden dort behandelt, nicht auf dieser Übersicht. Sie können diese Immobilie hier noch upgraden und weiterentwickeln, um zusätzliche Kapazität und passives Einkommen zu erzielen.",
-  "inventoryNoOwnedStorageHint": "Kaufen Sie hier ein Haus, eine Wohnung oder ein Lagerhaus, um zusätzlichen Lagerraum freizuschalten."
+  "inventoryNoOwnedStorageHint": "Kaufen Sie hier ein Haus, eine Wohnung oder ein Lagerhaus, um zusätzlichen Lagerraum freizuschalten.",
+  "propertyRoleCasino": "Ein Casino pro Land. Hohes passives Einkommen; Verbessern und entwickeln Sie es, um es zu erhöhen.",
+  "propertyInfoCasino": "Das Casino ist pro Land einzigartig. Es zahlt passives Einkommen und kann aufgerüstet oder ausgebaut werden. In diesem Gebäude gibt es keine persönlichen Verstecke.",
+  "propertyUpgradeNextStorage": "{from} → {to} Steckplätze",
+  "@propertyUpgradeNextStorage": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextHousing": "{from} → {to} Arbeiter",
+  "@propertyUpgradeNextHousing": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyUpgradeNextIncome": "+{amount} Einkommen",
+  "@propertyUpgradeNextIncome": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySlotsLabel": "Länderslots",
+  "propertySlotsInCountry": "{available} / {max} übrig",
+  "@propertySlotsInCountry": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "propertySlotsGone": "In diesem Land sind keine Slots mehr verfügbar",
+  "propertyUniqueTaken": "Hierzulande bereits beansprucht",
+  "propertySellAction": "Verkaufen",
+  "propertySellActionPrice": "Verkaufen · {price}",
+  "@propertySellActionPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellConfirmTitle": "Diese Immobilie verkaufen?",
+  "propertySellConfirmBody": "Sie erhalten {price} Bargeld (70 % des Kaufpreises). Leeren Sie zuerst den Speicher.",
+  "@propertySellConfirmBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySold": "Sold for {price}",
+  "@propertySold": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "propertySellErrorStorage": "Leeren Sie zuerst dieses Gebäude.",
+  "propertySellErrorCountry": "Reisen Sie in dieses Land, um zu verkaufen.",
+  "propertySellErrorNightclub": "Räumen Sie Nachtclubbestände auf, bevor Sie sie verkaufen.",
+  "propertySellErrorUnknown": "Diese Immobilie konnte nicht verkauft werden."
 }
