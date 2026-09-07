@@ -29,7 +29,7 @@ Scope-afbakening:
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
-- Residential house/apartment kaarten gebruiken `EstateLotView` gekoppeld aan `upgradeLevel` (house/parking/shed/hek), via `WebAssetHelper` + catalogus-PNG fallback (`house.png` / `apartment.png`). Preview-route (`/estate-lot-preview`) blijft beschikbaar, niet in de player-AppBar. Compose-pad: `scripts/compose_estate_grid_12x12.py`. Deploy kopieert `homes/` en `properties/` naar `runtime/client-images`.
+- Owned en available kaarten gebruiken dezelfde catalogusfoto (`house.png`, `apartment.png`, `warehouse.png`, `nightclub.png`) via `WebAssetHelper`. Geen `EstateLotView` op dit scherm. Deploy kopieert `properties/` naar `runtime/client-images`.
 - Default tab is **My properties**. Lege owned-staat heeft een CTA naar Available. Available heeft type-chips, cash/rank-lock op kopen, en geformatteerde confirm voor buy + upgrade. Fouten zijn per tab; een refresh wist geen bestaande lijst.
 - Brede schermen (≥720px twee kolommen, ≥1180px drie). Mobiel blijft één kolom. Elke kaart heeft een info-knop met type-uitleg + stats.
 - Clear success and failure feedback for the player.

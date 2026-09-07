@@ -3,7 +3,6 @@ import '../models/property.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../l10n/app_localizations.dart';
-import 'estate_lot_view.dart';
 import 'responsive_modal.dart';
 
 class PropertyCard extends StatelessWidget {
@@ -49,7 +48,6 @@ class PropertyCard extends StatelessWidget {
     final imagePath = _resolvedImagePath(propertyId);
 
     final imageHeight = expandToFill ? 140.0 : 150.0;
-    final lotHeight = expandToFill ? 176.0 : 220.0;
     final infoBody = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -120,26 +118,7 @@ class PropertyCard extends StatelessWidget {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (isOwned &&
-                    (propertyId == 'house' || propertyId == 'apartment'))
-                  SizedBox(
-                    height: lotHeight,
-                    width: double.infinity,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        if (imagePath != null) _buildPropertyImage(imagePath),
-                        EstateLotView(
-                          houseLevel: ownedProperty!.level,
-                          parkingLevel: ownedProperty!.level,
-                          shedLevel: (ownedProperty!.level - 1).clamp(1, 10),
-                          fenceLevel: ownedProperty!.level,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  )
-                else if (imagePath != null)
+                if (imagePath != null)
                   Container(
                     height: imageHeight,
                     width: double.infinity,
