@@ -7,6 +7,7 @@ import prisma from '../lib/prisma';
 import config from '../config';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
+import { propertyStorageService } from './propertyStorageService';
 
 async function runFbiSideEffect(
   label: string,
@@ -209,6 +210,18 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
         jailTime,
       },
       true
+    );
+  });
+
+  void runFbiSideEffect('warehouse search', async () => {
+    const result = await propertyStorageService.searchWarehousesOnArrest(playerId);
+    if (result.seizedUnits <= 0 && result.cashSeized <= 0) return;
+    await activityService.logActivity(
+      playerId,
+      'ARREST',
+      'FBI searched your warehouse and seized part of the stock',
+      result,
+      true,
     );
   });
 

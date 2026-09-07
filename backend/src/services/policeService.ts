@@ -2,6 +2,21 @@ import prisma from '../lib/prisma';
 import config from '../config';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
+import { propertyStorageService } from './propertyStorageService';
+
+async function searchWarehousesAfterArrest(playerId: number): Promise<void> {
+  await runPoliceSideEffect('warehouse search', async () => {
+    const result = await propertyStorageService.searchWarehousesOnArrest(playerId);
+    if (result.seizedUnits <= 0 && result.cashSeized <= 0) return;
+    await activityService.logActivity(
+      playerId,
+      'ARREST',
+      'Police searched your warehouse and seized part of the stock',
+      result,
+      true,
+    );
+  });
+}
 
 async function runPoliceSideEffect(
   label: string,
@@ -332,6 +347,7 @@ export async function setJailReleaseClock(
     where: { id: playerId },
     data: { jailRelease },
   });
+  void searchWarehousesAfterArrest(playerId);
   return jailRelease;
 }
 
@@ -374,6 +390,8 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
       true
     );
   });
+
+  void searchWarehousesAfterArrest(playerId);
 
   void notificationService.sendArrestAwaitingHelpNotifications(
     playerId,

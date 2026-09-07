@@ -21,7 +21,7 @@ interface ToolsData {
 }
 
 const PROPERTY_STORAGE_RULES: Record<string, string[]> = {
-  warehouse: ['tools'],
+  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor'],
   nightclub: ['drugs'],
   house: ['weapons', 'cash', 'ammo', 'armor'],
   apartment: ['weapons', 'cash', 'ammo', 'armor'],

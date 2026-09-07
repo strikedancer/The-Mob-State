@@ -36,6 +36,7 @@ class PropertyService {
   private properties: PropertyDefinition[] = [];
   private readonly hiddenPropertyIds = new Set(['shop']);
   private readonly scaledResidentialTypes = new Set(['house', 'apartment']);
+  private readonly onePerPlayerPerCountry = new Set(['warehouse']);
 
   constructor() {
     this.loadProperties();
@@ -110,6 +111,7 @@ class PropertyService {
       ownedBy?: number;
       ownedCount?: number;
       slotsAvailable?: number;
+      alreadyOwned?: boolean;
     }>
   > {
     const result = [];
@@ -178,7 +180,7 @@ class PropertyService {
           slotsAvailable,
         });
       } else {
-        // Unlimited: Always available
+        // Unlimited: Always available, except one-per-player types like warehouse
         const adjustedProperty = this.isScaledResidentialProperty(property.id)
           ? {
               ...property,
@@ -186,9 +188,22 @@ class PropertyService {
             }
           : property;
 
+        let alreadyOwned = false;
+        if (
+          this.onePerPlayerPerCountry.has(property.id) &&
+          typeof playerId === 'number' &&
+          playerId > 0
+        ) {
+          const ownedHere = await prisma.property.count({
+            where: { playerId, countryId, propertyType: property.id },
+          });
+          alreadyOwned = ownedHere > 0;
+        }
+
         result.push({
           property: adjustedProperty,
-          available: true,
+          available: !alreadyOwned,
+          alreadyOwned,
         });
       }
     }
@@ -313,6 +328,15 @@ class PropertyService {
     // Check if player is in the correct country (only for country-specific properties)
     if (property.type !== 'unlimited' && player.currentCountry !== countryId) {
       return { success: false, error: 'WRONG_COUNTRY' };
+    }
+
+    if (this.onePerPlayerPerCountry.has(propertyId)) {
+      const ownedHere = await prisma.property.count({
+        where: { playerId, countryId, propertyType: propertyId },
+      });
+      if (ownedHere > 0) {
+        return { success: false, error: 'ALREADY_OWNED' };
+      }
     }
 
     // Generate full property ID

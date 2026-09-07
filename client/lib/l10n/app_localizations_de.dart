@@ -5319,7 +5319,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get propertyRoleWarehouse =>
-      'Werkzeugaufbewahrung. Durch Upgrades werden weitere Slots hinzugefügt.';
+      'Großer Stauraum für Werkzeuge, Waffen, Munition, Westen und Bargeld. Die Polizei durchsucht es, wenn Sie in diesem Land verhaftet werden.';
 
   @override
   String get propertyRoleNightclub =>
@@ -5342,7 +5342,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get propertyInfoWarehouse =>
-      'In einem Lager werden ausschließlich Werkzeuge gelagert. Durch Upgrades werden weitere Slots hinzugefügt. Öffnen Sie den Speicher, um Werkzeuge für dieses Gebäude zu verwalten – Sie müssen sich im selben Land befinden. Develop gibt Bankgelder für einen dauerhaften passiven Einkommensbonus aus.';
+      'In einem Lagerhaus werden Werkzeuge, Waffen, Munition, Westen und Bargeld gelagert. Eine pro Spieler und Land – keine landesweite Slot-Obergrenze. Offene Lagerung im selben Land. Durch Upgrades werden weitere Slots hinzugefügt. Häuser sind bei Festnahme sicherer; Die Polizei durchsucht dieses Lagerhaus und beschlagnahmt etwa 40 % des Lagerbestands, wenn Sie hier festgenommen werden. Develop gibt Bankgelder für einen dauerhaften passiven Einkommensbonus aus.';
 
   @override
   String get propertyInfoNightclub =>
@@ -5382,6 +5382,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get propertySlotsGone =>
       'In diesem Land sind keine Slots mehr verfügbar';
+
+  @override
+  String get propertyAlreadyOwnedInCountry =>
+      'Sie besitzen dies bereits in diesem Land';
 
   @override
   String get propertyUniqueTaken => 'Hierzulande bereits beansprucht';
@@ -16407,7 +16411,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Das Inventar wird als Papierpuppenansicht geöffnet: Ihr Avatar in der Mitte, ein Kriminalwaffen-Slot und ein Westen-Slot sowie quadratische Rucksack-Slots.\nZiehen Sie ein Element (oder tippen Sie darauf und dann auf ein gültiges Ziel), um es zu verschieben. Auf Telefonen ist das Tippen zum Auswählen zuverlässiger als das Ziehen.\nWenn ein Stapel mehr als eine Einheit enthält (Munition, Materialien, gestapelte Waffen oder Werkzeuge), wählen Sie, wie viele Sie verschieben möchten: 1, alle oder eine benutzerdefinierte Menge.\nDas rechte Raster stellt den aktuellen Kontext dar: ein Haus oder Lagerhaus in diesem Land oder das Materialdepot. Hier springt die Option „Lager öffnen auf einem Grundstück“ mit ausgewähltem Gebäude.\nIn Häusern werden Waffen, Munition, Westen und Bargeld aufbewahrt. Lagerhallen lagern Werkzeuge. Materialien bleiben im Landdepot, nicht in einem Haus. Bargeld verwendet Knöpfe, nicht Ziehen.\nSie können nur eine Weste tragen. Wenn Sie eine Weste auf den Avatar fallen lassen, wird dieser ausgerüstet; Wenn man es in einem Haus lagert, wird es entrüstet. Eine zweite getragene Weste wird abgelehnt.\nDer Platz für die Verbrechenswaffe bleibt mit dem Bildschirm „Verbrechen“ synchronisiert. Es zählen nur getragene, verwendbare Waffen.\nDie Kapazität des Rucksacks deckt Werkzeuge, Waffen und mitgeführte Materialien ab. Munition und die getragene Weste belegen keine Rucksackplätze. Der Server lehnt volle Pakete, falsches Land und falschen Eigenschaftstyp ab.\nLoadouts bleiben eine zweite Registerkarte für gespeicherte Kriminal- oder Reisesets.\nMedikamente werden gespeichert und in Gramm angezeigt; 351 bedeutet 351g. Der Mannschaftsraum bleibt ein separater, sicherer Versteck.\nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Drogen im Inventar erhöhen das FBI-Risiko auf internationalen Reisen.';
+      'Das Inventar wird als Papierpuppenansicht geöffnet: Ihr Avatar in der Mitte, ein Platz für eine Kriminalwaffe, ein Platz für eine zweite Waffe und ein Westenplatz sowie quadratische Rucksackplätze. \nZiehen Sie ein Element (oder tippen Sie darauf und dann auf ein gültiges Ziel), um es zu verschieben. Auf Telefonen ist das Tippen zum Auswählen zuverlässiger als das Ziehen. \nWenn ein Stapel mehr als eine Einheit enthält (Munition, Materialien, gestapelte Waffen oder Werkzeuge), wählen Sie, wie viele Sie verschieben möchten: 1, alle oder eine benutzerdefinierte Menge. \nDas rechte Raster stellt den aktuellen Kontext dar: ein Haus oder Lagerhaus in diesem Land oder das Materialdepot. Hier springt die Option „Lager öffnen auf einem Grundstück“ mit ausgewähltem Gebäude. \nHäuser lagern Waffen, Munition, Westen und Bargeld und sind bei Festnahmen sicherer. In Lagerhäusern werden Werkzeuge, Waffen, Munition, Westen und Bargeld gelagert, aber die Polizei durchsucht das Lager in dem Land, in dem Sie verhaftet werden, und beschlagnahmt etwa 40 % dieser Bestände. Materialien bleiben im Landdepot, nicht in einem Haus. Bargeld verwendet Knöpfe, nicht Ziehen. \nSie können nur eine Weste tragen. Wenn Sie eine Weste auf den Avatar fallen lassen, wird dieser ausgerüstet. Wenn man es in einem Haus lagert, wird es entrüstet. Eine zweite getragene Weste wird abgelehnt. \nSie können zwei Waffen gleichzeitig tragen, zum Beispiel eine Pistole und ein Gewehr. Wenn Sie eine Straftat begehen, prüft der Server beide abgenutzten Slots und verwendet automatisch die beste Übereinstimmung für diese Straftat. \nFür Verbrechen zählen nur verwendbare Waffen, die auf Platz 1 oder 2 getragen werden. \nDie Rucksackkapazität deckt Werkzeuge, unbestückte Waffen und mitgeführte Materialien ab. Abgenutzte Waffen, Munition und die abgenutzte Weste belegen keine Rucksackplätze. Der Server lehnt volle Pakete, falsches Land und falschen Eigenschaftstyp ab. \nLoadouts bleiben eine zweite Registerkarte für gespeicherte Kriminal- oder Reisesets. \nMedikamente werden gespeichert und in Gramm angezeigt; 351 bedeutet 351g. Der Mannschaftsraum bleibt ein separater, sicherer Versteck. \nBei einer Festnahme kann die Polizei Gegenstände beschlagnahmen. Drogen im Inventar erhöhen das FBI-Risiko auf internationalen Reisen.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -16425,7 +16429,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Jede Immobilie hat ihre eigene Rolle: Lagerraum, Wohnkapazität oder Zugang zu einem Folgemodul wie dem Nightclub.\nLager-Upgrades erhöhen Ihre Lagerkapazität für Artikel und andere Bestände.\nHäuser lagern Waffen, Munition, Westen und Bargeld; Lagerhallen lagern Werkzeuge. Wenn Sie „Lager“ in einem Haus oder Lagerhaus öffnen, wird die Inventar-Papierpuppe mit dem ausgewählten Gebäude geöffnet. Sie müssen sich im selben Land befinden.\nHäuser und Wohnungen erhöhen die Wohnkapazität; VIP-Spieler erhalten darüber hinaus zusätzliche Slots.\nEinige Immobilien sind einzigartig oder länderspezifisch: Sie müssen sich im richtigen Land befinden, um sie zu kaufen oder zu verwalten.\nDie Verkaufsrendite beträgt 70 % des Kaufpreises. Beim Verkauf gibt es keine Abklingzeit, der Verkauf erfolgt sofort.\nEin gekaufter Nightclub öffnet den separaten Nightclub-Verwaltungsbildschirm; Dieses Modul kümmert sich um die Verwaltung und den Umsatz, nicht um die Immobilienübersicht.\n„Entwickeln“ gibt Bankgelder aus: Jede Stufe erhöht dauerhaft das passive Einkommen dieser Immobilie (maximale Stufe und Abklingzeit sind serverabhängig).';
+      'Jede Immobilie hat ihre eigene Rolle: Lagerraum, Wohnkapazität oder Zugang zu einem Folgemodul wie dem Nightclub. \nLager-Upgrades erhöhen Ihre Lagerkapazität für Artikel und andere Bestände. \nHäuser lagern Waffen, Munition, Westen und Bargeld und sind bei Festnahmen sicherer. Lagerhäuser lagern die gleichen Werkzeuge plus mehr Lagerplätze. Wenn Sie „Lager“ in einem Haus oder Lagerhaus öffnen, wird die Inventar-Papierpuppe mit dem ausgewählten Gebäude geöffnet. Sie müssen sich im selben Land befinden. \nHäuser und Wohnungen erhöhen die Wohnkapazität; VIP-Spieler erhalten darüber hinaus zusätzliche Slots. \nEinige Immobilien sind einzigartig oder länderspezifisch: Sie müssen sich im richtigen Land befinden, um sie zu kaufen oder zu verwalten. Sie können ein Lager pro Land besitzen (keine globale Obergrenze). Nightclub-Slots pro Land werden im Shop angezeigt. Das Casino ist pro Land einzigartig. \nBeim Verkauf von „Meine Immobilien“ erhalten Sie 70 % des Kaufpreises in bar. Der Lagerraum (und der Nachtclubbestand) müssen leer sein. Keine Abklingzeit. \nEin gekaufter Nightclub öffnet den separaten Nightclub-Verwaltungsbildschirm; Dieses Modul kümmert sich um die Verwaltung und den Umsatz, nicht um die Immobilienübersicht. \nDevelop gibt Bankgelder nur für Einkommensgebäude aus: Jede Stufe erhöht dauerhaft das passive Einkommen dieser Immobilie (maximale Stufe und Abklingzeit sind serverabhängig).';
 
   @override
   String get helpTopicPropertiesTips =>

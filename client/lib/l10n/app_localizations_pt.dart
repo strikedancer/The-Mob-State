@@ -5292,7 +5292,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get propertyRoleWarehouse =>
-      'Armazenamento de ferramentas. As atualizações adicionam mais slots.';
+      'Grande estoque de ferramentas, armas, munições, coletes e dinheiro. A polícia revista se você for preso neste país.';
 
   @override
   String get propertyRoleNightclub =>
@@ -5315,7 +5315,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get propertyInfoWarehouse =>
-      'Um armazém armazena apenas ferramentas. As atualizações adicionam mais slots. Abra o armazenamento para gerenciar ferramentas para este edifício — você deve estar no mesmo país. A Develop gasta dinheiro do banco para obter um bônus permanente de renda passiva.';
+      'Um armazém armazena ferramentas, armas, munições, coletes e dinheiro. Um por jogador por país — sem limite de slots em todo o país. Armazenamento aberto no mesmo país. As atualizações adicionam mais slots. As casas ficam mais seguras quando presas; a polícia revista este armazém e apreende cerca de 40% do estoque se você for preso aqui. A Develop gasta dinheiro do banco para obter um bônus permanente de renda passiva.';
 
   @override
   String get propertyInfoNightclub =>
@@ -5354,6 +5354,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get propertySlotsGone => 'Não há mais vagas neste país';
+
+  @override
+  String get propertyAlreadyOwnedInCountry => 'Você já possui isso neste país';
 
   @override
   String get propertyUniqueTaken => 'Já reivindicado neste país';
@@ -16328,7 +16331,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'O inventário abre como uma visão de boneca de papel: seu avatar no centro, um slot para arma do crime e um slot para colete, além de slots quadrados para mochila.\nArraste um item (ou toque nele e depois toque em um alvo válido) para movê-lo. Nos telefones, tocar para selecionar é mais confiável do que arrastar.\nSe uma pilha tiver mais de uma unidade (munição, materiais, armas ou ferramentas empilhadas), você escolhe quantas unidades deseja mover: 1, todas ou uma quantidade personalizada.\nA grelha da direita é o contexto actual: uma casa ou armazém neste país, ou o depósito de materiais. O Open Storage em uma propriedade salta aqui com esse edifício selecionado.\nAs casas armazenam armas, munições, coletes e dinheiro. Armazéns armazenam ferramentas. Os materiais ficam no depósito rural, não em uma casa. O dinheiro usa botões, não arrasta.\nVocê pode usar apenas um colete. Colocar um colete no avatar o equipa; armazená-lo em uma casa o desequipa. Um segundo colete usado é recusado.\nO slot da arma do crime permanece sincronizado com a tela Crimes. Contam apenas armas transportadas e utilizáveis.\nA capacidade da mochila cobre ferramentas, armas e materiais transportados. Munição e colete usado não usam slots de mochila. O servidor rejeita pacotes completos, país errado e tipo de propriedade errado.\nOs carregamentos continuam sendo uma segunda guia para crimes salvos ou conjuntos de viagens.\nOs medicamentos são armazenados e apresentados em gramas; 351 significa 351g. O armazenamento da Crew permanece em um esconderijo seguro separado.\nApós a prisão, a polícia pode confiscar itens. Drogas em estoque aumentam o risco do FBI em viagens internacionais.';
+      'O inventário abre como uma visão de boneco de papel: seu avatar no centro, um slot para arma do crime, um slot para segunda arma e um slot para colete, além de slots quadrados para mochila. \nArraste um item (ou toque nele e depois toque em um alvo válido) para movê-lo. Nos telefones, tocar para selecionar é mais confiável do que arrastar. \nSe uma pilha tiver mais de uma unidade (munição, materiais, armas ou ferramentas empilhadas), você escolhe quantas unidades deseja mover: 1, todas ou uma quantidade personalizada. \nA grelha da direita é o contexto actual: uma casa ou armazém neste país, ou o depósito de materiais. O Open Storage em uma propriedade salta aqui com esse edifício selecionado. \nAs casas armazenam armas, munições, coletes e dinheiro e ficam mais seguras na prisão. Os armazéns armazenam ferramentas, armas, munições, coletes e dinheiro, mas a polícia revista o armazém do país onde está preso e apreende cerca de 40% desse stock. Os materiais ficam no depósito rural, não em uma casa. O dinheiro usa botões, não arrasta. \nVocê pode usar apenas um colete. Colocar um colete no avatar o equipa; armazená-lo em uma casa o desequipa. Um segundo colete usado é recusado. \nVocê pode carregar duas armas ao mesmo tempo, por exemplo, uma pistola e um rifle. Quando você comete um crime, o servidor analisa os dois slots usados ​​e usa automaticamente a melhor correspondência para esse crime. \nApenas armas utilizáveis ​​usadas no slot 1 ou 2 contam para crimes. \nA capacidade da mochila cobre ferramentas, armas não equipadas e materiais transportados. Armas usadas, munições e colete usado não usam slots de mochila. O servidor rejeita pacotes completos, país errado e tipo de propriedade errado. \nOs carregamentos continuam sendo uma segunda guia para crimes salvos ou conjuntos de viagens. \nOs medicamentos são armazenados e apresentados em gramas; 351 significa 351g. O armazenamento da Crew permanece em um esconderijo seguro separado. \nApós a prisão, a polícia pode confiscar itens. Drogas em estoque aumentam o risco do FBI em viagens internacionais.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -16346,7 +16349,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Cada imóvel tem a sua função: espaço de arrumação, capacidade habitacional ou acesso a um módulo de acompanhamento como a discoteca.\nAs atualizações do armazém aumentam sua capacidade de armazenamento de itens e outros estoques.\nAs casas armazenam armas, munições, coletes e dinheiro; armazéns armazenam ferramentas. Abrir armazenamento em uma casa ou armazém abre o boneco de papel do Inventário com esse edifício selecionado. Você deve estar no mesmo país.\nCasas e apartamentos aumentam a capacidade habitacional; Além disso, os jogadores VIP recebem slots extras.\nAlgumas propriedades são exclusivas ou estão bloqueadas pelo país: você deve estar no país correto para comprá-las ou gerenciá-las.\nA venda rende 70% do preço de compra. Não há tempo de espera na venda, é instantâneo.\nUma boate comprada abre uma tela separada de gerenciamento de boate; esse módulo trata do gerenciamento e da receita, não da visão geral das propriedades.\nDevelop gasta dinheiro do banco: cada nível aumenta permanentemente a renda passiva daquela propriedade (o nível máximo e o tempo de espera são ajustados pelo servidor).';
+      'Cada imóvel tem a sua função: espaço de arrumação, capacidade habitacional ou acesso a um módulo de acompanhamento como a discoteca. \nAs atualizações do armazém aumentam sua capacidade de armazenamento de itens e outros estoques. \nAs casas armazenam armas, munições, coletes e dinheiro e ficam mais seguras na prisão. Os armazéns armazenam as mesmas ferramentas adicionais, com mais slots. Abrir armazenamento em uma casa ou armazém abre o boneco de papel do Inventário com esse edifício selecionado. Você deve estar no mesmo país. \nCasas e apartamentos aumentam a capacidade habitacional; Além disso, os jogadores VIP recebem slots extras. \nAlgumas propriedades são exclusivas ou estão bloqueadas pelo país: você deve estar no país correto para comprá-las ou gerenciá-las. Você pode possuir um armazém por país (sem limite global). Os slots das casas noturnas por país são mostrados na loja. O cassino é único por país. \nA venda em Minhas propriedades rende 70% do preço de compra à vista. O armazenamento (e o estoque da boate) devem estar vazios. Sem resfriamento. \nUma boate comprada abre uma tela separada de gerenciamento de boate; esse módulo trata do gerenciamento e da receita, não da visão geral das propriedades. \nA Develop gasta o dinheiro do banco apenas em edifícios de renda: cada nível aumenta permanentemente a renda passiva daquela propriedade (o nível máximo e o tempo de espera são ajustados pelo servidor).';
 
   @override
   String get helpTopicPropertiesTips =>

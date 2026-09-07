@@ -5333,7 +5333,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get propertyRoleWarehouse =>
-      'Rangement des outils. Les mises à niveau ajoutent plus d\'emplacements.';
+      'Grande réserve pour outils, armes, munitions, gilets et argent. La police le fouille si vous êtes arrêté dans ce pays.';
 
   @override
   String get propertyRoleNightclub =>
@@ -5356,7 +5356,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get propertyInfoWarehouse =>
-      'Un entrepôt stocke uniquement des outils. Les mises à niveau ajoutent plus d\'emplacements. Stockage ouvert pour gérer les outils de ce bâtiment : vous devez être dans le même pays. Develop dépense de l’argent en banque pour un bonus de revenu passif permanent.';
+      'Un entrepôt stocke des outils, des armes, des munitions, des gilets et de l\'argent liquide. Un par joueur et par pays – pas de limite de slots à l’échelle du pays. Stockage ouvert dans le même pays. Les mises à niveau ajoutent plus d\'emplacements. Les maisons sont plus sûres lors de l\'arrestation ; la police fouille cet entrepôt et saisit environ 40 % du stock si vous êtes arrêté ici. Develop dépense de l’argent en banque pour un bonus de revenu passif permanent.';
 
   @override
   String get propertyInfoNightclub =>
@@ -5395,6 +5395,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get propertySlotsGone => 'Plus de créneaux disponibles dans ce pays';
+
+  @override
+  String get propertyAlreadyOwnedInCountry =>
+      'Vous possédez déjà ceci dans ce pays';
 
   @override
   String get propertyUniqueTaken => 'Déjà revendiqué dans ce pays';
@@ -16404,7 +16408,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'L\'inventaire s\'ouvre sous la forme d\'une poupée de papier : votre avatar au centre, un emplacement pour arme du crime et un emplacement pour gilet, ainsi que des emplacements carrés pour sac à dos.\nFaites glisser un élément (ou appuyez dessus, puis appuyez sur une cible valide) pour le déplacer. Sur les téléphones, appuyer pour sélectionner est plus fiable que faire glisser.\nSi une pile contient plus d\'une unité (munitions, matériaux, armes ou outils empilés), vous choisissez combien de déplacer : 1, toutes ou un montant personnalisé.\nLa grille de droite représente le contexte actuel : une maison ou un entrepôt dans ce pays, ou le dépôt de matériaux. Ouvrir le stockage sur une propriété saute ici avec ce bâtiment sélectionné.\nLes maisons stockent des armes, des munitions, des gilets et de l\'argent liquide. Les entrepôts stockent les outils. Les matériaux restent dans le dépôt de campagne, pas dans une maison. Cash utilise des boutons, pas des glisser.\nVous ne pouvez porter qu\'un seul gilet. Déposer un gilet sur l\'avatar l\'équipe ; le stocker dans une maison le désCrew. Un deuxième gilet porté est refusé.\nL\'emplacement de l\'arme du crime reste synchronisé avec l\'écran Crimes. Seules les armes transportées et utilisables comptent.\nLa capacité du sac à dos couvre les outils, les armes et le matériel transporté. Les munitions et le gilet usé n\'utilisent pas les emplacements du sac à dos. Le serveur rejette les packs complets, le mauvais pays et le mauvais type de propriété.\nLes équipements restent un deuxième onglet pour les ensembles de crime ou de voyage enregistrés.\nLes médicaments sont stockés et affichés en grammes ; 351 signifie 351g. Le stockage de l’équipage reste une cachette sécurisée distincte.\nLors de son arrestation, la police peut confisquer des objets. Les médicaments en stock augmentent le risque du FBI lors des voyages internationaux.';
+      'L\'inventaire s\'ouvre sous la forme d\'une poupée de papier : votre avatar au centre, un emplacement pour arme du crime, un emplacement pour deuxième arme et un emplacement pour gilet, ainsi que des emplacements carrés pour sac à dos. \nFaites glisser un élément (ou appuyez dessus, puis appuyez sur une cible valide) pour le déplacer. Sur les téléphones, appuyer pour sélectionner est plus fiable que faire glisser. \nSi une pile contient plus d\'une unité (munitions, matériaux, armes ou outils empilés), vous choisissez combien de déplacer : 1, toutes ou un montant personnalisé. \nLa grille de droite représente le contexte actuel : une maison ou un entrepôt dans ce pays, ou le dépôt de matériaux. Ouvrir le stockage sur une propriété saute ici avec ce bâtiment sélectionné. \nLes maisons stockent des armes, des munitions, des gilets et de l’argent liquide et sont plus sûres en cas d’arrestation. Les entrepôts stockent des outils, des armes, des munitions, des gilets et de l\'argent liquide, mais la police fouille l\'entrepôt du pays où vous êtes arrêté et saisit environ 40 % de ce stock. Les matériaux restent dans le dépôt de campagne, pas dans une maison. Cash utilise des boutons, pas des glisser. \nVous ne pouvez porter qu\'un seul gilet. Déposer un gilet sur l\'avatar l\'équipe ; le stocker dans une maison le désCrew. Un deuxième gilet porté est refusé. \nVous pouvez porter deux armes à la fois, par exemple une arme de poing et un fusil. Lorsque vous commettez un crime, le serveur examine les deux emplacements usés et utilise automatiquement celui qui correspond le mieux à ce crime. \nSeules les armes utilisables portées sur l’emplacement 1 ou 2 comptent pour les crimes. \nLa capacité du sac à dos couvre les outils, les armes non équipées et le matériel transporté. Les armes usagées, les munitions et le gilet usé n\'utilisent pas les emplacements du sac à dos. Le serveur rejette les packs complets, le mauvais pays et le mauvais type de propriété. \nLes équipements restent un deuxième onglet pour les ensembles de crime ou de voyage enregistrés. \nLes médicaments sont stockés et affichés en grammes ; 351 signifie 351g. Le stockage de l’équipage reste une cachette sécurisée distincte. \nLors de son arrestation, la police peut confisquer des objets. Les médicaments en stock augmentent le risque du FBI lors des voyages internationaux.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -16422,7 +16426,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Chaque bien a son propre rôle : espace de stockage, capacité d\'accueil ou encore accès à un module de suivi comme la discothèque.\nLes mises à niveau de l\'entrepôt augmentent votre capacité de stockage pour les articles et autres stocks.\nLes maisons stockent des armes, des munitions, des gilets et de l’argent liquide ; les entrepôts stockent les outils. Le stockage ouvert sur une maison ou un entrepôt ouvre la poupée de papier d\'inventaire avec ce bâtiment sélectionné. Vous devez être dans le même pays.\nLes maisons et les appartements augmentent la capacité d\'accueil ; Les joueurs VIP reçoivent en plus des emplacements supplémentaires.\nCertaines propriétés sont uniques ou verrouillées par pays : vous devez être dans le bon pays pour les acheter ou les gérer.\nLa vente rapporte 70% du prix d\'achat. Pas de temps de recharge pour la vente, c\'est instantané.\nUne discothèque achetée ouvre l\'écran de gestion de discothèque séparé ; ce module gère la gestion et les revenus, pas l\'aperçu des propriétés.\nLe développement dépense de l\'argent en banque : chaque niveau augmente de façon permanente le revenu passif de cette propriété (le niveau maximum et le temps de recharge sont réglés en fonction du serveur).';
+      'Chaque bien a son propre rôle : espace de stockage, capacité d\'accueil ou encore accès à un module de suivi comme la discothèque. \nLes mises à niveau de l\'entrepôt augmentent votre capacité de stockage pour les articles et autres stocks. \nLes maisons stockent des armes, des munitions, des gilets et de l’argent liquide et sont plus sûres en cas d’arrestation. Les entrepôts stockent les mêmes outils, plus, avec plus d\'emplacements. Le stockage ouvert sur une maison ou un entrepôt ouvre la poupée de papier d\'inventaire avec ce bâtiment sélectionné. Vous devez être dans le même pays. \nLes maisons et les appartements augmentent la capacité d\'accueil ; Les joueurs VIP reçoivent en plus des emplacements supplémentaires. \nCertaines propriétés sont uniques ou verrouillées par pays : vous devez être dans le bon pays pour les acheter ou les gérer. Vous pouvez posséder un entrepôt par pays (pas de plafond global). Les créneaux horaires des discothèques par pays sont affichés dans la boutique. Le casino est unique par pays. \nLa vente depuis Mes propriétés rapporte 70 % du prix d\'achat en espèces. Le stockage (et le stock de la discothèque) doit être vide. Pas de temps de recharge. \nUne discothèque achetée ouvre l\'écran de gestion de discothèque séparé ; ce module gère la gestion et les revenus, pas l\'aperçu des propriétés. \nDevelop dépense l\'argent de sa banque uniquement pour les bâtiments à revenus : chaque niveau augmente de manière permanente le revenu passif de cette propriété (le niveau maximum et le temps de recharge sont réglés par le serveur).';
 
   @override
   String get helpTopicPropertiesTips =>

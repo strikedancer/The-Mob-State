@@ -5297,7 +5297,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get propertyRoleWarehouse =>
-      'Przechowywanie narzędzi. Ulepszenia dodają więcej miejsc.';
+      'Duży schowek na narzędzia, broń, amunicję, kamizelki i gotówkę. Policja przeszukuje je, jeśli zostaniesz aresztowany w tym kraju.';
 
   @override
   String get propertyRoleNightclub =>
@@ -5320,7 +5320,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get propertyInfoWarehouse =>
-      'Magazyn przechowuje wyłącznie narzędzia. Ulepszenia dodają więcej miejsc. Otwórz magazyn, aby zarządzać narzędziami dla tego budynku — musisz znajdować się w tym samym kraju. Develop wydaje pieniądze banku na stałą premię za dochód pasywny.';
+      'Magazyn przechowuje narzędzia, broń, amunicję, kamizelki i gotówkę. Po jednym na gracza na kraj — brak ogólnokrajowego limitu miejsc. Otwórz magazyn w tym samym kraju. Ulepszenia dodają więcej miejsc. Domy są bezpieczniejsze w areszcie; policja przeszuka ten magazyn i skonfiskuje około 40% towaru, jeśli zostaniesz tu aresztowany. Develop wydaje pieniądze banku na stałą premię za dochód pasywny.';
 
   @override
   String get propertyInfoNightclub =>
@@ -5359,6 +5359,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get propertySlotsGone => 'Brak wolnych miejsc w tym kraju';
+
+  @override
+  String get propertyAlreadyOwnedInCountry => 'Już to posiadasz w tym kraju';
 
   @override
   String get propertyUniqueTaken => 'Już zgłoszono roszczenia w tym kraju';
@@ -16333,7 +16336,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Ekwipunek otwiera się w widoku papierowej lalki: twój awatar pośrodku, miejsce na broń przestępczą i miejsce na kamizelkę, a także kwadratowe miejsca na plecak.\nPrzeciągnij element (lub dotknij go, a następnie dotknij prawidłowego celu), aby go przenieść. Na telefonach funkcja „dotknij, aby wybrać” jest bardziej niezawodna niż przeciąganie.\nJeśli stos składa się z więcej niż jednej jednostki (amunicji, materiałów, broni lub narzędzi), możesz wybrać, ile jednostek chcesz przenieść: 1, wszystkie lub niestandardowa ilość.\nSiatka po prawej stronie przedstawia bieżący kontekst: dom lub magazyn w tym kraju albo skład materiałów. Otwarty magazyn na nieruchomości przeskakuje tutaj z wybranym budynkiem.\nDomy przechowują broń, amunicję, kamizelki i gotówkę. Magazyny przechowują narzędzia. Materiały pozostają w wiejskim magazynie, a nie w domu. Cash używa przycisków, a nie przeciągania.\nMożna nosić tylko jedną kamizelkę. Upuszczenie kamizelki na awatara wyposaża ją; przechowywanie go w domu pozbawia go wyposażenia. Druga noszona kamizelka jest odrzucana.\nMiejsce na broń kryminalną jest zsynchronizowane z ekranem zbrodni. Liczy się tylko niesiona, użyteczna broń.\nPojemność plecaka obejmuje narzędzia, broń i przenoszone materiały. Amunicja i zużyta kamizelka nie korzystają z miejsc w plecaku. Serwer odrzuca pełne pakiety, zły kraj i zły typ właściwości.\nZestawy wyposażenia pozostają drugą zakładką dla zapisanych zestawów przestępczych lub podróżnych.\nLeki są przechowywane i wyświetlane w gramach; 351 oznacza 351g. Magazyn załogi pozostaje oddzielnym bezpiecznym schowkiem.\nPo aresztowaniu policja może skonfiskować przedmioty. Narkotyki w zapasach zwiększają ryzyko FBI podczas podróży międzynarodowych.';
+      'Ekwipunek otwiera się w widoku papierowej lalki: twój awatar pośrodku, miejsce na broń przestępczą, miejsce na drugą broń i miejsce na kamizelkę, a także kwadratowe miejsca na plecak. \nPrzeciągnij element (lub dotknij go, a następnie dotknij prawidłowego celu), aby go przenieść. Na telefonach funkcja „dotknij, aby wybrać” jest bardziej niezawodna niż przeciąganie. \nJeśli stos składa się z więcej niż jednej jednostki (amunicji, materiałów, broni lub narzędzi), wybierasz, ile jednostek chcesz przenieść: 1, wszystkie lub niestandardowa ilość. \nSiatka po prawej stronie przedstawia bieżący kontekst: dom lub magazyn w tym kraju albo skład materiałów. Otwarty magazyn na nieruchomości przeskakuje tutaj z wybranym budynkiem. \nDomy przechowują broń, amunicję, kamizelki i gotówkę, a aresztowanie jest bezpieczniejsze. Magazyny przechowują narzędzia, broń, amunicję, kamizelki i gotówkę, ale policja przeszukuje magazyn w kraju, w którym jesteś aresztowany i konfiskuje około 40% tego towaru. Materiały pozostają w wiejskim magazynie, a nie w domu. Cash używa przycisków, a nie przeciągania. \nMożna nosić tylko jedną kamizelkę. Upuszczenie kamizelki na awatara wyposaża ją; przechowywanie go w domu pozbawia go wyposażenia. Druga noszona kamizelka jest odrzucana. \nJednocześnie możesz nosić dwie bronie, na przykład pistolet i karabin. Kiedy popełnisz przestępstwo, serwer sprawdza oba zużyte miejsca i automatycznie wybiera najlepsze dopasowanie do tego przestępstwa. \nDo przestępstw zaliczana jest tylko broń użyteczna, noszona na slocie 1 lub 2. \nPojemność plecaka obejmuje narzędzia, niewyposażoną broń i przenoszone materiały. Zużyta broń, amunicja i zużyta kamizelka nie korzystają z miejsc w plecaku. Serwer odrzuca pełne pakiety, zły kraj i zły typ właściwości. \nZestawy wyposażenia pozostają drugą zakładką dla zapisanych zestawów przestępczych lub podróżnych. \nLeki są przechowywane i wyświetlane w gramach; 351 oznacza 351g. Magazyn załogi pozostaje oddzielnym bezpiecznym schowkiem. \nPo aresztowaniu policja może skonfiskować przedmioty. Narkotyki w zapasach zwiększają ryzyko FBI podczas podróży międzynarodowych.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -16351,7 +16354,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Każda nieruchomość ma swoją rolę: powierzchnię magazynową, pojemność mieszkaniową czy dostęp do modułu uzupełniającego, takiego jak Nightclub.\nUlepszenia magazynu zwiększają pojemność magazynu dla przedmiotów i innych zapasów.\nDomy przechowują broń, amunicję, kamizelki i gotówkę; magazyny przechowują narzędzia. Otwarty magazyn w domu lub magazynie otwiera papierową lalkę z inwentarzem z wybranym budynkiem. Musisz być w tym samym kraju.\nDomy i mieszkania zwiększają pojemność mieszkaniową; Oprócz tego gracze VIP otrzymują dodatkowe miejsca.\nNiektóre nieruchomości są unikalne lub mają blokadę krajową: aby je kupić lub zarządzać nimi, musisz znajdować się w odpowiednim kraju.\nSprzedaż daje 70% ceny zakupu. Sprzedaż nie wymaga czasu odnowienia, sprzedaż jest natychmiastowa.\nZakupiony Nightclub otwiera oddzielny ekran zarządzania klubem nocnym; moduł ten obsługuje zarządzanie i przychody, a nie przegląd właściwości.\nDevelop wydaje pieniądze z banku: każdy poziom trwale zwiększa pasywny dochód tej właściwości (maksymalny poziom i czas odnowienia są dostosowywane do serwera).';
+      'Każda nieruchomość ma swoją rolę: powierzchnię magazynową, pojemność mieszkaniową czy dostęp do modułu uzupełniającego, takiego jak Nightclub. \nUlepszenia magazynu zwiększają pojemność magazynu dla przedmiotów i innych zapasów. \nDomy przechowują broń, amunicję, kamizelki i gotówkę, a aresztowanie jest bezpieczniejsze. Magazyny przechowują te same dodatkowe narzędzia, z większą liczbą miejsc. Otwarty magazyn w domu lub magazynie otwiera papierową lalkę z inwentarzem z wybranym budynkiem. Musisz być w tym samym kraju. \nDomy i mieszkania zwiększają pojemność mieszkaniową; Oprócz tego gracze VIP otrzymują dodatkowe miejsca. \nNiektóre nieruchomości są unikalne lub mają blokadę krajową: aby je kupić lub zarządzać nimi, musisz znajdować się w odpowiednim kraju. Możesz posiadać jeden magazyn w każdym kraju (bez globalnego limitu). W sklepie pokazane są automaty do klubów nocnych według kraju. Kasyno jest unikalne w każdym kraju. \nSprzedaż z Moich nieruchomości zapewnia 70% ceny zakupu w gotówce. Magazyn (i wyposażenie klubu nocnego) musi być pusty. Brak możliwości odnowienia. \nZakupiony Nightclub otwiera oddzielny ekran zarządzania klubem nocnym; moduł ten obsługuje zarządzanie i przychody, a nie przegląd właściwości. \nDevelop wydaje pieniądze bankowe tylko na budynki dochodowe: każdy poziom trwale zwiększa pasywny dochód tej właściwości (maksymalny poziom i czas odnowienia są dopasowywane do serwera).';
 
   @override
   String get helpTopicPropertiesTips =>

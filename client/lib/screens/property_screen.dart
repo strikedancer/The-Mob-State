@@ -84,6 +84,7 @@ class PropertyScreenState extends State<PropertyScreen>
                   'slotsAvailable': mapEntry['slotsAvailable'],
                   'ownedCount': mapEntry['ownedCount'],
                   'maxOwners': nested['maxOwners'] ?? mapEntry['maxOwners'],
+                  'alreadyOwned': mapEntry['alreadyOwned'],
                 };
               }
               return mapEntry;
@@ -201,6 +202,9 @@ class PropertyScreenState extends State<PropertyScreen>
     final player = auth.currentPlayer;
     final rank = player?.rank ?? 0;
     final money = player?.money ?? 0;
+    if (property.alreadyOwned) {
+      return l10n.propertyAlreadyOwnedInCountry;
+    }
     if (!property.countryAvailable) {
       return property.unique
           ? l10n.propertyUniqueTaken

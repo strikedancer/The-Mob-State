@@ -6,10 +6,11 @@ Property buying, upgrading, utility and ownership rules.
 Scope-afbakening:
 - Shop valt buiten deze module en wordt hier niet getoond of geclaimd.
 - Nightclub is wél koopbaar via deze module (aankoop start het nachtclub-systeem); beheer van de nachtclub zelf vindt echter plaats in de aparte Nightclub-module.
-- Deze module richt zich op house/apartment/warehouse/nightclub/casino (shop blijft verborgen). Casino is unique per land. Warehouse heeft beperkte landslots (UI toont vrij/max). Upgrade-max is 6.
+- Deze module richt zich op house/apartment/warehouse/nightclub/casino (shop blijft verborgen). Casino is unique per land. Warehouse is 1 per speler per land (geen landelijk slotplafond). Nightclub heeft beperkte landslots (UI toont vrij/max). Upgrade-max is 6.
 - **Development (v1):** permanente income-boost per eigendom via bank-spend (`developmentLevel` / `lastDevelopAt`), los van warehouse capacity upgrades. Alleen op panden met passief inkomen (magazijn, nachtclub, casino) — niet op huis/appartement.
 - **Sell:** `POST /properties/:id/sell` keert 70% van `purchasePrice` contant uit. Vereist hetzelfde land, lege property-storage (en lege nachtclubvoorraad). Direct, geen cooldown.
-- Residential storage (house/apartment/mansion/penthouse/safehouse): `weapons, cash, ammo, armor`. Warehouse: `tools`. Nightclub drugs stay on the nightclub module.
+- Residential storage (house/apartment/mansion/penthouse/safehouse): `weapons, cash, ammo, armor`. Warehouse: `tools, weapons, cash, ammo, armor` (geen drugs; die blijven nachtclub). Nightclub drugs stay on the nightclub module.
+- **Warehouse arrest search:** bij politie/FBI-arrestatie wordt het magazijn in het huidige land doorzocht (~40% van tools/wapens/ammo/vesten/cash). Huizen worden niet doorzocht. Bankcash blijft beschermd.
 - **Open storage** on a house or warehouse opens Inventory with that property selected. Access still requires the same country (`accessibleInCurrentCountry` / `WRONG_COUNTRY`).
 
 ## Primary Frontend Entry
@@ -66,9 +67,11 @@ Endpoint: `POST /properties/:id/develop`
 - Verify shop is not returned in properties list endpoints and cannot be claimed via properties flow.
 - Verify nightclub is visible in properties list and can be purchased (creating a nightclubVenue record).
 - Verify develop spends bank, raises `developmentLevel`, and increases passive income display/calc.
-- Verify a house can store weapons, ammo and a vest, and that a warehouse still only accepts tools.
+- Verify a house can store weapons, ammo and a vest, and that a warehouse accepts tools plus weapons, ammo, armor and cash.
+- Verify a player can own only one warehouse per country, and that a second buy is locked.
+- Verify an arrest in that country seizes part of warehouse stock and leaves house storage intact.
 - Verify sell pays 70% cash, blocks when storage or nightclub stock is not empty, and frees a country slot.
-- Verify casino is unique per country and warehouse/nightclub show remaining country slots.
+- Verify casino is unique per country and nightclub shows remaining country slots.
 - Verify Open storage from a property opens Inventory with that building selected, and a property in another country stays locked.
 
 ## When To Update This File

@@ -9,7 +9,7 @@ import backpackService from './backpackService';
 type StorageCategory = 'tools' | 'drugs' | 'weapons' | 'cash' | 'ammo' | 'armor';
 
 const PROPERTY_STORAGE_RULES: Record<string, StorageCategory[]> = {
-  warehouse: ['tools'],
+  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor'],
   nightclub: ['drugs'],
   house: ['weapons', 'cash', 'ammo', 'armor'],
   apartment: ['weapons', 'cash', 'ammo', 'armor'],
@@ -774,6 +774,88 @@ class PropertyStorageService {
         data: { money: { increment: amount } },
       });
     });
+  }
+
+  private seizeAmount(quantity: number): number {
+    if (quantity <= 0) return 0;
+    const raw = quantity * 0.4;
+    const base = Math.floor(raw);
+    const remainder = raw - base;
+    return base + (remainder > 0 && Math.random() < remainder ? 1 : 0);
+  }
+
+  /**
+   * Police/FBI control of commercial storage in the arrest country.
+   * Houses stay personal; only warehouses are searched.
+   */
+  async searchWarehousesOnArrest(playerId: number): Promise<{
+    warehouseCount: number;
+    seizedUnits: number;
+    cashSeized: number;
+  }> {
+    const empty = { warehouseCount: 0, seizedUnits: 0, cashSeized: 0 };
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    if (!player?.currentCountry) return empty;
+
+    const warehouses = await prisma.property.findMany({
+      where: {
+        playerId,
+        propertyType: 'warehouse',
+        countryId: player.currentCountry,
+      },
+      select: { id: true },
+    });
+    if (warehouses.length === 0) return empty;
+
+    let seizedUnits = 0;
+    let cashSeized = 0;
+
+    for (const warehouse of warehouses) {
+      const tools = await prisma.playerTools.findMany({
+        where: { playerId, location: `property_${warehouse.id}` },
+      });
+      for (const tool of tools) {
+        const take = this.seizeAmount(tool.quantity);
+        if (take <= 0) continue;
+        if (take >= tool.quantity) {
+          await prisma.playerTools.delete({ where: { id: tool.id } });
+          seizedUnits += tool.quantity;
+        } else {
+          await prisma.playerTools.update({
+            where: { id: tool.id },
+            data: { quantity: tool.quantity - take },
+          });
+          seizedUnits += take;
+        }
+      }
+
+      const rows = await prisma.propertyDrugStorage.findMany({
+        where: { propertyId: warehouse.id },
+      });
+      for (const row of rows) {
+        if (row.drugType.startsWith('armorcond:')) continue;
+        const take = this.seizeAmount(row.quantity);
+        if (take <= 0) continue;
+        if (row.drugType === '__cash__') {
+          cashSeized += take;
+        } else {
+          seizedUnits += take;
+        }
+        if (take >= row.quantity) {
+          await prisma.propertyDrugStorage.delete({ where: { id: row.id } });
+        } else {
+          await prisma.propertyDrugStorage.update({
+            where: { id: row.id },
+            data: { quantity: row.quantity - take },
+          });
+        }
+      }
+    }
+
+    return { warehouseCount: warehouses.length, seizedUnits, cashSeized };
   }
 }
 

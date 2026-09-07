@@ -14,8 +14,8 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
 - Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo and materials.
 - Context grid (right on desktop, below on mobile): materials depot, or an owned property in the current country. Depot pads only to items + one drop cell. Property grids use that building's real capacity. No fake warehouse slots when the player owns none; show `inventoryNoOwnedStorageHint` instead. Backpack squares match `GET /tools/carried` capacity (no 8-slot floor).
-  - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag).
-  - Warehouse: tools.
+  - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag). Safer on arrest.
+  - Warehouse: tools, weapons, ammo, armor + cash buttons. Police/FBI search this building in the arrest country (~40% seize).
   - Materials stay in the country depot (`POST /drugs/materials/transfer`), not in a house.
 - Drag on desktop/web; tap-select then tap-target everywhere (mobile fallback). Each drop is one API call; no optimistic client move.
 - Stacks with quantity > 1 (ammo, materials, stacked weapons/tools) open a quantity dialog: move 1, move all, or a custom amount.

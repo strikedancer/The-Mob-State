@@ -5284,7 +5284,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get propertyRoleWarehouse =>
-      'Opslag voor gereedschap. Upgrades geven meer plekken.';
+      'Grote stash voor gereedschap, wapens, munitie, vesten en cash. Politie doorzoekt het als je in dit land wordt opgepakt.';
 
   @override
   String get propertyRoleNightclub => 'Opent het nachtclubbeheer na aankoop.';
@@ -5306,7 +5306,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get propertyInfoWarehouse =>
-      'Een magazijn slaat alleen gereedschap op. Upgrades geven meer plekken. Open opslag om gereedschap van dit pand te beheren — je moet in hetzelfde land zijn. Ontwikkelen betaal je van de bank voor een permanente bonus op passief inkomen.';
+      'Een magazijn slaat gereedschap, wapens, munitie, vesten en cash op. Eén per speler per land — geen landelijk slotplafond. Open opslag in hetzelfde land. Upgrades geven meer plekken. Een huis is veiliger bij aanhouding; de politie doorzoekt dit magazijn en neemt ongeveer 40% van de voorraad in beslag als je hier wordt opgepakt. Ontwikkelen betaal je van de bank voor een permanente bonus op passief inkomen.';
 
   @override
   String get propertyInfoNightclub =>
@@ -5345,6 +5345,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get propertySlotsGone => 'Geen slots meer in dit land';
+
+  @override
+  String get propertyAlreadyOwnedInCountry => 'Je hebt dit al in dit land';
 
   @override
   String get propertyUniqueTaken => 'Al geclaimd in dit land';
@@ -16245,7 +16248,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot, een tweede wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nBij een stapel van meer dan één (munitie, materialen, gestapelde wapens of tools) kies je hoeveel je verplaatst: 1, alles, of een eigen aantal.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash. Magazijnen bewaren gereedschap. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nJe kunt twee wapens tegelijk dragen, bijvoorbeeld een handgun en een automatisch geweer. Bij een crime kijkt de server naar beide gedragen slots en gebruikt automatisch het beste wapen voor die crime.\nAlleen gedragen, bruikbare wapens op slot 1 of 2 tellen mee voor crimes.\nRugzakcapaciteit telt tools, niet-gedragen wapens en meegenomen materialen. Gedragen wapens, munitie en het vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.';
+      'Inventaris opent als paper-doll: jouw avatar in het midden, een crime-wapenslot, een tweede wapenslot en een vestslot, plus vierkante rugzakvakjes.\nSleep een item (of tik het aan en tik daarna op een geldig doel) om het te verplaatsen. Op de telefoon is tikken betrouwbaarder dan slepen.\nBij een stapel van meer dan één (munitie, materialen, gestapelde wapens of tools) kies je hoeveel je verplaatst: 1, alles, of een eigen aantal.\nHet rechtergrid is de huidige context: een huis of magazijn in dit land, of het materialendepot. Open opslag op een pand springt hierheen met dat gebouw geselecteerd.\nHuizen bewaren wapens, munitie, vesten en cash en zijn veiliger bij aanhouding. Magazijnen bewaren gereedschap, wapens, munitie, vesten en cash, maar de politie doorzoekt het magazijn in het land waar je wordt opgepakt en neemt ongeveer 40% van die voorraad in beslag. Materialen blijven in het land-depot, niet in een huis. Cash gebruikt knoppen, geen slepen.\nJe draagt maar één vest. Een vest op de avatar droppen trekt het aan; opslaan in een huis trekt het uit. Een tweede gedragen vest wordt geweigerd.\nJe kunt twee wapens tegelijk dragen, bijvoorbeeld een handgun en een automatisch geweer. Bij een crime kijkt de server naar beide gedragen slots en gebruikt automatisch het beste wapen voor die crime.\nAlleen gedragen, bruikbare wapens op slot 1 of 2 tellen mee voor crimes.\nRugzakcapaciteit telt tools, niet-gedragen wapens en meegenomen materialen. Gedragen wapens, munitie en het vest gebruiken geen rugzakvakjes. De server weigert een volle tas, een verkeerd land en een verkeerd pandtype.\nLoadouts blijven een tweede tab voor bewaarde crime- of reissets.\nDrugs worden als gram getoond; 351 betekent 351g. Crew-opslag blijft een aparte veilige stash.\nBij arrestatie kan de politie items confisqueren. Drugs in je inventaris verhogen het FBI-risico bij internationaal reizen.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -16263,7 +16266,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash; magazijnen bewaren gereedschap. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Magazijn- en nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
+      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash en zijn veiliger bij aanhouding. Magazijnen bewaren hetzelfde plus gereedschap, met meer plekken. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Je kunt één magazijn per land hebben (geen landelijk plafond). Nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
 
   @override
   String get helpTopicPropertiesTips =>

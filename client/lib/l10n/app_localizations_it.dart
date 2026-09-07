@@ -5309,7 +5309,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get propertyRoleWarehouse =>
-      'Deposito attrezzi. Gli aggiornamenti aggiungono più slot.';
+      'Grande scorta per strumenti, armi, munizioni, giubbotti e contanti. La polizia lo perquisisce se vieni arrestato in questo paese.';
 
   @override
   String get propertyRoleNightclub =>
@@ -5332,7 +5332,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get propertyInfoWarehouse =>
-      'Un magazzino conserva solo strumenti. Gli aggiornamenti aggiungono più slot. Apri il deposito per gestire gli strumenti per questo edificio: devi trovarti nello stesso Paese. Develop spende denaro bancario per un bonus permanente di reddito passivo.';
+      'Un magazzino immagazzina strumenti, armi, munizioni, giubbotti e contanti. Uno per giocatore per paese: nessun limite di slot a livello nazionale. Deposito aperto nello stesso paese. Gli aggiornamenti aggiungono più slot. Le case sono più sicure durante gli arresti; la polizia perquisisce questo magazzino e sequestra circa il 40% delle scorte se vieni arrestato qui. Develop spende denaro bancario per un bonus permanente di reddito passivo.';
 
   @override
   String get propertyInfoNightclub =>
@@ -5371,6 +5371,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get propertySlotsGone => 'Non ci sono posti liberi in questo paese';
+
+  @override
+  String get propertyAlreadyOwnedInCountry => 'Lo possiedi già in questo paese';
 
   @override
   String get propertyUniqueTaken => 'Già rivendicato in questo paese';
@@ -16385,7 +16388,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'L\'inventario si apre come una bambola di carta: il tuo avatar al centro, uno slot per l\'arma del crimine e uno slot per il gilet, oltre a slot quadrati per lo zaino.\nTrascina un elemento (o toccalo, quindi tocca un bersaglio valido) per spostarlo. Sui telefoni, il tocco per selezionare è più affidabile del trascinamento.\nSe una pila ha più di un\'unità (munizioni, materiali, armi o strumenti impilati), scegli quante unità spostare: 1, tutte o un importo personalizzato.\nLa griglia di destra è il contesto attuale: una casa o un magazzino in questo paese, o il deposito dei materiali. Apri spazio di archiviazione su una proprietà salta qui con quell\'edificio selezionato.\nLe case immagazzinano armi, munizioni, giubbotti e contanti. I magazzini immagazzinano gli strumenti. I materiali restano nel deposito di campagna, non in una casa. Cash utilizza i pulsanti, non il trascinamento.\nPuoi indossare un solo gilet. Lasciare un giubbotto sull\'avatar lo equipaggia; conservarlo in una casa lo disequipaggia. Un secondo giubbotto indossato viene rifiutato.\nLo slot dell\'arma del crimine rimane sincronizzato con la schermata Crimini. Contano solo le armi trasportate e utilizzabili.\nLa capacità dello zaino comprende strumenti, armi e materiali trasportati. Le munizioni e il giubbotto indossato non utilizzano gli slot dello zaino. Il server rifiuta pacchetti completi, paese sbagliato e tipo di proprietà sbagliato.\nGli equipaggiamenti rimangono una seconda scheda per i crimini salvati o i set di viaggio.\nI farmaci vengono archiviati e visualizzati in grammi; 351 significa 351g. Lo stoccaggio dell\'Crew rimane una scorta sicura separata.\nAll\'arresto la polizia può confiscare oggetti. I farmaci nell\'inventario aumentano il rischio dell\'FBI nei viaggi internazionali.';
+      'L\'inventario si apre come una bambola di carta: il tuo avatar al centro, uno slot per l\'arma del crimine, uno slot per la seconda arma e uno slot per il gilet, oltre a slot quadrati per lo zaino. \nTrascina un elemento (o toccalo, quindi tocca un bersaglio valido) per spostarlo. Sui telefoni, il tocco per selezionare è più affidabile del trascinamento. \nSe una pila ha più di un\'unità (munizioni, materiali, armi o strumenti impilati), scegli quante unità spostare: 1, tutte o un importo personalizzato. \nLa griglia di destra è il contesto attuale: una casa o un magazzino in questo paese, o il deposito dei materiali. Apri spazio di archiviazione su una proprietà salta qui con quell\'edificio selezionato. \nLe case immagazzinano armi, munizioni, giubbotti e contanti e sono più sicure durante gli arresti. Nei magazzini sono conservati strumenti, armi, munizioni, giubbotti e contanti, ma la polizia perquisisce il magazzino del paese in cui sei stato arrestato e sequestra circa il 40% delle scorte. I materiali restano nel deposito di campagna, non in una casa. Cash utilizza i pulsanti, non il trascinamento. \nPuoi indossare un solo gilet. Lasciare un giubbotto sull\'avatar lo equipaggia; conservarlo in una casa lo disequipaggia. Un secondo giubbotto indossato viene rifiutato. \nPuoi trasportare due armi contemporaneamente, ad esempio una pistola e un fucile. Quando commetti un crimine, il server esamina entrambi gli slot usurati e utilizza automaticamente la migliore corrispondenza per quel crimine. \nSolo le armi utilizzabili indossate nello slot 1 o 2 contano per i crimini. \nLa capacità dello zaino comprende strumenti, armi non equipaggiate e materiali trasportati. Le armi indossate, le munizioni e il giubbotto indossato non utilizzano gli slot dello zaino. Il server rifiuta pacchetti completi, paese sbagliato e tipo di proprietà sbagliato. \nGli equipaggiamenti rimangono una seconda scheda per i crimini salvati o i set di viaggio. \nI farmaci vengono archiviati e visualizzati in grammi; 351 significa 351 g. Lo stoccaggio dell\'Crew rimane una scorta sicura separata. \nAll\'arresto la polizia può confiscare oggetti. I farmaci nell\'inventario aumentano il rischio dell\'FBI nei viaggi internazionali.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -16403,7 +16406,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Ogni proprietà ha il proprio ruolo: spazio di stoccaggio, capacità abitativa o accesso a un modulo successivo come la discoteca.\nGli aggiornamenti del magazzino aumentano la capacità di stoccaggio di articoli e altre scorte.\nLe case immagazzinano armi, munizioni, giubbotti e contanti; magazzini immagazzinano strumenti. L\'apertura del deposito in una casa o in un magazzino apre la bambola di carta Inventario con quell\'edificio selezionato. Devi essere nello stesso paese.\nCase e appartamenti aumentano la capacità abitativa; I giocatori VIP ricevono inoltre slot extra.\nAlcune proprietà sono uniche o bloccate nel paese: devi essere nel paese corretto per acquistarle o gestirle.\nLa vendita rende il 70% del prezzo di acquisto. Nessun tempo di recupero sulla vendita, è istantaneo.\nUna discoteca acquistata apre la schermata separata di gestione della discoteca; quel modulo gestisce la gestione e le entrate, non la panoramica delle proprietà.\nLo sviluppo spende denaro bancario: ogni livello aumenta in modo permanente il reddito passivo di quella proprietà (il livello massimo e il tempo di recupero sono ottimizzati dal server).';
+      'Ogni proprietà ha il proprio ruolo: spazio di stoccaggio, capacità abitativa o accesso a un modulo successivo come la discoteca. \nGli aggiornamenti del magazzino aumentano la capacità di stoccaggio di articoli e altre scorte. \nLe case immagazzinano armi, munizioni, giubbotti e contanti e sono più sicure durante gli arresti. I magazzini immagazzinano gli stessi strumenti aggiuntivi, con più slot. L\'apertura del deposito in una casa o in un magazzino apre la bambola di carta Inventario con quell\'edificio selezionato. Devi essere nello stesso paese. \nCase e appartamenti aumentano la capacità abitativa; I giocatori VIP ricevono inoltre slot extra. \nAlcune proprietà sono uniche o bloccate nel paese: devi essere nel paese corretto per acquistarle o gestirle. Puoi possedere un magazzino per paese (nessun limite globale). Gli slot dei nightclub per paese sono mostrati nel negozio. Il casinò è unico per paese. \nLa vendita da Le mie proprietà frutta il 70% del prezzo di acquisto in contanti. Il deposito (e le scorte del nightclub) devono essere vuoti. Nessun tempo di recupero. \nUna discoteca acquistata apre la schermata separata di gestione della discoteca; quel modulo gestisce la gestione e le entrate, non la panoramica delle proprietà. \nDevelop spende i soldi della banca solo per gli edifici a reddito: ogni livello aumenta in modo permanente il reddito passivo di quella proprietà (il livello massimo e il tempo di recupero sono ottimizzati dal server).';
 
   @override
   String get helpTopicPropertiesTips =>

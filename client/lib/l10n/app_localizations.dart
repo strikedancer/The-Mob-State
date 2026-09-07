@@ -9404,7 +9404,7 @@ abstract class AppLocalizations {
   /// No description provided for @propertyRoleWarehouse.
   ///
   /// In en, this message translates to:
-  /// **'Tool storage. Upgrades add more slots.'**
+  /// **'Large stash for tools, weapons, ammo, vests and cash. Police search it if you are arrested in this country.'**
   String get propertyRoleWarehouse;
 
   /// No description provided for @propertyRoleNightclub.
@@ -9440,7 +9440,7 @@ abstract class AppLocalizations {
   /// No description provided for @propertyInfoWarehouse.
   ///
   /// In en, this message translates to:
-  /// **'A warehouse stores tools only. Upgrades add more slots. Open storage to manage tools for this building — you must be in the same country. Develop spends bank money for a permanent passive-income bonus.'**
+  /// **'A warehouse stores tools, weapons, ammo, vests and cash. One per player per country — no country-wide slot cap. Open storage in the same country. Upgrades add more slots. Houses are safer on arrest; police search this warehouse and seize about 40% of the stock if you are arrested here. Develop spends bank money for a permanent passive-income bonus.'**
   String get propertyInfoWarehouse;
 
   /// No description provided for @propertyInfoNightclub.
@@ -9496,6 +9496,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No slots left in this country'**
   String get propertySlotsGone;
+
+  /// No description provided for @propertyAlreadyOwnedInCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'You already own this in this country'**
+  String get propertyAlreadyOwnedInCountry;
 
   /// No description provided for @propertyUniqueTaken.
   ///
@@ -28054,7 +28060,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicInventoryHow.
   ///
   /// In en, this message translates to:
-  /// **'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot, a second-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nIf a stack has more than one unit (ammo, materials, stacked weapons or tools), you choose how many to move: 1, all, or a custom amount.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash. Warehouses store tools. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nYou can carry two weapons at once, for example a handgun and a rifle. When you commit a crime, the server looks at both worn slots and automatically uses the best match for that crime.\nOnly usable weapons worn on slot 1 or 2 count for crimes.\nBackpack capacity covers tools, unequipped weapons and carried materials. Worn weapons, ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.'**
+  /// **'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot, a second-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nIf a stack has more than one unit (ammo, materials, stacked weapons or tools), you choose how many to move: 1, all, or a custom amount.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store tools, weapons, ammo, vests and cash, but police search the warehouse in the country where you are arrested and seize about 40% of that stock. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nYou can carry two weapons at once, for example a handgun and a rifle. When you commit a crime, the server looks at both worn slots and automatically uses the best match for that crime.\nOnly usable weapons worn on slot 1 or 2 count for crimes.\nBackpack capacity covers tools, unequipped weapons and carried materials. Worn weapons, ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.'**
   String get helpTopicInventoryHow;
 
   /// No description provided for @helpTopicInventoryTips.
@@ -28084,7 +28090,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPropertiesHow.
   ///
   /// In en, this message translates to:
-  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash; warehouses store tools. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. Warehouse and nightclub slots per country are shown in the shop. The casino is unique per country.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
+  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store the same plus tools, with more slots. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. You can own one warehouse per country (no global cap). Nightclub slots per country are shown in the shop. The casino is unique per country.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
   String get helpTopicPropertiesHow;
 
   /// No description provided for @helpTopicPropertiesTips.

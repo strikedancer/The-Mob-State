@@ -5313,7 +5313,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get propertyRoleWarehouse =>
-      'Almacenamiento de herramientas. Las actualizaciones agregan más espacios.';
+      'Gran alijo de herramientas, armas, municiones, chalecos y dinero en efectivo. La policía lo registra si te arrestan en este país.';
 
   @override
   String get propertyRoleNightclub =>
@@ -5336,7 +5336,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get propertyInfoWarehouse =>
-      'Un almacén almacena únicamente herramientas. Las actualizaciones agregan más espacios. Almacenamiento abierto para administrar herramientas para este edificio; debes estar en el mismo país. Develop gasta dinero del banco para obtener un bono permanente de ingresos pasivos.';
+      'Un almacén almacena herramientas, armas, municiones, chalecos y dinero en efectivo. Uno por jugador por país, sin límite de espacios en todo el país. Almacenamiento abierto en el mismo país. Las actualizaciones agregan más espacios. Las casas son más seguras tras un arresto; La policía registra este almacén y confisca alrededor del 40% de las existencias si lo arrestan aquí. Develop gasta dinero del banco para obtener un bono permanente de ingresos pasivos.';
 
   @override
   String get propertyInfoNightclub =>
@@ -5375,6 +5375,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get propertySlotsGone => 'No quedan espacios en este país';
+
+  @override
+  String get propertyAlreadyOwnedInCountry => 'Ya tienes esto en este país.';
 
   @override
   String get propertyUniqueTaken => 'Ya reclamado en este país.';
@@ -16357,7 +16360,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'El inventario se abre como una vista de muñeca de papel: tu avatar en el centro, una ranura para armas criminales y una ranura para chaleco, además de ranuras cuadradas para mochila.\nArrastre un elemento (o tóquelo y luego toque un objetivo válido) para moverlo. En los teléfonos, tocar para seleccionar es más confiable que arrastrar.\nSi una pila tiene más de una unidad (munición, materiales, armas o herramientas apiladas), eliges cuántas mover: 1, todas o una cantidad personalizada.\nLa cuadrícula de la derecha es el contexto actual: una casa o almacén en este país, o el depósito de materiales. Abrir almacenamiento en una propiedad salta aquí con ese edificio seleccionado.\nLas casas almacenan armas, municiones, chalecos y dinero en efectivo. Los almacenes almacenan herramientas. Los materiales permanecen en el depósito del campo, no en una casa. El efectivo usa botones, no arrastre.\nSolo puedes usar un chaleco. Colocar un chaleco sobre el avatar lo equipa; almacenarlo en una casa lo desequipa. Se rechaza un segundo chaleco usado.\nLa ranura de armas criminales permanece sincronizada con la pantalla Crímenes. Sólo cuentan las armas transportadas y utilizables.\nLa capacidad de la mochila cubre herramientas, armas y materiales transportados. La munición y el chaleco desgastado no utilizan ranuras para mochila. El servidor rechaza paquetes completos, países incorrectos y tipos de propiedad incorrectos.\nLos equipamientos siguen siendo una segunda pestaña para crímenes guardados o conjuntos de viajes.\nLos medicamentos se almacenan y se muestran en gramos; 351 significa 351 g. El almacenamiento de la Crew sigue siendo un escondite seguro separado.\nAl ser arrestado, la policía puede confiscar artículos. Las drogas en inventario aumentan el riesgo del FBI en viajes internacionales.';
+      'El inventario se abre como una vista de muñeca de papel: tu avatar en el centro, una ranura para armas criminales, una ranura para una segunda arma y una ranura para chaleco, además de ranuras cuadradas para mochilas. \nArrastre un elemento (o tóquelo y luego toque un objetivo válido) para moverlo. En los teléfonos, tocar para seleccionar es más confiable que arrastrar. \nSi una pila tiene más de una unidad (munición, materiales, armas o herramientas apiladas), eliges cuántas mover: 1, todas o una cantidad personalizada. \nLa cuadrícula de la derecha es el contexto actual: una casa o almacén en este país, o el depósito de materiales. Abrir almacenamiento en una propiedad salta aquí con ese edificio seleccionado. \nLas casas almacenan armas, municiones, chalecos y dinero en efectivo y son más seguras en caso de arresto. Los almacenes almacenan herramientas, armas, municiones, chalecos y dinero en efectivo, pero la policía registra el almacén en el país donde te arrestan y confisca alrededor del 40% de ese stock. Los materiales permanecen en el depósito del campo, no en una casa. El efectivo usa botones, no arrastre. \nSolo puedes usar un chaleco. Colocar un chaleco sobre el avatar lo equipa; almacenarlo en una casa lo desequipa. Se rechaza un segundo chaleco usado. \nPuedes llevar dos armas a la vez, por ejemplo una pistola y un rifle. Cuando cometes un delito, el servidor mira ambas ranuras desgastadas y automáticamente utiliza la mejor combinación para ese delito. \nSólo las armas utilizables usadas en las ranuras 1 o 2 cuentan para delitos. \nLa capacidad de la mochila cubre herramientas, armas no equipadas y materiales transportados. Las armas usadas, la munición y el chaleco usado no usan ranuras para mochila. El servidor rechaza paquetes completos, países incorrectos y tipos de propiedad incorrectos. \nLos equipamientos siguen siendo una segunda pestaña para crímenes guardados o conjuntos de viajes. \nLos medicamentos se almacenan y se muestran en gramos; 351 significa 351 g. El almacenamiento de la Crew sigue siendo un escondite seguro separado. \nAl ser arrestado, la policía puede confiscar artículos. Las drogas en inventario aumentan el riesgo del FBI en viajes internacionales.';
 
   @override
   String get helpTopicInventoryTips =>
@@ -16375,7 +16378,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Cada inmueble tiene su propio rol: espacio de almacenamiento, capacidad de vivienda o acceso a un módulo posterior como la discoteca.\nLas actualizaciones de almacén aumentan su capacidad de almacenamiento de artículos y otras existencias.\nLas casas almacenan armas, municiones, chalecos y dinero en efectivo; almacenes almacenan herramientas. Abrir almacenamiento en una casa o almacén abre la muñeca de papel del Inventario con ese edificio seleccionado. Debes estar en el mismo país.\nCasas y departamentos aumentan la capacidad habitacional; Los jugadores VIP reciben además espacios adicionales.\nAlgunas propiedades son únicas o están bloqueadas por país: debes estar en el país correcto para comprarlas o administrarlas.\nLa venta rinde el 70% del precio de compra. No hay tiempo de reutilización para vender, es instantáneo.\nUn Nightclub comprado abre la pantalla separada de administración del Nightclub; ese módulo maneja la administración y los ingresos, no la descripción general de las propiedades.\nDesarrollar gasta dinero del banco: cada nivel aumenta permanentemente los ingresos pasivos de esa propiedad (el nivel máximo y el tiempo de reutilización están ajustados por el servidor).';
+      'Cada inmueble tiene su propio rol: espacio de almacenamiento, capacidad de vivienda o acceso a un módulo posterior como la discoteca. \nLas actualizaciones de almacén aumentan su capacidad de almacenamiento de artículos y otras existencias. \nLas casas almacenan armas, municiones, chalecos y dinero en efectivo y son más seguras en caso de arresto. Los almacenes almacenan las mismas herramientas plus, con más espacios. Abrir almacenamiento en una casa o almacén abre la muñeca de papel del Inventario con ese edificio seleccionado. Debes estar en el mismo país. \nCasas y departamentos aumentan la capacidad habitacional; Los jugadores VIP reciben además espacios adicionales. \nAlgunas propiedades son únicas o están bloqueadas por país: debes estar en el país correcto para comprarlas o administrarlas. Puede poseer un almacén por país (sin límite global). Los espacios para discotecas por país se muestran en la tienda. El casino es único por país. \nVender desde Mis propiedades rinde el 70% del precio de compra en efectivo. El almacenamiento (y el stock de la discoteca) debe estar vacío. Sin tiempo de reutilización. \nUn Nightclub comprado abre la pantalla separada de administración del Nightclub; ese módulo maneja la administración y los ingresos, no la descripción general de las propiedades. \nDesarrollar gasta dinero del banco únicamente en edificios de ingresos: cada nivel aumenta permanentemente los ingresos pasivos de esa propiedad (el nivel máximo y el tiempo de reutilización están ajustados por el servidor).';
 
   @override
   String get helpTopicPropertiesTips =>

@@ -15,6 +15,7 @@ class PropertyDefinition {
   final int? slotsAvailable;
   final int? ownedCount;
   final int? maxOwners;
+  final bool alreadyOwned;
 
   PropertyDefinition({
     required this.id,
@@ -33,6 +34,7 @@ class PropertyDefinition {
     this.slotsAvailable,
     this.ownedCount,
     this.maxOwners,
+    this.alreadyOwned = false,
   });
 
   factory PropertyDefinition.fromJson(Map<String, dynamic> json) {
@@ -56,6 +58,7 @@ class PropertyDefinition {
       slotsAvailable: (json['slotsAvailable'] as num?)?.toInt(),
       ownedCount: (json['ownedCount'] as num?)?.toInt(),
       maxOwners: (json['maxOwners'] as num?)?.toInt(),
+      alreadyOwned: json['alreadyOwned'] as bool? ?? false,
     );
   }
 
