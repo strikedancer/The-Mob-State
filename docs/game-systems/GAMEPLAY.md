@@ -368,7 +368,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 ## Don
 
 - Eén Empire-hub (rank 7+): rackets, woeker, omgekochte ambten en stadscontracten in het land waar je bent.
-- Don-UI is noir/goud met foto-kaarten in een raster (tot 3–4 per rij op desktop; 2 op tablet, 1 op smal).
+- Don-UI is noir/goud met foto-kaarten in een raster (tot 3–4 per rij op desktop; 2 op tablet, 1 op smal). De gouden `i` opent een uitgebreide handleiding met foto’s per onderdeel.
 - Claim van een zaak is altijd persoonlijk. Innen gaat naar cash, tenzij je `leader` / `co_leader` / `capo` (in het capo-land) tribute naar de crew-bank stuurt.
 - Straatmisdaad `protection_racket` blijft een eenmalige shake; de hub is het persistente rijk (geen dubbel inkomen).
 - Handmatig innen met cooldown; te lang niet innen (~72u) maakt de zaak weer vrij. Squeeze: hogere tribute, extra wanted, kans dat de zaak afhaakt. Rivalen kunnen een korte contest starten.

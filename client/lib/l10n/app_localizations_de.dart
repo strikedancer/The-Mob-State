@@ -3196,6 +3196,58 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donSqueezeHeld => 'Der Laden hat extra bezahlt – vorerst.';
 
   @override
+  String get donInfoTooltip => 'Wie Don funktioniert';
+
+  @override
+  String get donInfoTitle => 'Der Don-Schreibtisch';
+
+  @override
+  String get donInfoIntro =>
+      'Don ist Ihr hartnäckiger Empire-Schreibtisch ab Rang 7. Hier passiert alles in dem Land, in dem Sie sich befinden. Ansprüche sind persönlich. Der Schutz vor Straßenkriminalität ist ein One-Shot-Shake und verschafft Ihnen diese Geschäfte nicht.';
+
+  @override
+  String get donInfoRacketsTitle => 'Schläger';
+
+  @override
+  String get donInfoRacketsBody =>
+      'Die Registerkarte „Schläger“ listet NPC-Läden in diesem Land auf: Café, Garage, Lagerhaus, Nachtladen, Hafenbüro und Wäscherei. Fordern Sie einen kostenlosen Shop an, wenn Ihre ausgerüstete Waffe ausreichend Einschüchterungspotenzial bietet. Sammle nach der Abklingzeit von Hand Tribut. Wenn Sie einen Shop etwa drei Tage lang ignorieren, wird er wieder kostenlos. \nSqueeze erhöht die nächste Auszahlung, erhöht aber auch die gewünschte Summe, und der Shop kann fliehen. Ein Rivale im selben Land kann einen kurzen Wettbewerb starten; Wenn Ihnen der Shop gehört, können Sie ihn behalten. \nSie können mehrere Shops bis zur Servergrenze betreiben. Der Tribut landet in bar, es sei denn, Sie sind Anführer, Co-Anführer oder Kapodaster (nur im Kapodaster-Land) und überweisen ihn an die Mannschaftsbank.';
+
+  @override
+  String get donInfoLoansTitle => 'Kredite';
+
+  @override
+  String get donInfoLoansBody =>
+      'Du bist der Hai. Legen Sie einen Betrag fest und leihen Sie ihn einem NPC (Straßenhändler, Hafenarbeiter, Clubwirt) oder bieten Sie einem anderen Spieler mit Benutzernamen ein Treuhandkonto an. \nNPC-Darlehen tendieren zur Rückzahlung oder zum Zahlungsausfall. Bei Zahlungsverzug kassieren Sie einen Teil der fälligen Beträge und nehmen die Forderung entgegen – nie wird der Kreditnehmer vollständig ausgelöscht. \nSpielerangebote bleiben bis zur Annahme im Treuhandkonto. Obergrenzen verhindern, dass daraus eine Alternativfarm wird: ein paar aktive Kredite, ein Mindest-/Höchstkapital und eine kurze Laufzeit.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Beeinflussen';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Jedes Land hat einen Richter, einen Kommissar und einen Stadtrat. Durch ein Überbieten von Bargeld wird das Büro für etwa 24 Stunden gekauft. Ein Rivale kann Sie ersetzen, indem er mehr bezahlt. \nRichter: ein kleiner, begrenzter Bonus bei Berufung vor Gericht. Mit dem Jurastudium ist es nur bis zur Don-Grenze vergleichbar; Die Gerichtsbestechung pro Fall besteht immer noch. \nHerr Kommissar: Durch gescheiterte Verbrechen wird weniger gesucht. Dies ist keine Haftimmunität. \nStadtrat: Schaltet Großstadtverträge frei oder stärkt sie.';
+
+  @override
+  String get donInfoContractsTitle => 'Verträge';
+
+  @override
+  String get donInfoContractsBody =>
+      'Offene öffentliche Stellen in diesem Land. Ein Gebot kostet einen Teil der Katalogauszahlung, bar oder von der Mannschaftsbank, wenn Sie die Erlaubnis dazu haben. \nGierige Gebote zahlen mehr und sorgen für zusätzliche Hitze. Off-Books extra nur, wenn Sie hier bereits Schläger besitzen. \nStraßenreparaturen sind kleine Arbeiten. Hafenkran will Ingenieurschule. Der Rathausflügel braucht den Stadtrat und mehr Technik.';
+
+  @override
+  String get donInfoCrewTitle => 'Crew-Rollen';
+
+  @override
+  String get donInfoCrewBody =>
+      'Consigliere sieht die Mannschaftsschlägerliste, kann aber die Mannschaftsbank nicht zurückziehen. Capo darf Tribut- und Vertragsgebote nur im zugewiesenen Land an die Mannschaftsbank senden. Leiter und Co-Leiter können dies in jedem Land tun. Der Überlauf fällt auf Ihr Bargeld zurück.';
+
+  @override
+  String get donInfoTipsTitle => 'Tipps';
+
+  @override
+  String get donInfoTipsBody =>
+      'Sammeln Sie in der Abklingzeit, anstatt jeden Laden zu quetschen – Fliehen Sie Chance und Gesuchtes summieren sich schnell. \nStellen Sie das Kapodaster-Land ein, bevor Sie den Crew-Bank-Tribut umschalten. \nBestechen Sie den Stadtrat, bevor Sie den Auftrag für das Rathaus anstreben, und denken Sie bei Hafenjobs an die Ingenieurschule. \nRang unter 7 und Gefängnisblockierung des Hubs.';
+
+  @override
   String get raceMenuLabel => 'Mitternachtsrennen';
 
   @override
@@ -17019,7 +17071,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Sammeln Sie in der Abklingzeit, anstatt jeden Laden zu quetschen – Fliehen Sie Chance und Gesuchtes summieren sich schnell. \nCapo Tribute funktioniert nur im zugewiesenen Land; Legen Sie dieses Land fest, bevor Sie die Crew-Bank umschalten. \nBestechen Sie den Stadtrat, bevor Sie den Auftrag für das Rathaus anstreben, und denken Sie bei Hafenjobs an die Ingenieurschule.';
+      'Sammeln Sie in der Abklingzeit, anstatt jeden Laden zu quetschen – Fliehen Sie Chance und Gesuchtes summieren sich schnell. \nCapo Tribute funktioniert nur im zugewiesenen Land; Legen Sie dieses Land fest, bevor Sie die Crew-Bank umschalten. \nBestechen Sie den Stadtrat, bevor Sie den Auftrag für das Rathaus anstreben, und denken Sie bei Hafenjobs an die Ingenieurschule. \nTippen Sie auf das goldene i auf dem Don-Schreibtisch, um eine längere bebilderte Anleitung zu erhalten.';
 
   @override
   String get helpTopicRacesCategory => 'Reich';

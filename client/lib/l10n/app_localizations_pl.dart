@@ -3177,6 +3177,58 @@ class AppLocalizationsPl extends AppLocalizations {
   String get donSqueezeHeld => 'Sklep zapłacił dodatkowo – na razie.';
 
   @override
+  String get donInfoTooltip => 'Jak działa Don';
+
+  @override
+  String get donInfoTitle => 'Biurko Dona';
+
+  @override
+  String get donInfoIntro =>
+      'Don jest Twoim stałym biurkiem w Imperium od rangi 7. Wszystko tutaj dzieje się w kraju, w którym stoisz. Roszczenia są osobiste. Rakieta chroniąca przed przestępczością uliczną to jednorazowy wystrzał i nie zapewnia również tych sklepów.';
+
+  @override
+  String get donInfoRacketsTitle => 'Rakiety';
+
+  @override
+  String get donInfoRacketsBody =>
+      'Zakładka Rakiety zawiera listę sklepów NPC w tym kraju: kawiarnię, garaż, magazyn, sklep nocny, biuro portowe i pralnię. Zdobądź darmowy sklep, jeśli twoja wyposażona broń ma wystarczająco dużo zastraszenia. Zbierz trybut ręcznie po upływie czasu odnowienia. Zignoruj ​​sklep na około trzy dni, a znów stanie się on darmowy. \nSqueeze podnosi następną wypłatę, ale także podnosi kwotę żądaną, a sklep może uciec. Rywal z tego samego kraju może rozpocząć krótki konkurs; jeśli jesteś właścicielem sklepu, możesz go zatrzymać. \nMożesz prowadzić kilka sklepów aż do limitu serwera. Hołd wyląduje w gotówce, chyba że jesteś liderem, współliderem lub capo (tylko w kraju capo) i wyślesz go do banku załogi.';
+
+  @override
+  String get donInfoLoansTitle => 'Pożyczki';
+
+  @override
+  String get donInfoLoansBody =>
+      'Jesteś rekinem. Ustaw kwotę i pożycz NPC (sprzedawcy ulicznemu, pracownikowi portowemu, gospodarzowi klubu) lub zaoferuj depozyt innemu graczowi według nazwy użytkownika. \nPożyczki NPC wskazują na spłatę lub niewykonanie zobowiązania. Domyślnie pobierasz część tego, co jest należne i bierzesz to, co chcesz – nigdy nie całkowicie usuwasz pożyczkobiorcę. \nOferty graczy pozostają w depozycie do czasu ich zaakceptowania. Ograniczenia sprawiają, że nie staje się to farmą alternatywnych: kilka aktywnych pożyczek, kwota główna min./maks. i krótkoterminowa.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Wpływ';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Każdy kraj ma jednego sędziego, jednego komisarza i jednego radnego. Przebicie gotówkowe kupuje biuro na około 24 godziny. Rywal może Cię zastąpić, płacąc więcej. \nSędzia: niewielka premia ograniczona w przypadku apelacji sądowej. Łączy się ze szkołą prawniczą tylko do limitu Dona; nadal istnieje łapówka sądowa w poszczególnych przypadkach. \nKomisarz: nieudane przestępstwa zwiększają mniej poszukiwanych. To nie jest immunitet aresztowania. \nAlderman: odblokowuje lub wzmacnia kontrakty w dużych miastach.';
+
+  @override
+  String get donInfoContractsTitle => 'Umowy';
+
+  @override
+  String get donInfoContractsBody =>
+      'Otwarte stanowiska pracy w sektorze publicznym w tym kraju. Oferta kosztuje część wypłaty z katalogu, z gotówki lub z banku załogi, jeśli masz pozwolenie. \nChciwe oferty płacą więcej i dodają ciepła. Dodatkowe rezerwacje tylko wtedy, gdy posiadasz już tutaj rakiety. \nNaprawa ulic to drobnostka. Żuraw portowy chce szkołę inżynierską. Skrzydło ratusza potrzebuje radnego i więcej inżynierów.';
+
+  @override
+  String get donInfoCrewTitle => 'Role załogi';
+
+  @override
+  String get donInfoCrewBody =>
+      'Consigliere widzi listę rakiet załogi, ale nie może wycofać banku załogi. Capo może przesyłać daniny i oferty kontraktów do banku załogi tylko w przydzielonym kraju. Lider i współlider mogą to robić w dowolnym kraju. Przepełnienie wraca do Twojej gotówki.';
+
+  @override
+  String get donInfoTipsTitle => 'Porady';
+
+  @override
+  String get donInfoTipsBody =>
+      'Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nUstaw kraj capo, zanim przełączysz daninę w banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt z ratuszem, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie. \nRanga poniżej 7 i więzienie blokują hub.';
+
+  @override
   String get raceMenuLabel => 'Wyścigi o północy';
 
   @override
@@ -16936,7 +16988,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nCapo hołd działa tylko w przydzielonym kraju; ustaw ten ląd przed przełączeniem banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt w ratuszu, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie.';
+      'Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nCapo hołd działa tylko w przydzielonym kraju; ustaw ten ląd przed przełączeniem banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt w ratuszu, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie. \nKliknij złote i na biurku Dona, aby wyświetlić dłuższy ilustrowany przewodnik.';
 
   @override
   String get helpTopicRacesCategory => 'Imperium';

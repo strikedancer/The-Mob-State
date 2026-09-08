@@ -3189,6 +3189,58 @@ class AppLocalizationsEs extends AppLocalizations {
   String get donSqueezeHeld => 'La tienda pagó más, por ahora.';
 
   @override
+  String get donInfoTooltip => 'Cómo funciona Don';
+
+  @override
+  String get donInfoTitle => 'El escritorio de Don';
+
+  @override
+  String get donInfoIntro =>
+      'Don es tu persistente escritorio Empire desde el rango 7. Aquí todo sucede en el país en el que te encuentras. Los reclamos son personales. El negocio de protección contra el crimen callejero es un negocio de una sola vez y no te ofrece estas tiendas.';
+
+  @override
+  String get donInfoRacketsTitle => 'Raquetas';
+
+  @override
+  String get donInfoRacketsBody =>
+      'La pestaña Raquetas enumera las tiendas NPC en este país: cafetería, garaje, almacén, tienda nocturna, oficina portuaria y lavandería. Reclama una tienda gratuita si tu arma equipada tiene suficiente intimidación. Recoge tributo a mano después del tiempo de reutilización. Ignora una tienda durante unos tres días y volverá a ser gratuita. \nSqueeze aumenta el siguiente pago pero también aumenta lo que se busca y la tienda puede huir. Un rival del mismo país puede iniciar una contienda corta; Si eres dueño de la tienda, puedes mantenerla. \nPuede ejecutar varias tiendas hasta el límite del servidor. El tributo se obtiene en efectivo a menos que seas líder, colíder o capo (solo en el país del capo) y lo envíes al banco de la Crew.';
+
+  @override
+  String get donInfoLoansTitle => 'Préstamos';
+
+  @override
+  String get donInfoLoansBody =>
+      'Eres el tiburón. Establece una cantidad y presta a un NPC (comerciante callejero, trabajador portuario, anfitrión del club) u ofrece depósito en garantía a otro jugador por nombre de usuario. \nLos préstamos NPC avanzan hacia el pago o el incumplimiento. En caso de incumplimiento, usted cobra una parte de lo adeudado y toma lo que desea, nunca una eliminación total del prestatario. \nLas ofertas de los jugadores permanecen en depósito de garantía hasta que sean aceptadas. Los límites evitan que esto se convierta en una granja alternativa: algunos préstamos activos, un capital mínimo/máximo y un plazo corto.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Influencia';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Cada país tiene un juez, un comisario y un concejal. Una sobrepuja en efectivo compra la oficina durante unas 24 horas. Un rival puede reemplazarte pagando más. \nJuez: una pequeña bonificación máxima en apelación ante el tribunal. Se compara con la facultad de derecho sólo hasta el límite de Don; el soborno judicial por caso todavía existe. \nComisario: los crímenes fallidos suman menos buscados. Esto no es inmunidad al arresto. \nConcejal: desbloquea o potencia los contratos de las grandes ciudades.';
+
+  @override
+  String get donInfoContractsTitle => 'Contratos';
+
+  @override
+  String get donInfoContractsBody =>
+      'Abrir empleos públicos en este país. Una oferta cuesta una parte del pago del catálogo, en efectivo o del banco de la Crew, si tiene permiso. \nLas ofertas codiciosas pagan más y añaden calor. Extra no registrado solo si ya posees raquetas aquí. \nLa reparación de calles es un trabajo pequeño. Harbour Crane quiere escuela de ingeniería. El ala del ayuntamiento necesita al concejal y más ingeniería.';
+
+  @override
+  String get donInfoCrewTitle => 'Roles de la Crew';
+
+  @override
+  String get donInfoCrewBody =>
+      'El consigliere ve la lista de raquetas de la Crew pero no puede retirar el banco de la Crew. Capo podrá enviar ofertas de tributos y contratos al banco de Crew sólo en el país asignado. Líder y colíder pueden hacerlo en cualquier país. El desbordamiento vuelve a su efectivo.';
+
+  @override
+  String get donInfoTipsTitle => 'Consejos';
+
+  @override
+  String get donInfoTipsBody =>
+      'Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nEstablece el país del capo antes de alternar el tributo al banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos portuarios. \nClasifique por debajo de 7 y la cárcel bloqueará el centro.';
+
+  @override
   String get raceMenuLabel => 'Carreras de medianoche';
 
   @override
@@ -16961,7 +17013,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nCapo tributo sólo funciona en el país asignado; establece esa tierra antes de alternar el banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos en el puerto.';
+      'Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nCapo tributo sólo funciona en el país asignado; establece esa tierra antes de alternar el banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos en el puerto. \nToque la i dorada en el escritorio de Don para obtener una guía ilustrada más extensa.';
 
   @override
   String get helpTopicRacesCategory => 'Imperio';

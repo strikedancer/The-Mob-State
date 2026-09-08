@@ -3171,6 +3171,58 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donSqueezeHeld => 'De zaak betaalt extra — voorlopig.';
 
   @override
+  String get donInfoTooltip => 'Hoe Don werkt';
+
+  @override
+  String get donInfoTitle => 'Het Don-bureau';
+
+  @override
+  String get donInfoIntro =>
+      'Don is je persistente Empire-bureau vanaf rang 7. Alles hier gebeurt in het land waar je staat. Claims zijn persoonlijk. De straatmisdaad beschermingsracket is een eenmalige shake en geeft je deze zaken niet extra.';
+
+  @override
+  String get donInfoRacketsTitle => 'Rackets';
+
+  @override
+  String get donInfoRacketsBody =>
+      'Het tabblad Rackets toont NPC-zaken in dit land: café, garage, magazijn, nachtwinkel, havenkantoor en wasserette. Claim een vrije zaak als je uitgeruste wapen genoeg intimidatie heeft. Innen doe je handmatig na de cooldown. Laat je een zaak ongeveer drie dagen staan, dan wordt hij weer vrij.\nUitknijpen verhoogt de volgende uitbetaling maar ook wanted, en de zaak kan afhaken. Een rivaal in hetzelfde land kan een korte overname starten; als jij de eigenaar bent kun je Vasthouden.\nJe kunt meerdere zaken runnen tot het servermaximum. Tribute landt in cash, tenzij je leader, co-leider of capo (alleen in het capo-land) bent en naar de crew-bank stuurt.';
+
+  @override
+  String get donInfoLoansTitle => 'Leningen';
+
+  @override
+  String get donInfoLoansBody =>
+      'Jij bent de shark. Zet een bedrag en leen uit aan een NPC (straatdealer, havenarbeider, clubhost) of bied escrow aan een andere speler via gebruikersnaam.\nNPC-leningen tikken richting terugbetalen of default. Bij default inner je een deel van wat openstaat en krijg je wanted — nooit een full wipe van de lener.\nSpeler-aanbiedingen staan in escrow tot ze worden geaccepteerd. Caps houden alt-farm tegen: een paar actieve leningen, een min/max hoofdsom en een korte looptijd.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Invloed';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Elk land heeft één rechter, één commissaris en één wethouder. Met een cash-overbieding koop je het ambt voor ongeveer 24 uur. Een rivaal kan je vervangen door meer te betalen.\nRechter: een kleine begrensde bonus op hoger beroep. Die stapelt met law-school alleen tot de Don-cap; de per-zaak court-omkoping blijft bestaan.\nCommissaris: mislukte crimes geven minder wanted. Dit is geen arrestatie-immuniteit.\nWethouder: ontgrendelt of versterkt de grote stadscontracten.';
+
+  @override
+  String get donInfoContractsTitle => 'Contracten';
+
+  @override
+  String get donInfoContractsBody =>
+      'Open publieke klussen in dit land. Een bod kost een deel van de catalogus-payout, uit cash of uit de crew-bank als je daar recht op hebt.\nHebberige biedingen betalen meer en geven extra heat. Off-books extra alleen als je hier al rackets hebt.\nStraatreparatie is de kleine klus. Havenkraan vraagt engineering-school. Stadhuisvleugel heeft de wethouder en meer engineering nodig.';
+
+  @override
+  String get donInfoCrewTitle => 'Crew-rollen';
+
+  @override
+  String get donInfoCrewBody =>
+      'Consigliere ziet de crew-racketlijst maar kan de crew-bank niet opnemen. Capo mag tribute en contractbiedingen alleen in het toegewezen land naar de crew-bank sturen. Leader en co-leider kunnen dat in elk land. Overflow valt terug naar jouw cash.';
+
+  @override
+  String get donInfoTipsTitle => 'Tips';
+
+  @override
+  String get donInfoTipsBody =>
+      'Innen op cooldown in plaats van elke zaak uit te knijpen — flee-kans en wanted lopen snel op.\nZet het capo-land vóór je tribute naar de crew-bank zet.\nKoop de wethouder om voordat je het stadhuis-contract najaagt, en houd engineering-school in gedachten voor havenklussen.\nOnder rang 7 en vanuit de cel is de hub geblokkeerd.';
+
+  @override
   String get raceMenuLabel => 'Midnight Races';
 
   @override
@@ -16847,7 +16899,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Innen op cooldown in plaats van elke zaak uit te knijpen — flee-kans en wanted lopen snel op.\nCapo-tribute werkt alleen in het toegewezen land; zet dat land vóór je de crew-bank aanzet.\nKoop de wethouder om voordat je het stadhuis-contract najaagt, en houd engineering-school in gedachten voor havenklussen.';
+      'Innen op cooldown in plaats van elke zaak uit te knijpen — flee-kans en wanted lopen snel op.\nCapo-tribute werkt alleen in het toegewezen land; zet dat land vóór je de crew-bank aanzet.\nKoop de wethouder om voordat je het stadhuis-contract najaagt, en houd engineering-school in gedachten voor havenklussen.\nTik op de gouden i op het Don-bureau voor een langere handleiding met foto’s.';
 
   @override
   String get helpTopicRacesCategory => 'Empire';

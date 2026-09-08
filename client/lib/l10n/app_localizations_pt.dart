@@ -3174,6 +3174,58 @@ class AppLocalizationsPt extends AppLocalizations {
   String get donSqueezeHeld => 'A loja pagou a mais – por enquanto.';
 
   @override
+  String get donInfoTooltip => 'Como Don funciona';
+
+  @override
+  String get donInfoTitle => 'A mesa do Don';
+
+  @override
+  String get donInfoIntro =>
+      'Don é o persistente escritório do Império desde o nível 7. Tudo aqui acontece no país em que você está. As reivindicações são pessoais. O esquema de proteção ao crime de rua é um golpe único e também não oferece essas lojas.';
+
+  @override
+  String get donInfoRacketsTitle => 'Raquetes';
+
+  @override
+  String get donInfoRacketsBody =>
+      'A aba Raquetes lista as lojas de NPCs neste país: café, garagem, armazém, loja noturna, escritório portuário e lavanderia. Solicite uma loja gratuita se sua arma equipada tiver intimidação suficiente. Colete o tributo manualmente após o tempo de espera. Ignore uma loja por cerca de três dias e ela ficará gratuita novamente. \nSqueeze aumenta o próximo pagamento, mas também aumenta o desejado, e a loja pode fugir. Um rival no mesmo país pode iniciar uma competição curta; se você possui a loja, você pode manter. \nVocê pode administrar várias lojas até o limite do servidor. O tributo pousa em dinheiro, a menos que você seja líder, co-líder ou capo (somente no país capo) e envie para o banco da Crew.';
+
+  @override
+  String get donInfoLoansTitle => 'Empréstimos';
+
+  @override
+  String get donInfoLoansBody =>
+      'Você é o tubarão. Defina uma quantia e empreste para um NPC (traficante de rua, estivador, anfitrião do clube) ou ofereça garantia a outro jogador pelo nome de usuário. \nOs empréstimos NPC apontam para reembolso ou inadimplência. Por padrão, você recebe uma parte do que é devido e recebe o que deseja – nunca uma limpeza completa do mutuário. \nAs ofertas dos jogadores ficam em depósito até serem aceitas. Os limites evitam que isso se torne uma fazenda alternativa: alguns empréstimos ativos, um principal mínimo/máximo e um curto prazo.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Influência';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Cada país tem um juiz, um comissário e um vereador. Uma oferta excessiva de dinheiro compra o escritório por cerca de 24 horas. Um rival pode substituí-lo pagando mais. \nJuiz: um pequeno bônus limitado em recurso judicial. Ele se compara à faculdade de direito apenas até o limite de Don; o suborno judicial por caso ainda existe. \nComissário: crimes fracassados ​​acrescentam menos procurados. Isto não é imunidade à prisão. \nVereador: desbloqueia ou aumenta os contratos das grandes cidades.';
+
+  @override
+  String get donInfoContractsTitle => 'Contratos';
+
+  @override
+  String get donInfoContractsBody =>
+      'Abra empregos públicos neste país. Uma oferta custa uma fatia do pagamento do catálogo, em dinheiro ou no banco da Crew, se você tiver permissão. \nLances gananciosos pagam mais e aumentam o calor. Extras fora dos livros somente se você já possui raquetes aqui. \nO conserto de ruas é um trabalho pequeno. Harbour Crane quer escola de engenharia. Ala da prefeitura precisa de vereador e mais engenharia.';
+
+  @override
+  String get donInfoCrewTitle => 'Funções da Crew';
+
+  @override
+  String get donInfoCrewBody =>
+      'O Consigliere vê a lista da raquete da Crew, mas não pode retirar o banco da Crew. Capo poderá enviar tributos e propostas de contrato ao banco da Crew somente no país designado. O líder e o colíder podem fazê-lo em qualquer país. O estouro volta para o seu dinheiro.';
+
+  @override
+  String get donInfoTipsTitle => 'Pontas';
+
+  @override
+  String get donInfoTipsBody =>
+      'Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nDefina o país do capo antes de alternar o tributo do banco da Crew. \nSuborne o vereador antes de buscar o contrato com a prefeitura e lembre-se da escola de engenharia para empregos no porto. \nClassificação abaixo de 7 e prisão bloqueiam o hub.';
+
+  @override
   String get raceMenuLabel => 'Corridas da Meia-Noite';
 
   @override
@@ -16933,7 +16985,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nO tributo Capo só funciona no país designado; defina esse terreno antes de alternar o banco da Crew. \nSuborne o vereador antes de conseguir o contrato com a prefeitura e lembre-se da escola de engenharia para os empregos no porto.';
+      'Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nO tributo Capo só funciona no país designado; defina esse terreno antes de alternar o banco da Crew. \nSuborne o vereador antes de conseguir o contrato com a prefeitura e lembre-se da escola de engenharia para os empregos no porto. \nToque no i dourado na mesa Don para obter um guia ilustrado mais longo.';
 
   @override
   String get helpTopicRacesCategory => 'Império';

@@ -11,6 +11,7 @@ Out of scope for this module: blotter newspaper, weapons P2P, Facebook Login, ho
 - `client/lib/screens/don_screen.dart` (dashboard Empire → Don; optional `/don`)
 - Crew Members: role `consigliere` / `capo` + capo land in `crew_screen.dart`
 - Hub art: `client/assets/images/don/*.png` (hero, rackets, NPC sharks, officials, contracts) served on web as `/images/don/*` after deploy copies into `runtime/client-images/don/`. Use `WebAssetHelper.image` with icon fallback. No extra AppBar when `embedded == true`. Photo cards sit in a responsive wrap-grid (1 / 2 / 3 / 4 columns from ~480 / 700 / 1040 px pane width) so Empire desktop does not stack full-width rows.
+- Gold `i` on the hero opens a scrollable noir/gold guide (`donInfo*`) with section photos. Dialog uses `SafeArea`, clamped size and `AppLocalizations.of(dialogContext)`.
 
 ## Primary Backend Entry
 - `GET /don/overview`

@@ -610,6 +610,202 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     );
   }
 
+  Future<void> _showDonGuide(BuildContext context) async {
+    final media = MediaQuery.of(context);
+    final maxWidth = media.size.width >= 900
+        ? 640.0
+        : media.size.width >= 600
+            ? 520.0
+            : media.size.width - 24;
+    final maxHeight = media.size.height * 0.82;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+          child: SafeArea(
+            child: SizedBox(
+              width: maxWidth,
+              height: maxHeight,
+              child: DecoratedBox(
+                decoration: _panelDecoration(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: ColoredBox(
+                    color: _donPanelDark,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.info_outline, color: _donGold),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n.donInfoTitle,
+                                  style: const TextStyle(
+                                    color: _donGold,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: l10n.close,
+                                onPressed: () => Navigator.of(dialogContext).pop(),
+                                color: _donGold,
+                                icon: const Icon(Icons.close),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  _guideBanner('hub', Icons.account_balance),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    l10n.donInfoIntro,
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.86),
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                  _guideSection(
+                                    title: l10n.donInfoRacketsTitle,
+                                    body: l10n.donInfoRacketsBody,
+                                    imageKey: 'cafe',
+                                    icon: Icons.local_cafe,
+                                  ),
+                                  _guideSection(
+                                    title: l10n.donInfoLoansTitle,
+                                    body: l10n.donInfoLoansBody,
+                                    imageKey: 'street_dealer',
+                                    icon: Icons.person_outline,
+                                  ),
+                                  _guideSection(
+                                    title: l10n.donInfoInfluenceTitle,
+                                    body: l10n.donInfoInfluenceBody,
+                                    imageKey: 'judge',
+                                    icon: Icons.gavel,
+                                  ),
+                                  _guideSection(
+                                    title: l10n.donInfoContractsTitle,
+                                    body: l10n.donInfoContractsBody,
+                                    imageKey: 'harbor_crane',
+                                    icon: Icons.engineering,
+                                  ),
+                                  _guideSection(
+                                    title: l10n.donInfoCrewTitle,
+                                    body: l10n.donInfoCrewBody,
+                                    imageKey: 'alderman',
+                                    icon: Icons.groups,
+                                  ),
+                                  _guideSection(
+                                    title: l10n.donInfoTipsTitle,
+                                    body: l10n.donInfoTipsBody,
+                                    imageKey: 'laundry',
+                                    icon: Icons.star,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: FilledButton(
+                              style: _goldFill,
+                              onPressed: () => Navigator.of(dialogContext).pop(),
+                              child: Text(l10n.close),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _guideBanner(String imageKey, IconData icon) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: SizedBox(
+        height: 140,
+        width: double.infinity,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            _donImage(_donAsset(imageKey), fallback: icon),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0x11000000), Color(0x66000000)],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _guideSection({
+    required String title,
+    required String body,
+    required String imageKey,
+    required IconData icon,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: _donGold,
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: SizedBox(
+              height: 120,
+              width: double.infinity,
+              child: _donImage(_donAsset(imageKey), fallback: icon),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            body,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.86),
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildHero(
     AppLocalizations l10n,
     int money,
@@ -677,6 +873,34 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                                 ),
                               ),
                             ),
+                            Tooltip(
+                              message: l10n.donInfoTooltip,
+                              child: Material(
+                                color: Colors.black.withValues(alpha: 0.55),
+                                shape: const CircleBorder(),
+                                child: InkWell(
+                                  customBorder: const CircleBorder(),
+                                  onTap: () => _showDonGuide(context),
+                                  child: Container(
+                                    width: 36,
+                                    height: 36,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: _donGold.withValues(alpha: 0.8),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.info_outline,
+                                      color: _donGold,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
                             IconButton(
                               onPressed: _busy ? null : _load,
                               color: _donGold,

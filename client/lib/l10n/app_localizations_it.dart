@@ -3183,6 +3183,58 @@ class AppLocalizationsIt extends AppLocalizations {
   String get donSqueezeHeld => 'Il negozio ha pagato un extra, per ora.';
 
   @override
+  String get donInfoTooltip => 'Come lavora Don';
+
+  @override
+  String get donInfoTitle => 'La scrivania del Don';
+
+  @override
+  String get donInfoIntro =>
+      'Don è la tua persistente scrivania dell\'Impero dal grado 7. Tutto qui accade nel paese in cui ti trovi. Le rivendicazioni sono personali. Il racket della protezione del crimine di strada è una scossa one-shot e non ti dà anche questi negozi.';
+
+  @override
+  String get donInfoRacketsTitle => 'Racchette';
+
+  @override
+  String get donInfoRacketsBody =>
+      'La scheda Racchette elenca i negozi NPC in questo paese: bar, garage, magazzino, negozio notturno, ufficio portuale e lavanderia. Richiedi un negozio gratuito se la tua arma equipaggiata ha abbastanza intimidazione. Raccogli i tributi a mano dopo il tempo di recupero. Ignora un negozio per circa tre giorni e tornerà libero. \nSqueeze aumenta la vincita successiva ma aumenta anche il ricercato e il negozio può fuggire. Un rivale nello stesso paese può iniziare una breve gara; se possiedi il negozio puoi Trattenere. \nPuoi gestire diversi negozi fino al limite del server. Il tributo arriva in contanti a meno che tu non sia leader, co-leader o capo (solo nel paese del capo) e lo invia alla banca dell\'Crew.';
+
+  @override
+  String get donInfoLoansTitle => 'Prestiti';
+
+  @override
+  String get donInfoLoansBody =>
+      'Tu sei lo squalo. Imposta un importo e prestalo a un NPC (commerciante di strada, lavoratore portuale, host del club) o offri un deposito in garanzia a un altro giocatore tramite nome utente. \nI prestiti NPC puntano al rimborso o al default. In caso di inadempienza raccogli una quota di ciò che è dovuto e prendi quello desiderato, mai una cancellazione completa del mutuatario. \nLe offerte dei giocatori rimangono in deposito a garanzia fino all\'accettazione. I limiti impediscono che diventi una fattoria alternativa: pochi prestiti attivi, un capitale minimo/massimo e un breve termine.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Influenza';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Ogni paese ha un giudice, un commissario e un assessore. Un\'offerta eccessiva in contanti acquista l\'ufficio per circa 24 ore. Un rivale può sostituirti pagando di più. \nGiudice: un bonus limitato in caso di appello in tribunale. Si accumula con la facoltà di giurisprudenza solo fino al Don Cap; la tangente giudiziaria caso per caso esiste ancora. \nCommissario: ai reati falliti si aggiungono meno ricercati. Questa non è immunità all\'arresto. \nAssessore: sblocca o potenzia i contratti delle grandi città.';
+
+  @override
+  String get donInfoContractsTitle => 'Contratti';
+
+  @override
+  String get donInfoContractsBody =>
+      'Apri lavori pubblici in questo paese. Un\'offerta costa una fetta del pagamento del catalogo, in contanti o presso la banca dell\'Crew se ne hai il permesso. \nLe offerte avide pagano di più e aggiungono calore. Extra extra solo se possiedi già delle racchette qui. \nLa riparazione della strada è un piccolo lavoro. La gru portuale vuole una scuola di ingegneria. L\'ala del municipio ha bisogno dell\'assessore e di più ingegneria.';
+
+  @override
+  String get donInfoCrewTitle => 'Ruoli dell\'Crew';
+
+  @override
+  String get donInfoCrewBody =>
+      'Il Consigliere vede la lista del racket dell\'Crew ma non può ritirare la banca dell\'Crew. Il Capo può inviare tributi e offerte contrattuali alla Crew Bank solo nel Paese assegnato. Leader e co-leader possono farlo in qualsiasi paese. L\'overflow ricade sui tuoi soldi.';
+
+  @override
+  String get donInfoTipsTitle => 'Suggerimenti';
+
+  @override
+  String get donInfoTipsBody =>
+      'Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nImposta il paese del capo prima di attivare il tributo alla crew-bank. \nCorrompi l\'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali. \nClassificati sotto il 7 e blocca l\'hub in jail.';
+
+  @override
   String get raceMenuLabel => 'Gare di mezzanotte';
 
   @override
@@ -16993,7 +17045,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nIl tributo al Capo funziona solo nel paese assegnato; imposta quella terra prima di attivare/disattivare la banca dell\'Crew. \nCorrompi l\'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali.';
+      'Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nIl tributo al Capo funziona solo nel paese assegnato; imposta quella terra prima di attivare/disattivare la banca dell\'Crew. \nCorrompi l\'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali. \nTocca la i dorata sulla scrivania del Don per una guida illustrata più lunga.';
 
   @override
   String get helpTopicRacesCategory => 'Impero';

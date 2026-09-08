@@ -3200,6 +3200,58 @@ class AppLocalizationsFr extends AppLocalizations {
       'Le magasin a payé un supplément – ​​pour l’instant.';
 
   @override
+  String get donInfoTooltip => 'Comment fonctionne Don';
+
+  @override
+  String get donInfoTitle => 'Le bureau Don';
+
+  @override
+  String get donInfoIntro =>
+      'Don est votre bureau Empire persistant à partir du rang 7. Ici, tout se passe dans le pays dans lequel vous vous trouvez. Les réclamations sont personnelles. Le racket de protection contre la criminalité de rue est une solution unique et ne vous offre pas non plus ces magasins.';
+
+  @override
+  String get donInfoRacketsTitle => 'Raquettes';
+
+  @override
+  String get donInfoRacketsBody =>
+      'L\'onglet Raquettes répertorie les boutiques de PNJ de ce pays : café, garage, entrepôt, magasin de nuit, bureau du port et blanchisserie. Réclamez une boutique gratuite si votre arme équipée est suffisamment intimidante. Récupérez l\'hommage à la main après le temps de recharge. Ignorez un magasin pendant environ trois jours et il redevient gratuit. \nSqueeze augmente le prochain paiement mais augmente également la valeur recherchée, et le magasin peut fuir. Un rival du même pays peut lancer une courte compétition ; si vous possédez la boutique, vous pouvez la conserver. \nVous pouvez gérer plusieurs boutiques jusqu\'à la limite du serveur. L\'hommage arrive en espèces, sauf si vous êtes leader, co-leader ou capo (uniquement dans le pays capo) et que vous l\'envoyez à la banque d\'équipage.';
+
+  @override
+  String get donInfoLoansTitle => 'Prêts';
+
+  @override
+  String get donInfoLoansBody =>
+      'Vous êtes le requin. Fixez un montant et prêtez à un PNJ (marchand de rue, docker, hôte du club) ou offrez un séquestre à un autre joueur par nom d\'utilisateur. \nLes prêts des PNJ sont destinés au remboursement ou au défaut de paiement. En cas de défaut, vous percevez une part de ce qui est dû et prenez ce qui est demandé – jamais un effacement complet de l’emprunteur. \nLes offres des joueurs restent bloquées jusqu\'à leur acceptation. Les plafonds empêchent que cela devienne une ferme alternative : quelques prêts actifs, un capital min/max et un court terme.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Influence';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Chaque pays compte un juge, un commissaire et un échevin. Une surenchère en espèces achète le bureau pour environ 24 heures. Un rival peut vous remplacer en payant plus. \nJuge : une petite prime plafonnée en appel. Il se cumule avec la faculté de droit uniquement jusqu\'au plafond Don ; le pot-de-vin judiciaire par affaire existe toujours. \nCommissaire : les crimes ratés ajoutent moins de personnes recherchées. Il ne s’agit pas d’une immunité d’arrestation. \nEchevin : débloque ou booste les contrats des grandes villes.';
+
+  @override
+  String get donInfoContractsTitle => 'Contrats';
+
+  @override
+  String get donInfoContractsBody =>
+      'Emplois publics ouverts dans ce pays. Une offre coûte une part du paiement du catalogue, en espèces ou par la banque de l\'équipage si vous en avez la permission. \nLes offres gourmandes paient plus et ajoutent de la chaleur. Hors livre en supplément uniquement si vous possédez déjà des raquettes ici. \nLa réparation des rues est un petit travail. La grue portuaire veut une école d\'ingénieur. L\'aile de l\'hôtel de ville a besoin de l\'échevin et de plus d\'ingénierie.';
+
+  @override
+  String get donInfoCrewTitle => 'Rôles de l\'équipage';
+
+  @override
+  String get donInfoCrewBody =>
+      'Consigliere voit la liste des raquettes de l\'équipage mais ne peut pas retirer la banque d\'équipage. Capo peut envoyer des hommages et des offres de contrat à la banque d\'équipage uniquement dans le pays attribué. Le leader et le co-leader peuvent le faire dans n’importe quel pays. Le débordement retombe sur votre argent.';
+
+  @override
+  String get donInfoTipsTitle => 'Conseils';
+
+  @override
+  String get donInfoTipsBody =>
+      'Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s\'accumulent rapidement. \nDéfinissez le pays du capo avant de basculer l\'hommage à la banque d\'équipage. \nSoudoyez l\'échevin avant de briguer le contrat de la mairie et gardez à l\'esprit l\'école d\'ingénieurs pour les emplois dans le port. \nClassez-vous en dessous de 7 et la prison bloque le hub.';
+
+  @override
   String get raceMenuLabel => 'Courses de minuit';
 
   @override
@@ -17018,7 +17070,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s\'accumulent rapidement. \nL\'hommage Capo ne fonctionne que dans le pays attribué ; définissez ce terrain avant de basculer entre les équipes. \nSoudoyez l\'échevin avant de briguer le contrat de la mairie et gardez à l\'esprit l\'école d\'ingénieurs pour les emplois dans le port.';
+      'Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s\'accumulent rapidement. \nL\'hommage Capo ne fonctionne que dans le pays attribué ; définissez ce terrain avant de basculer entre les équipes. \nSoudoyez l\'échevin avant de briguer le contrat de la mairie et gardez à l\'esprit l\'école d\'ingénieurs pour les emplois dans le port. \nAppuyez sur le i doré sur le bureau Don pour un guide illustré plus long.';
 
   @override
   String get helpTopicRacesCategory => 'Empire';

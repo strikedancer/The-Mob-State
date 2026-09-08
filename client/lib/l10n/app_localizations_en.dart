@@ -3155,6 +3155,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get donSqueezeHeld => 'The shop paid extra — for now.';
 
   @override
+  String get donInfoTooltip => 'How Don works';
+
+  @override
+  String get donInfoTitle => 'The Don desk';
+
+  @override
+  String get donInfoIntro =>
+      'Don is your persistent Empire desk from rank 7. Everything here happens in the country you are standing in. Claims are personal. Street crime Protection racket is a one-shot shake and does not also give you these shops.';
+
+  @override
+  String get donInfoRacketsTitle => 'Rackets';
+
+  @override
+  String get donInfoRacketsBody =>
+      'The Rackets tab lists NPC shops in this country: café, garage, warehouse, night shop, port office and laundry. Claim a free shop if your equipped weapon has enough intimidation. Collect tribute by hand after the cooldown. Ignore a shop for about three days and it becomes free again.\nSqueeze raises the next payout but also raises wanted, and the shop can flee. A rival in the same country can start a short contest; if you own the shop you can Hold.\nYou can run several shops up to the server cap. Tribute lands in cash unless you are leader, co-leader or capo (only in the capo country) and send it to the crew bank.';
+
+  @override
+  String get donInfoLoansTitle => 'Loans';
+
+  @override
+  String get donInfoLoansBody =>
+      'You are the shark. Set an amount and lend to an NPC (street dealer, dock worker, club host) or offer escrow to another player by username.\nNPC loans tick toward repay or default. On default you collect a share of what is due and take wanted — never a full wipe of the borrower.\nPlayer offers sit in escrow until accepted. Caps keep this from becoming an alt farm: a few active loans, a min/max principal and a short term.';
+
+  @override
+  String get donInfoInfluenceTitle => 'Influence';
+
+  @override
+  String get donInfoInfluenceBody =>
+      'Each country has one judge, one commissioner and one alderman. A cash overbid buys the office for about 24 hours. A rival can replace you by paying more.\nJudge: a small capped bonus on court appeal. It stacks with law school only up to the Don cap; the per-case court bribe still exists.\nCommissioner: failed crimes add less wanted. This is not arrest immunity.\nAlderman: unlocks or boosts the large city contracts.';
+
+  @override
+  String get donInfoContractsTitle => 'Contracts';
+
+  @override
+  String get donInfoContractsBody =>
+      'Open public jobs in this country. A bid costs a slice of the catalog payout, from cash or the crew bank if you have permission.\nGreedy bids pay more and add heat. Off-books extra only if you already own rackets here.\nStreet repair is the small job. Harbor crane wants engineering school. City hall wing needs the alderman and more engineering.';
+
+  @override
+  String get donInfoCrewTitle => 'Crew roles';
+
+  @override
+  String get donInfoCrewBody =>
+      'Consigliere sees the crew racket list but cannot withdraw the crew bank. Capo may send tribute and contract bids to the crew bank only in the assigned country. Leader and co-leader can do so in any country. Overflow falls back to your cash.';
+
+  @override
+  String get donInfoTipsTitle => 'Tips';
+
+  @override
+  String get donInfoTipsBody =>
+      'Collect on cooldown instead of squeezing every shop — flee chance and wanted add up fast.\nSet the capo country before you toggle crew-bank tribute.\nBribe the alderman before you chase the city-hall contract, and keep engineering school in mind for harbor jobs.\nRank below 7 and jail block the hub.';
+
+  @override
   String get raceMenuLabel => 'Midnight Races';
 
   @override
@@ -16808,7 +16860,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDonTips =>
-      'Collect on cooldown instead of squeezing every shop — flee chance and wanted add up fast.\nCapo tribute only works in the assigned country; set that land before you toggle crew-bank.\nBribe the alderman before you chase the city-hall contract, and keep engineering school in mind for the harbor jobs.';
+      'Collect on cooldown instead of squeezing every shop — flee chance and wanted add up fast.\nCapo tribute only works in the assigned country; set that land before you toggle crew-bank.\nBribe the alderman before you chase the city-hall contract, and keep engineering school in mind for the harbor jobs.\nTap the gold i on the Don desk for a longer illustrated guide.';
 
   @override
   String get helpTopicRacesCategory => 'Empire';
