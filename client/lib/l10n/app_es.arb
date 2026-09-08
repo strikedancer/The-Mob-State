@@ -11737,7 +11737,7 @@
   "helpTopicRacesTitle": "Carreras de medianoche",
   "helpTopicRacesSummary": "Carreras callejeras programadas en tu país actual. Clasifícate con tu propio coche, apuesta dinero y deja que las estadísticas de garaje y de afinación impulsen el desempeño del servidor. La discoteca anfitriona cobra una comisión.",
   "helpTopicRacesHow": "Abre carreras de medianoche de Empire. \nCorres en el país en el que te encuentras. El coche debe ser tuyo, estar presente en ese país, no estar listado para la venta y estar en buenas condiciones. \nLa entrada cuesta una apuesta en efectivo. Cuando la cuadrícula se cierra, el servidor finaliza el orden. La velocidad, los niveles de velocidad del taller de afinación y la condición otorgan una ligera bonificación; este no es un juego de habilidad para conducir. \nPuedes apostar por otros conductores. No puedes apostar por ti mismo. \nSe buscan complementos de fijación opcionales para obtener una pequeña bonificación por rollo. No garantiza una victoria. \nSi un Nightclub en ese país está abierto, ese anfitrión recibe la comisión. De lo contrario, el rastrillo se hundirá. \nSi participan menos de dos conductores, se reembolsarán las apuestas.",
-  "helpTopicRacesTips": "La velocidad de sintonización importa, pero la tirada aún decide la carrera; no trates esto como un segundo casino. \nMantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa fijación es calor, no un multiplicador de pagos.",
+  "helpTopicRacesTips": "La velocidad de sintonización importa, pero la tirada aún decide la carrera; no trates esto como un segundo casino. \nMantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa fijación es calor, no un multiplicador de pagos. \nToca la i dorada en Midnight Races para obtener una guía ilustrada más extensa.",
   "crewUiHintMissionLockedClearingHouse": "Clearing House también requiere el nivel de misión de la Crew {level}.",
   "@crewUiHintMissionLockedClearingHouse": {
     "placeholders": {
@@ -11808,5 +11808,20 @@
         "type": "String"
       }
     }
-  }
+  },
+  "raceInfoTooltip": "Cómo funcionan las carreras de medianoche",
+  "raceInfoTitle": "Carreras de medianoche",
+  "raceInfoIntro": "Midnight Races es la grilla nocturna de Empire en el país en el que te encuentras. Clasifícate con tu propio auto, arriesga dinero y deja que las estadísticas del garaje y los ajustes impulsen el desempeño del servidor. Este no es un juego de habilidad para conducir ni un segundo casino.",
+  "raceInfoEnterTitle": "Entrando",
+  "raceInfoEnterBody": "Abre carreras de medianoche de Empire. El rango y la cárcel pueden bloquear el centro. \nSu automóvil debe ser suyo, estar presente en este país, no estar listado para la venta, no estar en una sala de exhibición, no estar en tránsito y estar en buenas condiciones. \nElija un automóvil en la parrilla, establezca una apuesta en efectivo dentro del límite del servidor y luego ingrese. Una entrada por reunión.",
+  "raceInfoFieldTitle": "El campo y las apuestas",
+  "raceInfoFieldBody": "El campo muestra todos los conductores que ya ingresaron. Puedes apostar dinero en efectivo a otro conductor. No puedes apostar por ti mismo. \nEl servidor limita la cantidad de conductores y la cantidad de apuestas que puedes realizar. Cuando la ventana se cierra, la rejilla se asienta.",
+  "raceInfoFinishTitle": "Cómo se rueda el acabado",
+  "raceInfoFinishBody": "El servidor rueda el orden de finalización. La velocidad del vehículo, los niveles de velocidad del taller de afinación y el estado otorgan una ligera bonificación. La tirada aún decide la carrera; no trates un auto más rápido como una victoria garantizada.",
+  "raceInfoFixingTitle": "Fijación",
+  "raceInfoFixingBody": "Se buscan complementos de fijación opcionales para obtener una pequeña bonificación por rollo. No garantiza una ganancia y no es un multiplicador de pagos.",
+  "raceInfoPayoutTitle": "Pagos y comisión",
+  "raceInfoPayoutBody": "Si participan menos de dos conductores, se reembolsarán las apuestas. \nLa discoteca anfitriona en este país cobra comisión cuando está abierta. Si no hay hostia, ese rastrillo se hunde. \nEl piloto ganador se lleva la mayor parte del fondo neto; Las apuestas ganadoras comparten el resto.",
+  "raceInfoTipsTitle": "Consejos",
+  "raceInfoTipsBody": "Mantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa velocidad de sintonización importa, pero la tirada aún decide. \nLa reparación es calor, no premios en metálico extra. \nDespués de una reunión, la siguiente cuadrícula espera durante un tiempo de reutilización."
 }

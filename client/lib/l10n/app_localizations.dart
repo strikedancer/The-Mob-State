@@ -5791,6 +5791,96 @@ abstract class AppLocalizations {
   /// **'Night races in the country you stand in. Qualify with your own car, put cash on the line, and let the garage and tune shop nudge a server roll. The hosting nightclub takes rake.'**
   String get raceIntro;
 
+  /// No description provided for @raceInfoTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'How Midnight Races work'**
+  String get raceInfoTooltip;
+
+  /// No description provided for @raceInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight Races'**
+  String get raceInfoTitle;
+
+  /// No description provided for @raceInfoIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight Races is the Empire night grid in the country you are standing in. Qualify with your own car, put cash on the line, and let garage and tune stats nudge a server roll. This is not a driving skill game and it is not a second casino.'**
+  String get raceInfoIntro;
+
+  /// No description provided for @raceInfoEnterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Entering'**
+  String get raceInfoEnterTitle;
+
+  /// No description provided for @raceInfoEnterBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Midnight Races from Empire. Rank and jail can block the hub.\nYour car must be yours, present in this country, not listed for sale, not in a showroom, not in transit, and in decent condition.\nPick a car on the grid, set a cash stake within the server cap, then enter. One entry per meeting.'**
+  String get raceInfoEnterBody;
+
+  /// No description provided for @raceInfoFieldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The field and bets'**
+  String get raceInfoFieldTitle;
+
+  /// No description provided for @raceInfoFieldBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The field shows every driver who already entered. You can bet cash on another driver. You cannot bet on yourself.\nThe server caps how many drivers and how many bets you can place. When the window closes the grid settles.'**
+  String get raceInfoFieldBody;
+
+  /// No description provided for @raceInfoFinishTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How the finish is rolled'**
+  String get raceInfoFinishTitle;
+
+  /// No description provided for @raceInfoFinishBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The server rolls finish order. Vehicle speed, tune-shop speed levels and condition give a light bonus. The roll still decides the race — do not treat a faster car as a guaranteed win.'**
+  String get raceInfoFinishBody;
+
+  /// No description provided for @raceInfoFixingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixing'**
+  String get raceInfoFixingTitle;
+
+  /// No description provided for @raceInfoFixingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional fixing adds wanted for a small roll bonus. It does not guarantee a win and it is not a payout multiplier.'**
+  String get raceInfoFixingBody;
+
+  /// No description provided for @raceInfoPayoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payouts and rake'**
+  String get raceInfoPayoutTitle;
+
+  /// No description provided for @raceInfoPayoutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If fewer than two drivers enter, stakes and bets are refunded.\nThe hosting nightclub in this country takes rake when it is open. If there is no host, that rake is sunk.\nThe winning driver takes most of the net pool; winning bets share the rest.'**
+  String get raceInfoPayoutBody;
+
+  /// No description provided for @raceInfoTipsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get raceInfoTipsTitle;
+
+  /// No description provided for @raceInfoTipsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep a race car in the country you visit instead of leaving everything in the showroom.\nTune speed matters, but the roll still decides.\nFixing is heat, not extra prize money.\nAfter a meeting the next grid waits through a cooldown.'**
+  String get raceInfoTipsBody;
+
   /// No description provided for @raceLiveTitle.
   ///
   /// In en, this message translates to:
@@ -29284,7 +29374,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicRacesTips.
   ///
   /// In en, this message translates to:
-  /// **'Tune speed matters, but the roll still decides the race — do not treat this as a second casino.\nKeep a race car in the country you visit instead of leaving everything in the showroom.\nFixing is heat, not a payout multiplier.'**
+  /// **'Tune speed matters, but the roll still decides the race — do not treat this as a second casino.\nKeep a race car in the country you visit instead of leaving everything in the showroom.\nFixing is heat, not a payout multiplier.\nTap the gold i on Midnight Races for a longer illustrated guide.'**
   String get helpTopicRacesTips;
 
   /// No description provided for @helpTopicBankCategory.

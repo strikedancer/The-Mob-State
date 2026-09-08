@@ -3278,6 +3278,58 @@ class AppLocalizationsEs extends AppLocalizations {
       'Carreras nocturnas en el país en el que te encuentres. Clasifica con tu propio auto, arriesga dinero y deja que el taller y el taller de tuneo empujen a un servidor. La discoteca anfitriona cobra una comisión.';
 
   @override
+  String get raceInfoTooltip => 'Cómo funcionan las carreras de medianoche';
+
+  @override
+  String get raceInfoTitle => 'Carreras de medianoche';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races es la grilla nocturna de Empire en el país en el que te encuentras. Clasifícate con tu propio auto, arriesga dinero y deja que las estadísticas del garaje y los ajustes impulsen el desempeño del servidor. Este no es un juego de habilidad para conducir ni un segundo casino.';
+
+  @override
+  String get raceInfoEnterTitle => 'Entrando';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Abre carreras de medianoche de Empire. El rango y la cárcel pueden bloquear el centro. \nSu automóvil debe ser suyo, estar presente en este país, no estar listado para la venta, no estar en una sala de exhibición, no estar en tránsito y estar en buenas condiciones. \nElija un automóvil en la parrilla, establezca una apuesta en efectivo dentro del límite del servidor y luego ingrese. Una entrada por reunión.';
+
+  @override
+  String get raceInfoFieldTitle => 'El campo y las apuestas';
+
+  @override
+  String get raceInfoFieldBody =>
+      'El campo muestra todos los conductores que ya ingresaron. Puedes apostar dinero en efectivo a otro conductor. No puedes apostar por ti mismo. \nEl servidor limita la cantidad de conductores y la cantidad de apuestas que puedes realizar. Cuando la ventana se cierra, la rejilla se asienta.';
+
+  @override
+  String get raceInfoFinishTitle => 'Cómo se rueda el acabado';
+
+  @override
+  String get raceInfoFinishBody =>
+      'El servidor rueda el orden de finalización. La velocidad del vehículo, los niveles de velocidad del taller de afinación y el estado otorgan una ligera bonificación. La tirada aún decide la carrera; no trates un auto más rápido como una victoria garantizada.';
+
+  @override
+  String get raceInfoFixingTitle => 'Fijación';
+
+  @override
+  String get raceInfoFixingBody =>
+      'Se buscan complementos de fijación opcionales para obtener una pequeña bonificación por rollo. No garantiza una ganancia y no es un multiplicador de pagos.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Pagos y comisión';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'Si participan menos de dos conductores, se reembolsarán las apuestas. \nLa discoteca anfitriona en este país cobra comisión cuando está abierta. Si no hay hostia, ese rastrillo se hunde. \nEl piloto ganador se lleva la mayor parte del fondo neto; Las apuestas ganadoras comparten el resto.';
+
+  @override
+  String get raceInfoTipsTitle => 'Consejos';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Mantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa velocidad de sintonización importa, pero la tirada aún decide. \nLa reparación es calor, no premios en metálico extra. \nDespués de una reunión, la siguiente cuadrícula espera durante un tiempo de reutilización.';
+
+  @override
   String get raceLiveTitle => 'La grilla de esta noche';
 
   @override
@@ -17061,7 +17113,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'La velocidad de sintonización importa, pero la tirada aún decide la carrera; no trates esto como un segundo casino. \nMantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa fijación es calor, no un multiplicador de pagos.';
+      'La velocidad de sintonización importa, pero la tirada aún decide la carrera; no trates esto como un segundo casino. \nMantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa fijación es calor, no un multiplicador de pagos. \nToca la i dorada en Midnight Races para obtener una guía ilustrada más extensa.';
 
   @override
   String get helpTopicBankCategory => 'Economía';

@@ -3266,6 +3266,58 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nocne wyścigi w kraju, w którym się znajdujesz. Zakwalifikuj się własnym samochodem, ryzykuj gotówką i pozwól warsztatowi i warsztatowi tuningowemu popychać serwer. Nightclub będący gospodarzem pobiera prowizję.';
 
   @override
+  String get raceInfoTooltip => 'Jak działają wyścigi o północy';
+
+  @override
+  String get raceInfoTitle => 'Wyścigi o północy';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races to nocna rozgrywka Imperium w kraju, w którym się znajdujesz. Zakwalifikuj się własnym samochodem, stawiaj pieniądze na szali i pozwól, aby statystyki garażu i tuningu wpływały na wyniki serwera. To nie jest gra zręcznościowa, ani drugie kasyno.';
+
+  @override
+  String get raceInfoEnterTitle => 'Wstępowanie';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Otwarte wyścigi o północy z Empire. Ranga i więzienie mogą zablokować koncentrator. \nTwój samochód musi być Twój, znajdować się w tym kraju, nie być wystawiony na sprzedaż, nie znajdować się w salonie, nie być w transporcie i być w przyzwoitym stanie. \nWybierz samochód na siatce, ustaw stawkę pieniężną w ramach limitu serwera, a następnie wejdź. Jeden wpis na spotkanie.';
+
+  @override
+  String get raceInfoFieldTitle => 'Pole i zakłady';
+
+  @override
+  String get raceInfoFieldBody =>
+      'Pole pokazuje każdego kierowcę, który już wszedł. Możesz postawić gotówkę na innego kierowcę. Nie możesz stawiać na siebie. \nSerwer ogranicza liczbę kierowców i liczbę zakładów, które możesz obstawić. Kiedy okno się zamyka, siatka się stabilizuje.';
+
+  @override
+  String get raceInfoFinishTitle => 'Jak wykończenie jest walcowane';
+
+  @override
+  String get raceInfoFinishBody =>
+      'Serwer rzuca kolejność zakończenia. Prędkość pojazdu, poziomy prędkości i stan warsztatu tuningowego dają niewielką premię. Rzut nadal decyduje o wyścigu – nie traktuj szybszego samochodu jako gwarantowanej wygranej.';
+
+  @override
+  String get raceInfoFixingTitle => 'Ustalenie';
+
+  @override
+  String get raceInfoFixingBody =>
+      'Opcjonalne mocowanie dodaje pożądany bonus za małą rolkę. Nie gwarantuje wygranej i nie jest mnożnikiem wygranej.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Wypłaty i prowizja';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'Jeśli zgłosi się mniej niż dwóch kierowców, stawki i zakłady zostaną zwrócone. \nNightclub będący gospodarzem w tym kraju pobiera prowizję, gdy jest otwarty. Jeśli nie ma gospodarza, grabie przepadają. \nZwycięski kierowca zgarnia większość puli netto; wygrane zakłady dzielą się resztą.';
+
+  @override
+  String get raceInfoTipsTitle => 'Porady';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Zamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nSzybkość strojenia ma znaczenie, ale rzut nadal decyduje. \nNaprawa to ciepło, a nie dodatkowa nagroda pieniężna. \nPo spotkaniu następna siatka czeka na odnowienie.';
+
+  @override
   String get raceLiveTitle => 'Dzisiejsza siatka';
 
   @override
@@ -17036,7 +17088,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'Dostosuj prędkość ma znaczenie, ale rzut i tak decyduje o wyścigu – nie traktuj tego jak drugiego kasyna. \nZamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nFixing to ciepło, a nie mnożnik wypłat.';
+      'Dostosuj prędkość ma znaczenie, ale rzut i tak decyduje o wyścigu – nie traktuj tego jak drugiego kasyna. \nZamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nFixing to ciepło, a nie mnożnik wypłat. \nNaciśnij złote i na Midnight Races, aby wyświetlić dłuższy ilustrowany przewodnik.';
 
   @override
   String get helpTopicBankCategory => 'Gospodarka';

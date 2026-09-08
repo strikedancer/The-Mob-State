@@ -9,6 +9,7 @@ Not in v1: horses, breeding, real-time driving, daily condition decay, skill-gam
 - `client/lib/screens/race_screen.dart` (Empire → Midnight Races; optional `/races`)
 - Help topic `races`
 - Hub art: `client/assets/images/races/hub.png` served as `/images/races/hub.png`. Eligible cars, live field and last-result finishers use the **same garage car still** as inventory (`imageNew` / dirty / damaged via condition, then catalog `image`) over `/images/vehicles/*`. Photo cards sit in the same wrap-grid as Don (1 / 2 / 3 / 4 columns from ~480 / 700 / 1040 px pane width). No extra AppBar when `embedded == true`.
+- Gold `i` on the hero opens a scrollable noir/gold guide (`raceInfo*`) with hub and garage stills. Dialog uses `SafeArea`, clamped size and `AppLocalizations.of(dialogContext)`.
 
 ## Primary Backend Entry
 - `GET /races/overview`
@@ -54,3 +55,4 @@ Tune in `runtime_config`. Caps keep this from becoming a second casino.
 - [ ] Solo entry refunds
 - [ ] NL + EN strings
 - [ ] Empire desktop shows car / field / last-result photo cards in a 3–4 column grid (2 on tablet, 1 on narrow); images load on web (`/images/races/hub.png` + `/images/vehicles/*`)
+- [ ] Gold `i` opens the illustrated `raceInfo*` guide; no extra AppBar when embedded

@@ -270,6 +270,22 @@ class _RaceScreenState extends State<RaceScreen> {
     return 'assets/images/vehicles/$image';
   }
 
+  String _hubAsset() => 'assets/images/races/hub.png';
+
+  String _guidePhoto({int skip = 0}) {
+    final cars = ((_overview?['eligibleCars'] as List?) ?? []).whereType<Map>();
+    final meeting = (_overview?['meeting'] as Map?)?.cast<String, dynamic>();
+    final entries = ((meeting?['entries'] as List?) ?? []).whereType<Map>();
+    final last = (_overview?['lastResult'] as Map?)?.cast<String, dynamic>();
+    final finishers = ((last?['entries'] as List?) ?? []).whereType<Map>();
+    final images = <String>[
+      for (final row in [...cars, ...entries, ...finishers])
+        ?_vehicleAsset(Map<String, dynamic>.from(row)),
+    ];
+    if (images.isEmpty) return _hubAsset();
+    return images[skip % images.length];
+  }
+
   Widget _badge(String text, {Color color = _raceGold}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -441,6 +457,195 @@ class _RaceScreenState extends State<RaceScreen> {
     );
   }
 
+  Future<void> _showRaceGuide(BuildContext context) async {
+    final media = MediaQuery.of(context);
+    final maxWidth = media.size.width >= 900
+        ? 640.0
+        : media.size.width >= 600
+            ? 520.0
+            : media.size.width - 24;
+    final maxHeight = media.size.height * 0.82;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+          child: SafeArea(
+            child: SizedBox(
+              width: maxWidth,
+              height: maxHeight,
+              child: DecoratedBox(
+                decoration: _panelDecoration(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: ColoredBox(
+                    color: _racePanelDark,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.info_outline, color: _raceGold),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n.raceInfoTitle,
+                                  style: const TextStyle(
+                                    color: _raceGold,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: l10n.close,
+                                onPressed: () => Navigator.of(dialogContext).pop(),
+                                color: _raceGold,
+                                icon: const Icon(Icons.close),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  _guideBanner(_hubAsset()),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    l10n.raceInfoIntro,
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.86),
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                  _guideSection(
+                                    title: l10n.raceInfoEnterTitle,
+                                    body: l10n.raceInfoEnterBody,
+                                    asset: _guidePhoto(),
+                                  ),
+                                  _guideSection(
+                                    title: l10n.raceInfoFieldTitle,
+                                    body: l10n.raceInfoFieldBody,
+                                    asset: _guidePhoto(skip: 1),
+                                  ),
+                                  _guideSection(
+                                    title: l10n.raceInfoFinishTitle,
+                                    body: l10n.raceInfoFinishBody,
+                                    asset: _guidePhoto(skip: 2),
+                                  ),
+                                  _guideSection(
+                                    title: l10n.raceInfoFixingTitle,
+                                    body: l10n.raceInfoFixingBody,
+                                    asset: _hubAsset(),
+                                  ),
+                                  _guideSection(
+                                    title: l10n.raceInfoPayoutTitle,
+                                    body: l10n.raceInfoPayoutBody,
+                                    asset: _hubAsset(),
+                                  ),
+                                  _guideSection(
+                                    title: l10n.raceInfoTipsTitle,
+                                    body: l10n.raceInfoTipsBody,
+                                    asset: _guidePhoto(skip: 3),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: FilledButton(
+                              style: _goldFill,
+                              onPressed: () => Navigator.of(dialogContext).pop(),
+                              child: Text(l10n.close),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _guideBanner(String asset) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: SizedBox(
+        height: 140,
+        width: double.infinity,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            _raceImage(asset),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0x11000000), Color(0x66000000)],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _guideSection({
+    required String title,
+    required String body,
+    required String asset,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: _raceGold,
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: SizedBox(
+              height: 120,
+              width: double.infinity,
+              child: _raceImage(asset),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            body,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.86),
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildHero(AppLocalizations l10n, Map<String, dynamic>? meeting, String? cooldownUntil) {
     final wide = MediaQuery.sizeOf(context).width >= 720;
     final height = wide ? 168.0 : 148.0;
@@ -486,6 +691,34 @@ class _RaceScreenState extends State<RaceScreen> {
                           ),
                         ),
                       ),
+                      Tooltip(
+                        message: l10n.raceInfoTooltip,
+                        child: Material(
+                          color: Colors.black.withValues(alpha: 0.55),
+                          shape: const CircleBorder(),
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: () => _showRaceGuide(context),
+                            child: Container(
+                              width: 36,
+                              height: 36,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _raceGold.withValues(alpha: 0.8),
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.info_outline,
+                                color: _raceGold,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
                       IconButton(
                         onPressed: _busy ? null : _load,
                         color: _raceGold,

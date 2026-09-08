@@ -3244,6 +3244,58 @@ class AppLocalizationsEn extends AppLocalizations {
       'Night races in the country you stand in. Qualify with your own car, put cash on the line, and let the garage and tune shop nudge a server roll. The hosting nightclub takes rake.';
 
   @override
+  String get raceInfoTooltip => 'How Midnight Races work';
+
+  @override
+  String get raceInfoTitle => 'Midnight Races';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races is the Empire night grid in the country you are standing in. Qualify with your own car, put cash on the line, and let garage and tune stats nudge a server roll. This is not a driving skill game and it is not a second casino.';
+
+  @override
+  String get raceInfoEnterTitle => 'Entering';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Open Midnight Races from Empire. Rank and jail can block the hub.\nYour car must be yours, present in this country, not listed for sale, not in a showroom, not in transit, and in decent condition.\nPick a car on the grid, set a cash stake within the server cap, then enter. One entry per meeting.';
+
+  @override
+  String get raceInfoFieldTitle => 'The field and bets';
+
+  @override
+  String get raceInfoFieldBody =>
+      'The field shows every driver who already entered. You can bet cash on another driver. You cannot bet on yourself.\nThe server caps how many drivers and how many bets you can place. When the window closes the grid settles.';
+
+  @override
+  String get raceInfoFinishTitle => 'How the finish is rolled';
+
+  @override
+  String get raceInfoFinishBody =>
+      'The server rolls finish order. Vehicle speed, tune-shop speed levels and condition give a light bonus. The roll still decides the race — do not treat a faster car as a guaranteed win.';
+
+  @override
+  String get raceInfoFixingTitle => 'Fixing';
+
+  @override
+  String get raceInfoFixingBody =>
+      'Optional fixing adds wanted for a small roll bonus. It does not guarantee a win and it is not a payout multiplier.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Payouts and rake';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'If fewer than two drivers enter, stakes and bets are refunded.\nThe hosting nightclub in this country takes rake when it is open. If there is no host, that rake is sunk.\nThe winning driver takes most of the net pool; winning bets share the rest.';
+
+  @override
+  String get raceInfoTipsTitle => 'Tips';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Keep a race car in the country you visit instead of leaving everything in the showroom.\nTune speed matters, but the roll still decides.\nFixing is heat, not extra prize money.\nAfter a meeting the next grid waits through a cooldown.';
+
+  @override
   String get raceLiveTitle => 'Tonight\'s grid';
 
   @override
@@ -16908,7 +16960,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'Tune speed matters, but the roll still decides the race — do not treat this as a second casino.\nKeep a race car in the country you visit instead of leaving everything in the showroom.\nFixing is heat, not a payout multiplier.';
+      'Tune speed matters, but the roll still decides the race — do not treat this as a second casino.\nKeep a race car in the country you visit instead of leaving everything in the showroom.\nFixing is heat, not a payout multiplier.\nTap the gold i on Midnight Races for a longer illustrated guide.';
 
   @override
   String get helpTopicBankCategory => 'Economy';

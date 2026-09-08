@@ -3263,6 +3263,58 @@ class AppLocalizationsPt extends AppLocalizations {
       'Corridas noturnas no país em que você está. Qualifique-se com seu próprio carro, coloque dinheiro em jogo e deixe a garagem e a loja de ajustes empurrarem o servidor. A boate anfitriã cobra rake.';
 
   @override
+  String get raceInfoTooltip => 'Como funcionam as corridas da meia-noite';
+
+  @override
+  String get raceInfoTitle => 'Corridas da Meia-Noite';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races é a grade noturna do Império no país em que você está. Qualifique-se com seu próprio carro, coloque dinheiro em jogo e deixe as estatísticas de garagem e ajuste impulsionarem a rolagem do servidor. Este não é um jogo de habilidade de direção e não é um segundo cassino.';
+
+  @override
+  String get raceInfoEnterTitle => 'Entrando';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Abra corridas da meia-noite do Império. A classificação e a prisão podem bloquear o hub. \nSeu carro deve ser seu, estar presente neste país, não estar à venda, não estar em showroom, não estar em trânsito e estar em condições decentes. \nEscolha um carro na grade, defina uma aposta em dinheiro dentro do limite do servidor e entre. Uma entrada por reunião.';
+
+  @override
+  String get raceInfoFieldTitle => 'O campo e as apostas';
+
+  @override
+  String get raceInfoFieldBody =>
+      'O campo mostra todos os motoristas que já ingressaram. Você pode apostar dinheiro em outro motorista. Você não pode apostar em si mesmo. \nO servidor limita quantos pilotos e quantas apostas você pode fazer. Quando a janela fecha, a grade se estabiliza.';
+
+  @override
+  String get raceInfoFinishTitle => 'Como o acabamento é enrolado';
+
+  @override
+  String get raceInfoFinishBody =>
+      'O servidor rola a ordem de término. A velocidade do veículo, os níveis de velocidade e as condições da oficina dão um bônus leve. A rolagem ainda decide a corrida – não trate um carro mais rápido como uma vitória garantida.';
+
+  @override
+  String get raceInfoFixingTitle => 'Consertando';
+
+  @override
+  String get raceInfoFixingBody =>
+      'Adicionais de fixação opcionais necessários para um pequeno bônus de rolagem. Não garante uma vitória e não é um multiplicador de pagamento.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Pagamentos e rake';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'Se menos de dois pilotos participarem, os valores apostados serão reembolsados. \nA boate que hospeda neste país ganha dinheiro quando está aberta. Se não houver host, esse rake será afundado. \nO piloto vencedor fica com a maior parte do pool líquido; as apostas vencedoras compartilham o resto.';
+
+  @override
+  String get raceInfoTipsTitle => 'Pontas';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Mantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nA velocidade do ajuste é importante, mas o teste ainda decide. \nConsertar é calor, não prêmio extra em dinheiro. \nDepois de uma reunião, a próxima grade aguarda um tempo de espera.';
+
+  @override
   String get raceLiveTitle => 'Grade desta noite';
 
   @override
@@ -17033,7 +17085,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'A velocidade do ajuste é importante, mas o lançamento ainda decide a corrida – não trate isso como um segundo cassino. \nMantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nFixar é calor, não um multiplicador de pagamento.';
+      'A velocidade do ajuste é importante, mas o lançamento ainda decide a corrida – não trate isso como um segundo cassino. \nMantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nFixar é calor, não um multiplicador de pagamento. \nToque no i dourado em Midnight Races para obter um guia ilustrado mais longo.';
 
   @override
   String get helpTopicBankCategory => 'Economia';

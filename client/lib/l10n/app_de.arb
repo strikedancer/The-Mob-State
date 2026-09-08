@@ -11737,7 +11737,7 @@
   "helpTopicRacesTitle": "Mitternachtsrennen",
   "helpTopicRacesSummary": "Geplante Straßenrennen in Ihrem aktuellen Land. Qualifizieren Sie sich mit Ihrem eigenen Auto, setzen Sie Geld ein und lassen Sie Garagen- und Tuning-Statistiken den Server ins Rollen bringen. Der gastgebende Nightclub nimmt Rake.",
   "helpTopicRacesHow": "Offene Mitternachtsrennen von Empire. \nSie fahren in dem Land, in dem Sie antreten. Das Auto muss Ihnen gehören, in diesem Land vorhanden sein, nicht zum Verkauf angeboten werden und in gutem Zustand sein. \nDer Eintritt kostet einen Bargeldeinsatz. Wenn das Raster geschlossen wird, würfelt der Server die Endreihenfolge. Geschwindigkeit, Geschwindigkeitsstufen im Tuning-Shop und Zustand geben einen leichten Bonus – dies ist kein Fahrgeschicklichkeitsspiel. \nSie können auf andere Fahrer wetten. Sie können nicht auf sich selbst wetten. \nFür einen kleinen Rollbonus sind optionale Fixing-Adds erwünscht. Es garantiert keinen Sieg. \nWenn in diesem Land ein Nightclub geöffnet ist, erhält dieser Gastgeber den Rake. Sonst geht der Rechen unter. \nMelden sich weniger als zwei Fahrer, werden Einsätze und Wetten zurückerstattet.",
-  "helpTopicRacesTips": "Die Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch über das Rennen – betrachten Sie dies nicht als ein zweites Casino. \nBehalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nFixieren ist Hitze, kein Auszahlungsmultiplikator.",
+  "helpTopicRacesTips": "Die Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch über das Rennen – betrachten Sie dies nicht als ein zweites Casino. \nBehalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nFixieren ist Hitze, kein Auszahlungsmultiplikator. \nTippen Sie auf das goldene i bei „Midnight Races“, um eine längere illustrierte Anleitung zu erhalten.",
   "crewUiHintMissionLockedClearingHouse": "Für Clearing House ist außerdem die Missionsstufe {level} der Crew erforderlich.",
   "@crewUiHintMissionLockedClearingHouse": {
     "placeholders": {
@@ -11808,5 +11808,20 @@
         "type": "String"
       }
     }
-  }
+  },
+  "raceInfoTooltip": "So funktionieren Mitternachtsrennen",
+  "raceInfoTitle": "Mitternachtsrennen",
+  "raceInfoIntro": "Midnight Races ist das Nachtrennen des Imperiums in dem Land, in dem Sie antreten. Qualifizieren Sie sich mit Ihrem eigenen Auto, setzen Sie Geld aufs Spiel und lassen Sie Garagen- und Tuning-Statistiken den Server ins Rollen bringen. Dies ist kein Fahrgeschicklichkeitsspiel und es ist kein zweites Casino.",
+  "raceInfoEnterTitle": "Eintreten",
+  "raceInfoEnterBody": "Offene Mitternachtsrennen von Empire. Rang und Gefängnis können den Hub blockieren. \nIhr Auto muss Ihnen gehören, in diesem Land vorhanden sein, nicht zum Verkauf angeboten werden, sich nicht in einem Ausstellungsraum befinden, sich nicht im Transport befinden und sich in einem angemessenen Zustand befinden. \nWählen Sie ein Auto in der Startaufstellung aus, legen Sie einen Bargeldeinsatz innerhalb der Serverobergrenze fest und nehmen Sie dann teil. Ein Eintrag pro Sitzung.",
+  "raceInfoFieldTitle": "Das Feld und die Wetten",
+  "raceInfoFieldBody": "Das Feld zeigt alle bereits angemeldeten Fahrer an. Sie können bar auf einen anderen Fahrer wetten. Sie können nicht auf sich selbst wetten. \nDer Server begrenzt die Anzahl der Fahrer und die Anzahl der Wetten, die Sie platzieren können. Wenn das Fenster geschlossen wird, beruhigt sich das Gitter.",
+  "raceInfoFinishTitle": "Wie das Finish gerollt wird",
+  "raceInfoFinishBody": "Der Server würfelt in der Endreihenfolge. Fahrzeuggeschwindigkeit, Geschwindigkeitsstufen und Zustand des Tuning-Shops geben einen leichten Bonus. Der Wurf entscheidet immer noch über das Rennen – betrachten Sie ein schnelleres Auto nicht als garantierten Sieg.",
+  "raceInfoFixingTitle": "Festsetzung",
+  "raceInfoFixingBody": "Für einen kleinen Rollbonus sind optionale Fixing-Adds erwünscht. Es garantiert keinen Gewinn und ist kein Auszahlungsmultiplikator.",
+  "raceInfoPayoutTitle": "Auszahlungen und Rake",
+  "raceInfoPayoutBody": "Melden sich weniger als zwei Fahrer, werden Einsätze und Wetten zurückerstattet. \nDer gastgebende Nightclub in diesem Land nimmt Rake, wenn er geöffnet ist. Wenn kein Host vorhanden ist, wird dieser Rake versenkt. \nDer Gewinner erhält den größten Teil des Nettopools; Gewinnende Wetten teilen sich den Rest.",
+  "raceInfoTipsTitle": "Tipps",
+  "raceInfoTipsBody": "Behalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nDie Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch. \nReparieren ist Hitze, kein zusätzliches Preisgeld. \nNach einem Treffen wartet das nächste Gitter durch eine Abklingzeit."
 }

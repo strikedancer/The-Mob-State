@@ -3285,6 +3285,58 @@ class AppLocalizationsDe extends AppLocalizations {
       'Nachtrennen in dem Land, in dem Sie antreten. Qualifizieren Sie sich mit Ihrem eigenen Auto, setzen Sie Geld aufs Spiel und lassen Sie die Werkstatt und den Tuning-Shop den Server zum Laufen bringen. Der gastgebende Nightclub nimmt Rake.';
 
   @override
+  String get raceInfoTooltip => 'So funktionieren Mitternachtsrennen';
+
+  @override
+  String get raceInfoTitle => 'Mitternachtsrennen';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races ist das Nachtrennen des Imperiums in dem Land, in dem Sie antreten. Qualifizieren Sie sich mit Ihrem eigenen Auto, setzen Sie Geld aufs Spiel und lassen Sie Garagen- und Tuning-Statistiken den Server ins Rollen bringen. Dies ist kein Fahrgeschicklichkeitsspiel und es ist kein zweites Casino.';
+
+  @override
+  String get raceInfoEnterTitle => 'Eintreten';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Offene Mitternachtsrennen von Empire. Rang und Gefängnis können den Hub blockieren. \nIhr Auto muss Ihnen gehören, in diesem Land vorhanden sein, nicht zum Verkauf angeboten werden, sich nicht in einem Ausstellungsraum befinden, sich nicht im Transport befinden und sich in einem angemessenen Zustand befinden. \nWählen Sie ein Auto in der Startaufstellung aus, legen Sie einen Bargeldeinsatz innerhalb der Serverobergrenze fest und nehmen Sie dann teil. Ein Eintrag pro Sitzung.';
+
+  @override
+  String get raceInfoFieldTitle => 'Das Feld und die Wetten';
+
+  @override
+  String get raceInfoFieldBody =>
+      'Das Feld zeigt alle bereits angemeldeten Fahrer an. Sie können bar auf einen anderen Fahrer wetten. Sie können nicht auf sich selbst wetten. \nDer Server begrenzt die Anzahl der Fahrer und die Anzahl der Wetten, die Sie platzieren können. Wenn das Fenster geschlossen wird, beruhigt sich das Gitter.';
+
+  @override
+  String get raceInfoFinishTitle => 'Wie das Finish gerollt wird';
+
+  @override
+  String get raceInfoFinishBody =>
+      'Der Server würfelt in der Endreihenfolge. Fahrzeuggeschwindigkeit, Geschwindigkeitsstufen und Zustand des Tuning-Shops geben einen leichten Bonus. Der Wurf entscheidet immer noch über das Rennen – betrachten Sie ein schnelleres Auto nicht als garantierten Sieg.';
+
+  @override
+  String get raceInfoFixingTitle => 'Festsetzung';
+
+  @override
+  String get raceInfoFixingBody =>
+      'Für einen kleinen Rollbonus sind optionale Fixing-Adds erwünscht. Es garantiert keinen Gewinn und ist kein Auszahlungsmultiplikator.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Auszahlungen und Rake';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'Melden sich weniger als zwei Fahrer, werden Einsätze und Wetten zurückerstattet. \nDer gastgebende Nightclub in diesem Land nimmt Rake, wenn er geöffnet ist. Wenn kein Host vorhanden ist, wird dieser Rake versenkt. \nDer Gewinner erhält den größten Teil des Nettopools; Gewinnende Wetten teilen sich den Rest.';
+
+  @override
+  String get raceInfoTipsTitle => 'Tipps';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Behalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nDie Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch. \nReparieren ist Hitze, kein zusätzliches Preisgeld. \nNach einem Treffen wartet das nächste Gitter durch eine Abklingzeit.';
+
+  @override
   String get raceLiveTitle => 'Das heutige Raster';
 
   @override
@@ -17119,7 +17171,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'Die Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch über das Rennen – betrachten Sie dies nicht als ein zweites Casino. \nBehalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nFixieren ist Hitze, kein Auszahlungsmultiplikator.';
+      'Die Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch über das Rennen – betrachten Sie dies nicht als ein zweites Casino. \nBehalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nFixieren ist Hitze, kein Auszahlungsmultiplikator. \nTippen Sie auf das goldene i bei „Midnight Races“, um eine längere illustrierte Anleitung zu erhalten.';
 
   @override
   String get helpTopicBankCategory => 'Wirtschaft';

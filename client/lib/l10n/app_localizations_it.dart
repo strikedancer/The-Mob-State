@@ -3272,6 +3272,58 @@ class AppLocalizationsIt extends AppLocalizations {
       'Gare notturne nel paese in cui ti trovi. Qualificati con la tua auto, metti in gioco i soldi e lascia che il garage e il negozio di tuning spingano un server. La discoteca che ospita prende un rastrello.';
 
   @override
+  String get raceInfoTooltip => 'Come funzionano le gare di mezzanotte';
+
+  @override
+  String get raceInfoTitle => 'Gare di mezzanotte';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races è la griglia notturna dell\'Empire nel paese in cui ti trovi. Qualificati con la tua auto, metti in gioco i soldi e lascia che le statistiche del garage e della messa a punto spingano un server. Questo non è un gioco di abilità di guida e non è un secondo casinò.';
+
+  @override
+  String get raceInfoEnterTitle => 'Entrando';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Gare di mezzanotte aperte da Empire. Grado e prigione possono bloccare l\'hub. \nLa tua auto deve essere tua, presente in questo paese, non messa in vendita, non in uno showroom, non in transito e in discrete condizioni. \nScegli un\'auto sulla griglia, imposta una puntata in contanti entro il limite del server, quindi entra. Una voce per riunione.';
+
+  @override
+  String get raceInfoFieldTitle => 'Il campo e le scommesse';
+
+  @override
+  String get raceInfoFieldBody =>
+      'Il campo mostra tutti i piloti già iscritti. Puoi scommettere contanti su un altro conducente. Non puoi scommettere su te stesso. \nIl server limita il numero di guidatori e il numero di scommesse che puoi piazzare. Quando la finestra si chiude la griglia si stabilizza.';
+
+  @override
+  String get raceInfoFinishTitle => 'Come viene arrotolata la finitura';
+
+  @override
+  String get raceInfoFinishBody =>
+      'Il server lancia l\'ordine di finitura. La velocità del veicolo, i livelli di velocità e le condizioni dell\'officina danno un bonus leggero. Il tiro decide comunque la gara: non considerare un’auto più veloce come una vittoria garantita.';
+
+  @override
+  String get raceInfoFixingTitle => 'Fissaggio';
+
+  @override
+  String get raceInfoFixingBody =>
+      'Aggiunte di correzione opzionali richieste per un piccolo bonus di tiro. Non garantisce una vincita e non è un moltiplicatore di vincita.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Pagamenti e rastrello';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'Se entrano meno di due piloti, le puntate e le scommesse vengono rimborsate. \nLa discoteca che ospita in questo paese prende una commissione quando è aperta. Se non c\'è nessun ospite, quel rastrello viene affondato. \nIl pilota vincente prende la maggior parte del montepremi netto; le scommesse vincenti dividono il resto.';
+
+  @override
+  String get raceInfoTipsTitle => 'Suggerimenti';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Tieni un\'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nLa velocità dell\'accordatura conta, ma il tiro decide comunque. \nLa riparazione è calore, non premi in denaro extra. \nDopo una riunione, la griglia successiva attende un periodo di raffreddamento.';
+
+  @override
   String get raceLiveTitle => 'La griglia di stasera';
 
   @override
@@ -17093,7 +17145,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un\'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita.';
+      'La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un\'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita. \nTocca la i dorata su Midnight Races per una guida illustrata più lunga.';
 
   @override
   String get helpTopicBankCategory => 'Economia';

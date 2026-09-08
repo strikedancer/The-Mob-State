@@ -3260,6 +3260,58 @@ class AppLocalizationsNl extends AppLocalizations {
       'Nachtraces in het land waar je staat. Kwalificeer met je eigen auto, zet cash in, en laat garage en tuneshop een server-roll licht bijsturen. De hostende club neemt rake.';
 
   @override
+  String get raceInfoTooltip => 'Hoe Midnight Races werken';
+
+  @override
+  String get raceInfoTitle => 'Midnight Races';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races is de Empire-nachtgrid in het land waar je staat. Kwalificeer met je eigen auto, zet cash in, en laat garage en tune een server-roll licht bijsturen. Dit is geen stuurspel en geen tweede casino.';
+
+  @override
+  String get raceInfoEnterTitle => 'Inschrijven';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Open Midnight Races via Empire. Rang en cel kunnen de hub blokkeren.\nJe auto moet van jou zijn, in dit land staan, niet te koop, niet in een showroom, niet onderweg, en in redelijke staat.\nKies een auto op de grid, zet een cash-inzet binnen de servercap, en schrijf in. Eén inschrijving per meeting.';
+
+  @override
+  String get raceInfoFieldTitle => 'Het veld en weddenschappen';
+
+  @override
+  String get raceInfoFieldBody =>
+      'Het veld toont elke rijder die al is ingeschreven. Je kunt cash inzetten op een andere rijder. Je kunt niet op jezelf wedden.\nDe server beperkt het aantal rijders en het aantal weddenschappen. Als het venster sluit, wordt de grid afgerekend.';
+
+  @override
+  String get raceInfoFinishTitle => 'Hoe de uitslag valt';
+
+  @override
+  String get raceInfoFinishBody =>
+      'De server rollt de finishvolgorde. Voertuigsnelheid, tuneshop-speed en conditie geven een lichte bonus. De roll beslist nog steeds — een snellere auto is geen garantie.';
+
+  @override
+  String get raceInfoFixingTitle => 'Sjoemelen';
+
+  @override
+  String get raceInfoFixingBody =>
+      'Optioneel sjoemelen verhoogt wanted voor een kleine roll-bonus. Het garandeert geen winst en is geen payout-multiplier.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Uitbetaling en rake';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'Bij minder dan twee rijders gaan inzet en weddenschappen terug.\nDe hostende nightclub in dit land krijgt de rake als die open is. Zonder host verdwijnt die rake.\nDe winnende rijder krijgt het grootste deel van de nettopot; winnende weddenschappen delen de rest.';
+
+  @override
+  String get raceInfoTipsTitle => 'Tips';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Houd een race-auto in het land dat je bezoekt in plaats van alles in de showroom te laten staan.\nTune-snelheid telt, maar de roll beslist nog steeds.\nSjoemelen is heat, geen extra prijzengeld.\nNa een meeting wacht de volgende grid op een cooldown.';
+
+  @override
   String get raceLiveTitle => 'Vanavond op de grid';
 
   @override
@@ -16947,7 +16999,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'Tune-snelheid telt, maar de roll beslist nog steeds — behandel dit niet als een tweede casino.\nHoud een race-auto in het land dat je bezoekt in plaats van alles in de showroom te laten staan.\nSjoemelen is heat, geen payout-multiplier.';
+      'Tune-snelheid telt, maar de roll beslist nog steeds — behandel dit niet als een tweede casino.\nHoud een race-auto in het land dat je bezoekt in plaats van alles in de showroom te laten staan.\nSjoemelen is heat, geen payout-multiplier.\nTik op de gouden i bij Midnight Races voor een langere handleiding met foto’s.';
 
   @override
   String get helpTopicBankCategory => 'Economie';

@@ -11737,7 +11737,7 @@
   "helpTopicRacesTitle": "Courses de minuit",
   "helpTopicRacesSummary": "Courses de rue programmées dans votre pays actuel. Qualifiez-vous avec votre propre voiture, misez de l'argent et laissez les statistiques de garage et de réglage stimuler le serveur. La discothèque hôte prend le rake.",
   "helpTopicRacesHow": "Courses de minuit ouvertes d’Empire. \nVous courez dans le pays dans lequel vous vous trouvez. La voiture doit être la vôtre, présente dans ce pays, non mise en vente et en bon état. \nL’entrée coûte une mise en espèces. Lorsque la grille se ferme, le serveur lance l'ordre de fin. La vitesse, l'ajustement des niveaux de vitesse et de l'état de l'atelier donnent un léger bonus - ce n'est pas un jeu d'adresse de conduite. \nVous pouvez parier sur d'autres pilotes. Vous ne pouvez pas parier sur vous-même. \nLa fixation optionnelle ajoute un petit bonus de rouleau. Cela ne garantit pas une victoire. \nSi une discothèque dans ce pays est ouverte, cet hôte reçoit la commission. Sinon, le râteau est coulé. \nSi moins de deux pilotes participent, les mises et les paris sont remboursés.",
-  "helpTopicRacesTips": "La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains.",
+  "helpTopicRacesTips": "La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains. \nAppuyez sur le i doré sur Midnight Races pour un guide illustré plus long.",
   "crewUiHintMissionLockedClearingHouse": "Clearing House nécessite également le niveau de mission d'équipage {level}.",
   "@crewUiHintMissionLockedClearingHouse": {
     "placeholders": {
@@ -11808,5 +11808,20 @@
         "type": "String"
       }
     }
-  }
+  },
+  "raceInfoTooltip": "Comment fonctionnent les courses de minuit",
+  "raceInfoTitle": "Courses de minuit",
+  "raceInfoIntro": "Midnight Races est la grille nocturne de l'Empire dans le pays dans lequel vous vous trouvez. Qualifiez-vous avec votre propre voiture, mettez de l'argent en jeu et laissez le garage et les statistiques de réglage pousser un serveur. Ce n'est pas un jeu d'adresse de conduite et ce n'est pas un deuxième casino.",
+  "raceInfoEnterTitle": "Entrer",
+  "raceInfoEnterBody": "Courses de minuit ouvertes d’Empire. Le rang et la prison peuvent bloquer le hub. \nVotre voiture doit être la vôtre, présente dans ce pays, non mise en vente, ni dans une salle d'exposition, ni en transit et dans un état décent. \nChoisissez une voiture sur la grille, définissez une mise en espèces dans la limite du serveur, puis entrez. Une entrée par réunion.",
+  "raceInfoFieldTitle": "Le terrain et les paris",
+  "raceInfoFieldBody": "Le champ affiche tous les conducteurs déjà inscrits. Vous pouvez parier cash sur un autre pilote. Vous ne pouvez pas parier sur vous-même. \nLe serveur limite le nombre de pilotes et le nombre de paris que vous pouvez placer. Lorsque la fenêtre se ferme, la grille se stabilise.",
+  "raceInfoFinishTitle": "Comment la finition est roulée",
+  "raceInfoFinishBody": "Le serveur lance l'ordre de fin. La vitesse du véhicule, les niveaux de vitesse et l'état de l'atelier de réglage donnent un léger bonus. Le lancer décide toujours de la course – ne considérez pas une voiture plus rapide comme une victoire garantie.",
+  "raceInfoFixingTitle": "Fixation",
+  "raceInfoFixingBody": "La fixation optionnelle ajoute un petit bonus de rouleau. Cela ne garantit pas un gain et ce n’est pas un multiplicateur de gains.",
+  "raceInfoPayoutTitle": "Paiements et commission",
+  "raceInfoPayoutBody": "Si moins de deux pilotes participent, les mises et les paris sont remboursés. \nLa discothèque hôte dans ce pays prend du rake lorsqu'elle est ouverte. S’il n’y a pas d’hôte, ce râteau est coulé. \nLe pilote gagnant remporte la majeure partie du pool net ; les paris gagnants se partagent le reste.",
+  "raceInfoTipsTitle": "Conseils",
+  "raceInfoTipsBody": "Gardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLa vitesse de réglage compte, mais le lancer décide toujours. \nLa réparation est une question de chaleur, pas de prix en argent supplémentaire. \nAprès une réunion, la grille suivante attend un temps de recharge."
 }

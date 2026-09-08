@@ -11737,7 +11737,7 @@
   "helpTopicRacesTitle": "Gare di mezzanotte",
   "helpTopicRacesSummary": "Gare su strada programmate nel tuo paese attuale. Qualificati con la tua auto, scommetti denaro e lascia che il garage e le statistiche di messa a punto spingano un server. La discoteca che ospita prende un rastrello.",
   "helpTopicRacesHow": "Gare di mezzanotte aperte da Empire. \nCorri nel paese in cui ti trovi. L'auto deve essere tua, presente in quel paese, non in vendita e in discrete condizioni. \nL'ingresso costa una quota in contanti. Quando la griglia si chiude, il server lancia l'ordine di arrivo. Velocità, livelli di velocità e condizioni dell'officina danno un leggero bonus: questo non è un gioco di abilità di guida. \nPuoi scommettere su altri piloti. Non puoi scommettere su te stesso. \nAggiunte di correzione opzionali richieste per un piccolo bonus di tiro. Non garantisce una vittoria. \nSe una discoteca in quel paese è aperta, quell'ospite riceve la rastrellatura. Altrimenti il ​​rastrello è affondato. \nSe entrano meno di due piloti, le puntate e le scommesse vengono rimborsate.",
-  "helpTopicRacesTips": "La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita.",
+  "helpTopicRacesTips": "La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita. \nTocca la i dorata su Midnight Races per una guida illustrata più lunga.",
   "crewUiHintMissionLockedClearingHouse": "Clearing House richiede anche il livello di missione dell'Crew {level}.",
   "@crewUiHintMissionLockedClearingHouse": {
     "placeholders": {
@@ -11808,5 +11808,20 @@
         "type": "String"
       }
     }
-  }
+  },
+  "raceInfoTooltip": "Come funzionano le gare di mezzanotte",
+  "raceInfoTitle": "Gare di mezzanotte",
+  "raceInfoIntro": "Midnight Races è la griglia notturna dell'Empire nel paese in cui ti trovi. Qualificati con la tua auto, metti in gioco i soldi e lascia che le statistiche del garage e della messa a punto spingano un server. Questo non è un gioco di abilità di guida e non è un secondo casinò.",
+  "raceInfoEnterTitle": "Entrando",
+  "raceInfoEnterBody": "Gare di mezzanotte aperte da Empire. Grado e prigione possono bloccare l'hub. \nLa tua auto deve essere tua, presente in questo paese, non messa in vendita, non in uno showroom, non in transito e in discrete condizioni. \nScegli un'auto sulla griglia, imposta una puntata in contanti entro il limite del server, quindi entra. Una voce per riunione.",
+  "raceInfoFieldTitle": "Il campo e le scommesse",
+  "raceInfoFieldBody": "Il campo mostra tutti i piloti già iscritti. Puoi scommettere contanti su un altro conducente. Non puoi scommettere su te stesso. \nIl server limita il numero di guidatori e il numero di scommesse che puoi piazzare. Quando la finestra si chiude la griglia si stabilizza.",
+  "raceInfoFinishTitle": "Come viene arrotolata la finitura",
+  "raceInfoFinishBody": "Il server lancia l'ordine di finitura. La velocità del veicolo, i livelli di velocità e le condizioni dell'officina danno un bonus leggero. Il tiro decide comunque la gara: non considerare un’auto più veloce come una vittoria garantita.",
+  "raceInfoFixingTitle": "Fissaggio",
+  "raceInfoFixingBody": "Aggiunte di correzione opzionali richieste per un piccolo bonus di tiro. Non garantisce una vincita e non è un moltiplicatore di vincita.",
+  "raceInfoPayoutTitle": "Pagamenti e rastrello",
+  "raceInfoPayoutBody": "Se entrano meno di due piloti, le puntate e le scommesse vengono rimborsate. \nLa discoteca che ospita in questo paese prende una commissione quando è aperta. Se non c'è nessun ospite, quel rastrello viene affondato. \nIl pilota vincente prende la maggior parte del montepremi netto; le scommesse vincenti dividono il resto.",
+  "raceInfoTipsTitle": "Suggerimenti",
+  "raceInfoTipsBody": "Tieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nLa velocità dell'accordatura conta, ma il tiro decide comunque. \nLa riparazione è calore, non premi in denaro extra. \nDopo una riunione, la griglia successiva attende un periodo di raffreddamento."
 }

@@ -3289,6 +3289,58 @@ class AppLocalizationsFr extends AppLocalizations {
       'Courses nocturnes dans le pays dans lequel vous vous trouvez. Qualifiez-vous avec votre propre voiture, mettez de l\'argent en jeu et laissez le garage et le magasin de réglage pousser un serveur. La discothèque hôte prend le rake.';
 
   @override
+  String get raceInfoTooltip => 'Comment fonctionnent les courses de minuit';
+
+  @override
+  String get raceInfoTitle => 'Courses de minuit';
+
+  @override
+  String get raceInfoIntro =>
+      'Midnight Races est la grille nocturne de l\'Empire dans le pays dans lequel vous vous trouvez. Qualifiez-vous avec votre propre voiture, mettez de l\'argent en jeu et laissez le garage et les statistiques de réglage pousser un serveur. Ce n\'est pas un jeu d\'adresse de conduite et ce n\'est pas un deuxième casino.';
+
+  @override
+  String get raceInfoEnterTitle => 'Entrer';
+
+  @override
+  String get raceInfoEnterBody =>
+      'Courses de minuit ouvertes d’Empire. Le rang et la prison peuvent bloquer le hub. \nVotre voiture doit être la vôtre, présente dans ce pays, non mise en vente, ni dans une salle d\'exposition, ni en transit et dans un état décent. \nChoisissez une voiture sur la grille, définissez une mise en espèces dans la limite du serveur, puis entrez. Une entrée par réunion.';
+
+  @override
+  String get raceInfoFieldTitle => 'Le terrain et les paris';
+
+  @override
+  String get raceInfoFieldBody =>
+      'Le champ affiche tous les conducteurs déjà inscrits. Vous pouvez parier cash sur un autre pilote. Vous ne pouvez pas parier sur vous-même. \nLe serveur limite le nombre de pilotes et le nombre de paris que vous pouvez placer. Lorsque la fenêtre se ferme, la grille se stabilise.';
+
+  @override
+  String get raceInfoFinishTitle => 'Comment la finition est roulée';
+
+  @override
+  String get raceInfoFinishBody =>
+      'Le serveur lance l\'ordre de fin. La vitesse du véhicule, les niveaux de vitesse et l\'état de l\'atelier de réglage donnent un léger bonus. Le lancer décide toujours de la course – ne considérez pas une voiture plus rapide comme une victoire garantie.';
+
+  @override
+  String get raceInfoFixingTitle => 'Fixation';
+
+  @override
+  String get raceInfoFixingBody =>
+      'La fixation optionnelle ajoute un petit bonus de rouleau. Cela ne garantit pas un gain et ce n’est pas un multiplicateur de gains.';
+
+  @override
+  String get raceInfoPayoutTitle => 'Paiements et commission';
+
+  @override
+  String get raceInfoPayoutBody =>
+      'Si moins de deux pilotes participent, les mises et les paris sont remboursés. \nLa discothèque hôte dans ce pays prend du rake lorsqu\'elle est ouverte. S’il n’y a pas d’hôte, ce râteau est coulé. \nLe pilote gagnant remporte la majeure partie du pool net ; les paris gagnants se partagent le reste.';
+
+  @override
+  String get raceInfoTipsTitle => 'Conseils';
+
+  @override
+  String get raceInfoTipsBody =>
+      'Gardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d\'exposition. \nLa vitesse de réglage compte, mais le lancer décide toujours. \nLa réparation est une question de chaleur, pas de prix en argent supplémentaire. \nAprès une réunion, la grille suivante attend un temps de recharge.';
+
+  @override
   String get raceLiveTitle => 'La grille de ce soir';
 
   @override
@@ -17118,7 +17170,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicRacesTips =>
-      'La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d\'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains.';
+      'La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d\'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains. \nAppuyez sur le i doré sur Midnight Races pour un guide illustré plus long.';
 
   @override
   String get helpTopicBankCategory => 'Économie';
