@@ -9,6 +9,7 @@ import { Job } from 'bullmq';
 import { queueService } from './queueService';
 import { applyPassivePlayerTickBatch } from '../services/playerTickBatch';
 import { prostituteService } from '../services/prostituteService';
+import { propertyService } from '../services/propertyService';
 import nightclubService from '../services/nightclubService';
 import { RealTimeProvider, ITimeProvider } from '../utils/timeProvider';
 
@@ -155,6 +156,12 @@ class TickQueue {
       } catch (raceTickErr) {
         console.error('[TickQueue] Midnight races tick failed:', raceTickErr);
       }
+      let forfeitTick = { playersChecked: 0, propertiesForfeited: 0 };
+      try {
+        forfeitTick = await propertyService.checkForfeituresForEligibleOwners();
+      } catch (forfeitErr) {
+        console.error('[TickQueue] Property forfeiture failed:', forfeitErr);
+      }
 
       const duration = Date.now() - startTime;
 
@@ -173,6 +180,7 @@ class TickQueue {
         donContracts: donTick.contracts,
         racesSettled: raceTick.settled,
         racesRefunded: raceTick.refunded,
+        propertiesForfeited: forfeitTick.propertiesForfeited,
         duration: `${duration}ms`,
       });
 

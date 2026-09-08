@@ -1163,6 +1163,36 @@ class PropertyService {
     return 0;
   }
 
+  /**
+   * Tick helper: only inspect owners who are dead or have >24h jail remaining.
+   * Caps work per tick so hundreds of owners do not become an N+1 scan.
+   */
+  async checkForfeituresForEligibleOwners(limit = 200): Promise<{
+    playersChecked: number;
+    propertiesForfeited: number;
+  }> {
+    const now = timeProvider.now();
+    const longJailCutoff = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const candidates = await prisma.player.findMany({
+      where: {
+        properties: { some: {} },
+        OR: [{ health: { lte: 0 } }, { jailRelease: { gt: longJailCutoff } }],
+      },
+      select: { id: true },
+      take: Math.max(1, Math.min(500, Math.floor(limit))),
+    });
+
+    let totalForfeited = 0;
+    for (const { id } of candidates) {
+      totalForfeited += await this.checkPlayerForfeiture(id);
+    }
+
+    return {
+      playersChecked: candidates.length,
+      propertiesForfeited: totalForfeited,
+    };
+  }
+
   private async getDevelopmentConfig() {
     const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
       `SELECT configKey, configValue FROM runtime_config

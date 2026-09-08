@@ -44,6 +44,7 @@ Scope-afbakening:
 - Develop UI: confirm dialog, mapped errors, cooldown remaining on `/properties/mine` + 429 params, and card stats for level/bonus/income. Hide Develop when `canDevelop` is false.
 - Upgrade UI: confirm + next storage/housing/income preview; cash-lock like buy.
 - Sell UI: confirm with 70% cash, mapped empty-storage / wrong-country / nightclub-stock / showroom-collection errors.
+- Tick forfeiture (dood of >24u resterende celstraf) loopt via `checkForfeituresForEligibleOwners`: alleen kandidaten, max. 200 per tick, op zowel queue- als interval-ticks. Geen scan van alle eigenaren.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

@@ -7,7 +7,7 @@ import prisma from '../lib/prisma';
 import { Prisma } from '@prisma/client';
 import { getRankFromXP } from '../config';
 import vehiclesData from '../../content/vehicles.json';
-import { checkCooldown, setCooldown } from './cooldownService';
+import { checkCooldown, getPlayerCooldowns, setCooldown } from './cooldownService';
 import { calculateBail, checkArrest, checkIfJailed } from './policeService';
 import {
   capWantedLevel,
@@ -1828,19 +1828,76 @@ const withVehicleMeta = (
   };
 };
 
+function summarizeVehicleOpsCategory(input: {
+  vehicleType: VehicleOpsType;
+  now: Date;
+  country: string;
+  heat: number;
+  partsPrice: number;
+  hasCrew: boolean;
+  crewName: string | null;
+  cooldowns: Record<string, number>;
+  season: { points: number; wins: number; losses: number };
+  openInsuranceClaims: number;
+  carRep: number;
+  motorcycleRep: number;
+  boatRep: number;
+}) {
+  const {
+    vehicleType,
+    now,
+    country,
+    heat,
+    partsPrice,
+    hasCrew,
+    crewName,
+    cooldowns,
+    season,
+    openInsuranceClaims,
+    carRep,
+    motorcycleRep,
+    boatRep,
+  } = input;
+  const repValue =
+    vehicleType === 'motorcycle' ? motorcycleRep : vehicleType === 'boat' ? boatRep : carRep;
+  const contracts = getVehicleOpsContractsBoard(
+    vehicleType,
+    now,
+    getVehicleOpsRepLevel(repValue),
+    country
+  );
+  const blacklist = getRegionalBlacklistEvent(vehicleType, country, now);
+  const baseParts = vehicleType === 'boat' ? 2350 : vehicleType === 'motorcycle' ? 1180 : 1450;
+  return {
+    heatCurrent: heat,
+    heatLevel: classifyHeatLevel(heat),
+    reputationValue: repValue,
+    reputationLevel: getVehicleOpsRepLevel(repValue),
+    partsTrend: partsPrice >= baseParts ? 'up' : 'down',
+    blacklistActive: blacklist.active === true,
+    crewAvailable: hasCrew,
+    crewName,
+    contractsAvailable: contracts.length,
+    openInsuranceClaims,
+    seasonPoints: season.points,
+    seasonWins: season.wins,
+    seasonLosses: season.losses,
+    cooldowns: {
+      hotspot: cooldowns[hotspotActionTypeForVehicle(vehicleType)] ?? 0,
+      crew: cooldowns[crewActionTypeForVehicle(vehicleType)] ?? 0,
+      crewMatch: cooldowns[crewMatchActionTypeForVehicle(vehicleType)] ?? 0,
+      chop: cooldowns[chopActionTypeForVehicle(vehicleType)] ?? 0,
+      contract: cooldowns[opsContractActionTypeForVehicle(vehicleType)] ?? 0,
+      counter: cooldowns[counterInterceptActionTypeForVehicle(vehicleType)] ?? 0,
+    },
+  };
+}
+
 export const vehicleService = {
   /**
    * Get all available vehicles (cars and boats)
    */
   getAvailableVehicles(): { cars: Vehicle[]; boats: Vehicle[]; motorcycles: Vehicle[] } {
-    console.log('[getAvailableVehicles] Full data:', {
-      carsCount: vehiclesData.cars?.length,
-      boatsCount: vehiclesData.boats?.length,
-      motorcyclesCount: (vehiclesData as any).motorcycles?.length ?? 0,
-      carsKeys: vehiclesData.cars ? Object.keys(vehiclesData.cars[0] || {}) : [],
-      boatsKeys: vehiclesData.boats ? Object.keys(vehiclesData.boats[0] || {}) : [],
-    });
-
     return {
       cars: (vehiclesData.cars as unknown as Vehicle[]).map((vehicle) =>
         withVehicleMeta(vehicle, 'car')
@@ -1852,6 +1909,116 @@ export const vehicleService = {
         withVehicleMeta(vehicle, 'motorcycle')
       ),
     };
+  },
+
+  /**
+   * Compact Home/dashboard Vehicle Ops cards. Shared heat/profile/season/claims
+   * instead of three full intelligence payloads (leaderboard + crew roster + 9 cooldowns each).
+   */
+  async getVehicleOpsDashboardSummaries(playerId: number): Promise<{
+    car: ReturnType<typeof summarizeVehicleOpsCategory> | null;
+    motorcycle: ReturnType<typeof summarizeVehicleOpsCategory> | null;
+    boat: ReturnType<typeof summarizeVehicleOpsCategory> | null;
+  }> {
+    const empty = { car: null, motorcycle: null, boat: null };
+    try {
+      const now = new Date();
+      const seasonKey = getVehicleOpsSeasonKey(now);
+      const types = ['car', 'motorcycle', 'boat'] as const;
+
+      const [heatSnapshot, profile, player, crewMember, seasonRows, claimRows, cooldowns] =
+        await Promise.all([
+          getPlayerVehicleHeatSnapshot(playerId),
+          getPlayerVehicleOpsProfile(playerId),
+          prisma.player.findUnique({
+            where: { id: playerId },
+            select: { currentCountry: true },
+          }),
+          prisma.crewMember.findUnique({
+            where: { playerId },
+            select: { crew: { select: { name: true } } },
+          }),
+          (async () => {
+            await ensureVehicleOpsSeasonTable();
+            return prisma.$queryRaw<
+              Array<{
+                vehicle_type: string;
+                points: number | bigint;
+                wins: number | bigint;
+                losses: number | bigint;
+              }>
+            >`
+              SELECT vehicle_type, points, wins, losses
+              FROM player_vehicle_ops_season
+              WHERE season_key = ${seasonKey} AND player_id = ${playerId}
+            `;
+          })(),
+          (async () => {
+            await ensureVehicleOpsInsuranceClaimsTable();
+            return prisma.$queryRaw<Array<{ vehicle_type: string; cnt: bigint | number }>>`
+              SELECT vehicle_type, COUNT(*) AS cnt
+              FROM player_vehicle_ops_insurance_claims
+              WHERE player_id = ${playerId} AND status = 'REVIEW'
+              GROUP BY vehicle_type
+            `;
+          })(),
+          getPlayerCooldowns(playerId),
+        ]);
+
+      if (!player) return empty;
+
+      const heatByType: Record<VehicleOpsType, number> = {
+        car: heatSnapshot.car,
+        motorcycle: heatSnapshot.motorcycle,
+        boat: heatSnapshot.boat,
+      };
+      const partsMarketPrices = getPartsMarketPrices(now, heatByType);
+      const seasonByType = new Map(
+        seasonRows.map((row) => [
+          row.vehicle_type,
+          {
+            points: Number(row.points ?? 0),
+            wins: Number(row.wins ?? 0),
+            losses: Number(row.losses ?? 0),
+          },
+        ])
+      );
+      const claimsByType = new Map(
+        claimRows.map((row) => [row.vehicle_type, Number(row.cnt ?? 0)])
+      );
+      const country = player.currentCountry ?? '';
+      const hasCrew = Boolean(crewMember);
+      const crewName = crewMember?.crew?.name ?? null;
+
+      const built = Object.fromEntries(
+        types.map((vehicleType) => [
+          vehicleType,
+          summarizeVehicleOpsCategory({
+            vehicleType,
+            now,
+            country,
+            heat: heatByType[vehicleType],
+            partsPrice: partsMarketPrices[vehicleType],
+            hasCrew,
+            crewName,
+            cooldowns,
+            season: seasonByType.get(vehicleType) ?? { points: 1000, wins: 0, losses: 0 },
+            openInsuranceClaims: claimsByType.get(vehicleType) ?? 0,
+            carRep: profile.carRep,
+            motorcycleRep: profile.motorcycleRep,
+            boatRep: profile.boatRep,
+          }),
+        ])
+      ) as {
+        car: ReturnType<typeof summarizeVehicleOpsCategory>;
+        motorcycle: ReturnType<typeof summarizeVehicleOpsCategory>;
+        boat: ReturnType<typeof summarizeVehicleOpsCategory>;
+      };
+      return built;
+    } catch (error) {
+      console.error('[VehicleOps] Dashboard summaries failed:', { playerId, error });
+      return empty;
+    }
   },
 
   /**

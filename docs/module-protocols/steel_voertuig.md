@@ -51,7 +51,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Vehicle Ops moet live cooldowns per hoofdactie zichtbaar tonen met actieve countdown, niet alleen statische secondenwaarden na handmatige refresh.
 - Op de Vehicle Heist lane cards (en embedded garage/marina): bij actieve theft-cooldown toont een **bliksem-icoon** naast de timer; tikken opent bevestiging om credits te besteden (`vehicle_theft` / `motorcycle_theft` / `boat_theft` via dezelfde redeem-API). Geen full-screen `CooldownOverlay` meer; “bevestiging niet meer tonen” is lokaal + terug te zetten onder Instellingen.
 - Cooldowninformatie in Vehicle Ops hoort op 1 primaire plek te staan (actiekaarten); vermijd dubbele cooldownsamenvattingen in losse tekstregels.
-- Dashboard moet een compacte Vehicle Ops-samenvatting tonen (per auto/motor/boot) met live cooldowns, heat/reputatie en kernstatus van crew/contract/claims zonder dat 1 falende categorie de volledige dashboardweergave breekt.
+- Dashboard moet een compacte Vehicle Ops-samenvatting tonen (per auto/motor/boot) met live cooldowns, heat/reputatie en kernstatus van crew/contract/claims zonder dat 1 falende categorie de volledige dashboardweergave breekt. Home gebruikt daarvoor `getVehicleOpsDashboardSummaries`, niet drie keer de volle intelligence-payload (leaderboard + crew-roster).
 - Crew-only ops-acties (crew-run en crew-matchmaking) mogen alleen zichtbaar of bruikbaar zijn als de speler daadwerkelijk in een crew zit; zonder crew moet een duidelijke unlock-hint worden getoond.
 - Ops-actiekaarten moeten payout-context expliciet tonen (waarom cash toeneemt na klik), zodat reward-herkomst voor spelers traceerbaar is.
 - Toon per tab een catalogus met waarde, zeldzaamheid, landen en world-cap status.

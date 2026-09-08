@@ -196,7 +196,7 @@ class TickService {
       }
 
       // Check for property forfeitures (death or long imprisonment)
-      const forfeitResult = await this.checkPropertyForfeitures();
+      const forfeitResult = await propertyService.checkForfeituresForEligibleOwners();
       if (forfeitResult.playersChecked > 0) {
         console.log(
           `🏚️  Checked ${forfeitResult.playersChecked} property owners, forfeited ${forfeitResult.propertiesForfeited} properties`
@@ -211,35 +211,6 @@ class TickService {
       console.error('❌ Error during tick:', error);
       throw error;
     }
-  }
-
-  /**
-   * Check all property owners for forfeiture conditions
-   * Returns stats about forfeitures
-   */
-  private async checkPropertyForfeitures(): Promise<{
-    playersChecked: number;
-    propertiesForfeited: number;
-  }> {
-    // Get all unique property owners
-    const propertyOwners = await prisma.property.findMany({
-      select: {
-        playerId: true,
-      },
-      distinct: ['playerId'],
-    });
-
-    let totalForfeited = 0;
-
-    for (const { playerId } of propertyOwners) {
-      const forfeited = await propertyService.checkPlayerForfeiture(playerId);
-      totalForfeited += forfeited;
-    }
-
-    return {
-      playersChecked: propertyOwners.length,
-      propertiesForfeited: totalForfeited,
-    };
   }
 
   /**

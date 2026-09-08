@@ -888,14 +888,11 @@ router.get('/action-cooldowns', authenticate, async (req: AuthRequest, res: Resp
 router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = req.player!.id;
-    console.log('[Dashboard] Fetching stats for player:', playerId);
     const now = new Date();
     const last24hStart = new Date(now.getTime() - 24 * 60 * 60 * 1000);
     const prev24hStart = new Date(now.getTime() - 48 * 60 * 60 * 1000);
     const last7dStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    // Get cooldowns
-    const cooldowns = await getPlayerCooldowns(playerId);
     const parseNumber = (value: unknown): number => {
       if (typeof value === 'number' && Number.isFinite(value)) {
         return Math.trunc(value);
@@ -937,6 +934,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
     };
 
     const [
+      cooldowns,
       shootingStats,
       gymStats,
       drugInventoryAgg,
@@ -971,7 +969,25 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       propertiesOwnedAgg,
       vehicleInventoryRows,
       cryptoHoldingRows,
+      crimeAttempts,
+      successfulCrimes,
+      jobAttempts,
+      vehicleThieves,
+      boatThieves,
+      streetProstitutes,
+      redLightProstitutes,
+      ammoInventoryAgg,
+      weapons,
+      selectedVehicle,
+      jailStatus,
+      bankAccount,
+      selectedCrimeWeapon,
+      stockRowsOrEmpty,
+      countryPoliceMods,
+      territoryDrama,
+      vehicleOpsByType,
     ] = await Promise.all([
+      getPlayerCooldowns(playerId),
       prisma.shootingRangeStats.findUnique({
         where: { playerId },
         select: { lastTrainedAt: true },
@@ -1018,6 +1034,10 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           xp: true,
           wantedLevel: true,
           fbiHeat: true,
+          lastProstituteRecruitment: true,
+          lastHospitalVisit: true,
+          isVip: true,
+          vipExpiresAt: true,
         },
       }),
       prisma.worldEvent.count({
@@ -1188,11 +1208,16 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       prisma.vehicleInventory.findMany({
         where: { playerId },
         select: {
+          id: true,
           vehicleId: true,
+          vehicleType: true,
           condition: true,
           askingPrice: true,
           marketListing: true,
           transportStatus: true,
+          stolenAt: true,
+          currentLocation: true,
+          fuelLevel: true,
         },
       }),
       prisma.crypto_holdings.findMany({
@@ -1202,11 +1227,81 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           quantity: true,
         },
       }),
+      prisma.crimeAttempt.count({
+        where: { playerId },
+      }),
+      prisma.crimeAttempt.count({
+        where: { playerId, success: true },
+      }),
+      prisma.jobAttempt.count({
+        where: { playerId },
+      }),
+      prisma.vehicleInventory.count({
+        where: { playerId, vehicleType: 'car' },
+      }),
+      prisma.vehicleInventory.count({
+        where: { playerId, vehicleType: 'boat' },
+      }),
+      prisma.prostitute.count({
+        where: { playerId, location: 'street' },
+      }),
+      prisma.prostitute.count({
+        where: {
+          playerId,
+          OR: [{ location: 'redlight' }, { redLightRoomId: { not: null } }],
+        },
+      }),
+      prisma.ammoInventory.aggregate({
+        where: { playerId },
+        _sum: { quantity: true },
+      }),
+      prisma.weaponInventory.findMany({
+        where: { playerId },
+        select: { id: true, weaponId: true, condition: true },
+      }),
+      prisma.playerSelectedVehicle.findUnique({
+        where: { playerId },
+        include: { vehicle: true },
+      }),
+      policeService.checkIfJailed(playerId),
+      prisma.bankAccount.findUnique({
+        where: { playerId },
+        select: { balance: true },
+      }),
+      weaponSelectionService.getSelectedCrimeWeapon(playerId),
+      prisma
+        .$queryRawUnsafe<Array<{ quantity: number | string; currentPrice: number | string }>>(
+          `SELECT h.quantity, a.currentPrice
+           FROM stock_holdings h
+           INNER JOIN stock_assets a ON a.symbol = h.symbol
+           WHERE h.playerId = ? AND a.enabled = 1`,
+          playerId
+        )
+        .catch((error) => {
+          console.error('[Dashboard] Stock portfolio value failed:', { playerId, error });
+          return [] as Array<{ quantity: number | string; currentPrice: number | string }>;
+        }),
+      (async () => {
+        try {
+          const { countryPoliceService } = await import('../services/countryPoliceService');
+          return await countryPoliceService.getModifiersForPlayer(playerId);
+        } catch {
+          return null;
+        }
+      })(),
+      territoryService.getTerritoryDramaSnapshot().catch((error) => {
+        console.error('[Dashboard] Territory drama snapshot failed:', { playerId, error });
+        return null;
+      }),
+      vehicleService.getVehicleOpsDashboardSummaries(playerId),
     ]);
 
-    const territoryLeaderStats =
+    const cryptoSymbols = Array.from(
+      new Set(cryptoHoldingRows.map((holding) => holding.asset_symbol))
+    );
+    const [territoryLeaderStats, cryptoAssets] = await Promise.all([
       crewMembership?.role === 'leader'
-        ? await territoryService.getCrewEconomySummary(crewMembership.crewId).catch((error) => {
+        ? territoryService.getCrewEconomySummary(crewMembership.crewId).catch((error) => {
             console.error(
               '[Dashboard] Territory crew summary failed during dashboard stats load:',
               {
@@ -1217,99 +1312,16 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             );
             return null;
           })
-        : null;
+        : Promise.resolve(null),
+      cryptoSymbols.length > 0
+        ? prisma.crypto_assets.findMany({
+            where: { symbol: { in: cryptoSymbols } },
+            select: { symbol: true, current_price: true },
+          })
+        : Promise.resolve([]),
+    ]);
 
-    const territoryDrama = await territoryService.getTerritoryDramaSnapshot().catch((error) => {
-      console.error('[Dashboard] Territory drama snapshot failed:', { playerId, error });
-      return null;
-    });
-
-    const vehicleOpsEntries = await Promise.all(
-      (['car', 'motorcycle', 'boat'] as const).map(async (vehicleType) => {
-        try {
-          const intelligence = await vehicleService.getVehicleOpsIntelligence(playerId, vehicleType);
-          return [vehicleType, intelligence] as const;
-        } catch (error) {
-          console.error('[Dashboard] Vehicle Ops intelligence failed during dashboard stats load:', {
-            playerId,
-            vehicleType,
-            error,
-          });
-          return [vehicleType, null] as const;
-        }
-      })
-    );
-
-    const summarizeVehicleOps = (intelligence: Record<string, any> | null) => {
-      if (!intelligence) {
-        return null;
-      }
-
-      const hotspot = (Array.isArray(intelligence.hotspots)
-        ? intelligence.hotspots[0]
-        : null) as Record<string, any> | null;
-      const crewOp = (intelligence.crewOp ?? {}) as Record<string, any>;
-      const chopContract = (intelligence.chopContract ?? {}) as Record<string, any>;
-      const contractsBoard = (intelligence.contractsBoard ?? {}) as Record<string, any>;
-      const crewMatchmaking = (intelligence.crewMatchmaking ?? {}) as Record<string, any>;
-      const counterIntercept = (intelligence.counterIntercept ?? {}) as Record<string, any>;
-      const categoryHeat = (intelligence.categoryHeat ?? {}) as Record<string, any>;
-      const opsReputation = (intelligence.opsReputation ?? {}) as Record<string, any>;
-      const contrabandInsurance = (intelligence.contrabandInsurance ?? {}) as Record<string, any>;
-      const regionalBlacklist = (intelligence.regionalBlacklist ?? {}) as Record<string, any>;
-      const partsMarket = (intelligence.partsMarket ?? {}) as Record<string, any>;
-      const seasonCurrent = (crewMatchmaking.current ?? {}) as Record<string, any>;
-      const openClaims = Array.isArray(contrabandInsurance.openClaims)
-        ? contrabandInsurance.openClaims
-        : [];
-      const contracts = Array.isArray(contractsBoard.contracts) ? contractsBoard.contracts : [];
-
-      return {
-        heatCurrent: parseNumber(categoryHeat.current),
-        heatLevel: (categoryHeat.level ?? 'LOW').toString(),
-        reputationValue: parseNumber(opsReputation.value),
-        reputationLevel: parseNumber(opsReputation.level),
-        partsTrend: (partsMarket.trend ?? 'flat').toString(),
-        blacklistActive: regionalBlacklist.active === true,
-        crewAvailable: crewOp.available === true,
-        crewName: crewOp.crewName?.toString() ?? null,
-        contractsAvailable: contracts.length,
-        openInsuranceClaims: openClaims.length,
-        seasonPoints: parseNumber(seasonCurrent.points),
-        seasonWins: parseNumber(seasonCurrent.wins),
-        seasonLosses: parseNumber(seasonCurrent.losses),
-        cooldowns: {
-          hotspot: parseNumber(hotspot?.cooldownRemainingSeconds),
-          crew: parseNumber(crewOp.cooldownRemainingSeconds),
-          crewMatch: parseNumber(crewMatchmaking.cooldownRemainingSeconds),
-          chop: parseNumber(chopContract.cooldownRemainingSeconds),
-          contract: parseNumber(contractsBoard.cooldownRemainingSeconds),
-          counter: parseNumber(counterIntercept.cooldownRemainingSeconds),
-        },
-      };
-    };
-
-    const vehicleOpsByType = Object.fromEntries(
-      vehicleOpsEntries.map(([vehicleType, intelligence]) => [
-        vehicleType,
-        summarizeVehicleOps(intelligence as Record<string, any> | null),
-      ])
-    ) as {
-      car: ReturnType<typeof summarizeVehicleOps>;
-      motorcycle: ReturnType<typeof summarizeVehicleOps>;
-      boat: ReturnType<typeof summarizeVehicleOps>;
-    };
-
-    const cooldownPlayer = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: {
-        lastProstituteRecruitment: true,
-        lastHospitalVisit: true,
-        isVip: true,
-        vipExpiresAt: true,
-      },
-    });
-    const vipCooldownActive = isVipStatusActive(cooldownPlayer);
+    const vipCooldownActive = isVipStatusActive(playerCore);
     const trainingCooldownMs = applyVipTimeoutReductionMs(60 * 60 * 1000, vipCooldownActive);
     const prostituteRecruitCooldownSeconds = applyVipTimeoutReductionSeconds(
       PROSTITUTE_RECRUITMENT_COOLDOWN_SECONDS,
@@ -1355,79 +1367,23 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       : Math.min(...gymParts);
 
     cooldowns.prostitute_recruit = toRemainingSeconds(
-      cooldownPlayer?.lastProstituteRecruitment
+      playerCore?.lastProstituteRecruitment
         ? new Date(
-            cooldownPlayer.lastProstituteRecruitment.getTime() +
+            playerCore.lastProstituteRecruitment.getTime() +
               prostituteRecruitCooldownSeconds * 1000
           )
         : null
     );
 
     cooldowns.hospital = toRemainingSeconds(
-      cooldownPlayer?.lastHospitalVisit
-        ? new Date(cooldownPlayer.lastHospitalVisit.getTime() + hospitalCooldownMs)
+      playerCore?.lastHospitalVisit
+        ? new Date(playerCore.lastHospitalVisit.getTime() + hospitalCooldownMs)
         : null
     );
 
     cooldowns.nightclub = toRemainingSeconds(nightclubSeasonState?.seasonEndAt ?? null);
 
-    console.log('[Dashboard] Cooldowns:', JSON.stringify(cooldowns));
-
-    // Get crime attempts count
-    const crimeAttempts = await prisma.crimeAttempt.count({
-      where: { playerId },
-    });
-
-    // Get successful crimes count
-    const successfulCrimes = await prisma.crimeAttempt.count({
-      where: {
-        playerId,
-        success: true,
-      },
-    });
-
-    // Get job attempts count
-    const jobAttempts = await prisma.jobAttempt.count({
-      where: { playerId },
-    });
-
-    // Get vehicle theft counts (auto stelen)
-    const vehicleThieves = await prisma.vehicleInventory.count({
-      where: {
-        playerId,
-        vehicleType: 'car',
-      },
-    });
-
-    // Get boat theft counts (boot stelen)
-    const boatThieves = await prisma.vehicleInventory.count({
-      where: {
-        playerId,
-        vehicleType: 'boat',
-      },
-    });
-
-    // Get prostitution distribution stats
-    const [streetProstitutes, redLightProstitutes] = await Promise.all([
-      prisma.prostitute.count({
-        where: {
-          playerId,
-          location: 'street',
-        },
-      }),
-      prisma.prostitute.count({
-        where: {
-          playerId,
-          OR: [{ location: 'redlight' }, { redLightRoomId: { not: null } }],
-        },
-      }),
-    ]);
-
-    // Get player ammo count
-    const ammoInventory = await prisma.ammoInventory.findMany({
-      where: { playerId },
-    });
-    const totalAmmo = ammoInventory.reduce((sum, item) => sum + item.quantity, 0);
+    const totalAmmo = Number(ammoInventoryAgg._sum.quantity ?? 0);
     const drugsTotalQuantity = Number(drugInventoryAgg._sum.quantity ?? 0);
     const nightclubRevenueAllTime = Number(nightclubRevenueAgg._sum.totalRevenueAllTime ?? 0n);
     const killCount = Number(playerCore?.killCount ?? 0);
@@ -1486,19 +1442,6 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       }
     );
 
-    const cryptoSymbols = Array.from(new Set(cryptoHoldingRows.map((holding) => holding.asset_symbol)));
-    const cryptoAssets =
-      cryptoSymbols.length > 0
-        ? await prisma.crypto_assets.findMany({
-            where: {
-              symbol: { in: cryptoSymbols },
-            },
-            select: {
-              symbol: true,
-              current_price: true,
-            },
-          })
-        : [];
     const cryptoPriceMap = new Map(
       cryptoAssets.map((asset) => [asset.symbol, parseFloatNumber(asset.current_price)])
     );
@@ -1507,48 +1450,17 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       const price = cryptoPriceMap.get(holding.asset_symbol) ?? 0;
       return sum + qty * price;
     }, 0);
-    let stockPortfolioValue = 0;
-    try {
-      const stockRows = await prisma.$queryRawUnsafe<
-        Array<{ quantity: number | string; currentPrice: number | string }>
-      >(
-        `SELECT h.quantity, a.currentPrice
-         FROM stock_holdings h
-         INNER JOIN stock_assets a ON a.symbol = h.symbol
-         WHERE h.playerId = ? AND a.enabled = 1`,
-        playerId,
-      );
-      stockPortfolioValue = stockRows.reduce((sum, row) => {
-        return sum + parseFloatNumber(row.quantity) * parseFloatNumber(row.currentPrice);
-      }, 0);
-    } catch (error) {
-      console.error('[Dashboard] Stock portfolio value failed:', { playerId, error });
-    }
+    const stockPortfolioValue = stockRowsOrEmpty.reduce((sum, row) => {
+      return sum + parseFloatNumber(row.quantity) * parseFloatNumber(row.currentPrice);
+    }, 0);
     const propertyPortfolioValue = Number(propertiesOwnedAgg._sum.purchasePrice ?? 0);
 
-    // Get player weapons
-    const weapons = await prisma.weaponInventory.findMany({
-      where: { playerId },
-    });
-
-    // Get selected vehicle for crimes (car or boat)
-    const selectedVehicle = await prisma.playerSelectedVehicle.findUnique({
-      where: { playerId },
-      include: { vehicle: true },
-    });
-
-    const activeVehicle = selectedVehicle?.vehicle
-      ? await prisma.vehicleInventory.findFirst({
-          where: {
-            playerId,
-            vehicleId: selectedVehicle.vehicle.vehicleType,
-            transportStatus: null,
-          },
-          orderBy: { stolenAt: 'desc' },
-        })
+    const selectedType = selectedVehicle?.vehicle?.vehicleType ?? null;
+    const activeVehicle = selectedType
+      ? vehicleInventoryRows
+          .filter((row) => row.vehicleId === selectedType && row.transportStatus == null)
+          .sort((a, b) => b.stolenAt.getTime() - a.stolenAt.getTime())[0] ?? null
       : null;
-
-    const selectedCrimeWeapon = await weaponSelectionService.getSelectedCrimeWeapon(playerId);
 
     const currentCrewWar = crewWarHub.currentWar;
     const myCrewId = crewWarHub.myCrewId;
@@ -1577,13 +1489,6 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       ? Math.max(0, Math.ceil((new Date(phaseEndsAt).getTime() - Date.now()) / 1000))
       : 0;
 
-    // Get jail status
-    const jailStatus = await policeService.checkIfJailed(playerId);
-
-    // Get bank balance
-    const bankAccount = await prisma.bankAccount.findUnique({
-      where: { playerId },
-    });
     const bankBalance = Number(bankAccount?.balance ?? 0);
     const activeCooldownCount = Object.values(cooldowns).filter((value) => value > 0).length;
     const longestCooldownSeconds = Object.values(cooldowns).reduce(
@@ -1601,30 +1506,19 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       Math.max(0, Math.round(wantedLevel * 0.6 + fbiHeat * 0.4 + activeCooldownCount * 1.5))
     );
 
-    let countryPolice: {
-      enabled: boolean;
-      countryCode: string;
-      pressure: number;
-      band: string;
-      successPenaltyPp: number;
-      arrestBonusPp: number;
-      coolUntil: string | null;
-    } | null = null;
-    try {
-      const { countryPoliceService } = await import('../services/countryPoliceService');
-      const mods = await countryPoliceService.getModifiersForPlayer(playerId);
-      countryPolice = {
-        enabled: mods.enabled,
-        countryCode: mods.countryCode,
-        pressure: mods.pressure,
-        band: mods.band,
-        successPenaltyPp: mods.successPenaltyPp,
-        arrestBonusPp: mods.arrestBonusPp,
-        coolUntil: mods.coolUntil ? mods.coolUntil.toISOString() : null,
-      };
-    } catch {
-      countryPolice = null;
-    }
+    const countryPolice = countryPoliceMods
+      ? {
+          enabled: countryPoliceMods.enabled,
+          countryCode: countryPoliceMods.countryCode,
+          pressure: countryPoliceMods.pressure,
+          band: countryPoliceMods.band,
+          successPenaltyPp: countryPoliceMods.successPenaltyPp,
+          arrestBonusPp: countryPoliceMods.arrestBonusPp,
+          coolUntil: countryPoliceMods.coolUntil
+            ? countryPoliceMods.coolUntil.toISOString()
+            : null,
+        }
+      : null;
 
     const netWorth =
       cashBalance +
