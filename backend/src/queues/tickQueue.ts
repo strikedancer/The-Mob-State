@@ -180,6 +180,13 @@ class TickQueue {
       } catch (donTickErr) {
         console.error('[TickQueue] Don tick failed:', donTickErr);
       }
+      let raceTick = { settled: 0, refunded: 0 };
+      try {
+        const { raceService } = await import('../services/raceService');
+        raceTick = await raceService.processTick();
+      } catch (raceTickErr) {
+        console.error('[TickQueue] Midnight races tick failed:', raceTickErr);
+      }
 
       const duration = Date.now() - startTime;
 
@@ -194,6 +201,8 @@ class TickQueue {
         donContests: donTick.contests,
         donLoans: donTick.loans,
         donContracts: donTick.contracts,
+        racesSettled: raceTick.settled,
+        racesRefunded: raceTick.refunded,
         duration: `${duration}ms`,
       });
 

@@ -5,7 +5,7 @@ Persistent Don hub: protection rackets, loan sharking, NPC officials and city co
 
 Street crime `protection_racket` stays a one-shot shake. This hub is the persistent empire and must not also grant shops from that crime.
 
-Out of scope: war theater, blotter newspaper, midnight races, weapons P2P, country-police flag, Clearing House gate, Facebook Login, horses.
+Out of scope for this module: blotter newspaper, weapons P2P, Facebook Login, horses. Country police, Clearing House, war theater and Midnight Races live in their own protocols.
 
 ## Primary Frontend Entry
 - `client/lib/screens/don_screen.dart` (dashboard Empire → Don; optional `/don`)
@@ -28,7 +28,7 @@ Out of scope: war theater, blotter newspaper, midnight races, weapons P2P, count
 - `backend/content/donContracts.json` (NPC sharks + city contracts)
 
 ## Runtime keys (`DON_*`, default **on**)
-Tune in Admin; do not flip country-police or Clearing House defaults from this module.
+Tune in Admin; do not flip Clearing House defaults from this module.
 - `DON_ENABLED` (1)
 - `DON_MIN_RANK` (7)
 - `DON_COLLECT_COOLDOWN_SECONDS` (14400)
@@ -74,4 +74,4 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 4. Bid a small contract; greedy heat; large contract locked without alderman/engineering.
 5. Leader sets consigliere and capo+country; capo tribute only in that country.
 6. Rank &lt; 7 and jailed players are blocked.
-7. Help topic `don` NL/EN; no war-theater / races / police-flag / Clearing House side effects.
+7. Help topic `don` NL/EN; Don hub does not own war-theater / races / police / Clearing House.

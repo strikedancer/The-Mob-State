@@ -15,6 +15,8 @@ class CrewWarDashboardSummary {
   final int availableTargetsCount;
   final int phaseEndsInSeconds;
   final String? theaterRegionKey;
+  final String? theaterNameNl;
+  final String? theaterNameEn;
   final List<String> hotRegionKeys;
 
   CrewWarDashboardSummary({
@@ -29,6 +31,8 @@ class CrewWarDashboardSummary {
     required this.availableTargetsCount,
     required this.phaseEndsInSeconds,
     this.theaterRegionKey,
+    this.theaterNameNl,
+    this.theaterNameEn,
     this.hotRegionKeys = const [],
   });
 
@@ -46,6 +50,8 @@ class CrewWarDashboardSummary {
       availableTargetsCount: json['availableTargetsCount'] as int? ?? 0,
       phaseEndsInSeconds: json['phaseEndsInSeconds'] as int? ?? 0,
       theaterRegionKey: json['theaterRegionKey'] as String?,
+      theaterNameNl: json['theaterNameNl'] as String?,
+      theaterNameEn: json['theaterNameEn'] as String?,
       hotRegionKeys: hot is List
           ? hot.map((e) => e.toString()).where((e) => e.isNotEmpty).toList()
           : const [],
@@ -65,6 +71,8 @@ class CrewWarDashboardSummary {
       availableTargetsCount: availableTargetsCount,
       phaseEndsInSeconds: phaseEndsInSeconds ?? this.phaseEndsInSeconds,
       theaterRegionKey: theaterRegionKey,
+      theaterNameNl: theaterNameNl,
+      theaterNameEn: theaterNameEn,
       hotRegionKeys: hotRegionKeys,
     );
   }

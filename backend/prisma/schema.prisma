@@ -143,6 +143,9 @@ model Player {
   donLoansBorrowed                DonLoan[]                        @relation("DonLoansBorrowed")
   donOfficials                    DonOfficial[]                    @relation("DonOfficials")
   donContracts                    DonContract[]                    @relation("DonContracts")
+  midnightRaceEntries             MidnightRaceEntry[]
+  midnightRaceBets                MidnightRaceBet[]
+  midnightRaceHostMeetings        MidnightRaceMeeting[]            @relation("MidnightRaceHost")
   prostitutes                     Prostitute[]
   prostitutionAchievements        ProstitutionAchievement[]
   leaderboardEntries              ProstitutionLeaderboard[]
@@ -2128,6 +2131,7 @@ model NightclubVenue {
   seasonRewards         NightclubSeasonReward[]
   securityShifts        NightclubSecurityShift[]
   thefts                NightclubTheft[]
+  raceMeetings          MidnightRaceMeeting[]
   property              Property                        @relation(fields: [propertyId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_venues_ibfk_1")
   player                Player                          @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_venues_ibfk_2")
   currentDJ             NightclubDJ?                    @relation(fields: [currentDJId], references: [id], onUpdate: Restrict, map: "nightclub_venues_ibfk_3")
@@ -2715,4 +2719,67 @@ model DonContract {
   @@index([countryCode, status])
   @@index([bidderPlayerId])
   @@map("don_contracts")
+}
+
+model MidnightRaceMeeting {
+  id           Int                 @id @default(autoincrement())
+  countryCode  String              @db.VarChar(50)
+  status       String              @db.VarChar(20)
+  startsAt     DateTime
+  endsAt       DateTime
+  hostVenueId  Int?
+  hostPlayerId Int?
+  rakeBps      Int                 @default(800)
+  prizePool    Int                 @default(0)
+  rakePaid     Int                 @default(0)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  hostVenue    NightclubVenue?     @relation(fields: [hostVenueId], references: [id], onDelete: SetNull)
+  hostPlayer   Player?             @relation("MidnightRaceHost", fields: [hostPlayerId], references: [id], onDelete: SetNull)
+  entries      MidnightRaceEntry[]
+  bets         MidnightRaceBet[]
+
+  @@index([countryCode, status, endsAt])
+  @@index([hostPlayerId])
+  @@map("midnight_race_meetings")
+}
+
+model MidnightRaceEntry {
+  id                 Int                  @id @default(autoincrement())
+  meetingId          Int
+  playerId           Int
+  vehicleInventoryId Int
+  vehicleId          String               @db.VarChar(100)
+  stake              Int
+  fixing             Boolean              @default(false)
+  speedScore         Int                  @default(0)
+  finishPlace        Int?
+  payout             Int                  @default(0)
+  status             String               @db.VarChar(20)
+  createdAt          DateTime             @default(now())
+  meeting            MidnightRaceMeeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  player             Player               @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  bets               MidnightRaceBet[]
+
+  @@unique([meetingId, playerId])
+  @@index([playerId])
+  @@map("midnight_race_entries")
+}
+
+model MidnightRaceBet {
+  id        Int                 @id @default(autoincrement())
+  meetingId Int
+  entryId   Int
+  bettorId  Int
+  amount    Int
+  payout    Int                 @default(0)
+  status    String              @db.VarChar(20)
+  createdAt DateTime            @default(now())
+  meeting   MidnightRaceMeeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  entry     MidnightRaceEntry   @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  bettor    Player              @relation(fields: [bettorId], references: [id], onDelete: Cascade)
+
+  @@index([meetingId, bettorId])
+  @@index([entryId])
+  @@map("midnight_race_bets")
 }

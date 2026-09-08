@@ -11667,5 +11667,75 @@
   "helpTopicDonTitle": "Enfiler",
   "helpTopicDonSummary": "Gérez des rackets de protection, des prêts usuraires, des fonctionnaires municipaux et des contrats publics à partir d'un seul hub de l'Empire. Les réclamations sont personnelles ; l'hommage peut être versé en espèces ou à la banque de l'équipage.",
   "helpTopicDonHow": "Ouvrez Don depuis Empire une fois que vous atteignez le rang 7. Vous agissez toujours dans le pays dans lequel vous vous trouvez. \nLes raquettes sont des boutiques de PNJ. Réclamez-les avec une arme suffisamment intimidante, puis récupérez l'hommage à la main après le temps de recharge. Si vous ignorez un magasin pendant environ trois jours, il redevient gratuit. \nSqueeze soulève le prochain hommage mais relance également les personnes recherchées et peut faire fuir la boutique. Un rival du même pays peut lancer une courte compétition ; le propriétaire peut détenir. \nL'hommage est de l'argent personnel, sauf si vous êtes leader, co-leader ou capo (dans le pays du capo) et que vous l'envoyez à la banque de l'équipage. \nPrêts : vous êtes le requin. Prêtez à des PNJ ou offrez un séquestre à un autre joueur. Les défauts de paiement coûtent cher et vous permettent de recouvrer une partie de la dette – jamais un effacement complet. \nInfluence : corrompre le juge, le commissaire ou l'échevin pendant 24 heures. Les rivaux peuvent surenchérir. Le juge ajoute seulement une petite prime d'appel plafonnée ; le pot-de-vin judiciaire par affaire existe toujours. Le commissaire réduit les personnes recherchées pour les crimes manqués. L'échevin débloque ou booste les gros contrats. \nLes contrats municipaux paient légalement après une offre (en espèces ou en banque d'équipage). Hors livre en supplément uniquement si vous y possédez des raquettes. Les offres gourmandes paient plus et ajoutent de la chaleur. Les gros travaux peuvent nécessiter une école d’ingénieur. \nLe racket de protection contre la délinquance de rue reste une solution ponctuelle et n'accorde pas également ces magasins.",
-  "helpTopicDonTips": "Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s'accumulent rapidement. \nL'hommage Capo ne fonctionne que dans le pays attribué ; définissez ce terrain avant de basculer entre les équipes. \nSoudoyez l'échevin avant de briguer le contrat de la mairie et gardez à l'esprit l'école d'ingénieurs pour les emplois dans le port."
+  "helpTopicDonTips": "Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s'accumulent rapidement. \nL'hommage Capo ne fonctionne que dans le pays attribué ; définissez ce terrain avant de basculer entre les équipes. \nSoudoyez l'échevin avant de briguer le contrat de la mairie et gardez à l'esprit l'école d'ingénieurs pour les emplois dans le port.",
+  "raceMenuLabel": "Courses de minuit",
+  "raceIntro": "Courses nocturnes dans le pays dans lequel vous vous trouvez. Qualifiez-vous avec votre propre voiture, mettez de l'argent en jeu et laissez le garage et le magasin de réglage pousser un serveur. La discothèque hôte prend le rake.",
+  "raceLiveTitle": "La grille de ce soir",
+  "raceEndsIn": "La grille se ferme dans {clock}",
+  "@raceEndsIn": {
+    "placeholders": {
+      "clock": {
+        "type": "String"
+      }
+    }
+  },
+  "raceRake": "Commission du club {percent}%",
+  "@raceRake": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "raceYouEntered": "Vous êtes sur la grille.",
+  "raceNeedCar": "Apportez une voiture qui se trouve dans ce pays, non répertoriée et en bon état.",
+  "racePickCar": "Voiture",
+  "raceSpeedLabel": "Vitesse",
+  "raceStake": "Miser",
+  "raceFixing": "Réparer la course",
+  "raceFixingHint": "Paie une bosse recherchée pour un petit bonus de lancer. Pas une victoire garantie.",
+  "raceEnter": "Participer à la course",
+  "raceField": "Champ",
+  "raceNoEntries": "Personne n'est encore entré.",
+  "raceBetAmount": "Montant du pari",
+  "racePlaceBet": "Pariez sur le pilote sélectionné",
+  "raceLastResult": "Dernier résultat",
+  "raceNoMeeting": "Aucune course n'est ouverte dans ce pays pour le moment.",
+  "raceCooldown": "La prochaine course est encore en train de se refroidir.",
+  "raceActionOk": "Course mise à jour.",
+  "raceErrorGeneric": "Cette action de course a échoué.",
+  "raceErrorDisabled": "Les courses de minuit sont fermées.",
+  "raceErrorJailed": "Vous ne pouvez pas sortir de prison en courant.",
+  "raceErrorTraveling": "Finissez de voyager en premier.",
+  "raceErrorFunds": "Pas assez d'argent.",
+  "raceErrorCooldown": "La prochaine course n'est pas encore ouverte.",
+  "raceErrorClosed": "Cette grille est fermée.",
+  "raceErrorEntered": "Vous êtes déjà sur cette grille.",
+  "raceErrorFull": "La grille est pleine.",
+  "raceErrorVehicle": "Cette voiture ne peut pas courir ici.",
+  "raceErrorCondition": "Cette voiture est trop endommagée pour courir.",
+  "raceErrorBetOwn": "Vous ne pouvez pas parier sur vous-même.",
+  "raceErrorBetCap": "Vous avez déjà placé le nombre maximum de paris.",
+  "raceErrorRank": "Atteignez le rang {rank} avant de pouvoir courir.",
+  "@raceErrorRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarTheater": "Théâtre : {name}",
+  "@crewUiWarTheater": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTheaterHint": "Territory War et Total War choisissent une région théâtrale sur la carte réelle. Les conséquences restent limitées dans le temps.",
+  "helpTopicRacesCategory": "Empire",
+  "helpTopicRacesTitle": "Courses de minuit",
+  "helpTopicRacesSummary": "Courses de rue programmées dans votre pays actuel. Qualifiez-vous avec votre propre voiture, misez de l'argent et laissez les statistiques de garage et de réglage stimuler le serveur. La discothèque hôte prend le rake.",
+  "helpTopicRacesHow": "Courses de minuit ouvertes d’Empire. \nVous courez dans le pays dans lequel vous vous trouvez. La voiture doit être la vôtre, présente dans ce pays, non mise en vente et en bon état. \nL’entrée coûte une mise en espèces. Lorsque la grille se ferme, le serveur lance l'ordre de fin. La vitesse, l'ajustement des niveaux de vitesse et de l'état de l'atelier donnent un léger bonus - ce n'est pas un jeu d'adresse de conduite. \nVous pouvez parier sur d'autres pilotes. Vous ne pouvez pas parier sur vous-même. \nLa fixation optionnelle ajoute un petit bonus de rouleau. Cela ne garantit pas une victoire. \nSi une discothèque dans ce pays est ouverte, cet hôte reçoit la commission. Sinon, le râteau est coulé. \nSi moins de deux pilotes participent, les mises et les paris sont remboursés.",
+  "helpTopicRacesTips": "La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains."
 }

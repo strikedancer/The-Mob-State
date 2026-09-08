@@ -11667,5 +11667,75 @@
   "helpTopicDonTitle": "Don",
   "helpTopicDonSummary": "Dirige fraudes de protección, usura, funcionarios de la ciudad y contratos públicos desde un centro de Empire. Los reclamos son personales; El tributo puede ir al efectivo o al banco de la Crew.",
   "helpTopicDonHow": "Abre Don del Imperio una vez que alcances el rango 7. Siempre actúas en el país en el que te encuentras. \nLas raquetas son tiendas de NPC. Reclámalos con un arma que tenga suficiente intimidación y luego recolecta tributo a mano después del tiempo de reutilización. Si ignoras una tienda durante unos tres días, vuelve a ser gratuita. \nSqueeze genera el próximo tributo pero también genera búsqueda y puede hacer que la tienda huya. Un rival del mismo país puede iniciar una contienda corta; el dueño puede aguantar. \nEl tributo es dinero en efectivo personal a menos que seas líder, colíder o capo (en el país del capo) y lo envíes al banco de la Crew. \nPréstamos: tú eres el tiburón. Prestar a NPC u ofrecer depósito en garantía a otro jugador. Los costos predeterminados son deseables y le permiten cobrar parte de la deuda, nunca una cancelación completa. \nInfluencia: sobornar al juez, comisario o concejal durante 24 horas. Los rivales pueden sobrepujar. El juez sólo añade una pequeña bonificación de apelación; el soborno judicial por caso todavía existe. El comisario baja los buscados por crímenes fallidos. El concejal desbloquea o impulsa grandes contratos. \nLos contratos de la ciudad se pagan legalmente después de una oferta (en efectivo o en el banco de la Crew). Extra fuera de libros solo si tienes raquetas allí. Las ofertas codiciosas pagan más y añaden calor. Los trabajos grandes pueden requerir una escuela de ingeniería. \nEl negocio de la protección contra la delincuencia callejera sigue siendo una solución puntual y no se concede tampoco a estos establecimientos.",
-  "helpTopicDonTips": "Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nCapo tributo sólo funciona en el país asignado; establece esa tierra antes de alternar el banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos en el puerto."
+  "helpTopicDonTips": "Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nCapo tributo sólo funciona en el país asignado; establece esa tierra antes de alternar el banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos en el puerto.",
+  "raceMenuLabel": "Carreras de medianoche",
+  "raceIntro": "Carreras nocturnas en el país en el que te encuentres. Clasifica con tu propio auto, arriesga dinero y deja que el taller y el taller de tuneo empujen a un servidor. La discoteca anfitriona cobra una comisión.",
+  "raceLiveTitle": "La grilla de esta noche",
+  "raceEndsIn": "La cuadrícula se cierra en {clock}",
+  "@raceEndsIn": {
+    "placeholders": {
+      "clock": {
+        "type": "String"
+      }
+    }
+  },
+  "raceRake": "Comisión del club {percent}%",
+  "@raceRake": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "raceYouEntered": "Estás en la red.",
+  "raceNeedCar": "Traiga un automóvil que esté en este país, que no esté listado y en buenas condiciones.",
+  "racePickCar": "Auto",
+  "raceSpeedLabel": "Velocidad",
+  "raceStake": "Apostar",
+  "raceFixing": "arreglar la carrera",
+  "raceFixingHint": "Paga un aumento de búsqueda por una pequeña bonificación por tirada. No es una victoria garantizada.",
+  "raceEnter": "Entrar carrera",
+  "raceField": "Campo",
+  "raceNoEntries": "Nadie ha entrado todavía.",
+  "raceBetAmount": "Monto de la apuesta",
+  "racePlaceBet": "Apuesta por la conductora seleccionada",
+  "raceLastResult": "Último resultado",
+  "raceNoMeeting": "Ninguna carrera está abierta en este país en este momento.",
+  "raceCooldown": "La próxima carrera todavía se está enfriando.",
+  "raceActionOk": "Carrera actualizada.",
+  "raceErrorGeneric": "Esa acción racial fracasó.",
+  "raceErrorDisabled": "Las carreras de medianoche están cerradas.",
+  "raceErrorJailed": "No puedes salir corriendo de la cárcel.",
+  "raceErrorTraveling": "Termina de viajar primero.",
+  "raceErrorFunds": "No hay suficiente efectivo.",
+  "raceErrorCooldown": "La próxima carrera aún no ha comenzado.",
+  "raceErrorClosed": "Esta cuadrícula está cerrada.",
+  "raceErrorEntered": "Ya estás en esta grilla.",
+  "raceErrorFull": "La grilla está llena.",
+  "raceErrorVehicle": "Ese coche no puede correr aquí.",
+  "raceErrorCondition": "Ese auto está demasiado dañado para correr.",
+  "raceErrorBetOwn": "No puedes apostar por ti mismo.",
+  "raceErrorBetCap": "Ya has realizado el número máximo de apuestas.",
+  "raceErrorRank": "Alcanza el rango {rank} antes de poder competir.",
+  "@raceErrorRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarTheater": "Teatro: {name}",
+  "@crewUiWarTheater": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTheaterHint": "Territory War y Total War eligen una región de teatro del mapa real. Las consecuencias permanecen limitadas en el tiempo.",
+  "helpTopicRacesCategory": "Imperio",
+  "helpTopicRacesTitle": "Carreras de medianoche",
+  "helpTopicRacesSummary": "Carreras callejeras programadas en tu país actual. Clasifícate con tu propio coche, apuesta dinero y deja que las estadísticas de garaje y de afinación impulsen el desempeño del servidor. La discoteca anfitriona cobra una comisión.",
+  "helpTopicRacesHow": "Abre carreras de medianoche de Empire. \nCorres en el país en el que te encuentras. El coche debe ser tuyo, estar presente en ese país, no estar listado para la venta y estar en buenas condiciones. \nLa entrada cuesta una apuesta en efectivo. Cuando la cuadrícula se cierra, el servidor finaliza el orden. La velocidad, los niveles de velocidad del taller de afinación y la condición otorgan una ligera bonificación; este no es un juego de habilidad para conducir. \nPuedes apostar por otros conductores. No puedes apostar por ti mismo. \nSe buscan complementos de fijación opcionales para obtener una pequeña bonificación por rollo. No garantiza una victoria. \nSi un Nightclub en ese país está abierto, ese anfitrión recibe la comisión. De lo contrario, el rastrillo se hundirá. \nSi participan menos de dos conductores, se reembolsarán las apuestas.",
+  "helpTopicRacesTips": "La velocidad de sintonización importa, pero la tirada aún decide la carrera; no trates esto como un segundo casino. \nMantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa fijación es calor, no un multiplicador de pagos."
 }

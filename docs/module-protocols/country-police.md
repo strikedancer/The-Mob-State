@@ -4,14 +4,14 @@
 Shared **per-country police pressure** (world state) that soft-modifies crime success and arrest chance. Distinct from personal `wantedLevel` / `fbiHeat`. Phase 2: flavor floors, territory dampening, crime-event crackdown mult. Phase 3: rare disrupt ops (`corruption` / `distract` / `raid`).
 
 ## Status
-**Implemented** behind runtime flag `COUNTRY_POLICE_PRESSURE_ENABLED` (default **`0` / off**).  
+**Implemented** and **live** via runtime `COUNTRY_POLICE_PRESSURE_ENABLED=1` (prod upsert). Code default remains **`0` / off** so a missing row does not silently enable the loop.  
 Design: `docs/game-systems/COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`  
 Service: `backend/src/services/countryPoliceService.ts`  
 Routes: `GET /police/status`, `GET /police/countries`, `POST /police/disrupt`  
 Client: crimes strip + travel badges + disrupt sheet (`country_police_ui.dart`)
 
 ## Enable (production)
-Admin → **Landelijke politie**: toggle `COUNTRY_POLICE_PRESSURE_ENABLED` to `1`. Do not flip the code default without a balance pass. Dashboard already renders `CountryPoliceStrip` when the flag is on.
+Admin → **Landelijke politie**: toggle stays the source of truth after deploy. This release upserts `1` once; do not flip the code default. Dashboard already renders `CountryPoliceStrip` when the flag is on.
 
 ## Primary Frontend Entry
 - Crimes strip + disrupt: `client/lib/screens/crime_screen.dart` + `client/lib/widgets/country_police_ui.dart` (embedded in the crimes hero; `CountryPoliceStrip(embedded: true)` has no extra card chrome)

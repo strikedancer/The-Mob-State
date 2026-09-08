@@ -3155,6 +3155,121 @@ class AppLocalizationsEn extends AppLocalizations {
   String get donSqueezeHeld => 'The shop paid extra — for now.';
 
   @override
+  String get raceMenuLabel => 'Midnight Races';
+
+  @override
+  String get raceIntro =>
+      'Night races in the country you stand in. Qualify with your own car, put cash on the line, and let the garage and tune shop nudge a server roll. The hosting nightclub takes rake.';
+
+  @override
+  String get raceLiveTitle => 'Tonight\'s grid';
+
+  @override
+  String raceEndsIn(String clock) {
+    return 'Grid closes in $clock';
+  }
+
+  @override
+  String raceRake(int percent) {
+    return 'Club rake $percent%';
+  }
+
+  @override
+  String get raceYouEntered => 'You are on the grid.';
+
+  @override
+  String get raceNeedCar =>
+      'Bring a car that is in this country, not listed, and in decent condition.';
+
+  @override
+  String get racePickCar => 'Car';
+
+  @override
+  String get raceSpeedLabel => 'Speed';
+
+  @override
+  String get raceStake => 'Stake';
+
+  @override
+  String get raceFixing => 'Fix the race';
+
+  @override
+  String get raceFixingHint =>
+      'Pays a wanted bump for a small roll bonus. Not a guaranteed win.';
+
+  @override
+  String get raceEnter => 'Enter race';
+
+  @override
+  String get raceField => 'Field';
+
+  @override
+  String get raceNoEntries => 'Nobody has entered yet.';
+
+  @override
+  String get raceBetAmount => 'Bet amount';
+
+  @override
+  String get racePlaceBet => 'Bet on selected driver';
+
+  @override
+  String get raceLastResult => 'Last result';
+
+  @override
+  String get raceNoMeeting => 'No race is open in this country right now.';
+
+  @override
+  String get raceCooldown => 'The next race is still cooling down.';
+
+  @override
+  String get raceActionOk => 'Race updated.';
+
+  @override
+  String get raceErrorGeneric => 'That race action failed.';
+
+  @override
+  String get raceErrorDisabled => 'Midnight Races are closed.';
+
+  @override
+  String get raceErrorJailed => 'You cannot race from jail.';
+
+  @override
+  String get raceErrorTraveling => 'Finish traveling first.';
+
+  @override
+  String get raceErrorFunds => 'Not enough cash.';
+
+  @override
+  String get raceErrorCooldown => 'The next race has not opened yet.';
+
+  @override
+  String get raceErrorClosed => 'This grid is closed.';
+
+  @override
+  String get raceErrorEntered => 'You are already on this grid.';
+
+  @override
+  String get raceErrorFull => 'The grid is full.';
+
+  @override
+  String get raceErrorVehicle => 'That car cannot race here.';
+
+  @override
+  String get raceErrorCondition => 'That car is too damaged to race.';
+
+  @override
+  String get raceErrorBetOwn => 'You cannot bet on yourself.';
+
+  @override
+  String get raceErrorBetCap =>
+      'You already placed the maximum number of bets.';
+
+  @override
+  String raceErrorRank(int rank) {
+    return 'Reach rank $rank before you can race.';
+  }
+
+  @override
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
@@ -4914,6 +5029,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get crewUiTr125 => 'War territories';
+
+  @override
+  String crewUiWarTheater(String name) {
+    return 'Theater: $name';
+  }
+
+  @override
+  String get crewUiWarTheaterHint =>
+      'Territory War and Total War pick a theater region from the real map. Aftermath stays time-boxed.';
 
   @override
   String get crewUiTr126 => 'Neutral';
@@ -16585,7 +16709,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrewHow =>
-      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission; first wait for the remaining cooldown or speed it up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.';
+      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nClearing House Vault Run is a live Tier 3 mission; the optional mission-level lock stays off until there is enough Blackout telemetry.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission; first wait for the remaining cooldown or speed it up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nTerritory War and Total War also pick a theater region at declare time; the War Room labels that frontline and aftermath stays time-boxed.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.';
 
   @override
   String get helpTopicCrewTips =>
@@ -16680,6 +16804,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get helpTopicDonTips =>
       'Collect on cooldown instead of squeezing every shop — flee chance and wanted add up fast.\nCapo tribute only works in the assigned country; set that land before you toggle crew-bank.\nBribe the alderman before you chase the city-hall contract, and keep engineering school in mind for the harbor jobs.';
+
+  @override
+  String get helpTopicRacesCategory => 'Empire';
+
+  @override
+  String get helpTopicRacesTitle => 'Midnight Races';
+
+  @override
+  String get helpTopicRacesSummary =>
+      'Scheduled street races in your current country. Qualify with your own car, stake cash, and let garage and tune stats nudge a server roll. The hosting nightclub takes rake.';
+
+  @override
+  String get helpTopicRacesHow =>
+      'Open Midnight Races from Empire.\nYou race in the country you are standing in. The car must be yours, present in that country, not listed for sale, and in decent condition.\nEntry costs a cash stake. When the grid closes the server rolls finish order. Speed, tune shop speed levels and condition give a light bonus — this is not a driving skill game.\nYou can bet on other drivers. You cannot bet on yourself.\nOptional fixing adds wanted for a small roll bonus. It does not guarantee a win.\nIf a nightclub in that country is open, that host receives the rake. Otherwise the rake is sunk.\nIf fewer than two drivers enter, stakes and bets are refunded.';
+
+  @override
+  String get helpTopicRacesTips =>
+      'Tune speed matters, but the roll still decides the race — do not treat this as a second casino.\nKeep a race car in the country you visit instead of leaving everything in the showroom.\nFixing is heat, not a payout multiplier.';
 
   @override
   String get helpTopicBankCategory => 'Economy';

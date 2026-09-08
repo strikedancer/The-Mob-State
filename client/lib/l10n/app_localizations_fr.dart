@@ -3200,6 +3200,126 @@ class AppLocalizationsFr extends AppLocalizations {
       'Le magasin a payé un supplément – ​​pour l’instant.';
 
   @override
+  String get raceMenuLabel => 'Courses de minuit';
+
+  @override
+  String get raceIntro =>
+      'Courses nocturnes dans le pays dans lequel vous vous trouvez. Qualifiez-vous avec votre propre voiture, mettez de l\'argent en jeu et laissez le garage et le magasin de réglage pousser un serveur. La discothèque hôte prend le rake.';
+
+  @override
+  String get raceLiveTitle => 'La grille de ce soir';
+
+  @override
+  String raceEndsIn(String clock) {
+    return 'La grille se ferme dans $clock';
+  }
+
+  @override
+  String raceRake(int percent) {
+    return 'Commission du club $percent%';
+  }
+
+  @override
+  String get raceYouEntered => 'Vous êtes sur la grille.';
+
+  @override
+  String get raceNeedCar =>
+      'Apportez une voiture qui se trouve dans ce pays, non répertoriée et en bon état.';
+
+  @override
+  String get racePickCar => 'Voiture';
+
+  @override
+  String get raceSpeedLabel => 'Vitesse';
+
+  @override
+  String get raceStake => 'Miser';
+
+  @override
+  String get raceFixing => 'Réparer la course';
+
+  @override
+  String get raceFixingHint =>
+      'Paie une bosse recherchée pour un petit bonus de lancer. Pas une victoire garantie.';
+
+  @override
+  String get raceEnter => 'Participer à la course';
+
+  @override
+  String get raceField => 'Champ';
+
+  @override
+  String get raceNoEntries => 'Personne n\'est encore entré.';
+
+  @override
+  String get raceBetAmount => 'Montant du pari';
+
+  @override
+  String get racePlaceBet => 'Pariez sur le pilote sélectionné';
+
+  @override
+  String get raceLastResult => 'Dernier résultat';
+
+  @override
+  String get raceNoMeeting =>
+      'Aucune course n\'est ouverte dans ce pays pour le moment.';
+
+  @override
+  String get raceCooldown =>
+      'La prochaine course est encore en train de se refroidir.';
+
+  @override
+  String get raceActionOk => 'Course mise à jour.';
+
+  @override
+  String get raceErrorGeneric => 'Cette action de course a échoué.';
+
+  @override
+  String get raceErrorDisabled => 'Les courses de minuit sont fermées.';
+
+  @override
+  String get raceErrorJailed =>
+      'Vous ne pouvez pas sortir de prison en courant.';
+
+  @override
+  String get raceErrorTraveling => 'Finissez de voyager en premier.';
+
+  @override
+  String get raceErrorFunds => 'Pas assez d\'argent.';
+
+  @override
+  String get raceErrorCooldown =>
+      'La prochaine course n\'est pas encore ouverte.';
+
+  @override
+  String get raceErrorClosed => 'Cette grille est fermée.';
+
+  @override
+  String get raceErrorEntered => 'Vous êtes déjà sur cette grille.';
+
+  @override
+  String get raceErrorFull => 'La grille est pleine.';
+
+  @override
+  String get raceErrorVehicle => 'Cette voiture ne peut pas courir ici.';
+
+  @override
+  String get raceErrorCondition =>
+      'Cette voiture est trop endommagée pour courir.';
+
+  @override
+  String get raceErrorBetOwn => 'Vous ne pouvez pas parier sur vous-même.';
+
+  @override
+  String get raceErrorBetCap =>
+      'Vous avez déjà placé le nombre maximum de paris.';
+
+  @override
+  String raceErrorRank(int rank) {
+    return 'Atteignez le rang $rank avant de pouvoir courir.';
+  }
+
+  @override
   String get vehicleOpsHotspot => 'Point chaud';
 
   @override
@@ -4995,6 +5115,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get crewUiTr125 => 'Territoires de guerre';
+
+  @override
+  String crewUiWarTheater(String name) {
+    return 'Théâtre : $name';
+  }
+
+  @override
+  String get crewUiWarTheaterHint =>
+      'Territory War et Total War choisissent une région théâtrale sur la carte réelle. Les conséquences restent limitées dans le temps.';
 
   @override
   String get crewUiTr126 => 'Neutre';
@@ -16885,6 +17014,24 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpTopicDonTips =>
       'Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s\'accumulent rapidement. \nL\'hommage Capo ne fonctionne que dans le pays attribué ; définissez ce terrain avant de basculer entre les équipes. \nSoudoyez l\'échevin avant de briguer le contrat de la mairie et gardez à l\'esprit l\'école d\'ingénieurs pour les emplois dans le port.';
+
+  @override
+  String get helpTopicRacesCategory => 'Empire';
+
+  @override
+  String get helpTopicRacesTitle => 'Courses de minuit';
+
+  @override
+  String get helpTopicRacesSummary =>
+      'Courses de rue programmées dans votre pays actuel. Qualifiez-vous avec votre propre voiture, misez de l\'argent et laissez les statistiques de garage et de réglage stimuler le serveur. La discothèque hôte prend le rake.';
+
+  @override
+  String get helpTopicRacesHow =>
+      'Courses de minuit ouvertes d’Empire. \nVous courez dans le pays dans lequel vous vous trouvez. La voiture doit être la vôtre, présente dans ce pays, non mise en vente et en bon état. \nL’entrée coûte une mise en espèces. Lorsque la grille se ferme, le serveur lance l\'ordre de fin. La vitesse, l\'ajustement des niveaux de vitesse et de l\'état de l\'atelier donnent un léger bonus - ce n\'est pas un jeu d\'adresse de conduite. \nVous pouvez parier sur d\'autres pilotes. Vous ne pouvez pas parier sur vous-même. \nLa fixation optionnelle ajoute un petit bonus de rouleau. Cela ne garantit pas une victoire. \nSi une discothèque dans ce pays est ouverte, cet hôte reçoit la commission. Sinon, le râteau est coulé. \nSi moins de deux pilotes participent, les mises et les paris sont remboursés.';
+
+  @override
+  String get helpTopicRacesTips =>
+      'La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d\'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains.';
 
   @override
   String get helpTopicBankCategory => 'Économie';

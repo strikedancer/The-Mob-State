@@ -485,11 +485,12 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   ├── black-market.md (UI hub incl. contraband) → trade.md (API) → TRADE_RISK_MECHANICS.md
     │   ├── player-marketplace.md (Marktplaats P2P: voertuigen + spelersitems; `market` routes)
     │   ├── steel_voertuig.md (Vehicle Heist auto/motor/boot; boot-balans + fail-catch/arrest 0–100 wanted; embedded jail-overlay na stal via `vehicle_heist_screen`; server o.a. `vehicleService.stealVehicle` + `balance-economy.md`)
-    │   ├── country-police.md (live behind flag: per-land politiedruk → crimes/arrest + disrupt; `COUNTRY_POLICE_PRESSURE_ENABLED`)
+    │   ├── country-police.md (live via runtime: per-land politiedruk → crimes/arrest + disrupt; code-default `COUNTRY_POLICE_PRESSURE_ENABLED=0`)
     │   ├── aviation.md (school Aviation 5/5 + betaalde vlieglicentie vóór vliegtuigkoop; tiers basic/commercial/cargo)
     │   ├── smuggling.md (hub-zendingen; DrugInventory unique = playerId+drugType+quality, geen country in Prisma-key)
     │   ├── prostitution.md → Game-system: NIGHTCLUB_SYSTEM.md + VIP_MANAGEMENT.md
     │   ├── don.md → Game-system: GAMEPLAY.md (rackets, loans, officials, city contracts)
+    │   ├── races.md → Game-system: GAMEPLAY.md (Midnight Races, nightclub rake)
     │   ├── crew.md → Game-system: VIP_LEVELS_SYSTEM.md + HQ_PROGRESSION_GUIDE.md
     │   └── [andere modules...]
     │

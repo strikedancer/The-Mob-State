@@ -77,7 +77,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 Economy / progression keys blijven leidend in Admin `runtime_config`. Extra module:
 
 ### Country police pressure (`COUNTRY_POLICE_*`)
-- `COUNTRY_POLICE_PRESSURE_ENABLED` (0/1, default 0)
+- `COUNTRY_POLICE_PRESSURE_ENABLED` (0/1, code default 0; prod live via runtime upsert)
 - Baseline / decay / crime+theft+drug gains / success & arrest max pp / hourly player cap
 - Territory gain mult + extra decay; crackdown mult when a live `crime` event is active
 - Disrupt: enable, min rank, require crew, cooldown seconds, cool minutes, success chance
@@ -117,7 +117,8 @@ See also `country-police.md`.
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN`
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID`
 - `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE`
-- `COUNTRY_POLICE_PRESSURE_ENABLED` (0/1, default 0) — shared per-country police pressure; see `country-police.md` / `countryPoliceService.ts` for full `COUNTRY_POLICE_*` set (gains, decay, success/arrest pp caps, territory dampening, disrupt)
+- `COUNTRY_POLICE_PRESSURE_ENABLED` (0/1, code default 0; prod live via runtime upsert) — shared per-country police pressure; see `country-police.md` / `countryPoliceService.ts` for full `COUNTRY_POLICE_*` set (gains, decay, success/arrest pp caps, territory dampening, disrupt)
+- `RACE_ENABLED` / `RACE_MIN_RANK` / `RACE_WINDOW_MINUTES` / `RACE_COOLDOWN_MINUTES` / `RACE_RAKE_BPS` / stake+bet caps / `RACE_MIN_CONDITION` / `RACE_FIXING_WANTED` — Midnight Races; see `races.md`
 
 ## Balance Change Workflow (Verplicht)
 1. Haal live telemetry op (minimaal 24 uur).

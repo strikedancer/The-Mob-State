@@ -112,7 +112,7 @@ Doel:
 - `Casino Ledger Raid` (`casino_ledger_raid`) — enige crew-mission met primair casino-thema
 - `Federal Convoy Break` (`federal_convoy_break`)
 - `Reserve Vault Breach` (`reserve_vault_breach`)
-- `Clearing House Vault Run` (`clearing_house_vault_run`)
+- `Clearing House Vault Run` (`clearing_house_vault_run`) — live T3 settlement-run; Phase-2 mission-level gate remains **off** (`0`) until telemetry + explicit enable
 - `Territory Blackout Push` (`territory_blackout_push`)
 - `Courier Intercept` (`courier_intercept`)
 - `City Vault Prep` (`city_vault_prep`)

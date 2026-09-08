@@ -11667,5 +11667,75 @@
   "helpTopicDonTitle": "Assistente",
   "helpTopicDonSummary": "Gestisci racket di protezione, strozzinaggio, funzionari comunali e appalti pubblici da un unico hub dell'Impero. I reclami sono personali; il tributo può andare in contanti o alla banca dell'Crew.",
   "helpTopicDonHow": "Apri Don dall'Impero una volta raggiunto il grado 7. Agisci sempre nel paese in cui ti trovi. \nI racket sono negozi di NPC. Reclamali con un'arma che abbia abbastanza intimidazione, quindi raccogli i tributi a mano dopo il tempo di recupero. Se ignori un negozio per circa tre giorni, diventa nuovamente gratuito. \nSqueeze aumenta il prossimo tributo ma aumenta anche il ricercato e può far fuggire il negozio. Un rivale nello stesso paese può iniziare una breve gara; il proprietario può trattenere. \nIl tributo è denaro personale a meno che tu non sia leader, co-leader o capo (nel paese del capo) e lo invii alla banca dell'Crew. \nPrestiti: lo squalo sei tu. Presta agli NPC o offri un deposito in garanzia a un altro giocatore. Le inadempienze costano qualcosa e ti consentono di riscuotere parte del debito, mai una cancellazione completa. \nInfluenza: corrompere il giudice, il commissario o l'assessore per 24 ore. I rivali possono rilanciare troppo. Il giudice aggiunge solo un piccolo bonus di appello; la tangente giudiziaria caso per caso esiste ancora. Il commissario abbassa i ricercati per reati falliti. L'assessore sblocca o rilancia i grandi appalti. \nI contratti comunali vengono pagati legalmente dopo un'offerta (contanti o banca dell'Crew). Fuori dai libri extra solo se possiedi delle racchette lì. Le offerte avide pagano di più e aggiungono calore. I lavori di grandi dimensioni possono richiedere la scuola di ingegneria. \nIl racket della protezione dalla criminalità di strada resta un problema unico e non concede benefici anche a questi negozi.",
-  "helpTopicDonTips": "Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nIl tributo al Capo funziona solo nel paese assegnato; imposta quella terra prima di attivare/disattivare la banca dell'Crew. \nCorrompi l'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali."
+  "helpTopicDonTips": "Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nIl tributo al Capo funziona solo nel paese assegnato; imposta quella terra prima di attivare/disattivare la banca dell'Crew. \nCorrompi l'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali.",
+  "raceMenuLabel": "Gare di mezzanotte",
+  "raceIntro": "Gare notturne nel paese in cui ti trovi. Qualificati con la tua auto, metti in gioco i soldi e lascia che il garage e il negozio di tuning spingano un server. La discoteca che ospita prende un rastrello.",
+  "raceLiveTitle": "La griglia di stasera",
+  "raceEndsIn": "La griglia si chiude tra {clock}",
+  "@raceEndsIn": {
+    "placeholders": {
+      "clock": {
+        "type": "String"
+      }
+    }
+  },
+  "raceRake": "Rake del club {percent}%",
+  "@raceRake": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "raceYouEntered": "Sei sulla griglia.",
+  "raceNeedCar": "Porta un'auto che si trova in questo paese, non elencata e in condizioni decenti.",
+  "racePickCar": "Auto",
+  "raceSpeedLabel": "Velocità",
+  "raceStake": "Palo",
+  "raceFixing": "Correggi la gara",
+  "raceFixingHint": "Paga un aumento di ricercato per un piccolo bonus di tiro. Non è una vittoria garantita.",
+  "raceEnter": "Partecipa alla gara",
+  "raceField": "Campo",
+  "raceNoEntries": "Nessuno è ancora entrato.",
+  "raceBetAmount": "Importo della scommessa",
+  "racePlaceBet": "Scommetti sul pilota selezionato",
+  "raceLastResult": "Ultimo risultato",
+  "raceNoMeeting": "Nessuna gara è aperta in questo paese in questo momento.",
+  "raceCooldown": "La prossima gara è ancora in fase di raffreddamento.",
+  "raceActionOk": "Gara aggiornata.",
+  "raceErrorGeneric": "Quell'azione di gara è fallita.",
+  "raceErrorDisabled": "Le gare di mezzanotte sono chiuse.",
+  "raceErrorJailed": "Non puoi correre dalla prigione.",
+  "raceErrorTraveling": "Finisci prima di viaggiare.",
+  "raceErrorFunds": "Non abbastanza contanti.",
+  "raceErrorCooldown": "La prossima gara non è ancora iniziata.",
+  "raceErrorClosed": "Questa griglia è chiusa.",
+  "raceErrorEntered": "Sei già su questa griglia.",
+  "raceErrorFull": "La griglia è piena.",
+  "raceErrorVehicle": "Quella macchina non può correre qui.",
+  "raceErrorCondition": "Quella macchina è troppo danneggiata per correre.",
+  "raceErrorBetOwn": "Non puoi scommettere su te stesso.",
+  "raceErrorBetCap": "Hai già piazzato il numero massimo di scommesse.",
+  "raceErrorRank": "Raggiungi il grado {rank} prima di poter gareggiare.",
+  "@raceErrorRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarTheater": "Teatro: {name}",
+  "@crewUiWarTheater": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTheaterHint": "Territory War e Total War scelgono una regione teatro dalla mappa reale. Le conseguenze rimangono vincolate al tempo.",
+  "helpTopicRacesCategory": "Impero",
+  "helpTopicRacesTitle": "Gare di mezzanotte",
+  "helpTopicRacesSummary": "Gare su strada programmate nel tuo paese attuale. Qualificati con la tua auto, scommetti denaro e lascia che il garage e le statistiche di messa a punto spingano un server. La discoteca che ospita prende un rastrello.",
+  "helpTopicRacesHow": "Gare di mezzanotte aperte da Empire. \nCorri nel paese in cui ti trovi. L'auto deve essere tua, presente in quel paese, non in vendita e in discrete condizioni. \nL'ingresso costa una quota in contanti. Quando la griglia si chiude, il server lancia l'ordine di arrivo. Velocità, livelli di velocità e condizioni dell'officina danno un leggero bonus: questo non è un gioco di abilità di guida. \nPuoi scommettere su altri piloti. Non puoi scommettere su te stesso. \nAggiunte di correzione opzionali richieste per un piccolo bonus di tiro. Non garantisce una vittoria. \nSe una discoteca in quel paese è aperta, quell'ospite riceve la rastrellatura. Altrimenti il ​​rastrello è affondato. \nSe entrano meno di due piloti, le puntate e le scommesse vengono rimborsate.",
+  "helpTopicRacesTips": "La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita."
 }

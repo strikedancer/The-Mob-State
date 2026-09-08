@@ -233,6 +233,32 @@ function getWarTerritoryTargetsFromMetadata(metadata: Record<string, any>): Crew
   return getLegacyCrewWarTerritoryTargets(territoryState);
 }
 
+function pickTheaterTarget(targets: CrewWarTerritoryTarget[]): CrewWarTerritoryTarget | null {
+  if (targets.length === 0) return null;
+  return [...targets].sort((left, right) => {
+    return (right.warPriorityScore ?? 0) - (left.warPriorityScore ?? 0)
+      || (right.tickPoints ?? 0) - (left.tickPoints ?? 0)
+      || (right.claimBonusPoints ?? 0) - (left.claimBonusPoints ?? 0)
+      || left.regionKey.localeCompare(right.regionKey);
+  })[0] ?? null;
+}
+
+function attachTheaterMetadata(
+  metadata: Record<string, any>,
+  warType: WarType,
+  targets: CrewWarTerritoryTarget[],
+): Record<string, any> {
+  if (warType !== 'territory_war' && warType !== 'total_war') {
+    return metadata;
+  }
+  const theater = pickTheaterTarget(targets);
+  if (!theater) return metadata;
+  metadata.theaterRegionKey = theater.regionKey;
+  metadata.theaterNameNl = theater.nameNl;
+  metadata.theaterNameEn = theater.nameEn;
+  return metadata;
+}
+
 async function buildCrewWarTerritoryTargets(attackerCrewId: number, defenderCrewId: number): Promise<CrewWarTerritoryTarget[]> {
   const rows = await prisma.$queryRawUnsafe<Array<{
     regionKey: string;
@@ -921,6 +947,18 @@ async function buildWarDetail(warId: number, playerId?: number) {
 
   const metadata = asJson(war.metadataJson);
   metadata.territoryTargets = getWarTerritoryTargetsFromMetadata(metadata);
+  if (
+    (war.warType === 'territory_war' || war.warType === 'total_war') &&
+    !String(metadata.theaterRegionKey ?? '').trim()
+  ) {
+    attachTheaterMetadata(metadata, war.warType as WarType, metadata.territoryTargets);
+    if (metadata.theaterRegionKey) {
+      await prisma.crewWar.update({
+        where: { id: war.id },
+        data: { metadataJson: stringifyJson(metadata) },
+      });
+    }
+  }
   const joinedParticipant = playerId
     ? participants.find((entry) => entry.playerId === playerId) ?? null
     : null;
@@ -1139,13 +1177,15 @@ export async function declareWar(playerId: number, targetCrewId: number, warType
   const activeFrom = new Date(now.getTime() + PREPARATION_MINUTES * 60 * 1000);
   const lockDownFrom = new Date(activeFrom.getTime() + (ACTIVE_HOURS * 60 - LOCKDOWN_MINUTES) * 60 * 1000);
   const endTime = new Date(activeFrom.getTime() + ACTIVE_HOURS * 60 * 60 * 1000);
+  const territoryTargets = await buildCrewWarTerritoryTargets(membership.crewId, targetCrewId);
   const metadata: Record<string, any> = {
-    territoryTargets: await buildCrewWarTerritoryTargets(membership.crewId, targetCrewId),
+    territoryTargets,
     lastTerritoryTickAt: activeFrom.toISOString(),
   };
   metadata.territories = Object.fromEntries(
-    (metadata.territoryTargets as CrewWarTerritoryTarget[]).map((territory) => [territory.regionKey, territory.ownerCrewId ?? null]),
+    territoryTargets.map((territory) => [territory.regionKey, territory.ownerCrewId ?? null]),
   );
+  attachTheaterMetadata(metadata, warType, territoryTargets);
 
   const war = await prisma.$transaction(async (tx) => {
     const createdWar = await tx.crewWar.create({
@@ -1608,6 +1648,13 @@ export async function adminDeclareWar(adminId: number, payload: {
   const lockDownFrom = new Date(activeFrom.getTime() + (ACTIVE_HOURS * 60 - LOCKDOWN_MINUTES) * 60 * 1000);
   const endTime = new Date(activeFrom.getTime() + ACTIVE_HOURS * 60 * 60 * 1000);
   const territoryTargets = await buildCrewWarTerritoryTargets(payload.attackerCrewId, payload.defenderCrewId);
+  const metadata: Record<string, any> = {
+    territoryTargets,
+    territories: Object.fromEntries(
+      territoryTargets.map((territory) => [territory.regionKey, territory.ownerCrewId ?? null]),
+    ),
+  };
+  attachTheaterMetadata(metadata, payload.warType, territoryTargets);
   const war = await prisma.crewWar.create({
     data: {
       seasonId: season.id,
@@ -1616,12 +1663,7 @@ export async function adminDeclareWar(adminId: number, payload: {
       declaredByPlayerId: adminId,
       attackerCrewId: payload.attackerCrewId,
       defenderCrewId: payload.defenderCrewId,
-      metadataJson: stringifyJson({
-        territoryTargets,
-        territories: Object.fromEntries(
-          territoryTargets.map((territory) => [territory.regionKey, territory.ownerCrewId ?? null]),
-        ),
-      }),
+      metadataJson: stringifyJson(metadata),
       startTime: now,
       activeFrom,
       lockDownFrom,

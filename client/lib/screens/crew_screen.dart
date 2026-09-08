@@ -5516,6 +5516,14 @@ class _CrewScreenState extends State<CrewScreen>
                           setState(() => _selectedWarType = value);
                         },
                       ),
+                      if (_selectedWarType == 'territory_war' ||
+                          _selectedWarType == 'total_war') ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.crewUiWarTheaterHint,
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      ],
                       const SizedBox(height: 12),
                       SizedBox(
                         width: double.infinity,
@@ -5561,6 +5569,19 @@ class _CrewScreenState extends State<CrewScreen>
                           currentWar['warType'] as String?,
                         ),
                       ),
+                      if ((metadata['theaterRegionKey'] ?? '').toString().isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Chip(
+                          avatar: const Icon(Icons.flag, size: 16),
+                          label: Text(
+                            l10n.crewUiWarTheater(
+                              Localizations.localeOf(context).languageCode == 'nl'
+                                  ? ((metadata['theaterNameNl'] ?? metadata['theaterRegionKey']).toString())
+                                  : ((metadata['theaterNameEn'] ?? metadata['theaterRegionKey']).toString()),
+                            ),
+                          ),
+                        ),
+                      ],
                       if ((currentWar['warType'] as String?) ==
                               'territory_war' ||
                           (currentWar['warType'] as String?) ==

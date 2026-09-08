@@ -50,6 +50,7 @@ import '../widgets/training_summary_card.dart';
 import 'ammo_factory_screen.dart';
 import 'school_screen.dart';
 import 'don_screen.dart';
+import 'race_screen.dart';
 import 'prostitution_screen.dart';
 import 'bank_screen.dart';
 import 'achievements_screen.dart';
@@ -86,6 +87,7 @@ enum _WebSection {
   inventory,
   properties,
   don,
+  races,
   bank,
   casino,
   blackMarket,
@@ -124,6 +126,8 @@ _WebSection _webSectionFromQueryParam(String? value) {
       return _WebSection.vault;
     case 'don':
       return _WebSection.don;
+    case 'races':
+      return _WebSection.races;
     default:
       return _WebSection.dashboard;
   }
@@ -326,6 +330,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.nightclub:
       case _WebSection.properties:
       case _WebSection.don:
+      case _WebSection.races:
       case _WebSection.prostitution:
       case _WebSection.redLightDistricts:
       case _WebSection.ammoFactory:
@@ -1370,6 +1375,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.nightlife, label: l10n.nightclub, section: _WebSection.nightclub),
         navItem(icon: Icons.business, label: l10n.properties, section: _WebSection.properties),
         navItem(icon: Icons.account_balance_wallet, label: l10n.donMenuLabel, section: _WebSection.don),
+        navItem(icon: Icons.speed, label: l10n.raceMenuLabel, section: _WebSection.races),
         navItem(icon: Icons.favorite, label: l10n.prostitutionTitle, section: _WebSection.prostitution),
         navItem(icon: Icons.storefront, label: l10n.prostitutionRedLightDistricts, section: _WebSection.redLightDistricts),
         navItem(icon: Icons.factory, label: l10n.ammoFactory, section: _WebSection.ammoFactory),
@@ -1837,6 +1843,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return PropertyScreen(onOpenInventory: _openInventoryStorage);
       case _WebSection.don:
         return const DonScreen(embedded: true);
+      case _WebSection.races:
+        return const RaceScreen(embedded: true);
       case _WebSection.bank:
         return const BankScreen();
       case _WebSection.casino:
@@ -2283,6 +2291,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const DonScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.speed,
+                                  label: l10n.raceMenuLabel,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const RaceScreen(),
                                     ),
                                   ),
                                 ),
@@ -4219,7 +4238,13 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     if ((_stats?.crewWar?.theaterRegionKey ?? '').isNotEmpty)
                       _buildInfoRow(
                         l10n.dashboardWarTheater,
-                        _stats!.crewWar!.theaterRegionKey!,
+                        Localizations.localeOf(context).languageCode == 'nl'
+                            ? (_stats!.crewWar!.theaterNameNl?.isNotEmpty == true
+                                ? _stats!.crewWar!.theaterNameNl!
+                                : _stats!.crewWar!.theaterRegionKey!)
+                            : (_stats!.crewWar!.theaterNameEn?.isNotEmpty == true
+                                ? _stats!.crewWar!.theaterNameEn!
+                                : _stats!.crewWar!.theaterRegionKey!),
                         Colors.white,
                       ),
                     if ((_stats?.crewWar?.hotRegionKeys.isNotEmpty ?? false))

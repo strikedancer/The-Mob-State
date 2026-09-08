@@ -1741,6 +1741,18 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             (crewWarHub.currentWar as { metadata?: { theaterRegionKey?: string } } | null)?.metadata
               ?.theaterRegionKey ??
             null,
+          theaterNameNl:
+            (currentCrewWar as { metadata?: { theaterNameNl?: string } } | null)?.metadata
+              ?.theaterNameNl ??
+            (crewWarHub.currentWar as { metadata?: { theaterNameNl?: string } } | null)?.metadata
+              ?.theaterNameNl ??
+            null,
+          theaterNameEn:
+            (currentCrewWar as { metadata?: { theaterNameEn?: string } } | null)?.metadata
+              ?.theaterNameEn ??
+            (crewWarHub.currentWar as { metadata?: { theaterNameEn?: string } } | null)?.metadata
+              ?.theaterNameEn ??
+            null,
           hotRegionKeys: Array.isArray(
             (crewWarHub.currentWar as { metadata?: { territoryTargets?: Array<{ regionKey?: string }> } } | null)
               ?.metadata?.territoryTargets,

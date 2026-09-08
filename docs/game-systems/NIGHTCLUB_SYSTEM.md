@@ -413,7 +413,7 @@ These run automatically but need cron setup:
 5. **Drug Synergy:** Certain drug+vibe combos more profitable
 6. **Promotional Events:** Owner can invest in marketing for crowd boost
 7. **Entertainment Acts:** Hire performers, strippers, comedians
-8. **Midnight Races:** Host racing events from nightclub
+8. **Midnight Races:** Live Empire hub (`races.md`) — nightclub host still takes rake when a venue is open in that country.
 9. **Political System:** Payoffs to avoid raids
 10. **Reputation System:** Reviews affect crowd quality
 

@@ -3183,6 +3183,124 @@ class AppLocalizationsIt extends AppLocalizations {
   String get donSqueezeHeld => 'Il negozio ha pagato un extra, per ora.';
 
   @override
+  String get raceMenuLabel => 'Gare di mezzanotte';
+
+  @override
+  String get raceIntro =>
+      'Gare notturne nel paese in cui ti trovi. Qualificati con la tua auto, metti in gioco i soldi e lascia che il garage e il negozio di tuning spingano un server. La discoteca che ospita prende un rastrello.';
+
+  @override
+  String get raceLiveTitle => 'La griglia di stasera';
+
+  @override
+  String raceEndsIn(String clock) {
+    return 'La griglia si chiude tra $clock';
+  }
+
+  @override
+  String raceRake(int percent) {
+    return 'Rake del club $percent%';
+  }
+
+  @override
+  String get raceYouEntered => 'Sei sulla griglia.';
+
+  @override
+  String get raceNeedCar =>
+      'Porta un\'auto che si trova in questo paese, non elencata e in condizioni decenti.';
+
+  @override
+  String get racePickCar => 'Auto';
+
+  @override
+  String get raceSpeedLabel => 'Velocità';
+
+  @override
+  String get raceStake => 'Palo';
+
+  @override
+  String get raceFixing => 'Correggi la gara';
+
+  @override
+  String get raceFixingHint =>
+      'Paga un aumento di ricercato per un piccolo bonus di tiro. Non è una vittoria garantita.';
+
+  @override
+  String get raceEnter => 'Partecipa alla gara';
+
+  @override
+  String get raceField => 'Campo';
+
+  @override
+  String get raceNoEntries => 'Nessuno è ancora entrato.';
+
+  @override
+  String get raceBetAmount => 'Importo della scommessa';
+
+  @override
+  String get racePlaceBet => 'Scommetti sul pilota selezionato';
+
+  @override
+  String get raceLastResult => 'Ultimo risultato';
+
+  @override
+  String get raceNoMeeting =>
+      'Nessuna gara è aperta in questo paese in questo momento.';
+
+  @override
+  String get raceCooldown =>
+      'La prossima gara è ancora in fase di raffreddamento.';
+
+  @override
+  String get raceActionOk => 'Gara aggiornata.';
+
+  @override
+  String get raceErrorGeneric => 'Quell\'azione di gara è fallita.';
+
+  @override
+  String get raceErrorDisabled => 'Le gare di mezzanotte sono chiuse.';
+
+  @override
+  String get raceErrorJailed => 'Non puoi correre dalla prigione.';
+
+  @override
+  String get raceErrorTraveling => 'Finisci prima di viaggiare.';
+
+  @override
+  String get raceErrorFunds => 'Non abbastanza contanti.';
+
+  @override
+  String get raceErrorCooldown => 'La prossima gara non è ancora iniziata.';
+
+  @override
+  String get raceErrorClosed => 'Questa griglia è chiusa.';
+
+  @override
+  String get raceErrorEntered => 'Sei già su questa griglia.';
+
+  @override
+  String get raceErrorFull => 'La griglia è piena.';
+
+  @override
+  String get raceErrorVehicle => 'Quella macchina non può correre qui.';
+
+  @override
+  String get raceErrorCondition =>
+      'Quella macchina è troppo danneggiata per correre.';
+
+  @override
+  String get raceErrorBetOwn => 'Non puoi scommettere su te stesso.';
+
+  @override
+  String get raceErrorBetCap =>
+      'Hai già piazzato il numero massimo di scommesse.';
+
+  @override
+  String raceErrorRank(int rank) {
+    return 'Raggiungi il grado $rank prima di poter gareggiare.';
+  }
+
+  @override
   String get vehicleOpsHotspot => 'Punto caldo';
 
   @override
@@ -4969,6 +5087,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get crewUiTr125 => 'Territori di guerra';
+
+  @override
+  String crewUiWarTheater(String name) {
+    return 'Teatro: $name';
+  }
+
+  @override
+  String get crewUiWarTheaterHint =>
+      'Territory War e Total War scelgono una regione teatro dalla mappa reale. Le conseguenze rimangono vincolate al tempo.';
 
   @override
   String get crewUiTr126 => 'Neutra';
@@ -16862,6 +16989,24 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get helpTopicDonTips =>
       'Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nIl tributo al Capo funziona solo nel paese assegnato; imposta quella terra prima di attivare/disattivare la banca dell\'Crew. \nCorrompi l\'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali.';
+
+  @override
+  String get helpTopicRacesCategory => 'Impero';
+
+  @override
+  String get helpTopicRacesTitle => 'Gare di mezzanotte';
+
+  @override
+  String get helpTopicRacesSummary =>
+      'Gare su strada programmate nel tuo paese attuale. Qualificati con la tua auto, scommetti denaro e lascia che il garage e le statistiche di messa a punto spingano un server. La discoteca che ospita prende un rastrello.';
+
+  @override
+  String get helpTopicRacesHow =>
+      'Gare di mezzanotte aperte da Empire. \nCorri nel paese in cui ti trovi. L\'auto deve essere tua, presente in quel paese, non in vendita e in discrete condizioni. \nL\'ingresso costa una quota in contanti. Quando la griglia si chiude, il server lancia l\'ordine di arrivo. Velocità, livelli di velocità e condizioni dell\'officina danno un leggero bonus: questo non è un gioco di abilità di guida. \nPuoi scommettere su altri piloti. Non puoi scommettere su te stesso. \nAggiunte di correzione opzionali richieste per un piccolo bonus di tiro. Non garantisce una vittoria. \nSe una discoteca in quel paese è aperta, quell\'ospite riceve la rastrellatura. Altrimenti il ​​rastrello è affondato. \nSe entrano meno di due piloti, le puntate e le scommesse vengono rimborsate.';
+
+  @override
+  String get helpTopicRacesTips =>
+      'La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un\'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita.';
 
   @override
   String get helpTopicBankCategory => 'Economia';

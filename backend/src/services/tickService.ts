@@ -203,6 +203,25 @@ class TickService {
         console.error('[Tick] Drug wholesale settle failed:', wholesaleErr);
       }
 
+      try {
+        const { donService } = await import('./donService');
+        await donService.processTick();
+      } catch (donTickErr) {
+        console.error('[Tick] Don tick failed:', donTickErr);
+      }
+
+      try {
+        const { raceService } = await import('./raceService');
+        const raceTick = await raceService.processTick();
+        if (raceTick.settled > 0 || raceTick.refunded > 0) {
+          console.log(
+            `🏁 Midnight races: settled ${raceTick.settled}, refunded ${raceTick.refunded}`,
+          );
+        }
+      } catch (raceTickErr) {
+        console.error('[Tick] Midnight races tick failed:', raceTickErr);
+      }
+
       const seasonResult = await nightclubService.processWeeklySeasonIfNeeded();
       if (seasonResult.processed) {
         console.log(

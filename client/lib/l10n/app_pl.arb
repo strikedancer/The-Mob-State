@@ -11667,5 +11667,75 @@
   "helpTopicDonTitle": "Przywdziewać",
   "helpTopicDonSummary": "Zarządzaj rakietami ochronnymi, lichwiarstwem, urzędnikami miejskimi i zamówieniami publicznymi z jednego centrum Imperium. Roszczenia są osobiste; hołd może zostać przekazany na gotówkę lub do banku załogi.",
   "helpTopicDonHow": "Otwórz Don z Imperium, gdy osiągniesz rangę 7. Zawsze działasz w kraju, w którym stoisz. \nRakiety to sklepy NPC. Zdobądź je za pomocą broni, która ma wystarczająco dużo zastraszenia, a następnie po upływie czasu odnowienia zbieraj daninę ręcznie. Jeśli zignorujesz sklep przez około trzy dni, znów stanie się on bezpłatny. \nSqueeze podnosi kolejny hołd, ale także podnosi liczbę poszukiwanych i może sprawić, że sklep ucieknie. Rywal z tego samego kraju może rozpocząć krótki konkurs; właściciel może utrzymać. \nHołd to osobista gotówka, chyba że jesteś liderem, współliderem lub capo (w kraju capo) i wyślesz ją do banku załogi. \nPożyczki: jesteś rekinem. Pożyczaj NPC-om lub oferuj depozyt innemu graczowi. Domyślne koszty są pożądane i umożliwiają odzyskanie części długu — nigdy pełne wyczyszczenie. \nWpływ: przekup sędziego, komisarza lub radnego na 24 godziny. Rywale mogą przebić. Sędzia dodaje jedynie niewielką, ograniczoną premię za odwołanie; nadal istnieje łapówka sądowa w poszczególnych przypadkach. Komisarz obniża karę za nieudane przestępstwa. Radny odblokowuje lub wzmacnia duże kontrakty. \nKontrakty miejskie płacą legalnie po złożeniu oferty (gotówką lub bankiem załogi). Dodatkowe rezerwacje tylko wtedy, gdy posiadasz tam rakiety. Chciwe oferty płacą więcej i dodają ciepła. Duże prace mogą wymagać szkoły inżynierskiej. \nRakieta chroniąca przed przestępczością uliczną pozostaje jednorazowym przedsięwzięciem i nie zapewnia również tym sklepom.",
-  "helpTopicDonTips": "Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nCapo hołd działa tylko w przydzielonym kraju; ustaw ten ląd przed przełączeniem banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt w ratuszu, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie."
+  "helpTopicDonTips": "Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nCapo hołd działa tylko w przydzielonym kraju; ustaw ten ląd przed przełączeniem banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt w ratuszu, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie.",
+  "raceMenuLabel": "Wyścigi o północy",
+  "raceIntro": "Nocne wyścigi w kraju, w którym się znajdujesz. Zakwalifikuj się własnym samochodem, ryzykuj gotówką i pozwól warsztatowi i warsztatowi tuningowemu popychać serwer. Nightclub będący gospodarzem pobiera prowizję.",
+  "raceLiveTitle": "Dzisiejsza siatka",
+  "raceEndsIn": "Siatka zamyka się za {clock}",
+  "@raceEndsIn": {
+    "placeholders": {
+      "clock": {
+        "type": "String"
+      }
+    }
+  },
+  "raceRake": "Prowizja klubowa {percent}%",
+  "@raceRake": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "raceYouEntered": "Jesteś na siatce.",
+  "raceNeedCar": "Przyjedź samochodem, który znajduje się w tym kraju, nie jest wymieniony na liście i jest w przyzwoitym stanie.",
+  "racePickCar": "Samochód",
+  "raceSpeedLabel": "Prędkość",
+  "raceStake": "Stawka",
+  "raceFixing": "Napraw wyścig",
+  "raceFixingHint": "Płaci żądaną premię za mały bonus za rzut. Nie jest to gwarantowana wygrana.",
+  "raceEnter": "Wprowadź wyścig",
+  "raceField": "Pole",
+  "raceNoEntries": "Nikt jeszcze nie wszedł.",
+  "raceBetAmount": "Kwota zakładu",
+  "racePlaceBet": "Postaw na wybranego kierowcę",
+  "raceLastResult": "Ostatni wynik",
+  "raceNoMeeting": "Żaden wyścig nie jest obecnie otwarty w tym kraju.",
+  "raceCooldown": "Następny wyścig wciąż się ochładza.",
+  "raceActionOk": "Wyścig zaktualizowany.",
+  "raceErrorGeneric": "Ta akcja wyścigowa nie powiodła się.",
+  "raceErrorDisabled": "Wyścigi o północy są zamknięte.",
+  "raceErrorJailed": "Nie możesz ścigać się z więzienia.",
+  "raceErrorTraveling": "Najpierw zakończ podróż.",
+  "raceErrorFunds": "Za mało gotówki.",
+  "raceErrorCooldown": "Kolejny wyścig jeszcze się nie rozpoczął.",
+  "raceErrorClosed": "Ta siatka jest zamknięta.",
+  "raceErrorEntered": "Jesteś już w tej siatce.",
+  "raceErrorFull": "Siatka jest pełna.",
+  "raceErrorVehicle": "Ten samochód nie może się tu ścigać.",
+  "raceErrorCondition": "Ten samochód jest zbyt uszkodzony, żeby się ścigać.",
+  "raceErrorBetOwn": "Nie możesz stawiać na siebie.",
+  "raceErrorBetCap": "Postawiłeś już maksymalną liczbę zakładów.",
+  "raceErrorRank": "Osiągnij rangę {rank}, zanim będziesz mógł się ścigać.",
+  "@raceErrorRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarTheater": "Teatr: {name}",
+  "@crewUiWarTheater": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTheaterHint": "Territory War i Total War wybierają region teatru z prawdziwej mapy. Następstwa pozostają ograniczone w czasie.",
+  "helpTopicRacesCategory": "Imperium",
+  "helpTopicRacesTitle": "Wyścigi o północy",
+  "helpTopicRacesSummary": "Zaplanowane wyścigi uliczne w Twoim obecnym kraju. Zakwalifikuj się własnym samochodem, stawiaj gotówkę i pozwól, aby statystyki garażu i tuningu wpływały na wyniki serwera. Nightclub będący gospodarzem pobiera prowizję.",
+  "helpTopicRacesHow": "Otwarte wyścigi o północy z Empire. \nŚcigasz się w kraju, w którym się znajdujesz. Samochód musi być Twój, znajdować się w tym kraju, nie być wystawiony na sprzedaż i być w przyzwoitym stanie. \nWstęp kosztuje stawkę gotówkową. Kiedy siatka się zamyka, serwer rzuca kolejność kończenia. Szybkość, poziomy prędkości i stan warsztatu tuningowego dają niewielką premię — to nie jest gra zręcznościowa. \nMożna stawiać na innych kierowców. Nie możesz stawiać na siebie. \nOpcjonalne mocowanie dodaje pożądany bonus za małą rolkę. Nie gwarantuje wygranej. \nJeśli Nightclub w tym kraju jest otwarty, gospodarz otrzymuje prowizję. W przeciwnym razie grabie zostaną zatopione. \nJeśli zgłosi się mniej niż dwóch kierowców, stawki i zakłady zostaną zwrócone.",
+  "helpTopicRacesTips": "Dostosuj prędkość ma znaczenie, ale rzut i tak decyduje o wyścigu – nie traktuj tego jak drugiego kasyna. \nZamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nFixing to ciepło, a nie mnożnik wypłat."
 }

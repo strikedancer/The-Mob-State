@@ -38,6 +38,7 @@ De master protocol zorgt ervoor dat je:
 - [Territory](territory.md) - Crew territoriumcontrole per land met SVG maps, contests en seizoenen
 - [Properties](properties.md) - Huizen/appartementen/magazijnen (HQ_PROGRESSION_GUIDE.md)
 - [Don](don.md) - Rackets, woeker, ambten en stadscontracten (Empire-hub)
+- [Midnight Races](races.md) - Nachtraces per land, garage/tune-roll, nightclub-rake
 - [Friends & Messages](friends.md) & [Messages](messages.md)
 - [Support Tickets](support-tickets.md) - Player reports, admin opvolging en todo-tracking
 - [Inventory](inventory.md) - Item opslag en management
@@ -156,6 +157,7 @@ Voor schermen die meerdere API calls doen:
 - [Ammo Factory](ammo-factory.md)
 - [School](school.md)
 - [Don](don.md)
+- [Midnight Races](races.md)
 - [Prostitution](prostitution.md)
 - [Red Light Districts](red-light-districts.md)
 - [Achievements](achievements.md)

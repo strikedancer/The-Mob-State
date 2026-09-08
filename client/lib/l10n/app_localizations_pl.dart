@@ -3177,6 +3177,122 @@ class AppLocalizationsPl extends AppLocalizations {
   String get donSqueezeHeld => 'Sklep zapłacił dodatkowo – na razie.';
 
   @override
+  String get raceMenuLabel => 'Wyścigi o północy';
+
+  @override
+  String get raceIntro =>
+      'Nocne wyścigi w kraju, w którym się znajdujesz. Zakwalifikuj się własnym samochodem, ryzykuj gotówką i pozwól warsztatowi i warsztatowi tuningowemu popychać serwer. Nightclub będący gospodarzem pobiera prowizję.';
+
+  @override
+  String get raceLiveTitle => 'Dzisiejsza siatka';
+
+  @override
+  String raceEndsIn(String clock) {
+    return 'Siatka zamyka się za $clock';
+  }
+
+  @override
+  String raceRake(int percent) {
+    return 'Prowizja klubowa $percent%';
+  }
+
+  @override
+  String get raceYouEntered => 'Jesteś na siatce.';
+
+  @override
+  String get raceNeedCar =>
+      'Przyjedź samochodem, który znajduje się w tym kraju, nie jest wymieniony na liście i jest w przyzwoitym stanie.';
+
+  @override
+  String get racePickCar => 'Samochód';
+
+  @override
+  String get raceSpeedLabel => 'Prędkość';
+
+  @override
+  String get raceStake => 'Stawka';
+
+  @override
+  String get raceFixing => 'Napraw wyścig';
+
+  @override
+  String get raceFixingHint =>
+      'Płaci żądaną premię za mały bonus za rzut. Nie jest to gwarantowana wygrana.';
+
+  @override
+  String get raceEnter => 'Wprowadź wyścig';
+
+  @override
+  String get raceField => 'Pole';
+
+  @override
+  String get raceNoEntries => 'Nikt jeszcze nie wszedł.';
+
+  @override
+  String get raceBetAmount => 'Kwota zakładu';
+
+  @override
+  String get racePlaceBet => 'Postaw na wybranego kierowcę';
+
+  @override
+  String get raceLastResult => 'Ostatni wynik';
+
+  @override
+  String get raceNoMeeting =>
+      'Żaden wyścig nie jest obecnie otwarty w tym kraju.';
+
+  @override
+  String get raceCooldown => 'Następny wyścig wciąż się ochładza.';
+
+  @override
+  String get raceActionOk => 'Wyścig zaktualizowany.';
+
+  @override
+  String get raceErrorGeneric => 'Ta akcja wyścigowa nie powiodła się.';
+
+  @override
+  String get raceErrorDisabled => 'Wyścigi o północy są zamknięte.';
+
+  @override
+  String get raceErrorJailed => 'Nie możesz ścigać się z więzienia.';
+
+  @override
+  String get raceErrorTraveling => 'Najpierw zakończ podróż.';
+
+  @override
+  String get raceErrorFunds => 'Za mało gotówki.';
+
+  @override
+  String get raceErrorCooldown => 'Kolejny wyścig jeszcze się nie rozpoczął.';
+
+  @override
+  String get raceErrorClosed => 'Ta siatka jest zamknięta.';
+
+  @override
+  String get raceErrorEntered => 'Jesteś już w tej siatce.';
+
+  @override
+  String get raceErrorFull => 'Siatka jest pełna.';
+
+  @override
+  String get raceErrorVehicle => 'Ten samochód nie może się tu ścigać.';
+
+  @override
+  String get raceErrorCondition =>
+      'Ten samochód jest zbyt uszkodzony, żeby się ścigać.';
+
+  @override
+  String get raceErrorBetOwn => 'Nie możesz stawiać na siebie.';
+
+  @override
+  String get raceErrorBetCap => 'Postawiłeś już maksymalną liczbę zakładów.';
+
+  @override
+  String raceErrorRank(int rank) {
+    return 'Osiągnij rangę $rank, zanim będziesz mógł się ścigać.';
+  }
+
+  @override
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
@@ -4958,6 +5074,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get crewUiTr125 => 'Terytoria wojenne';
+
+  @override
+  String crewUiWarTheater(String name) {
+    return 'Teatr: $name';
+  }
+
+  @override
+  String get crewUiWarTheaterHint =>
+      'Territory War i Total War wybierają region teatru z prawdziwej mapy. Następstwa pozostają ograniczone w czasie.';
 
   @override
   String get crewUiTr126 => 'Neutralny';
@@ -16807,6 +16932,24 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get helpTopicDonTips =>
       'Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nCapo hołd działa tylko w przydzielonym kraju; ustaw ten ląd przed przełączeniem banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt w ratuszu, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie.';
+
+  @override
+  String get helpTopicRacesCategory => 'Imperium';
+
+  @override
+  String get helpTopicRacesTitle => 'Wyścigi o północy';
+
+  @override
+  String get helpTopicRacesSummary =>
+      'Zaplanowane wyścigi uliczne w Twoim obecnym kraju. Zakwalifikuj się własnym samochodem, stawiaj gotówkę i pozwól, aby statystyki garażu i tuningu wpływały na wyniki serwera. Nightclub będący gospodarzem pobiera prowizję.';
+
+  @override
+  String get helpTopicRacesHow =>
+      'Otwarte wyścigi o północy z Empire. \nŚcigasz się w kraju, w którym się znajdujesz. Samochód musi być Twój, znajdować się w tym kraju, nie być wystawiony na sprzedaż i być w przyzwoitym stanie. \nWstęp kosztuje stawkę gotówkową. Kiedy siatka się zamyka, serwer rzuca kolejność kończenia. Szybkość, poziomy prędkości i stan warsztatu tuningowego dają niewielką premię — to nie jest gra zręcznościowa. \nMożna stawiać na innych kierowców. Nie możesz stawiać na siebie. \nOpcjonalne mocowanie dodaje pożądany bonus za małą rolkę. Nie gwarantuje wygranej. \nJeśli Nightclub w tym kraju jest otwarty, gospodarz otrzymuje prowizję. W przeciwnym razie grabie zostaną zatopione. \nJeśli zgłosi się mniej niż dwóch kierowców, stawki i zakłady zostaną zwrócone.';
+
+  @override
+  String get helpTopicRacesTips =>
+      'Dostosuj prędkość ma znaczenie, ale rzut i tak decyduje o wyścigu – nie traktuj tego jak drugiego kasyna. \nZamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nFixing to ciepło, a nie mnożnik wypłat.';
 
   @override
   String get helpTopicBankCategory => 'Gospodarka';

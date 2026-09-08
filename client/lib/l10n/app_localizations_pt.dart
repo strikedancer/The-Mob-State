@@ -3174,6 +3174,122 @@ class AppLocalizationsPt extends AppLocalizations {
   String get donSqueezeHeld => 'A loja pagou a mais – por enquanto.';
 
   @override
+  String get raceMenuLabel => 'Corridas da Meia-Noite';
+
+  @override
+  String get raceIntro =>
+      'Corridas noturnas no país em que você está. Qualifique-se com seu próprio carro, coloque dinheiro em jogo e deixe a garagem e a loja de ajustes empurrarem o servidor. A boate anfitriã cobra rake.';
+
+  @override
+  String get raceLiveTitle => 'Grade desta noite';
+
+  @override
+  String raceEndsIn(String clock) {
+    return 'A grade fecha em $clock';
+  }
+
+  @override
+  String raceRake(int percent) {
+    return 'Rake do clube $percent%';
+  }
+
+  @override
+  String get raceYouEntered => 'Você está na grade.';
+
+  @override
+  String get raceNeedCar =>
+      'Traga um carro que esteja neste país, não listado e em condições decentes.';
+
+  @override
+  String get racePickCar => 'Carro';
+
+  @override
+  String get raceSpeedLabel => 'Velocidade';
+
+  @override
+  String get raceStake => 'Estaca';
+
+  @override
+  String get raceFixing => 'Corrija a corrida';
+
+  @override
+  String get raceFixingHint =>
+      'Paga um aumento de procurado por um pequeno bônus de rolagem. Não é uma vitória garantida.';
+
+  @override
+  String get raceEnter => 'Entre na corrida';
+
+  @override
+  String get raceField => 'Campo';
+
+  @override
+  String get raceNoEntries => 'Ninguém entrou ainda.';
+
+  @override
+  String get raceBetAmount => 'Valor da aposta';
+
+  @override
+  String get racePlaceBet => 'Aposte no piloto selecionado';
+
+  @override
+  String get raceLastResult => 'Último resultado';
+
+  @override
+  String get raceNoMeeting =>
+      'Nenhuma corrida está aberta neste país neste momento.';
+
+  @override
+  String get raceCooldown => 'A próxima corrida ainda está esfriando.';
+
+  @override
+  String get raceActionOk => 'Corrida atualizada.';
+
+  @override
+  String get raceErrorGeneric => 'Essa ação de corrida falhou.';
+
+  @override
+  String get raceErrorDisabled => 'As corridas da meia-noite estão encerradas.';
+
+  @override
+  String get raceErrorJailed => 'Você não pode correr da prisão.';
+
+  @override
+  String get raceErrorTraveling => 'Termine de viajar primeiro.';
+
+  @override
+  String get raceErrorFunds => 'Não há dinheiro suficiente.';
+
+  @override
+  String get raceErrorCooldown => 'A próxima corrida ainda não abriu.';
+
+  @override
+  String get raceErrorClosed => 'Esta grade está fechada.';
+
+  @override
+  String get raceErrorEntered => 'Você já está nesta grade.';
+
+  @override
+  String get raceErrorFull => 'A grade está cheia.';
+
+  @override
+  String get raceErrorVehicle => 'Esse carro não pode correr aqui.';
+
+  @override
+  String get raceErrorCondition =>
+      'Esse carro está muito danificado para correr.';
+
+  @override
+  String get raceErrorBetOwn => 'Você não pode apostar em si mesmo.';
+
+  @override
+  String get raceErrorBetCap => 'Você já fez o número máximo de apostas.';
+
+  @override
+  String raceErrorRank(int rank) {
+    return 'Alcance a classificação $rank antes de poder competir.';
+  }
+
+  @override
   String get vehicleOpsHotspot => 'Ponto de acesso';
 
   @override
@@ -4954,6 +5070,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get crewUiTr125 => 'Territórios de guerra';
+
+  @override
+  String crewUiWarTheater(String name) {
+    return 'Teatro: $name';
+  }
+
+  @override
+  String get crewUiWarTheaterHint =>
+      'Territory War e Total War escolhem uma região de teatro no mapa real. As consequências permanecem limitadas pelo tempo.';
 
   @override
   String get crewUiTr126 => 'Neutra';
@@ -16804,6 +16929,24 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get helpTopicDonTips =>
       'Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nO tributo Capo só funciona no país designado; defina esse terreno antes de alternar o banco da Crew. \nSuborne o vereador antes de conseguir o contrato com a prefeitura e lembre-se da escola de engenharia para os empregos no porto.';
+
+  @override
+  String get helpTopicRacesCategory => 'Império';
+
+  @override
+  String get helpTopicRacesTitle => 'Corridas da Meia-Noite';
+
+  @override
+  String get helpTopicRacesSummary =>
+      'Corridas de rua programadas em seu país atual. Qualifique-se com seu próprio carro, aposte dinheiro e deixe as estatísticas de garagem e ajuste impulsionarem a rolagem do servidor. A boate anfitriã cobra rake.';
+
+  @override
+  String get helpTopicRacesHow =>
+      'Abra corridas da meia-noite do Império. \nVocê corre no país em que está. O carro deve ser seu, estar presente naquele país, não estar listado para venda e estar em condições decentes. \nA entrada custa uma aposta em dinheiro. Quando a grade fecha, o servidor rola a ordem de término. Velocidade, níveis de velocidade e condições da oficina oferecem um bônus leve - este não é um jogo de habilidade de direção. \nVocê pode apostar em outros pilotos. Você não pode apostar em si mesmo. \nAdicionais de fixação opcionais necessários para um pequeno bônus de rolagem. Não garante uma vitória. \nSe uma boate naquele país estiver aberta, o anfitrião recebe a rake. Caso contrário, o ancinho afundará. \nSe menos de dois pilotos participarem, os valores apostados serão reembolsados.';
+
+  @override
+  String get helpTopicRacesTips =>
+      'A velocidade do ajuste é importante, mas o lançamento ainda decide a corrida – não trate isso como um segundo cassino. \nMantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nFixar é calor, não um multiplicador de pagamento.';
 
   @override
   String get helpTopicBankCategory => 'Economia';

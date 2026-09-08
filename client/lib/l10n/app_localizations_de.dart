@@ -3196,6 +3196,123 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donSqueezeHeld => 'Der Laden hat extra bezahlt – vorerst.';
 
   @override
+  String get raceMenuLabel => 'Mitternachtsrennen';
+
+  @override
+  String get raceIntro =>
+      'Nachtrennen in dem Land, in dem Sie antreten. Qualifizieren Sie sich mit Ihrem eigenen Auto, setzen Sie Geld aufs Spiel und lassen Sie die Werkstatt und den Tuning-Shop den Server zum Laufen bringen. Der gastgebende Nightclub nimmt Rake.';
+
+  @override
+  String get raceLiveTitle => 'Das heutige Raster';
+
+  @override
+  String raceEndsIn(String clock) {
+    return 'Gitter schließt in $clock';
+  }
+
+  @override
+  String raceRake(int percent) {
+    return 'Club-Rake $percent%';
+  }
+
+  @override
+  String get raceYouEntered => 'Sie sind im Raster.';
+
+  @override
+  String get raceNeedCar =>
+      'Bringen Sie ein Auto mit, das in diesem Land steht, nicht gelistet ist und sich in gutem Zustand befindet.';
+
+  @override
+  String get racePickCar => 'Auto';
+
+  @override
+  String get raceSpeedLabel => 'Geschwindigkeit';
+
+  @override
+  String get raceStake => 'Einsatz';
+
+  @override
+  String get raceFixing => 'Repariere das Rennen';
+
+  @override
+  String get raceFixingHint =>
+      'Zahlt einen Fahndungsbonus für einen kleinen Rollbonus. Kein garantierter Sieg.';
+
+  @override
+  String get raceEnter => 'Nehmen Sie am Rennen teil';
+
+  @override
+  String get raceField => 'Feld';
+
+  @override
+  String get raceNoEntries => 'Es ist noch niemand eingetreten.';
+
+  @override
+  String get raceBetAmount => 'Wettbetrag';
+
+  @override
+  String get racePlaceBet => 'Wetten Sie auf den ausgewählten Fahrer';
+
+  @override
+  String get raceLastResult => 'Letztes Ergebnis';
+
+  @override
+  String get raceNoMeeting => 'Derzeit ist in diesem Land kein Rennen offen.';
+
+  @override
+  String get raceCooldown => 'Das nächste Rennen kühlt sich noch ab.';
+
+  @override
+  String get raceActionOk => 'Rennen aktualisiert.';
+
+  @override
+  String get raceErrorGeneric => 'Diese Rennaktion scheiterte.';
+
+  @override
+  String get raceErrorDisabled => 'Die Mitternachtsrennen sind geschlossen.';
+
+  @override
+  String get raceErrorJailed =>
+      'Aus dem Gefängnis heraus kann man kein Rennen fahren.';
+
+  @override
+  String get raceErrorTraveling => 'Beenden Sie zuerst die Reise.';
+
+  @override
+  String get raceErrorFunds => 'Nicht genug Bargeld.';
+
+  @override
+  String get raceErrorCooldown => 'Das nächste Rennen ist noch nicht eröffnet.';
+
+  @override
+  String get raceErrorClosed => 'Dieses Gitter ist geschlossen.';
+
+  @override
+  String get raceErrorEntered => 'Sie befinden sich bereits in diesem Raster.';
+
+  @override
+  String get raceErrorFull => 'Das Raster ist voll.';
+
+  @override
+  String get raceErrorVehicle => 'Dieses Auto kann hier nicht fahren.';
+
+  @override
+  String get raceErrorCondition =>
+      'Das Auto ist zu beschädigt, um Rennen zu fahren.';
+
+  @override
+  String get raceErrorBetOwn => 'Sie können nicht auf sich selbst wetten.';
+
+  @override
+  String get raceErrorBetCap =>
+      'Sie haben bereits die maximale Anzahl an Wetten platziert.';
+
+  @override
+  String raceErrorRank(int rank) {
+    return 'Erreiche Rang $rank, bevor du Rennen fahren kannst.';
+  }
+
+  @override
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
@@ -4981,6 +5098,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get crewUiTr125 => 'Kriegsgebiete';
+
+  @override
+  String crewUiWarTheater(String name) {
+    return 'Theater: $name';
+  }
+
+  @override
+  String get crewUiWarTheaterHint =>
+      'Territory War und Total War wählen eine Schauplatzregion auf der echten Karte aus. Nachwirkungen bleiben zeitlich begrenzt.';
 
   @override
   String get crewUiTr126 => 'Neutral';
@@ -16889,6 +17015,24 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get helpTopicDonTips =>
       'Sammeln Sie in der Abklingzeit, anstatt jeden Laden zu quetschen – Fliehen Sie Chance und Gesuchtes summieren sich schnell. \nCapo Tribute funktioniert nur im zugewiesenen Land; Legen Sie dieses Land fest, bevor Sie die Crew-Bank umschalten. \nBestechen Sie den Stadtrat, bevor Sie den Auftrag für das Rathaus anstreben, und denken Sie bei Hafenjobs an die Ingenieurschule.';
+
+  @override
+  String get helpTopicRacesCategory => 'Reich';
+
+  @override
+  String get helpTopicRacesTitle => 'Mitternachtsrennen';
+
+  @override
+  String get helpTopicRacesSummary =>
+      'Geplante Straßenrennen in Ihrem aktuellen Land. Qualifizieren Sie sich mit Ihrem eigenen Auto, setzen Sie Geld ein und lassen Sie Garagen- und Tuning-Statistiken den Server ins Rollen bringen. Der gastgebende Nightclub nimmt Rake.';
+
+  @override
+  String get helpTopicRacesHow =>
+      'Offene Mitternachtsrennen von Empire. \nSie fahren in dem Land, in dem Sie antreten. Das Auto muss Ihnen gehören, in diesem Land vorhanden sein, nicht zum Verkauf angeboten werden und in gutem Zustand sein. \nDer Eintritt kostet einen Bargeldeinsatz. Wenn das Raster geschlossen wird, würfelt der Server die Endreihenfolge. Geschwindigkeit, Geschwindigkeitsstufen im Tuning-Shop und Zustand geben einen leichten Bonus – dies ist kein Fahrgeschicklichkeitsspiel. \nSie können auf andere Fahrer wetten. Sie können nicht auf sich selbst wetten. \nFür einen kleinen Rollbonus sind optionale Fixing-Adds erwünscht. Es garantiert keinen Sieg. \nWenn in diesem Land ein Nightclub geöffnet ist, erhält dieser Gastgeber den Rake. Sonst geht der Rechen unter. \nMelden sich weniger als zwei Fahrer, werden Einsätze und Wetten zurückerstattet.';
+
+  @override
+  String get helpTopicRacesTips =>
+      'Die Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch über das Rennen – betrachten Sie dies nicht als ein zweites Casino. \nBehalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nFixieren ist Hitze, kein Auszahlungsmultiplikator.';
 
   @override
   String get helpTopicBankCategory => 'Wirtschaft';

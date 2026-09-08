@@ -46,6 +46,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Smuggling, supplier and promoter actions must remain side-grade choices (risk/reliability/price trade-off), not flat guaranteed power spikes.
 - Smuggling routes must enforce a visible backend cooldown window (no infinite repeat spam), with remaining lock time exposed in stats payload for UI feedback.
 - Bar & Kitchen management (drinks/food stock + menu pricing) must show stock state, spoilage risk and pricing impact in NL+EN before confirmation.
+- Open venues can host **Midnight Races** rake in their country (`races.md`); this is not a nightclub screen feature, but club owners receive the rake when a meeting settles.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

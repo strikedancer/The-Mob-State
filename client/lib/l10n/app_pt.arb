@@ -11667,5 +11667,75 @@
   "helpTopicDonTitle": "Vestir",
   "helpTopicDonSummary": "Execute esquemas de proteção, agiotagem, autoridades municipais e contratos públicos a partir de um centro do Império. As reivindicações são pessoais; o tributo pode ir para dinheiro ou para o banco da Crew.",
   "helpTopicDonHow": "Abra Don do Empire quando chegar ao rank 7. Você sempre atua no país em que está. \nRaquetes são lojas de NPCs. Reivindique-os com uma arma que tenha intimidação suficiente e, em seguida, colete o tributo manualmente após o tempo de espera. Se você ignorar uma loja por cerca de três dias, ela se tornará gratuita novamente. \nSqueeze aumenta o próximo tributo, mas também aumenta os procurados e pode fazer a loja fugir. Um rival no mesmo país pode iniciar uma competição curta; o proprietário pode segurar. \nO tributo é dinheiro pessoal, a menos que você seja líder, co-líder ou capo (no país capo) e envie para o banco da Crew. \nEmpréstimos: você é o tubarão. Empreste para NPCs ou ofereça garantia a outro jogador. O custo padrão é desejado e permite que você cobre parte da dívida – nunca uma liquidação completa. \nInfluência: subornar o juiz, comissário ou vereador por 24 horas. Os rivais podem fazer ofertas exageradas. O juiz adiciona apenas um pequeno bônus de apelação; o suborno judicial por caso ainda existe. O comissário reduz os procurados por crimes fracassados. O vereador desbloqueia ou aumenta grandes contratos. \nOs contratos municipais são pagos legalmente após uma licitação (dinheiro ou banco da Crew). Extras fora dos livros apenas se você possuir raquetes lá. Lances gananciosos pagam mais e aumentam o calor. Grandes empregos podem exigir escola de engenharia. \nO esquema de proteção ao crime de rua continua sendo um golpe único e também não beneficia essas lojas.",
-  "helpTopicDonTips": "Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nO tributo Capo só funciona no país designado; defina esse terreno antes de alternar o banco da Crew. \nSuborne o vereador antes de conseguir o contrato com a prefeitura e lembre-se da escola de engenharia para os empregos no porto."
+  "helpTopicDonTips": "Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nO tributo Capo só funciona no país designado; defina esse terreno antes de alternar o banco da Crew. \nSuborne o vereador antes de conseguir o contrato com a prefeitura e lembre-se da escola de engenharia para os empregos no porto.",
+  "raceMenuLabel": "Corridas da Meia-Noite",
+  "raceIntro": "Corridas noturnas no país em que você está. Qualifique-se com seu próprio carro, coloque dinheiro em jogo e deixe a garagem e a loja de ajustes empurrarem o servidor. A boate anfitriã cobra rake.",
+  "raceLiveTitle": "Grade desta noite",
+  "raceEndsIn": "A grade fecha em {clock}",
+  "@raceEndsIn": {
+    "placeholders": {
+      "clock": {
+        "type": "String"
+      }
+    }
+  },
+  "raceRake": "Rake do clube {percent}%",
+  "@raceRake": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "raceYouEntered": "Você está na grade.",
+  "raceNeedCar": "Traga um carro que esteja neste país, não listado e em condições decentes.",
+  "racePickCar": "Carro",
+  "raceSpeedLabel": "Velocidade",
+  "raceStake": "Estaca",
+  "raceFixing": "Corrija a corrida",
+  "raceFixingHint": "Paga um aumento de procurado por um pequeno bônus de rolagem. Não é uma vitória garantida.",
+  "raceEnter": "Entre na corrida",
+  "raceField": "Campo",
+  "raceNoEntries": "Ninguém entrou ainda.",
+  "raceBetAmount": "Valor da aposta",
+  "racePlaceBet": "Aposte no piloto selecionado",
+  "raceLastResult": "Último resultado",
+  "raceNoMeeting": "Nenhuma corrida está aberta neste país neste momento.",
+  "raceCooldown": "A próxima corrida ainda está esfriando.",
+  "raceActionOk": "Corrida atualizada.",
+  "raceErrorGeneric": "Essa ação de corrida falhou.",
+  "raceErrorDisabled": "As corridas da meia-noite estão encerradas.",
+  "raceErrorJailed": "Você não pode correr da prisão.",
+  "raceErrorTraveling": "Termine de viajar primeiro.",
+  "raceErrorFunds": "Não há dinheiro suficiente.",
+  "raceErrorCooldown": "A próxima corrida ainda não abriu.",
+  "raceErrorClosed": "Esta grade está fechada.",
+  "raceErrorEntered": "Você já está nesta grade.",
+  "raceErrorFull": "A grade está cheia.",
+  "raceErrorVehicle": "Esse carro não pode correr aqui.",
+  "raceErrorCondition": "Esse carro está muito danificado para correr.",
+  "raceErrorBetOwn": "Você não pode apostar em si mesmo.",
+  "raceErrorBetCap": "Você já fez o número máximo de apostas.",
+  "raceErrorRank": "Alcance a classificação {rank} antes de poder competir.",
+  "@raceErrorRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarTheater": "Teatro: {name}",
+  "@crewUiWarTheater": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTheaterHint": "Territory War e Total War escolhem uma região de teatro no mapa real. As consequências permanecem limitadas pelo tempo.",
+  "helpTopicRacesCategory": "Império",
+  "helpTopicRacesTitle": "Corridas da Meia-Noite",
+  "helpTopicRacesSummary": "Corridas de rua programadas em seu país atual. Qualifique-se com seu próprio carro, aposte dinheiro e deixe as estatísticas de garagem e ajuste impulsionarem a rolagem do servidor. A boate anfitriã cobra rake.",
+  "helpTopicRacesHow": "Abra corridas da meia-noite do Império. \nVocê corre no país em que está. O carro deve ser seu, estar presente naquele país, não estar listado para venda e estar em condições decentes. \nA entrada custa uma aposta em dinheiro. Quando a grade fecha, o servidor rola a ordem de término. Velocidade, níveis de velocidade e condições da oficina oferecem um bônus leve - este não é um jogo de habilidade de direção. \nVocê pode apostar em outros pilotos. Você não pode apostar em si mesmo. \nAdicionais de fixação opcionais necessários para um pequeno bônus de rolagem. Não garante uma vitória. \nSe uma boate naquele país estiver aberta, o anfitrião recebe a rake. Caso contrário, o ancinho afundará. \nSe menos de dois pilotos participarem, os valores apostados serão reembolsados.",
+  "helpTopicRacesTips": "A velocidade do ajuste é importante, mas o lançamento ainda decide a corrida – não trate isso como um segundo cassino. \nMantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nFixar é calor, não um multiplicador de pagamento."
 }

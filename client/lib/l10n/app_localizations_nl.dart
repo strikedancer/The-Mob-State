@@ -3171,6 +3171,121 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donSqueezeHeld => 'De zaak betaalt extra — voorlopig.';
 
   @override
+  String get raceMenuLabel => 'Midnight Races';
+
+  @override
+  String get raceIntro =>
+      'Nachtraces in het land waar je staat. Kwalificeer met je eigen auto, zet cash in, en laat garage en tuneshop een server-roll licht bijsturen. De hostende club neemt rake.';
+
+  @override
+  String get raceLiveTitle => 'Vanavond op de grid';
+
+  @override
+  String raceEndsIn(String clock) {
+    return 'Grid sluit over $clock';
+  }
+
+  @override
+  String raceRake(int percent) {
+    return 'Club-rake $percent%';
+  }
+
+  @override
+  String get raceYouEntered => 'Je staat op de grid.';
+
+  @override
+  String get raceNeedCar =>
+      'Neem een auto mee die in dit land staat, niet te koop is, en in redelijke staat verkeert.';
+
+  @override
+  String get racePickCar => 'Auto';
+
+  @override
+  String get raceSpeedLabel => 'Snelheid';
+
+  @override
+  String get raceStake => 'Inzet';
+
+  @override
+  String get raceFixing => 'Race sjoemelen';
+
+  @override
+  String get raceFixingHint =>
+      'Kost extra wanted voor een kleine roll-bonus. Geen garantie op winst.';
+
+  @override
+  String get raceEnter => 'Inschrijven';
+
+  @override
+  String get raceField => 'Veld';
+
+  @override
+  String get raceNoEntries => 'Nog niemand heeft ingeschreven.';
+
+  @override
+  String get raceBetAmount => 'Wedbedrag';
+
+  @override
+  String get racePlaceBet => 'Wed op geselecteerde rijder';
+
+  @override
+  String get raceLastResult => 'Laatste uitslag';
+
+  @override
+  String get raceNoMeeting => 'Er is nu geen race open in dit land.';
+
+  @override
+  String get raceCooldown => 'De volgende race is nog in cooldown.';
+
+  @override
+  String get raceActionOk => 'Race bijgewerkt.';
+
+  @override
+  String get raceErrorGeneric => 'Die race-actie is mislukt.';
+
+  @override
+  String get raceErrorDisabled => 'Midnight Races zijn gesloten.';
+
+  @override
+  String get raceErrorJailed => 'Je kunt niet racen vanuit de cel.';
+
+  @override
+  String get raceErrorTraveling => 'Maak eerst je reis af.';
+
+  @override
+  String get raceErrorFunds => 'Niet genoeg cash.';
+
+  @override
+  String get raceErrorCooldown => 'De volgende race is nog niet open.';
+
+  @override
+  String get raceErrorClosed => 'Deze grid is gesloten.';
+
+  @override
+  String get raceErrorEntered => 'Je staat al op deze grid.';
+
+  @override
+  String get raceErrorFull => 'De grid is vol.';
+
+  @override
+  String get raceErrorVehicle => 'Die auto kan hier niet racen.';
+
+  @override
+  String get raceErrorCondition => 'Die auto is te beschadigd om te racen.';
+
+  @override
+  String get raceErrorBetOwn => 'Je kunt niet op jezelf wedden.';
+
+  @override
+  String get raceErrorBetCap =>
+      'Je hebt al het maximum aantal weddenschappen geplaatst.';
+
+  @override
+  String raceErrorRank(int rank) {
+    return 'Bereik eerst rang $rank om te racen.';
+  }
+
+  @override
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
@@ -4947,6 +5062,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crewUiTr125 => 'Oorlogsgebieden';
+
+  @override
+  String crewUiWarTheater(String name) {
+    return 'Theater: $name';
+  }
+
+  @override
+  String get crewUiWarTheaterHint =>
+      'Territory War en Total War kiezen een theaterregio op de echte kaart. Nasleep blijft time-boxed.';
 
   @override
   String get crewUiTr126 => 'Neutrale';
@@ -16624,7 +16748,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrewHow =>
-      'Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten.\nCrew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.\nNieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.\nAuto opslag in crew accepteert nu ook motoren, zodat landvoertuigen samen vanuit dezelfde gedeelde crew-opslag beheerd kunnen worden.\nAls een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.\nHet crew-scherm is nu gegroepeerd in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crew Missies, Crews en Chat zodat beheer rustiger en professioneler blijft.\nIn Crew Missies zie je templates per tier, een actieve run-kaart en recente runs. Leaders/co-leaders kunnen starten en resolven; rewards claimen en cooldown speedup gaan via dezelfde tab.\nEr zijn nu extra crew missies met onder andere bank-thema (night deposit, skim-netwerk, pantserroute, dochterbank, reservekluis en clearing house). Er is geen tweede casino-crew-missie naast Casino Ledger Raid.\nCrew mission-beloningen komen uit de missie-economy op de server: andere spelers hun banksaldo wordt daar niet voor aangesproken.\nBij starten van een missie kun je nu per crewlid een rol kiezen (Planner, Enforcer, Logistics, Tech) voor team-bonussen.\nActieve en recente missiekaarten tonen nu ook rolbijdragen per speler met score en eventuele payout-multiplier.\nCrewleden krijgen nu ook push/in-app meldingen bij missie-start, missie-resultaat en wanneer een missie-cooldown weer klaar is.\nTijdens een actieve missie-cooldown kun je geen nieuwe missie starten; je ziet eerst de resterende cooldown of kunt die versnellen met credits.\nBij cooldown speedup zie je eerst exact hoeveel credits het kost en hoeveel minuten resterend zijn voordat je bevestigt.\nCrew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.\nWar-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.\nTijdens een actieve war kunnen deelnemers acties uitvoeren zoals kills, mugs, sabotage, intel, raids, shields, boosts en territory claims. Doelgerichte acties kiezen nu direct uit een lijst met spelers van de tegencrew in plaats van handmatig om een speler-ID te vragen.\nSeizoenspunten worden per war opgeteld in het Crew Wars leaderboard. Je ziet in de War Room ook standings, recente acties en recente wars van je crew.\nBij Territory War en Total War claim je nu echte Territory-regio\'s uit het territory-systeem in plaats van generieke placeholder-doelen.\nDie war-regio\'s tonen nu ook hun strategische waarde in de War Room: claimbonus, tick-punten en tags zoals haven, hoofdstad of logistiek. Daardoor zie je direct welke regio\'s niet alleen van eigenaar wisselen, maar ook meer war-punten waard zijn.\nCrew Wars kiest Territory-targets nu niet meer alleen op waarde-tier, maar ook op strategische tags en aangrenzende druk van aanvaller of verdediger. Daardoor voelen Territory War en Total War meer als een echte frontlinie dan als drie willekeurige claims.\nWint jouw crew een Territory War of Total War, dan kunnen de betrokken Territory-regio\'s tijdelijk war pressure krijgen. In de Territory-modal zie je dan welke crew de druk heeft, hoeveel effectieve stabiliteit wegvalt en wanneer die nasleep afloopt.\nHeists: Small Bank Heist (2 spelers, 40% kans, €10.000-€30.000, cooldown 30 min), Sieradenzaak (3 spelers, 35%, €20.000-€50.000, 45 min), Casino Heist (4 spelers, 25%, €50.000-€150.000, 2 uur), Federal Reserve (5 spelers, 15%, €100.000-€500.000, 6 uur, +20 FBI Heat).\nBij een heist moeten alle leden online zijn bij de start. Is iemand afwezig dan mislukt de heist.\nBij mislukte heist: jail time voor alle leden, Wanted Level +5, geen beloning.\nDe reward bij een geslaagde heist wordt gelijk verdeeld over alle deelnemende leden.\nCrew-chat is beschikbaar voor snelle coördinatie zonder extra apps.\nCrew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen.';
+      'Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten.\nCrew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.\nNieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.\nAuto opslag in crew accepteert nu ook motoren, zodat landvoertuigen samen vanuit dezelfde gedeelde crew-opslag beheerd kunnen worden.\nAls een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.\nHet crew-scherm is nu gegroepeerd in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crew Missies, Crews en Chat zodat beheer rustiger en professioneler blijft.\nIn Crew Missies zie je templates per tier, een actieve run-kaart en recente runs. Leaders/co-leaders kunnen starten en resolven; rewards claimen en cooldown speedup gaan via dezelfde tab.\nEr zijn nu extra crew missies met onder andere bank-thema (night deposit, skim-netwerk, pantserroute, dochterbank, reservekluis en clearing house). Er is geen tweede casino-crew-missie naast Casino Ledger Raid.\nClearing House Vault Run is een live Tier-3 missie; de optionele mission-level lock blijft uit tot er genoeg Blackout-telemetry is.\nCrew mission-beloningen komen uit de missie-economy op de server: andere spelers hun banksaldo wordt daar niet voor aangesproken.\nBij starten van een missie kun je nu per crewlid een rol kiezen (Planner, Enforcer, Logistics, Tech) voor team-bonussen.\nActieve en recente missiekaarten tonen nu ook rolbijdragen per speler met score en eventuele payout-multiplier.\nCrewleden krijgen nu ook push/in-app meldingen bij missie-start, missie-resultaat en wanneer een missie-cooldown weer klaar is.\nTijdens een actieve missie-cooldown kun je geen nieuwe missie starten; je ziet eerst de resterende cooldown of kunt die versnellen met credits.\nBij cooldown speedup zie je eerst exact hoeveel credits het kost en hoeveel minuten resterend zijn voordat je bevestigt.\nCrew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.\nWar-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.\nTijdens een actieve war kunnen deelnemers acties uitvoeren zoals kills, mugs, sabotage, intel, raids, shields, boosts en territory claims. Doelgerichte acties kiezen nu direct uit een lijst met spelers van de tegencrew in plaats van handmatig om een speler-ID te vragen.\nSeizoenspunten worden per war opgeteld in het Crew Wars leaderboard. Je ziet in de War Room ook standings, recente acties en recente wars van je crew.\nBij Territory War en Total War claim je nu echte Territory-regio\'s uit het territory-systeem in plaats van generieke placeholder-doelen.\nDie war-regio\'s tonen nu ook hun strategische waarde in de War Room: claimbonus, tick-punten en tags zoals haven, hoofdstad of logistiek. Daardoor zie je direct welke regio\'s niet alleen van eigenaar wisselen, maar ook meer war-punten waard zijn.\nCrew Wars kiest Territory-targets nu niet meer alleen op waarde-tier, maar ook op strategische tags en aangrenzende druk van aanvaller of verdediger. Daardoor voelen Territory War en Total War meer als een echte frontlinie dan als drie willekeurige claims.\nTerritory War en Total War kiezen bij declare ook een theaterregio; de War Room toont die frontlinie en nasleep blijft time-boxed.\nWint jouw crew een Territory War of Total War, dan kunnen de betrokken Territory-regio\'s tijdelijk war pressure krijgen. In de Territory-modal zie je dan welke crew de druk heeft, hoeveel effectieve stabiliteit wegvalt en wanneer die nasleep afloopt.\nHeists: Small Bank Heist (2 spelers, 40% kans, €10.000-€30.000, cooldown 30 min), Sieradenzaak (3 spelers, 35%, €20.000-€50.000, 45 min), Casino Heist (4 spelers, 25%, €50.000-€150.000, 2 uur), Federal Reserve (5 spelers, 15%, €100.000-€500.000, 6 uur, +20 FBI Heat).\nBij een heist moeten alle leden online zijn bij de start. Is iemand afwezig dan mislukt de heist.\nBij mislukte heist: jail time voor alle leden, Wanted Level +5, geen beloning.\nDe reward bij een geslaagde heist wordt gelijk verdeeld over alle deelnemende leden.\nCrew-chat is beschikbaar voor snelle coördinatie zonder extra apps.\nCrew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen.';
 
   @override
   String get helpTopicCrewTips =>
@@ -16719,6 +16843,24 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get helpTopicDonTips =>
       'Innen op cooldown in plaats van elke zaak uit te knijpen — flee-kans en wanted lopen snel op.\nCapo-tribute werkt alleen in het toegewezen land; zet dat land vóór je de crew-bank aanzet.\nKoop de wethouder om voordat je het stadhuis-contract najaagt, en houd engineering-school in gedachten voor havenklussen.';
+
+  @override
+  String get helpTopicRacesCategory => 'Empire';
+
+  @override
+  String get helpTopicRacesTitle => 'Midnight Races';
+
+  @override
+  String get helpTopicRacesSummary =>
+      'Geplande straatraces in het land waar je staat. Kwalificeer met je eigen auto, zet cash in, en laat garage en tune een server-roll licht bijsturen. De hostende club neemt rake.';
+
+  @override
+  String get helpTopicRacesHow =>
+      'Open Midnight Races via Empire.\nJe racet in het land waar je staat. De auto moet van jou zijn, in dat land staan, niet te koop staan, en in redelijke staat zijn.\nInschrijven kost een cash-inzet. Als de grid sluit, rollt de server de uitslag. Snelheid, tuneshop-speed en conditie geven een lichte bonus — dit is geen stuurspel.\nJe kunt op andere rijders wedden, niet op jezelf.\nSjoemelen verhoogt wanted voor een kleine roll-bonus. Het garandeert geen winst.\nAls er een open nightclub in dat land is, krijgt die host de rake. Anders verdwijnt de rake.\nBij minder dan twee rijders gaan inzet en weddenschappen terug.';
+
+  @override
+  String get helpTopicRacesTips =>
+      'Tune-snelheid telt, maar de roll beslist nog steeds — behandel dit niet als een tweede casino.\nHoud een race-auto in het land dat je bezoekt in plaats van alles in de showroom te laten staan.\nSjoemelen is heat, geen payout-multiplier.';
 
   @override
   String get helpTopicBankCategory => 'Economie';
