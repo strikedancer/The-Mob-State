@@ -13388,7 +13388,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get profilePropertiesTitle => 'Eigenschaften';
+  String get profilePropertiesTitle => 'Immobilien';
 
   @override
   String get profilePropertiesHint =>

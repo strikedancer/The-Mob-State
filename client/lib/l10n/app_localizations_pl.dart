@@ -13309,7 +13309,7 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get profilePropertiesTitle => 'Właściwości';
+  String get profilePropertiesTitle => 'Nieruchomości';
 
   @override
   String get profilePropertiesHint =>
