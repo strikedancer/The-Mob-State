@@ -519,6 +519,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ## Midnight Races
 - Empire-hub: gepland venster per land, eigen auto in dat land, cash-inzet, server-roll met garage/tune als lichte modifier, nightclub-host krijgt rake, optioneel sjoemelen = wanted.
+- Midnight Races-UI is noir/goud met een hero-strip en foto-kaarten in een raster (tot 3–4 per rij): kies je auto, het startveld en de uitslag.
 - Protocol: `docs/module-protocols/races.md`. Caps via `RACE_*` zodat dit geen tweede casino wordt.
 
 ## Bank Systeem

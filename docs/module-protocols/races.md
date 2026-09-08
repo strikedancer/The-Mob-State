@@ -8,6 +8,7 @@ Not in v1: horses, breeding, real-time driving, daily condition decay, skill-gam
 ## Primary Frontend Entry
 - `client/lib/screens/race_screen.dart` (Empire → Midnight Races; optional `/races`)
 - Help topic `races`
+- Hub art: `client/assets/images/races/hub.png` served as `/images/races/hub.png`. Eligible cars, live field and last-result finishers use catalog vehicle photos (`image` from `vehicles.json`) via `WebAssetHelper`. Photo cards sit in the same wrap-grid as Don (1 / 2 / 3 / 4 columns from ~480 / 700 / 1040 px pane width). No extra AppBar when `embedded == true`.
 
 ## Primary Backend Entry
 - `GET /races/overview`
@@ -52,3 +53,4 @@ Tune in `runtime_config`. Caps keep this from becoming a second casino.
 - [ ] Host nightclub owner receives rake when present
 - [ ] Solo entry refunds
 - [ ] NL + EN strings
+- [ ] Empire desktop shows car / field / last-result photo cards in a 3–4 column grid (2 on tablet, 1 on narrow); images load on web (`/images/races/hub.png` + `/images/vehicles/*`)

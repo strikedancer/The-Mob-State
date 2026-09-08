@@ -6,12 +6,19 @@ import { getRaceRuntimeConfig, type RaceRuntimeConfig } from './raceRuntimeConfi
 type VehicleCatalogRow = {
   id: string;
   name?: string;
+  image?: string;
   stats?: { speed?: number };
 };
 
 function findCar(vehicleId: string): VehicleCatalogRow | null {
   const cars = (vehiclesData as { cars?: VehicleCatalogRow[] }).cars ?? [];
   return cars.find((row) => row.id === vehicleId) ?? null;
+}
+
+function catalogLook(vehicleId: string): { name: string; image: string | null } {
+  const def = findCar(vehicleId);
+  const image = typeof def?.image === 'string' && def.image.trim() ? def.image : null;
+  return { name: def?.name ?? vehicleId, image };
 }
 
 async function getTuneSpeed(playerId: number, inventoryId: number): Promise<number> {
@@ -179,10 +186,12 @@ export const raceService = {
       })
       .map((row) => {
         const def = findCar(row.vehicleId);
+        const look = catalogLook(row.vehicleId);
         return {
           inventoryId: row.id,
           vehicleId: row.vehicleId,
-          name: def?.name ?? row.vehicleId,
+          name: look.name,
+          image: look.image,
           speed: Number(def?.stats?.speed ?? 0),
           condition: row.condition,
         };
@@ -209,6 +218,7 @@ export const raceService = {
           ? {
               id: myEntry.id,
               vehicleId: myEntry.vehicleId,
+              ...catalogLook(myEntry.vehicleId),
               stake: myEntry.stake,
               fixing: myEntry.fixing,
             }
@@ -218,6 +228,7 @@ export const raceService = {
           playerId: entry.playerId,
           username: entry.player.username,
           vehicleId: entry.vehicleId,
+          ...catalogLook(entry.vehicleId),
           stake: entry.stake,
           fixing: entry.fixing,
         })),
@@ -254,6 +265,7 @@ export const raceService = {
               playerId: entry.playerId,
               username: entry.player.username,
               vehicleId: entry.vehicleId,
+              ...catalogLook(entry.vehicleId),
               finishPlace: entry.finishPlace,
               payout: entry.payout,
               speedScore: entry.speedScore,
