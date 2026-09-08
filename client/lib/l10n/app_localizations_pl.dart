@@ -2977,6 +2977,206 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewRoleMember => 'Członek';
 
   @override
+  String get crewRoleConsigliere => 'Consigliere';
+
+  @override
+  String get crewRoleCapo => 'Capo';
+
+  @override
+  String get crewSetRole => 'Ustaw rolę';
+
+  @override
+  String get crewCapoCountry => 'Kraj Capo';
+
+  @override
+  String get donMenuLabel => 'Przywdziewać';
+
+  @override
+  String get donTabRackets => 'Rakiety';
+
+  @override
+  String get donTabLoans => 'Pożyczki';
+
+  @override
+  String get donTabInfluence => 'Wpływ';
+
+  @override
+  String get donTabContracts => 'Umowy';
+
+  @override
+  String get donCommandStrip => 'Rozkaz';
+
+  @override
+  String get donTributeCrew => 'Bank załogi';
+
+  @override
+  String get donTributeCash => 'Gotówka';
+
+  @override
+  String get donClaim => 'Prawo';
+
+  @override
+  String get donCollect => 'Zbierać';
+
+  @override
+  String get donSqueeze => 'Ściśnięcie';
+
+  @override
+  String get donContest => 'Konkurs';
+
+  @override
+  String get donHold => 'Trzymać';
+
+  @override
+  String donOwnedBy(String name) {
+    return 'Właściciel: $name';
+  }
+
+  @override
+  String get donFree => 'Otwarte';
+
+  @override
+  String donIntimidationNeed(int needed, int have) {
+    return 'Zastraszanie $needed (masz $have)';
+  }
+
+  @override
+  String get donCollectReady => 'Gotowe do odbioru';
+
+  @override
+  String get donLoanNpc => 'Pożycz NPC';
+
+  @override
+  String get donLoanOffer => 'Zaproponuj pożyczkę';
+
+  @override
+  String get donLoanAccept => 'Przyjąć';
+
+  @override
+  String get donLoanRepay => 'Spłacać';
+
+  @override
+  String get donLoanCollect => 'Zbierać';
+
+  @override
+  String get donLoanBorrowerHint => 'Nazwa użytkownika pożyczkobiorcy';
+
+  @override
+  String get donLoanPrincipalHint => 'Kwota';
+
+  @override
+  String get donBribe => 'Przekupić';
+
+  @override
+  String get donBid => 'Oferta';
+
+  @override
+  String get donBidFromCrew => 'Zapłać z banku załogi';
+
+  @override
+  String get donBidGreedy => 'Chciwy (+wypłata, +ciepło)';
+
+  @override
+  String get donCrewOverview => 'Rakiety załogi';
+
+  @override
+  String donRankGate(int rank) {
+    return 'Wymagana ranga $rank.';
+  }
+
+  @override
+  String get donBusinessCafe => 'Kawiarnia';
+
+  @override
+  String get donBusinessGarage => 'Garaż';
+
+  @override
+  String get donBusinessWarehouse => 'Magazyn';
+
+  @override
+  String get donBusinessNightShop => 'Sklep nocny';
+
+  @override
+  String get donBusinessPortOffice => 'Biuro portowe';
+
+  @override
+  String get donBusinessLaundry => 'Pranie';
+
+  @override
+  String get donNpcStreetDealer => 'Sprzedawca uliczny';
+
+  @override
+  String get donNpcDockWorker => 'Pracownik dokujący';
+
+  @override
+  String get donNpcClubHost => 'Gospodarz klubu';
+
+  @override
+  String get donOfficeJudge => 'Sędzia';
+
+  @override
+  String get donOfficeCommissioner => 'Komisarz';
+
+  @override
+  String get donOfficeAlderman => 'Radny miejski';
+
+  @override
+  String get donContractStreetRepair => 'Remont ulicy';
+
+  @override
+  String get donContractHarborCrane => 'Żuraw portowy';
+
+  @override
+  String get donContractCityHallWing => 'Skrzydło ratusza';
+
+  @override
+  String get donErrorGeneric => 'Ta akcja Dona nie powiodła się.';
+
+  @override
+  String get donErrorDisabled => 'Hub Don jest obecnie zamknięty.';
+
+  @override
+  String get donErrorJailed => 'Nie możesz zarządzać centrum Dona z więzienia.';
+
+  @override
+  String get donErrorWrongCountry => 'Najpierw udaj się do tego kraju.';
+
+  @override
+  String get donErrorFunds => 'Za mało gotówki.';
+
+  @override
+  String get donErrorCooldown => 'Kolekcja wciąż się ochładza.';
+
+  @override
+  String get donErrorOwned => 'Ktoś już prowadzi ten sklep.';
+
+  @override
+  String get donErrorCap => 'Masz już maksymalną liczbę rakiet.';
+
+  @override
+  String get donErrorNotOwner => 'Nie jesteś właścicielem tego.';
+
+  @override
+  String get donErrorContest => 'Konkurs już trwa.';
+
+  @override
+  String get donErrorCrewBank => 'Nie możesz wysłać tego do banku załogi.';
+
+  @override
+  String get donErrorAlderman => 'W tym kraju potrzebny jest radny.';
+
+  @override
+  String donErrorEngineering(int level) {
+    return 'Wymagany poziom szkoły inżynierskiej $level.';
+  }
+
+  @override
+  String get donSqueezeFled => 'Sklep spakował się i wyszedł.';
+
+  @override
+  String get donSqueezeHeld => 'Sklep zapłacił dodatkowo – na razie.';
+
+  @override
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
@@ -16589,6 +16789,24 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get helpTopicPropertiesTips =>
       'Jeśli potrzebujesz więcej miejsca na inne systemy, zainwestuj w magazyn już wcześniej. \nWybierz domy i mieszkania, jeśli chcesz zbudować więcej mieszkań dla powiązanych systemów rozgrywki. \nNie sprzedawaj zbyt szybko: 70% oznacza poważną obniżkę ceny zakupu.';
+
+  @override
+  String get helpTopicDonCategory => 'Imperium';
+
+  @override
+  String get helpTopicDonTitle => 'Przywdziewać';
+
+  @override
+  String get helpTopicDonSummary =>
+      'Zarządzaj rakietami ochronnymi, lichwiarstwem, urzędnikami miejskimi i zamówieniami publicznymi z jednego centrum Imperium. Roszczenia są osobiste; hołd może zostać przekazany na gotówkę lub do banku załogi.';
+
+  @override
+  String get helpTopicDonHow =>
+      'Otwórz Don z Imperium, gdy osiągniesz rangę 7. Zawsze działasz w kraju, w którym stoisz. \nRakiety to sklepy NPC. Zdobądź je za pomocą broni, która ma wystarczająco dużo zastraszenia, a następnie po upływie czasu odnowienia zbieraj daninę ręcznie. Jeśli zignorujesz sklep przez około trzy dni, znów stanie się on bezpłatny. \nSqueeze podnosi kolejny hołd, ale także podnosi liczbę poszukiwanych i może sprawić, że sklep ucieknie. Rywal z tego samego kraju może rozpocząć krótki konkurs; właściciel może utrzymać. \nHołd to osobista gotówka, chyba że jesteś liderem, współliderem lub capo (w kraju capo) i wyślesz ją do banku załogi. \nPożyczki: jesteś rekinem. Pożyczaj NPC-om lub oferuj depozyt innemu graczowi. Domyślne koszty są pożądane i umożliwiają odzyskanie części długu — nigdy pełne wyczyszczenie. \nWpływ: przekup sędziego, komisarza lub radnego na 24 godziny. Rywale mogą przebić. Sędzia dodaje jedynie niewielką, ograniczoną premię za odwołanie; nadal istnieje łapówka sądowa w poszczególnych przypadkach. Komisarz obniża karę za nieudane przestępstwa. Radny odblokowuje lub wzmacnia duże kontrakty. \nKontrakty miejskie płacą legalnie po złożeniu oferty (gotówką lub bankiem załogi). Dodatkowe rezerwacje tylko wtedy, gdy posiadasz tam rakiety. Chciwe oferty płacą więcej i dodają ciepła. Duże prace mogą wymagać szkoły inżynierskiej. \nRakieta chroniąca przed przestępczością uliczną pozostaje jednorazowym przedsięwzięciem i nie zapewnia również tym sklepom.';
+
+  @override
+  String get helpTopicDonTips =>
+      'Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nCapo hołd działa tylko w przydzielonym kraju; ustaw ten ląd przed przełączeniem banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt w ratuszu, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie.';
 
   @override
   String get helpTopicBankCategory => 'Gospodarka';

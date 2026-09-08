@@ -2973,6 +2973,207 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewRoleMember => 'Membro';
 
   @override
+  String get crewRoleConsigliere => 'Consultor';
+
+  @override
+  String get crewRoleCapo => 'Capo';
+
+  @override
+  String get crewSetRole => 'Definir função';
+
+  @override
+  String get crewCapoCountry => 'País Capo';
+
+  @override
+  String get donMenuLabel => 'Vestir';
+
+  @override
+  String get donTabRackets => 'Raquetes';
+
+  @override
+  String get donTabLoans => 'Empréstimos';
+
+  @override
+  String get donTabInfluence => 'Influência';
+
+  @override
+  String get donTabContracts => 'Contratos';
+
+  @override
+  String get donCommandStrip => 'Comando';
+
+  @override
+  String get donTributeCrew => 'Banco de Crew';
+
+  @override
+  String get donTributeCash => 'Dinheiro';
+
+  @override
+  String get donClaim => 'Alegar';
+
+  @override
+  String get donCollect => 'Coletar';
+
+  @override
+  String get donSqueeze => 'Espremer';
+
+  @override
+  String get donContest => 'Contestar';
+
+  @override
+  String get donHold => 'Segurar';
+
+  @override
+  String donOwnedBy(String name) {
+    return 'Propriedade de $name';
+  }
+
+  @override
+  String get donFree => 'Abrir';
+
+  @override
+  String donIntimidationNeed(int needed, int have) {
+    return 'Intimidação $needed (você tem $have)';
+  }
+
+  @override
+  String get donCollectReady => 'Pronto para coletar';
+
+  @override
+  String get donLoanNpc => 'Empreste ao NPC';
+
+  @override
+  String get donLoanOffer => 'Oferecer empréstimo';
+
+  @override
+  String get donLoanAccept => 'Aceitar';
+
+  @override
+  String get donLoanRepay => 'Reembolsar';
+
+  @override
+  String get donLoanCollect => 'Coletar';
+
+  @override
+  String get donLoanBorrowerHint => 'Nome de usuário do mutuário';
+
+  @override
+  String get donLoanPrincipalHint => 'Quantia';
+
+  @override
+  String get donBribe => 'Suborno';
+
+  @override
+  String get donBid => 'Oferta';
+
+  @override
+  String get donBidFromCrew => 'Pague do banco da Crew';
+
+  @override
+  String get donBidGreedy => 'Ganancioso (+pagamento, +calor)';
+
+  @override
+  String get donCrewOverview => 'Raquetes de Crew';
+
+  @override
+  String donRankGate(int rank) {
+    return 'Classificação $rank necessária.';
+  }
+
+  @override
+  String get donBusinessCafe => 'Café';
+
+  @override
+  String get donBusinessGarage => 'Garagem';
+
+  @override
+  String get donBusinessWarehouse => 'Armazém';
+
+  @override
+  String get donBusinessNightShop => 'Loja noturna';
+
+  @override
+  String get donBusinessPortOffice => 'Escritório portuário';
+
+  @override
+  String get donBusinessLaundry => 'Lavanderia';
+
+  @override
+  String get donNpcStreetDealer => 'Revendedor de rua';
+
+  @override
+  String get donNpcDockWorker => 'Trabalhador portuário';
+
+  @override
+  String get donNpcClubHost => 'Anfitrião do clube';
+
+  @override
+  String get donOfficeJudge => 'Juíza';
+
+  @override
+  String get donOfficeCommissioner => 'Comissária';
+
+  @override
+  String get donOfficeAlderman => 'Vereador';
+
+  @override
+  String get donContractStreetRepair => 'Reparação de rua';
+
+  @override
+  String get donContractHarborCrane => 'Guindaste portuário';
+
+  @override
+  String get donContractCityHallWing => 'Ala da prefeitura';
+
+  @override
+  String get donErrorGeneric => 'Essa ação de Don falhou.';
+
+  @override
+  String get donErrorDisabled => 'O hub Don está fechado no momento.';
+
+  @override
+  String get donErrorJailed => 'Você não pode executar o hub Don na prisão.';
+
+  @override
+  String get donErrorWrongCountry => 'Viaje primeiro para esse país.';
+
+  @override
+  String get donErrorFunds => 'Não há dinheiro suficiente.';
+
+  @override
+  String get donErrorCooldown => 'A coleção ainda está esfriando.';
+
+  @override
+  String get donErrorOwned => 'Alguém já administra esta loja.';
+
+  @override
+  String get donErrorCap => 'Você já possui o número máximo de raquetes.';
+
+  @override
+  String get donErrorNotOwner => 'Você não é dono disso.';
+
+  @override
+  String get donErrorContest => 'Um concurso já está em andamento.';
+
+  @override
+  String get donErrorCrewBank =>
+      'Você não pode enviar isso para o banco da Crew.';
+
+  @override
+  String get donErrorAlderman => 'Você precisa do vereador neste país.';
+
+  @override
+  String donErrorEngineering(int level) {
+    return 'É necessário nível de escola de engenharia $level.';
+  }
+
+  @override
+  String get donSqueezeFled => 'A loja fez as malas e foi embora.';
+
+  @override
+  String get donSqueezeHeld => 'A loja pagou a mais – por enquanto.';
+
+  @override
   String get vehicleOpsHotspot => 'Ponto de acesso';
 
   @override
@@ -16585,6 +16786,24 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get helpTopicPropertiesTips =>
       'Invista em um armazém com antecedência se precisar de mais espaço de armazenamento para seus outros sistemas. \nEscolha casas e apartamentos quando quiser construir mais capacidade habitacional para sistemas de jogo relacionados. \nNão venda muito rapidamente: 70% representa uma grande redução do preço de compra.';
+
+  @override
+  String get helpTopicDonCategory => 'Império';
+
+  @override
+  String get helpTopicDonTitle => 'Vestir';
+
+  @override
+  String get helpTopicDonSummary =>
+      'Execute esquemas de proteção, agiotagem, autoridades municipais e contratos públicos a partir de um centro do Império. As reivindicações são pessoais; o tributo pode ir para dinheiro ou para o banco da Crew.';
+
+  @override
+  String get helpTopicDonHow =>
+      'Abra Don do Empire quando chegar ao rank 7. Você sempre atua no país em que está. \nRaquetes são lojas de NPCs. Reivindique-os com uma arma que tenha intimidação suficiente e, em seguida, colete o tributo manualmente após o tempo de espera. Se você ignorar uma loja por cerca de três dias, ela se tornará gratuita novamente. \nSqueeze aumenta o próximo tributo, mas também aumenta os procurados e pode fazer a loja fugir. Um rival no mesmo país pode iniciar uma competição curta; o proprietário pode segurar. \nO tributo é dinheiro pessoal, a menos que você seja líder, co-líder ou capo (no país capo) e envie para o banco da Crew. \nEmpréstimos: você é o tubarão. Empreste para NPCs ou ofereça garantia a outro jogador. O custo padrão é desejado e permite que você cobre parte da dívida – nunca uma liquidação completa. \nInfluência: subornar o juiz, comissário ou vereador por 24 horas. Os rivais podem fazer ofertas exageradas. O juiz adiciona apenas um pequeno bônus de apelação; o suborno judicial por caso ainda existe. O comissário reduz os procurados por crimes fracassados. O vereador desbloqueia ou aumenta grandes contratos. \nOs contratos municipais são pagos legalmente após uma licitação (dinheiro ou banco da Crew). Extras fora dos livros apenas se você possuir raquetes lá. Lances gananciosos pagam mais e aumentam o calor. Grandes empregos podem exigir escola de engenharia. \nO esquema de proteção ao crime de rua continua sendo um golpe único e também não beneficia essas lojas.';
+
+  @override
+  String get helpTopicDonTips =>
+      'Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nO tributo Capo só funciona no país designado; defina esse terreno antes de alternar o banco da Crew. \nSuborne o vereador antes de conseguir o contrato com a prefeitura e lembre-se da escola de engenharia para os empregos no porto.';
 
   @override
   String get helpTopicBankCategory => 'Economia';

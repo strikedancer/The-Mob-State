@@ -49,6 +49,7 @@ import 'training_hub_screen.dart';
 import '../widgets/training_summary_card.dart';
 import 'ammo_factory_screen.dart';
 import 'school_screen.dart';
+import 'don_screen.dart';
 import 'prostitution_screen.dart';
 import 'bank_screen.dart';
 import 'achievements_screen.dart';
@@ -84,6 +85,7 @@ enum _WebSection {
   friends,
   inventory,
   properties,
+  don,
   bank,
   casino,
   blackMarket,
@@ -120,6 +122,8 @@ _WebSection _webSectionFromQueryParam(String? value) {
       return _WebSection.premium;
     case 'vault':
       return _WebSection.vault;
+    case 'don':
+      return _WebSection.don;
     default:
       return _WebSection.dashboard;
   }
@@ -321,6 +325,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.drugs:
       case _WebSection.nightclub:
       case _WebSection.properties:
+      case _WebSection.don:
       case _WebSection.prostitution:
       case _WebSection.redLightDistricts:
       case _WebSection.ammoFactory:
@@ -1364,6 +1369,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.local_pharmacy, label: l10n.drugs, section: _WebSection.drugs),
         navItem(icon: Icons.nightlife, label: l10n.nightclub, section: _WebSection.nightclub),
         navItem(icon: Icons.business, label: l10n.properties, section: _WebSection.properties),
+        navItem(icon: Icons.account_balance_wallet, label: l10n.donMenuLabel, section: _WebSection.don),
         navItem(icon: Icons.favorite, label: l10n.prostitutionTitle, section: _WebSection.prostitution),
         navItem(icon: Icons.storefront, label: l10n.prostitutionRedLightDistricts, section: _WebSection.redLightDistricts),
         navItem(icon: Icons.factory, label: l10n.ammoFactory, section: _WebSection.ammoFactory),
@@ -1829,6 +1835,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       case _WebSection.properties:
         return PropertyScreen(onOpenInventory: _openInventoryStorage);
+      case _WebSection.don:
+        return const DonScreen(embedded: true);
       case _WebSection.bank:
         return const BankScreen();
       case _WebSection.casino:
@@ -2264,6 +2272,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => PropertyScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.account_balance_wallet,
+                                  label: l10n.donMenuLabel,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const DonScreen(),
                                     ),
                                   ),
                                 ),
@@ -4438,6 +4457,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         : switch (roleLabel) {
             'leader' => l10n.crewRoleLeader,
             'co_leader' => l10n.crewRoleCoLeader,
+            'consigliere' => l10n.crewRoleConsigliere,
+            'capo' => l10n.crewRoleCapo,
             'member' => l10n.crewRoleMember,
             _ => roleLabel,
           };

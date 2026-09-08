@@ -11567,5 +11567,105 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crewRoleConsigliere": "Consigliere",
+  "crewRoleCapo": "Capo",
+  "crewSetRole": "Ustaw rolę",
+  "crewCapoCountry": "Kraj Capo",
+  "donMenuLabel": "Przywdziewać",
+  "donTabRackets": "Rakiety",
+  "donTabLoans": "Pożyczki",
+  "donTabInfluence": "Wpływ",
+  "donTabContracts": "Umowy",
+  "donCommandStrip": "Rozkaz",
+  "donTributeCrew": "Bank załogi",
+  "donTributeCash": "Gotówka",
+  "donClaim": "Prawo",
+  "donCollect": "Zbierać",
+  "donSqueeze": "Ściśnięcie",
+  "donContest": "Konkurs",
+  "donHold": "Trzymać",
+  "donOwnedBy": "Właściciel: {name}",
+  "@donOwnedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "donFree": "Otwarte",
+  "donIntimidationNeed": "Zastraszanie {needed} (masz {have})",
+  "@donIntimidationNeed": {
+    "placeholders": {
+      "needed": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "donCollectReady": "Gotowe do odbioru",
+  "donLoanNpc": "Pożycz NPC",
+  "donLoanOffer": "Zaproponuj pożyczkę",
+  "donLoanAccept": "Przyjąć",
+  "donLoanRepay": "Spłacać",
+  "donLoanCollect": "Zbierać",
+  "donLoanBorrowerHint": "Nazwa użytkownika pożyczkobiorcy",
+  "donLoanPrincipalHint": "Kwota",
+  "donBribe": "Przekupić",
+  "donBid": "Oferta",
+  "donBidFromCrew": "Zapłać z banku załogi",
+  "donBidGreedy": "Chciwy (+wypłata, +ciepło)",
+  "donCrewOverview": "Rakiety załogi",
+  "donRankGate": "Wymagana ranga {rank}.",
+  "@donRankGate": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "donBusinessCafe": "Kawiarnia",
+  "donBusinessGarage": "Garaż",
+  "donBusinessWarehouse": "Magazyn",
+  "donBusinessNightShop": "Sklep nocny",
+  "donBusinessPortOffice": "Biuro portowe",
+  "donBusinessLaundry": "Pranie",
+  "donNpcStreetDealer": "Sprzedawca uliczny",
+  "donNpcDockWorker": "Pracownik dokujący",
+  "donNpcClubHost": "Gospodarz klubu",
+  "donOfficeJudge": "Sędzia",
+  "donOfficeCommissioner": "Komisarz",
+  "donOfficeAlderman": "Radny miejski",
+  "donContractStreetRepair": "Remont ulicy",
+  "donContractHarborCrane": "Żuraw portowy",
+  "donContractCityHallWing": "Skrzydło ratusza",
+  "donErrorGeneric": "Ta akcja Dona nie powiodła się.",
+  "donErrorDisabled": "Hub Don jest obecnie zamknięty.",
+  "donErrorJailed": "Nie możesz zarządzać centrum Dona z więzienia.",
+  "donErrorWrongCountry": "Najpierw udaj się do tego kraju.",
+  "donErrorFunds": "Za mało gotówki.",
+  "donErrorCooldown": "Kolekcja wciąż się ochładza.",
+  "donErrorOwned": "Ktoś już prowadzi ten sklep.",
+  "donErrorCap": "Masz już maksymalną liczbę rakiet.",
+  "donErrorNotOwner": "Nie jesteś właścicielem tego.",
+  "donErrorContest": "Konkurs już trwa.",
+  "donErrorCrewBank": "Nie możesz wysłać tego do banku załogi.",
+  "donErrorAlderman": "W tym kraju potrzebny jest radny.",
+  "donErrorEngineering": "Wymagany poziom szkoły inżynierskiej {level}.",
+  "@donErrorEngineering": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "donSqueezeFled": "Sklep spakował się i wyszedł.",
+  "donSqueezeHeld": "Sklep zapłacił dodatkowo – na razie.",
+  "helpTopicDonCategory": "Imperium",
+  "helpTopicDonTitle": "Przywdziewać",
+  "helpTopicDonSummary": "Zarządzaj rakietami ochronnymi, lichwiarstwem, urzędnikami miejskimi i zamówieniami publicznymi z jednego centrum Imperium. Roszczenia są osobiste; hołd może zostać przekazany na gotówkę lub do banku załogi.",
+  "helpTopicDonHow": "Otwórz Don z Imperium, gdy osiągniesz rangę 7. Zawsze działasz w kraju, w którym stoisz. \nRakiety to sklepy NPC. Zdobądź je za pomocą broni, która ma wystarczająco dużo zastraszenia, a następnie po upływie czasu odnowienia zbieraj daninę ręcznie. Jeśli zignorujesz sklep przez około trzy dni, znów stanie się on bezpłatny. \nSqueeze podnosi kolejny hołd, ale także podnosi liczbę poszukiwanych i może sprawić, że sklep ucieknie. Rywal z tego samego kraju może rozpocząć krótki konkurs; właściciel może utrzymać. \nHołd to osobista gotówka, chyba że jesteś liderem, współliderem lub capo (w kraju capo) i wyślesz ją do banku załogi. \nPożyczki: jesteś rekinem. Pożyczaj NPC-om lub oferuj depozyt innemu graczowi. Domyślne koszty są pożądane i umożliwiają odzyskanie części długu — nigdy pełne wyczyszczenie. \nWpływ: przekup sędziego, komisarza lub radnego na 24 godziny. Rywale mogą przebić. Sędzia dodaje jedynie niewielką, ograniczoną premię za odwołanie; nadal istnieje łapówka sądowa w poszczególnych przypadkach. Komisarz obniża karę za nieudane przestępstwa. Radny odblokowuje lub wzmacnia duże kontrakty. \nKontrakty miejskie płacą legalnie po złożeniu oferty (gotówką lub bankiem załogi). Dodatkowe rezerwacje tylko wtedy, gdy posiadasz tam rakiety. Chciwe oferty płacą więcej i dodają ciepła. Duże prace mogą wymagać szkoły inżynierskiej. \nRakieta chroniąca przed przestępczością uliczną pozostaje jednorazowym przedsięwzięciem i nie zapewnia również tym sklepom.",
+  "helpTopicDonTips": "Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nCapo hołd działa tylko w przydzielonym kraju; ustaw ten ląd przed przełączeniem banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt w ratuszu, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie."
 }

@@ -2971,6 +2971,206 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewRoleMember => 'Lid';
 
   @override
+  String get crewRoleConsigliere => 'Consigliere';
+
+  @override
+  String get crewRoleCapo => 'Capo';
+
+  @override
+  String get crewSetRole => 'Rol instellen';
+
+  @override
+  String get crewCapoCountry => 'Capo-land';
+
+  @override
+  String get donMenuLabel => 'Don';
+
+  @override
+  String get donTabRackets => 'Rackets';
+
+  @override
+  String get donTabLoans => 'Leningen';
+
+  @override
+  String get donTabInfluence => 'Invloed';
+
+  @override
+  String get donTabContracts => 'Contracten';
+
+  @override
+  String get donCommandStrip => 'Commando';
+
+  @override
+  String get donTributeCrew => 'Crew-bank';
+
+  @override
+  String get donTributeCash => 'Cash';
+
+  @override
+  String get donClaim => 'Claim';
+
+  @override
+  String get donCollect => 'Innen';
+
+  @override
+  String get donSqueeze => 'Uitknijpen';
+
+  @override
+  String get donContest => 'Overnemen';
+
+  @override
+  String get donHold => 'Vasthouden';
+
+  @override
+  String donOwnedBy(String name) {
+    return 'Van $name';
+  }
+
+  @override
+  String get donFree => 'Vrij';
+
+  @override
+  String donIntimidationNeed(int needed, int have) {
+    return 'Intimidatie $needed (jij hebt $have)';
+  }
+
+  @override
+  String get donCollectReady => 'Klaar om te innen';
+
+  @override
+  String get donLoanNpc => 'Uitlenen aan NPC';
+
+  @override
+  String get donLoanOffer => 'Lening aanbieden';
+
+  @override
+  String get donLoanAccept => 'Accepteren';
+
+  @override
+  String get donLoanRepay => 'Terugbetalen';
+
+  @override
+  String get donLoanCollect => 'Innen';
+
+  @override
+  String get donLoanBorrowerHint => 'Gebruikersnaam lener';
+
+  @override
+  String get donLoanPrincipalHint => 'Bedrag';
+
+  @override
+  String get donBribe => 'Omkopen';
+
+  @override
+  String get donBid => 'Bieden';
+
+  @override
+  String get donBidFromCrew => 'Betalen uit crew-bank';
+
+  @override
+  String get donBidGreedy => 'Hebberig (+payout, +heat)';
+
+  @override
+  String get donCrewOverview => 'Crew-rackets';
+
+  @override
+  String donRankGate(int rank) {
+    return 'Rang $rank vereist.';
+  }
+
+  @override
+  String get donBusinessCafe => 'Café';
+
+  @override
+  String get donBusinessGarage => 'Garage';
+
+  @override
+  String get donBusinessWarehouse => 'Magazijn';
+
+  @override
+  String get donBusinessNightShop => 'Nachwinkel';
+
+  @override
+  String get donBusinessPortOffice => 'Havenkantoor';
+
+  @override
+  String get donBusinessLaundry => 'Wasserette';
+
+  @override
+  String get donNpcStreetDealer => 'Straatdealer';
+
+  @override
+  String get donNpcDockWorker => 'Havenarbeider';
+
+  @override
+  String get donNpcClubHost => 'Clubhost';
+
+  @override
+  String get donOfficeJudge => 'Rechter';
+
+  @override
+  String get donOfficeCommissioner => 'Commissaris';
+
+  @override
+  String get donOfficeAlderman => 'Wethouder';
+
+  @override
+  String get donContractStreetRepair => 'Straatreparatie';
+
+  @override
+  String get donContractHarborCrane => 'Havenkraan';
+
+  @override
+  String get donContractCityHallWing => 'Stadhuisvleugel';
+
+  @override
+  String get donErrorGeneric => 'Die Don-actie is mislukt.';
+
+  @override
+  String get donErrorDisabled => 'De Don-hub is nu gesloten.';
+
+  @override
+  String get donErrorJailed => 'Je kunt de Don-hub niet vanuit de cel runnen.';
+
+  @override
+  String get donErrorWrongCountry => 'Reis eerst naar dat land.';
+
+  @override
+  String get donErrorFunds => 'Niet genoeg cash.';
+
+  @override
+  String get donErrorCooldown => 'Innen is nog in cooldown.';
+
+  @override
+  String get donErrorOwned => 'Iemand anders runt deze zaak al.';
+
+  @override
+  String get donErrorCap => 'Je hebt al het maximum aantal rackets.';
+
+  @override
+  String get donErrorNotOwner => 'Dit is niet van jou.';
+
+  @override
+  String get donErrorContest => 'Er loopt al een contest.';
+
+  @override
+  String get donErrorCrewBank => 'Je mag dit niet naar de crew-bank sturen.';
+
+  @override
+  String get donErrorAlderman => 'Je hebt de wethouder in dit land nodig.';
+
+  @override
+  String donErrorEngineering(int level) {
+    return 'Engineering-school level $level vereist.';
+  }
+
+  @override
+  String get donSqueezeFled => 'De zaak pakte in en vertrok.';
+
+  @override
+  String get donSqueezeHeld => 'De zaak betaalt extra — voorlopig.';
+
+  @override
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
@@ -16501,6 +16701,24 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get helpTopicPropertiesTips =>
       'Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.\nKies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.\nVerkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.\nOntwikkel eerst eigendommen met hoog basisinkomen — de procentuele boost telt harder daar.';
+
+  @override
+  String get helpTopicDonCategory => 'Empire';
+
+  @override
+  String get helpTopicDonTitle => 'Don';
+
+  @override
+  String get helpTopicDonSummary =>
+      'Run beschermingsrackets, woeker, stadsambten en publieke contracten vanuit één Empire-hub. Claims zijn persoonlijk; tribute kan naar cash of de crew-bank.';
+
+  @override
+  String get helpTopicDonHow =>
+      'Open Don onder Empire vanaf rang 7. Je handelt altijd in het land waar je staat.\nRackets zijn NPC-zaken. Claim ze met een wapen dat genoeg intimidatie heeft en innen daarna handmatig na de cooldown. Laat je een zaak ongeveer drie dagen staan, dan wordt hij weer vrij.\nUitknijpen verhoogt de volgende tribute maar ook wanted, en de zaak kan afhaken. Een rivaal in hetzelfde land kan een korte contest starten; de eigenaar kan vasthouden.\nTribute gaat naar cash tenzij je leader, co-leider of capo (in het capo-land) bent en naar de crew-bank stuurt.\nLeningen: jij bent de shark. Leen aan NPC\'s of bied escrow aan een andere speler. Default kost wanted en laat je een deel innen — nooit een full wipe.\nInvloed: koop de rechter, commissaris of wethouder voor 24 uur. Rivalen kunnen overbieden. De rechter geeft alleen een kleine begrensde beroepbonus; per-zaak court-omkoping blijft. De commissaris verlaagt wanted bij mislukte crimes. De wethouder ontgrendelt of versterkt grote contracten.\nStadscontracten betalen legaal na een bod (cash of crew-bank). Off-books extra alleen met rackets in dat land. Hebberige biedingen betalen meer en geven heat. Grote klussen kunnen engineering-school vereisen.\nStraatmisdaad protection racket blijft een eenmalige shake en geeft deze zaken niet extra.';
+
+  @override
+  String get helpTopicDonTips =>
+      'Innen op cooldown in plaats van elke zaak uit te knijpen — flee-kans en wanted lopen snel op.\nCapo-tribute werkt alleen in het toegewezen land; zet dat land vóór je de crew-bank aanzet.\nKoop de wethouder om voordat je het stadhuis-contract najaagt, en houd engineering-school in gedachten voor havenklussen.';
 
   @override
   String get helpTopicBankCategory => 'Economie';

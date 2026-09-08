@@ -37,6 +37,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Crew recruiting uses `recruitingOpen` (default true) and `autoAccept` (default false). Open + auto-accept joins instantly via `joinCrew()`; open without auto-accept still uses a pending request. Closed crews stay off `GET /crews/recruiting`.
 - Applicants must see pending state and be able to cancel (`POST /crews/:id/join/cancel`). Leaders toggle recruiting on the Members tab.
 - Each ISO week has one missable crew weekly goal (`crew_week_mission_1`, fallback `crew_week_crimes_15`). Unclaimed rewards expire at the end of the UTC week. No invite API in this flow.
+- Extra roles besides `leader` / `co_leader` / `member`: `consigliere` (Don crew overview, no bank withdraw) and `capo` with optional `capoCountry` (crew-bank tribute only in that country). Leader sets roles via `POST /crews/:id/members/:playerId/role`. See [don.md](don.md).
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

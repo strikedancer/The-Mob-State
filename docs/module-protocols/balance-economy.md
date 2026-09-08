@@ -23,6 +23,14 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 ## Documented static modifiers (training → crimes)
 - **Combo-readiness:** when the player has **at least one gym train (any track; `gymLastTrainedAt` = latest of strength/speed/stamina `lastTrainedAt`) and one shooting-range train** on the **same UTC calendar day**, `crimeService` adds **`TRAINING_COMBO_READINESS_BONUS`** (**+0.5%** success chance as a fraction, see `backend/src/lib/trainingComboReadiness.ts`) on top of existing gym aggregate + shooting-range training bonuses. Still clamped with all other modifiers to **5–95%** final success chance. Exposed for UI as `trainingComboReadiness` on **`GET /training/status`**.
 
+## Documented static modifiers (don hub)
+- **Tribute band:** catalog `baseTribute` is hundreds per collect (café ~€450, port office ~€1,100), cooldown 4h. Stays below jobs/drugs/nightclub unless telemetry says otherwise.
+- **Squeeze:** tribute × `DON_SQUEEZE_TRIBUTE_PERCENT` (150), +`DON_SQUEEZE_WANTED` (4), flee `DON_SQUEEZE_FLEE_PERCENT` (18). Unused rackets abandon after `DON_ABANDON_SECONDS` (72h).
+- **Loans:** 3 active, principal €2,000–€50,000, 3-day term. Default collect `DON_LOAN_COLLECT_PERCENT` (70) of due; NPC default chance 15%. No full wipe.
+- **Officials:** 24h patronage. Judge appeal bonus capped at `DON_JUDGE_APPEAL_BONUS_PERCENT` (8) on top of law-school, then 10–85% clamp. Commissioner multiplies crime-fail wanted by `DON_COMMISSIONER_WANTED_MULT` (80%). Alderman +15% contract payout.
+- **Contracts:** bid = 20% of catalog payout. Off-books +`DON_CONTRACT_OFFBOOKS_PERCENT` (12) per owned racket in that country (cap 3). Greedy +25% payout and extra wanted.
+- See [don.md](don.md).
+
 ## Documented static modifiers (ammo factory)
 - **Claim interval:** `PRODUCTION_INTERVAL_MINUTES = 20` in `ammoFactoryService.ts` (was 10 after Apr 2026; originally 5).
 - **Base output:** `BASE_ROUNDS_PER_TICK = 3` rounds per ammo type at level 1 (was 5). Level curve unchanged (`1 + (level-1)*2.46`). Session backlog still 8 hours. UI copy + `ammo_factory_screen.dart` estimate constants must match. See `ammo-factory.md`.

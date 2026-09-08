@@ -11567,5 +11567,105 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crewRoleConsigliere": "Consigliera",
+  "crewRoleCapo": "Capa",
+  "crewSetRole": "Imposta il ruolo",
+  "crewCapoCountry": "Paese del Capo",
+  "donMenuLabel": "Assistente",
+  "donTabRackets": "Racchette",
+  "donTabLoans": "Prestiti",
+  "donTabInfluence": "Influenza",
+  "donTabContracts": "Contratti",
+  "donCommandStrip": "Comando",
+  "donTributeCrew": "Banca dell'Crew",
+  "donTributeCash": "Contanti",
+  "donClaim": "Reclamo",
+  "donCollect": "Raccogliere",
+  "donSqueeze": "Stretta",
+  "donContest": "Concorso",
+  "donHold": "Presa",
+  "donOwnedBy": "Di proprietà di {name}",
+  "@donOwnedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "donFree": "Aprire",
+  "donIntimidationNeed": "Intimidazione {needed} (hai {have})",
+  "@donIntimidationNeed": {
+    "placeholders": {
+      "needed": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "donCollectReady": "Pronto da collezionare",
+  "donLoanNpc": "Prestare all'NPC",
+  "donLoanOffer": "Offrire prestito",
+  "donLoanAccept": "Accettare",
+  "donLoanRepay": "Rimborsare",
+  "donLoanCollect": "Raccogliere",
+  "donLoanBorrowerHint": "Nome utente del mutuatario",
+  "donLoanPrincipalHint": "Quantità",
+  "donBribe": "Tangente",
+  "donBid": "Offerta",
+  "donBidFromCrew": "Paga dalla banca dell'Crew",
+  "donBidGreedy": "Avido (+pagamento, +calore)",
+  "donCrewOverview": "Racchette da Crew",
+  "donRankGate": "Grado {rank} richiesto.",
+  "@donRankGate": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "donBusinessCafe": "Caffetteria",
+  "donBusinessGarage": "Garage",
+  "donBusinessWarehouse": "Magazzino",
+  "donBusinessNightShop": "Negozio notturno",
+  "donBusinessPortOffice": "Ufficio portuale",
+  "donBusinessLaundry": "Lavanderia",
+  "donNpcStreetDealer": "Commerciante di strada",
+  "donNpcDockWorker": "Lavoratore portuale",
+  "donNpcClubHost": "Ospite del club",
+  "donOfficeJudge": "Giudice",
+  "donOfficeCommissioner": "Commissaria",
+  "donOfficeAlderman": "Assessore",
+  "donContractStreetRepair": "Riparazione della strada",
+  "donContractHarborCrane": "Gru portuale",
+  "donContractCityHallWing": "Ala del municipio",
+  "donErrorGeneric": "L'azione di Don è fallita.",
+  "donErrorDisabled": "L'hub del Don è attualmente chiuso.",
+  "donErrorJailed": "Non puoi gestire l'hub del Don dalla prigione.",
+  "donErrorWrongCountry": "Viaggia prima in quel paese.",
+  "donErrorFunds": "Non abbastanza contanti.",
+  "donErrorCooldown": "La raccolta è ancora in fase di raffreddamento.",
+  "donErrorOwned": "Qualcuno gestisce già questo negozio.",
+  "donErrorCap": "Possiedi già il numero massimo di racchette.",
+  "donErrorNotOwner": "Questo non lo possiedi.",
+  "donErrorContest": "È già in corso un concorso.",
+  "donErrorCrewBank": "Non puoi inviarlo alla Crew Bank.",
+  "donErrorAlderman": "Hai bisogno dell'assessore in questo paese.",
+  "donErrorEngineering": "È richiesto il livello di scuola di ingegneria {level}.",
+  "@donErrorEngineering": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "donSqueezeFled": "Il negozio fece le valigie e se ne andò.",
+  "donSqueezeHeld": "Il negozio ha pagato un extra, per ora.",
+  "helpTopicDonCategory": "Impero",
+  "helpTopicDonTitle": "Assistente",
+  "helpTopicDonSummary": "Gestisci racket di protezione, strozzinaggio, funzionari comunali e appalti pubblici da un unico hub dell'Impero. I reclami sono personali; il tributo può andare in contanti o alla banca dell'Crew.",
+  "helpTopicDonHow": "Apri Don dall'Impero una volta raggiunto il grado 7. Agisci sempre nel paese in cui ti trovi. \nI racket sono negozi di NPC. Reclamali con un'arma che abbia abbastanza intimidazione, quindi raccogli i tributi a mano dopo il tempo di recupero. Se ignori un negozio per circa tre giorni, diventa nuovamente gratuito. \nSqueeze aumenta il prossimo tributo ma aumenta anche il ricercato e può far fuggire il negozio. Un rivale nello stesso paese può iniziare una breve gara; il proprietario può trattenere. \nIl tributo è denaro personale a meno che tu non sia leader, co-leader o capo (nel paese del capo) e lo invii alla banca dell'Crew. \nPrestiti: lo squalo sei tu. Presta agli NPC o offri un deposito in garanzia a un altro giocatore. Le inadempienze costano qualcosa e ti consentono di riscuotere parte del debito, mai una cancellazione completa. \nInfluenza: corrompere il giudice, il commissario o l'assessore per 24 ore. I rivali possono rilanciare troppo. Il giudice aggiunge solo un piccolo bonus di appello; la tangente giudiziaria caso per caso esiste ancora. Il commissario abbassa i ricercati per reati falliti. L'assessore sblocca o rilancia i grandi appalti. \nI contratti comunali vengono pagati legalmente dopo un'offerta (contanti o banca dell'Crew). Fuori dai libri extra solo se possiedi delle racchette lì. Le offerte avide pagano di più e aggiungono calore. I lavori di grandi dimensioni possono richiedere la scuola di ingegneria. \nIl racket della protezione dalla criminalità di strada resta un problema unico e non concede benefici anche a questi negozi.",
+  "helpTopicDonTips": "Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nIl tributo al Capo funziona solo nel paese assegnato; imposta quella terra prima di attivare/disattivare la banca dell'Crew. \nCorrompi l'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali."
 }

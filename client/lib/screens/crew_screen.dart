@@ -14,6 +14,7 @@ import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/trade_good_l10n.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/country_helper.dart';
 import '../widgets/crew_heists_panel.dart';
 import '../widgets/drug_wholesale_export_dialog.dart';
 import '../services/drug_service.dart';
@@ -1895,11 +1896,15 @@ class _CrewScreenState extends State<CrewScreen>
   String _formatCrewWarRole(AppLocalizations loc, String role) {
     switch (role) {
       case 'leader':
-        return loc.crewUiTr45;
+        return loc.crewRoleLeader;
       case 'co_leader':
-        return loc.crewUiTr46;
+        return loc.crewRoleCoLeader;
+      case 'consigliere':
+        return loc.crewRoleConsigliere;
+      case 'capo':
+        return loc.crewRoleCapo;
       default:
-        return loc.crewUiTr47;
+        return loc.crewRoleMember;
     }
   }
 
@@ -2876,24 +2881,24 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  Future<void> _promoteMember(int playerId) async {
+  Future<void> _setMemberRole(int playerId, String role, {String? capoCountry}) async {
     if (_myCrew == null) return;
     try {
       final apiClient = AuthService().apiClient;
       final response = await apiClient.post(
-        '/crews/${_myCrew!.id}/members/$playerId/promote',
-        {},
+        '/crews/${_myCrew!.id}/members/$playerId/role',
+        {
+          'role': role,
+          if (role == 'capo') 'capoCountry': capoCountry,
+        },
       );
 
       if (response.statusCode == 200) {
         if (mounted) {
-          final locale = Localizations.localeOf(context).languageCode;
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(
-                locale == 'nl' ? 'Lid gepromoveerd' : 'Member promoted',
-              ),
+              content: Text(AppLocalizations.of(context)!.crewSetRole),
               backgroundColor: Colors.green,
             ),
           );
@@ -2905,7 +2910,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('Er is een fout opgetreden'),
+            content: Text(AppLocalizations.of(context)!.donErrorGeneric),
             backgroundColor: Colors.red,
           ),
         );
@@ -2913,41 +2918,83 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  Future<void> _demoteMember(int playerId) async {
-    if (_myCrew == null) return;
-    try {
-      final apiClient = AuthService().apiClient;
-      final response = await apiClient.post(
-        '/crews/${_myCrew!.id}/members/$playerId/demote',
-        {},
-      );
-
-      if (response.statusCode == 200) {
-        if (mounted) {
-          final locale = Localizations.localeOf(context).languageCode;
-          showTopRightFromSnackBar(
-            context,
-            SnackBar(
-              content: Text(
-                locale == 'nl' ? 'Lid gedegradeerd' : 'Member demoted',
-              ),
-              backgroundColor: Colors.orange,
-            ),
-          );
-        }
-        _loadData();
-      }
-    } catch (e) {
-      if (mounted) {
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text('Er is een fout opgetreden'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+  Future<void> _promptMemberRole(int playerId, String currentRole) async {
+    final l10n = AppLocalizations.of(context)!;
+    String selected = currentRole == 'leader' ? 'member' : currentRole;
+    if (!['member', 'co_leader', 'consigliere', 'capo'].contains(selected)) {
+      selected = 'member';
     }
+    String capoCountry = CountryHelper.aviationDestinations.first;
+    final chosen = await showDialog<Map<String, String>>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setLocal) {
+            return AlertDialog(
+              title: Text(l10n.crewSetRole),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButton<String>(
+                    value: selected,
+                    isExpanded: true,
+                    items: [
+                      DropdownMenuItem(value: 'member', child: Text(l10n.crewRoleMember)),
+                      DropdownMenuItem(value: 'co_leader', child: Text(l10n.crewRoleCoLeader)),
+                      DropdownMenuItem(value: 'consigliere', child: Text(l10n.crewRoleConsigliere)),
+                      DropdownMenuItem(value: 'capo', child: Text(l10n.crewRoleCapo)),
+                    ],
+                    onChanged: (value) {
+                      if (value == null) return;
+                      setLocal(() => selected = value);
+                    },
+                  ),
+                  if (selected == 'capo') ...[
+                    const SizedBox(height: 12),
+                    DropdownButton<String>(
+                      value: capoCountry,
+                      isExpanded: true,
+                      items: [
+                        for (final country in CountryHelper.aviationDestinations)
+                          DropdownMenuItem(
+                            value: country,
+                            child: Text(
+                              CountryHelper.getLocalizedCountryName(country, l10n),
+                            ),
+                          ),
+                      ],
+                      onChanged: (value) {
+                        if (value == null) return;
+                        setLocal(() => capoCountry = value);
+                      },
+                    ),
+                  ],
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext),
+                  child: Text(l10n.cancel),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext, {
+                    'role': selected,
+                    'capoCountry': capoCountry,
+                  }),
+                  child: Text(l10n.confirm),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+    if (chosen == null) return;
+    await _setMemberRole(
+      playerId,
+      chosen['role'] ?? 'member',
+      capoCountry: chosen['capoCountry'],
+    );
   }
 
   Future<void> _handleBankAction({required bool deposit}) async {
@@ -5067,45 +5114,23 @@ class _CrewScreenState extends State<CrewScreen>
                                 onSelected: (value) {
                                   if (value == 'kick') {
                                     _kickMember(member.playerId);
-                                  } else if (value == 'promote') {
-                                    _promoteMember(member.playerId);
-                                  } else if (value == 'demote') {
-                                    _demoteMember(member.playerId);
+                                  } else if (value == 'role') {
+                                    _promptMemberRole(member.playerId, member.role);
                                   }
                                 },
                                 itemBuilder: (context) {
-                                  final items = <PopupMenuEntry<String>>[];
-                                  if (member.role == 'co_leader') {
-                                    items.add(
-                                      PopupMenuItem(
-                                        value: 'demote',
-                                        child: Text(
-                                          locale == 'nl'
-                                              ? 'Degradeer'
-                                              : 'Demote',
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    items.add(
-                                      PopupMenuItem(
-                                        value: 'promote',
-                                        child: Text(
-                                          locale == 'nl'
-                                              ? 'Promoveer'
-                                              : 'Promote',
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  items.add(
+                                  final items = <PopupMenuEntry<String>>[
+                                    PopupMenuItem(
+                                      value: 'role',
+                                      child: Text(AppLocalizations.of(context)!.crewSetRole),
+                                    ),
                                     PopupMenuItem(
                                       value: 'kick',
                                       child: Text(
                                         locale == 'nl' ? 'Verwijder' : 'Kick',
                                       ),
                                     ),
-                                  );
+                                  ];
                                   return items;
                                 },
                               )
@@ -5119,19 +5144,20 @@ class _CrewScreenState extends State<CrewScreen>
                                       ? Colors.amber
                                       : (member.role == 'co_leader'
                                             ? Colors.deepPurple
-                                            : Colors.blue),
+                                            : member.role == 'consigliere'
+                                                ? Colors.teal
+                                                : member.role == 'capo'
+                                                    ? Colors.brown
+                                                    : Colors.blue),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
                                   member.isLeader
-                                      ? (locale == 'nl' ? 'Leader' : 'Leader')
-                                      : (member.role == 'co_leader'
-                                            ? (locale == 'nl'
-                                                  ? 'Co-Leader'
-                                                  : 'Co-Leader')
-                                            : (locale == 'nl'
-                                                  ? 'Member'
-                                                  : 'Member')),
+                                      ? AppLocalizations.of(context)!.crewRoleLeader
+                                      : _formatCrewWarRole(
+                                          AppLocalizations.of(context)!,
+                                          member.role,
+                                        ),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

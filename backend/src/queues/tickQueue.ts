@@ -173,6 +173,13 @@ class TickQueue {
       // Keep nightclub economy running in queue-mode ticks as well.
       await nightclubService.processAutomagicSales();
       const seasonResult = await nightclubService.processWeeklySeasonIfNeeded();
+      let donTick = { abandoned: 0, contests: 0, loans: 0, contracts: 0 };
+      try {
+        const { donService } = await import('../services/donService');
+        donTick = await donService.processTick();
+      } catch (donTickErr) {
+        console.error('[TickQueue] Don tick failed:', donTickErr);
+      }
 
       const duration = Date.now() - startTime;
 
@@ -183,6 +190,10 @@ class TickQueue {
         nightclubAutoSalesProcessed: true,
         seasonProcessed: seasonResult.processed,
         seasonWinnerCount: seasonResult.winners.length,
+        donAbandoned: donTick.abandoned,
+        donContests: donTick.contests,
+        donLoans: donTick.loans,
+        donContracts: donTick.contracts,
         duration: `${duration}ms`,
       });
 

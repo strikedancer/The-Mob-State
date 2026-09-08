@@ -11,6 +11,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Crime success math uses gym strength and shooting-range accuracy bonuses from the server. The crime UI may call **`GET /training/status`** to show the same active bonus percentages the player has while committing crimes (transparent summary, not a second rules engine).
 - **Combo-readiness:** same UTC calendar day with at least one gym session and one shooting-range session adds a small extra success chance (`trainingComboReadiness` in `/training/status`; constant in `backend/src/lib/trainingComboReadiness.ts`).
 - **Country police pressure (flagged):** soft success/arrest modifiers from shared per-country pressure — see `country-police.md`. Flag `COUNTRY_POLICE_PRESSURE_ENABLED` default off.
+- **Don commissioner:** if the player currently patrons the commissioner in their country, the crime-fail wanted bump is multiplied by `DON_COMMISSIONER_WANTED_MULT` (default 80%). Not immunity. See [don.md](don.md).
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

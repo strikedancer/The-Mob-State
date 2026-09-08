@@ -3,6 +3,7 @@ import crimesData from '../../content/crimes.json';
 import * as policeService from './policeService';
 import { educationService } from './educationService';
 import { worldEventService } from './worldEventService';
+import { donService } from './donService';
 
 type JudgeSpecialtyKey = 'violence' | 'financial' | 'drugs' | 'white_collar' | 'organized';
 
@@ -145,6 +146,7 @@ export function computeAppealOdds(input: {
   priorConvictions: number;
   wantedLevel: number;
   fbiHeat: number;
+  donJudgeBonusPercent?: number;
 }): AppealOddsBreakdown {
   const lawLevel = Math.max(0, Math.min(5, Math.floor(input.lawLevel)));
   const lawBonus = Math.min(lawLevel * 0.05, 0.25);
@@ -157,6 +159,7 @@ export function computeAppealOdds(input: {
     priorConvictionModifier = -0.2;
   }
   successChance += priorConvictionModifier;
+  successChance += Math.max(0, Math.min(0.08, (input.donJudgeBonusPercent ?? 0) / 100));
 
   const wantedPenaltyApplied = input.wantedLevel > 20;
   const fbiPenaltyApplied = input.fbiHeat > 10;
@@ -462,7 +465,7 @@ export async function getCurrentSentence(playerId: number) {
     return null;
   }
 
-  const [educationProfile, player, prior] = await Promise.all([
+  const [educationProfile, player, prior, donJudgeBonusPercent] = await Promise.all([
     educationService.getPlayerEducationProfile(playerId),
     prisma.player.findUnique({
       where: { id: playerId },
@@ -472,6 +475,7 @@ export async function getCurrentSentence(playerId: number) {
       },
     }),
     getVisibleConvictionAttempts(playerId, crimeAttempt.id),
+    donService.getJudgeAppealBonusPercent(playerId),
   ]);
 
   const appealOdds = computeAppealOdds({
@@ -479,6 +483,7 @@ export async function getCurrentSentence(playerId: number) {
     priorConvictions: prior.visibleAttempts.length,
     wantedLevel: Number(player?.wantedLevel ?? 0),
     fbiHeat: Number(player?.fbiHeat ?? 0),
+    donJudgeBonusPercent,
   });
 
   return {
@@ -591,12 +596,14 @@ export async function appealSentence(
     crimeAttemptId
   );
   const priorConvictions = priorConvictionAttempts.length;
+  const donJudgeBonusPercent = await donService.getJudgeAppealBonusPercent(playerId);
 
   const appealOdds = computeAppealOdds({
     lawLevel: educationProfile.tracks['law']?.level ?? 0,
     priorConvictions,
     wantedLevel: Number(player.wantedLevel ?? 0),
     fbiHeat: Number(player.fbiHeat ?? 0),
+    donJudgeBonusPercent,
   });
   const success = Math.random() < appealOdds.successChance;
 

@@ -11567,5 +11567,105 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crewRoleConsigliere": "Consigliere",
+  "crewRoleCapo": "Kapodaster",
+  "crewSetRole": "Rolle festlegen",
+  "crewCapoCountry": "Capo-Land",
+  "donMenuLabel": "Don",
+  "donTabRackets": "Schläger",
+  "donTabLoans": "Kredite",
+  "donTabInfluence": "Beeinflussen",
+  "donTabContracts": "Verträge",
+  "donCommandStrip": "Befehl",
+  "donTributeCrew": "Mannschaftsbank",
+  "donTributeCash": "Kasse",
+  "donClaim": "Beanspruchen",
+  "donCollect": "Sammeln",
+  "donSqueeze": "Quetschen",
+  "donContest": "Wettbewerb",
+  "donHold": "Halten",
+  "donOwnedBy": "Im Besitz von {name}",
+  "@donOwnedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "donFree": "Offen",
+  "donIntimidationNeed": "Einschüchterung {needed} (Sie haben {have})",
+  "@donIntimidationNeed": {
+    "placeholders": {
+      "needed": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "donCollectReady": "Bereit zum Abholen",
+  "donLoanNpc": "An NPC leihen",
+  "donLoanOffer": "Darlehen anbieten",
+  "donLoanAccept": "Akzeptieren",
+  "donLoanRepay": "Zurückzahlen",
+  "donLoanCollect": "Sammeln",
+  "donLoanBorrowerHint": "Benutzername des Kreditnehmers",
+  "donLoanPrincipalHint": "Menge",
+  "donBribe": "Bestechen",
+  "donBid": "Gebot",
+  "donBidFromCrew": "Bezahlen Sie von der Crew-Bank",
+  "donBidGreedy": "Gierig (+Auszahlung, +Hitze)",
+  "donCrewOverview": "Mannschaftsschläger",
+  "donRankGate": "Rang {rank} erforderlich.",
+  "@donRankGate": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "donBusinessCafe": "Cafe",
+  "donBusinessGarage": "Garage",
+  "donBusinessWarehouse": "Lager",
+  "donBusinessNightShop": "Nachtladen",
+  "donBusinessPortOffice": "Hafenbüro",
+  "donBusinessLaundry": "Wäscherei",
+  "donNpcStreetDealer": "Straßenhändler",
+  "donNpcDockWorker": "Hafenarbeiter",
+  "donNpcClubHost": "Club-Gastgeber",
+  "donOfficeJudge": "Richterin",
+  "donOfficeCommissioner": "Kommissarin",
+  "donOfficeAlderman": "Alderman",
+  "donContractStreetRepair": "Straßenreparatur",
+  "donContractHarborCrane": "Hafenkran",
+  "donContractCityHallWing": "Rathausflügel",
+  "donErrorGeneric": "Diese Don-Aktion ist fehlgeschlagen.",
+  "donErrorDisabled": "Der Don-Hub ist derzeit geschlossen.",
+  "donErrorJailed": "Sie können den Don-Hub nicht vom Gefängnis aus ausführen.",
+  "donErrorWrongCountry": "Reisen Sie zuerst in dieses Land.",
+  "donErrorFunds": "Nicht genug Bargeld.",
+  "donErrorCooldown": "Die Sammlung kühlt noch ab.",
+  "donErrorOwned": "Jemand betreibt diesen Shop bereits.",
+  "donErrorCap": "Sie haben bereits die maximale Anzahl an Schlägern in der Hand.",
+  "donErrorNotOwner": "Das gehört Ihnen nicht.",
+  "donErrorContest": "Ein Wettbewerb läuft bereits.",
+  "donErrorCrewBank": "Sie können dies nicht an die Crew-Bank senden.",
+  "donErrorAlderman": "Sie brauchen den Stadtrat in diesem Land.",
+  "donErrorEngineering": "Ingenieurschulniveau {level} erforderlich.",
+  "@donErrorEngineering": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "donSqueezeFled": "Der Laden packte und ging.",
+  "donSqueezeHeld": "Der Laden hat extra bezahlt – vorerst.",
+  "helpTopicDonCategory": "Reich",
+  "helpTopicDonTitle": "Don",
+  "helpTopicDonSummary": "Führen Sie Schutzgelderpressungen, Kredithaie, Stadtverwaltungen und öffentliche Aufträge von einem Empire-Hub aus durch. Ansprüche sind persönlich; Der Tribut kann in bar oder in der Mannschaftsbank ausgezahlt werden.",
+  "helpTopicDonHow": "Öffne Don von Empire, sobald du Rang 7 erreicht hast. Du agierst immer in dem Land, in dem du stehst. \nSchläger sind NPC-Läden. Erobern Sie sie mit einer Waffe, die ausreichend Einschüchterungspotenzial bietet, und sammeln Sie nach der Abklingzeit per Hand Tribut ein. Wenn Sie einen Shop etwa drei Tage lang ignorieren, wird er wieder kostenlos. \nSqueeze erhöht den nächsten Tribut, erhöht aber auch die Fahndung und kann den Laden in die Flucht schlagen. Ein Rivale im selben Land kann einen kurzen Wettbewerb starten; Der Besitzer kann halten. \nTribut ist persönliches Geld, es sei denn, Sie sind Anführer, Co-Anführer oder Kapodaster (im Kapodaster-Land) und überweisen es an die Mannschaftsbank. \nKredite: Du bist der Hai. Leihen Sie es an NPCs oder bieten Sie einem anderen Spieler ein Treuhandkonto an. Zahlungsausfälle verursachen Kosten und ermöglichen es Ihnen, einen Teil der Schulden einzutreiben – niemals eine vollständige Tilgung. \nEinfluss: Bestechung des Richters, Kommissars oder Stadtrats für 24 Stunden. Konkurrenten können überbieten. Der Richter fügt nur einen kleinen, begrenzten Berufungsbonus hinzu; Die Gerichtsbestechung pro Fall besteht immer noch. Der Kommissar senkt die Fahndung nach gescheiterten Verbrechen. Der Stadtrat schließt große Verträge ab oder erhöht sie. \nStadtverträge zahlen legal nach einem Gebot (Bargeld oder Mannschaftsbank). Off-Books extra nur, wenn Sie dort Schläger besitzen. Gierige Gebote zahlen mehr und sorgen für zusätzliche Hitze. Für große Aufträge kann eine Ingenieurschule erforderlich sein. \nDie Schutzgelderpressung gegen Straßenkriminalität bleibt eine einmalige Sache und gewährt diesen Geschäften nichts.",
+  "helpTopicDonTips": "Sammeln Sie in der Abklingzeit, anstatt jeden Laden zu quetschen – Fliehen Sie Chance und Gesuchtes summieren sich schnell. \nCapo Tribute funktioniert nur im zugewiesenen Land; Legen Sie dieses Land fest, bevor Sie die Crew-Bank umschalten. \nBestechen Sie den Stadtrat, bevor Sie den Auftrag für das Rathaus anstreben, und denken Sie bei Hafenjobs an die Ingenieurschule."
 }

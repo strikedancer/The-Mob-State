@@ -24,6 +24,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - A successful judge bribe must clear only the linked active conviction from the criminal record, not wipe unrelated convictions.
 - If the player uses an external crime flow to wipe their full record, the court record must hide only convictions older than that expungement point and show new convictions normally afterward.
 - **Law education bonus**: the player's `law` track level (0–5) grants +5% appeal success per level (max +25% at level 5). Base appeal chance is therefore 35%–60% before prior-convictions/wanted-level/FBI-heat adjustments. Hard cap is 10%–85%.
+  - Optional Don judge patronage in the current country adds up to `DON_JUDGE_APPEAL_BONUS_PERCENT` (default +8%) before the same 10–85% clamp. It does **not** replace per-case `POST /trial/bribe`. See [don.md](don.md).
   - Cross-dependency: `educationService.getPlayerEducationProfile` is called in parallel inside `judgeService.appealSentence` and `getCurrentSentence`.
   - `GET /trial/current-sentence` returns `appealOdds` (law level/bonus, prior-conviction modifier, wanted, FBI heat, estimated percent). The court screen shows this breakdown; odds are computed in `computeAppealOdds` so UI and roll stay aligned.
   - Wanted above 20 subtracts 10% from appeal. FBI heat above 10 subtracts 15%. These modifiers do **not** change bribe chance (judge corruptibility + offer only). The bribe dialog still shows current Wanted/FBI so the player sees why appeal looks worse.

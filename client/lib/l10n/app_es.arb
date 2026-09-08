@@ -11567,5 +11567,105 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crewRoleConsigliere": "Consigliere",
+  "crewRoleCapo": "capó",
+  "crewSetRole": "Establecer rol",
+  "crewCapoCountry": "país capo",
+  "donMenuLabel": "Don",
+  "donTabRackets": "Raquetas",
+  "donTabLoans": "Préstamos",
+  "donTabInfluence": "Influencia",
+  "donTabContracts": "Contratos",
+  "donCommandStrip": "Dominio",
+  "donTributeCrew": "banco de tripulacion",
+  "donTributeCash": "Dinero",
+  "donClaim": "Afirmar",
+  "donCollect": "Recolectar",
+  "donSqueeze": "Estrujar",
+  "donContest": "Concurso",
+  "donHold": "Sostener",
+  "donOwnedBy": "Propiedad de {name}",
+  "@donOwnedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "donFree": "Abierta",
+  "donIntimidationNeed": "Intimidación {needed} (tienes {have})",
+  "@donIntimidationNeed": {
+    "placeholders": {
+      "needed": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "donCollectReady": "Listo para recoger",
+  "donLoanNpc": "Prestar a NPC",
+  "donLoanOffer": "Oferta de préstamo",
+  "donLoanAccept": "Aceptar",
+  "donLoanRepay": "Pagar",
+  "donLoanCollect": "Recolectar",
+  "donLoanBorrowerHint": "Nombre de usuario del prestatario",
+  "donLoanPrincipalHint": "Cantidad",
+  "donBribe": "Soborno",
+  "donBid": "Licitación",
+  "donBidFromCrew": "Pagar desde el banco de la Crew",
+  "donBidGreedy": "Codiciosa (+ pago, + calor)",
+  "donCrewOverview": "Raquetas de Crew",
+  "donRankGate": "Se requiere rango {rank}.",
+  "@donRankGate": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "donBusinessCafe": "Cafetería",
+  "donBusinessGarage": "Cochera",
+  "donBusinessWarehouse": "Depósito",
+  "donBusinessNightShop": "tienda nocturna",
+  "donBusinessPortOffice": "oficina portuaria",
+  "donBusinessLaundry": "Lavadero",
+  "donNpcStreetDealer": "comerciante callejero",
+  "donNpcDockWorker": "Trabajadora portuaria",
+  "donNpcClubHost": "Anfitriona del club",
+  "donOfficeJudge": "Jueza",
+  "donOfficeCommissioner": "Notaria",
+  "donOfficeAlderman": "Concejal",
+  "donContractStreetRepair": "Reparación de calles",
+  "donContractHarborCrane": "Grúa portuaria",
+  "donContractCityHallWing": "ala del ayuntamiento",
+  "donErrorGeneric": "Esa acción de Don fracasó.",
+  "donErrorDisabled": "El centro Don está actualmente cerrado.",
+  "donErrorJailed": "No puedes ejecutar el centro Don desde la cárcel.",
+  "donErrorWrongCountry": "Viaja primero a ese país.",
+  "donErrorFunds": "No hay suficiente efectivo.",
+  "donErrorCooldown": "La colección aún se está enfriando.",
+  "donErrorOwned": "Alguien ya dirige esta tienda.",
+  "donErrorCap": "Ya tienes el número máximo de raquetas.",
+  "donErrorNotOwner": "No eres dueño de esto.",
+  "donErrorContest": "Ya hay un concurso en marcha.",
+  "donErrorCrewBank": "No puedes enviar esto al banco de la Crew.",
+  "donErrorAlderman": "Necesitas al concejal en este país.",
+  "donErrorEngineering": "Se requiere nivel de escuela de ingeniería {level}.",
+  "@donErrorEngineering": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "donSqueezeFled": "La tienda hizo las maletas y se fue.",
+  "donSqueezeHeld": "La tienda pagó más, por ahora.",
+  "helpTopicDonCategory": "Imperio",
+  "helpTopicDonTitle": "Don",
+  "helpTopicDonSummary": "Dirige fraudes de protección, usura, funcionarios de la ciudad y contratos públicos desde un centro de Empire. Los reclamos son personales; El tributo puede ir al efectivo o al banco de la Crew.",
+  "helpTopicDonHow": "Abre Don del Imperio una vez que alcances el rango 7. Siempre actúas en el país en el que te encuentras. \nLas raquetas son tiendas de NPC. Reclámalos con un arma que tenga suficiente intimidación y luego recolecta tributo a mano después del tiempo de reutilización. Si ignoras una tienda durante unos tres días, vuelve a ser gratuita. \nSqueeze genera el próximo tributo pero también genera búsqueda y puede hacer que la tienda huya. Un rival del mismo país puede iniciar una contienda corta; el dueño puede aguantar. \nEl tributo es dinero en efectivo personal a menos que seas líder, colíder o capo (en el país del capo) y lo envíes al banco de la Crew. \nPréstamos: tú eres el tiburón. Prestar a NPC u ofrecer depósito en garantía a otro jugador. Los costos predeterminados son deseables y le permiten cobrar parte de la deuda, nunca una cancelación completa. \nInfluencia: sobornar al juez, comisario o concejal durante 24 horas. Los rivales pueden sobrepujar. El juez sólo añade una pequeña bonificación de apelación; el soborno judicial por caso todavía existe. El comisario baja los buscados por crímenes fallidos. El concejal desbloquea o impulsa grandes contratos. \nLos contratos de la ciudad se pagan legalmente después de una oferta (en efectivo o en el banco de la Crew). Extra fuera de libros solo si tienes raquetas allí. Las ofertas codiciosas pagan más y añaden calor. Los trabajos grandes pueden requerir una escuela de ingeniería. \nEl negocio de la protección contra la delincuencia callejera sigue siendo una solución puntual y no se concede tampoco a estos establecimientos.",
+  "helpTopicDonTips": "Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nCapo tributo sólo funciona en el país asignado; establece esa tierra antes de alternar el banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos en el puerto."
 }

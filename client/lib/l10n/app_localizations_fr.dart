@@ -2996,6 +2996,210 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewRoleMember => 'Membre';
 
   @override
+  String get crewRoleConsigliere => 'Consiglière';
+
+  @override
+  String get crewRoleCapo => 'Capodastre';
+
+  @override
+  String get crewSetRole => 'Définir le rôle';
+
+  @override
+  String get crewCapoCountry => 'Pays des Capodastres';
+
+  @override
+  String get donMenuLabel => 'Enfiler';
+
+  @override
+  String get donTabRackets => 'Raquettes';
+
+  @override
+  String get donTabLoans => 'Prêts';
+
+  @override
+  String get donTabInfluence => 'Influence';
+
+  @override
+  String get donTabContracts => 'Contrats';
+
+  @override
+  String get donCommandStrip => 'Commande';
+
+  @override
+  String get donTributeCrew => 'Banque d\'équipage';
+
+  @override
+  String get donTributeCash => 'Espèces';
+
+  @override
+  String get donClaim => 'Réclamer';
+
+  @override
+  String get donCollect => 'Collecter';
+
+  @override
+  String get donSqueeze => 'Presser';
+
+  @override
+  String get donContest => 'Concours';
+
+  @override
+  String get donHold => 'Prise';
+
+  @override
+  String donOwnedBy(String name) {
+    return 'Propriété de $name';
+  }
+
+  @override
+  String get donFree => 'Ouvrir';
+
+  @override
+  String donIntimidationNeed(int needed, int have) {
+    return 'Intimidation $needed (vous avez $have)';
+  }
+
+  @override
+  String get donCollectReady => 'Prêt à collectionner';
+
+  @override
+  String get donLoanNpc => 'Prêter au PNJ';
+
+  @override
+  String get donLoanOffer => 'Proposer un prêt';
+
+  @override
+  String get donLoanAccept => 'Accepter';
+
+  @override
+  String get donLoanRepay => 'Rembourser';
+
+  @override
+  String get donLoanCollect => 'Collecter';
+
+  @override
+  String get donLoanBorrowerHint => 'Nom d\'utilisateur de l\'emprunteur';
+
+  @override
+  String get donLoanPrincipalHint => 'Montante';
+
+  @override
+  String get donBribe => 'Pot-de-vin';
+
+  @override
+  String get donBid => 'Offre';
+
+  @override
+  String get donBidFromCrew => 'Payer depuis la banque de l\'équipage';
+
+  @override
+  String get donBidGreedy => 'Gourmand (+ paiement, + chaleur)';
+
+  @override
+  String get donCrewOverview => 'Raquettes de l\'équipage';
+
+  @override
+  String donRankGate(int rank) {
+    return 'Rang $rank requis.';
+  }
+
+  @override
+  String get donBusinessCafe => 'Café';
+
+  @override
+  String get donBusinessGarage => 'Garage';
+
+  @override
+  String get donBusinessWarehouse => 'Entrepôt';
+
+  @override
+  String get donBusinessNightShop => 'Boutique de nuit';
+
+  @override
+  String get donBusinessPortOffice => 'Bureau du port';
+
+  @override
+  String get donBusinessLaundry => 'Lessive';
+
+  @override
+  String get donNpcStreetDealer => 'Marchand de rue';
+
+  @override
+  String get donNpcDockWorker => 'Docker';
+
+  @override
+  String get donNpcClubHost => 'Hôte du club';
+
+  @override
+  String get donOfficeJudge => 'Juge';
+
+  @override
+  String get donOfficeCommissioner => 'Commissaire';
+
+  @override
+  String get donOfficeAlderman => 'Échevin';
+
+  @override
+  String get donContractStreetRepair => 'Réparation des rues';
+
+  @override
+  String get donContractHarborCrane => 'Grue portuaire';
+
+  @override
+  String get donContractCityHallWing => 'Aile de l\'hôtel de ville';
+
+  @override
+  String get donErrorGeneric => 'Cette action de Don a échoué.';
+
+  @override
+  String get donErrorDisabled => 'Le hub Don est actuellement fermé.';
+
+  @override
+  String get donErrorJailed =>
+      'Vous ne pouvez pas exécuter le hub Don depuis la prison.';
+
+  @override
+  String get donErrorWrongCountry => 'Voyagez d’abord dans ce pays.';
+
+  @override
+  String get donErrorFunds => 'Pas assez d\'argent.';
+
+  @override
+  String get donErrorCooldown =>
+      'La collection est encore en train de refroidir.';
+
+  @override
+  String get donErrorOwned => 'Quelqu\'un gère déjà cette boutique.';
+
+  @override
+  String get donErrorCap => 'Vous détenez déjà le nombre maximum de raquettes.';
+
+  @override
+  String get donErrorNotOwner => 'Cela ne vous appartient pas.';
+
+  @override
+  String get donErrorContest => 'Un concours est déjà en cours.';
+
+  @override
+  String get donErrorCrewBank =>
+      'Vous ne pouvez pas l\'envoyer à la banque d\'équipage.';
+
+  @override
+  String get donErrorAlderman => 'Vous avez besoin d’un échevin dans ce pays.';
+
+  @override
+  String donErrorEngineering(int level) {
+    return 'Niveau école d\'ingénieur $level requis.';
+  }
+
+  @override
+  String get donSqueezeFled => 'Le magasin a fait ses valises et est parti.';
+
+  @override
+  String get donSqueezeHeld =>
+      'Le magasin a payé un supplément – ​​pour l’instant.';
+
+  @override
   String get vehicleOpsHotspot => 'Point chaud';
 
   @override
@@ -16663,6 +16867,24 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpTopicPropertiesTips =>
       'Investissez tôt dans un entrepôt si vous avez besoin de plus d’espace de stockage pour vos autres systèmes. \nChoisissez des maisons et des appartements lorsque vous souhaitez augmenter la capacité d\'hébergement pour les systèmes de jeu associés. \nNe vendez pas trop vite : 70 % représente une forte décote par rapport au prix d\'achat.';
+
+  @override
+  String get helpTopicDonCategory => 'Empire';
+
+  @override
+  String get helpTopicDonTitle => 'Enfiler';
+
+  @override
+  String get helpTopicDonSummary =>
+      'Gérez des rackets de protection, des prêts usuraires, des fonctionnaires municipaux et des contrats publics à partir d\'un seul hub de l\'Empire. Les réclamations sont personnelles ; l\'hommage peut être versé en espèces ou à la banque de l\'équipage.';
+
+  @override
+  String get helpTopicDonHow =>
+      'Ouvrez Don depuis Empire une fois que vous atteignez le rang 7. Vous agissez toujours dans le pays dans lequel vous vous trouvez. \nLes raquettes sont des boutiques de PNJ. Réclamez-les avec une arme suffisamment intimidante, puis récupérez l\'hommage à la main après le temps de recharge. Si vous ignorez un magasin pendant environ trois jours, il redevient gratuit. \nSqueeze soulève le prochain hommage mais relance également les personnes recherchées et peut faire fuir la boutique. Un rival du même pays peut lancer une courte compétition ; le propriétaire peut détenir. \nL\'hommage est de l\'argent personnel, sauf si vous êtes leader, co-leader ou capo (dans le pays du capo) et que vous l\'envoyez à la banque de l\'équipage. \nPrêts : vous êtes le requin. Prêtez à des PNJ ou offrez un séquestre à un autre joueur. Les défauts de paiement coûtent cher et vous permettent de recouvrer une partie de la dette – jamais un effacement complet. \nInfluence : corrompre le juge, le commissaire ou l\'échevin pendant 24 heures. Les rivaux peuvent surenchérir. Le juge ajoute seulement une petite prime d\'appel plafonnée ; le pot-de-vin judiciaire par affaire existe toujours. Le commissaire réduit les personnes recherchées pour les crimes manqués. L\'échevin débloque ou booste les gros contrats. \nLes contrats municipaux paient légalement après une offre (en espèces ou en banque d\'équipage). Hors livre en supplément uniquement si vous y possédez des raquettes. Les offres gourmandes paient plus et ajoutent de la chaleur. Les gros travaux peuvent nécessiter une école d’ingénieur. \nLe racket de protection contre la délinquance de rue reste une solution ponctuelle et n\'accorde pas également ces magasins.';
+
+  @override
+  String get helpTopicDonTips =>
+      'Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s\'accumulent rapidement. \nL\'hommage Capo ne fonctionne que dans le pays attribué ; définissez ce terrain avant de basculer entre les équipes. \nSoudoyez l\'échevin avant de briguer le contrat de la mairie et gardez à l\'esprit l\'école d\'ingénieurs pour les emplois dans le port.';
 
   @override
   String get helpTopicBankCategory => 'Économie';

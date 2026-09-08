@@ -20,6 +20,7 @@ import { processCrimeAttempt, CrimeOutcome } from '../utils/crimeOutcomeEngine';
 import { getPlayerTool, degradeTool, resolveSelectedCrimeVehicle } from './vehicleToolService';
 import { serializeAchievementForClient } from './achievementService';
 import * as judgeService from './judgeService';
+import { donService } from './donService';
 import { notificationService } from './notificationService';
 import { economyBalanceService } from './economyBalanceService';
 import { getActiveEventBoostEffects } from './premiumCreditsService';
@@ -536,9 +537,12 @@ export const crimeService = {
         await fbiService.increaseFBIHeat(playerId, config.fbiHeatIncreaseOnFederalCrimeFail);
       } else {
         // Regular crime increases wanted level (softer for low ranks)
-        const wantedBump = crimeFailWantedIncrease(
-          player.rank,
-          config.wantedLevelIncreaseOnCrimeFail,
+        const wantedBump = Math.max(
+          1,
+          Math.round(
+            crimeFailWantedIncrease(player.rank, config.wantedLevelIncreaseOnCrimeFail) *
+              (await donService.getCommissionerWantedMultiplier(playerId))
+          )
         );
         await policeService.increaseWantedLevel(playerId, wantedBump);
       }

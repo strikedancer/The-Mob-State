@@ -5269,6 +5269,390 @@ abstract class AppLocalizations {
   /// **'Member'**
   String get crewRoleMember;
 
+  /// No description provided for @crewRoleConsigliere.
+  ///
+  /// In en, this message translates to:
+  /// **'Consigliere'**
+  String get crewRoleConsigliere;
+
+  /// No description provided for @crewRoleCapo.
+  ///
+  /// In en, this message translates to:
+  /// **'Capo'**
+  String get crewRoleCapo;
+
+  /// No description provided for @crewSetRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Set role'**
+  String get crewSetRole;
+
+  /// No description provided for @crewCapoCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Capo country'**
+  String get crewCapoCountry;
+
+  /// No description provided for @donMenuLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Don'**
+  String get donMenuLabel;
+
+  /// No description provided for @donTabRackets.
+  ///
+  /// In en, this message translates to:
+  /// **'Rackets'**
+  String get donTabRackets;
+
+  /// No description provided for @donTabLoans.
+  ///
+  /// In en, this message translates to:
+  /// **'Loans'**
+  String get donTabLoans;
+
+  /// No description provided for @donTabInfluence.
+  ///
+  /// In en, this message translates to:
+  /// **'Influence'**
+  String get donTabInfluence;
+
+  /// No description provided for @donTabContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts'**
+  String get donTabContracts;
+
+  /// No description provided for @donCommandStrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Command'**
+  String get donCommandStrip;
+
+  /// No description provided for @donTributeCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew bank'**
+  String get donTributeCrew;
+
+  /// No description provided for @donTributeCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get donTributeCash;
+
+  /// No description provided for @donClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim'**
+  String get donClaim;
+
+  /// No description provided for @donCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect'**
+  String get donCollect;
+
+  /// No description provided for @donSqueeze.
+  ///
+  /// In en, this message translates to:
+  /// **'Squeeze'**
+  String get donSqueeze;
+
+  /// No description provided for @donContest.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest'**
+  String get donContest;
+
+  /// No description provided for @donHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold'**
+  String get donHold;
+
+  /// No description provided for @donOwnedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned by {name}'**
+  String donOwnedBy(String name);
+
+  /// No description provided for @donFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get donFree;
+
+  /// No description provided for @donIntimidationNeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Intimidation {needed} (you have {have})'**
+  String donIntimidationNeed(int needed, int have);
+
+  /// No description provided for @donCollectReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to collect'**
+  String get donCollectReady;
+
+  /// No description provided for @donLoanNpc.
+  ///
+  /// In en, this message translates to:
+  /// **'Lend to NPC'**
+  String get donLoanNpc;
+
+  /// No description provided for @donLoanOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer loan'**
+  String get donLoanOffer;
+
+  /// No description provided for @donLoanAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get donLoanAccept;
+
+  /// No description provided for @donLoanRepay.
+  ///
+  /// In en, this message translates to:
+  /// **'Repay'**
+  String get donLoanRepay;
+
+  /// No description provided for @donLoanCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect'**
+  String get donLoanCollect;
+
+  /// No description provided for @donLoanBorrowerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Borrower username'**
+  String get donLoanBorrowerHint;
+
+  /// No description provided for @donLoanPrincipalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get donLoanPrincipalHint;
+
+  /// No description provided for @donBribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Bribe'**
+  String get donBribe;
+
+  /// No description provided for @donBid.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid'**
+  String get donBid;
+
+  /// No description provided for @donBidFromCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay from crew bank'**
+  String get donBidFromCrew;
+
+  /// No description provided for @donBidGreedy.
+  ///
+  /// In en, this message translates to:
+  /// **'Greedy (+payout, +heat)'**
+  String get donBidGreedy;
+
+  /// No description provided for @donCrewOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew rackets'**
+  String get donCrewOverview;
+
+  /// No description provided for @donRankGate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank {rank} required.'**
+  String donRankGate(int rank);
+
+  /// No description provided for @donBusinessCafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Café'**
+  String get donBusinessCafe;
+
+  /// No description provided for @donBusinessGarage.
+  ///
+  /// In en, this message translates to:
+  /// **'Garage'**
+  String get donBusinessGarage;
+
+  /// No description provided for @donBusinessWarehouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Warehouse'**
+  String get donBusinessWarehouse;
+
+  /// No description provided for @donBusinessNightShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Night shop'**
+  String get donBusinessNightShop;
+
+  /// No description provided for @donBusinessPortOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Port office'**
+  String get donBusinessPortOffice;
+
+  /// No description provided for @donBusinessLaundry.
+  ///
+  /// In en, this message translates to:
+  /// **'Laundry'**
+  String get donBusinessLaundry;
+
+  /// No description provided for @donNpcStreetDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Street dealer'**
+  String get donNpcStreetDealer;
+
+  /// No description provided for @donNpcDockWorker.
+  ///
+  /// In en, this message translates to:
+  /// **'Dock worker'**
+  String get donNpcDockWorker;
+
+  /// No description provided for @donNpcClubHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Club host'**
+  String get donNpcClubHost;
+
+  /// No description provided for @donOfficeJudge.
+  ///
+  /// In en, this message translates to:
+  /// **'Judge'**
+  String get donOfficeJudge;
+
+  /// No description provided for @donOfficeCommissioner.
+  ///
+  /// In en, this message translates to:
+  /// **'Commissioner'**
+  String get donOfficeCommissioner;
+
+  /// No description provided for @donOfficeAlderman.
+  ///
+  /// In en, this message translates to:
+  /// **'Alderman'**
+  String get donOfficeAlderman;
+
+  /// No description provided for @donContractStreetRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'Street repair'**
+  String get donContractStreetRepair;
+
+  /// No description provided for @donContractHarborCrane.
+  ///
+  /// In en, this message translates to:
+  /// **'Harbor crane'**
+  String get donContractHarborCrane;
+
+  /// No description provided for @donContractCityHallWing.
+  ///
+  /// In en, this message translates to:
+  /// **'City hall wing'**
+  String get donContractCityHallWing;
+
+  /// No description provided for @donErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'That Don action failed.'**
+  String get donErrorGeneric;
+
+  /// No description provided for @donErrorDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'The Don hub is currently closed.'**
+  String get donErrorDisabled;
+
+  /// No description provided for @donErrorJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot run the Don hub from jail.'**
+  String get donErrorJailed;
+
+  /// No description provided for @donErrorWrongCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel to that country first.'**
+  String get donErrorWrongCountry;
+
+  /// No description provided for @donErrorFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough cash.'**
+  String get donErrorFunds;
+
+  /// No description provided for @donErrorCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection is still cooling down.'**
+  String get donErrorCooldown;
+
+  /// No description provided for @donErrorOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone already runs this shop.'**
+  String get donErrorOwned;
+
+  /// No description provided for @donErrorCap.
+  ///
+  /// In en, this message translates to:
+  /// **'You already hold the maximum number of rackets.'**
+  String get donErrorCap;
+
+  /// No description provided for @donErrorNotOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not own this.'**
+  String get donErrorNotOwner;
+
+  /// No description provided for @donErrorContest.
+  ///
+  /// In en, this message translates to:
+  /// **'A contest is already running.'**
+  String get donErrorContest;
+
+  /// No description provided for @donErrorCrewBank.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot send this to the crew bank.'**
+  String get donErrorCrewBank;
+
+  /// No description provided for @donErrorAlderman.
+  ///
+  /// In en, this message translates to:
+  /// **'You need the alderman in this country.'**
+  String get donErrorAlderman;
+
+  /// No description provided for @donErrorEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Engineering school level {level} required.'**
+  String donErrorEngineering(int level);
+
+  /// No description provided for @donSqueezeFled.
+  ///
+  /// In en, this message translates to:
+  /// **'The shop packed up and left.'**
+  String get donSqueezeFled;
+
+  /// No description provided for @donSqueezeHeld.
+  ///
+  /// In en, this message translates to:
+  /// **'The shop paid extra — for now.'**
+  String get donSqueezeHeld;
+
   /// No description provided for @vehicleOpsHotspot.
   ///
   /// In en, this message translates to:
@@ -28488,6 +28872,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nDevelop high base-income properties first — the percentage boost matters more there.'**
   String get helpTopicPropertiesTips;
+
+  /// No description provided for @helpTopicDonCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Empire'**
+  String get helpTopicDonCategory;
+
+  /// No description provided for @helpTopicDonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Don'**
+  String get helpTopicDonTitle;
+
+  /// No description provided for @helpTopicDonSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Run protection rackets, loan-sharking, city officials and public contracts from one Empire hub. Claims are personal; tribute can go to cash or the crew bank.'**
+  String get helpTopicDonSummary;
+
+  /// No description provided for @helpTopicDonHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. Defaults cost wanted and let you collect part of the debt — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.'**
+  String get helpTopicDonHow;
+
+  /// No description provided for @helpTopicDonTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect on cooldown instead of squeezing every shop — flee chance and wanted add up fast.\nCapo tribute only works in the assigned country; set that land before you toggle crew-bank.\nBribe the alderman before you chase the city-hall contract, and keep engineering school in mind for the harbor jobs.'**
+  String get helpTopicDonTips;
 
   /// No description provided for @helpTopicBankCategory.
   ///

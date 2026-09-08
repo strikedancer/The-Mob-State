@@ -31,8 +31,20 @@ const crewBankSchema = z.object({
 
 function getRoleLabel(role: string, language: 'en' | 'nl'): string {
   const labels = {
-    en: { leader: 'Leader', co_leader: 'Co-Leader', member: 'Member' },
-    nl: { leader: 'Leader', co_leader: 'Co-Leider', member: 'Lid' },
+    en: {
+      leader: 'Leader',
+      co_leader: 'Co-Leader',
+      consigliere: 'Consigliere',
+      capo: 'Capo',
+      member: 'Member',
+    },
+    nl: {
+      leader: 'Leider',
+      co_leader: 'Co-Leider',
+      consigliere: 'Consigliere',
+      capo: 'Capo',
+      member: 'Lid',
+    },
   };
 
   const langLabels = labels[language] ?? labels.en;
@@ -883,6 +895,117 @@ router.post(
         if (error.message === 'CANNOT_CHANGE_LEADER') {
           return res.status(400).json({
             event: 'error.cannot_change_leader',
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/members/:playerId/role
+ * Set member role to member / co_leader / consigliere / capo (leader only)
+ */
+router.post(
+  '/:id/members/:playerId/role',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const targetPlayerId = parseInt(req.params.playerId as string);
+      const currentPlayerId = req.player!.id;
+      const role = String(req.body?.role ?? '');
+      const capoCountry =
+        typeof req.body?.capoCountry === 'string' ? req.body.capoCountry : null;
+
+      if (isNaN(crewId) || isNaN(targetPlayerId)) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      const allowed = new Set(['member', 'co_leader', 'consigliere', 'capo']);
+      if (!allowed.has(role)) {
+        return res.status(400).json({
+          event: 'error.invalid_role',
+          params: {},
+        });
+      }
+
+      const isLeader = await crewService.isCrewLeader(currentPlayerId, crewId);
+      if (!isLeader) {
+        return res.status(403).json({
+          event: 'error.not_crew_leader',
+          params: {},
+        });
+      }
+
+      const targetMembership = await prisma.crewMember.findFirst({
+        where: { crewId, playerId: targetPlayerId },
+        include: {
+          player: { select: { id: true, username: true, email: true, preferredLanguage: true } },
+          crew: { select: { name: true } },
+        },
+      });
+
+      await crewService.changeMemberRole(
+        crewId,
+        targetPlayerId,
+        role as 'member' | 'co_leader' | 'consigliere' | 'capo',
+        capoCountry
+      );
+
+      if (targetMembership) {
+        const language = translationService.getPlayerLanguage(targetMembership.player);
+        const roleLabel = getRoleLabel(role, language);
+        if (targetMembership.player.email) {
+          await emailService.sendCrewRoleChangedEmail(
+            targetMembership.player.email,
+            targetMembership.player.username,
+            targetMembership.crew.name,
+            roleLabel,
+            language
+          );
+        }
+
+        await notificationService.sendCrewRoleChangedNotification(
+          targetMembership.player.id,
+          targetMembership.crew.name,
+          roleLabel,
+          language
+        );
+      }
+
+      return res.json({
+        event: 'crew.member_role_changed',
+        params: { playerId: targetPlayerId, role, capoCountry: role === 'capo' ? capoCountry : null },
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === 'MEMBER_NOT_FOUND') {
+          return res.status(404).json({
+            event: 'error.member_not_found',
+            params: {},
+          });
+        }
+        if (error.message === 'CANNOT_CHANGE_LEADER') {
+          return res.status(400).json({
+            event: 'error.cannot_change_leader',
+            params: {},
+          });
+        }
+        if (error.message === 'CAPO_COUNTRY_REQUIRED') {
+          return res.status(400).json({
+            event: 'error.capo_country_required',
+            params: {},
+          });
+        }
+        if (error.message === 'INVALID_ROLE') {
+          return res.status(400).json({
+            event: 'error.invalid_role',
             params: {},
           });
         }

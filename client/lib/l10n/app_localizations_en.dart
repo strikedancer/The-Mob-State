@@ -2955,6 +2955,206 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crewRoleMember => 'Member';
 
   @override
+  String get crewRoleConsigliere => 'Consigliere';
+
+  @override
+  String get crewRoleCapo => 'Capo';
+
+  @override
+  String get crewSetRole => 'Set role';
+
+  @override
+  String get crewCapoCountry => 'Capo country';
+
+  @override
+  String get donMenuLabel => 'Don';
+
+  @override
+  String get donTabRackets => 'Rackets';
+
+  @override
+  String get donTabLoans => 'Loans';
+
+  @override
+  String get donTabInfluence => 'Influence';
+
+  @override
+  String get donTabContracts => 'Contracts';
+
+  @override
+  String get donCommandStrip => 'Command';
+
+  @override
+  String get donTributeCrew => 'Crew bank';
+
+  @override
+  String get donTributeCash => 'Cash';
+
+  @override
+  String get donClaim => 'Claim';
+
+  @override
+  String get donCollect => 'Collect';
+
+  @override
+  String get donSqueeze => 'Squeeze';
+
+  @override
+  String get donContest => 'Contest';
+
+  @override
+  String get donHold => 'Hold';
+
+  @override
+  String donOwnedBy(String name) {
+    return 'Owned by $name';
+  }
+
+  @override
+  String get donFree => 'Open';
+
+  @override
+  String donIntimidationNeed(int needed, int have) {
+    return 'Intimidation $needed (you have $have)';
+  }
+
+  @override
+  String get donCollectReady => 'Ready to collect';
+
+  @override
+  String get donLoanNpc => 'Lend to NPC';
+
+  @override
+  String get donLoanOffer => 'Offer loan';
+
+  @override
+  String get donLoanAccept => 'Accept';
+
+  @override
+  String get donLoanRepay => 'Repay';
+
+  @override
+  String get donLoanCollect => 'Collect';
+
+  @override
+  String get donLoanBorrowerHint => 'Borrower username';
+
+  @override
+  String get donLoanPrincipalHint => 'Amount';
+
+  @override
+  String get donBribe => 'Bribe';
+
+  @override
+  String get donBid => 'Bid';
+
+  @override
+  String get donBidFromCrew => 'Pay from crew bank';
+
+  @override
+  String get donBidGreedy => 'Greedy (+payout, +heat)';
+
+  @override
+  String get donCrewOverview => 'Crew rackets';
+
+  @override
+  String donRankGate(int rank) {
+    return 'Rank $rank required.';
+  }
+
+  @override
+  String get donBusinessCafe => 'Café';
+
+  @override
+  String get donBusinessGarage => 'Garage';
+
+  @override
+  String get donBusinessWarehouse => 'Warehouse';
+
+  @override
+  String get donBusinessNightShop => 'Night shop';
+
+  @override
+  String get donBusinessPortOffice => 'Port office';
+
+  @override
+  String get donBusinessLaundry => 'Laundry';
+
+  @override
+  String get donNpcStreetDealer => 'Street dealer';
+
+  @override
+  String get donNpcDockWorker => 'Dock worker';
+
+  @override
+  String get donNpcClubHost => 'Club host';
+
+  @override
+  String get donOfficeJudge => 'Judge';
+
+  @override
+  String get donOfficeCommissioner => 'Commissioner';
+
+  @override
+  String get donOfficeAlderman => 'Alderman';
+
+  @override
+  String get donContractStreetRepair => 'Street repair';
+
+  @override
+  String get donContractHarborCrane => 'Harbor crane';
+
+  @override
+  String get donContractCityHallWing => 'City hall wing';
+
+  @override
+  String get donErrorGeneric => 'That Don action failed.';
+
+  @override
+  String get donErrorDisabled => 'The Don hub is currently closed.';
+
+  @override
+  String get donErrorJailed => 'You cannot run the Don hub from jail.';
+
+  @override
+  String get donErrorWrongCountry => 'Travel to that country first.';
+
+  @override
+  String get donErrorFunds => 'Not enough cash.';
+
+  @override
+  String get donErrorCooldown => 'Collection is still cooling down.';
+
+  @override
+  String get donErrorOwned => 'Someone already runs this shop.';
+
+  @override
+  String get donErrorCap => 'You already hold the maximum number of rackets.';
+
+  @override
+  String get donErrorNotOwner => 'You do not own this.';
+
+  @override
+  String get donErrorContest => 'A contest is already running.';
+
+  @override
+  String get donErrorCrewBank => 'You cannot send this to the crew bank.';
+
+  @override
+  String get donErrorAlderman => 'You need the alderman in this country.';
+
+  @override
+  String donErrorEngineering(int level) {
+    return 'Engineering school level $level required.';
+  }
+
+  @override
+  String get donSqueezeFled => 'The shop packed up and left.';
+
+  @override
+  String get donSqueezeHeld => 'The shop paid extra — for now.';
+
+  @override
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
@@ -16462,6 +16662,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get helpTopicPropertiesTips =>
       'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nDevelop high base-income properties first — the percentage boost matters more there.';
+
+  @override
+  String get helpTopicDonCategory => 'Empire';
+
+  @override
+  String get helpTopicDonTitle => 'Don';
+
+  @override
+  String get helpTopicDonSummary =>
+      'Run protection rackets, loan-sharking, city officials and public contracts from one Empire hub. Claims are personal; tribute can go to cash or the crew bank.';
+
+  @override
+  String get helpTopicDonHow =>
+      'Open Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. Defaults cost wanted and let you collect part of the debt — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.';
+
+  @override
+  String get helpTopicDonTips =>
+      'Collect on cooldown instead of squeezing every shop — flee chance and wanted add up fast.\nCapo tribute only works in the assigned country; set that land before you toggle crew-bank.\nBribe the alderman before you chase the city-hall contract, and keep engineering school in mind for the harbor jobs.';
 
   @override
   String get helpTopicBankCategory => 'Economy';

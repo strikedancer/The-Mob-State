@@ -27,6 +27,7 @@ import 'screens/prostitution_rivalry_screen.dart';
 import 'screens/estate_lot_preview_screen.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/school_screen.dart';
+import 'screens/don_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/tune_shop_screen.dart';
 import 'screens/territory_screen.dart';
@@ -190,6 +191,7 @@ class MafiaGameApp extends StatelessWidget {
             '/estate-lot-preview': (context) => const EstateLotPreviewScreen(),
             '/achievements': (context) => const AchievementsScreen(),
             '/school': (context) => const SchoolScreen(),
+            '/don': (context) => const DonScreen(),
             '/help': (context) => const HelpScreen(),
             '/tune-shop': (context) => const TuneShopScreen(),
             '/territory': (context) => const TerritoryScreen(),

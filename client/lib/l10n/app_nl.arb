@@ -5682,6 +5682,101 @@
   "crewRoleLeader": "Leider",
   "crewRoleCoLeader": "Co-leider",
   "crewRoleMember": "Lid",
+  "crewRoleConsigliere": "Consigliere",
+  "crewRoleCapo": "Capo",
+  "crewSetRole": "Rol instellen",
+  "crewCapoCountry": "Capo-land",
+  "donMenuLabel": "Don",
+  "donTabRackets": "Rackets",
+  "donTabLoans": "Leningen",
+  "donTabInfluence": "Invloed",
+  "donTabContracts": "Contracten",
+  "donCommandStrip": "Commando",
+  "donTributeCrew": "Crew-bank",
+  "donTributeCash": "Cash",
+  "donClaim": "Claim",
+  "donCollect": "Innen",
+  "donSqueeze": "Uitknijpen",
+  "donContest": "Overnemen",
+  "donHold": "Vasthouden",
+  "donOwnedBy": "Van {name}",
+  "@donOwnedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "donFree": "Vrij",
+  "donIntimidationNeed": "Intimidatie {needed} (jij hebt {have})",
+  "@donIntimidationNeed": {
+    "placeholders": {
+      "needed": {
+        "type": "int"
+      },
+      "have": {
+        "type": "int"
+      }
+    }
+  },
+  "donCollectReady": "Klaar om te innen",
+  "donLoanNpc": "Uitlenen aan NPC",
+  "donLoanOffer": "Lening aanbieden",
+  "donLoanAccept": "Accepteren",
+  "donLoanRepay": "Terugbetalen",
+  "donLoanCollect": "Innen",
+  "donLoanBorrowerHint": "Gebruikersnaam lener",
+  "donLoanPrincipalHint": "Bedrag",
+  "donBribe": "Omkopen",
+  "donBid": "Bieden",
+  "donBidFromCrew": "Betalen uit crew-bank",
+  "donBidGreedy": "Hebberig (+payout, +heat)",
+  "donCrewOverview": "Crew-rackets",
+  "donRankGate": "Rang {rank} vereist.",
+  "@donRankGate": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "donBusinessCafe": "Café",
+  "donBusinessGarage": "Garage",
+  "donBusinessWarehouse": "Magazijn",
+  "donBusinessNightShop": "Nachwinkel",
+  "donBusinessPortOffice": "Havenkantoor",
+  "donBusinessLaundry": "Wasserette",
+  "donNpcStreetDealer": "Straatdealer",
+  "donNpcDockWorker": "Havenarbeider",
+  "donNpcClubHost": "Clubhost",
+  "donOfficeJudge": "Rechter",
+  "donOfficeCommissioner": "Commissaris",
+  "donOfficeAlderman": "Wethouder",
+  "donContractStreetRepair": "Straatreparatie",
+  "donContractHarborCrane": "Havenkraan",
+  "donContractCityHallWing": "Stadhuisvleugel",
+  "donErrorGeneric": "Die Don-actie is mislukt.",
+  "donErrorDisabled": "De Don-hub is nu gesloten.",
+  "donErrorJailed": "Je kunt de Don-hub niet vanuit de cel runnen.",
+  "donErrorWrongCountry": "Reis eerst naar dat land.",
+  "donErrorFunds": "Niet genoeg cash.",
+  "donErrorCooldown": "Innen is nog in cooldown.",
+  "donErrorOwned": "Iemand anders runt deze zaak al.",
+  "donErrorCap": "Je hebt al het maximum aantal rackets.",
+  "donErrorNotOwner": "Dit is niet van jou.",
+  "donErrorContest": "Er loopt al een contest.",
+  "donErrorCrewBank": "Je mag dit niet naar de crew-bank sturen.",
+  "donErrorAlderman": "Je hebt de wethouder in dit land nodig.",
+  "donErrorEngineering": "Engineering-school level {level} vereist.",
+  "@donErrorEngineering": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "donSqueezeFled": "De zaak pakte in en vertrok.",
+  "donSqueezeHeld": "De zaak betaalt extra — voorlopig.",
   "vehicleOpsHotspot": "Hotspot",
   "vehicleOpsCrew": "Bemanning",
   "vehicleOpsCrewMatch": "Crew-match",
@@ -10111,6 +10206,11 @@
   "helpTopicPropertiesSummary": "Koop eigendommen om opslag, wooncapaciteit, voertuigcollecties en toegang tot systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.",
   "helpTopicPropertiesHow": "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit, voertuigcollectie of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash en zijn veiliger bij aanhouding. Magazijnen bewaren hetzelfde plus gereedschap, met meer plekken. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Je kunt één magazijn per land hebben (geen landelijk plafond). Nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nAuto-showroom, motorzaak en boothaven zijn collecties: één van elk per account wereldwijd, gekocht in een land en daaraan gebonden. Zet alleen voertuigen uit dat land in de vitrine, op 100% conditie, één per model. Upgrades vergroten de vitrine in stappen tot alle types van die categorie. Getoonde voertuigen zijn vergrendeld (geen crimes, smokkel, verkoop) en tellen niet in garage of haven. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per voertuig). Haal de collectie leeg voor je het pand verkoopt.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad of showroomcollectie) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).",
   "helpTopicPropertiesTips": "Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.\nKies huizen en appartementen als je extra wooncapaciteit wilt opbouwen voor gerelateerde gameplay-systemen.\nVerkoop niet te snel: 70% is een serieuze afschrijving ten opzichte van aankooprijs.\nOntwikkel eerst eigendommen met hoog basisinkomen — de procentuele boost telt harder daar.",
+  "helpTopicDonCategory": "Empire",
+  "helpTopicDonTitle": "Don",
+  "helpTopicDonSummary": "Run beschermingsrackets, woeker, stadsambten en publieke contracten vanuit één Empire-hub. Claims zijn persoonlijk; tribute kan naar cash of de crew-bank.",
+  "helpTopicDonHow": "Open Don onder Empire vanaf rang 7. Je handelt altijd in het land waar je staat.\nRackets zijn NPC-zaken. Claim ze met een wapen dat genoeg intimidatie heeft en innen daarna handmatig na de cooldown. Laat je een zaak ongeveer drie dagen staan, dan wordt hij weer vrij.\nUitknijpen verhoogt de volgende tribute maar ook wanted, en de zaak kan afhaken. Een rivaal in hetzelfde land kan een korte contest starten; de eigenaar kan vasthouden.\nTribute gaat naar cash tenzij je leader, co-leider of capo (in het capo-land) bent en naar de crew-bank stuurt.\nLeningen: jij bent de shark. Leen aan NPC's of bied escrow aan een andere speler. Default kost wanted en laat je een deel innen — nooit een full wipe.\nInvloed: koop de rechter, commissaris of wethouder voor 24 uur. Rivalen kunnen overbieden. De rechter geeft alleen een kleine begrensde beroepbonus; per-zaak court-omkoping blijft. De commissaris verlaagt wanted bij mislukte crimes. De wethouder ontgrendelt of versterkt grote contracten.\nStadscontracten betalen legaal na een bod (cash of crew-bank). Off-books extra alleen met rackets in dat land. Hebberige biedingen betalen meer en geven heat. Grote klussen kunnen engineering-school vereisen.\nStraatmisdaad protection racket blijft een eenmalige shake en geeft deze zaken niet extra.",
+  "helpTopicDonTips": "Innen op cooldown in plaats van elke zaak uit te knijpen — flee-kans en wanted lopen snel op.\nCapo-tribute werkt alleen in het toegewezen land; zet dat land vóór je de crew-bank aanzet.\nKoop de wethouder om voordat je het stadhuis-contract najaagt, en houd engineering-school in gedachten voor havenklussen.",
   "helpTopicBankCategory": "Economie",
   "helpTopicBankTitle": "Bank",
   "helpTopicBankSummary": "Stort werkkapitaal gratis tot een daglimiet. Grotere straatcash moet je witwassen met fee, wachttijd en FBI-heat risico.",

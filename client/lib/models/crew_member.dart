@@ -8,6 +8,7 @@ class CrewMember {
   final int crewId;
   final int playerId;
   final String role;
+  final String? capoCountry;
   final int trustScore;
   final String joinedAt;
   
@@ -20,6 +21,7 @@ class CrewMember {
     required this.crewId,
     required this.playerId,
     required this.role,
+    this.capoCountry,
     required this.trustScore,
     required this.joinedAt,
     this.playerInfo,

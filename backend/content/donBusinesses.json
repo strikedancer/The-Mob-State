@@ -1,0 +1,10 @@
+{
+  "businesses": [
+    { "key": "cafe", "baseTribute": 450, "minIntimidation": 20 },
+    { "key": "garage", "baseTribute": 650, "minIntimidation": 20 },
+    { "key": "warehouse", "baseTribute": 900, "minIntimidation": 24 },
+    { "key": "night_shop", "baseTribute": 700, "minIntimidation": 20 },
+    { "key": "port_office", "baseTribute": 1100, "minIntimidation": 28 },
+    { "key": "laundry", "baseTribute": 550, "minIntimidation": 20 }
+  ]
+}

@@ -64,6 +64,11 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/properties.md',
   ),
   HelpTopic(
+    id: 'don',
+    icon: Icons.account_balance_wallet,
+    protocolPath: 'docs/module-protocols/don.md',
+  ),
+  HelpTopic(
     id: 'bank',
     icon: Icons.account_balance,
     protocolPath: 'docs/module-protocols/bank.md',

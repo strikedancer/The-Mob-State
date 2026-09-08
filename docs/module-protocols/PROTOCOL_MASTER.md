@@ -53,6 +53,7 @@ Acceptatie-eis:
 
 - Drugs -> Facilities, Production, Inventory, Dashboard, Admin
 - Properties -> Drugs, Dashboard, Admin, Balance & Economy, Inventory, Security
+- Don -> Travel, Crew/bank, Court, Crimes, School, Territory (optionele regionKey, geen contest-reuse), Dashboard, Notifications, Balance
 - Money Laundering -> Bank, Security/FBI heat, Dashboard, Balance & Economy
 - Stock Market -> Bank, Dashboard, Balance & Economy (gescheiden van Crypto)
 - Nightclub -> Drugs, Prostitution, Dashboard, Admin
@@ -488,6 +489,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   ├── aviation.md (school Aviation 5/5 + betaalde vlieglicentie vóór vliegtuigkoop; tiers basic/commercial/cargo)
     │   ├── smuggling.md (hub-zendingen; DrugInventory unique = playerId+drugType+quality, geen country in Prisma-key)
     │   ├── prostitution.md → Game-system: NIGHTCLUB_SYSTEM.md + VIP_MANAGEMENT.md
+    │   ├── don.md → Game-system: GAMEPLAY.md (rackets, loans, officials, city contracts)
     │   ├── crew.md → Game-system: VIP_LEVELS_SYSTEM.md + HQ_PROGRESSION_GUIDE.md
     │   └── [andere modules...]
     │

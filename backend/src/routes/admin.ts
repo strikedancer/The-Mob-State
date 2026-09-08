@@ -38,6 +38,11 @@ import {
   COUNTRY_POLICE_RUNTIME_SETTING_KEYS,
   invalidateCountryPoliceConfigCache,
 } from '../services/countryPoliceService';
+import {
+  DON_RUNTIME_SETTING_DEFAULTS,
+  DON_RUNTIME_SETTING_KEYS,
+  invalidateDonRuntimeConfigCache,
+} from '../services/donRuntimeConfig';
 import * as casinoOwnershipService from '../services/casinoOwnershipService';
 import {
   getDrugRuntimeConfigView,
@@ -100,6 +105,7 @@ const RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   ...CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
   ...TERRITORY_RUNTIME_SETTING_DEFAULTS,
   ...COUNTRY_POLICE_RUNTIME_SETTING_DEFAULTS,
+  ...DON_RUNTIME_SETTING_DEFAULTS,
 };
 const RUNTIME_SETTING_KEYS = [
   ...HITLIST_RUNTIME_SETTING_KEYS,
@@ -107,6 +113,7 @@ const RUNTIME_SETTING_KEYS = [
   ...CREW_MISSION_RUNTIME_SETTING_KEYS,
   ...TERRITORY_RUNTIME_SETTING_KEYS,
   ...COUNTRY_POLICE_RUNTIME_SETTING_KEYS,
+  ...DON_RUNTIME_SETTING_KEYS,
 ];
 let runtimeConfigSchemaReady = false;
 
@@ -4024,6 +4031,9 @@ router.put(
           Object.keys(runtimeUpdates).some((key) => key.startsWith('COUNTRY_POLICE_'))
         ) {
           invalidateCountryPoliceConfigCache();
+        }
+        if (Object.keys(runtimeUpdates).some((key) => key.startsWith('DON_'))) {
+          invalidateDonRuntimeConfigCache();
         }
       }
 

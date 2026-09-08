@@ -1,0 +1,7 @@
+{
+  "offices": [
+    { "key": "judge", "baseCost": 18000 },
+    { "key": "commissioner", "baseCost": 15000 },
+    { "key": "alderman", "baseCost": 12000 }
+  ]
+}

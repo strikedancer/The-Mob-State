@@ -137,6 +137,12 @@ model Player {
   profileLikesReceived            ProfileLike[]                    @relation("ProfileLikesReceived")
   productionMaterials             ProductionMaterial[]
   properties                      Property[]
+  donRacketsOwned                 DonRacket[]                      @relation("DonRacketsOwned")
+  donRacketContests               DonRacket[]                      @relation("DonRacketContests")
+  donLoansLent                    DonLoan[]                        @relation("DonLoansLent")
+  donLoansBorrowed                DonLoan[]                        @relation("DonLoansBorrowed")
+  donOfficials                    DonOfficial[]                    @relation("DonOfficials")
+  donContracts                    DonContract[]                    @relation("DonContracts")
   prostitutes                     Prostitute[]
   prostitutionAchievements        ProstitutionAchievement[]
   leaderboardEntries              ProstitutionLeaderboard[]
@@ -533,14 +539,15 @@ model Crew {
 }
 
 model CrewMember {
-  id         Int      @id @default(autoincrement())
-  crewId     Int
-  playerId   Int      @unique
-  role       String   @db.VarChar(20)
-  joinedAt   DateTime @default(now())
-  trustScore Int      @default(50)
-  crew       Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
-  player     Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  id          Int      @id @default(autoincrement())
+  crewId      Int
+  playerId    Int      @unique
+  role        String   @db.VarChar(20)
+  capoCountry String?  @db.VarChar(50)
+  joinedAt    DateTime @default(now())
+  trustScore  Int      @default(50)
+  crew        Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
   @@unique([crewId, playerId])
   @@index([playerId])
@@ -2630,4 +2637,82 @@ enum NPCType {
   MATIG
   GEMIDDELD
   CONTINU
+}
+
+model DonRacket {
+  id              Int       @id @default(autoincrement())
+  businessKey     String    @db.VarChar(40)
+  countryCode     String    @db.VarChar(50)
+  regionKey       String?   @db.VarChar(64)
+  ownerPlayerId   Int?
+  squeezeUntil    DateTime?
+  lastCollectAt   DateTime?
+  tributeToCrew   Boolean   @default(false)
+  contestUntil    DateTime?
+  contestPlayerId Int?
+  claimedAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  owner           Player?   @relation("DonRacketsOwned", fields: [ownerPlayerId], references: [id], onDelete: SetNull)
+  contestPlayer   Player?   @relation("DonRacketContests", fields: [contestPlayerId], references: [id], onDelete: SetNull)
+
+  @@unique([businessKey, countryCode])
+  @@index([ownerPlayerId])
+  @@index([countryCode])
+  @@map("don_rackets")
+}
+
+model DonLoan {
+  id               Int       @id @default(autoincrement())
+  lenderId         Int
+  borrowerPlayerId Int?
+  npcKey           String?   @db.VarChar(40)
+  principal        Int
+  interestBps      Int
+  dueAt            DateTime
+  status           String    @db.VarChar(20)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  lender           Player    @relation("DonLoansLent", fields: [lenderId], references: [id], onDelete: Cascade)
+  borrower         Player?   @relation("DonLoansBorrowed", fields: [borrowerPlayerId], references: [id], onDelete: SetNull)
+
+  @@index([lenderId])
+  @@index([borrowerPlayerId])
+  @@index([status, dueAt])
+  @@map("don_loans")
+}
+
+model DonOfficial {
+  id             Int       @id @default(autoincrement())
+  countryCode    String    @db.VarChar(50)
+  office         String    @db.VarChar(20)
+  patronPlayerId Int?
+  paidUntil      DateTime?
+  bidAmount      Int       @default(0)
+  updatedAt      DateTime  @updatedAt
+  patron         Player?   @relation("DonOfficials", fields: [patronPlayerId], references: [id], onDelete: SetNull)
+
+  @@unique([countryCode, office])
+  @@index([patronPlayerId])
+  @@map("don_officials")
+}
+
+model DonContract {
+  id             Int       @id @default(autoincrement())
+  countryCode    String    @db.VarChar(50)
+  contractKey    String    @db.VarChar(40)
+  bidderPlayerId Int?
+  crewId         Int?
+  startsAt       DateTime?
+  endsAt         DateTime?
+  payout         Int       @default(0)
+  status         String    @db.VarChar(20)
+  greedy         Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  bidder         Player?   @relation("DonContracts", fields: [bidderPlayerId], references: [id], onDelete: SetNull)
+
+  @@index([countryCode, status])
+  @@index([bidderPlayerId])
+  @@map("don_contracts")
 }

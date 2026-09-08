@@ -1,0 +1,12 @@
+{
+  "npcs": [
+    { "key": "street_dealer", "interestBps": 2200 },
+    { "key": "dock_worker", "interestBps": 2500 },
+    { "key": "club_host", "interestBps": 2800 }
+  ],
+  "contracts": [
+    { "key": "street_repair", "payout": 3500, "durationHours": 6, "requiresAlderman": false, "minEngineering": 0 },
+    { "key": "harbor_crane", "payout": 7000, "durationHours": 8, "requiresAlderman": false, "minEngineering": 2 },
+    { "key": "city_hall_wing", "payout": 14000, "durationHours": 10, "requiresAlderman": true, "minEngineering": 3 }
+  ]
+}

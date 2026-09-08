@@ -7,6 +7,7 @@
 - [FBI & Federal Crimes](#fbi--federal-crimes)
 - [Health & Hospital Systeem](#health--hospital-systeem)
 - [Jobs Systeem](#jobs-systeem)
+- [Don](#don)
 - [Properties](#properties)
 - [Crews & Heists](#crews--heists)
 - [Crew Missions](#crew-missions)
@@ -361,6 +362,19 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Veilige manier om geld te verdienen
 - Minder lucratief dan crimes
 - Na een geslaagde job zie je eerst een resultaatvenster met verdiensten en XP (zelfde stijl als Misdaden); daarna volgt de cooldown.
+
+---
+
+## Don
+
+- Eén Empire-hub (rank 7+): rackets, woeker, omgekochte ambten en stadscontracten in het land waar je bent.
+- Claim van een zaak is altijd persoonlijk. Innen gaat naar cash, tenzij je `leader` / `co_leader` / `capo` (in het capo-land) tribute naar de crew-bank stuurt.
+- Straatmisdaad `protection_racket` blijft een eenmalige shake; de hub is het persistente rijk (geen dubbel inkomen).
+- Handmatig innen met cooldown; te lang niet innen (~72u) maakt de zaak weer vrij. Squeeze: hogere tribute, extra wanted, kans dat de zaak afhaakt. Rivalen kunnen een korte contest starten.
+- Woeker: jij bent de shark (NPC + P2P escrow). Default = wanted + innen van een deel van de schuld, geen full wipe. Caps tegen alt-farm.
+- Per land drie NPC-ambten (rechter, commissaris, wethouder): cash-overbieding, tijdelijk, verloopt. Rechter geeft een begrensde hoger-beroepbonus (stapel niet onbeperkt met law-school). Commissaris verlaagt wanted bij mislukte crimes licht. Wethouder ontgrendelt/versterkt grote contracten. Per-zaak court-omkoping blijft los.
+- Stadscontracten: bod (cash of crew-bank), looptijd, legale payout. Off-books bonus alleen met rackets in dat land; greedy = extra heat. Grotere klussen kunnen engineering-school + wethouder vereisen.
+- Crew-rollen `consigliere` (overzicht, geen bank-opname) en `capo` (tribute naar crew-bank in één land). Tribute blijft onder jobs/drugs/nightclub.
 
 ---
 

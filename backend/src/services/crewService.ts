@@ -585,7 +585,8 @@ export async function kickMember(crewId: number, targetPlayerId: number): Promis
 export async function changeMemberRole(
   crewId: number,
   targetPlayerId: number,
-  role: 'member' | 'co_leader'
+  role: 'member' | 'co_leader' | 'consigliere' | 'capo',
+  capoCountry?: string | null
 ): Promise<void> {
   const membership = await prisma.crewMember.findFirst({
     where: { crewId, playerId: targetPlayerId },
@@ -599,9 +600,19 @@ export async function changeMemberRole(
     throw new Error('CANNOT_CHANGE_LEADER');
   }
 
+  const allowed = new Set(['member', 'co_leader', 'consigliere', 'capo']);
+  if (!allowed.has(role)) {
+    throw new Error('INVALID_ROLE');
+  }
+
+  const nextCountry = role === 'capo' ? (capoCountry?.trim() || null) : null;
+  if (role === 'capo' && !nextCountry) {
+    throw new Error('CAPO_COUNTRY_REQUIRED');
+  }
+
   await prisma.crewMember.update({
     where: { id: membership.id },
-    data: { role },
+    data: { role, capoCountry: nextCountry },
   });
 }
 
