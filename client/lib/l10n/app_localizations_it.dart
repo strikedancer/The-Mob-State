@@ -13344,6 +13344,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get eventItemName_event_badge_rival => 'Rival badge (bound)';
 
   @override
+  String get profileEventChipsTitle => 'Chip evento';
+
+  @override
+  String get profileEventChipsHint =>
+      'Vinti negli eventi. Visibili su questo profilo. Vendibili su Mercato nero → Piazza.';
+
+  @override
   String get gameScreenUnknownPlayer => 'Sconosciuta';
 
   @override

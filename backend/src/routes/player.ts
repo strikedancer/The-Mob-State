@@ -27,6 +27,7 @@ import {
   isSupportedPlayerLanguage,
   normalizePlayerLanguage,
 } from '../config/supportedLanguages';
+import { getPublicEventChipShowcase } from '../services/eventItemService';
 
 function emptyCrewWarHub() {
   return {
@@ -337,6 +338,12 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     const rankInfo = getRankTitle(player.rank);
 
     let featuredAchievements: Array<{ id: string; title: string; icon?: string }> = [];
+    let eventChips: Array<{
+      itemKey: string;
+      quantity: number;
+      nameNl: string;
+      nameEn: string;
+    }> = [];
     let estateLot: {
       houseLevel: number;
       parkingLevel: number;
@@ -344,6 +351,12 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       fenceLevel: number;
       goldFence: boolean;
     } | null = null;
+    try {
+      eventChips = await getPublicEventChipShowcase(playerId);
+    } catch (chipError) {
+      console.error('⚠️ Profile event chips fallback:', chipError);
+    }
+
     try {
       const { ACHIEVEMENT_DEFINITIONS } = await import('../services/achievementService');
       const unlocked = await prisma.prostitutionAchievement.findMany({
@@ -420,6 +433,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       crewRole,
       crewId,
       featuredAchievements,
+      eventChips,
       estateLot,
     });
   } catch (error) {

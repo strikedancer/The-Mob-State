@@ -9519,6 +9519,8 @@
   "eventItemName_event_chip_silver": "Event chip (silver)",
   "eventItemName_event_chip_bronze": "Event chip (bronze)",
   "eventItemName_event_badge_rival": "Rival badge (bound)",
+  "profileEventChipsTitle": "Żetony eventu",
+  "profileEventChipsHint": "Zdobyte na eventach. Widoczne na tym profilu. Sprzedawalne na Czarnym rynku → Targowisko.",
   "gameScreenHeroTitle": "Live events",
   "gameScreenHeroSubtitle": "Compete for cash, credits and event chips. Climb the board before the timer hits zero.",
   "gameScreenActiveCount": "{count} live",

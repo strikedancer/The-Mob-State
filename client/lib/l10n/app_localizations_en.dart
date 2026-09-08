@@ -13195,6 +13195,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eventItemName_event_badge_rival => 'Rival badge (bound)';
 
   @override
+  String get profileEventChipsTitle => 'Event chips';
+
+  @override
+  String get profileEventChipsHint =>
+      'Won from events. Visible on this profile. Sellable on Black Market → Marketplace.';
+
+  @override
   String get gameScreenUnknownPlayer => 'Unknown';
 
   @override
@@ -16466,7 +16473,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Open Black Market from the Economy menu. Shops sit in one strip: Trade goods, Weapons, Ammo, Tools, Security, Materials and Backpacks. Player market has Marketplace and My listings.\nTrade goods: stock you can sell here sits at the top. Goods bought or claimed in another country stay there until you smuggle them. Then the catalog (pricing, caps, risk chips). Type a quantity or tap Max for large stacks. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into shops (Trade goods, Weapons, Ammo, Tools, Security, Materials, Backpacks) and a player market (Marketplace, My listings).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.';
+      'Open Black Market from the Economy menu. Shops sit in one strip: Trade goods, Weapons, Ammo, Tools, Security, Materials and Backpacks. Player market has Marketplace and My listings.\nTrade goods: stock you can sell here sits at the top. Goods bought or claimed in another country stay there until you smuggle them. Then the catalog (pricing, caps, risk chips). Type a quantity or tap Max for large stacks. Buy/sell uses the /trade API; partial load failures show a warning banner.\nThe black market is divided into shops (Trade goods, Weapons, Ammo, Tools, Security, Materials, Backpacks) and a player market (Marketplace, My listings).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Event chips (gold/silver/bronze) show on every public profile. Sell them via Sell item → event item; other players buy them on Marketplace.';
 
   @override
   String get helpTopicBlackMarketTips =>
@@ -16862,7 +16869,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsHow =>
-      'Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAchievement badges are visible on your public profile. They show other players your specializations and experience.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.';
+      'Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAchievement badges are visible on your public profile. They show other players your specializations and experience.\nEvent chips (gold, silver, bronze) also appear on the profile: everyone can see how many you have won. They give no extra power; you can sell them on Black Market → Marketplace.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.';
 
   @override
   String get helpTopicAchievementsTips =>

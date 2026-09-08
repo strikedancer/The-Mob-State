@@ -9519,6 +9519,8 @@
   "eventItemName_event_chip_silver": "Event chip (silver)",
   "eventItemName_event_chip_bronze": "Event chip (bronze)",
   "eventItemName_event_badge_rival": "Rival badge (bound)",
+  "profileEventChipsTitle": "Fichas de evento",
+  "profileEventChipsHint": "Ganadas en eventos. Visibles en este perfil. Se pueden vender en Mercado negro → Mercado.",
   "gameScreenHeroTitle": "Live events",
   "gameScreenHeroSubtitle": "Compete for cash, credits and event chips. Climb the board before the timer hits zero.",
   "gameScreenActiveCount": "{count} live",

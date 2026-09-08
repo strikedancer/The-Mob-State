@@ -29,7 +29,7 @@ Player-to-player listings on **Zwarte Markt → Marktplaats** (`black_market_scr
 | POST | `/market/delist-item/:id` | restores escrow for stack kinds |
 | POST | `/market/buy-item/:id` | cash + transfer / merge |
 
-Inventory for event items: `GET /game-events/my-items`. Grants via event reward `items[]` and `POST /admin/game-events/event-items/grant`. Bound catalog keys (`event_badge_rival`) are not listable.
+Inventory for event items: `GET /game-events/my-items`. Public gold/silver/bronze counts: `GET /player/:id/profile` → `eventChips`. Grants via event reward `items[]` and `POST /admin/game-events/event-items/grant`. Bound catalog keys (`event_badge_rival`) are not listable and stay off the profile vitrine.
 
 ## Services
 - `playerMarketplaceService.ts` — tools + drug/crypto/trade/event lots

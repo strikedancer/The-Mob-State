@@ -150,6 +150,40 @@ export async function debitEventItem(
   }
 }
 
+const PUBLIC_CHIP_KEYS = [
+  'event_chip_gold',
+  'event_chip_silver',
+  'event_chip_bronze',
+] as const;
+
+export async function getPublicEventChipShowcase(playerId: number): Promise<
+  Array<{
+    itemKey: string;
+    quantity: number;
+    nameNl: string;
+    nameEn: string;
+  }>
+> {
+  const rows = await prisma.playerEventItem.findMany({
+    where: {
+      playerId,
+      itemKey: { in: [...PUBLIC_CHIP_KEYS] },
+    },
+    select: { itemKey: true, quantity: true },
+  });
+  const qtyByKey = new Map(rows.map((row) => [row.itemKey, row.quantity]));
+
+  return PUBLIC_CHIP_KEYS.map((itemKey) => {
+    const def = EVENT_ITEM_CATALOG[itemKey];
+    return {
+      itemKey,
+      quantity: Math.max(0, qtyByKey.get(itemKey) ?? 0),
+      nameNl: def.nameNl,
+      nameEn: def.nameEn,
+    };
+  });
+}
+
 export async function getPlayerEventInventory(playerId: number) {
   const rows = await prisma.playerEventItem.findMany({
     where: { playerId, quantity: { gt: 0 } },
@@ -179,4 +213,5 @@ export const eventItemService = {
   creditEventItem,
   debitEventItem,
   getPlayerEventInventory,
+  getPublicEventChipShowcase,
 };

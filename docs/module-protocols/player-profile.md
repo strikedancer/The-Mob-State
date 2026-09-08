@@ -27,7 +27,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 - Nieuwe accounts kiezen bij registratie **mannelijk of vrouwelijk** (`LoginScreen`); de server slaat `gender` (`male` \| `female`) op en zet `avatar` op `default_1` / `default_2`. Bestaande accounts kunnen `gender` null hebben; avatars blijven via `settings` / rank-allowlist wisselbaar. **Preset** custom portret-PNG’s (defaults): `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API, zie `PROTOCOL_MASTER` AI-keys). **Speler-gestuurde portretten:** selfie-upload in Instellingen → kost premium credits, opslag onder `/images/player_avatars/...` op de runtime mount; zie [player-portraits.md](player-portraits.md). **Flutter web:** registratie toont `AvatarHelper` → na asset-fallback `Image.network` naar `/images/avatars/default_*.png`; die bestanden moeten op de **externe client-image mount** staan (`runtime/client-images/avatars/`, sync via deploy-script uit `client/assets/images/avatars/`). **Layout:** breed scherm = formulier rechts; onderaan zelfde **GuestLegalFooter** als marketing (`bottomNavigationBar`).
 
 ## Must Preserve
-- Publiek profiel toont featured achievements (top 6–9), tappable crew-naam en `EstateLotView` als er een huis/appartement met upgrade-levels is. Geen live landkaart.
+- Publiek profiel toont featured achievements (top 6–9), **event chips** (goud/zilver/brons-aantallen van `player_event_items`, ook 0), tappable crew-naam en `EstateLotView` als er een huis/appartement met upgrade-levels is. Geen live landkaart. Chips zijn prestige + P2P-verkoop, geen locatie-intel.
 - **Online** op het publieke profiel is echte sessie-activiteit (`online:{playerId}` in Redis, gezet bij authenticate). Gebruik **niet** `lastTickAt` / `updatedAt` / `lastSessionAt` als “nu online” — ticks en login-tijd zijn geen presence. Last-seen komt uit `lastseen:{playerId}` (laatste authenticate); ontbreekt die key, val terug op `createdAt`. `lastSessionAt` is alleen voor single-session JWT-vervanging.
 - Duidelijke profielnavigatie vanaf avatars en namen.
 - Rangtitel op het publieke profiel is gelokaliseerd vanaf het numerieke rank-veld en gelijk aan de dashboard-rang (niet de ruwe Engelse API-`rankTitle`).
@@ -53,6 +53,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 6. Controleer NL/EN copy voor profielknoppen, likes en foutmeldingen.
 7. Verifieer dat embedded/contextuele flows de hoofdmodule niet onnodig kapot navigeren.
 8. Open het profiel van een account dat lang niet inlogde: Online mag niet “Nu online” zijn; toon last-seen in dagen. Een tweede keer openen mag dat niet in “Nu online” veranderen.
+9. Open eigen en andermans profiel: Event chips-kaart toont goud/zilver/brons (0 als leeg). Geen live land.
 
 ## Implementation Pattern
 

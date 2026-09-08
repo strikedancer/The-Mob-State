@@ -9,6 +9,7 @@ import '../config/app_config.dart';
 import '../models/vehicle.dart';
 import '../screens/crew_screen.dart';
 import '../utils/avatar_helper.dart';
+import '../utils/game_event_rewards.dart';
 import '../utils/rank_display.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/estate_lot_view.dart';
@@ -410,6 +411,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
           _buildIdentityCard(),
           const SizedBox(height: 12),
           _buildAchievementsCard(),
+          const SizedBox(height: 12),
+          _buildEventChipsCard(),
           if (_playerData?['estateLot'] is Map) ...[
             const SizedBox(height: 12),
             _buildEstateCard(),
@@ -702,6 +705,101 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                   )
                   .toList(),
             ),
+    );
+  }
+
+  List<Map<String, dynamic>> _eventChipRows() {
+    const keys = [
+      'event_chip_gold',
+      'event_chip_silver',
+      'event_chip_bronze',
+    ];
+    final raw = _playerData?['eventChips'];
+    final listed = raw is List
+        ? raw.whereType<Map>().map((row) => Map<String, dynamic>.from(row)).toList()
+        : const <Map<String, dynamic>>[];
+    final byKey = {for (final row in listed) row['itemKey']?.toString(): row};
+    return keys
+        .map(
+          (key) => {
+            'itemKey': key,
+            'quantity': (byKey[key]?['quantity'] as num?)?.toInt() ?? 0,
+          },
+        )
+        .toList();
+  }
+
+  Color _chipMetalColor(String itemKey) {
+    switch (itemKey) {
+      case 'event_chip_gold':
+        return const Color(0xFFE0B44A);
+      case 'event_chip_silver':
+        return const Color(0xFFC0C7D1);
+      default:
+        return const Color(0xFFCD7F32);
+    }
+  }
+
+  Widget _buildEventChipsCard() {
+    final l10n = AppLocalizations.of(context)!;
+    final chips = _eventChipRows();
+    return _sectionCard(
+      title: l10n.profileEventChipsTitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.profileEventChipsHint,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              for (var i = 0; i < chips.length; i++) ...[
+                if (i > 0) const SizedBox(width: 8),
+                Expanded(child: _eventChipTile(chips[i])),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _eventChipTile(Map<String, dynamic> chip) {
+    final l10n = AppLocalizations.of(context)!;
+    final itemKey = chip['itemKey']?.toString() ?? '';
+    final quantity = (chip['quantity'] as num?)?.toInt() ?? 0;
+    final color = _chipMetalColor(itemKey);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.35)),
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.workspace_premium, color: color),
+          const SizedBox(height: 6),
+          Text(
+            eventItemDisplayName(l10n, itemKey),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.w700,
+              fontSize: 11,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            quantity.toString(),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ],
+      ),
     );
   }
 
