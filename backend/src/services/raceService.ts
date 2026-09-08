@@ -7,6 +7,9 @@ type VehicleCatalogRow = {
   id: string;
   name?: string;
   image?: string;
+  imageNew?: string;
+  imageDirty?: string;
+  imageDamaged?: string;
   stats?: { speed?: number };
 };
 
@@ -15,10 +18,40 @@ function findCar(vehicleId: string): VehicleCatalogRow | null {
   return cars.find((row) => row.id === vehicleId) ?? null;
 }
 
-function catalogLook(vehicleId: string): { name: string; image: string | null } {
+function catalogFile(value?: string): string {
+  return typeof value === 'string' && value.trim() ? value.trim() : '';
+}
+
+/** Same priority as garage `imageForCondition`: new / dirty / damaged, then catalog still. */
+function pickCarImage(def: VehicleCatalogRow | null, condition: number | null): string | null {
+  if (!def) return null;
+  const imageNew = catalogFile(def.imageNew);
+  const imageDirty = catalogFile(def.imageDirty);
+  const imageDamaged = catalogFile(def.imageDamaged);
+  const image = catalogFile(def.image);
+  const cond = condition ?? 100;
+  if (cond >= 100 && imageNew) return imageNew;
+  if (cond >= 70 && imageDirty) return imageDirty;
+  if (cond < 70 && imageDamaged) return imageDamaged;
+  return imageNew || imageDirty || imageDamaged || image || null;
+}
+
+function catalogLook(
+  vehicleId: string,
+  condition: number | null = null,
+): { name: string; image: string | null } {
   const def = findCar(vehicleId);
-  const image = typeof def?.image === 'string' && def.image.trim() ? def.image : null;
-  return { name: def?.name ?? vehicleId, image };
+  return { name: def?.name ?? vehicleId, image: pickCarImage(def, condition) };
+}
+
+async function conditionsByInventoryId(ids: number[]): Promise<Map<number, number>> {
+  const unique = [...new Set(ids.filter((id) => Number.isInteger(id) && id > 0))];
+  if (unique.length === 0) return new Map();
+  const rows = await prisma.vehicleInventory.findMany({
+    where: { id: { in: unique } },
+    select: { id: true, condition: true },
+  });
+  return new Map(rows.map((row) => [row.id, row.condition]));
 }
 
 async function getTuneSpeed(playerId: number, inventoryId: number): Promise<number> {
@@ -186,7 +219,7 @@ export const raceService = {
       })
       .map((row) => {
         const def = findCar(row.vehicleId);
-        const look = catalogLook(row.vehicleId);
+        const look = catalogLook(row.vehicleId, row.condition);
         return {
           inventoryId: row.id,
           vehicleId: row.vehicleId,
@@ -212,13 +245,17 @@ export const raceService = {
           where: { meetingId_playerId: { meetingId: meeting.id, playerId } },
         }),
       ]);
+      const entryConditions = await conditionsByInventoryId([
+        ...entries.map((entry) => entry.vehicleInventoryId),
+        ...(myEntry ? [myEntry.vehicleInventoryId] : []),
+      ]);
       live = serializeMeeting(meeting, {
         endsInSeconds: Math.max(0, Math.floor((meeting.endsAt.getTime() - Date.now()) / 1000)),
         myEntry: myEntry
           ? {
               id: myEntry.id,
               vehicleId: myEntry.vehicleId,
-              ...catalogLook(myEntry.vehicleId),
+              ...catalogLook(myEntry.vehicleId, entryConditions.get(myEntry.vehicleInventoryId) ?? null),
               stake: myEntry.stake,
               fixing: myEntry.fixing,
             }
@@ -228,7 +265,7 @@ export const raceService = {
           playerId: entry.playerId,
           username: entry.player.username,
           vehicleId: entry.vehicleId,
-          ...catalogLook(entry.vehicleId),
+          ...catalogLook(entry.vehicleId, entryConditions.get(entry.vehicleInventoryId) ?? null),
           stake: entry.stake,
           fixing: entry.fixing,
         })),
@@ -239,6 +276,10 @@ export const raceService = {
         })),
       });
     }
+
+    const resultConditions = lastSettled
+      ? await conditionsByInventoryId(lastSettled.entries.map((entry) => entry.vehicleInventoryId))
+      : new Map<number, number>();
 
     return {
       countryCode: player.currentCountry,
@@ -265,7 +306,7 @@ export const raceService = {
               playerId: entry.playerId,
               username: entry.player.username,
               vehicleId: entry.vehicleId,
-              ...catalogLook(entry.vehicleId),
+              ...catalogLook(entry.vehicleId, resultConditions.get(entry.vehicleInventoryId) ?? null),
               finishPlace: entry.finishPlace,
               payout: entry.payout,
               speedScore: entry.speedScore,

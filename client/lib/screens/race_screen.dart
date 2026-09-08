@@ -245,7 +245,9 @@ class _RaceScreenState extends State<RaceScreen> {
         child: Icon(Icons.directions_car, color: _raceGold.withValues(alpha: 0.55), size: 36),
       );
     }
-    return WebAssetHelper.image(
+    final isVehicle = assetPath.contains('/vehicles/');
+    final loader = isVehicle ? WebAssetHelper.imageHttpFirst : WebAssetHelper.image;
+    return loader(
       assetPath,
       width: width,
       height: height,

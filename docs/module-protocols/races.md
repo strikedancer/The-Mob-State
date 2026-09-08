@@ -8,7 +8,7 @@ Not in v1: horses, breeding, real-time driving, daily condition decay, skill-gam
 ## Primary Frontend Entry
 - `client/lib/screens/race_screen.dart` (Empire → Midnight Races; optional `/races`)
 - Help topic `races`
-- Hub art: `client/assets/images/races/hub.png` served as `/images/races/hub.png`. Eligible cars, live field and last-result finishers use catalog vehicle photos (`image` from `vehicles.json`) via `WebAssetHelper`. Photo cards sit in the same wrap-grid as Don (1 / 2 / 3 / 4 columns from ~480 / 700 / 1040 px pane width). No extra AppBar when `embedded == true`.
+- Hub art: `client/assets/images/races/hub.png` served as `/images/races/hub.png`. Eligible cars, live field and last-result finishers use the **same garage car still** as inventory (`imageNew` / dirty / damaged via condition, then catalog `image`) over `/images/vehicles/*`. Photo cards sit in the same wrap-grid as Don (1 / 2 / 3 / 4 columns from ~480 / 700 / 1040 px pane width). No extra AppBar when `embedded == true`.
 
 ## Primary Backend Entry
 - `GET /races/overview`
