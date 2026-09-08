@@ -5395,6 +5395,42 @@ abstract class AppLocalizations {
   /// **'Ready to collect'**
   String get donCollectReady;
 
+  /// No description provided for @donCollectIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect in {time}'**
+  String donCollectIn(String time);
+
+  /// No description provided for @donContestIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest: {time}'**
+  String donContestIn(String time);
+
+  /// No description provided for @donSqueezeIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Squeeze: {time}'**
+  String donSqueezeIn(String time);
+
+  /// No description provided for @donOfficeIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Office: {time}'**
+  String donOfficeIn(String time);
+
+  /// No description provided for @donLoanDueIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due in {time}'**
+  String donLoanDueIn(String time);
+
+  /// No description provided for @donContractIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Finishes in {time}'**
+  String donContractIn(String time);
+
   /// No description provided for @donLoanNpc.
   ///
   /// In en, this message translates to:

@@ -11760,5 +11760,53 @@
   "donInfoCrewTitle": "Ruoli dell'Crew",
   "donInfoCrewBody": "Il Consigliere vede la lista del racket dell'Crew ma non può ritirare la banca dell'Crew. Il Capo può inviare tributi e offerte contrattuali alla Crew Bank solo nel Paese assegnato. Leader e co-leader possono farlo in qualsiasi paese. L'overflow ricade sui tuoi soldi.",
   "donInfoTipsTitle": "Suggerimenti",
-  "donInfoTipsBody": "Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nImposta il paese del capo prima di attivare il tributo alla crew-bank. \nCorrompi l'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali. \nClassificati sotto il 7 e blocca l'hub in jail."
+  "donInfoTipsBody": "Raccogli in tempo di recupero invece di spremere tutti i negozi: fuggi dal caso e vuoi accumulare velocemente. \nImposta il paese del capo prima di attivare il tributo alla crew-bank. \nCorrompi l'assessore prima di inseguire il contratto del municipio e tieni a mente la scuola di ingegneria per i lavori portuali. \nClassificati sotto il 7 e blocca l'hub in jail.",
+  "donCollectIn": "Ritiro tra {time}",
+  "@donCollectIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContestIn": "Concorso: {time}",
+  "@donContestIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donSqueezeIn": "Spremere: {time}",
+  "@donSqueezeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donOfficeIn": "Ufficio: {time}",
+  "@donOfficeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donLoanDueIn": "Scadenza tra {time}",
+  "@donLoanDueIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContractIn": "Termina tra {time}",
+  "@donContractIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

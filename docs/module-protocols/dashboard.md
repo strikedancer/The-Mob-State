@@ -13,7 +13,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - The compact status-bar health meter opens Hospital. Crimes shows a wounded banner (`hospitalGoHeal`) when HP is below 70.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - Web dashboard navigation is sidebar-first: add or change module navigation via the sidebar source (`_buildWebMenuItems` + `_WebSection` content switch) and not only via the legacy tile grid. Sidebar and hamburger menu are grouped (Acties / Wereld / Sociaal / Economie / Empire / Assets / Meer) and have a search field.
-- Don lives under **Empire** next to properties (`_WebSection.don` → `don_screen.dart`). Keep the mobile extra-tile entry in sync. See [don.md](don.md).
+- Don lives under **Empire** next to properties (`_WebSection.don` → `don_screen.dart`). Keep the mobile extra-tile entry in sync. See [don.md](don.md). Don collect/office/loan/contract timers stay on the Don hub (per racket / per job), not as a single Home footer cooldown.
 - Midnight Races live under **Empire** (`_WebSection.races` → `race_screen.dart`). See [races.md](races.md).
 - Dealer shops live on **Economie → Zwarte Markt** (trade goods, weapons, ammo, tools, security, materials, backpacks, plus player market). Do not add separate sidebar entries for Tools or Security; search aliases may still open those shops.
 - Premium & Credits is a first-class dashboard destination when premium purchases or wallet actions are exposed to players; wire it into the sidebar and keep direct route entry (`/premium`) working for payment return flows.

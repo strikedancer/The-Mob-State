@@ -11760,5 +11760,53 @@
   "donInfoCrewTitle": "Rôles de l'équipage",
   "donInfoCrewBody": "Consigliere voit la liste des raquettes de l'équipage mais ne peut pas retirer la banque d'équipage. Capo peut envoyer des hommages et des offres de contrat à la banque d'équipage uniquement dans le pays attribué. Le leader et le co-leader peuvent le faire dans n’importe quel pays. Le débordement retombe sur votre argent.",
   "donInfoTipsTitle": "Conseils",
-  "donInfoTipsBody": "Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s'accumulent rapidement. \nDéfinissez le pays du capo avant de basculer l'hommage à la banque d'équipage. \nSoudoyez l'échevin avant de briguer le contrat de la mairie et gardez à l'esprit l'école d'ingénieurs pour les emplois dans le port. \nClassez-vous en dessous de 7 et la prison bloque le hub."
+  "donInfoTipsBody": "Collectez pendant le temps de recharge au lieu de presser chaque magasin - fuyez le hasard et les besoins s'accumulent rapidement. \nDéfinissez le pays du capo avant de basculer l'hommage à la banque d'équipage. \nSoudoyez l'échevin avant de briguer le contrat de la mairie et gardez à l'esprit l'école d'ingénieurs pour les emplois dans le port. \nClassez-vous en dessous de 7 et la prison bloque le hub.",
+  "donCollectIn": "Récupérez en {time}",
+  "@donCollectIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContestIn": "Concours : {time}",
+  "@donContestIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donSqueezeIn": "Presser : {time}",
+  "@donSqueezeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donOfficeIn": "Bureau : {time}",
+  "@donOfficeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donLoanDueIn": "À rendre en {time}",
+  "@donLoanDueIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContractIn": "Se termine en {time}",
+  "@donContractIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

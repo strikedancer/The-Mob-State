@@ -371,7 +371,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Don-UI is noir/goud met foto-kaarten in een raster (tot 3–4 per rij op desktop; 2 op tablet, 1 op smal). De gouden `i` opent een uitgebreide handleiding met foto’s per onderdeel.
 - Claim van een zaak is altijd persoonlijk. Innen gaat naar cash, tenzij je `leader` / `co_leader` / `capo` (in het capo-land) tribute naar de crew-bank stuurt.
 - Straatmisdaad `protection_racket` blijft een eenmalige shake; de hub is het persistente rijk (geen dubbel inkomen).
-- Handmatig innen met cooldown; te lang niet innen (~72u) maakt de zaak weer vrij. Squeeze: hogere tribute, extra wanted, kans dat de zaak afhaakt. Rivalen kunnen een korte contest starten.
+- Handmatig innen met cooldown; de Don-hub toont live resterende tijd en de Innen-knop blijft uit tot de timer klaar is. Te lang niet innen (~72u) maakt de zaak weer vrij. Squeeze: hogere tribute, extra wanted, kans dat de zaak afhaakt. Rivalen kunnen een korte contest starten.
 - Woeker: jij bent de shark (NPC + P2P escrow). Default = wanted + innen van een deel van de schuld, geen full wipe. Caps tegen alt-farm.
 - Per land drie NPC-ambten (rechter, commissaris, wethouder): cash-overbieding, tijdelijk, verloopt. Rechter geeft een begrensde hoger-beroepbonus (stapel niet onbeperkt met law-school). Commissaris verlaagt wanted bij mislukte crimes licht. Wethouder ontgrendelt/versterkt grote contracten. Per-zaak court-omkoping blijft los.
 - Stadscontracten: bod (cash of crew-bank), looptijd, legale payout. Off-books bonus alleen met rackets in dat land; greedy = extra heat. Grotere klussen kunnen engineering-school + wethouder vereisen.

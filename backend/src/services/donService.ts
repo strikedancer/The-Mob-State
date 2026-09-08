@@ -225,6 +225,16 @@ async function ensureCountryContracts(countryCode: string): Promise<void> {
   }
 }
 
+function secondsUntil(target: Date | null | undefined, now: Date): number {
+  if (!target) return 0;
+  return Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 1000));
+}
+
+function collectReadyAt(lastCollectAt: Date | null | undefined, cooldownSeconds: number): Date | null {
+  if (!lastCollectAt) return null;
+  return new Date(lastCollectAt.getTime() + cooldownSeconds * 1000);
+}
+
 function tributeFor(def: DonBusinessDef, squeezeUntil: Date | null, now: Date, squeezePercent: number): number {
   if (squeezeUntil && squeezeUntil.getTime() > now.getTime()) {
     return Math.round(def.baseTribute * (squeezePercent / 100));
@@ -388,6 +398,8 @@ export const donService = {
       rackets: rackets.map((row) => {
         const def = businessDef(row.businessKey);
         const squeezed = !!(row.squeezeUntil && row.squeezeUntil > now);
+        const readyAt = collectReadyAt(row.lastCollectAt, cfg.collectCooldownSeconds);
+        const collectRemainingSeconds = secondsUntil(readyAt, now);
         return {
           id: row.id,
           businessKey: row.businessKey,
@@ -398,10 +410,15 @@ export const donService = {
           ownerPlayerId: row.ownerPlayerId,
           ownerUsername: row.owner?.username ?? null,
           squeezeUntil: row.squeezeUntil?.toISOString() ?? null,
+          squeezeRemainingSeconds: secondsUntil(row.squeezeUntil, now),
           squeezed,
           lastCollectAt: row.lastCollectAt?.toISOString() ?? null,
+          collectReadyAt: readyAt?.toISOString() ?? null,
+          collectRemainingSeconds,
+          collectReady: collectRemainingSeconds <= 0,
           tributeToCrew: row.tributeToCrew,
           contestUntil: row.contestUntil?.toISOString() ?? null,
+          contestRemainingSeconds: secondsUntil(row.contestUntil, now),
           contestPlayerId: row.contestPlayerId,
           contestUsername: row.contestPlayer?.username ?? null,
           claimedAt: row.claimedAt?.toISOString() ?? null,
@@ -418,6 +435,7 @@ export const donService = {
           patronPlayerId: active ? row.patronPlayerId : null,
           patronUsername: active ? row.patron?.username ?? null : null,
           paidUntil: active ? row.paidUntil?.toISOString() ?? null : null,
+          paidRemainingSeconds: active ? secondsUntil(row.paidUntil, now) : 0,
           isMine: active && row.patronPlayerId === playerId,
         };
       }),
@@ -432,6 +450,7 @@ export const donService = {
         interestBps: row.interestBps,
         dueAmount: dueAmount(row.principal, row.interestBps),
         dueAt: row.dueAt.toISOString(),
+        dueRemainingSeconds: secondsUntil(row.dueAt, now),
         status: row.status,
         isLender: row.lenderId === playerId,
       })),
@@ -449,6 +468,7 @@ export const donService = {
           bidderPlayerId: row.bidderPlayerId,
           bidderUsername: row.bidder?.username ?? null,
           endsAt: row.endsAt?.toISOString() ?? null,
+          endsRemainingSeconds: secondsUntil(row.endsAt, now),
           hasAlderman: !!alderman,
           bidCost: Math.round((def?.payout ?? row.payout) * 0.2),
         };

@@ -11760,5 +11760,53 @@
   "donInfoCrewTitle": "Role załogi",
   "donInfoCrewBody": "Consigliere widzi listę rakiet załogi, ale nie może wycofać banku załogi. Capo może przesyłać daniny i oferty kontraktów do banku załogi tylko w przydzielonym kraju. Lider i współlider mogą to robić w dowolnym kraju. Przepełnienie wraca do Twojej gotówki.",
   "donInfoTipsTitle": "Porady",
-  "donInfoTipsBody": "Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nUstaw kraj capo, zanim przełączysz daninę w banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt z ratuszem, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie. \nRanga poniżej 7 i więzienie blokują hub."
+  "donInfoTipsBody": "Zbieraj po odnowieniu, zamiast ściskać każdy sklep – unikaj szans i szybko się sumuj. \nUstaw kraj capo, zanim przełączysz daninę w banku załogi. \nPrzekup radnego, zanim zaczniesz zabiegać o kontrakt z ratuszem, i pamiętaj o szkole inżynierskiej, jeśli chodzi o pracę w porcie. \nRanga poniżej 7 i więzienie blokują hub.",
+  "donCollectIn": "Odbierz za {time}",
+  "@donCollectIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContestIn": "Konkurs: {time}",
+  "@donContestIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donSqueezeIn": "Ściśnij: {time}",
+  "@donSqueezeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donOfficeIn": "Biuro: {time}",
+  "@donOfficeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donLoanDueIn": "Termin za {time}",
+  "@donLoanDueIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContractIn": "Kończy się za {time}",
+  "@donContractIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -93,6 +94,12 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
       case 'INSUFFICIENT_FUNDS':
         return l10n.donErrorFunds;
       case 'COLLECT_COOLDOWN':
+        final remaining = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
+        if (remaining > 0) {
+          return l10n.donCollectIn(
+            formatAdaptiveDurationFromSeconds(remaining, localeName: l10n.localeName),
+          );
+        }
         return l10n.donErrorCooldown;
       case 'RACKET_OWNED':
         return l10n.donErrorOwned;
@@ -189,6 +196,22 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     } finally {
       if (mounted) setState(() => _busy = false);
     }
+  }
+
+  String? _nextCollectReadyAt() {
+    final rackets = (_overview?['rackets'] as List?) ?? const [];
+    DateTime? soonest;
+    for (final raw in rackets) {
+      if (raw is! Map) continue;
+      final racket = Map<String, dynamic>.from(raw);
+      if (racket['isMine'] != true) continue;
+      final at = DateTime.tryParse(racket['collectReadyAt']?.toString() ?? '');
+      if (at == null || !at.isAfter(DateTime.now())) continue;
+      if (soonest == null || at.isBefore(soonest)) {
+        soonest = at;
+      }
+    }
+    return soonest?.toIso8601String();
   }
 
   String _businessName(AppLocalizations l10n, String key) {
@@ -291,15 +314,6 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
   }
 
   String _donAsset(String key) => 'assets/images/don/$key.png';
-
-  String _formatStamp(String? raw) {
-    if (raw == null || raw.isEmpty) return '';
-    final dt = DateTime.tryParse(raw);
-    if (dt == null) return raw;
-    final local = dt.toLocal();
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${local.year}-${two(local.month)}-${two(local.day)} ${two(local.hour)}:${two(local.minute)}';
-  }
 
   BoxDecoration _panelDecoration() {
     return BoxDecoration(
@@ -815,6 +829,7 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
   ) {
     final wide = MediaQuery.sizeOf(context).width >= 720;
     final height = wide ? 176.0 : 154.0;
+    final nextCollectAt = _nextCollectReadyAt();
     return Container(
       decoration: _panelDecoration(),
       clipBehavior: Clip.antiAlias,
@@ -921,6 +936,13 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                             ),
                             if (canCrew)
                               _statChip(icon: Icons.groups, label: l10n.donTributeCrew),
+                            if (nextCollectAt != null)
+                              _DonEndsAtChip(
+                                endsAtIso: nextCollectAt,
+                                icon: Icons.timer,
+                                activeLabel: l10n.donCollectIn,
+                                readyLabel: l10n.donCollectReady,
+                              ),
                           ],
                         ),
                       ],
@@ -1052,7 +1074,23 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                 Positioned(
                   bottom: 8,
                   left: 8,
-                  child: _badge('${l10n.donContest}: ${_formatStamp(contestUntil)}', color: const Color(0xFFFFCC80)),
+                  child: _DonEndsAtChip(
+                    endsAtIso: contestUntil,
+                    icon: Icons.flag,
+                    activeLabel: l10n.donContestIn,
+                    color: const Color(0xFFFFCC80),
+                  ),
+                ),
+              if (mine)
+                Positioned(
+                  bottom: 8,
+                  right: 8,
+                  child: _DonEndsAtChip(
+                    endsAtIso: racket['collectReadyAt']?.toString(),
+                    icon: Icons.timer,
+                    activeLabel: l10n.donCollectIn,
+                    readyLabel: l10n.donCollectReady,
+                  ),
                 ),
             ],
           ),
@@ -1079,9 +1117,11 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                 ),
                 if (squeezed) ...[
                   const SizedBox(height: 4),
-                  Text(
-                    l10n.donSqueezeHeld,
-                    style: const TextStyle(color: _donGold, fontSize: 12),
+                  _DonEndsAtChip(
+                    endsAtIso: racket['squeezeUntil']?.toString(),
+                    icon: Icons.whatshot,
+                    activeLabel: l10n.donSqueezeIn,
+                    readyLabel: l10n.donSqueezeHeld,
                   ),
                 ],
                 const SizedBox(height: 10),
@@ -1096,10 +1136,13 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                         child: Text(l10n.donClaim),
                       ),
                     if (mine)
-                      FilledButton(
+                      _DonCollectButton(
+                        readyAtIso: racket['collectReadyAt']?.toString(),
+                        busy: _busy,
                         style: _goldFill,
-                        onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/collect'),
-                        child: Text(l10n.donCollect),
+                        collectLabel: l10n.donCollect,
+                        cooldownLabel: l10n.donCollectIn,
+                        onCollect: () => _postQuietSuccess('/don/rackets/$id/collect'),
                       ),
                     if (mine)
                       OutlinedButton(
@@ -1302,9 +1345,23 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
           title,
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
-        subtitle: Text(
-          '$status · ${formatCurrency((loan['dueAmount'] as num?) ?? 0)} · ${_formatStamp(loan['dueAt']?.toString())}',
-          style: TextStyle(color: Colors.white.withValues(alpha: 0.72)),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$status · ${formatCurrency((loan['dueAmount'] as num?) ?? 0)}',
+              style: TextStyle(color: Colors.white.withValues(alpha: 0.72)),
+            ),
+            if (status == 'active' || status == 'offered')
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: _DonEndsAtChip(
+                  endsAtIso: loan['dueAt']?.toString(),
+                  icon: Icons.schedule,
+                  activeLabel: l10n.donLoanDueIn,
+                ),
+              ),
+          ],
         ),
         trailing: Wrap(
           spacing: 4,
@@ -1404,9 +1461,11 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                 ),
                 if (!free) ...[
                   const SizedBox(height: 4),
-                  Text(
-                    _formatStamp(row['paidUntil']?.toString()),
-                    style: TextStyle(color: Colors.white.withValues(alpha: 0.72), fontSize: 12),
+                  _DonEndsAtChip(
+                    endsAtIso: row['paidUntil']?.toString(),
+                    icon: Icons.schedule,
+                    activeLabel: l10n.donOfficeIn,
+                    readyLabel: l10n.donFree,
                   ),
                 ],
                 const SizedBox(height: 10),
@@ -1538,6 +1597,14 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                   '${bidder != null && bidder.isNotEmpty ? ' · $bidder' : ''}',
                   style: TextStyle(color: Colors.white.withValues(alpha: 0.74), fontSize: 12),
                 ),
+                if (!open && row['endsAt'] != null) ...[
+                  const SizedBox(height: 6),
+                  _DonEndsAtChip(
+                    endsAtIso: row['endsAt']?.toString(),
+                    icon: Icons.schedule,
+                    activeLabel: l10n.donContractIn,
+                  ),
+                ],
                 const SizedBox(height: 10),
                 if (open)
                   FilledButton(
@@ -1559,6 +1626,210 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+DateTime? _parseDonStamp(String? raw) {
+  if (raw == null || raw.isEmpty) return null;
+  return DateTime.tryParse(raw)?.toLocal();
+}
+
+int _donSecondsLeft(String? endsAtIso) {
+  final endsAt = _parseDonStamp(endsAtIso);
+  if (endsAt == null) return 0;
+  return endsAt.difference(DateTime.now()).inSeconds;
+}
+
+class _DonEndsAtChip extends StatefulWidget {
+  const _DonEndsAtChip({
+    required this.endsAtIso,
+    required this.activeLabel,
+    this.readyLabel,
+    this.icon = Icons.timer,
+    this.color = _donGold,
+  });
+
+  final String? endsAtIso;
+  final String Function(String time) activeLabel;
+  final String? readyLabel;
+  final IconData icon;
+  final Color color;
+
+  @override
+  State<_DonEndsAtChip> createState() => _DonEndsAtChipState();
+}
+
+class _DonEndsAtChipState extends State<_DonEndsAtChip> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _syncTimer();
+  }
+
+  @override
+  void didUpdateWidget(covariant _DonEndsAtChip oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.endsAtIso != widget.endsAtIso) {
+      _syncTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _syncTimer() {
+    _timer?.cancel();
+    if (_donSecondsLeft(widget.endsAtIso) <= 0) return;
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() {});
+      if (_donSecondsLeft(widget.endsAtIso) <= 0) {
+        _timer?.cancel();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final remaining = _donSecondsLeft(widget.endsAtIso);
+    if (remaining <= 0) {
+      if (widget.readyLabel == null) return const SizedBox.shrink();
+      return _DonTimerChip(
+        icon: widget.icon,
+        label: widget.readyLabel!,
+        color: widget.color,
+      );
+    }
+    final l10n = AppLocalizations.of(context);
+    return _DonTimerChip(
+      icon: widget.icon,
+      label: widget.activeLabel(
+        formatAdaptiveDurationFromSeconds(remaining, localeName: l10n?.localeName),
+      ),
+      color: widget.color,
+    );
+  }
+}
+
+class _DonTimerChip extends StatelessWidget {
+  const _DonTimerChip({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.65),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withValues(alpha: 0.7)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13, color: color),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DonCollectButton extends StatefulWidget {
+  const _DonCollectButton({
+    required this.readyAtIso,
+    required this.busy,
+    required this.style,
+    required this.collectLabel,
+    required this.cooldownLabel,
+    required this.onCollect,
+  });
+
+  final String? readyAtIso;
+  final bool busy;
+  final ButtonStyle style;
+  final String collectLabel;
+  final String Function(String time) cooldownLabel;
+  final VoidCallback onCollect;
+
+  @override
+  State<_DonCollectButton> createState() => _DonCollectButtonState();
+}
+
+class _DonCollectButtonState extends State<_DonCollectButton> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _syncTimer();
+  }
+
+  @override
+  void didUpdateWidget(covariant _DonCollectButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.readyAtIso != widget.readyAtIso) {
+      _syncTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _syncTimer() {
+    _timer?.cancel();
+    if (_donSecondsLeft(widget.readyAtIso) <= 0) return;
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() {});
+      if (_donSecondsLeft(widget.readyAtIso) <= 0) {
+        _timer?.cancel();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final remaining = _donSecondsLeft(widget.readyAtIso);
+    final cooling = remaining > 0;
+    final l10n = AppLocalizations.of(context);
+    return FilledButton(
+      style: widget.style,
+      onPressed: widget.busy || cooling ? null : widget.onCollect,
+      child: Text(
+        cooling
+            ? widget.cooldownLabel(
+                formatAdaptiveDurationFromSeconds(
+                  remaining,
+                  localeName: l10n?.localeName,
+                ),
+              )
+            : widget.collectLabel,
       ),
     );
   }

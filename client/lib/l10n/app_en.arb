@@ -1979,6 +1979,42 @@
     }
   },
   "donCollectReady": "Ready to collect",
+  "donCollectIn": "Collect in {time}",
+  "@donCollectIn": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "donContestIn": "Contest: {time}",
+  "@donContestIn": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "donSqueezeIn": "Squeeze: {time}",
+  "@donSqueezeIn": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "donOfficeIn": "Office: {time}",
+  "@donOfficeIn": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "donLoanDueIn": "Due in {time}",
+  "@donLoanDueIn": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "donContractIn": "Finishes in {time}",
+  "@donContractIn": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
   "donLoanNpc": "Lend to NPC",
   "donLoanOffer": "Offer loan",
   "donLoanAccept": "Accept",

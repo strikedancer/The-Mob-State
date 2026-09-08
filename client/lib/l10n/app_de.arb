@@ -11760,5 +11760,53 @@
   "donInfoCrewTitle": "Crew-Rollen",
   "donInfoCrewBody": "Consigliere sieht die Mannschaftsschlägerliste, kann aber die Mannschaftsbank nicht zurückziehen. Capo darf Tribut- und Vertragsgebote nur im zugewiesenen Land an die Mannschaftsbank senden. Leiter und Co-Leiter können dies in jedem Land tun. Der Überlauf fällt auf Ihr Bargeld zurück.",
   "donInfoTipsTitle": "Tipps",
-  "donInfoTipsBody": "Sammeln Sie in der Abklingzeit, anstatt jeden Laden zu quetschen – Fliehen Sie Chance und Gesuchtes summieren sich schnell. \nStellen Sie das Kapodaster-Land ein, bevor Sie den Crew-Bank-Tribut umschalten. \nBestechen Sie den Stadtrat, bevor Sie den Auftrag für das Rathaus anstreben, und denken Sie bei Hafenjobs an die Ingenieurschule. \nRang unter 7 und Gefängnisblockierung des Hubs."
+  "donInfoTipsBody": "Sammeln Sie in der Abklingzeit, anstatt jeden Laden zu quetschen – Fliehen Sie Chance und Gesuchtes summieren sich schnell. \nStellen Sie das Kapodaster-Land ein, bevor Sie den Crew-Bank-Tribut umschalten. \nBestechen Sie den Stadtrat, bevor Sie den Auftrag für das Rathaus anstreben, und denken Sie bei Hafenjobs an die Ingenieurschule. \nRang unter 7 und Gefängnisblockierung des Hubs.",
+  "donCollectIn": "Abholung in {time}",
+  "@donCollectIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContestIn": "Wettbewerb: {time}",
+  "@donContestIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donSqueezeIn": "Drücken: {time}",
+  "@donSqueezeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donOfficeIn": "Büro: {time}",
+  "@donOfficeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donLoanDueIn": "Fällig in {time}",
+  "@donLoanDueIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContractIn": "Endet in {time}",
+  "@donContractIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

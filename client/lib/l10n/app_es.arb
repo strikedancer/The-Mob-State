@@ -11760,5 +11760,53 @@
   "donInfoCrewTitle": "Roles de la Crew",
   "donInfoCrewBody": "El consigliere ve la lista de raquetas de la Crew pero no puede retirar el banco de la Crew. Capo podrá enviar ofertas de tributos y contratos al banco de Crew sólo en el país asignado. Líder y colíder pueden hacerlo en cualquier país. El desbordamiento vuelve a su efectivo.",
   "donInfoTipsTitle": "Consejos",
-  "donInfoTipsBody": "Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nEstablece el país del capo antes de alternar el tributo al banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos portuarios. \nClasifique por debajo de 7 y la cárcel bloqueará el centro."
+  "donInfoTipsBody": "Recoge en el tiempo de reutilización en lugar de exprimir cada tienda: huye de las oportunidades y los deseos se acumulan rápidamente. \nEstablece el país del capo antes de alternar el tributo al banco de Crew. \nSoborna al concejal antes de conseguir el contrato con el ayuntamiento y ten en cuenta la escuela de ingeniería para los trabajos portuarios. \nClasifique por debajo de 7 y la cárcel bloqueará el centro.",
+  "donCollectIn": "Recoger en {time}",
+  "@donCollectIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContestIn": "Concurso: {time}",
+  "@donContestIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donSqueezeIn": "Apretar: {time}",
+  "@donSqueezeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donOfficeIn": "Oficina: {time}",
+  "@donOfficeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donLoanDueIn": "Vencimiento en {time}",
+  "@donLoanDueIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContractIn": "Termina en {time}",
+  "@donContractIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

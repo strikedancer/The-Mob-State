@@ -3044,6 +3044,36 @@ class AppLocalizationsPl extends AppLocalizations {
   String get donCollectReady => 'Gotowe do odbioru';
 
   @override
+  String donCollectIn(String time) {
+    return 'Odbierz za $time';
+  }
+
+  @override
+  String donContestIn(String time) {
+    return 'Konkurs: $time';
+  }
+
+  @override
+  String donSqueezeIn(String time) {
+    return 'Ściśnij: $time';
+  }
+
+  @override
+  String donOfficeIn(String time) {
+    return 'Biuro: $time';
+  }
+
+  @override
+  String donLoanDueIn(String time) {
+    return 'Termin za $time';
+  }
+
+  @override
+  String donContractIn(String time) {
+    return 'Kończy się za $time';
+  }
+
+  @override
   String get donLoanNpc => 'Pożycz NPC';
 
   @override

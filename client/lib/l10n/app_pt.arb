@@ -11760,5 +11760,53 @@
   "donInfoCrewTitle": "Funções da Crew",
   "donInfoCrewBody": "O Consigliere vê a lista da raquete da Crew, mas não pode retirar o banco da Crew. Capo poderá enviar tributos e propostas de contrato ao banco da Crew somente no país designado. O líder e o colíder podem fazê-lo em qualquer país. O estouro volta para o seu dinheiro.",
   "donInfoTipsTitle": "Pontas",
-  "donInfoTipsBody": "Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nDefina o país do capo antes de alternar o tributo do banco da Crew. \nSuborne o vereador antes de buscar o contrato com a prefeitura e lembre-se da escola de engenharia para empregos no porto. \nClassificação abaixo de 7 e prisão bloqueiam o hub."
+  "donInfoTipsBody": "Colete no tempo de espera em vez de apertar todas as lojas - fuja das chances e os desejos aumentem rapidamente. \nDefina o país do capo antes de alternar o tributo do banco da Crew. \nSuborne o vereador antes de buscar o contrato com a prefeitura e lembre-se da escola de engenharia para empregos no porto. \nClassificação abaixo de 7 e prisão bloqueiam o hub.",
+  "donCollectIn": "Colete em {time}",
+  "@donCollectIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContestIn": "Concurso: {time}",
+  "@donContestIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donSqueezeIn": "Apertar: {time}",
+  "@donSqueezeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donOfficeIn": "Escritório: {time}",
+  "@donOfficeIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donLoanDueIn": "Vencimento em {time}",
+  "@donLoanDueIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "donContractIn": "Termina em {time}",
+  "@donContractIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

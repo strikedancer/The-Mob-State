@@ -3038,6 +3038,36 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donCollectReady => 'Klaar om te innen';
 
   @override
+  String donCollectIn(String time) {
+    return 'Innen over $time';
+  }
+
+  @override
+  String donContestIn(String time) {
+    return 'Overnemen: $time';
+  }
+
+  @override
+  String donSqueezeIn(String time) {
+    return 'Uitknijpen: $time';
+  }
+
+  @override
+  String donOfficeIn(String time) {
+    return 'Ambt: $time';
+  }
+
+  @override
+  String donLoanDueIn(String time) {
+    return 'Vervalt over $time';
+  }
+
+  @override
+  String donContractIn(String time) {
+    return 'Klaar over $time';
+  }
+
+  @override
   String get donLoanNpc => 'Uitlenen aan NPC';
 
   @override
