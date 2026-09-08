@@ -10724,6 +10724,19 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String schoolLessonTuition(String amount) {
+    return 'Frais de scolarité : $amount';
+  }
+
+  @override
+  String get schoolLessonTuitionConfirmTitle => 'Commencer cette leçon ?';
+
+  @override
+  String schoolLessonTuitionConfirmBody(String amount) {
+    return 'Cette leçon coûte $amount cash.';
+  }
+
+  @override
   String schoolTrainBonusLevels(int count) {
     return '+$count niv.';
   }
@@ -17023,11 +17036,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicSchoolHow =>
-      'L\'école propose des pistes par domaine : Pénal (meilleures statistiques sur la criminalité), Économie (coûts commerciaux et bancaires inférieurs), Militaire (primes de combat), Médecine (coûts hospitaliers inférieurs), Droit (coûts d\'avocat inférieurs), Technique (meilleure production d\'usine et de médicaments). \nChaque leçon a une durée d\'étude de 15 à 60 minutes selon le niveau. Les niveaux plus élevés prennent plus de temps. \nAprès avoir terminé une leçon, vous recevez un certificat pour ce niveau de piste. Ce certificat est permanent et accorde le bonus immédiatement. \nVous ne pouvez suivre qu\'un seul cours à la fois. Planifiez soigneusement vos études lorsque vous avez un besoin urgent d\'un certificat spécifique. \nLes frais de scolarité augmentent par niveau. L\'enseignement supérieur nécessite de terminer les niveaux antérieurs de la même filière. \nCertaines fonctionnalités avancées du jeu sont verrouillées derrière un certificat scolaire : par ex. accès à certains emplois, niveaux d\'usine plus élevés, événements de discothèque VIP et niveaux de mise à niveau plus élevés des installations pharmaceutiques. \nLes certificats ne sont jamais réinitialisés à moins que votre compte ne reçoive une lourde pénalité.';
+      'L\'école propose des filières par domaine : Aviation, Droit, Médecine, Finance, Ingénierie, Informatique et Stupéfiants. \nChaque leçon accorde immédiatement de l\'XP et démarre un temps de recharge partagé pour l\'école. Le temps de recharge augmente avec votre niveau de piste actuel (environ 1,5 minutes au début, jusqu\'à 40 minutes aux niveaux les plus élevés). \nLes certificats se déverrouillent lorsque vous atteignez le niveau de piste requis. Ils sont permanents. \nToutes les pistes partagent un temps de recharge scolaire, vous ne pouvez donc pas empiler les leçons. Les crédits premium peuvent ignorer un temps de recharge scolaire actif ; ce ne sont pas des frais de scolarité. \nChaque leçon coûte de l\'argent de rue. Les frais de scolarité augmentent avec votre niveau actuel dans cette filière (environ 2 000 € pour les premiers cours, jusqu\'à environ 28 000 € pour les niveaux les plus élevés). Les niveaux déjà terminés ne sont pas facturés à nouveau. Les licences d\'aviation restent une étape rémunérée distincte après l\'école d\'aviation. \nCertaines fonctionnalités avancées du jeu restent verrouillées derrière un certificat scolaire : certains emplois, améliorations d\'avions, d\'usine de munitions et d\'installations pharmaceutiques. \nLes certificats ne sont jamais réinitialisés à moins que votre compte ne reçoive une lourde pénalité.';
 
   @override
   String get helpTopicSchoolTips =>
-      'Commencez toujours par la filière Criminel : les bonus aux chances de réussite criminelle remboursent les frais d\'études en quelques séances. \nProgrammez des études longues (60 min+) avant de vous coucher : vous vous réveillez avec un nouveau certificat sans manquer de temps actif.';
+      'Commencez par la piste qui débloque ce dont vous avez besoin ensuite (emplois, aviation, droit pour les appels, stupéfiants pour la mise à niveau des installations). \nLes frais de scolarité sont modestes; le temps de recharge partagé est le véritable limiteur. Gardez quelques milliers d’argent liquide à portée de main pour les premiers cours. \nDépensez des crédits pour l\'école uniquement lorsque vous êtes à mi-temps de recharge et que vous avez besoin de la prochaine leçon maintenant.';
 
   @override
   String get helpTopicTerritoryCategory => 'Empire';

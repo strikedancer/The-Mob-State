@@ -72,6 +72,7 @@
 ## School
 
 - Op mobiel worden School-tracks en unlock-kaarten in auto-hoogte weergegeven zodat volledige kaartinhoud altijd zichtbaar blijft (geen afgekapt onderste deel).
+- Elke les kost **contant geld**. Lesgeld stijgt met je huidige track-level (€2.000 → €4.000 → €8.000 → €15.000 → €28.000). Al behaalde levels worden niet nagefactureerd. De gedeelde school-cooldown blijft de hoofdrem; credits skippen alleen die cooldown, ze betalen geen lesgeld. Aviation-licenties blijven een aparte betaalde stap na de aviation-track.
 
 ---
 

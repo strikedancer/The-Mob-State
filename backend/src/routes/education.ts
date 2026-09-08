@@ -9,6 +9,7 @@ router.get('/tracks', authenticate, (_req: AuthRequest, res: Response) => {
     event: 'education.tracks',
     params: {},
     tracks: educationService.getTracks(),
+    tuitionByLevel: educationService.getTuitionByLevel(),
   });
 });
 
@@ -53,6 +54,8 @@ router.post('/tracks/:trackId/train', authenticate, async (req: AuthRequest, res
         levelUps: result.levelUps,
         certificationsEarned: result.certificationsEarned,
         cooldownSeconds: result.cooldownSeconds,
+        tuitionPaid: result.tuitionPaid,
+        newMoney: result.newMoney,
       },
       result,
     });
@@ -85,6 +88,21 @@ router.post('/tracks/:trackId/train', authenticate, async (req: AuthRequest, res
         event: 'education.error',
         params: {
           reason: 'TRACK_MAX_LEVEL_REACHED',
+        },
+      });
+    }
+
+    if (message.startsWith('TRACK_INSUFFICIENT_FUNDS:')) {
+      const parts = message.split(':');
+      const needed = parseInt(parts[1] || '0', 10) || 0;
+      const have = parseInt(parts[2] || '0', 10) || 0;
+
+      return res.status(400).json({
+        event: 'education.error',
+        params: {
+          reason: 'INSUFFICIENT_FUNDS',
+          needed,
+          have,
         },
       });
     }

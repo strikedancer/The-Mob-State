@@ -8352,8 +8352,8 @@
   "helpTopicSchoolCategory": "Capacitación",
   "helpTopicSchoolTitle": "Escuela",
   "helpTopicSchoolSummary": "Siga cursos en múltiples pistas para desbloquear bonificaciones, reducir costos y abrir nuevos sistemas. La escuela es un multiplicador de todo lo que haces.",
-  "helpTopicSchoolHow": "La escuela ofrece pistas por dominio: Penal (mejores estadísticas de delitos), Economía (menores costos comerciales y bancarios), Militar (bonificaciones de combate), Medicina (menores costos hospitalarios), Derecho (menores costos de abogados), Técnico (mejores fábricas y producción de medicamentos). \nCada lección tiene un tiempo de estudio de 15 a 60 minutos según el nivel. Los niveles más altos tardan más. \nDespués de completar una lección, recibirá un certificado para ese nivel de pista. Este certificado es permanente y otorga el bono de forma inmediata. \nSólo puedes seguir una lección a la vez. Planifica tus estudios cuidadosamente cuando necesites urgentemente un certificado específico. \nLos costos escolares aumentan por nivel. La educación superior requiere completar niveles anteriores en el mismo itinerario. \nAlgunas funciones avanzadas del juego están bloqueadas tras un certificado escolar: p. acceso a ciertos trabajos, niveles de fábrica más altos, eventos de clubes nocturnos VIP y niveles más altos de mejora de instalaciones farmacéuticas. \nLos certificados nunca se restablecen a menos que su cuenta reciba una fuerte penalización.",
-  "helpTopicSchoolTips": "Comience siempre con la vía criminal: las bonificaciones por las posibilidades de éxito en el crimen amortizan los costos del estudio en unas pocas sesiones. \nPrograma estudios largos (60 min+) antes de irte a dormir: te despiertas con un nuevo certificado sin perder tiempo activo.",
+  "helpTopicSchoolHow": "La escuela ofrece pistas por dominio: Aviación, Derecho, Medicina, Finanzas, Ingeniería, Informática y Narcóticos. \nCada lección otorga XP inmediatamente y comienza un tiempo de reutilización escolar compartido. El tiempo de reutilización aumenta con el nivel actual de tu pista (aproximadamente 1,5 minutos al principio, hasta 40 minutos en los niveles más altos). \nLos certificados se desbloquean cuando alcanzas el nivel de seguimiento requerido. Son permanentes. \nTodas las pistas comparten un tiempo de reutilización de la escuela, por lo que no puedes acumular lecciones. Los créditos premium pueden omitir un tiempo de reutilización activo de la escuela; no son matrícula. \nCada lección cuesta dinero en efectivo en la calle. La matrícula aumenta según tu nivel actual en ese itinerario (unos 2.000 € para las primeras lecciones, hasta unos 28.000 € en los niveles más altos). Los niveles ya completados no se vuelven a cobrar. Las licencias de aviación siguen siendo un paso pago separado después de la escuela de aviación. \nAlgunas características avanzadas del juego permanecen bloqueadas detrás de un certificado escolar: ciertos trabajos, aviones, fábricas de municiones y actualizaciones de instalaciones farmacéuticas. \nLos certificados nunca se restablecen a menos que su cuenta reciba una fuerte penalización.",
+  "helpTopicSchoolTips": "Comience con la pista que desbloquea lo que necesita a continuación (empleos, aviación, leyes para apelaciones, narcóticos para mejoras de instalaciones). \nLa matrícula es modesta; el tiempo de reutilización compartido es el verdadero limitador. Tenga a mano unos cuantos miles de dólares en efectivo para las primeras lecciones. \nGasta créditos en la escuela solo cuando estés en la mitad del tiempo de reutilización y necesites la siguiente lección ahora.",
   "helpTopicTerritoryCategory": "Imperio",
   "helpTopicTerritoryTitle": "Territorio",
   "helpTopicTerritorySummary": "Reclama y controla regiones geográficas para obtener ingresos pasivos, prestigio de Crew y bonificaciones regionales estratégicas. Territory combina el control del mapa con concursos y recompensas estacionales.",
@@ -11550,5 +11550,22 @@
   },
   "profilePropertiesTitle": "Propiedades",
   "profilePropertiesHint": "Edificios propios. El campo y el almacenamiento permanecen privados.",
-  "profilePropertiesEmpty": "Aún no hay propiedades"
+  "profilePropertiesEmpty": "Aún no hay propiedades",
+  "schoolLessonTuition": "Matrícula: {amount}",
+  "@schoolLessonTuition": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "schoolLessonTuitionConfirmTitle": "¿Comenzar esta lección?",
+  "schoolLessonTuitionConfirmBody": "Esta lección cuesta {amount} en efectivo.",
+  "@schoolLessonTuitionConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

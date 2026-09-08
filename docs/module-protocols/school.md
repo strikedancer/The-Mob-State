@@ -1,7 +1,15 @@
 ﻿# School Protocol
 
 ## Scope
-Education tracks, certifications, gates, cooldowns and unlock dependencies.
+Education tracks, certifications, gates, cash tuition, cooldowns and unlock dependencies.
+
+## Tuition
+- Each lesson costs **street cash** (`player.money`). Bank/crypto are not charged.
+- Price is keyed by the player's **current level on that track** when the lesson starts (`SCHOOL_TUITION_BY_LEVEL` in `educationService.ts`): **€2.000 / €4.000 / €8.000 / €15.000 / €28.000** for levels 0–4.
+- Same curve for every track. Aviation school does **not** add a surcharge; aircraft licenses stay a separate paid step after the aviation track.
+- Already completed levels are never billed again. Gym / shooting-range remain free (small combat %, not school).
+- Premium credits stay **cooldown skip only** (`ACTION_COOLDOWN_RESET` / `actionType=school`). Credits are not tuition.
+- Server is source of truth: `GET /education/tracks` returns `tuitionByLevel`; `POST /education/tracks/:trackId/train` deducts cash atomically (`money >= tuition`) **after** rank / max-level / cooldown checks and refunds if XP events fail. Error `INSUFFICIENT_FUNDS` includes `needed` + `have`.
 
 ## Primary Frontend Entry
 - client/lib/screens/school_screen.dart

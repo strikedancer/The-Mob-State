@@ -10654,6 +10654,19 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String schoolLessonTuition(String amount) {
+    return 'Mensalidade: $amount';
+  }
+
+  @override
+  String get schoolLessonTuitionConfirmTitle => 'Iniciar esta lição?';
+
+  @override
+  String schoolLessonTuitionConfirmBody(String amount) {
+    return 'Esta lição custa $amount dinheiro.';
+  }
+
+  @override
   String schoolTrainBonusLevels(int count) {
     return '+$count niv.';
   }
@@ -16945,11 +16958,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicSchoolHow =>
-      'A escola oferece faixas por domínio: Criminal (melhores estatísticas de criminalidade), Economia (menores custos comerciais e bancários), Militar (bônus de combate), Medicina (menores custos hospitalares), Direito (menores custos com advogados), Técnico (melhores fábricas e produção de medicamentos). \nCada lição tem um tempo de estudo de 15 a 60 minutos dependendo do nível. Níveis mais altos demoram mais. \nDepois de concluir uma lição, você recebe um certificado para esse nível de curso. Este certificado é permanente e concede o bônus imediatamente. \nVocê só pode acompanhar uma lição por vez. Planeje seus estudos com cuidado quando precisar urgentemente de um certificado específico. \nOs custos escolares aumentam por nível. O ensino superior exige a conclusão de níveis anteriores do mesmo curso. \nAlguns recursos avançados do jogo estão bloqueados por um certificado escolar: por ex. acesso a determinados empregos, níveis mais altos de fábrica, eventos em boates VIP e níveis mais altos de atualização de instalações de drogas. \nOs certificados nunca são redefinidos, a menos que sua conta receba uma penalidade pesada.';
+      'A escola oferece cursos por domínio: Aviação, Direito, Medicina, Finanças, Engenharia, TI e Narcóticos. \nCada lição concede XP imediatamente e inicia um tempo de espera escolar compartilhado. O tempo de espera aumenta com o nível atual da trilha (cerca de 1,5 minutos no início, até 40 minutos nos níveis mais altos). \nOs certificados são desbloqueados quando você atinge o nível de treinamento exigido. Eles são permanentes. \nTodas as faixas compartilham um tempo de espera escolar, portanto você não pode acumular aulas. Os créditos premium podem pular o tempo de espera da escola ativa; eles não são mensalidades. \nCada lição custa dinheiro nas ruas. A mensalidade aumenta com o seu nível atual nessa faixa (cerca de € 2.000 para as primeiras aulas, até cerca de € 28.000 nos níveis mais altos). Os níveis já concluídos não são cobrados novamente. As licenças de aviação permanecem uma etapa paga separada após a escola de aviação. \nAlguns recursos avançados do jogo ficam bloqueados por um certificado escolar: certos empregos, aeronaves, fábricas de munições e atualizações de instalações de drogas. \nOs certificados nunca são redefinidos, a menos que sua conta receba uma penalidade pesada.';
 
   @override
   String get helpTopicSchoolTips =>
-      'Sempre comece com a trilha Criminal: os bônus nas chances de sucesso no crime reembolsam os custos do estudo em poucas sessões. \nAgende estudos longos (60 min+) antes de dormir: você acorda com um novo certificado sem perder tempo ativo.';
+      'Comece com a trilha que desbloqueia o que você precisa em seguida (empregos, aviação, leis para recursos, narcóticos para atualizações de instalações). \nA mensalidade é modesta; o cooldown compartilhado é o verdadeiro limitador. Mantenha alguns milhares de dinheiro em mãos para as primeiras aulas. \nGaste créditos na escola apenas quando estiver no meio do tempo de espera e precisar da próxima lição agora.';
 
   @override
   String get helpTopicTerritoryCategory => 'Império';

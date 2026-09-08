@@ -44,6 +44,9 @@ interface EducationGate {
 
 const TRACKS = (educationTracksData as { tracks: EducationTrackDefinition[] }).tracks;
 
+/** Street-cash tuition for the next lesson, keyed by current track level (0–4). */
+const SCHOOL_TUITION_BY_LEVEL = [2000, 4000, 8000, 15000, 28000] as const;
+
 const TRACK_MIN_PLAYER_RANK: Record<EducationTrackId, number> = {
   aviation: 15,
   law: 10,
@@ -265,6 +268,8 @@ interface TrackTrainingResult {
   levelUps: number;
   certificationsEarned: string[];
   cooldownSeconds: number;
+  tuitionPaid: number;
+  newMoney: number;
 }
 
 class EducationService {
@@ -301,6 +306,59 @@ class EducationService {
     const highLevelExtraSeconds = safeLevel > 3 ? (safeLevel - 3) * 120 : 0;
 
     return Math.min(2400, baseSeconds + safeLevel * perLevelSeconds + highLevelExtraSeconds);
+  }
+
+  getTuitionByLevel(): number[] {
+    return [...SCHOOL_TUITION_BY_LEVEL];
+  }
+
+  getTrainingTuitionForLevel(level: number): number {
+    const safeLevel = Math.max(0, Math.floor(level));
+    const index = Math.min(SCHOOL_TUITION_BY_LEVEL.length - 1, safeLevel);
+    return SCHOOL_TUITION_BY_LEVEL[index];
+  }
+
+  private async chargeTrainingTuition(playerId: number, tuition: number): Promise<number> {
+    if (tuition <= 0) {
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { money: true },
+      });
+      if (!player) {
+        throw new Error('PLAYER_NOT_FOUND');
+      }
+      return player.money;
+    }
+
+    const charged = await prisma.player.updateMany({
+      where: { id: playerId, money: { gte: tuition } },
+      data: { money: { decrement: tuition } },
+    });
+
+    if (charged.count === 0) {
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { money: true },
+      });
+      if (!player) {
+        throw new Error('PLAYER_NOT_FOUND');
+      }
+      throw new Error(`TRACK_INSUFFICIENT_FUNDS:${tuition}:${player.money}`);
+    }
+
+    const updated = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    return updated?.money ?? 0;
+  }
+
+  private async refundTrainingTuition(playerId: number, tuition: number): Promise<void> {
+    if (tuition <= 0) return;
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { money: { increment: tuition } },
+    });
   }
 
   private async getRemainingTrainingCooldownSeconds(
@@ -458,6 +516,9 @@ class EducationService {
       throw new Error('TRACK_MAX_LEVEL_REACHED');
     }
 
+    const tuition = this.getTrainingTuitionForLevel(currentProgress.level);
+    const newMoney = await this.chargeTrainingTuition(playerId, tuition);
+
     const xpGain = this.randomTrainingXpGain();
     const totalXp = currentProgress.xp + xpGain;
     const previousLevel = currentProgress.level;
@@ -472,87 +533,94 @@ class EducationService {
 
     const certificationsEarned: string[] = [];
 
-    await worldEventService.createEvent(
-      'school.track_progress',
-      {
-        trackId: track.id,
-        xpGain,
-        totalXp,
-        cooldownSeconds,
-      },
-      playerId
-    );
+    try {
+      await worldEventService.createEvent(
+        'school.track_progress',
+        {
+          trackId: track.id,
+          xpGain,
+          totalXp,
+          cooldownSeconds,
+          tuitionPaid: tuition,
+        },
+        playerId
+      );
 
-    await cooldownService.setCooldown(playerId, 'school', cooldownSeconds);
+      await cooldownService.setCooldown(playerId, 'school', cooldownSeconds);
 
-    this.logEducationActivity(
-      playerId,
-      'SCHOOL_TRAINING',
-      `School training afgerond: ${track.name}`,
-      {
-        trackId: track.id,
-        trackName: track.name,
-        xpGained: xpGain,
-        totalXp,
-        previousLevel,
-        newLevel,
+      this.logEducationActivity(
+        playerId,
+        'SCHOOL_TRAINING',
+        `School training afgerond: ${track.name}`,
+        {
+          trackId: track.id,
+          trackName: track.name,
+          xpGained: xpGain,
+          totalXp,
+          previousLevel,
+          newLevel,
+          tuitionPaid: tuition,
+        }
+      );
+
+      if (newLevel > previousLevel) {
+        for (let level = previousLevel + 1; level <= newLevel; level += 1) {
+          await worldEventService.createEvent(
+            'school.level_up',
+            {
+              trackId: track.id,
+              newLevel: level,
+              educationLevel: level,
+            },
+            playerId
+          );
+
+          this.logEducationActivity(
+            playerId,
+            'SCHOOL_LEVEL_UP',
+            `School level omhoog: ${track.name} naar level ${level}`,
+            {
+              trackId: track.id,
+              trackName: track.name,
+              previousLevel: level - 1,
+              newLevel: level,
+              xpGained: level === newLevel ? xpGain : 0,
+            }
+          );
+        }
       }
-    );
 
-    if (newLevel > previousLevel) {
-      for (let level = previousLevel + 1; level <= newLevel; level += 1) {
-        await worldEventService.createEvent(
-          'school.level_up',
-          {
-            trackId: track.id,
-            newLevel: level,
-            educationLevel: level,
-          },
-          playerId
-        );
+      const ownedCertifications = new Set(profile.certifications);
+      for (const certification of track.certifications) {
+        if (certification.requiredLevel <= newLevel && !ownedCertifications.has(certification.id)) {
+          certificationsEarned.push(certification.id);
+          await worldEventService.createEvent(
+            'school.certification_earned',
+            {
+              trackId: track.id,
+              certificationId: certification.id,
+              certificationName: certification.name,
+            },
+            playerId
+          );
 
-        this.logEducationActivity(
-          playerId,
-          'SCHOOL_LEVEL_UP',
-          `School level omhoog: ${track.name} naar level ${level}`,
-          {
-            trackId: track.id,
-            trackName: track.name,
-            previousLevel: level - 1,
-            newLevel: level,
-            xpGained: level === newLevel ? xpGain : 0,
-          }
-        );
+          this.logEducationActivity(
+            playerId,
+            'SCHOOL_CERTIFICATION_EARNED',
+            `School certificaat behaald: ${certification.name}`,
+            {
+              trackId: track.id,
+              trackName: track.name,
+              certificationId: certification.id,
+              certificationName: certification.name,
+              levelAtUnlock: newLevel,
+            }
+          );
+        }
       }
-    }
-
-    const ownedCertifications = new Set(profile.certifications);
-    for (const certification of track.certifications) {
-      if (certification.requiredLevel <= newLevel && !ownedCertifications.has(certification.id)) {
-        certificationsEarned.push(certification.id);
-        await worldEventService.createEvent(
-          'school.certification_earned',
-          {
-            trackId: track.id,
-            certificationId: certification.id,
-            certificationName: certification.name,
-          },
-          playerId
-        );
-
-        this.logEducationActivity(
-          playerId,
-          'SCHOOL_CERTIFICATION_EARNED',
-          `School certificaat behaald: ${certification.name}`,
-          {
-            trackId: track.id,
-            trackName: track.name,
-            certificationId: certification.id,
-            certificationName: certification.name,
-            levelAtUnlock: newLevel,
-          }
-        );
-      }
+    } catch (error) {
+      await this.refundTrainingTuition(playerId, tuition);
+      throw error;
     }
 
     return {
@@ -564,6 +632,8 @@ class EducationService {
       levelUps: Math.max(0, newLevel - previousLevel),
       certificationsEarned,
       cooldownSeconds,
+      tuitionPaid: tuition,
+      newMoney,
     };
   }
 

@@ -18688,6 +18688,24 @@ abstract class AppLocalizations {
   /// **'XP: {xp}'**
   String schoolXpLabel(int xp);
 
+  /// No description provided for @schoolLessonTuition.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuition: {amount}'**
+  String schoolLessonTuition(String amount);
+
+  /// No description provided for @schoolLessonTuitionConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start this lesson?'**
+  String get schoolLessonTuitionConfirmTitle;
+
+  /// No description provided for @schoolLessonTuitionConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This lesson costs {amount} cash.'**
+  String schoolLessonTuitionConfirmBody(String amount);
+
   /// No description provided for @schoolTrainBonusLevels.
   ///
   /// In en, this message translates to:
@@ -29092,13 +29110,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSchoolHow.
   ///
   /// In en, this message translates to:
-  /// **'School offers tracks per domain: Criminal (better crime stats), Economy (lower trade and bank costs), Military (combat bonuses), Medicine (lower hospital costs), Law (lower lawyer costs), Technical (better factory and drug production).\nEach lesson has a study time of 15-60 minutes depending on level. Higher levels take longer.\nAfter completing a lesson you receive a certificate for that track level. This certificate is permanent and grants the bonus immediately.\nYou can only follow one lesson at a time. Plan your studies carefully when you urgently need a specific certificate.\nSchool costs increase per level. Higher education requires earlier levels in the same track to be completed.\nSome advanced game features are locked behind a school certificate: e.g. access to certain jobs, higher factory levels, VIP nightclub events and higher drug facility upgrade tiers.\nCertificates are never reset unless your account receives a heavy penalty.'**
+  /// **'School offers tracks per domain: Aviation, Law, Medicine, Finance, Engineering, IT and Narcotics.\nEach lesson grants XP immediately and starts a shared school cooldown. Cooldown grows with your current track level (about 1.5 minutes at the start, up to 40 minutes at the highest levels).\nCertificates unlock when you reach the required track level. They are permanent.\nAll tracks share one school cooldown, so you cannot stack lessons. Premium credits can skip an active school cooldown; they are not tuition.\nEach lesson costs street cash. Tuition rises with your current level on that track (about €2,000 for the first lessons, up to about €28,000 at the highest levels). Already completed levels are not charged again. Aviation licenses stay a separate paid step after aviation school.\nSome advanced game features stay locked behind a school certificate: certain jobs, aircraft, ammo factory and drug facility upgrades.\nCertificates are never reset unless your account receives a heavy penalty.'**
   String get helpTopicSchoolHow;
 
   /// No description provided for @helpTopicSchoolTips.
   ///
   /// In en, this message translates to:
-  /// **'Always start with the Criminal track: bonuses to crime success chances pay back the study costs within a few sessions.\nSchedule long studies (60 min+) before going to sleep: you wake up with a new certificate without missing active time.'**
+  /// **'Start with the track that unlocks what you need next (jobs, aviation, law for appeals, narcotics for facility upgrades).\nTuition is modest; the shared cooldown is the real limiter. Keep a few thousand cash on hand for early lessons.\nSpend credits on school only when you are mid-cooldown and need the next lesson now.'**
   String get helpTopicSchoolTips;
 
   /// No description provided for @helpTopicTerritoryCategory.

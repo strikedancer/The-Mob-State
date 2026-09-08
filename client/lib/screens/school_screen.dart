@@ -33,6 +33,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   List<Map<String, dynamic>> _tracks = [];
   List<Map<String, dynamic>> _gates = [];
+  List<int> _tuitionByLevel = const [];
   Map<String, dynamic>? _profile;
   String? _trainingTrackId;
   String? _hoveredTrackId;
@@ -89,6 +90,11 @@ class _SchoolScreenState extends State<SchoolScreen> {
             .map((entry) => entry.cast<String, dynamic>())
             .toList(growable: false);
 
+        _tuitionByLevel = ((tracksData['tuitionByLevel'] as List?) ?? const [])
+            .whereType<num>()
+            .map((entry) => entry.toInt())
+            .toList(growable: false);
+
         _profile = (profileData['profile'] as Map?)?.cast<String, dynamic>();
         _isLoading = false;
       });
@@ -118,6 +124,12 @@ class _SchoolScreenState extends State<SchoolScreen> {
         (tracksMap[trackId] as Map?)?.cast<String, dynamic>() ??
         <String, dynamic>{};
     return (trackData['xp'] as num?)?.toInt() ?? 0;
+  }
+
+  int _tuitionForLevel(int level) {
+    if (_tuitionByLevel.isEmpty) return 0;
+    final index = level.clamp(0, _tuitionByLevel.length - 1);
+    return _tuitionByLevel[index];
   }
 
   bool _hasCertification(String certificationId) {
@@ -164,6 +176,64 @@ class _SchoolScreenState extends State<SchoolScreen> {
       return;
     }
 
+    final currentLevel = _trackLevel(trackId);
+    final maxLevel = (track['maxLevel'] as num?)?.toInt() ?? 5;
+    if (currentLevel >= maxLevel) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.schoolTrackMaxLevelReached),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final tuition = _tuitionForLevel(currentLevel);
+    final authProvider = context.read<AuthProvider>();
+    final currentMoney = authProvider.currentPlayer?.money ?? 0;
+    if (tuition > 0 && currentMoney < tuition) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            l10n.insufficientFunds(tuition.toString(), currentMoney.toString()),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (tuition > 0) {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) {
+          return AlertDialog(
+            title: Text(l10n.schoolLessonTuitionConfirmTitle),
+            content: Text(
+              l10n.schoolLessonTuitionConfirmBody(formatCurrency(tuition)),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: Text(l10n.cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: Text(l10n.confirm),
+              ),
+            ],
+          );
+        },
+      );
+      if (confirmed != true) {
+        return;
+      }
+    }
+
     setState(() {
       _trainingTrackId = trackId;
     });
@@ -199,20 +269,28 @@ class _SchoolScreenState extends State<SchoolScreen> {
             : '';
         final cooldownSeconds =
             (params['cooldownSeconds'] as num?)?.toInt() ?? 0;
+        final tuitionPaid = (params['tuitionPaid'] as num?)?.toInt() ?? tuition;
+        final newMoney = (params['newMoney'] as num?)?.toInt();
 
         if (cooldownSeconds > 0) {
           _setGlobalCooldown(cooldownSeconds);
         }
 
+        if (newMoney != null) {
+          authProvider.updatePlayerStats(money: newMoney);
+        }
+
         showActionResultToast(
           context,
           title: trackName,
+          moneyDelta: tuitionPaid > 0 ? '-${formatCurrency(tuitionPaid)}' : null,
           xpDelta: '+$xpGain XP$suffix',
           cooldownLine:
               '${l10n.cooldown} ${_formatCooldownSeconds(cooldownSeconds)}',
           success: true,
         );
 
+        await authProvider.refreshPlayer();
         await _loadSchoolData();
       } else {
         final reason = params['reason']?.toString() ?? 'UNKNOWN';
@@ -227,6 +305,10 @@ class _SchoolScreenState extends State<SchoolScreen> {
           message = '${l10n.cooldown}: ${_formatCooldownSeconds(remaining)}';
         } else if (reason == 'TRACK_MAX_LEVEL_REACHED') {
           message = l10n.schoolTrackMaxLevelReached;
+        } else if (reason == 'INSUFFICIENT_FUNDS') {
+          final needed = (params['needed'] as num?)?.toInt() ?? tuition;
+          final have = (params['have'] as num?)?.toInt() ?? currentMoney;
+          message = l10n.insufficientFunds(needed.toString(), have.toString());
         } else {
           message = l10n.schoolTrackStartFailed;
         }
@@ -596,6 +678,11 @@ class _SchoolScreenState extends State<SchoolScreen> {
     final maxLevel = (track['maxLevel'] as num?)?.toInt() ?? 5;
     final currentLevel = _trackLevel(trackId);
     final currentXp = _trackXp(trackId);
+    final atMaxLevel = currentLevel >= maxLevel;
+    final nextTuition = atMaxLevel ? 0 : _tuitionForLevel(currentLevel);
+    final playerMoney =
+        context.read<AuthProvider>().currentPlayer?.money ?? 0;
+    final canAffordTuition = nextTuition <= 0 || playerMoney >= nextTuition;
     final imageAsset = _trackImageAsset(trackId);
     final fallbackEmoji = _trackFallbackEmoji(trackId);
     final isHovered = _hoveredTrackId == trackId;
@@ -642,7 +729,11 @@ class _SchoolScreenState extends State<SchoolScreen> {
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
-            onTap: (!trackUnlockedByRank || isTraining || isOnCooldown)
+            onTap:
+                (!trackUnlockedByRank ||
+                    isTraining ||
+                    isOnCooldown ||
+                    atMaxLevel)
                 ? null
                 : () => _trainTrack(track, playerRank),
             child: Column(
@@ -780,6 +871,19 @@ class _SchoolScreenState extends State<SchoolScreen> {
                         l10n.schoolXpLabel(currentXp),
                         style: TextStyle(fontSize: 11, color: Colors.grey[300]),
                       ),
+                      if (!atMaxLevel && nextTuition > 0) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          l10n.schoolLessonTuition(formatCurrency(nextTuition)),
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: canAffordTuition
+                                ? const Color(0xFFFFC107)
+                                : Colors.redAccent,
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 5,

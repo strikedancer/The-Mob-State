@@ -10697,6 +10697,19 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String schoolLessonTuition(String amount) {
+    return 'Retta: $amount';
+  }
+
+  @override
+  String get schoolLessonTuitionConfirmTitle => 'Iniziare questa lezione?';
+
+  @override
+  String schoolLessonTuitionConfirmBody(String amount) {
+    return 'Questa lezione costa $amount contanti.';
+  }
+
+  @override
   String schoolTrainBonusLevels(int count) {
     return '+$count liv.';
   }
@@ -17002,11 +17015,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicSchoolHow =>
-      'La scuola offre percorsi per dominio: Penale (migliori statistiche sulla criminalità), Economia (minori costi commerciali e bancari), Militare (bonus di combattimento), Medicina (minori costi ospedalieri), Giurisprudenza (minori costi legali), Tecnico (migliore fabbrica e produzione di farmaci). \nOgni lezione ha una durata di studio di 15-60 minuti a seconda del livello. I livelli più alti richiedono più tempo. \nDopo aver completato una lezione ricevi un certificato per quel livello di traccia. Questo certificato è permanente e concede il bonus immediatamente. \nPuoi seguire una sola lezione alla volta. Pianifica attentamente i tuoi studi quando hai bisogno urgentemente di un certificato specifico. \nI costi scolastici aumentano per livello. L’istruzione superiore richiede il completamento dei livelli precedenti dello stesso percorso. \nAlcune funzionalità avanzate del gioco sono protette da un certificato scolastico: ad es. accesso a determinati lavori, livelli di fabbrica più elevati, eventi in nightclub VIP e livelli di aggiornamento delle strutture farmaceutiche più elevati. \nI certificati non vengono mai ripristinati a meno che il tuo account non riceva una pesante penalità.';
+      'La scuola offre percorsi per dominio: aviazione, diritto, medicina, finanza, ingegneria, informatica e narcotici. \nOgni lezione garantisce XP immediatamente e avvia un tempo di recupero della scuola condivisa. Il tempo di recupero aumenta con il livello attuale del tracciato (circa 1,5 minuti all\'inizio, fino a 40 minuti ai livelli più alti). \nI certificati si sbloccano quando raggiungi il livello di traccia richiesto. Sono permanenti. \nTutte le tracce condividono un tempo di recupero della scuola, quindi non è possibile impilare le lezioni. I crediti premium possono saltare un periodo di recupero scolastico attivo; non sono tasse scolastiche. \nOgni lezione costa contanti. La retta aumenta con il tuo livello attuale in quel percorso (circa € 2.000 per le prime lezioni, fino a circa € 28.000 ai livelli più alti). I livelli già completati non vengono addebitati nuovamente. Le licenze aeronautiche rimangono un gradino retribuito separato dopo la scuola di aviazione. \nAlcune funzionalità avanzate del gioco rimangono bloccate dietro un certificato scolastico: alcuni lavori, aerei, fabbrica di munizioni e aggiornamenti di strutture farmaceutiche. \nI certificati non vengono mai ripristinati a meno che il tuo account non riceva una pesante penalità.';
 
   @override
   String get helpTopicSchoolTips =>
-      'Inizia sempre con il percorso Criminale: i bonus alle possibilità di successo nel crimine ripagano i costi di studio in poche sessioni. \nPianifica studi lunghi (60 min+) prima di andare a dormire: ti svegli con un nuovo certificato senza perdere tempo attivo.';
+      'Inizia con il percorso che sblocca ciò di cui hai bisogno dopo (lavoro, aviazione, legge per i ricorsi, narcotici per potenziamenti delle strutture). \nLe tasse scolastiche sono modeste; il cooldown condiviso è il vero limitatore. Tieni qualche migliaio di contanti a portata di mano per le prime lezioni. \nSpendi crediti per la scuola solo quando sei a metà del recupero e hai bisogno della lezione successiva adesso.';
 
   @override
   String get helpTopicTerritoryCategory => 'Impero';

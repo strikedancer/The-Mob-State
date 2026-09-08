@@ -14,6 +14,12 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Boat theft ease:** in `vehicleService.stealVehicle`, after heat / dynamic police pattern / ops-rep, **+0.06** success chance for `vehicleType === 'boat'` (max 0.95). **Port lockdown** window uses boat risk multiplier **1.10** (not 1.18). Rationale: boat `baseValue` bands in content skew harder than starter cars; see `steel_voertuig.md`.
 - **Street target weights:** `streetTheftRarityWeights(rank)` in `vehicleService.ts`. Risk is always a street (common/uncommon) attempt; rare/epic/legendary are post-success upgrades. Unlocks: rare 7, epic 13, legendary 22. Rank 7 ≈ 70/28/2; rank 13–21 ≈ 48/30/16/6; rank 22+ ≈ 42/28/18/9/3. Catalog count is not the drop rate. See `garage.md` / `steel_voertuig.md`.
 
+## Documented static modifiers (school tuition)
+- **Street-cash tuition:** `SCHOOL_TUITION_BY_LEVEL = [2000, 4000, 8000, 15000, 28000]` in `educationService.ts`, keyed by current track level (0–4) when a lesson starts. Same curve on every track. Time/cooldown remains the main pace limiter; cash is a modest sink (early lessons in the low thousands, top lessons in the tens of thousands — not millions).
+- **Not charged:** already completed levels, gym / shooting-range, bank/crypto, premium credits. Aviation licenses stay a separate paid step after aviation school (no double school surcharge).
+- **Credits:** `ACTION_COOLDOWN_RESET` for `actionType=school` skips an active school cooldown only.
+- See [school.md](school.md).
+
 ## Documented static modifiers (training → crimes)
 - **Combo-readiness:** when the player has **at least one gym train (any track; `gymLastTrainedAt` = latest of strength/speed/stamina `lastTrainedAt`) and one shooting-range train** on the **same UTC calendar day**, `crimeService` adds **`TRAINING_COMBO_READINESS_BONUS`** (**+0.5%** success chance as a fraction, see `backend/src/lib/trainingComboReadiness.ts`) on top of existing gym aggregate + shooting-range training bonuses. Still clamped with all other modifiers to **5–95%** final success chance. Exposed for UI as `trainingComboReadiness` on **`GET /training/status`**.
 

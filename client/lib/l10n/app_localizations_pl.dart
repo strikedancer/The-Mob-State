@@ -10661,6 +10661,19 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String schoolLessonTuition(String amount) {
+    return 'Czesne: $amount';
+  }
+
+  @override
+  String get schoolLessonTuitionConfirmTitle => 'Rozpocząć tę lekcję?';
+
+  @override
+  String schoolLessonTuitionConfirmBody(String amount) {
+    return 'Ta lekcja kosztuje $amount gotówki.';
+  }
+
+  @override
   String schoolTrainBonusLevels(int count) {
     return '+$count poz.';
   }
@@ -16949,11 +16962,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicSchoolHow =>
-      'Szkoła oferuje ścieżki w poszczególnych domenach: Kryminalny (lepsze statystyki przestępczości), Ekonomiczny (niższe koszty handlu i banku), Wojskowy (premie bojowe), Medycyna (niższe koszty szpitala), Prawo (niższe koszty prawnika), Techniczny (lepsza fabryka i produkcja leków). \nKażda lekcja trwa od 15 do 60 minut, w zależności od poziomu. Wyższe poziomy trwają dłużej. \nPo ukończeniu lekcji otrzymasz certyfikat na dany poziom ścieżki. Certyfikat ten jest trwały i przyznaje natychmiastową premię. \nMożesz uczestniczyć tylko w jednej lekcji na raz. Starannie zaplanuj studia, gdy pilnie potrzebujesz konkretnego certyfikatu. \nKoszty szkoły rosną z każdym poziomem. Szkolnictwo wyższe wymaga ukończenia wcześniejszych poziomów tej samej ścieżki. \nNiektóre zaawansowane funkcje gry są zablokowane za świadectwem szkolnym: np. dostęp do niektórych stanowisk pracy, wyższych poziomów fabrycznych, wydarzeń w klubach nocnych VIP i wyższych poziomów ulepszeń placówki farmaceutycznej. \nCertyfikaty nigdy nie są resetowane, chyba że na Twoje konto zostanie nałożona surowa kara.';
+      'Szkoła oferuje ścieżki w poszczególnych domenach: lotnictwo, prawo, medycyna, finanse, inżynieria, informatyka i narkotyki. \nKażda lekcja zapewnia natychmiastowe PD i rozpoczyna wspólny okres odnowienia szkoły. Czas odnowienia rośnie wraz z aktualnym poziomem toru (około 1,5 minuty na początku, do 40 minut na najwyższych poziomach). \nCertyfikaty odblokowują się po osiągnięciu wymaganego poziomu ścieżki. Są trwałe. \nWszystkie ścieżki mają wspólny czas odnowienia szkoły, więc nie można łączyć lekcji w stosy. Kredyty premium mogą pominąć czas odnowienia aktywnej szkoły; nie są to czesne. \nKażda lekcja kosztuje uliczną gotówkę. Czesne rośnie wraz z Twoim obecnym poziomem na tym poziomie (około 2000 euro za pierwsze lekcje, do około 28 000 euro na najwyższych poziomach). Już ukończone poziomy nie są ponownie obciążane. Licencje lotnicze pozostają odrębnym płatnym krokiem po szkole lotniczej. \nNiektóre zaawansowane funkcje gry pozostają niedostępne dla świadectwa szkolnego: niektóre prace, samoloty, fabryki amunicji i ulepszenia placówek farmaceutycznych. \nCertyfikaty nigdy nie są resetowane, chyba że na Twoje konto zostanie nałożona surowa kara.';
 
   @override
   String get helpTopicSchoolTips =>
-      'Zawsze zaczynaj od ścieżki kryminalnej: premie do szans na sukces w przestępstwie zwracają koszty nauki w ciągu kilku sesji. \nZaplanuj długie studia (60 min+) przed pójściem spać: budzisz się z nowym certyfikatem, nie tracąc aktywnego czasu.';
+      'Zacznij od ścieżki, która odblokowuje to, czego potrzebujesz dalej (praca, lotnictwo, prawo odwoławcze, narkotyki do ulepszenia obiektu). \nCzesne jest skromne; wspólny czas odnowienia jest prawdziwym ograniczeniem. Trzymaj kilka tysięcy gotówki pod ręką na wczesne lekcje. \nWydawaj kredyty na szkołę tylko wtedy, gdy jesteś w połowie odnowienia i potrzebujesz następnej lekcji już teraz.';
 
   @override
   String get helpTopicTerritoryCategory => 'Imperium';

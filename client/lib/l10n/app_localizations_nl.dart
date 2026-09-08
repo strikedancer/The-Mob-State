@@ -10640,6 +10640,19 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String schoolLessonTuition(String amount) {
+    return 'Lesgeld: $amount';
+  }
+
+  @override
+  String get schoolLessonTuitionConfirmTitle => 'Les starten?';
+
+  @override
+  String schoolLessonTuitionConfirmBody(String amount) {
+    return 'Deze les kost $amount contant.';
+  }
+
+  @override
   String schoolTrainBonusLevels(int count) {
     return '+$count Lv';
   }
@@ -16861,11 +16874,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSchoolHow =>
-      'School biedt tracks per domein: Crimineel (betere crime stats), Economie (lagere handels- en bankkosten), Militair (combat bonussen), Geneeskunde (lagere ziekenhuiskosten), Rechten (lagere advocaatkosten), Technisch (factory) en Narcotica (drugsfaciliteit-upgrades).\nElke les heeft een studietime van 15-60 minuten afhankelijk van het level. Hogere levels duren langer.\nNa het voltooien van een les ontvang je een certificaat voor dat track-level. Dit certificaat is permanent en geeft de bonus direct.\nJe kunt maar één les tegelijk volgen. Plan je studies zorgvuldig als je snel een specifiek certificaat nodig hebt.\nSchoolkosten stijgen per level. Hoger onderwijs vereist dat eerdere niveaus in hetzelfde track zijn voltooid.\nSommige geavanceerde game-features zijn vergrendeld achter een schoolcertificaat: bv. toegang tot bepaalde jobs, hogere factory levels, VIP nightclub events.\nCertifcaten worden nooit gereset tenzij je account een zware straf ontvangt.';
+      'School biedt tracks per domein: Luchtvaart, Rechten, Geneeskunde, Financiën, Techniek, IT en Narcotica.\nElke les geeft meteen XP en start een gedeelde school-cooldown. De cooldown groeit met je huidige track-level (ongeveer 1,5 minuut aan het begin, tot 40 minuten op de hoogste niveaus).\nCertificaten ontgrendel je bij het vereiste track-level. Ze zijn permanent.\nAlle tracks delen één school-cooldown, dus je kunt lessen niet stapelen. Premium credits skippen alleen een actieve school-cooldown; ze zijn geen lesgeld.\nElke les kost contant geld. Lesgeld stijgt met je huidige level op dat track (ongeveer €2.000 voor de eerste lessen, tot ongeveer €28.000 op de hoogste niveaus). Al behaalde levels worden niet opnieuw in rekening gebracht. Luchtvaartlicenties blijven een aparte betaalde stap na de aviation-school.\nSommige geavanceerde features blijven achter een schoolcertificaat: bepaalde jobs, vliegtuigen, munitiefabriek en drugsfaciliteit-upgrades.\nCertificaten worden nooit gereset tenzij je account een zware straf ontvangt.';
 
   @override
   String get helpTopicSchoolTips =>
-      'Start altijd met het Crimineel-track: de bonussen op crime-slagingskansen betalen de leerkosten binnen een paar sessies terug.\nPlan lange studies (60 min+) voor je gaat slapen: je wake-up met een nieuw certificaat zonder gemiste actietijd.';
+      'Start met het track dat je het eerst nodig hebt (jobs, luchtvaart, rechten voor hoger beroep, narcotica voor faciliteit-upgrades).\nLesgeld is beperkt; de gedeelde cooldown is de echte rem. Houd een paar duizend euro contant achter de hand voor vroege lessen.\nGebruik credits alleen als je midden in een cooldown zit en de volgende les nu nodig hebt.';
 
   @override
   String get helpTopicTerritoryCategory => 'Empire';

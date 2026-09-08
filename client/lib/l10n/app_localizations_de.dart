@@ -10722,6 +10722,19 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String schoolLessonTuition(String amount) {
+    return 'Studiengebühr: $amount';
+  }
+
+  @override
+  String get schoolLessonTuitionConfirmTitle => 'Mit dieser Lektion beginnen?';
+
+  @override
+  String schoolLessonTuitionConfirmBody(String amount) {
+    return 'Diese Lektion kostet $amount Bargeld.';
+  }
+
+  @override
   String schoolTrainBonusLevels(int count) {
     return '+$count Lv';
   }
@@ -17028,11 +17041,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicSchoolHow =>
-      'Die Schule bietet Titel pro Domäne an: Kriminalität (bessere Kriminalitätsstatistiken), Wirtschaft (geringere Handels- und Bankkosten), Militär (Kampfprämien), Medizin (geringere Krankenhauskosten), Jura (geringere Anwaltskosten), Technik (bessere Fabrik- und Arzneimittelproduktion). \nDie Lernzeit für jede Lektion beträgt je nach Niveau 15–60 Minuten. Höhere Level dauern länger. \nNach Abschluss einer Unterrichtsstunde erhalten Sie ein Zertifikat für das entsprechende Kursniveau. Dieses Zertifikat ist dauerhaft und gewährt den Bonus sofort. \nSie können jeweils nur einer Lektion folgen. Planen Sie Ihr Studium sorgfältig, wenn Sie dringend ein bestimmtes Zertifikat benötigen. \nDie Schulkosten steigen pro Stufe. Für die Hochschulbildung ist der Abschluss früherer Stufen derselben Studienrichtung erforderlich. \nEinige erweiterte Spielfunktionen sind hinter einem Schulzertifikat verschlossen: z.B. Zugang zu bestimmten Jobs, höhere Fabrikstufen, VIP-Nightclub-Events und höhere Upgrade-Stufen für Drogeneinrichtungen. \nZertifikate werden niemals zurückgesetzt, es sei denn, Ihr Konto erhält eine hohe Strafe.';
+      'Die Schule bietet Studiengänge pro Bereich an: Luftfahrt, Recht, Medizin, Finanzen, Ingenieurwesen, IT und Betäubungsmittel. \nJede Lektion gewährt sofort XP und startet eine gemeinsame Abklingzeit für die Schule. Die Abklingzeit wächst mit der aktuellen Streckenstufe (ca. 1,5 Minuten zu Beginn, bis zu 40 Minuten auf der höchsten Stufe). \nZertifikate werden freigeschaltet, wenn Sie das erforderliche Track-Level erreichen. Sie sind dauerhaft. \nAlle Tracks haben die gleiche Abklingzeit für die Schule, daher können Lektionen nicht gestapelt werden. Premium-Credits können eine aktive Schulabklingzeit überspringen; es handelt sich nicht um Unterricht. \nJede Unterrichtsstunde kostet Straßengeld. Die Studiengebühren steigen mit Ihrem aktuellen Niveau in diesem Studiengang (ca. 2.000 € für die ersten Unterrichtsstunden, bis zu ca. 28.000 € auf dem höchsten Niveau). Bereits abgeschlossene Level werden nicht erneut berechnet. Fluglizenzen bleiben ein separater bezahlter Schritt nach der Flugschule. \nEinige erweiterte Spielfunktionen bleiben hinter einem Schulzertifikat verborgen: bestimmte Jobs, Upgrades von Flugzeugen, Munitionsfabriken und Arzneimitteleinrichtungen. \nZertifikate werden niemals zurückgesetzt, es sei denn, Ihr Konto erhält eine hohe Strafe.';
 
   @override
   String get helpTopicSchoolTips =>
-      'Beginnen Sie immer mit dem Kriminal-Track: Boni auf Kriminal-Erfolgschancen amortisieren die Studienkosten innerhalb weniger Sitzungen. \nPlanen Sie vor dem Schlafengehen langes Lernen (60 Min.+) ein: Sie wachen mit einem neuen Zertifikat auf, ohne aktive Zeit zu verpassen.';
+      'Beginnen Sie mit dem Track, der das freischaltet, was Sie als Nächstes benötigen (Arbeitsplätze, Luftfahrt, Rechtsmittel für Berufungen, Betäubungsmittel für Anlagenmodernisierungen). \nDie Studiengebühren sind bescheiden; Die gemeinsame Abklingzeit ist der eigentliche Begrenzer. Halten Sie ein paar Tausend Euro für den frühen Unterricht bereit. \nGeben Sie Credits nur dann für die Schule aus, wenn Sie sich in der Mitte der Abklingzeit befinden und jetzt die nächste Unterrichtsstunde benötigen.';
 
   @override
   String get helpTopicTerritoryCategory => 'Reich';
