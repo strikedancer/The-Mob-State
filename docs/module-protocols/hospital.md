@@ -9,6 +9,7 @@ The hospital is the **paid, immediate reset** when crimes or hits drop HP. Waiti
 - Crimes cost ~5–15 HP (vest/bodyguards cut up to ~55%). Hits also cost HP.
 - **Fit (≥70):** no crime penalty.
 - **Wounded (<70 / <40 / <20):** −4% / −8% / −12% crime success (already in the listed % on crime cards).
+- **Passive tick heal:** +`PASSIVE_HEALING_PER_TICK` (default 5) HP while `health` is 1–99; HP 0 (ICU) is skipped. Applied as **one batched `UPDATE`** per tick (`applyPassivePlayerTickBatch` in `playerTickBatch.ts`), not per player row.
 - **Paid heal:** standard €10k / +30 HP, intensive €20k / +75 HP, shared 60 min cooldown (VIP −10%).
 - **Emergency Help:** player-pressed button only below 10 HP, free +20 HP, no cooldown. Not automatic.
 - **ICU:** automatic at 0 HP for 180 minutes. `checkICUStatus` returns remaining **minutes**.

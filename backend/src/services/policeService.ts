@@ -226,8 +226,8 @@ export async function increaseWantedLevel(playerId: number, amount: number): Pro
 }
 
 /**
- * Decrease wanted level over time (passive decay)
- * Called by tick service
+ * Decrease wanted level over time (passive decay).
+ * Game ticks use `applyPassivePlayerTickBatch` instead of this per-player helper.
  */
 export async function decayWantedLevel(playerId: number): Promise<number> {
   const player = await prisma.player.findUnique({

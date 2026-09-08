@@ -48,7 +48,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Gekoppelde moduledata zoals Crew Wars mag dashboardstatistieken nooit als alles-of-niets dependency blokkeren; als een secundaire hub-call faalt moet het dashboard met veilige fallbackdata blijven renderen in plaats van 500 of nul-collaps van alle statistiekkaarten.
 - Vehicle Heist/Ops data (crew-acties, cooldowns, heat/reputatie, contracts/claims) moet als compacte dashboardsamenvatting zichtbaar blijven met live countdowns, inclusief veilige fallback per voertuigtype. Theft-cooldown na stelen blijft correct zichtbaar: API levert `cooldownRemainingSeconds` in steal-responses; embedded Vehicle Heist toont feedback rechtsboven in lijn met dashboard-notificatiepatroon.
 - Responsive usability without pushing critical actions off-screen.
-- Op mobiel (onder de tablet-breakpoint) blijft een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew altijd in beeld. Op Misdaden/Stelen/Werken toont een gouden stip dat de cooldown klaar is. Remaining komt uit `GET /player/action-cooldowns` bij load/navigatie/na actie en tikt daarna lokaal; geen 10/30s-poll. Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu / de zijbalk.
+- Op mobiel (onder de tablet-breakpoint) blijft een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew altijd in beeld. Op Misdaden/Stelen/Werken toont een gouden stip dat de cooldown klaar is. Remaining komt uit `GET /player/action-cooldowns` bij load/navigatie/na actie en tikt daarna lokaal; geen 10/30s-poll. Home-statistiek-countdowns (timeouts, jail, vehicle-ops, war-phase) tikken via dezelfde `ValueNotifier`-aanpak: niet elke seconde `setState` op de hele home-tree. Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu / de zijbalk.
 - **Eten & Drinken is verwijderd.** Geen menu-item, geen `/food`-API, geen honger/dorst-tick. Nightclub bar & kitchen blijft (clubvoorraad, niet spelerhonger).
 - De hoofdbalk-avatar opent een gebruikersmenu met **Mijn profiel**, berichten, hulp, instellingen en uitloggen. Mijn profiel toont het publieke profiel van de ingelogde speler **in de dashboard-content** (niet als fullscreen-route).
 - Rangtitels op dashboard en publiek profiel gebruiken dezelfde ladder als `backend/src/utils/rankSystem.ts` (`client/lib/utils/rank_display.dart`). Rang 21+ is niet automatisch Peetvader; Peetvader is rang 60–74, Soldaat is rang 25–29.
@@ -70,7 +70,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
-- Verifieer dat economy/operations/risk/notification dashboardsecties gevuld blijven met echte backenddata en geen lege defaults bij normale accounts.
+- Verifieer dat Home-countdowns (timeouts, jail, vehicle-ops chips, war-phase) elke seconde blijven lopen zonder dat de rest van de home-kaart (event-feed, doelen, economy-cijfers) meerebuildt.
 - Verifieer dat een fout in een gekoppelde submodule zoals Crew Wars de dashboard-statistieken niet volledig leeg of op nul laat terugvallen.
 - Verifieer dat Vehicle Ops-data per voertuigtype (auto/motor/boot) op dashboard blijft renderen, ook als één type tijdelijk geen intelligence payload teruggeeft.
 - Verify no text overflows or clipped buttons appear.

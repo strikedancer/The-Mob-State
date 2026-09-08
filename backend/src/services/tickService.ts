@@ -1,7 +1,6 @@
 import config from '../config';
 import prisma from '../lib/prisma';
-import * as policeService from './policeService';
-import * as fbiService from './fbiService';
+import { applyPassivePlayerTickBatch } from './playerTickBatch';
 import { prostituteService } from './prostituteService';
 import { propertyService } from './propertyService';
 import nightclubService from './nightclubService';
@@ -95,43 +94,10 @@ class TickService {
     console.log(`\n⏰ Running tick at ${this.timeProvider.now().toISOString()}`);
 
     try {
-      // Get all players for periodic processing
-      const players = await prisma.player.findMany({
-        select: {
-          id: true,
-          username: true,
-          health: true,
-        },
-      });
-
-      console.log(`📊 Processing ${players.length} players...`);
-
-      // Process each player
-      for (const player of players) {
-        // Passive healing: +5 HP per tick if HP > 0 and < 100
-        // Fetch full player data for health access
-        const fullPlayer = await prisma.player.findUnique({
-          where: { id: player.id },
-          select: { health: true, username: true },
-        });
-
-        if (fullPlayer && fullPlayer.health > 0 && fullPlayer.health < 100) {
-          const newHealth = Math.min(100, fullPlayer.health + config.passiveHealingPerTick);
-          await prisma.player.update({
-            where: { id: player.id },
-            data: { health: newHealth },
-          });
-          console.log(
-            `💚 Player ${fullPlayer.username} passive heal: ${fullPlayer.health} → ${newHealth} HP`
-          );
-        }
-
-        // Decay wanted level
-        await policeService.decayWantedLevel(player.id);
-
-        // Decay FBI heat (slower than wanted level)
-        await fbiService.decayFBIHeat(player.id);
-      }
+      const playerTick = await applyPassivePlayerTickBatch();
+      console.log(
+        `📊 Passive player tick: healed ${playerTick.healed}, wanted ${playerTick.wantedDecayed}, fbi ${playerTick.fbiHeatDecayed}`
+      );
 
       try {
         const { countryPoliceService } = await import('./countryPoliceService');
@@ -239,7 +205,7 @@ class TickService {
 
       const duration = this.timeProvider.timestamp() - startTime;
       console.log(
-        `✅ Tick complete in ${duration}ms (${players.length} players)\n`
+        `✅ Tick complete in ${duration}ms (healed ${playerTick.healed}, wanted ${playerTick.wantedDecayed}, fbi ${playerTick.fbiHeatDecayed})\n`
       );
     } catch (error) {
       console.error('❌ Error during tick:', error);

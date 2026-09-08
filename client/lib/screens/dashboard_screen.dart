@@ -2681,6 +2681,99 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
+class _HomeLiveTimers {
+  const _HomeLiveTimers({
+    required this.cooldowns,
+    required this.jailTimeRemaining,
+    required this.longestCooldownSeconds,
+    required this.nextDrugProductionEndsInSeconds,
+    required this.nextNightclubEventStartsInSeconds,
+    required this.crewWarPhaseEndsInSeconds,
+    required this.vehicleOpsCooldowns,
+  });
+
+  final Map<String, int> cooldowns;
+  final int jailTimeRemaining;
+  final int longestCooldownSeconds;
+  final int nextDrugProductionEndsInSeconds;
+  final int nextNightclubEventStartsInSeconds;
+  final int crewWarPhaseEndsInSeconds;
+  final Map<String, Map<String, int>> vehicleOpsCooldowns;
+
+  bool get jailed => jailTimeRemaining > 0;
+
+  bool get hasActive {
+    if (jailTimeRemaining > 0 ||
+        longestCooldownSeconds > 0 ||
+        nextDrugProductionEndsInSeconds > 0 ||
+        nextNightclubEventStartsInSeconds > 0 ||
+        crewWarPhaseEndsInSeconds > 0) {
+      return true;
+    }
+    for (final value in cooldowns.values) {
+      if (value > 0) return true;
+    }
+    for (final category in vehicleOpsCooldowns.values) {
+      for (final value in category.values) {
+        if (value > 0) return true;
+      }
+    }
+    return false;
+  }
+
+  factory _HomeLiveTimers.fromStats(DashboardStats stats) {
+    Map<String, int> categoryCooldowns(
+      VehicleOpsCategoryDashboardSummary? category,
+    ) {
+      return Map<String, int>.from(category?.cooldowns ?? const {});
+    }
+
+    return _HomeLiveTimers(
+      cooldowns: Map<String, int>.from(stats.cooldowns),
+      jailTimeRemaining: stats.jailTimeRemaining,
+      longestCooldownSeconds: stats.operations?.longestCooldownSeconds ?? 0,
+      nextDrugProductionEndsInSeconds:
+          stats.operations?.nextDrugProductionEndsInSeconds ?? 0,
+      nextNightclubEventStartsInSeconds:
+          stats.operations?.nextNightclubEventStartsInSeconds ?? 0,
+      crewWarPhaseEndsInSeconds: stats.crewWar?.phaseEndsInSeconds ?? 0,
+      vehicleOpsCooldowns: {
+        'car': categoryCooldowns(stats.vehicleOps?.car),
+        'motorcycle': categoryCooldowns(stats.vehicleOps?.motorcycle),
+        'boat': categoryCooldowns(stats.vehicleOps?.boat),
+      },
+    );
+  }
+
+  _HomeLiveTimers ticked() {
+    Map<String, int> tickMap(Map<String, int> source) => {
+      for (final entry in source.entries)
+        entry.key: entry.value > 0 ? entry.value - 1 : 0,
+    };
+
+    return _HomeLiveTimers(
+      cooldowns: tickMap(cooldowns),
+      jailTimeRemaining: jailTimeRemaining > 0 ? jailTimeRemaining - 1 : 0,
+      longestCooldownSeconds: longestCooldownSeconds > 0
+          ? longestCooldownSeconds - 1
+          : 0,
+      nextDrugProductionEndsInSeconds: nextDrugProductionEndsInSeconds > 0
+          ? nextDrugProductionEndsInSeconds - 1
+          : 0,
+      nextNightclubEventStartsInSeconds: nextNightclubEventStartsInSeconds > 0
+          ? nextNightclubEventStartsInSeconds - 1
+          : 0,
+      crewWarPhaseEndsInSeconds: crewWarPhaseEndsInSeconds > 0
+          ? crewWarPhaseEndsInSeconds - 1
+          : 0,
+      vehicleOpsCooldowns: {
+        for (final entry in vehicleOpsCooldowns.entries)
+          entry.key: tickMap(entry.value),
+      },
+    );
+  }
+}
+
 class _WebDashboardHomeContent extends StatefulWidget {
   const _WebDashboardHomeContent({this.onOpenTrainingHub});
 
@@ -2699,6 +2792,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   bool _weeklyGoalsLoading = false;
   Timer? _cooldownTimer;
   int _statsLoadGen = 0;
+  final ValueNotifier<_HomeLiveTimers?> _liveTicks =
+      ValueNotifier<_HomeLiveTimers?>(null);
 
   String _dailyGoalTitle(AppLocalizations l10n, String key) {
     switch (key) {
@@ -2885,57 +2980,12 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     _loadGameEventsOverview();
     _loadWeeklyGoals();
 
-    // Update cooldowns every second
+    // Tick only the countdown notifier — never rebuild the whole home tree.
     _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted && _stats != null) {
-        setState(() {
-          // Decrement cooldowns
-          _stats = DashboardStats(
-            crimeAttempts: _stats!.crimeAttempts,
-            breakoutCount: _stats!.breakoutCount,
-            killCount: _stats!.killCount,
-            hitsPlacedCount: _stats!.hitsPlacedCount,
-            successfulCrimes: _stats!.successfulCrimes,
-            jobAttempts: _stats!.jobAttempts,
-            vehicleThieves: _stats!.vehicleThieves,
-            boatThieves: _stats!.boatThieves,
-            streetProstitutes: _stats!.streetProstitutes,
-            redLightProstitutes: _stats!.redLightProstitutes,
-            totalAmmo: _stats!.totalAmmo,
-            drugsTotalQuantity: _stats!.drugsTotalQuantity,
-            nightclubVenues: _stats!.nightclubVenues,
-            nightclubRevenueAllTime: _stats!.nightclubRevenueAllTime,
-            travelCount: _stats!.travelCount,
-            weapons: _stats!.weapons,
-            selectedWeaponName: _stats!.selectedWeaponName,
-            activeVehicle: _stats!.activeVehicle,
-            jailed: _stats!.jailTimeRemaining > 1,
-            jailTimeRemaining: _stats!.jailTimeRemaining > 0
-                ? _stats!.jailTimeRemaining - 1
-                : 0,
-            bankBalance: _stats!.bankBalance,
-            economy: _stats!.economy,
-            economy24h: _stats!.economy24h,
-            activity7d: _stats!.activity7d,
-            operations: _tickOperations(_stats!.operations),
-            notifications: _stats!.notifications,
-            risk: _stats!.risk,
-            crewWar: _stats!.crewWar?.copyWith(
-              phaseEndsInSeconds: (_stats!.crewWar?.phaseEndsInSeconds ?? 0) > 0
-                  ? (_stats!.crewWar?.phaseEndsInSeconds ?? 0) - 1
-                  : 0,
-            ),
-            territoryLeaderStats: _stats!.territoryLeaderStats,
-            territoryDrama: _stats!.territoryDrama,
-            vehicleOps: _tickVehicleOps(_stats!.vehicleOps),
-            cooldowns: Map.fromEntries(
-              _stats!.cooldowns.entries.map(
-                (e) => MapEntry(e.key, e.value > 0 ? e.value - 1 : 0),
-              ),
-            ),
-          );
-        });
-      }
+      if (!mounted) return;
+      final current = _liveTicks.value;
+      if (current == null || !current.hasActive) return;
+      _liveTicks.value = current.ticked();
     });
 
     // Listen to events for immediate refresh
@@ -2972,6 +3022,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   @override
   void dispose() {
     _cooldownTimer?.cancel();
+    _liveTicks.dispose();
     // Remove event listener
     try {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
@@ -2987,8 +3038,12 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     try {
       final stats = await DashboardService.getDashboardStats();
       if (!mounted || gen != _statsLoadGen) return;
+      _liveTicks.value = _mergeLiveTimers(
+        _liveTicks.value,
+        _HomeLiveTimers.fromStats(stats),
+      );
       setState(() {
-        _stats = _mergeLiveDashboardStats(_stats, stats);
+        _stats = stats;
         _loading = false;
       });
     } catch (e) {
@@ -3017,75 +3072,48 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     };
   }
 
-  DashboardStats _mergeLiveDashboardStats(
-    DashboardStats? local,
-    DashboardStats incoming,
+  Map<String, Map<String, int>> _mergeVehicleOpsCooldownMaps(
+    Map<String, Map<String, int>> local,
+    Map<String, Map<String, int>> incoming,
+  ) {
+    final keys = {...local.keys, ...incoming.keys};
+    return {
+      for (final key in keys)
+        key: _mergeCooldownMap(local[key] ?? const {}, incoming[key] ?? const {}),
+    };
+  }
+
+  _HomeLiveTimers _mergeLiveTimers(
+    _HomeLiveTimers? local,
+    _HomeLiveTimers incoming,
   ) {
     if (local == null) return incoming;
-    return DashboardStats(
-      crimeAttempts: incoming.crimeAttempts,
-      breakoutCount: incoming.breakoutCount,
-      killCount: incoming.killCount,
-      hitsPlacedCount: incoming.hitsPlacedCount,
-      successfulCrimes: incoming.successfulCrimes,
-      jobAttempts: incoming.jobAttempts,
-      vehicleThieves: incoming.vehicleThieves,
-      boatThieves: incoming.boatThieves,
-      streetProstitutes: incoming.streetProstitutes,
-      redLightProstitutes: incoming.redLightProstitutes,
-      totalAmmo: incoming.totalAmmo,
-      drugsTotalQuantity: incoming.drugsTotalQuantity,
-      nightclubVenues: incoming.nightclubVenues,
-      nightclubRevenueAllTime: incoming.nightclubRevenueAllTime,
-      travelCount: incoming.travelCount,
-      weapons: incoming.weapons,
-      selectedWeaponName: incoming.selectedWeaponName,
-      activeVehicle: incoming.activeVehicle,
-      jailed: incoming.jailed,
+    return _HomeLiveTimers(
+      cooldowns: _mergeCooldownMap(local.cooldowns, incoming.cooldowns),
       jailTimeRemaining: _preferLiveRemaining(
         local.jailTimeRemaining,
         incoming.jailTimeRemaining,
       ),
-      bankBalance: incoming.bankBalance,
-      economy: incoming.economy,
-      economy24h: incoming.economy24h,
-      activity7d: incoming.activity7d,
-      operations: incoming.operations == null
-          ? local.operations
-          : DashboardOperationsSummary(
-              activeCooldownCount: incoming.operations!.activeCooldownCount,
-              longestCooldownSeconds: _preferLiveRemaining(
-                local.operations?.longestCooldownSeconds ?? 0,
-                incoming.operations!.longestCooldownSeconds,
-              ),
-              activeDrugProductionsCount:
-                  incoming.operations!.activeDrugProductionsCount,
-              nextDrugProductionEndsInSeconds: _preferLiveRemaining(
-                local.operations?.nextDrugProductionEndsInSeconds ?? 0,
-                incoming.operations!.nextDrugProductionEndsInSeconds,
-              ),
-              activeNightclubEventsCount:
-                  incoming.operations!.activeNightclubEventsCount,
-              nextNightclubEventStartsInSeconds: _preferLiveRemaining(
-                local.operations?.nextNightclubEventStartsInSeconds ?? 0,
-                incoming.operations!.nextNightclubEventStartsInSeconds,
-              ),
-              activeVehicleCount: incoming.operations!.activeVehicleCount,
-              listedVehicleCount: incoming.operations!.listedVehicleCount,
-              inTransitVehicleCount: incoming.operations!.inTransitVehicleCount,
-            ),
-      notifications: incoming.notifications,
-      risk: incoming.risk,
-      crewWar: incoming.crewWar?.copyWith(
-        phaseEndsInSeconds: _preferLiveRemaining(
-          local.crewWar?.phaseEndsInSeconds ?? 0,
-          incoming.crewWar?.phaseEndsInSeconds ?? 0,
-        ),
+      longestCooldownSeconds: _preferLiveRemaining(
+        local.longestCooldownSeconds,
+        incoming.longestCooldownSeconds,
       ),
-      territoryLeaderStats: incoming.territoryLeaderStats,
-      territoryDrama: incoming.territoryDrama,
-      vehicleOps: incoming.vehicleOps,
-      cooldowns: _mergeCooldownMap(local.cooldowns, incoming.cooldowns),
+      nextDrugProductionEndsInSeconds: _preferLiveRemaining(
+        local.nextDrugProductionEndsInSeconds,
+        incoming.nextDrugProductionEndsInSeconds,
+      ),
+      nextNightclubEventStartsInSeconds: _preferLiveRemaining(
+        local.nextNightclubEventStartsInSeconds,
+        incoming.nextNightclubEventStartsInSeconds,
+      ),
+      crewWarPhaseEndsInSeconds: _preferLiveRemaining(
+        local.crewWarPhaseEndsInSeconds,
+        incoming.crewWarPhaseEndsInSeconds,
+      ),
+      vehicleOpsCooldowns: _mergeVehicleOpsCooldownMaps(
+        local.vehicleOpsCooldowns,
+        incoming.vehicleOpsCooldowns,
+      ),
     );
   }
 
@@ -3455,55 +3483,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     return formatAdaptiveDurationFromSeconds(
       seconds,
       localeName: Localizations.localeOf(context).languageCode,
-    );
-  }
-
-  VehicleOpsCategoryDashboardSummary? _tickVehicleOpsCategory(
-    VehicleOpsCategoryDashboardSummary? category,
-  ) {
-    if (category == null) return null;
-    return category.copyWith(
-      cooldowns: Map.fromEntries(
-        category.cooldowns.entries.map(
-          (entry) => MapEntry(entry.key, entry.value > 0 ? entry.value - 1 : 0),
-        ),
-      ),
-    );
-  }
-
-  VehicleOpsDashboardSummary? _tickVehicleOps(
-    VehicleOpsDashboardSummary? summary,
-  ) {
-    if (summary == null) return null;
-    return summary.copyWith(
-      car: _tickVehicleOpsCategory(summary.car),
-      motorcycle: _tickVehicleOpsCategory(summary.motorcycle),
-      boat: _tickVehicleOpsCategory(summary.boat),
-    );
-  }
-
-  DashboardOperationsSummary? _tickOperations(
-    DashboardOperationsSummary? operations,
-  ) {
-    if (operations == null) return null;
-    return DashboardOperationsSummary(
-      activeCooldownCount: operations.activeCooldownCount,
-      longestCooldownSeconds: operations.longestCooldownSeconds > 0
-          ? operations.longestCooldownSeconds - 1
-          : 0,
-      activeDrugProductionsCount: operations.activeDrugProductionsCount,
-      nextDrugProductionEndsInSeconds:
-          operations.nextDrugProductionEndsInSeconds > 0
-          ? operations.nextDrugProductionEndsInSeconds - 1
-          : 0,
-      activeNightclubEventsCount: operations.activeNightclubEventsCount,
-      nextNightclubEventStartsInSeconds:
-          operations.nextNightclubEventStartsInSeconds > 0
-          ? operations.nextNightclubEventStartsInSeconds - 1
-          : 0,
-      activeVehicleCount: operations.activeVehicleCount,
-      listedVehicleCount: operations.listedVehicleCount,
-      inTransitVehicleCount: operations.inTransitVehicleCount,
     );
   }
 
@@ -3985,9 +3964,9 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       '${_stats?.operations?.activeCooldownCount ?? 0}',
                       Colors.white,
                     ),
-                    _buildInfoRow(
+                    _buildLiveSecondsRow(
                       l10n.dashboardLongestTimer,
-                      _formatCooldown(_stats?.operations?.longestCooldownSeconds ?? 0),
+                      (live) => live.longestCooldownSeconds,
                       Colors.orange.shade300,
                     ),
                     _buildInfoRow(
@@ -3995,11 +3974,9 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       '${_stats?.operations?.activeDrugProductionsCount ?? 0}',
                       Colors.white,
                     ),
-                    _buildInfoRow(
+                    _buildLiveSecondsRow(
                       l10n.dashboardProductionReadyIn,
-                      _formatCooldown(
-                        _stats?.operations?.nextDrugProductionEndsInSeconds ?? 0,
-                      ),
+                      (live) => live.nextDrugProductionEndsInSeconds,
                       Colors.white,
                     ),
                     _buildInfoRow(
@@ -4007,11 +3984,9 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       '${_stats?.operations?.activeNightclubEventsCount ?? 0}',
                       Colors.white,
                     ),
-                    _buildInfoRow(
+                    _buildLiveSecondsRow(
                       l10n.dashboardNextEventStartsIn,
-                      _formatCooldown(
-                        _stats?.operations?.nextNightclubEventStartsInSeconds ?? 0,
-                      ),
+                      (live) => live.nextNightclubEventStartsInSeconds,
                       Colors.white,
                     ),
                     _buildInfoRow(
@@ -4158,16 +4133,22 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const SizedBox(height: 12),
                     _buildVehicleOpsDashboardSection(),
                     const SizedBox(height: 12),
-                    _buildInfoRow(
-                      l10n.jail,
-                      _stats != null && _stats!.jailed
-                          ? l10n.dashboardJailStatusIn(
-                              _formatCooldown(_stats!.jailTimeRemaining),
-                            )
-                          : l10n.free,
-                      _stats != null && _stats!.jailed
-                          ? Colors.red.shade300
-                          : Colors.green.shade300,
+                    ValueListenableBuilder<_HomeLiveTimers?>(
+                      valueListenable: _liveTicks,
+                      builder: (context, live, _) {
+                        final jailed = live?.jailed ?? false;
+                        return _buildInfoRow(
+                          l10n.jail,
+                          jailed
+                              ? l10n.dashboardJailStatusIn(
+                                  _formatCooldown(live!.jailTimeRemaining),
+                                )
+                              : l10n.free,
+                          jailed
+                              ? Colors.red.shade300
+                              : Colors.green.shade300,
+                        );
+                      },
                     ),
                     const SizedBox(height: 12),
                     const Divider(color: Colors.grey),
@@ -4229,12 +4210,18 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       '${_stats?.crewWar?.availableTargetsCount ?? 0}',
                       Colors.white,
                     ),
-                    if ((_stats?.crewWar?.phaseEndsInSeconds ?? 0) > 0)
-                      _buildInfoRow(
-                        l10n.dashboardPhaseEndsIn,
-                        _formatCooldown(_stats!.crewWar!.phaseEndsInSeconds),
-                        Colors.orange.shade300,
-                      ),
+                    ValueListenableBuilder<_HomeLiveTimers?>(
+                      valueListenable: _liveTicks,
+                      builder: (context, live, _) {
+                        final seconds = live?.crewWarPhaseEndsInSeconds ?? 0;
+                        if (seconds <= 0) return const SizedBox.shrink();
+                        return _buildInfoRow(
+                          l10n.dashboardPhaseEndsIn,
+                          _formatCooldown(seconds),
+                          Colors.orange.shade300,
+                        );
+                      },
+                    ),
                     if ((_stats?.crewWar?.theaterRegionKey ?? '').isNotEmpty)
                       _buildInfoRow(
                         l10n.dashboardWarTheater,
@@ -4446,30 +4433,49 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     );
   }
 
-  Widget _buildCooldownRow(String label, String actionType) {
-    final cooldown = _stats?.getCooldownSeconds(actionType) ?? 0;
-    final canDo = cooldown == 0;
-    final displayText = _formatCooldown(cooldown);
+  Widget _buildLiveSecondsRow(
+    String label,
+    int Function(_HomeLiveTimers live) pick,
+    Color valueColor,
+  ) {
+    return ValueListenableBuilder<_HomeLiveTimers?>(
+      valueListenable: _liveTicks,
+      builder: (context, live, _) {
+        final seconds = live == null ? 0 : pick(live);
+        return _buildInfoRow(label, _formatCooldown(seconds), valueColor);
+      },
+    );
+  }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.white70, fontSize: 13),
+  Widget _buildCooldownRow(String label, String actionType) {
+    return ValueListenableBuilder<_HomeLiveTimers?>(
+      valueListenable: _liveTicks,
+      builder: (context, live, _) {
+        final cooldown = live?.cooldowns[actionType] ?? 0;
+        final canDo = cooldown == 0;
+        final displayText = _formatCooldown(cooldown);
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(color: Colors.white70, fontSize: 13),
+              ),
+              Text(
+                displayText,
+                style: TextStyle(
+                  color: canDo ? Colors.green.shade300 : Colors.orange.shade300,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
-          Text(
-            displayText,
-            style: TextStyle(
-              color: canDo ? Colors.green.shade300 : Colors.orange.shade300,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -4502,18 +4508,21 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         const SizedBox(height: 10),
         _buildVehicleOpsCategoryCard(
           title: l10n.dashboardCar,
+          categoryKey: 'car',
           category: vehicleOps?.car,
           accent: const Color(0xFF4FC3F7),
         ),
         const SizedBox(height: 8),
         _buildVehicleOpsCategoryCard(
           title: l10n.dashboardMotorcycle,
+          categoryKey: 'motorcycle',
           category: vehicleOps?.motorcycle,
           accent: const Color(0xFFFFB74D),
         ),
         const SizedBox(height: 8),
         _buildVehicleOpsCategoryCard(
           title: l10n.dashboardBoat,
+          categoryKey: 'boat',
           category: vehicleOps?.boat,
           accent: const Color(0xFF4DD0A6),
         ),
@@ -4532,6 +4541,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
 
   Widget _buildVehicleOpsCategoryCard({
     required String title,
+    required String categoryKey,
     required VehicleOpsCategoryDashboardSummary? category,
     required Color accent,
   }) {
@@ -4595,35 +4605,42 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             ],
           ),
           const SizedBox(height: 8),
-          Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            children: [
-              _buildVehicleOpsCooldownChip(
-                l10n.vehicleOpsHotspot,
-                category.cooldowns['hotspot'] ?? 0,
-              ),
-              _buildVehicleOpsCooldownChip(
-                l10n.vehicleOpsCrew,
-                category.cooldowns['crew'] ?? 0,
-              ),
-              _buildVehicleOpsCooldownChip(
-                l10n.vehicleOpsCrewMatch,
-                category.cooldowns['crewMatch'] ?? 0,
-              ),
-              _buildVehicleOpsCooldownChip(
-                l10n.vehicleOpsChop,
-                category.cooldowns['chop'] ?? 0,
-              ),
-              _buildVehicleOpsCooldownChip(
-                l10n.vehicleOpsContract,
-                category.cooldowns['contract'] ?? 0,
-              ),
-              _buildVehicleOpsCooldownChip(
-                l10n.vehicleOpsCounter,
-                category.cooldowns['counter'] ?? 0,
-              ),
-            ],
+          ValueListenableBuilder<_HomeLiveTimers?>(
+            valueListenable: _liveTicks,
+            builder: (context, live, _) {
+              final liveCooldowns =
+                  live?.vehicleOpsCooldowns[categoryKey] ?? category.cooldowns;
+              return Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  _buildVehicleOpsCooldownChip(
+                    l10n.vehicleOpsHotspot,
+                    liveCooldowns['hotspot'] ?? 0,
+                  ),
+                  _buildVehicleOpsCooldownChip(
+                    l10n.vehicleOpsCrew,
+                    liveCooldowns['crew'] ?? 0,
+                  ),
+                  _buildVehicleOpsCooldownChip(
+                    l10n.vehicleOpsCrewMatch,
+                    liveCooldowns['crewMatch'] ?? 0,
+                  ),
+                  _buildVehicleOpsCooldownChip(
+                    l10n.vehicleOpsChop,
+                    liveCooldowns['chop'] ?? 0,
+                  ),
+                  _buildVehicleOpsCooldownChip(
+                    l10n.vehicleOpsContract,
+                    liveCooldowns['contract'] ?? 0,
+                  ),
+                  _buildVehicleOpsCooldownChip(
+                    l10n.vehicleOpsCounter,
+                    liveCooldowns['counter'] ?? 0,
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 8),
           Wrap(

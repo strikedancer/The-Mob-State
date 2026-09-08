@@ -159,8 +159,9 @@ export async function increaseFBIHeat(playerId: number, amount: number): Promise
 }
 
 /**
- * Decay FBI heat over time (slower than police wanted level)
- * FBI heat decays by 1 every 2 ticks (10 minutes) by default
+ * Decay FBI heat over time (slower than police wanted level).
+ * Game ticks use `applyPassivePlayerTickBatch` (INT column: 0.5 decay = −1 every two ticks).
+ * This per-player helper remains for one-off calls; do not use it in the tick loop.
  */
 export async function decayFBIHeat(playerId: number): Promise<void> {
   const player = await prisma.player.findUnique({

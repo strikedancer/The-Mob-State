@@ -7,10 +7,7 @@
 
 import { Job } from 'bullmq';
 import { queueService } from './queueService';
-import prisma from '../lib/prisma';
-import config from '../config';
-import * as policeService from '../services/policeService';
-import * as fbiService from '../services/fbiService';
+import { applyPassivePlayerTickBatch } from '../services/playerTickBatch';
 import { prostituteService } from '../services/prostituteService';
 import nightclubService from '../services/nightclubService';
 import { RealTimeProvider, ITimeProvider } from '../utils/timeProvider';
@@ -130,36 +127,7 @@ class TickQueue {
     console.log(`⏰ Processing tick: ${tickId} at ${new Date(timestamp).toISOString()}`);
 
     try {
-      // 1. Process periodic player systems
-      const players = await prisma.player.findMany({
-        select: {
-          id: true,
-          username: true,
-          health: true,
-        },
-      });
-
-      let playersProcessed = 0;
-      for (const player of players) {
-        try {
-          // Passive healing: +X HP per tick if alive and below max health
-          if (player.health > 0 && player.health < 100) {
-            const newHealth = Math.min(100, player.health + config.passiveHealingPerTick);
-            await prisma.player.update({
-              where: { id: player.id },
-              data: { health: newHealth },
-            });
-          }
-
-          // Decay wanted level and FBI heat
-          await policeService.decayWantedLevel(player.id);
-          await fbiService.decayFBIHeat(player.id);
-
-          playersProcessed++;
-        } catch (error) {
-          console.error(`❌ Error processing tick for player ${player.id}:`, error);
-        }
-      }
+      const playerTick = await applyPassivePlayerTickBatch();
 
       try {
         const { countryPoliceService } = await import('../services/countryPoliceService');
@@ -191,7 +159,9 @@ class TickQueue {
       const duration = Date.now() - startTime;
 
       console.log(`✅ Tick ${tickId} completed in ${duration}ms:`, {
-        players: playersProcessed,
+        playersHealed: playerTick.healed,
+        wantedDecayed: playerTick.wantedDecayed,
+        fbiHeatDecayed: playerTick.fbiHeatDecayed,
         prostitutionPlayers: prostitutionResult.playersProcessed,
         prostitutionEarnings: prostitutionResult.totalEarningsSettled,
         nightclubAutoSalesProcessed: true,
