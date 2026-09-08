@@ -8085,6 +8085,9 @@
       }
     }
   },
+  "profilePropertiesTitle": "Properties",
+  "profilePropertiesHint": "Owned buildings. Country and storage stay private.",
+  "profilePropertiesEmpty": "No properties yet",
   "gameScreenUnknownPlayer": "Unknown",
   "gameScreenDash": "—",
   "gameCardActive": "Active",

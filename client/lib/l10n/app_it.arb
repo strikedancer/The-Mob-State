@@ -11547,5 +11547,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePropertiesTitle": "Proprietà",
+  "profilePropertiesHint": "Edifici di proprietà. Il paese e lo spazio di archiviazione rimangono privati.",
+  "profilePropertiesEmpty": "Nessuna proprietà ancora"
 }

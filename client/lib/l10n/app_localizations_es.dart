@@ -13345,6 +13345,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get profilePropertiesTitle => 'Propiedades';
+
+  @override
+  String get profilePropertiesHint =>
+      'Edificios propios. El campo y el almacenamiento permanecen privados.';
+
+  @override
+  String get profilePropertiesEmpty => 'Aún no hay propiedades';
+
+  @override
   String get gameScreenUnknownPlayer => 'Desconocido';
 
   @override

@@ -352,13 +352,10 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       nameNl: string;
       nameEn: string;
     }> = [];
-    let estateLot: {
-      houseLevel: number;
-      parkingLevel: number;
-      shedLevel: number;
-      fenceLevel: number;
-      goldFence: boolean;
-    } | null = null;
+    let ownedProperties: Array<{
+      propertyType: string;
+      upgradeLevel: number;
+    }> = [];
     try {
       eventChips = await getPublicEventChipShowcase(playerId);
     } catch (chipError) {
@@ -377,32 +374,31 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     }
 
     try {
-      const residential = await prisma.property.findFirst({
-        where: { playerId, propertyType: { in: ['house', 'apartment'] } },
-        orderBy: { upgradeLevel: 'desc' },
-        select: { upgradeLevel: true },
-      });
-      if (residential) {
-        const level = Math.max(1, Math.min(10, residential.upgradeLevel || 1));
-        const goldFence = await prisma.playerCreditEntitlement.findFirst({
-          where: {
-            playerId,
-            key: 'estate_gold_fence',
-            status: 'ACTIVE',
-            OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+      const rows = await prisma.property.findMany({
+        where: {
+          playerId,
+          propertyType: {
+            in: [
+              'house',
+              'apartment',
+              'warehouse',
+              'nightclub',
+              'casino',
+              'car_showroom',
+              'motorcycle_showroom',
+              'boat_harbor',
+            ],
           },
-          select: { id: true },
-        });
-        estateLot = {
-          houseLevel: level,
-          parkingLevel: level,
-          shedLevel: Math.max(1, level - 1),
-          fenceLevel: goldFence ? 10 : level,
-          goldFence: Boolean(goldFence),
-        };
-      }
+        },
+        select: { propertyType: true, upgradeLevel: true },
+        orderBy: [{ upgradeLevel: 'desc' }, { purchasedAt: 'asc' }],
+      });
+      ownedProperties = rows.map((row) => ({
+        propertyType: row.propertyType,
+        upgradeLevel: Math.max(1, row.upgradeLevel || 1),
+      }));
     } catch (extraError) {
-      console.error('⚠️ Profile extras fallback:', extraError);
+      console.error('⚠️ Profile properties fallback:', extraError);
     }
 
     return res.status(200).json({
@@ -439,7 +435,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       featuredAchievements,
       unlockedAchievements,
       eventChips,
-      estateLot,
+      ownedProperties,
     });
   } catch (error) {
     console.error('❌ Error in /player/:playerId/profile:', error);

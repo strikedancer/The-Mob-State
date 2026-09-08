@@ -11547,5 +11547,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePropertiesTitle": "Propiedades",
+  "profilePropertiesHint": "Edificios propios. El campo y el almacenamiento permanecen privados.",
+  "profilePropertiesEmpty": "Aún no hay propiedades"
 }

@@ -23224,6 +23224,24 @@ abstract class AppLocalizations {
   /// **'{count} earned'**
   String profileAchievementsCount(String count);
 
+  /// No description provided for @profilePropertiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Properties'**
+  String get profilePropertiesTitle;
+
+  /// No description provided for @profilePropertiesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned buildings. Country and storage stay private.'**
+  String get profilePropertiesHint;
+
+  /// No description provided for @profilePropertiesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No properties yet'**
+  String get profilePropertiesEmpty;
+
   /// No description provided for @gameScreenUnknownPlayer.
   ///
   /// In en, this message translates to:

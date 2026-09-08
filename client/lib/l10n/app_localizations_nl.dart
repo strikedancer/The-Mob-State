@@ -13257,6 +13257,16 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get profilePropertiesTitle => 'Eigendommen';
+
+  @override
+  String get profilePropertiesHint =>
+      'Panden in bezit. Land en opslag blijven privé.';
+
+  @override
+  String get profilePropertiesEmpty => 'Nog geen eigendommen';
+
+  @override
   String get gameScreenUnknownPlayer => 'Onbekend';
 
   @override

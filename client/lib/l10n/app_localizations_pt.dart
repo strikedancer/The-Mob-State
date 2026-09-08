@@ -13318,6 +13318,16 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get profilePropertiesTitle => 'Propriedades';
+
+  @override
+  String get profilePropertiesHint =>
+      'Edifícios próprios. O país e o armazenamento permanecem privados.';
+
+  @override
+  String get profilePropertiesEmpty => 'Ainda não há propriedades';
+
+  @override
   String get gameScreenUnknownPlayer => 'Desconhecida';
 
   @override

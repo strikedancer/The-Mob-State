@@ -11547,5 +11547,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePropertiesTitle": "Eigenschaften",
+  "profilePropertiesHint": "Eigene Gebäude. Country and storage stay private.",
+  "profilePropertiesEmpty": "Noch keine Eigenschaften"
 }

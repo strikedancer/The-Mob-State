@@ -11547,5 +11547,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePropertiesTitle": "Propriedades",
+  "profilePropertiesHint": "Edifícios próprios. O país e o armazenamento permanecem privados.",
+  "profilePropertiesEmpty": "Ainda não há propriedades"
 }

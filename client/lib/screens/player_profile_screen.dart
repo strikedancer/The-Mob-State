@@ -11,9 +11,10 @@ import '../screens/crew_screen.dart';
 import '../utils/achievement_display.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/game_event_rewards.dart';
+import '../utils/property_display.dart';
 import '../utils/rank_display.dart';
 import '../utils/top_right_notification.dart';
-import '../widgets/estate_lot_view.dart';
+import '../utils/web_asset_helper.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
@@ -414,10 +415,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
           _buildAchievementsCard(),
           const SizedBox(height: 12),
           _buildEventChipsCard(),
-          if (_playerData?['estateLot'] is Map) ...[
-            const SizedBox(height: 12),
-            _buildEstateCard(),
-          ],
+          const SizedBox(height: 12),
+          _buildPropertiesCard(),
           const SizedBox(height: 12),
           _buildEconomyCard(),
           const SizedBox(height: 12),
@@ -956,20 +955,126 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     );
   }
 
-  Widget _buildEstateCard() {
-    final lot = Map<String, dynamic>.from(_playerData!['estateLot'] as Map);
-    final house = (lot['houseLevel'] as num?)?.toInt() ?? 1;
-    final parking = (lot['parkingLevel'] as num?)?.toInt() ?? house;
-    final shed = (lot['shedLevel'] as num?)?.toInt() ?? house;
-    final fence = (lot['fenceLevel'] as num?)?.toInt() ?? house;
+  List<Map<String, dynamic>> _ownedPropertyRows() {
+    final raw = _playerData?['ownedProperties'];
+    if (raw is! List) return const <Map<String, dynamic>>[];
+    final rows = raw
+        .whereType<Map>()
+        .map((row) => Map<String, dynamic>.from(row))
+        .where((row) {
+          final type = row['propertyType']?.toString() ?? '';
+          return kPublicPropertyTypeOrder.contains(type);
+        })
+        .toList();
+    rows.sort((a, b) {
+      final aType = a['propertyType']?.toString() ?? '';
+      final bType = b['propertyType']?.toString() ?? '';
+      final aOrder = kPublicPropertyTypeOrder.indexOf(aType);
+      final bOrder = kPublicPropertyTypeOrder.indexOf(bType);
+      if (aOrder != bOrder) return aOrder.compareTo(bOrder);
+      final aLevel = (a['upgradeLevel'] as num?)?.toInt() ?? 1;
+      final bLevel = (b['upgradeLevel'] as num?)?.toInt() ?? 1;
+      return bLevel.compareTo(aLevel);
+    });
+    return rows;
+  }
+
+  Widget _buildPropertiesCard() {
+    final l10n = AppLocalizations.of(context)!;
+    final items = _ownedPropertyRows();
     return _sectionCard(
-      title: _tr('Landgoed', 'Estate'),
-      child: EstateLotView(
-        houseLevel: house,
-        parkingLevel: parking,
-        shedLevel: shed,
-        fenceLevel: fence,
-        goldFence: lot['goldFence'] == true,
+      title: l10n.profilePropertiesTitle,
+      trailing: items.isEmpty
+          ? null
+          : Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.blueGrey.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Text('${items.length}'),
+            ),
+      child: items.isEmpty
+          ? Text(
+              l10n.profilePropertiesEmpty,
+              style: const TextStyle(color: Colors.white70),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.profilePropertiesHint,
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final item in items) _profilePropertyTile(item),
+                  ],
+                ),
+              ],
+            ),
+    );
+  }
+
+  Widget _profilePropertyTile(Map<String, dynamic> item) {
+    final l10n = AppLocalizations.of(context)!;
+    final type = item['propertyType']?.toString() ?? '';
+    final level = (item['upgradeLevel'] as num?)?.toInt() ?? 1;
+    final name = localizedPropertyName(l10n, type);
+    final imagePath = propertyCatalogAssetPath(type);
+    return Container(
+      width: 148,
+      decoration: BoxDecoration(
+        color: Colors.black26,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white10),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 88,
+            child: imagePath == null
+                ? const Icon(Icons.home_work, color: Colors.white54, size: 36)
+                : WebAssetHelper.image(
+                    imagePath,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 88,
+                    errorBuilder: (_, _, _) => const Icon(
+                      Icons.home_work,
+                      color: Colors.white54,
+                      size: 36,
+                    ),
+                  ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  l10n.propertyLevel(level.toString()),
+                  style: const TextStyle(color: Colors.white70, fontSize: 11),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

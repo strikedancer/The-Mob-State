@@ -11547,5 +11547,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePropertiesTitle": "Propriétés",
+  "profilePropertiesHint": "Bâtiments possédés. Le pays et le stockage restent privés.",
+  "profilePropertiesEmpty": "Aucune propriété pour l'instant"
 }

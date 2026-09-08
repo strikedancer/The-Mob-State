@@ -6031,6 +6031,9 @@
       }
     }
   },
+  "profilePropertiesTitle": "Eigendommen",
+  "profilePropertiesHint": "Panden in bezit. Land en opslag blijven privé.",
+  "profilePropertiesEmpty": "Nog geen eigendommen",
   "gameScreenUnknownPlayer": "Onbekend",
   "gameCardActive": "Actief",
   "gameCardScheduled": "Gepland",
