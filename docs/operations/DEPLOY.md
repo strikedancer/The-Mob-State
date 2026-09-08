@@ -82,6 +82,12 @@ Zelfde Flutter-app als `.com`. API en admin blijven op `api.` / `admin.themobsta
    `www.themobstate.nl` is een CNAME in de alias-zone, geen aparte alias.
 3. **Mailbox:** een Plesk-alias (`themobstate.nl`) heeft geen eigen mailbox. Auth blijft `SMTP_USER=noreply@themobstate.com`; From-header is `SMTP_FROM=noreply@themobstate.nl` + `SMTP_FROM_NAME=The Mob State` (wachtwoord alleen in `.env.plesk`). Plesk levert mail naar `noreply@themobstate.nl` af op de `.com`-mailbox. Gmail kan een korte testmail accepteren en een wachtwoord-reset (HTML + reset-URL) alsnog met **550 5.7.1 low reputation** weigeren — bounce landt op `noreply@themobstate.com`. Auth-mails zijn daarom bewust eenvoudig (geen emoji-onderwerp, text + lichte HTML, verificatie zonder “imperium”-welkomstcopy). Zelfde VPS-IP kan nog op blocklists staan.
 4. CORS/Flutter kennen `.nl` al in code (`config/index.ts`, `app_config.dart`). Alias `themobstate.nl` staat op de VPS (mail+web aan, geen 301).
+5. **Google Postmaster / Search Console** — apex-TXT op `themobstate.nl` (Plesk alias-zone). Meerdere `google-site-verification=…` records mogen naast elkaar; de oude Search Console-token niet verwijderen.
+   ```bash
+   plesk bin dns --add themobstate.nl -txt "google-site-verification=<TOKEN>" -domain ""
+   plesk bin dns --info themobstate.nl | grep google-site-verification
+   ```
+   Postmaster (apr 2026): `google-site-verification=yoi8jC9w1ShdfYzm6IVZxOvZ1ni4LSlHi4G6HwIDdSk`. Publieke resolvers kunnen de oude TXT-set nog cachen tot de TTL verloopt; autoritatief is `ns1.themobstate.com`.
 
 ## PuTTY Update Flow (Standard)
 
