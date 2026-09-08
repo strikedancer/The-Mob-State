@@ -11823,5 +11823,17 @@
   "raceInfoPayoutTitle": "Pagamentos e rake",
   "raceInfoPayoutBody": "Se menos de dois pilotos participarem, os valores apostados serão reembolsados. \nA boate que hospeda neste país ganha dinheiro quando está aberta. Se não houver host, esse rake será afundado. \nO piloto vencedor fica com a maior parte do pool líquido; as apostas vencedoras compartilham o resto.",
   "raceInfoTipsTitle": "Pontas",
-  "raceInfoTipsBody": "Mantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nA velocidade do ajuste é importante, mas o teste ainda decide. \nConsertar é calor, não prêmio extra em dinheiro. \nDepois de uma reunião, a próxima grade aguarda um tempo de espera."
+  "raceInfoTipsBody": "Mantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nA velocidade do ajuste é importante, mas o teste ainda decide. \nConsertar é calor, não prêmio extra em dinheiro. \nDepois de uma reunião, a próxima grade aguarda um tempo de espera.",
+  "evStreamRaceSettled": "As corridas da meia-noite terminaram. Vencedor: {winner}. Você recebeu €{payout}.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRaceRefunded": "Corridas da Meia-Noite canceladas. Sua aposta e apostas foram reembolsadas."
 }

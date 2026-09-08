@@ -11823,5 +11823,17 @@
   "raceInfoPayoutTitle": "Auszahlungen und Rake",
   "raceInfoPayoutBody": "Melden sich weniger als zwei Fahrer, werden Einsätze und Wetten zurückerstattet. \nDer gastgebende Nightclub in diesem Land nimmt Rake, wenn er geöffnet ist. Wenn kein Host vorhanden ist, wird dieser Rake versenkt. \nDer Gewinner erhält den größten Teil des Nettopools; Gewinnende Wetten teilen sich den Rest.",
   "raceInfoTipsTitle": "Tipps",
-  "raceInfoTipsBody": "Behalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nDie Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch. \nReparieren ist Hitze, kein zusätzliches Preisgeld. \nNach einem Treffen wartet das nächste Gitter durch eine Abklingzeit."
+  "raceInfoTipsBody": "Behalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nDie Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch. \nReparieren ist Hitze, kein zusätzliches Preisgeld. \nNach einem Treffen wartet das nächste Gitter durch eine Abklingzeit.",
+  "evStreamRaceSettled": "Mitternachtsrennen beendet. Gewinner: {winner}. Sie haben {payout} € erhalten.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRaceRefunded": "Mitternachtsrennen abgesagt. Ihr Einsatz und Ihre Wetten wurden zurückerstattet."
 }

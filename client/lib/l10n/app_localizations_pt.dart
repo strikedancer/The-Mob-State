@@ -14198,6 +14198,15 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String evStreamRaceSettled(String winner, String payout) {
+    return 'As corridas da meia-noite terminaram. Vencedor: $winner. Você recebeu €$payout.';
+  }
+
+  @override
+  String get evStreamRaceRefunded =>
+      'Corridas da Meia-Noite canceladas. Sua aposta e apostas foram reembolsadas.';
+
+  @override
   String evStreamHeistOk(String name, String money) {
     return 'Assalto “$name” bem-sucedido! +€$money';
   }

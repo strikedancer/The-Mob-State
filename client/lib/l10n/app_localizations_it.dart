@@ -14249,6 +14249,15 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String evStreamRaceSettled(String winner, String payout) {
+    return 'Le gare di mezzanotte sono terminate. Vincitore: $winner. Hai ricevuto €$payout.';
+  }
+
+  @override
+  String get evStreamRaceRefunded =>
+      'Gare di mezzanotte annullate. La tua puntata e le tue scommesse sono state rimborsate.';
+
+  @override
   String evStreamHeistOk(String name, String money) {
     return 'Rapina “$name” riuscita! +€$money';
   }

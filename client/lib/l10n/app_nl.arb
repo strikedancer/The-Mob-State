@@ -6858,6 +6858,18 @@
       }
     }
   },
+  "evStreamRaceSettled": "Midnight Races afgelopen. Winnaar: {winner}. Jij ontving €{payout}.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRaceRefunded": "Midnight Races geannuleerd. Je inzet en weddenschappen zijn teruggestort.",
   "evStreamHeistOk": "Overval “{name}” geslaagd! +€{money}",
   "evStreamHeistFail": "Overval “{name}” mislukt.",
   "@evStreamHeistOk": {

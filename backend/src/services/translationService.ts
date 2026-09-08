@@ -231,6 +231,16 @@ export interface Translations {
       pushBody: (regionKey: string) => string;
       inboxMessage: (regionKey: string) => string;
     };
+    raceResult: {
+      title: string;
+      systemSender: string;
+      refunded: string;
+      winnerLine: (winner: string) => string;
+      driverLine: (place: string, payout: string) => string;
+      betWonLine: (payout: string) => string;
+      betLostLine: string;
+      hostLine: (rake: string) => string;
+    };
   };
   common: {
     footer: string;
@@ -508,6 +518,16 @@ const translations: Record<'en' | 'nl', Translations> = {
             'This region was taken by another crew.',
           ].join('\n'),
       },
+      raceResult: {
+        title: 'Midnight Races',
+        systemSender: 'Midnight Races',
+        refunded: 'The grid was cancelled (fewer than two drivers). Your stake and bets were refunded.',
+        winnerLine: (winner) => `Winner: ${winner}.`,
+        driverLine: (place, payout) => `You finished #${place} and received ${payout}.`,
+        betWonLine: (payout) => `Your bet paid ${payout}.`,
+        betLostLine: 'Your bet lost.',
+        hostLine: (rake) => `Your club took ${rake} rake.`,
+      },
     },
     common: {
       footer: '© 2026 The Mob State. All rights reserved.',
@@ -782,6 +802,16 @@ const translations: Record<'en' | 'nl', Translations> = {
             `Regio: ${regionKey}`,
             'Deze regio is overgenomen door een andere crew.',
           ].join('\n'),
+      },
+      raceResult: {
+        title: 'Midnight Races',
+        systemSender: 'Midnight Races',
+        refunded: 'De grid is geannuleerd (minder dan twee rijders). Je inzet en weddenschappen zijn teruggestort.',
+        winnerLine: (winner) => `Winnaar: ${winner}.`,
+        driverLine: (place, payout) => `Je finishte als #${place} en ontving ${payout}.`,
+        betWonLine: (payout) => `Je weddenschap betaalde ${payout}.`,
+        betLostLine: 'Je weddenschap verloor.',
+        hostLine: (rake) => `Je club nam ${rake} rake.`,
       },
     },
     common: {

@@ -11823,5 +11823,17 @@
   "raceInfoPayoutTitle": "Paiements et commission",
   "raceInfoPayoutBody": "Si moins de deux pilotes participent, les mises et les paris sont remboursés. \nLa discothèque hôte dans ce pays prend du rake lorsqu'elle est ouverte. S’il n’y a pas d’hôte, ce râteau est coulé. \nLe pilote gagnant remporte la majeure partie du pool net ; les paris gagnants se partagent le reste.",
   "raceInfoTipsTitle": "Conseils",
-  "raceInfoTipsBody": "Gardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLa vitesse de réglage compte, mais le lancer décide toujours. \nLa réparation est une question de chaleur, pas de prix en argent supplémentaire. \nAprès une réunion, la grille suivante attend un temps de recharge."
+  "raceInfoTipsBody": "Gardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLa vitesse de réglage compte, mais le lancer décide toujours. \nLa réparation est une question de chaleur, pas de prix en argent supplémentaire. \nAprès une réunion, la grille suivante attend un temps de recharge.",
+  "evStreamRaceSettled": "Les courses de minuit sont terminées. Gagnant : {winner}. Vous avez reçu{payout}€.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRaceRefunded": "Courses de minuit annulées. Votre mise et vos paris ont été remboursés."
 }

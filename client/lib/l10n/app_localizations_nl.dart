@@ -14134,6 +14134,15 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String evStreamRaceSettled(String winner, String payout) {
+    return 'Midnight Races afgelopen. Winnaar: $winner. Jij ontving €$payout.';
+  }
+
+  @override
+  String get evStreamRaceRefunded =>
+      'Midnight Races geannuleerd. Je inzet en weddenschappen zijn teruggestort.';
+
+  @override
   String evStreamHeistOk(String name, String money) {
     return 'Overval “$name” geslaagd! +€$money';
   }

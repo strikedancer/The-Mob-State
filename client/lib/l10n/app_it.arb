@@ -11823,5 +11823,17 @@
   "raceInfoPayoutTitle": "Pagamenti e rastrello",
   "raceInfoPayoutBody": "Se entrano meno di due piloti, le puntate e le scommesse vengono rimborsate. \nLa discoteca che ospita in questo paese prende una commissione quando è aperta. Se non c'è nessun ospite, quel rastrello viene affondato. \nIl pilota vincente prende la maggior parte del montepremi netto; le scommesse vincenti dividono il resto.",
   "raceInfoTipsTitle": "Suggerimenti",
-  "raceInfoTipsBody": "Tieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nLa velocità dell'accordatura conta, ma il tiro decide comunque. \nLa riparazione è calore, non premi in denaro extra. \nDopo una riunione, la griglia successiva attende un periodo di raffreddamento."
+  "raceInfoTipsBody": "Tieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nLa velocità dell'accordatura conta, ma il tiro decide comunque. \nLa riparazione è calore, non premi in denaro extra. \nDopo una riunione, la griglia successiva attende un periodo di raffreddamento.",
+  "evStreamRaceSettled": "Le gare di mezzanotte sono terminate. Vincitore: {winner}. Hai ricevuto €{payout}.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRaceRefunded": "Gare di mezzanotte annullate. La tua puntata e le tue scommesse sono state rimborsate."
 }

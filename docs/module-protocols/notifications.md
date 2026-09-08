@@ -25,6 +25,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Territory -> Notifications (contest start, prep-ready/active, capture, loss)
 - Drugs -> Notifications (batch ready: `drugs.production_ready`, idempotent via `readyNotifiedAt`)
 - Nightclub player-supply -> inbox system message to the club owner (no extra push)
+- Midnight Races -> inbox + FCM + activity feed on settle (`race.settled`) or refund (`race.refunded`)
 
 ## Must Preserve
 - Expliciete in-app permissie-entrypoint voor web/iOS homescreen push, doorgaans via Settings.

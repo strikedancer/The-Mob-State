@@ -238,6 +238,14 @@ class EventRenderer {
           params['pointsAwarded']?.toString() ?? '0',
         );
 
+      case 'race.settled':
+        return l10n.evStreamRaceSettled(
+          params['winner']?.toString() ?? '—',
+          '${params['payout'] ?? 0}',
+        );
+      case 'race.refunded':
+        return l10n.evStreamRaceRefunded;
+
       case 'heist.success':
         return l10n.evStreamHeistOk(
           params['heistName']?.toString() ?? '—',

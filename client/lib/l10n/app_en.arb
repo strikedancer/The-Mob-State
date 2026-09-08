@@ -8898,6 +8898,14 @@
       }
     }
   },
+  "evStreamRaceSettled": "Midnight Races finished. Winner: {winner}. You received €{payout}.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": { "type": "String" },
+      "payout": { "type": "String" }
+    }
+  },
+  "evStreamRaceRefunded": "Midnight Races cancelled. Your stake and bets were refunded.",
   "evStreamHeistOk": "Heist “{name}” successful! +€{money}",
   "evStreamHeistFail": "Heist “{name}” failed.",
   "@evStreamHeistOk": {

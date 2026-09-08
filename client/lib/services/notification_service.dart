@@ -320,6 +320,8 @@ class NotificationService {
       case 'territory_contest_active':
       case 'territory_captured':
       case 'territory_lost':
+      case 'race_settled':
+      case 'race_refunded':
         return '/dashboard';
       default:
         return null;

@@ -2,6 +2,9 @@ import crypto from 'crypto';
 import prisma from '../lib/prisma';
 import vehiclesData from '../../content/vehicles.json';
 import { getRaceRuntimeConfig, type RaceRuntimeConfig } from './raceRuntimeConfig';
+import { translationService } from './translationService';
+import { directMessageService } from './directMessageService';
+import { notificationService } from './notificationService';
 
 type VehicleCatalogRow = {
   id: string;
@@ -90,6 +93,89 @@ async function requirePlayer(playerId: number) {
     throw new Error('PLAYER_TRAVELING');
   }
   return player;
+}
+
+function formatRaceMoney(amount: number): string {
+  return `€${Math.round(amount).toLocaleString('en-GB')}`;
+}
+
+type RaceNotifyTarget = {
+  playerId: number;
+  place?: number | null;
+  driverPayout?: number;
+  betWon?: boolean;
+  betPayout?: number;
+  hostRake?: number;
+};
+
+async function notifyRacePlayers(args: {
+  meetingId: number;
+  kind: 'settled' | 'refunded';
+  winnerUsername: string | null;
+  targets: RaceNotifyTarget[];
+}): Promise<void> {
+  const unique = new Map<number, RaceNotifyTarget>();
+  for (const target of args.targets) {
+    const existing = unique.get(target.playerId) ?? { playerId: target.playerId };
+    unique.set(target.playerId, {
+      playerId: target.playerId,
+      place: target.place ?? existing.place ?? null,
+      driverPayout: (existing.driverPayout ?? 0) + (target.driverPayout ?? 0),
+      betWon: target.betWon ?? existing.betWon,
+      betPayout: (existing.betPayout ?? 0) + (target.betPayout ?? 0),
+      hostRake: (existing.hostRake ?? 0) + (target.hostRake ?? 0),
+    });
+  }
+
+  const players = await prisma.player.findMany({
+    where: { id: { in: [...unique.keys()] } },
+    select: { id: true, preferredLanguage: true },
+  });
+  const languageById = new Map(players.map((row) => [row.id, translationService.getPlayerLanguage(row)]));
+
+  await Promise.all(
+    [...unique.values()].map(async (target) => {
+      const language = languageById.get(target.playerId) ?? 'en';
+      const copy = translationService.getTranslations(language).notification.raceResult;
+      const lines =
+        args.kind === 'refunded'
+          ? [copy.refunded]
+          : [
+              args.winnerUsername ? copy.winnerLine(args.winnerUsername) : '',
+              target.place != null
+                ? copy.driverLine(String(target.place), formatRaceMoney(target.driverPayout ?? 0))
+                : '',
+              target.betWon === true
+                ? copy.betWonLine(formatRaceMoney(target.betPayout ?? 0))
+                : target.betWon === false
+                  ? copy.betLostLine
+                  : '',
+              (target.hostRake ?? 0) > 0 ? copy.hostLine(formatRaceMoney(target.hostRake ?? 0)) : '',
+            ].filter((line) => line.length > 0);
+      const body = lines.join('\n');
+      if (!body) return;
+      try {
+        await directMessageService.sendSystemMessage(target.playerId, body, {
+          sendPush: false,
+          senderName: copy.systemSender,
+        });
+        await notificationService.sendRaceResultNotification(target.playerId, {
+          kind: args.kind,
+          title: copy.title,
+          body,
+          meetingId: args.meetingId,
+          winnerUsername: args.winnerUsername,
+          payout:
+            (target.driverPayout ?? 0) +
+            (target.betPayout ?? 0) +
+            (target.hostRake ?? 0),
+          place: target.place ?? null,
+        }, language);
+      } catch (error) {
+        console.error('[raceService] Failed to notify race player', target.playerId, error);
+      }
+    })
+  );
 }
 
 async function pickHost(countryCode: string) {
@@ -490,6 +576,18 @@ export const raceService = {
           data: { status: 'settled', prizePool: 0, rakePaid: 0 },
         });
       });
+      const refundTargets: RaceNotifyTarget[] = [
+        ...meeting.entries.map((entry) => ({ playerId: entry.playerId, driverPayout: entry.stake })),
+        ...meeting.bets.map((bet) => ({ playerId: bet.bettorId, betPayout: bet.amount, betWon: false })),
+      ];
+      void notifyRacePlayers({
+        meetingId: meeting.id,
+        kind: 'refunded',
+        winnerUsername: null,
+        targets: refundTargets,
+      }).catch((error) => {
+        console.error('[raceService] Failed to notify refunded race', meeting.id, error);
+      });
       return 'refunded';
     }
 
@@ -595,6 +693,37 @@ export const raceService = {
           rakePaid: leftoverRake,
         },
       });
+    });
+
+    const winnerPlayerId = scored[0]?.entry.playerId ?? null;
+    const winner = winnerPlayerId
+      ? await prisma.player.findUnique({
+          where: { id: winnerPlayerId },
+          select: { username: true },
+        })
+      : null;
+    const winnerUsername = winner?.username ?? null;
+    void notifyRacePlayers({
+      meetingId: meeting.id,
+      kind: 'settled',
+      winnerUsername,
+      targets: [
+        ...driverPayouts.map((row) => ({
+          playerId: row.playerId,
+          place: row.place,
+          driverPayout: row.payout,
+        })),
+        ...betPayouts.map((bet) => ({
+          playerId: bet.bettorId,
+          betWon: bet.won,
+          betPayout: bet.payout,
+        })),
+        ...(meeting.hostPlayerId && leftoverRake > 0
+          ? [{ playerId: meeting.hostPlayerId, hostRake: leftoverRake }]
+          : []),
+      ],
+    }).catch((error) => {
+      console.error('[raceService] Failed to notify settled race', meeting.id, error);
     });
 
     return 'settled';

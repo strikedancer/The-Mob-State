@@ -11823,5 +11823,17 @@
   "raceInfoPayoutTitle": "Pagos y comisión",
   "raceInfoPayoutBody": "Si participan menos de dos conductores, se reembolsarán las apuestas. \nLa discoteca anfitriona en este país cobra comisión cuando está abierta. Si no hay hostia, ese rastrillo se hunde. \nEl piloto ganador se lleva la mayor parte del fondo neto; Las apuestas ganadoras comparten el resto.",
   "raceInfoTipsTitle": "Consejos",
-  "raceInfoTipsBody": "Mantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa velocidad de sintonización importa, pero la tirada aún decide. \nLa reparación es calor, no premios en metálico extra. \nDespués de una reunión, la siguiente cuadrícula espera durante un tiempo de reutilización."
+  "raceInfoTipsBody": "Mantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa velocidad de sintonización importa, pero la tirada aún decide. \nLa reparación es calor, no premios en metálico extra. \nDespués de una reunión, la siguiente cuadrícula espera durante un tiempo de reutilización.",
+  "evStreamRaceSettled": "Las carreras de medianoche terminaron. Ganador: {winner}. Recibiste {payout}€.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRaceRefunded": "Carreras de medianoche canceladas. Su apuesta y su apuesta fueron reembolsadas."
 }

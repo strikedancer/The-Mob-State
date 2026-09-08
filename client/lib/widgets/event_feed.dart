@@ -140,6 +140,9 @@ class EventFeed extends StatelessWidget {
     } else if (eventKey.startsWith('bank.')) {
       icon = Icons.account_balance;
       color = Colors.teal;
+    } else if (eventKey.startsWith('race.')) {
+      icon = Icons.sports_motorsports;
+      color = const Color(0xFFFFB347);
     } else if (eventKey.startsWith('connection.')) {
       icon = Icons.wifi;
       color = Colors.green;

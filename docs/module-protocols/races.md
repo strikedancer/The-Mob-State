@@ -17,6 +17,7 @@ Not in v1: horses, breeding, real-time driving, daily condition decay, skill-gam
 - `POST /races/bet` `{ entryId, amount }`
 - `raceService.ts` + `raceRuntimeConfig.ts`
 - Tick: `tickQueue.ts` / `tickService.ts` settles meetings whose `endsAt` has passed
+- After settle or refund: inbox system message + FCM push + activity feed (`race.settled` / `race.refunded`) to drivers, bettors and the nightclub host. Fire-and-forget; money already moved.
 
 ## Runtime keys (`RACE_*`, default **on**)
 Tune in `runtime_config`. Caps keep this from becoming a second casino.
@@ -47,6 +48,7 @@ Tune in `runtime_config`. Caps keep this from becoming a second casino.
 - Travel (you race where you stand)
 - Country police / wanted (fixing heat)
 - Dashboard Empire nav
+- Notifications / inbox (`directMessageService` + FCM)
 
 ## QA Checklist
 - [ ] Enter with a car in-country; reject listed/showroom/transit/low condition
@@ -56,3 +58,4 @@ Tune in `runtime_config`. Caps keep this from becoming a second casino.
 - [ ] NL + EN strings
 - [ ] Empire desktop shows car / field / last-result photo cards in a 3–4 column grid (2 on tablet, 1 on narrow); images load on web (`/images/races/hub.png` + `/images/vehicles/*`)
 - [ ] Gold `i` opens the illustrated `raceInfo*` guide; no extra AppBar when embedded
+- [ ] Drivers, bettors and host get an inbox result + push after settle or refund

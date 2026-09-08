@@ -203,6 +203,16 @@ const notificationDE: Translations['notification'] = {
         'Diese Region wurde von einer anderen Crew übernommen.',
       ].join('\n'),
   },
+  raceResult: {
+    title: 'Midnight Races',
+    systemSender: 'Midnight Races',
+    refunded: 'Das Rennen wurde abgebrochen (weniger als zwei Fahrer). Einsatz und Wetten wurden erstattet.',
+    winnerLine: (winner) => `Sieger: ${winner}.`,
+    driverLine: (place, payout) => `Du wurdest #${place} und hast ${payout} erhalten.`,
+    betWonLine: (payout) => `Deine Wette zahlte ${payout}.`,
+    betLostLine: 'Deine Wette hat verloren.',
+    hostLine: (rake) => `Dein Club nahm ${rake} Rake.`,
+  },
 };
 
 // —— FR ——
@@ -402,6 +412,16 @@ const notificationFR: Translations['notification'] = {
         'Cette région a été prise par une autre crew.',
       ].join('\n'),
   },
+  raceResult: {
+    title: 'Midnight Races',
+    systemSender: 'Midnight Races',
+    refunded: 'La grille a été annulée (moins de deux pilotes). Votre mise et vos paris ont été remboursés.',
+    winnerLine: (winner) => `Vainqueur : ${winner}.`,
+    driverLine: (place, payout) => `Tu as fini #${place} et reçu ${payout}.`,
+    betWonLine: (payout) => `Ton pari a rapporté ${payout}.`,
+    betLostLine: 'Ton pari a perdu.',
+    hostLine: (rake) => `Ton club a pris ${rake} de rake.`,
+  },
 };
 
 // —— ES ——
@@ -599,6 +619,16 @@ const notificationES: Translations['notification'] = {
         `Región: ${regionKey}`,
         'Esta región fue tomada por otra crew.',
       ].join('\n'),
+  },
+  raceResult: {
+    title: 'Midnight Races',
+    systemSender: 'Midnight Races',
+    refunded: 'La parrilla se canceló (menos de dos pilotos). Tu apuesta y tus apuestas se reembolsaron.',
+    winnerLine: (winner) => `Ganador: ${winner}.`,
+    driverLine: (place, payout) => `Terminaste #${place} y recibiste ${payout}.`,
+    betWonLine: (payout) => `Tu apuesta pagó ${payout}.`,
+    betLostLine: 'Tu apuesta perdió.',
+    hostLine: (rake) => `Tu club se llevó ${rake} de rake.`,
   },
 };
 
@@ -799,6 +829,16 @@ const notificationIT: Translations['notification'] = {
         'Questa regione è stata presa da un’altra crew.',
       ].join('\n'),
   },
+  raceResult: {
+    title: 'Midnight Races',
+    systemSender: 'Midnight Races',
+    refunded: 'La griglia è stata annullata (meno di due piloti). La tua puntata e le scommesse sono state rimborsate.',
+    winnerLine: (winner) => `Vincitore: ${winner}.`,
+    driverLine: (place, payout) => `Hai finito #${place} e ricevuto ${payout}.`,
+    betWonLine: (payout) => `La tua scommessa ha pagato ${payout}.`,
+    betLostLine: 'La tua scommessa ha perso.',
+    hostLine: (rake) => `Il tuo club ha preso ${rake} di rake.`,
+  },
 };
 
 // —— PL ——
@@ -992,6 +1032,16 @@ const notificationPL: Translations['notification'] = {
         `Region: ${regionKey}`,
         'Ten region został przejęty przez inną ekipę.',
       ].join('\n'),
+  },
+  raceResult: {
+    title: 'Midnight Races',
+    systemSender: 'Midnight Races',
+    refunded: 'Wyścig odwołano (mniej niż dwóch kierowców). Twój wpis i zakłady zwrócono.',
+    winnerLine: (winner) => `Zwycięzca: ${winner}.`,
+    driverLine: (place, payout) => `Ukończyłeś jako #${place} i otrzymałeś ${payout}.`,
+    betWonLine: (payout) => `Twój zakład wypłacił ${payout}.`,
+    betLostLine: 'Twój zakład przegrał.',
+    hostLine: (rake) => `Twój klub wziął ${rake} rake.`,
   },
 };
 
@@ -1188,6 +1238,16 @@ const notificationPT: Translations['notification'] = {
         `Região: ${regionKey}`,
         'Esta região foi tomada por outra crew.',
       ].join('\n'),
+  },
+  raceResult: {
+    title: 'Midnight Races',
+    systemSender: 'Midnight Races',
+    refunded: 'A grelha foi cancelada (menos de dois condutores). A tua inscrição e apostas foram reembolsadas.',
+    winnerLine: (winner) => `Vencedor: ${winner}.`,
+    driverLine: (place, payout) => `Ficaste #${place} e recebeste ${payout}.`,
+    betWonLine: (payout) => `A tua aposta pagou ${payout}.`,
+    betLostLine: 'A tua aposta perdeu.',
+    hostLine: (rake) => `O teu clube ficou com ${rake} de rake.`,
   },
 };
 

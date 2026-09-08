@@ -24551,6 +24551,18 @@ abstract class AppLocalizations {
   /// **'Crew war action: {action} (+{points} pt)'**
   String evStreamCrewAction(String action, String points);
 
+  /// No description provided for @evStreamRaceSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight Races finished. Winner: {winner}. You received €{payout}.'**
+  String evStreamRaceSettled(String winner, String payout);
+
+  /// No description provided for @evStreamRaceRefunded.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight Races cancelled. Your stake and bets were refunded.'**
+  String get evStreamRaceRefunded;
+
   /// No description provided for @evStreamHeistOk.
   ///
   /// In en, this message translates to:

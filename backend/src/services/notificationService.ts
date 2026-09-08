@@ -1622,6 +1622,39 @@ export class NotificationService {
       );
     }
   }
+
+  public async sendRaceResultNotification(
+    playerId: number,
+    details: {
+      kind: 'settled' | 'refunded';
+      title: string;
+      body: string;
+      meetingId: number;
+      winnerUsername?: string | null;
+      payout?: number;
+      place?: number | null;
+    },
+    language?: Language
+  ): Promise<void> {
+    await this.resolveLanguageForPlayer(playerId, language);
+    await this.createInAppWorldEvent(
+      playerId,
+      details.kind === 'refunded' ? 'race.refunded' : 'race.settled',
+      {
+        meetingId: details.meetingId,
+        winner: details.winnerUsername ?? null,
+        payout: details.payout ?? 0,
+        place: details.place ?? null,
+      }
+    );
+    const pushBody = details.body.replace(/\n+/g, ' ').trim();
+    await this.sendToPlayer(playerId, details.title, pushBody, {
+      type: details.kind === 'refunded' ? 'race_refunded' : 'race_settled',
+      meetingId: String(details.meetingId),
+      winner: details.winnerUsername ?? '',
+      payout: String(details.payout ?? 0),
+    });
+  }
 }
 
 export const notificationService = NotificationService.getInstance();

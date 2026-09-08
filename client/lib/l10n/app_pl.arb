@@ -11823,5 +11823,17 @@
   "raceInfoPayoutTitle": "Wypłaty i prowizja",
   "raceInfoPayoutBody": "Jeśli zgłosi się mniej niż dwóch kierowców, stawki i zakłady zostaną zwrócone. \nNightclub będący gospodarzem w tym kraju pobiera prowizję, gdy jest otwarty. Jeśli nie ma gospodarza, grabie przepadają. \nZwycięski kierowca zgarnia większość puli netto; wygrane zakłady dzielą się resztą.",
   "raceInfoTipsTitle": "Porady",
-  "raceInfoTipsBody": "Zamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nSzybkość strojenia ma znaczenie, ale rzut nadal decyduje. \nNaprawa to ciepło, a nie dodatkowa nagroda pieniężna. \nPo spotkaniu następna siatka czeka na odnowienie."
+  "raceInfoTipsBody": "Zamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nSzybkość strojenia ma znaczenie, ale rzut nadal decyduje. \nNaprawa to ciepło, a nie dodatkowa nagroda pieniężna. \nPo spotkaniu następna siatka czeka na odnowienie.",
+  "evStreamRaceSettled": "Wyścigi o północy zakończone. Zwycięzca: {winner}. Otrzymałeś {payout} €.",
+  "@evStreamRaceSettled": {
+    "placeholders": {
+      "winner": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRaceRefunded": "Wyścigi o północy odwołane. Twoja stawka i zakłady zostały zwrócone."
 }
