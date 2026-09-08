@@ -320,16 +320,56 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     );
   }
 
+  int _donGridCols(double width) {
+    if (width >= 1040) return 4;
+    if (width >= 700) return 3;
+    if (width >= 480) return 2;
+    return 1;
+  }
+
+  double _donCardImageHeight(int cols) {
+    switch (cols) {
+      case 4:
+        return 112;
+      case 3:
+        return 124;
+      default:
+        return 148;
+    }
+  }
+
+  Widget _donWrapGrid({
+    required double width,
+    required List<Widget> children,
+  }) {
+    const gap = 12.0;
+    final cols = _donGridCols(width);
+    final cardW = cols <= 1 ? width : (width - gap * (cols - 1)) / cols;
+    return Wrap(
+      spacing: gap,
+      runSpacing: gap,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      children: [
+        for (final child in children)
+          SizedBox(width: cardW, child: child),
+      ],
+    );
+  }
+
   ButtonStyle get _goldFill => FilledButton.styleFrom(
         backgroundColor: _donGold,
         foregroundColor: const Color(0xFF1A0C0C),
         disabledBackgroundColor: _donGold.withValues(alpha: 0.28),
         disabledForegroundColor: const Color(0xFF1A0C0C).withValues(alpha: 0.55),
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       );
 
   ButtonStyle get _goldOutline => OutlinedButton.styleFrom(
         foregroundColor: _donGold,
         side: BorderSide(color: _donGold.withValues(alpha: 0.75)),
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       );
 
   InputDecoration _fieldDecoration(String label) {
@@ -676,37 +716,37 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     final crewRackets = (overview['crewRackets'] as List?) ?? const [];
     return LayoutBuilder(
       builder: (context, constraints) {
-        final cols = constraints.maxWidth >= 980 ? 2 : 1;
-        final gap = 12.0;
-        final cardW = cols == 1
+        const pad = 12.0;
+        final paneW = constraints.maxWidth.isFinite
             ? constraints.maxWidth
-            : (constraints.maxWidth - gap) / 2;
+            : MediaQuery.sizeOf(context).width;
+        final innerW = (paneW - pad * 2).clamp(0.0, double.infinity);
+        final imageH = _donCardImageHeight(_donGridCols(innerW));
         return ListView(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(pad),
           children: [
-            Wrap(
-              spacing: gap,
-              runSpacing: gap,
+            _donWrapGrid(
+              width: innerW,
               children: [
                 for (final raw in rackets)
-                  SizedBox(
-                    width: cardW,
-                    child: _racketCard(
-                      l10n,
-                      Map<String, dynamic>.from(raw as Map),
-                      canCrew,
-                    ),
+                  _racketCard(
+                    l10n,
+                    Map<String, dynamic>.from(raw as Map),
+                    canCrew,
+                    imageHeight: imageH,
                   ),
               ],
             ),
             if (crewRackets.isNotEmpty) ...[
               const SizedBox(height: 16),
               _sectionTitle(l10n.donCrewOverview),
-              for (final raw in crewRackets)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: _crewRacketTile(l10n, Map<String, dynamic>.from(raw as Map)),
-                ),
+              _donWrapGrid(
+                width: innerW,
+                children: [
+                  for (final raw in crewRackets)
+                    _crewRacketTile(l10n, Map<String, dynamic>.from(raw as Map)),
+                ],
+              ),
             ],
           ],
         );
@@ -743,7 +783,12 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     );
   }
 
-  Widget _racketCard(AppLocalizations l10n, Map<String, dynamic> racket, bool canCrew) {
+  Widget _racketCard(
+    AppLocalizations l10n,
+    Map<String, dynamic> racket,
+    bool canCrew, {
+    double imageHeight = 148,
+  }) {
     final id = (racket['id'] as num).toInt();
     final key = racket['businessKey']?.toString() ?? '';
     final mine = racket['isMine'] == true;
@@ -771,7 +816,7 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
           _sceneStack(
             asset: _donAsset(key),
             icon: _businessIcon(key),
-            height: 148,
+            height: imageHeight,
             overlays: [
               Positioned(top: 8, left: 8, child: _badge(badgeText, color: badgeColor)),
               Positioned(
@@ -882,69 +927,82 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     final loans = (overview['loans'] as List?) ?? const [];
     final minP = (overview['loanMinPrincipal'] as num?)?.toInt() ?? 2000;
     final maxP = (overview['loanMaxPrincipal'] as num?)?.toInt() ?? 50000;
-    return ListView(
-      padding: const EdgeInsets.all(12),
-      children: [
-        Container(
-          decoration: _panelDecoration(),
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionTitle(l10n.donTabLoans),
-              Text(
-                '${l10n.donLoanPrincipalHint}: ${formatCurrency(minP)}–${formatCurrency(maxP)}',
-                style: TextStyle(color: Colors.white.withValues(alpha: 0.78)),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const pad = 12.0;
+        final paneW = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width;
+        final innerW = (paneW - pad * 2).clamp(0.0, double.infinity);
+        return ListView(
+          padding: const EdgeInsets.all(pad),
+          children: [
+            Container(
+              decoration: _panelDecoration(),
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionTitle(l10n.donTabLoans),
+                  Text(
+                    '${l10n.donLoanPrincipalHint}: ${formatCurrency(minP)}–${formatCurrency(maxP)}',
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.78)),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: _principalController,
+                    keyboardType: TextInputType.number,
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: _donGold,
+                    decoration: _fieldDecoration(l10n.donLoanPrincipalHint),
+                  ),
+                ],
               ),
+            ),
+            const SizedBox(height: 12),
+            _donWrapGrid(
+              width: innerW,
+              children: [
+                for (final raw in npcs)
+                  _npcCard(l10n, Map<String, dynamic>.from(raw as Map), minP),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Container(
+              decoration: _panelDecoration(),
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionTitle(l10n.donLoanOffer),
+                  TextField(
+                    controller: _borrowerController,
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: _donGold,
+                    decoration: _fieldDecoration(l10n.donLoanBorrowerHint),
+                  ),
+                  const SizedBox(height: 10),
+                  FilledButton(
+                    style: _goldFill,
+                    onPressed: _busy
+                        ? null
+                        : () => _postQuietSuccess('/don/loans/offer', {
+                              'borrowerUsername': _borrowerController.text.trim(),
+                              'principal': int.tryParse(_principalController.text) ?? minP,
+                            }),
+                    child: Text(l10n.donLoanOffer),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            for (final raw in loans) ...[
+              _loanTile(l10n, Map<String, dynamic>.from(raw as Map)),
               const SizedBox(height: 10),
-              TextField(
-                controller: _principalController,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.white),
-                cursorColor: _donGold,
-                decoration: _fieldDecoration(l10n.donLoanPrincipalHint),
-              ),
             ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        for (final raw in npcs) ...[
-          _npcCard(l10n, Map<String, dynamic>.from(raw as Map), minP),
-          const SizedBox(height: 10),
-        ],
-        Container(
-          decoration: _panelDecoration(),
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sectionTitle(l10n.donLoanOffer),
-              TextField(
-                controller: _borrowerController,
-                style: const TextStyle(color: Colors.white),
-                cursorColor: _donGold,
-                decoration: _fieldDecoration(l10n.donLoanBorrowerHint),
-              ),
-              const SizedBox(height: 10),
-              FilledButton(
-                style: _goldFill,
-                onPressed: _busy
-                    ? null
-                    : () => _postQuietSuccess('/don/loans/offer', {
-                          'borrowerUsername': _borrowerController.text.trim(),
-                          'principal': int.tryParse(_principalController.text) ?? minP,
-                        }),
-                child: Text(l10n.donLoanOffer),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        for (final raw in loans) ...[
-          _loanTile(l10n, Map<String, dynamic>.from(raw as Map)),
-          const SizedBox(height: 10),
-        ],
-      ],
+          ],
+        );
+      },
     );
   }
 
@@ -1050,18 +1108,39 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
 
   Widget _buildOfficials(AppLocalizations l10n, Map<String, dynamic> overview) {
     final officials = (overview['officials'] as List?) ?? const [];
-    return ListView(
-      padding: const EdgeInsets.all(12),
-      children: [
-        for (final raw in officials) ...[
-          _officialCard(l10n, Map<String, dynamic>.from(raw as Map)),
-          const SizedBox(height: 12),
-        ],
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const pad = 12.0;
+        final paneW = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width;
+        final innerW = (paneW - pad * 2).clamp(0.0, double.infinity);
+        final imageH = _donCardImageHeight(_donGridCols(innerW));
+        return ListView(
+          padding: const EdgeInsets.all(pad),
+          children: [
+            _donWrapGrid(
+              width: innerW,
+              children: [
+                for (final raw in officials)
+                  _officialCard(
+                    l10n,
+                    Map<String, dynamic>.from(raw as Map),
+                    imageHeight: imageH,
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
-  Widget _officialCard(AppLocalizations l10n, Map<String, dynamic> row) {
+  Widget _officialCard(
+    AppLocalizations l10n,
+    Map<String, dynamic> row, {
+    double imageHeight = 148,
+  }) {
     final office = row['office']?.toString() ?? '';
     final patron = row['patronUsername']?.toString();
     final free = patron == null || patron.isEmpty;
@@ -1074,7 +1153,7 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
           _sceneStack(
             asset: _donAsset(office),
             icon: _officeIcon(office),
-            height: 148,
+            height: imageHeight,
             overlays: [
               Positioned(
                 top: 8,
@@ -1125,46 +1204,67 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
   Widget _buildContracts(AppLocalizations l10n, Map<String, dynamic> overview) {
     final contracts = (overview['contracts'] as List?) ?? const [];
     final canCrew = overview['canTributeToCrew'] == true;
-    return ListView(
-      padding: const EdgeInsets.all(12),
-      children: [
-        Container(
-          decoration: _panelDecoration(),
-          padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-          child: Column(
-            children: [
-              if (canCrew)
-                SwitchListTile(
-                  activeColor: _donGold,
-                  title: Text(
-                    l10n.donBidFromCrew,
-                    style: const TextStyle(color: Colors.white),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const pad = 12.0;
+        final paneW = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width;
+        final innerW = (paneW - pad * 2).clamp(0.0, double.infinity);
+        final imageH = _donCardImageHeight(_donGridCols(innerW));
+        return ListView(
+          padding: const EdgeInsets.all(pad),
+          children: [
+            Container(
+              decoration: _panelDecoration(),
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+              child: Column(
+                children: [
+                  if (canCrew)
+                    SwitchListTile(
+                      activeColor: _donGold,
+                      title: Text(
+                        l10n.donBidFromCrew,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      value: _bidFromCrew,
+                      onChanged: (value) => setState(() => _bidFromCrew = value),
+                    ),
+                  SwitchListTile(
+                    activeColor: _donGold,
+                    title: Text(
+                      l10n.donBidGreedy,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    value: _bidGreedy,
+                    onChanged: (value) => setState(() => _bidGreedy = value),
                   ),
-                  value: _bidFromCrew,
-                  onChanged: (value) => setState(() => _bidFromCrew = value),
-                ),
-              SwitchListTile(
-                activeColor: _donGold,
-                title: Text(
-                  l10n.donBidGreedy,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                value: _bidGreedy,
-                onChanged: (value) => setState(() => _bidGreedy = value),
+                ],
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        for (final raw in contracts) ...[
-          _contractCard(l10n, Map<String, dynamic>.from(raw as Map)),
-          const SizedBox(height: 12),
-        ],
-      ],
+            ),
+            const SizedBox(height: 12),
+            _donWrapGrid(
+              width: innerW,
+              children: [
+                for (final raw in contracts)
+                  _contractCard(
+                    l10n,
+                    Map<String, dynamic>.from(raw as Map),
+                    imageHeight: imageH,
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
-  Widget _contractCard(AppLocalizations l10n, Map<String, dynamic> row) {
+  Widget _contractCard(
+    AppLocalizations l10n,
+    Map<String, dynamic> row, {
+    double imageHeight = 148,
+  }) {
     final id = (row['id'] as num).toInt();
     final open = row['status'] == 'open';
     final key = row['contractKey']?.toString() ?? '';
@@ -1178,7 +1278,7 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
           _sceneStack(
             asset: _donAsset(key),
             icon: Icons.engineering,
-            height: 148,
+            height: imageHeight,
             overlays: [
               Positioned(
                 top: 8,
