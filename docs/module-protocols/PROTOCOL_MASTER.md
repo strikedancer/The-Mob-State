@@ -351,6 +351,7 @@ Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitl
 
 **Trade goods card thumbnails:** optionele Leonardo-batch `backend/scripts/generate_trade_goods_card_images_leonardo.py` schrijft `runtime/client-images/trade_goods/cards/<good_id>.png` (zelfde mount als `/images/`). UI staat op de **eerste tab van de Zwarte markt** (`trade_goods_tab.dart`); `WebAssetHelper` + fallback (gradient + emoji) als het bestand ontbreekt. Zie `docs/module-protocols/trade.md` (technisch) en `black-market.md` (hub).
 **Material icons:** `client/assets/images/materials/<id>.png` (id uit `drugs.json`). Leonardo: `backend/scripts/generate_material_images_leonardo.py`. `vps_pull_and_build.ps1` kopieert naar `runtime/client-images/materials/` (`/images/materials/`). Shop gebruikt `WebAssetHelper` + donkere thumb-plaat.
+**Don hub photos:** `client/assets/images/don/*.png` (hero, rackets, NPC sharks, officials, contracts). Deploy kopieert naar `runtime/client-images/don/` (`/images/don/`). Client: `don_screen.dart` via `WebAssetHelper` + icoon-fallback.
 
 **Result-overlay badges (misdaad/baan/overval):** circulaire badge boven “Dienst mislukt” / succes. Material Icons waren leeg op Flutter web; gebruik Leonardo-PNG’s `result_badge_fail.png` / `result_badge_success.png` via `backend/scripts/generate_result_overlay_badges_leonardo.py` → `client/assets/images/ui/` + deploy-copy naar `runtime/client-images/ui/`. Client: `crime_result_overlay.dart` (`WebAssetHelper` + CustomPaint-glyph fallback).
 

@@ -5,7 +5,15 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
 import '../widgets/action_result_toast.dart';
+
+const Color _donGold = Color(0xFFFFB347);
+const Color _donBgStart = Color(0xFF160707);
+const Color _donBgMid = Color(0xFF261010);
+const Color _donBgEnd = Color(0xFF100505);
+const Color _donPanelDark = Color(0xFF1B1212);
+const Color _donPanelLight = Color(0xFF2A1A1A);
 
 class DonScreen extends StatefulWidget {
   const DonScreen({super.key, this.embedded = false});
@@ -260,23 +268,231 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     }
   }
 
+  IconData _npcIcon(String key) {
+    switch (key) {
+      case 'dock_worker':
+        return Icons.anchor;
+      case 'club_host':
+        return Icons.star;
+      default:
+        return Icons.person_outline;
+    }
+  }
+
+  IconData _officeIcon(String key) {
+    switch (key) {
+      case 'judge':
+        return Icons.gavel;
+      case 'commissioner':
+        return Icons.local_police;
+      default:
+        return Icons.account_balance;
+    }
+  }
+
+  String _donAsset(String key) => 'assets/images/don/$key.png';
+
+  String _formatStamp(String? raw) {
+    if (raw == null || raw.isEmpty) return '';
+    final dt = DateTime.tryParse(raw);
+    if (dt == null) return raw;
+    final local = dt.toLocal();
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${local.year}-${two(local.month)}-${two(local.day)} ${two(local.hour)}:${two(local.minute)}';
+  }
+
+  BoxDecoration _panelDecoration() {
+    return BoxDecoration(
+      gradient: const LinearGradient(
+        colors: [_donPanelLight, _donPanelDark],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: _donGold.withValues(alpha: 0.45)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.28),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+  }
+
+  ButtonStyle get _goldFill => FilledButton.styleFrom(
+        backgroundColor: _donGold,
+        foregroundColor: const Color(0xFF1A0C0C),
+        disabledBackgroundColor: _donGold.withValues(alpha: 0.28),
+        disabledForegroundColor: const Color(0xFF1A0C0C).withValues(alpha: 0.55),
+      );
+
+  ButtonStyle get _goldOutline => OutlinedButton.styleFrom(
+        foregroundColor: _donGold,
+        side: BorderSide(color: _donGold.withValues(alpha: 0.75)),
+      );
+
+  InputDecoration _fieldDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.72)),
+      filled: true,
+      fillColor: Colors.black.withValues(alpha: 0.28),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: _donGold.withValues(alpha: 0.35)),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderSide: BorderSide(color: _donGold),
+      ),
+    );
+  }
+
+  Widget _donImage(
+    String assetPath, {
+    required IconData fallback,
+    double? width,
+    double? height,
+    BoxFit fit = BoxFit.cover,
+  }) {
+    return WebAssetHelper.image(
+      assetPath,
+      width: width,
+      height: height,
+      fit: fit,
+      errorBuilder: (context, error, stackTrace) {
+        return Container(
+          width: width,
+          height: height,
+          color: const Color(0xFF1E1414),
+          alignment: Alignment.center,
+          child: Icon(fallback, color: _donGold.withValues(alpha: 0.55), size: 36),
+        );
+      },
+    );
+  }
+
+  Widget _sceneStack({
+    required String asset,
+    required IconData icon,
+    required double height,
+    List<Widget> overlays = const [],
+  }) {
+    return SizedBox(
+      height: height,
+      width: double.infinity,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          _donImage(asset, fallback: icon),
+          const DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0x14000000),
+                  Color(0xB8000000),
+                ],
+              ),
+            ),
+          ),
+          ...overlays,
+        ],
+      ),
+    );
+  }
+
+  Widget _badge(String text, {Color color = _donGold}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.65),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withValues(alpha: 0.7)),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  Widget _statChip({required IconData icon, required String label}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _donGold.withValues(alpha: 0.4)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: _donGold),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionTitle(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10, top: 4),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: _donGold,
+          fontWeight: FontWeight.w700,
+          fontSize: 15,
+          letterSpacing: 0.3,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     if (_loading && _overview == null) {
-      return const Center(child: CircularProgressIndicator());
+      return _shell(
+        child: const Center(child: CircularProgressIndicator(color: _donGold)),
+      );
     }
     if (_error != null && _overview == null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(_error!, textAlign: TextAlign.center),
-              const SizedBox(height: 12),
-              FilledButton(onPressed: _load, child: Text(l10n.retry)),
-            ],
+      return _shell(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _error!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 12),
+                FilledButton(
+                  style: _goldFill,
+                  onPressed: _load,
+                  child: Text(l10n.retry),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -292,37 +508,21 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Wrap(
-                      spacing: 16,
-                      runSpacing: 8,
-                      children: [
-                        Text('${l10n.cash}: ${formatCurrency(money)}'),
-                        Text('${l10n.wantedLevel}: $wanted'),
-                        Text('${l10n.donCommandStrip}: $intimidation'),
-                        if (canCrew) Text(l10n.donTributeCrew),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: _busy ? null : _load,
-                    icon: const Icon(Icons.refresh),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child: _buildHero(l10n, money, wanted, intimidation, canCrew),
         ),
+        if (_busy)
+          const LinearProgressIndicator(
+            minHeight: 2,
+            color: _donGold,
+            backgroundColor: Color(0x33FFB347),
+          ),
         TabBar(
           controller: _tabs,
           isScrollable: true,
-          labelColor: const Color(0xFFFFB347),
+          labelColor: _donGold,
           unselectedLabelColor: Colors.white70,
+          indicatorColor: _donGold,
+          dividerColor: _donGold.withValues(alpha: 0.22),
           tabs: [
             Tab(text: l10n.donTabRackets),
             Tab(text: l10n.donTabLoans),
@@ -344,34 +544,202 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
       ],
     );
 
-    if (widget.embedded) return body;
+    return _shell(child: body);
+  }
+
+  Widget _shell({required Widget child}) {
+    final painted = DecoratedBox(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [_donBgStart, _donBgMid, _donBgEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: child,
+    );
+    if (widget.embedded) return painted;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.donMenuLabel)),
-      body: body,
+      backgroundColor: _donBgEnd,
+      appBar: AppBar(
+        backgroundColor: _donBgStart,
+        foregroundColor: _donGold,
+        title: Text(AppLocalizations.of(context)!.donMenuLabel),
+      ),
+      body: painted,
+    );
+  }
+
+  Widget _buildHero(
+    AppLocalizations l10n,
+    int money,
+    int wanted,
+    int intimidation,
+    bool canCrew,
+  ) {
+    final wide = MediaQuery.sizeOf(context).width >= 720;
+    final height = wide ? 176.0 : 154.0;
+    return Container(
+      decoration: _panelDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: SizedBox(
+        height: height,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            _donImage(_donAsset('hub'), fallback: Icons.account_balance),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Colors.black.withValues(alpha: 0.82),
+                    Colors.black.withValues(alpha: 0.42),
+                    Colors.black.withValues(alpha: 0.18),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    width: wide ? 108 : 84,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: _donGold.withValues(alpha: 0.7)),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: _donImage(
+                      'assets/images/avatars/vip_don_1920s.png',
+                      fallback: Icons.person,
+                      width: wide ? 108 : 84,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                l10n.donMenuLabel,
+                                style: const TextStyle(
+                                  color: _donGold,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 0.4,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: _busy ? null : _load,
+                              color: _donGold,
+                              icon: const Icon(Icons.refresh),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            _statChip(icon: Icons.attach_money, label: formatCurrency(money)),
+                            _statChip(icon: Icons.warning, label: '${l10n.wantedLevel}: $wanted'),
+                            _statChip(
+                              icon: Icons.security,
+                              label: '${l10n.donCommandStrip}: $intimidation',
+                            ),
+                            if (canCrew)
+                              _statChip(icon: Icons.groups, label: l10n.donTributeCrew),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildRackets(AppLocalizations l10n, Map<String, dynamic> overview, bool canCrew) {
     final rackets = (overview['rackets'] as List?) ?? const [];
     final crewRackets = (overview['crewRackets'] as List?) ?? const [];
-    return ListView(
-      padding: const EdgeInsets.all(12),
-      children: [
-        for (final raw in rackets)
-          _racketCard(l10n, Map<String, dynamic>.from(raw as Map), canCrew),
-        if (crewRackets.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          Text(l10n.donCrewOverview, style: Theme.of(context).textTheme.titleMedium),
-          for (final raw in crewRackets)
-            ListTile(
-              leading: const Icon(Icons.groups),
-              title: Text(_businessName(l10n, (raw as Map)['businessKey']?.toString() ?? '')),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cols = constraints.maxWidth >= 980 ? 2 : 1;
+        final gap = 12.0;
+        final cardW = cols == 1
+            ? constraints.maxWidth
+            : (constraints.maxWidth - gap) / 2;
+        return ListView(
+          padding: const EdgeInsets.all(12),
+          children: [
+            Wrap(
+              spacing: gap,
+              runSpacing: gap,
+              children: [
+                for (final raw in rackets)
+                  SizedBox(
+                    width: cardW,
+                    child: _racketCard(
+                      l10n,
+                      Map<String, dynamic>.from(raw as Map),
+                      canCrew,
+                    ),
+                  ),
+              ],
+            ),
+            if (crewRackets.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              _sectionTitle(l10n.donCrewOverview),
+              for (final raw in crewRackets)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _crewRacketTile(l10n, Map<String, dynamic>.from(raw as Map)),
+                ),
+            ],
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _crewRacketTile(AppLocalizations l10n, Map<String, dynamic> raw) {
+    final key = raw['businessKey']?.toString() ?? '';
+    return Container(
+      decoration: _panelDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 92,
+            height: 72,
+            child: _donImage(_donAsset(key), fallback: _businessIcon(key)),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text(
+                _businessName(l10n, key),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              ),
               subtitle: Text(
                 '${raw['countryCode'] ?? ''} · ${l10n.donOwnedBy(raw['ownerUsername']?.toString() ?? '-')}',
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.72)),
               ),
             ),
+          ),
         ],
-      ],
+      ),
     );
   }
 
@@ -382,74 +750,127 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     final owner = racket['ownerUsername']?.toString();
     final contestUntil = racket['contestUntil']?.toString();
     final squeezed = racket['squeezed'] == true;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(child: Icon(_businessIcon(key))),
-              title: Text(_businessName(l10n, key)),
-              subtitle: Text(
-                owner == null || owner.isEmpty
-                    ? l10n.donFree
-                    : l10n.donOwnedBy(owner),
+    final free = owner == null || owner.isEmpty;
+    final badgeText = mine
+        ? l10n.donOwnedBy(owner ?? '')
+        : free
+            ? l10n.donFree
+            : l10n.donOwnedBy(owner);
+    final badgeColor = mine
+        ? _donGold
+        : free
+            ? const Color(0xFF8FDF9A)
+            : const Color(0xFFFF8A80);
+
+    return Container(
+      decoration: _panelDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _sceneStack(
+            asset: _donAsset(key),
+            icon: _businessIcon(key),
+            height: 148,
+            overlays: [
+              Positioned(top: 8, left: 8, child: _badge(badgeText, color: badgeColor)),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: _badge(formatCurrency((racket['nextTribute'] as num?) ?? 0)),
               ),
-              trailing: Text(formatCurrency((racket['nextTribute'] as num?) ?? 0)),
-            ),
-            Text(
-              l10n.donIntimidationNeed(
-                (racket['minIntimidation'] as num?)?.toInt() ?? 0,
-                (overviewIntimidation()),
-              ),
-            ),
-            if (squeezed) Text(l10n.donSqueezeHeld),
-            if (contestUntil != null) Text('${l10n.donContest}: $contestUntil'),
-            Wrap(
-              spacing: 8,
+              if (contestUntil != null)
+                Positioned(
+                  bottom: 8,
+                  left: 8,
+                  child: _badge('${l10n.donContest}: ${_formatStamp(contestUntil)}', color: const Color(0xFFFFCC80)),
+                ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (!mine && owner == null)
-                  FilledButton(
-                    onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/claim'),
-                    child: Text(l10n.donClaim),
+                Text(
+                  _businessName(l10n, key),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
                   ),
-                if (mine)
-                  FilledButton(
-                    onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/collect'),
-                    child: Text(l10n.donCollect),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.donIntimidationNeed(
+                    (racket['minIntimidation'] as num?)?.toInt() ?? 0,
+                    overviewIntimidation(),
                   ),
-                if (mine)
-                  OutlinedButton(
-                    onPressed: _busy ? null : () => _post('/don/rackets/$id/squeeze'),
-                    child: Text(l10n.donSqueeze),
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.74), fontSize: 12),
+                ),
+                if (squeezed) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.donSqueezeHeld,
+                    style: const TextStyle(color: _donGold, fontSize: 12),
                   ),
-                if (!mine && owner != null)
-                  OutlinedButton(
-                    onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/contest'),
-                    child: Text(l10n.donContest),
-                  ),
-                if (mine && contestUntil != null)
-                  OutlinedButton(
-                    onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/hold'),
-                    child: Text(l10n.donHold),
+                ],
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    if (!mine && free)
+                      FilledButton(
+                        style: _goldFill,
+                        onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/claim'),
+                        child: Text(l10n.donClaim),
+                      ),
+                    if (mine)
+                      FilledButton(
+                        style: _goldFill,
+                        onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/collect'),
+                        child: Text(l10n.donCollect),
+                      ),
+                    if (mine)
+                      OutlinedButton(
+                        style: _goldOutline,
+                        onPressed: _busy ? null : () => _post('/don/rackets/$id/squeeze'),
+                        child: Text(l10n.donSqueeze),
+                      ),
+                    if (!mine && !free)
+                      OutlinedButton(
+                        style: _goldOutline,
+                        onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/contest'),
+                        child: Text(l10n.donContest),
+                      ),
+                    if (mine && contestUntil != null)
+                      OutlinedButton(
+                        style: _goldOutline,
+                        onPressed: _busy ? null : () => _postQuietSuccess('/don/rackets/$id/hold'),
+                        child: Text(l10n.donHold),
+                      ),
+                  ],
+                ),
+                if (mine && canCrew)
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    activeColor: _donGold,
+                    title: Text(
+                      l10n.donTributeCrew,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    value: racket['tributeToCrew'] == true,
+                    onChanged: _busy
+                        ? null
+                        : (value) => _postQuietSuccess('/don/rackets/$id/tribute', {
+                              'tributeToCrew': value,
+                            }),
                   ),
               ],
             ),
-            if (mine && canCrew)
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(l10n.donTributeCrew),
-                value: racket['tributeToCrew'] == true,
-                onChanged: _busy
-                    ? null
-                    : (value) => _postQuietSuccess('/don/rackets/$id/tribute', {
-                          'tributeToCrew': value,
-                        }),
-              ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -464,46 +885,123 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     return ListView(
       padding: const EdgeInsets.all(12),
       children: [
-        Text('${l10n.donLoanPrincipalHint}: ${formatCurrency(minP)}–${formatCurrency(maxP)}'),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _principalController,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(labelText: l10n.donLoanPrincipalHint),
-        ),
-        const SizedBox(height: 8),
-        for (final raw in npcs)
-          ListTile(
-            leading: const Icon(Icons.person_outline),
-            title: Text(_npcName(l10n, (raw as Map)['key']?.toString() ?? '')),
-            trailing: FilledButton(
-              onPressed: _busy
-                  ? null
-                  : () => _postQuietSuccess('/don/loans/npc', {
-                        'npcKey': raw['key'],
-                        'principal': int.tryParse(_principalController.text) ?? minP,
-                      }),
-              child: Text(l10n.donLoanNpc),
-            ),
+        Container(
+          decoration: _panelDecoration(),
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _sectionTitle(l10n.donTabLoans),
+              Text(
+                '${l10n.donLoanPrincipalHint}: ${formatCurrency(minP)}–${formatCurrency(maxP)}',
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.78)),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _principalController,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: _donGold,
+                decoration: _fieldDecoration(l10n.donLoanPrincipalHint),
+              ),
+            ],
           ),
-        const Divider(),
-        TextField(
-          controller: _borrowerController,
-          decoration: InputDecoration(labelText: l10n.donLoanBorrowerHint),
-        ),
-        const SizedBox(height: 8),
-        FilledButton(
-          onPressed: _busy
-              ? null
-              : () => _postQuietSuccess('/don/loans/offer', {
-                    'borrowerUsername': _borrowerController.text.trim(),
-                    'principal': int.tryParse(_principalController.text) ?? minP,
-                  }),
-          child: Text(l10n.donLoanOffer),
         ),
         const SizedBox(height: 12),
-        for (final raw in loans) _loanTile(l10n, Map<String, dynamic>.from(raw as Map)),
+        for (final raw in npcs) ...[
+          _npcCard(l10n, Map<String, dynamic>.from(raw as Map), minP),
+          const SizedBox(height: 10),
+        ],
+        Container(
+          decoration: _panelDecoration(),
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _sectionTitle(l10n.donLoanOffer),
+              TextField(
+                controller: _borrowerController,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: _donGold,
+                decoration: _fieldDecoration(l10n.donLoanBorrowerHint),
+              ),
+              const SizedBox(height: 10),
+              FilledButton(
+                style: _goldFill,
+                onPressed: _busy
+                    ? null
+                    : () => _postQuietSuccess('/don/loans/offer', {
+                          'borrowerUsername': _borrowerController.text.trim(),
+                          'principal': int.tryParse(_principalController.text) ?? minP,
+                        }),
+                child: Text(l10n.donLoanOffer),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        for (final raw in loans) ...[
+          _loanTile(l10n, Map<String, dynamic>.from(raw as Map)),
+          const SizedBox(height: 10),
+        ],
       ],
+    );
+  }
+
+  Widget _npcCard(AppLocalizations l10n, Map<String, dynamic> raw, int minP) {
+    final key = raw['key']?.toString() ?? '';
+    return Container(
+      decoration: _panelDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              width: 112,
+              height: 148,
+              child: _donImage(
+                _donAsset(key),
+                fallback: _npcIcon(key),
+                width: 112,
+                height: 148,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _npcName(l10n, key),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const Spacer(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton(
+                        style: _goldFill,
+                        onPressed: _busy
+                            ? null
+                            : () => _postQuietSuccess('/don/loans/npc', {
+                                  'npcKey': raw['key'],
+                                  'principal': int.tryParse(_principalController.text) ?? minP,
+                                }),
+                        child: Text(l10n.donLoanNpc),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -515,11 +1013,16 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     final title = npc != null && npc.isNotEmpty
         ? _npcName(l10n, npc)
         : (isLender ? loan['borrowerUsername'] : loan['lenderUsername'])?.toString() ?? '';
-    return Card(
+    return Container(
+      decoration: _panelDecoration(),
       child: ListTile(
-        title: Text(title),
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+        ),
         subtitle: Text(
-          '$status · ${formatCurrency((loan['dueAmount'] as num?) ?? 0)} · ${loan['dueAt'] ?? ''}',
+          '$status · ${formatCurrency((loan['dueAmount'] as num?) ?? 0)} · ${_formatStamp(loan['dueAt']?.toString())}',
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.72)),
         ),
         trailing: Wrap(
           spacing: 4,
@@ -527,17 +1030,17 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
             if (!isLender && status == 'offered')
               TextButton(
                 onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/accept'),
-                child: Text(l10n.donLoanAccept),
+                child: Text(l10n.donLoanAccept, style: const TextStyle(color: _donGold)),
               ),
             if (!isLender && status == 'active')
               TextButton(
                 onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/repay'),
-                child: Text(l10n.donLoanRepay),
+                child: Text(l10n.donLoanRepay, style: const TextStyle(color: _donGold)),
               ),
             if (isLender && (status == 'defaulted' || status == 'active'))
               TextButton(
                 onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/collect'),
-                child: Text(l10n.donLoanCollect),
+                child: Text(l10n.donLoanCollect, style: const TextStyle(color: _donGold)),
               ),
           ],
         ),
@@ -550,40 +1053,72 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     return ListView(
       padding: const EdgeInsets.all(12),
       children: [
-        for (final raw in officials)
-          Builder(
-            builder: (_) {
-              final row = Map<String, dynamic>.from(raw as Map);
-              final office = row['office']?.toString() ?? '';
-              final patron = row['patronUsername']?.toString();
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child: Icon(
-                      office == 'judge'
-                          ? Icons.gavel
-                          : office == 'commissioner'
-                              ? Icons.local_police
-                              : Icons.account_balance,
-                    ),
-                  ),
-                  title: Text(_officeName(l10n, office)),
-                  subtitle: Text(
-                    patron == null || patron.isEmpty
-                        ? l10n.donFree
-                        : '${l10n.donOwnedBy(patron)} · ${row['paidUntil'] ?? ''}',
-                  ),
-                  trailing: FilledButton(
-                    onPressed: _busy
-                        ? null
-                        : () => _postQuietSuccess('/don/officials/$office/bribe'),
-                    child: Text('${l10n.donBribe} ${formatCurrency((row['nextBid'] as num?) ?? 0)}'),
+        for (final raw in officials) ...[
+          _officialCard(l10n, Map<String, dynamic>.from(raw as Map)),
+          const SizedBox(height: 12),
+        ],
+      ],
+    );
+  }
+
+  Widget _officialCard(AppLocalizations l10n, Map<String, dynamic> row) {
+    final office = row['office']?.toString() ?? '';
+    final patron = row['patronUsername']?.toString();
+    final free = patron == null || patron.isEmpty;
+    return Container(
+      decoration: _panelDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _sceneStack(
+            asset: _donAsset(office),
+            icon: _officeIcon(office),
+            height: 148,
+            overlays: [
+              Positioned(
+                top: 8,
+                left: 8,
+                child: _badge(
+                  free ? l10n.donFree : l10n.donOwnedBy(patron),
+                  color: free ? const Color(0xFF8FDF9A) : _donGold,
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _officeName(l10n, office),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-              );
-            },
+                if (!free) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    _formatStamp(row['paidUntil']?.toString()),
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.72), fontSize: 12),
+                  ),
+                ],
+                const SizedBox(height: 10),
+                FilledButton(
+                  style: _goldFill,
+                  onPressed: _busy
+                      ? null
+                      : () => _postQuietSuccess('/don/officials/$office/bribe'),
+                  child: Text('${l10n.donBribe} ${formatCurrency((row['nextBid'] as num?) ?? 0)}'),
+                ),
+              ],
+            ),
           ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -593,47 +1128,114 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     return ListView(
       padding: const EdgeInsets.all(12),
       children: [
-        if (canCrew)
-          SwitchListTile(
-            title: Text(l10n.donBidFromCrew),
-            value: _bidFromCrew,
-            onChanged: (value) => setState(() => _bidFromCrew = value),
-          ),
-        SwitchListTile(
-          title: Text(l10n.donBidGreedy),
-          value: _bidGreedy,
-          onChanged: (value) => setState(() => _bidGreedy = value),
-        ),
-        for (final raw in contracts)
-          Builder(
-            builder: (_) {
-              final row = Map<String, dynamic>.from(raw as Map);
-              final id = (row['id'] as num).toInt();
-              final open = row['status'] == 'open';
-              return Card(
-                child: ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.engineering)),
-                  title: Text(_contractName(l10n, row['contractKey']?.toString() ?? '')),
-                  subtitle: Text(
-                    '${formatCurrency((row['payout'] as num?) ?? 0)} · bid ${formatCurrency((row['bidCost'] as num?) ?? 0)}'
-                    '${row['bidderUsername'] != null ? ' · ${row['bidderUsername']}' : ''}',
+        Container(
+          decoration: _panelDecoration(),
+          padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+          child: Column(
+            children: [
+              if (canCrew)
+                SwitchListTile(
+                  activeColor: _donGold,
+                  title: Text(
+                    l10n.donBidFromCrew,
+                    style: const TextStyle(color: Colors.white),
                   ),
-                  trailing: open
-                      ? FilledButton(
-                          onPressed: _busy
-                              ? null
-                              : () => _postQuietSuccess('/don/contracts/$id/bid', {
-                                    'fromCrew': _bidFromCrew,
-                                    'greedy': _bidGreedy,
-                                  }),
-                          child: Text(l10n.donBid),
-                        )
-                      : Text(row['status']?.toString() ?? ''),
+                  value: _bidFromCrew,
+                  onChanged: (value) => setState(() => _bidFromCrew = value),
                 ),
-              );
-            },
+              SwitchListTile(
+                activeColor: _donGold,
+                title: Text(
+                  l10n.donBidGreedy,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                value: _bidGreedy,
+                onChanged: (value) => setState(() => _bidGreedy = value),
+              ),
+            ],
           ),
+        ),
+        const SizedBox(height: 12),
+        for (final raw in contracts) ...[
+          _contractCard(l10n, Map<String, dynamic>.from(raw as Map)),
+          const SizedBox(height: 12),
+        ],
       ],
+    );
+  }
+
+  Widget _contractCard(AppLocalizations l10n, Map<String, dynamic> row) {
+    final id = (row['id'] as num).toInt();
+    final open = row['status'] == 'open';
+    final key = row['contractKey']?.toString() ?? '';
+    final bidder = row['bidderUsername']?.toString();
+    return Container(
+      decoration: _panelDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _sceneStack(
+            asset: _donAsset(key),
+            icon: Icons.engineering,
+            height: 148,
+            overlays: [
+              Positioned(
+                top: 8,
+                left: 8,
+                child: _badge(
+                  row['status']?.toString() ?? '',
+                  color: open ? const Color(0xFF8FDF9A) : _donGold,
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: _badge(formatCurrency((row['payout'] as num?) ?? 0)),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _contractName(l10n, key),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${l10n.donBid} ${formatCurrency((row['bidCost'] as num?) ?? 0)}'
+                  '${bidder != null && bidder.isNotEmpty ? ' · $bidder' : ''}',
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.74), fontSize: 12),
+                ),
+                const SizedBox(height: 10),
+                if (open)
+                  FilledButton(
+                    style: _goldFill,
+                    onPressed: _busy
+                        ? null
+                        : () => _postQuietSuccess('/don/contracts/$id/bid', {
+                              'fromCrew': _bidFromCrew,
+                              'greedy': _bidGreedy,
+                            }),
+                    child: Text(l10n.donBid),
+                  )
+                else
+                  Text(
+                    row['status']?.toString() ?? '',
+                    style: const TextStyle(color: _donGold, fontWeight: FontWeight.w700),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
