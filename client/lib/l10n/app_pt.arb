@@ -11737,5 +11737,13 @@
   "helpTopicRacesTitle": "Corridas da Meia-Noite",
   "helpTopicRacesSummary": "Corridas de rua programadas em seu país atual. Qualifique-se com seu próprio carro, aposte dinheiro e deixe as estatísticas de garagem e ajuste impulsionarem a rolagem do servidor. A boate anfitriã cobra rake.",
   "helpTopicRacesHow": "Abra corridas da meia-noite do Império. \nVocê corre no país em que está. O carro deve ser seu, estar presente naquele país, não estar listado para venda e estar em condições decentes. \nA entrada custa uma aposta em dinheiro. Quando a grade fecha, o servidor rola a ordem de término. Velocidade, níveis de velocidade e condições da oficina oferecem um bônus leve - este não é um jogo de habilidade de direção. \nVocê pode apostar em outros pilotos. Você não pode apostar em si mesmo. \nAdicionais de fixação opcionais necessários para um pequeno bônus de rolagem. Não garante uma vitória. \nSe uma boate naquele país estiver aberta, o anfitrião recebe a rake. Caso contrário, o ancinho afundará. \nSe menos de dois pilotos participarem, os valores apostados serão reembolsados.",
-  "helpTopicRacesTips": "A velocidade do ajuste é importante, mas o lançamento ainda decide a corrida – não trate isso como um segundo cassino. \nMantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nFixar é calor, não um multiplicador de pagamento."
+  "helpTopicRacesTips": "A velocidade do ajuste é importante, mas o lançamento ainda decide a corrida – não trate isso como um segundo cassino. \nMantenha um carro de corrida no país que você visita em vez de deixar tudo no showroom. \nFixar é calor, não um multiplicador de pagamento.",
+  "crewUiHintMissionLockedClearingHouse": "A Clearing House também exige nível de missão da Crew {level}.",
+  "@crewUiHintMissionLockedClearingHouse": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

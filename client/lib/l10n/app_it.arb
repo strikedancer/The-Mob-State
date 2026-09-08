@@ -11737,5 +11737,13 @@
   "helpTopicRacesTitle": "Gare di mezzanotte",
   "helpTopicRacesSummary": "Gare su strada programmate nel tuo paese attuale. Qualificati con la tua auto, scommetti denaro e lascia che il garage e le statistiche di messa a punto spingano un server. La discoteca che ospita prende un rastrello.",
   "helpTopicRacesHow": "Gare di mezzanotte aperte da Empire. \nCorri nel paese in cui ti trovi. L'auto deve essere tua, presente in quel paese, non in vendita e in discrete condizioni. \nL'ingresso costa una quota in contanti. Quando la griglia si chiude, il server lancia l'ordine di arrivo. Velocità, livelli di velocità e condizioni dell'officina danno un leggero bonus: questo non è un gioco di abilità di guida. \nPuoi scommettere su altri piloti. Non puoi scommettere su te stesso. \nAggiunte di correzione opzionali richieste per un piccolo bonus di tiro. Non garantisce una vittoria. \nSe una discoteca in quel paese è aperta, quell'ospite riceve la rastrellatura. Altrimenti il ​​rastrello è affondato. \nSe entrano meno di due piloti, le puntate e le scommesse vengono rimborsate.",
-  "helpTopicRacesTips": "La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita."
+  "helpTopicRacesTips": "La velocità di messa a punto è importante, ma il tiro decide comunque la gara: non trattarlo come un secondo casinò. \nTieni un'auto da corsa nel paese che visiti invece di lasciare tutto nello showroom. \nIl fissaggio è calore, non un moltiplicatore di vincita.",
+  "crewUiHintMissionLockedClearingHouse": "Clearing House richiede anche il livello di missione dell'Crew {level}.",
+  "@crewUiHintMissionLockedClearingHouse": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

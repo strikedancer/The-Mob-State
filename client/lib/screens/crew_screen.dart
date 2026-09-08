@@ -786,6 +786,8 @@ class _CrewScreenState extends State<CrewScreen>
         return l10n.crewUiTr13;
       case 'error.mission_tier_locked':
         return l10n.crewUiTr14;
+      case 'error.mission_clearing_house_locked':
+        return l10n.crewUiHintMissionLockedClearingHouse(3);
       case 'error.mission_run_not_found':
         return l10n.crewUiTr15;
       case 'error.mission_already_resolved':
@@ -812,6 +814,10 @@ class _CrewScreenState extends State<CrewScreen>
       case 'TIER3_REQUIRES_HQ9_AND_3_MEMBERS':
         return _t(loc, 'hint.missionLockedTier3');
       default:
+        if ((reason ?? '').startsWith('CLEARING_HOUSE_REQUIRES_MISSION_LEVEL_')) {
+          final level = int.tryParse(reason!.split('_').last) ?? 3;
+          return loc.crewUiHintMissionLockedClearingHouse(level);
+        }
         return _t(loc, 'hint.missionLockedDefault');
     }
   }

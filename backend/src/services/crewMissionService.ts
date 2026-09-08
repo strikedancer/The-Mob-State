@@ -136,7 +136,7 @@ const CREW_MISSION_RUNTIME_SETTING_DEFAULTS = {
     process.env.CREW_MISSION_CREW_LEVEL_CASH_BONUS_PER_LEVEL_PCT || '1.0',
   CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT:
     process.env.CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT || '15.0',
-  // Default 0: Phase-2 gate off until T2/T3 + Blackout telemetry justifies enabling (set to 3).
+  // Code default stays 0. Prod live value is runtime `3` (user enable 2026-09-08).
   CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL:
     process.env.CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL || '0',
 } as const;

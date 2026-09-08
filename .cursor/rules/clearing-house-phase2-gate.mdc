@@ -1,23 +1,22 @@
 ---
-description: When to enable Clearing House Phase-2 mission-level gate
+description: Clearing House Phase-2 mission-level gate is live at 3
 alwaysApply: true
 ---
 
 # Clearing House Phase-2 gate
 
-Runtime key: `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` (default **`0` = uit**).
+Runtime key: `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL`.
 
-## Do not enable yet when
+**Live (2026-09-08):** prod runtime is **`3`** after explicit user enable. Code default stays **`0`**.
 
-- Prod has little/no Tier 2–3 or Blackout (`territory_blackout_push`) run telemetry
-- Top crews are still around `missionLevel` 1
-- User has not explicitly asked to turn the gate on
+## Keep it on 3 unless
 
-## Enable (set to `3`) only when
+- User asks to turn the extra lock **off** (set runtime to `0` via Admin → Crew Missions)
+- Exploit/speedup telemetry shows the gate should be paused
 
-- User asks to enable Phase-2 / Clearing House mission-level gate, **or**
-- There is solid T2/T3 + Blackout telemetry (multiple runs, no speedup/exploit red flags) **and** the user confirms
+## Do not
 
-Prefer enabling via **Admin → Crew Missions** toggle (runtime key), not by changing code defaults.
+- Flip the **code** default from `0` to `3` (runtime is the source of truth)
+- Change the live runtime value without the user asking
 
-Never flip the default in code from `0` to `3` without that confirmation. Docs: `docs/module-protocols/crew-missions.md`, `docs/game-systems/CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md`.
+Docs: `docs/module-protocols/crew-missions.md`, `docs/game-systems/CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md`.

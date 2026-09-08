@@ -503,7 +503,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **Trade cargo (T2)**: **Port Contraband Manifest** en **Warehouse Luxury Offload** vereisen handelswaren uit **crew trade storage** (tabak/koffie resp. parfum/luxe horloges); verbruikt bij start, niet bij claim.
 - Beloningen blijven uit de crew-mission economy (server); er wordt geen geld rechtstreeks uit andere spelers hun banksaldo gehaald.
 - Catalogus en getallen: [CREW_MISSIONS_EXPANSION_2026-04-26.md](CREW_MISSIONS_EXPANSION_2026-04-26.md). Afbeeldingen: `backend/scripts/generate_crew_missions_images_leonardo.py` (Leonardo API); gecommit runtime-PNG’s staan onder `runtime/client-images/crew_missions/cards/` en `.../scenes/` (zelfde mount als `CLIENT_EXTERNAL_IMAGES_PATH` op de server).
-- **Clearing House Vault Run** is live als T3-missie. Phase-2 `missionLevel`-gate (`CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL`) blijft **0 / uit** tot er T2/T3 + Blackout-telemetry is; niet de code-default naar 3 zetten.
+- **Clearing House Vault Run** is live als T3-missie. Phase-2-gate staat **aan**: crew `missionLevel >= 3` naast HQ 9 + 3 leden (`CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL=3` in runtime; code-default blijft `0`).
 
 ### Crew Mission XP & Level
 - Crew Missions geven naast persoonlijke XP ook **crew mission XP** aan de crew.

@@ -11737,5 +11737,13 @@
   "helpTopicRacesTitle": "Courses de minuit",
   "helpTopicRacesSummary": "Courses de rue programmées dans votre pays actuel. Qualifiez-vous avec votre propre voiture, misez de l'argent et laissez les statistiques de garage et de réglage stimuler le serveur. La discothèque hôte prend le rake.",
   "helpTopicRacesHow": "Courses de minuit ouvertes d’Empire. \nVous courez dans le pays dans lequel vous vous trouvez. La voiture doit être la vôtre, présente dans ce pays, non mise en vente et en bon état. \nL’entrée coûte une mise en espèces. Lorsque la grille se ferme, le serveur lance l'ordre de fin. La vitesse, l'ajustement des niveaux de vitesse et de l'état de l'atelier donnent un léger bonus - ce n'est pas un jeu d'adresse de conduite. \nVous pouvez parier sur d'autres pilotes. Vous ne pouvez pas parier sur vous-même. \nLa fixation optionnelle ajoute un petit bonus de rouleau. Cela ne garantit pas une victoire. \nSi une discothèque dans ce pays est ouverte, cet hôte reçoit la commission. Sinon, le râteau est coulé. \nSi moins de deux pilotes participent, les mises et les paris sont remboursés.",
-  "helpTopicRacesTips": "La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains."
+  "helpTopicRacesTips": "La vitesse de réglage est importante, mais le lancer décide toujours de la course – ne considérez pas cela comme un deuxième casino. \nGardez une voiture de course dans le pays que vous visitez au lieu de tout laisser dans la salle d'exposition. \nLe fixage est une question de chaleur, pas un multiplicateur de gains.",
+  "crewUiHintMissionLockedClearingHouse": "Clearing House nécessite également le niveau de mission d'équipage {level}.",
+  "@crewUiHintMissionLockedClearingHouse": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

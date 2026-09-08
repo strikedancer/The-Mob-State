@@ -11737,5 +11737,13 @@
   "helpTopicRacesTitle": "Mitternachtsrennen",
   "helpTopicRacesSummary": "Geplante Straßenrennen in Ihrem aktuellen Land. Qualifizieren Sie sich mit Ihrem eigenen Auto, setzen Sie Geld ein und lassen Sie Garagen- und Tuning-Statistiken den Server ins Rollen bringen. Der gastgebende Nightclub nimmt Rake.",
   "helpTopicRacesHow": "Offene Mitternachtsrennen von Empire. \nSie fahren in dem Land, in dem Sie antreten. Das Auto muss Ihnen gehören, in diesem Land vorhanden sein, nicht zum Verkauf angeboten werden und in gutem Zustand sein. \nDer Eintritt kostet einen Bargeldeinsatz. Wenn das Raster geschlossen wird, würfelt der Server die Endreihenfolge. Geschwindigkeit, Geschwindigkeitsstufen im Tuning-Shop und Zustand geben einen leichten Bonus – dies ist kein Fahrgeschicklichkeitsspiel. \nSie können auf andere Fahrer wetten. Sie können nicht auf sich selbst wetten. \nFür einen kleinen Rollbonus sind optionale Fixing-Adds erwünscht. Es garantiert keinen Sieg. \nWenn in diesem Land ein Nightclub geöffnet ist, erhält dieser Gastgeber den Rake. Sonst geht der Rechen unter. \nMelden sich weniger als zwei Fahrer, werden Einsätze und Wetten zurückerstattet.",
-  "helpTopicRacesTips": "Die Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch über das Rennen – betrachten Sie dies nicht als ein zweites Casino. \nBehalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nFixieren ist Hitze, kein Auszahlungsmultiplikator."
+  "helpTopicRacesTips": "Die Abstimmungsgeschwindigkeit ist wichtig, aber der Wurf entscheidet immer noch über das Rennen – betrachten Sie dies nicht als ein zweites Casino. \nBehalten Sie einen Rennwagen in dem Land, das Sie besuchen, anstatt alles im Ausstellungsraum zu lassen. \nFixieren ist Hitze, kein Auszahlungsmultiplikator.",
+  "crewUiHintMissionLockedClearingHouse": "Für Clearing House ist außerdem die Missionsstufe {level} der Crew erforderlich.",
+  "@crewUiHintMissionLockedClearingHouse": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

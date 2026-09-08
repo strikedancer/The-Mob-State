@@ -112,7 +112,7 @@ Doel:
 - `Casino Ledger Raid` (`casino_ledger_raid`) — enige crew-mission met primair casino-thema
 - `Federal Convoy Break` (`federal_convoy_break`)
 - `Reserve Vault Breach` (`reserve_vault_breach`)
-- `Clearing House Vault Run` (`clearing_house_vault_run`) — live T3 settlement-run; Phase-2 mission-level gate remains **off** (`0`) until telemetry + explicit enable
+- `Clearing House Vault Run` (`clearing_house_vault_run`) — live T3 settlement-run; Phase-2 gate **aan** (`CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL=3`)
 - `Territory Blackout Push` (`territory_blackout_push`)
 - `Courier Intercept` (`courier_intercept`)
 - `City Vault Prep` (`city_vault_prep`)
@@ -142,7 +142,7 @@ Regels:
 - Premium mag alleen utility geven (bijv. extra reroll of planning slot), nooit exclusieve top reward power.
 - Crew mission XP is functioneel en bouwt een crew mission level op; levelprogressie en bonus moeten zichtbaar zijn in de Crew Missions UI.
 - Crew mission level mag alleen utility/efficiency voordelen geven (bijv. lichte cash-bonus op crew mission claims), geen directe pay-to-win success- of combatboost.
-- **Clearing House Phase-2 gate:** runtime key `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL` (default **`0` = uit**). Zet op `3` pas na voldoende T2/T3 + Blackout telemetry. Zie baseline hieronder.
+- **Clearing House Phase-2 gate:** runtime key `CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL`. **Live: `3`** (user enable 2026-09-08). Code-default blijft `0`. Zet via Admin → Crew Missions terug op `0` om de extra lock uit te zetten.
 - **Admin UI:** tab **Crew Missions** (`CrewMissionsAdminPanel`) — toggle Clearing House gate + pacing runtime keys via `GET/PUT /admin/crew-missions/runtime-config`. Geen deploy nodig; live na opslaan.
 
 ### Telemetry baseline (prod, 2026-08-02)
@@ -156,7 +156,7 @@ Regels:
 | Top crew `missionLevel` | 1 (62 XP) |
 | Admin windows 24h / 7d / 30d | allen leeg (recente activiteit = 0) |
 
-**Besluit P2:** Phase-2 `missionLevel >= 3` gate voor Clearing House **niet aanzetten**. Code-pad staat klaar (runtime key); aanzetten vereist nieuwe admin-beslissing na ≥ enkele T2/T3 + Blackout runs zonder exploit-signalen.
+**Besluit P2 (2026-09-08):** Phase-2 `missionLevel >= 3` gate voor Clearing House **aan** via runtime upsert. Code-default blijft `0`. Uitzetten: Admin → Crew Missions (`0`).
 
 ## Reward Model (Balance-First)
 

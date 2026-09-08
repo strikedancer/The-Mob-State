@@ -11737,5 +11737,13 @@
   "helpTopicRacesTitle": "Wyścigi o północy",
   "helpTopicRacesSummary": "Zaplanowane wyścigi uliczne w Twoim obecnym kraju. Zakwalifikuj się własnym samochodem, stawiaj gotówkę i pozwól, aby statystyki garażu i tuningu wpływały na wyniki serwera. Nightclub będący gospodarzem pobiera prowizję.",
   "helpTopicRacesHow": "Otwarte wyścigi o północy z Empire. \nŚcigasz się w kraju, w którym się znajdujesz. Samochód musi być Twój, znajdować się w tym kraju, nie być wystawiony na sprzedaż i być w przyzwoitym stanie. \nWstęp kosztuje stawkę gotówkową. Kiedy siatka się zamyka, serwer rzuca kolejność kończenia. Szybkość, poziomy prędkości i stan warsztatu tuningowego dają niewielką premię — to nie jest gra zręcznościowa. \nMożna stawiać na innych kierowców. Nie możesz stawiać na siebie. \nOpcjonalne mocowanie dodaje pożądany bonus za małą rolkę. Nie gwarantuje wygranej. \nJeśli Nightclub w tym kraju jest otwarty, gospodarz otrzymuje prowizję. W przeciwnym razie grabie zostaną zatopione. \nJeśli zgłosi się mniej niż dwóch kierowców, stawki i zakłady zostaną zwrócone.",
-  "helpTopicRacesTips": "Dostosuj prędkość ma znaczenie, ale rzut i tak decyduje o wyścigu – nie traktuj tego jak drugiego kasyna. \nZamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nFixing to ciepło, a nie mnożnik wypłat."
+  "helpTopicRacesTips": "Dostosuj prędkość ma znaczenie, ale rzut i tak decyduje o wyścigu – nie traktuj tego jak drugiego kasyna. \nZamiast zostawiać wszystko w salonie, zatrzymaj samochód wyścigowy w kraju, który odwiedzasz. \nFixing to ciepło, a nie mnożnik wypłat.",
+  "crewUiHintMissionLockedClearingHouse": "Clearing House wymaga również poziomu misji załogi {level}.",
+  "@crewUiHintMissionLockedClearingHouse": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

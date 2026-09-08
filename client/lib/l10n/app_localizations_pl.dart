@@ -4289,6 +4289,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Poziom 3 wymaga członków HQ 9+ i 3+.';
 
   @override
+  String crewUiHintMissionLockedClearingHouse(int level) {
+    return 'Clearing House wymaga również poziomu misji załogi $level.';
+  }
+
+  @override
   String get crewUiHintMissionLockedDefault => 'Misja jest nadal zamknięta.';
 
   @override

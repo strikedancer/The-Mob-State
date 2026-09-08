@@ -11737,5 +11737,13 @@
   "helpTopicRacesTitle": "Carreras de medianoche",
   "helpTopicRacesSummary": "Carreras callejeras programadas en tu país actual. Clasifícate con tu propio coche, apuesta dinero y deja que las estadísticas de garaje y de afinación impulsen el desempeño del servidor. La discoteca anfitriona cobra una comisión.",
   "helpTopicRacesHow": "Abre carreras de medianoche de Empire. \nCorres en el país en el que te encuentras. El coche debe ser tuyo, estar presente en ese país, no estar listado para la venta y estar en buenas condiciones. \nLa entrada cuesta una apuesta en efectivo. Cuando la cuadrícula se cierra, el servidor finaliza el orden. La velocidad, los niveles de velocidad del taller de afinación y la condición otorgan una ligera bonificación; este no es un juego de habilidad para conducir. \nPuedes apostar por otros conductores. No puedes apostar por ti mismo. \nSe buscan complementos de fijación opcionales para obtener una pequeña bonificación por rollo. No garantiza una victoria. \nSi un Nightclub en ese país está abierto, ese anfitrión recibe la comisión. De lo contrario, el rastrillo se hundirá. \nSi participan menos de dos conductores, se reembolsarán las apuestas.",
-  "helpTopicRacesTips": "La velocidad de sintonización importa, pero la tirada aún decide la carrera; no trates esto como un segundo casino. \nMantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa fijación es calor, no un multiplicador de pagos."
+  "helpTopicRacesTips": "La velocidad de sintonización importa, pero la tirada aún decide la carrera; no trates esto como un segundo casino. \nMantenga un auto de carreras en el país que visite en lugar de dejarlo todo en la sala de exhibición. \nLa fijación es calor, no un multiplicador de pagos.",
+  "crewUiHintMissionLockedClearingHouse": "Clearing House también requiere el nivel de misión de la Crew {level}.",
+  "@crewUiHintMissionLockedClearingHouse": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }
