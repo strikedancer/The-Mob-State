@@ -13373,6 +13373,21 @@ class AppLocalizationsDe extends AppLocalizations {
       'Bei Events gewonnen. Auf diesem Profil sichtbar. Verkaufbar auf Schwarzmarkt → Marktplatz.';
 
   @override
+  String get profileAchievementsTitle => 'Erfolge';
+
+  @override
+  String get profileAchievementsHint =>
+      'Verdiente Abzeichen. Jeder kann sie hier sehen. Gesperrter Fortschritt bleibt privat.';
+
+  @override
+  String get profileAchievementsEmpty => 'Noch keine Abzeichen';
+
+  @override
+  String profileAchievementsCount(String count) {
+    return '$count verdient';
+  }
+
+  @override
   String get gameScreenUnknownPlayer => 'Unbekannt';
 
   @override

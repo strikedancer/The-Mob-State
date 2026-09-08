@@ -13202,6 +13202,21 @@ class AppLocalizationsEn extends AppLocalizations {
       'Won from events. Visible on this profile. Sellable on Black Market → Marketplace.';
 
   @override
+  String get profileAchievementsTitle => 'Achievements';
+
+  @override
+  String get profileAchievementsHint =>
+      'Earned badges. Everyone can see them here. Locked progress stays private.';
+
+  @override
+  String get profileAchievementsEmpty => 'No badges yet';
+
+  @override
+  String profileAchievementsCount(String count) {
+    return '$count earned';
+  }
+
+  @override
   String get gameScreenUnknownPlayer => 'Unknown';
 
   @override
@@ -16869,7 +16884,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsHow =>
-      'Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAchievement badges are visible on your public profile. They show other players your specializations and experience.\nEvent chips (gold, silver, bronze) also appear on the profile: everyone can see how many you have won. They give no extra power; you can sell them on Black Market → Marketplace.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.';
+      'Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAll earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.\nEvent chips (gold, silver, bronze) also appear on the profile: everyone can see how many you have won. They give no extra power; you can sell them on Black Market → Marketplace.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.';
 
   @override
   String get helpTopicAchievementsTips =>

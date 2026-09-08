@@ -11536,5 +11536,16 @@
   "nightclubPlayerSupplyFailed": "Impossibile vendere al club.",
   "nightclubPlayerSupplyToggleTitle": "Acquista dai giocatori",
   "nightclubPlayerSupplyToggleHint": "I giocatori in questo paese possono venderti azioni a un prezzo all'ingrosso. Paghi in contanti; il lotto finisce nel deposito del club.",
-  "nightclubPlayerSupplyToggleFailed": "Impossibile aggiornare la fornitura del lettore."
+  "nightclubPlayerSupplyToggleFailed": "Impossibile aggiornare la fornitura del lettore.",
+  "profileAchievementsTitle": "Risultati",
+  "profileAchievementsHint": "Distintivi guadagnati. Tutti possono vederli qui. I progressi bloccati rimangono privati.",
+  "profileAchievementsEmpty": "Nessun badge ancora",
+  "profileAchievementsCount": "{count} guadagnato",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

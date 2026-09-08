@@ -11536,5 +11536,16 @@
   "nightclubPlayerSupplyFailed": "Nie udało się sprzedać klubowi.",
   "nightclubPlayerSupplyToggleTitle": "Kupuj od graczy",
   "nightclubPlayerSupplyToggleHint": "Gracze w tym kraju mogą sprzedać Ci akcje po cenie hurtowej. Płacisz gotówką; większość trafia do magazynów klubowych.",
-  "nightclubPlayerSupplyToggleFailed": "Nie można zaktualizować zasobów odtwarzacza."
+  "nightclubPlayerSupplyToggleFailed": "Nie można zaktualizować zasobów odtwarzacza.",
+  "profileAchievementsTitle": "Osiągnięcia",
+  "profileAchievementsHint": "Zdobyte odznaki. Każdy może je tutaj zobaczyć. Zablokowany postęp pozostaje prywatny.",
+  "profileAchievementsEmpty": "Nie ma jeszcze odznak",
+  "profileAchievementsCount": "{count} zdobyte",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -3133,6 +3133,51 @@ export async function getPlayerAchievements(playerId: number) {
 }
 
 /**
+ * Public profile showcase: unlocked badges only.
+ * Does not expose locked definitions, live progress, or country/location intel.
+ */
+export async function getPublicUnlockedAchievementShowcase(playerId: number): Promise<
+  Array<{
+    id: string;
+    category: AchievementDefinition['category'];
+    title: string;
+    icon: string;
+    unlockedAt: string;
+  }>
+> {
+  const unlocked = await prisma.prostitutionAchievement.findMany({
+    where: { playerId },
+    orderBy: { unlockedAt: 'desc' },
+    select: { achievementType: true, unlockedAt: true },
+  });
+
+  const seen = new Set<string>();
+  const showcase: Array<{
+    id: string;
+    category: AchievementDefinition['category'];
+    title: string;
+    icon: string;
+    unlockedAt: string;
+  }> = [];
+
+  for (const row of unlocked) {
+    if (seen.has(row.achievementType)) continue;
+    const definition = ACHIEVEMENT_DEFINITIONS[row.achievementType];
+    if (!definition) continue;
+    seen.add(row.achievementType);
+    showcase.push({
+      id: definition.id,
+      category: definition.category,
+      title: definition.title,
+      icon: definition.icon,
+      unlockedAt: row.unlockedAt.toISOString(),
+    });
+  }
+
+  return showcase;
+}
+
+/**
  * Get all achievement definitions
  */
 export function getAllAchievementDefinitions() {

@@ -8074,6 +8074,17 @@
   "eventItemName_event_badge_rival": "Rival badge (bound)",
   "profileEventChipsTitle": "Event chips",
   "profileEventChipsHint": "Won from events. Visible on this profile. Sellable on Black Market → Marketplace.",
+  "profileAchievementsTitle": "Achievements",
+  "profileAchievementsHint": "Earned badges. Everyone can see them here. Locked progress stays private.",
+  "profileAchievementsEmpty": "No badges yet",
+  "profileAchievementsCount": "{count} earned",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "gameScreenUnknownPlayer": "Unknown",
   "gameScreenDash": "—",
   "gameCardActive": "Active",
@@ -10643,7 +10654,7 @@
   "helpTopicAchievementsCategory": "Meta",
   "helpTopicAchievementsTitle": "Achievements",
   "helpTopicAchievementsSummary": "Earn badges by reaching milestones across all game systems. Achievements give rewards, raise your status profile and show your progress per category.",
-  "helpTopicAchievementsHow": "Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAchievement badges are visible on your public profile. They show other players your specializations and experience.\nEvent chips (gold, silver, bronze) also appear on the profile: everyone can see how many you have won. They give no extra power; you can sell them on Black Market → Marketplace.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.",
+  "helpTopicAchievementsHow": "Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAll earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.\nEvent chips (gold, silver, bronze) also appear on the profile: everyone can see how many you have won. They give no extra power; you can sell them on Black Market → Marketplace.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.",
   "helpTopicAchievementsTips": "Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.",
   "helpTopicSupportTicketsCategory": "Support",
   "helpTopicSupportTicketsTitle": "Reports & Tickets",

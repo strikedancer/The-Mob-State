@@ -11536,5 +11536,16 @@
   "nightclubPlayerSupplyFailed": "Impossible de vendre au club.",
   "nightclubPlayerSupplyToggleTitle": "Acheter auprès des joueurs",
   "nightclubPlayerSupplyToggleHint": "Les joueurs de ce pays peuvent vous vendre des actions au prix de gros. Vous payez en espèces ; le lot va dans le stockage du club.",
-  "nightclubPlayerSupplyToggleFailed": "Impossible de mettre à jour l'offre de joueurs."
+  "nightclubPlayerSupplyToggleFailed": "Impossible de mettre à jour l'offre de joueurs.",
+  "profileAchievementsTitle": "Réalisations",
+  "profileAchievementsHint": "Insignes gagnés. Tout le monde peut les voir ici. La progression verrouillée reste privée.",
+  "profileAchievementsEmpty": "Pas encore de badge",
+  "profileAchievementsCount": "{count} gagné",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

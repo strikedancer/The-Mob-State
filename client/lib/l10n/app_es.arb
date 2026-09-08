@@ -11536,5 +11536,16 @@
   "nightclubPlayerSupplyFailed": "No se pudo vender al club.",
   "nightclubPlayerSupplyToggleTitle": "Comprar a las jugadoras",
   "nightclubPlayerSupplyToggleHint": "Los jugadores de este país pueden venderle acciones a precio mayorista. Pagas en efectivo; el lote se destina al almacén del club.",
-  "nightclubPlayerSupplyToggleFailed": "No se pudo actualizar el suministro del reproductor."
+  "nightclubPlayerSupplyToggleFailed": "No se pudo actualizar el suministro del reproductor.",
+  "profileAchievementsTitle": "Logros",
+  "profileAchievementsHint": "Insignias ganadas. Todos pueden verlos aquí. El progreso bloqueado permanece privado.",
+  "profileAchievementsEmpty": "Aún no hay insignias",
+  "profileAchievementsCount": "{count} ganado",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

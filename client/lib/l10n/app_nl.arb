@@ -6020,6 +6020,17 @@
   "eventItemName_event_badge_rival": "Rival badge (gebonden)",
   "profileEventChipsTitle": "Event chips",
   "profileEventChipsHint": "Gewonnen bij events. Iedereen kan ze hier zien. Verkoopbaar op Zwarte Markt → Marktplaats.",
+  "profileAchievementsTitle": "Prestaties",
+  "profileAchievementsHint": "Behaalde badges. Iedereen kan ze hier zien. Voortgang van nog niet behaalde badges blijft privé.",
+  "profileAchievementsEmpty": "Nog geen badges",
+  "profileAchievementsCount": "{count} behaald",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "gameScreenUnknownPlayer": "Onbekend",
   "gameCardActive": "Actief",
   "gameCardScheduled": "Gepland",
@@ -10203,7 +10214,7 @@
   "helpTopicAchievementsCategory": "Meta",
   "helpTopicAchievementsTitle": "Prestaties",
   "helpTopicAchievementsSummary": "Verdien badges door mijlpalen te bereiken in alle spelsystemen. Achievements geven beloningen, verhogen je statusprofiel en tonen je voortgang per categorie.",
-  "helpTopicAchievementsHow": "Achievements zijn gegroepeerd in categorieën: Crimes, Empire, PvP, Economie, Training, Sociaal en Meta.\nElke achievement heeft meerdere tiers (Brons, Zilver, Goud, Platina). Elk tier geeft een hogere beloning en een meer indrukwekkende badge.\nBeloningen per achievement zijn: cash, XP, speciale items, permanente bonussen of unieke titels voor je profiel.\nProgress wordt automatisch bijgehouden. Je hoeft niets te activeren: bereik de drempel en de badge wordt direct uitgedeeld.\nSommige achievements zijn verborgen totdat je ze deels hebt voltooid — ze verschijnen dan met hun echte naam en eisen.\nAchievement-badges zijn zichtbaar op je openbare profiel. Ze tonen andere spelers je specialisaties en ervaring.\nEvent chips (goud, zilver, brons) staan ook op het profiel: iedereen ziet hoeveel je hebt gewonnen. Ze geven geen extra power; je kunt ze verkopen op Zwarte Markt → Marktplaats.\nChain-achievements: sommige badges zijn gekoppeld in een keten. Goud vereist dat Zilver al behaald is. Plan vroeg voor de hogere tiers.",
+  "helpTopicAchievementsHow": "Achievements zijn gegroepeerd in categorieën: Crimes, Empire, PvP, Economie, Training, Sociaal en Meta.\nElke achievement heeft meerdere tiers (Brons, Zilver, Goud, Platina). Elk tier geeft een hogere beloning en een meer indrukwekkende badge.\nBeloningen per achievement zijn: cash, XP, speciale items, permanente bonussen of unieke titels voor je profiel.\nProgress wordt automatisch bijgehouden. Je hoeft niets te activeren: bereik de drempel en de badge wordt direct uitgedeeld.\nSommige achievements zijn verborgen totdat je ze deels hebt voltooid — ze verschijnen dan met hun echte naam en eisen.\nAlle behaalde achievement-badges staan op je openbare profiel, gegroepeerd per categorie. Voortgang van nog niet behaalde badges blijft privé.\nEvent chips (goud, zilver, brons) staan ook op het profiel: iedereen ziet hoeveel je hebt gewonnen. Ze geven geen extra power; je kunt ze verkopen op Zwarte Markt → Marktplaats.\nChain-achievements: sommige badges zijn gekoppeld in een keten. Goud vereist dat Zilver al behaald is. Plan vroeg voor de hogere tiers.",
   "helpTopicAchievementsTips": "Bekijk je bijna-voltooide achievements dagelijks: een kleine extra inspanning kan een badge en cash-beloning opleveren die anders maanden uitgesteld wordt.\nRicht je vroeg op de Economie- en Crime-categorieën: deze hebben de meeste cash-beloningen en zijn het makkelijkst te combineren met je normale gameplay.",
   "helpTopicSupportTicketsCategory": "Support",
   "helpTopicSupportTicketsTitle": "Meldingen & Tickets",

@@ -8,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 import '../models/vehicle.dart';
 import '../screens/crew_screen.dart';
+import '../utils/achievement_display.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/game_event_rewards.dart';
 import '../utils/rank_display.dart';
@@ -681,30 +682,182 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     );
   }
 
+  List<Map<String, dynamic>> _unlockedAchievementRows() {
+    final raw = _playerData?['unlockedAchievements'];
+    if (raw is List) {
+      return raw
+          .whereType<Map>()
+          .map((row) => Map<String, dynamic>.from(row))
+          .where((row) => (row['id']?.toString() ?? '').isNotEmpty)
+          .toList();
+    }
+    final featured = _playerData?['featuredAchievements'];
+    if (featured is List) {
+      return featured
+          .whereType<Map>()
+          .map((row) => Map<String, dynamic>.from(row))
+          .where((row) => (row['id']?.toString() ?? '').isNotEmpty)
+          .toList();
+    }
+    return const <Map<String, dynamic>>[];
+  }
+
+  List<String> _orderedAchievementCategories(Iterable<String> categories) {
+    final unique = categories.toSet();
+    final ordered = <String>[];
+    for (final category in kAchievementCategoryOrder) {
+      if (unique.remove(category)) {
+        ordered.add(category);
+      }
+    }
+    ordered.addAll(unique);
+    return ordered;
+  }
+
   Widget _buildAchievementsCard() {
-    final raw = _playerData?['featuredAchievements'];
-    final items = raw is List
-        ? raw.whereType<Map>().take(9).toList()
-        : const <Map>[];
+    final l10n = AppLocalizations.of(context)!;
+    final items = _unlockedAchievementRows();
+    final byCategory = <String, List<Map<String, dynamic>>>{};
+    for (final item in items) {
+      final category = (item['category']?.toString().isNotEmpty ?? false)
+          ? item['category'].toString()
+          : 'legacy';
+      byCategory.putIfAbsent(category, () => []).add(item);
+    }
+    final categories = _orderedAchievementCategories(byCategory.keys);
+
     return _sectionCard(
-      title: _tr('Prestaties', 'Achievements'),
+      title: l10n.profileAchievementsTitle,
+      trailing: items.isEmpty
+          ? null
+          : Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.amber.withOpacity(0.18),
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: Colors.amber.withOpacity(0.35)),
+              ),
+              child: Text(
+                l10n.profileAchievementsCount(items.length.toString()),
+                style: const TextStyle(
+                  color: Color(0xFFFFD54F),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                ),
+              ),
+            ),
       child: items.isEmpty
           ? Text(
-              _tr('Nog geen badges', 'No badges yet'),
+              l10n.profileAchievementsEmpty,
               style: const TextStyle(color: Colors.white70),
             )
-          : Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: items
-                  .map(
-                    (item) => Chip(
-                      avatar: const Icon(Icons.military_tech, size: 16),
-                      label: Text((item['title'] ?? item['id'] ?? '').toString()),
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.profileAchievementsHint,
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                ),
+                const SizedBox(height: 12),
+                for (var i = 0; i < categories.length; i++) ...[
+                  if (i > 0) const SizedBox(height: 12),
+                  Text(
+                    localizedAchievementCategory(l10n, categories[i]),
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
                     ),
-                  )
-                  .toList(),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      for (final item in byCategory[categories[i]]!)
+                        _profileAchievementBadge(item),
+                    ],
+                  ),
+                ],
+              ],
             ),
+    );
+  }
+
+  Widget _profileAchievementBadge(Map<String, dynamic> item) {
+    final l10n = AppLocalizations.of(context)!;
+    final id = item['id']?.toString() ?? '';
+    final category = item['category']?.toString() ?? 'legacy';
+    final title = localizedAchievementTitle(
+      l10n,
+      id,
+      item['title']?.toString(),
+    );
+    return Tooltip(
+      message: title,
+      child: InkWell(
+        onTap: () => _showProfileAchievement(item),
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          width: 64,
+          height: 70,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: Colors.black26,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.amber.withOpacity(0.28)),
+          ),
+          alignment: Alignment.center,
+          child: achievementBadgeImage(
+            id: id,
+            category: category,
+            fallbackIcon: item['icon']?.toString(),
+            width: 52,
+            height: 58,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showProfileAchievement(Map<String, dynamic> item) async {
+    final l10n = AppLocalizations.of(context)!;
+    final id = item['id']?.toString() ?? '';
+    final category = item['category']?.toString() ?? 'legacy';
+    final title = localizedAchievementTitle(
+      l10n,
+      id,
+      item['title']?.toString(),
+    );
+    await showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1A1C20),
+        title: Text(title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            achievementBadgeImage(
+              id: id,
+              category: category,
+              fallbackIcon: item['icon']?.toString(),
+              width: 96,
+              height: 108,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              localizedAchievementCategory(l10n, category),
+              style: const TextStyle(color: Colors.white70),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l10n.close),
+          ),
+        ],
+      ),
     );
   }
 

@@ -11536,5 +11536,16 @@
   "nightclubPlayerSupplyFailed": "Não foi possível vender para o clube.",
   "nightclubPlayerSupplyToggleTitle": "Compre de jogadores",
   "nightclubPlayerSupplyToggleHint": "Os jogadores deste país podem vender ações a preço de atacado. Você paga em dinheiro; o lote vai para o armazenamento do clube.",
-  "nightclubPlayerSupplyToggleFailed": "Não foi possível atualizar o fornecimento do jogador."
+  "nightclubPlayerSupplyToggleFailed": "Não foi possível atualizar o fornecimento do jogador.",
+  "profileAchievementsTitle": "Conquistas",
+  "profileAchievementsHint": "Distintivos ganhos. Todos podem vê-los aqui. O progresso bloqueado permanece privado.",
+  "profileAchievementsEmpty": "Ainda não há emblemas",
+  "profileAchievementsCount": "{count} ganho",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

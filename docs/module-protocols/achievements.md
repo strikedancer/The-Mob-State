@@ -22,7 +22,7 @@ Badge progression, category tracking, rewards and long-term account goals.
 - Crime/job/school/miljonair-payouts zijn een bonus, geen tweede inkomen. Early milestones (1–50 crimes/jobs, school level 1–5, eerste lawyer/doctor-shift) blijven in de lage duizenden, niet tonnen. Al uitbetaalde achievements worden niet herberekend.
 
 ## Must Preserve
-- Uitgelichte unlocked achievements zijn zichtbaar op het publieke profiel (niet alleen self-only).
+- Alle unlocked achievements zijn zichtbaar op het publieke profiel (badge-PNG’s per categorie). Locked definitions, currentValue en progress blijven self-only via `GET /achievements`. `featuredAchievements` blijft de laatste 9 voor oudere clients.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.

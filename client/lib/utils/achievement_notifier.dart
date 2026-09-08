@@ -1,43 +1,14 @@
 import 'package:flutter/material.dart';
 import '../models/achievement.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/achievement_display.dart';
 import '../utils/top_right_notification.dart';
 
 /// Shows achievement unlock notifications as overlay banners
 class AchievementNotifier {
-  static String _badgeFolderForCategory(String category) {
-    switch (category) {
-      case 'prostitution':
-        return 'prostitution';
-      case 'crimes':
-        return 'crimes';
-      case 'jobs':
-        return 'jobs';
-      case 'school':
-        return 'school';
-      case 'vehicles':
-        return 'vehicles';
-      case 'travel':
-        return 'travel';
-      case 'drugs':
-        return 'drugs';
-      case 'trade':
-        return 'trade';
-      case 'social':
-        return 'social';
-      case 'mastery':
-        return 'mastery';
-      case 'power':
-        return 'power';
-      default:
-        return 'legacy';
-    }
-  }
-
   static Widget _buildBadgeVisual(Achievement achievement, {double size = 48}) {
-    final folder = _badgeFolderForCategory(achievement.category);
-    final path = 'assets/images/achievements/badges/$folder/${achievement.id}.png';
-    final legacyPath = 'assets/images/achievements/badges/${achievement.id}.png';
+    final path = achievementBadgeAssetPath(achievement.category, achievement.id);
+    final legacyPath = achievementLegacyBadgeAssetPath(achievement.id);
 
     return Image.asset(
       path,

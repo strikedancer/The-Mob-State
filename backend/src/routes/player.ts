@@ -12,6 +12,7 @@ import { vehicleService } from '../services/vehicleService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
 import {
   checkAndUnlockAchievements,
+  getPublicUnlockedAchievementShowcase,
   serializeAchievementForClient,
 } from '../services/achievementService';
 import { existsCached, getCached } from '../services/redisClient';
@@ -338,6 +339,13 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     const rankInfo = getRankTitle(player.rank);
 
     let featuredAchievements: Array<{ id: string; title: string; icon?: string }> = [];
+    let unlockedAchievements: Array<{
+      id: string;
+      category: string;
+      title: string;
+      icon: string;
+      unlockedAt: string;
+    }> = [];
     let eventChips: Array<{
       itemKey: string;
       quantity: number;
@@ -358,21 +366,17 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     }
 
     try {
-      const { ACHIEVEMENT_DEFINITIONS } = await import('../services/achievementService');
-      const unlocked = await prisma.prostitutionAchievement.findMany({
-        where: { playerId },
-        orderBy: { unlockedAt: 'desc' },
-        take: 9,
-        select: { achievementType: true },
-      });
-      featuredAchievements = unlocked
-        .map((row) => {
-          const def = ACHIEVEMENT_DEFINITIONS[row.achievementType];
-          if (!def) return null;
-          return { id: def.id, title: def.title, icon: def.icon };
-        })
-        .filter((row): row is { id: string; title: string; icon?: string } => Boolean(row));
+      unlockedAchievements = await getPublicUnlockedAchievementShowcase(playerId);
+      featuredAchievements = unlockedAchievements.slice(0, 9).map((row) => ({
+        id: row.id,
+        title: row.title,
+        icon: row.icon,
+      }));
+    } catch (achievementError) {
+      console.error('⚠️ Profile achievements fallback:', achievementError);
+    }
 
+    try {
       const residential = await prisma.property.findFirst({
         where: { playerId, propertyType: { in: ['house', 'apartment'] } },
         orderBy: { upgradeLevel: 'desc' },
@@ -433,6 +437,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       crewRole,
       crewId,
       featuredAchievements,
+      unlockedAchievements,
       eventChips,
       estateLot,
     });

@@ -13364,6 +13364,21 @@ class AppLocalizationsFr extends AppLocalizations {
       'Gagnés lors des events. Visibles sur ce profil. Vendables sur Marché noir → Place de marché.';
 
   @override
+  String get profileAchievementsTitle => 'Réalisations';
+
+  @override
+  String get profileAchievementsHint =>
+      'Insignes gagnés. Tout le monde peut les voir ici. La progression verrouillée reste privée.';
+
+  @override
+  String get profileAchievementsEmpty => 'Pas encore de badge';
+
+  @override
+  String profileAchievementsCount(String count) {
+    return '$count gagné';
+  }
+
+  @override
   String get gameScreenUnknownPlayer => 'Inconnue';
 
   @override

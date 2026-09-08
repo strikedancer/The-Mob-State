@@ -1513,7 +1513,7 @@
       "Beloningen per achievement zijn: cash, XP, speciale items, permanente bonussen of unieke titels voor je profiel.",
       "Progress wordt automatisch bijgehouden. Je hoeft niets te activeren: bereik de drempel en de badge wordt direct uitgedeeld.",
       "Sommige achievements zijn verborgen totdat je ze deels hebt voltooid — ze verschijnen dan met hun echte naam en eisen.",
-      "Achievement-badges zijn zichtbaar op je openbare profiel. Ze tonen andere spelers je specialisaties en ervaring.",
+      "Alle behaalde achievement-badges staan op je openbare profiel, gegroepeerd per categorie. Voortgang van nog niet behaalde badges blijft privé.",
       "Chain-achievements: sommige badges zijn gekoppeld in een keten. Goud vereist dat Zilver al behaald is. Plan vroeg voor de hogere tiers."
     ],
     "howEn": [
@@ -1522,7 +1522,7 @@
       "Rewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.",
       "Progress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.",
       "Some achievements are hidden until you partially complete them — they then appear with their real name and requirements.",
-      "Achievement badges are visible on your public profile. They show other players your specializations and experience.",
+      "All earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.",
       "Chain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers."
     ],
     "tipsNl": [

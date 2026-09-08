@@ -11536,5 +11536,16 @@
   "nightclubPlayerSupplyFailed": "Konnte nicht an den Verein verkauft werden.",
   "nightclubPlayerSupplyToggleTitle": "Kaufen Sie von Spielern",
   "nightclubPlayerSupplyToggleHint": "Spieler in diesem Land können Ihnen Aktien zum Großhandelspreis verkaufen. Sie zahlen bar; das Los geht ins Vereinslager.",
-  "nightclubPlayerSupplyToggleFailed": "Der Spielervorrat konnte nicht aktualisiert werden."
+  "nightclubPlayerSupplyToggleFailed": "Der Spielervorrat konnte nicht aktualisiert werden.",
+  "profileAchievementsTitle": "Erfolge",
+  "profileAchievementsHint": "Verdiente Abzeichen. Jeder kann sie hier sehen. Gesperrter Fortschritt bleibt privat.",
+  "profileAchievementsEmpty": "Noch keine Abzeichen",
+  "profileAchievementsCount": "{count} verdient",
+  "@profileAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

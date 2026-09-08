@@ -13294,6 +13294,21 @@ class AppLocalizationsPl extends AppLocalizations {
       'Zdobyte na eventach. Widoczne na tym profilu. Sprzedawalne na Czarnym rynku → Targowisko.';
 
   @override
+  String get profileAchievementsTitle => 'Osiągnięcia';
+
+  @override
+  String get profileAchievementsHint =>
+      'Zdobyte odznaki. Każdy może je tutaj zobaczyć. Zablokowany postęp pozostaje prywatny.';
+
+  @override
+  String get profileAchievementsEmpty => 'Nie ma jeszcze odznak';
+
+  @override
+  String profileAchievementsCount(String count) {
+    return '$count zdobyte';
+  }
+
+  @override
   String get gameScreenUnknownPlayer => 'Nieznany';
 
   @override

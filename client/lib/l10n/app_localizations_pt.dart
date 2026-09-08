@@ -13303,6 +13303,21 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ganhas em eventos. Visíveis neste perfil. Vendáveis no Mercado negro → Praça.';
 
   @override
+  String get profileAchievementsTitle => 'Conquistas';
+
+  @override
+  String get profileAchievementsHint =>
+      'Distintivos ganhos. Todos podem vê-los aqui. O progresso bloqueado permanece privado.';
+
+  @override
+  String get profileAchievementsEmpty => 'Ainda não há emblemas';
+
+  @override
+  String profileAchievementsCount(String count) {
+    return '$count ganho';
+  }
+
+  @override
   String get gameScreenUnknownPlayer => 'Desconhecida';
 
   @override
