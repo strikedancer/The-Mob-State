@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/prostitute.dart';
 import '../services/prostitution_service.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import '../widgets/mobile_load_error.dart';
 
 class ProstitutionLeaderboardScreen extends StatefulWidget {
@@ -41,12 +41,7 @@ class _ProstitutionLeaderboardScreenState
   }
 
   void _openPlayerProfile(int playerId, String username) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) =>
-            PlayerProfileScreen(playerId: playerId, username: username),
-      ),
-    );
+    PlayerProfileNavigation.open(context, playerId, username);
   }
 
   Future<void> _loadAllData() async {

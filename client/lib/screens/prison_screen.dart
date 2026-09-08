@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 
 class PrisonScreen extends StatefulWidget {
   const PrisonScreen({super.key, this.embedded = false});
@@ -23,12 +23,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
   OverlayEntry? _notificationEntry;
 
   void _openPlayerProfile(int playerId, String username) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) =>
-            PlayerProfileScreen(playerId: playerId, username: username),
-      ),
-    );
+    PlayerProfileNavigation.open(context, playerId, username);
   }
 
   Timer? _notificationTimer;

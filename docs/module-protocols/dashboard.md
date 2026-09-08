@@ -48,7 +48,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Responsive usability without pushing critical actions off-screen.
 - Op mobiel (onder de tablet-breakpoint) blijft een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew altijd in beeld. Op Misdaden/Stelen/Werken toont een gouden stip dat de cooldown klaar is. Remaining komt uit `GET /player/action-cooldowns` bij load/navigatie/na actie en tikt daarna lokaal; geen 10/30s-poll. Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu / de zijbalk.
 - **Eten & Drinken is verwijderd.** Geen menu-item, geen `/food`-API, geen honger/dorst-tick. Nightclub bar & kitchen blijft (clubvoorraad, niet spelerhonger).
-- De hoofdbalk-avatar opent een gebruikersmenu met **Mijn profiel**, berichten, hulp, instellingen en uitloggen. Mijn profiel toont het publieke profiel van de ingelogde speler.
+- De hoofdbalk-avatar opent een gebruikersmenu met **Mijn profiel**, berichten, hulp, instellingen en uitloggen. Mijn profiel toont het publieke profiel van de ingelogde speler **in de dashboard-content** (niet als fullscreen-route).
 - Rangtitels op dashboard en publiek profiel gebruiken dezelfde ladder als `backend/src/utils/rankSystem.ts` (`client/lib/utils/rank_display.dart`). Rang 21+ is niet automatisch Peetvader; Peetvader is rang 60–74, Soldaat is rang 25–29.
 - In web/dashboard-shell context moet klik op dezelfde sectie een expliciete remount of refresh kunnen triggeren wanneer dat scherm anders vastloopt op stale state.
 - Info- en statistiekblokken in dashboard/admin views moeten ook bij subtiele backgrounds en in dark mode expliciete contrasten voor tekst, border en hover/focus-state behouden.
@@ -73,7 +73,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verifieer dat Vehicle Ops-data per voertuigtype (auto/motor/boot) op dashboard blijft renderen, ook als één type tijdelijk geen intelligence payload teruggeeft.
 - Verify no text overflows or clipped buttons appear.
 - Verifieer op smalle breedte de sticky footer (Misdaden, Stelen, Werken, Bank, Crew), klaar-stippen na cooldown, en dat zoeken in het hamburger-menu groepen filtert.
-- Verifieer dat de avatar-knop **Mijn profiel** opent en het eigen publieke profiel toont.
+- Verifieer dat de avatar-knop **Mijn profiel** het eigen publieke profiel in de content-pane toont (sidebar blijft zichtbaar).
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer dat nieuwe accounts een Start-kaart met één CTA zien (crime → daily/job → crew) en dat rank 3+ of afgeronde onboarding die kaart niet meer ziet.
 - Verifieer dat dagdoelen **één keer** in de gestylede paneelkaart staan (niet dubbel bovenaan), dat elke regel cash + XP toont, dat Claim een toast met bedragen geeft, en dat autodiefstal niet featured is onder rank 5.

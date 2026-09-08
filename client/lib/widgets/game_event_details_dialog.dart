@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
-import '../screens/player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import '../services/auth_service.dart';
 import '../screens/premium_screen.dart';
 import '../utils/avatar_helper.dart';
@@ -239,14 +239,7 @@ class _GameEventDetailsDialogState extends State<_GameEventDetailsDialog> {
   }
 
   void _openPlayerProfile(int playerId, String username) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => PlayerProfileScreen(
-          playerId: playerId,
-          username: username,
-        ),
-      ),
-    );
+    PlayerProfileNavigation.open(context, playerId, username);
   }
 
   Widget _leaderboardRow(

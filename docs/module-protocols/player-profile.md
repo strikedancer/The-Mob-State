@@ -14,7 +14,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 - Elke screen die een andere speler toont met bruikbare `playerId` moet navigatie naar het profiel bieden.
 - Profielnavigatie moet klikbaar en zichtbaar gesignaleerd worden; verstop dit niet achter impliciete of hover-only affordances.
 - Publieke profieldata mag geen live gameplay-intel lekken zoals huidig land of andere locatiecontext die hitlist/onderzoek beïnvloedt.
-- In context-screens zoals hitlist, chat of lijsten mag profielweergave de hoofdflow niet onnodig breken; embedded of contextuele navigatie heeft de voorkeur waar dat UX-technisch past.
+- In context-screens zoals hitlist, chat of lijsten mag profielweergave de hoofdflow niet onnodig breken. Op web opent het profiel **in de dashboard-content** (sidebar + header blijven staan), niet als fullscreen-route. Gebruik `PlayerProfileNavigation.open`.
 
 ## Cross-Module Dependencies
 - Dashboard -> Player Profile (own profile via header user menu)
@@ -51,7 +51,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 4. Controleer dat null/ontbrekende `playerId` niet klikbaar wordt gemaakt.
 5. Verifieer dat publiek profiel geen live locatie-informatie toont.
 6. Controleer NL/EN copy voor profielknoppen, likes en foutmeldingen.
-7. Verifieer dat embedded/contextuele flows de hoofdmodule niet onnodig kapot navigeren.
+7. Verifieer dat een profiel op web in de content-pane opent (sidebar zichtbaar) en dat Terug de vorige module terugzet. Geen fullscreen AppBar over de hele shell.
 8. Open het profiel van een account dat lang niet inlogde: Online mag niet “Nu online” zijn; toon last-seen in dagen. Een tweede keer openen mag dat niet in “Nu online” veranderen.
 9. Open eigen en andermans profiel: Event chips-kaart toont goud/zilver/brons (0 als leeg). Geen live land.
 10. Open eigen en andermans profiel: Prestaties-kaart toont alleen behaalde badges (PNG + titel bij tik). Leeg = “Nog geen badges”. Locked/hidden progress niet zichtbaar.
@@ -60,14 +60,10 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 ## Implementation Pattern
 
 ```dart
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 
 void _openPlayerProfile(int playerId, String username) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => PlayerProfileScreen(playerId: playerId, username: username),
-    ),
-  );
+  PlayerProfileNavigation.open(context, playerId, username);
 }
 
 GestureDetector(

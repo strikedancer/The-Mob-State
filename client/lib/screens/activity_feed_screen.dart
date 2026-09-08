@@ -5,7 +5,7 @@ import '../models/player_activity.dart';
 import '../services/auth_service.dart';
 import '../providers/event_provider.dart';
 import '../utils/avatar_helper.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
 
@@ -116,12 +116,7 @@ class _ActivityFeedScreenState extends State<ActivityFeedScreen> {
   }
 
   void _openPlayerProfile(ActivityPlayer player) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => PlayerProfileScreen(playerId: player.id, username: player.username),
-      ),
-    );
+    PlayerProfileNavigation.open(context, player.id, player.username);
   }
 
   @override

@@ -5,7 +5,7 @@ import '../services/api_client.dart';
 import '../widgets/hit_card.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import '../utils/formatters.dart';
 import '../widgets/mobile_load_error.dart';
 
@@ -485,21 +485,11 @@ class _HitlistScreenState extends State<HitlistScreen> {
   }
 
   void _openPlayerProfile(int playerId, String? username) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => FractionallySizedBox(
-        heightFactor: 0.94,
-        child: PlayerProfileScreen(
-          playerId: playerId,
-          username: (username != null && username.isNotEmpty)
-              ? username
-              : AppLocalizations.of(context)!.unknown,
-          embedded: true,
-        ),
-      ),
+    final l10n = AppLocalizations.of(context)!;
+    PlayerProfileNavigation.open(
+      context,
+      playerId,
+      (username != null && username.isNotEmpty) ? username : l10n.unknown,
     );
   }
 

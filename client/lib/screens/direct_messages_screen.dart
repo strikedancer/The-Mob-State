@@ -7,7 +7,7 @@ import '../providers/event_provider.dart';
 import '../models/direct_message.dart';
 import '../widgets/conversation_card.dart';
 import 'chat_screen.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 
@@ -182,14 +182,10 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
   void _openPlayerProfile(Conversation conversation) {
     if (conversation.friendId <= 0) return;
 
-    Navigator.push(
+    PlayerProfileNavigation.open(
       context,
-      MaterialPageRoute(
-        builder: (_) => PlayerProfileScreen(
-          playerId: conversation.friendId,
-          username: conversation.username,
-        ),
-      ),
+      conversation.friendId,
+      conversation.username,
     );
   }
 

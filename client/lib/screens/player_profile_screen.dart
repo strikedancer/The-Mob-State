@@ -20,12 +20,14 @@ class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
   final String username;
   final bool embedded;
+  final VoidCallback? onClose;
 
   const PlayerProfileScreen({
     super.key,
     required this.playerId,
     required this.username,
     this.embedded = false,
+    this.onClose,
   });
 
   @override
@@ -350,14 +352,42 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     final content = _buildContent();
 
     if (widget.embedded) {
+      final l10n = AppLocalizations.of(context);
       return Material(
         color: Colors.transparent,
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            child: content,
-          ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+              child: Row(
+                children: [
+                  if (widget.onClose != null)
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      tooltip: l10n?.back ?? _tr('Terug', 'Back'),
+                      onPressed: widget.onClose,
+                    ),
+                  Expanded(
+                    child: Text(
+                      widget.username,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: _loadPlayerProfile,
+                    tooltip: l10n?.refresh ?? _tr('Ververs', 'Refresh'),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: content),
+          ],
         ),
       );
     }

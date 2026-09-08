@@ -25,6 +25,7 @@ import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/localized_api_message.dart';
+import '../utils/player_profile_navigation.dart';
 import '../utils/rank_display.dart';
 import '../services/event_renderer.dart';
 import 'crime_screen.dart';
@@ -108,6 +109,7 @@ enum _WebSection {
   prostitution,
   redLightDistricts,
   achievements,
+  playerProfile,
 }
 
 enum _NavGroup { actions, world, social, economy, empire, assets, more }
@@ -190,14 +192,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Timer? _navCooldownTick;
   final TextEditingController _menuSearchController = TextEditingController();
 
+  int? _profilePlayerId;
+  String _profileUsername = '';
+  _WebSection? _profileReturnSection;
+
+  void _openEmbeddedProfile(int playerId, String username) {
+    setState(() {
+      _profileReturnSection = _selectedWebSection == _WebSection.playerProfile
+          ? _profileReturnSection
+          : _selectedWebSection;
+      _profilePlayerId = playerId;
+      _profileUsername = username;
+      if (_selectedWebSection == _WebSection.playerProfile) {
+        _webSectionRefreshSeed++;
+      } else {
+        _selectedWebSection = _WebSection.playerProfile;
+      }
+    });
+    _syncOnNavigate();
+  }
+
   void _openPlayerProfile(Player player) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) =>
-            PlayerProfileScreen(playerId: player.id, username: player.username),
-      ),
-    );
+    PlayerProfileNavigation.open(context, player.id, player.username);
+  }
+
+  void _closeEmbeddedProfile() {
+    _selectWebSection(_profileReturnSection ?? _WebSection.dashboard);
   }
 
   StreamSubscription? _eventSubscription;
@@ -322,6 +342,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.settings:
       case _WebSection.garage:
       case _WebSection.marina:
+      case _WebSection.playerProfile:
         return null;
     }
   }
@@ -329,6 +350,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    PlayerProfileNavigation.bindShell(_openEmbeddedProfile);
     _selectedWebSection = _webSectionFromQueryParam(
       Uri.base.queryParameters['section'],
     );
@@ -407,6 +429,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void dispose() {
+    PlayerProfileNavigation.unbindShell();
     _eventSubscription?.cancel();
     _navCooldownTick?.cancel();
     _navCooldowns.dispose();
@@ -1882,6 +1905,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const ProstitutionScreen(initialTabIndex: 1);
       case _WebSection.achievements:
         return const AchievementsScreen();
+      case _WebSection.playerProfile:
+        final playerId = _profilePlayerId;
+        if (playerId == null) {
+          return const SizedBox.shrink();
+        }
+        return PlayerProfileScreen(
+          key: ValueKey('profile-$playerId-$_webSectionRefreshSeed'),
+          playerId: playerId,
+          username: _profileUsername,
+          embedded: true,
+          onClose: _closeEmbeddedProfile,
+        );
     }
   }
 

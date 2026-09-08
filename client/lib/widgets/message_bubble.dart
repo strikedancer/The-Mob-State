@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/direct_message.dart';
 import '../models/crew_message.dart';
 import '../utils/avatar_helper.dart';
-import '../screens/player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 
 /// WhatsApp-style message bubble widget
 class MessageBubble extends StatelessWidget {
@@ -87,15 +87,7 @@ class MessageBubble extends StatelessWidget {
 
     void openSenderProfile() {
       if (isMe || senderId == null || senderName == null) return;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => PlayerProfileScreen(
-            playerId: senderId!,
-            username: senderName!,
-          ),
-        ),
-      );
+      PlayerProfileNavigation.open(context, senderId!, senderName!);
     }
 
     return GestureDetector(

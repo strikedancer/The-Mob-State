@@ -9,7 +9,7 @@ import '../providers/event_provider.dart';
 import '../utils/avatar_helper.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/country_helper.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
@@ -84,12 +84,7 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 
   void _openPlayerProfile(int playerId, String username) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => PlayerProfileScreen(playerId: playerId, username: username),
-      ),
-    );
+    PlayerProfileNavigation.open(context, playerId, username);
   }
 
   Future<void> _loadUnreadCount() async {

@@ -4,7 +4,7 @@ import '../models/achievement.dart';
 import '../services/prostitution_service.dart';
 import '../utils/achievement_notifier.dart';
 import 'red_light_district_detail_screen.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
@@ -91,12 +91,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
   }
 
   void _openPlayerProfile(int playerId, String username) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) =>
-            PlayerProfileScreen(playerId: playerId, username: username),
-      ),
-    );
+    PlayerProfileNavigation.open(context, playerId, username);
   }
 
   Future<void> _purchaseDistrict(RedLightDistrict district) async {

@@ -8,7 +8,7 @@ import '../providers/event_provider.dart';
 import '../models/direct_message.dart';
 import '../widgets/message_bubble.dart';
 import '../utils/avatar_helper.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/mobile_load_error.dart';
@@ -336,15 +336,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _openFriendProfile() {
     if (_isSystemThread) return;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => PlayerProfileScreen(
-          playerId: widget.friendId,
-          username: widget.friendName,
-        ),
-      ),
-    );
+    PlayerProfileNavigation.open(context, widget.friendId, widget.friendName);
   }
 
   _MurderCaseMeta? _extractMurderCaseMeta(String rawMessage) {

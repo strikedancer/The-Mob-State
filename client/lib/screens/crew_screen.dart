@@ -8,7 +8,7 @@ import '../services/auth_service.dart';
 import '../models/crew.dart';
 import '../models/crew_join_request.dart';
 import '../widgets/crew_chat_widget.dart';
-import 'player_profile_screen.dart';
+import '../utils/player_profile_navigation.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
@@ -94,12 +94,7 @@ class _CrewScreenState extends State<CrewScreen>
   AppLocalizations get l10n => AppLocalizations.of(context)!;
 
   void _openPlayerProfile(int playerId, String username) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) =>
-            PlayerProfileScreen(playerId: playerId, username: username),
-      ),
-    );
+    PlayerProfileNavigation.open(context, playerId, username);
   }
 
   String _crewMapLookup(AppLocalizations l10n, String key, [Map<String, String>? params]) {
