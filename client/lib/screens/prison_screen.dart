@@ -7,6 +7,7 @@ import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../utils/player_profile_navigation.dart';
+import '../widgets/game_page_info.dart';
 
 class PrisonScreen extends StatefulWidget {
   const PrisonScreen({super.key, this.embedded = false});
@@ -643,6 +644,13 @@ class _PrisonScreenState extends State<PrisonScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'prison',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final body = _isLoading
         ? const Center(child: CircularProgressIndicator())

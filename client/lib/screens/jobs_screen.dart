@@ -21,6 +21,7 @@ import '../widgets/jail_screen.dart';
 import '../widgets/job_card.dart';
 import '../utils/web_asset_helper.dart';
 import 'school_screen.dart';
+import '../widgets/game_page_info.dart';
 
 enum _JobListFilter { all, available }
 
@@ -967,6 +968,13 @@ class _JobsScreenState extends State<JobsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'jobs',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final player = authProvider.currentPlayer;

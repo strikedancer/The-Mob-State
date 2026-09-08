@@ -24,6 +24,7 @@ import '../services/inventory_service.dart';
 import '../services/drug_service.dart';
 import '../services/crypto_service.dart';
 import '../services/api_client.dart';
+import '../widgets/game_page_info.dart';
 class BlackMarketScreen extends StatefulWidget {
   static const int tabTrade = 0;
   static const int tabMarketplace = 1;
@@ -361,6 +362,13 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'black-market',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final vehicleProvider = Provider.of<VehicleProvider>(context);
     final l10n = AppLocalizations.of(context)!;
     final showMarketFilter =

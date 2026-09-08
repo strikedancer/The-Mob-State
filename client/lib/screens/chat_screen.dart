@@ -12,6 +12,7 @@ import '../utils/player_profile_navigation.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 
 class ChatScreen extends StatefulWidget {
   final int friendId;
@@ -493,6 +494,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'messages',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFF121212),

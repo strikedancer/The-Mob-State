@@ -4,6 +4,7 @@ import '../models/prostitute.dart';
 import '../services/prostitution_service.dart';
 import '../utils/player_profile_navigation.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 
 class ProstitutionLeaderboardScreen extends StatefulWidget {
   const ProstitutionLeaderboardScreen({super.key});
@@ -99,6 +100,13 @@ class _ProstitutionLeaderboardScreenState
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'prostitution',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Column(

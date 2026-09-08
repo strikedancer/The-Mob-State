@@ -10,6 +10,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/crime_localization.dart';
 import '../utils/court_localization.dart';
+import '../widgets/game_page_info.dart';
 
 class CourtScreen extends StatefulWidget {
   const CourtScreen({
@@ -1192,6 +1193,13 @@ class _CourtScreenState extends State<CourtScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'court',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(

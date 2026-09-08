@@ -17,6 +17,7 @@ import '../widgets/prostitution/prostitution_social_tab.dart';
 import 'red_light_districts_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
+import '../widgets/game_page_info.dart';
 
 class ProstitutionScreen extends StatefulWidget {
   final int initialTabIndex;
@@ -880,6 +881,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'prostitution',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(

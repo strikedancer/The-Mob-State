@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import 'inventory_paper_doll_tab.dart';
 import 'loadouts_tab.dart';
+import '../widgets/game_page_info.dart';
 
 class InventoryScreen extends StatefulWidget {
   final int? initialPropertyId;
@@ -38,6 +39,13 @@ class _InventoryScreenState extends State<InventoryScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'inventory',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final tabs = TabBar(

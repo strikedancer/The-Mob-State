@@ -15,6 +15,7 @@ import '../utils/property_display.dart';
 import '../utils/rank_display.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/game_page_info.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
@@ -349,6 +350,13 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'player-profile',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final content = _buildContent();
 
     if (widget.embedded) {

@@ -8,6 +8,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/player_profile_navigation.dart';
 import '../utils/formatters.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 
 String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
   final map = data is Map ? data : null;
@@ -204,6 +205,13 @@ class _HitlistScreenState extends State<HitlistScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'hitlist',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(

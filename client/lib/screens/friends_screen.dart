@@ -14,6 +14,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
@@ -510,6 +511,13 @@ class _FriendsScreenState extends State<FriendsScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'friends',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(

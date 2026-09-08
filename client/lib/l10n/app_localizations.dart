@@ -5689,6 +5689,30 @@ abstract class AppLocalizations {
   /// **'The shop paid extra — for now.'**
   String get donSqueezeHeld;
 
+  /// No description provided for @pageInfoTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'How this page works'**
+  String get pageInfoTooltip;
+
+  /// No description provided for @pageInfoOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get pageInfoOverview;
+
+  /// No description provided for @pageInfoHow.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get pageInfoHow;
+
+  /// No description provided for @pageInfoTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get pageInfoTips;
+
   /// No description provided for @donInfoTooltip.
   ///
   /// In en, this message translates to:

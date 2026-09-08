@@ -11835,5 +11835,9 @@
       }
     }
   },
-  "evStreamRaceRefunded": "Corridas da Meia-Noite canceladas. Sua aposta e apostas foram reembolsadas."
+  "evStreamRaceRefunded": "Corridas da Meia-Noite canceladas. Sua aposta e apostas foram reembolsadas.",
+  "pageInfoTooltip": "Como esta página funciona",
+  "pageInfoOverview": "Visão geral",
+  "pageInfoHow": "Como funciona",
+  "pageInfoTips": "Dicas"
 }

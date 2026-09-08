@@ -12,6 +12,7 @@ import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
 import 'black_market_screen.dart';
 import 'school_screen.dart';
+import '../widgets/game_page_info.dart';
 
 class AmmoFactoryScreen extends StatefulWidget {
   const AmmoFactoryScreen({
@@ -1002,6 +1003,13 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'ammo-factory',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) {
       return const Center(child: CircularProgressIndicator());

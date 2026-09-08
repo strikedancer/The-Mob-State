@@ -8,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/game_page_info.dart';
 
 class PremiumScreen extends StatefulWidget {
   const PremiumScreen({
@@ -1684,6 +1685,13 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'premium',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     if (widget.embedded) {
       return _buildBody();
     }

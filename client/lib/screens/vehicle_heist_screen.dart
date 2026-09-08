@@ -23,6 +23,7 @@ import '../widgets/vehicle_catalog_dialog.dart';
 import 'events_screen.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
+import '../widgets/game_page_info.dart';
 
 class VehicleHeistScreen extends StatefulWidget {
   const VehicleHeistScreen({
@@ -2040,6 +2041,13 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'vehicle-heist',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     if (_showStealResult) {

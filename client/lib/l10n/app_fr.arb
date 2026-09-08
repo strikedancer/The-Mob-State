@@ -11835,5 +11835,9 @@
       }
     }
   },
-  "evStreamRaceRefunded": "Courses de minuit annulées. Votre mise et vos paris ont été remboursés."
+  "evStreamRaceRefunded": "Courses de minuit annulées. Votre mise et vos paris ont été remboursés.",
+  "pageInfoTooltip": "Comment fonctionne cette page",
+  "pageInfoOverview": "Aperçu",
+  "pageInfoHow": "Comment ça marche",
+  "pageInfoTips": "Conseils"
 }

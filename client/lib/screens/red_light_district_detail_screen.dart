@@ -6,6 +6,7 @@ import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
 import '../widgets/prostitution/prostitution_section_header.dart';
+import '../widgets/game_page_info.dart';
 
 class RedLightDistrictDetailScreen extends StatefulWidget {
   final int districtId;
@@ -312,6 +313,13 @@ class _RedLightDistrictDetailScreenState
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'red-light-districts',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     if (_isLoading) {

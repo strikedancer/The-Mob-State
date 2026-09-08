@@ -12,6 +12,7 @@ import './showroom_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class PropertyScreen extends StatefulWidget {
   final ValueChanged<int>? onOpenInventory;
@@ -683,6 +684,13 @@ class PropertyScreenState extends State<PropertyScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'properties',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(

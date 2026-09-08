@@ -12,6 +12,7 @@ import '../widgets/drug_wholesale_export_dialog.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/nightclub_player_supply_dialog.dart';
 import '../services/nightclub_service.dart';
+import '../widgets/game_page_info.dart';
 
 class DrugInventoryScreen extends StatefulWidget {
   const DrugInventoryScreen({super.key});
@@ -465,6 +466,13 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'drugs',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
 

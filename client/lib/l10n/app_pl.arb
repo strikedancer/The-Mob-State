@@ -11835,5 +11835,9 @@
       }
     }
   },
-  "evStreamRaceRefunded": "Wyścigi o północy odwołane. Twoja stawka i zakłady zostały zwrócone."
+  "evStreamRaceRefunded": "Wyścigi o północy odwołane. Twoja stawka i zakłady zostały zwrócone.",
+  "pageInfoTooltip": "Jak działa ta strona",
+  "pageInfoOverview": "Przegląd",
+  "pageInfoHow": "Jak to działa",
+  "pageInfoTips": "Porady"
 }

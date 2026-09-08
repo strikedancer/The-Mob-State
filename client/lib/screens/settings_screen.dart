@@ -17,6 +17,7 @@ import '../widgets/portrait_tile_action_glyphs.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import '../providers/auth_provider.dart';
+import '../widgets/game_page_info.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool embedded;
@@ -1430,6 +1431,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'settings',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final content = _isLoading
         ? const Center(child: CircularProgressIndicator())

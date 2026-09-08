@@ -6,6 +6,7 @@ import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/market_compact.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 class AmmoMarketScreen extends StatefulWidget {
   const AmmoMarketScreen({super.key});
 
@@ -307,6 +308,13 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'black-market',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
     if (_isLoading) {

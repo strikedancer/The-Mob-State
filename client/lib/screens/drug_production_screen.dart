@@ -11,6 +11,7 @@ import 'drug_facility_screen.dart';
 import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/game_page_info.dart';
 
 class DrugProductionScreen extends StatefulWidget {
   final VoidCallback? onOpenFacilitiesRequested;
@@ -875,6 +876,13 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'drugs',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
     return LayoutBuilder(

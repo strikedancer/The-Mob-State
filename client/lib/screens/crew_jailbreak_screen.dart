@@ -6,6 +6,7 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/event_renderer.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class CrewJailbreakScreen extends StatefulWidget {
   final int crewId;
@@ -209,6 +210,13 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'crew',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(

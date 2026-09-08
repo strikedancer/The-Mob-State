@@ -11835,5 +11835,9 @@
       }
     }
   },
-  "evStreamRaceRefunded": "Gare di mezzanotte annullate. La tua puntata e le tue scommesse sono state rimborsate."
+  "evStreamRaceRefunded": "Gare di mezzanotte annullate. La tua puntata e le tue scommesse sono state rimborsate.",
+  "pageInfoTooltip": "Come funziona questa pagina",
+  "pageInfoOverview": "Panoramica",
+  "pageInfoHow": "Come funziona",
+  "pageInfoTips": "Suggerimenti"
 }

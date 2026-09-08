@@ -11835,5 +11835,9 @@
       }
     }
   },
-  "evStreamRaceRefunded": "Carreras de medianoche canceladas. Su apuesta y su apuesta fueron reembolsadas."
+  "evStreamRaceRefunded": "Carreras de medianoche canceladas. Su apuesta y su apuesta fueron reembolsadas.",
+  "pageInfoTooltip": "Cómo funciona esta página",
+  "pageInfoOverview": "Descripción general",
+  "pageInfoHow": "Cómo funciona",
+  "pageInfoTips": "Consejos"
 }

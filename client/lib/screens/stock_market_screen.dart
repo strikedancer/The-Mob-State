@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/stock_market_service.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class StockMarketScreen extends StatefulWidget {
   const StockMarketScreen({super.key});
@@ -122,6 +123,13 @@ class _StockMarketScreenState extends State<StockMarketScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'stock-market',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final assets = (_market['assets'] as List<dynamic>?) ?? const [];
     final bankBalance = (_market['bankBalance'] as num?)?.toInt() ?? 0;
     final portfolioValue = (_market['portfolioValue'] as num?)?.toInt() ?? 0;

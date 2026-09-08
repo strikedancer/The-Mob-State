@@ -7,6 +7,7 @@ import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/market_compact.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 class WeaponsMarketScreen extends StatefulWidget {
   const WeaponsMarketScreen({super.key});
 
@@ -109,6 +110,13 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'black-market',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final ammoLabel = l10n?.ammoGeneric ?? 'Ammo';

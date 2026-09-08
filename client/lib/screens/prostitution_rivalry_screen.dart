@@ -6,6 +6,7 @@ import '../models/achievement.dart';
 import '../services/prostitution_service.dart';
 import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class ProstitutionRivalryScreen extends StatefulWidget {
   const ProstitutionRivalryScreen({super.key});
@@ -263,6 +264,13 @@ class _ProstitutionRivalryScreenState extends State<ProstitutionRivalryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'prostitution',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
         : RefreshIndicator(

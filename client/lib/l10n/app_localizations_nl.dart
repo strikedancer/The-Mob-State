@@ -3201,6 +3201,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donSqueezeHeld => 'De zaak betaalt extra — voorlopig.';
 
   @override
+  String get pageInfoTooltip => 'Hoe deze pagina werkt';
+
+  @override
+  String get pageInfoOverview => 'Overzicht';
+
+  @override
+  String get pageInfoHow => 'Hoe het werkt';
+
+  @override
+  String get pageInfoTips => 'Tips';
+
+  @override
   String get donInfoTooltip => 'Hoe Don werkt';
 
   @override

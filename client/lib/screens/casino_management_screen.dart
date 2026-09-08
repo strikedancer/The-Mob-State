@@ -5,6 +5,7 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class CasinoManagementScreen extends StatefulWidget {
   final String countryId;
@@ -781,6 +782,13 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'casino',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     if (widget.embeddedInDialog) {

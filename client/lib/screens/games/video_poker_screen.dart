@@ -9,6 +9,7 @@ import '../../l10n/app_localizations.dart';
 import '../../utils/formatters.dart';
 import '../../utils/top_right_notification.dart';
 import '../../utils/casino_play_l10n.dart';
+import '../../widgets/game_page_info.dart';
 
 class VideoPokerScreen extends StatefulWidget {
   final CasinoGame game;
@@ -285,6 +286,13 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'casino',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;

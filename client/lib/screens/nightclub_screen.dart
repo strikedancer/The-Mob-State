@@ -12,6 +12,7 @@ import '../services/nightclub_service.dart';
 import '../services/prostitution_service.dart';
 import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class NightclubScreen extends StatefulWidget {
   final Property? property;
@@ -1097,6 +1098,13 @@ class _NightclubScreenState extends State<NightclubScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'nightclub',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;

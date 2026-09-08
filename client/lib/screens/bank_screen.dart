@@ -10,6 +10,7 @@ import '../services/launder_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/game_page_info.dart';
 
 class BankScreen extends StatefulWidget {
   const BankScreen({super.key});
@@ -760,6 +761,13 @@ class _BankScreenState extends State<BankScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'bank',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cash = Provider.of<AuthProvider>(context).currentPlayer?.money ?? 0;
     final screenWidth = MediaQuery.of(context).size.width;

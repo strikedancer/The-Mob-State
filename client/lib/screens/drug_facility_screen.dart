@@ -9,6 +9,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/education_requirements_dialog.dart';
+import '../widgets/game_page_info.dart';
 
 class DrugFacilityScreen extends StatefulWidget {
   final bool showAppBar;
@@ -423,6 +424,13 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'drugs',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final facilitiesConfig =
         _config['facilities'] as Map<String, dynamic>? ?? const {};
     final orderedEntries = facilitiesConfig.entries.toList()

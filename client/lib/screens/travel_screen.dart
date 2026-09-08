@@ -14,6 +14,7 @@ import '../widgets/cooldown_overlay.dart';
 import '../widgets/country_police_ui.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/trade_good_l10n.dart';
+import '../widgets/game_page_info.dart';
 
 class TravelScreen extends StatefulWidget {
   const TravelScreen({
@@ -1211,6 +1212,13 @@ class _TravelScreenState extends State<TravelScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'travel',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final player = authProvider.currentPlayer;

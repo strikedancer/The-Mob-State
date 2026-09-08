@@ -20,6 +20,7 @@ import '../widgets/market_teaser_tile.dart';
 import '../widgets/daily_goals_card.dart';
 import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
+import '../widgets/game_page_info.dart';
 import '../widgets/live_event_rail.dart';
 import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
@@ -1780,7 +1781,107 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  String? _pageInfoTopicFor(_WebSection section) {
+    switch (section) {
+      case _WebSection.support:
+        return 'support-tickets';
+      case _WebSection.dashboard:
+        return 'dashboard';
+      case _WebSection.vault:
+        return 'vault';
+      case _WebSection.events:
+        return 'events';
+      case _WebSection.crimes:
+        return 'crimes';
+      case _WebSection.jobs:
+        return 'jobs';
+      case _WebSection.messages:
+        return 'messages';
+      case _WebSection.help:
+        return null;
+      case _WebSection.settings:
+        return 'settings';
+      case _WebSection.travel:
+        return 'travel';
+      case _WebSection.aviation:
+        return 'aviation';
+      case _WebSection.crew:
+        return 'crew';
+      case _WebSection.premium:
+        return 'premium';
+      case _WebSection.friends:
+        return 'friends';
+      case _WebSection.inventory:
+        return 'inventory';
+      case _WebSection.properties:
+        return 'properties';
+      case _WebSection.don:
+        return null;
+      case _WebSection.races:
+        return null;
+      case _WebSection.bank:
+        return 'bank';
+      case _WebSection.casino:
+        return 'casino';
+      case _WebSection.blackMarket:
+        return 'black-market';
+      case _WebSection.drugs:
+        return 'drugs';
+      case _WebSection.nightclub:
+        return 'nightclub';
+      case _WebSection.crypto:
+        return 'crypto';
+      case _WebSection.stockMarket:
+        return 'stock-market';
+      case _WebSection.smuggling:
+        return 'smuggling';
+      case _WebSection.tools:
+        return 'tools';
+      case _WebSection.court:
+        return 'court';
+      case _WebSection.hitlist:
+        return 'hitlist';
+      case _WebSection.security:
+        return 'security';
+      case _WebSection.hospital:
+        return 'hospital';
+      case _WebSection.prison:
+        return 'prison';
+      case _WebSection.vehicleHeist:
+        return 'vehicle-heist';
+      case _WebSection.tuneShop:
+        return 'tuneshop';
+      case _WebSection.garage:
+        return 'garage';
+      case _WebSection.marina:
+        return 'marina';
+      case _WebSection.trainingHub:
+        return 'training-hub';
+      case _WebSection.ammoFactory:
+        return 'ammo-factory';
+      case _WebSection.school:
+        return 'school';
+      case _WebSection.territory:
+        return 'territory';
+      case _WebSection.prostitution:
+        return 'prostitution';
+      case _WebSection.redLightDistricts:
+        return 'red-light-districts';
+      case _WebSection.achievements:
+        return 'achievements';
+      case _WebSection.playerProfile:
+        return 'player-profile';
+    }
+  }
+
   Widget _buildWebContent(BuildContext context) {
+    final topicId = _pageInfoTopicFor(_selectedWebSection);
+    final child = _buildWebContentBody(context);
+    if (topicId == null) return child;
+    return GamePageInfoHost(topicId: topicId, child: child);
+  }
+
+  Widget _buildWebContentBody(BuildContext context) {
     switch (_selectedWebSection) {
       case _WebSection.support:
         return SupportTicketsScreen(
@@ -1947,6 +2048,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           : AppBar(
               title: Text(l10n.dashboard),
               actions: [
+                GamePageInfoButton(topicId: 'dashboard'),
                 IconButton(
                   icon: const Icon(Icons.chat),
                   onPressed: () {

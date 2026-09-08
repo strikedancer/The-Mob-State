@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../widgets/market_compact.dart';
+import '../widgets/game_page_info.dart';
 
 class SecurityScreen extends StatefulWidget {
   final bool embedded;
@@ -592,6 +593,13 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'security',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final condition = _armorCondition();
     final cap = _asInt(_securityStatus?['bodyguardCap'], 10);

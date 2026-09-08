@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 /// Combined gym + shooting range (single entry from dashboard).
 class TrainingHubScreen extends StatefulWidget {
@@ -303,6 +304,13 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'training-hub',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final wide = MediaQuery.sizeOf(context).width >= 960;
 

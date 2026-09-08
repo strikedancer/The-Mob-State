@@ -8,6 +8,7 @@ import '../services/api_client.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/localized_api_message.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class VaultScreen extends StatefulWidget {
   final bool embedded;
@@ -316,6 +317,13 @@ class _VaultScreenState extends State<VaultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'vault',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isSmall = MediaQuery.of(context).size.width < 700;
     final tiers = _tiers();

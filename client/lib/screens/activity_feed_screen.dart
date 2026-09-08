@@ -8,6 +8,7 @@ import '../utils/avatar_helper.dart';
 import '../utils/player_profile_navigation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class ActivityFeedScreen extends StatefulWidget {
   const ActivityFeedScreen({super.key});
@@ -121,6 +122,13 @@ class _ActivityFeedScreenState extends State<ActivityFeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'dashboard',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Friend Activity'),

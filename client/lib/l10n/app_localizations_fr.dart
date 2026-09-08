@@ -3230,6 +3230,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Le magasin a payé un supplément – ​​pour l’instant.';
 
   @override
+  String get pageInfoTooltip => 'Comment fonctionne cette page';
+
+  @override
+  String get pageInfoOverview => 'Aperçu';
+
+  @override
+  String get pageInfoHow => 'Comment ça marche';
+
+  @override
+  String get pageInfoTips => 'Conseils';
+
+  @override
   String get donInfoTooltip => 'Comment fonctionne Don';
 
   @override

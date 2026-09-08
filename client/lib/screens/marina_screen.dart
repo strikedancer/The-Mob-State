@@ -18,6 +18,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/stolen_vehicle_dialog.dart';
+import '../widgets/game_page_info.dart';
 
 class MarinaScreen extends StatefulWidget {
   const MarinaScreen({
@@ -570,6 +571,13 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'marina',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final vehicleProvider = Provider.of<VehicleProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
 

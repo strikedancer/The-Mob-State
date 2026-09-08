@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../providers/vehicle_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class TuneShopScreen extends StatefulWidget {
   final bool embedded;
@@ -241,6 +242,13 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'tuneshop',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final provider = context.watch<VehicleProvider>();
     final content = _buildContent(provider);
     final l10n = AppLocalizations.of(context);

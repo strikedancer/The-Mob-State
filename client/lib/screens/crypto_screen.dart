@@ -8,6 +8,7 @@ import '../models/achievement.dart';
 import '../services/crypto_service.dart';
 import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 String _localizeCryptoApiMessage(AppLocalizations l10n, String? raw) {
   if (raw == null || raw.trim().isEmpty) {
@@ -593,6 +594,13 @@ class _CryptoScreenState extends State<CryptoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'crypto',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;

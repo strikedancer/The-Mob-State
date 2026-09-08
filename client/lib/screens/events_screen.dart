@@ -13,6 +13,7 @@ import '../utils/top_right_notification.dart';
 import '../widgets/game_event_details_dialog.dart';
 import '../widgets/season_pass_panel.dart';
 import 'premium_screen.dart';
+import '../widgets/game_page_info.dart';
 
 class EventsScreen extends StatefulWidget {
   /// When true (e.g. web dashboard panel), no [AppBar] — parent provides chrome.
@@ -584,6 +585,13 @@ class _EventsScreenState extends State<EventsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'events',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final upcomingCombined = [..._upcoming, ..._upcomingPreview];
 

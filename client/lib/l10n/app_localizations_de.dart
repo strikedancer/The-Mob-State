@@ -3226,6 +3226,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donSqueezeHeld => 'Der Laden hat extra bezahlt – vorerst.';
 
   @override
+  String get pageInfoTooltip => 'So funktioniert diese Seite';
+
+  @override
+  String get pageInfoOverview => 'Überblick';
+
+  @override
+  String get pageInfoHow => 'Wie es funktioniert';
+
+  @override
+  String get pageInfoTips => 'Tipps';
+
+  @override
   String get donInfoTooltip => 'Wie Don funktioniert';
 
   @override

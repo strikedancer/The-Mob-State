@@ -10,6 +10,7 @@ import '../utils/web_asset_helper.dart';
 import '../widgets/market_compact.dart';
 import '../widgets/responsive_modal.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 
 class MaterialsShopScreen extends StatefulWidget {
   const MaterialsShopScreen({super.key});
@@ -259,6 +260,13 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'black-market',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final country = _snapshot.currentCountry.isEmpty

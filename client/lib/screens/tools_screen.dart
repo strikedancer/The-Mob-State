@@ -10,6 +10,7 @@ import '../l10n/app_localizations.dart';
 import '../widgets/market_compact.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/tool_display_name.dart';
+import '../widgets/game_page_info.dart';
 String _toolsPurchaseErrorMessage(
   ToolPurchaseResult result,
   AppLocalizations l10n,
@@ -395,6 +396,13 @@ class _ToolsScreenState extends State<ToolsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'tools',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final body = _toolsBody(l10n);
     if (widget.embedded) {

@@ -6,6 +6,7 @@ import '../services/inventory_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/tool_display_name.dart';
+import '../widgets/game_page_info.dart';
 
 class CreateLoadoutScreen extends StatefulWidget {
   final int playerId;
@@ -193,6 +194,13 @@ class _CreateLoadoutScreenState extends State<CreateLoadoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'inventory',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(

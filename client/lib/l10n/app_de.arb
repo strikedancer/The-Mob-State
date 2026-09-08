@@ -11835,5 +11835,9 @@
       }
     }
   },
-  "evStreamRaceRefunded": "Mitternachtsrennen abgesagt. Ihr Einsatz und Ihre Wetten wurden zurückerstattet."
+  "evStreamRaceRefunded": "Mitternachtsrennen abgesagt. Ihr Einsatz und Ihre Wetten wurden zurückerstattet.",
+  "pageInfoTooltip": "So funktioniert diese Seite",
+  "pageInfoOverview": "Überblick",
+  "pageInfoHow": "Wie es funktioniert",
+  "pageInfoTips": "Tipps"
 }

@@ -20,6 +20,7 @@ import '../widgets/drug_wholesale_export_dialog.dart';
 import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
 import 'black_market_screen.dart';
+import '../widgets/game_page_info.dart';
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
 
@@ -4228,6 +4229,13 @@ class _CrewScreenState extends State<CrewScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'crew',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_t(l10n, 'app.crews')),

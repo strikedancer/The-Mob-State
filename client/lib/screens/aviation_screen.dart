@@ -10,6 +10,7 @@ import '../utils/country_helper.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/game_page_info.dart';
 
 class AviationScreen extends StatefulWidget {
   const AviationScreen({
@@ -1173,6 +1174,13 @@ class _AviationScreenState extends State<AviationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'aviation',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final player = Provider.of<AuthProvider>(context).currentPlayer;
     final playerRank = player?.rank ?? 0;

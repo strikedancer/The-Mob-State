@@ -11,6 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../utils/support_badge_state.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/game_page_info.dart';
 
 class _SupportTicketSummary {
   const _SupportTicketSummary({
@@ -1240,6 +1241,13 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'support-tickets',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: widget.embedded

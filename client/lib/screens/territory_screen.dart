@@ -20,6 +20,7 @@ import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 // ---------------------------------------------------------------------------
 // TerritoryScreen â€” Responsive crew territory map (NL-first)
 // Layout: desktop = split (map | side panel), tablet = stacked collapsible,
@@ -1621,6 +1622,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'territory',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }

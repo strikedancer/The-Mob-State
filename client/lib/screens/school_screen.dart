@@ -12,6 +12,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/action_result_toast.dart';
 import '../widgets/cooldown_overlay.dart';
+import '../widgets/game_page_info.dart';
 
 class SchoolScreen extends StatefulWidget {
   const SchoolScreen({super.key});
@@ -1183,6 +1184,13 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'school',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final playerRank = authProvider.currentPlayer?.rank ?? 1;

@@ -9,6 +9,7 @@ import '../utils/top_right_notification.dart';
 import '../widgets/market_compact.dart';
 import '../widgets/responsive_modal.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/game_page_info.dart';
 
 class BackpackShopScreen extends StatefulWidget {
   final bool isTab;
@@ -459,6 +460,13 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'black-market',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     return _buildContent(context);
   }
 

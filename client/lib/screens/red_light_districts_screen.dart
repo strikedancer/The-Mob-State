@@ -10,6 +10,7 @@ import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 class RedLightDistrictsScreen extends StatefulWidget {
   final bool embedded;
 
@@ -184,6 +185,13 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'red-light-districts',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     final body = _selectedDistrictId != null

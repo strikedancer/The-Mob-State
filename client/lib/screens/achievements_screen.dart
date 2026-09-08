@@ -5,6 +5,7 @@ import '../models/achievement.dart';
 import '../services/prostitution_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/achievement_display.dart';
+import '../widgets/game_page_info.dart';
 
 class AchievementsScreen extends StatefulWidget {
   const AchievementsScreen({super.key});
@@ -315,6 +316,13 @@ class _AchievementsScreenState extends State<AchievementsScreen>
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'achievements',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
     return Scaffold(

@@ -8,6 +8,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/smuggling_result_overlay.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/game_page_info.dart';
 
 class SmugglingScreen extends StatefulWidget {
   const SmugglingScreen({super.key});
@@ -893,6 +894,13 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'smuggling',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
     return Container(

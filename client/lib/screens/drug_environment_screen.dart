@@ -13,6 +13,7 @@ import 'black_market_screen.dart';
 import 'drug_facility_screen.dart';
 import 'drug_inventory_screen.dart';
 import 'drug_production_screen.dart';
+import '../widgets/game_page_info.dart';
 
 class DrugEnvironmentScreen extends StatefulWidget {
   const DrugEnvironmentScreen({
@@ -535,6 +536,13 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return GamePageInfoHost(
+      topicId: 'drugs',
+      child: _buildPageInfoChild(context),
+    );
+  }
+
+  Widget _buildPageInfoChild(BuildContext context) {
     if (_webSubview != _DrugWebSubview.hub && (kIsWeb || widget.embedded)) {
       if (widget.embedded) {
         return Column(
