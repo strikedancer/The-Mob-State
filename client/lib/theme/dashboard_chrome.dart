@@ -75,6 +75,7 @@ class DashboardHudCell extends StatelessWidget {
     this.valueColor = Colors.white,
     this.progress,
     this.barColor,
+    this.compact = false,
   });
 
   final String label;
@@ -82,45 +83,60 @@ class DashboardHudCell extends StatelessWidget {
   final Color valueColor;
   final double? progress;
   final Color? barColor;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
+    final padH = compact ? 4.0 : 8.0;
+    final valueSize = compact ? 12.0 : 13.0;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: padH, vertical: compact ? 1 : 2),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              label.toUpperCase(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: dashboardMuted,
-                fontSize: 9,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.8,
+            SizedBox(
+              width: double.infinity,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  label.toUpperCase(),
+                  maxLines: 1,
+                  style: const TextStyle(
+                    color: dashboardMuted,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 3),
-            Text(
-              value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: valueColor,
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                height: 1.15,
+            SizedBox(height: compact ? 2 : 3),
+            SizedBox(
+              width: double.infinity,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  value,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: valueColor,
+                    fontSize: valueSize,
+                    fontWeight: FontWeight.w700,
+                    height: 1.15,
+                  ),
+                ),
               ),
             ),
             if (progress != null) ...[
-              const SizedBox(height: 5),
+              SizedBox(height: compact ? 4 : 5),
               ClipRRect(
                 borderRadius: BorderRadius.circular(2),
                 child: LinearProgressIndicator(
                   value: progress!.clamp(0.0, 1.0),
-                  minHeight: 3,
+                  minHeight: compact ? 2.5 : 3,
                   backgroundColor: Colors.white.withValues(alpha: 0.08),
                   valueColor: AlwaysStoppedAnimation<Color>(
                     barColor ?? dashboardGold,
@@ -135,13 +151,15 @@ class DashboardHudCell extends StatelessWidget {
 }
 
 class DashboardHudDivider extends StatelessWidget {
-  const DashboardHudDivider({super.key});
+  const DashboardHudDivider({super.key, this.compact = false});
+
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 1,
-      height: 28,
+      height: compact ? 22 : 28,
       color: dashboardHairline,
     );
   }

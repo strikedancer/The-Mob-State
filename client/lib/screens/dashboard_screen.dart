@@ -966,10 +966,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 if (!showLeftSidebar) const SizedBox(width: 8),
                 Expanded(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(
+                    constraints: BoxConstraints(
                       maxWidth: 600,
-                      maxHeight: 100,
-                      minHeight: 60,
+                      maxHeight: showLeftSidebar ? 100 : 48,
+                      minHeight: showLeftSidebar ? 60 : 36,
                     ),
                     child: Image.network(
                       'title_mobstate.png',
@@ -1766,96 +1766,169 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final healthColor = player.health > 50
         ? Colors.green.shade400
         : (player.health > 25 ? Colors.orange : Colors.red);
-    final body = Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 2,
-          child: DashboardHudCell(
-            label: _cashLabel(context),
-            value: formatCurrency(player.money),
-            valueColor: Colors.green.shade300,
-          ),
-        ),
-        const DashboardHudDivider(),
-        Expanded(
-          flex: 2,
-          child: DashboardHudCell(
-            label: l10n.rank,
-            value:
-                '${RankDisplay.titleWithNumber(l10n, player.rank)}  ${(rankProgress * 100).toStringAsFixed(0)}%',
-            valueColor: Colors.amber.shade300,
-            progress: rankProgress,
-          ),
-        ),
-        const DashboardHudDivider(),
-        Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: () => _selectWebSection(_WebSection.hospital),
-            child: DashboardHudCell(
-              label: l10n.health,
-              value: '${player.health}%',
-              valueColor: healthColor,
-              progress: healthProgress,
-              barColor: healthColor,
-            ),
-          ),
-        ),
-        const DashboardHudDivider(),
-        Expanded(
-          child: DashboardHudCell(
-            label: l10n.wantedLevel,
-            value: '${wantedLevel.toInt()}/5',
-            valueColor: wantedLevel > 0 ? Colors.orange : Colors.white70,
-            progress: wantedProgress,
-            barColor: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
-          ),
-        ),
-        const DashboardHudDivider(),
-        Expanded(
-          child: DashboardHudCell(
-            label: 'FBI',
-            value: '${fbiHeat.toInt()}%',
-            valueColor: fbiHeat > 0 ? Colors.deepPurple.shade200 : Colors.white70,
-            progress: fbiProgress,
-            barColor: fbiHeat > 0 ? Colors.deepPurple : Colors.blueGrey,
-          ),
-        ),
-        const DashboardHudDivider(),
-        Expanded(
-          flex: 2,
-          child: DashboardHudCell(
-            label: l10n.countryLabel,
-            value:
-                '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
-          ),
-        ),
-        if (_unreadCount > 0) ...[
-          const DashboardHudDivider(),
-          Expanded(
-            child: DashboardHudCell(
-              label: l10n.messages,
-              value: _newMessagesLabel(context, _unreadCount),
-              valueColor: Colors.orange.shade200,
-            ),
-          ),
-        ],
-        if (pageInfoTopic != null) ...[
-          const SizedBox(width: 6),
-          GamePageInfoButton(topicId: pageInfoTopic),
-        ],
-      ],
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 720;
+        final rankLabel = compact
+        ? RankDisplay.titleWithNumber(l10n, player.rank)
+        : '${RankDisplay.titleWithNumber(l10n, player.rank)}  ${(rankProgress * 100).toStringAsFixed(0)}%';
+
+    Widget cell({
+      required String label,
+      required String value,
+      Color valueColor = Colors.white,
+      double? progress,
+      Color? barColor,
+      int flex = 1,
+      VoidCallback? onTap,
+    }) {
+      final hud = DashboardHudCell(
+        label: label,
+        value: value,
+        valueColor: valueColor,
+        progress: progress,
+        barColor: barColor,
+        compact: compact,
+      );
+      return Expanded(
+        flex: flex,
+        child: onTap == null
+            ? hud
+            : InkWell(onTap: onTap, child: hud),
+      );
+    }
+
+    Widget divider() => DashboardHudDivider(compact: compact);
+
+    final cashCell = cell(
+      label: _cashLabel(context),
+      value: formatCurrency(player.money),
+      valueColor: Colors.green.shade300,
+      flex: compact ? 1 : 2,
     );
+    final rankCell = cell(
+      label: l10n.rank,
+      value: rankLabel,
+      valueColor: Colors.amber.shade300,
+      progress: rankProgress,
+      flex: compact ? 1 : 2,
+    );
+    final healthCell = cell(
+      label: l10n.health,
+      value: '${player.health}%',
+      valueColor: healthColor,
+      progress: healthProgress,
+      barColor: healthColor,
+      flex: compact ? 1 : 2,
+      onTap: () => _selectWebSection(_WebSection.hospital),
+    );
+    final wantedCell = cell(
+      label: l10n.wantedLevel,
+      value: '${wantedLevel.toInt()}/5',
+      valueColor: wantedLevel > 0 ? Colors.orange : Colors.white70,
+      progress: wantedProgress,
+      barColor: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
+    );
+    final fbiCell = cell(
+      label: 'FBI',
+      value: '${fbiHeat.toInt()}%',
+      valueColor: fbiHeat > 0 ? Colors.deepPurple.shade200 : Colors.white70,
+      progress: fbiProgress,
+      barColor: fbiHeat > 0 ? Colors.deepPurple : Colors.blueGrey,
+    );
+    final countryCell = cell(
+      label: l10n.countryLabel,
+      value: '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
+      flex: compact ? 1 : 2,
+    );
+    final messagesCell = _unreadCount > 0
+        ? cell(
+            label: l10n.messages,
+            value: _newMessagesLabel(context, _unreadCount),
+            valueColor: Colors.orange.shade200,
+          )
+        : null;
+
+    final infoButton = pageInfoTopic == null
+        ? null
+        : Padding(
+            padding: EdgeInsets.only(left: compact ? 4 : 6),
+            child: GamePageInfoButton(topicId: pageInfoTopic),
+          );
+
+    final Widget body;
+    if (compact) {
+      body = Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              cashCell,
+              divider(),
+              rankCell,
+              divider(),
+              healthCell,
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              wantedCell,
+              divider(),
+              fbiCell,
+              divider(),
+              countryCell,
+              if (messagesCell != null) ...[
+                divider(),
+                messagesCell,
+              ],
+              if (infoButton != null) infoButton,
+            ],
+          ),
+        ],
+      );
+    } else {
+      body = Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          cashCell,
+          divider(),
+          rankCell,
+          divider(),
+          healthCell,
+          divider(),
+          wantedCell,
+          divider(),
+          fbiCell,
+          divider(),
+          countryCell,
+          if (messagesCell != null) ...[
+            divider(),
+            messagesCell,
+          ],
+          if (infoButton != null) infoButton,
+        ],
+      );
+    }
 
     if (!decorated) {
       return body;
     }
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(6, 8, 10, 8),
+      padding: EdgeInsets.fromLTRB(
+        compact ? 4 : 6,
+        compact ? 6 : 8,
+        compact ? 6 : 10,
+        compact ? 6 : 8,
+      ),
       decoration: dashboardPanelDecoration(radius: 8),
       child: body,
+    );
+      },
     );
   }
 
