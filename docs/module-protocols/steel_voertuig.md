@@ -45,6 +45,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Houd Auto, Motor en Boot als drie duidelijk gescheiden componenten in de UI, met eigen opslagcontext en duidelijke labels. Onder de foto-hero geen extra Auto/Motor/Boot-chips; de drie lane cards zijn de enige categorie-selector.
 - In de gecombineerde Vehicle Heist shell mag geen dubbele categorie-navigatie bestaan: gebruik één primaire categorie-selector (lane cards) en vermijd een tweede redundante tab-rij met dezelfde drie categorieën.
 - Lane cards in Vehicle Heist tonen ook opslagcapaciteit per type (opslag gebruikt/totaal + upgradelevel), zodat spelers niet hoeven te scrollen naar losse capaciteitsbalken.
+- Help & Uitleg (gouden `i` op Voertuig stelen) moet uitleggen dat opslag-upgrades alleen gelden voor het **huidige land** en per type (auto/motor/boot) gescheiden blijven; upgrades geven extra plekken, geen hogere steelkans.
 - Vehicle Ops uitbreidingen (hotspots, parts market, crew ops, category heat, chop contracts, dynamic police patterns) moeten per voertuigcategorie duidelijk zichtbaar en uitlegbaar blijven.
 - Advanced Vehicle Ops uitbreidingen (hotspot intercept windows, crew role-bonussen, ops-reputatie unlocks, regionale blacklist-events, contraband insurance, ops-telemetry) moeten coherent blijven met balance-economy guardrails.
 - Vehicle Ops omvat nu ook Counter-Intercept missies, Crew Matchmaking met seizoensladder, country modifiers (inflatie/corruptie/havenstaking), contracts board met weekly legendary contracts en insurance dispute-resolutie.

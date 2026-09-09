@@ -27,6 +27,7 @@ Boat inventory, theft flow, timed repairs, country availability catalog, boat-sp
 - When a timed repair completes, the owner must receive a repair-ready push notification.
 - Available boat catalog entries must expose country availability, value, rarity and world-cap information.
 - World-cap rotation must remain correct: when a boat is sold or scrapped, one slot reopens for theft.
+- Marina storage upgrades are per player per country (same as garage): upgrading boats in one country does not raise marina capacity elsewhere. Player help (`helpTopicMarinaHow` and the Vehicle Heist info popup) must say so, and that upgrades add boat slots not steal chance.
 - Scrap system: players can scrap owned boats to get salvage value (35% of base value, scaled by condition and marina upgrade level). Scrapping must not be instant; it must trigger immediately but show clear feedback. Scrap price must respect marina upgrade multipliers (up to 20% bonus at max level).
 - Scrapping in this flow also yields boat parts for TuneShop upgrades.
 - Keep event-only police boats disabled outside explicit event windows.
