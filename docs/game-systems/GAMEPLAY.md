@@ -707,9 +707,10 @@ Onderstaande bullets beschrijven nog steeds relevante **globale** reis- en heat-
 - **Reparatie:** `repairCost` uit de catalogus als `isBroken` true is.
 
 ### Reistijdbonus op Reizen
-- Beste bezeten vliegtuig verkort commerciële etappe-cooldown (`3600s × (1 − bonus)`).
+- Commerciële Travel landt per etappe meteen. Het beste bezeten vliegtuig verkort alleen de etappe-wacht (`3600s × (1 − bonus)`).
 - Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo −30%. Niet cumulatief.
-- Zichtbaar op het Reizen-scherm als "Eigen vliegtuig: −X% reistijd".
+- Zichtbaar op het Reizen-scherm als "Eigen vliegtuig: −X% wacht per etappe".
+- Etappes overslaan: Vliegen in de hangar (100 L), niet het Reizen-scherm.
 
 ---
 

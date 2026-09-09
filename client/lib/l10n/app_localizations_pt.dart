@@ -735,7 +735,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get travelHeroSubtitle =>
-      'Mova-se entre países em busca de mercados, crimes e comércio. Cada perna custa dinheiro e pode fazer com que você seja revistado.';
+      'Cada trecho comercial leva você imediatamente; então você espera uma hora pela próxima. Pule pernas com Fly in Aviation.';
 
   @override
   String get travelHereChip => 'Você está aqui';
@@ -760,7 +760,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Aeronave própria: −$percent% tempo de viagem';
+    return 'Aeronave própria: −$percent% de espera por trecho';
   }
 
   @override
@@ -4736,7 +4736,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aviationHeroSubtitle =>
-      'Conclua a escola de aviação, compre uma licença paga e depois compre um avião para viagens mais rápidas e contrabando.';
+      'Escola mais uma licença paga e depois compre. Hangar Fly pula pernas; em Viajar de avião apenas diminui a espera.';
 
   @override
   String aviationSchoolChip(String level) {
@@ -4796,7 +4796,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String aviationFlyConfirmBody(String name, String country) {
-    return 'Voar $name para $country? Usa 100 L e chega instantaneamente.';
+    return 'Voar $name para $country? Usa 100 L. Você pula lá agora - sem pernas ou horas de espera.';
   }
 
   @override
@@ -4852,7 +4852,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% tempo de viagem';
+    return '−$percent% de espera por trecho';
   }
 
   @override
@@ -16990,11 +16990,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicTravelHow =>
-      'Países disponíveis: Holanda (início), Bélgica, Alemanha, França, Reino Unido, Espanha, Itália, Suíça, EUA, México, Colômbia, Brasil. \nCustos de viagem: país vizinho entre 500 e 2.000 euros, Europa → Américas entre 5.000 e 10.000 euros, longa distância entre 10.000 e 20.000 euros. \nRequisitos de viagem: não estar na prisão, não estar na UTI, mínimo de 20 HP, fundos para viagem disponíveis. \nAs quantidades de medicamentos em seu inventário contam como gramas reais para peso de transporte e verificações de viagem; 500 significa 500g e não 50kg. \nCada país tem preços de mercado diferentes (diferença de preço de até 300%), diferentes pagamentos de crimes e itens comerciais exclusivos. \nRisco de transporte: a polícia pode apreender mercadorias com base no Nível de Procurado (chance = procurado × 2%, máximo 80%). O FBI pode confiscar tudo internacionalmente se a temperatura estiver alta. \nA inspeção alfandegária tem uma chance básica de 10%. Você pode subornar (1.000€-5.000€) ou ser pego perdendo 50% dos bens. \nApós a chegada, todas as ações ficam imediatamente disponíveis no novo país. Os mercados e a velocidade do crime variam de acordo com o local.';
+      'Países disponíveis: Holanda (início), Bélgica, Alemanha, França, Reino Unido, Espanha, Itália, Suíça, EUA, México, Colômbia, Brasil. \nCustos de viagem: país vizinho entre 500 e 2.000 euros, Europa → Américas entre 5.000 e 10.000 euros, longa distância entre 10.000 e 20.000 euros. \nRequisitos de viagem: não estar na prisão, não estar na UTI, mínimo de 20 HP, fundos para viagem disponíveis. \nAs quantidades de medicamentos em seu inventário contam como gramas reais para peso de transporte e verificações de viagem; 500 significa 500g e não 50kg. \nCada país tem preços de mercado diferentes (diferença de preço de até 300%), diferentes pagamentos de crimes e itens comerciais exclusivos. \nRisco de transporte: a polícia pode apreender mercadorias com base no nível de procurado (chance = procurado × 2%, máximo 80%). O FBI pode apreender tudo internacionalmente se a temperatura estiver alta. \nA inspeção alfandegária tem uma chance básica de 10%. Você pode subornar (1.000€-5.000€) ou ser pego perdendo 50% dos bens. \nApós a chegada, todas as ações ficam imediatamente disponíveis no novo país. Os mercados e a velocidade do crime variam de acordo com o local. \nCada etapa comercial leva você imediatamente. Você então espera 60 minutos antes do próximo trecho ou antes de poder viajar novamente. As rotas diretas não têm espera extra durante a viagem, somente depois. \nPossuir um avião apenas reduz a espera por trecho (o melhor avião conta). Pular pernas não está em Viagem: use Fly no hangar (100 L, sem hora de espera).';
 
   @override
   String get helpTopicTravelTips =>
-      'Combine sempre viagens com comércio, drogas ou contrabando – viagens vazias desperdiçam dinheiro. \nReduza o seu nível de procurado antes da partida: um nível de procurado elevado aumenta muito o risco de confisco no caminho. \nPlaneje sua viagem de volta com antecedência para já saber o que levar na chegada.';
+      'As viagens comerciais não movimentam mercadorias comerciais – contrabandeie ações para o país onde você deseja vender. \nReduza o seu nível de procurado antes da partida: um nível de procurado elevado aumenta muito o risco de confisco de materiais transportados e contrabando. \nPlaneje sua viagem de volta com antecedência para já saber o que levar na chegada. \nPara pular para qualquer lugar sem pernas: reabasteça 100 L e use Fly on Aviation. A % em Viagem apenas encurta a escala, não leva você mais rápido.';
 
   @override
   String get helpTopicAviationCategory => 'Mundo';
@@ -17004,15 +17004,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Conclua a escola de aviação, compre uma licença paga e, em seguida, compre um avião para voar instantaneamente, reduza o tempo de viagem comercial e venda ou repare sua frota de hangares.';
+      'Conclua a escola de Aviação, compre uma licença paga e depois compre um avião para voar direto para um país, encurte a espera entre os trechos da viagem e mantenha sua frota de hangar.';
 
   @override
   String get helpTopicAviationHow =>
-      'Conclua a escola de aviação até o nível 5 e ganhe os dois certificados de voo antes de comprar uma licença paga. \nCompre uma licença paga na tela Aviação: básica, comercial ou de carga. Camadas mais altas desbloqueiam aviões mais pesados. \nCompre uma aeronave no catálogo do hangar. Novos aviões começam com o tanque vazio. \nReabasteça no hangar a 50€ por litro. Um voo privado usa 100 L e leva você para outro país instantaneamente. \nA Viagem Comercial ainda usa passagens e trechos. Possuir um avião reduz essa espera: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviões de carga −30%. Somente o melhor avião conta. \nVenda um avião próprio por 50% do preço de compra. Conserte um avião quebrado antes de poder reabastecê-lo ou pilotá-lo.';
+      'Conclua a escola de aviação até o nível 5 e ganhe os dois certificados de voo antes de comprar uma licença paga. \nCompre uma licença paga na tela Aviação: básica, comercial ou de carga. Camadas mais altas desbloqueiam aviões mais pesados. \nCompre uma aeronave no catálogo do hangar. Novos aviões começam com o tanque vazio. \nReabasteça no hangar a 50€ por litro. O Hangar Fly usa 100 L e coloca você em qualquer país com um só salto: sem pernas e sem hora de espera. \nA Viagem Comercial já leva você imediatamente em cada trecho. Possuir um avião apenas encurta a espera de 60 minutos até o próximo trecho ou próxima viagem: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviões de carga −30%. Somente o melhor avião conta. \nVenda um avião próprio por 50% do preço de compra. Repare um avião quebrado antes de poder reabastecê-lo ou pilotá-lo.';
 
   @override
   String get helpTopicAviationTips =>
-      'A escola 5/5 não é suficiente: você ainda precisa da licença paga antes de qualquer compra. \nTanque suficiente para 100 L antes de voar. Um avião vazio não pode sair do hangar. \nUm avião também acelera a viagem normal, mesmo se você seguir a rota comercial. \nVenda aviões não utilizados se precisar de dinheiro; você recebe apenas metade do que pagou.';
+      'Escola 5/5 não é suficiente: você ainda precisa da licença paga antes de qualquer compra. \nTanque suficiente para 100 L antes de voar. Um avião vazio não pode sair do hangar. \nEm Viagem você vê −% de espera por trecho. Esse não é o mesmo salto instantâneo que Fly no hangar. \nVenda aviões não utilizados se precisar de dinheiro; você recebe apenas metade do que pagou.';
 
   @override
   String get helpTopicCrewCategory => 'Social';

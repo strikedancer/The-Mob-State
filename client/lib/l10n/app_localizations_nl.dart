@@ -736,7 +736,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get travelHeroSubtitle =>
-      'Reis tussen landen voor markten, misdaden en handel. Elke etappe kost geld en kan een controle geven.';
+      'Elke commerciële etappe landt je meteen; daarna wacht je een uur tot de volgende. Etappes overslaan: Vliegen in Luchtvaart.';
 
   @override
   String get travelHereChip => 'Je bent hier';
@@ -761,7 +761,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Eigen vliegtuig: −$percent% reistijd';
+    return 'Eigen vliegtuig: −$percent% wacht per etappe';
   }
 
   @override
@@ -4728,7 +4728,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get aviationHeroSubtitle =>
-      'Rond Luchtvaart-school af, koop een betaalde licentie en kies daarna een vliegtuig voor sneller reizen en smokkel.';
+      'School plus licentie, daarna kopen. Vliegen in de hangar slaat etappes over; op Reizen verkort een vliegtuig alleen de wacht.';
 
   @override
   String aviationSchoolChip(String level) {
@@ -4788,7 +4788,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String aviationFlyConfirmBody(String name, String country) {
-    return 'Vlieg met $name naar $country? Kost 100 L en je komt direct aan.';
+    return 'Vlieg met $name naar $country? Kost 100 L. Je springt direct, zonder etappes of uur-wacht.';
   }
 
   @override
@@ -4844,7 +4844,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% reistijd';
+    return '−$percent% wacht per etappe';
   }
 
   @override
@@ -16904,11 +16904,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTravelHow =>
-      'Beschikbare landen: Nederland (startland), België, Duitsland, Frankrijk, Verenigd Koninkrijk, Spanje, Italië, Zwitserland, USA, Mexico, Colombia, Brazilië.\nReiskosten: buurland €500-€2.000, Europa → Amerika €5.000-€10.000, lange afstand €10.000-€20.000.\nVereisten voor reizen: niet in de cel, niet in ICU, minimaal 20 HP, reiskosten beschikbaar.\nDrugshoeveelheden in je inventaris tellen hierbij als echte gram voor draaggewicht en reischecks; 500 betekent dus 500g en niet 50kg.\nElk land heeft andere marktprijzen voor handelsgoederen (tot 300% prijsverschil), andere crime-opbrengsten en unieke trade items.\nRisico tijdens transport: politie kan goederen confisqueren op basis van je Wanted Level (kans = wanted × 2%, max 80%). FBI kan internationaal alles in beslag nemen als heat hoog is.\nDouane-inspectie heeft 10% basiskans. Je kunt steekpenningen betalen (€1.000-€5.000) of gepakt worden voor 50% goederen-verlies.\nNa aankomst zijn al je acties direct beschikbaar in het nieuwe land. Markten en crimesnelheid variëren per locatie.';
+      'Beschikbare landen: Nederland (startland), België, Duitsland, Frankrijk, Verenigd Koninkrijk, Spanje, Italië, Zwitserland, USA, Mexico, Colombia, Brazilië.\nReiskosten: buurland €500-€2.000, Europa → Amerika €5.000-€10.000, lange afstand €10.000-€20.000.\nVereisten voor reizen: niet in de cel, niet in ICU, minimaal 20 HP, reiskosten beschikbaar.\nDrugshoeveelheden in je inventaris tellen hierbij als echte gram voor draaggewicht en reischecks; 500 betekent dus 500g en niet 50kg.\nElk land heeft andere marktprijzen voor handelsgoederen (tot 300% prijsverschil), andere crime-opbrengsten en unieke trade items.\nRisico tijdens transport: politie kan goederen confisqueren op basis van je Wanted Level (kans = wanted × 2%, max 80%). FBI kan internationaal alles in beslag nemen als heat hoog is.\nDouane-inspectie heeft 10% basiskans. Je kunt steekpenningen betalen (€1.000-€5.000) of gepakt worden voor 50% goederen-verlies.\nNa aankomst zijn al je acties direct beschikbaar in het nieuwe land. Markten en crimesnelheid variëren per locatie.\nElke commerciële etappe landt je meteen. Daarna wacht je 60 minuten tot de volgende etappe, of tot je opnieuw kunt reizen. Directe routes hebben dus geen extra wacht tijdens de reis, alleen daarna.\nEen eigen vliegtuig verkort alleen die wacht per etappe (beste toestel telt). Etappes overslaan doe je niet op Reizen: gebruik Vliegen in de hangar (100 L, geen uur-wacht).';
 
   @override
   String get helpTopicTravelTips =>
-      'Gewone reizen verplaatst geen handelswaren — smokkel voorraad naar het land waar je wilt verkopen.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie van rugzak-materiaal en smokkelzendingen.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.\nMet een eigen vliegtuig in Luchtvaart wordt de commerciële reiscooldown korter. Privévluchten blijven apart en kosten brandstof.';
+      'Gewone reizen verplaatst geen handelswaren — smokkel voorraad naar het land waar je wilt verkopen.\nVerlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie van rugzak-materiaal en smokkelzendingen.\nCombineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.\nDirect overal naartoe zonder etappes: tank 100 L en kies Vliegen op Luchtvaart. Het %-voordeel op Reizen is alleen een kortere layover, geen snellere landing.';
 
   @override
   String get helpTopicAviationCategory => 'Wereld';
@@ -16918,15 +16918,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Rond Luchtvaart-school af, koop een betaalde licentie en koop daarna een vliegtuig om direct te vliegen, commerciële reistijd te korten en je hangar te onderhouden.';
+      'Rond Luchtvaart-school af, koop een betaalde licentie en koop daarna een vliegtuig om met Vliegen direct naar een land te gaan, de wacht tussen Reizen-etappes te korten en je hangar te onderhouden.';
 
   @override
   String get helpTopicAviationHow =>
-      'Haal Luchtvaart-school tot level 5 en beide vliegbrevetten voordat je een betaalde licentie kunt kopen.\nKoop op het Luchtvaart-scherm een betaalde licentie: basic, commercial of cargo. Hogere tiers ontgrendelen zwaardere toestellen.\nKoop een vliegtuig uit de hangar-catalogus. Nieuwe toestellen starten met een lege tank.\nTank in de hangar voor €50 per liter. Een privévlucht kost 100 L en verplaatst je direct naar een ander land.\nGewoon Reizen blijft tickets en etappes gebruiken. Een eigen vliegtuig verkort die wachttijd: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, vrachttoestellen −30%. Alleen het beste toestel telt.\nVerkoop een toestel voor 50% van de aankoopprijs. Repareer een kapot toestel voordat je kunt tanken of vliegen.';
+      'Haal Luchtvaart-school tot level 5 en beide vliegbrevetten voordat je een betaalde licentie kunt kopen.\nKoop op het Luchtvaart-scherm een betaalde licentie: basic, commercial of cargo. Hogere tiers ontgrendelen zwaardere toestellen.\nKoop een vliegtuig uit de hangar-catalogus. Nieuwe toestellen starten met een lege tank.\nTank in de hangar voor €50 per liter. Vliegen in de hangar kost 100 L en zet je in één sprong in elk land: geen etappes en geen uur-wacht.\nGewoon Reizen landt je per etappe al meteen. Een eigen vliegtuig verkort alleen de wacht van 60 minuten tot de volgende etappe of volgende reis: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, vrachttoestellen −30%. Alleen het beste toestel telt.\nVerkoop een toestel voor 50% van de aankoopprijs. Repareer een kapot toestel voordat je kunt tanken of vliegen.';
 
   @override
   String get helpTopicAviationTips =>
-      'School 5/5 is niet genoeg: je hebt nog steeds de betaalde licentie nodig voor aankoop.\nTank minstens 100 L voordat je vliegt. Een lege tank blijft aan de grond.\nEen vliegtuig versnelt ook gewoon Reizen, ook als je de commerciële route neemt.\nVerkoop ongebruikte toestellen als je cash nodig hebt; je krijgt de helft terug.';
+      'School 5/5 is niet genoeg: je hebt nog steeds de betaalde licentie nodig voor aankoop.\nTank minstens 100 L voordat je vliegt. Een lege tank blijft aan de grond.\nOp Reizen zie je −% wacht per etappe. Dat is niet dezelfde instant-sprong als Vliegen in de hangar.\nVerkoop ongebruikte toestellen als je cash nodig hebt; je krijgt de helft terug.';
 
   @override
   String get helpTopicCrewCategory => 'Sociaal';

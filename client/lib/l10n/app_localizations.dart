@@ -1463,7 +1463,7 @@ abstract class AppLocalizations {
   /// No description provided for @travelHeroSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Move between countries for markets, crimes and trade. Each leg costs cash and can get you searched.'**
+  /// **'Each commercial leg lands you immediately; then you wait an hour for the next. Skip legs with Fly in Aviation.'**
   String get travelHeroSubtitle;
 
   /// No description provided for @travelHereChip.
@@ -1499,7 +1499,7 @@ abstract class AppLocalizations {
   /// No description provided for @travelAircraftBonusChip.
   ///
   /// In en, this message translates to:
-  /// **'Own aircraft: −{percent}% travel time'**
+  /// **'Own aircraft: −{percent}% wait per leg'**
   String travelAircraftBonusChip(String percent);
 
   /// No description provided for @travelVia.
@@ -8396,7 +8396,7 @@ abstract class AppLocalizations {
   /// No description provided for @aviationHeroSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Finish Aviation school, buy a paid license, then buy a plane for faster travel and smuggling.'**
+  /// **'School plus a paid license, then buy. Hangar Fly skips legs; on Travel a plane only shortens the wait.'**
   String get aviationHeroSubtitle;
 
   /// No description provided for @aviationSchoolChip.
@@ -8492,7 +8492,7 @@ abstract class AppLocalizations {
   /// No description provided for @aviationFlyConfirmBody.
   ///
   /// In en, this message translates to:
-  /// **'Fly {name} to {country}? Uses 100 L and arrives instantly.'**
+  /// **'Fly {name} to {country}? Uses 100 L. You jump there now — no legs or hour wait.'**
   String aviationFlyConfirmBody(String name, String country);
 
   /// No description provided for @aviationFlyPickDestination.
@@ -8588,7 +8588,7 @@ abstract class AppLocalizations {
   /// No description provided for @aviationTravelBonusChip.
   ///
   /// In en, this message translates to:
-  /// **'−{percent}% travel time'**
+  /// **'−{percent}% wait per leg'**
   String aviationTravelBonusChip(String percent);
 
   /// No description provided for @crewUiTr0.
@@ -29210,13 +29210,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTravelHow.
   ///
   /// In en, this message translates to:
-  /// **'Available countries: Netherlands (start), Belgium, Germany, France, United Kingdom, Spain, Italy, Switzerland, USA, Mexico, Colombia, Brazil.\nTravel costs: neighboring country €500-€2.000, Europe → Americas €5.000-€10.000, long distance €10.000-€20.000.\nTravel requirements: not in jail, not in ICU, minimum 20 HP, travel funds available.\nDrug quantities in your inventory count as real grams for carry weight and travel checks; 500 means 500g, not 50kg.\nEach country has different market prices (up to 300% price difference), different crime payouts and unique trade items.\nTransport risk: police can seize goods based on Wanted Level (chance = wanted × 2%, max 80%). FBI can seize everything internationally if heat is high.\nCustoms inspection has a 10% base chance. You can bribe (€1.000-€5.000) or get caught losing 50% of goods.\nAfter arrival all actions are immediately available in the new country. Markets and crime speed vary by location.'**
+  /// **'Available countries: Netherlands (start), Belgium, Germany, France, United Kingdom, Spain, Italy, Switzerland, USA, Mexico, Colombia, Brazil.\nTravel costs: neighboring country €500-€2.000, Europe → Americas €5.000-€10.000, long distance €10.000-€20.000.\nTravel requirements: not in jail, not in ICU, minimum 20 HP, travel funds available.\nDrug quantities in your inventory count as real grams for carry weight and travel checks; 500 means 500g, not 50kg.\nEach country has different market prices (up to 300% price difference), different crime payouts and unique trade items.\nTransport risk: police can seize goods based on Wanted Level (chance = wanted × 2%, max 80%). FBI can seize everything internationally if heat is high.\nCustoms inspection has a 10% base chance. You can bribe (€1.000-€5.000) or get caught losing 50% of goods.\nAfter arrival all actions are immediately available in the new country. Markets and crime speed vary by location.\nEach commercial leg lands you immediately. You then wait 60 minutes before the next leg, or before you can travel again. Direct routes have no extra wait during the trip, only afterwards.\nOwning a plane only shortens that per-leg wait (best plane counts). Skipping legs is not on Travel: use Fly in the hangar (100 L, no hour wait).'**
   String get helpTopicTravelHow;
 
   /// No description provided for @helpTopicTravelTips.
   ///
   /// In en, this message translates to:
-  /// **'Commercial travel does not move trade goods — smuggle stock to the country where you want to sell.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk for carried materials and smuggling runs.\nPlan your return trip in advance so you already know what to bring back on arrival.\nOwn a plane in Aviation to cut commercial travel cooldown. Instant private flights still need fuel.'**
+  /// **'Commercial travel does not move trade goods — smuggle stock to the country where you want to sell.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk for carried materials and smuggling runs.\nPlan your return trip in advance so you already know what to bring back on arrival.\nTo jump anywhere without legs: refuel 100 L and use Fly on Aviation. The % on Travel only shortens the layover, it does not land you faster.'**
   String get helpTopicTravelTips;
 
   /// No description provided for @helpTopicAviationCategory.
@@ -29234,19 +29234,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicAviationSummary.
   ///
   /// In en, this message translates to:
-  /// **'Finish Aviation school, buy a paid license, then buy a plane to fly instantly, cut commercial travel time, and sell or repair your hangar fleet.'**
+  /// **'Finish Aviation school, buy a paid license, then buy a plane to Fly straight to a country, shorten the wait between Travel legs, and maintain your hangar fleet.'**
   String get helpTopicAviationSummary;
 
   /// No description provided for @helpTopicAviationHow.
   ///
   /// In en, this message translates to:
-  /// **'Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. A private flight uses 100 L and moves you to another country instantly.\nCommercial Travel still uses tickets and legs. Owning a plane shortens that wait: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.'**
+  /// **'Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. Hangar Fly uses 100 L and puts you in any country in one jump: no legs and no hour wait.\nCommercial Travel already lands you immediately on each leg. Owning a plane only shortens the 60-minute wait until the next leg or next trip: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.'**
   String get helpTopicAviationHow;
 
   /// No description provided for @helpTopicAviationTips.
   ///
   /// In en, this message translates to:
-  /// **'School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nA plane also speeds up normal Travel even if you take the commercial route.\nSell unused planes if you need cash; you only get half of what you paid.'**
+  /// **'School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nOn Travel you see −% wait per leg. That is not the same instant jump as Fly in the hangar.\nSell unused planes if you need cash; you only get half of what you paid.'**
   String get helpTopicAviationTips;
 
   /// No description provided for @helpTopicCrewCategory.

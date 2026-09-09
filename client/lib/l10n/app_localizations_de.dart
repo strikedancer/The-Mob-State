@@ -745,7 +745,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get travelHeroSubtitle =>
-      'Bewegen Sie sich zwischen Ländern für Märkte, Verbrechen und Handel. Jede Etappe kostet Bargeld und kann zu einer Durchsuchung führen.';
+      'Jeder kommerzielle Zweig bringt Sie sofort ans Ziel; dann wartest du eine Stunde auf den nächsten. Überspringen Sie Beine mit Fly in Aviation.';
 
   @override
   String get travelHereChip => 'Sie sind hier';
@@ -770,7 +770,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Eigenes Flugzeug: −$percent% Reisezeit';
+    return 'Eigenes Flugzeug: −$percent % Wartezeit pro Strecke';
   }
 
   @override
@@ -4761,7 +4761,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aviationHeroSubtitle =>
-      'Beenden Sie die Flugschule, kaufen Sie eine kostenpflichtige Lizenz und kaufen Sie dann ein Flugzeug, um schneller reisen und schmuggeln zu können.';
+      'Schule plus kostenpflichtige Lizenz, dann kaufen. Hangar Fly überspringt Beine; Auf Reisen verkürzt ein Flugzeug nur die Wartezeit.';
 
   @override
   String aviationSchoolChip(String level) {
@@ -4821,7 +4821,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String aviationFlyConfirmBody(String name, String country) {
-    return 'Von $name nach $country fliegen? Verbraucht 100 l und ist sofort verfügbar.';
+    return 'Von $name nach $country fliegen? Verbraucht 100 L. Sie springen jetzt dorthin – keine Beine oder stundenlange Wartezeit.';
   }
 
   @override
@@ -4877,7 +4877,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% Fahrzeit';
+    return '−$percent % Wartezeit pro Etappe';
   }
 
   @override
@@ -17076,11 +17076,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicTravelHow =>
-      'Verfügbare Länder: Niederlande (Start), Belgien, Deutschland, Frankreich, Vereinigtes Königreich, Spanien, Italien, Schweiz, USA, Mexiko, Kolumbien, Brasilien. \nReisekosten: Nachbarland 500–2.000 €, Europa → Amerika 5.000–10.000 €, Fernreise 10.000–20.000 €. \nReisevoraussetzungen: nicht im Gefängnis, nicht auf der Intensivstation, mindestens 20 PS, Reisekosten vorhanden. \nMedikamentenmengen in Ihrem Inventar gelten für das Tragegewicht und für Reiseschecks als echte Gramm; 500 bedeutet 500g, nicht 50kg. \nJedes Land hat unterschiedliche Marktpreise (bis zu 300 % Preisunterschied), unterschiedliche Kriminalitätsauszahlungen und einzigartige Handelsgüter. \nTransportrisiko: Die Polizei kann Waren basierend auf der Fahndungsstufe beschlagnahmen (Chance = Fahndung × 2 %, max. 80 %). Wenn es heiß hergeht, kann das FBI international alles beschlagnahmen. \nDie Zollkontrolle hat eine Grundchance von 10 %. Sie können bestechen (1.000-5.000 €) oder dabei erwischt werden, wie Sie 50 % der Waren verlieren. \nNach der Ankunft sind alle Aktionen sofort im neuen Land verfügbar. Märkte und Kriminalitätsgeschwindigkeit variieren je nach Standort.';
+      'Verfügbare Länder: Niederlande (Start), Belgien, Deutschland, Frankreich, Vereinigtes Königreich, Spanien, Italien, Schweiz, USA, Mexiko, Kolumbien, Brasilien. \nReisekosten: Nachbarland 500–2.000 €, Europa → Amerika 5.000–10.000 €, Fernreise 10.000–20.000 €. \nReisevoraussetzungen: nicht im Gefängnis, nicht auf der Intensivstation, mindestens 20 HP, Reisekosten vorhanden. \nMedikamentenmengen in Ihrem Inventar gelten für das Transportgewicht und Reiseschecks als echte Gramm; 500 bedeutet 500g, nicht 50kg. \nJedes Land hat unterschiedliche Marktpreise (bis zu 300 % Preisunterschied), unterschiedliche Kriminalitätsauszahlungen und einzigartige Handelsgüter. \nTransportrisiko: Die Polizei kann Waren basierend auf der Fahndungsstufe beschlagnahmen (Chance = Fahndung × 2 %, max. 80 %). Wenn es heiß hergeht, kann das FBI international alles beschlagnahmen. \nDie Zollkontrolle hat eine Grundchance von 10 %. Sie können bestechen (1.000-5.000 €) oder dabei erwischt werden, wie Sie 50 % der Waren verlieren. \nNach der Ankunft sind alle Aktionen sofort im neuen Land verfügbar. Märkte und Kriminalitätsgeschwindigkeit variieren je nach Standort. \nJeder kommerzielle Zweig bringt Sie sofort ans Ziel. Sie warten dann 60 Minuten, bevor Sie die nächste Etappe antreten bzw. wieder reisen können. Bei Direktflügen gibt es während der Fahrt keine zusätzliche Wartezeit, nur danach. \nDer Besitz eines Flugzeugs verkürzt nur die Wartezeit pro Flugstrecke (das beste Flugzeug zählt). Das Überspringen von Beinen ist nicht auf Reisen möglich: Verwenden Sie „Fly“ im Hangar (100 L, keine stundenlange Wartezeit).';
 
   @override
   String get helpTopicTravelTips =>
-      'Kombinieren Sie Reisen immer mit Handel, Drogen oder Schmuggel – Leerreisen verschwenden Geld. \nSenken Sie Ihren Fahndungslevel vor dem Abflug: Ein hoher Fahndungsstatus erhöht das Beschlagnahmungsrisiko unterwegs erheblich. \nPlanen Sie Ihre Rückreise im Voraus, damit Sie bereits wissen, was Sie bei Ihrer Ankunft mitbringen müssen.';
+      'Bei Geschäftsreisen werden keine Handelsgüter transportiert – schmuggeln Sie Lagerbestände in das Land, in dem Sie verkaufen möchten. \nSenken Sie Ihren Fahndungslevel vor der Abreise: Ein hoher Fahndungsstatus erhöht das Risiko der Beschlagnahmung von mitgeführtem Material und Schmuggelfahrten erheblich. \nPlanen Sie Ihre Rückreise im Voraus, damit Sie bereits wissen, was Sie bei Ihrer Ankunft mitbringen müssen. \nUm ohne Beine überall hin zu springen: 100 L tanken und Fly on Aviation nutzen. Der Prozentsatz für Reisen verkürzt nur den Zwischenstopp, Sie landen jedoch nicht schneller.';
 
   @override
   String get helpTopicAviationCategory => 'Welt';
@@ -17090,15 +17090,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Beenden Sie die Flugschule, erwerben Sie eine kostenpflichtige Lizenz, kaufen Sie dann ein Flugzeug, um sofort fliegen zu können, verkürzen Sie die kommerzielle Reisezeit und verkaufen oder reparieren Sie Ihre Hangarflotte.';
+      'Beenden Sie die Flugschule, kaufen Sie eine kostenpflichtige Lizenz, kaufen Sie dann ein Flugzeug, um direkt in ein Land zu fliegen, verkürzen Sie die Wartezeit zwischen den Reiseabschnitten und warten Sie Ihre Hangarflotte.';
 
   @override
   String get helpTopicAviationHow =>
-      'Absolvieren Sie die Flugschule bis zur Stufe 5 und erwerben Sie beide Flugzertifikate, bevor Sie eine kostenpflichtige Lizenz erwerben können. \nKaufen Sie eine kostenpflichtige Lizenz auf dem Luftfahrtbildschirm: Basislizenz, kommerzielle Lizenz oder Frachtlizenz. Höhere Stufen schalten schwerere Flugzeuge frei. \nKaufen Sie ein Flugzeug aus dem Hangarkatalog. Neue Flugzeuge starten mit leerem Tank. \nTanken Sie im Hangar für 50 € pro Liter. Ein Privatflug verbraucht 100 Liter und befördert Sie sofort in ein anderes Land. \nKommerzielle Reisen nutzen immer noch Tickets und Strecken. Der Besitz eines Flugzeugs verkürzt die Wartezeit: Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, Frachtflugzeuge −30 %. Nur das beste Flugzeug zählt. \nVerkaufen Sie ein eigenes Flugzeug für 50 % des Kaufpreises. Reparieren Sie ein kaputtes Flugzeug, bevor Sie es auftanken oder fliegen können.';
+      'Absolvieren Sie die Flugschule bis zur Stufe 5 und erwerben Sie beide Flugzertifikate, bevor Sie eine kostenpflichtige Lizenz erwerben können. \nKaufen Sie eine kostenpflichtige Lizenz auf dem Luftfahrtbildschirm: Basislizenz, kommerzielle Lizenz oder Frachtlizenz. Höhere Stufen schalten schwerere Flugzeuge frei.\n Kaufen Sie ein Flugzeug aus dem Hangarkatalog. Neue Flugzeuge starten mit leerem Tank. \nTanken Sie im Hangar für 50 € pro Liter. Hangar Fly verbraucht 100 L und bringt Sie mit einem Sprung in jedes Land: keine Beine und keine stundenlange Wartezeit. \nBei kommerziellen Reisen landen Sie sofort auf jeder Etappe. Der Besitz eines Flugzeugs verkürzt nur die 60-minütige Wartezeit bis zur nächsten Etappe oder Reise: Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, Frachtflugzeuge −30 %. Nur das beste Flugzeug zählt. \nVerkaufen Sie ein eigenes Flugzeug für 50 % des Kaufpreises. Reparieren Sie ein kaputtes Flugzeug, bevor Sie es auftanken oder fliegen können.';
 
   @override
   String get helpTopicAviationTips =>
-      'School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nEin Flugzeug beschleunigt auch das normale Reisen, selbst wenn Sie die kommerzielle Route nehmen. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben.';
+      'School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nAuf Reisen sehen Sie − % Wartezeit pro Strecke. Das ist nicht derselbe Sofortsprung wie „Fliegen im Hangar“. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben.';
 
   @override
   String get helpTopicCrewCategory => 'Sozial';

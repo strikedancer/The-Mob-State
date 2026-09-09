@@ -736,7 +736,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get travelHeroSubtitle =>
-      'Muoversi tra paesi per mercati, crimini e commercio. Ogni tratta costa in contanti e può farti perquisire.';
+      'Ogni tratta commerciale ti fa atterrare immediatamente; poi aspetti un\'ora per il successivo. Salta le gambe con Fly in Aviation.';
 
   @override
   String get travelHereChip => 'Tu sei qui';
@@ -761,7 +761,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Aereo proprio: −$percent% tempo di viaggio';
+    return 'Aereo proprio: −$percent% di attesa per tratta';
   }
 
   @override
@@ -4751,7 +4751,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get aviationHeroSubtitle =>
-      'Termina la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per viaggiare più velocemente e contrabbandare.';
+      'School più una licenza a pagamento, quindi acquista. Hangar Fly salta le gambe; in viaggio un aereo non fa altro che abbreviare l\'attesa.';
 
   @override
   String aviationSchoolChip(String level) {
@@ -4811,7 +4811,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String aviationFlyConfirmBody(String name, String country) {
-    return 'Volare da $name a $country? Utilizza 100 L e arriva immediatamente.';
+    return 'Volare da $name a $country? Utilizza 100 L. Salti lì adesso - senza gambe o ore di attesa.';
   }
 
   @override
@@ -4867,7 +4867,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% tempo di viaggio';
+    return '−$percent% di attesa per tratta';
   }
 
   @override
@@ -17050,11 +17050,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicTravelHow =>
-      'Paesi disponibili: Paesi Bassi (inizio), Belgio, Germania, Francia, Regno Unito, Spagna, Italia, Svizzera, Stati Uniti, Messico, Colombia, Brasile. \nSpese di viaggio: Paese limitrofo € 500-€ 2.000, Europa → Americhe € 5.000-€ 10.000, lunga distanza € 10.000-€ 20.000. \nRequisiti di viaggio: non in carcere, non in terapia intensiva, minimo 20 HP, fondi di viaggio disponibili. \nLe quantità di farmaci nel tuo inventario contano come grammi reali per il peso di trasporto e gli assegni di viaggio; 500 significa 500 g, non 50 kg. \nOgni paese ha prezzi di mercato diversi (differenza di prezzo fino al 300%), compensi diversi per i reati e articoli commerciali unici. \nRischio di trasporto: la polizia può sequestrare merci in base al livello di ricercato (probabilità = ricercato × 2%, massimo 80%). L\'FBI può sequestrare tutto a livello internazionale se la situazione è alta. \nL\'ispezione doganale ha una probabilità base del 10%. Puoi corrompere (€ 1.000-€ 5.000) o farti scoprire mentre perdi il 50% della merce. \nDopo l\'arrivo tutte le azioni sono immediatamente disponibili nel nuovo paese. I mercati e la velocità della criminalità variano in base alla località.';
+      'Paesi disponibili: Paesi Bassi (inizio), Belgio, Germania, Francia, Regno Unito, Spagna, Italia, Svizzera, Stati Uniti, Messico, Colombia, Brasile. \nSpese di viaggio: Paese limitrofo € 500-€ 2.000, Europa → Americhe € 5.000-€ 10.000, lunga distanza € 10.000-€ 20.000. \nRequisiti di viaggio: non in carcere, non in terapia intensiva, minimo 20 HP, fondi di viaggio disponibili. \nLe quantità di farmaci nel tuo inventario contano come grammi reali per il peso di trasporto e gli assegni di viaggio; 500 significa 500 g, non 50 kg. \nOgni paese ha prezzi di mercato diversi (differenza di prezzo fino al 300%), compensi diversi per i reati e articoli commerciali unici. \nRischio di trasporto: la polizia può sequestrare merci in base al livello di ricercato (probabilità = ricercato × 2%, massimo 80%). L\'FBI può sequestrare tutto a livello internazionale se la situazione è alta. \nL\'ispezione doganale ha una probabilità base del 10%. Puoi corrompere (€ 1.000-€ 5.000) o farti scoprire mentre perdi il 50% della merce. \nDopo l\'arrivo tutte le azioni sono immediatamente disponibili nel nuovo paese. I mercati e la velocità della criminalità variano in base alla località. \nOgni tratta commerciale ti fa atterrare immediatamente. Quindi attendi 60 minuti prima della tratta successiva o prima di poter viaggiare di nuovo. Le tratte dirette non prevedono attese aggiuntive durante il viaggio, ma solo successivamente. \nPossedere un aereo riduce solo l\'attesa per tratta (conta il miglior aereo). Saltare le gambe non è in Viaggio: usa Vola nell\'hangar (100 L, nessuna ora di attesa).';
 
   @override
   String get helpTopicTravelTips =>
-      'Combina sempre il viaggio con il commercio, la droga o il contrabbando: i viaggi a vuoto sono uno spreco di denaro. \nAbbassa il tuo livello di ricercato prima della partenza: un livello elevato di ricercato aumenta notevolmente il rischio di confisca durante il viaggio. \nPianifica in anticipo il viaggio di ritorno in modo da sapere già cosa portare all\'arrivo.';
+      'I viaggi commerciali non spostano beni commerciali: contrabbanda azioni nel paese in cui desideri venderle. \nAbbassa il tuo livello di ricercato prima della partenza: un livello elevato di ricercato aumenta notevolmente il rischio di confisca dei materiali trasportati e dei traffici di contrabbando. \nPianifica in anticipo il viaggio di ritorno in modo da sapere già cosa portare all\'arrivo. \nPer saltare ovunque senza gambe: fai rifornimento di 100 L e usa Fly on Aviation. La % sul viaggio accorcia solo la sosta, non ti fa atterrare più velocemente.';
 
   @override
   String get helpTopicAviationCategory => 'Mondo';
@@ -17064,15 +17064,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Completa la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per volare immediatamente, riduci i tempi di viaggio commerciale e vendi o ripara la tua flotta di hangar.';
+      'Completa la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per volare direttamente in un paese, riduci l\'attesa tra le tratte di viaggio e mantieni la tua flotta di hangar.';
 
   @override
   String get helpTopicAviationHow =>
-      'Completa la scuola di aviazione fino al livello 5 e ottieni entrambi i certificati di volo prima di poter acquistare una licenza a pagamento. \nAcquista una licenza a pagamento nella schermata Aviazione: base, commerciale o cargo. I livelli più alti sbloccano aerei più pesanti. \nAcquista un aereo dal catalogo dell\'hangar. I nuovi aerei iniziano con un serbatoio vuoto. \nRifornimento dall\'hangar a 50€ al litro. Un volo privato consuma 100 L e ti trasferisce istantaneamente in un altro paese. \nI viaggi commerciali utilizzano ancora biglietti e tratte. Possedere un aereo riduce l\'attesa: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aerei cargo −30%. Conta solo l\'aereo migliore. \nVendere un aereo di proprietà al 50% del prezzo di acquisto. Ripara un aereo rotto prima di poterlo rifornire di carburante o farlo volare.';
+      'Completa la scuola di aviazione fino al livello 5 e ottieni entrambi i certificati di volo prima di poter acquistare una licenza a pagamento. \nAcquista una licenza a pagamento nella schermata Aviazione: base, commerciale o cargo. I livelli più alti sbloccano aerei più pesanti. \nAcquista un aereo dal catalogo dell\'hangar. I nuovi aerei iniziano con un serbatoio vuoto. \nRifornimento dall\'hangar a 50€ al litro. Hangar Fly consuma 100 L e ti porta in qualsiasi paese in un solo salto: senza gambe e senza ore di attesa. \nIl viaggio commerciale ti fa già atterrare immediatamente su ogni tratta. Possedere un aereo riduce solo i 60 minuti di attesa fino alla tratta successiva o al prossimo viaggio: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aerei cargo −30%. Conta solo l\'aereo migliore. \nVendere un aereo di proprietà al 50% del prezzo di acquisto. Ripara un aereo rotto prima di poterlo rifornire di carburante o farlo volare.';
 
   @override
   String get helpTopicAviationTips =>
-      'School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l\'hangar. \nUn aereo inoltre accelera il Viaggio normale anche se si prende la rotta commerciale. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato.';
+      'School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l\'hangar. \nIn Viaggio vedi −% di attesa per tratta. Non è lo stesso salto istantaneo di Vola nell\'hangar. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato.';
 
   @override
   String get helpTopicCrewCategory => 'Sociale';

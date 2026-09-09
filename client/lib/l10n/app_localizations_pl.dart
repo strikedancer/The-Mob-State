@@ -733,7 +733,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get travelHeroSubtitle =>
-      'Poruszaj się między krajami w poszukiwaniu rynków, przestępstw i handlu. Każda noga kosztuje gotówkę i może spowodować przeszukanie.';
+      'Każda część komercyjna zapewnia natychmiastowe lądowanie; potem czekasz godzinę na następny. Pomiń nogi z Fly in Aviation.';
 
   @override
   String get travelHereChip => 'Jesteś tutaj';
@@ -758,7 +758,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Własny samolot: −$percent% czasu podróży';
+    return 'Własny samolot: −$percent% oczekiwania na etap';
   }
 
   @override
@@ -4742,7 +4742,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get aviationHeroSubtitle =>
-      'Skończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby szybciej podróżować i przemycać.';
+      'Szkoła plus płatna licencja, potem kup. Hangar Fly pomija nogi; na Podróż samolotem tylko skraca czas oczekiwania.';
 
   @override
   String aviationSchoolChip(String level) {
@@ -4802,7 +4802,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String aviationFlyConfirmBody(String name, String country) {
-    return 'Polecieć $name do $country? Zużywa 100 L i dociera natychmiast.';
+    return 'Polecieć $name do $country? Zużywa 100 L. Wskakujesz tam teraz – bez nóg i godzin czekania.';
   }
 
   @override
@@ -4857,7 +4857,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% czasu podróży';
+    return '−$percent% oczekiwania na nogę';
   }
 
   @override
@@ -16993,11 +16993,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicTravelHow =>
-      'Dostępne kraje: Holandia (start), Belgia, Niemcy, Francja, Wielka Brytania, Hiszpania, Włochy, Szwajcaria, USA, Meksyk, Kolumbia, Brazylia. \nKoszty podróży: kraj sąsiadujący 500-2000 euro, Europa → Ameryka 5000-10 000 euro, podróż międzymiastowa 10 000-20 000 euro. \nWymagania dotyczące podróży: nie w więzieniu, nie na oddziale intensywnej terapii, minimum 20 HP, dostępne fundusze na podróż. \nIlości narkotyków znajdujące się w Twoim ekwipunku są liczone jako rzeczywiste gramy na potrzeby kontroli wagi i podróży; 500 oznacza 500g, a nie 50kg. \nKażdy kraj ma inne ceny rynkowe (różnica cenowa do 300%), różne wypłaty za przestępstwa i unikalne przedmioty handlowe. \nRyzyko w transporcie: policja może zająć towar na podstawie poziomu poszukiwanego (szansa = poszukiwany × 2%, maksymalnie 80%). FBI może przejąć wszystko na arenie międzynarodowej, jeśli panuje wysoka temperatura. \nInspekcja celna ma 10% szans bazowych. Możesz przekupić (1000-5000 €) lub zostać przyłapanym na utracie 50% towarów. \nPo przybyciu na miejsce wszystkie akcje są od razu dostępne w nowym kraju. Rynki i prędkość przestępczości różnią się w zależności od lokalizacji.';
+      'Dostępne kraje: Holandia (start), Belgia, Niemcy, Francja, Wielka Brytania, Hiszpania, Włochy, Szwajcaria, USA, Meksyk, Kolumbia, Brazylia. \nKoszty podróży: kraj sąsiadujący 500-2000 euro, Europa → Ameryka 5000-10 000 euro, podróż międzymiastowa 10 000-20 000 euro. \nWymagania dotyczące podróży: nie w więzieniu, nie na oddziale intensywnej terapii, minimum 20 HP, dostępne fundusze na podróż. \nIlości narkotyków znajdujące się w Twoim ekwipunku są liczone jako rzeczywiste gramy na potrzeby kontroli wagi i podróży; 500 oznacza 500g, a nie 50kg. \nKażdy kraj ma inne ceny rynkowe (różnica cenowa do 300%), różne wypłaty za przestępstwa i unikalne przedmioty handlowe. \nRyzyko transportu: policja może zająć towar na podstawie poziomu poszukiwanego (szansa = poszukiwany × 2%, maksymalnie 80%). FBI może przejąć wszystko na arenie międzynarodowej, jeśli panuje wysoka temperatura. \nInspekcja celna ma 10% szans bazowych. Możesz przekupić (1000-5000 €) lub zostać przyłapanym na utracie 50% towarów. \nPo przybyciu na miejsce wszystkie akcje są od razu dostępne w nowym kraju. Rynki i prędkość przestępczości różnią się w zależności od lokalizacji. \nKażda odnoga komercyjna ląduje natychmiast. Następnie odczekaj 60 minut do następnego etapu lub zanim będziesz mógł ponownie podróżować. Na trasach bezpośrednich nie trzeba czekać w trakcie podróży, tylko po jej zakończeniu. \nPosiadanie samolotu jedynie skraca czas oczekiwania na jedną nogę (liczy się najlepszy samolot). Skakanie nóg nie jest częścią Podróży: użyj Latania w hangarze (100 L, bez godziny czekania).';
 
   @override
   String get helpTopicTravelTips =>
-      'Zawsze łącz podróż z handlem, narkotykami lub przemytem – pusta podróż to strata pieniędzy. \nObniż poziom poszukiwanej osoby przed wyjazdem: wysoka kara znacznie zwiększa ryzyko konfiskaty na trasie. \nZaplanuj podróż powrotną z wyprzedzeniem, aby wiedzieć, co zabrać ze sobą po przyjeździe.';
+      'Podróże komercyjne nie powodują przenoszenia towarów handlowych — przemycają towary do kraju, do którego chcesz sprzedać. \nObniż poziom poszukiwanego przed wyjazdem: wysoki poziom gończy znacznie zwiększa ryzyko konfiskaty przewożonych materiałów i przemytu. \nZaplanuj podróż powrotną z wyprzedzeniem, aby wiedzieć, co zabrać ze sobą po przyjeździe. \nAby skoczyć gdziekolwiek bez nóg: zatankuj 100 L i użyj Fly on Aviation. % na podróż jedynie skraca przerwę w podróży, nie powoduje szybszego wylądowania.';
 
   @override
   String get helpTopicAviationCategory => 'Świat';
@@ -17007,15 +17007,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Ukończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby natychmiast latać, skróć czas podróży komercyjnych i sprzedaj lub napraw swoją flotę w hangarze.';
+      'Ukończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby polecieć prosto do kraju, skróć czas oczekiwania między etapami podróży i utrzymuj flotę w hangarze.';
 
   @override
   String get helpTopicAviationHow =>
-      'Ukończ szkołę lotniczą do poziomu 5 i zdobądź oba certyfikaty lotnicze, zanim będziesz mógł kupić płatną licencję. \nKup płatną licencję na ekranie Lotnictwo: podstawową, komercyjną lub cargo. Wyższe poziomy odblokowują cięższe samoloty. \nKup samolot z katalogu hangaru. Nowe samoloty startują z pustym zbiornikiem. \nTankuj w hangarze po 50 € za litr. Prywatny lot zużywa 100 litrów i pozwala natychmiastowo przenieść się do innego kraju. \nPodróże komercyjne nadal korzystają z biletów i nóg. Posiadanie samolotu skraca czas oczekiwania: Cessna –15%, King Air –25%, Citation –30%, Gulfstream –35%, samoloty cargo –30%. Liczy się tylko najlepszy samolot. \nSprzedaj posiadany samolot za 50% ceny zakupu. Napraw zepsuty samolot, zanim będziesz mógł go zatankować lub polecieć.';
+      'Ukończ szkołę lotniczą do poziomu 5 i zdobądź oba certyfikaty lotu, zanim będziesz mógł kupić płatną licencję. \nKup płatną licencję na ekranie Lotnictwo: podstawową, komercyjną lub cargo. Wyższe poziomy odblokowują cięższe samoloty. \nKup samolot z katalogu hangaru. Nowe samoloty startują z pustym zbiornikiem. \nTankuj w hangarze po 50 € za litr. Hangar Fly zużywa 100 litrów i jednym skokiem przeniesie Cię do dowolnego kraju: bez nóg i bez godzinnego czekania. \nDzięki podróżom komercyjnym natychmiast znajdziesz się na każdej nodze. Posiadanie samolotu jedynie skraca 60-minutowe oczekiwanie do następnego etapu lub kolejnej podróży: Cessna –15%, King Air –25%, Citation –30%, Gulfstream –35%, samoloty cargo –30%. Liczy się tylko najlepszy samolot. \nSprzedaj posiadany samolot za 50% ceny zakupu. Napraw zepsuty samolot, zanim będziesz mógł go zatankować lub polecieć.';
 
   @override
   String get helpTopicAviationTips =>
-      'Szkoła 5/5 nie wystarczy: przed zakupem nadal potrzebujesz płatnej licencji. \nZbiornik wystarczający na 100 litrów przed lotem. Pusty samolot nie może opuścić hangaru. \nSamolot przyspiesza również normalną podróż, nawet jeśli wybierasz trasę komercyjną. \nSprzedaj nieużywane samoloty, jeśli potrzebujesz gotówki; dostajesz tylko połowę tego, co zapłaciłeś.';
+      'Szkoła 5/5 nie wystarczy: przed zakupem nadal potrzebujesz płatnej licencji. \nZbiornik wystarczający na 100 litrów przed lotem. Pusty samolot nie może opuścić hangaru. \nW opcji Podróż widzisz −% oczekiwania na nogę. To nie jest ten sam natychmiastowy skok, co Fly in the hangar. \nSprzedaj nieużywane samoloty, jeśli potrzebujesz gotówki; dostajesz tylko połowę tego, co zapłaciłeś.';
 
   @override
   String get helpTopicCrewCategory => 'Społeczny';

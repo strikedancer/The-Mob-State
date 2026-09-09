@@ -745,7 +745,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get travelHeroSubtitle =>
-      'Déplacez-vous entre les pays pour les marchés, les crimes et le commerce. Chaque étape coûte de l\'argent et peut vous permettre d\'être fouillé.';
+      'Chaque étape commerciale vous amène immédiatement ; puis tu attends une heure pour la suivante. Sautez des jambes avec Fly in Aviation.';
 
   @override
   String get travelHereChip => 'Vous êtes ici';
@@ -770,7 +770,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Propre avion : −$percent% du temps de trajet';
+    return 'Propre avion : −$percent % d\'attente par étape';
   }
 
   @override
@@ -4779,7 +4779,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get aviationHeroSubtitle =>
-      'Terminez l\'école d\'aviation, achetez une licence payante, puis achetez un avion pour voyager plus rapidement et faire de la contrebande.';
+      'École plus une licence payante, puis achetez. Hangar Fly saute des jambes ; en voyage, un avion ne fait que raccourcir l\'attente.';
 
   @override
   String aviationSchoolChip(String level) {
@@ -4839,7 +4839,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String aviationFlyConfirmBody(String name, String country) {
-    return 'Voler de $name à $country ? Utilise 100 L et arrive instantanément.';
+    return 'Voler de $name à $country ? Utilise 100 L. Vous y sautez maintenant – pas de jambes ni d\'heure d\'attente.';
   }
 
   @override
@@ -4895,7 +4895,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% du temps de trajet';
+    return '−$percent% d\'attente par étape';
   }
 
   @override
@@ -17075,11 +17075,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicTravelHow =>
-      'Pays disponibles : Pays-Bas (début), Belgique, Allemagne, France, Royaume-Uni, Espagne, Italie, Suisse, USA, Mexique, Colombie, Brésil. \nFrais de déplacement : pays voisin 500-2 000 €, Europe → Amériques 5 000-10 000 €, longue distance 10 000-20 000 €. \nConditions de voyage : pas en prison, pas en soins intensifs, minimum 20 HP, fonds de voyage disponibles. \nLes quantités de médicaments dans votre inventaire comptent en grammes réels pour le poids à transporter et les chèques de voyage ; 500 signifie 500 g et non 50 kg. \nChaque pays a des prix de marché différents (jusqu\'à 300 % de différence), des paiements de délits différents et des articles commerciaux uniques. \nRisque lié au transport : la police peut saisir des marchandises en fonction du niveau de recherche (chance = recherche × 2 %, max 80 %). Le FBI peut tout saisir à l’échelle internationale si la chaleur est forte. \nL\'inspection douanière a une chance de base de 10 %. Vous pouvez corrompre (1 000 à 5 000 €) ou vous faire prendre en train de perdre 50 % des marchandises. \nAprès l\'arrivée, toutes les actions sont immédiatement disponibles dans le nouveau pays. Les marchés et la vitesse de la criminalité varient selon le lieu.';
+      'Pays disponibles : Pays-Bas (début), Belgique, Allemagne, France, Royaume-Uni, Espagne, Italie, Suisse, USA, Mexique, Colombie, Brésil. \nFrais de déplacement : pays voisin 500-2 000 €, Europe → Amériques 5 000-10 000 €, longue distance 10 000-20 000 €. \nConditions de voyage : pas en prison, pas en soins intensifs, minimum 20 HP, fonds de voyage disponibles. \nLes quantités de médicaments dans votre inventaire comptent en grammes réels pour le poids à transporter et les chèques de voyage ; 500 signifie 500 g et non 50 kg. \nChaque pays a des prix de marché différents (jusqu\'à 300 % de différence), des paiements de délits différents et des articles commerciaux uniques. \nRisque lié au transport : la police peut saisir des marchandises en fonction du niveau de recherche (chance = recherche × 2 %, max 80 %). Le FBI peut tout saisir à l’échelle internationale si la chaleur est forte. \nL\'inspection douanière a une chance de base de 10 %. Vous pouvez corrompre (1 000 à 5 000 €) ou vous faire prendre en train de perdre 50 % des marchandises. \nAprès l\'arrivée, toutes les actions sont immédiatement disponibles dans le nouveau pays. Les marchés et la vitesse de la criminalité varient selon le lieu. \nChaque étape commerciale vous amène immédiatement. Vous attendez ensuite 60 minutes avant la prochaine étape ou avant de pouvoir voyager à nouveau. Les itinéraires directs n\'ont pas d\'attente supplémentaire pendant le voyage, seulement après. \nPosséder un avion ne fait que raccourcir l\'attente par trajet (le meilleur avion compte). Sauter des jambes n\'est pas en voyage : utilisez Fly dans le hangar (100 L, pas d\'heure d\'attente).';
 
   @override
   String get helpTopicTravelTips =>
-      'Combinez toujours les voyages avec le commerce, la drogue ou la contrebande : les voyages à vide gaspillent de l’argent. \nRéduisez votre niveau de recherche avant le départ : un niveau de recherche élevé augmente considérablement le risque de confiscation en cours de route. \nPlanifiez votre voyage de retour à l\'avance afin de savoir déjà quoi rapporter à votre arrivée.';
+      'Les voyages commerciaux ne transportent pas de marchandises commerciales : faites passer clandestinement des stocks vers le pays où vous souhaitez vendre. \nRéduisez votre niveau de recherche avant le départ : un niveau de recherche élevé augmente considérablement le risque de confiscation des matériaux transportés et des courses de contrebande. \nPlanifiez votre voyage de retour à l\'avance afin de savoir déjà quoi rapporter à votre arrivée. \nPour sauter n\'importe où sans jambes : faites le plein de 100 L et utilisez Fly on Aviation. Le % sur le voyage ne fait que raccourcir l\'escale, il ne vous fait pas atterrir plus rapidement.';
 
   @override
   String get helpTopicAviationCategory => 'Monde';
@@ -17089,15 +17089,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Terminez l\'école d\'aviation, achetez une licence payante, puis achetez un avion pour voler instantanément, réduisez le temps de déplacement commercial et vendez ou réparez votre flotte de hangars.';
+      'Terminez l\'école d\'aviation, achetez une licence payante, puis achetez un avion pour voler directement vers un pays, réduisez l\'attente entre les voyages et entretenez votre flotte de hangars.';
 
   @override
   String get helpTopicAviationHow =>
-      'Terminez l\'école d\'aviation jusqu\'au niveau 5 et obtenez les deux certificats de vol avant de pouvoir acheter une licence payante. \nAchetez une licence payante sur l\'écran Aviation : de base, commerciale ou cargo. Les niveaux supérieurs débloquent des avions plus lourds. \nAchetez un avion dans le catalogue du hangar. Les nouveaux avions démarrent avec un réservoir vide. \nFaire le plein au hangar à 50 € le litre. Un vol privé consomme 100 L et vous transporte instantanément vers un autre pays. \nLes voyages commerciaux utilisent toujours des billets et des trajets. Posséder un avion raccourcit cette attente : Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, avions cargo −30 %. Seul le meilleur avion compte. \nVendez un avion en votre possession pour 50 % du prix d\'achat. Réparez un avion en panne avant de pouvoir faire le plein ou le piloter.';
+      'Terminez l\'école d\'aviation jusqu\'au niveau 5 et obtenez les deux certificats de vol avant de pouvoir acheter une licence payante. \nAchetez une licence payante sur l\'écran Aviation : de base, commerciale ou cargo. Les niveaux supérieurs débloquent des avions plus lourds. \nAchetez un avion dans le catalogue du hangar. Les nouveaux avions démarrent avec un réservoir vide. \nFaire le plein au hangar à 50 € le litre. Hangar Fly utilise 100 L et vous emmène dans n\'importe quel pays en un seul saut : pas d\'étapes et pas d\'heure d\'attente. \nLes voyages commerciaux vous amènent déjà immédiatement à chaque étape. Posséder un avion ne fait que raccourcir les 60 minutes d\'attente jusqu\'à la prochaine étape ou le prochain voyage : Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, avions cargo −30 %. Seul le meilleur avion compte. \nVendez un avion en votre possession pour 50 % du prix d\'achat. Réparez un avion en panne avant de pouvoir faire le plein ou le piloter.';
 
   @override
   String get helpTopicAviationTips =>
-      'L\'école 5/5 ne suffit pas : il faut quand même la licence payante avant tout achat. \nRéservoir suffisant pour 100 L avant de voler. Un avion vide ne peut pas quitter le hangar. \nUn avion accélère également les voyages normaux, même si vous empruntez la route commerciale. \nVendez des avions inutilisés si vous avez besoin d’argent liquide ; vous ne recevez que la moitié de ce que vous avez payé.';
+      'L\'école 5/5 ne suffit pas : il faut quand même la licence payante avant tout achat. \nRéservoir suffisant pour 100 L avant de voler. Un avion vide ne peut pas quitter le hangar. \nSur Travel, vous voyez −% d\'attente par étape. Ce n\'est pas le même saut instantané que Fly in the hangar. \nVendez des avions inutilisés si vous avez besoin d’argent liquide ; vous ne recevez que la moitié de ce que vous avez payé.';
 
   @override
   String get helpTopicCrewCategory => 'Sociale';

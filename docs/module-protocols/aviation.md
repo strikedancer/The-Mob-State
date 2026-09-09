@@ -87,10 +87,10 @@ Elk vliegtuig heeft een vast aantal cargo-slots. Items nemen een bepaald aantal 
 - `aviationService.getBestAircraftBonus(playerId)` geeft de hoogste `travelBonus` van alle bezeten toestellen, anders `0`.
 - `GET /travel` en `GET /travel/countries` passen die bonus toe op `totalTime` en sturen `aircraftTravelBonus` mee.
 - `POST /travel/:countryId` en `POST /travel/next` zetten de etappe-cooldown op `3600 × (1 − bonus)` seconden (VIP-korting blijft daarna gelden).
-- Reistijd = `baseReistijd × (1 − bonus)`. Voorbeeld: 4 uur + Gulfstream (−35%) → `4 × 0.65 = 2.6 uur`.
-- Geldt voor commerciële Travel-etappes. Privévluchten via `POST /aviation/fly/:id` zijn instant en gebruiken 100 L.
-- Het bonus-voordeel is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% reistijd".
-- Geen vliegtuig → geen bonus (reistijd ongewijzigd, geen regressie).
+- Commerciële Travel landt per etappe al meteen. De bonus verkort alleen die wacht. Voorbeeld: 4 etappes + Gulfstream (−35%) → `4 × 0.65 = 2.6 uur` wachten in plaats van 4 uur.
+- Etappes overslaan: privévluchten via `POST /aviation/fly/:id` zijn instant, 100 L, geen uur-wacht.
+- Het bonus-voordeel is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% wacht per etappe".
+- Geen vliegtuig → geen bonus (wacht ongewijzigd, geen regressie).
 
 ## Hangar-acties
 
@@ -186,7 +186,7 @@ Catalogus staten in `backend/content/aircraft.json`:
 ## Must Preserve
 - Gate-status (vergrendeld/beschikbaar) altijd zichtbaar in catalogus, incl. welk level nog benodigd is.
 - Cargo-slots gebruikt/vrij zichtbaar in smokkel-manifest UI.
-- Reistijdbonus zichtbaar in Travel scherm vóór vertrek ("Eigen vliegtuig: −X% reistijd").
+- Reistijdbonus zichtbaar in Travel scherm vóór vertrek ("Eigen vliegtuig: −X% wacht per etappe").
 - Hangar toont tanken, vliegen, verkopen en repareren op elk bezeten toestel.
 - Help-topic `aviation` staat in Help na Reizen.
 - Confiscatie-kans bij eigen voertuig smokkel altijd expliciet communiceren vóór bevestiging.

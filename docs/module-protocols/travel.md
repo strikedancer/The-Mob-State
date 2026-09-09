@@ -48,10 +48,10 @@ Commercial travel does **not** move or confiscate personal trade-good warehouses
 
 ## Aircraft Reistijdbonus
 
-Als een speler een privévliegtuig bezit, wordt de internationale reistijd korter:
+Commerciële Travel **landt je per etappe meteen**. Een eigen vliegtuig maakt die landing niet sneller. De −% gaat alleen over de **wacht van 1 uur per etappe** (tot de volgende etappe, of tot de volgende commerciële reis). Directe routes hebben dus geen extra wacht tijdens de trip, alleen daarna.
 
-| Vliegtuig (live id) | Reistijdbonus |
-|---------------------|---------------|
+| Vliegtuig (live id) | Wacht per etappe |
+|---------------------|------------------|
 | Cessna 172 (`cessna_172`) | −15% |
 | Beechcraft King Air (`king_air_350`) | −25% |
 | Citation X (`citation_x`) | −30% |
@@ -59,10 +59,10 @@ Als een speler een privévliegtuig bezit, wordt de internationale reistijd korte
 | Boeing 737 Cargo / Antonov | −30% |
 
 - Backend loadt het beste vliegtuig via `aviationService.getBestAircraftBonus(playerId)` (niet cumulatief).
-- Reistijd = `baseReistijd × (1 − bonus)`. Geen vliegtuig = geen bonus (geen regressie).
-- Bonus is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% reistijd" / "Own aircraft: −X% travel time".
-- De bonus geldt voor commerciële Travel-etappes (1 uur basis per etappe). Waterroutes zijn niet beïnvloed; het huidige landengraf heeft nog geen aparte waterflag.
-- Privévluchten vanaf Luchtvaart zijn instant en staan los van deze cooldown.
+- Wacht = `3600s × (1 − bonus)` per etappe (VIP-korting daarna). Geen vliegtuig = 60 minuten (geen regressie).
+- Bonus is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% wacht per etappe" / "Own aircraft: −X% wait per leg".
+- Waterroutes zijn niet beïnvloed; het huidige landengraf heeft nog geen aparte waterflag.
+- Etappes overslaan: privévluchten vanaf Luchtvaart (`POST /aviation/fly/:id`) zijn instant, 100 L, en staan los van deze cooldown.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

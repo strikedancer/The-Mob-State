@@ -171,7 +171,9 @@
       "Elk land heeft andere marktprijzen voor handelsgoederen (tot 300% prijsverschil), andere crime-opbrengsten en unieke trade items.",
       "Risico tijdens transport: politie kan goederen confisqueren op basis van je Wanted Level (kans = wanted × 2%, max 80%). FBI kan internationaal alles in beslag nemen als heat hoog is.",
       "Douane-inspectie heeft 10% basiskans. Je kunt steekpenningen betalen (€1.000-€5.000) of gepakt worden voor 50% goederen-verlies.",
-      "Na aankomst zijn al je acties direct beschikbaar in het nieuwe land. Markten en crimesnelheid variëren per locatie."
+      "Na aankomst zijn al je acties direct beschikbaar in het nieuwe land. Markten en crimesnelheid variëren per locatie.",
+      "Elke commerciële etappe landt je meteen. Daarna wacht je 60 minuten tot de volgende etappe, of tot je opnieuw kunt reizen. Directe routes hebben dus geen extra wacht tijdens de reis, alleen daarna.",
+      "Een eigen vliegtuig verkort alleen die wacht per etappe (beste toestel telt). Etappes overslaan doe je niet op Reizen: gebruik Vliegen in de hangar (100 L, geen uur-wacht)."
     ],
     "howEn": [
       "Available countries: Netherlands (start), Belgium, Germany, France, United Kingdom, Spain, Italy, Switzerland, USA, Mexico, Colombia, Brazil.",
@@ -181,17 +183,21 @@
       "Each country has different market prices (up to 300% price difference), different crime payouts and unique trade items.",
       "Transport risk: police can seize goods based on Wanted Level (chance = wanted × 2%, max 80%). FBI can seize everything internationally if heat is high.",
       "Customs inspection has a 10% base chance. You can bribe (€1.000-€5.000) or get caught losing 50% of goods.",
-      "After arrival all actions are immediately available in the new country. Markets and crime speed vary by location."
+      "After arrival all actions are immediately available in the new country. Markets and crime speed vary by location.",
+      "Each commercial leg lands you immediately. You then wait 60 minutes before the next leg, or before you can travel again. Direct routes have no extra wait during the trip, only afterwards.",
+      "Owning a plane only shortens that per-leg wait (best plane counts). Skipping legs is not on Travel: use Fly in the hangar (100 L, no hour wait)."
     ],
     "tipsNl": [
-      "Plan reizen altijd samen met trade, drugs of smokkel — een lege reis is weggegooid geld.",
-      "Verlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie onderweg sterk.",
-      "Combineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg."
+      "Gewone reizen verplaatst geen handelswaren — smokkel voorraad naar het land waar je wilt verkopen.",
+      "Verlaag je Wanted Level voor vertrek: hoog wanted vergroot de kans op confiscatie van rugzak-materiaal en smokkelzendingen.",
+      "Combineer heen- en terugreis zodat je bij aankomst al weet wat je meebrengt op de terugweg.",
+      "Direct overal naartoe zonder etappes: tank 100 L en kies Vliegen op Luchtvaart. Het %-voordeel op Reizen is alleen een kortere layover, geen snellere landing."
     ],
     "tipsEn": [
-      "Always combine travel with trade, drugs or smuggling — empty travel wastes money.",
-      "Lower your Wanted Level before departure: high wanted greatly increases confiscation risk en route.",
-      "Plan your return trip in advance so you already know what to bring back on arrival."
+      "Commercial travel does not move trade goods — smuggle stock to the country where you want to sell.",
+      "Lower your Wanted Level before departure: high wanted greatly increases confiscation risk for carried materials and smuggling runs.",
+      "Plan your return trip in advance so you already know what to bring back on arrival.",
+      "To jump anywhere without legs: refuel 100 L and use Fly on Aviation. The % on Travel only shortens the layover, it does not land you faster."
     ],
     "protocolPath": "docs/module-protocols/travel.md"
   },
