@@ -47,7 +47,6 @@ class VehicleHeistScreen extends StatefulWidget {
 class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     with SingleTickerProviderStateMixin {
   static const Color _gold = Color(0xFFD4AF37);
-  static const Color _panelBorder = Color(0xFF2A3344);
   static const Color _vehicleAccent = Color(0xFFF0A04B);
 
   final ApiClient _apiClient = ApiClient();
@@ -333,34 +332,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTabQuickSelect(AppLocalizations l10n) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: List.generate(3, (index) {
-          final isActive = _activeTabIndex == index;
-          return ChoiceChip(
-            label: Text(_tabTitle(l10n, index)),
-            selected: isActive,
-            onSelected: (_) => _tabController.animateTo(index),
-            selectedColor: kEmpireGold.withValues(alpha: 0.22),
-            labelStyle: TextStyle(
-              color: isActive ? kEmpireGold : Colors.white70,
-              fontWeight: FontWeight.w700,
-            ),
-            side: BorderSide(
-              color: isActive
-                  ? kEmpireGold.withValues(alpha: 0.65)
-                  : _panelBorder,
-            ),
-          );
-        }),
       ),
     );
   }
@@ -2054,7 +2025,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
               children: [
                 _buildPageHero(l10n, provider),
                 _buildLiveEventBanner(l10n),
-                _buildTabQuickSelect(l10n),
                 Text(
                   _tabSubtitle(l10n, _activeTabIndex),
                   style: const TextStyle(

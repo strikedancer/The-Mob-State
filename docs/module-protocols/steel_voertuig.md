@@ -42,7 +42,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Houd NL en EN tekst parity op alle zichtbare teksten.
 - Ops-panel labels, knoppen en statusregels moeten volledig gelokaliseerd zijn; NL-weergave mag geen Engelse fallbacklabels tonen.
 - Houd layout bruikbaar op mobiel, tablet en desktop.
-- Houd Auto, Motor en Boot als drie duidelijk gescheiden componenten in de UI, met eigen opslagcontext en duidelijke labels.
+- Houd Auto, Motor en Boot als drie duidelijk gescheiden componenten in de UI, met eigen opslagcontext en duidelijke labels. Onder de foto-hero geen extra Auto/Motor/Boot-chips; de drie lane cards zijn de enige categorie-selector.
 - In de gecombineerde Vehicle Heist shell mag geen dubbele categorie-navigatie bestaan: gebruik één primaire categorie-selector (lane cards) en vermijd een tweede redundante tab-rij met dezelfde drie categorieën.
 - Lane cards in Vehicle Heist tonen ook opslagcapaciteit per type (opslag gebruikt/totaal + upgradelevel), zodat spelers niet hoeven te scrollen naar losse capaciteitsbalken.
 - Vehicle Ops uitbreidingen (hotspots, parts market, crew ops, category heat, chop contracts, dynamic police patterns) moeten per voertuigcategorie duidelijk zichtbaar en uitlegbaar blijven.
