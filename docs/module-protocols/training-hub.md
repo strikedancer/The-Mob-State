@@ -17,7 +17,7 @@ Single Flutter entry that combines **gym** (three tracks: strength / speed / sta
 - **Refresh:** reloads `GET /training/status` (and related state). Prefer **silent refresh** (no full-page blocking spinner) when the user taps refresh while already on the hub.
 - **“Open crimes” / misdaden:** optional `onOpenCrimes` callback (e.g. web dashboard embed) jumps to the crimes section so active bonuses are visible there too.
 - **Crimes banner:** optional `onOpenTraining` on `CrimeScreen` — tappable strip linking back to the hub.
-- **Dashboard home:** `TrainingSummaryCard` shows aggregate bonuses + combo state; cooldown panel lists `gym_strength`, `gym_speed`, `gym_stamina` per track plus `gym` (soonest).
+- **Dashboard home:** no training summary bar. Open the hub from the sidebar (Acties). Cooldown panel still lists `gym_strength`, `gym_speed`, `gym_stamina` per track plus `gym` (soonest).
 
 Legacy wrappers (same UI):
 

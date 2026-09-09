@@ -47,7 +47,6 @@ import 'tune_shop_screen.dart';
 import 'direct_messages_screen.dart';
 import 'hitlist_screen.dart';
 import 'training_hub_screen.dart';
-import '../widgets/training_summary_card.dart';
 import 'ammo_factory_screen.dart';
 import 'school_screen.dart';
 import 'don_screen.dart';
@@ -2092,8 +2091,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       case _WebSection.dashboard:
         return _WebDashboardHomeContent(
-          onOpenTrainingHub: () =>
-              _selectWebSection(_WebSection.trainingHub),
           onOpenMarket: () =>
               _openBlackMarket(BlackMarketScreen.tabMarketplace),
         );
@@ -3036,11 +3033,9 @@ class _HomeLiveTimers {
 
 class _WebDashboardHomeContent extends StatefulWidget {
   const _WebDashboardHomeContent({
-    this.onOpenTrainingHub,
     this.onOpenMarket,
   });
 
-  final VoidCallback? onOpenTrainingHub;
   final VoidCallback? onOpenMarket;
 
   @override
@@ -3705,8 +3700,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             ),
             const SizedBox(height: 8),
             MarketTeaserTile(onOpenMarket: widget.onOpenMarket),
-            const SizedBox(height: 8),
-            TrainingSummaryCard(onOpenHub: widget.onOpenTrainingHub),
             const SizedBox(height: 8),
             LayoutBuilder(
               builder: (context, constraints) {
