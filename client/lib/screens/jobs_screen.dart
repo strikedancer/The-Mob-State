@@ -183,13 +183,21 @@ class _JobsScreenState extends State<JobsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      l10n.jobScreenHeroTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.jobScreenHeroTitle,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const GamePageInfoButton(topicId: 'jobs'),
+                      ],
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -970,6 +978,7 @@ class _JobsScreenState extends State<JobsScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'jobs',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }

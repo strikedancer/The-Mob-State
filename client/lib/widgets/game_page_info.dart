@@ -72,7 +72,8 @@ class GamePageInfoButton extends StatelessWidget {
   }
 }
 
-/// Wraps a player page so the gold `i` sits top-right.
+/// Wraps a player page with [GamePageInfoScope].
+/// Set [showOverlay] only for standalone mobile routes that have no title-row `i`.
 /// Nested hosts are no-ops, so dashboard + screen can both wrap safely.
 class GamePageInfoHost extends StatelessWidget {
   const GamePageInfoHost({
@@ -80,16 +81,21 @@ class GamePageInfoHost extends StatelessWidget {
     required this.topicId,
     required this.child,
     this.enabled = true,
+    this.showOverlay = true,
   });
 
   final String topicId;
   final Widget child;
   final bool enabled;
+  final bool showOverlay;
 
   @override
   Widget build(BuildContext context) {
     if (!enabled || topicId.isEmpty) return child;
     if (GamePageInfoScope.maybeOf(context) != null) return child;
+
+    final scoped = GamePageInfoScope(topicId: topicId, child: child);
+    if (!showOverlay) return scoped;
 
     return GamePageInfoScope(
       topicId: topicId,
@@ -102,7 +108,7 @@ class GamePageInfoHost extends StatelessWidget {
             right: 0,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 6, 52, 0),
+                padding: const EdgeInsets.fromLTRB(0, 6, 12, 0),
                 child: GamePageInfoButton(topicId: topicId),
               ),
             ),

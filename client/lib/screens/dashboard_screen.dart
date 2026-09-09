@@ -1604,6 +1604,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       1.0,
     );
     final healthProgress = (player.health / 100).clamp(0.0, 1.0);
+    final pageInfoTopic = _statusBarPageInfoTopic();
     final wantedLevel = (player.wantedLevel ?? 0).toDouble();
     final wantedProgress = (wantedLevel / 5.0).clamp(0.0, 1.0);
     final fbiHeat = (player.fbiHeat ?? 0).toDouble();
@@ -1650,6 +1651,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Colors.blueGrey,
                 ),
               ),
+              if (pageInfoTopic != null) ...[
+                const SizedBox(width: 10),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: GamePageInfoButton(topicId: pageInfoTopic),
+                ),
+              ],
             ],
           ),
           const SizedBox(height: 8),
@@ -1781,6 +1789,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  bool _pageInfoLivesInHero(_WebSection section) {
+    switch (section) {
+      case _WebSection.crimes:
+      case _WebSection.jobs:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  String? _statusBarPageInfoTopic() {
+    if (_pageInfoLivesInHero(_selectedWebSection)) return null;
+    return _pageInfoTopicFor(_selectedWebSection);
+  }
+
   String? _pageInfoTopicFor(_WebSection section) {
     switch (section) {
       case _WebSection.support:
@@ -1878,7 +1901,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final topicId = _pageInfoTopicFor(_selectedWebSection);
     final child = _buildWebContentBody(context);
     if (topicId == null) return child;
-    return GamePageInfoHost(topicId: topicId, child: child);
+    return GamePageInfoHost(
+      topicId: topicId,
+      showOverlay: false,
+      child: child,
+    );
   }
 
   Widget _buildWebContentBody(BuildContext context) {

@@ -362,13 +362,21 @@ class _CrimeScreenState extends State<CrimeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          l10n.crimeScreenHeroTitle,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                l10n.crimeScreenHeroTitle,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const GamePageInfoButton(topicId: 'crimes'),
+                          ],
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -1288,6 +1296,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'crimes',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
