@@ -8,6 +8,8 @@ android
 ios
 build
 test
+# Local video tooling — never copy into the Flutter web image.
+tools/
 # Images are served from external runtime mount — exclude from build context to keep it small.
 # Exception: maps/ contains SVG assets bundled by Flutter (rootBundle) — must be included.
 assets/images/

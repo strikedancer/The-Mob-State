@@ -131,6 +131,8 @@ dc run --rm backend npx prisma migrate resolve --rolled-back "20260802140000_pla
 dc run --rm backend npx prisma migrate resolve --rolled-back "20260802160000_player_event_items" || true
 dc run --rm backend npx prisma migrate deploy
 dc up -d --no-build --no-deps backend
+# Flutter COPY . . has filled the 8G disk when client/tools/ffmpeg leaked into the context.
+docker builder prune -f >/dev/null || true
 dc build --memory 3g client
 dc up -d --no-build --no-deps client
 dc build --memory 1536m admin
