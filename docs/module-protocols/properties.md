@@ -34,7 +34,7 @@ Scope-afbakening:
 
 ## Must Preserve
 - Owned en available kaarten gebruiken dezelfde catalogusfoto (`house.png`, `apartment.png`, `warehouse.png`, `nightclub.png`, `car_showroom.png`, `motorcycle_showroom.png`, `boat_harbor.png`) via `WebAssetHelper`. Geen `EstateLotView` op dit scherm of op het publieke profiel. Deploy kopieert `properties/` naar `runtime/client-images`.
-- Default tab is **My properties**. Lege owned-staat heeft een CTA naar Available. Available heeft type-chips, cash/rank-lock op kopen, en geformatteerde confirm voor buy + upgrade. Fouten zijn per tab; een refresh wist geen bestaande lijst.
+- Default tab is **My properties**. Lege owned-staat heeft een CTA naar Available. **Mijn eigendommen** opent op het huidige land (niet wereldwijd). Chips: **Alles** of per land waar je panden hebt (huidig land eerst, met Hier). Elke owned-tegel toont vlag + land. Available heeft type-chips, cash/rank-lock op kopen, en geformatteerde confirm voor buy + upgrade. Fouten zijn per tab; een refresh wist geen bestaande lijst. Publiek profiel toont geen land op eigendomtegels.
 - Brede schermen (≥720px twee kolommen, ≥1180px drie). Mobiel blijft één kolom. Elke kaart heeft een info-knop met type-uitleg + stats.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
@@ -62,6 +62,7 @@ Scope-afbakening:
 Endpoint: `POST /properties/:id/develop`
 
 ## QA Checklist
+- Open My properties: default list is the current country; All shows every owned building with current-country first; each owned tile shows country; empty current-country still keeps the filter with a hint.
 - Open the module on mobile width, tablet width and desktop width. Confirm 1 / 2 / 3 columns and that the info popup opens per property type.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.

@@ -5904,6 +5904,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Geen eigendommen van dit type in dit land.';
 
   @override
+  String get propertyOwnedCountryHere => 'Hier';
+
+  @override
+  String propertyOwnedFilterEmpty(String country) {
+    return 'Geen eigendommen in $country.';
+  }
+
+  @override
   String get propertyRoleHouse =>
       'Woonruimte plus opslag voor wapens, munitie, vesten en contant geld.';
 
@@ -17012,7 +17020,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPropertiesHow =>
-      'Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit, voertuigcollectie of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash en zijn veiliger bij aanhouding. Magazijnen bewaren hetzelfde plus gereedschap, met meer plekken. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Je kunt één magazijn per land hebben (geen landelijk plafond). Nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nAuto-showroom, motorzaak en boothaven zijn collecties: één van elk per account wereldwijd, gekocht in een land en daaraan gebonden. Zet alleen voertuigen uit dat land in de vitrine, op 100% conditie, één per model. Upgrades vergroten de vitrine in stappen tot alle types van die categorie. Getoonde voertuigen zijn vergrendeld (geen crimes, smokkel, verkoop) en tellen niet in garage of haven. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per voertuig). Haal de collectie leeg voor je het pand verkoopt.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad of showroomcollectie) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
+      'Mijn eigendommen opent op het land waar je nu bent. Filter op Alles of een ander land. Elke tegel in bezit toont het land van dat pand.\nElk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit, voertuigcollectie of toegang tot een vervolgmodule zoals de nachtclub.\nWarehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.\nHuizen bewaren wapens, munitie, vesten en cash en zijn veiliger bij aanhouding. Magazijnen bewaren hetzelfde plus gereedschap, met meer plekken. Open opslag op een huis of magazijn opent de Inventaris-paper-doll met dat pand geselecteerd. Je moet in hetzelfde land zijn.\nHuizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.\nSommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren. Je kunt één magazijn per land hebben (geen landelijk plafond). Nachtclubslots per land staan in de winkel. Het casino is uniek per land.\nAuto-showroom, motorzaak en boothaven zijn collecties: één van elk per account wereldwijd, gekocht in een land en daaraan gebonden. Zet alleen voertuigen uit dat land in de vitrine, op 100% conditie, één per model. Upgrades vergroten de vitrine in stappen tot alle types van die categorie. Getoonde voertuigen zijn vergrendeld (geen crimes, smokkel, verkoop) en tellen niet in garage of haven. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per voertuig). Haal de collectie leeg voor je het pand verkoopt.\nVerkopen via Mijn eigendommen levert 70% van de aankoopprijs contant op. Opslag (en nachtclubvoorraad of showroomcollectie) moet leeg zijn. Geen cooldown.\nEen gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.\nOntwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).';
 
   @override
   String get helpTopicPropertiesTips =>

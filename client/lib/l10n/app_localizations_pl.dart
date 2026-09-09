@@ -5918,6 +5918,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get propertyFilterEmpty => 'Brak obiektów tego typu w tym kraju.';
 
   @override
+  String get propertyOwnedCountryHere => 'Tutaj';
+
+  @override
+  String propertyOwnedFilterEmpty(String country) {
+    return 'Brak nieruchomości w $country.';
+  }
+
+  @override
   String get propertyRoleHouse =>
       'Mieszkanie plus schowek na broń, amunicję, kamizelki i gotówkę.';
 

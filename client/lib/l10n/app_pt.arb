@@ -11873,5 +11873,14 @@
   },
   "prostitutionNeedHomeInCountry": "Você precisa de uma casa ou apartamento neste país para recrutar.",
   "prostitutionRecruitNeedLocalHome": "Precisa de uma casa aqui",
-  "prostitutionHousingHomesHere": "Aqui"
+  "prostitutionHousingHomesHere": "Aqui",
+  "propertyOwnedCountryHere": "Aqui",
+  "propertyOwnedFilterEmpty": "Nenhuma propriedade em {country}.",
+  "@propertyOwnedFilterEmpty": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  }
 }

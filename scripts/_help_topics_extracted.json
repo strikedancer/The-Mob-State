@@ -410,6 +410,7 @@
     "summaryNl": "Koop eigendommen om opslag, wooncapaciteit en toegang tot bepaalde systemen zoals de nachtclub uit te breiden. Ontwikkel eigendommen voor een permanente inkomensboost.",
     "summaryEn": "Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost.",
     "howNl": [
+      "Mijn eigendommen opent op het land waar je nu bent. Filter op Alles of een ander land. Elke tegel in bezit toont het land van dat pand.",
       "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.",
       "Warehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.",
       "Huizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.",
@@ -419,6 +420,7 @@
       "Ontwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server)."
     ],
     "howEn": [
+      "My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building's country.",
       "Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.",
       "Warehouse upgrades increase your storage capacity for items and other stock.",
       "Houses and apartments increase housing capacity; VIP players receive extra slots on top of that.",

@@ -10,6 +10,7 @@ import './inventory_screen.dart';
 import './nightclub_screen.dart';
 import './showroom_screen.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/country_helper.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/empire_page_hero.dart';
@@ -46,6 +47,8 @@ class PropertyScreenState extends State<PropertyScreen>
   String? _availableError;
   String? _ownedError;
   String? _availableTypeFilter;
+  /// `null` = current country, `*` = all countries, otherwise a country slug.
+  String? _ownedCountryFilter;
 
   @override
   void initState() {
@@ -893,6 +896,115 @@ class PropertyScreenState extends State<PropertyScreen>
     return lines;
   }
 
+  static const String _ownedCountryFilterAll = '*';
+
+  String _playerCountryId(AuthProvider auth) {
+    return CountryHelper.normalizeCountryId(
+      auth.currentPlayer?.currentCountry ?? 'netherlands',
+    );
+  }
+
+  bool _sameCountry(String? a, String? b) {
+    return CountryHelper.normalizeCountryId(a) ==
+        CountryHelper.normalizeCountryId(b);
+  }
+
+  bool get _isOwnedFilterAll =>
+      _ownedCountryFilter == _ownedCountryFilterAll;
+
+  String _effectiveOwnedCountryFilter(String currentCountryId) {
+    if (_isOwnedFilterAll) return _ownedCountryFilterAll;
+    return CountryHelper.normalizeCountryId(
+      _ownedCountryFilter ?? currentCountryId,
+    );
+  }
+
+  List<String> _ownedCountryChipIds(
+    AppLocalizations l10n,
+    String currentCountryId,
+  ) {
+    final ids = <String>{};
+    for (final property in _myProperties) {
+      final id = CountryHelper.normalizeCountryId(property.countryId);
+      if (id.isNotEmpty) ids.add(id);
+    }
+    if (currentCountryId.isNotEmpty) ids.add(currentCountryId);
+    final list = ids.toList();
+    list.sort((a, b) {
+      if (a == currentCountryId) return -1;
+      if (b == currentCountryId) return 1;
+      return CountryHelper.getLocalizedCountryName(a, l10n).compareTo(
+        CountryHelper.getLocalizedCountryName(b, l10n),
+      );
+    });
+    return list;
+  }
+
+  List<Property> _visibleOwnedProperties(String currentCountryId) {
+    final filter = _effectiveOwnedCountryFilter(currentCountryId);
+    var list = List<Property>.from(_myProperties);
+    if (filter != _ownedCountryFilterAll) {
+      list = list
+          .where((property) => _sameCountry(property.countryId, filter))
+          .toList();
+    }
+    list.sort((a, b) {
+      final aHere = _sameCountry(a.countryId, currentCountryId);
+      final bHere = _sameCountry(b.countryId, currentCountryId);
+      if (aHere != bHere) return aHere ? -1 : 1;
+      final byCountry = CountryHelper.normalizeCountryId(a.countryId).compareTo(
+        CountryHelper.normalizeCountryId(b.countryId),
+      );
+      if (byCountry != 0) return byCountry;
+      return (a.name ?? a.propertyId).toLowerCase().compareTo(
+        (b.name ?? b.propertyId).toLowerCase(),
+      );
+    });
+    return list;
+  }
+
+  Widget _buildOwnedCountryFilterRow(
+    List<String> countryIds,
+    String currentCountryId,
+    AppLocalizations l10n,
+  ) {
+    final selected = _effectiveOwnedCountryFilter(currentCountryId);
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: ChoiceChip(
+              label: Text(l10n.propertyFilterAll),
+              selected: selected == _ownedCountryFilterAll,
+              onSelected: (_) =>
+                  setState(() => _ownedCountryFilter = _ownedCountryFilterAll),
+            ),
+          ),
+          ...countryIds.map((id) {
+            final flag = CountryHelper.getCountryFlag(id);
+            final name = CountryHelper.getLocalizedCountryName(id, l10n);
+            final here = id == currentCountryId;
+            return Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: ChoiceChip(
+                label: Text(
+                  here
+                      ? '$flag $name (${l10n.propertyOwnedCountryHere})'
+                      : '$flag $name',
+                ),
+                selected: selected == id,
+                onSelected: (_) => setState(() => _ownedCountryFilter = id),
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
   Widget _buildMyPropertiesTab() {
     final l10n = AppLocalizations.of(context)!;
     if (_isLoadingMine && _myProperties.isEmpty) {
@@ -934,66 +1046,94 @@ class PropertyScreenState extends State<PropertyScreen>
       );
     }
 
+    final auth = context.watch<AuthProvider>();
+    final currentCountryId = _playerCountryId(auth);
+    final visible = _visibleOwnedProperties(currentCountryId);
+    final countryIds = _ownedCountryChipIds(l10n, currentCountryId);
+    final filterCountry = _effectiveOwnedCountryFilter(currentCountryId);
+
     return Column(
       children: [
         if (_isLoadingMine) const LinearProgressIndicator(minHeight: 2),
         if (_ownedError != null)
           _buildInlineError(_ownedError!, _loadMyProperties),
+        _buildOwnedCountryFilterRow(countryIds, currentCountryId, l10n),
         Expanded(
-          child: _buildResponsivePropertyList(
-            itemCount: _myProperties.length,
-            onRefresh: _loadMyProperties,
-            itemBuilder: (context, index, expandToFill) {
-              final property = _myProperties[index];
-              final propertyType = property.type ?? property.propertyId;
-              final matchingDefs = _availableProperties
-                  .where((d) => d.id == propertyType)
-                  .toList();
-              final definition = matchingDefs.isNotEmpty
-                  ? matchingDefs.first
-                  : null;
-              return PropertyCard(
-                ownedProperty: property,
-                definition: definition,
-                expandToFill: expandToFill,
-                playerIsVip: _playerIsVip,
-                vipBonusPerProperty: _vipHousingBonusPerProperty,
-                onUpgrade: () => _upgradeProperty(property),
-                upgradeLockedReason: () {
-                  final cost = property.nextUpgradeCost;
-                  final money = context.read<AuthProvider>().currentPlayer?.money ?? 0;
-                  if (cost != null && money < cost) {
-                    return l10n.propertyBuyNeedsCash(formatCurrency(cost));
-                  }
-                  return null;
-                }(),
-                onDevelop: property.canDevelop && property.nextDevelopCost != null
-                    ? () => _developProperty(property)
-                    : null,
-                onSell: property.sellPrice != null
-                    ? () => _sellProperty(property)
-                    : null,
-                onOpenStorage: _storagePropertyTypes.contains(propertyType)
-                    ? () => _openStorage(property)
-                    : null,
-                onManage: propertyType == 'nightclub'
-                    ? () => _openNightclub(property)
-                    : _isShowroom(propertyType)
-                        ? () => _openShowroom(property)
-                        : null,
-                manageLabel: propertyType == 'nightclub'
-                    ? l10n.propertyManageNightclub
-                    : _isShowroom(propertyType)
-                        ? l10n.propertyManageShowroom
-                        : null,
-                manageIcon: propertyType == 'nightclub'
-                    ? Icons.nightlife
-                    : _isShowroom(propertyType)
-                        ? Icons.garage_outlined
-                        : null,
-              );
-            },
-          ),
+          child: visible.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                      l10n.propertyOwnedFilterEmpty(
+                        CountryHelper.getLocalizedCountryName(
+                          filterCountry,
+                          l10n,
+                        ),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              : _buildResponsivePropertyList(
+                  itemCount: visible.length,
+                  onRefresh: _loadMyProperties,
+                  itemBuilder: (context, index, expandToFill) {
+                    final property = visible[index];
+                    final propertyType = property.type ?? property.propertyId;
+                    final matchingDefs = _availableProperties
+                        .where((d) => d.id == propertyType)
+                        .toList();
+                    final definition = matchingDefs.isNotEmpty
+                        ? matchingDefs.first
+                        : null;
+                    return PropertyCard(
+                      ownedProperty: property,
+                      definition: definition,
+                      expandToFill: expandToFill,
+                      currentCountryId: currentCountryId,
+                      playerIsVip: _playerIsVip,
+                      vipBonusPerProperty: _vipHousingBonusPerProperty,
+                      onUpgrade: () => _upgradeProperty(property),
+                      upgradeLockedReason: () {
+                        final cost = property.nextUpgradeCost;
+                        final money =
+                            context.read<AuthProvider>().currentPlayer?.money ??
+                                0;
+                        if (cost != null && money < cost) {
+                          return l10n.propertyBuyNeedsCash(formatCurrency(cost));
+                        }
+                        return null;
+                      }(),
+                      onDevelop:
+                          property.canDevelop &&
+                              property.nextDevelopCost != null
+                          ? () => _developProperty(property)
+                          : null,
+                      onSell: property.sellPrice != null
+                          ? () => _sellProperty(property)
+                          : null,
+                      onOpenStorage:
+                          _storagePropertyTypes.contains(propertyType)
+                          ? () => _openStorage(property)
+                          : null,
+                      onManage: propertyType == 'nightclub'
+                          ? () => _openNightclub(property)
+                          : _isShowroom(propertyType)
+                          ? () => _openShowroom(property)
+                          : null,
+                      manageLabel: propertyType == 'nightclub'
+                          ? l10n.propertyManageNightclub
+                          : _isShowroom(propertyType)
+                          ? l10n.propertyManageShowroom
+                          : null,
+                      manageIcon: propertyType == 'nightclub'
+                          ? Icons.nightlife
+                          : _isShowroom(propertyType)
+                          ? Icons.garage_outlined
+                          : null,
+                    );
+                  },
+                ),
         ),
       ],
     );

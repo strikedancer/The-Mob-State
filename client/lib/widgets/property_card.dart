@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/property.dart';
+import '../utils/country_helper.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../l10n/app_localizations.dart';
@@ -22,6 +23,7 @@ class PropertyCard extends StatelessWidget {
   final String? buyLockedReason;
   final String? upgradeLockedReason;
   final bool expandToFill;
+  final String? currentCountryId;
 
   const PropertyCard({
     super.key,
@@ -41,6 +43,7 @@ class PropertyCard extends StatelessWidget {
     this.buyLockedReason,
     this.upgradeLockedReason,
     this.expandToFill = false,
+    this.currentCountryId,
   });
 
   @override
@@ -102,6 +105,10 @@ class PropertyCard extends StatelessWidget {
           _getPropertyTypeLabel(propertyId, l10n),
           style: TextStyle(color: Colors.grey[600]),
         ),
+        if (isOwned) ...[
+          const SizedBox(height: 4),
+          _buildOwnedCountryLine(l10n),
+        ],
         const SizedBox(height: 12),
         if (isOwned)
           ..._buildOwnedPropertyStats(l10n)
@@ -156,6 +163,38 @@ class PropertyCard extends StatelessWidget {
                 ),
               ],
             ),
+    );
+  }
+
+  Widget _buildOwnedCountryLine(AppLocalizations l10n) {
+    final countryId = ownedProperty!.countryId;
+    final flag = CountryHelper.getCountryFlag(countryId);
+    final name = CountryHelper.getLocalizedCountryName(countryId, l10n);
+    final here = currentCountryId != null &&
+        CountryHelper.normalizeCountryId(countryId) ==
+            CountryHelper.normalizeCountryId(currentCountryId);
+    return Row(
+      children: [
+        Flexible(
+          child: Text(
+            '$flag $name',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.grey[600], fontSize: 13),
+          ),
+        ),
+        if (here) ...[
+          const SizedBox(width: 8),
+          Text(
+            l10n.propertyOwnedCountryHere,
+            style: TextStyle(
+              color: Colors.grey[500],
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ],
     );
   }
 

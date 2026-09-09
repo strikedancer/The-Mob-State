@@ -10497,6 +10497,18 @@ abstract class AppLocalizations {
   /// **'No properties of this type in this country.'**
   String get propertyFilterEmpty;
 
+  /// No description provided for @propertyOwnedCountryHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Here'**
+  String get propertyOwnedCountryHere;
+
+  /// No description provided for @propertyOwnedFilterEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No properties in {country}.'**
+  String propertyOwnedFilterEmpty(String country);
+
   /// No description provided for @propertyRoleHouse.
   ///
   /// In en, this message translates to:
@@ -29390,7 +29402,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPropertiesHow.
   ///
   /// In en, this message translates to:
-  /// **'Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store the same plus tools, with more slots. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. You can own one warehouse per country (no global cap). Nightclub slots per country are shown in the shop. The casino is unique per country.\nThe car showroom, motorcycle shop and boat harbor are collections: one of each per account worldwide, bought in a country and bound there. Only vehicles in that country, at 100% condition, one per model. Upgrades grow the vitrine in steps until every type in that category fits. Displayed vehicles are locked (no crimes, smuggling or sales) and do not use garage or marina slots. An arrest in that country searches the vitrine (~40% chance per vehicle). Empty the collection before selling.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock or showroom collection) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
+  /// **'My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building\'s country.\nEach property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store the same plus tools, with more slots. Open storage on a house or warehouse opens the Inventory paper-doll with that building selected. You must be in the same country.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them. You can own one warehouse per country (no global cap). Nightclub slots per country are shown in the shop. The casino is unique per country.\nThe car showroom, motorcycle shop and boat harbor are collections: one of each per account worldwide, bought in a country and bound there. Only vehicles in that country, at 100% condition, one per model. Upgrades grow the vitrine in steps until every type in that category fits. Displayed vehicles are locked (no crimes, smuggling or sales) and do not use garage or marina slots. An arrest in that country searches the vitrine (~40% chance per vehicle). Empty the collection before selling.\nSelling from My properties yields 70% of the purchase price in cash. Storage (and nightclub stock or showroom collection) must be empty. No cooldown.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money on income buildings only: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).'**
   String get helpTopicPropertiesHow;
 
   /// No description provided for @helpTopicPropertiesTips.
