@@ -26,7 +26,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Migration: `20260829120000_production_materials_country_depot` backfills existing rows to the player's `currentCountry`.
 
 ### API
-- `GET /drugs/my-materials` → `{ materials, depot, carried, currentCountry, backpack }`
+- `GET /drugs/my-materials` → `{ materials, depot, storedElsewhere, carried, currentCountry, backpack }` — `depot` is **current country only**; other-country lots stay in `materials` / `storedElsewhere`.
 - `POST /drugs/materials/buy/:materialId` → depot only
 - `POST /drugs/materials/transfer` `{ materialId, quantity, direction }`
 - VIP `buy-missing` also credits the **current-country depot**

@@ -13,6 +13,7 @@ import '../services/api_client.dart';
 import '../services/drug_service.dart';
 import '../services/inventory_service.dart';
 import '../utils/avatar_helper.dart';
+import '../utils/country_helper.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/inventory_slot.dart';
 
@@ -44,6 +45,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   List<InventoryGridItem> _backpack = [];
   List<InventoryGridItem> _contextItems = [];
   List<StorageInfo> _properties = [];
+  PlayerMaterialsSnapshot _materials = PlayerMaterialsSnapshot.empty();
   String _contextKey = 'depot';
   InventoryGridItem? _selected;
   String? _crimeWeaponId;
@@ -115,9 +117,16 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     return null;
   }
 
-  List<StorageInfo> get _selectableProperties => _properties
+  List<StorageInfo> get _storageProperties => _properties
       .where((p) => _paperDollTypes.contains(p.propertyType))
       .toList();
+
+  List<StorageInfo> get _selectableProperties => _storageProperties
+      .where((p) => p.accessibleInCurrentCountry)
+      .toList();
+
+  bool get _hasStorageElsewhere =>
+      _storageProperties.any((p) => !p.accessibleInCurrentCountry);
 
   @override
   void initState() {
@@ -269,6 +278,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         InventoryZone.equippedSecondary,
       );
 
+      _materials = materials;
       _properties = overview['success'] == true
           ? (overview['storage'] as List<StorageInfo>)
           : <StorageInfo>[];
@@ -980,16 +990,12 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           items: [
             DropdownMenuItem(
               value: 'depot',
-              child: Text(l10n.inventoryMaterialsDepot),
+              child: Text(_depotLabel(l10n)),
             ),
             ..._selectableProperties.map(
               (p) => DropdownMenuItem(
                 value: 'property_${p.propertyId}',
-                enabled: p.accessibleInCurrentCountry,
-                child: Text(
-                  '${_storageTypeLabel(p.propertyType, l10n)}'
-                  '${p.accessibleInCurrentCountry ? '' : ' ✕'}',
-                ),
+                child: Text(_storageOptionLabel(p, l10n)),
               ),
             ),
           ],
@@ -997,6 +1003,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
             if (value == null) return;
             setState(() => _contextKey = value);
             final materials = await _drugs.getPlayerMaterials();
+            _materials = materials;
             await _loadContextItems(materials);
             if (mounted) setState(() {});
           },
@@ -1030,9 +1037,17 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
               style: const TextStyle(color: Colors.white54, fontSize: 12),
             ),
           ),
+        if (_hasStorageElsewhere || _materials.hasDepotElsewhere)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              l10n.inventoryOtherCountryStashHint,
+              style: const TextStyle(color: Colors.white54, fontSize: 12),
+            ),
+          ),
         _buildGrid(
           title: _contextKey == 'depot'
-              ? l10n.inventoryMaterialsDepot
+              ? _depotLabel(l10n)
               : l10n.inventoryStorageGrid,
           items: _contextItems,
           emptySlots: _contextEmptySlots(),
@@ -1103,6 +1118,25 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     final capacity = _selectedStorage?.capacity ?? 0;
     if (capacity > 0) return capacity;
     return _contextItems.isEmpty ? 0 : _contextItems.length;
+  }
+
+  String _countryLabel(String? countryId, AppLocalizations l10n) {
+    final flag = CountryHelper.getCountryFlag(countryId);
+    final name = CountryHelper.getLocalizedCountryName(countryId, l10n);
+    return '$flag $name';
+  }
+
+  String _depotLabel(AppLocalizations l10n) {
+    final countryId = _materials.currentCountry.isNotEmpty
+        ? _materials.currentCountry
+        : context.read<AuthProvider>().currentPlayer?.currentCountry;
+    return l10n.inventoryMaterialsDepotIn(_countryLabel(countryId, l10n));
+  }
+
+  String _storageOptionLabel(StorageInfo property, AppLocalizations l10n) {
+    final type = _storageTypeLabel(property.propertyType, l10n);
+    if (property.countryId.isEmpty) return type;
+    return '${_countryLabel(property.countryId, l10n)} · $type';
   }
 
   String _storageTypeLabel(String propertyType, AppLocalizations l10n) {

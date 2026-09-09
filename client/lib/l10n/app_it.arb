@@ -11882,5 +11882,14 @@
         "type": "String"
       }
     }
-  }
+  },
+  "inventoryMaterialsDepotIn": "Deposito materiali · {country}",
+  "@inventoryMaterialsDepotIn": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryOtherCountryStashHint": "Lo stoccaggio e i materiali in altri paesi rimangono lì. Viaggia in quel paese per usarli."
 }

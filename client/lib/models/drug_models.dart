@@ -185,10 +185,13 @@ class PlayerMaterialsSnapshot {
         .map((e) => PlayerMaterial.fromJson(Map<String, dynamic>.from(e)))
         .toList();
     final backpack = (json['backpack'] as Map?)?.cast<String, dynamic>() ?? {};
+    final currentCountry = (json['currentCountry'] ?? '').toString();
     return PlayerMaterialsSnapshot(
-      currentCountry: (json['currentCountry'] ?? '').toString(),
+      currentCountry: currentCountry,
       materials: materials,
-      depot: materials.where((m) => !m.isCarried).toList(),
+      depot: materials
+          .where((m) => !m.isCarried && _sameCountry(m.country, currentCountry))
+          .toList(),
       carried: materials.where((m) => m.isCarried).toList(),
       backpackCapacity: (backpack['capacity'] as num?)?.toInt() ?? 5,
       backpackUsed: (backpack['used'] as num?)?.toInt() ?? 0,
@@ -200,7 +203,10 @@ class PlayerMaterialsSnapshot {
   int depotQty(String materialId, {String? country}) {
     final c = country ?? currentCountry;
     return materials
-        .where((m) => !m.isCarried && m.materialId == materialId && m.country == c)
+        .where((m) =>
+            !m.isCarried &&
+            m.materialId == materialId &&
+            _sameCountry(m.country, c))
         .fold<int>(0, (sum, m) => sum + m.quantity);
   }
 
@@ -213,6 +219,17 @@ class PlayerMaterialsSnapshot {
   /// Materials usable for production here: local depot + backpack.
   int availableForProduction(String materialId) {
     return depotQty(materialId) + carriedQty(materialId);
+  }
+
+  bool get hasDepotElsewhere => materials.any(
+        (m) =>
+            !m.isCarried &&
+            m.quantity > 0 &&
+            !_sameCountry(m.country, currentCountry),
+      );
+
+  static bool _sameCountry(String? a, String? b) {
+    return (a ?? '').trim().toLowerCase() == (b ?? '').trim().toLowerCase();
   }
 }
 

@@ -7950,6 +7950,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get inventoryMaterialsDepot => 'Magazyn materiałów';
 
   @override
+  String inventoryMaterialsDepotIn(String country) {
+    return 'Magazyn materiałów · $country';
+  }
+
+  @override
+  String get inventoryOtherCountryStashHint =>
+      'Magazyny i materiały w innych krajach pozostają tam. Aby z nich skorzystać, udaj się do tego kraju.';
+
+  @override
   String get inventoryNoOwnedStorageHint =>
       'Kup dom, mieszkanie lub magazyn, aby odblokować tutaj dodatkowe miejsce.';
 

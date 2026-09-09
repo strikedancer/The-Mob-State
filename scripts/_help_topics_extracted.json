@@ -367,6 +367,7 @@
     "summaryNl": "Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.",
     "summaryEn": "Manage everything you carry, store and equip: weapons, tools, vehicles, drugs and trade goods.",
     "howNl": [
+      "Het materialendepot en pandopslag tonen alleen het land waar je nu bent. Voorraad in andere landen blijft daar tot je erheen reist.",
       "Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.",
       "Gewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.",
       "Drugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.",
@@ -378,6 +379,7 @@
       "Crew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico."
     ],
     "howEn": [
+      "The materials depot and property storage show only the country you are in. Stock in other countries stays there until you travel.",
       "Inventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.",
       "Weight determines your carrying capacity. Some crimes or travel block if you are overloaded.",
       "Drugs are stored and shown in inventory and storage as grams; 351 means 351g.",

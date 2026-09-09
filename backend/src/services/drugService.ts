@@ -278,6 +278,7 @@ class DrugService {
     currentCountry: string;
     materials: any[];
     depot: any[];
+    storedElsewhere: any[];
     carried: any[];
     backpack: { capacity: number; used: number; materialSlots: number; unitsPerSlot: number };
   }> {
@@ -313,7 +314,12 @@ class DrugService {
     return {
       currentCountry,
       materials: mapped,
-      depot: mapped.filter((m) => m.location === 'depot'),
+      depot: mapped.filter(
+        (m) => m.location === 'depot' && m.country === currentCountry,
+      ),
+      storedElsewhere: mapped.filter(
+        (m) => m.location === 'depot' && m.country !== currentCountry,
+      ),
       carried: mapped.filter((m) => m.location === 'carried'),
       backpack: {
         capacity,

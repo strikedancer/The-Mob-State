@@ -7892,6 +7892,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inventoryMaterialsDepot => 'Materials depot';
 
   @override
+  String inventoryMaterialsDepotIn(String country) {
+    return 'Materials depot · $country';
+  }
+
+  @override
+  String get inventoryOtherCountryStashHint =>
+      'Storage and materials in other countries stay there. Travel to that country to use them.';
+
+  @override
   String get inventoryNoOwnedStorageHint =>
       'Buy a house, apartment or warehouse to unlock extra storage here.';
 
@@ -16963,7 +16972,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot, a second-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nIf a stack has more than one unit (ammo, materials, stacked weapons or tools), you choose how many to move: 1, all, or a custom amount.\nThe right-hand grid is the current context: a house or warehouse in this country, or the materials depot. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store tools, weapons, ammo, vests and cash, but police search the warehouse in the country where you are arrested and seize about 40% of that stock. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nYou can carry two weapons at once, for example a handgun and a rifle. When you commit a crime, the server looks at both worn slots and automatically uses the best match for that crime.\nOnly usable weapons worn on slot 1 or 2 count for crimes.\nBackpack capacity covers tools, unequipped weapons and carried materials. Worn weapons, ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.';
+      'Inventory opens as a paper-doll view: your avatar in the center, a crime-weapon slot, a second-weapon slot and a vest slot, plus square backpack slots.\nDrag an item (or tap it, then tap a valid target) to move it. On phones, tap-to-select is more reliable than dragging.\nIf a stack has more than one unit (ammo, materials, stacked weapons or tools), you choose how many to move: 1, all, or a custom amount.\nThe right-hand grid is the current context: a house or warehouse in this country, or this country\'s materials depot. Stock in other countries stays there until you travel. Open Storage on a property jumps here with that building selected.\nHouses store weapons, ammo, vests and cash and are safer on arrest. Warehouses store tools, weapons, ammo, vests and cash, but police search the warehouse in the country where you are arrested and seize about 40% of that stock. Materials stay in the country depot, not in a house. Cash uses buttons, not drag.\nYou can wear only one vest. Dropping a vest onto the avatar equips it; storing it in a house unequips it. A second worn vest is refused.\nYou can carry two weapons at once, for example a handgun and a rifle. When you commit a crime, the server looks at both worn slots and automatically uses the best match for that crime.\nOnly usable weapons worn on slot 1 or 2 count for crimes.\nBackpack capacity covers tools, unequipped weapons and carried materials. Worn weapons, ammo and the worn vest do not use backpack slots. The server rejects full packs, wrong country and wrong property type.\nLoadouts remain a second tab for saved crime or travel sets.\nDrugs are stored and shown as grams; 351 means 351g. Crew storage stays a separate safe stash.\nOn arrest police can confiscate items. Drugs in inventory increase FBI risk on international travel.';
 
   @override
   String get helpTopicInventoryTips =>

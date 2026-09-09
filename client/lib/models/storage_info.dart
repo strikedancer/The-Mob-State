@@ -12,6 +12,7 @@ class StorageInfo {
   final int drugCount;
   final int cashAmount;
   final bool accessibleInCurrentCountry;
+  final String countryId;
   final List<CarriedTool> tools;
 
   StorageInfo({
@@ -26,6 +27,7 @@ class StorageInfo {
     required this.drugCount,
     required this.cashAmount,
     required this.accessibleInCurrentCountry,
+    this.countryId = '',
     required this.tools,
   });
 
@@ -45,6 +47,7 @@ class StorageInfo {
       cashAmount: json['cashAmount'] as int? ?? 0,
       accessibleInCurrentCountry:
           json['accessibleInCurrentCountry'] as bool? ?? true,
+      countryId: (json['propertyCountry'] ?? json['countryId'] ?? '').toString(),
       tools: (json['tools'] as List? ?? [])
           .map((tool) => CarriedTool.fromJson(Map<String, dynamic>.from(tool as Map)))
           .toList(),
@@ -64,6 +67,7 @@ class StorageInfo {
       'drugCount': drugCount,
       'cashAmount': cashAmount,
       'accessibleInCurrentCountry': accessibleInCurrentCountry,
+      'countryId': countryId,
       'tools': tools.map((t) => t.toJson()).toList(),
     };
   }
