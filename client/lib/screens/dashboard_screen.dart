@@ -2216,6 +2216,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return AmmoFactoryScreen(
           embedded: true,
           onOpenSchool: () => _selectWebSection(_WebSection.school),
+          onOpenBlackMarket: () =>
+              _openBlackMarket(BlackMarketScreen.tabAmmo),
         );
       case _WebSection.school:
         return const SchoolScreen(embedded: true);

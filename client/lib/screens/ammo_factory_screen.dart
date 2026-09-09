@@ -19,11 +19,14 @@ class AmmoFactoryScreen extends StatefulWidget {
   const AmmoFactoryScreen({
     super.key,
     this.onOpenSchool,
+    this.onOpenBlackMarket,
     this.embedded = false,
   });
 
   /// When set (e.g. web dashboard), opens the school section in-place.
   final VoidCallback? onOpenSchool;
+  /// When set (e.g. web dashboard), opens Black Market ammo in the shell.
+  final VoidCallback? onOpenBlackMarket;
   final bool embedded;
 
   @override
@@ -968,9 +971,15 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
   }
 
   void _openBlackMarketAmmo() {
+    if (widget.onOpenBlackMarket != null) {
+      widget.onOpenBlackMarket!();
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => const BlackMarketScreen(initialTabIndex: 6),
+        builder: (_) => const BlackMarketScreen(
+          initialTabIndex: BlackMarketScreen.tabAmmo,
+        ),
       ),
     );
   }
@@ -996,7 +1005,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
           const SizedBox(height: 10),
           OutlinedButton.icon(
             onPressed: _openBlackMarketAmmo,
-            icon: const Icon(Icons.open_in_new),
+            icon: const Icon(Icons.storefront),
             label: Text(l10n.blackMarket),
           ),
         ],
