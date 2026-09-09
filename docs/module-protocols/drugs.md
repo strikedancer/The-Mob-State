@@ -74,7 +74,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
-- Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell. Inventory cards (`DrugInventoryScreen`) use a **Wrap** with intrinsic height, not a fixed `mainAxisExtent` grid, so extra lines (beste prijs, nightclub-marge, Snijden) never clip **Naar crew-opslag**.
+- Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell. Inventory cards (`DrugInventoryScreen`) use a **Wrap** with intrinsic height, not a fixed `mainAxisExtent` grid, so extra lines (beste prijs, nightclub-marge, Snijden) never clip **Naar crew-opslag**. Geen tweede landenbanner op Voorraad: het land staat al in de dashboard-statusbalk.
 - Materials shop and drug inventory load failure must show retry (`MobileLoadError`), not an empty shop/stash.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 

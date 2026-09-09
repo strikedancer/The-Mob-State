@@ -612,44 +612,6 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(height: 14),
-                                        Container(
-                                          padding: const EdgeInsets.all(16),
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Colors.blue[700]!,
-                                                Colors.blue[500]!,
-                                              ],
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.location_on,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                t.drugsInvCurrentLocation(
-                                                  drugCountryDisplayName(
-                                                    t,
-                                                    _currentCountry ??
-                                                        'netherlands',
-                                                  ),
-                                                ),
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -702,7 +664,12 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                             ),
                                             margin: EdgeInsets.zero,
                                             child: Padding(
-                                              padding: const EdgeInsets.all(14),
+                                              padding: const EdgeInsets.fromLTRB(
+                                                14,
+                                                14,
+                                                14,
+                                                18,
+                                              ),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment:
