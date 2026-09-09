@@ -411,6 +411,8 @@ class _RaceScreenState extends State<RaceScreen> {
         final cols = _gridCols(innerW);
         final imageH = _cardImageHeight(cols);
         return ListView(
+          primary: true,
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(pad),
           children: [
             _buildHero(l10n, meeting, cooldownUntil),

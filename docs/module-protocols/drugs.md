@@ -74,7 +74,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
-- Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell. The Drugs hub matches Don/Midnight Races: compact photo hero, gold `i`, then a scrollable `TabBar` (`isScrollable: true`) for Facilities / Production / Inventory. Nested sub-screens omit their AppBar in those tabs. Inventory cards (`DrugInventoryScreen`) use a **Wrap** with intrinsic height, not a fixed `mainAxisExtent` grid, so extra lines (beste prijs, nightclub-marge, Snijden) never clip **Naar crew-opslag**. Geen tweede landenbanner op Voorraad: het land staat al in de dashboard-statusbalk. The hub still shows a short wholesale shipment strip under the hero (crew rows prefixed).
+- Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell. The Drugs hub matches Don/Midnight Races: compact photo hero, gold `i`, then a scrollable `TabBar` (`isScrollable: true`) for Facilities / Production / Inventory. The hero (and heat/materials strip) live in a `NestedScrollView` header and **scroll away**; the tab strip stays pinned. Nested sub-screens omit their AppBar in those tabs. Inventory cards (`DrugInventoryScreen`) use a **Wrap** with intrinsic height, not a fixed `mainAxisExtent` grid, so extra lines (beste prijs, nightclub-marge, Snijden) never clip **Naar crew-opslag**. Geen tweede landenbanner op Voorraad: het land staat al in de dashboard-statusbalk. The hub still shows a short wholesale shipment strip under the hero (crew rows prefixed).
 - Materials shop and drug inventory load failure must show retry (`MobileLoadError`), not an empty shop/stash.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
@@ -129,7 +129,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
-- Verify the photo hero, gold `i`, and three tabs (Facilities / Production / Inventory) on web and mobile; nested screens must not show a second AppBar.
+- Verify the photo hero, gold `i`, and three tabs (Facilities / Production / Inventory) on web and mobile; nested screens must not show a second AppBar. Scrolling the tab content must move the hero off-screen while the tab strip stays.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.

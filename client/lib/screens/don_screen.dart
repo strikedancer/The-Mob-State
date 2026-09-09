@@ -558,44 +558,54 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     final intimidation = (overview['intimidation'] as num?)?.toInt() ?? 0;
     final canCrew = overview['canTributeToCrew'] == true;
 
-    final body = Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-          child: _buildHero(l10n, money, wanted, intimidation, canCrew),
+    final tabBar = TabBar(
+      controller: _tabs,
+      isScrollable: true,
+      labelColor: _donGold,
+      unselectedLabelColor: Colors.white70,
+      indicatorColor: _donGold,
+      dividerColor: _donGold.withValues(alpha: 0.22),
+      tabs: [
+        Tab(text: l10n.donTabRackets),
+        Tab(text: l10n.donTabLoans),
+        Tab(text: l10n.donTabInfluence),
+        Tab(text: l10n.donTabContracts),
+      ],
+    );
+
+    final body = NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: _buildHero(l10n, money, wanted, intimidation, canCrew),
+          ),
         ),
         if (_busy)
-          const LinearProgressIndicator(
-            minHeight: 2,
-            color: _donGold,
-            backgroundColor: Color(0x33FFB347),
+          const SliverToBoxAdapter(
+            child: LinearProgressIndicator(
+              minHeight: 2,
+              color: _donGold,
+              backgroundColor: Color(0x33FFB347),
+            ),
           ),
-        TabBar(
-          controller: _tabs,
-          isScrollable: true,
-          labelColor: _donGold,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: _donGold,
-          dividerColor: _donGold.withValues(alpha: 0.22),
-          tabs: [
-            Tab(text: l10n.donTabRackets),
-            Tab(text: l10n.donTabLoans),
-            Tab(text: l10n.donTabInfluence),
-            Tab(text: l10n.donTabContracts),
-          ],
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabs,
-            children: [
-              _buildRackets(l10n, overview, canCrew),
-              _buildLoans(l10n, overview),
-              _buildOfficials(l10n, overview),
-              _buildContracts(l10n, overview),
-            ],
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: _PinnedTabBarDelegate(
+            tabBar: tabBar,
+            background: _donBgMid,
           ),
         ),
       ],
+      body: TabBarView(
+        controller: _tabs,
+        children: [
+          _buildRackets(l10n, overview, canCrew),
+          _buildLoans(l10n, overview),
+          _buildOfficials(l10n, overview),
+          _buildContracts(l10n, overview),
+        ],
+      ),
     );
 
     return _shell(child: body);
@@ -1832,5 +1842,39 @@ class _DonCollectButtonState extends State<_DonCollectButton> {
             : widget.collectLabel,
       ),
     );
+  }
+}
+
+class _PinnedTabBarDelegate extends SliverPersistentHeaderDelegate {
+  _PinnedTabBarDelegate({
+    required this.tabBar,
+    required this.background,
+  });
+
+  final TabBar tabBar;
+  final Color background;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Material(
+      color: background,
+      elevation: overlapsContent ? 2 : 0,
+      child: tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _PinnedTabBarDelegate oldDelegate) {
+    return tabBar != oldDelegate.tabBar || background != oldDelegate.background;
   }
 }

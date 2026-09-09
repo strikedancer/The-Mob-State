@@ -10,7 +10,7 @@ Out of scope for this module: blotter newspaper, weapons P2P, Facebook Login, ho
 ## Primary Frontend Entry
 - `client/lib/screens/don_screen.dart` (dashboard Empire → Don; optional `/don`)
 - Crew Members: role `consigliere` / `capo` + capo land in `crew_screen.dart`
-- Hub art: `client/assets/images/don/*.png` (hero, rackets, NPC sharks, officials, contracts) served on web as `/images/don/*` after deploy copies into `runtime/client-images/don/`. Use `WebAssetHelper.image` with icon fallback. No extra AppBar when `embedded == true`. Photo cards sit in a responsive wrap-grid (1 / 2 / 3 / 4 columns from ~480 / 700 / 1040 px pane width) so Empire desktop does not stack full-width rows.
+- Hub art: `client/assets/images/don/*.png` (hero, rackets, NPC sharks, officials, contracts) served on web as `/images/don/*` after deploy copies into `runtime/client-images/don/`. Use `WebAssetHelper.image` with icon fallback. No extra AppBar when `embedded == true`. The photo hero lives in a `NestedScrollView` header and **scrolls away** with tab content; the `TabBar` stays pinned. Photo cards sit in a responsive wrap-grid (1 / 2 / 3 / 4 columns from ~480 / 700 / 1040 px pane width) so Empire desktop does not stack full-width rows.
 - Gold `i` on the hero opens a scrollable noir/gold guide (`donInfo*`) with section photos. Dialog uses `SafeArea`, clamped size and `AppLocalizations.of(dialogContext)`.
 - Overview returns `collectReadyAt` / `collectRemainingSeconds` plus remaining seconds for contest, squeeze, officials, loans and contracts. The hub ticks those locally (no parent `setState` every second). Collect stays disabled until the timer hits zero.
 
@@ -78,5 +78,5 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 5. Leader sets consigliere and capo+country; capo tribute only in that country.
 6. Rank &lt; 7 and jailed players are blocked.
 7. Help topic `don` NL/EN; Don hub does not own war-theater / races / police / Clearing House.
-8. Empire → Don looks noir/gold: hero photo, racket/NPC/official/contract photo cards in a 3–4 column grid on desktop (2 on tablet, 1 on narrow), gold CTAs; images load on web (`/images/don/*`) with icon fallback.
+8. Empire → Don looks noir/gold: hero photo, racket/NPC/official/contract photo cards in a 3–4 column grid on desktop (2 on tablet, 1 on narrow), gold CTAs; images load on web (`/images/don/*`) with icon fallback. Scroll tab content: the hero leaves the viewport; the tab strip stays.
 9. Owned rackets show a live collect countdown; Collect is disabled until ready. Contest, squeeze, office, loan and contract remaining time also tick on the card.

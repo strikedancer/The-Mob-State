@@ -408,63 +408,70 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
   }
 
   Widget _buildBody(AppLocalizations t) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-          child: _buildHero(t),
+    final tabBar = TabBar(
+      controller: _tabs,
+      isScrollable: true,
+      labelColor: _drugGold,
+      unselectedLabelColor: Colors.white70,
+      indicatorColor: _drugGold,
+      dividerColor: _drugGold.withValues(alpha: 0.22),
+      tabs: [
+        Tab(text: t.drugsCardFacilitiesTitle),
+        Tab(text: t.drugsCardProductionTitle),
+        Tab(text: t.drugsCardInventoryTitle),
+      ],
+    );
+
+    return NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: _buildHero(t),
+          ),
         ),
         if (_busy || _isLoadingStats)
-          const LinearProgressIndicator(
-            minHeight: 2,
-            color: _drugGold,
-            backgroundColor: Color(0x33FFB347),
+          const SliverToBoxAdapter(
+            child: LinearProgressIndicator(
+              minHeight: 2,
+              color: _drugGold,
+              backgroundColor: Color(0x33FFB347),
+            ),
           ),
-        _buildActionStrip(t),
-        Material(
-          color: Colors.transparent,
-          child: TabBar(
-            controller: _tabs,
-            isScrollable: true,
-            labelColor: _drugGold,
-            unselectedLabelColor: Colors.white70,
-            indicatorColor: _drugGold,
-            dividerColor: _drugGold.withValues(alpha: 0.22),
-            tabs: [
-              Tab(text: t.drugsCardFacilitiesTitle),
-              Tab(text: t.drugsCardProductionTitle),
-              Tab(text: t.drugsCardInventoryTitle),
-            ],
-          ),
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabs,
-            children: [
-              _keepAlive(
-                DrugFacilityScreen(
-                  key: ValueKey('drug-fac-$_refreshSeed'),
-                  showAppBar: false,
-                ),
-              ),
-              _keepAlive(
-                DrugProductionScreen(
-                  key: ValueKey('drug-prod-$_refreshSeed'),
-                  showAppBar: false,
-                  onOpenFacilitiesRequested: () => _tabs.animateTo(0),
-                  onOpenBlackMarket: _openMaterials,
-                ),
-              ),
-              _keepAlive(
-                DrugInventoryScreen(
-                  key: ValueKey('drug-inv-$_refreshSeed'),
-                  showAppBar: false,
-                ),
-              ),
-            ],
+        SliverToBoxAdapter(child: _buildActionStrip(t)),
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: _PinnedTabBarDelegate(
+            tabBar: tabBar,
+            background: _drugBgMid,
           ),
         ),
       ],
+      body: TabBarView(
+        controller: _tabs,
+        children: [
+          _keepAlive(
+            DrugFacilityScreen(
+              key: ValueKey('drug-fac-$_refreshSeed'),
+              showAppBar: false,
+            ),
+          ),
+          _keepAlive(
+            DrugProductionScreen(
+              key: ValueKey('drug-prod-$_refreshSeed'),
+              showAppBar: false,
+              onOpenFacilitiesRequested: () => _tabs.animateTo(0),
+              onOpenBlackMarket: _openMaterials,
+            ),
+          ),
+          _keepAlive(
+            DrugInventoryScreen(
+              key: ValueKey('drug-inv-$_refreshSeed'),
+              showAppBar: false,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -520,5 +527,39 @@ class _KeepAliveTabState extends State<_KeepAliveTab>
   Widget build(BuildContext context) {
     super.build(context);
     return widget.child;
+  }
+}
+
+class _PinnedTabBarDelegate extends SliverPersistentHeaderDelegate {
+  _PinnedTabBarDelegate({
+    required this.tabBar,
+    required this.background,
+  });
+
+  final TabBar tabBar;
+  final Color background;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Material(
+      color: background,
+      elevation: overlapsContent ? 2 : 0,
+      child: tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _PinnedTabBarDelegate oldDelegate) {
+    return tabBar != oldDelegate.tabBar || background != oldDelegate.background;
   }
 }
