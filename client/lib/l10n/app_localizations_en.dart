@@ -11551,6 +11551,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prostitutionBuyPropertyFirst => 'Buy a house or apartment first';
 
   @override
+  String get prostitutionNeedHomeInCountry =>
+      'You need a house or apartment in this country to recruit.';
+
+  @override
+  String get prostitutionRecruitNeedLocalHome => 'Need a home here';
+
+  @override
+  String get prostitutionHousingHomesHere => 'Here';
+
+  @override
   String prostitutionWorkAll(int count) {
     return 'Work all ($count)';
   }
@@ -17413,7 +17423,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.';
+      'You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nYou can only recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.';
 
   @override
   String get helpTopicProstitutionTips =>

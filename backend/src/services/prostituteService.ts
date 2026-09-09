@@ -312,6 +312,11 @@ function getVipHousingBonusPerProperty(): number {
   return VIP_HOUSING_BONUS_DEFAULT;
 }
 
+function isResidentialPropertyType(propertyType: string): boolean {
+  const definition = propertyService.getPropertyDefinition(propertyType);
+  return Array.isArray(definition?.features) && definition!.features.includes('residential');
+}
+
 function getResidentialCapacityFromProperty(definition: any, upgradeLevel: number): number {
   const hasResidentialFeature =
     Array.isArray(definition?.features) && definition.features.includes('residential');
@@ -522,10 +527,9 @@ export const prostituteService = {
       },
     });
 
-    const residential = ownedProperties.filter((property) => {
-      const definition = propertyService.getPropertyDefinition(property.propertyType);
-      return Array.isArray(definition?.features) && definition!.features.includes('residential');
-    });
+    const residential = ownedProperties.filter((property) =>
+      isResidentialPropertyType(property.propertyType)
+    );
 
     const totalCapacity = residential.reduce((sum, property) => {
       const definition = propertyService.getPropertyDefinition(property.propertyType);
@@ -623,6 +627,44 @@ export const prostituteService = {
       vipBonusPerProperty,
       isVip,
     };
+  },
+
+  async hasResidentialPropertyInCountry(playerId: number, countryId: string): Promise<boolean> {
+    const country = (countryId || '').trim().toLowerCase();
+    if (!country) return false;
+
+    const ownedProperties = await prisma.property.findMany({
+      where: { playerId },
+      select: {
+        propertyType: true,
+        countryId: true,
+      },
+    });
+
+    return ownedProperties.some(
+      (property) =>
+        (property.countryId || '').trim().toLowerCase() === country &&
+        isResidentialPropertyType(property.propertyType)
+    );
+  },
+
+  async countResidentialPropertiesInCountry(playerId: number, countryId: string): Promise<number> {
+    const country = (countryId || '').trim().toLowerCase();
+    if (!country) return 0;
+
+    const ownedProperties = await prisma.property.findMany({
+      where: { playerId },
+      select: {
+        propertyType: true,
+        countryId: true,
+      },
+    });
+
+    return ownedProperties.filter(
+      (property) =>
+        (property.countryId || '').trim().toLowerCase() === country &&
+        isResidentialPropertyType(property.propertyType)
+    ).length;
   },
 
   async processHousingUpkeep(playerId: number): Promise<{
@@ -746,6 +788,15 @@ export const prostituteService = {
     const atRiskCutoff = addDays(now, economyPreset.housingAtRiskDays);
     const capacity = await this.getHousingCapacity(playerId);
     const residentialStats = await this.getResidentialPortfolioStats(playerId);
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const currentCountry = player?.currentCountry ?? '';
+    const currentCountryHomes = await this.countResidentialPropertiesInCountry(
+      playerId,
+      currentCountry
+    );
 
     const atRiskCount = prostitutes.filter(
       (item) =>
@@ -769,6 +820,8 @@ export const prostituteService = {
       occupiedSlots: prostitutes.length,
       freeSlots: Math.max(0, capacity.totalCapacity - prostitutes.length),
       residentialProperties: capacity.residentialProperties,
+      currentCountryHomes,
+      hasResidentialInCurrentCountry: currentCountryHomes > 0,
       averageResidentialUpgrade: Number(residentialStats.averageResidentialUpgrade.toFixed(2)),
       housingHappinessBonusPercent: Math.round(residentialStats.housingHappinessBonusPercent),
       betrayalTriggered: upkeep.betrayalTriggered == true,
@@ -783,13 +836,20 @@ export const prostituteService = {
    */
   async canRecruit(
     playerId: number
-  ): Promise<{ canRecruit: boolean; cooldownRemaining?: number; jailRemaining?: number }> {
+  ): Promise<{
+    canRecruit: boolean;
+    cooldownRemaining?: number;
+    jailRemaining?: number;
+    needsLocalHousing?: boolean;
+    needsHousingSlots?: boolean;
+  }> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       select: {
         lastProstituteRecruitment: true,
         isVip: true,
         vipExpiresAt: true,
+        currentCountry: true,
       },
     });
 
@@ -797,9 +857,17 @@ export const prostituteService = {
       return { canRecruit: false };
     }
 
+    const hasLocalHome = await this.hasResidentialPropertyInCountry(
+      playerId,
+      player.currentCountry ?? ''
+    );
+    if (!hasLocalHome) {
+      return { canRecruit: false, needsLocalHousing: true };
+    }
+
     const housingCapacity = await this.getHousingCapacity(playerId);
     if (housingCapacity.freeSlots <= 0) {
-      return { canRecruit: false };
+      return { canRecruit: false, needsHousingSlots: true };
     }
 
     const remainingJailTime = await checkIfJailed(playerId);
@@ -832,8 +900,10 @@ export const prostituteService = {
   async recruitProstitute(playerId: number): Promise<{
     success: boolean;
     message: string;
+    error?: string;
     prostitute?: any;
     cooldownRemaining?: number;
+    jailRemaining?: number;
     newlyUnlockedAchievements?: any[];
     lostProstitute?: { id: number; name: string; reason: string };
   }> {
@@ -848,21 +918,33 @@ export const prostituteService = {
       };
     }
 
-    const housingCapacity = await this.getHousingCapacity(playerId);
-    if (housingCapacity.freeSlots <= 0) {
-      return {
-        success: false,
-        message: 'Je hebt eerst een huis of appartement nodig met een vrije woonplek',
-      };
-    }
-
-    // Check cooldown
-    const cooldownCheck = await this.canRecruit(playerId);
-    if (!cooldownCheck.canRecruit) {
+    const recruitGate = await this.canRecruit(playerId);
+    if (!recruitGate.canRecruit) {
+      if (recruitGate.jailRemaining && recruitGate.jailRemaining > 0) {
+        return {
+          success: false,
+          message: 'Je kunt geen prostituees werven vanuit de gevangenis',
+          jailRemaining: recruitGate.jailRemaining,
+        };
+      }
+      if (recruitGate.needsLocalHousing) {
+        return {
+          success: false,
+          error: 'NEEDS_LOCAL_HOUSING',
+          message: 'Je hebt in dit land een huis of appartement nodig om te werven',
+        };
+      }
+      if (recruitGate.needsHousingSlots) {
+        return {
+          success: false,
+          error: 'NEEDS_HOUSING_SLOTS',
+          message: 'Je hebt eerst een huis of appartement nodig met een vrije woonplek',
+        };
+      }
       return {
         success: false,
         message: 'Je moet nog wachten voordat je weer kunt werven',
-        cooldownRemaining: cooldownCheck.cooldownRemaining,
+        cooldownRemaining: recruitGate.cooldownRemaining,
       };
     }
 

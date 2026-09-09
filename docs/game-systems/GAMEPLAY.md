@@ -614,6 +614,7 @@ interest = 0
 ### Prostitutie (Empire hub)
 - Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
 - **Collect** int openstaande inkomsten (`settleEarnings`); KPI-strip toont o.a. collectable, housing slots, recruit-cooldown en €/uur.
+- **Werven** vereist een huis of appartement **in het huidige land**. Plekken uit woningen in andere landen tellen niet om hier te werven. Totale netwerk-capaciteit blijft wereldwijd (slots/huur).
 - RLD-detail: tier- en security-upgrades + raid-risicopaneel (bestaande APIs). Geen speelregelwijzigingen — alleen UI.
 - Rivaliteit starten: vul **spelersnaam** in (numeriek ID blijft ook werken). Server: `POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`. Zie `docs/module-protocols/prostitution.md`.
 

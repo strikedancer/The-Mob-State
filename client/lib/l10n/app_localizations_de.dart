@@ -11695,6 +11695,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Kaufe zuerst ein Haus oder eine Wohnung';
 
   @override
+  String get prostitutionNeedHomeInCountry =>
+      'Für die Rekrutierung benötigen Sie ein Haus oder eine Wohnung in diesem Land.';
+
+  @override
+  String get prostitutionRecruitNeedLocalHome => 'Brauche hier ein Zuhause';
+
+  @override
+  String get prostitutionHousingHomesHere => 'Hier';
+
+  @override
   String prostitutionWorkAll(int count) {
     return 'Alle arbeiten lassen ($count)';
   }
@@ -17624,7 +17634,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Der Hub „Prostitution Empire“ verfügt über vier Registerkarten: Arbeiter, RLD, Ereignisse und Soziales.\nSie verwalten die Rekruten jeweils mit ihren eigenen Statistiken (Erfahrung, Beliebtheit, Verfügbarkeit). Mehr Rekruten = höheres passives Einkommen.\nVerwenden Sie „Collect“, um ausstehende Einnahmen abzurechnen, die im KPI-Streifen angezeigt werden.\nDie Arbeitsschichten dauern pro Rekrut 8 Stunden: Nach einer Schicht benötigt dieser Rekrut Ruhezeit, bevor er wieder anfangen kann.\nDie Standortverwaltung ist flexibel: Verschieben Sie Rekruten über das Menü „Verschieben“ auf jeder Arbeiterkarte zwischen Straße, Rotlichtviertel und Nightclub.\nEvents sind vorübergehende Booster: Sondershows, VIP-Abende und Partys erhöhen die Einnahmen pro Tick für die Dauer der Veranstaltung.\nRivalität: Andere Spieler oder NPC-Konkurrenten können Ihre Rekruten abwerben oder Events sabotieren. Höhere Sicherheit verringert dieses Risiko.\nVIP-Kunden zahlen deutlich mehr, benötigen aber Rekruten mit hoher Beliebtheit (80+) und einem gesicherten Standort.\nBei Großtransaktionen und Razzien steigt die Aufmerksamkeit (Hitze) der Polizei. Hohe Hitze führt zur Beschlagnahme von Einkommen oder zur vorübergehenden Schließung.\nKombination mit Nightclub: Ein Nightclub bietet rechtlichen Schutz für Aktivitäten, die den Hitzeanstieg verlangsamen.\nNutzen Sie das Einnahmen-Einblicksfenster oben, um schnell die Stundenleistung für Straße, RLD und Nightclub zu vergleichen.\nBestenliste: Der höchste wöchentliche Gesamtumsatz gewinnt eine wöchentliche Geldprämie und ein Abzeichen.';
+      'Sie verwalten die Rekruten jeweils mit ihren eigenen Statistiken (Erfahrung, Beliebtheit, Verfügbarkeit). Mehr Rekruten = höheres passives Einkommen. \nSie können nur in dem Land rekrutieren, in dem Sie sich befinden, und auch nur, wenn Sie dort ein Haus oder eine Wohnung besitzen. Freie Wohnplätze in anderen Ländern ermöglichen es Ihnen nicht, hier zu rekrutieren. \nDie Arbeitsschichten dauern pro Rekrut 8 Stunden: Nach einer Schicht benötigt dieser Rekrut Ruhezeit, bevor er wieder anfangen kann. \nDie Standortverwaltung ist flexibel: Sie können Rekruten mithilfe der Aktionsschaltflächen auf jeder Karte zwischen Straße, Rotlichtviertel und Nightclub bewegen. \nEvents sind vorübergehende Booster: Sondershows, VIP-Abende und Partys erhöhen die Einnahmen pro Tick für die Dauer der Veranstaltung. \nRivalität: Andere Spieler oder NPC-Konkurrenten können Ihre Rekruten abwerben oder Events sabotieren. Höhere Sicherheit verringert dieses Risiko. \nVIP-Kunden zahlen deutlich mehr, benötigen aber Rekruten mit hoher Beliebtheit (80+) und einem gesicherten Standort. \nBei Großtransaktionen und Razzien steigt die Aufmerksamkeit (Hitze) der Polizei. Hohe Hitze führt zur Beschlagnahme von Einkommen oder zur vorübergehenden Schließung. \nKombination mit Nightclub: Ein Nightclub bietet rechtlichen Schutz für Aktivitäten, die den Hitzeanstieg verlangsamen. \nNutzen Sie das Einnahmen-Einblicksfenster oben, um schnell die Stundenleistung für Straße, RLD und Nightclub zu vergleichen. \nBestenliste: Der höchste wöchentliche Gesamtumsatz gewinnt eine wöchentliche Geldprämie und ein Abzeichen.';
 
   @override
   String get helpTopicProstitutionTips =>

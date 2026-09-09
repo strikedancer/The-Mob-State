@@ -508,6 +508,17 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     );
   }
 
+  bool get _housingBlocksRecruit =>
+      _housingSummary != null && _housingSummary!.blocksRecruit;
+
+  String _housingRecruitBlockLabel(AppLocalizations l10n) {
+    if (_housingSummary != null &&
+        !_housingSummary!.hasResidentialInCurrentCountry) {
+      return l10n.prostitutionRecruitNeedLocalHome;
+    }
+    return l10n.prostitutionBuyPropertyFirst;
+  }
+
   Future<void> _checkRecruitmentStatus() async {
     final result = await _service.canRecruit();
     setState(() {
@@ -608,13 +619,19 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         final l10nFail = AppLocalizations.of(context)!;
         final lost = result['lostProstitute'];
         final lostName = lost is Map ? lost['name']?.toString() : null;
+        final errorCode = result['error']?.toString();
+        final failMessage = switch (errorCode) {
+          'NEEDS_LOCAL_HOUSING' => l10nFail.prostitutionNeedHomeInCountry,
+          'NEEDS_HOUSING_SLOTS' => l10nFail.prostitutionNoHousingForRecruit,
+          _ =>
+            result['message']?.toString() ?? l10nFail.prostitutionRecruitFailed,
+        };
         _finishRecruitPresentation(
           success: false,
           name: lostName?.isNotEmpty == true
               ? lostName
               : l10nFail.prostitutionRecruit,
-          message: result['message']?.toString() ??
-              l10nFail.prostitutionRecruitFailed,
+          message: failMessage,
           achievements: const [],
         );
       }
@@ -967,8 +984,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                         Expanded(
                           child: ElevatedButton.icon(
                             onPressed:
-                                (_housingSummary == null ||
-                                        _housingSummary!.freeSlots > 0) &&
+                                !_housingBlocksRecruit &&
                                     (_cooldownSeconds == null ||
                                         _cooldownSeconds == 0) &&
                                     (_jailSeconds == null ||
@@ -986,15 +1002,17 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                                   )
                                 : const Icon(Icons.person_add),
                             label: Text(
-                              _housingSummary != null &&
-                                      _housingSummary!.freeSlots <= 0
-                                  ? l10n.prostitutionBuyPropertyFirst
+                              _housingBlocksRecruit
+                                  ? _housingRecruitBlockLabel(l10n)
                                   : _jailSeconds != null && _jailSeconds! > 0
                                   ? '${l10n.jail} (${_formatCooldown(_jailSeconds!)})'
                                   : _cooldownSeconds != null &&
                                         _cooldownSeconds! > 0
                                   ? '${l10n.prostitutionRecruit} (${_formatCooldown(_cooldownSeconds!)})'
                                   : l10n.prostitutionRecruit,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -1062,12 +1080,15 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                     ),
                   ),
                 ),
-                if (_housingSummary != null && _housingSummary!.freeSlots <= 0)
+                if (_housingBlocksRecruit)
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                       child: Text(
-                        l10n.prostitutionNoHousingForRecruit,
+                        _housingSummary != null &&
+                                !_housingSummary!.hasResidentialInCurrentCountry
+                            ? l10n.prostitutionNeedHomeInCountry
+                            : l10n.prostitutionNoHousingForRecruit,
                         style: TextStyle(
                           color: Colors.orange.shade300,
                           fontSize: 12,
@@ -1160,7 +1181,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         onAction:
             (_cooldownSeconds != null && _cooldownSeconds! > 0) ||
                     (_jailSeconds != null && _jailSeconds! > 0) ||
-                    (_housingSummary != null && _housingSummary!.freeSlots <= 0)
+                    (_housingSummary != null && _housingSummary!.blocksRecruit)
                 ? null
                 : _recruitProstitute,
       );
@@ -1255,6 +1276,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
               _buildHousingChip(
                 l10n.prostitutionHousingHomes,
                 '${_housingSummary!.residentialProperties}',
+              ),
+              _buildHousingChip(
+                l10n.prostitutionHousingHomesHere,
+                '${_housingSummary!.currentCountryHomes}',
               ),
               _buildHousingChip(
                 l10n.prostitutionHousingAvgUpgrade,

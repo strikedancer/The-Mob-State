@@ -141,6 +141,7 @@ class ProstitutionService {
       return {
         'success': false,
         'message': data['message'] ?? 'Failed to recruit',
+        'error': data['error'],
         'cooldownRemaining': data['cooldownRemaining'],
         'jailRemaining': data['jailRemaining'],
         'lostProstitute': data['lostProstitute'],

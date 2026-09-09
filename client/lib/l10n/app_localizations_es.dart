@@ -11655,6 +11655,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionBuyPropertyFirst => 'Compra primero una casa o piso';
 
   @override
+  String get prostitutionNeedHomeInCountry =>
+      'Necesitas una casa o apartamento en este país para contratar.';
+
+  @override
+  String get prostitutionRecruitNeedLocalHome => 'Necesito un hogar aquí';
+
+  @override
+  String get prostitutionHousingHomesHere => 'Aquí';
+
+  @override
   String prostitutionWorkAll(int count) {
     return 'Mandar a todas a trabajar ($count)';
   }
@@ -17566,7 +17576,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'El centro Prostitution Empire tiene cuatro pestañas: Trabajadores, RLD, Eventos y Social.\nGestionas reclutas, cada uno con sus propias estadísticas (experiencia, popularidad, disponibilidad). Más reclutas = mayores ingresos pasivos.\nUtilice Cobrar para liquidar las ganancias pendientes que se muestran en la franja de KPI.\nLos turnos de trabajo duran 8 horas por recluta: después de un turno, ese recluta necesita tiempo de descanso antes de poder comenzar de nuevo.\nLa gestión de la ubicación es flexible: mueva los reclutas entre la calle, el Barrio Rojo y el Nightclub a través del menú Mover en cada tarjeta de trabajador.\nLos eventos son impulsores temporales: espectáculos especiales, noches VIP y fiestas aumentan los ingresos por tick durante la duración del evento.\nRivalidad: otros jugadores o competidores NPC pueden robar a tus reclutas o sabotear eventos. Una mayor seguridad reduce este riesgo.\nLos clientes VIP pagan considerablemente más, pero requieren reclutas con gran popularidad (más de 80) y una ubicación segura.\nLa atención policial (calor) aumenta con grandes transacciones y redadas. Las altas temperaturas conducen a la confiscación de ingresos o al cierre temporal.\nCombinación con discoteca: una discoteca proporciona cobertura legal para actividades que hacen que el calor suba más lentamente.\nUtilice el panel de información de ganancias en la parte superior para comparar rápidamente la producción por hora de calle, RLD y Nightclub.\nTabla de clasificación: la facturación semanal total más alta gana una recompensa en efectivo semanal y una insignia.';
+      'Gestionas reclutas, cada uno con sus propias estadísticas (experiencia, popularidad, disponibilidad). Más reclutas = mayores ingresos pasivos. \nSólo puedes contratar en el país en el que te encuentras y sólo si eres propietario de una casa o apartamento allí. Las plazas de alojamiento disponibles en otros países no permiten contratar aquí. \nLos turnos de trabajo duran 8 horas por recluta: después de un turno, ese recluta necesita tiempo de descanso antes de poder comenzar de nuevo. \nLa gestión de la ubicación es flexible: puedes mover reclutas entre la calle, el Barrio Rojo y el Nightclub usando los botones de acción en cada tarjeta. \nLos eventos son impulsores temporales: espectáculos especiales, noches VIP y fiestas aumentan los ingresos por tick durante la duración del evento. \nRivalidad: otros jugadores o competidores NPC pueden robar a tus reclutas o sabotear eventos. Una mayor seguridad reduce este riesgo. \nLos clientes VIP pagan considerablemente más, pero requieren reclutas con gran popularidad (más de 80) y una ubicación segura. \nLa atención policial (calor) aumenta con grandes transacciones y redadas. Las altas temperaturas conducen a la confiscación de ingresos o al cierre temporal. \nCombinación con discoteca: una discoteca proporciona cobertura legal para actividades que hacen que el calor suba más lentamente. \nUtilice el panel de información de ganancias en la parte superior para comparar rápidamente la producción por hora de calle, RLD y Nightclub. \nTabla de clasificación: la facturación semanal total más alta gana una recompensa en efectivo semanal y una insignia.';
 
   @override
   String get helpTopicProstitutionTips =>

@@ -11600,6 +11600,16 @@ class AppLocalizationsNl extends AppLocalizations {
       'Koop eerst een huis of appartement';
 
   @override
+  String get prostitutionNeedHomeInCountry =>
+      'Je hebt in dit land een huis of appartement nodig om te werven.';
+
+  @override
+  String get prostitutionRecruitNeedLocalHome => 'Eerst huis hier';
+
+  @override
+  String get prostitutionHousingHomesHere => 'Hier';
+
+  @override
   String prostitutionWorkAll(int count) {
     return 'Alle laten werken ($count)';
   }
@@ -17452,7 +17462,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Je beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: je kunt recruits verplaatsen tussen straat, Red Light District en nightclub via de actieknoppen op de kaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.';
+      'Je beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nWerven kan alleen in het land waar je nu bent, en alleen als je daar een huis of appartement hebt. Vrije woonplekken uit andere landen tellen niet voor werven hier.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: je kunt recruits verplaatsen tussen straat, Red Light District en nightclub via de actieknoppen op de kaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.';
 
   @override
   String get helpTopicProstitutionTips =>

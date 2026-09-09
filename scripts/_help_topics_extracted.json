@@ -1437,6 +1437,7 @@
     "summaryEn": "Build a prostitution network with recruits, events and VIP clients. A well-run network generates passive income but requires active management to control rivalry and police attention.",
     "howNl": [
       "Je beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.",
+      "Werven kan alleen in het land waar je nu bent, en alleen als je daar een huis of appartement hebt. Vrije woonplekken uit andere landen tellen niet voor werven hier.",
       "Werk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.",
       "Locatiebeheer is flexibel: je kunt recruits verplaatsen tussen straat, Red Light District en nightclub via de actieknoppen op de kaart.",
       "Events zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.",
@@ -1449,6 +1450,7 @@
     ],
     "howEn": [
       "You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.",
+      "You can only recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.",
       "Work shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.",
       "Location management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.",
       "Events are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.",

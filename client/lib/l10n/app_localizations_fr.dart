@@ -11699,6 +11699,16 @@ class AppLocalizationsFr extends AppLocalizations {
       'Achetez d\'abord une maison ou un appartement';
 
   @override
+  String get prostitutionNeedHomeInCountry =>
+      'Vous avez besoin d\'une maison ou d\'un appartement dans ce pays pour recruter.';
+
+  @override
+  String get prostitutionRecruitNeedLocalHome => 'Besoin d\'une maison ici';
+
+  @override
+  String get prostitutionHousingHomesHere => 'Ici';
+
+  @override
   String prostitutionWorkAll(int count) {
     return 'Tout envoyer travailler ($count)';
   }
@@ -17623,7 +17633,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Le hub Prostitution Empire comporte quatre onglets : Travailleurs, RLD, Événements et Social.\nVous gérez les recrues chacune avec leurs propres statistiques (expérience, popularité, disponibilité). Plus de recrues = revenu passif plus élevé.\nUtilisez Collecter pour régler les revenus en attente affichés dans la bande KPI.\nLes quarts de travail durent 8 heures par recrue : après un quart de travail, cette recrue a besoin de temps de repos avant de pouvoir recommencer.\nLa gestion des emplacements est flexible : déplacez les recrues entre la rue, le quartier rouge et la discothèque via le menu Déplacer sur chaque carte d\'ouvrier.\nLes événements sont des boosters temporaires : des spectacles spéciaux, des soirées VIP et des fêtes augmentent les revenus par tick pendant la durée de l\'événement.\nRivalité : d\'autres joueurs ou PNJ concurrents peuvent débaucher vos recrues ou saboter des événements. Une sécurité plus élevée réduit ce risque.\nLes clients VIP paient beaucoup plus mais nécessitent des recrues très populaires (80+) et un emplacement sécurisé.\nL\'attention (la chaleur) de la police augmente avec les transactions et les perquisitions importantes. La forte chaleur entraîne une confiscation des revenus ou une fermeture temporaire.\nCombinaison avec une discothèque : une discothèque offre une couverture légale aux activités faisant monter plus lentement la chaleur.\nUtilisez le panneau d\'informations sur les revenus en haut pour comparer rapidement la production horaire pour la rue, le RLD et la discothèque.\nClassement : le chiffre d\'affaires total hebdomadaire le plus élevé remporte une récompense hebdomadaire en espèces et un badge.';
+      'Vous gérez les recrues chacune avec leurs propres statistiques (expérience, popularité, disponibilité). Plus de recrues = revenu passif plus élevé. \nVous ne pouvez recruter que dans le pays dans lequel vous vous trouvez et uniquement si vous y possédez une maison ou un appartement. Les logements disponibles dans d\'autres pays ne vous permettent pas de recruter ici. \nLes quarts de travail durent 8 heures par recrue : après un quart de travail, cette recrue a besoin de temps de repos avant de pouvoir recommencer. \nLa gestion des emplacements est flexible : vous pouvez déplacer les recrues entre la rue, le quartier rouge et la discothèque à l\'aide des boutons d\'action présents sur chaque carte. \nLes événements sont des boosters temporaires : des spectacles spéciaux, des soirées VIP et des fêtes augmentent les revenus par tick pendant la durée de l\'événement. \nRivalité : d\'autres joueurs ou PNJ concurrents peuvent débaucher vos recrues ou saboter des événements. Une sécurité plus élevée réduit ce risque. \nLes clients VIP paient beaucoup plus mais nécessitent des recrues très populaires (80+) et un emplacement sécurisé. \nL\'attention (la chaleur) de la police augmente avec les transactions et les perquisitions importantes. La forte chaleur entraîne une confiscation des revenus ou une fermeture temporaire. \nCombinaison avec une discothèque : une discothèque offre une couverture légale aux activités faisant monter plus lentement la chaleur. \nUtilisez le panneau d\'informations sur les revenus en haut pour comparer rapidement la production horaire pour la rue, le RLD et la discothèque. \nClassement : le chiffre d\'affaires total hebdomadaire le plus élevé remporte une récompense hebdomadaire en espèces et un badge.';
 
   @override
   String get helpTopicProstitutionTips =>

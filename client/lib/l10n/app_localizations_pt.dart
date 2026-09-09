@@ -11622,6 +11622,16 @@ class AppLocalizationsPt extends AppLocalizations {
       'Compre primeiro uma casa ou apartamento';
 
   @override
+  String get prostitutionNeedHomeInCountry =>
+      'Você precisa de uma casa ou apartamento neste país para recrutar.';
+
+  @override
+  String get prostitutionRecruitNeedLocalHome => 'Precisa de uma casa aqui';
+
+  @override
+  String get prostitutionHousingHomesHere => 'Aqui';
+
+  @override
   String prostitutionWorkAll(int count) {
     return 'Mandar todas trabalhar ($count)';
   }
@@ -17538,7 +17548,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'O hub Prostitution Empire possui quatro guias: Trabalhadores, RLD, Eventos e Social.\nVocê gerencia recrutas, cada um com suas próprias estatísticas (experiência, popularidade, disponibilidade). Mais recrutas = maior renda passiva.\nUse Cobrar para liquidar ganhos pendentes mostrados na faixa de KPI.\nOs turnos de trabalho duram 8 horas por recruta: após um turno, esse recruta precisa de um tempo de descanso antes de poder começar novamente.\nO gerenciamento de localização é flexível: mova os recrutas entre a rua, o Distrito da Luz Vermelha e a boate por meio do menu Mover em cada cartão de trabalhador.\nOs eventos são impulsionadores temporários: shows especiais, noites VIP e festas aumentam a receita por tick durante o evento.\nRivalidade: outros jogadores ou competidores NPC podem roubar seus recrutas ou sabotar eventos. Maior segurança reduz esse risco.\nOs clientes VIP pagam consideravelmente mais, mas exigem recrutas com alta popularidade (80+) e uma localização segura.\nA atenção da polícia (calor) aumenta com grandes transações e batidas. O calor elevado leva ao confisco de rendimentos ou ao encerramento temporário.\nCombinação com discoteca: uma discoteca oferece cobertura legal para atividades que provocam um aumento mais lento do calor.\nUse o painel de informações de ganhos na parte superior para comparar rapidamente a produção por hora de rua, RLD e boate.\nTabela de classificação: o maior faturamento semanal total ganha uma recompensa semanal em dinheiro e um distintivo.';
+      'Você gerencia recrutas, cada um com suas próprias estatísticas (experiência, popularidade, disponibilidade). Mais recrutas = maior renda passiva. \nVocê só pode recrutar no país em que está e somente se possuir uma casa ou apartamento lá. Vagas vagas em outros países não permitem que você recrute aqui. \nOs turnos de trabalho duram 8 horas por recruta: após um turno, esse recruta precisa de um tempo de descanso antes de poder começar novamente. \nO gerenciamento de localização é flexível: você pode mover os recrutas entre a rua, o Red Light District e a boate usando os botões de ação em cada cartão. \nOs eventos são impulsionadores temporários: shows especiais, noites VIP e festas aumentam a receita por tick durante o evento. \nRivalidade: outros jogadores ou competidores NPC podem roubar seus recrutas ou sabotar eventos. Maior segurança reduz esse risco. \nOs clientes VIP pagam consideravelmente mais, mas exigem recrutas com alta popularidade (80+) e uma localização segura. \nA atenção da polícia (calor) aumenta com grandes transações e batidas. O calor elevado leva ao confisco de rendimentos ou ao encerramento temporário. \nCombinação com discoteca: uma discoteca oferece cobertura legal para atividades que provocam um aumento mais lento do calor. \nUse o painel de informações de ganhos na parte superior para comparar rapidamente a produção por hora de rua, RLD e boate. \nTabela de classificação: o maior faturamento semanal total ganha uma recompensa semanal em dinheiro e um distintivo.';
 
   @override
   String get helpTopicProstitutionTips =>

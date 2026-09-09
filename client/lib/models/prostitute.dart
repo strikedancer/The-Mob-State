@@ -262,6 +262,8 @@ class ProstituteHousingSummary {
   final int occupiedSlots;
   final int freeSlots;
   final int residentialProperties;
+  final int currentCountryHomes;
+  final bool hasResidentialInCurrentCountry;
   final double averageResidentialUpgrade;
   final int housingHappinessBonusPercent;
   final bool betrayalTriggered;
@@ -278,6 +280,8 @@ class ProstituteHousingSummary {
     required this.occupiedSlots,
     required this.freeSlots,
     required this.residentialProperties,
+    this.currentCountryHomes = 0,
+    this.hasResidentialInCurrentCountry = true,
     required this.averageResidentialUpgrade,
     required this.housingHappinessBonusPercent,
     this.betrayalTriggered = false,
@@ -285,6 +289,9 @@ class ProstituteHousingSummary {
     this.seizedDrugsGrams = 0,
     this.nightclubLicensesRevoked = 0,
   });
+
+  bool get blocksRecruit =>
+      !hasResidentialInCurrentCountry || freeSlots <= 0;
 
   factory ProstituteHousingSummary.fromJson(Map<String, dynamic> json) {
     return ProstituteHousingSummary(
@@ -296,6 +303,9 @@ class ProstituteHousingSummary {
       occupiedSlots: json['occupiedSlots'] as int? ?? 0,
       freeSlots: json['freeSlots'] as int? ?? 0,
       residentialProperties: json['residentialProperties'] as int? ?? 0,
+      currentCountryHomes: json['currentCountryHomes'] as int? ?? 0,
+      hasResidentialInCurrentCountry:
+          json['hasResidentialInCurrentCountry'] as bool? ?? true,
       averageResidentialUpgrade:
           (json['averageResidentialUpgrade'] as num?)?.toDouble() ?? 0,
       housingHappinessBonusPercent:

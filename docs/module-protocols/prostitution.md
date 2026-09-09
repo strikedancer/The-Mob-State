@@ -38,6 +38,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Weekly housing rent weergave moet overeenkomen met backend-config (standaard/VIP dagtarief x 7).
+- Recruit (`POST /prostitutes/recruit` en `canRecruit`) vereist een residential property (huis/appartement) in `player.currentCountry`. Globale vrije slots uit andere landen mogen werven niet unlocken. UI waarschuwt met `prostitutionNeedHomeInCountry`.
 - Rivaliteit starten accepteert **spelersnaam of numeriek ID** (`POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`); het challenge-veld mag geen puur-numeriek toetsenbord forceren.
 - 8u work / 8u rest shifts; earnings verschillen per locatie (street / RLD / nightclub).
 - Worker cards: hoogte volgt content (geen bottom-clip op web/tablet/desktop).

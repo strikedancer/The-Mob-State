@@ -11625,6 +11625,16 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prostitutionBuyPropertyFirst => 'Najpierw kup dom lub mieszkanie';
 
   @override
+  String get prostitutionNeedHomeInCountry =>
+      'Aby przeprowadzić rekrutację, potrzebujesz domu lub mieszkania w tym kraju.';
+
+  @override
+  String get prostitutionRecruitNeedLocalHome => 'Potrzebujesz tutaj domu';
+
+  @override
+  String get prostitutionHousingHomesHere => 'Tutaj';
+
+  @override
   String prostitutionWorkAll(int count) {
     return 'Wyślij wszystkie do pracy ($count)';
   }
@@ -17541,7 +17551,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Centrum Imperium Prostytucji składa się z czterech zakładek: Pracownicy, RLD, Wydarzenia i Społeczności.\nZarządzasz rekrutami, każdy za pomocą własnych statystyk (doświadczenie, popularność, dostępność). Więcej rekrutów = wyższy dochód pasywny.\nUżyj opcji Collect, aby rozliczyć oczekujące zarobki pokazane na pasku KPI.\nPraca zmianowa trwa 8 godzin na rekruta: po zmianie rekrut potrzebuje czasu na odpoczynek, zanim będzie mógł zacząć od nowa.\nZarządzanie lokalizacjami jest elastyczne: przenoś rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym za pomocą menu Ruchu na każdej karcie pracownika.\nWydarzenia to tymczasowe wzmocnienia: specjalne pokazy, noce VIP i imprezy zwiększają dochód za każdy tik przez cały czas trwania wydarzenia.\nRywalizacja: inni gracze lub konkurenci NPC mogą kłusować na twoich rekrutów lub sabotować wydarzenia. Wyższe bezpieczeństwo zmniejsza to ryzyko.\nKlienci VIP płacą znacznie więcej, ale wymagają rekrutów o dużej popularności (80+) i bezpiecznej lokalizacji.\nUwaga policji (gorąco) wzrasta w przypadku dużych transakcji i nalotów. Wysoka temperatura prowadzi do konfiskaty dochodów lub tymczasowego przestoju.\nPołączenie z klubem nocnym: Nightclub zapewnia prawną ochronę działań powodujących wolniejszy wzrost temperatury.\nSkorzystaj z panelu analizy zarobków u góry, aby szybko porównać godzinowe wyniki dla ulicy, RLD i klubu nocnego.\nTabela liderów: najwyższy łączny tygodniowy obrót zapewnia cotygodniową nagrodę pieniężną i odznakę.';
+      'Zarządzasz rekrutami, każdy za pomocą własnych statystyk (doświadczenie, popularność, dostępność). Więcej rekrutów = wyższy dochód pasywny. \nMożesz rekrutować tylko w kraju, w którym się znajdujesz i tylko jeśli posiadasz tam dom lub mieszkanie. Miejsca na mieszkania zastępcze w innych krajach nie pozwalają na rekrutację tutaj. \nPraca zmianowa trwa 8 godzin na rekruta: po zmianie rekrut potrzebuje czasu na odpoczynek, zanim będzie mógł zacząć od nowa. \nZarządzanie lokalizacjami jest elastyczne: możesz przenosić rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym, korzystając z przycisków akcji na każdej karcie. \nWydarzenia to tymczasowe wzmocnienia: specjalne pokazy, noce VIP i imprezy zwiększają dochód za każdy tik przez cały czas trwania wydarzenia. \nRywalizacja: inni gracze lub konkurenci NPC mogą kłusować na twoich rekrutów lub sabotować wydarzenia. Wyższe bezpieczeństwo zmniejsza to ryzyko. \nKlienci VIP płacą znacznie więcej, ale wymagają rekrutów o dużej popularności (80+) i bezpiecznej lokalizacji. \nUwaga policji (gorąco) wzrasta w przypadku dużych transakcji i nalotów. Wysoka temperatura prowadzi do konfiskaty dochodów lub tymczasowego przestoju. \nPołączenie z klubem nocnym: Nightclub zapewnia prawną ochronę działań powodujących wolniejszy wzrost temperatury. \nSkorzystaj z panelu analizy zarobków u góry, aby szybko porównać godzinowe wyniki dla ulicy, RLD i klubu nocnego. \nTabela liderów: najwyższy łączny tygodniowy obrót zapewnia cotygodniową nagrodę pieniężną i odznakę.';
 
   @override
   String get helpTopicProstitutionTips =>
