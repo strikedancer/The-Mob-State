@@ -37,7 +37,7 @@ Inventory for event items: `GET /game-events/my-items`. Public gold/silver/bronz
 - `blackMarketService.ts` — vehicles
 
 ## Dashboard
-- Compact **Markt**-tegel toont het aantal actieve listings (`GET /market/unified`) en de nieuwste itemlistings (max 8). Lege staat: “Zet een tool of drugs online”. Geen NPC-fake listings.
+- Compact **Markt**-tegel toont het aantal actieve listings (`GET /market/unified`) en de nieuwste itemlistings (max 8). Lege staat: “Zet een tool of drugs online”. Geen NPC-fake listings. Op web opent de tegel de Marktplaats-tab **in de dashboard-shell** (`MarketTeaserTile.onOpenMarket` → `_openBlackMarket(tabMarketplace)`), niet `Navigator.push`.
 
 ## Client
 - Sell FAB → kind picker (tool/drug/crypto/trade/event)

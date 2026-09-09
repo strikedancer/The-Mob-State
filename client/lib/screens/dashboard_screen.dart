@@ -260,6 +260,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _blackMarketTabIndex = initialTabIndex;
       _selectedWebSection = _WebSection.blackMarket;
       _expandedNavGroup = _navGroupForSection(_WebSection.blackMarket);
+      _webSectionRefreshSeed++;
     });
     _syncOnNavigate();
   }
@@ -1828,6 +1829,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return _WebDashboardHomeContent(
           onOpenTrainingHub: () =>
               _selectWebSection(_WebSection.trainingHub),
+          onOpenMarket: () =>
+              _openBlackMarket(BlackMarketScreen.tabMarketplace),
         );
       case _WebSection.vault:
         return const VaultScreen(embedded: true);
@@ -2813,9 +2816,13 @@ class _HomeLiveTimers {
 }
 
 class _WebDashboardHomeContent extends StatefulWidget {
-  const _WebDashboardHomeContent({this.onOpenTrainingHub});
+  const _WebDashboardHomeContent({
+    this.onOpenTrainingHub,
+    this.onOpenMarket,
+  });
 
   final VoidCallback? onOpenTrainingHub;
+  final VoidCallback? onOpenMarket;
 
   @override
   State<_WebDashboardHomeContent> createState() =>
@@ -3627,7 +3634,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               },
             ),
             const SizedBox(height: 8),
-            const MarketTeaserTile(),
+            MarketTeaserTile(onOpenMarket: widget.onOpenMarket),
             const SizedBox(height: 8),
             TrainingSummaryCard(onOpenHub: widget.onOpenTrainingHub),
             const SizedBox(height: 8),
