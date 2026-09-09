@@ -1758,7 +1758,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final healthProgress = (player.health / 100).clamp(0.0, 1.0);
     final pageInfoTopic = _statusBarPageInfoTopic();
     final wantedLevel = (player.wantedLevel ?? 0).toDouble();
-    final wantedProgress = (wantedLevel / 5.0).clamp(0.0, 1.0);
+    final wantedProgress = (wantedLevel / 100.0).clamp(0.0, 1.0);
     final fbiHeat = (player.fbiHeat ?? 0).toDouble();
     final fbiProgress = (fbiHeat / 100.0).clamp(0.0, 1.0);
 
@@ -1822,7 +1822,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
     final wantedCell = cell(
       label: l10n.wantedLevel,
-      value: '${wantedLevel.toInt()}/5',
+      value: '${wantedLevel.toInt()}/100',
       valueColor: wantedLevel > 0 ? Colors.orange : Colors.white70,
       progress: wantedProgress,
       barColor: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,

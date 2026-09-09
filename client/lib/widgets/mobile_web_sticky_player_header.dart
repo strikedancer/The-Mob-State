@@ -147,8 +147,8 @@ class _MobileWebStickyPlayerHeader extends StatelessWidget {
                     Expanded(
                       child: _TinyProgressBar(
                         label: 'Wanted',
-                        valueText: '${wantedLevel.toInt()}/5',
-                        progress: (wantedLevel / 5.0).clamp(0.0, 1.0),
+                        valueText: '${wantedLevel.toInt()}/100',
+                        progress: (wantedLevel / 100.0).clamp(0.0, 1.0),
                         color: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
                       ),
                     ),
