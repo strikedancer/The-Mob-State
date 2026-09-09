@@ -175,6 +175,160 @@ const Color _dashboardBgMid = dashboardBgMid;
 const Color _dashboardBgEnd = dashboardBgEnd;
 const Color _dashboardPanelDark = dashboardPanelDark;
 
+String _sessionRecapTimeAgo(DateTime dt, AppLocalizations l10n) {
+  final diff = DateTime.now().difference(dt);
+  if (diff.inSeconds < 20) return l10n.justNow;
+  if (diff.inMinutes < 1) {
+    return l10n.secondsAgo(diff.inSeconds.toString());
+  }
+  if (diff.inHours < 1) {
+    return l10n.minutesAgo(diff.inMinutes.toString());
+  }
+  return l10n.hoursAgo(diff.inHours.toString());
+}
+
+void showSessionRecapSheet(BuildContext context, AppLocalizations l10n) {
+  final eventProvider = Provider.of<EventProvider>(context, listen: false);
+  final renderer = EventRenderer(l10n);
+  final items = eventProvider.events.take(10).toList();
+
+  showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (ctx) {
+      return SafeArea(
+        child: Container(
+          margin: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141012).withOpacity(0.98),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: _dashboardGold.withOpacity(0.35)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.4),
+                blurRadius: 16,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(ctx).size.height * 0.75,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.receipt_long, color: _dashboardGold),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.sessionRecap,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(ctx),
+                    icon: const Icon(Icons.close, color: Colors.white70),
+                    tooltip: l10n.close,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Text(
+                l10n.last10EventsLive,
+                style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: items.isEmpty
+                    ? Center(
+                        child: Text(
+                          l10n.noEventsYetSession,
+                          style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                        ),
+                      )
+                    : ListView.separated(
+                        itemCount: items.length,
+                        separatorBuilder: (_, _) =>
+                            Divider(color: Colors.white.withOpacity(0.08)),
+                        itemBuilder: (_, i) {
+                          final ev = items[i];
+                          final text = renderer.renderEvent(ev.eventKey, ev.params);
+                          final when = _sessionRecapTimeAgo(ev.timestamp, l10n);
+                          final isPositive = ev.eventKey.endsWith('.success') ||
+                              ev.eventKey == 'job.success' ||
+                              ev.eventKey == 'crime.success';
+                          final accent =
+                              isPositive ? Colors.greenAccent : Colors.white70;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  margin: const EdgeInsets.only(top: 4),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: accent.withOpacity(0.85),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        text,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        when,
+                                        style: TextStyle(
+                                          color: Colors.white.withOpacity(0.55),
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                onPressed: () => eventProvider.clearEvents(),
+                icon: const Icon(Icons.delete_outline),
+                label: Text(l10n.clearRecap),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: BorderSide(color: Colors.white.withOpacity(0.18)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -1996,7 +2150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 GamePageInfoButton(topicId: 'dashboard'),
                 IconButton(
                   icon: const Icon(Icons.receipt_long),
-                  onPressed: () => _openSessionRecap(l10n),
+                  onPressed: () => showSessionRecapSheet(context, l10n),
                   tooltip: l10n.sessionRecap,
                 ),
                 IconButton(
@@ -2820,157 +2974,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     }
   }
 
-  String _timeAgoLabel(DateTime dt) {
-    final diff = DateTime.now().difference(dt);
-    final l10n = AppLocalizations.of(context)!;
-    if (diff.inSeconds < 20) return l10n.justNow;
-    if (diff.inMinutes < 1) {
-      return l10n.secondsAgo(diff.inSeconds.toString());
-    }
-    if (diff.inHours < 1) {
-      return l10n.minutesAgo(diff.inMinutes.toString());
-    }
-    return l10n.hoursAgo(diff.inHours.toString());
-  }
-
   void _openSessionRecap(AppLocalizations l10n) {
-    final eventProvider = Provider.of<EventProvider>(context, listen: false);
-    final renderer = EventRenderer(l10n);
-    final items = eventProvider.events.take(10).toList();
-
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) {
-        return SafeArea(
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: const Color(0xFF141012).withOpacity(0.98),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: _dashboardGold.withOpacity(0.35)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.4),
-                  blurRadius: 16,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(ctx).size.height * 0.75,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.receipt_long, color: _dashboardGold),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        l10n.sessionRecap,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(ctx),
-                      icon: const Icon(Icons.close, color: Colors.white70),
-                      tooltip: l10n.close,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  l10n.last10EventsLive,
-                  style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
-                ),
-                const SizedBox(height: 12),
-                Expanded(
-                  child: items.isEmpty
-                      ? Center(
-                          child: Text(
-                            l10n.noEventsYetSession,
-                            style: TextStyle(color: Colors.white.withOpacity(0.7)),
-                          ),
-                        )
-                      : ListView.separated(
-                          itemCount: items.length,
-                          separatorBuilder: (_, _) => Divider(color: Colors.white.withOpacity(0.08)),
-                          itemBuilder: (_, i) {
-                            final ev = items[i];
-                            final text = renderer.renderEvent(ev.eventKey, ev.params);
-                            final when = _timeAgoLabel(ev.timestamp);
-                            final isPositive = ev.eventKey.endsWith('.success') ||
-                                ev.eventKey == 'job.success' ||
-                                ev.eventKey == 'crime.success';
-                            final accent = isPositive ? Colors.greenAccent : Colors.white70;
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 6),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 10,
-                                    height: 10,
-                                    margin: const EdgeInsets.only(top: 4),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: accent.withOpacity(0.85),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          text,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 13,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          when,
-                                          style: TextStyle(
-                                            color: Colors.white.withOpacity(0.55),
-                                            fontSize: 11,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                ),
-                const SizedBox(height: 10),
-                OutlinedButton.icon(
-                  onPressed: () => eventProvider.clearEvents(),
-                  icon: const Icon(Icons.delete_outline),
-                  label: Text(l10n.clearRecap),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: BorderSide(color: Colors.white.withOpacity(0.18)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+    showSessionRecapSheet(context, l10n);
   }
 
   @override

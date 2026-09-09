@@ -52,7 +52,7 @@
 - Het dashboard toont **Dagdoelen** één keer in de gestylede paneelkaart (progress + cash/XP + streak), op web bij het economie-blok. Na claim zie je rechtsboven cash + XP. Featured daily pusht autodiefstal niet onder rang 5.
 - Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie; op desktop staat de volledige weeklijst onderaan de linker kolom. In een crew zie je daarnaast een missable **crew-weekdoel**.
 - Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
-- Het dashboard heeft een **Sessie-overzicht** (link rechtsboven op Home; op native in de AppBar) met de laatste eigen acties. Er staat geen aparte **Mijn activiteit**-lijst meer op het dashboard zelf.
+- Het dashboard heeft een **Sessie-overzicht** (link rechtsboven op Home; op native in de AppBar) met de laatste eigen acties. Web en native openen dezelfde lijst. Er staat geen aparte **Mijn activiteit**-lijst meer op het dashboard zelf.
 - Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim. **Event Pass**-prijzen staan **bovenaan** (klaar-om-te-claimen), niet alleen verspreid over de 56 doelrijen. Op mobiel blijven Claim-tegels onder het doel tappable.
 - **Misdaden** laadt de lijst in één server-batch. Als het scherm “kon niet laden / probeer opnieuw” toont, is dat een timeout of verbinding — Retry (en één automatische retry) hoort daarna de lijst te geven.
 - **Berichten / postvak:** een badge of push “nieuw bericht” hoort bij bestaande threads (spelers + The Mob State). De inbox mag niet leeg lijken terwijl die berichten er wél zijn; bij een laadfout zie je retry, niet “Nog geen berichten”.
