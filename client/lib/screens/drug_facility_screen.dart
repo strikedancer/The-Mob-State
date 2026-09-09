@@ -449,6 +449,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
         final padding = isMobile ? 12.0 : 20.0;
 
         return Scaffold(
+          backgroundColor: widget.showAppBar ? null : Colors.transparent,
           appBar: widget.showAppBar
               ? AppBar(
                   backgroundColor: const Color(0xCC111111),

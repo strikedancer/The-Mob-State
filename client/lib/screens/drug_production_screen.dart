@@ -16,11 +16,13 @@ import '../widgets/game_page_info.dart';
 class DrugProductionScreen extends StatefulWidget {
   final VoidCallback? onOpenFacilitiesRequested;
   final VoidCallback? onOpenBlackMarket;
+  final bool showAppBar;
 
   const DrugProductionScreen({
     super.key,
     this.onOpenFacilitiesRequested,
     this.onOpenBlackMarket,
+    this.showAppBar = true,
   });
 
   @override
@@ -893,39 +895,19 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
         final padding = isMobile ? 12.0 : 20.0;
 
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xCC111111),
-            title: Text(t.drugsProdTitle),
-            actions: [
-              if (!_isLoading) ..._buildProductionKpis(t),
-              if (_stats?.isVip == true)
-                Tooltip(
-                  message: _stats?.autoCollectEnabled == true
-                      ? t.drugsProdAutoCollectOn
-                      : t.drugsProdAutoCollectOff,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.autorenew,
-                      color: _stats?.autoCollectEnabled == true
-                          ? Colors.greenAccent
-                          : Colors.grey,
-                    ),
-                    onPressed: _togglingAutoCollect ? null : _toggleAutoCollect,
-                  ),
-                ),
-              IconButton(
-                icon: const Icon(Icons.factory_outlined),
-                onPressed: _openFacilities,
-              ),
-              IconButton(
-                icon: const Icon(Icons.science_outlined),
-                tooltip: t.drugsOpenMaterials,
-                onPressed: _openMaterials,
-              ),
-              IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
-            ],
-          ),
-          body: Stack(
+          backgroundColor: widget.showAppBar ? null : Colors.transparent,
+          appBar: widget.showAppBar
+              ? AppBar(
+                  backgroundColor: const Color(0xCC111111),
+                  title: Text(t.drugsProdTitle),
+                  actions: _buildProductionToolbar(t),
+                )
+              : null,
+          body: Column(
+            children: [
+              if (!widget.showAppBar) _buildEmbeddedProductionBar(t),
+              Expanded(
+                child: Stack(
             children: [
               Positioned.fill(
                 child: WebAssetHelper.image(
@@ -1823,8 +1805,59 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                     ),
             ],
           ),
+              ),
+            ],
+          ),
         );
       },
+    );
+  }
+
+  List<Widget> _buildProductionToolbar(AppLocalizations t) {
+    return [
+      if (!_isLoading) ..._buildProductionKpis(t),
+      if (_stats?.isVip == true)
+        Tooltip(
+          message: _stats?.autoCollectEnabled == true
+              ? t.drugsProdAutoCollectOn
+              : t.drugsProdAutoCollectOff,
+          child: IconButton(
+            icon: Icon(
+              Icons.autorenew,
+              color: _stats?.autoCollectEnabled == true
+                  ? Colors.greenAccent
+                  : Colors.grey,
+            ),
+            onPressed: _togglingAutoCollect ? null : _toggleAutoCollect,
+          ),
+        ),
+      IconButton(
+        icon: const Icon(Icons.factory_outlined),
+        onPressed: _openFacilities,
+      ),
+      IconButton(
+        icon: const Icon(Icons.science_outlined),
+        tooltip: t.drugsOpenMaterials,
+        onPressed: _openMaterials,
+      ),
+      IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
+    ];
+  }
+
+  Widget _buildEmbeddedProductionBar(AppLocalizations t) {
+    return Material(
+      color: const Color(0xCC111111),
+      child: SizedBox(
+        height: 48,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(children: _buildProductionToolbar(t)),
+          ),
+        ),
+      ),
     );
   }
 

@@ -113,6 +113,7 @@ Elke **5 minuten** gebeurt er automatisch:
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
+- Empire → **Drugs** gebruikt dezelfde foto-header als Don/Midnight Races, plus drie tabs: Faciliteiten, Productie en Voorraad. Heat, materialen en groothandelszendingen staan onder de header.
 
 ---
 

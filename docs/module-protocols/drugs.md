@@ -4,7 +4,7 @@
 Drug empire hub with facilities, production, inventory, heat and progression.
 
 ## Primary Frontend Entry
-- client/lib/screens/drug_environment_screen.dart
+- client/lib/screens/drug_environment_screen.dart (Empire → Drugs: Don-style photo hero + `TabBar` for Facilities / Production / Inventory; gold `i` in the hero; no extra AppBar when `embedded == true`)
 - Materials buy / transfer: `client/lib/screens/materials_shop_screen.dart` (also via Black Market → Materials)
 - Material icons: `client/assets/images/materials/<id>.png` (filename = `drugs.json` material `id`). Generate/repair via `backend/scripts/generate_material_images_leonardo.py` (transparent PNG + rembg). Shop thumbs use `WebAssetHelper` on a dark plate so missing/white plates do not flash.
 
@@ -49,7 +49,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Tick + quote/list settle due rows. Ready wholesale is paid immediately; seized pays nothing.
 - Heat on send (`DRUG_WHOLESALE_DRUG_HEAT`, includes smuggle +2). FBI heat per kg on successful arrival. Country police `drug_wholesale` (origin on send, dest on success) only if pressure flag is already on.
 - Admin → Drugs runtime tab. Do not flip Clearing House or `COUNTRY_POLICE_PRESSURE_ENABLED` here.
-- Client entry: Inventory **Exporteren** (personal). Crew storage tab lists quality lots with **Exporteren** (`scope=crew`). Hub shows a short shipment strip (crew rows prefixed). Smuggling Hub stays general cargo; do not add a second wholesale wizard.
+- Client entry: Inventory **Exporteren** (personal). Crew storage tab lists quality lots with **Exporteren** (`scope=crew`). Hub shows a short shipment strip under the photo header (crew rows prefixed). Smuggling Hub stays general cargo; do not add a second wholesale wizard.
 
 ### Crew wholesale
 - Same sell-on-arrival loop. Source is `CrewDrugLot` (quality lots from Inventory **Naar crew-opslag**), not legacy `crewDrugInventory`.
@@ -74,7 +74,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
-- Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell. Inventory cards (`DrugInventoryScreen`) use a **Wrap** with intrinsic height, not a fixed `mainAxisExtent` grid, so extra lines (beste prijs, nightclub-marge, Snijden) never clip **Naar crew-opslag**. Geen tweede landenbanner op Voorraad: het land staat al in de dashboard-statusbalk.
+- Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell. The Drugs hub matches Don/Midnight Races: compact photo hero, gold `i`, then a scrollable `TabBar` (`isScrollable: true`) for Facilities / Production / Inventory. Nested sub-screens omit their AppBar in those tabs. Inventory cards (`DrugInventoryScreen`) use a **Wrap** with intrinsic height, not a fixed `mainAxisExtent` grid, so extra lines (beste prijs, nightclub-marge, Snijden) never clip **Naar crew-opslag**. Geen tweede landenbanner op Voorraad: het land staat al in de dashboard-statusbalk. The hub still shows a short wholesale shipment strip under the hero (crew rows prefixed).
 - Materials shop and drug inventory load failure must show retry (`MobileLoadError`), not an empty shop/stash.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
@@ -129,6 +129,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
+- Verify the photo hero, gold `i`, and three tabs (Facilities / Production / Inventory) on web and mobile; nested screens must not show a second AppBar.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.

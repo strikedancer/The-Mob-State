@@ -15,7 +15,12 @@ import '../services/nightclub_service.dart';
 import '../widgets/game_page_info.dart';
 
 class DrugInventoryScreen extends StatefulWidget {
-  const DrugInventoryScreen({super.key});
+  const DrugInventoryScreen({
+    super.key,
+    this.showAppBar = true,
+  });
+
+  final bool showAppBar;
 
   @override
   State<DrugInventoryScreen> createState() => _DrugInventoryScreenState();
@@ -483,32 +488,36 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
         final padding = isMobile ? 12.0 : 20.0;
 
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xCC111111),
-            title: Text(t.drugsInvTitle),
-            actions: [
-              if (!_isLoading && _inventory.isNotEmpty)
-                _KpiChip(
-                  value: '${_inventory.fold(0, (s, i) => s + i.quantity)}g',
-                  label: t.drugsInvKpiGramsLabel,
-                  icon: Icons.inventory_2,
-                  color: const Color(0xFFC16CFF),
-                ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    '€${authProvider.currentPlayer?.money.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.') ?? '0'}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
+          backgroundColor: widget.showAppBar ? null : Colors.transparent,
+          appBar: widget.showAppBar
+              ? AppBar(
+                  backgroundColor: const Color(0xCC111111),
+                  title: Text(t.drugsInvTitle),
+                  actions: [
+                    if (!_isLoading && _inventory.isNotEmpty)
+                      _KpiChip(
+                        value:
+                            '${_inventory.fold(0, (s, i) => s + i.quantity)}g',
+                        label: t.drugsInvKpiGramsLabel,
+                        icon: Icons.inventory_2,
+                        color: const Color(0xFFC16CFF),
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          '€${authProvider.currentPlayer?.money.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.') ?? '0'}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+                  ],
+                )
+              : null,
           body: Stack(
             children: [
               Positioned.fill(

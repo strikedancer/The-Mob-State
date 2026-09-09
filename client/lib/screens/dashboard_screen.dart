@@ -1932,6 +1932,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     switch (section) {
       case _WebSection.crimes:
       case _WebSection.jobs:
+      case _WebSection.drugs:
         return true;
       default:
         return false;

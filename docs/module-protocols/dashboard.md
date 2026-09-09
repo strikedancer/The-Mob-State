@@ -15,6 +15,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Web dashboard navigation is sidebar-first: add or change module navigation via the sidebar source (`_buildWebMenuItems` + `_WebSection` content switch) and not only via the legacy tile grid. Sidebar and hamburger menu are grouped (Acties / Wereld / Sociaal / Economie / Empire / Assets / Meer) and have a search field.
 - Don lives under **Empire** next to properties (`_WebSection.don` → `don_screen.dart`). Keep the mobile extra-tile entry in sync. See [don.md](don.md). Don collect/office/loan/contract timers stay on the Don hub (per racket / per job), not as a single Home footer cooldown.
 - Midnight Races live under **Empire** (`_WebSection.races` → `race_screen.dart`). See [races.md](races.md). Settle/refund writes `race.settled` / `race.refunded` to the personal activity feed plus inbox + push.
+- Drugs live under **Empire** (`_WebSection.drugs` → `drug_environment_screen.dart`) with the same photo-hero + tab pattern as Don. Page-info `i` lives in the Drugs hero, not the HUD. See [drugs.md](drugs.md).
 - Dealer shops live on **Economie → Zwarte Markt** (trade goods, weapons, ammo, tools, security, materials, backpacks, plus player market). Do not add separate sidebar entries for Tools or Security; search aliases may still open those shops.
 - Premium & Credits is a first-class dashboard destination when premium purchases or wallet actions are exposed to players; wire it into the sidebar and keep direct route entry (`/premium`) working for payment return flows.
 

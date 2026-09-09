@@ -566,7 +566,7 @@
     "summaryNl": "Bouw een complete drugsoperatie van grondstoffen tot eindproduct. Draai productieketens, beheer opslag en verkoop voor hoge marges maar ook serieuze risico's.",
     "summaryEn": "Build a complete drug operation from raw materials to finished product. Run production chains, manage storage and sell for high margins but serious risks.",
     "howNl": [
-      "Het drugsysteem bestaat uit: Hub (overzicht en stats), Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Inventaris (eindproduct en grondstoffen).",
+      "Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).",
       "Grondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.",
       "Productietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.",
       "Klaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.",
@@ -580,7 +580,7 @@
       "Drugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles."
     ],
     "howEn": [
-      "The drug system consists of: Hub (overview and stats), Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products and raw materials).",
+      "The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).",
       "Buy raw materials via the black market or trade. Combine them in a facility to produce drugs.",
       "Production timers run while you are offline. No active clicking needed: check back when the timer finishes.",
       "Finished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.",
