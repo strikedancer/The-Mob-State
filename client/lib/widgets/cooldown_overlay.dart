@@ -36,6 +36,7 @@ class CooldownOverlay extends StatefulWidget {
 
 class _CooldownOverlayState extends State<CooldownOverlay> {
   late int _secondsLeft;
+  DateTime? _endsAt;
   Timer? _timer;
   late CooldownInfo _cooldownInfo;
   bool _loadingCreditAction = false;
@@ -52,7 +53,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
   @override
   void initState() {
     super.initState();
-    _secondsLeft = widget.remainingSeconds;
+    _armDeadline(widget.remainingSeconds);
     _cooldownInfo = CooldownInfo(
       actionType: widget.actionType,
       remainingSeconds: widget.remainingSeconds,
@@ -61,33 +62,53 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     _loadCooldownCreditAction();
   }
 
+  void _armDeadline(int remaining) {
+    final safe = remaining < 0 ? 0 : remaining;
+    _secondsLeft = safe;
+    _endsAt = DateTime.now().add(Duration(seconds: safe));
+  }
+
+  int _secondsUntilEnd() {
+    final ends = _endsAt;
+    if (ends == null) return 0;
+    final left = ends.difference(DateTime.now()).inSeconds;
+    return left < 0 ? 0 : left;
+  }
+
   @override
   void didUpdateWidget(covariant CooldownOverlay oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.remainingSeconds <= 0) return;
-    if (_secondsLeft <= 1 && widget.remainingSeconds > 5) {
-      setState(() => _secondsLeft = widget.remainingSeconds);
+    // Parent rebuilds (HUD, events, credit fetch) pass the original remaining
+    // seconds again. Ignore those so the clock does not jump backward.
+    final sameAction = widget.actionType == oldWidget.actionType &&
+        widget.cooldownActionType == oldWidget.cooldownActionType;
+    if (sameAction &&
+        widget.remainingSeconds == oldWidget.remainingSeconds) {
       return;
     }
-    if (widget.remainingSeconds > _secondsLeft + 2) {
+
+    final incoming = widget.remainingSeconds;
+    if (incoming <= 0) {
+      setState(() => _armDeadline(0));
       return;
     }
-    if ((widget.remainingSeconds - _secondsLeft).abs() >= 2) {
-      setState(() => _secondsLeft = widget.remainingSeconds);
+    if (incoming > _secondsLeft + 2 && _secondsLeft > 1) {
+      return;
     }
+    setState(() => _armDeadline(incoming));
   }
 
   void _startCountdown() {
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_secondsLeft <= 0) {
+      if (!mounted) return;
+      final left = _secondsUntilEnd();
+      if (left != _secondsLeft) {
+        setState(() => _secondsLeft = left);
+      }
+      if (left <= 0) {
         timer.cancel();
-        if (mounted) {
-          widget.onExpired?.call(); // Call callback when expired
-        }
-      } else {
-        setState(() {
-          _secondsLeft--;
-        });
+        widget.onExpired?.call();
       }
     });
   }
@@ -218,9 +239,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
       );
 
       _timer?.cancel();
-      setState(() {
-        _secondsLeft = 0;
-      });
+      setState(() => _armDeadline(0));
       widget.onExpired?.call();
     } catch (_) {
       if (!mounted) return;

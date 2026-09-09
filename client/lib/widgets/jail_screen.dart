@@ -55,6 +55,9 @@ class _JailOverlayState extends State<JailOverlay> {
   @override
   void didUpdateWidget(covariant JailOverlay oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.remainingSeconds == oldWidget.remainingSeconds) {
+      return;
+    }
     if (widget.remainingSeconds <= 0) return;
     if (_remainingSeconds <= 1 && widget.remainingSeconds > 5) {
       setState(() => _remainingSeconds = widget.remainingSeconds);

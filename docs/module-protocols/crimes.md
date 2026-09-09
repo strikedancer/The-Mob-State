@@ -34,6 +34,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - No auto-playing video overlays in the crimes loop.
 - Arrest feedback should be immediate message-first, optionally with a static image/icon indicator.
 - Accurate state refresh after an action completes.
+- The crime cooldown overlay ticks locally from the first `remainingSeconds`. Parent rebuilds must not snap the clock backward to that stale start value.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Crime pacing is reward-tier based, not flat-rate; low-reward crimes stay fast while high-reward crimes must pick up meaningfully longer cooldowns.
