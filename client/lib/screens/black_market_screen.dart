@@ -672,12 +672,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             height: double.infinity,
             errorBuilder: (context, error, stackTrace) {
               return Center(
-                child: Icon(Icons.medication_liquid, size: iconSize),
+                child: Icon(Icons.local_pharmacy, size: iconSize),
               );
             },
           );
         }
-        return Center(child: Icon(Icons.medication_liquid, size: iconSize));
+        return Center(child: Icon(Icons.local_pharmacy, size: iconSize));
       case 'crypto_lot':
         return Center(
           child: Icon(
@@ -1043,7 +1043,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                 onTap: () => Navigator.pop(dialogContext, 'tool'),
               ),
               ListTile(
-                leading: const Icon(Icons.medication_liquid),
+                leading: const Icon(Icons.local_pharmacy),
                 title: Text(_bmL10n(l10n, 'bmHubSellKindDrug', 'Drugs')),
                 onTap: () => Navigator.pop(dialogContext, 'drug'),
               ),

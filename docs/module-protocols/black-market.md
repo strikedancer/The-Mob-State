@@ -19,6 +19,7 @@ Speler-tegen-speler verkoop op de **Marktplaats**-tab: **voertuigen** (auto/moto
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Weapons and ammo tabs: load failure shows retry, not an empty market.
 - Empty Marktplaats and empty Mijn advertenties must still offer **Verkoop item** in the empty state. Do not hide sell behind a FAB that only appears when listings exist.
+- Flutter web: sell-kind and listing icons must use glyphs that ship in the default Material webfont. Do not use `Icons.medication_liquid` (blank on web); drugs use `Icons.local_pharmacy` like the sidebar.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing
