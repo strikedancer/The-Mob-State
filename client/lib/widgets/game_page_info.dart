@@ -352,17 +352,56 @@ Widget _guideSection(GamePageInfoSection section) {
           const SizedBox(height: 8),
           _guideImage(section.imageAsset!, section.icon, 120),
         ],
-        const SizedBox(height: 8),
-        Text(
-          section.body,
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.86),
-            height: 1.4,
-          ),
-        ),
+        const SizedBox(height: 10),
+        ..._spacedBody(section.body),
       ],
     ),
   );
+}
+
+List<Widget> _spacedBody(String body) {
+  final lines = body
+      .split('\n')
+      .map((line) => line.trim())
+      .where((line) => line.isNotEmpty)
+      .toList();
+  if (lines.isEmpty) return const [];
+  if (lines.length == 1) {
+    return [
+      Text(
+        lines.first,
+        style: TextStyle(
+          color: Colors.white.withValues(alpha: 0.86),
+          height: 1.45,
+        ),
+      ),
+    ];
+  }
+  return [
+    for (final line in lines)
+      Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 7),
+              child: Icon(Icons.circle, size: 7, color: _pageInfoGold),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                line,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.86),
+                  height: 1.45,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+  ];
 }
 
 Widget _guideImage(String asset, IconData icon, double height) {
