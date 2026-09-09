@@ -1822,7 +1822,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
     final wantedCell = cell(
       label: l10n.wantedLevel,
-      value: '${wantedLevel.toInt()}/100',
+      value: '${wantedLevel.toInt()}%',
       valueColor: wantedLevel > 0 ? Colors.orange : Colors.white70,
       progress: wantedProgress,
       barColor: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
