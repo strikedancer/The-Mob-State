@@ -12,12 +12,18 @@ import '../services/nightclub_service.dart';
 import '../services/prostitution_service.dart';
 import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 
 class NightclubScreen extends StatefulWidget {
   final Property? property;
+  final bool embedded;
 
-  const NightclubScreen({super.key, this.property});
+  const NightclubScreen({
+    super.key,
+    this.property,
+    this.embedded = false,
+  });
 
   @override
   State<NightclubScreen> createState() => _NightclubScreenState();
@@ -355,16 +361,6 @@ class _NightclubScreenState extends State<NightclubScreen> {
       return 'assets/images/backgrounds/nightclub_hub_bg_tablet.png';
     }
     return 'assets/images/backgrounds/nightclub_hub_bg_mobile.png';
-  }
-
-  String _emblemAsset(double width) {
-    if (width >= 1200) {
-      return 'assets/images/ui/nightclub_hub_emblem_desktop.png';
-    }
-    if (width >= 700) {
-      return 'assets/images/ui/nightclub_hub_emblem_tablet.png';
-    }
-    return 'assets/images/ui/nightclub_hub_emblem_mobile.png';
   }
 
   bool _isCompactLayout() => MediaQuery.of(context).size.width < 700;
@@ -1100,6 +1096,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'nightclub',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -1109,52 +1106,29 @@ class _NightclubScreenState extends State<NightclubScreen> {
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         final bg = _backgroundAsset(width);
-        final emblem = _emblemAsset(width);
 
-        return Scaffold(
-          appBar: AppBar(title: Text(_t.nightclubManagementTitle)),
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: Image.asset(
-                  bg,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      Container(color: Colors.black87),
+        final body = NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                child: EmpirePageHero(
+                  title: _t.nightclubManagementTitle,
+                  imageAsset: bg,
+                  topicId: 'nightclub',
+                  onRefresh: _loading ? null : () { _load(); },
+                  refreshEnabled: !_loading,
+                  fallbackIcon: Icons.nightlife,
                 ),
               ),
-              Positioned.fill(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xCC000000),
-                        Color(0xA8000000),
-                        Color(0xCC000000),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 12,
-                right: 12,
-                child: Opacity(
-                  opacity: 0.72,
-                  child: Image.asset(
-                    emblem,
-                    width: width < 700 ? 70 : 96,
-                    height: width < 700 ? 70 : 96,
-                  ),
-                ),
-              ),
-              _loading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _venueId == null
+            ),
+          ],
+          body: _loading
+              ? const Center(child: CircularProgressIndicator(color: kEmpireGold))
+              : _venueId == null
                   ? _emptyState()
                   : RefreshIndicator(
+                      color: kEmpireGold,
                       onRefresh: () => _load(),
                       child: ListView(
                         padding: EdgeInsets.all(_contentPadding()),
@@ -1170,7 +1144,8 @@ class _NightclubScreenState extends State<NightclubScreen> {
                           ExpansionTile(
                             initiallyExpanded: false,
                             title: Text(
-                              Localizations.localeOf(context).languageCode == 'nl'
+                              Localizations.localeOf(context).languageCode ==
+                                      'nl'
                                   ? 'Geavanceerd'
                                   : 'Advanced',
                               style: const TextStyle(
@@ -1189,8 +1164,18 @@ class _NightclubScreenState extends State<NightclubScreen> {
                         ],
                       ),
                     ),
-            ],
+        );
+
+        final painted = empireHubPainted(child: body);
+        if (widget.embedded) return painted;
+        return Scaffold(
+          backgroundColor: kEmpireBgEnd,
+          appBar: AppBar(
+            backgroundColor: kEmpireBgStart,
+            foregroundColor: kEmpireGold,
+            title: Text(_t.nightclubManagementTitle),
           ),
+          body: painted,
         );
       },
     );

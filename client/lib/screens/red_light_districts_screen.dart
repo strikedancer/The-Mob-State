@@ -10,7 +10,9 @@ import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
 import '../widgets/mobile_load_error.dart';
+import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
+
 class RedLightDistrictsScreen extends StatefulWidget {
   final bool embedded;
 
@@ -187,6 +189,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'red-light-districts',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -194,7 +197,42 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final body = _selectedDistrictId != null
+    final innerTabs = Column(
+      children: [
+        Material(
+          color: kEmpireBgMid,
+          child: TabBar(
+            controller: _tabController,
+            isScrollable: true,
+            labelColor: kEmpireGold,
+            unselectedLabelColor: Colors.white70,
+            indicatorColor: kEmpireGold,
+            dividerColor: kEmpireGold.withValues(alpha: 0.22),
+            tabs: [
+              Tab(text: l10n.prostitutionCurrentRLD),
+              Tab(text: l10n.prostitutionMyRLDs),
+            ],
+          ),
+        ),
+        Expanded(
+          child: _isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(color: kEmpireGold),
+                )
+              : _loadError != null
+                  ? MobileLoadError(
+                      message: _loadError!,
+                      onRetry: _loadData,
+                    )
+                  : TabBarView(
+                      controller: _tabController,
+                      children: [_buildAvailableTab(), _buildOwnedTab()],
+                    ),
+        ),
+      ],
+    );
+
+    final tabsAndContent = _selectedDistrictId != null
         ? RedLightDistrictDetailScreen(
             districtId: _selectedDistrictId!,
             embedded: true,
@@ -203,51 +241,71 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
               _loadData();
             },
           )
-        : Column(
-            children: [
-              TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                labelColor: Theme.of(context).colorScheme.primary,
-                unselectedLabelColor: Colors.grey,
-                tabs: [
-                  Tab(text: l10n.prostitutionCurrentRLD),
-                  Tab(text: l10n.prostitutionMyRLDs),
-                ],
-              ),
-              Expanded(
-                child: _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : _loadError != null
-                    ? MobileLoadError(
-                        message: _loadError!,
-                        onRetry: _loadData,
-                      )
-                    : TabBarView(
-                        controller: _tabController,
-                        children: [_buildAvailableTab(), _buildOwnedTab()],
+        : widget.embedded
+            ? innerTabs
+            : NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                      child: EmpirePageHero(
+                        title: l10n.prostitutionRedLightDistricts,
+                        imageAsset:
+                            'assets/images/prostitution/buildings/rld_building_exterior.png',
+                        topicId: 'red-light-districts',
+                        onRefresh: _loadData,
+                        fallbackIcon: Icons.storefront,
                       ),
-              ),
-            ],
-          );
+                    ),
+                  ),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: PinnedTabBarDelegate(
+                      tabBar: TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        labelColor: kEmpireGold,
+                        unselectedLabelColor: Colors.white70,
+                        indicatorColor: kEmpireGold,
+                        dividerColor: kEmpireGold.withValues(alpha: 0.22),
+                        tabs: [
+                          Tab(text: l10n.prostitutionCurrentRLD),
+                          Tab(text: l10n.prostitutionMyRLDs),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+                body: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(color: kEmpireGold),
+                      )
+                    : _loadError != null
+                        ? MobileLoadError(
+                            message: _loadError!,
+                            onRetry: _loadData,
+                          )
+                        : TabBarView(
+                            controller: _tabController,
+                            children: [
+                              _buildAvailableTab(),
+                              _buildOwnedTab(),
+                            ],
+                          ),
+              );
 
     if (widget.embedded) {
-      return body;
-    }
-
-    // Dynamic title based on active tab
-    String title = l10n.prostitutionRedLightDistricts;
-    if (_tabController.index == 0 && _currentCountryDistrict != null) {
-      final countryName = CountryHelper.getLocalizedCountryName(
-        _currentCountryDistrict!.countryCode,
-        l10n,
-      );
-      title = l10n.prostitutionRldAppBarTitle(countryName);
+      return tabsAndContent;
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: body,
+      backgroundColor: kEmpireBgEnd,
+      appBar: AppBar(
+        backgroundColor: kEmpireBgStart,
+        foregroundColor: kEmpireGold,
+        title: Text(l10n.prostitutionRedLightDistricts),
+      ),
+      body: empireHubPainted(child: tabsAndContent),
     );
   }
 

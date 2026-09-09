@@ -17,12 +17,18 @@ import '../widgets/prostitution/prostitution_social_tab.dart';
 import 'red_light_districts_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
+import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 
 class ProstitutionScreen extends StatefulWidget {
   final int initialTabIndex;
+  final bool embedded;
 
-  const ProstitutionScreen({super.key, this.initialTabIndex = 0});
+  const ProstitutionScreen({
+    super.key,
+    this.initialTabIndex = 0,
+    this.embedded = false,
+  });
 
   @override
   State<ProstitutionScreen> createState() => _ProstitutionScreenState();
@@ -116,6 +122,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       vsync: this,
       initialIndex: safeInitialTab,
     );
+    _tabController.addListener(() {
+      if (mounted && !_tabController.indexIsChanging) setState(() {});
+    });
     _loadData();
     _checkRecruitmentStatus();
   }
@@ -882,7 +891,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   @override
   Widget build(BuildContext context) {
     return GamePageInfoHost(
-      topicId: 'prostitution',
+      topicId: _tabController.index == 1
+          ? 'red-light-districts'
+          : 'prostitution',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -890,38 +902,55 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      body: _jailSeconds != null && _jailSeconds! > 0
-          ? JailOverlay(
-              embedded: true,
-              remainingSeconds: _jailSeconds!,
-              wantedLevel: _wantedLevel,
-              onReleased: () {
-                if (!mounted) return;
-                setState(() {
-                  _jailSeconds = null;
-                });
-                _checkRecruitmentStatus();
-                _loadData();
-              },
-            )
-          : _showRecruitResult
-          ? CrimeResultOverlay(
-              embedded: kIsWeb,
-              isSuccess: _recruitResultSuccess,
-              headline: _recruitResultSuccess
-                  ? l10n.prostitutionRecruitCeremonyTitle
-                  : l10n.prostitutionRecruitFailed,
-              crimeName: _recruitResultName ?? l10n.prostitutionRecruit,
-              flavorLine: _recruitResultFlavor,
-              onContinue: _dismissRecruitResult,
-            )
-          : NestedScrollView(
+    Widget body;
+    if (_jailSeconds != null && _jailSeconds! > 0) {
+      body = JailOverlay(
+        embedded: true,
+        remainingSeconds: _jailSeconds!,
+        wantedLevel: _wantedLevel,
+        onReleased: () {
+          if (!mounted) return;
+          setState(() {
+            _jailSeconds = null;
+          });
+          _checkRecruitmentStatus();
+          _loadData();
+        },
+      );
+    } else if (_showRecruitResult) {
+      body = CrimeResultOverlay(
+        embedded: kIsWeb,
+        isSuccess: _recruitResultSuccess,
+        headline: _recruitResultSuccess
+            ? l10n.prostitutionRecruitCeremonyTitle
+            : l10n.prostitutionRecruitFailed,
+        crimeName: _recruitResultName ?? l10n.prostitutionRecruit,
+        flavorLine: _recruitResultFlavor,
+        onContinue: _dismissRecruitResult,
+      );
+    } else {
+      body = empireHubPainted(
+        child: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                SliverAppBar(
-                  title: Text(l10n.prostitutionTitle),
-                  pinned: false,
-                  floating: false,
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                    child: EmpirePageHero(
+                      title: _tabController.index == 1
+                          ? l10n.prostitutionRedLightDistricts
+                          : l10n.prostitutionTitle,
+                      imageAsset: _tabController.index == 1
+                          ? 'assets/images/prostitution/buildings/rld_building_exterior.png'
+                          : 'assets/images/prostitution/backgrounds/recruitment_street_corner.png',
+                      topicId: _tabController.index == 1
+                          ? 'red-light-districts'
+                          : 'prostitution',
+                      onRefresh: _loadData,
+                      fallbackIcon: _tabController.index == 1
+                          ? Icons.storefront
+                          : Icons.favorite,
+                    ),
+                  ),
                 ),
                 if (_latestIncomingSabotage != null)
                   SliverToBoxAdapter(
@@ -1060,14 +1089,15 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       child: _buildHousingSummaryBox(),
                     ),
                   ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TabBar(
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: PinnedTabBarDelegate(
+                    tabBar: TabBar(
                       controller: _tabController,
-                      labelColor: kProstitutionGold,
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: kProstitutionGold,
+                      labelColor: kEmpireGold,
+                      unselectedLabelColor: Colors.white70,
+                      indicatorColor: kEmpireGold,
+                      dividerColor: kEmpireGold.withValues(alpha: 0.22),
                       isScrollable: true,
                       tabs: [
                         Tab(text: l10n.prostitutionTabWorkers),
@@ -1089,6 +1119,22 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 ],
               ),
             ),
+          );
+    }
+
+    if (widget.embedded) return body;
+    return Scaffold(
+      backgroundColor: kEmpireBgEnd,
+      appBar: AppBar(
+        backgroundColor: kEmpireBgStart,
+        foregroundColor: kEmpireGold,
+        title: Text(
+          _tabController.index == 1
+              ? l10n.prostitutionRedLightDistricts
+              : l10n.prostitutionTitle,
+        ),
+      ),
+      body: body,
     );
   }
 

@@ -15,6 +15,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - client/lib/screens/prostitution_screen.dart — **Empire hub** tabs: Workers | RLD | Events | Social
 - Shared widgets: `client/lib/widgets/prostitution/` (KPI strip, section header, empty/error, social tab)
 - Deep-links: `/prostitution` with `tabIndex` args or `?tab=rld|events|social`; `/prostitution-leaderboard` and `/prostitution-rivalry` remain
+- Compact photo hero scrolls away (`recruitment_street_corner.png`, or RLD exterior on the RLD tab); the four hub tabs stay pinned. Gold `i` lives in the hero (topic `prostitution` or `red-light-districts` on the RLD tab). No extra AppBar in the Empire shell.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

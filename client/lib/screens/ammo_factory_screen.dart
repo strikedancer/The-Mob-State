@@ -10,18 +10,21 @@ import '../utils/country_helper.dart';
 import '../utils/formatters.dart';
 import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/empire_page_hero.dart';
+import '../widgets/game_page_info.dart';
 import 'black_market_screen.dart';
 import 'school_screen.dart';
-import '../widgets/game_page_info.dart';
 
 class AmmoFactoryScreen extends StatefulWidget {
   const AmmoFactoryScreen({
     super.key,
     this.onOpenSchool,
+    this.embedded = false,
   });
 
   /// When set (e.g. web dashboard), opens the school section in-place.
   final VoidCallback? onOpenSchool;
+  final bool embedded;
 
   @override
   State<AmmoFactoryScreen> createState() => _AmmoFactoryScreenState();
@@ -1005,6 +1008,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'ammo-factory',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -1023,27 +1027,17 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         !isSessionActive ||
         (nextProductionAt != null && !_now.isBefore(nextProductionAt));
 
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     final ownsCurrentCountryFactory =
         _myFactory != null &&
         _myFactory?['countryId'] == _currentCountryFactory?['countryId'];
     final currentOwner = _currentCountryFactory?['owner'];
     final isAvailableToBuy = currentOwner == null && !ownsCurrentCountryFactory;
 
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
-          fit: BoxFit.cover,
-          opacity: 0.35,
-        ),
-      ),
-      child: ListView(
-        padding: const EdgeInsets.all(12),
-        children: [
+    final list = _isLoading
+        ? const Center(child: CircularProgressIndicator(color: kEmpireGold))
+        : ListView(
+      padding: const EdgeInsets.all(12),
+      children: [
           _buildIntroCard(context, l10n),
           const SizedBox(height: 12),
           if (_currentCountryFactory != null) ...[
@@ -1247,7 +1241,35 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
               ),
           ],
         ],
+          );
+
+    final body = NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: EmpirePageHero(
+              title: l10n.ammoFactory,
+              imageAsset: 'assets/images/backgrounds/ammo_factory_bg.png',
+              topicId: 'ammo-factory',
+              onRefresh: _loadData,
+              fallbackIcon: Icons.factory,
+            ),
+          ),
+        ),
+      ],
+      body: list,
+    );
+    final painted = empireHubPainted(child: body);
+    if (widget.embedded) return painted;
+    return Scaffold(
+      backgroundColor: kEmpireBgEnd,
+      appBar: AppBar(
+        backgroundColor: kEmpireBgStart,
+        foregroundColor: kEmpireGold,
+        title: Text(l10n.ammoFactory),
       ),
+      body: painted,
     );
   }
 }

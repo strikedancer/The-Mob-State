@@ -12,12 +12,18 @@ import './showroom_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 
 class PropertyScreen extends StatefulWidget {
   final ValueChanged<int>? onOpenInventory;
+  final bool embedded;
 
-  const PropertyScreen({super.key, this.onOpenInventory});
+  const PropertyScreen({
+    super.key,
+    this.onOpenInventory,
+    this.embedded = false,
+  });
 
   @override
   PropertyScreenState createState() => PropertyScreenState();
@@ -686,28 +692,65 @@ class PropertyScreenState extends State<PropertyScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'properties',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.properties),
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: MediaQuery.sizeOf(context).width < 420,
-          tabs: [
-            Tab(text: l10n.propertiesAvailable, icon: const Icon(Icons.store)),
-            Tab(text: l10n.myProperties, icon: const Icon(Icons.home)),
-          ],
+    final tabBar = TabBar(
+      controller: _tabController,
+      isScrollable: MediaQuery.sizeOf(context).width < 420,
+      labelColor: kEmpireGold,
+      unselectedLabelColor: Colors.white70,
+      indicatorColor: kEmpireGold,
+      dividerColor: kEmpireGold.withValues(alpha: 0.22),
+      tabs: [
+        Tab(text: l10n.propertiesAvailable, icon: const Icon(Icons.store)),
+        Tab(text: l10n.myProperties, icon: const Icon(Icons.home)),
+      ],
+    );
+    final body = NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: EmpirePageHero(
+              title: l10n.properties,
+              imageAsset: 'assets/images/properties/house.png',
+              topicId: 'properties',
+              onRefresh: _loadData,
+              fallbackIcon: Icons.home_work,
+              chips: [
+                EmpireStatChip(
+                  icon: Icons.home,
+                  label: '${_myProperties.length}',
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: PinnedTabBarDelegate(tabBar: tabBar),
+        ),
+      ],
       body: TabBarView(
         controller: _tabController,
         children: [_buildAvailablePropertiesTab(), _buildMyPropertiesTab()],
       ),
+    );
+    final painted = empireHubPainted(child: body);
+    if (widget.embedded) return painted;
+    return Scaffold(
+      backgroundColor: kEmpireBgEnd,
+      appBar: AppBar(
+        backgroundColor: kEmpireBgStart,
+        foregroundColor: kEmpireGold,
+        title: Text(l10n.properties),
+      ),
+      body: painted,
     );
   }
 

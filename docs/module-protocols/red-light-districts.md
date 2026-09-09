@@ -6,6 +6,7 @@ District ownership, country-level expansion and prostitution territory progressi
 ## Primary Frontend Entry
 - client/lib/screens/red_light_districts_screen.dart (also embedded as Empire hub tab RLD)
 - District detail: `client/lib/screens/red_light_district_detail_screen.dart`
+- Standalone (not the hub tab): compact photo hero (`rld_building_exterior.png`) scrolls away; Current RLD / My RLDs stay pinned. When embedded in the prostitution hub, skip a second hero — the parent hub already has one.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

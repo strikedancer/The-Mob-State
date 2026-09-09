@@ -17,6 +17,7 @@ Scope-afbakening:
 ## Primary Frontend Entry
 - client/lib/screens/property_screen.dart
 - client/lib/widgets/property_card.dart (Develop-actie)
+- Compact photo hero (`house.png`) scrolls away; Available / My properties stay pinned. No extra AppBar in the embedded Empire shell. Gold `i` lives in the hero.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

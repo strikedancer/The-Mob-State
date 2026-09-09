@@ -1933,6 +1933,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.crimes:
       case _WebSection.jobs:
       case _WebSection.drugs:
+      case _WebSection.nightclub:
+      case _WebSection.properties:
+      case _WebSection.prostitution:
+      case _WebSection.redLightDistricts:
+      case _WebSection.ammoFactory:
         return true;
       default:
         return false;
@@ -2110,7 +2115,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           initialPropertyId: _inventoryInitialPropertyId,
         );
       case _WebSection.properties:
-        return PropertyScreen(onOpenInventory: _openInventoryStorage);
+        return PropertyScreen(
+          embedded: true,
+          onOpenInventory: _openInventoryStorage,
+        );
       case _WebSection.don:
         return const DonScreen(embedded: true);
       case _WebSection.races:
@@ -2131,7 +2139,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onOpenBlackMarket: () => _openBlackMarket(4),
         );
       case _WebSection.nightclub:
-        return const NightclubScreen();
+        return const NightclubScreen(embedded: true);
       case _WebSection.crypto:
         return const CryptoScreen();
       case _WebSection.stockMarket:
@@ -2178,6 +2186,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       case _WebSection.ammoFactory:
         return AmmoFactoryScreen(
+          embedded: true,
           onOpenSchool: () => _selectWebSection(_WebSection.school),
         );
       case _WebSection.school:
@@ -2185,10 +2194,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.territory:
         return const TerritoryScreen();
       case _WebSection.prostitution:
-        return const ProstitutionScreen();
+        return const ProstitutionScreen(embedded: true);
       case _WebSection.redLightDistricts:
         // Deep-link into Empire hub RLD tab (Workers=0, RLD=1, Events=2, Social=3).
-        return const ProstitutionScreen(initialTabIndex: 1);
+        return const ProstitutionScreen(initialTabIndex: 1, embedded: true);
       case _WebSection.achievements:
         return const AchievementsScreen();
       case _WebSection.playerProfile:

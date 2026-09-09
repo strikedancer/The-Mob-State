@@ -5,6 +5,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 
 ## Primary Frontend Entry
 - client/lib/screens/ammo_factory_screen.dart
+- Compact photo hero (`ammo_factory_bg.png`) scrolls away; no extra AppBar in the embedded Empire shell. Gold `i` lives in the hero.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

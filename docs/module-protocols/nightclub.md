@@ -5,6 +5,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 
 ## Primary Frontend Entry
 - client/lib/screens/nightclub_screen.dart
+- Compact photo hero (`nightclub_hub_bg_{desktop,tablet,mobile}.png` via `WebAssetHelper`) scrolls away; no extra AppBar in the embedded Empire shell. Gold `i` lives in the hero.
 
 ## Admin
 - Read-only telemetry: `GET /admin/nightclubs/overview` + admin tab `NightclubAdminPanel` (crowd, 24h sales/thefts, active events). Not a full Ops Lab duplicate.
@@ -36,7 +37,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
 - Own-production lots stored in the nightclub get a capped sale-margin bonus (`DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`); this is not a credit/VIP yield boost.
 - **Player supply (opt-in):** owner toggles `playerSupplyEnabled`. Same-country players sell grams at a server wholesale quote (`NIGHTCLUB_PLAYER_SUPPLY_PRICE_PERCENT`, default 55% of base×quality). Owner pays cash; stock is not marked `ownProduction`. Min/max grams via runtime keys. Self-sale is blocked (use Store).
-- Nightclub management UI must keep one primary vertical page scroll on mobile; do not embed fixed-height subpanels with independent scrollbars.
+- Nightclub management UI must keep one primary vertical page scroll on mobile; the compact photo hero (`EmpirePageHero` + `NestedScrollView`) scrolls away. Do not embed fixed-height subpanels with independent scrollbars.
 - DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
 - Rival-targeting UX in nightclub must be name-first (search by player username), never forcing players to input or know numeric player IDs.
