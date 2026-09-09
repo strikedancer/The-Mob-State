@@ -29,7 +29,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Dashboard shell en hoofdpanelen moeten visueel aansluiten op de game-identiteit (noir/gold), met nadruk op leesbaar contrast, subtiele gradients en duidelijke scheiding tussen navigatie en content in plaats van vlakke donkere blokken.
-- Web-chrome is een compacte operations-console (`dashboard_chrome.dart`): slanke topbar, platte zijbalk met gouden selectiebalk, HUD-statusrij (cash/rang/HP/wanted/FBI/land) en homepanelen met sectietitels. Geen gameplay-wijziging.
+- Web-chrome is een operations-console (`dashboard_chrome.dart`): gecentreerd logo in de topbar op het oude formaat (min. 60px, max. 100px), platte zijbalk met gouden selectiebalk, HUD-statusrij (cash/rang/HP/wanted/FBI/land) en homepanelen met sectietitels. Geen gameplay-wijziging.
 - Op **Misdaden** (web) blijft de compacte statusbalk boven de contentkaart staan, hetzelfde als op andere secties. Paginatitel, landelijke politie, training en gedragen wapens zitten in één header **in** de contentkaart.
 - **Gevangenis** opent in de web-shell embedded (geen extra AppBar); de lijst moet op mobiel retry/pull-to-refresh houden.
 - Dashboard statistiekblokken mogen geen hardcoded nul-placeholders tonen wanneer er al echte backendtellers of bestaande spelerstats beschikbaar zijn.

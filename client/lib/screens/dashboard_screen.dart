@@ -794,8 +794,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Column(
         children: [
           Container(
-            height: 52,
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: const BoxDecoration(
               color: _dashboardPanelDark,
               border: Border(
@@ -811,23 +810,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     tooltip: l10n.menu,
                     color: Colors.white70,
                   ),
-                if (!showLeftSidebar) const SizedBox(width: 4),
-                Image.network(
-                  'title_mobstate.png',
-                  height: 28,
-                  fit: BoxFit.contain,
-                  alignment: Alignment.centerLeft,
-                  errorBuilder: (context, error, stackTrace) => Text(
-                    l10n.appTitle,
-                    style: const TextStyle(
-                      color: _dashboardGold,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.6,
+                if (!showLeftSidebar) const SizedBox(width: 8),
+                Expanded(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 600,
+                      maxHeight: 100,
+                      minHeight: 60,
+                    ),
+                    child: Image.network(
+                      'title_mobstate.png',
+                      fit: BoxFit.contain,
+                      alignment: Alignment.center,
+                      errorBuilder: (context, error, stackTrace) => Text(
+                        l10n.appTitle,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: _dashboardGold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                const Spacer(),
                 if (showLeftSidebar) ...[
                   Text(
                     player.username.toString(),
@@ -1094,7 +1100,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               activeEvents: _gameEventsActive,
               eventPassClaimableCount: _eventPassClaimableCount,
               onOpenEvents: () => _selectWebSection(_WebSection.events),
-              topOffset: showLeftSidebar ? 64 : 88,
+              topOffset: showLeftSidebar ? 96 : 128,
               maxVisible: 6,
             ),
         ],
