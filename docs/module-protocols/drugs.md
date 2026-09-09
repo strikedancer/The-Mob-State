@@ -65,7 +65,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ### Helper module
 - `backend/src/services/productionMaterialStock.ts`
 
-### Dashboard activity (Mijn activiteit)
+### Dashboard activity (Sessie-overzicht)
 - Start: `drugs.production_started` (`drugName`, `minutes`, …)
 - Collect: `drugs.production_collected` (`quantity`, `drugName`, `qualityLabel`, …)
 - Wholesale settle: `drugs.wholesale_sold` / `drugs.wholesale_seized` (push + inbox)

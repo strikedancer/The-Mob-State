@@ -38,10 +38,10 @@ Global player overview, navigation shell, timers, live events and quick access.
 - “Wat nu?” is optioneel; als we het tonen moet het compact blijven en mag het nooit primaire statistiekpanelen blokkeren of verstoppen. Als we het niet tonen, moeten doelen/recap nog steeds logisch vindbaar blijven.
 - Voor reward-gevoel en transparantie mag het dashboard een compacte **sessie recap** tonen (laatste events in deze sessie) zodat spelers direct zien wat acties opleverden. Dit mag de primaire loop niet onderbreken en moet optioneel/openklapbaar blijven.
 - Plaats de **Start-kaart** (alleen nieuwe spelers) bovenaan. **Dagdoelen** staan **één keer** in de gestylede paneelkaart (progress + cash/XP), op web bij het speler/economie-blok en op mobiel onder Start. Niet nog een tweede platte lijst bovenaan. Na Claim verschijnt rechtsboven wat je kreeg. De weekdoelen-minikaart mag naast/onder die kaart blijven. Featured daily mag `vehicle_theft_1` niet pushen onder rank 5.
-- Dashboard toont een compacte **Markt**-tegel (actieve listings + CTA) en dezelfde **EventFeed** op web als op mobiel, gehydrateerd via `GET /events?limit=50` (auth). Geen locatie-intel. Op web opent de tegel **Zwarte Markt → Marktplaats** in de dashboard-content (`_openBlackMarket(tabMarketplace)`), niet als fullscreen-route.
+- Dashboard toont een compacte **Markt**-tegel (actieve listings + CTA). Geen locatie-intel. Op web opent de tegel **Zwarte Markt → Marktplaats** in de dashboard-content (`_openBlackMarket(tabMarketplace)`), niet als fullscreen-route. Recente eigen acties staan **niet** als vaste **Mijn activiteit**-lijst op Home: open **Sessie-overzicht** (rechtsboven op web, AppBar op native). Data blijft `GET /events?limit=50` + SSE (scoped op `playerId`).
 - **Live event rail** (rechtsonder, niet op Events-sectie): foto-avatar + resterende-tijd-badge; Monthly Empire altijd zichtbaar (dichtst bij de duim); tap opent dezelfde event-detailpopup als Events (maandevent: dezelfde Event Pass-lijst als Evenementen). Rode claim-cijfer alleen op het maandevent (Event Pass), nooit op week-avatars en nooit voor dashboard dag-/weekdoelen. Zie `events.md`.
-- De feed heet **Mijn activiteit**: alleen events van de ingelogde speler (API + SSE scoped op `playerId`). Geen wereldwijde feed van andere spelers.
-- Chat-events (`direct_message.*`) komen wél via SSE (berichtenbadge/chat) maar **niet** in Mijn activiteit.
+- Sessie-overzicht toont alleen events van de ingelogde speler (API + SSE scoped op `playerId`). Geen wereldwijde feed van andere spelers.
+- Chat-events (`direct_message.*`) komen wél via SSE (berichtenbadge/chat) maar **niet** in Sessie-overzicht.
 - **Berichten / postvak:** de badge (`GET /messages/unread`) mag nooit groener zijn dan de inbox-lijst. `GET /messages/conversations` blijft één gebatchte query; bij laadfout retry, geen lege “geen berichten”-staat.
 - Travel-regels in de feed gebruiken `toCountry`/`destination` (gelokaliseerde landnaam); niet alleen het legacy-veld `country`.
 - Weekdoelen moeten claimbaar zijn wanneer ze als “klaar”/“ready” worden getoond; zorg dat weekly-claims dezelfde window/key gebruiken als de weekdoelen-status (week start maandag UTC) zodat “1 klaar om te claimen” nooit in een claim-fout resulteert.
@@ -73,7 +73,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
-- Verifieer dat Home-countdowns (timeouts, jail, vehicle-ops chips, war-phase) elke seconde blijven lopen zonder dat de rest van de home-kaart (event-feed, doelen, economy-cijfers) meerebuildt.
+- Verifieer dat Home-countdowns (timeouts, jail, vehicle-ops chips, war-phase) elke seconde blijven lopen zonder dat de rest van de home-kaart (doelen, economy-cijfers) meerebuildt.
 - Verifieer dat een fout in een gekoppelde submodule zoals Crew Wars de dashboard-statistieken niet volledig leeg of op nul laat terugvallen.
 - Verifieer dat Vehicle Ops-data per voertuigtype (auto/motor/boot) op dashboard blijft renderen, ook als één type tijdelijk geen intelligence payload teruggeeft.
 - Verify no text overflows or clipped buttons appear.

@@ -15,7 +15,6 @@ import '../utils/avatar_helper.dart';
 import '../utils/country_helper.dart';
 import '../utils/fontawesome_icons.dart';
 import '../utils/formatters.dart';
-import '../widgets/event_feed.dart';
 import '../widgets/market_teaser_tile.dart';
 import '../widgets/daily_goals_card.dart';
 import '../widgets/start_and_goals_panel.dart';
@@ -1996,6 +1995,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               actions: [
                 GamePageInfoButton(topicId: 'dashboard'),
                 IconButton(
+                  icon: const Icon(Icons.receipt_long),
+                  onPressed: () => _openSessionRecap(l10n),
+                  tooltip: l10n.sessionRecap,
+                ),
+                IconButton(
                   icon: const Icon(Icons.chat),
                   onPressed: () {
                     Navigator.push(
@@ -2575,62 +2579,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ],
                             );
                           },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Events feed card
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.feed, size: 20),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n.liveEvents,
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
-                                  ),
-                                  Text(
-                                    l10n.worldFeedHint,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(color: Colors.white54),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Consumer<EventProvider>(
-                              builder: (context, eventProvider, _) {
-                                return Icon(
-                                  eventProvider.isConnected
-                                      ? Icons.wifi
-                                      : Icons.wifi_off,
-                                  size: 20,
-                                  color: eventProvider.isConnected
-                                      ? Colors.green
-                                      : Colors.grey,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        SizedBox(
-                          height: 300,
-                          child: const EventFeed(maxEvents: 10),
                         ),
                       ],
                     ),
@@ -3644,29 +3592,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             MarketTeaserTile(onOpenMarket: widget.onOpenMarket),
             const SizedBox(height: 8),
             TrainingSummaryCard(onOpenHub: widget.onOpenTrainingHub),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-              decoration: _panelDecoration(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DashboardSectionTitle(l10n.liveEvents),
-                  Text(
-                    l10n.worldFeedHint,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: dashboardMuted,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const SizedBox(
-                    height: 220,
-                    child: EventFeed(maxEvents: 8),
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 8),
             LayoutBuilder(
               builder: (context, constraints) {
