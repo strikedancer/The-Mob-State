@@ -701,14 +701,14 @@ class PropertyScreenState extends State<PropertyScreen>
     final l10n = AppLocalizations.of(context)!;
     final tabBar = TabBar(
       controller: _tabController,
-      isScrollable: MediaQuery.sizeOf(context).width < 420,
+      isScrollable: true,
       labelColor: kEmpireGold,
       unselectedLabelColor: Colors.white70,
       indicatorColor: kEmpireGold,
       dividerColor: kEmpireGold.withValues(alpha: 0.22),
       tabs: [
-        Tab(text: l10n.propertiesAvailable, icon: const Icon(Icons.store)),
-        Tab(text: l10n.myProperties, icon: const Icon(Icons.home)),
+        Tab(text: l10n.propertiesAvailable),
+        Tab(text: l10n.myProperties),
       ],
     );
     final body = NestedScrollView(
