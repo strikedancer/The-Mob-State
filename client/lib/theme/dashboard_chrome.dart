@@ -92,60 +92,48 @@ class DashboardHudCell extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padH, vertical: compact ? 1 : 2),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  label.toUpperCase(),
-                  maxLines: 1,
-                  style: const TextStyle(
-                    color: dashboardMuted,
-                    fontSize: 9,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.8,
-                  ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label.toUpperCase(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: dashboardMuted,
+              fontSize: 9,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.8,
+            ),
+          ),
+          SizedBox(height: compact ? 2 : 3),
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: valueColor,
+              fontSize: valueSize,
+              fontWeight: FontWeight.w700,
+              height: 1.15,
+            ),
+          ),
+          if (progress != null) ...[
+            SizedBox(height: compact ? 4 : 5),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(2),
+              child: LinearProgressIndicator(
+                value: progress!.clamp(0.0, 1.0),
+                minHeight: 3,
+                backgroundColor: Colors.white.withValues(alpha: 0.08),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  barColor ?? dashboardGold,
                 ),
               ),
             ),
-            SizedBox(height: compact ? 2 : 3),
-            SizedBox(
-              width: double.infinity,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  value,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: valueColor,
-                    fontSize: valueSize,
-                    fontWeight: FontWeight.w700,
-                    height: 1.15,
-                  ),
-                ),
-              ),
-            ),
-            if (progress != null) ...[
-              SizedBox(height: compact ? 4 : 5),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(2),
-                child: LinearProgressIndicator(
-                  value: progress!.clamp(0.0, 1.0),
-                  minHeight: compact ? 2.5 : 3,
-                  backgroundColor: Colors.white.withValues(alpha: 0.08),
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    barColor ?? dashboardGold,
-                  ),
-                ),
-              ),
-            ],
           ],
-        ),
+        ],
+      ),
     );
   }
 }

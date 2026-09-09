@@ -1766,11 +1766,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final healthColor = player.health > 50
         ? Colors.green.shade400
         : (player.health > 25 ? Colors.orange : Colors.red);
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final compact = constraints.maxWidth < 720;
-        final rankLabel = compact
+    final compact = MediaQuery.sizeOf(context).width < _tabletBreakpoint;
+    final rankLabel = compact
         ? RankDisplay.titleWithNumber(l10n, player.rank)
         : '${RankDisplay.titleWithNumber(l10n, player.rank)}  ${(rankProgress * 100).toStringAsFixed(0)}%';
 
@@ -1919,6 +1916,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.fromLTRB(
         compact ? 4 : 6,
         compact ? 6 : 8,
@@ -1927,8 +1925,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       decoration: dashboardPanelDecoration(radius: 8),
       child: body,
-    );
-      },
     );
   }
 
