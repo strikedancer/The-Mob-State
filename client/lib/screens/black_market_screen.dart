@@ -417,6 +417,36 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     );
   }
 
+  /// Clears the live-event rail that sits on the dashboard bottom-right.
+  static const double _sellFabRightInset = 88;
+
+  Widget _sellItemCta(VehicleProvider provider) {
+    final l10n = AppLocalizations.of(context)!;
+    return ElevatedButton.icon(
+      onPressed: () => _showSellItemKindPicker(provider),
+      icon: const Icon(Icons.sell_outlined),
+      label: Text(l10n.bmHubSellCarriedItem),
+    );
+  }
+
+  Widget _withSellFab(VehicleProvider provider, Widget child) {
+    final l10n = AppLocalizations.of(context)!;
+    return Stack(
+      children: [
+        child,
+        Positioned(
+          bottom: 16,
+          right: _sellFabRightInset,
+          child: FloatingActionButton.extended(
+            onPressed: () => _showSellItemKindPicker(provider),
+            icon: const Icon(Icons.sell_outlined),
+            label: Text(l10n.bmHubSellCarriedItem),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildMarketListings(VehicleProvider provider) {
     final l10n = AppLocalizations.of(context)!;
 
@@ -447,53 +477,43 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
 
     if (filteredVehicles.isEmpty && filteredTools.isEmpty) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.storefront, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              l10n.bmHubNoMarketListingsTitle,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.bmHubNoMarketListingsBody,
-              style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.bmHubAdjustFiltersHint,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.storefront, size: 64, color: Colors.grey),
+              const SizedBox(height: 16),
+              Text(
+                l10n.bmHubNoMarketListingsTitle,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.bmHubNoMarketListingsBody,
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              _sellItemCta(provider),
+            ],
+          ),
         ),
       );
     }
 
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: _loadData,
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 88),
-            children: [
-              ...filteredVehicles.map(_buildMarketListingCard),
-              ...filteredTools.map(_buildToolMarketListingCard),
-            ],
-          ),
+    return _withSellFab(
+      provider,
+      RefreshIndicator(
+        onRefresh: _loadData,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 88),
+          children: [
+            ...filteredVehicles.map(_buildMarketListingCard),
+            ...filteredTools.map(_buildToolMarketListingCard),
+          ],
         ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton.extended(
-            onPressed: () => _showSellItemKindPicker(provider),
-            icon: const Icon(Icons.sell_outlined),
-            label: Text(l10n.bmHubSellCarriedItem),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -506,22 +526,27 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
 
     if (myVehicles.isEmpty && myTools.isEmpty) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.list_alt, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noListings,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.bmHubEmptyMyListingsHint,
-              style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.list_alt, size: 64, color: Colors.grey),
+              const SizedBox(height: 16),
+              Text(
+                l10n.noListings,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.bmHubEmptyMyListingsHint,
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              _sellItemCta(provider),
+            ],
+          ),
         ),
       );
     }

@@ -18,6 +18,7 @@ Speler-tegen-speler verkoop op de **Marktplaats**-tab: **voertuigen** (auto/moto
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Weapons and ammo tabs: load failure shows retry, not an empty market.
+- Empty Marktplaats and empty Mijn advertenties must still offer **Verkoop item** in the empty state. Do not hide sell behind a FAB that only appears when listings exist.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing
