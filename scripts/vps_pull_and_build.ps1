@@ -66,6 +66,8 @@ $remoteScript = @'
 #!/bin/bash
 set -e
 cd REMOTE_PROJECT_DIR
+# BuildKit cache has filled this disk (git pull failed at 100%). Prune unused cache first.
+docker builder prune -af >/dev/null || true
 cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M) || true
 test -f .env.plesk && cp .env.plesk .env.plesk.bak-$(date +%F-%H%M) || true
 # Tracked PNGs under runtime/ can conflict with old untracked copies on the server.
@@ -131,8 +133,8 @@ dc run --rm backend npx prisma migrate resolve --rolled-back "20260802140000_pla
 dc run --rm backend npx prisma migrate resolve --rolled-back "20260802160000_player_event_items" || true
 dc run --rm backend npx prisma migrate deploy
 dc up -d --no-build --no-deps backend
-# Flutter COPY . . has filled the 8G disk when client/tools/ffmpeg leaked into the context.
-docker builder prune -f >/dev/null || true
+# Flutter COPY . . has filled the disk when client/tools/ffmpeg leaked into the context.
+docker builder prune -af >/dev/null || true
 dc build --memory 3g client
 dc up -d --no-build --no-deps client
 dc build --memory 1536m admin
