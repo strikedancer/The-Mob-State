@@ -28,6 +28,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/localized_api_message.dart';
 import '../utils/player_profile_navigation.dart';
 import '../utils/rank_display.dart';
+import '../theme/dashboard_chrome.dart';
 import '../services/event_renderer.dart';
 import 'crime_screen.dart';
 import 'jobs_screen.dart';
@@ -169,12 +170,11 @@ String _localizedVehicleOpsHeatLevel(AppLocalizations l10n, String raw) {
   }
 }
 
-const Color _dashboardGold = Color(0xFFFFB347);
-const Color _dashboardBgStart = Color(0xFF160707);
-const Color _dashboardBgMid = Color(0xFF261010);
-const Color _dashboardBgEnd = Color(0xFF100505);
-const Color _dashboardPanelDark = Color(0xFF1B1212);
-const Color _dashboardPanelLight = Color(0xFF2A1A1A);
+const Color _dashboardGold = dashboardGold;
+const Color _dashboardBgStart = dashboardBgStart;
+const Color _dashboardBgMid = dashboardBgMid;
+const Color _dashboardBgEnd = dashboardBgEnd;
+const Color _dashboardPanelDark = dashboardPanelDark;
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -793,54 +793,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [_dashboardPanelLight, _dashboardPanelDark],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+            height: 52,
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            decoration: const BoxDecoration(
+              color: _dashboardPanelDark,
               border: Border(
-                bottom: BorderSide(color: _dashboardGold, width: 1),
+                bottom: BorderSide(color: dashboardHairline),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.35),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: Row(
               children: [
                 if (!showLeftSidebar)
                   IconButton(
-                    icon: const Icon(Icons.menu),
+                    icon: const Icon(Icons.menu, size: 20),
                     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
                     tooltip: l10n.menu,
+                    color: Colors.white70,
                   ),
-                if (!showLeftSidebar) const SizedBox(width: 8),
-                Expanded(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: 600,
-                      maxHeight: 100,
-                      minHeight: 60,
-                    ),
-                    child: Image.network(
-                      'title_mobstate.png',
-                      fit: BoxFit.contain,
-                      alignment: Alignment.center,
-                      errorBuilder: (context, error, stackTrace) => Text(
-                        l10n.appTitle,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                if (!showLeftSidebar) const SizedBox(width: 4),
+                Image.network(
+                  'title_mobstate.png',
+                  height: 28,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.centerLeft,
+                  errorBuilder: (context, error, stackTrace) => Text(
+                    l10n.appTitle,
+                    style: const TextStyle(
+                      color: _dashboardGold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.6,
                     ),
                   ),
                 ),
+                const Spacer(),
+                if (showLeftSidebar) ...[
+                  Text(
+                    player.username.toString(),
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                ],
                 PopupMenuButton<String>(
                   tooltip: l10n.userAccountMenuTooltip,
                   onSelected: (value) async {
@@ -964,11 +962,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     clipBehavior: Clip.none,
                     children: [
                       Container(
-                        width: 36,
-                        height: 36,
+                        width: 32,
+                        height: 32,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.grey.shade700,
+                          color: Colors.grey.shade800,
+                          border: Border.all(color: _dashboardGold, width: 1.2),
                         ),
                         child: ClipOval(
                           child: Image(
@@ -1022,24 +1021,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 if (showLeftSidebar)
                   Container(
-                    width: 230,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [_dashboardPanelLight, _dashboardPanelDark],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
+                    width: 236,
+                    padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF110A0A),
                       border: Border(
-                        right: BorderSide(
-                          color: _dashboardGold.withOpacity(0.6),
-                        ),
+                        right: BorderSide(color: dashboardHairline),
                       ),
                     ),
                     child: Column(
                       children: [
                         _buildMenuSearchField(l10n),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                         Expanded(
                           child: ListView(
                             children: _buildWebMenuItems(context, l10n),
@@ -1050,37 +1043,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
                     child: Column(
                       children: [
                         _buildCompactStatusBar(context, player, countryName),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 10),
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  _dashboardBgStart,
-                                  _dashboardBgMid,
-                                  _dashboardBgEnd,
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: _dashboardGold.withOpacity(0.45),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.4),
-                                  blurRadius: 20,
-                                  offset: const Offset(0, 8),
-                                ),
-                              ],
+                              color: const Color(0xFF100808),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: dashboardHairline),
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                               child: ScrollConfiguration(
                                 behavior: ScrollConfiguration.of(context)
                                     .copyWith(
@@ -1117,7 +1093,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               activeEvents: _gameEventsActive,
               eventPassClaimableCount: _eventPassClaimableCount,
               onOpenEvents: () => _selectWebSection(_WebSection.events),
-              topOffset: showLeftSidebar ? 96 : 128,
+              topOffset: showLeftSidebar ? 64 : 88,
               maxVisible: 6,
             ),
         ],
@@ -1169,7 +1145,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ];
 
     return Material(
-      color: _dashboardPanelDark,
+      color: const Color(0xFF110A0A),
       elevation: 8,
       child: SafeArea(
         top: false,
@@ -1272,27 +1248,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return TextField(
       controller: _menuSearchController,
       onChanged: (_) => setState(() {}),
-      style: const TextStyle(color: Colors.white, fontSize: 13),
+      style: const TextStyle(color: Colors.white, fontSize: 12),
       cursorColor: _dashboardGold,
       decoration: InputDecoration(
         isDense: true,
         hintText: l10n.menuSearchHint,
-        hintStyle: const TextStyle(color: Colors.white54, fontSize: 13),
-        prefixIcon: const Icon(Icons.search, color: Colors.white54, size: 18),
-        prefixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+        hintStyle: const TextStyle(color: dashboardMuted, fontSize: 12),
+        prefixIcon: const Icon(Icons.search, color: dashboardMuted, size: 16),
+        prefixIconConstraints: const BoxConstraints(minWidth: 32, minHeight: 32),
         filled: true,
-        fillColor: Colors.black.withOpacity(0.25),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        fillColor: Colors.black.withValues(alpha: 0.35),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide(color: Colors.white.withOpacity(0.12)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.12)),
+          borderRadius: BorderRadius.circular(6),
+          borderSide: const BorderSide(color: dashboardHairline),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(6),
           borderSide: const BorderSide(color: _dashboardGold),
         ),
       ),
@@ -1429,17 +1405,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 }
               });
             },
-            tilePadding: const EdgeInsets.symmetric(horizontal: 8),
-            childrenPadding: const EdgeInsets.only(bottom: 6),
-            collapsedIconColor: Colors.white54,
+            tilePadding: const EdgeInsets.symmetric(horizontal: 6),
+            childrenPadding: const EdgeInsets.only(bottom: 4),
+            collapsedIconColor: dashboardMuted,
             iconColor: _dashboardGold,
+            visualDensity: VisualDensity.compact,
             title: Text(
-              _navGroupLabel(l10n, group),
+              _navGroupLabel(l10n, group).toUpperCase(),
               style: const TextStyle(
                 color: _dashboardGold,
-                fontSize: 12,
+                fontSize: 10,
                 fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
+                letterSpacing: 1.2,
               ),
             ),
             children: [
@@ -1470,56 +1447,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ) {
     final selected = _selectedWebSection == item.section;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        decoration: BoxDecoration(
-          gradient: selected
-              ? LinearGradient(
-                  colors: [
-                    _dashboardGold.withOpacity(0.22),
-                    _dashboardGold.withOpacity(0.08),
-                  ],
-                )
-              : const LinearGradient(
-                  colors: [_dashboardPanelLight, _dashboardPanelDark],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: selected
-                ? _dashboardGold.withOpacity(0.9)
-                : Colors.white.withOpacity(0.08),
-          ),
-        ),
-        child: ListTile(
-          dense: true,
-          visualDensity: VisualDensity.compact,
-          selected: selected,
-          leading: Icon(
-            item.icon,
-            color: selected ? _dashboardGold : Colors.white70,
-          ),
-          title: Text(
-            item.label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: selected ? Colors.white : Colors.white70,
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            ),
-          ),
-          trailing: item.badge > 0
-              ? CircleAvatar(
-                  radius: 10,
-                  backgroundColor: Colors.red,
-                  child: Text(
-                    item.badge > 99 ? '99+' : '${item.badge}',
-                    style: const TextStyle(fontSize: 10, color: Colors.white),
-                  ),
-                )
-              : null,
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(6),
           onTap: () {
             onBeforeNavigate?.call();
             if (item.section == _WebSection.vehicleHeist) {
@@ -1528,6 +1460,63 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _selectWebSection(item.section);
             }
           },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 140),
+            height: 36,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: selected
+                  ? _dashboardGold.withValues(alpha: 0.12)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(6),
+              border: Border(
+                left: BorderSide(
+                  color: selected ? _dashboardGold : Colors.transparent,
+                  width: 2,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  item.icon,
+                  size: 16,
+                  color: selected ? _dashboardGold : Colors.white70,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    item.label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: selected ? Colors.white : const Color(0xCCFFFFFF),
+                      fontSize: 13,
+                      fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                    ),
+                  ),
+                ),
+                if (item.badge > 0)
+                  Container(
+                    height: 18,
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFC62828),
+                      borderRadius: BorderRadius.circular(9),
+                    ),
+                    child: Text(
+                      item.badge > 99 ? '99+' : '${item.badge}',
+                      style: const TextStyle(
+                        fontSize: 9,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -1536,14 +1525,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildDrawer(BuildContext context, AppLocalizations l10n) {
     return Drawer(
       child: Container(
-        color: Theme.of(context).colorScheme.surface,
+        color: const Color(0xFF110A0A),
         child: Column(
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
+              decoration: const BoxDecoration(
+                color: _dashboardPanelDark,
                 border: Border(
-                  bottom: BorderSide(color: Theme.of(context).dividerColor),
+                  bottom: BorderSide(color: dashboardHairline),
                 ),
               ),
               child: Column(
@@ -1551,13 +1540,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   Image.network(
                     'title_mobstate.png',
-                    height: 60,
+                    height: 36,
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => Text(
                       l10n.appTitle,
                       style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: _dashboardGold,
+                        letterSpacing: 0.6,
                       ),
                     ),
                   ),
@@ -1610,113 +1601,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final fbiHeat = (player.fbiHeat ?? 0).toDouble();
     final fbiProgress = (fbiHeat / 100.0).clamp(0.0, 1.0);
 
-    final body = Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // First row: 3 main progress bars
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  _rankProgressLabel(context, player.rank),
-                  rankProgress,
-                  '${(rankProgress * 100).toStringAsFixed(0)}%',
-                  Colors.amber.shade700,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: InkWell(
-                  onTap: () => _selectWebSection(_WebSection.hospital),
-                  child: _buildLargeProgressBar(
-                    context,
-                    AppLocalizations.of(context)!.health,
-                    healthProgress,
-                    '${player.health}%',
-                    player.health > 50
-                        ? Colors.green
-                        : (player.health > 25 ? Colors.orange : Colors.red),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  AppLocalizations.of(context)!.security,
-                  0.0,
-                  '0%',
-                  Colors.blueGrey,
-                ),
-              ),
-              if (pageInfoTopic != null) ...[
-                const SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: GamePageInfoButton(topicId: pageInfoTopic),
-                ),
-              ],
-            ],
+    final l10n = AppLocalizations.of(context)!;
+    final healthColor = player.health > 50
+        ? Colors.green.shade400
+        : (player.health > 25 ? Colors.orange : Colors.red);
+    final body = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 2,
+          child: DashboardHudCell(
+            label: _cashLabel(context),
+            value: formatCurrency(player.money),
+            valueColor: Colors.green.shade300,
           ),
-          const SizedBox(height: 8),
-          // Second row: Info + Wanted + FBI
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Wrap(
-                  spacing: 12,
-                  runSpacing: 4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    _buildTopInfoItem(
-                      '${_cashLabel(context)} ${formatCurrency(player.money)}',
-                      Colors.green.shade300,
-                    ),
-                    _buildTopInfoItem(
-                      RankDisplay.title(
-                        AppLocalizations.of(context)!,
-                        player.rank,
-                      ),
-                      Colors.amber.shade300,
-                    ),
-                    _buildTopInfoItem(
-                      _newMessagesLabel(context, _unreadCount),
-                      Colors.white70,
-                    ),
-                    _buildTopInfoItem(
-                      '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
-                      Colors.white70,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  AppLocalizations.of(context)!.wantedLevel,
-                  wantedProgress,
-                  '${wantedLevel.toInt()}/5',
-                  wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  'FBI',
-                  fbiProgress,
-                  '${fbiHeat.toInt()}%',
-                  fbiHeat > 0 ? Colors.deepPurple : Colors.blueGrey,
-                ),
-              ),
-            ],
+        ),
+        const DashboardHudDivider(),
+        Expanded(
+          flex: 2,
+          child: DashboardHudCell(
+            label: l10n.rank,
+            value:
+                '${RankDisplay.title(l10n, player.rank)}  ${(rankProgress * 100).toStringAsFixed(0)}%',
+            valueColor: Colors.amber.shade300,
+            progress: rankProgress,
+          ),
+        ),
+        const DashboardHudDivider(),
+        Expanded(
+          flex: 2,
+          child: InkWell(
+            onTap: () => _selectWebSection(_WebSection.hospital),
+            child: DashboardHudCell(
+              label: l10n.health,
+              value: '${player.health}%',
+              valueColor: healthColor,
+              progress: healthProgress,
+              barColor: healthColor,
+            ),
+          ),
+        ),
+        const DashboardHudDivider(),
+        Expanded(
+          child: DashboardHudCell(
+            label: l10n.wantedLevel,
+            value: '${wantedLevel.toInt()}/5',
+            valueColor: wantedLevel > 0 ? Colors.orange : Colors.white70,
+            progress: wantedProgress,
+            barColor: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
+          ),
+        ),
+        const DashboardHudDivider(),
+        Expanded(
+          child: DashboardHudCell(
+            label: 'FBI',
+            value: '${fbiHeat.toInt()}%',
+            valueColor: fbiHeat > 0 ? Colors.deepPurple.shade200 : Colors.white70,
+            progress: fbiProgress,
+            barColor: fbiHeat > 0 ? Colors.deepPurple : Colors.blueGrey,
+          ),
+        ),
+        const DashboardHudDivider(),
+        Expanded(
+          flex: 2,
+          child: DashboardHudCell(
+            label: l10n.countryLabel,
+            value:
+                '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
+          ),
+        ),
+        if (_unreadCount > 0) ...[
+          const DashboardHudDivider(),
+          Expanded(
+            child: DashboardHudCell(
+              label: l10n.messages,
+              value: _newMessagesLabel(context, _unreadCount),
+              valueColor: Colors.orange.shade200,
+            ),
           ),
         ],
+        if (pageInfoTopic != null) ...[
+          const SizedBox(width: 6),
+          GamePageInfoButton(topicId: pageInfoTopic),
+        ],
+      ],
     );
 
     if (!decorated) {
@@ -1724,68 +1692,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [_dashboardPanelLight, _dashboardPanelDark],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _dashboardGold.withOpacity(0.5)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.32),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      padding: const EdgeInsets.fromLTRB(6, 8, 10, 8),
+      decoration: dashboardPanelDecoration(radius: 8),
       child: body,
-    );
-  }
-
-  Widget _buildTopInfoItem(String text, Color color) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: color,
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0.2,
-      ),
-    );
-  }
-
-  Widget _buildLargeProgressBar(
-    BuildContext context,
-    String label,
-    double progress,
-    String valueText,
-    Color color,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '$label: $valueText',
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 11,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 4),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: progress,
-            minHeight: 9,
-            backgroundColor: Colors.white.withOpacity(0.14),
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
-        ),
-      ],
     );
   }
 
@@ -3616,22 +3525,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   }
 
   BoxDecoration _panelDecoration({Color accent = _dashboardGold}) {
-    return BoxDecoration(
-      gradient: const LinearGradient(
-        colors: [_dashboardPanelLight, _dashboardPanelDark],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: accent.withOpacity(0.45)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.28),
-          blurRadius: 12,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    );
+    return dashboardPanelDecoration(accent: accent);
   }
 
   @override
@@ -3681,18 +3575,47 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ),
       ),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: () => _openSessionRecap(l10n),
-                icon: const Icon(Icons.receipt_long, color: Colors.white70),
-                tooltip: l10n.sessionRecap,
-              ),
+            Row(
+              children: [
+                Container(
+                  width: 3,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: _dashboardGold,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l10n.dashboard,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => _openSessionRecap(l10n),
+                  icon: const Icon(Icons.receipt_long, size: 16, color: _dashboardGold),
+                  label: Text(
+                    l10n.sessionRecap,
+                    style: const TextStyle(
+                      color: _dashboardGold,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 4),
             StartAndGoalsPanel(
               playerRank: Provider.of<AuthProvider>(context, listen: false)
                       .currentPlayer
@@ -3708,30 +3631,26 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             const SizedBox(height: 8),
             TrainingSummaryCard(onOpenHub: widget.onOpenTrainingHub),
             const SizedBox(height: 8),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.liveEvents,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+            Container(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+              decoration: _panelDecoration(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DashboardSectionTitle(l10n.liveEvents),
+                  Text(
+                    l10n.worldFeedHint,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: dashboardMuted,
                     ),
-                    Text(
-                      l10n.worldFeedHint,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withOpacity(0.54),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const SizedBox(
-                      height: 220,
-                      child: EventFeed(maxEvents: 8),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 8),
+                  const SizedBox(
+                    height: 220,
+                    child: EventFeed(maxEvents: 8),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 8),
@@ -3752,6 +3671,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    DashboardSectionTitle(l10n.profile),
                     _buildInfoRow(l10n.nameLabel, player.username, Colors.white),
                     _buildInfoRow(
                       '${l10n.rank} (${player.rank})',
@@ -3791,9 +3711,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         '${player.fbiHeat}',
                         Colors.orange.shade300,
                       ),
-                    const SizedBox(height: 16),
-                    const Divider(color: Colors.grey),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 14),
+                    DashboardSectionTitle(l10n.netWorth),
                     _buildInfoRow(
                       l10n.cash,
                       formatCurrency(_stats?.economy?.cashBalance ?? player.money),
@@ -3829,9 +3748,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       formatCurrency(_stats?.economy?.netWorth ?? 0),
                       Colors.amber.shade300,
                     ),
-                    const SizedBox(height: 12),
-                    const Divider(color: Colors.grey),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 14),
+                    DashboardSectionTitle(l10n.security),
                     _buildInfoRow(
                       l10n.securityLabel,
                       l10n.noSecurity,
@@ -3868,15 +3786,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          l10n.statistics,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
+                        DashboardSectionTitle(l10n.statistics),
                         _buildInfoRow(
                           l10n.breakouts,
                           '${_stats?.breakoutCount ?? 0}',
@@ -3953,7 +3863,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                           Colors.white,
                         ),
                         const SizedBox(height: 10),
-                        const Divider(color: Colors.grey),
+                        const Divider(height: 1, color: dashboardHairline),
                         const SizedBox(height: 10),
                         Text(
                           l10n.dashboardEconomy24h,
@@ -3989,7 +3899,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                               : Colors.red.shade300,
                         ),
                         const SizedBox(height: 10),
-                        const Divider(color: Colors.grey),
+                        const Divider(height: 1, color: dashboardHairline),
                         const SizedBox(height: 10),
                         Text(
                           l10n.dashboardActivity7d,
@@ -4070,15 +3980,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      l10n.dashboardTimeouts,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+                    DashboardSectionTitle(l10n.dashboardTimeouts),
                     Text(
                       l10n.dashboardOpsOverview,
                       style: const TextStyle(
@@ -4125,7 +4027,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     ),
                     if (_gameEventsActive.isNotEmpty) ...[
                       const SizedBox(height: 12),
-                      const Divider(color: Colors.grey),
+                      const Divider(height: 1, color: dashboardHairline),
                       const SizedBox(height: 12),
                       Text(
                         l10n.dashboardLivePlayerEvents,
@@ -4176,7 +4078,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       ),
                     ],
                     const SizedBox(height: 12),
-                    const Divider(color: Colors.grey),
+                    const Divider(height: 1, color: dashboardHairline),
                     const SizedBox(height: 12),
                     Text(
                       l10n.dashboardNotificationsAndRisk,
@@ -4258,7 +4160,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       'prostitute_recruit',
                     ),
                     const SizedBox(height: 12),
-                    const Divider(color: Colors.grey),
+                    const Divider(height: 1, color: dashboardHairline),
                     const SizedBox(height: 12),
                     _buildVehicleOpsDashboardSection(),
                     const SizedBox(height: 12),
@@ -4280,7 +4182,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       },
                     ),
                     const SizedBox(height: 12),
-                    const Divider(color: Colors.grey),
+                    const Divider(height: 1, color: dashboardHairline),
                     const SizedBox(height: 12),
                     Text(
                       l10n.dashboardCrewWars,
@@ -4371,7 +4273,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       ),
                     if (_stats?.territoryLeaderStats != null) ...[
                       const SizedBox(height: 12),
-                      const Divider(color: Colors.grey),
+                      const Divider(height: 1, color: dashboardHairline),
                       const SizedBox(height: 12),
                       Text(
                         l10n.dashboardCrewTerritory,
@@ -4430,7 +4332,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     ],
                     if (_stats?.territoryDrama?.hasContent == true) ...[
                       const SizedBox(height: 12),
-                      const Divider(color: Colors.grey),
+                      const Divider(height: 1, color: dashboardHairline),
                       const SizedBox(height: 12),
                       Text(
                         l10n.territoryDramaTitle,
@@ -4535,14 +4437,18 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
 
   Widget _buildInfoRow(String label, String value, Color valueColor) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(color: Colors.white70, fontSize: 13),
+              style: const TextStyle(
+                color: dashboardMuted,
+                fontSize: 12,
+                letterSpacing: 0.15,
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -4553,7 +4459,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               style: TextStyle(
                 color: valueColor,
                 fontSize: 13,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -4892,28 +4798,28 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             Text(
               label,
               style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+                color: dashboardMuted,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
               ),
             ),
             Text(
               valueText,
               style: TextStyle(
                 color: color,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         ClipRRect(
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(2),
           child: LinearProgressIndicator(
             value: progress,
-            minHeight: 24,
-            backgroundColor: Colors.white.withOpacity(0.12),
+            minHeight: 4,
+            backgroundColor: Colors.white.withOpacity(0.08),
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),
