@@ -53,6 +53,7 @@ String formatLiveEventRemainingBadge(Duration remaining, AppLocalizations l10n) 
 
 
 /// Right-edge circular avatars for active live events (Clash-style quick access).
+/// Anchored bottom-right so page-header actions (info, refresh, chips) stay tappable.
 class LiveEventRail extends StatelessWidget {
   const LiveEventRail({
     super.key,
@@ -60,7 +61,7 @@ class LiveEventRail extends StatelessWidget {
     required this.onOpenEvents,
     this.eventPassClaimableCount = 0,
     this.maxVisible = 6,
-    this.topOffset = 120,
+    this.bottomOffset = 16,
   });
 
   final List<Map<String, dynamic>> activeEvents;
@@ -70,7 +71,7 @@ class LiveEventRail extends StatelessWidget {
   /// dashboard daily/weekly goals stay separate.
   final int eventPassClaimableCount;
   final int maxVisible;
-  final double topOffset;
+  final double bottomOffset;
 
   static GameEventTheme categoryStyle(String? category) {
     return gameEventThemeForCategory(category);
@@ -82,28 +83,18 @@ class LiveEventRail extends StatelessWidget {
 
     final visible = activeEvents.take(maxVisible).toList();
     final overflow = activeEvents.length - visible.length;
+    // Column is bottom-anchored, so reverse: Monthly Empire (first item) sits
+    // nearest the thumb; overflow "+N" stays above the stack.
+    final stacked = visible.reversed.toList();
+    final safeBottom = MediaQuery.paddingOf(context).bottom;
 
     return Positioned(
       right: 8,
-      top: topOffset,
+      bottom: bottomOffset + safeBottom,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          for (var i = 0; i < visible.length; i++) ...[
-            if (i > 0) const SizedBox(height: 8),
-            _EventAvatarButton(
-              event: visible[i],
-              claimableCount: isMonthlyEmpireEvent(visible[i])
-                  ? eventPassClaimableCount
-                  : 0,
-              onTap: () => showGameEventDetailsDialog(
-                context: context,
-                event: visible[i],
-              ),
-            ),
-          ],
           if (overflow > 0) ...[
-            const SizedBox(height: 8),
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -127,6 +118,20 @@ class LiveEventRail extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
+          for (var i = 0; i < stacked.length; i++) ...[
+            if (i > 0) const SizedBox(height: 8),
+            _EventAvatarButton(
+              event: stacked[i],
+              claimableCount: isMonthlyEmpireEvent(stacked[i])
+                  ? eventPassClaimableCount
+                  : 0,
+              onTap: () => showGameEventDetailsDialog(
+                context: context,
+                event: stacked[i],
               ),
             ),
           ],

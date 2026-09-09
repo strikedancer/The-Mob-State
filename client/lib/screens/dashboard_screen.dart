@@ -1100,7 +1100,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               activeEvents: _gameEventsActive,
               eventPassClaimableCount: _eventPassClaimableCount,
               onOpenEvents: () => _selectWebSection(_WebSection.events),
-              topOffset: showLeftSidebar ? 96 : 128,
+              // Body already sits above the mobile footer; keep a small inset.
+              bottomOffset: showLeftSidebar ? 20 : 16,
               maxVisible: 6,
             ),
         ],
