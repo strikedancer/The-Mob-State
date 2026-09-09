@@ -8,6 +8,7 @@ import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../utils/player_profile_navigation.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class PrisonScreen extends StatefulWidget {
   const PrisonScreen({super.key, this.embedded = false});
@@ -646,6 +647,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'prison',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -710,36 +712,15 @@ class _PrisonScreenState extends State<PrisonScreen> {
                   ),
           );
 
-    if (widget.embedded) {
-      return Column(
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              onPressed: _isLoading || _isActing
-                  ? null
-                  : () => _loadPrisoners(autoRetry: true),
-              icon: const Icon(Icons.refresh),
-              tooltip: l10n.retryAgain,
-            ),
-          ),
-          Expanded(child: body),
-        ],
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.prisonTitle),
-        actions: [
-          IconButton(
-            onPressed: _isLoading || _isActing
-                ? null
-                : () => _loadPrisoners(autoRetry: true),
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
-      ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.prisonTitle,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'prison',
+      fallbackIcon: Icons.gavel,
+      onRefresh: _isLoading || _isActing
+          ? null
+          : () => _loadPrisoners(autoRetry: true),
       body: body,
     );
   }

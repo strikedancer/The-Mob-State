@@ -15,6 +15,7 @@ class EmpirePageHero extends StatelessWidget {
     super.key,
     required this.title,
     required this.imageAsset,
+    this.subtitle,
     this.topicId,
     this.onRefresh,
     this.refreshEnabled = true,
@@ -24,6 +25,7 @@ class EmpirePageHero extends StatelessWidget {
   });
 
   final String title;
+  final String? subtitle;
   final String imageAsset;
   final String? topicId;
   final VoidCallback? onRefresh;
@@ -35,7 +37,10 @@ class EmpirePageHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wide = MediaQuery.sizeOf(context).width >= 720;
-    final height = wide ? 168.0 : 148.0;
+    final hasSub = subtitle != null && subtitle!.trim().isNotEmpty;
+    final height = wide
+        ? (hasSub ? 186.0 : 168.0)
+        : (hasSub ? 166.0 : 148.0);
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -118,6 +123,19 @@ class EmpirePageHero extends StatelessWidget {
                       ],
                     ],
                   ),
+                  if (hasSub) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 13,
+                        height: 1.3,
+                      ),
+                    ),
+                  ],
                   if (chips.isNotEmpty) ...[
                     const Spacer(),
                     Wrap(
@@ -220,3 +238,109 @@ Widget empireHubPainted({required Widget child}) {
     child: child,
   );
 }
+
+TabBar empireGoldTabBar({
+  required TabController controller,
+  required List<Widget> tabs,
+  ValueChanged<int>? onTap,
+}) {
+  return TabBar(
+    controller: controller,
+    isScrollable: true,
+    labelColor: kEmpireGold,
+    unselectedLabelColor: Colors.white70,
+    indicatorColor: kEmpireGold,
+    dividerColor: kEmpireGold.withValues(alpha: 0.22),
+    onTap: onTap,
+    tabs: tabs,
+  );
+}
+
+/// Shared Empire-shell page: photo hero scrolls away; optional gold TabBar stays pinned.
+class EmpireHubScaffold extends StatelessWidget {
+  const EmpireHubScaffold({
+    super.key,
+    required this.title,
+    required this.imageAsset,
+    required this.body,
+    this.embedded = false,
+    this.subtitle,
+    this.topicId,
+    this.onRefresh,
+    this.refreshEnabled = true,
+    this.chips = const [],
+    this.fallbackIcon = Icons.apartment,
+    this.tabBar,
+    this.extraHeaderSlivers = const [],
+    this.floatingActionButton,
+  });
+
+  final bool embedded;
+  final String title;
+  final String? subtitle;
+  final String imageAsset;
+  final String? topicId;
+  final VoidCallback? onRefresh;
+  final bool refreshEnabled;
+  final List<Widget> chips;
+  final IconData fallbackIcon;
+  final TabBar? tabBar;
+  final List<Widget> extraHeaderSlivers;
+  final Widget body;
+  final Widget? floatingActionButton;
+
+  @override
+  Widget build(BuildContext context) {
+    final scroll = NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: EmpirePageHero(
+              title: title,
+              subtitle: subtitle,
+              imageAsset: imageAsset,
+              topicId: topicId,
+              onRefresh: onRefresh,
+              refreshEnabled: refreshEnabled,
+              chips: chips,
+              fallbackIcon: fallbackIcon,
+            ),
+          ),
+        ),
+        ...extraHeaderSlivers,
+        if (tabBar != null)
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: PinnedTabBarDelegate(tabBar: tabBar!),
+          ),
+      ],
+      body: body,
+    );
+    final painted = empireHubPainted(child: scroll);
+    if (embedded) {
+      if (floatingActionButton == null) return painted;
+      return Stack(
+        children: [
+          Positioned.fill(child: painted),
+          Positioned(
+            right: 16,
+            bottom: 16,
+            child: floatingActionButton!,
+          ),
+        ],
+      );
+    }
+    return Scaffold(
+      backgroundColor: kEmpireBgEnd,
+      appBar: AppBar(
+        backgroundColor: kEmpireBgStart,
+        foregroundColor: kEmpireGold,
+        title: Text(title),
+      ),
+      floatingActionButton: floatingActionButton,
+      body: painted,
+    );
+  }
+}
+

@@ -22,6 +22,7 @@ import '../utils/crime_localization.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 enum _CrimeListFilter { all, available }
 
@@ -331,106 +332,34 @@ class _CrimeScreenState extends State<CrimeScreen> {
     final showPolice =
         _countryPolice != null && _countryPolice!['enabled'] == true;
 
-    return _panel(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final wide = constraints.maxWidth >= 640;
-              final titleBlock = Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _crimeAccent.withValues(alpha: 0.14),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: _crimeAccent.withValues(alpha: 0.45),
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.warning_amber_rounded,
-                      color: _crimeAccent,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                l10n.crimeScreenHeroTitle,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            const GamePageInfoButton(topicId: 'crimes'),
-                          ],
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          l10n.crimeScreenHeroSubtitle,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            height: 1.3,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-              final chips = Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: [
-                  _statChip(
-                    '${_crimes.length} ${l10n.crimes.toLowerCase()}',
-                    _gold,
-                  ),
-                  _statChip(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+          child: EmpirePageHero(
+            title: l10n.crimeScreenHeroTitle,
+            subtitle: l10n.crimeScreenHeroSubtitle,
+            imageAsset: 'assets/images/backgrounds/crime_background.png',
+            topicId: 'crimes',
+            fallbackIcon: Icons.warning_amber_rounded,
+            chips: [
+              EmpireStatChip(
+                icon: Icons.warning_amber_rounded,
+                label: '${_crimes.length} ${l10n.crimes.toLowerCase()}',
+              ),
+              EmpireStatChip(
+                icon: Icons.check_circle_outline,
+                label:
                     '$availableCount ${l10n.crimeScreenFilterAvailable.toLowerCase()}',
-                    Colors.greenAccent,
-                  ),
-                ],
-              );
-              if (wide) {
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: titleBlock),
-                    const SizedBox(width: 12),
-                    chips,
-                  ],
-                );
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  titleBlock,
-                  const SizedBox(height: 10),
-                  chips,
-                ],
-              );
-            },
+              ),
+            ],
           ),
-          if (_healthPenaltyPercent > 0) ...[
-            const SizedBox(height: 10),
-            const Divider(height: 1, color: Color(0xFF2A3344)),
-            const SizedBox(height: 8),
-            InkWell(
+        ),
+        if (_healthPenaltyPercent > 0)
+          _panel(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child: InkWell(
               onTap: _openHospital,
               child: Row(
                 children: [
@@ -464,45 +393,20 @@ class _CrimeScreenState extends State<CrimeScreen> {
                 ],
               ),
             ),
-          ],
-          if (showPolice) ...[
-            const SizedBox(height: 10),
-            const Divider(height: 1, color: Color(0xFF2A3344)),
-            const SizedBox(height: 8),
-            CountryPoliceStrip(
-              countryPolice: _countryPolice!,
-              disruptActions: _disruptActions,
-              onDisrupt: _openCountryPoliceDisrupt,
-              embedded: true,
-            ),
-          ],
-          if (_trainingBonusesLoaded || _hasWeaponCrime) ...[
-            const SizedBox(height: 10),
-            const Divider(height: 1, color: Color(0xFF2A3344)),
-            const SizedBox(height: 8),
-            _buildHeaderPrepLoadout(l10n),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _statChip(String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.45)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
-      ),
+          ),
+        if (showPolice)
+          CountryPoliceStrip(
+            countryPolice: _countryPolice!,
+            disruptActions: _disruptActions,
+            onDisrupt: _openCountryPoliceDisrupt,
+            embedded: true,
+          ),
+        if (_trainingBonusesLoaded || _hasWeaponCrime)
+          _panel(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child: _buildHeaderPrepLoadout(l10n),
+          ),
+      ],
     );
   }
 

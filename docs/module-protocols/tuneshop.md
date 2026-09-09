@@ -8,6 +8,7 @@ Vehicle parts economy, tuning upgrades (speed/stealth/armor), upgrade costs, val
 ## Primary Frontend Entry
 - client/lib/screens/tune_shop_screen.dart
 - client/lib/screens/dashboard_screen.dart (menu entry: TuneShop)
+- Compact photo hero (`EmpireHubScaffold`) scrolls away; gold `i` lives in the hero. No extra AppBar in the embedded Empire shell.
 
 ## Core Rules
 - Parts are earned by scrapping vehicles only.

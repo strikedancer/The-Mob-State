@@ -25,6 +25,8 @@ import '../services/drug_service.dart';
 import '../services/crypto_service.dart';
 import '../services/api_client.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
+
 class BlackMarketScreen extends StatefulWidget {
   static const int tabTrade = 0;
   static const int tabMarketplace = 1;
@@ -364,6 +366,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'black-market',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -374,49 +377,41 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     final showMarketFilter =
         _tabController.index == BlackMarketScreen.tabMarketplace ||
         _tabController.index == BlackMarketScreen.tabMyListings;
-    final compactDepartments = MediaQuery.sizeOf(context).width < 720;
+    final departmentBar = _departmentBar(
+      l10n,
+      compact: true,
+      showMarketFilter: showMarketFilter,
+    );
 
-    return Scaffold(
-      backgroundColor: widget.embedded ? Colors.transparent : null,
-      appBar: widget.embedded
-          ? null
-          : AppBar(
-              title: Text(l10n.blackMarket),
-              actions: [
-                if (!compactDepartments) ...[
-                  IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
-                  if (showMarketFilter)
-                    IconButton(
-                      icon: const Icon(Icons.filter_list),
-                      onPressed: _showFilterDialog,
-                    ),
-                ],
-              ],
-            ),
-      body: Column(
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.blackMarket,
+      imageAsset: 'assets/images/backgrounds/weapon_shop_bg.png',
+      topicId: 'black-market',
+      onRefresh: _loadData,
+      fallbackIcon: Icons.storefront,
+      extraHeaderSlivers: [
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: _PinnedDepartmentBarDelegate(
+            height: 56,
+            child: departmentBar,
+          ),
+        ),
+      ],
+      body: TabBarView(
+        controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
-          _departmentBar(
-            l10n,
-            compact: compactDepartments,
-            showMarketFilter: showMarketFilter,
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                const TradeGoodsTab(),
-                _buildMarketListings(vehicleProvider),
-                _buildMyListings(vehicleProvider),
-                const BackpackShopScreen(),
-                const MaterialsShopScreen(),
-                const WeaponsMarketScreen(),
-                const AmmoMarketScreen(),
-                const ToolsScreen(embedded: true),
-                const SecurityScreen(embedded: true),
-              ],
-            ),
-          ),
+          const TradeGoodsTab(),
+          _buildMarketListings(vehicleProvider),
+          _buildMyListings(vehicleProvider),
+          const BackpackShopScreen(),
+          const MaterialsShopScreen(),
+          const WeaponsMarketScreen(),
+          const AmmoMarketScreen(),
+          const ToolsScreen(embedded: true),
+          const SecurityScreen(embedded: true),
         ],
       ),
     );
@@ -2325,5 +2320,39 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         ),
       );
     }
+  }
+}
+
+class _PinnedDepartmentBarDelegate extends SliverPersistentHeaderDelegate {
+  _PinnedDepartmentBarDelegate({
+    required this.child,
+    required this.height,
+  });
+
+  final Widget child;
+  final double height;
+
+  @override
+  double get minExtent => height;
+
+  @override
+  double get maxExtent => height;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Material(
+      color: const Color(0xFF1B1212),
+      elevation: overlapsContent ? 2 : 0,
+      child: SizedBox(height: height, width: double.infinity, child: child),
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _PinnedDepartmentBarDelegate oldDelegate) {
+    return height != oldDelegate.height || child != oldDelegate.child;
   }
 }

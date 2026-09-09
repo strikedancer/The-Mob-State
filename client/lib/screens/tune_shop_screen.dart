@@ -7,6 +7,7 @@ import '../providers/vehicle_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class TuneShopScreen extends StatefulWidget {
   final bool embedded;
@@ -244,22 +245,24 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'tuneshop',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
     final provider = context.watch<VehicleProvider>();
-    final content = _buildContent(provider);
     final l10n = AppLocalizations.of(context);
 
-    if (widget.embedded) {
-      return content;
-    }
-
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n?.tuneShop ?? 'Tune Shop')),
-      body: content,
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n?.tuneShop ?? 'Tune Shop',
+      subtitle: l10n?.tuneShopIntro,
+      imageAsset: 'assets/images/backgrounds/tuneshop_bg_desktop.png',
+      topicId: 'tuneshop',
+      fallbackIcon: Icons.tune,
+      onRefresh: _load,
+      body: _buildContent(provider),
     );
   }
 
@@ -311,8 +314,6 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
                   20,
                 ),
                 children: [
-                  _buildHeaderCard(),
-                  const SizedBox(height: 12),
                   _buildPartsSummary(provider),
                   const SizedBox(height: 16),
                   if (provider.tuningVehicles.isEmpty)
@@ -326,57 +327,6 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
             },
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCard() {
-    final l10n = AppLocalizations.of(context);
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.35),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.amber.withOpacity(0.35)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/tuneshop/tuneshop_emblem.png',
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const SizedBox(width: 48, height: 48),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                l10n?.tuneShop ?? 'Tune Shop',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            l10n?.tuneShopIntro ??
-                'Scrap vehicles for parts and upgrade speed, stealth and armor. Parts are shared per category (car/motorcycle/boat), so you can tune any vehicle within the same category.',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
-              fontSize: 13,
-              height: 1.35,
-            ),
-          ),
-        ],
       ),
     );
   }

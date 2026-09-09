@@ -21,6 +21,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 // ---------------------------------------------------------------------------
 // TerritoryScreen â€” Responsive crew territory map (NL-first)
 // Layout: desktop = split (map | side panel), tablet = stacked collapsible,
@@ -28,7 +29,9 @@ import '../widgets/game_page_info.dart';
 // ---------------------------------------------------------------------------
 
 class TerritoryScreen extends StatefulWidget {
-  const TerritoryScreen({super.key});
+  const TerritoryScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<TerritoryScreen> createState() => _TerritoryScreenState();
@@ -1624,57 +1627,90 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'territory',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
-    if (_loadError != null && _mapData.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(title: Text(AppLocalizations.of(context)!.territory)),
-        body: MobileLoadError(
-          message: _loadError!,
-          onRetry: () => _loadData(reloadCountries: true),
-        ),
-      );
-    }
-
-    if (!_isTerritoryEnabled) {
-      final t = AppLocalizations.of(context)!;
-      return Scaffold(
-        appBar: AppBar(title: Text(t.territory)),
-        body: Center(
-          child: Text(
-            t.territoryUnavailableMessage,
-            style: const TextStyle(fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
     final t = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(t.territory),
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabs: [
-            Tab(text: t.territoryTabMap),
-            Tab(text: t.territoryTabLeaderboard),
-            Tab(text: t.territoryTabSeason),
-          ],
+    final showCountryPicker = !_isLoading &&
+        _isTerritoryEnabled &&
+        _countries.length > 1 &&
+        !(_loadError != null && _mapData.isEmpty);
+
+    Widget body;
+    TabBar? tabBar;
+    if (_isLoading) {
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_loadError != null && _mapData.isEmpty) {
+      body = MobileLoadError(
+        message: _loadError!,
+        onRetry: () => _loadData(reloadCountries: true),
+      );
+    } else if (!_isTerritoryEnabled) {
+      body = Center(
+        child: Text(
+          t.territoryUnavailableMessage,
+          style: const TextStyle(fontSize: 16),
+          textAlign: TextAlign.center,
         ),
-        actions: [
-          if (_countries.length > 1)
+      );
+    } else {
+      tabBar = empireGoldTabBar(
+        controller: _tabController,
+        tabs: [
+          Tab(text: t.territoryTabMap),
+          Tab(text: t.territoryTabLeaderboard),
+          Tab(text: t.territoryTabSeason),
+        ],
+      );
+      body = TabBarView(
+        controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [_buildMapTab(), _buildLeaderboardTab(), _buildSeasonTab()],
+      );
+    }
+
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: t.territory,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'territory',
+      onRefresh: _isLoading ? null : _loadData,
+      refreshEnabled: !_isLoading,
+      fallbackIcon: Icons.map,
+      extraHeaderSlivers: [
+        if (showCountryPicker)
+          SliverToBoxAdapter(child: _buildCountryPickerBar(t)),
+      ],
+      tabBar: tabBar,
+      body: body,
+    );
+  }
+
+  Widget _buildCountryPickerBar(AppLocalizations t) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Material(
+        color: kEmpireBgMid,
+        child: Row(
+          children: [
+            const Icon(Icons.language, color: kEmpireGold, size: 20),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                _currentCountryLabel(),
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
             PopupMenuButton<String>(
               tooltip: t.territorySelectCountryTooltip,
-              icon: const Icon(Icons.language),
+              icon: const Icon(Icons.arrow_drop_down, color: kEmpireGold),
               onSelected: (countryCode) {
                 if (countryCode == _selectedCountryCode) return;
                 setState(() {
@@ -1712,17 +1748,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                   })
                   .toList(growable: false),
             ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: t.refresh,
-            onPressed: _loadData,
-          ),
-        ],
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [_buildMapTab(), _buildLeaderboardTab(), _buildSeasonTab()],
+          ],
+        ),
       ),
     );
   }

@@ -9,6 +9,7 @@ import '../services/crypto_service.dart';
 import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 String _localizeCryptoApiMessage(AppLocalizations l10n, String? raw) {
   if (raw == null || raw.trim().isEmpty) {
@@ -126,7 +127,9 @@ List<Achievement> _parseAchievementsPayload(dynamic payload) {
 }
 
 class CryptoScreen extends StatefulWidget {
-  const CryptoScreen({super.key});
+  const CryptoScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<CryptoScreen> createState() => _CryptoScreenState();
@@ -159,16 +162,6 @@ class _CryptoScreenState extends State<CryptoScreen> {
   void dispose() {
     _refreshTimer?.cancel();
     super.dispose();
-  }
-
-  String _backgroundAssetForWidth(double width) {
-    if (width >= 1200) {
-      return 'assets/images/backgrounds/crypto_market_bg_desktop.png';
-    }
-    if (width >= 700) {
-      return 'assets/images/backgrounds/crypto_market_bg_tablet.png';
-    }
-    return 'assets/images/backgrounds/crypto_market_bg_mobile.png';
   }
 
   Future<void> _loadAll({bool silent = false}) async {
@@ -354,6 +347,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
         const SizedBox(height: 12),
         Expanded(
           child: ListView.separated(
+            primary: false,
             itemCount: _market.length,
             separatorBuilder: (context, index) => const SizedBox(height: 8),
             itemBuilder: (context, index) {
@@ -527,6 +521,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
                     ),
                   )
                 : ListView.separated(
+                    primary: false,
                     itemCount: _holdings.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 8),
@@ -596,68 +591,49 @@ class _CryptoScreenState extends State<CryptoScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'crypto',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final isWide = width >= 1100;
-        final bgAsset = _backgroundAssetForWidth(width);
-
-        return Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                bgAsset,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color(0xFF07121E),
-                          Color(0xFF0F2438),
-                          Color(0xFF09131F),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Positioned.fill(
-              child: Container(color: Colors.black.withOpacity(0.45)),
-            ),
-            if (_loading)
-              const Center(child: CircularProgressIndicator())
-            else
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: isWide
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(flex: 3, child: _buildMarketCard()),
-                          const SizedBox(width: 14),
-                          Expanded(flex: 2, child: _buildPortfolioCard()),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          Expanded(flex: 3, child: _buildMarketCard()),
-                          const SizedBox(height: 12),
-                          Expanded(flex: 2, child: _buildPortfolioCard()),
-                        ],
-                      ),
-              ),
-          ],
-        );
+    final l10n = AppLocalizations.of(context)!;
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.crypto,
+      imageAsset: 'assets/images/backgrounds/crypto_market_bg_desktop.png',
+      topicId: 'crypto',
+      onRefresh: () {
+        _loadAll();
       },
+      refreshEnabled: !_loading,
+      fallbackIcon: Icons.currency_bitcoin,
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                final isWide = constraints.maxWidth >= 1100;
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: isWide
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(flex: 3, child: _buildMarketCard()),
+                            const SizedBox(width: 14),
+                            Expanded(flex: 2, child: _buildPortfolioCard()),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Expanded(flex: 3, child: _buildMarketCard()),
+                            const SizedBox(height: 12),
+                            Expanded(flex: 2, child: _buildPortfolioCard()),
+                          ],
+                        ),
+                );
+              },
+            ),
     );
   }
 }

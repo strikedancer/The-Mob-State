@@ -9,6 +9,7 @@ import '../services/auth_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class PremiumScreen extends StatefulWidget {
   const PremiumScreen({
@@ -40,7 +41,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
   List<Map<String, dynamic>> _creditItems = const [];
   List<Map<String, dynamic>> _entitlements = const [];
   int _creditBalance = 0;
-  final ScrollController _scrollController = ScrollController();
   final GlobalKey _passOffersKey = GlobalKey();
   bool _didFocusProduct = false;
 
@@ -73,12 +73,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => _showRedirectFeedback(),
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -1653,20 +1647,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView(
-        controller: _scrollController,
         padding: const EdgeInsets.all(16),
         children: [
-          Text(
-            l10n.premiumAndCredits,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.premiumUiIntroSubtitle,
-          ),
-          const SizedBox(height: 16),
           _buildStatusStrip(l10n),
           const SizedBox(height: 24),
           _buildVipPlans(l10n),
@@ -1687,20 +1669,22 @@ class _PremiumScreenState extends State<PremiumScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'premium',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
-    if (widget.embedded) {
-      return _buildBody();
-    }
-
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.premiumAndCredits),
-      ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.premiumAndCredits,
+      subtitle: l10n.premiumUiIntroSubtitle,
+      imageAsset: 'assets/images/premium_tiles/credits_medium.png',
+      topicId: 'premium',
+      onRefresh: _loadData,
+      refreshEnabled: !_loading && !_processingCheckout && !_processingRedeem,
+      fallbackIcon: Icons.workspace_premium,
       body: _buildBody(),
     );
   }

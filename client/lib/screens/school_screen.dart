@@ -13,9 +13,12 @@ import '../utils/top_right_notification.dart';
 import '../widgets/action_result_toast.dart';
 import '../widgets/cooldown_overlay.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class SchoolScreen extends StatefulWidget {
-  const SchoolScreen({super.key});
+  const SchoolScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<SchoolScreen> createState() => _SchoolScreenState();
@@ -1186,6 +1189,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'school',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -1213,12 +1217,11 @@ class _SchoolScreenState extends State<SchoolScreen> {
       );
     }
 
+    late final Widget body;
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (_error != null) {
-      return Center(
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_error != null) {
+      body = Center(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
@@ -1228,12 +1231,11 @@ class _SchoolScreenState extends State<SchoolScreen> {
           ),
         ),
       );
-    }
-
+    } else {
     final viewportWidth = MediaQuery.of(context).size.width;
     final isMobile = viewportWidth < 480;
 
-    return Container(
+    body = Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
@@ -1392,6 +1394,17 @@ class _SchoolScreenState extends State<SchoolScreen> {
           ],
         ),
       ),
+    );
+    }
+
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.schoolTitle,
+      imageAsset: 'assets/images/school/tracks/it_track.png',
+      topicId: 'school',
+      fallbackIcon: Icons.school,
+      onRefresh: _loadSchoolData,
+      body: body,
     );
   }
 }

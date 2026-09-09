@@ -10,7 +10,7 @@ Single Flutter entry that combines **gym** (three tracks: strength / speed / sta
 
 ### Hub UX (player-facing)
 
-- **Header:** gradient hero with title/subtitle, optional **combo chip** when `trainingComboReadiness.active` is true (shows `bonusFraction` as a crime success bonus percentage).
+- **Header:** Empire photo hero (`EmpireHubScaffold`) with title/subtitle; optional **combo chip** when `trainingComboReadiness.active` is true (shows `bonusFraction` as a crime success bonus percentage). Gold `i` lives in the hero.
 - **Gym section:** three tracks (**strength / speed / stamina**) with per-track progress, cooldown countdown, train button, aggregate gym bonus (+8% cap), and **Smart train** (first ready track). Client posts `POST /gym/train` with `{ "track": "strength"|"speed"|"stamina" }`.
 - **Shooting section:** accuracy bonus, hitlist accuracy line (`hitlistAccuracy` from status), train + cooldown.
 - **Live countdown:** hub ticks every second; silent refresh when a cooldown expires.

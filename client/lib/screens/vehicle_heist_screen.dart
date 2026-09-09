@@ -24,6 +24,7 @@ import 'events_screen.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class VehicleHeistScreen extends StatefulWidget {
   const VehicleHeistScreen({
@@ -46,7 +47,6 @@ class VehicleHeistScreen extends StatefulWidget {
 class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     with SingleTickerProviderStateMixin {
   static const Color _gold = Color(0xFFD4AF37);
-  static const Color _panelBg = Color(0xFF151B28);
   static const Color _panelBorder = Color(0xFF2A3344);
   static const Color _vehicleAccent = Color(0xFFF0A04B);
 
@@ -201,111 +201,52 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final motorCount = _countForTab(provider, 1);
     final boatCount = _countForTab(provider, 2);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFF3A2814).withValues(alpha: 0.95),
-            _panelBg.withValues(alpha: 0.95),
-          ],
-        ),
-        border: Border.all(color: _gold.withValues(alpha: 0.45)),
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: _vehicleAccent.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _vehicleAccent.withValues(alpha: 0.45),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.directions_car_filled,
-                  color: _vehicleAccent,
-                  size: 28,
-                ),
+          EmpirePageHero(
+            title: l10n.vehicleHeistTitle,
+            subtitle: l10n.vehicleHeistHeroSubtitle,
+            imageAsset: 'assets/images/backgrounds/garage_background.png',
+            topicId: 'vehicle-heist',
+            fallbackIcon: Icons.directions_car_filled,
+            chips: [
+              EmpireStatChip(
+                icon: Icons.directions_car,
+                label: '$totalOwned ${l10n.vehicles.toLowerCase()}',
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.vehicleHeistTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.vehicleHeistHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.35,
-                      ),
-                    ),
-                  ],
-                ),
+              EmpireStatChip(
+                icon: Icons.directions_car_filled,
+                label: '${l10n.car} $carCount',
               ),
-              const SizedBox(width: 8),
-              OutlinedButton.icon(
-                onPressed: provider.isLoading
-                    ? null
-                    : () => _showCatalogForActiveTab(provider),
-                icon: const Icon(Icons.menu_book, size: 18),
-                label: Text(l10n.catalog),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: _gold,
-                  side: BorderSide(color: _gold.withValues(alpha: 0.45)),
-                ),
+              EmpireStatChip(
+                icon: Icons.two_wheeler,
+                label: '${l10n.motorcycle} $motorCount',
+              ),
+              EmpireStatChip(
+                icon: Icons.sailing,
+                label: '${l10n.boat} $boatCount',
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _statChip('$totalOwned ${l10n.vehicles.toLowerCase()}', _gold),
-              _statChip('${l10n.car} $carCount', _tabAccentColor(0)),
-              _statChip('${l10n.motorcycle} $motorCount', _tabAccentColor(1)),
-              _statChip('${l10n.boat} $boatCount', _tabAccentColor(2)),
-            ],
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerRight,
+            child: OutlinedButton.icon(
+              onPressed: provider.isLoading
+                  ? null
+                  : () => _showCatalogForActiveTab(provider),
+              icon: const Icon(Icons.menu_book, size: 18),
+              label: Text(l10n.catalog),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: _gold,
+                side: BorderSide(color: _gold.withValues(alpha: 0.45)),
+              ),
+            ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _statChip(String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.45)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
       ),
     );
   }
@@ -403,27 +344,19 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         spacing: 8,
         runSpacing: 8,
         children: List.generate(3, (index) {
-          final accent = _tabAccentColor(index);
           final isActive = _activeTabIndex == index;
           return ChoiceChip(
-            label: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(_tabIcon(index), size: 16, color: isActive ? accent : Colors.white70),
-                const SizedBox(width: 6),
-                Text(_tabTitle(l10n, index)),
-              ],
-            ),
+            label: Text(_tabTitle(l10n, index)),
             selected: isActive,
             onSelected: (_) => _tabController.animateTo(index),
-            selectedColor: accent.withValues(alpha: 0.22),
+            selectedColor: kEmpireGold.withValues(alpha: 0.22),
             labelStyle: TextStyle(
-              color: isActive ? accent : Colors.white70,
+              color: isActive ? kEmpireGold : Colors.white70,
               fontWeight: FontWeight.w700,
             ),
             side: BorderSide(
               color: isActive
-                  ? accent.withValues(alpha: 0.65)
+                  ? kEmpireGold.withValues(alpha: 0.65)
                   : _panelBorder,
             ),
           );
@@ -2043,6 +1976,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'vehicle-heist',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }

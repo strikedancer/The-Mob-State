@@ -113,7 +113,7 @@ Elke **5 minuten** gebeurt er automatisch:
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
-- Empire → **Drugs** gebruikt dezelfde foto-header als Don/Midnight Races, plus drie tabs: Faciliteiten, Productie en Voorraad. Heat, materialen en groothandelszendingen staan onder de header. De foto-hero **scrollt mee** (tabs blijven bovenaan). Don hetzelfde; Midnight Races heeft de hero al in dezelfde paginalijst. Nachtclub, Eigendommen, Prostitutie / Red Light Districts en Munitiefabriek volgen hetzelfde patroon.
+- Empire-pagina’s delen dezelfde foto-header als Don/Midnight Races/Drugs. De foto-hero **scrollt mee**; als er tabs zijn blijven die bovenaan (alleen tekst, goud). De gouden `i` zit in de hero. Dashboard-home, Help en Instellingen hebben deze kop niet.
 
 ---
 

@@ -11,9 +11,12 @@ import '../utils/player_profile_navigation.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class DirectMessagesScreen extends StatefulWidget {
-  const DirectMessagesScreen({super.key});
+  const DirectMessagesScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<DirectMessagesScreen> createState() => _DirectMessagesScreenState();
@@ -194,6 +197,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'messages',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -212,46 +216,20 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF121212),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1E1E1E),
-        title: Row(
-          children: [
-            Text(
-              l10n.messages,
-              style: const TextStyle(color: Colors.white),
-            ),
-            if (_totalUnread > 0) ...[
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 3,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1F8B24),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  _totalUnread > 99 ? '99+' : '$_totalUnread',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
-            onPressed: _loadConversations,
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.messages,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'messages',
+      onRefresh: _loadConversations,
+      fallbackIcon: Icons.mail_outline,
+      chips: [
+        if (_totalUnread > 0)
+          EmpireStatChip(
+            icon: Icons.mark_email_unread,
+            label: _totalUnread > 99 ? '99+' : '$_totalUnread',
           ),
-        ],
-      ),
+      ],
       body: _loading && _conversations.isEmpty
         ? const Center(
             child: CircularProgressIndicator(
@@ -333,3 +311,4 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
     );
   }
 }
+

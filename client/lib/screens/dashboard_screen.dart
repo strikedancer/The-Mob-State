@@ -1938,6 +1938,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.prostitution:
       case _WebSection.redLightDistricts:
       case _WebSection.ammoFactory:
+      case _WebSection.inventory:
+      case _WebSection.messages:
+      case _WebSection.support:
+      case _WebSection.bank:
+      case _WebSection.casino:
+      case _WebSection.hospital:
+      case _WebSection.prison:
+      case _WebSection.school:
+      case _WebSection.crew:
+      case _WebSection.friends:
+      case _WebSection.territory:
+      case _WebSection.crypto:
+      case _WebSection.stockMarket:
+      case _WebSection.smuggling:
+      case _WebSection.premium:
+      case _WebSection.achievements:
+      case _WebSection.vault:
+      case _WebSection.events:
+      case _WebSection.travel:
+      case _WebSection.aviation:
+      case _WebSection.court:
+      case _WebSection.hitlist:
+      case _WebSection.blackMarket:
+      case _WebSection.tools:
+      case _WebSection.security:
+      case _WebSection.vehicleHeist:
+      case _WebSection.garage:
+      case _WebSection.marina:
+      case _WebSection.tuneShop:
+      case _WebSection.trainingHub:
         return true;
       default:
         return false;
@@ -2091,7 +2121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onOpenSchool: () => _selectWebSection(_WebSection.school),
         );
       case _WebSection.messages:
-        return const DirectMessagesScreen();
+        return DirectMessagesScreen(embedded: true);
       case _WebSection.help:
         return const HelpScreen(embedded: true);
       case _WebSection.settings:
@@ -2101,14 +2131,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.aviation:
         return const AviationScreen(embedded: true);
       case _WebSection.crew:
-        return const CrewScreen();
+        return const CrewScreen(embedded: true);
       case _WebSection.premium:
         return PremiumScreen(
           embedded: true,
           focusProductKey: _premiumFocusProductKey,
         );
       case _WebSection.friends:
-        return const FriendsScreen();
+        return const FriendsScreen(embedded: true);
       case _WebSection.inventory:
         return InventoryScreen(
           embedded: true,
@@ -2124,9 +2154,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.races:
         return const RaceScreen(embedded: true);
       case _WebSection.bank:
-        return const BankScreen();
+        return const BankScreen(embedded: true);
       case _WebSection.casino:
-        return const CasinoScreen();
+        return const CasinoScreen(embedded: true);
       case _WebSection.blackMarket:
         return BlackMarketScreen(
           key: ValueKey('black-market-$_blackMarketTabIndex-$_webSectionRefreshSeed'),
@@ -2141,11 +2171,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.nightclub:
         return const NightclubScreen(embedded: true);
       case _WebSection.crypto:
-        return const CryptoScreen();
+        return const CryptoScreen(embedded: true);
       case _WebSection.stockMarket:
-        return const StockMarketScreen();
+        return const StockMarketScreen(embedded: true);
       case _WebSection.smuggling:
-        return const SmugglingScreen();
+        return const SmugglingScreen(embedded: true);
       case _WebSection.tools:
         return const BlackMarketScreen(
           initialTabIndex: BlackMarketScreen.tabTools,
@@ -2164,7 +2194,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           embedded: true,
         );
       case _WebSection.hospital:
-        return const HospitalScreen();
+        return const HospitalScreen(embedded: true);
       case _WebSection.prison:
         return const PrisonScreen(embedded: true);
       case _WebSection.vehicleHeist:
@@ -2182,6 +2212,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const VehicleHeistScreen(embedded: true, initialTabIndex: 2);
       case _WebSection.trainingHub:
         return TrainingHubScreen(
+          embedded: true,
           onOpenCrimes: () => _selectWebSection(_WebSection.crimes),
         );
       case _WebSection.ammoFactory:
@@ -2190,16 +2221,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onOpenSchool: () => _selectWebSection(_WebSection.school),
         );
       case _WebSection.school:
-        return const SchoolScreen();
+        return const SchoolScreen(embedded: true);
       case _WebSection.territory:
-        return const TerritoryScreen();
+        return const TerritoryScreen(embedded: true);
       case _WebSection.prostitution:
         return const ProstitutionScreen(embedded: true);
       case _WebSection.redLightDistricts:
         // Deep-link into Empire hub RLD tab (Workers=0, RLD=1, Events=2, Social=3).
         return const ProstitutionScreen(initialTabIndex: 1, embedded: true);
       case _WebSection.achievements:
-        return const AchievementsScreen();
+        return const AchievementsScreen(embedded: true);
       case _WebSection.playerProfile:
         final playerId = _profilePlayerId;
         if (playerId == null) {

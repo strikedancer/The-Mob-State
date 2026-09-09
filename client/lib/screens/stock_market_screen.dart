@@ -4,9 +4,12 @@ import '../l10n/app_localizations.dart';
 import '../services/stock_market_service.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class StockMarketScreen extends StatefulWidget {
-  const StockMarketScreen({super.key});
+  const StockMarketScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<StockMarketScreen> createState() => _StockMarketScreenState();
@@ -125,6 +128,7 @@ class _StockMarketScreenState extends State<StockMarketScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'stock-market',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -136,13 +140,15 @@ class _StockMarketScreenState extends State<StockMarketScreen> {
     final isNl = Localizations.localeOf(context).languageCode == 'nl';
     final openPositions = _openPositions(assets);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_l10n.stockMarketTitle),
-        actions: [
-          IconButton(onPressed: _busy || _loading ? null : _load, icon: const Icon(Icons.refresh)),
-        ],
-      ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: _l10n.stockMarketTitle,
+      subtitle: _l10n.stockMarketHint,
+      imageAsset: 'assets/images/jobs/stockbroker_job.png',
+      topicId: 'stock-market',
+      onRefresh: _busy || _loading ? null : _load,
+      refreshEnabled: !_busy && !_loading,
+      fallbackIcon: Icons.show_chart,
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _loadError != null
@@ -174,11 +180,6 @@ class _StockMarketScreenState extends State<StockMarketScreen> {
                   child: ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
-                      Text(
-                        _l10n.stockMarketHint,
-                        style: TextStyle(color: Colors.grey.shade400, fontSize: 13),
-                      ),
-                      const SizedBox(height: 14),
                       Card(
                         color: Colors.grey.shade900,
                         child: Padding(

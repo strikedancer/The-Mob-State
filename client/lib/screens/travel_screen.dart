@@ -15,6 +15,7 @@ import '../widgets/country_police_ui.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/trade_good_l10n.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class TravelScreen extends StatefulWidget {
   const TravelScreen({
@@ -878,97 +879,6 @@ class _TravelScreenState extends State<TravelScreen> {
     );
   }
 
-  Widget _buildPageHero(
-    AppLocalizations l10n, {
-    required String currentName,
-    required String currentFlag,
-    required int destinationCount,
-    required int wantedLevel,
-    required int fbiHeat,
-  }) {
-    return _buildPanel(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: _gold.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: _gold.withValues(alpha: 0.45)),
-                ),
-                child: const Icon(Icons.public, color: _gold, size: 24),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.travelHeroTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.travelHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.3,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _statChip(
-                '$currentFlag ${l10n.travelHereChip}',
-                const Color(0xFF72C48F),
-              ),
-              _statChip(currentName, _gold),
-              _statChip(
-                l10n.travelDestinationsChip('$destinationCount'),
-                _gold,
-              ),
-              _statChip(
-                l10n.travelWantedChip('$wantedLevel'),
-                wantedLevel > 0
-                    ? const Color(0xFFE5967A)
-                    : Colors.white70,
-              ),
-              _statChip(
-                l10n.travelFbiChip('$fbiHeat'),
-                fbiHeat > 0
-                    ? const Color(0xFFE5967A)
-                    : Colors.white70,
-              ),
-              if (_aircraftTravelBonus > 0)
-                _statChip(
-                  l10n.travelAircraftBonusChip(
-                    (_aircraftTravelBonus * 100).round().toString(),
-                  ),
-                  _gold,
-                ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildJourneyCard(AppLocalizations l10n) {
     if (_journeyRoute.isEmpty || !_isInTransit) {
       return const SizedBox.shrink();
@@ -1214,6 +1124,7 @@ class _TravelScreenState extends State<TravelScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'travel',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -1233,95 +1144,120 @@ class _TravelScreenState extends State<TravelScreen> {
       ..._countries.where((country) => country.id == currentCountry),
       ..._countries.where((country) => country.id != currentCountry),
     ];
+    final wantedLevel = player?.wantedLevel ?? 0;
+    final fbiHeat = player?.fbiHeat ?? 0;
 
-    return Scaffold(
-      appBar: widget.embedded
-          ? null
-          : AppBar(
-              title: Text(l10n.travel),
-              backgroundColor: const Color(0xFF2E2A24),
-              foregroundColor: Colors.white,
-            ),
-      backgroundColor: widget.embedded ? Colors.transparent : null,
-      body: _cooldownSeconds != null && _cooldownSeconds! > 0
-          ? CooldownOverlay(
-              actionType: 'travel',
-              cooldownActionType: 'travel',
-              remainingSeconds: _cooldownSeconds!,
-              onExpired: () {
-                setState(() {
-                  _cooldownSeconds = null;
-                });
-                _checkJailStatusAndLoadCountries();
-              },
-            )
-          : _jailTime != null && _jailTime! > 0
-          ? JailOverlay(
-              remainingSeconds: _jailTime!,
-              wantedLevel: player?.wantedLevel,
-              onReleased: () {
-                setState(() {
-                  _jailTime = null;
-                });
-                _checkJailStatusAndLoadCountries();
-              },
-            )
-          : _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _error != null
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      _error!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton.icon(
-                      onPressed: _isTraveling ? null : _loadCountries,
-                      icon: const Icon(Icons.refresh),
-                      label: Text(l10n.retry),
-                    ),
-                  ],
-                ),
+    if (_cooldownSeconds != null && _cooldownSeconds! > 0) {
+      return CooldownOverlay(
+        actionType: 'travel',
+        cooldownActionType: 'travel',
+        remainingSeconds: _cooldownSeconds!,
+        onExpired: () {
+          setState(() {
+            _cooldownSeconds = null;
+          });
+          _checkJailStatusAndLoadCountries();
+        },
+      );
+    }
+    if (_jailTime != null && _jailTime! > 0) {
+      return JailOverlay(
+        remainingSeconds: _jailTime!,
+        wantedLevel: player?.wantedLevel,
+        onReleased: () {
+          setState(() {
+            _jailTime = null;
+          });
+          _checkJailStatusAndLoadCountries();
+        },
+      );
+    }
+
+    final Widget body;
+    if (_isLoading) {
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_error != null) {
+      body = Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _error!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.red),
               ),
-            )
-          : RefreshIndicator(
-              color: _gold,
-              onRefresh: _checkJailStatusAndLoadCountries,
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(16),
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                          _buildPageHero(
-                            l10n,
-                            currentName: currentName,
-                            currentFlag: currentFlag,
-                            destinationCount: destinations.length,
-                            wantedLevel: player?.wantedLevel ?? 0,
-                            fbiHeat: player?.fbiHeat ?? 0,
-                          ),
-                          if (_isInTransit) _buildJourneyCard(l10n),
-                          ...destinations.map(
-                            (country) => _buildDestinationCard(
-                              country: country,
-                              l10n: l10n,
-                              currentCountry: currentCountry,
-                              money: player?.money ?? 0,
-                            ),
-                          ),
-                    ],
-                  ),
-                ],
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: _isTraveling ? null : _loadCountries,
+                icon: const Icon(Icons.refresh),
+                label: Text(l10n.retry),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      body = RefreshIndicator(
+        color: _gold,
+        onRefresh: _checkJailStatusAndLoadCountries,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          children: [
+            if (_isInTransit) _buildJourneyCard(l10n),
+            ...destinations.map(
+              (country) => _buildDestinationCard(
+                country: country,
+                l10n: l10n,
+                currentCountry: currentCountry,
+                money: player?.money ?? 0,
               ),
             ),
+          ],
+        ),
+      );
+    }
+
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.travel,
+      subtitle: l10n.travelHeroSubtitle,
+      imageAsset: 'assets/images/travel/route_map.png',
+      topicId: 'travel',
+      fallbackIcon: Icons.public,
+      onRefresh: _checkJailStatusAndLoadCountries,
+      chips: [
+        EmpireStatChip(
+          icon: Icons.flag,
+          label: '$currentFlag ${l10n.travelHereChip}',
+        ),
+        EmpireStatChip(
+          icon: Icons.place,
+          label: currentName,
+        ),
+        EmpireStatChip(
+          icon: Icons.map,
+          label: l10n.travelDestinationsChip('${destinations.length}'),
+        ),
+        EmpireStatChip(
+          icon: Icons.local_police,
+          label: l10n.travelWantedChip('$wantedLevel'),
+        ),
+        EmpireStatChip(
+          icon: Icons.visibility,
+          label: l10n.travelFbiChip('$fbiHeat'),
+        ),
+        if (_aircraftTravelBonus > 0)
+          EmpireStatChip(
+            icon: Icons.flight,
+            label: l10n.travelAircraftBonusChip(
+              (_aircraftTravelBonus * 100).round().toString(),
+            ),
+          ),
+      ],
+      body: body,
     );
   }
 }

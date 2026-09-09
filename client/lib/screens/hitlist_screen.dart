@@ -9,6 +9,7 @@ import '../utils/player_profile_navigation.dart';
 import '../utils/formatters.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
   final map = data is Map ? data : null;
@@ -207,6 +208,7 @@ class _HitlistScreenState extends State<HitlistScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'hitlist',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -214,75 +216,82 @@ class _HitlistScreenState extends State<HitlistScreen> {
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: widget.embedded
-          ? null
-          : AppBar(
-              title: Text(l10n.hitlist),
-              actions: [
-                if (_isHunted)
-                  Tooltip(
-                    message: l10n.youAreTargeted,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Icon(Icons.warning, color: Colors.red[300]),
-                    ),
-                  ),
-                IconButton(
-                  icon: const Icon(Icons.security),
-                  tooltip: l10n.security,
-                  onPressed: _goToSecurity,
+    Widget body;
+    if (_isLoading && _activeHits.isEmpty) {
+      body = const Center(child: CircularProgressIndicator(color: _gold));
+    } else {
+      body = RefreshIndicator(
+        color: _gold,
+        onRefresh: _loadActiveHits,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            if (_loadError != null && _activeHits.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 48),
+                child: MobileLoadError(
+                  message: _loadError!,
+                  onRetry: _loadActiveHits,
                 ),
-              ],
-            ),
-      backgroundColor: widget.embedded ? Colors.transparent : null,
-      body: _isLoading && _activeHits.isEmpty
-          ? const Center(child: CircularProgressIndicator(color: _gold))
-          : RefreshIndicator(
-              color: _gold,
-              onRefresh: _loadActiveHits,
-              child: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                  SliverToBoxAdapter(child: _buildPageHero(l10n)),
-                  if (_loadError != null && _activeHits.isEmpty)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: MobileLoadError(
-                        message: _loadError!,
-                        onRetry: _loadActiveHits,
-                      ),
-                    )
-                  else if (_activeHits.isEmpty)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: _buildEmptyState(l10n),
-                    )
-                  else
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final hit = _activeHits[index];
-                          return HitCard(
-                            hit: hit,
-                            onAttemptHit: () => _attemptHit(hit['id']),
-                            onInvestigate: () =>
-                                _showInvestigateOptions(hit['id']),
-                            onOpenPlayerProfile: _openPlayerProfile,
-                            onPlaceCounterBounty: () => _placeCounterBounty(
-                              hit['id'],
-                              hit['bounty'],
-                            ),
-                            onCancelHit: () => _cancelHit(hit['id']),
-                          );
-                        },
-                        childCount: _activeHits.length,
-                      ),
-                    ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 88)),
-                ],
-              ),
-            ),
+              )
+            else if (_activeHits.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 48),
+                child: _buildEmptyState(l10n),
+              )
+            else
+              ..._activeHits.map((hit) {
+                return HitCard(
+                  hit: hit,
+                  onAttemptHit: () => _attemptHit(hit['id']),
+                  onInvestigate: () => _showInvestigateOptions(hit['id']),
+                  onOpenPlayerProfile: _openPlayerProfile,
+                  onPlaceCounterBounty: () => _placeCounterBounty(
+                    hit['id'],
+                    hit['bounty'],
+                  ),
+                  onCancelHit: () => _cancelHit(hit['id']),
+                );
+              }),
+            const SizedBox(height: 88),
+          ],
+        ),
+      );
+    }
+
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.hitlist,
+      subtitle: l10n.hitlistHeroSubtitle,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'hitlist',
+      fallbackIcon: Icons.gps_fixed,
+      onRefresh: _loadActiveHits,
+      chips: [
+        EmpireStatChip(
+          icon: Icons.gps_fixed,
+          label: l10n.hitlistOpenCount('${_activeHits.length}'),
+        ),
+        EmpireStatChip(
+          icon: Icons.attach_money,
+          label: l10n.minimumBounty,
+        ),
+        if (_isHunted)
+          EmpireStatChip(
+            icon: Icons.warning,
+            label: l10n.youAreTargeted,
+          ),
+        TextButton.icon(
+          onPressed: _goToSecurity,
+          style: TextButton.styleFrom(
+            foregroundColor: kEmpireGold,
+            visualDensity: VisualDensity.compact,
+          ),
+          icon: const Icon(Icons.security, size: 16),
+          label: Text(l10n.security),
+        ),
+      ],
+      body: body,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showPlaceHitDialog,
         tooltip: l10n.placeHitTitle,
@@ -304,105 +313,6 @@ class _HitlistScreenState extends State<HitlistScreen> {
         border: Border.all(color: _panelBorder),
       ),
       child: child,
-    );
-  }
-
-  Widget _buildPageHero(AppLocalizations l10n) {
-    return _panel(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: _hitAccent.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _hitAccent.withValues(alpha: 0.45),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.gps_fixed,
-                  color: _hitAccent,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.hitlistHeroTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.hitlistHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.3,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              _statChip(
-                l10n.hitlistOpenCount('${_activeHits.length}'),
-                _gold,
-              ),
-              _statChip(l10n.minimumBounty, Colors.white70),
-              if (_isHunted)
-                _statChip(l10n.youAreTargeted, _hitAccent),
-              TextButton.icon(
-                onPressed: _goToSecurity,
-                style: TextButton.styleFrom(
-                  foregroundColor: _gold,
-                  visualDensity: VisualDensity.compact,
-                ),
-                icon: const Icon(Icons.security, size: 16),
-                label: Text(l10n.security),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _statChip(String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.45)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
-      ),
     );
   }
 

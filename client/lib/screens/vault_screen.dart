@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
-import '../utils/web_asset_helper.dart';
 import '../utils/localized_api_message.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class VaultScreen extends StatefulWidget {
   final bool embedded;
@@ -195,130 +195,11 @@ class _VaultScreenState extends State<VaultScreen> {
     }
   }
 
-  Widget _buildVaultHero(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final isSmall = MediaQuery.of(context).size.width < 700;
-    final height = isSmall ? 190.0 : 220.0;
-    final seasonWindow = _seasonWindowLabel(context);
-
-    // Prefer external image library path on web/prod (served via nginx),
-    // fall back to bundled Flutter asset.
-    final externalBannerUrl = Uri.base.resolve('/client/images/vault/vault_banner.png').toString();
-
-    Widget banner() {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.network(
-          externalBannerUrl,
-          width: double.infinity,
-          height: height,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return WebAssetHelper.image(
-              'assets/images/vault/vault_banner.png',
-              width: double.infinity,
-              height: height,
-              fit: BoxFit.cover,
-              errorBuilder: (ctx, err, st) {
-                return Container(
-                  width: double.infinity,
-                  height: height,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xFF0F0F12).withOpacity(0.94),
-                        const Color(0xFF1B1324).withOpacity(0.92),
-                        const Color(0xFF101820).withOpacity(0.9),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      );
-    }
-
-    return Container(
-      height: height,
-      width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white12),
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xFF0F0F12).withOpacity(0.94),
-            const Color(0xFF1B1324).withOpacity(0.92),
-            const Color(0xFF101820).withOpacity(0.9),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(child: banner()),
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.62),
-                    Colors.black.withOpacity(0.22),
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                l10n.menuCrackVault,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.2,
-                    ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                l10n.vaultHeroTagline,
-                style: const TextStyle(color: Colors.white70),
-              ),
-              if (seasonWindow.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(999),
-                    color: Colors.black.withOpacity(0.28),
-                    border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.55)),
-                  ),
-                  child: Text(
-                    l10n.vaultSeasonLabel(seasonWindow),
-                    style: const TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFD4AF37)),
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'vault',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -331,11 +212,10 @@ class _VaultScreenState extends State<VaultScreen> {
     final balance = _creditsBalance();
     final reward = _rewardForStake(_stakeTier);
 
+    final seasonWindow = _seasonWindowLabel(context);
     final content = ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       children: [
-        _buildVaultHero(context),
-        const SizedBox(height: 14),
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -531,21 +411,21 @@ class _VaultScreenState extends State<VaultScreen> {
       ],
     );
 
-    if (widget.embedded) {
-      return content;
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.menuCrackVault),
-        actions: [
-          IconButton(
-            onPressed: _loadStatus,
-            icon: const Icon(Icons.refresh),
-            tooltip: l10n.refresh,
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.menuCrackVault,
+      subtitle: l10n.vaultHeroTagline,
+      imageAsset: 'assets/images/vault/vault_banner.png',
+      topicId: 'vault',
+      fallbackIcon: Icons.lock,
+      onRefresh: _loadStatus,
+      chips: [
+        if (seasonWindow.isNotEmpty)
+          EmpireStatChip(
+            icon: Icons.calendar_month,
+            label: l10n.vaultSeasonLabel(seasonWindow),
           ),
-        ],
-      ),
+      ],
       body: content,
     );
   }

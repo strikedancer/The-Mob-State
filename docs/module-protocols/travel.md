@@ -7,6 +7,7 @@ Commercial travel does **not** move or confiscate personal trade-good warehouses
 
 ## Primary Frontend Entry
 - client/lib/screens/travel_screen.dart
+- Compact photo hero (`EmpireHubScaffold`) scrolls away; gold `i` lives in the hero. No extra AppBar in the embedded Empire shell.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

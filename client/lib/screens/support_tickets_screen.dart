@@ -12,6 +12,7 @@ import '../services/auth_service.dart';
 import '../utils/support_badge_state.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class _SupportTicketSummary {
   const _SupportTicketSummary({
@@ -1243,16 +1244,20 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'support-tickets',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: widget.embedded
-          ? null
-          : AppBar(title: Text(l10n.supportTicketsScreenTitle)),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.supportTicketsScreenTitle,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'support-tickets',
+      onRefresh: _refreshScreen,
+      fallbackIcon: Icons.support_agent,
       body: RefreshIndicator(
         onRefresh: _refreshScreen,
         child: ListView(

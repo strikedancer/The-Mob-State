@@ -6,9 +6,12 @@ import '../services/prostitution_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/achievement_display.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class AchievementsScreen extends StatefulWidget {
-  const AchievementsScreen({super.key});
+  const AchievementsScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<AchievementsScreen> createState() => _AchievementsScreenState();
@@ -318,6 +321,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'achievements',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -325,17 +329,21 @@ class _AchievementsScreenState extends State<AchievementsScreen>
   Widget _buildPageInfoChild(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(t.achievementsTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadAchievements,
-            tooltip: t.refresh,
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: t.achievementsTitle,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'achievements',
+      onRefresh: _loadAchievements,
+      refreshEnabled: !_isLoading,
+      fallbackIcon: Icons.emoji_events,
+      chips: [
+        if (_progress != null)
+          EmpireStatChip(
+            icon: Icons.emoji_events,
+            label: '${_progress!.unlockedCount}/${_progress!.totalAchievements}',
           ),
-        ],
-      ),
+      ],
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage.isNotEmpty
@@ -437,6 +445,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
     }
 
     return ListView.builder(
+      primary: false,
       padding: const EdgeInsets.all(16),
       itemCount: categories.length,
       itemBuilder: (context, index) {

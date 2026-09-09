@@ -21,8 +21,12 @@ import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
 import 'black_market_screen.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
+
 class CrewScreen extends StatefulWidget {
-  const CrewScreen({super.key});
+  const CrewScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<CrewScreen> createState() => _CrewScreenState();
@@ -4231,28 +4235,30 @@ class _CrewScreenState extends State<CrewScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'crew',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_t(l10n, 'app.crews')),
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabs: [
-            Tab(text: _t(l10n, 'tab.myCrew')),
-            Tab(text: _t(l10n, 'tab.crewHq')),
-            Tab(text: _t(l10n, 'tab.storageHub')),
-            Tab(text: _t(l10n, 'tab.members')),
-            Tab(text: _t(l10n, 'tab.warRoom')),
-            Tab(text: _t(l10n, 'tab.crewMissions')),
-            Tab(text: _t(l10n, 'tab.allCrews')),
-            Tab(icon: const Icon(Icons.chat), text: _t(l10n, 'tab.chat')),
-          ],
-        ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: _t(l10n, 'app.crews'),
+      imageAsset: 'assets/images/crew_hq/villa/hq_l3.png',
+      topicId: 'crew',
+      fallbackIcon: Icons.groups,
+      tabBar: empireGoldTabBar(
+        controller: _tabController,
+        tabs: [
+          Tab(text: _t(l10n, 'tab.myCrew')),
+          Tab(text: _t(l10n, 'tab.crewHq')),
+          Tab(text: _t(l10n, 'tab.storageHub')),
+          Tab(text: _t(l10n, 'tab.members')),
+          Tab(text: _t(l10n, 'tab.warRoom')),
+          Tab(text: _t(l10n, 'tab.crewMissions')),
+          Tab(text: _t(l10n, 'tab.allCrews')),
+          Tab(text: _t(l10n, 'tab.chat')),
+        ],
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())

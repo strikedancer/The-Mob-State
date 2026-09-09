@@ -22,6 +22,7 @@ import '../widgets/job_card.dart';
 import '../utils/web_asset_helper.dart';
 import 'school_screen.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 enum _JobListFilter { all, available }
 
@@ -132,106 +133,34 @@ class _JobsScreenState extends State<JobsScreen> {
     );
   }
 
-  Widget _statChip(String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.45)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
-      ),
-    );
-  }
-
   Widget _buildPageHero(AppLocalizations l10n, int playerRank) {
     final availableCount =
         _jobs.where((j) => playerRank >= j.requiredRank).length;
 
-    return _panel(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: _jobAccent.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _jobAccent.withValues(alpha: 0.45),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.work_outline,
-                  color: _jobAccent,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            l10n.jobScreenHeroTitle,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const GamePageInfoButton(topicId: 'jobs'),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.jobScreenHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.35,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+      child: EmpirePageHero(
+        title: l10n.jobScreenHeroTitle,
+        subtitle: l10n.jobScreenHeroSubtitle,
+        imageAsset: 'assets/images/backgrounds/gym_bg.png',
+        topicId: 'jobs',
+        fallbackIcon: Icons.work_outline,
+        chips: [
+          EmpireStatChip(
+            icon: Icons.work_outline,
+            label: '${_jobs.length} ${l10n.jobs.toLowerCase()}',
           ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _statChip(
-                '${_jobs.length} ${l10n.jobs.toLowerCase()}',
-                _gold,
-              ),
-              _statChip(
+          EmpireStatChip(
+            icon: Icons.check_circle_outline,
+            label:
                 '$availableCount ${l10n.jobScreenFilterAvailable.toLowerCase()}',
-                Colors.greenAccent,
-              ),
-              if (_lockedJobs.isNotEmpty)
-                _statChip(
-                  '${_lockedJobs.length} ${l10n.jobCardEducationRequired.toLowerCase()}',
-                  const Color(0xFFFFC107),
-                ),
-            ],
           ),
+          if (_lockedJobs.isNotEmpty)
+            EmpireStatChip(
+              icon: Icons.lock_outline,
+              label:
+                  '${_lockedJobs.length} ${l10n.jobCardEducationRequired.toLowerCase()}',
+            ),
         ],
       ),
     );

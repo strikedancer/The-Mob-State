@@ -15,9 +15,12 @@ import 'casino_management_screen.dart';
 import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class CasinoScreen extends StatefulWidget {
-  const CasinoScreen({super.key});
+  const CasinoScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<CasinoScreen> createState() => _CasinoScreenState();
@@ -485,6 +488,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'casino',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -497,16 +501,13 @@ class _CasinoScreenState extends State<CasinoScreen> {
         ? 'assets/images/casino/casino_background_portrait.png'
         : 'assets/images/casino/casino_background_landscape.png';
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Icon(Icons.casino),
-            const SizedBox(width: 8),
-            Text(l10n.casino),
-          ],
-        ),
-      ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.casino,
+      imageAsset: backgroundImage,
+      topicId: 'casino',
+      fallbackIcon: Icons.casino,
+      onRefresh: _checkOwnershipAndLoadGames,
       floatingActionButton:
           _isOwner && _casinoStats != null && !_gameRouteActive
           ? FloatingActionButton.extended(
@@ -516,26 +517,28 @@ class _CasinoScreenState extends State<CasinoScreen> {
               backgroundColor: Colors.orange,
             )
           : null,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(backgroundImage),
-            fit: BoxFit.cover,
-          ),
-        ),
+      body: PrimaryScrollController.none(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(
-              0.3,
-            ), // Slight overlay for better text readability
+            image: DecorationImage(
+              image: AssetImage(backgroundImage),
+              fit: BoxFit.cover,
+            ),
           ),
-          child: _isLoading
-              ? Center(child: CircularProgressIndicator(color: Colors.white))
-              : _error != null
-              ? _buildError()
-              : !_isOwned
-              ? _buildClosedCasino()
-              : _buildEmbeddedCasinoNavigator(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(
+                0.3,
+              ), // Slight overlay for better text readability
+            ),
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator(color: Colors.white))
+                : _error != null
+                ? _buildError()
+                : !_isOwned
+                ? _buildClosedCasino()
+                : _buildEmbeddedCasinoNavigator(),
+          ),
         ),
       ),
     );

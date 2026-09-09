@@ -9,9 +9,12 @@ import '../utils/top_right_notification.dart';
 import '../widgets/smuggling_result_overlay.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class SmugglingScreen extends StatefulWidget {
-  const SmugglingScreen({super.key});
+  const SmugglingScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<SmugglingScreen> createState() => _SmugglingScreenState();
@@ -687,24 +690,6 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     }
   }
 
-  String _backgroundAssetForWidth(double width) {
-    if (width >= 1200) {
-      return 'assets/images/backgrounds/smuggling_hub_bg_desktop.png';
-    }
-    if (width >= 700) {
-      return 'assets/images/backgrounds/smuggling_hub_bg_tablet.png';
-    }
-    return 'assets/images/backgrounds/smuggling_hub_bg_mobile.png';
-  }
-
-  String _emblemAssetForWidth(double width) {
-    if (width >= 1200) {
-      return 'assets/images/ui/smuggling_hub_emblem_desktop.png';
-    }
-    if (width >= 700) return 'assets/images/ui/smuggling_hub_emblem_tablet.png';
-    return 'assets/images/ui/smuggling_hub_emblem_mobile.png';
-  }
-
   String _crateAssetForWidth(double width) {
     if (width >= 1200) return 'assets/images/ui/smuggling_crate_desktop.png';
     if (width >= 700) return 'assets/images/ui/smuggling_crate_tablet.png';
@@ -896,117 +881,73 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'smuggling',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final l10n = AppLocalizations.of(context)!;
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(_backgroundAssetForWidth(width)),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        color: Colors.black.withOpacity(0.58),
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator(color: _gold))
-            : _loadError != null && _destinations.isEmpty && _shipments.isEmpty
-            ? MobileLoadError(message: _loadError!, onRetry: _loadData)
-            : RefreshIndicator(
-                color: _gold,
-                onRefresh: _loadData,
-                child: ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    _buildHeader(context),
-                    const SizedBox(height: 12),
-                    _buildSendPanel(context),
-                    const SizedBox(height: 12),
-                    _buildDepotsPanel(context),
-                    const SizedBox(height: 12),
-                    _buildShipmentsPanel(context),
-                  ],
-                ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.smugglingHubTitle,
+      subtitle: l10n.smugglingHubSubtitle,
+      imageAsset: 'assets/images/backgrounds/smuggling_hub_bg_desktop.png',
+      topicId: 'smuggling',
+      onRefresh: _loadData,
+      refreshEnabled: !_isLoading,
+      fallbackIcon: Icons.local_shipping,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator(color: _gold))
+          : _loadError != null && _destinations.isEmpty && _shipments.isEmpty
+          ? MobileLoadError(message: _loadError!, onRetry: _loadData)
+          : RefreshIndicator(
+              color: _gold,
+              onRefresh: _loadData,
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  _buildHeader(context),
+                  const SizedBox(height: 12),
+                  _buildSendPanel(context),
+                  const SizedBox(height: 12),
+                  _buildDepotsPanel(context),
+                  const SizedBox(height: 12),
+                  _buildShipmentsPanel(context),
+                ],
               ),
-      ),
+            ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final width = MediaQuery.of(context).size.width;
-    final narrow = width < 700;
-
-    final claimButtons = Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        OutlinedButton.icon(
-          onPressed: _isClaiming ? null : () => _claimCurrentDepot('personal'),
-          icon: const Icon(Icons.inventory_2, size: 18),
-          label: Text(l10n.smugglingClaimPersonal),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: _gold,
-            side: const BorderSide(color: _gold),
-          ),
-        ),
-        if (_canUseCrewNetwork)
-          ElevatedButton.icon(
-            onPressed: _isClaiming ? null : () => _claimCurrentDepot('crew'),
-            icon: const Icon(Icons.groups, size: 18),
-            label: Text(l10n.smugglingClaimCrew),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _gold,
-              foregroundColor: const Color(0xFF1B1212),
-            ),
-          ),
-      ],
-    );
 
     return _mafiaPanel(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
         children: [
-          Row(
-            children: [
-              Image.asset(
-                _emblemAssetForWidth(width),
-                width: 56,
-                height: 56,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.local_shipping, size: 42, color: _gold),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.smugglingHubTitle,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: _gold,
-                      ),
-                    ),
-                    Text(
-                      l10n.smugglingHubSubtitle,
-                      style: const TextStyle(color: Colors.white70),
-                    ),
-                  ],
-                ),
-              ),
-              if (!narrow) claimButtons,
-            ],
+          OutlinedButton.icon(
+            onPressed: _isClaiming ? null : () => _claimCurrentDepot('personal'),
+            icon: const Icon(Icons.inventory_2, size: 18),
+            label: Text(l10n.smugglingClaimPersonal),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: _gold,
+              side: const BorderSide(color: _gold),
+            ),
           ),
-          if (narrow) ...[
-            const SizedBox(height: 12),
-            claimButtons,
-          ],
+          if (_canUseCrewNetwork)
+            ElevatedButton.icon(
+              onPressed: _isClaiming ? null : () => _claimCurrentDepot('crew'),
+              icon: const Icon(Icons.groups, size: 18),
+              label: Text(l10n.smugglingClaimCrew),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _gold,
+                foregroundColor: const Color(0xFF1B1212),
+              ),
+            ),
         ],
       ),
     );

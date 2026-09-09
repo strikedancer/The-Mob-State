@@ -14,6 +14,7 @@ import '../widgets/game_event_details_dialog.dart';
 import '../widgets/season_pass_panel.dart';
 import 'premium_screen.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class EventsScreen extends StatefulWidget {
   /// When true (e.g. web dashboard panel), no [AppBar] — parent provides chrome.
@@ -491,84 +492,6 @@ class _EventsScreenState extends State<EventsScreen> {
     );
   }
 
-  Widget _buildPageHero(AppLocalizations l10n) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 18),
-      padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFF4A2814).withValues(alpha: 0.95),
-            const Color(0xFF120808),
-          ],
-        ),
-        border: Border.all(color: _gold.withValues(alpha: 0.5)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: _gold.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: _gold.withValues(alpha: 0.4)),
-                ),
-                child: const Icon(Icons.emoji_events, color: _gold, size: 28),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.gameScreenHeroTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.gameScreenHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.35,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _statChip(
-                l10n.gameScreenActiveCount(_active.length.toString()),
-                Colors.greenAccent,
-              ),
-              _statChip(
-                l10n.gameScreenUpcomingCount(
-                  (_upcoming.length + _upcomingPreview.length).toString(),
-                ),
-                Colors.orangeAccent,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _sectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10, top: 4),
@@ -587,6 +510,7 @@ class _EventsScreenState extends State<EventsScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'events',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -671,31 +595,37 @@ class _EventsScreenState extends State<EventsScreen> {
       );
     }
 
-    final body = RefreshIndicator(
-      color: _gold,
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.events,
+      subtitle: l10n.gameScreenHeroSubtitle,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'events',
+      fallbackIcon: Icons.emoji_events,
       onRefresh: _loadOverview,
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
-        children: [
-          _buildPageHero(l10n),
-          seasonPass,
-          liveSection,
-        ],
-      ),
-    );
-
-    return Scaffold(
-      backgroundColor: const Color(0xFF0C0A0A),
-      appBar: widget.embedded ? null : AppBar(title: Text(l10n.events)),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF1A0A0A), Color(0xFF0C0A0A)],
+      chips: [
+        EmpireStatChip(
+          icon: Icons.play_circle,
+          label: l10n.gameScreenActiveCount(_active.length.toString()),
+        ),
+        EmpireStatChip(
+          icon: Icons.upcoming,
+          label: l10n.gameScreenUpcomingCount(
+            (_upcoming.length + _upcomingPreview.length).toString(),
           ),
         ),
-        child: body,
+      ],
+      body: RefreshIndicator(
+        color: _gold,
+        onRefresh: _loadOverview,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
+          children: [
+            seasonPass,
+            liveSection,
+          ],
+        ),
       ),
     );
   }

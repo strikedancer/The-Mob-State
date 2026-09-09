@@ -11,6 +11,7 @@ import '../utils/formatters.dart';
 import '../utils/crime_localization.dart';
 import '../utils/court_localization.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class CourtScreen extends StatefulWidget {
   const CourtScreen({
@@ -29,13 +30,6 @@ class _CourtScreenState extends State<CourtScreen> {
   static const Color _gold = Color(0xFFD4AF37);
   static const Color _panelBg = Color(0xFF151B28);
   static const Color _panelBorder = Color(0xFF2A3344);
-  static const Color _courtAccent = Color(0xFFD7B378);
-
-  static const String _backgroundAsset =
-      'assets/images/backgrounds/courtroom_background.png';
-  static const String _backgroundAssetMobile =
-      'assets/images/backgrounds/courtroom_background_mobile.png';
-
   final ApiClient _apiClient = ApiClient();
 
   bool _isLoading = true;
@@ -782,97 +776,6 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
-  Widget _statChip(String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.45)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPageHero(AppLocalizations l10n) {
-    final serving = _currentSentence != null;
-    return _buildPanel(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: _courtAccent.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _courtAccent.withValues(alpha: 0.45),
-                  ),
-                ),
-                child: const Icon(Icons.gavel, color: _courtAccent, size: 24),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.courtHeroTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.courtHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.3,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _statChip(
-                serving ? l10n.courtActiveChip : l10n.courtFreeChip,
-                serving ? const Color(0xFFE6B85C) : const Color(0xFF72C48F),
-              ),
-              _statChip(
-                l10n.courtConvictionsChip('$_totalConvictions'),
-                _gold,
-              ),
-              if (serving)
-                _statChip(
-                  l10n.courtRemainingMinutes('$_remainingMinutesNow'),
-                  _gold,
-                ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildCurrentSentenceCard(AppLocalizations l10n) {
     if (_currentSentence == null) {
       return _buildPanel(
@@ -1141,126 +1044,77 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
-  Widget _buildBackgroundLayer() {
-    final isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
-    final preferredAsset = isPortrait
-        ? _backgroundAssetMobile
-        : _backgroundAsset;
-    final fallbackAsset = isPortrait
-        ? _backgroundAsset
-        : _backgroundAssetMobile;
-
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Image.asset(
-          preferredAsset,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              fallbackAsset,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0xFF283445), Color(0xFF161D27)],
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                const Color(0xFF0B111C).withValues(alpha: 0.28),
-                const Color(0xFF0B111C).withValues(alpha: 0.62),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'court',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final serving = _currentSentence != null;
 
-    return Scaffold(
-      appBar: widget.embedded
-          ? null
-          : AppBar(
-              title: Text(l10n.court),
-              backgroundColor: const Color(0xFF2E2A24),
-              foregroundColor: Colors.white,
-            ),
-      backgroundColor: widget.embedded ? Colors.transparent : null,
-      body: Stack(
-        children: [
-          _buildBackgroundLayer(),
-          RefreshIndicator(
-            color: _gold,
-            onRefresh: _loadCourtData,
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16),
-              children: [
-                _isLoading
-                        ? const Padding(
-                            padding: EdgeInsets.only(top: 120),
-                            child: Center(child: CircularProgressIndicator()),
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              if (_error != null)
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 12),
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: const Color(
-                                      0xFF601D1D,
-                                    ).withValues(alpha: 0.82),
-                                    border: Border.all(
-                                      color: const Color(
-                                        0xFFE58B8B,
-                                      ).withValues(alpha: 0.6),
-                                    ),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    _error!,
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                )
-                              else ...[
-                                _buildLoadWarning(l10n),
-                                _buildPageHero(l10n),
-                                _buildCurrentSentenceCard(l10n),
-                                _buildRecordCard(l10n),
-                              ],
-                            ],
-                          ),
-              ],
-            ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.court,
+      subtitle: l10n.courtHeroSubtitle,
+      imageAsset: 'assets/images/backgrounds/courtroom_background.png',
+      topicId: 'court',
+      fallbackIcon: Icons.gavel,
+      onRefresh: _loadCourtData,
+      chips: [
+        EmpireStatChip(
+          icon: serving ? Icons.gavel : Icons.check_circle,
+          label: serving ? l10n.courtActiveChip : l10n.courtFreeChip,
+        ),
+        EmpireStatChip(
+          icon: Icons.folder,
+          label: l10n.courtConvictionsChip('$_totalConvictions'),
+        ),
+        if (serving)
+          EmpireStatChip(
+            icon: Icons.timer,
+            label: l10n.courtRemainingMinutes('$_remainingMinutesNow'),
           ),
-        ],
+      ],
+      body: RefreshIndicator(
+        color: _gold,
+        onRefresh: _loadCourtData,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          children: [
+            if (_isLoading)
+              const Padding(
+                padding: EdgeInsets.only(top: 120),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else if (_error != null)
+              Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF601D1D).withValues(alpha: 0.82),
+                  border: Border.all(
+                    color: const Color(0xFFE58B8B).withValues(alpha: 0.6),
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              )
+            else ...[
+              _buildLoadWarning(l10n),
+              _buildCurrentSentenceCard(l10n),
+              _buildRecordCard(l10n),
+            ],
+          ],
+        ),
       ),
     );
   }

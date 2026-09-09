@@ -6,6 +6,7 @@ import '../providers/auth_provider.dart';
 import 'inventory_paper_doll_tab.dart';
 import 'loadouts_tab.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class InventoryScreen extends StatefulWidget {
   final int? initialPropertyId;
@@ -41,6 +42,7 @@ class _InventoryScreenState extends State<InventoryScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'inventory',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -48,46 +50,27 @@ class _InventoryScreenState extends State<InventoryScreen>
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
-    final tabs = TabBar(
-      controller: _tabController,
-      isScrollable: MediaQuery.sizeOf(context).width < 420,
-      indicatorColor: Colors.amber,
-      labelColor: const Color(0xFFD4AF37),
-      unselectedLabelColor: Colors.white70,
-      tabs: [
-        Tab(icon: const Icon(Icons.person), text: l10n.inventoryPaperDoll),
-        Tab(
-          icon: const Icon(Icons.dashboard_customize),
-          text: l10n.loadouts,
-        ),
-      ],
-    );
-    final body = TabBarView(
-      controller: _tabController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        InventoryPaperDollTab(initialPropertyId: widget.initialPropertyId),
-        LoadoutsTab(playerId: authProvider.currentPlayer?.id ?? 0),
-      ],
-    );
-
-    if (widget.embedded) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Material(color: const Color(0xFF1A1A1A), child: tabs),
-          Expanded(child: body),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.inventory,
+      imageAsset: 'assets/images/ui/materials_inventory.png',
+      topicId: 'inventory',
+      fallbackIcon: Icons.backpack,
+      tabBar: empireGoldTabBar(
+        controller: _tabController,
+        tabs: [
+          Tab(text: l10n.inventoryPaperDoll),
+          Tab(text: l10n.loadouts),
         ],
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.inventory),
-        backgroundColor: Colors.grey[900],
-        bottom: tabs,
       ),
-      body: body,
+      body: TabBarView(
+        controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          InventoryPaperDollTab(initialPropertyId: widget.initialPropertyId),
+          LoadoutsTab(playerId: authProvider.currentPlayer?.id ?? 0),
+        ],
+      ),
     );
   }
 }

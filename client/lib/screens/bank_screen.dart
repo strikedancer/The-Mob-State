@@ -11,9 +11,12 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class BankScreen extends StatefulWidget {
-  const BankScreen({super.key});
+  const BankScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<BankScreen> createState() => _BankScreenState();
@@ -763,6 +766,7 @@ class _BankScreenState extends State<BankScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'bank',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -777,14 +781,13 @@ class _BankScreenState extends State<BankScreen> {
         ? 300.0
         : 380.0;
 
+    late final Widget body;
     if (_isLoading) {
-      return const Center(
+      body = const Center(
         child: CircularProgressIndicator(color: Colors.amber),
       );
-    }
-
-    if (_error != null) {
-      return Center(
+    } else if (_error != null) {
+      body = Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -802,34 +805,14 @@ class _BankScreenState extends State<BankScreen> {
           ),
         ),
       );
-    }
-
-    return RefreshIndicator(
+    } else {
+      body = RefreshIndicator(
       onRefresh: _refreshAll,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  l10n.bank,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: _isSubmitting ? null : _refreshAll,
-                  color: Colors.amber,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
             Card(
               color: Colors.grey.shade900,
               child: Padding(
@@ -1683,6 +1666,17 @@ class _BankScreenState extends State<BankScreen> {
           ],
         ),
       ),
+    );
+    }
+
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.bank,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'bank',
+      fallbackIcon: Icons.account_balance,
+      onRefresh: _isSubmitting ? null : _refreshAll,
+      body: body,
     );
   }
 

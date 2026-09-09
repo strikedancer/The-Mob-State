@@ -11,6 +11,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class AviationScreen extends StatefulWidget {
   const AviationScreen({
@@ -761,49 +762,37 @@ class _AviationScreenState extends State<AviationScreen> {
   }
 
   Widget _buildHero(AppLocalizations l10n) {
-    final schoolReady = _aviationLevel >= 5;
     final certCount =
         (_hasFlightBasic ? 1 : 0) + (_hasFlightCommercial ? 1 : 0);
-    return _buildPanel(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: _gold.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: _gold.withValues(alpha: 0.45)),
-                ),
-                child: const Icon(Icons.flight, color: _gold, size: 24),
+          EmpirePageHero(
+            title: l10n.aviationHeroTitle,
+            subtitle: l10n.aviationHeroSubtitle,
+            imageAsset: 'assets/images/aircraft/citation_x.png',
+            topicId: 'aviation',
+            fallbackIcon: Icons.flight,
+            chips: [
+              EmpireStatChip(
+                icon: Icons.school,
+                label: l10n.aviationSchoolChip('$_aviationLevel'),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.aviationHeroTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.aviationHeroSubtitle,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.3,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
+              EmpireStatChip(
+                icon: Icons.verified,
+                label: l10n.aviationCertsChip('$certCount'),
+              ),
+              EmpireStatChip(
+                icon: Icons.badge,
+                label: _hasLicense
+                    ? _licenseLabel(_licenseType ?? 'basic', l10n)
+                    : l10n.aviationNoLicenseChip,
+              ),
+              EmpireStatChip(
+                icon: Icons.flight,
+                label: l10n.aviationOwnedCountChip('${_owned.length}'),
               ),
             ],
           ),
@@ -815,33 +804,6 @@ class _AviationScreenState extends State<AviationScreen> {
                   )
                 : l10n.aviationUiLicenseMissingBlurb,
             style: const TextStyle(color: Colors.white70, fontSize: 13),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _statChip(
-                l10n.aviationSchoolChip('$_aviationLevel'),
-                schoolReady ? const Color(0xFF72C48F) : const Color(0xFFE6B85C),
-              ),
-              _statChip(
-                l10n.aviationCertsChip('$certCount'),
-                certCount >= 2
-                    ? const Color(0xFF72C48F)
-                    : const Color(0xFFE6B85C),
-              ),
-              _statChip(
-                _hasLicense
-                    ? _licenseLabel(_licenseType ?? 'basic', l10n)
-                    : l10n.aviationNoLicenseChip,
-                _hasLicense ? const Color(0xFF72C48F) : const Color(0xFFE5967A),
-              ),
-              _statChip(
-                l10n.aviationOwnedCountChip('${_owned.length}'),
-                _gold,
-              ),
-            ],
           ),
         ],
       ),
@@ -1176,6 +1138,7 @@ class _AviationScreenState extends State<AviationScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'aviation',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }

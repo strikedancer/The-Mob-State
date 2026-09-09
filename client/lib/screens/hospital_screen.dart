@@ -9,9 +9,12 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class HospitalScreen extends StatefulWidget {
-  const HospitalScreen({super.key});
+  const HospitalScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<HospitalScreen> createState() => _HospitalScreenState();
@@ -322,30 +325,20 @@ class _HospitalScreenState extends State<HospitalScreen> {
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'hospital',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
-    const goldColor = Color(0xFFD4AF37);
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Icon(Icons.local_hospital, color: goldColor),
-            const SizedBox(width: 8),
-            Text(l10n.hospital),
-          ],
-        ),
-        backgroundColor: const Color(0xFF1A1A1A),
-        foregroundColor: Colors.white,
-        elevation: 0,
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Divider(height: 1, color: goldColor),
-        ),
-      ),
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.hospital,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'hospital',
+      fallbackIcon: Icons.local_hospital,
+      onRefresh: _refreshMedicalStatus,
       body: _loadError != null && _hospitalInfo == null
           ? MobileLoadError(message: _loadError!, onRetry: _loadHospitalInfo)
           : _hospitalInfo == null

@@ -15,9 +15,12 @@ import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/empire_page_hero.dart';
 
 class FriendsScreen extends StatefulWidget {
-  const FriendsScreen({super.key});
+  const FriendsScreen({super.key, this.embedded = false});
+
+  final bool embedded;
 
   @override
   State<FriendsScreen> createState() => _FriendsScreenState();
@@ -513,6 +516,7 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget build(BuildContext context) {
     return GamePageInfoHost(
       topicId: 'friends',
+      showOverlay: false,
       child: _buildPageInfoChild(context),
     );
   }
@@ -520,70 +524,29 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.friends),
-        actions: [
-          // Messages button with badge
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.chat_bubble_outline),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DirectMessagesScreen(),
-                    ),
-                  ).then((_) => _loadUnreadCount());
-                },
-              ),
-              if (_unreadMessages > 0)
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF1F8B24),
-                      shape: BoxShape.circle,
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 18,
-                      minHeight: 18,
-                    ),
-                    child: Text(
-                      _unreadMessages > 99 ? '99+' : '$_unreadMessages',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabs: [
-            Tab(text: l10n.friends),
-            Tab(text: l10n.friendsUiTabActivity),
-            Tab(
-              text: l10n.friendsUiTabRequests,
-              icon: _pendingRequests.isNotEmpty
-                  ? Badge(
-                      label: Text('${_pendingRequests.length}'),
-                      child: const Icon(Icons.notifications),
-                    )
-                  : null,
+    return EmpireHubScaffold(
+      embedded: widget.embedded,
+      title: l10n.friends,
+      imageAsset: 'assets/images/backgrounds/login_background.png',
+      topicId: 'friends',
+      fallbackIcon: Icons.people,
+      extraHeaderSlivers: [
+        SliverToBoxAdapter(child: _buildMessagesBar()),
+      ],
+      tabBar: empireGoldTabBar(
+        controller: _tabController,
+        tabs: [
+          Tab(text: l10n.friends),
+          Tab(text: l10n.friendsUiTabActivity),
+          Tab(
+            child: Badge(
+              isLabelVisible: _pendingRequests.isNotEmpty,
+              label: Text('${_pendingRequests.length}'),
+              child: Text(l10n.friendsUiTabRequests),
             ),
-            Tab(text: l10n.friendsUiTabSearch),
-          ],
-        ),
+          ),
+          Tab(text: l10n.friendsUiTabSearch),
+        ],
       ),
       body: TabBarView(
         controller: _tabController,
@@ -594,6 +557,58 @@ class _FriendsScreenState extends State<FriendsScreen>
           _buildRequestsTab(l10n),
           _buildSearchTab(l10n),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMessagesBar() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Stack(
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.chat_bubble_outline,
+                color: kEmpireGold,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DirectMessagesScreen(),
+                  ),
+                ).then((_) => _loadUnreadCount());
+              },
+            ),
+            if (_unreadMessages > 0)
+              Positioned(
+                right: 8,
+                top: 8,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF1F8B24),
+                    shape: BoxShape.circle,
+                  ),
+                  constraints: const BoxConstraints(
+                    minWidth: 18,
+                    minHeight: 18,
+                  ),
+                  child: Text(
+                    _unreadMessages > 99 ? '99+' : '$_unreadMessages',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
