@@ -52,4 +52,8 @@ class RankDisplay {
 
   static String withIcon(AppLocalizations l10n, int rank) =>
       '${icon(rank)} ${title(l10n, rank)}';
+
+  /// Title plus numeric rank, e.g. `Cadet (21)`.
+  static String titleWithNumber(AppLocalizations l10n, int rank) =>
+      '${title(l10n, rank)} ($rank)';
 }

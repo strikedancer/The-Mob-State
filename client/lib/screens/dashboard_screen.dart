@@ -1783,7 +1783,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: DashboardHudCell(
             label: l10n.rank,
             value:
-                '${RankDisplay.title(l10n, player.rank)}  ${(rankProgress * 100).toStringAsFixed(0)}%',
+                '${RankDisplay.titleWithNumber(l10n, player.rank)}  ${(rankProgress * 100).toStringAsFixed(0)}%',
             valueColor: Colors.amber.shade300,
             progress: rankProgress,
           ),
