@@ -665,22 +665,22 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                 ? 3
                                                 : (gridWidth >= 560 ? 2 : 1));
 
-                                      return GridView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: _inventory.length,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: columns,
-                                              mainAxisExtent: columns == 1
-                                                  ? 260
-                                                  : 280,
-                                              crossAxisSpacing: 12,
-                                              mainAxisSpacing: 12,
-                                            ),
-                                        itemBuilder: (context, index) {
-                                          final drug = _inventory[index];
+                                      final gap = 12.0;
+                                      final cardWidth = columns <= 1
+                                          ? gridWidth
+                                          : ((gridWidth - gap * (columns - 1)) /
+                                                  columns)
+                                              .floorToDouble();
+
+                                      return Wrap(
+                                        spacing: gap,
+                                        runSpacing: gap,
+                                        children: [
+                                          for (final drug in _inventory)
+                                            SizedBox(
+                                              width: cardWidth,
+                                              child: Builder(
+                                                builder: (context) {
                                           final currentPrice =
                                               (_getCurrentPrice(drug.drugType) *
                                                       drug.qualityMultiplier)
@@ -689,6 +689,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                               currentPrice * drug.quantity;
 
                                           return Card(
+                                            clipBehavior: Clip.none,
                                             color: Colors.black.withOpacity(
                                               0.58,
                                             ),
@@ -703,6 +704,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                             child: Padding(
                                               padding: const EdgeInsets.all(14),
                                               child: Column(
+                                                mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
@@ -843,7 +845,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                       ),
                                                     ),
                                                   ],
-                                                  const Spacer(),
+                                                  const SizedBox(height: 12),
                                                   Column(
                                                     children: [
                                                       Row(
@@ -1007,13 +1009,28 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () => _depositToCrew(drug),
+                                                    style: TextButton.styleFrom(
+                                                      visualDensity:
+                                                          VisualDensity.compact,
+                                                      tapTargetSize:
+                                                          MaterialTapTargetSize
+                                                              .shrinkWrap,
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 6,
+                                                      ),
+                                                    ),
                                                     child: Text(t.drugsCrewDepositAction),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           );
-                                        },
+                                                },
+                                              ),
+                                            ),
+                                        ],
                                       );
                                     },
                                   ),
