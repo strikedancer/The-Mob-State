@@ -1285,14 +1285,22 @@ class _GarageScreenState extends State<GarageScreen> {
 
     if (confirmed != true || !mounted) return;
 
-    final success = await provider.sellVehicle(vehicleId);
+    final soldFor = await provider.sellVehicle(vehicleId);
 
     if (!mounted) return;
 
-    if (success) {
+    if (soldFor != null) {
       showTopRightFromSnackBar(
         context,
-        SnackBar(content: Text(AppLocalizations.of(context)!.vehicleSold)),
+        SnackBar(
+          content: Text(
+            soldFor > 0
+                ? AppLocalizations.of(context)!.vehicleSoldFor(
+                    formatCurrency(soldFor),
+                  )
+                : AppLocalizations.of(context)!.vehicleSold,
+          ),
+        ),
       );
     } else {
       showTopRightFromSnackBar(

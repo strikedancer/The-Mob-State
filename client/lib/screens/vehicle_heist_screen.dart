@@ -506,6 +506,18 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     });
   }
 
+  void _hideStealResult() {
+    if (!mounted) return;
+    setState(() {
+      _showStealResult = false;
+      _stealResultSuccess = false;
+      _stealResultTitle = '';
+      _stealResultMessage = null;
+      _stealResultXp = 0;
+      _stealResultVehicle = null;
+    });
+  }
+
   Future<void> _refreshLaneCapacities() async {
     final authProvider = context.read<AuthProvider>();
     final country = authProvider.currentPlayer?.currentCountry ?? 'netherlands';
@@ -1965,15 +1977,22 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
             : l10n.vehicleHeistTitle,
         message: _stealResultMessage,
         xpGained: _stealResultXp,
-        onContinue: () {
-          if (!mounted) return;
-          setState(() {
-            _showStealResult = false;
-            _stealResultSuccess = false;
-            _stealResultTitle = '';
-            _stealResultMessage = null;
-            _stealResultXp = 0;
-            _stealResultVehicle = null;
+        onContinue: _hideStealResult,
+        onDisposeFeedback: (message, {required bool success}) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            if (!mounted) return;
+            if (success) {
+              await context.read<AuthProvider>().refreshPlayer();
+              await _refreshLaneCapacities();
+            }
+            if (!mounted) return;
+            showTopRightFromSnackBar(
+              context,
+              SnackBar(
+                content: Text(message),
+                backgroundColor: success ? Colors.green : Colors.red,
+              ),
+            );
           });
         },
       );

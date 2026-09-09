@@ -62,7 +62,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 
 ## Must Preserve
 
-- Clear success and failure feedback for the player.
+- Clear success and failure feedback for the player. After a successful theft the result popup must offer sell and scrap on the same card (with confirm), plus keep.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.

@@ -694,8 +694,8 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
-  /// Sell a vehicle
-  Future<bool> sellVehicle(int inventoryId) async {
+  /// Sell a vehicle. Returns the cash received, or null on failure.
+  Future<int?> sellVehicle(int inventoryId) async {
     try {
       final headers = await _getHeaders();
       final response = await http.post(
@@ -707,18 +707,19 @@ class VehicleProvider with ChangeNotifier {
 
       if (response.statusCode == 200 &&
           data['event'] == 'vehicles.stolen_sold') {
-        // Refresh inventory
         await fetchInventory();
-        return true;
+        final raw = data['params']?['sellPrice'];
+        if (raw is num) return raw.toInt();
+        return int.tryParse(raw?.toString() ?? '') ?? 0;
       } else {
         _error = _getErrorMessage(data['params']?['reason']?.toString());
         notifyListeners();
-        return false;
+        return null;
       }
     } catch (e) {
       _error = 'Er is een fout opgetreden';
       notifyListeners();
-      return false;
+      return null;
     }
   }
 
@@ -762,7 +763,15 @@ class VehicleProvider with ChangeNotifier {
         }
         // Refresh inventory only; avoid forcing TuneShop endpoint during Garage/Marina actions.
         await fetchInventory();
-        return {'partsGained': partsGained, 'partsType': partsType};
+        final rawScrap = data['params']?['scrapPrice'];
+        final scrapPrice = rawScrap is num
+            ? rawScrap.toInt()
+            : int.tryParse(rawScrap?.toString() ?? '') ?? 0;
+        return {
+          'partsGained': partsGained,
+          'partsType': partsType,
+          'scrapPrice': scrapPrice,
+        };
       } else {
         final reason = data['params']?['reason']?.toString();
         _error = _getErrorMessage(reason);

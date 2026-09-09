@@ -1235,15 +1235,21 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
     if (confirmed != true || !mounted) return;
 
-    final success = await provider.sellVehicle(vehicleId);
+    final soldFor = await provider.sellVehicle(vehicleId);
 
     if (!mounted) return;
 
-    if (success) {
+    if (soldFor != null) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.boatSold),
+          content: Text(
+            soldFor > 0
+                ? AppLocalizations.of(context)!.vehicleSoldFor(
+                    formatCurrency(soldFor),
+                  )
+                : AppLocalizations.of(context)!.boatSold,
+          ),
           backgroundColor: Colors.green,
         ),
       );

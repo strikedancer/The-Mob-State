@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/vehicle.dart';
+import '../providers/auth_provider.dart';
+import '../providers/vehicle_provider.dart';
+import '../utils/formatters.dart';
+import '../utils/top_right_notification.dart';
 import 'overlay_image.dart';
 import 'responsive_modal.dart';
 
@@ -80,6 +85,7 @@ class VehicleTheftResultOverlay extends StatelessWidget {
     this.message,
     this.xpGained = 0,
     this.embedded = false,
+    this.onDisposeFeedback,
   });
 
   final bool isSuccess;
@@ -89,6 +95,10 @@ class VehicleTheftResultOverlay extends StatelessWidget {
   final int xpGained;
   final bool embedded;
   final VoidCallback onContinue;
+
+  /// Called before [onContinue] after a sell/scrap attempt so the parent can
+  /// show a toast on a still-mounted context.
+  final void Function(String message, {required bool success})? onDisposeFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -461,7 +471,12 @@ class VehicleTheftResultOverlay extends StatelessWidget {
             },
           ),
           const SizedBox(height: 18),
-          _continueButton(l10n, _gold, compactWidth),
+          _StolenVehicleQuickActions(
+            vehicle: vehicle,
+            compactWidth: compactWidth,
+            onKeep: onContinue,
+            onDisposeFeedback: onDisposeFeedback,
+          ),
         ],
       ),
     );
@@ -490,6 +505,249 @@ class VehicleTheftResultOverlay extends StatelessWidget {
   }
 }
 
+class _StolenVehicleQuickActions extends StatefulWidget {
+  const _StolenVehicleQuickActions({
+    required this.vehicle,
+    required this.compactWidth,
+    required this.onKeep,
+    this.onDisposeFeedback,
+  });
+
+  final VehicleInventoryItem vehicle;
+  final bool compactWidth;
+  final VoidCallback onKeep;
+  final void Function(String message, {required bool success})? onDisposeFeedback;
+
+  @override
+  State<_StolenVehicleQuickActions> createState() =>
+      _StolenVehicleQuickActionsState();
+}
+
+class _StolenVehicleQuickActionsState extends State<_StolenVehicleQuickActions> {
+  bool _busy = false;
+
+  Future<bool> _confirm({
+    required String title,
+    required String body,
+    required String confirmLabel,
+    required Color confirmColor,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(title),
+        content: Text(body),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            style: ElevatedButton.styleFrom(backgroundColor: confirmColor),
+            child: Text(confirmLabel),
+          ),
+        ],
+      ),
+    );
+    return confirmed == true;
+  }
+
+  void _finish({required String message, required bool success}) {
+    if (success) {
+      widget.onDisposeFeedback?.call(message, success: true);
+      widget.onKeep();
+      return;
+    }
+    if (!mounted) return;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
+
+  Future<void> _sell() async {
+    if (_busy || widget.vehicle.isBusy) return;
+    final l10n = AppLocalizations.of(context)!;
+    final isBoat = widget.vehicle.vehicleType == 'boat';
+    final confirmed = await _confirm(
+      title: l10n.confirmAction,
+      body: isBoat ? l10n.confirmSellBoat : l10n.confirmSellVehicle,
+      confirmLabel: l10n.sell,
+      confirmColor: Colors.green,
+    );
+    if (!confirmed || !mounted) return;
+
+    setState(() => _busy = true);
+    final provider = context.read<VehicleProvider>();
+    final soldFor = await provider.sellVehicle(widget.vehicle.id);
+    if (!mounted) return;
+
+    if (soldFor != null) {
+      try {
+        await context.read<AuthProvider>().refreshPlayer();
+      } catch (_) {}
+      if (!mounted) return;
+      setState(() => _busy = false);
+      _finish(
+        message: soldFor > 0
+            ? l10n.vehicleSoldFor(formatCurrency(soldFor))
+            : (isBoat ? l10n.boatSold : l10n.vehicleSold),
+        success: true,
+      );
+      return;
+    }
+
+    setState(() => _busy = false);
+    _finish(
+      message: provider.error ?? l10n.saleFailed,
+      success: false,
+    );
+  }
+
+  Future<void> _scrap() async {
+    if (_busy || widget.vehicle.isBusy) return;
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await _confirm(
+      title: l10n.confirmAction,
+      body: l10n.vehicleGarageScrapConfirm,
+      confirmLabel: l10n.vehicleGarageScrapAction,
+      confirmColor: Colors.red,
+    );
+    if (!confirmed || !mounted) return;
+
+    setState(() => _busy = true);
+    final provider = context.read<VehicleProvider>();
+    final result = await provider.scrapVehicle(widget.vehicle.id);
+    if (!mounted) return;
+
+    if (result != null) {
+      try {
+        await context.read<AuthProvider>().refreshPlayer();
+      } catch (_) {}
+      if (!mounted) return;
+      final gained = result['partsGained'] as int? ?? 0;
+      final partsType =
+          (result['partsType'] as String? ?? widget.vehicle.vehicleType ?? 'car')
+              .toLowerCase();
+      final typeLabel = switch (partsType) {
+        'motorcycle' => l10n.vehicleGaragePartsTypeMotorcycle,
+        'boat' => l10n.vehicleGaragePartsTypeBoat,
+        _ => l10n.vehicleGaragePartsTypeCar,
+      };
+      final scrapPrice = result['scrapPrice'] as int? ?? 0;
+      setState(() => _busy = false);
+      _finish(
+        message: scrapPrice > 0
+            ? l10n.vehicleGarageScrapSuccessCash(
+                formatCurrency(scrapPrice),
+                gained.toString(),
+                typeLabel,
+              )
+            : l10n.vehicleGarageScrapSuccess(gained.toString(), typeLabel),
+        success: true,
+      );
+      return;
+    }
+
+    setState(() => _busy = false);
+    _finish(
+      message: provider.error ?? l10n.vehicleGarageScrapFailed,
+      success: false,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final sellValue = widget.vehicle.getMarketValue();
+    final sellLabel = sellValue > 0
+        ? l10n.vehicleHeistSellFor(formatCurrency(sellValue))
+        : l10n.sell;
+    final buttonHeight = widget.compactWidth ? 48.0 : 54.0;
+
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: _busy ? null : _sell,
+                icon: _busy
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.sell, size: 18),
+                label: Text(
+                  sellLabel,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2E7D32),
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: const Color(0xFF2E7D32)
+                      .withValues(alpha: 0.4),
+                  elevation: 0,
+                  minimumSize: Size.fromHeight(buttonHeight),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: _busy ? null : _scrap,
+                icon: const Icon(Icons.recycling, size: 18),
+                label: Text(
+                  l10n.vehicleGarageScrapAction,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFC62828),
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: const Color(0xFFC62828)
+                      .withValues(alpha: 0.4),
+                  elevation: 0,
+                  minimumSize: Size.fromHeight(buttonHeight),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: _busy ? null : widget.onKeep,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: _gold,
+              side: const BorderSide(color: _gold, width: 1.2),
+              minimumSize: Size.fromHeight(buttonHeight),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              l10n.vehicleHeistKeepVehicle,
+              style: const TextStyle(fontWeight: FontWeight.w800),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 /// Legacy dialog wrapper (garage / marina) — same success content with image + specs.
 Future<void> showStolenVehicleDialog(
   BuildContext context,
@@ -497,6 +755,8 @@ Future<void> showStolenVehicleDialog(
   int xpGained = 0,
   String? message,
 }) async {
+  var feedbackMessage = '';
+  var feedbackSuccess = false;
   await showDialog<void>(
     context: context,
     barrierDismissible: false,
@@ -511,8 +771,20 @@ Future<void> showStolenVehicleDialog(
           xpGained: xpGained,
           message: message,
           onContinue: () => Navigator.of(dialogContext).pop(),
+          onDisposeFeedback: (message, {required bool success}) {
+            feedbackMessage = message;
+            feedbackSuccess = success;
+          },
         ),
       );
     },
+  );
+  if (!context.mounted || feedbackMessage.isEmpty) return;
+  showTopRightFromSnackBar(
+    context,
+    SnackBar(
+      content: Text(feedbackMessage),
+      backgroundColor: feedbackSuccess ? Colors.green : Colors.red,
+    ),
   );
 }

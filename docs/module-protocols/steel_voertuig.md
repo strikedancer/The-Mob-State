@@ -19,7 +19,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 
 - In **embedded** mode (`VehicleHeistScreen` op het dashboard) staat `JailOverlay` op de **shell**, niet in de geneste garage/marina (die gebruiken `suppressJailOverlay`), omdat de overlay anders onder slivers/headers blijft hangen.
 - Na **stelen via de lane/ops-kaart** (`_runTileSteal`) moet de client **direct** `GET /player/jail-status` volgen (en bij arrest + lege response desnoods `jailTime` uit de steal-response in seconden mappen), zodat de overlay **onmiddellijk** verschijnt. Alleen periodiek pollen is onvoldoende.
-- Na **succesvolle diefstal** via lane/ops-kaart **én** via garage/marina toont de UI dezelfde gedeelde popup (`client/lib/widgets/stolen_vehicle_dialog.dart` → `showStolenVehicleDialog`), niet alleen een top-right toast. Snapshot `lastStolenVehicle` / XP vóór inventory-refresh.
+- Na **succesvolle diefstal** via lane/ops-kaart **én** via garage/marina toont de UI dezelfde gedeelde popup (`client/lib/widgets/stolen_vehicle_dialog.dart` → `VehicleTheftResultOverlay` / `showStolenVehicleDialog`), niet alleen een top-right toast. Snapshot `lastStolenVehicle` / XP vóór inventory-refresh. Bij succes staan **Verkopen** en **Slopen** direct in die popup (met bevestiging); **Houden** sluit zonder te verkopen. Zelfde `POST /vehicles/sell-stolen/:id` en `POST /vehicles/scrap/:id` als de voertuigkaarten.
 
 ## Boot-diefstal (balans)
 
