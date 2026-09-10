@@ -48,7 +48,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Paper-doll property grids use catalog capacity by upgrade level. A new house is **10** slots, not 100.
 - The two paper-doll weapon slots are the only weapons Crimes considers. Dropping a weapon from backpack or house storage onto a slot wears it. Taking it off (to backpack or house) unequips that slot. Moving a weapon only between backpack and storage does not change worn slots.
 - The second-weapon slot uses `POST/DELETE /weapons/secondary-weapon` the same way. Crimes compare both worn slots at attempt time and pick the best match; wearing a weapon on the second slot is enough for it to be considered. The same `weaponId` cannot occupy both body slots (moving it switches slot). Withdrawing a weapon from a house onto a body slot may send `equip: true` so a full backpack does not block wearing it.
-- Backpack upgrade visibility stays progression-clean: after buying a better backpack, lower or equal backpack tiers should no longer be shown as selectable shop options; only real upgrades remain visible.
+- Backpack upgrade visibility stays progression-clean: after buying a better backpack, lower or equal backpack tiers should no longer be shown as selectable shop options; only real upgrades remain visible. Higher catalog tiers stay listed even when rank or VIP is not met yet; buy stays locked until those gates pass.
 - Catalog in `backend/content/backpacks.json`: small +5, medium +10, large +20, military +35, VIP tactical +50 (VIP, rank 25), **travel suitcase +70** (rank 30, not VIP-only). Capacity = 5 base + backpack slots. One owned bag at a time; suitcase is the current top upgrade.
 
 ## i18n and Messaging

@@ -361,32 +361,19 @@ export async function getAvailableBackpacks(playerId: number): Promise<{
     return { owned: null, available: [], canUpgradeTo: [] };
   }
 
-  const isVip = player.isVip || false;
-
   const owned = playerBackpack?.backpack || null;
   const ownedSlots = owned?.slots || 0;
 
-  // Filter backpacks player can buy based on rank/VIP and ownership
-  const purchasable = allBackpacks.filter(bp => {
-    // Check rank
-    if (player.rank < bp.requiredRank) return false;
-    
-    // Check VIP
-    if (bp.vipOnly && !isVip) return false;
-    
-    // Don't show if already owned
-    if (owned && bp.id === owned.id) return false;
-    
-    return true;
-  });
+  // Show the full ladder, including rank/VIP-locked tiers. Buy still enforces those gates.
+  const catalogForShop = allBackpacks.filter(bp => !(owned && bp.id === owned.id));
 
   // Only show true upgrades when player already owns a backpack.
   const canUpgradeTo = owned
-    ? purchasable.filter(bp => bp.slots > ownedSlots)
+    ? catalogForShop.filter(bp => bp.slots > ownedSlots)
     : [];
 
   // Hide lower/equal tiers once a backpack is owned.
-  const available = owned ? [] : purchasable;
+  const available = owned ? [] : catalogForShop;
 
   return { owned, available, canUpgradeTo };
 }
