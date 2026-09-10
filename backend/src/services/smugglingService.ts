@@ -7,6 +7,16 @@ import { playerService } from './playerService';
 import { gameEventService } from './gameEventService';
 import { scoreTradeSmuggleClaim } from './gameEventTradeContribution';
 import { mapTravelCountryToTerritoryCode } from './territoryService';
+import { CARRIED_TRADE_LOCATION } from '../utils/propertyStash';
+import {
+  assertBackpackFits,
+  creditCarriedTrade,
+  debitBackpackTrade,
+  extraSlotsForTradeAdd,
+  getBackpackTradeQuantity,
+  listBackpackTradeLots,
+  refreshInventorySlotUsage,
+} from './carriedInventory';
 
 export type SmugglingCategory = 'drug' | 'trade' | 'vehicle' | 'weapon' | 'ammo';
 export type SmugglingChannel = 'package' | 'courier' | 'container' | 'owned';
@@ -914,7 +924,7 @@ class SmugglingService {
 
     const [drugs, tradeGoods, vehicles, weapons, ammo] = await Promise.all([
       prisma.drugInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: [{ drugType: 'asc' }, { quality: 'asc' }] }),
-      prisma.inventory.findMany({ where: { playerId, country: player.currentCountry, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
+      listBackpackTradeLots(playerId, player.currentCountry),
       prisma.vehicleInventory.findMany({ where: { playerId, currentLocation: player.currentCountry, transportStatus: null, marketListing: false, showroomPropertyId: null }, orderBy: { stolenAt: 'desc' } }),
       prisma.weaponInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: { weaponId: 'asc' } }),
       prisma.ammoInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: { ammoType: 'asc' } }),
@@ -1126,24 +1136,15 @@ class SmugglingService {
             });
           }
         } else {
-          const inv = await tx.inventory.findUnique({
-            where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } },
-          });
-          if (!inv || inv.quantity < quantity) return { ok: false, message: 'Niet genoeg handelswaar in dit land' } as const;
+          const available = await getBackpackTradeQuantity(playerId, itemKey, player.currentCountry);
+          if (available < quantity) return { ok: false, message: 'Niet genoeg handelswaar in je rugzak' } as const;
 
+          const taken = await debitBackpackTrade(tx, playerId, player.currentCountry, itemKey, quantity);
           metadata = {
             ...metadata,
-            purchasePrice: inv.purchasePrice ?? 0,
-            condition: inv.condition ?? 100,
+            purchasePrice: taken.purchasePrice,
+            condition: taken.condition,
           };
-          if (inv.quantity === quantity) {
-            await tx.inventory.delete({ where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } } });
-          } else {
-            await tx.inventory.update({
-              where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } },
-              data: { quantity: inv.quantity - quantity },
-            });
-          }
         }
 
         itemLabel = itemKey;
@@ -1500,11 +1501,7 @@ class SmugglingService {
         });
         availableQuantity = inv?.quantity ?? 0;
       } else {
-        const inv = await prisma.inventory.findUnique({
-          where: { playerId_goodType_country: { playerId, goodType: itemKey, country: player.currentCountry } },
-          select: { quantity: true },
-        });
-        availableQuantity = inv?.quantity ?? 0;
+        availableQuantity = await getBackpackTradeQuantity(playerId, itemKey, player.currentCountry);
       }
     } else if (category === 'weapon') {
       if (networkScope === 'crew') {
@@ -1589,7 +1586,7 @@ class SmugglingService {
           where: {
             playerId,
             goodType: itemKey,
-            country: { not: player.currentCountry },
+            country: { notIn: [player.currentCountry, CARRIED_TRADE_LOCATION] },
             quantity: { gt: 0 },
           },
           select: { country: true, quantity: true },
@@ -1873,42 +1870,18 @@ class SmugglingService {
             100,
             Math.max(0, Math.floor(Number(metadata.condition ?? 100)))
           );
-          const claimCountry = shipment.destination_country;
-          const existing = await tx.inventory.findUnique({
-            where: { playerId_goodType_country: { playerId, goodType: shipment.item_key, country: claimCountry } },
-          });
-          if (existing) {
-            const newQty = existing.quantity + shipment.quantity;
-            await tx.inventory.update({
-              where: { playerId_goodType_country: { playerId, goodType: shipment.item_key, country: claimCountry } },
-              data: {
-                quantity: newQty,
-                purchasePrice: blendInventoryAverage(
-                  existing.quantity,
-                  existing.purchasePrice ?? 0,
-                  shipment.quantity,
-                  arrivingPrice
-                ),
-                condition: blendInventoryAverage(
-                  existing.quantity,
-                  existing.condition ?? 100,
-                  shipment.quantity,
-                  arrivingCondition
-                ),
-              },
-            });
-          } else {
-            await tx.inventory.create({
-              data: {
-                playerId,
-                goodType: shipment.item_key,
-                country: claimCountry,
-                quantity: shipment.quantity,
-                purchasePrice: arrivingPrice,
-                condition: arrivingCondition,
-              },
-            });
-          }
+          await assertBackpackFits(
+            playerId,
+            await extraSlotsForTradeAdd(playerId, shipment.quantity),
+          );
+          await creditCarriedTrade(
+            tx,
+            playerId,
+            shipment.item_key,
+            shipment.quantity,
+            arrivingPrice,
+            arrivingCondition,
+          );
         } else if (shipment.category === 'weapon' && scope === 'crew') {
           const existingCrewWeapon = await tx.crewWeaponInventory.findUnique({
             where: { crewId_weaponId: { crewId: crewId!, weaponId: shipment.item_key } },
@@ -2021,6 +1994,7 @@ class SmugglingService {
       }
     });
 
+    await refreshInventorySlotUsage(playerId);
     claimXp = Math.min(60, claimXp);
     let awardedXp = 0;
     if (claimXp > 0) {

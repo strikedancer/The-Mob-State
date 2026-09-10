@@ -447,9 +447,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
       _premiumFocusProductKey =
           section == _WebSection.premium ? focusProductKey : null;
-      if (section != _WebSection.inventory) {
-        _inventoryInitialPropertyId = null;
-      }
+      _inventoryInitialPropertyId = null;
     });
     _syncOnNavigate();
   }

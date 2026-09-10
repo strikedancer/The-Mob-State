@@ -11900,5 +11900,6 @@
       }
     }
   },
-  "inventoryUnplacedHint": "I materiali acquistati o raccolti, i farmaci e i beni commerciali restano qui finché non li immagazzini in una casa o in un magazzino. Ritirali qui di nuovo per venderli quando il prezzo sarà migliore. I beni commerciali non possono entrare nello zaino."
+  "inventoryUnplacedHint": "I materiali acquistati o raccolti, i farmaci e i beni commerciali restano qui finché non li immagazzini in una casa o in un magazzino. Ritirali qui di nuovo per venderli quando il prezzo sarà migliore. I beni commerciali non possono entrare nello zaino.",
+  "inventoryStashAtPropertyHint": "Your backpack holds what you just bought or collected. Go to Properties, open a house, apartment or warehouse, then use Open storage to stash or take goods. Selling, smuggling and flying with a full backpack is risky: customs and police can seize what you carry."
 }

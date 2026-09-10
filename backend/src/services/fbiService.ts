@@ -9,6 +9,7 @@ import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { propertyStorageService } from './propertyStorageService';
 import { showroomService } from './showroomService';
+import { seizeCarriedOnArrest } from './carriedInventory';
 
 async function runFbiSideEffect(
   label: string,
@@ -212,6 +213,18 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
         jailTime,
       },
       true
+    );
+  });
+
+  void runFbiSideEffect('backpack seize', async () => {
+    const result = await seizeCarriedOnArrest(playerId);
+    if (result.seizedUnits <= 0) return;
+    await activityService.logActivity(
+      playerId,
+      'ARREST',
+      'FBI seized part of the goods in your backpack',
+      result,
+      true,
     );
   });
 

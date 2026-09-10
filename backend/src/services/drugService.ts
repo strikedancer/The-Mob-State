@@ -17,6 +17,11 @@ import {
 } from './productionMaterialStock';
 import { getPlayerCarryingCapacity } from './backpackService';
 import toolService from './toolService';
+import {
+  assertBackpackFits,
+  extraSlotsForDrugAdd,
+  refreshInventorySlotUsage,
+} from './carriedInventory';
 import { worldEventService } from './worldEventService';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
@@ -131,7 +136,7 @@ class DrugService {
     return this.materials.get(materialId);
   }
 
-  // Buy production materials into the current-country depot (not backpack).
+  // Buy production materials into the backpack.
   async buyMaterial(playerId: number, materialId: string, quantity: number): Promise<{ success: boolean; message: string; country?: string }> {
     const material = this.materials.get(materialId);
     if (!material) {
@@ -157,18 +162,36 @@ class DrugService {
     }
 
     const country = player.currentCountry || 'netherlands';
+    const carried = await prisma.productionMaterial.findUnique({
+      where: {
+        playerId_country_materialId: {
+          playerId,
+          country: CARRIED_MATERIAL_LOCATION,
+          materialId,
+        },
+      },
+    });
+    const extra =
+      materialSlotsForQuantity((carried?.quantity ?? 0) + quantity) -
+      materialSlotsForQuantity(carried?.quantity ?? 0);
+    try {
+      await assertBackpackFits(playerId, extra);
+    } catch {
+      return { success: false, message: 'Rugzak vol / Backpack full' };
+    }
 
     await prisma.$transaction(async (tx) => {
       await tx.player.update({
         where: { id: playerId },
         data: { money: { decrement: totalCost } },
       });
-      await addMaterialStock(tx, playerId, country, materialId, quantity);
+      await addMaterialStock(tx, playerId, CARRIED_MATERIAL_LOCATION, materialId, quantity);
     });
+    await refreshInventorySlotUsage(playerId);
 
     return {
       success: true,
-      message: `${quantity}x ${material.name} gekocht voor depot in ${country} (€${totalCost.toLocaleString()})`,
+      message: `${quantity}x ${material.name} in je rugzak (€${totalCost.toLocaleString()})`,
       country,
     };
   }
@@ -253,6 +276,32 @@ class DrugService {
       };
     }
 
+    let extraSlots = 0;
+    for (const line of purchaseLines) {
+      const carried = await prisma.productionMaterial.findUnique({
+        where: {
+          playerId_country_materialId: {
+            playerId,
+            country: CARRIED_MATERIAL_LOCATION,
+            materialId: line.materialId,
+          },
+        },
+      });
+      extraSlots +=
+        materialSlotsForQuantity((carried?.quantity ?? 0) + line.quantity) -
+        materialSlotsForQuantity(carried?.quantity ?? 0);
+    }
+    try {
+      await assertBackpackFits(playerId, extraSlots);
+    } catch {
+      return {
+        success: false,
+        message: 'Rugzak vol / Backpack full',
+        totalCost,
+        purchased: purchaseLines,
+      };
+    }
+
     await prisma.$transaction(async (tx) => {
       await tx.player.update({
         where: { id: playerId },
@@ -262,13 +311,14 @@ class DrugService {
       });
 
       for (const line of purchaseLines) {
-        await addMaterialStock(tx, playerId, country, line.materialId, line.quantity);
+        await addMaterialStock(tx, playerId, CARRIED_MATERIAL_LOCATION, line.materialId, line.quantity);
       }
     });
+    await refreshInventorySlotUsage(playerId);
 
     return {
       success: true,
-      message: `VIP snelle aankoop voltooid / VIP quick purchase completed for ${drug.displayName}: €${totalCost.toLocaleString()} (depot ${country})`,
+      message: `VIP snelle aankoop voltooid / VIP quick purchase completed for ${drug.displayName}: €${totalCost.toLocaleString()} (rugzak)`,
       totalCost,
       purchased: purchaseLines,
     };
@@ -1140,6 +1190,20 @@ class DrugService {
 
     const ownProduction = Boolean(production.facilityId);
 
+    try {
+      await assertBackpackFits(
+        playerId,
+        await extraSlotsForDrugAdd(
+          playerId,
+          production.drugType,
+          quality,
+          production.quantity,
+        ),
+      );
+    } catch {
+      return { success: false, message: 'Rugzak vol / Backpack full' };
+    }
+
     // Atomic collect: never mark as collected unless inventory update succeeds.
     await prisma.$transaction(async (tx) => {
       await tx.drugProduction.update({
@@ -1159,6 +1223,7 @@ class DrugService {
         ownProduction
       );
     });
+    await refreshInventorySlotUsage(playerId);
 
     const drug = this.drugs.get(production.drugType);
     const qualityDef = drugFacilityService.getQualityTier(quality as any);
@@ -2438,6 +2503,15 @@ class DrugService {
       return { success: false, message: 'Ongeldige keuze' };
     }
 
+    try {
+      await assertBackpackFits(
+        playerId,
+        await extraSlotsForDrugAdd(playerId, production.drugType, quality, granted),
+      );
+    } catch {
+      return { success: false, message: 'Rugzak vol / Backpack full' };
+    }
+
     await prisma.$transaction(async (tx) => {
       await tx.drugProduction.update({
         where: { id: productionId },
@@ -2457,6 +2531,7 @@ class DrugService {
       );
     });
 
+    await refreshInventorySlotUsage(playerId);
     await this.updateHeat(playerId, -15);
     const drug = this.drugs.get(production.drugType);
     const qualityDef = drugFacilityService.getQualityTier(quality as any);

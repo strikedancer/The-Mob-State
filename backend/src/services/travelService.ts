@@ -14,11 +14,16 @@ import countries from '../../content/countries.json';
 import travelRoutes from '../../content/travelRoutes.json';
 import {
   CARRIED_MATERIAL_LOCATION,
-  getCarriedMaterialSlots,
   materialTravelArrestBonus,
   materialTravelConfiscationChance,
 } from './productionMaterialStock';
 import toolService from './toolService';
+import {
+  confiscateCarriedDrugs,
+  confiscateCarriedTrade,
+  getRiskyBackpackSlots,
+  refreshInventorySlotUsage,
+} from './carriedInventory';
 
 export interface Country {
   id: string;
@@ -358,7 +363,7 @@ async function confiscateCarriedMaterials(
   });
   if (carried.length === 0) return [];
 
-  const slots = await getCarriedMaterialSlots(playerId);
+  const slots = await getRiskyBackpackSlots(playerId);
   const chance = materialTravelConfiscationChance(slots, wantedLevel);
   const confiscated: Array<{ materialId: string; quantity: number }> = [];
 
@@ -389,11 +394,11 @@ async function confiscateCarriedMaterials(
   return confiscated;
 }
 
-function getTravelArrestChance(wantedLevel: number, materialSlots = 0): number {
+export function getTravelArrestChance(wantedLevel: number, riskySlots = 0): number {
   const chance =
     BASE_ARREST_CHANCE +
     wantedLevel * WANTED_LEVEL_ARREST_BONUS +
-    materialTravelArrestBonus(materialSlots);
+    materialTravelArrestBonus(riskySlots);
   return Math.min(chance, MAX_ARREST_CHANCE);
 }
 
@@ -432,6 +437,33 @@ async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Prom
     'Border Police',
     'TRAVEL'
   );
+}
+
+export async function runCustomsInspection(
+  playerId: number,
+  wantedLevel: number,
+): Promise<{
+  confiscatedMaterials: Array<{ materialId: string; quantity: number }>;
+  confiscatedDrugs: Array<{ drugType: string; quality: string; quantity: number }>;
+  confiscatedGoods: Array<{ goodType: string; quantity: number }>;
+}> {
+  const slots = await getRiskyBackpackSlots(playerId);
+  const chance = materialTravelConfiscationChance(slots, wantedLevel);
+  const confiscatedMaterials = await confiscateCarriedMaterials(playerId, wantedLevel);
+  const confiscatedDrugs = await confiscateCarriedDrugs(playerId, chance);
+  const confiscatedGoods = await confiscateCarriedTrade(playerId, chance);
+  if (confiscatedDrugs.length > 0 || confiscatedGoods.length > 0) {
+    await refreshInventorySlotUsage(playerId);
+  }
+  return { confiscatedMaterials, confiscatedDrugs, confiscatedGoods };
+}
+
+export async function wipeGoodsAndJailOnTravel(
+  playerId: number,
+  jailTimeMinutes: number,
+): Promise<void> {
+  await clearAllPlayerGoods(playerId);
+  await sendPlayerToJail(playerId, jailTimeMinutes);
 }
 
 /**
@@ -512,9 +544,9 @@ export async function startJourney(playerId: number, destinationCountryId: strin
   // Clear selected crime vehicle when player moves to different country
   await clearPlayerCrimeVehicle(playerId);
 
-  // Check for arrest on first leg (hybrid chance; backpack materials raise risk)
-  const materialSlots = await getCarriedMaterialSlots(playerId);
-  const arrestChance = getTravelArrestChance(player.wantedLevel, materialSlots);
+  // Check for arrest on first leg (backpack goods raise risk)
+  const riskySlots = await getRiskyBackpackSlots(playerId);
+  const arrestChance = getTravelArrestChance(player.wantedLevel, riskySlots);
   if (Math.random() < arrestChance) {
     await clearAllPlayerGoods(playerId);
     await sendPlayerToJail(playerId, TRAVEL_JAIL_TIME_MINUTES);
@@ -533,10 +565,8 @@ export async function startJourney(playerId: number, destinationCountryId: strin
     throw error;
   }
 
-  const confiscatedMaterials = await confiscateCarriedMaterials(
-    playerId,
-    player.wantedLevel,
-  );
+  const { confiscatedMaterials, confiscatedDrugs, confiscatedGoods } =
+    await runCustomsInspection(playerId, player.wantedLevel);
 
   // Log activity
   const routeDescription = route.path.slice(1).map((id) => getCountryById(id)?.name || id).join(' → ');
@@ -649,13 +679,9 @@ export async function travelToCountry(playerId: number, countryId: string): Prom
   // Clear selected crime vehicle when player moves to different country
   await clearPlayerCrimeVehicle(playerId);
 
-  // Trade warehouses stay in-country; commercial travel does not move or seize them.
-  const confiscatedGoods: Array<{ goodType: string; quantity: number }> = [];
+  const { confiscatedMaterials, confiscatedDrugs, confiscatedGoods } =
+    await runCustomsInspection(playerId, player.wantedLevel);
   const damagedGoods: Array<{ goodType: string; damagePercent: number }> = [];
-  const confiscatedMaterials = await confiscateCarriedMaterials(
-    playerId,
-    player.wantedLevel,
-  );
 
   // Create world event
   await worldEventService.createEvent(
@@ -822,9 +848,9 @@ export async function continueJourney(playerId: number): Promise<TravelResult> {
   // Clear selected crime vehicle when player moves to different country
   await clearPlayerCrimeVehicle(playerId);
 
-  // Check for arrest on this leg (hybrid chance; backpack materials raise risk)
-  const materialSlots = await getCarriedMaterialSlots(playerId);
-  const arrestChance = getTravelArrestChance(player.wantedLevel, materialSlots);
+  // Check for arrest on this leg (backpack goods raise risk)
+  const riskySlots = await getRiskyBackpackSlots(playerId);
+  const arrestChance = getTravelArrestChance(player.wantedLevel, riskySlots);
   if (Math.random() < arrestChance) {
     await clearAllPlayerGoods(playerId);
     await sendPlayerToJail(playerId, TRAVEL_JAIL_TIME_MINUTES);
@@ -843,13 +869,9 @@ export async function continueJourney(playerId: number): Promise<TravelResult> {
     throw error;
   }
 
-  // Trade warehouses stay in-country; commercial travel does not move or seize them.
-  const confiscatedGoods: Array<{ goodType: string; quantity: number }> = [];
+  const { confiscatedMaterials, confiscatedDrugs, confiscatedGoods } =
+    await runCustomsInspection(playerId, player.wantedLevel);
   const damagedGoods: Array<{ goodType: string; damagePercent: number }> = [];
-  const confiscatedMaterials = await confiscateCarriedMaterials(
-    playerId,
-    player.wantedLevel,
-  );
 
   // Determine if journey is complete
   const isJourneyComplete = nextLegIndex === route.length - 1;

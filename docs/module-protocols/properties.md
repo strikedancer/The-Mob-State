@@ -12,7 +12,7 @@ Scope-afbakening:
 - **Sell:** `POST /properties/:id/sell` keert 70% van `purchasePrice` contant uit. Vereist hetzelfde land, lege property-storage (en lege nachtclubvoorraad / lege showroomcollectie). Direct, geen cooldown.
 - Residential storage (house/apartment/mansion/penthouse/safehouse): `weapons, cash, ammo, armor, materials, drugs, trade`. Warehouse: `tools, weapons, cash, ammo, armor, materials, drugs, trade`. Nightclub venue drugs stay unprefixed on the nightclub module; finished player drugs in a house use `drug:` keys.
 - **Warehouse arrest search:** bij politie/FBI-arrestatie wordt het magazijn in het huidige land doorzocht (~40% van tools/wapens/ammo/vesten/cash/materialen/drugs/handelswaren). Huizen worden niet doorzocht. Bankcash blijft beschermd.
-- **Open storage** on a house or warehouse opens Inventory with that property selected. Access still requires the same country (`accessibleInCurrentCountry` / `WRONG_COUNTRY`).
+- **Open storage** on a house or warehouse opens Inventory with **that** property selected. The Inventory menu itself cannot stash into a house. Access still requires the same country (`accessibleInCurrentCountry` / `WRONG_COUNTRY`).
 
 ## Primary Frontend Entry
 - client/lib/screens/property_screen.dart

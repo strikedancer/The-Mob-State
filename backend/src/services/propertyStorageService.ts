@@ -27,6 +27,15 @@ import {
   materialSlotsForQuantity,
   removeMaterialStock,
 } from './productionMaterialStock';
+import {
+  assertBackpackFits,
+  creditCarriedTrade,
+  debitBackpackTrade,
+  extraSlotsForDrugAdd,
+  extraSlotsForTradeAdd,
+  getBackpackTradeQuantity,
+  refreshInventorySlotUsage,
+} from './carriedInventory';
 
 type StorageCategory =
   | 'tools'
@@ -782,6 +791,7 @@ class PropertyStorageService {
       }
       await this.bumpStorageKey(tx, propertyId, key, quantity);
     });
+    await refreshInventorySlotUsage(playerId);
   }
 
   async withdrawDrug(
@@ -807,6 +817,11 @@ class PropertyStorageService {
       throw new Error('INSUFFICIENT_DRUGS');
     }
 
+    await assertBackpackFits(
+      playerId,
+      await extraSlotsForDrugAdd(playerId, drugType, quality, quantity),
+    );
+
     await prisma.$transaction(async (tx) => {
       await this.bumpStorageKey(tx, propertyId, key, -quantity);
       const existing = await tx.drugInventory.findUnique({
@@ -823,6 +838,7 @@ class PropertyStorageService {
         });
       }
     });
+    await refreshInventorySlotUsage(playerId);
   }
 
   async depositTrade(
@@ -839,16 +855,12 @@ class PropertyStorageService {
       throw new Error('UNKNOWN_GOOD');
     }
 
-    const owned = await prisma.inventory.findUnique({
-      where: {
-        playerId_goodType_country: {
-          playerId,
-          goodType,
-          country: player.currentCountry,
-        },
-      },
-    });
-    if (!owned || owned.quantity < quantity) {
+    const ownedQty = await getBackpackTradeQuantity(
+      playerId,
+      goodType,
+      player.currentCountry,
+    );
+    if (ownedQty < quantity) {
       throw new Error('INSUFFICIENT_GOODS');
     }
 
@@ -875,24 +887,24 @@ class PropertyStorageService {
         },
       },
     });
-    const oldPx = pxRow?.quantity ?? owned.purchasePrice ?? 0;
-    const nextQty = oldQty + quantity;
-    const averagePrice = Math.floor(
-      (oldQty * oldPx + quantity * (owned.purchasePrice ?? 0)) / Math.max(1, nextQty),
-    );
+    const oldPx = pxRow?.quantity ?? 0;
 
     await prisma.$transaction(async (tx) => {
-      if (owned.quantity === quantity) {
-        await tx.inventory.delete({ where: { id: owned.id } });
-      } else {
-        await tx.inventory.update({
-          where: { id: owned.id },
-          data: { quantity: owned.quantity - quantity },
-        });
-      }
+      const taken = await debitBackpackTrade(
+        tx,
+        playerId,
+        player.currentCountry,
+        goodType,
+        quantity,
+      );
+      const nextQty = oldQty + quantity;
+      const averagePrice = Math.floor(
+        (oldQty * oldPx + quantity * taken.purchasePrice) / Math.max(1, nextQty),
+      );
       await this.bumpStorageKey(tx, propertyId, key, quantity);
       await this.setTradeAveragePrice(tx, propertyId, goodType, nextQty, averagePrice);
     });
+    await refreshInventorySlotUsage(playerId);
   }
 
   async withdrawTrade(
@@ -925,40 +937,14 @@ class PropertyStorageService {
     const stashPx = pxRow?.quantity ?? 0;
     const remainingQty = stored.quantity - quantity;
 
+    await assertBackpackFits(playerId, await extraSlotsForTradeAdd(playerId, quantity));
+
     await prisma.$transaction(async (tx) => {
       await this.bumpStorageKey(tx, propertyId, key, -quantity);
-      const existing = await tx.inventory.findUnique({
-        where: {
-          playerId_goodType_country: {
-            playerId,
-            goodType,
-            country: player.currentCountry,
-          },
-        },
-      });
-      if (existing) {
-        const nextQty = existing.quantity + quantity;
-        const averagePrice = Math.floor(
-          (existing.quantity * (existing.purchasePrice ?? 0) + quantity * stashPx) /
-            Math.max(1, nextQty),
-        );
-        await tx.inventory.update({
-          where: { id: existing.id },
-          data: { quantity: nextQty, purchasePrice: averagePrice },
-        });
-      } else {
-        await tx.inventory.create({
-          data: {
-            playerId,
-            goodType,
-            country: player.currentCountry,
-            quantity,
-            purchasePrice: stashPx,
-          },
-        });
-      }
+      await creditCarriedTrade(tx, playerId, goodType, quantity, stashPx);
       await this.setTradeAveragePrice(tx, propertyId, goodType, remainingQty, stashPx);
     });
+    await refreshInventorySlotUsage(playerId);
   }
 
   private async setTradeAveragePrice(

@@ -14,6 +14,15 @@ import tradableGoods from '../../content/tradableGoods.json';
 import countries from '../../content/countries.json';
 import { getPlayerCountry } from './travelService';
 import { propertyStorageService } from './propertyStorageService';
+import {
+  assertBackpackFits,
+  creditCarriedTrade,
+  debitBackpackTrade,
+  extraSlotsForTradeAdd,
+  getBackpackTradeQuantity,
+  refreshInventorySlotUsage,
+} from './carriedInventory';
+import { CARRIED_TRADE_LOCATION } from '../utils/propertyStash';
 
 export interface TradableGood {
   id: string;
@@ -26,7 +35,7 @@ export interface TradableGood {
   damageChancePerTrip?: number;
   confiscationChance?: number;
   priceVolatility?: number;
-  /** Countries where this good can be purchased. Sell is only allowed from the same-country warehouse. */
+  /** Countries where this good can be purchased. Sell is from the backpack in the same country. */
   availableInCountries?: string[];
   /** UI grouping: starter | bulk | luxury | dangerous */
   category?: string;
@@ -171,23 +180,25 @@ function mapInventoryLot(item: {
 }
 
 /**
- * Get player's warehouse quantity for a good in a country (defaults to current country).
+ * Backpack quantity (carried + leftover current-country lots).
  */
 export async function getInventoryItem(
   playerId: number,
   goodType: string,
   country?: string
 ): Promise<number> {
-  const lotCountry = country ?? (await getPlayerCountry(playerId));
-  const item = await prisma.inventory.findUnique({
-    where: tradeLotWhere(playerId, goodType, lotCountry),
-  });
-
-  return item?.quantity || 0;
+  if (country && country !== CARRIED_TRADE_LOCATION) {
+    const item = await prisma.inventory.findUnique({
+      where: tradeLotWhere(playerId, goodType, country),
+    });
+    return item?.quantity || 0;
+  }
+  const currentCountry = await getPlayerCountry(playerId);
+  return getBackpackTradeQuantity(playerId, goodType, currentCountry);
 }
 
 /**
- * Current-country stock plus read-only lots stored in other countries.
+ * Backpack lots (carried + leftover in this country). Other countries stay stranded until you travel there.
  */
 export async function getFullInventory(playerId: number) {
   const currentCountry = await getPlayerCountry(playerId);
@@ -195,7 +206,13 @@ export async function getFullInventory(playerId: number) {
     where: { playerId, quantity: { gt: 0 } },
   });
 
-  const mapped = inventory.map(mapInventoryLot);
+  const mapped = inventory.map((item) => {
+    const lot = mapInventoryLot(item);
+    if (lot.country === CARRIED_TRADE_LOCATION) {
+      return { ...lot, country: currentCountry };
+    }
+    return lot;
+  });
   return {
     currentCountry,
     inventory: mapped.filter((item) => item.country === currentCountry),
@@ -250,52 +267,32 @@ export async function buyGoods(
     throw new Error('INSUFFICIENT_MONEY');
   }
 
-  // Check inventory limits (per-country warehouse)
-  const currentQuantity = await getInventoryItem(playerId, goodType, currentCountry);
+  // Check inventory limits (backpack + property stock in this country)
+  const currentQuantity = await getBackpackTradeQuantity(playerId, goodType, currentCountry);
   const storedQuantity = await propertyStorageService.getTradeQuantityInCountry(
     playerId,
     currentCountry,
     goodType,
   );
-  const newQuantity = currentQuantity + storedQuantity + quantity;
 
-  if (newQuantity > good.maxInventory) {
+  if (currentQuantity + storedQuantity + quantity > good.maxInventory) {
     throw new Error('INVENTORY_FULL');
   }
 
-  // Get existing inventory to calculate weighted average purchase price
-  const existingInventory = await prisma.inventory.findUnique({
-    where: tradeLotWhere(playerId, goodType, currentCountry),
-  });
+  await assertBackpackFits(playerId, await extraSlotsForTradeAdd(playerId, quantity));
 
-  // Calculate weighted average purchase price
-  const oldValue = (existingInventory?.purchasePrice || 0) * currentQuantity;
-  const newValue = pricePerUnit * quantity;
-  const averagePurchasePrice = Math.floor((oldValue + newValue) / newQuantity);
-
-  // Execute transaction
-  const [updatedPlayer, updatedInventory] = await prisma.$transaction([
-    // Deduct money
-    prisma.player.update({
+  const [updatedPlayer] = await prisma.$transaction(async (tx) => {
+    const playerRow = await tx.player.update({
       where: { id: playerId },
       data: { money: player.money - totalCost },
-    }),
-    // Update inventory
-    prisma.inventory.upsert({
-      where: tradeLotWhere(playerId, goodType, currentCountry),
-      create: {
-        playerId,
-        goodType,
-        country: currentCountry,
-        quantity,
-        purchasePrice: pricePerUnit,
-      },
-      update: {
-        quantity: newQuantity,
-        purchasePrice: averagePurchasePrice,
-      },
-    }),
-  ]);
+    });
+    await creditCarriedTrade(tx, playerId, goodType, quantity, pricePerUnit);
+    return [playerRow];
+  });
+
+  await refreshInventorySlotUsage(playerId);
+
+  const backpackQty = await getBackpackTradeQuantity(playerId, goodType, currentCountry);
 
   // Create world event
   await worldEventService.createEvent(
@@ -320,7 +317,7 @@ export async function buyGoods(
     pricePerUnit,
     totalCost,
     newBalance: updatedPlayer.money,
-    newQuantity: updatedInventory.quantity,
+    newQuantity: backpackQty,
   };
 }
 
@@ -347,18 +344,14 @@ export async function sellGoods(
   }
 
   const currentCountry = await getPlayerCountry(playerId);
+  const available = await getBackpackTradeQuantity(playerId, goodType, currentCountry);
 
-  // Sell only from the warehouse in the player's current country.
-  const inventoryItem = await prisma.inventory.findUnique({
-    where: tradeLotWhere(playerId, goodType, currentCountry),
-  });
-
-  if (!inventoryItem || inventoryItem.quantity < quantity) {
+  if (available < quantity) {
     const storedElsewhere = await prisma.inventory.findFirst({
       where: {
         playerId,
         goodType,
-        country: { not: currentCountry },
+        country: { notIn: [currentCountry, CARRIED_TRADE_LOCATION] },
         quantity: { gt: 0 },
       },
     });
@@ -368,32 +361,45 @@ export async function sellGoods(
     throw new Error('INSUFFICIENT_INVENTORY');
   }
 
-  // Check for spoilage (flowers)
-  if (good.spoilageHours && inventoryItem.purchasedAt) {
-    const now = new Date();
-    const hoursSincePurchase = (now.getTime() - new Date(inventoryItem.purchasedAt).getTime()) / (1000 * 60 * 60);
+  const [carriedLot, leftoverLot] = await Promise.all([
+    prisma.inventory.findUnique({
+      where: tradeLotWhere(playerId, goodType, CARRIED_TRADE_LOCATION),
+    }),
+    prisma.inventory.findUnique({
+      where: tradeLotWhere(playerId, goodType, currentCountry),
+    }),
+  ]);
+  const spoilageSource = carriedLot?.purchasedAt
+    ? carriedLot
+    : leftoverLot;
+  if (good.spoilageHours && spoilageSource?.purchasedAt) {
+    const hoursSincePurchase =
+      (Date.now() - new Date(spoilageSource.purchasedAt).getTime()) / (1000 * 60 * 60);
     if (hoursSincePurchase > good.spoilageHours) {
       throw new Error('GOODS_SPOILED');
     }
   }
 
-  // Calculate price in current country
-  // Sell price is 90% of buy price (10% spread)
   const buyPrice = calculatePrice(goodType, currentCountry);
   let pricePerUnit = Math.floor(buyPrice * 0.9);
 
-  // Apply condition damage (electronics)
-  const condition = inventoryItem.condition || 100;
-  if (condition < 100) {
-    pricePerUnit = Math.floor(pricePerUnit * (condition / 100));
+  const blendedCondition = Math.min(
+    carriedLot?.condition ?? 100,
+    leftoverLot?.condition ?? 100,
+  );
+  if (blendedCondition < 100) {
+    pricePerUnit = Math.floor(pricePerUnit * (blendedCondition / 100));
   }
 
   const totalEarnings = pricePerUnit * quantity;
-  const unitCost = inventoryItem.purchasePrice || 0;
+  const unitCost = Math.floor(
+    (((carriedLot?.quantity || 0) * (carriedLot?.purchasePrice || 0)) +
+      ((leftoverLot?.quantity || 0) * (leftoverLot?.purchasePrice || 0))) /
+      Math.max(1, available),
+  );
   const realizedProfit = (pricePerUnit - unitCost) * quantity;
   const xpGained = calculateTradeSellXp(totalEarnings, realizedProfit);
 
-  // Get player
   const player = await prisma.player.findUnique({
     where: { id: playerId },
   });
@@ -402,27 +408,17 @@ export async function sellGoods(
     throw new Error('PLAYER_NOT_FOUND');
   }
 
-  const newQuantity = inventoryItem.quantity - quantity;
-
-  // Execute transaction
-  const [updatedPlayer] = await prisma.$transaction([
-    // Add money
-    prisma.player.update({
+  const updatedPlayer = await prisma.$transaction(async (tx) => {
+    const playerRow = await tx.player.update({
       where: { id: playerId },
       data: { money: player.money + totalEarnings },
-    }),
-    // Update inventory (or delete if 0)
-    newQuantity === 0
-      ? prisma.inventory.delete({
-          where: tradeLotWhere(playerId, goodType, currentCountry),
-        })
-      : prisma.inventory.update({
-          where: tradeLotWhere(playerId, goodType, currentCountry),
-          data: {
-            quantity: newQuantity,
-          },
-        }),
-  ]);
+    });
+    await debitBackpackTrade(tx, playerId, currentCountry, goodType, quantity);
+    return playerRow;
+  });
+
+  await refreshInventorySlotUsage(playerId);
+  const newQuantity = await getBackpackTradeQuantity(playerId, goodType, currentCountry);
 
   let awardedXp = 0;
   try {

@@ -1,6 +1,11 @@
 import prisma from '../lib/prisma';
 import { getCrewStorageCapacity } from './crewBuildingService';
 import { vehicleService } from './vehicleService';
+import {
+  debitBackpackTrade,
+  getBackpackTradeQuantity,
+  refreshInventorySlotUsage,
+} from './carriedInventory';
 
 async function playerCountry(playerId: number): Promise<string> {
   const player = await prisma.player.findUnique({
@@ -491,22 +496,13 @@ export async function depositCrewTradeGoods(
   }
 
   const country = await playerCountry(playerId);
-  const playerItem = await prisma.inventory.findUnique({
-    where: { playerId_goodType_country: { playerId, goodType, country } },
-  });
-  if (!playerItem || playerItem.quantity < quantity) {
+  const available = await getBackpackTradeQuantity(playerId, goodType, country);
+  if (available < quantity) {
     throw new Error('INSUFFICIENT_TRADE_GOODS');
   }
 
   await prisma.$transaction(async (tx) => {
-    if (playerItem.quantity === quantity) {
-      await tx.inventory.delete({ where: { id: playerItem.id } });
-    } else {
-      await tx.inventory.update({
-        where: { id: playerItem.id },
-        data: { quantity: playerItem.quantity - quantity },
-      });
-    }
+    const taken = await debitBackpackTrade(tx, playerId, country, goodType, quantity);
 
     const existing = await tx.crewTradeInventory.findUnique({
       where: { crewId_goodType: { crewId, goodType } },
@@ -514,10 +510,10 @@ export async function depositCrewTradeGoods(
     if (existing) {
       const totalQty = existing.quantity + quantity;
       const weightedPrice = Math.floor(
-        (existing.averagePurchasePrice * existing.quantity + playerItem.purchasePrice * quantity) / totalQty
+        (existing.averagePurchasePrice * existing.quantity + taken.purchasePrice * quantity) / totalQty
       );
       const weightedCondition = Math.floor(
-        (existing.averageCondition * existing.quantity + playerItem.condition * quantity) / totalQty
+        (existing.averageCondition * existing.quantity + taken.condition * quantity) / totalQty
       );
       await tx.crewTradeInventory.update({
         where: { id: existing.id },
@@ -533,12 +529,13 @@ export async function depositCrewTradeGoods(
           crewId,
           goodType,
           quantity,
-          averagePurchasePrice: playerItem.purchasePrice,
-          averageCondition: playerItem.condition,
+          averagePurchasePrice: taken.purchasePrice,
+          averageCondition: taken.condition,
         },
       });
     }
   });
+  await refreshInventorySlotUsage(playerId);
 }
 
 /** Deduct crew trade inventory when starting a mission that requires contraband cargo. */

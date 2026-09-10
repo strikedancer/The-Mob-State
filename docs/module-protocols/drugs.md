@@ -11,14 +11,14 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ## Production materials: country depot + backpack (2026-08)
 
 ### Player rules
-1. **Buy** → stock goes into the **depot of the player's current country** (not the backpack).
-2. **Production** in country X consumes **depot(X) first**, then **house/warehouse stock in X**, then **backpack** (`_carried_`).
-3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` for the current country only.
-4. **Backpack capacity**: materials use slots (`ceil(qty / 5)` per stack) together with tools and unequipped weapons (`toolService.calculateInventoryUsage`). Worn crime/secondary weapons do not use backpack slots. Upgrade backpacks to carry more.
-5. **Travel**:
-   - Country depots are **safe** (not wiped on arrest).
-   - Backpack materials raise **arrest chance** and can be **partially confiscated** per leg.
-   - Full arrest still wipes trade inventory + finished drugs + **carried materials only**.
+1. **Buy** → stock goes into the **backpack** (`country = _carried_`). Needs free backpack slots (`ceil(qty / 5)` per stack).
+2. **Production** in country X consumes **depot(X) first** (legacy leftover), then **house/warehouse stock in X**, then **backpack** (`_carried_`).
+3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` still exists for leftover depot lots.
+4. **Backpack capacity**: materials, finished drugs and trade goods share slots with tools and unequipped weapons (`toolService.calculateInventoryUsage`). Worn crime/secondary weapons do not use backpack slots. Upgrade backpacks to carry more.
+5. **Travel / fly / arrest**:
+   - Country depots and house stock are **safe** on travel.
+   - Backpack materials, drugs and trade raise **arrest chance** and can be **partially confiscated** per leg or hangar flight.
+   - Full travel arrest wipes carried goods. Police/FBI arrest seizes ~40% of the backpack. Warehouse search in the arrest country is separate.
 
 ### Data model
 - `production_materials.country`: country id **or** sentinel `_carried_` for backpack.
@@ -27,9 +27,9 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 
 ### API
 - `GET /drugs/my-materials` → `{ materials, depot, stored, storedElsewhere, carried, currentCountry, backpack }` — `depot` is **current country only**; `stored` is materials sitting in a house/warehouse in this country; other-country lots stay in `materials` / `storedElsewhere`.
-- `POST /drugs/materials/buy/:materialId` → depot only
+- `POST /drugs/materials/buy/:materialId` → backpack (`_carried_`)
 - `POST /drugs/materials/transfer` `{ materialId, quantity, direction }`
-- VIP `buy-missing` also credits the **current-country depot**
+- VIP `buy-missing` also credits the **backpack**
 - `GET /drugs/productions/:productionId/speedup-quote` → credit cost to finish an in-progress batch early
 - `POST /drugs/productions/:productionId/speedup` → spend premium credits; sets `finishesAt = now` (player still collects normally)
 - `GET /drug-facilities` → owned facilities + `catalog` (price, rank, owned, next-upgrade education)

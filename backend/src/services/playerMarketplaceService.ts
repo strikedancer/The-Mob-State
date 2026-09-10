@@ -21,6 +21,13 @@ import { drugFacilityService } from './drugFacilityService';
 import type { DrugQuality } from './drugFacilityService';
 import { getGoodById } from './tradeService';
 import { propertyStorageService } from './propertyStorageService';
+import { CARRIED_TRADE_LOCATION } from '../utils/propertyStash';
+import {
+  assertBackpackFits,
+  creditCarriedTrade,
+  extraSlotsForTradeAdd,
+  getBackpackTradeQuantity,
+} from './carriedInventory';
 import {
   creditEventItem,
   debitEventItem,
@@ -709,12 +716,15 @@ export const playerMarketplaceService = {
     if (rejected) return rejected;
 
     const countryCode = await getSellerCountry(playerId);
-    if (!countryCode || row.country !== countryCode) {
+    if (
+      !countryCode ||
+      (row.country !== countryCode && row.country !== CARRIED_TRADE_LOCATION)
+    ) {
       throw new Error('TRADE_GOOD_NOT_IN_COUNTRY');
     }
     const meta: TradeGoodLotMeta = {
       goodType: row.goodType,
-      country: row.country,
+      country: CARRIED_TRADE_LOCATION,
       condition: row.condition ?? 100,
       unitPurchasePrice: row.purchasePrice ?? 0,
       purchasedAt: row.purchasedAt ? new Date(row.purchasedAt).toISOString() : null,
@@ -1007,57 +1017,34 @@ export const playerMarketplaceService = {
         where: { id: buyerId },
         select: { currentCountry: true },
       });
-      const lotCountry = buyer?.currentCountry?.trim() || 'netherlands';
-      const existing = await tx.inventory.findUnique({
-        where: {
-          playerId_goodType_country: {
-            playerId: buyerId,
-            goodType: meta.goodType,
-            country: lotCountry,
-          },
-        },
-      });
-      const currentQuantity = existing?.quantity ?? 0;
+      const buyerCountry = buyer?.currentCountry?.trim() || 'netherlands';
+      const currentQuantity = await getBackpackTradeQuantity(
+        buyerId,
+        meta.goodType,
+        buyerCountry,
+      );
       const storedQuantity = await propertyStorageService.getTradeQuantityInCountry(
         buyerId,
-        lotCountry,
+        buyerCountry,
         meta.goodType,
       );
       if (currentQuantity + storedQuantity + lotQuantity > good.maxInventory) {
         throw new Error('TRADE_CAPACITY');
       }
+      await assertBackpackFits(buyerId, await extraSlotsForTradeAdd(buyerId, lotQuantity));
 
       await claimListing(tx, listing.id, buyerId);
       const newMoney = await settlePayment(tx, buyerId, listing.sellerId, listing.price);
 
-      if (existing) {
-        const totalQuantity = currentQuantity + lotQuantity;
-        const blendedPrice = Math.floor(
-          (currentQuantity * (existing.purchasePrice ?? 0) + lotQuantity * unitPaid) /
-            totalQuantity,
-        );
-        await tx.inventory.update({
-          where: { id: existing.id },
-          data: {
-            quantity: totalQuantity,
-            purchasePrice: blendedPrice,
-            condition: Math.min(existing.condition ?? 100, meta.condition ?? 100),
-          },
-        });
-      } else {
-        await tx.inventory.create({
-          data: {
-            playerId: buyerId,
-            goodType: meta.goodType,
-            country: lotCountry,
-            quantity: lotQuantity,
-            purchasePrice: unitPaid,
-            condition: meta.condition ?? 100,
-            // Carry the original timestamp so spoilage cannot be reset by relisting.
-            ...(meta.purchasedAt ? { purchasedAt: new Date(meta.purchasedAt) } : {}),
-          },
-        });
-      }
+      await creditCarriedTrade(
+        tx,
+        buyerId,
+        meta.goodType,
+        lotQuantity,
+        unitPaid,
+        meta.condition ?? 100,
+        meta.purchasedAt ? new Date(meta.purchasedAt) : null,
+      );
 
       return { newMoney, purchasePrice: listing.price };
     });
@@ -1124,8 +1111,7 @@ async function restoreEscrow(tx: TransactionClient, listing: ListingRow): Promis
     case MARKET_LISTING_KIND_TRADE_GOOD_LOT: {
       const meta = parseMeta<TradeGoodLotMeta>(listing.meta);
       if (!meta) return;
-      const returnCountry =
-        meta.country?.trim() || listing.countryCode?.trim() || 'netherlands';
+      const returnCountry = CARRIED_TRADE_LOCATION;
       const existing = await tx.inventory.findUnique({
         where: {
           playerId_goodType_country: {

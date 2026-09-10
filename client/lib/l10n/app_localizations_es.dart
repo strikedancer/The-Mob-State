@@ -7982,6 +7982,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los materiales, las drogas y los bienes comerciales comprados o recolectados permanecen aquí hasta que los almacena en una casa o almacén. Retíralos aquí nuevamente para venderlos cuando el precio sea mejor. Los bienes comerciales no pueden ir en su mochila.';
 
   @override
+  String get inventoryStashAtPropertyHint =>
+      'Your backpack holds what you just bought or collected. Go to Properties, open a house, apartment or warehouse, then use Open storage to stash or take goods. Selling, smuggling and flying with a full backpack is risky: customs and police can seize what you carry.';
+
+  @override
   String get inventoryOtherCountryStashHint =>
       'El almacenamiento y los materiales en otros países se quedan allí. Viaja a ese país para utilizarlos.';
 

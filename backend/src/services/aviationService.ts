@@ -10,6 +10,15 @@ import { worldEventService } from './worldEventService';
 import { educationService } from './educationService';
 import aircraft from '../../content/aircraft.json';
 import config from '../config';
+import {
+  getRiskyBackpackSlots,
+} from './carriedInventory';
+import {
+  getTravelArrestChance,
+  runCustomsInspection,
+  wipeGoodsAndJailOnTravel,
+} from './travelService';
+import { clearPlayerCrimeVehicle } from './vehicleToolService';
 
 export interface AircraftDefinition {
   id: string;
@@ -710,6 +719,38 @@ export async function flyToDestination(
     throw new Error('FLIGHT_CAP_REACHED');
   }
 
+  const TRAVEL_JAIL_TIME_MINUTES = 30;
+  const riskySlots = await getRiskyBackpackSlots(playerId);
+  const arrestChance = getTravelArrestChance(player.wantedLevel, riskySlots);
+  if (Math.random() < arrestChance) {
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: {
+          currentCountry: destinationCountry,
+          currentTravelLeg: 0,
+          travelingTo: null,
+          travelRoute: null,
+          travelStartedAt: null,
+        },
+      }),
+      prisma.aircraft.update({
+        where: { id: aircraftId },
+        data: {
+          fuel: playerAircraft.fuel - fuelNeeded,
+          totalFlights: playerAircraft.totalFlights + 1,
+        },
+      }),
+    ]);
+    await clearPlayerCrimeVehicle(playerId);
+    await wipeGoodsAndJailOnTravel(playerId, TRAVEL_JAIL_TIME_MINUTES);
+    const error: any = new Error('JAILED_IN_TRANSIT');
+    error.jailTime = TRAVEL_JAIL_TIME_MINUTES;
+    throw error;
+  }
+
+  await runCustomsInspection(playerId, player.wantedLevel);
+
   // Execute flight
   const [, updatedAircraft] = await prisma.$transaction([
     prisma.player.update({
@@ -730,6 +771,8 @@ export async function flyToDestination(
       },
     }),
   ]);
+
+  await clearPlayerCrimeVehicle(playerId);
 
   // Create public world event (all flights are public)
   await worldEventService.createEvent(

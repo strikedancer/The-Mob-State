@@ -4,6 +4,7 @@ import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { propertyStorageService } from './propertyStorageService';
 import { showroomService } from './showroomService';
+import { seizeCarriedOnArrest } from './carriedInventory';
 
 async function searchWarehousesAfterArrest(playerId: number): Promise<void> {
   await runPoliceSideEffect('warehouse search', async () => {
@@ -360,6 +361,18 @@ export async function setJailReleaseClock(
     data: { jailRelease },
   });
   void searchWarehousesAfterArrest(playerId);
+  void seizeCarriedOnArrest(playerId).then((result) => {
+    if (result.seizedUnits <= 0) return;
+    void activityService.logActivity(
+      playerId,
+      'ARREST',
+      'Police seized part of the goods in your backpack',
+      result,
+      true,
+    );
+  }).catch((error) => {
+    console.error('[Police Service] backpack seize failed:', error);
+  });
   return jailRelease;
 }
 
@@ -404,6 +417,19 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
   });
 
   void searchWarehousesAfterArrest(playerId);
+
+  void seizeCarriedOnArrest(playerId).then((result) => {
+    if (result.seizedUnits <= 0) return;
+    void activityService.logActivity(
+      playerId,
+      'ARREST',
+      'Police seized part of the goods in your backpack',
+      result,
+      true,
+    );
+  }).catch((error) => {
+    console.error('[Police Service] backpack seize failed:', error);
+  });
 
   void notificationService.sendArrestAwaitingHelpNotifications(
     playerId,

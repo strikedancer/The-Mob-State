@@ -47,10 +47,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   List<InventoryGridItem> _backpack = [];
   List<InventoryGridItem> _contextItems = [];
   List<StorageInfo> _properties = [];
-  PlayerMaterialsSnapshot _materials = PlayerMaterialsSnapshot.empty();
-  List<DrugInventory> _holdingDrugs = [];
-  List<Map<String, dynamic>> _holdingTrade = [];
-  String _contextKey = 'depot';
+  String _contextKey = 'none';
   int? _stashPropertyId;
   InventoryGridItem? _selected;
   String? _crimeWeaponId;
@@ -282,6 +279,30 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
             imagePath: m.getImagePath(),
           ),
         ),
+        ...drugInventory.where((d) => d.quantity > 0).map(
+          (d) => InventoryGridItem(
+            kind: InventoryItemKind.drug,
+            id: d.drugType,
+            name: '${d.drugName} (${d.quality})',
+            quantity: d.quantity,
+            zone: InventoryZone.backpack,
+            imagePath: d.getImagePath(),
+            quality: d.quality,
+          ),
+        ),
+        ...tradeLots.where((t) => ((t['quantity'] as num?)?.toInt() ?? 0) > 0).map(
+          (t) {
+            final goodType = '${t['goodType'] ?? t['id'] ?? ''}';
+            return InventoryGridItem(
+              kind: InventoryItemKind.trade,
+              id: goodType,
+              name: '${t['goodName'] ?? t['name'] ?? goodType}',
+              quantity: (t['quantity'] as num?)?.toInt() ?? 0,
+              zone: InventoryZone.backpack,
+              imagePath: 'assets/images/trade_goods/cards/$goodType.png',
+            );
+          },
+        ),
       ].where((item) => item.quantity > 0).toList();
 
       _equippedWeapon = _weaponFromInventory(
@@ -295,9 +316,6 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         InventoryZone.equippedSecondary,
       );
 
-      _materials = materials;
-      _holdingDrugs = drugInventory;
-      _holdingTrade = tradeLots;
       _properties = overview['success'] == true
           ? (overview['storage'] as List<StorageInfo>)
           : <StorageInfo>[];
@@ -307,7 +325,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           (p) => p.propertyId == _selectedPropertyId,
         );
         if (!exists) {
-          _contextKey = 'depot';
+          _contextKey = 'none';
         } else {
           _stashPropertyId = _selectedPropertyId;
         }
@@ -323,44 +341,9 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     setState(() => _loading = false);
   }
 
-  Future<void> _loadContextItems(PlayerMaterialsSnapshot materials) async {
-    if (_contextKey == 'depot') {
-      _contextItems = [
-        ...materials.depot.where((m) => m.quantity > 0).map(
-          (m) => InventoryGridItem(
-            kind: InventoryItemKind.material,
-            id: m.materialId,
-            name: m.name,
-            quantity: m.quantity,
-            zone: InventoryZone.depot,
-            imagePath: m.getImagePath(),
-          ),
-        ),
-        ..._holdingDrugs.where((d) => d.quantity > 0).map(
-          (d) => InventoryGridItem(
-            kind: InventoryItemKind.drug,
-            id: d.drugType,
-            name: '${d.drugName} (${d.quality})',
-            quantity: d.quantity,
-            zone: InventoryZone.depot,
-            imagePath: d.getImagePath(),
-            quality: d.quality,
-          ),
-        ),
-        ..._holdingTrade.where((t) => ((t['quantity'] as num?)?.toInt() ?? 0) > 0).map(
-          (t) {
-            final goodType = '${t['goodType'] ?? t['id'] ?? ''}';
-            return InventoryGridItem(
-              kind: InventoryItemKind.trade,
-              id: goodType,
-              name: '${t['goodName'] ?? t['name'] ?? goodType}',
-              quantity: (t['quantity'] as num?)?.toInt() ?? 0,
-              zone: InventoryZone.depot,
-              imagePath: 'assets/images/trade_goods/cards/$goodType.png',
-            );
-          },
-        ),
-      ];
+  Future<void> _loadContextItems(PlayerMaterialsSnapshot _) async {
+    if (!_contextKey.startsWith('property_')) {
+      _contextItems = [];
       return;
     }
 
@@ -900,7 +883,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           target: 'depot',
         );
       } else if (source.kind == InventoryItemKind.drug &&
-          source.zone == InventoryZone.depot &&
+          source.zone == InventoryZone.backpack &&
           target == InventoryZone.property &&
           propertyId != null) {
         result = await _inventory.depositDrugToProperty(
@@ -911,7 +894,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         );
       } else if (source.kind == InventoryItemKind.drug &&
           source.zone == InventoryZone.property &&
-          target == InventoryZone.depot &&
+          target == InventoryZone.backpack &&
           propertyId != null) {
         result = await _inventory.withdrawDrugFromHouse(
           propertyId: propertyId,
@@ -920,7 +903,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           quantity: quantity,
         );
       } else if (source.kind == InventoryItemKind.trade &&
-          source.zone == InventoryZone.depot &&
+          source.zone == InventoryZone.backpack &&
           target == InventoryZone.property &&
           propertyId != null) {
         result = await _inventory.depositTradeToProperty(
@@ -930,7 +913,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         );
       } else if (source.kind == InventoryItemKind.trade &&
           source.zone == InventoryZone.property &&
-          target == InventoryZone.depot &&
+          target == InventoryZone.backpack &&
           propertyId != null) {
         result = await _inventory.withdrawTradeFromProperty(
           propertyId: propertyId,
@@ -1147,111 +1130,48 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
 
   Widget _buildContextPanel(AppLocalizations l10n) {
     final storage = _selectedStorage;
-    final contextValue =
-        _contextKey.startsWith('property_') &&
-            !_selectableProperties.any((p) => 'property_${p.propertyId}' == _contextKey)
-        ? 'depot'
-        : _contextKey;
+    if (storage == null || !storage.accessibleInCurrentCountry) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Text(
+          l10n.inventoryStashAtPropertyHint,
+          style: const TextStyle(color: Colors.white54, fontSize: 13, height: 1.35),
+        ),
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DropdownButtonFormField<String>(
-          value: contextValue,
-          dropdownColor: const Color(0xFF2A2A2A),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: const Color(0xFF1E1E1E),
-            labelText: l10n.inventoryStorageGrid,
-            border: const OutlineInputBorder(),
-          ),
-          items: [
-            DropdownMenuItem(
-              value: 'depot',
-              child: Text(_depotLabel(l10n)),
-            ),
-            ..._selectableProperties.map(
-              (p) => DropdownMenuItem(
-                value: 'property_${p.propertyId}',
-                child: Text(_storageOptionLabel(p, l10n)),
-              ),
-            ),
-          ],
-          onChanged: (value) async {
-            if (value == null) return;
-            setState(() {
-              _contextKey = value;
-              if (value.startsWith('property_')) {
-                _stashPropertyId = int.tryParse(
-                  value.substring('property_'.length),
-                );
-              }
-            });
-            final materials = await _drugs.getPlayerMaterials();
-            _materials = materials;
-            await _loadContextItems(materials);
-            if (mounted) setState(() {});
-          },
+        Text(
+          _storageOptionLabel(storage, l10n),
+          style: const TextStyle(fontWeight: FontWeight.w700),
         ),
-        if (_contextKey == 'depot')
-          Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 8),
-            child: Text(
-              l10n.inventoryUnplacedHint,
-              style: const TextStyle(color: Colors.white54, fontSize: 12),
-            ),
-          )
-        else
-          const SizedBox(height: 8),
-        if (storage != null && !storage.accessibleInCurrentCountry)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              l10n.inventoryStorageWrongCountry,
-              style: const TextStyle(color: Colors.orange, fontSize: 12),
-            ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.inventoryStorageSlotsDetail(
+            storage.usage,
+            storage.capacity,
+            '${storage.percentFull}',
           ),
-        if (storage != null && storage.accessibleInCurrentCountry)
+          style: const TextStyle(color: Colors.white54, fontSize: 12),
+        ),
+        if (_hasStorageElsewhere)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              l10n.inventoryStorageSlotsDetail(
-                storage.usage,
-                storage.capacity,
-                '${storage.percentFull}',
-              ),
-              style: const TextStyle(color: Colors.white54, fontSize: 12),
-            ),
-          ),
-        if (_selectableProperties.isEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              l10n.inventoryNoOwnedStorageHint,
-              style: const TextStyle(color: Colors.white54, fontSize: 12),
-            ),
-          ),
-        if (_hasStorageElsewhere || _materials.hasDepotElsewhere)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(top: 8),
             child: Text(
               l10n.inventoryOtherCountryStashHint,
               style: const TextStyle(color: Colors.white54, fontSize: 12),
             ),
           ),
+        const SizedBox(height: 8),
         _buildGrid(
-          title: _contextKey == 'depot'
-              ? _depotLabel(l10n)
-              : l10n.inventoryStorageGrid,
+          title: l10n.inventoryStorageGrid,
           items: _contextItems,
           emptySlots: _contextEmptySlots(),
-          zone: _contextKey == 'depot'
-              ? InventoryZone.depot
-              : InventoryZone.property,
+          zone: InventoryZone.property,
         ),
-        if (storage != null &&
-            storage.accessibleInCurrentCountry &&
-            storage.allowedCategories.contains('cash'))
+        if (storage.allowedCategories.contains('cash'))
           _buildCashPanel(l10n, storage),
       ],
     );
@@ -1306,9 +1226,6 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   }
 
   int _contextEmptySlots() {
-    if (_contextKey == 'depot') {
-      return _contextItems.length + 1;
-    }
     final capacity = _selectedStorage?.capacity ?? 0;
     if (capacity > 0) return capacity;
     return _contextItems.isEmpty ? 0 : _contextItems.length;
@@ -1318,13 +1235,6 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     final flag = CountryHelper.getCountryFlag(countryId);
     final name = CountryHelper.getLocalizedCountryName(countryId, l10n);
     return '$flag $name';
-  }
-
-  String _depotLabel(AppLocalizations l10n) {
-    final countryId = _materials.currentCountry.isNotEmpty
-        ? _materials.currentCountry
-        : context.read<AuthProvider>().currentPlayer?.currentCountry;
-    return l10n.inventoryUnplacedGrid(_countryLabel(countryId, l10n));
   }
 
   String _storageOptionLabel(StorageInfo property, AppLocalizations l10n) {

@@ -3,6 +3,9 @@ export const STASH_DRUG_PREFIX = 'drug:';
 export const STASH_TRADE_PREFIX = 'trade:';
 export const STASH_TRADE_PX_PREFIX = 'tradepx:';
 
+/** Sentinel `inventory.country` for trade goods in the personal backpack. */
+export const CARRIED_TRADE_LOCATION = '_carried_';
+
 /** Grams of one drug stack per property storage slot. */
 export const DRUG_GRAMS_PER_SLOT = 50;
 const MATERIAL_UNITS_PER_SLOT = 5;
@@ -60,6 +63,15 @@ export function parseTradeStashKey(key: string): string | null {
 export function drugSlotsForGrams(grams: number): number {
   if (grams <= 0) return 0;
   return Math.ceil(grams / DRUG_GRAMS_PER_SLOT);
+}
+
+export function tradeSlotsForQuantity(quantity: number): number {
+  if (quantity <= 0) return 0;
+  return quantity;
+}
+
+export function isCarriedTradeLocation(country: string | null | undefined): boolean {
+  return (country ?? '') === CARRIED_TRADE_LOCATION;
 }
 
 export function stashSlotsForRow(drugType: string, quantity: number): number {
