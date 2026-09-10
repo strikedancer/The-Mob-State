@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import backpackService from './backpackService';
+import { catalogStorageCapacity } from '../utils/propertyCatalogStorage';
 
 const { getPlayerCarryingCapacity } = backpackService;
 
@@ -633,7 +634,10 @@ class ToolService {
 
       // Check property storage capacity
       const storageUsage = await this.getPropertyStorageUsage(playerId, propertyId);
-      const capacity = await this.getPropertyStorageCapacity(ownsProperty.propertyType);
+      const capacity = await this.getPropertyStorageCapacity(
+        ownsProperty.propertyType,
+        ownsProperty.upgradeLevel,
+      );
       
       const toolDef = this.getToolDefinition(toolId);
       const slotSize = (toolDef as any)?.slotSize || 1;
@@ -731,12 +735,17 @@ class ToolService {
   /**
    * Get property storage capacity by type
    */
-  async getPropertyStorageCapacity(propertyType: string): Promise<number> {
+  async getPropertyStorageCapacity(
+    propertyType: string,
+    upgradeLevel = 1,
+  ): Promise<number> {
+    const fromCatalog = catalogStorageCapacity(propertyType, upgradeLevel);
+    if (fromCatalog != null) return fromCatalog;
     const capacity = await prisma.propertyStorageCapacity.findUnique({
       where: { propertyType },
     });
 
-    return capacity?.maxSlots || 20; // Default to 20
+    return capacity?.maxSlots || 20;
   }
 
   /**
@@ -778,7 +787,10 @@ class ToolService {
       const usage = supportsTools
         ? await this.getPropertyStorageUsage(playerId, property.id)
         : 0;
-      const capacity = await this.getPropertyStorageCapacity(property.propertyType);
+      const capacity = await this.getPropertyStorageCapacity(
+        property.propertyType,
+        property.upgradeLevel,
+      );
       const tools = supportsTools
         ? await this.getPropertyStorage(playerId, property.id)
         : [];

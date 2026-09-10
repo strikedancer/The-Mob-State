@@ -5,6 +5,7 @@ import toolService from './toolService';
 import { weaponService } from './weaponService';
 import { ammoService } from './ammoService';
 import backpackService from './backpackService';
+import { catalogStorageCapacity } from '../utils/propertyCatalogStorage';
 
 type StorageCategory = 'tools' | 'drugs' | 'weapons' | 'cash' | 'ammo' | 'armor';
 
@@ -61,7 +62,12 @@ class PropertyStorageService {
     }
   }
 
-  private async getCapacity(propertyType: string): Promise<number> {
+  private async getCapacity(
+    propertyType: string,
+    upgradeLevel = 1,
+  ): Promise<number> {
+    const fromCatalog = catalogStorageCapacity(propertyType, upgradeLevel);
+    if (fromCatalog != null) return fromCatalog;
     const configured = await prisma.propertyStorageCapacity.findUnique({
       where: { propertyType },
       select: { maxSlots: true },
@@ -124,7 +130,10 @@ class PropertyStorageService {
 
     for (const property of properties) {
       const allowedCategories = this.getAllowedCategories(property.propertyType);
-      const capacity = await this.getCapacity(property.propertyType);
+      const capacity = await this.getCapacity(
+        property.propertyType,
+        property.upgradeLevel,
+      );
 
       let toolCount = 0;
       let tools: any[] = [];
@@ -204,7 +213,10 @@ class PropertyStorageService {
     this.ensureCountryAccess(player.currentCountry, property.countryId);
 
     const allowedCategories = this.getAllowedCategories(property.propertyType);
-    const capacity = await this.getCapacity(property.propertyType);
+    const capacity = await this.getCapacity(
+      property.propertyType,
+      property.upgradeLevel,
+    );
 
     const tools = allowedCategories.includes('tools')
       ? await toolService.getPropertyStorage(playerId, property.id)

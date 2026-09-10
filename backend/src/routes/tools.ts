@@ -186,7 +186,10 @@ router.get('/storage/:propertyId', authenticate, async (req: AuthRequest, res: R
 
   const tools = await toolService.getPropertyStorage(req.player!.id, propertyId);
   const usage = await toolService.getPropertyStorageUsage(req.player!.id, propertyId);
-  const capacity = await toolService.getPropertyStorageCapacity(property.propertyType);
+  const capacity = await toolService.getPropertyStorageCapacity(
+    property.propertyType,
+    property.upgradeLevel,
+  );
 
   return res.status(200).json({
     event: 'tools.storage',

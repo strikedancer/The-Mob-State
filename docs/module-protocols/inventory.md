@@ -14,7 +14,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
 - Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo and materials.
 - Context grid (right on desktop, below on mobile): the **current-country** materials depot, or an owned property **in the current country**. Depot pads only to items + one drop cell. Property grids use that building's real capacity. Other-country houses and depot lots stay hidden until the player travels there (`inventoryOtherCountryStashHint`). No fake warehouse slots when the player owns none locally; show `inventoryNoOwnedStorageHint` instead. Backpack squares match `GET /tools/carried` capacity (no 8-slot floor).
-  - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag). Safer on arrest.
+  - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag). Safer on arrest. Slot count comes from `properties.json` `storageCapacity` at the building's upgrade level (house 10→95, apartment 5→38), not the legacy `property_storage_capacity` row (house was wrongly 100).
   - Warehouse: tools, weapons, ammo, armor + cash buttons. Police/FBI search this building in the arrest country (~40% seize).
   - Materials stay in the country depot (`POST /drugs/materials/transfer`), not in a house.
 - Drag on desktop/web; tap-select then tap-target everywhere (mobile fallback). Each drop is one API call; no optimistic client move.
@@ -43,6 +43,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Responsive usability without pushing critical actions off-screen.
 - Shared equipment choices that other modules depend on, such as worn weapon slots, must stay visible and must remain in sync with the consuming gameplay screen.
 - Inventory storage and the materials depot are **current-country only**. Do not merge other-country depot lots or foreign houses into the paper-doll grids.
+- Paper-doll property grids use catalog capacity by upgrade level. A new house is **10** slots, not 100.
 - The two paper-doll weapon slots are the only weapons Crimes considers. Dropping a weapon from backpack or house storage onto a slot wears it. Taking it off (to backpack or house) unequips that slot. Moving a weapon only between backpack and storage does not change worn slots.
 - The second-weapon slot uses `POST/DELETE /weapons/secondary-weapon` the same way. Crimes compare both worn slots at attempt time and pick the best match; wearing a weapon on the second slot is enough for it to be considered. The same `weaponId` cannot occupy both body slots (moving it switches slot). Withdrawing a weapon from a house onto a body slot may send `equip: true` so a full backpack does not block wearing it.
 - Backpack upgrade visibility stays progression-clean: after buying a better backpack, lower or equal backpack tiers should no longer be shown as selectable shop options; only real upgrades remain visible.
@@ -63,6 +64,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Verify drag and tap-to-move between backpack and house/warehouse/depot, including a rejected drop (full, wrong country, wrong type).
 - Verify Open storage from a house or warehouse opens this screen with that property selected.
 - Verify the materials depot and storage dropdown only show the current country; other-country stock stays hidden with a travel hint.
+- Verify a newly bought house shows 10 storage squares (not 100). An apartment starts at 5; a warehouse at 100.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
