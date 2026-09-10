@@ -12,7 +12,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - client/lib/utils/web_asset_helper.dart
 - client/lib/widgets/overlay_image.dart
 - client/lib/screens/help_screen.dart (Almanac CTA → wiki.themobstate.com)
-- wiki/ (public almanac; static HTML, shared `/images` mount on :8082)
+- wiki/ (public almanac; HTML generated from bind-mounted `backend/content`, shared `/images` mount on :8082)
 - client/lib/screens/inventory_screen.dart
 - client/lib/screens/inventory_paper_doll_tab.dart
 - client/lib/widgets/inventory_slot.dart

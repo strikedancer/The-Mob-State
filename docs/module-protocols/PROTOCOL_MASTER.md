@@ -315,7 +315,7 @@ Acceptatie-eis voor dit runbook:
 
 ### VPS snelpad (Windows: Pageant + PuTTY plink) — aanbevolen
 
-Gebruik dit **volgende keer eerst**; het voert dezelfde stappen uit als het bash-blok hierboven (backup compose + `.env.plesk`, `git pull`, `docker compose … config`, rebuild **backend** + **client** + **admin** + **wiki**, backend-logs), maar dan **vanaf je Windows-pc** via **PuTTY `plink`** met je opgeslagen sessie.
+Gebruik dit **volgende keer eerst**; het voert dezelfde stappen uit als het bash-blok hierboven (backup compose + `.env.plesk`, `git pull`, `docker compose … config`, rebuild **wiki** (catalogus-HTML uit `backend/content`, daarna watcher), **backend** + **client** + **admin**, backend-logs), maar dan **vanaf je Windows-pc** via **PuTTY `plink`** met je opgeslagen sessie.
 
 **Voorwaarden**
 

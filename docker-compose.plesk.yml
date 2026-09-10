@@ -121,11 +121,17 @@ services:
     build:
       context: ./wiki
       dockerfile: Dockerfile
+    environment:
+      WIKI_CONTENT: /content
+      WIKI_SRC: /wiki/src
+      WIKI_OUT: /usr/share/nginx/html
     volumes:
       - ${CLIENT_EXTERNAL_IMAGES_PATH:-/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images}:/mnt/external-images:ro
+      - ./backend/content:/content:ro
+      - ./wiki/src:/wiki/src:ro
     ports:
       - 127.0.0.1:${WIKI_PORT:-8082}:80
-    mem_limit: 128m
+    mem_limit: 256m
     restart: unless-stopped
 
 volumes:

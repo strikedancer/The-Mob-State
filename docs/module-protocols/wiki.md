@@ -1,21 +1,22 @@
 # Player Almanac (wiki.themobstate.com)
 
 ## Scope
-Public, read-only player almanac generated from `backend/content/*.json` and served at `https://wiki.themobstate.com`. Noir/gold static HTML in all player locales (`nl`, `en`, `de`, `fr`, `es`, `it`, `pl`, `pt`). Original game images come from the same `runtime/client-images` mount as the Flutter client (`/images/...`).
+Public, read-only player almanac generated from `backend/content/*.json` and served at `https://wiki.themobstate.com`. Pages are regenerated automatically when those catalogs (or wiki templates) change on the VPS. Noir/gold static HTML in all player locales (`nl`, `en`, `de`, `fr`, `es`, `it`, `pl`, `pt`). Original game images come from the same `runtime/client-images` mount as the Flutter client (`/images/...`).
 
 This is a catalogue and typical-relative guide, not live Black Market quotes. Street prices still move in-game.
 
 ## Primary Frontend Entry
-- Generator: `wiki/src/build.mjs`
+- Generator: `wiki/src/build.mjs` (one-shot) and `wiki/src/watch.mjs` (rebuild on file change)
 - Theme/nav: `wiki/src/theme.css`, `wiki/src/layout.mjs`, `wiki/src/i18n.mjs`
-- Docker: `wiki/Dockerfile` + `wiki/nginx.conf` (port **8082**)
+- Docker: `wiki/Dockerfile` + `wiki/nginx.conf` + `wiki/docker-entrypoint.sh` (port **8082**)
 - In-game links: Help (`helpAlmanacOpen`) and landing/login footer (`landingFooterAlmanac`) → `AppConfig.wikiHomeUrl`
 
 ## Primary Backend Entry
-- None. The almanac does not call the API. Catalog JSON is copied into the image at build time (`wiki/content` from `backend/content`).
+- None. The almanac does not call the API. Catalog JSON is bind-mounted from `backend/content` (`/content` in the wiki container). HTML is generated at container start and rebuilt when those JSON files or `wiki/src` templates change.
 
 ## Change Rules
-- Rebuild the wiki service whenever `backend/content/` catalogs or wiki templates change.
+- Catalog or copy changes in `backend/content/` and `wiki/src/` refresh the live almanac after they land on the VPS (`git pull` / standard deploy). No extra `wiki/content` copy is required.
+- Chapter-tile PNGs still need the usual copy into `runtime/client-images/wiki/hubs/` (the deploy script already does this).
 - Do not publish live tick prices or a ranked “best money route” ladder. Country **tradeBonuses** may be shown as a typical factor (lower = typically cheaper to buy).
 - Keep UI chrome translated in `wiki/src/i18n.mjs` for every SupportedLanguages code.
 - Item names fall back to catalog `name` / `name_en` / `descriptionEn`.
@@ -40,6 +41,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 4. `/images/logo.png` and catalog images load via the runtime mount.
 5. `wiki.themobstate.com` serves HTTPS after Plesk subdomain + LE.
 6. Help button and landing footer open the matching locale home.
+7. Changing a file under `backend/content/` on the VPS rebuilds HTML without a wiki image rebuild (container logs show `wiki: rebuilding`).
 
 ## i18n and Messaging
 - Wiki UI: `wiki/src/i18n.mjs`

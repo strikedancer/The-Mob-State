@@ -126,6 +126,11 @@ grep -q "^vm.swappiness" /etc/sysctl.conf || echo "vm.swappiness=10" >> /etc/sys
 dc() { docker compose --env-file .env.plesk -f docker-compose.plesk.yml "$@"; }
 export COMPOSE_PARALLEL_LIMIT=1
 dc config
+# Almanac HTML is generated inside the wiki container from bind-mounted backend/content.
+# Rebuild wiki first so catalog/template changes go live before the long Flutter build.
+dc build --memory 512m wiki
+dc up -d --no-build --no-deps wiki
+bash scripts/plesk_ensure_wiki_subdomain.sh || true
 dc build --memory 2560m backend
 # If a prior deploy left 20260414223000_expand_support_workflow in failed state (P3018), clear it so idempotent SQL can re-apply. No-op when not failed.
 dc run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
@@ -144,12 +149,6 @@ dc build --memory 3g client
 dc up -d --no-build --no-deps client
 dc build --memory 1536m admin
 dc up -d --no-build --no-deps admin
-rm -rf wiki/content
-mkdir -p wiki/content
-cp -a backend/content/. wiki/content/
-dc build --memory 512m wiki
-dc up -d --no-build --no-deps wiki
-bash scripts/plesk_ensure_wiki_subdomain.sh || true
 dc logs --tail=120 backend
 '@.Replace("REMOTE_PROJECT_DIR", $dirUnix)
 

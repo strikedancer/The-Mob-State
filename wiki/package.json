@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node src/build.mjs --content ../backend/content --out dist"
+    "build": "node src/build.mjs --content ../backend/content --out dist",
+    "watch": "node src/watch.mjs --content ../backend/content --out dist"
   }
 }

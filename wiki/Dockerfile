@@ -1,13 +1,11 @@
 # syntax=docker/dockerfile:1
-FROM node:22-alpine AS builder
+FROM nginx:1.27-alpine
+RUN apk add --no-cache nodejs
 WORKDIR /wiki
 COPY src ./src
-COPY nginx.conf ./nginx.conf
-COPY content ./content
-RUN node src/build.mjs --content /wiki/content --out /out
-
-FROM nginx:1.27-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /out /usr/share/nginx/html
+COPY docker-entrypoint.sh /wiki-entrypoint.sh
+RUN chmod +x /wiki-entrypoint.sh \
+  && mkdir -p /content /usr/share/nginx/html
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/wiki-entrypoint.sh"]
