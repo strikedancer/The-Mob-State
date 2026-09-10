@@ -105,27 +105,36 @@ function load() {
 }
 
 function homeHubs(lang) {
-  return [
-    ['countries/', 'countries', '/images/backgrounds/login_background.png'],
-    ['trade/', 'trade', '/images/backgrounds/smuggling_hub_bg_desktop.png'],
-    ['vehicles/', 'vehicles', '/images/backgrounds/garage_background.png'],
-    ['weapons/', 'weapons', '/images/backgrounds/weapon_shop_bg.png'],
-    ['drugs/', 'drugs', '/images/backgrounds/drug_environment_desktop.png'],
-    ['materials/', 'materials', '/images/backgrounds/drug_production_bg.png'],
-    ['facilities/', 'facilities', '/images/backgrounds/drug_facility_bg.png'],
-    ['properties/', 'properties', '/images/backgrounds/nightclub_hub_bg_desktop.png'],
-    ['aircraft/', 'aircraft', '/images/aircraft/citation_x.png'],
-    ['backpacks/', 'backpacks', '/images/backgrounds/smuggling_hub_bg.png'],
-    ['security/', 'security', '/images/backgrounds/weapon_shop_bg.png'],
-    ['ammo/', 'ammo', '/images/backgrounds/ammo_factory_bg.png'],
-    ['travel/', 'travel', '/images/backgrounds/marina_background.png'],
-    ['crimes/', 'crimes', '/images/backgrounds/crime_background.png'],
-    ['jobs/', 'jobs', '/images/backgrounds/gym_bg.png'],
-    ['crew/', 'crew', '/images/crew_buildings/cash/city/lvl_5.png'],
-    ['school/', 'school', '/images/backgrounds/courtroom_background.png'],
-  ].map(([href, key, image]) =>
-    card({ href: `/${lang}/${href}`, title: ui(lang, key), image, search: ui(lang, key), contain: key === 'aircraft' })
-  ).join('');
+  const keys = [
+    'countries',
+    'trade',
+    'vehicles',
+    'weapons',
+    'drugs',
+    'materials',
+    'facilities',
+    'properties',
+    'aircraft',
+    'backpacks',
+    'security',
+    'ammo',
+    'travel',
+    'crimes',
+    'jobs',
+    'crew',
+    'school',
+  ];
+  return keys
+    .map((key) => {
+      const href = `${key}/`;
+      return card({
+        href: `/${lang}/${href}`,
+        title: ui(lang, key),
+        image: `/images/wiki/hubs/${key}.png`,
+        search: ui(lang, key),
+      });
+    })
+    .join('');
 }
 
 function countryPages(data, lang) {

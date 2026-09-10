@@ -19,7 +19,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 - Do not publish live tick prices or a ranked “best money route” ladder. Country **tradeBonuses** may be shown as a typical factor (lower = typically cheaper to buy).
 - Keep UI chrome translated in `wiki/src/i18n.mjs` for every SupportedLanguages code.
 - Item names fall back to catalog `name` / `name_en` / `descriptionEn`.
-- Images must be the game originals (vehicles, weapons, drugs, materials, trade cards, properties, aircraft). Missing files hide via CSS empty background; do not ship placeholders that look like new art.
+- Images must be the game originals on item pages (vehicles, weapons, drugs, materials, trade cards, properties, aircraft). **Chapter tiles** on the almanac home use dedicated art in `client/assets/images/wiki/hubs/<key>.png` (runtime `/images/wiki/hubs/`), generated with `backend/scripts/generate_wiki_hub_tiles_leonardo.py`. Do not reuse unrelated backgrounds for those tiles.
 - Plesk: `wiki.themobstate.com` reverse-proxies to `127.0.0.1:8082` with ACME `ProxyPass !` like admin/api.
 
 ## Cross-Module Dependencies

@@ -90,6 +90,9 @@ mkdir -p runtime/client-images/crew_buildings || true
 cp -rf client/assets/images/crew_buildings/. runtime/client-images/crew_buildings/ 2>/dev/null || true
 # Almanac wordmark
 cp -f client/assets/images/logo.png runtime/client-images/logo.png 2>/dev/null || true
+# Almanac chapter tiles (/images/wiki/hubs/*)
+mkdir -p runtime/client-images/wiki/hubs || true
+cp -f client/assets/images/wiki/hubs/*.png runtime/client-images/wiki/hubs/ 2>/dev/null || true
 # Black-market material icons (/images/materials/*)
 mkdir -p runtime/client-images/materials || true
 cp -f client/assets/images/materials/*.png runtime/client-images/materials/ 2>/dev/null || true
