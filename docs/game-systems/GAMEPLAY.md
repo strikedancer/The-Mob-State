@@ -603,7 +603,7 @@ interest = 0
 
 ## Trade Market
 
-- **Almanak** (`https://wiki.themobstate.com`): publieke catalogus in alle speler-talen, met originele game-beelden. Pagina’s worden gegenereerd uit `backend/content` en vernieuwen automatisch als die catalogi (of wiki-templates) op de VPS wijzigen. Hoofdstuktegels op het overzicht hebben eigen passende foto’s (`wiki/hubs`). Toont bronlanden en de vaste landfactor van handelswaren (niet de live straatprijs). Links vanuit Help & Uitleg en de landingsfooter.
+- **Almanak** (`https://wiki.themobstate.com`): publieke **handleiding** (alle Help-onderwerpen, inclusief profiel, avatar wisselen en selfie→portret) plus catalogus in alle speler-talen, met originele game-beelden. Pagina’s worden gegenereerd uit `backend/content` en Help-ARB’s en vernieuwen automatisch als die bestanden op de VPS wijzigen. Hoofdstuktegels op het overzicht hebben eigen passende foto’s (`wiki/hubs`). Toont bronlanden en de vaste landfactor van handelswaren (niet de live straatprijs). Help opent de handleiding; de landingsfooter opent het overzicht.
 
 ### Client / talen
 - **Zwarte markt** (incl. eerste tab handelswaren/contraband), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven. Het voertuigenaanbod-tabblad gebruikt de ARB-key **`marketplace`** (NL: *Marktplaats*), hetzelfde label als vroeger op het aparte handels-scherm.

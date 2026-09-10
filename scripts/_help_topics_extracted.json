@@ -1599,6 +1599,55 @@
     "protocolPath": "docs/module-protocols/messages.md"
   },
   {
+    "id": "profile",
+    "icon": "Icons.person",
+    "categoryNl": "Basis",
+    "categoryEn": "Core",
+    "titleNl": "Profiel & avatar",
+    "titleEn": "Profile & avatar",
+    "summaryNl": "Open je publieke profiel, wissel een preset-avatar en maak een gangsterportret van een foto of selfie. Wat anderen zien blijft prestige — geen live locatie.",
+    "summaryEn": "Open your public profile, switch a preset avatar and turn a photo or selfie into a gangster portrait. What others see is prestige — never your live location.",
+    "howNl": [
+      "Je eigen publieke profiel open je via de avatar-knop rechtsboven → Mijn profiel. Op web blijft de zijbalk staan; het profiel opent in het contentpaneel.",
+      "Tik op een naam of avatar van een andere speler (vrienden, crew, chat, hitlist, leaderboards) om hun profiel te openen.",
+      "Het publieke profiel toont je rangtitel (dezelfde als op het dashboard), behaalde badges, event-chips (goud/zilver/brons), crew-naam en eigendommen (catalogusfoto + niveau).",
+      "Wat verborgen blijft: huidig land, opslaginhoud, locked achievement-voortgang en het oude landgoed-composiet. Online betekent een echte sessie in de laatste minuten, geen world-tick.",
+      "Anderen kunnen je profiel liken. Crew-naam is tappable. Event-chips zijn prestige en verkoopbaar op Zwarte Markt → Marktplaats, geen extra power.",
+      "Bij registratie kies je mannelijk of vrouwelijk. Dat bepaalt je start-avatar (`default_1` of `default_2`) en later de stijl van een selfie-portret.",
+      "Preset-avatars wissel je in Instellingen. Gratis looks staan voor iedereen open; VIP-looks alleen met Player VIP. Een preset kiezen zet een custom portret uit.",
+      "Je kunt een preset-avatar maximaal eens per 7 dagen wisselen. Gebruikersnaam wijzigen kan maximaal eens per 30 dagen (3–20 tekens).",
+      "Avatar van foto of selfie: in Instellingen kies je een look (classic noir, street casual, sharp suit of avondglamour), vink je toestemming aan en upload je een scherpe gezichtsfoto (max. 5 MB).",
+      "Elke geslaagde generatie kost 100 premium credits. Mislukt de AI-run, dan word je niet belast. Je kunt tot 20 custom portretten bewaren.",
+      "Tijdens het maken blijft een wachtdialoog open (kan een paar minuten duren). Daarna tik je een portret aan om het als avatar te gebruiken, download je de PNG of verwijder je het.",
+      "De selfie wordt niet bewaard na generatie. Je accountgeslacht uit registratie stuurt de AI-prompt; alle looks blijven binnen de spelregels (avondglamour blijft classy)."
+    ],
+    "howEn": [
+      "Open your own public profile from the avatar button at the top right → My profile. On web the sidebar stays; the profile opens in the content pane.",
+      "Tap another player’s name or avatar (friends, crew, chat, hitlist, leaderboards) to open their profile.",
+      "The public profile shows your rank title (same as the dashboard), earned badges, event chips (gold/silver/bronze), crew name and properties (catalog photo + level).",
+      "What stays hidden: current country, storage contents, locked achievement progress and the old estate composite. Online means a real session in the last minutes, not a world tick.",
+      "Others can like your profile. The crew name is tappable. Event chips are prestige and sellable on Black Market → Marketplace; they add no power.",
+      "At registration you choose male or female. That sets your starter avatar (`default_1` or `default_2`) and later the selfie-portrait style.",
+      "Switch preset avatars in Settings. Free looks are open to everyone; VIP looks need Player VIP. Picking a preset turns a custom portrait off.",
+      "You can change a preset avatar at most once every 7 days. Username can change at most once every 30 days (3–20 characters).",
+      "Avatar from a photo or selfie: in Settings pick a look (classic noir, street casual, sharp suit or evening glamour), accept consent and upload a sharp face photo (max 5 MB).",
+      "Each successful generation costs 100 premium credits. A failed AI run is not charged. You can keep up to 20 custom portraits.",
+      "While it generates, a wait dialog stays open (this can take a few minutes). Then tap a portrait to use it as your avatar, download the PNG or remove it.",
+      "The selfie is not stored after generation. Your registration gender steers the AI prompt; every look stays within the game rules (evening glamour stays classy)."
+    ],
+    "tipsNl": [
+      "Gebruik een scherpe close-up van je gezicht; zonnebril, groepsfoto’s of zware filters geven een zwakker portret.",
+      "Heb je weinig credits? Wissel eerst een gratis preset. Selfie-portretten zijn een credit-sink, geen verplichting.",
+      "Zet een portret dat de regels schendt meteen weg; staff kan custom portretten verwijderen."
+    ],
+    "tipsEn": [
+      "Use a sharp close-up of your face; sunglasses, group shots or heavy filters make a weaker portrait.",
+      "Low on credits? Switch a free preset first. Selfie portraits are a credit sink, not a requirement.",
+      "Remove a portrait that breaks the rules; staff can delete custom portraits."
+    ],
+    "protocolPath": "docs/module-protocols/player-profile.md"
+  },
+  {
     "id": "settings",
     "icon": "Icons.settings",
     "categoryNl": "Basis",
@@ -1609,7 +1658,7 @@
     "summaryEn": "Manage all account settings: language, avatar, privacy, notification preferences per system and security options. Settings directly affect your gameplay experience.",
     "howNl": [
       "Taal: schakel tussen Nederlands en Engels. Alle UI-teksten, systeemberichten en notificaties worden direct bijgewerkt.",
-      "Avatar: upload of selecteer een profielafbeelding die zichtbaar is voor andere spelers op je openbare profiel en in crew-lijsten.",
+      "Avatar en selfie-portret: wissel een preset in Instellingen (maximaal eens per week; VIP-looks alleen met Player VIP) of maak een gangsterportret van een foto. De complete stappen staan in Help → Profiel & avatar en in de Almanak-handleiding.",
       "Privacy: stel in wie je online-status, locatie (huidig land) en statistieken kan zien — alleen jezelf, crew, vrienden of iedereen.",
       "Push-notificaties: schakel per systeem in/uit. Categorieën: Crimes, Crypto-handel, Prijsalerts, Orders, live spelerevents (competitie), Marktregime, Heist, Nightclub, algemene berichten.",
       "Als push al was toegestaan, koppelt de web/PWA-versie na refresh of update automatisch opnieuw aan je actuele apparaat-token; alleen als je browser meldingen blokkeert moet je dit opnieuw via Instellingen toestaan.",
@@ -1620,7 +1669,7 @@
     ],
     "howEn": [
       "Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.",
-      "Avatar: upload or select a profile image visible to other players on your public profile and in crew lists.",
+      "Avatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.",
       "Privacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.",
       "Push notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.",
       "If push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.",

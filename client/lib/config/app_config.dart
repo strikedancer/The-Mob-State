@@ -35,6 +35,10 @@ class AppConfig {
     return '$wikiBaseUrl/$lang/';
   }
 
+  static String wikiGuideUrl(String languageCode) {
+    return '${wikiHomeUrl(languageCode)}guide/';
+  }
+
   static const Duration apiTimeout = Duration(seconds: 30);
   static const String defaultLocale = 'nl';
 

@@ -17653,7 +17653,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Język: przełączanie pomiędzy holenderskim i angielskim. Wszystkie teksty interfejsu użytkownika, komunikaty systemowe i powiadomienia są aktualizowane natychmiast. \nAwatar: prześlij lub wybierz zdjęcie profilowe widoczne dla innych graczy na Twoim profilu publicznym i na listach załogi. \nPrywatność: ustaw, kto może zobaczyć Twój status online, lokalizację (bieżący kraj) i statystyki — tylko Ty, Crew, przyjaciele lub wszyscy. \nPowiadomienia push: przełączanie w zależności od systemu. Kategorie: Przestępstwa, Handel kryptowalutami, Alerty cenowe, Zamówienia, wydarzenia dla graczy na żywo (konkurencja), Reżim rynkowy, Napad, Nightclub, wiadomości ogólne. \nJeśli funkcja push była już dozwolona, ​​wersja web/PWA automatycznie ponownie połączy się z bieżącym tokenem urządzenia po odświeżeniu lub aktualizacji; wystarczy ponownie włączyć ją w Ustawieniach, gdy sama przeglądarka blokuje powiadomienia. \nPreferencje powiadomień o kryptowalutach pozostają zapisane po opuszczeniu Ustawień i ponownym otwarciu ich później. \nPowiadomienia w aplikacji: konfigurowalne niezależnie od powiadomień push. W aplikacji wyświetla alerty w aplikacji bez wysyłania powiadomienia systemowego. \nBezpieczeństwo: zmień hasło, skonfiguruj uwierzytelnianie dwuskładnikowe i przeglądaj aktywne sesje. \nPreferencje dotyczące powiadomień dla poszczególnych systemów: dostosuj, aby nie otrzymywać burzy powiadomień z systemów, w których aktywnie nie grasz.';
+      'Język: przełączanie pomiędzy holenderskim i angielskim. Wszystkie teksty interfejsu użytkownika, komunikaty systemowe i powiadomienia są aktualizowane natychmiast. \nAwatar i portret selfie: zmień ustawienie wstępne w Ustawieniach (najwyżej raz w tygodniu; wygląd VIP wymaga VIP-a gracza) lub zamień zdjęcie w portret gangstera. Pełne instrukcje znajdziesz w Pomoc → Profil i awatar oraz w podręczniku Almanachu. \nPrywatność: ustaw, kto może zobaczyć Twój status online, lokalizację (bieżący kraj) i statystyki — tylko Ty, Crew, przyjaciele lub wszyscy. \nPowiadomienia push: przełączanie w zależności od systemu. Kategorie: Przestępstwa, Handel kryptowalutami, Alerty cenowe, Zamówienia, wydarzenia dla graczy na żywo (konkurencja), Reżim rynkowy, Napad, Nightclub, wiadomości ogólne. \nJeśli funkcja push była już dozwolona, ​​wersja web/PWA automatycznie ponownie połączy się z bieżącym tokenem urządzenia po odświeżeniu lub aktualizacji; wystarczy ponownie włączyć ją w Ustawieniach, gdy sama przeglądarka blokuje powiadomienia. \nPreferencje powiadomień o kryptowalutach pozostają zapisane po opuszczeniu Ustawień i ponownym otwarciu ich później. \nPowiadomienia w aplikacji: konfigurowalne niezależnie od powiadomień push. W aplikacji wyświetla alerty w aplikacji bez wysyłania powiadomienia systemowego. \nBezpieczeństwo: zmień hasło, skonfiguruj uwierzytelnianie dwuskładnikowe i przeglądaj aktywne sesje. \nPreferencje dotyczące powiadomień dla poszczególnych systemów: dostosuj, aby nie otrzymywać burzy powiadomień z systemów, w których aktywnie nie grasz.';
 
   @override
   String get helpTopicSettingsTips =>
@@ -17731,11 +17731,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get landingFooterAlmanac => 'Almanach';
 
   @override
-  String get helpAlmanacOpen => 'Otwórz Almanach';
+  String get helpAlmanacOpen => 'Otwórz podręcznik i almanach';
 
   @override
   String get helpAlmanacBlurb =>
-      'Katalogi krajów, kontrabandy, pojazdów, broni, narkotyków i materiałów — oficjalna grafika, wszystkie języki: wiki.themobstate.com';
+      'Kompletny podręcznik (profil, awatar, portret selfie i każdy ekran) plus katalogi z oficjalną grafiką, we wszystkich językach: wiki.themobstate.com';
 
   @override
   String landingCopyright(int year) {
@@ -18873,4 +18873,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get casinoNoStaffHired => 'Brak personelu';
+
+  @override
+  String get helpTopicProfileCategory => 'Rdzeń';
+
+  @override
+  String get helpTopicProfileTitle => 'Profil i awatar';
+
+  @override
+  String get helpTopicProfileSummary =>
+      'Otwórz swój profil publiczny, zmień gotowy awatar i zamień zdjęcie lub selfie w portret gangstera. To, co inni widzą, to prestiż — nigdy Twoja lokalizacja na żywo.';
+
+  @override
+  String get helpTopicProfileHow =>
+      'Otwórz swój własny profil publiczny za pomocą przycisku awatara w prawym górnym rogu → Mój profil. W Internecie pasek boczny pozostaje; profil zostanie otwarty w panelu zawartości. \nStuknij nazwę lub awatar innego gracza (znajomi, Crew, czat, lista trafień, tabele wyników), aby otworzyć jego profil. \nProfil publiczny pokazuje Twoją rangę (tak samo jak panel kontrolny), zdobyte odznaki, żetony wydarzenia (złote/srebrne/brązowe), nazwę załogi i właściwości (zdjęcie katalogowe + poziom). \nCo pozostaje ukryte: aktualny kraj, zawartość magazynu, postęp w zablokowanych osiągnięciach i kompozycja starej nieruchomości. Online oznacza prawdziwą sesję w ostatnich minutach, a nie tykanie świata. \nInni mogą polubić Twój profil. Nazwę załogi można dotknąć. Żetony wydarzeń są prestiżowe i można je sprzedać na Czarnym Rynku → Rynek; nie dodają żadnej mocy. \nPodczas rejestracji wybierasz mężczyznę lub kobietę. To ustawia początkowy awatar („domyślny_1” lub „domyślny_2”), a później styl autoportretu. \nPrzełącz gotowe awatary w Ustawieniach. Bezpłatne spojrzenia są dostępne dla wszystkich; Wygląd VIP wymaga VIP-a gracza. Wybranie ustawienia wstępnego powoduje wyłączenie niestandardowego portretu. \nMożesz zmienić wstępnie ustawiony awatar maksymalnie raz na 7 dni. Nazwa użytkownika może się zmieniać maksymalnie raz na 30 dni (3–20 znaków). \nAwatar ze zdjęcia lub selfie: w Ustawieniach wybierz wygląd (klasyczny noir, street casual, ostry garnitur lub wieczorowy glamour), zaakceptuj zgodę i prześlij ostre zdjęcie twarzy (maks. 5 MB). \nKażda udana generacja kosztuje 100 kredytów premium. Nieudana próba AI nie jest obciążana opłatą. Możesz zachować maksymalnie 20 niestandardowych portretów. \nPodczas generowania okno dialogowe oczekiwania pozostaje otwarte (może to zająć kilka minut). Następnie dotknij portretu, aby użyć go jako swojego awatara, pobierz plik PNG lub usuń go. \nSelfie nie jest przechowywane po wygenerowaniu. Twoja płeć rejestracyjna steruje podpowiedzią AI; każdy wygląd pozostaje zgodny z zasadami gry (wieczorowy glamour pozostaje z klasą).';
+
+  @override
+  String get helpTopicProfileTips =>
+      'Użyj ostrego zbliżenia twarzy; okulary przeciwsłoneczne, zdjęcia grupowe lub ciężkie filtry powodują słabszy portret. \nMało kredytów? Najpierw zmień darmowe ustawienie wstępne. Portrety selfie są źródłem kredytu, a nie wymogiem. \nUsuń portret, który łamie zasady; personel może usuwać niestandardowe portrety.';
 }

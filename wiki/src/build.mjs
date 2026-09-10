@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { LANGS, ui, countryName } from './i18n.mjs';
 import { esc, money, page, card, stat } from './layout.mjs';
+import { guidePages, guideSitemapPaths, loadHelpTopics, resolveHelpPaths } from './guides.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const args = Object.fromEntries(
@@ -15,6 +16,7 @@ const args = Object.fromEntries(
 const ROOT = path.resolve(__dirname, '..');
 const CONTENT = path.resolve(args.content || path.join(ROOT, '..', 'backend', 'content'));
 const OUT = path.resolve(args.out || path.join(ROOT, 'dist'));
+const HELP_PATHS = resolveHelpPaths(args, ROOT);
 
 function readJson(name) {
   const raw = fs.readFileSync(path.join(CONTENT, name), 'utf8').replace(/^\uFEFF/, '');
@@ -106,6 +108,7 @@ function load() {
 
 function homeHubs(lang) {
   const keys = [
+    'guide',
     'countries',
     'trade',
     'vehicles',
@@ -843,6 +846,7 @@ function robotsAndSitemap() {
   for (const lang of LANGS) {
     urls.push(`https://wiki.themobstate.com/${lang}/`);
     for (const p of [
+      ...guideSitemapPaths(help),
       'countries',
       'trade',
       'vehicles',
@@ -873,6 +877,7 @@ function robotsAndSitemap() {
 }
 
 const data = load();
+const help = loadHelpTopics(HELP_PATHS.l10n, HELP_PATHS.helpIndex);
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 copyAsset('theme.css');
@@ -903,6 +908,7 @@ for (const lang of LANGS) {
   tradePages(data, lang);
   vehiclePages(data, lang);
   restPages(data, lang);
+  guidePages(help, lang, write);
 }
 
 console.log(`Almanac built → ${OUT}`);

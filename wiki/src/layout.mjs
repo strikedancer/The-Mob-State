@@ -16,6 +16,7 @@ export function money(n) {
 
 const NAV = [
   ['', 'home'],
+  ['guide/', 'guide'],
   ['countries/', 'countries'],
   ['trade/', 'trade'],
   ['vehicles/', 'vehicles'],

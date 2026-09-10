@@ -17710,7 +17710,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Lingua: passa dall\'olandese all\'inglese. Tutti i testi dell\'interfaccia utente, i messaggi di sistema e le notifiche si aggiornano immediatamente. \nAvatar: carica o seleziona un\'immagine del profilo visibile agli altri giocatori sul tuo profilo pubblico e nelle liste della crew. \nPrivacy: imposta chi può vedere il tuo stato online, la tua posizione (paese attuale) e le statistiche: solo tu, l\'Crew, i tuoi amici o tutti. \nNotifiche push: attiva/disattiva per sistema. Categorie: Crimini, Trading di criptovalute, Avvisi sui prezzi, Ordini, eventi dei giocatori dal vivo (competizione), Regime di mercato, Rapina, Discoteca, messaggi generali. \nSe il push era già consentito, la versione web/PWA si riconnette automaticamente al token del dispositivo corrente dopo un aggiornamento o un aggiornamento; devi solo riattivarlo in Impostazioni quando il browser stesso blocca le notifiche. \nLe preferenze di notifica crittografica rimangono salvate dopo aver lasciato le Impostazioni e riaperte in un secondo momento. \nNotifiche in-app: configurabili separatamente dalle push. In-app mostra gli avvisi all\'interno dell\'app senza inviare una notifica di sistema. \nSicurezza: cambia password, imposta l\'autenticazione a due fattori e visualizza le sessioni attive. \nPreferenza di notifica per sistema: ottimizzala in modo da non ricevere una tempesta di notifiche dai sistemi su cui non stai giocando attivamente.';
+      'Lingua: passa dall\'olandese all\'inglese. Tutti i testi dell\'interfaccia utente, i messaggi di sistema e le notifiche si aggiornano immediatamente. \nAvatar e ritratto selfie: cambia una preimpostazione in Impostazioni (al massimo una volta alla settimana; i look VIP richiedono Player VIP) o trasforma una foto in un ritratto di gangster. I passaggi completi si trovano in Aiuto → Profilo e avatar e nel manuale dell\'Almanacco. \nPrivacy: imposta chi può vedere il tuo stato online, la tua posizione (paese attuale) e le statistiche: solo tu, l\'Crew, i tuoi amici o tutti. \nNotifiche push: attiva/disattiva per sistema. Categorie: Crimini, Trading di criptovalute, Avvisi sui prezzi, Ordini, eventi dei giocatori dal vivo (competizione), Regime di mercato, Rapina, Discoteca, messaggi generali. \nSe il push era già consentito, la versione web/PWA si riconnette automaticamente al token del dispositivo corrente dopo un aggiornamento o un aggiornamento; devi solo riattivarlo in Impostazioni quando il browser stesso blocca le notifiche. \nLe preferenze di notifica crittografica rimangono salvate dopo aver lasciato le Impostazioni e riaperte in un secondo momento. \nNotifiche in-app: configurabili separatamente dalle push. In-app mostra gli avvisi all\'interno dell\'app senza inviare una notifica di sistema. \nSicurezza: cambia password, imposta l\'autenticazione a due fattori e visualizza le sessioni attive. \nPreferenza di notifica per sistema: ottimizzala in modo da non ricevere una tempesta di notifiche dai sistemi su cui non stai giocando attivamente.';
 
   @override
   String get helpTopicSettingsTips =>
@@ -17789,11 +17789,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get landingFooterAlmanac => 'Almanacco';
 
   @override
-  String get helpAlmanacOpen => 'Apri l\'Almanacco';
+  String get helpAlmanacOpen => 'Apri il manuale e l\'almanacco';
 
   @override
   String get helpAlmanacBlurb =>
-      'Cataloghi di paesi, contrabbando, veicoli, armi, droghe e materiali - arte ufficiale, tutte le lingue: wiki.themobstate.com';
+      'Manuale completo (profilo, avatar, ritratto selfie e ogni schermata) più cataloghi con illustrazioni ufficiali, tutte le lingue: wiki.themobstate.com';
 
   @override
   String landingCopyright(int year) {
@@ -18934,4 +18934,22 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get casinoNoStaffHired => 'Nessuno assunto';
+
+  @override
+  String get helpTopicProfileCategory => 'Nucleo';
+
+  @override
+  String get helpTopicProfileTitle => 'Profilo e avatar';
+
+  @override
+  String get helpTopicProfileSummary =>
+      'Apri il tuo profilo pubblico, cambia un avatar preimpostato e trasforma una foto o un selfie in un ritratto di gangster. Ciò che gli altri vedono è prestigio, mai la tua posizione dal vivo.';
+
+  @override
+  String get helpTopicProfileHow =>
+      'Apri il tuo profilo pubblico dal pulsante avatar in alto a destra → Il mio profilo. Sul web la barra laterale rimane; il profilo si apre nel riquadro del contenuto. \nTocca il nome o l\'avatar di un altro giocatore (amici, squadra, chat, hitlist, classifiche) per aprire il suo profilo. \nIl profilo pubblico mostra il tuo titolo in classifica (lo stesso del dashboard), i badge guadagnati, i chip evento (oro/argento/bronzo), il nome dell\'Crew e le proprietà (foto del catalogo + livello). \nCosa rimane nascosto: paese attuale, contenuti di archiviazione, progressi degli obiettivi bloccati e il vecchio patrimonio composito. Online significa una sessione reale negli ultimi minuti, non un tick mondiale. \nAd altri può piacere il tuo profilo. Il nome dell\'Crew è toccabile. I chip evento sono prestigiosi e vendibili sul Mercato nero → Mercato; non aggiungono alcun potere. \nAl momento della registrazione scegli maschio o femmina. Ciò imposta il tuo avatar iniziale (`default_1` o `default_2`) e successivamente lo stile del ritratto selfie. \nCambia gli avatar preimpostati in Impostazioni. I look gratuiti sono aperti a tutti; I look VIP richiedono Player VIP. La selezione di una preimpostazione disattiva un ritratto personalizzato. \nPuoi modificare un avatar preimpostato al massimo una volta ogni 7 giorni. Il nome utente può cambiare al massimo una volta ogni 30 giorni (3-20 caratteri). \nAvatar da una foto o da un selfie: in Impostazioni scegli un look (classico noir, street casual, abito elegante o glamour da sera), accetta il consenso e carica una foto del viso nitido (max 5 MB). \nOgni generazione riuscita costa 100 crediti premium. Una corsa IA fallita non viene addebitata. Puoi conservare fino a 20 ritratti personalizzati. \nDurante la generazione, rimane aperta una finestra di dialogo di attesa (l\'operazione può richiedere alcuni minuti). Quindi tocca un ritratto per usarlo come avatar, scarica il PNG o rimuovilo. \nIl selfie non viene memorizzato dopo la generazione. Il tuo genere di registrazione guida il prompt dell\'intelligenza artificiale; ogni look rientra nelle regole del gioco (il glamour serale resta di classe).';
+
+  @override
+  String get helpTopicProfileTips =>
+      'Usa un primo piano nitido del tuo viso; occhiali da sole, foto di gruppo o filtri pesanti rendono il ritratto più debole. \nHai pochi crediti? Cambia prima una preimpostazione gratuita. I ritratti selfie sono un pozzo di credito, non un requisito. \nRimuovi un ritratto che infrange le regole; lo staff può eliminare i ritratti personalizzati.';
 }

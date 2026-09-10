@@ -17,12 +17,17 @@ const SRC = path.resolve(args.src || __dirname);
 const CONTENT = path.resolve(args.content || path.join(SRC, '..', '..', 'backend', 'content'));
 const OUT = path.resolve(args.out || path.join(SRC, '..', 'dist'));
 const BUILD = path.join(SRC, 'build.mjs');
+const L10N = args.l10n ? path.resolve(args.l10n) : '';
+const HELP_INDEX = args['help-index'] ? path.resolve(args['help-index']) : '';
 const DEBOUNCE_MS = 1500;
-const WATCH_EXT = new Set(['.json', '.mjs', '.js', '.css']);
+const WATCH_EXT = new Set(['.json', '.mjs', '.js', '.css', '.dart', '.arb']);
 
 function runBuild(outDir) {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [BUILD, '--content', CONTENT, '--out', outDir], {
+    const cmd = [BUILD, '--content', CONTENT, '--out', outDir];
+    if (L10N) cmd.push('--l10n', L10N);
+    if (HELP_INDEX) cmd.push('--help-index', HELP_INDEX);
+    const child = spawn(process.execPath, cmd, {
       stdio: 'inherit',
     });
     child.on('error', reject);
@@ -107,5 +112,7 @@ if (!skipInitial) {
 
 watchTree(CONTENT, 'content');
 watchTree(SRC, 'templates');
+if (L10N) watchTree(L10N, 'help-l10n');
+if (HELP_INDEX) watchTree(path.dirname(HELP_INDEX), 'help-index');
 
 await new Promise(() => {});

@@ -10,6 +10,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 - backend/src/routes/player.ts
 
 ## Change Rules
+- Player-facing how-to for profile, preset avatars and selfie portraits lives in Help topic `profile` and Almanac `/guide/profile/`.
 - Dashboard header user menu (avatar) includes **My profile** so a player can open their own public profile without going through friends/chat.
 - Elke screen die een andere speler toont met bruikbare `playerId` moet navigatie naar het profiel bieden.
 - Profielnavigatie moet klikbaar en zichtbaar gesignaleerd worden; verstop dit niet achter impliciete of hover-only affordances.

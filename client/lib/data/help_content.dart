@@ -34,11 +34,6 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/travel.md',
   ),
   HelpTopic(
-    id: 'aviation',
-    icon: Icons.flight_takeoff,
-    protocolPath: 'docs/module-protocols/aviation.md',
-  ),
-  HelpTopic(
     id: 'crew',
     icon: Icons.groups,
     protocolPath: 'docs/module-protocols/crew.md',
@@ -62,16 +57,6 @@ const List<HelpTopic> helpTopics = [
     id: 'properties',
     icon: Icons.business,
     protocolPath: 'docs/module-protocols/properties.md',
-  ),
-  HelpTopic(
-    id: 'don',
-    icon: Icons.account_balance_wallet,
-    protocolPath: 'docs/module-protocols/don.md',
-  ),
-  HelpTopic(
-    id: 'races',
-    icon: Icons.speed,
-    protocolPath: 'docs/module-protocols/races.md',
   ),
   HelpTopic(
     id: 'bank',
@@ -202,6 +187,11 @@ const List<HelpTopic> helpTopics = [
     id: 'support-tickets',
     icon: Icons.support_agent,
     protocolPath: 'docs/module-protocols/messages.md',
+  ),
+  HelpTopic(
+    id: 'profile',
+    icon: Icons.person,
+    protocolPath: 'docs/module-protocols/player-profile.md',
   ),
   HelpTopic(
     id: 'settings',

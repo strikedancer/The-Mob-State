@@ -25,7 +25,7 @@ De master protocol zorgt ervoor dat je:
 - [Balance & Economy](balance-economy.md) - Progression pacing, cooldown balancing, premium sinks en non-pay-to-win guardrails
 - [Frontend Platform](frontend-platform.md) - Flutter web/mobile/PWA shells, assets, embedded views en cachegedrag
 - [Marketing web](marketing-web.md) - Publieke landing, `GET /public/home`, gast-locale, juridische ARB-schermen, SPA-fallback
-- [Player Almanac](wiki.md) - Publieke catalogus-wiki op `wiki.themobstate.com` (gegenereerd uit `backend/content`, auto-rebuild bij cataloguswijziging)
+- [Player Almanac](wiki.md) - Publieke catalogus-wiki + handleiding op `wiki.themobstate.com` (catalogi uit `backend/content`, handleiding uit Help-ARB’s)
 - [Facebook](facebook.md) - Facebook Login (web OAuth) + handmatige Page-posts vanuit Admin
 - [Notifications & Push](notifications.md) - Push pipeline, FCM/service worker en cooldown-signalen
 - [Player Profile](player-profile.md) - Profielnavigatie, privacy en profielinteracties

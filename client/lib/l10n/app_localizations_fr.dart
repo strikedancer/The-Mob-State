@@ -17735,7 +17735,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Langue : basculez entre le néerlandais et l\'anglais. Tous les textes de l\'interface utilisateur, les messages système et les notifications sont mis à jour immédiatement. \nAvatar : téléchargez ou sélectionnez une image de profil visible par les autres joueurs sur votre profil public et dans les listes d\'équipage. \nConfidentialité : définissez qui peut voir votre statut en ligne, votre emplacement (pays actuel) et vos statistiques : uniquement vous, l\'équipage, vos amis ou tout le monde. \nNotifications push : basculer par système. Catégories : Crimes, Trading de crypto, Alertes de prix, Ordres, événements de joueurs en direct (compétition), Régime de marché, Braquage, Discothèque, messages généraux. \nSi le push était déjà autorisé, la version Web/PWA se reconnecte automatiquement au jeton de votre appareil actuel après une actualisation ou une mise à jour ; il vous suffit de le réactiver dans Paramètres lorsque le navigateur lui-même bloque les notifications. \nLes préférences de notification crypto restent enregistrées après avoir quitté les paramètres et les avoir rouvertes plus tard. \nNotifications dans l\'application : configurables séparément du push. L\'application affiche les alertes dans l\'application sans envoyer de notification système. \nSécurité : changez le mot de passe, configurez l\'authentification à deux facteurs et affichez les sessions actives. \nPréférence de notification par système : affinez afin de ne pas recevoir de tempête de notifications de la part de systèmes sur lesquels vous ne jouez pas activement.';
+      'Langue : basculez entre le néerlandais et l\'anglais. Tous les textes de l\'interface utilisateur, les messages système et les notifications sont mis à jour immédiatement. \nAvatar et portrait selfie : changez un préréglage dans Paramètres (au plus une fois par semaine ; les looks VIP nécessitent un joueur VIP) ou transformez une photo en portrait de gangster. Les étapes complètes sont disponibles dans Aide → Profil et avatar et dans le manuel de l\'Almanach. \nConfidentialité : définissez qui peut voir votre statut en ligne, votre emplacement (pays actuel) et vos statistiques : uniquement vous, l\'équipage, vos amis ou tout le monde. \nNotifications push : basculer par système. Catégories : Crimes, Trading de crypto, Alertes de prix, Ordres, événements de joueurs en direct (compétition), Régime de marché, Braquage, Discothèque, messages généraux. \nSi le push était déjà autorisé, la version Web/PWA se reconnecte automatiquement au jeton de votre appareil actuel après une actualisation ou une mise à jour ; il vous suffit de le réactiver dans Paramètres lorsque le navigateur lui-même bloque les notifications. \nLes préférences de notification crypto restent enregistrées après avoir quitté les paramètres et les avoir rouvertes plus tard. \nNotifications dans l\'application : configurables séparément du push. L\'application affiche les alertes dans l\'application sans envoyer de notification système. \nSécurité : changez le mot de passe, configurez l\'authentification à deux facteurs et affichez les sessions actives. \nPréférence de notification par système : affinez afin de ne pas recevoir de tempête de notifications de la part de systèmes sur lesquels vous ne jouez pas activement.';
 
   @override
   String get helpTopicSettingsTips =>
@@ -17814,11 +17814,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get landingFooterAlmanac => 'Almanach';
 
   @override
-  String get helpAlmanacOpen => 'Ouvrir l\'Almanach';
+  String get helpAlmanacOpen => 'Ouvrir le manuel et l\'almanach';
 
   @override
   String get helpAlmanacBlurb =>
-      'Catalogues de pays, contrebande, véhicules, armes, drogues et matériaux — art officiel, toutes langues : wiki.themobstate.com';
+      'Manuel complet (profil, avatar, selfie portrait et chaque écran) ainsi que des catalogues avec des œuvres d\'art officielles, toutes langues : wiki.themobstate.com';
 
   @override
   String landingCopyright(int year) {
@@ -18957,4 +18957,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get casinoNoStaffHired => 'Aucun personnel';
+
+  @override
+  String get helpTopicProfileCategory => 'Cœur';
+
+  @override
+  String get helpTopicProfileTitle => 'Profil et avatar';
+
+  @override
+  String get helpTopicProfileSummary =>
+      'Ouvrez votre profil public, changez d\'avatar prédéfini et transformez une photo ou un selfie en portrait de gangster. Ce que les autres voient, c\'est du prestige, jamais votre lieu de résidence.';
+
+  @override
+  String get helpTopicProfileHow =>
+      'Ouvrez votre propre profil public à partir du bouton avatar en haut à droite → Mon profil. Sur le Web, la barre latérale reste ; le profil s\'ouvre dans le volet de contenu. \nAppuyez sur le nom ou l\'avatar d\'un autre joueur (amis, équipe, chat, liste de résultats, classements) pour ouvrir son profil. \nLe profil public affiche le titre de votre classement (identique à celui du tableau de bord), les badges gagnés, les jetons d\'événement (or/argent/bronze), le nom de l\'équipage et les propriétés (photo du catalogue + niveau). \nCe qui reste caché : le pays actuel, le contenu du stockage, la progression des réalisations verrouillées et l\'ancien composite de domaine. En ligne signifie une vraie session dans les dernières minutes, pas un tick mondial. \nD’autres peuvent aimer votre profil. Le nom de l\'équipage peut être tapé. Les jetons d\'événement sont prestigieux et vendables sur le marché noir → Marketplace ; ils n\'ajoutent aucune puissance. \nLors de l\'inscription, vous choisissez un homme ou une femme. Cela définit votre avatar de départ (`default_1` ou `default_2`) et plus tard le style de selfie-portrait. \nChangez d\'avatar prédéfini dans Paramètres. Les looks gratuits sont ouverts à tous ; VIP semble avoir besoin d\'un joueur VIP. La sélection d’un préréglage désactive un portrait personnalisé. \nVous pouvez modifier un avatar prédéfini au maximum une fois tous les 7 jours. Le nom d’utilisateur peut changer au maximum une fois tous les 30 jours (3 à 20 caractères). \nAvatar à partir d\'une photo ou d\'un selfie : dans Paramètres, choisissez un look (noir classique, street casual, costume pointu ou glamour du soir), acceptez le consentement et téléchargez une photo de visage nette (max 5 Mo). \nChaque génération réussie coûte 100 crédits premium. Une exécution d’IA échouée n’est pas facturée. Vous pouvez conserver jusqu\'à 20 portraits personnalisés. \nPendant la génération, une boîte de dialogue d\'attente reste ouverte (cela peut prendre quelques minutes). Appuyez ensuite sur un portrait pour l\'utiliser comme avatar, téléchargez le PNG ou supprimez-le. \nLe selfie n\'est pas stocké après génération. Votre sexe d\'enregistrement oriente l\'invite de l\'IA ; chaque look reste dans les règles du jeu (le glamour du soir reste classe).';
+
+  @override
+  String get helpTopicProfileTips =>
+      'Utilisez un gros plan net de votre visage ; les lunettes de soleil, les photos de groupe ou les filtres épais donnent un portrait plus faible. \nVous n\'avez plus de crédits ? Commencez par changer un préréglage gratuit. Les portraits en selfie sont une perte de crédit, pas une exigence. \nSupprimez un portrait qui enfreint les règles ; le personnel peut supprimer des portraits personnalisés.';
 }

@@ -125,10 +125,14 @@ services:
       WIKI_CONTENT: /content
       WIKI_SRC: /wiki/src
       WIKI_OUT: /usr/share/nginx/html
+      WIKI_L10N: /l10n
+      WIKI_HELP_INDEX: /help/help_content.dart
     volumes:
       - ${CLIENT_EXTERNAL_IMAGES_PATH:-/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images}:/mnt/external-images:ro
       - ./backend/content:/content:ro
       - ./wiki/src:/wiki/src:ro
+      - ./client/lib/l10n:/l10n:ro
+      - ./client/lib/data/help_content.dart:/help/help_content.dart:ro
     ports:
       - 127.0.0.1:${WIKI_PORT:-8082}:80
     mem_limit: 256m

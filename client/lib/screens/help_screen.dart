@@ -205,7 +205,7 @@ class _HelpScreenState extends State<HelpScreen> {
             onPressed: () {
               final lang = Localizations.localeOf(context).languageCode;
               launchUrl(
-                Uri.parse(AppConfig.wikiHomeUrl(lang)),
+                Uri.parse(AppConfig.wikiGuideUrl(lang)),
                 mode: LaunchMode.externalApplication,
               );
             },

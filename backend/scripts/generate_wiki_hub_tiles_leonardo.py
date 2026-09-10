@@ -147,6 +147,16 @@ HUBS: List[Tuple[str, str]] = [
         "underground crime-school lecture hall with chalkboard tactics diagrams, desks and a projector, "
         "education catalog, not a courtroom",
     ),
+    (
+        "guide",
+        "open leather crime handbook and fountain pen on a mahogany desk beside a brass lamp, "
+        "noir instruction manual still life, gold-edged pages, no readable letters",
+    ),
+    (
+        "profile",
+        "film-noir dressing table with a gangster portrait in a gilt frame, fedora and pocket watch, "
+        "avatar customization mood, warm amber lamp, no readable letters",
+    ),
 ]
 
 
