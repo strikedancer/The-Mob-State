@@ -47,13 +47,24 @@
     {
       "id": "vip_tactical_backpack",
       "name": "VIP Tactische Rugzak",
-      "description": "Exclusieve gouden rugzak alleen voor VIP leden. Maximum capaciteit!",
+      "description": "Exclusieve gouden rugzak alleen voor VIP. Veel ruimte tot je een reiskoffer kunt kopen.",
       "type": "VIP_TACTICAL",
       "slots": 50,
       "price": 100000,
       "requiredRank": 25,
       "vipOnly": true,
       "icon": "👑"
+    },
+    {
+      "id": "travel_suitcase",
+      "name": "Reiskoffer",
+      "description": "Harde koffer voor lange ritten. +70 vakken (75 totaal). Meer meenemen valt sneller op bij de douane.",
+      "type": "SUITCASE",
+      "slots": 70,
+      "price": 250000,
+      "requiredRank": 30,
+      "vipOnly": false,
+      "icon": "🧳"
     }
   ]
 }
