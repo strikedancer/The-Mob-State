@@ -70,6 +70,7 @@ Acceptatie-eis:
 - Admin -> Alle gameplay modules met logs, assets of economy-impact
 - Player-facing lists/avatars/namen -> Player Profile
 - Flutter Web/Mobile/PWA shell behavior -> Frontend Platform, Notifications
+- Player Almanac (`wiki.themobstate.com`) -> Trade, Travel, Vehicles, Weapons, Drugs, Materials, Properties, Aviation, Help, Marketing web
 
 ## Wat Hier Wel En Niet Hoort
 
@@ -314,7 +315,7 @@ Acceptatie-eis voor dit runbook:
 
 ### VPS snelpad (Windows: Pageant + PuTTY plink) — aanbevolen
 
-Gebruik dit **volgende keer eerst**; het voert dezelfde stappen uit als het bash-blok hierboven (backup compose + `.env.plesk`, `git pull`, `docker compose … config`, rebuild **backend** + **client**, backend-logs), maar dan **vanaf je Windows-pc** via **PuTTY `plink`** met je opgeslagen sessie.
+Gebruik dit **volgende keer eerst**; het voert dezelfde stappen uit als het bash-blok hierboven (backup compose + `.env.plesk`, `git pull`, `docker compose … config`, rebuild **backend** + **client** + **admin** + **wiki**, backend-logs), maar dan **vanaf je Windows-pc** via **PuTTY `plink`** met je opgeslagen sessie.
 
 **Voorwaarden**
 

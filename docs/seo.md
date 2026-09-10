@@ -7,6 +7,7 @@ Doel: beter vindbaar zijn voor zoekopdrachten zoals **“mafia game”** en **�
 - **App (public)**: `https://themobstate.com/` (canonical). `https://themobstate.nl/` serves the same Flutter shell; keep Search Console / sitemap on `.com`.
 - **API**: `https://api.themobstate.com/`
 - **Admin**: `https://admin.themobstate.com/`
+- **Almanac**: `https://wiki.themobstate.com/` (static catalog, all locales)
 
 In de client-web entry (`client/web/index.html`) is een canonical gezet naar de public app URL.
 

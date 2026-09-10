@@ -88,6 +88,8 @@ cp -f client/assets/images/ui/*.png runtime/client-images/ui/ 2>/dev/null || tru
 # Crew HQ side-building cards (/images/crew_buildings/*)
 mkdir -p runtime/client-images/crew_buildings || true
 cp -rf client/assets/images/crew_buildings/. runtime/client-images/crew_buildings/ 2>/dev/null || true
+# Almanac wordmark
+cp -f client/assets/images/logo.png runtime/client-images/logo.png 2>/dev/null || true
 # Black-market material icons (/images/materials/*)
 mkdir -p runtime/client-images/materials || true
 cp -f client/assets/images/materials/*.png runtime/client-images/materials/ 2>/dev/null || true
@@ -139,6 +141,12 @@ dc build --memory 3g client
 dc up -d --no-build --no-deps client
 dc build --memory 1536m admin
 dc up -d --no-build --no-deps admin
+rm -rf wiki/content
+mkdir -p wiki/content
+cp -a backend/content/. wiki/content/
+dc build --memory 512m wiki
+dc up -d --no-build --no-deps wiki
+bash scripts/plesk_ensure_wiki_subdomain.sh || true
 dc logs --tail=120 backend
 '@.Replace("REMOTE_PROJECT_DIR", $dirUnix)
 

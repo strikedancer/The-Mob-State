@@ -49,7 +49,7 @@ RequestHeader set X-Forwarded-Proto "https"
 RequestHeader set X-Forwarded-Port "443"
 ```
 
-Poorten: apex/`www` → `8080`, `api.themobstate.com` → `3000`, `admin.themobstate.com` → `8081`.
+Poorten: apex/`www` → `8080`, `api.themobstate.com` → `3000`, `admin.themobstate.com` → `8081`, `wiki.themobstate.com` → `8082`.
 
 Na wijziging: `apachectl configtest && systemctl reload apache2`.
 
@@ -59,6 +59,7 @@ Handmatig vernieuwen (als Plesk-UI hangt op oude pending orders: eerst JSON onde
 plesk bin extension --exec letsencrypt cli.php -d themobstate.com -d www.themobstate.com -m info@themobstate.com
 plesk bin extension --exec letsencrypt cli.php -d api.themobstate.com -m info@themobstate.com
 plesk bin extension --exec letsencrypt cli.php -d admin.themobstate.com -m info@themobstate.com
+plesk bin extension --exec letsencrypt cli.php -d wiki.themobstate.com -m administratie@themobstate.com
 plesk bin domain -u themobstate.com -ssl true -certificate-name "Lets Encrypt themobstate.com" -ssl-redirect true
 plesk bin domain -u api.themobstate.com -ssl true -certificate-name "Lets Encrypt api.themobstate.com" -ssl-redirect true
 plesk bin domain -u admin.themobstate.com -ssl true -certificate-name "Lets Encrypt admin.themobstate.com" -ssl-redirect true

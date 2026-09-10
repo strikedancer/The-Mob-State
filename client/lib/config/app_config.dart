@@ -28,6 +28,13 @@ class AppConfig {
     }
   }
   
+  static const String wikiBaseUrl = 'https://wiki.themobstate.com';
+
+  static String wikiHomeUrl(String languageCode) {
+    final lang = languageCode.toLowerCase();
+    return '$wikiBaseUrl/$lang/';
+  }
+
   static const Duration apiTimeout = Duration(seconds: 30);
   static const String defaultLocale = 'nl';
 

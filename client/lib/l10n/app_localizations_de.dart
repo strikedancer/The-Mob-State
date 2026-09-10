@@ -17812,6 +17812,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get landingFooterLanguage => 'Sprache';
 
   @override
+  String get landingFooterAlmanac => 'Almanach';
+
+  @override
+  String get helpAlmanacOpen => 'Öffnen Sie den Almanach';
+
+  @override
+  String get helpAlmanacBlurb =>
+      'Kataloge von Ländern, Schmuggelware, Fahrzeugen, Waffen, Drogen und Materialien – offizielle Kunst, alle Sprachen: wiki.themobstate.com';
+
+  @override
   String landingCopyright(int year) {
     return '© $year Der Mob State. Alle Rechte vorbehalten.';
   }

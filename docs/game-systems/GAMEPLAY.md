@@ -603,6 +603,8 @@ interest = 0
 
 ## Trade Market
 
+- **Almanak** (`https://wiki.themobstate.com`): publieke catalogus in alle speler-talen, met originele game-beelden. Toont bronlanden en de vaste landfactor van handelswaren (niet de live straatprijs). Links vanuit Help & Uitleg en de landingsfooter.
+
 ### Client / talen
 - **Zwarte markt** (incl. eerste tab handelswaren/contraband), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven. Het voertuigenaanbod-tabblad gebruikt de ARB-key **`marketplace`** (NL: *Marktplaats*), hetzelfde label als vroeger op het aparte handels-scherm.
 - **Marktplaats (P2P)**: naast **voertuigen** (inclusief motoren en boten als voertuig-inventory) kunnen spelers **gedragen gereedschap**, **drugs-lots**, **crypto-lots**, **handelswaren-stacks** en **event items** (transferable chips) aan elkaar verkopen op dezelfde tab; **`GET /market/unified`** combineert voertuigen met `itemListings`. Verkopen start met **Verkoop item** op Marktplaats (ook als de lijst leeg is). De Drugs-rij in dat menu gebruikt hetzelfde apotheek-icoon als het Drugs-menu (geen leeg vlak op web). Contant geld + escrow; eigen advertentie kopen is geblokkeerd. Bound event badges zijn niet listbaar.
@@ -1195,7 +1197,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - Juridische pagina’s: `/privacy`, `/terms` en `/digital-goods` (teksten volledig uit de client-ARB’s; ook bereikbaar als **modal** vanuit de sticky footer op landing/login i.p.v. alleen full-page). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
 - Layout: hero-titel + pitch in een leesbare kolom (op desktop visueel meer naar het midden-rechts t.o.v. de achtergrond-titel), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan**. Ranglijsten: `GET /public/home` via dezelfde API-basis als de rest van de client (`AppConfig.apiBaseUrl`).
 - **CORS:** de API moet origins van de Flutter-web-shell (`https://themobstate.com`, `www`, `admin`, `https://themobstate.nl`, `www`) toestaan wanneer de client op een ander subdomein (`api.…`) aanroept; in productie worden die origins altijd met `ALLOWED_ORIGINS` geünioneerd (`config/index.ts`). Express zet `cors` vóór de Prisma-wachtmiddleware (`app.ts`) zodat ook fout- en 503-responses CORS-headers dragen.
-- **Domeinen:** het spel draait op `themobstate.com` (canonical) én `themobstate.nl` (zelfde app, API blijft `api.themobstate.com`). Transactionele mail hoort van `noreply@themobstate.nl` te komen zodra die mailbox + SPF/DKIM/DMARC op `.nl` staan.
+- **Domeinen:** het spel draait op `themobstate.com` (canonical) én `themobstate.nl` (zelfde app, API blijft `api.themobstate.com`). De **Almanak** staat op `https://wiki.themobstate.com` (catalogus + originele beelden, alle UI-talen). Transactionele mail hoort van `noreply@themobstate.nl` te komen zodra die mailbox + SPF/DKIM/DMARC op `.nl` staan.
 - Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`. SPA-fallback in `app.ts`: `app.use` met GET-check (geen `app.get('*')` — Express 5 / path-to-regexp v8).
 
 ---

@@ -22,6 +22,8 @@ pnpm-debug.log*
 
 # Build outputs
 admin/dist/
+wiki/dist/
+wiki/content/
 client/build/
 client/.dart_tool/
 client/.packages

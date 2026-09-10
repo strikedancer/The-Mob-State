@@ -17600,6 +17600,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get landingFooterLanguage => 'Language';
 
   @override
+  String get landingFooterAlmanac => 'Almanac';
+
+  @override
+  String get helpAlmanacOpen => 'Open the Almanac';
+
+  @override
+  String get helpAlmanacBlurb =>
+      'Catalogues of countries, contraband, vehicles, weapons, drugs and materials — official art, all languages: wiki.themobstate.com';
+
+  @override
   String landingCopyright(int year) {
     return '© $year The Mob State. All rights reserved.';
   }

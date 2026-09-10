@@ -17728,6 +17728,16 @@ class AppLocalizationsPl extends AppLocalizations {
   String get landingFooterLanguage => 'Język';
 
   @override
+  String get landingFooterAlmanac => 'Almanach';
+
+  @override
+  String get helpAlmanacOpen => 'Otwórz Almanach';
+
+  @override
+  String get helpAlmanacBlurb =>
+      'Katalogi krajów, kontrabandy, pojazdów, broni, narkotyków i materiałów — oficjalna grafika, wszystkie języki: wiki.themobstate.com';
+
+  @override
   String landingCopyright(int year) {
     return '© $year Państwo mafii. Wszelkie prawa zastrzeżone.';
   }

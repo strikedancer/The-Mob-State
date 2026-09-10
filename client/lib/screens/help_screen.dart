@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../config/app_config.dart';
 import '../data/help_content.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/help_topic_localizations.dart';
@@ -197,6 +199,27 @@ class _HelpScreenState extends State<HelpScreen> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 14),
+          FilledButton.icon(
+            onPressed: () {
+              final lang = Localizations.localeOf(context).languageCode;
+              launchUrl(
+                Uri.parse(AppConfig.wikiHomeUrl(lang)),
+                mode: LaunchMode.externalApplication,
+              );
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFD4AF37),
+              foregroundColor: Colors.black,
+            ),
+            icon: const Icon(Icons.public),
+            label: Text(l10n.helpAlmanacOpen),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.helpAlmanacBlurb,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
           ),
         ],
       ),

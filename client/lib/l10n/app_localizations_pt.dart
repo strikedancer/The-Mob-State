@@ -17726,6 +17726,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get landingFooterLanguage => 'Linguagem';
 
   @override
+  String get landingFooterAlmanac => 'Almanaque';
+
+  @override
+  String get helpAlmanacOpen => 'Abra o Almanaque';
+
+  @override
+  String get helpAlmanacBlurb =>
+      'Catálogos de países, contrabando, veículos, armas, drogas e materiais — arte oficial, todos os idiomas: wiki.themobstate.com';
+
+  @override
   String landingCopyright(int year) {
     return '© $year O Estado da Máfia. Todos os direitos reservados.';
   }

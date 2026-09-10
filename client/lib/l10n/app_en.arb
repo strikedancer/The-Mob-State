@@ -11005,6 +11005,9 @@
   "landingFooterTerms": "Terms of Service",
   "landingFooterDigitalGoods": "Purchase of Digital Goods",
   "landingFooterLanguage": "Language",
+  "landingFooterAlmanac": "Almanac",
+  "helpAlmanacOpen": "Open the Almanac",
+  "helpAlmanacBlurb": "Catalogues of countries, contraband, vehicles, weapons, drugs and materials — official art, all languages: wiki.themobstate.com",
   "@landingCopyright": {
     "description": "Footer copyright; year is injected from the app clock.",
     "placeholders": {

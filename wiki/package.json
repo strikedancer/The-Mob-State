@@ -1,0 +1,8 @@
+{
+  "name": "themobstate-wiki",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs --content ../backend/content --out dist"
+  }
+}

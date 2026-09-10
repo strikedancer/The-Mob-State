@@ -10601,6 +10601,9 @@
   "landingFooterTerms": "Algemene voorwaarden",
   "landingFooterDigitalGoods": "Aankoop digitale goederen",
   "landingFooterLanguage": "Taal",
+  "landingFooterAlmanac": "Almanak",
+  "helpAlmanacOpen": "Open de Almanak",
+  "helpAlmanacBlurb": "Catalogi van landen, handelswaren, voertuigen, wapens, drugs en materialen — officiële beelden, alle talen: wiki.themobstate.com",
   "@landingCopyright": {
     "description": "Footer copyright; year is injected from the app clock.",
     "placeholders": {

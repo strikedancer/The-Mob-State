@@ -17639,6 +17639,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get landingFooterLanguage => 'Taal';
 
   @override
+  String get landingFooterAlmanac => 'Almanak';
+
+  @override
+  String get helpAlmanacOpen => 'Open de Almanak';
+
+  @override
+  String get helpAlmanacBlurb =>
+      'Catalogi van landen, handelswaren, voertuigen, wapens, drugs en materialen — officiële beelden, alle talen: wiki.themobstate.com';
+
+  @override
   String landingCopyright(int year) {
     return '© $year The Mob State. Alle rechten voorbehouden.';
   }

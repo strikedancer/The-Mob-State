@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
+import '../config/app_config.dart';
 import '../config/supported_languages.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/locale_provider.dart';
@@ -87,6 +90,28 @@ class GuestLegalFooter extends StatelessWidget {
                       ),
                   child: Text(
                     l10n.landingFooterDigitalGoods,
+                    style: const TextStyle(
+                      color: _guestFooterGold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                  ),
+                  onPressed: () {
+                    final lang = Localizations.localeOf(context).languageCode;
+                    launchUrl(
+                      Uri.parse(AppConfig.wikiHomeUrl(lang)),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
+                  child: Text(
+                    l10n.landingFooterAlmanac,
                     style: const TextStyle(
                       color: _guestFooterGold,
                       fontSize: 13,

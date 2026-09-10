@@ -17754,6 +17754,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get landingFooterLanguage => 'Idioma';
 
   @override
+  String get landingFooterAlmanac => 'Almanaque';
+
+  @override
+  String get helpAlmanacOpen => 'abrir el almanaque';
+
+  @override
+  String get helpAlmanacBlurb =>
+      'Catálogos de países, contrabando, vehículos, armas, drogas y materiales: arte oficial, todos los idiomas: wiki.themobstate.com';
+
+  @override
   String landingCopyright(int year) {
     return '© $year El Estado mafioso. Reservados todos los derechos.';
   }

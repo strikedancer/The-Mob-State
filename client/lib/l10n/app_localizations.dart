@@ -30437,6 +30437,24 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get landingFooterLanguage;
 
+  /// No description provided for @landingFooterAlmanac.
+  ///
+  /// In en, this message translates to:
+  /// **'Almanac'**
+  String get landingFooterAlmanac;
+
+  /// No description provided for @helpAlmanacOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Almanac'**
+  String get helpAlmanacOpen;
+
+  /// No description provided for @helpAlmanacBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalogues of countries, contraband, vehicles, weapons, drugs and materials — official art, all languages: wiki.themobstate.com'**
+  String get helpAlmanacBlurb;
+
   /// Footer copyright; year is injected from the app clock.
   ///
   /// In en, this message translates to:
