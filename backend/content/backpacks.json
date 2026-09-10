@@ -58,12 +58,12 @@
     {
       "id": "travel_suitcase",
       "name": "Reiskoffer",
-      "description": "Harde koffer voor lange ritten. +70 vakken (75 totaal). Meer meenemen valt sneller op bij de douane.",
+      "description": "Harde koffer voor lange ritten, alleen voor VIP. +70 vakken (75 totaal). Meer meenemen valt sneller op bij de douane.",
       "type": "SUITCASE",
       "slots": 70,
       "price": 250000,
       "requiredRank": 30,
-      "vipOnly": false,
+      "vipOnly": true,
       "icon": "🧳"
     }
   ]
