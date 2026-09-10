@@ -13,15 +13,16 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - A player can wear two weapons at once (for example a handgun and a rifle). When a crime is committed, both worn slots are compared and the best eligible weapon for that crime is used automatically.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
 - Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo and materials.
-- Context grid (right on desktop, below on mobile): the **current-country** materials depot, or an owned property **in the current country**. Depot pads only to items + one drop cell. Property grids use that building's real capacity. Other-country houses and depot lots stay hidden until the player travels there (`inventoryOtherCountryStashHint`). No fake warehouse slots when the player owns none locally; show `inventoryNoOwnedStorageHint` instead. Backpack squares match `GET /tools/carried` capacity (no 8-slot floor).
-  - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor + cash buttons (no cash drag). Safer on arrest. Slot count comes from `properties.json` `storageCapacity` at the building's upgrade level (house 10→95, apartment 5→38), not the legacy `property_storage_capacity` row (house was wrongly 100).
-  - Warehouse: tools, weapons, ammo, armor + cash buttons. Police/FBI search this building in the arrest country (~40% seize).
-  - Materials stay in the country depot (`POST /drugs/materials/transfer`), not in a house.
+- Context grid (right on desktop, below on mobile): **unplaced stock** in the current country (materials depot + finished drugs + local trade goods), or an owned property **in the current country**. Depot pads only to items + one drop cell. Property grids use that building's real capacity. Other-country houses and depot lots stay hidden until the player travels there (`inventoryOtherCountryStashHint`). No fake warehouse slots when the player owns none locally; show `inventoryNoOwnedStorageHint` instead. Backpack squares match `GET /tools/carried` capacity (no 8-slot floor).
+  - House / apartment / mansion / penthouse / safehouse: weapons, ammo, armor, cash, **materials, finished drugs, trade goods**. Safer on arrest. Slot count comes from `properties.json` `storageCapacity` at the building's upgrade level (house 10→95, apartment 5→38), not the legacy `property_storage_capacity` row.
+  - Warehouse: tools plus the same stash types. Police/FBI search this building in the arrest country (~40% seize, including materials/drugs/trade).
+  - Buy/collect still credits holding inventories first. The player then places stock in a house or warehouse to hold for a better price, and withdraws to unplaced stock before selling. Trade goods never enter the backpack.
+  - Slot costs in property grids: materials `ceil(qty/5)`, drugs **50g/slot**, trade **1 unit = 1 slot**.
 - Drag on desktop/web; tap-select then tap-target everywhere (mobile fallback). Each drop is one API call; no optimistic client move.
 - Stacks with quantity > 1 (ammo, materials, stacked weapons/tools) open a quantity dialog: move 1, move all, or a custom amount.
-- Transfers: weapons `POST /properties/storage/:id/weapons/deposit|withdraw` (house-to-body may send `equip: true`), body slots `POST/DELETE /weapons/crime-weapon` and `/weapons/secondary-weapon`, tools `POST /tools/transfer`, materials depot API, ammo/armor `POST /properties/storage/:id/ammo|armor/deposit|withdraw`.
+- Transfers: weapons `POST /properties/storage/:id/weapons/deposit|withdraw` (house-to-body may send `equip: true`), body slots `POST/DELETE /weapons/crime-weapon` and `/weapons/secondary-weapon`, tools `POST /tools/transfer`, materials depot API plus `POST /properties/storage/:id/materials|drugs|trade/deposit|withdraw`, ammo/armor `POST /properties/storage/:id/ammo|armor/deposit|withdraw`.
 - Invalid drop surfaces the server reason (`INVENTORY_FULL`, `STORAGE_FULL`, `WRONG_COUNTRY`, `STORAGE_TYPE_NOT_ALLOWED`, `ARMOR_ALREADY_EQUIPPED`).
-- Out of scope here: drugs/nightclub, crew storage, garage vehicles, cash-drag.
+- Out of scope here: nightclub venue stock (unprefixed `drugs` keys), crew storage, garage vehicles, cash-drag.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -61,7 +62,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Verify no text overflows or clipped buttons appear.
 - Verify the selected crime weapon shown in Inventory matches the selection used on the Crimes screen and survives refresh/navigation correctly.
 - Verify a player can wear two different weapons at once (crime slot + second slot) and that worn weapons do not consume backpack capacity.
-- Verify drag and tap-to-move between backpack and house/warehouse/depot, including a rejected drop (full, wrong country, wrong type).
+- Verify drag and tap-to-move between backpack, unplaced stock and house/warehouse, including materials/drugs/trade and a rejected drop (full, wrong country, trade-to-backpack).
 - Verify Open storage from a house or warehouse opens this screen with that property selected.
 - Verify the materials depot and storage dropdown only show the current country; other-country stock stays hidden with a travel hint.
 - Verify a newly bought house shows 10 storage squares (not 100). An apartment starts at 5; a warehouse at 100.

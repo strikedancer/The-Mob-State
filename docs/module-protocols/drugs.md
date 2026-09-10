@@ -12,7 +12,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 
 ### Player rules
 1. **Buy** → stock goes into the **depot of the player's current country** (not the backpack).
-2. **Production** in country X consumes **depot(X) first**, then **backpack** (`_carried_`).
+2. **Production** in country X consumes **depot(X) first**, then **house/warehouse stock in X**, then **backpack** (`_carried_`).
 3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` for the current country only.
 4. **Backpack capacity**: materials use slots (`ceil(qty / 5)` per stack) together with tools and unequipped weapons (`toolService.calculateInventoryUsage`). Worn crime/secondary weapons do not use backpack slots. Upgrade backpacks to carry more.
 5. **Travel**:
@@ -26,7 +26,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Migration: `20260829120000_production_materials_country_depot` backfills existing rows to the player's `currentCountry`.
 
 ### API
-- `GET /drugs/my-materials` → `{ materials, depot, storedElsewhere, carried, currentCountry, backpack }` — `depot` is **current country only**; other-country lots stay in `materials` / `storedElsewhere`.
+- `GET /drugs/my-materials` → `{ materials, depot, stored, storedElsewhere, carried, currentCountry, backpack }` — `depot` is **current country only**; `stored` is materials sitting in a house/warehouse in this country; other-country lots stay in `materials` / `storedElsewhere`.
 - `POST /drugs/materials/buy/:materialId` → depot only
 - `POST /drugs/materials/transfer` `{ materialId, quantity, direction }`
 - VIP `buy-missing` also credits the **current-country depot**

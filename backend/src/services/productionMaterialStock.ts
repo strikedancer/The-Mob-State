@@ -1,4 +1,10 @@
 import prisma from '../lib/prisma';
+import {
+  STASH_MATERIAL_PREFIX,
+  STASH_PROPERTY_TYPES,
+  materialStashKey,
+  parseMaterialStashKey,
+} from '../utils/propertyStash';
 
 /** Sentinel country value for materials stored in the personal backpack. */
 export const CARRIED_MATERIAL_LOCATION = '_carried_';
@@ -83,35 +89,113 @@ export async function removeMaterialStock(
   await upsertDelta(tx, playerId, country, materialId, -quantity);
 }
 
+async function propertyMaterialLots(
+  playerId: number,
+  currentCountry: string,
+) {
+  const properties = await prisma.property.findMany({
+    where: {
+      playerId,
+      countryId: currentCountry,
+      propertyType: { in: [...STASH_PROPERTY_TYPES] },
+    },
+    select: { id: true },
+    orderBy: { id: 'asc' },
+  });
+  if (properties.length === 0) return [];
+  const rows = await prisma.propertyDrugStorage.findMany({
+    where: {
+      propertyId: { in: properties.map((item) => item.id) },
+      drugType: { startsWith: STASH_MATERIAL_PREFIX },
+      quantity: { gt: 0 },
+    },
+  });
+  return rows
+    .map((row) => ({
+      propertyId: row.propertyId,
+      materialId: parseMaterialStashKey(row.drugType),
+      quantity: row.quantity,
+    }))
+    .filter(
+      (
+        row,
+      ): row is { propertyId: number; materialId: string; quantity: number } =>
+        !!row.materialId,
+    );
+}
+
+export async function getPropertyMaterialQuantities(
+  playerId: number,
+  currentCountry: string,
+): Promise<Record<string, number>> {
+  const lots = await propertyMaterialLots(playerId, currentCountry);
+  const map: Record<string, number> = {};
+  for (const lot of lots) {
+    map[lot.materialId] = (map[lot.materialId] ?? 0) + lot.quantity;
+  }
+  return map;
+}
+
+async function removePropertyMaterialStock(
+  tx: Tx,
+  propertyId: number,
+  materialId: string,
+  quantity: number,
+): Promise<void> {
+  if (quantity <= 0) return;
+  const key = materialStashKey(materialId);
+  const existing = await tx.propertyDrugStorage.findUnique({
+    where: { propertyId_drugType: { propertyId, drugType: key } },
+  });
+  if (!existing || existing.quantity < quantity) {
+    throw new Error('INSUFFICIENT_MATERIALS');
+  }
+  if (existing.quantity === quantity) {
+    await tx.propertyDrugStorage.delete({ where: { id: existing.id } });
+    return;
+  }
+  await tx.propertyDrugStorage.update({
+    where: { id: existing.id },
+    data: { quantity: existing.quantity - quantity },
+  });
+}
+
 /**
- * Available for production in the current country = local depot + backpack.
+ * Available for production in the current country = local depot + house/warehouse + backpack.
  */
 export async function getProductionAvailableMap(
   playerId: number,
   currentCountry: string,
-): Promise<Record<string, { depot: number; carried: number; total: number }>> {
+): Promise<Record<string, { depot: number; stored: number; carried: number; total: number }>> {
   const rows = await prisma.productionMaterial.findMany({
     where: {
       playerId,
       OR: [{ country: currentCountry }, { country: CARRIED_MATERIAL_LOCATION }],
     },
   });
-  const map: Record<string, { depot: number; carried: number; total: number }> = {};
+  const map: Record<string, { depot: number; stored: number; carried: number; total: number }> = {};
   for (const row of rows) {
-    const entry = map[row.materialId] ?? { depot: 0, carried: 0, total: 0 };
+    const entry = map[row.materialId] ?? { depot: 0, stored: 0, carried: 0, total: 0 };
     if (isCarriedLocation(row.country)) {
       entry.carried += row.quantity;
     } else {
       entry.depot += row.quantity;
     }
-    entry.total = entry.depot + entry.carried;
+    entry.total = entry.depot + entry.stored + entry.carried;
     map[row.materialId] = entry;
+  }
+  const stored = await getPropertyMaterialQuantities(playerId, currentCountry);
+  for (const [materialId, quantity] of Object.entries(stored)) {
+    const entry = map[materialId] ?? { depot: 0, stored: 0, carried: 0, total: 0 };
+    entry.stored += quantity;
+    entry.total = entry.depot + entry.stored + entry.carried;
+    map[materialId] = entry;
   }
   return map;
 }
 
 /**
- * Deduct required materials: prefer local depot, then backpack.
+ * Deduct required materials: prefer local depot, then house/warehouse in this country, then backpack.
  */
 export async function deductForProduction(
   tx: Tx,
@@ -127,6 +211,8 @@ export async function deductForProduction(
     }
   }
 
+  const lots = await propertyMaterialLots(playerId, currentCountry);
+
   for (const [materialId, required] of Object.entries(requirements)) {
     let left = required;
     const depotQty = available[materialId]?.depot ?? 0;
@@ -134,6 +220,15 @@ export async function deductForProduction(
     if (fromDepot > 0) {
       await removeMaterialStock(tx, playerId, currentCountry, materialId, fromDepot);
       left -= fromDepot;
+    }
+    if (left > 0) {
+      for (const lot of lots) {
+        if (lot.materialId !== materialId || lot.quantity <= 0 || left <= 0) continue;
+        const take = Math.min(lot.quantity, left);
+        await removePropertyMaterialStock(tx, lot.propertyId, materialId, take);
+        lot.quantity -= take;
+        left -= take;
+      }
     }
     if (left > 0) {
       await removeMaterialStock(

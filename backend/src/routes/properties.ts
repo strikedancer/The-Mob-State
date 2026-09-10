@@ -330,6 +330,181 @@ router.post('/storage/:propertyId/armor/withdraw', authenticate, async (req: Aut
   }
 });
 
+function parsePositiveInt(value: unknown): number {
+  const n = Math.floor(Number(value));
+  return Number.isFinite(n) ? n : NaN;
+}
+
+router.post('/storage/:propertyId/materials/deposit', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const materialId = String(req.body?.materialId || '');
+    const quantity = parsePositiveInt(req.body?.quantity || 1);
+    const source = req.body?.source === 'carried' ? 'carried' : 'depot';
+    if (isNaN(propertyId) || !materialId || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.depositMaterial(
+      req.player!.id,
+      propertyId,
+      materialId,
+      quantity,
+      source,
+    );
+    return res.status(200).json({
+      event: 'properties.material_deposited',
+      params: { propertyId, materialId, quantity, source },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.material_deposit_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/materials/withdraw', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const materialId = String(req.body?.materialId || '');
+    const quantity = parsePositiveInt(req.body?.quantity || 1);
+    const target = req.body?.target === 'carried' ? 'carried' : 'depot';
+    if (isNaN(propertyId) || !materialId || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.withdrawMaterial(
+      req.player!.id,
+      propertyId,
+      materialId,
+      quantity,
+      target,
+    );
+    return res.status(200).json({
+      event: 'properties.material_withdrawn',
+      params: { propertyId, materialId, quantity, target },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.material_withdraw_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/drugs/deposit', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const drugType = String(req.body?.drugType || '');
+    const quality = String(req.body?.quality || 'C');
+    const quantity = parsePositiveInt(req.body?.quantity || 1);
+    if (isNaN(propertyId) || !drugType || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.depositDrug(
+      req.player!.id,
+      propertyId,
+      drugType,
+      quality,
+      quantity,
+    );
+    return res.status(200).json({
+      event: 'properties.drug_deposited',
+      params: { propertyId, drugType, quality, quantity },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.drug_deposit_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/drugs/withdraw', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const drugType = String(req.body?.drugType || '');
+    const quality = String(req.body?.quality || 'C');
+    const quantity = parsePositiveInt(req.body?.quantity || 1);
+    if (isNaN(propertyId) || !drugType || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.withdrawDrug(
+      req.player!.id,
+      propertyId,
+      drugType,
+      quality,
+      quantity,
+    );
+    return res.status(200).json({
+      event: 'properties.drug_withdrawn',
+      params: { propertyId, drugType, quality, quantity },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.drug_withdraw_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/trade/deposit', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const goodType = String(req.body?.goodType || '');
+    const quantity = parsePositiveInt(req.body?.quantity || 1);
+    if (isNaN(propertyId) || !goodType || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.depositTrade(
+      req.player!.id,
+      propertyId,
+      goodType,
+      quantity,
+    );
+    return res.status(200).json({
+      event: 'properties.trade_deposited',
+      params: { propertyId, goodType, quantity },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.trade_deposit_failed',
+      params: { reason },
+    });
+  }
+});
+
+router.post('/storage/:propertyId/trade/withdraw', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const propertyId = parseInt(String(req.params.propertyId), 10);
+    const goodType = String(req.body?.goodType || '');
+    const quantity = parsePositiveInt(req.body?.quantity || 1);
+    if (isNaN(propertyId) || !goodType || quantity <= 0) {
+      return res.status(400).json({ event: 'error.validation', params: {} });
+    }
+    await propertyStorageService.withdrawTrade(
+      req.player!.id,
+      propertyId,
+      goodType,
+      quantity,
+    );
+    return res.status(200).json({
+      event: 'properties.trade_withdrawn',
+      params: { propertyId, goodType, quantity },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'UNKNOWN';
+    return res.status(storageFailStatus(reason)).json({
+      event: 'properties.trade_withdraw_failed',
+      params: { reason },
+    });
+  }
+});
+
 /**
  * POST /properties/claim/:propertyId
  * Claim a property in the current country

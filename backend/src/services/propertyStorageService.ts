@@ -6,17 +6,76 @@ import { weaponService } from './weaponService';
 import { ammoService } from './ammoService';
 import backpackService from './backpackService';
 import { catalogStorageCapacity } from '../utils/propertyCatalogStorage';
+import tradableGoods from '../../content/tradableGoods.json';
+import {
+  STASH_PROPERTY_TYPES,
+  STASH_TRADE_PX_PREFIX,
+  drugStashKey,
+  isMetaStashKey,
+  materialStashKey,
+  parseDrugStashKey,
+  parseMaterialStashKey,
+  parseTradeStashKey,
+  stashSlotsForRow,
+  tradePriceStashKey,
+  tradeStashKey,
+} from '../utils/propertyStash';
+import {
+  addMaterialStock,
+  CARRIED_MATERIAL_LOCATION,
+  isCarriedLocation,
+  materialSlotsForQuantity,
+  removeMaterialStock,
+} from './productionMaterialStock';
 
-type StorageCategory = 'tools' | 'drugs' | 'weapons' | 'cash' | 'ammo' | 'armor';
+type StorageCategory =
+  | 'tools'
+  | 'weapons'
+  | 'cash'
+  | 'ammo'
+  | 'armor'
+  | 'materials'
+  | 'drugs'
+  | 'trade';
+
+const DRUG_QUALITIES = new Set(['D', 'C', 'B', 'A', 'S']);
+
+type NamedCatalogItem = { id: string; name?: string; displayName?: string };
+
+function loadNamedCatalog(
+  fileName: string,
+  listKey: 'drugs' | 'materials',
+): Map<string, string> {
+  try {
+    const raw = JSON.parse(
+      readFileSync(join(__dirname, `../../content/${fileName}`), 'utf8'),
+    ) as Record<string, NamedCatalogItem[]>;
+    const items = raw[listKey] ?? [];
+    return new Map(
+      items.map((item) => [item.id, item.displayName || item.name || item.id]),
+    );
+  } catch {
+    return new Map();
+  }
+}
+
+const MATERIAL_NAMES = loadNamedCatalog('drugs.json', 'materials');
+const DRUG_NAMES = loadNamedCatalog('drugs.json', 'drugs');
+const TRADE_NAMES = new Map(
+  (tradableGoods as NamedCatalogItem[]).map((item) => [
+    item.id,
+    item.name || item.id,
+  ]),
+);
 
 const PROPERTY_STORAGE_RULES: Record<string, StorageCategory[]> = {
-  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor'],
+  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
   nightclub: ['drugs'],
-  house: ['weapons', 'cash', 'ammo', 'armor'],
-  apartment: ['weapons', 'cash', 'ammo', 'armor'],
-  mansion: ['weapons', 'cash', 'ammo', 'armor'],
-  penthouse: ['weapons', 'cash', 'ammo', 'armor'],
-  safehouse: ['weapons', 'cash', 'ammo', 'armor'],
+  house: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  apartment: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  mansion: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  penthouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  safehouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
 };
 
 const CASH_SLOT_VALUE = 10000;
@@ -28,6 +87,10 @@ const NON_DRUG_STORAGE_FILTER = [
   { drugType: { startsWith: 'ammo:' } },
   { drugType: { startsWith: 'armor:' } },
   { drugType: { startsWith: 'armorcond:' } },
+  { drugType: { startsWith: 'material:' } },
+  { drugType: { startsWith: 'drug:' } },
+  { drugType: { startsWith: 'trade:' } },
+  { drugType: { startsWith: 'tradepx:' } },
   { drugType: '__cash__' },
 ];
 
@@ -184,6 +247,15 @@ class PropertyStorageService {
         usage += armorCount;
       }
 
+      const stashRows = await prisma.propertyDrugStorage.findMany({
+        where: { propertyId: property.id },
+        select: { drugType: true, quantity: true },
+      });
+      usage += stashRows.reduce(
+        (sum, row) => sum + stashSlotsForRow(row.drugType, row.quantity),
+        0,
+      );
+
       const accessibleInCurrentCountry = player?.currentCountry === property.countryId;
 
       overview.push({
@@ -249,6 +321,14 @@ class PropertyStorageService {
       ? await this.getCashStorage(property.id)
       : 0;
 
+    const stashRows = await prisma.propertyDrugStorage.findMany({
+      where: { propertyId: property.id },
+      select: { drugType: true, quantity: true },
+    });
+    const materials = this.parseMaterialStash(stashRows);
+    const finishedDrugs = this.parseFinishedDrugStash(stashRows);
+    const trade = this.parseTradeStash(stashRows);
+
     const toolUsage = allowedCategories.includes('tools')
       ? await toolService.getPropertyStorageUsage(playerId, property.id)
       : 0;
@@ -259,7 +339,12 @@ class PropertyStorageService {
     );
     const armorUsage = armor.reduce((sum, row) => sum + row.quantity, 0);
     const cashUsage = Math.ceil(cashAmount / CASH_SLOT_VALUE);
-    const usage = toolUsage + drugUsage + weaponUsage + ammoUsage + armorUsage + cashUsage;
+    const stashUsage = stashRows.reduce(
+      (sum, row) => sum + stashSlotsForRow(row.drugType, row.quantity),
+      0,
+    );
+    const usage =
+      toolUsage + drugUsage + weaponUsage + ammoUsage + armorUsage + cashUsage + stashUsage;
 
     return {
       propertyId: property.id,
@@ -274,6 +359,9 @@ class PropertyStorageService {
       ammo,
       armor,
       drugs,
+      materials,
+      finishedDrugs,
+      trade,
       cashAmount,
     };
   }
@@ -425,6 +513,481 @@ class PropertyStorageService {
   private ammoSlotsForQuantity(rounds: number): number {
     if (rounds <= 0) return 0;
     return Math.ceil(rounds / AMMO_ROUNDS_PER_SLOT);
+  }
+
+  private parseMaterialStash(
+    rows: Array<{ drugType: string; quantity: number }>,
+  ) {
+    return rows
+      .map((row) => {
+        const materialId = parseMaterialStashKey(row.drugType);
+        if (!materialId) return null;
+        return { materialId, name: MATERIAL_NAMES.get(materialId) ?? materialId, quantity: row.quantity };
+      })
+      .filter((row): row is { materialId: string; name: string; quantity: number } => !!row);
+  }
+
+  private parseFinishedDrugStash(
+    rows: Array<{ drugType: string; quantity: number }>,
+  ) {
+    return rows
+      .map((row) => {
+        const parsed = parseDrugStashKey(row.drugType);
+        if (!parsed) return null;
+        return {
+          drugType: parsed.drugType,
+          quality: parsed.quality,
+          name: DRUG_NAMES.get(parsed.drugType) ?? parsed.drugType,
+          quantity: row.quantity,
+        };
+      })
+      .filter(
+        (
+          row,
+        ): row is {
+          drugType: string;
+          quality: string;
+          name: string;
+          quantity: number;
+        } => !!row,
+      );
+  }
+
+  private parseTradeStash(rows: Array<{ drugType: string; quantity: number }>) {
+    const priceByGood = new Map<string, number>();
+    for (const row of rows) {
+      if (row.drugType.startsWith(STASH_TRADE_PX_PREFIX)) {
+        priceByGood.set(row.drugType.slice(STASH_TRADE_PX_PREFIX.length), row.quantity);
+      }
+    }
+    return rows
+      .map((row) => {
+        const goodType = parseTradeStashKey(row.drugType);
+        if (!goodType) return null;
+        return {
+          goodType,
+          name: TRADE_NAMES.get(goodType) ?? goodType,
+          quantity: row.quantity,
+          purchasePrice: priceByGood.get(goodType) ?? 0,
+        };
+      })
+      .filter(
+        (
+          row,
+        ): row is {
+          goodType: string;
+          name: string;
+          quantity: number;
+          purchasePrice: number;
+        } => !!row,
+      );
+  }
+
+  private assertStashProperty(propertyType: string, category: StorageCategory) {
+    if (!(STASH_PROPERTY_TYPES as readonly string[]).includes(propertyType)) {
+      throw new Error('STORAGE_TYPE_NOT_ALLOWED');
+    }
+    if (!this.getAllowedCategories(propertyType).includes(category)) {
+      throw new Error('STORAGE_TYPE_NOT_ALLOWED');
+    }
+  }
+
+  private async extraSlotsForKey(
+    propertyId: number,
+    storageKey: string,
+    newQuantity: number,
+  ): Promise<number> {
+    const existing = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: storageKey } },
+    });
+    const oldSlots = stashSlotsForRow(storageKey, existing?.quantity ?? 0);
+    const nextSlots = stashSlotsForRow(storageKey, newQuantity);
+    return nextSlots - oldSlots;
+  }
+
+  async getTradeQuantityInCountry(
+    playerId: number,
+    country: string,
+    goodType: string,
+  ): Promise<number> {
+    const properties = await prisma.property.findMany({
+      where: {
+        playerId,
+        countryId: country,
+        propertyType: { in: [...STASH_PROPERTY_TYPES] },
+      },
+      select: { id: true },
+    });
+    if (properties.length === 0) return 0;
+    const key = tradeStashKey(goodType);
+    const rows = await prisma.propertyDrugStorage.findMany({
+      where: {
+        propertyId: { in: properties.map((item) => item.id) },
+        drugType: key,
+      },
+      select: { quantity: true },
+    });
+    return rows.reduce((sum, row) => sum + row.quantity, 0);
+  }
+
+  async depositMaterial(
+    playerId: number,
+    propertyId: number,
+    materialId: string,
+    quantity: number,
+    source: 'depot' | 'carried',
+  ) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    this.assertStashProperty(property.propertyType, 'materials');
+    if (quantity <= 0) throw new Error('INVALID_QUANTITY');
+
+    const fromCountry =
+      source === 'carried' ? CARRIED_MATERIAL_LOCATION : player.currentCountry;
+    const owned = await prisma.productionMaterial.findUnique({
+      where: {
+        playerId_country_materialId: { playerId, country: fromCountry, materialId },
+      },
+    });
+    if (!owned || owned.quantity < quantity) {
+      throw new Error('INSUFFICIENT_MATERIALS');
+    }
+
+    const key = materialStashKey(materialId);
+    const existing = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: key } },
+    });
+    const detail = await this.getPropertyStorageDetail(playerId, propertyId);
+    const delta = await this.extraSlotsForKey(
+      propertyId,
+      key,
+      (existing?.quantity ?? 0) + quantity,
+    );
+    if (detail.usage + delta > detail.capacity) {
+      throw new Error('STORAGE_FULL');
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await removeMaterialStock(tx, playerId, fromCountry, materialId, quantity);
+      await this.bumpStorageKey(tx, propertyId, key, quantity);
+    });
+    if (isCarriedLocation(fromCountry)) {
+      const newUsage = await toolService.calculateInventoryUsage(playerId);
+      await prisma.player.update({
+        where: { id: playerId },
+        data: { inventory_slots_used: newUsage },
+      });
+    }
+  }
+
+  async withdrawMaterial(
+    playerId: number,
+    propertyId: number,
+    materialId: string,
+    quantity: number,
+    target: 'depot' | 'carried',
+  ) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    this.assertStashProperty(property.propertyType, 'materials');
+    if (quantity <= 0) throw new Error('INVALID_QUANTITY');
+
+    const key = materialStashKey(materialId);
+    const stored = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: key } },
+    });
+    if (!stored || stored.quantity < quantity) {
+      throw new Error('INSUFFICIENT_MATERIALS');
+    }
+
+    const toCountry =
+      target === 'carried' ? CARRIED_MATERIAL_LOCATION : player.currentCountry;
+    if (target === 'carried') {
+      const carried = await prisma.productionMaterial.findUnique({
+        where: {
+          playerId_country_materialId: {
+            playerId,
+            country: CARRIED_MATERIAL_LOCATION,
+            materialId,
+          },
+        },
+      });
+      const extra =
+        materialSlotsForQuantity((carried?.quantity ?? 0) + quantity) -
+        materialSlotsForQuantity(carried?.quantity ?? 0);
+      const usage = await toolService.calculateInventoryUsage(playerId);
+      const capacity = await backpackService.getPlayerCarryingCapacity(playerId);
+      if (usage + extra > capacity) {
+        throw new Error('INVENTORY_FULL');
+      }
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await this.bumpStorageKey(tx, propertyId, key, -quantity);
+      await addMaterialStock(tx, playerId, toCountry, materialId, quantity);
+    });
+    if (target === 'carried') {
+      const newUsage = await toolService.calculateInventoryUsage(playerId);
+      await prisma.player.update({
+        where: { id: playerId },
+        data: { inventory_slots_used: newUsage },
+      });
+    }
+  }
+
+  async depositDrug(
+    playerId: number,
+    propertyId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+  ) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    this.assertStashProperty(property.propertyType, 'drugs');
+    if (quantity <= 0) throw new Error('INVALID_QUANTITY');
+    if (!DRUG_NAMES.has(drugType) || !DRUG_QUALITIES.has(quality)) {
+      throw new Error('UNKNOWN_DRUG');
+    }
+
+    const owned = await prisma.drugInventory.findUnique({
+      where: { playerId_drugType_quality: { playerId, drugType, quality } },
+    });
+    if (!owned || owned.quantity < quantity) {
+      throw new Error('INSUFFICIENT_DRUGS');
+    }
+
+    const key = drugStashKey(drugType, quality);
+    const existing = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: key } },
+    });
+    const detail = await this.getPropertyStorageDetail(playerId, propertyId);
+    const delta = await this.extraSlotsForKey(
+      propertyId,
+      key,
+      (existing?.quantity ?? 0) + quantity,
+    );
+    if (detail.usage + delta > detail.capacity) {
+      throw new Error('STORAGE_FULL');
+    }
+
+    await prisma.$transaction(async (tx) => {
+      if (owned.quantity === quantity) {
+        await tx.drugInventory.delete({ where: { id: owned.id } });
+      } else {
+        await tx.drugInventory.update({
+          where: { id: owned.id },
+          data: { quantity: owned.quantity - quantity },
+        });
+      }
+      await this.bumpStorageKey(tx, propertyId, key, quantity);
+    });
+  }
+
+  async withdrawDrug(
+    playerId: number,
+    propertyId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+  ) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    this.assertStashProperty(property.propertyType, 'drugs');
+    if (quantity <= 0) throw new Error('INVALID_QUANTITY');
+    if (!DRUG_QUALITIES.has(quality)) {
+      throw new Error('UNKNOWN_DRUG');
+    }
+
+    const key = drugStashKey(drugType, quality);
+    const stored = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: key } },
+    });
+    if (!stored || stored.quantity < quantity) {
+      throw new Error('INSUFFICIENT_DRUGS');
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await this.bumpStorageKey(tx, propertyId, key, -quantity);
+      const existing = await tx.drugInventory.findUnique({
+        where: { playerId_drugType_quality: { playerId, drugType, quality } },
+      });
+      if (existing) {
+        await tx.drugInventory.update({
+          where: { id: existing.id },
+          data: { quantity: existing.quantity + quantity },
+        });
+      } else {
+        await tx.drugInventory.create({
+          data: { playerId, drugType, quality, quantity, ownProduction: false },
+        });
+      }
+    });
+  }
+
+  async depositTrade(
+    playerId: number,
+    propertyId: number,
+    goodType: string,
+    quantity: number,
+  ) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    this.assertStashProperty(property.propertyType, 'trade');
+    if (quantity <= 0) throw new Error('INVALID_QUANTITY');
+    if (!TRADE_NAMES.has(goodType)) {
+      throw new Error('UNKNOWN_GOOD');
+    }
+
+    const owned = await prisma.inventory.findUnique({
+      where: {
+        playerId_goodType_country: {
+          playerId,
+          goodType,
+          country: player.currentCountry,
+        },
+      },
+    });
+    if (!owned || owned.quantity < quantity) {
+      throw new Error('INSUFFICIENT_GOODS');
+    }
+
+    const key = tradeStashKey(goodType);
+    const existing = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: key } },
+    });
+    const detail = await this.getPropertyStorageDetail(playerId, propertyId);
+    const delta = await this.extraSlotsForKey(
+      propertyId,
+      key,
+      (existing?.quantity ?? 0) + quantity,
+    );
+    if (detail.usage + delta > detail.capacity) {
+      throw new Error('STORAGE_FULL');
+    }
+
+    const oldQty = existing?.quantity ?? 0;
+    const pxRow = await prisma.propertyDrugStorage.findUnique({
+      where: {
+        propertyId_drugType: {
+          propertyId,
+          drugType: tradePriceStashKey(goodType),
+        },
+      },
+    });
+    const oldPx = pxRow?.quantity ?? owned.purchasePrice ?? 0;
+    const nextQty = oldQty + quantity;
+    const averagePrice = Math.floor(
+      (oldQty * oldPx + quantity * (owned.purchasePrice ?? 0)) / Math.max(1, nextQty),
+    );
+
+    await prisma.$transaction(async (tx) => {
+      if (owned.quantity === quantity) {
+        await tx.inventory.delete({ where: { id: owned.id } });
+      } else {
+        await tx.inventory.update({
+          where: { id: owned.id },
+          data: { quantity: owned.quantity - quantity },
+        });
+      }
+      await this.bumpStorageKey(tx, propertyId, key, quantity);
+      await this.setTradeAveragePrice(tx, propertyId, goodType, nextQty, averagePrice);
+    });
+  }
+
+  async withdrawTrade(
+    playerId: number,
+    propertyId: number,
+    goodType: string,
+    quantity: number,
+  ) {
+    const { player, property } = await this.getPlayerAndProperty(playerId, propertyId);
+    this.ensureCountryAccess(player.currentCountry, property.countryId);
+    this.assertStashProperty(property.propertyType, 'trade');
+    if (quantity <= 0) throw new Error('INVALID_QUANTITY');
+
+    const key = tradeStashKey(goodType);
+    const stored = await prisma.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: key } },
+    });
+    if (!stored || stored.quantity < quantity) {
+      throw new Error('INSUFFICIENT_GOODS');
+    }
+
+    const pxRow = await prisma.propertyDrugStorage.findUnique({
+      where: {
+        propertyId_drugType: {
+          propertyId,
+          drugType: tradePriceStashKey(goodType),
+        },
+      },
+    });
+    const stashPx = pxRow?.quantity ?? 0;
+    const remainingQty = stored.quantity - quantity;
+
+    await prisma.$transaction(async (tx) => {
+      await this.bumpStorageKey(tx, propertyId, key, -quantity);
+      const existing = await tx.inventory.findUnique({
+        where: {
+          playerId_goodType_country: {
+            playerId,
+            goodType,
+            country: player.currentCountry,
+          },
+        },
+      });
+      if (existing) {
+        const nextQty = existing.quantity + quantity;
+        const averagePrice = Math.floor(
+          (existing.quantity * (existing.purchasePrice ?? 0) + quantity * stashPx) /
+            Math.max(1, nextQty),
+        );
+        await tx.inventory.update({
+          where: { id: existing.id },
+          data: { quantity: nextQty, purchasePrice: averagePrice },
+        });
+      } else {
+        await tx.inventory.create({
+          data: {
+            playerId,
+            goodType,
+            country: player.currentCountry,
+            quantity,
+            purchasePrice: stashPx,
+          },
+        });
+      }
+      await this.setTradeAveragePrice(tx, propertyId, goodType, remainingQty, stashPx);
+    });
+  }
+
+  private async setTradeAveragePrice(
+    tx: any,
+    propertyId: number,
+    goodType: string,
+    remainingQty: number,
+    averagePrice: number,
+  ) {
+    const pxKey = tradePriceStashKey(goodType);
+    if (remainingQty <= 0) {
+      await tx.propertyDrugStorage.deleteMany({
+        where: { propertyId, drugType: pxKey },
+      });
+      return;
+    }
+    const existing = await tx.propertyDrugStorage.findUnique({
+      where: { propertyId_drugType: { propertyId, drugType: pxKey } },
+    });
+    if (existing) {
+      await tx.propertyDrugStorage.update({
+        where: { id: existing.id },
+        data: { quantity: averagePrice },
+      });
+      return;
+    }
+    await tx.propertyDrugStorage.create({
+      data: { propertyId, drugType: pxKey, quantity: averagePrice },
+    });
   }
 
   private async getAmmoStorage(propertyId: number) {
@@ -848,7 +1411,7 @@ class PropertyStorageService {
         where: { propertyId: warehouse.id },
       });
       for (const row of rows) {
-        if (row.drugType.startsWith('armorcond:')) continue;
+        if (isMetaStashKey(row.drugType)) continue;
         const take = this.seizeAmount(row.quantity);
         if (take <= 0) continue;
         if (row.drugType === '__cash__') {
@@ -858,6 +1421,15 @@ class PropertyStorageService {
         }
         if (take >= row.quantity) {
           await prisma.propertyDrugStorage.delete({ where: { id: row.id } });
+          const goodType = parseTradeStashKey(row.drugType);
+          if (goodType) {
+            await prisma.propertyDrugStorage.deleteMany({
+              where: {
+                propertyId: warehouse.id,
+                drugType: tradePriceStashKey(goodType),
+              },
+            });
+          }
         } else {
           await prisma.propertyDrugStorage.update({
             where: { id: row.id },

@@ -11,6 +11,7 @@ import {
   deductForProduction,
   getCarriedMaterialSlots,
   getProductionAvailableMap,
+  getPropertyMaterialQuantities,
   materialSlotsForQuantity,
   removeMaterialStock,
 } from './productionMaterialStock';
@@ -278,6 +279,7 @@ class DrugService {
     currentCountry: string;
     materials: any[];
     depot: any[];
+    stored: any[];
     storedElsewhere: any[];
     carried: any[];
     backpack: { capacity: number; used: number; materialSlots: number; unitsPerSlot: number };
@@ -307,6 +309,24 @@ class DrugService {
       };
     });
 
+    const storedQty = await getPropertyMaterialQuantities(playerId, currentCountry);
+    const stored = Object.entries(storedQty)
+      .filter(([, quantity]) => quantity > 0)
+      .map(([materialId, quantity]) => {
+        const def = this.materials.get(materialId);
+        return {
+          id: 0,
+          materialId,
+          name: def?.name || materialId,
+          description: def?.description || '',
+          quantity,
+          price: def?.price || 0,
+          country: currentCountry,
+          location: 'stored',
+          slots: 0,
+        };
+      });
+
     const capacity = await getPlayerCarryingCapacity(playerId);
     const used = await toolService.calculateInventoryUsage(playerId);
     const materialSlots = await getCarriedMaterialSlots(playerId);
@@ -317,6 +337,7 @@ class DrugService {
       depot: mapped.filter(
         (m) => m.location === 'depot' && m.country === currentCountry,
       ),
+      stored,
       storedElsewhere: mapped.filter(
         (m) => m.location === 'depot' && m.country !== currentCountry,
       ),
@@ -535,10 +556,11 @@ class DrugService {
       if (have < required) {
         const materialDef = this.materials.get(materialId);
         const depot = available[materialId]?.depot ?? 0;
+        const stored = available[materialId]?.stored ?? 0;
         const carried = available[materialId]?.carried ?? 0;
         return {
           success: false,
-          message: `Je hebt ${required}x ${materialDef?.name || materialId} nodig (depot ${depot} + rugzak ${carried})`,
+          message: `Je hebt ${required}x ${materialDef?.name || materialId} nodig (depot ${depot} + opslag ${stored} + rugzak ${carried})`,
         };
       }
     }

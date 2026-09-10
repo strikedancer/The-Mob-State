@@ -1,4 +1,4 @@
-enum InventoryItemKind { weapon, tool, ammo, material, armor }
+enum InventoryItemKind { weapon, tool, ammo, material, armor, drug, trade }
 
 enum InventoryZone {
   backpack,
@@ -17,6 +17,7 @@ class InventoryGridItem {
   final int? condition;
   final InventoryZone zone;
   final String? imagePath;
+  final String? quality;
 
   const InventoryGridItem({
     required this.kind,
@@ -26,6 +27,7 @@ class InventoryGridItem {
     required this.zone,
     this.condition,
     this.imagePath,
+    this.quality,
   });
 }
 

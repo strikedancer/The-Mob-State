@@ -23,6 +23,8 @@ const _storageKinds = {
   InventoryItemKind.ammo,
   InventoryItemKind.armor,
   InventoryItemKind.material,
+  InventoryItemKind.drug,
+  InventoryItemKind.trade,
 };
 
 class InventoryPaperDollTab extends StatefulWidget {
@@ -46,7 +48,10 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   List<InventoryGridItem> _contextItems = [];
   List<StorageInfo> _properties = [];
   PlayerMaterialsSnapshot _materials = PlayerMaterialsSnapshot.empty();
+  List<DrugInventory> _holdingDrugs = [];
+  List<Map<String, dynamic>> _holdingTrade = [];
   String _contextKey = 'depot';
+  int? _stashPropertyId;
   InventoryGridItem? _selected;
   String? _crimeWeaponId;
   String? _secondaryWeaponId;
@@ -154,6 +159,18 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       final secondaryRes = await _api.get('/weapons/secondary-weapon');
       final securityRes = await _api.get('/security/status');
       final materials = await _drugs.getPlayerMaterials();
+      final drugInventory = await _drugs.getDrugInventory();
+      List<Map<String, dynamic>> tradeLots = [];
+      try {
+        final tradeRes = await _api.get('/trade/inventory');
+        if (tradeRes.statusCode == 200) {
+          final data = jsonDecode(tradeRes.body);
+          tradeLots = ((data['inventory'] as List?) ?? [])
+              .whereType<Map>()
+              .map((row) => Map<String, dynamic>.from(row))
+              .toList();
+        }
+      } catch (_) {}
 
       final tools = (toolsResult['success'] == true)
           ? (toolsResult['tools'] as List<CarriedTool>)
@@ -279,6 +296,8 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       );
 
       _materials = materials;
+      _holdingDrugs = drugInventory;
+      _holdingTrade = tradeLots;
       _properties = overview['success'] == true
           ? (overview['storage'] as List<StorageInfo>)
           : <StorageInfo>[];
@@ -287,7 +306,11 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         final exists = _selectableProperties.any(
           (p) => p.propertyId == _selectedPropertyId,
         );
-        if (!exists) _contextKey = 'depot';
+        if (!exists) {
+          _contextKey = 'depot';
+        } else {
+          _stashPropertyId = _selectedPropertyId;
+        }
       }
 
       _backpack = backpack;
@@ -302,42 +325,48 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
 
   Future<void> _loadContextItems(PlayerMaterialsSnapshot materials) async {
     if (_contextKey == 'depot') {
-      _contextItems = materials.depot
-          .where((m) => m.quantity > 0)
-          .map(
-            (m) => InventoryGridItem(
-              kind: InventoryItemKind.material,
-              id: m.materialId,
-              name: m.name,
-              quantity: m.quantity,
+      _contextItems = [
+        ...materials.depot.where((m) => m.quantity > 0).map(
+          (m) => InventoryGridItem(
+            kind: InventoryItemKind.material,
+            id: m.materialId,
+            name: m.name,
+            quantity: m.quantity,
+            zone: InventoryZone.depot,
+            imagePath: m.getImagePath(),
+          ),
+        ),
+        ..._holdingDrugs.where((d) => d.quantity > 0).map(
+          (d) => InventoryGridItem(
+            kind: InventoryItemKind.drug,
+            id: d.drugType,
+            name: '${d.drugName} (${d.quality})',
+            quantity: d.quantity,
+            zone: InventoryZone.depot,
+            imagePath: d.getImagePath(),
+            quality: d.quality,
+          ),
+        ),
+        ..._holdingTrade.where((t) => ((t['quantity'] as num?)?.toInt() ?? 0) > 0).map(
+          (t) {
+            final goodType = '${t['goodType'] ?? t['id'] ?? ''}';
+            return InventoryGridItem(
+              kind: InventoryItemKind.trade,
+              id: goodType,
+              name: '${t['goodName'] ?? t['name'] ?? goodType}',
+              quantity: (t['quantity'] as num?)?.toInt() ?? 0,
               zone: InventoryZone.depot,
-              imagePath: m.getImagePath(),
-            ),
-          )
-          .toList();
+              imagePath: 'assets/images/trade_goods/cards/$goodType.png',
+            );
+          },
+        ),
+      ];
       return;
     }
 
     final info = _selectedStorage;
     if (info == null || !info.accessibleInCurrentCountry) {
       _contextItems = [];
-      return;
-    }
-
-    if (info.allowedCategories.contains('tools')) {
-      _contextItems = info.tools
-          .where((t) => t.quantity > 0)
-          .map(
-            (t) => InventoryGridItem(
-              kind: InventoryItemKind.tool,
-              id: t.toolId,
-              name: t.name,
-              quantity: t.quantity,
-              zone: InventoryZone.property,
-              imagePath: _toolAssetPath(t.toolId),
-            ),
-          )
-          .toList();
       return;
     }
 
@@ -348,6 +377,21 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     }
     final storage = detail['storage'] as Map<String, dynamic>;
     final items = <InventoryGridItem>[];
+    for (final t in (storage['tools'] as List? ?? [])) {
+      final row = Map<String, dynamic>.from(t as Map);
+      final toolId = '${row['toolId'] ?? row['id'] ?? ''}';
+      if (toolId.isEmpty) continue;
+      items.add(
+        InventoryGridItem(
+          kind: InventoryItemKind.tool,
+          id: toolId,
+          name: '${row['name'] ?? toolId}',
+          quantity: (row['quantity'] as num?)?.toInt() ?? 1,
+          zone: InventoryZone.property,
+          imagePath: _toolAssetPath(toolId),
+        ),
+      );
+    }
     for (final w in (storage['weapons'] as List? ?? [])) {
       final row = Map<String, dynamic>.from(w as Map);
       items.add(
@@ -385,6 +429,53 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           condition: (row['condition'] as num?)?.toInt(),
           zone: InventoryZone.property,
           imagePath: 'assets/images/security/${row['armorId']}.png',
+        ),
+      );
+    }
+    for (final m in (storage['materials'] as List? ?? [])) {
+      final row = Map<String, dynamic>.from(m as Map);
+      final materialId = '${row['materialId'] ?? ''}';
+      if (materialId.isEmpty) continue;
+      items.add(
+        InventoryGridItem(
+          kind: InventoryItemKind.material,
+          id: materialId,
+          name: '${row['name'] ?? materialId}',
+          quantity: (row['quantity'] as num?)?.toInt() ?? 0,
+          zone: InventoryZone.property,
+          imagePath: 'assets/images/materials/$materialId.png',
+        ),
+      );
+    }
+    for (final d in (storage['finishedDrugs'] as List? ?? [])) {
+      final row = Map<String, dynamic>.from(d as Map);
+      final drugType = '${row['drugType'] ?? ''}';
+      final quality = '${row['quality'] ?? 'C'}';
+      if (drugType.isEmpty) continue;
+      items.add(
+        InventoryGridItem(
+          kind: InventoryItemKind.drug,
+          id: drugType,
+          name: '${row['name'] ?? drugType} ($quality)',
+          quantity: (row['quantity'] as num?)?.toInt() ?? 0,
+          zone: InventoryZone.property,
+          imagePath: 'assets/images/drugs/$drugType.png',
+          quality: quality,
+        ),
+      );
+    }
+    for (final t in (storage['trade'] as List? ?? [])) {
+      final row = Map<String, dynamic>.from(t as Map);
+      final goodType = '${row['goodType'] ?? ''}';
+      if (goodType.isEmpty) continue;
+      items.add(
+        InventoryGridItem(
+          kind: InventoryItemKind.trade,
+          id: goodType,
+          name: '${row['name'] ?? goodType}',
+          quantity: (row['quantity'] as num?)?.toInt() ?? 0,
+          zone: InventoryZone.property,
+          imagePath: 'assets/images/trade_goods/cards/$goodType.png',
         ),
       );
     }
@@ -521,6 +612,8 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       case InventoryItemKind.material:
       case InventoryItemKind.weapon:
       case InventoryItemKind.tool:
+      case InventoryItemKind.drug:
+      case InventoryItemKind.trade:
         return true;
       case InventoryItemKind.armor:
         return false;
@@ -590,7 +683,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       setState(() => _selected = item);
       return;
     }
-    if (_selected!.id == item.id && _selected!.zone == item.zone) {
+    if (_sameGridItem(_selected!, item)) {
       setState(() => _selected = null);
       return;
     }
@@ -600,6 +693,13 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   void _onTapZone(InventoryZone zone) {
     if (_selected == null) return;
     _transfer(_selected!, zone);
+  }
+
+  bool _sameGridItem(InventoryGridItem a, InventoryGridItem b) {
+    return a.kind == b.kind &&
+        a.id == b.id &&
+        a.zone == b.zone &&
+        a.quality == b.quality;
   }
 
   Future<void> _transfer(InventoryGridItem source, InventoryZone target) async {
@@ -632,7 +732,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     };
 
     try {
-      final propertyId = _selectedPropertyId;
+      final propertyId = _selectedPropertyId ?? _stashPropertyId;
       if (source.kind == InventoryItemKind.weapon &&
           _isWeaponEquipZone(target) &&
           source.zone == InventoryZone.backpack) {
@@ -758,6 +858,84 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           materialId: source.id,
           quantity: quantity,
           direction: 'to_backpack',
+        );
+      } else if (source.kind == InventoryItemKind.material &&
+          source.zone == InventoryZone.backpack &&
+          target == InventoryZone.property &&
+          propertyId != null) {
+        result = await _inventory.depositMaterialToProperty(
+          propertyId: propertyId,
+          materialId: source.id,
+          quantity: quantity,
+          source: 'carried',
+        );
+      } else if (source.kind == InventoryItemKind.material &&
+          source.zone == InventoryZone.depot &&
+          target == InventoryZone.property &&
+          propertyId != null) {
+        result = await _inventory.depositMaterialToProperty(
+          propertyId: propertyId,
+          materialId: source.id,
+          quantity: quantity,
+          source: 'depot',
+        );
+      } else if (source.kind == InventoryItemKind.material &&
+          source.zone == InventoryZone.property &&
+          target == InventoryZone.backpack &&
+          propertyId != null) {
+        result = await _inventory.withdrawMaterialFromProperty(
+          propertyId: propertyId,
+          materialId: source.id,
+          quantity: quantity,
+          target: 'carried',
+        );
+      } else if (source.kind == InventoryItemKind.material &&
+          source.zone == InventoryZone.property &&
+          target == InventoryZone.depot &&
+          propertyId != null) {
+        result = await _inventory.withdrawMaterialFromProperty(
+          propertyId: propertyId,
+          materialId: source.id,
+          quantity: quantity,
+          target: 'depot',
+        );
+      } else if (source.kind == InventoryItemKind.drug &&
+          source.zone == InventoryZone.depot &&
+          target == InventoryZone.property &&
+          propertyId != null) {
+        result = await _inventory.depositDrugToProperty(
+          propertyId: propertyId,
+          drugType: source.id,
+          quality: source.quality ?? 'C',
+          quantity: quantity,
+        );
+      } else if (source.kind == InventoryItemKind.drug &&
+          source.zone == InventoryZone.property &&
+          target == InventoryZone.depot &&
+          propertyId != null) {
+        result = await _inventory.withdrawDrugFromHouse(
+          propertyId: propertyId,
+          drugType: source.id,
+          quality: source.quality ?? 'C',
+          quantity: quantity,
+        );
+      } else if (source.kind == InventoryItemKind.trade &&
+          source.zone == InventoryZone.depot &&
+          target == InventoryZone.property &&
+          propertyId != null) {
+        result = await _inventory.depositTradeToProperty(
+          propertyId: propertyId,
+          goodType: source.id,
+          quantity: quantity,
+        );
+      } else if (source.kind == InventoryItemKind.trade &&
+          source.zone == InventoryZone.property &&
+          target == InventoryZone.depot &&
+          propertyId != null) {
+        result = await _inventory.withdrawTradeFromProperty(
+          propertyId: propertyId,
+          goodType: source.id,
+          quantity: quantity,
         );
       }
     } catch (e) {
@@ -1001,14 +1179,30 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           ],
           onChanged: (value) async {
             if (value == null) return;
-            setState(() => _contextKey = value);
+            setState(() {
+              _contextKey = value;
+              if (value.startsWith('property_')) {
+                _stashPropertyId = int.tryParse(
+                  value.substring('property_'.length),
+                );
+              }
+            });
             final materials = await _drugs.getPlayerMaterials();
             _materials = materials;
             await _loadContextItems(materials);
             if (mounted) setState(() {});
           },
         ),
-        const SizedBox(height: 8),
+        if (_contextKey == 'depot')
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Text(
+              l10n.inventoryUnplacedHint,
+              style: const TextStyle(color: Colors.white54, fontSize: 12),
+            ),
+          )
+        else
+          const SizedBox(height: 8),
         if (storage != null && !storage.accessibleInCurrentCountry)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -1130,7 +1324,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     final countryId = _materials.currentCountry.isNotEmpty
         ? _materials.currentCountry
         : context.read<AuthProvider>().currentPlayer?.currentCountry;
-    return l10n.inventoryMaterialsDepotIn(_countryLabel(countryId, l10n));
+    return l10n.inventoryUnplacedGrid(_countryLabel(countryId, l10n));
   }
 
   String _storageOptionLabel(StorageInfo property, AppLocalizations l10n) {

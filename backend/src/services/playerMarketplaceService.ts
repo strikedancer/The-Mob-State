@@ -20,6 +20,7 @@ import drugService from './drugService';
 import { drugFacilityService } from './drugFacilityService';
 import type { DrugQuality } from './drugFacilityService';
 import { getGoodById } from './tradeService';
+import { propertyStorageService } from './propertyStorageService';
 import {
   creditEventItem,
   debitEventItem,
@@ -1017,7 +1018,12 @@ export const playerMarketplaceService = {
         },
       });
       const currentQuantity = existing?.quantity ?? 0;
-      if (currentQuantity + lotQuantity > good.maxInventory) {
+      const storedQuantity = await propertyStorageService.getTradeQuantityInCountry(
+        buyerId,
+        lotCountry,
+        meta.goodType,
+      );
+      if (currentQuantity + storedQuantity + lotQuantity > good.maxInventory) {
         throw new Error('TRADE_CAPACITY');
       }
 

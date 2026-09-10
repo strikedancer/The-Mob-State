@@ -135,6 +135,10 @@ class InventorySlot extends StatelessWidget {
         return Icons.science;
       case InventoryItemKind.armor:
         return Icons.shield;
+      case InventoryItemKind.drug:
+        return Icons.medication;
+      case InventoryItemKind.trade:
+        return Icons.inventory_2;
     }
   }
 }

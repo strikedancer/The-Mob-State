@@ -22,13 +22,13 @@ interface ToolsData {
 }
 
 const PROPERTY_STORAGE_RULES: Record<string, string[]> = {
-  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor'],
+  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
   nightclub: ['drugs'],
-  house: ['weapons', 'cash', 'ammo', 'armor'],
-  apartment: ['weapons', 'cash', 'ammo', 'armor'],
-  mansion: ['weapons', 'cash', 'ammo', 'armor'],
-  penthouse: ['weapons', 'cash', 'ammo', 'armor'],
-  safehouse: ['weapons', 'cash', 'ammo', 'armor'],
+  house: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  apartment: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  mansion: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  penthouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
+  safehouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
 };
 
 function toolConditionFlags(durability: number, maxDurability?: number) {

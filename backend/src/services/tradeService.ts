@@ -13,6 +13,7 @@ import { scoreTradeSellContribution } from './gameEventTradeContribution';
 import tradableGoods from '../../content/tradableGoods.json';
 import countries from '../../content/countries.json';
 import { getPlayerCountry } from './travelService';
+import { propertyStorageService } from './propertyStorageService';
 
 export interface TradableGood {
   id: string;
@@ -251,7 +252,12 @@ export async function buyGoods(
 
   // Check inventory limits (per-country warehouse)
   const currentQuantity = await getInventoryItem(playerId, goodType, currentCountry);
-  const newQuantity = currentQuantity + quantity;
+  const storedQuantity = await propertyStorageService.getTradeQuantityInCountry(
+    playerId,
+    currentCountry,
+    goodType,
+  );
+  const newQuantity = currentQuantity + storedQuantity + quantity;
 
   if (newQuantity > good.maxInventory) {
     throw new Error('INVENTORY_FULL');

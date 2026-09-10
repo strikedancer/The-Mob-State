@@ -360,4 +360,134 @@ class InventoryService {
       return {'success': false, 'error': 'Network error: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> depositMaterialToProperty({
+    required int propertyId,
+    required String materialId,
+    required int quantity,
+    required String source,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/materials/deposit',
+        {'materialId': materialId, 'quantity': quantity, 'source': source},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to store material',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> withdrawMaterialFromProperty({
+    required int propertyId,
+    required String materialId,
+    required int quantity,
+    required String target,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/materials/withdraw',
+        {'materialId': materialId, 'quantity': quantity, 'target': target},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to withdraw material',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> depositDrugToProperty({
+    required int propertyId,
+    required String drugType,
+    required String quality,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/drugs/deposit',
+        {'drugType': drugType, 'quality': quality, 'quantity': quantity},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to store drugs',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> withdrawDrugFromHouse({
+    required int propertyId,
+    required String drugType,
+    required String quality,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/drugs/withdraw',
+        {'drugType': drugType, 'quality': quality, 'quantity': quantity},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to withdraw drugs',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> depositTradeToProperty({
+    required int propertyId,
+    required String goodType,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/trade/deposit',
+        {'goodType': goodType, 'quantity': quantity},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to store trade goods',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> withdrawTradeFromProperty({
+    required int propertyId,
+    required String goodType,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/storage/$propertyId/trade/withdraw',
+        {'goodType': goodType, 'quantity': quantity},
+      );
+      if (response.statusCode == 200) return {'success': true};
+      final error = json.decode(response.body);
+      return {
+        'success': false,
+        'error': error['params']?['reason'] ?? 'Failed to withdraw trade goods',
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: $e'};
+    }
+  }
 }

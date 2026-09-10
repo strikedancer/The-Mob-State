@@ -368,6 +368,7 @@
     "summaryEn": "Manage everything you carry, store and equip: weapons, tools, vehicles, drugs and trade goods.",
     "howNl": [
       "Het materialendepot en pandopslag tonen alleen het land waar je nu bent. Voorraad in andere landen blijft daar tot je erheen reist.",
+      "Gekochte of opgehaalde materialen, drugs en handelswaren staan eerst bij niet-geplaatste voorraad. Zet ze in een huis of loods tot de prijs beter is; haal ze daar weer uit vóór je verkoopt. Handelswaren gaan niet in de rugzak.",
       "Een nieuw huis heeft 10 opslagvakjes; upgraden vergroot dat. Een appartement start op 5, een magazijn op 100.",
       "Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.",
       "Gewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.",
@@ -381,6 +382,7 @@
     ],
     "howEn": [
       "The materials depot and property storage show only the country you are in. Stock in other countries stays there until you travel.",
+      "Bought or collected materials, drugs and trade goods first sit in unplaced stock. Place them in a house or warehouse to hold for a better price; withdraw them before you sell. Trade goods cannot go in the backpack.",
       "A new house has 10 storage slots; upgrades raise that. An apartment starts at 5, a warehouse at 100.",
       "Inventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.",
       "Weight determines your carrying capacity. Some crimes or travel block if you are overloaded.",
@@ -417,6 +419,7 @@
       "Mijn eigendommen opent op het land waar je nu bent. Filter op Alles of een ander land. Elke tegel in bezit toont het land van dat pand.",
       "Elk eigendom heeft zijn eigen rol: opslagruimte, wooncapaciteit of toegang tot een vervolgmodule zoals de nachtclub.",
       "Warehouse-upgrades vergroten je opslagcapaciteit voor items en andere voorraden.",
+      "Huizen bewaren wapens, munitie, vesten, cash, materialen, drugs en handelswaren en zijn veiliger bij aanhouding. Magazijnen bewaren hetzelfde plus gereedschap.",
       "Huizen en appartementen vergroten je wooncapaciteit; VIP-spelers krijgen daar extra plekken bovenop.",
       "Sommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.",
       "Verkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.",
@@ -427,6 +430,7 @@
       "My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building's country.",
       "Each property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.",
       "Warehouse upgrades increase your storage capacity for items and other stock.",
+      "Houses store weapons, ammo, vests, cash, materials, drugs and trade goods and are safer on arrest. Warehouses store the same plus tools.",
       "Houses and apartments increase housing capacity; VIP players receive extra slots on top of that.",
       "Some properties are unique or country locked: you must be in the correct country to buy or manage them.",
       "Selling yields 70% of purchase price. No cooldown on selling, it is instant.",

@@ -150,6 +150,7 @@ class PlayerMaterialsSnapshot {
   final String currentCountry;
   final List<PlayerMaterial> materials;
   final List<PlayerMaterial> depot;
+  final List<PlayerMaterial> stored;
   final List<PlayerMaterial> carried;
   final int backpackCapacity;
   final int backpackUsed;
@@ -160,6 +161,7 @@ class PlayerMaterialsSnapshot {
     required this.currentCountry,
     required this.materials,
     required this.depot,
+    this.stored = const [],
     required this.carried,
     required this.backpackCapacity,
     required this.backpackUsed,
@@ -171,6 +173,7 @@ class PlayerMaterialsSnapshot {
         currentCountry: '',
         materials: const [],
         depot: const [],
+        stored: const [],
         carried: const [],
         backpackCapacity: 5,
         backpackUsed: 0,
@@ -179,20 +182,29 @@ class PlayerMaterialsSnapshot {
       );
 
   factory PlayerMaterialsSnapshot.fromJson(Map<String, dynamic> json) {
-    final materialsJson = (json['materials'] as List?) ?? const [];
-    final materials = materialsJson
-        .whereType<Map>()
-        .map((e) => PlayerMaterial.fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+    List<PlayerMaterial> parseList(String key) {
+      return ((json[key] as List?) ?? const [])
+          .whereType<Map>()
+          .map((e) => PlayerMaterial.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+
+    final materials = parseList('materials');
     final backpack = (json['backpack'] as Map?)?.cast<String, dynamic>() ?? {};
     final currentCountry = (json['currentCountry'] ?? '').toString();
+    final depot = json['depot'] is List
+        ? parseList('depot')
+        : materials
+            .where((m) => !m.isCarried && _sameCountry(m.country, currentCountry))
+            .toList();
     return PlayerMaterialsSnapshot(
       currentCountry: currentCountry,
       materials: materials,
-      depot: materials
-          .where((m) => !m.isCarried && _sameCountry(m.country, currentCountry))
-          .toList(),
-      carried: materials.where((m) => m.isCarried).toList(),
+      depot: depot,
+      stored: parseList('stored'),
+      carried: json['carried'] is List
+          ? parseList('carried')
+          : materials.where((m) => m.isCarried).toList(),
       backpackCapacity: (backpack['capacity'] as num?)?.toInt() ?? 5,
       backpackUsed: (backpack['used'] as num?)?.toInt() ?? 0,
       materialSlots: (backpack['materialSlots'] as num?)?.toInt() ?? 0,
@@ -216,9 +228,15 @@ class PlayerMaterialsSnapshot {
         .fold<int>(0, (sum, m) => sum + m.quantity);
   }
 
-  /// Materials usable for production here: local depot + backpack.
+  int storedQty(String materialId) {
+    return stored
+        .where((m) => m.materialId == materialId)
+        .fold<int>(0, (sum, m) => sum + m.quantity);
+  }
+
+  /// Materials usable for production here: local depot + house/warehouse + backpack.
   int availableForProduction(String materialId) {
-    return depotQty(materialId) + carriedQty(materialId);
+    return depotQty(materialId) + storedQty(materialId) + carriedQty(materialId);
   }
 
   bool get hasDepotElsewhere => materials.any(
