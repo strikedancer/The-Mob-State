@@ -3,6 +3,7 @@ import { adminService } from "../services/adminService";
 import type { AdminLanguage } from "../i18n/translations";
 import { getAdminTr } from "../i18n/inlineMessages";
 import { EventChipGrantCard } from "./EventChipGrantCard";
+import { AdminPageIntro } from "./adminChrome";
 
 type Props = {
   locale: AdminLanguage;
@@ -77,14 +78,13 @@ export function OpsAdminPanel({ locale, canManage, isSuperAdmin }: Props) {
 
   return (
     <>
-      <span className="admin-kicker">{l("Operaties", "Operations")}</span>
-      <h1>{l("Ops lab", "Ops lab")}</h1>
-      <p className="text-muted">
-        {l(
+      <AdminPageIntro
+        kicker={l("Operaties · lab", "Operations · lab")}
+        description={l(
           "Enterprise-controles: cron, event-chips en live serverjobs. Acties worden geaudit.",
           "Enterprise controls: cron, event chips and live server jobs. Actions are audited.",
         )}
-      </p>
+      />
       {error && <div className="alert alert-danger">{error}</div>}
 
       <div className="ops-grid">

@@ -8,7 +8,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Compact photo hero (`nightclub_hub_bg_{desktop,tablet,mobile}.png` via `WebAssetHelper`) scrolls away; no extra AppBar in the embedded Empire shell. Gold `i` lives in the hero.
 
 ## Admin
-- Read-only telemetry: `GET /admin/nightclubs/overview` + admin tab `NightclubAdminPanel` (crowd, 24h sales/thefts, active events). Not a full Ops Lab duplicate.
+- Read-only telemetry: `GET /admin/nightclubs/overview` + admin tab `NightclubAdminPanel` (KPI-strip + crowd/24h sales/thefts/events table). Not a full Ops Lab duplicate.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

@@ -47,6 +47,11 @@ import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
 import { OpsAdminPanel } from "./components/OpsAdminPanel";
 import { EventChipGrantCard } from "./components/EventChipGrantCard";
 import {
+  AdminPageIntro,
+  RuntimeKpi,
+  RuntimeKpiGrid,
+} from "./components/adminChrome";
+import {
   translations,
   type AdminLanguage,
 } from "./i18n/translations";
@@ -5058,8 +5063,14 @@ function App() {
               )}
               {activeTab === "dashboard" && (
                 <>
-                  <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                    <h1 className="mb-0">{t.dashboardTitle}</h1>
+                  <div className="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+                    <AdminPageIntro
+                      kicker={l("Live · overzicht", "Live · overview")}
+                      description={l(
+                        "Spelers, economie en recente activiteit. Geen catalogus-editor.",
+                        "Players, economy and recent activity. Not a catalog editor.",
+                      )}
+                    />
                     <div className="d-flex align-items-center gap-2 flex-wrap">
                       <span className="badge dashboard-live-badge">
                         {l("Live overzicht", "Live overview")}
@@ -6182,6 +6193,13 @@ function App() {
 
               {activeTab === "players" && (
                 <>
+                  <AdminPageIntro
+                    kicker={l("Spelers · accounts", "Players · accounts")}
+                    description={l(
+                      "Zoek, filter en bewerk speleraccounts. Bulkacties gelden voor de huidige pagina.",
+                      "Search, filter and edit player accounts. Bulk actions apply to the current page.",
+                    )}
+                  />
                   {/* Search */}
                   <div className="mb-3">
                     <div className="input-group">
@@ -6505,6 +6523,13 @@ function App() {
 
               {activeTab === "player-detail" && (
                 <div className="player-detail-view">
+                  <AdminPageIntro
+                    kicker={l("Spelers · detail", "Players · detail")}
+                    description={l(
+                      "Account, assets, straffen en live acties voor één speler.",
+                      "Account, assets, penalties and live actions for one player.",
+                    )}
+                  />
                   {playerDetailLoading && (
                     <div className="alert alert-info">{t.loading}</div>
                   )}
@@ -8703,15 +8728,13 @@ function App() {
 
               {activeTab === "vehicles" && (
                 <>
-                  <h1>{t.vehiclesTitle}</h1>
-                  <div className="config-warning">
-                    {l("🚘 Beheer voertuigen in ", "🚘 Manage vehicles in ")}
-                    <strong>backend/content/vehicles.json</strong>
-                    {l(
-                      " zonder handmatig files te editen.",
-                      " without manual file edits.",
+                  <AdminPageIntro
+                    kicker={l("Catalogus · voertuigen", "Catalog · vehicles")}
+                    description={l(
+                      "Beheer voertuigen in backend/content/vehicles.json zonder handmatig files te editen.",
+                      "Manage vehicles in backend/content/vehicles.json without manual file edits.",
                     )}
-                  </div>
+                  />
 
                   <div
                     className="table-container"
@@ -9096,15 +9119,14 @@ function App() {
                   </div>
 
                   <h2>
-                    ✈️ {l("Vliegtuigen", "Aircraft")} ({aircraftList.length})
+                    {l("Vliegtuigen", "Aircraft")} ({aircraftList.length})
                   </h2>
-                  <div className="config-warning">
+                  <p className="text-muted small">
                     {l(
-                      "Vliegtuigen worden opgeslagen in ",
-                      "Aircraft are stored in ",
+                      "Vliegtuigen worden opgeslagen in backend/content/aircraft.json.",
+                      "Aircraft are stored in backend/content/aircraft.json.",
                     )}
-                    <strong>backend/content/aircraft.json</strong>.
-                  </div>
+                  </p>
 
                   <div
                     className="table-container"
@@ -9353,14 +9375,13 @@ function App() {
 
               {activeTab === "tools" && (
                 <>
-                  <h1>{t.toolsTitle}</h1>
-                  <div className="config-warning">
-                    {l(
-                      "Gereedschappen worden opgeslagen in ",
-                      "Tools are stored in ",
+                  <AdminPageIntro
+                    kicker={l("Catalogus · gereedschap", "Catalog · tools")}
+                    description={l(
+                      "Gereedschappen worden opgeslagen in backend/data/tools.json.",
+                      "Tools are stored in backend/data/tools.json.",
                     )}
-                    <strong>backend/data/tools.json</strong>.
-                  </div>
+                  />
 
                   <div
                     className="table-container"
@@ -9652,14 +9673,13 @@ function App() {
 
               {activeTab === "crimes" && (
                 <>
-                  <h1>{t.crimesTitle}</h1>
-                  <div className="config-warning">
-                    {l(
-                      "Misdaden worden opgeslagen in ",
-                      "Crimes are stored in ",
+                  <AdminPageIntro
+                    kicker={l("Catalogus · misdaden", "Catalog · crimes")}
+                    description={l(
+                      "Misdaden worden opgeslagen in backend/content/crimes.json.",
+                      "Crimes are stored in backend/content/crimes.json.",
                     )}
-                    <strong>backend/content/crimes.json</strong>.
-                  </div>
+                  />
 
                   <div
                     className="table-container"
@@ -10132,13 +10152,13 @@ function App() {
 
               {activeTab === "events" && (
                 <>
-                  <h1>{l("Events", "Events")}</h1>
-                  <div className="config-warning">
-                    {l(
+                  <AdminPageIntro
+                    kicker={l("Live · events", "Live · events")}
+                    description={l(
                       "Vaste events worden bij serverstart geregistreerd. Gebruik de schakelaar om template + intervalschema tegelijk aan of uit te zetten.",
                       "Preset events are registered on server start. Use the switch to enable or disable both the template and its interval schedule.",
                     )}
-                  </div>
+                  />
 
                   <div
                     className="table-container"
@@ -10896,16 +10916,7 @@ function App() {
               )}
 
               {activeTab === "crew-wars" && (
-                <>
-                  <h1>{l("Crew Wars", "Crew Wars")}</h1>
-                  <div className="config-warning">
-                    {l(
-                      "Beheer oorlogen, seizoensstanden en handmatige moderatie vanuit een centrale war room.",
-                      "Manage wars, seasonal standings, and manual moderation from a central war room.",
-                    )}
-                  </div>
-                  <CrewWarsAdminPanel locale={language} />
-                </>
+                <CrewWarsAdminPanel locale={language} />
               )}
 
               {activeTab === "crew-missions" && (
@@ -10929,10 +10940,7 @@ function App() {
               )}
 
               {activeTab === "nightclubs" && (
-                <>
-                  <h1>{l("Nightclubs", "Nightclubs")}</h1>
-                  <NightclubAdminPanel locale={language} />
-                </>
+                <NightclubAdminPanel locale={language} />
               )}
 
               {activeTab === "ops" && (
@@ -10945,7 +10953,13 @@ function App() {
 
               {activeTab === "audit-logs" && (
                 <>
-                  <h1>{t.auditLogsTitle}</h1>
+                  <AdminPageIntro
+                    kicker={l("Audit · acties", "Audit · actions")}
+                    description={l(
+                      "Wie deed wat, op welk doel en vanaf welk IP. Alleen lezen.",
+                      "Who did what, on which target and from which IP. Read-only.",
+                    )}
+                  />
                   <div className="table-container">
                     <table className="data-table">
                       <thead>
@@ -11005,7 +11019,13 @@ function App() {
 
               {activeTab === "system-logs" && (
                 <>
-                  <h1>{l("Systeem Logs", "System Logs")}</h1>
+                  <AdminPageIntro
+                    kicker={l("Systeem · logs", "System · logs")}
+                    description={l(
+                      "Server- en applicatielogs met datum- en bronfilters.",
+                      "Server and application logs with date and source filters.",
+                    )}
+                  />
                   <div
                     className="search-bar"
                     style={{
@@ -11162,58 +11182,32 @@ function App() {
 
               {activeTab === "tickets" && (
                 <>
-                  <h1>{l("Tickets", "Tickets")}</h1>
+                  <AdminPageIntro
+                    kicker={l("Support · tickets", "Support · tickets")}
+                    description={l(
+                      "Inbox, SLA-tijden en ticketstatus. Analytics zijn live.",
+                      "Inbox, SLA times and ticket status. Analytics are live.",
+                    )}
+                  />
                   {supportAnalytics && (
-                    <div className="row g-3 mb-3">
-                      <div className="col-md-3">
-                        <div className="card">
-                          <div className="card-body">
-                            <div className="small text-muted">
-                              {l("Actieve tickets", "Active tickets")}
-                            </div>
-                            <div className="h3 mb-0">
-                              {supportAnalytics.totals.activeTickets}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3">
-                        <div className="card">
-                          <div className="card-body">
-                            <div className="small text-muted">
-                              {l("Urgent", "Urgent")}
-                            </div>
-                            <div className="h3 mb-0">
-                              {supportAnalytics.totals.urgentTickets}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3">
-                        <div className="card">
-                          <div className="card-body">
-                            <div className="small text-muted">
-                              {l("Gem. eerste reactie", "Avg first reply")}
-                            </div>
-                            <div className="h3 mb-0">
-                              {supportAnalytics.totals.avgFirstResponseMinutes}m
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3">
-                        <div className="card">
-                          <div className="card-body">
-                            <div className="small text-muted">
-                              {l("Gem. oplostijd", "Avg resolution")}
-                            </div>
-                            <div className="h3 mb-0">
-                              {supportAnalytics.totals.avgResolutionMinutes}m
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <RuntimeKpiGrid>
+                      <RuntimeKpi
+                        label={l("Actieve tickets", "Active tickets")}
+                        value={String(supportAnalytics.totals.activeTickets)}
+                      />
+                      <RuntimeKpi
+                        label={l("Urgent", "Urgent")}
+                        value={String(supportAnalytics.totals.urgentTickets)}
+                      />
+                      <RuntimeKpi
+                        label={l("Gem. eerste reactie", "Avg first reply")}
+                        value={`${supportAnalytics.totals.avgFirstResponseMinutes}m`}
+                      />
+                      <RuntimeKpi
+                        label={l("Gem. oplostijd", "Avg resolution")}
+                        value={`${supportAnalytics.totals.avgResolutionMinutes}m`}
+                      />
+                    </RuntimeKpiGrid>
                   )}
                   <div
                     className="search-bar"
@@ -12054,7 +12048,13 @@ function App() {
 
               {activeTab === "todos" && (
                 <>
-                  <h1>{l("Todo", "Todo")}</h1>
+                  <AdminPageIntro
+                    kicker={l("Support · werklijst", "Support · worklist")}
+                    description={l(
+                      "Interne todo’s gekoppeld aan tickets. Filter op status.",
+                      "Internal todos linked to tickets. Filter by status.",
+                    )}
+                  />
                   <div
                     className="search-bar"
                     style={{ display: "flex", gap: 10, marginBottom: 12 }}
@@ -12336,7 +12336,13 @@ function App() {
 
               {activeTab === "admins" && (
                 <>
-                  <h1>{l("Admin Beheer", "Admin Management")}</h1>
+                  <AdminPageIntro
+                    kicker={l("Toegang · beheerders", "Access · admins")}
+                    description={l(
+                      "Accounts, rollen en wachtwoorden voor het adminpanel.",
+                      "Accounts, roles and passwords for the admin panel.",
+                    )}
+                  />
 
                   <div
                     className="card p-3 mb-3"
@@ -12473,7 +12479,13 @@ function App() {
 
               {activeTab === "images" && (
                 <>
-                  <h1>{t.imagesTitle}</h1>
+                  <AdminPageIntro
+                    kicker={l("Assets · bibliotheek", "Assets · library")}
+                    description={l(
+                      "Blader en beheer runtime-afbeeldingen in de image library.",
+                      "Browse and manage runtime images in the image library.",
+                    )}
+                  />
 
                   <div
                     className="card p-3 mb-3"
@@ -12835,13 +12847,13 @@ function App() {
 
               {activeTab === "config" && (
                 <>
-                  <h1>{t.configEditorTitle}</h1>
-                  <p className="text-muted">
-                    {l(
+                  <AdminPageIntro
+                    kicker={l("Runtime · instellingen", "Runtime · settings")}
+                    description={l(
                       "Instellingen staan per onderwerp. Gebruik Alle keys alleen voor ruwe runtime-waarden.",
                       "Settings are grouped by topic. Use All keys only for raw runtime values.",
                     )}
-                  </p>
+                  />
                   <div className="admin-subnav" role="tablist">
                     {(
                       [
@@ -13133,9 +13145,9 @@ function App() {
                   )}
                   {configSection === "keys" && (
                     <>
-                  <div className="config-warning">
-                    ⚠️ <strong>{t.warning}:</strong> {t.configRestartWarning}
-                  </div>
+                  <p className="text-muted small">
+                    <strong>{t.warning}:</strong> {t.configRestartWarning}
+                  </p>
                   <div className="search-bar">
                     <input
                       type="text"
@@ -13212,13 +13224,13 @@ function App() {
 
               {activeTab === "premium-offers" && (
                 <>
-                  <h1>{t.premiumOffersTitle}</h1>
-                  <div className="config-warning">
-                    {l(
-                      "💡 Beheer hier VIP-prijzen, creditbundels en credit-shop items live vanuit admin.",
-                      "💡 Manage VIP pricing, credit bundles, and credit shop items live from admin here.",
+                  <AdminPageIntro
+                    kicker={l("Monetisatie · shop", "Monetization · shop")}
+                    description={l(
+                      "VIP-prijzen, creditbundels en credit-shop items. Wijzigingen zijn live.",
+                      "VIP pricing, credit bundles and credit shop items. Changes apply live.",
                     )}
-                  </div>
+                  />
 
                   <div
                     className="table-container"
@@ -14525,13 +14537,13 @@ function App() {
 
               {activeTab === "npcs" && (
                 <>
-                  <h1>{t.npcManagementTitle}</h1>
-                  <p className="text-muted">
-                    {l(
+                  <AdminPageIntro
+                    kicker={l("Simulatie · NPCs", "Simulation · NPCs")}
+                    description={l(
                       "Voeg hier een NPC toe. Die krijgt een echt speleraccount en speelt automatisch volgens het activiteitsniveau.",
                       "Add an NPC here. It gets a real player account and plays automatically according to the activity level.",
                     )}
-                  </p>
+                  />
                   <div className="table-container npc-create-card">
                     <h3 className="h5 mb-3">{t.createNpcTitle}</h3>
                     {npcFormError && (

@@ -29,7 +29,7 @@ House loop (Casino 2.0): one casino per country, floors (public/VIP/private), vi
 - Dealer raises rake and can trim payouts; promoter raises max bet and FBI heat; security lowers ledger-raid drain. Max one active hire per role.
 - Staff salary is paid from `CasinoOwnership.bankroll` on the existing game tick. Too low → fire cheapest hire and run the low-balance path.
 - Successful `casino_ledger_raid` drains `%` of bankroll in the run `startCountry` (starter `currentCountry` at start; starter country at resolve as fallback). Skip if the casino owner is in the raiding crew. Crew cash reward is unchanged.
-- Admin → Casino tab edits runtime keys. Do not flip Clearing House gate defaults here.
+- Admin → Casino: grouped runtime console (floors / rake / upgrades / security) via `CasinoAdminPanel` + `adminChrome`. Do not flip Clearing House gate defaults here.
 - Bankruptcy must clear `Property.playerId` as well as the ownership row.
 
 ## Must Preserve

@@ -66,7 +66,7 @@
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
   - `backend/src/routes/territory.ts` + `backend/src/services/territoryService.ts` — admin overview endpoint toegevoegd voor territory moderatie, contest-overzicht, seizoenen, regio-eigendom en leaderboard
-  - `admin/src/components/TerritoryAdminPanel.tsx` + `admin/src/App.tsx` + `admin/src/services/adminService.ts` — admin tab voor Territory toegevoegd met region assign/reset, contest resolve, season start/close en live overzicht van contests/regio's
+  - `admin/src/components/TerritoryAdminPanel.tsx` + `admin/src/App.tsx` + `admin/src/services/adminService.ts` — admin tab voor Territory met intro/KPI-chrome, region assign/reset, contest resolve, season start/close en live overzicht van contests/regio's
 
 ## Scope
 Crew-territoriumcontrole per land met kaartweergave (SVG), contest lifecycle, invloedspunten, seizoenen, rewards, anti-abuse, notificaties en admin-moderatie.

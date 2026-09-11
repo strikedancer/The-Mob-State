@@ -114,7 +114,7 @@ Elke **5 minuten** gebeurt er automatisch:
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
 - Empire-pagina’s delen dezelfde foto-header als Don/Midnight Races/Drugs. De foto-hero **scrollt mee**; als er tabs zijn blijven die bovenaan (alleen tekst, goud). De gouden `i` zit in de hero. Dashboard-home, Help en Instellingen hebben deze kop niet.
-- **Admin → Drugs** groepeert groothandel, heat, raids, darkweb en nightclub in kaarten met leesbare eenheden (g, %, €, uur), live-waardes en onopgeslagen-status. Police-pressure en Clearing House blijven op hun eigen tabs.
+- **Admin-console:** elke tab gebruikt dezelfde intro (kicker + doelzin) onder de page-header; runtime-tabs (Drugs, Casino, Crew Missions, Landelijke politie) groeperen keys in kaarten met eenheden, defaults en unsaved-status. Police-pressure en Clearing House blijven op hun eigen tabs.
 
 ---
 
@@ -1015,7 +1015,7 @@ Bob: â‚¬300K counter-hit
 - Player VIP geeft 10% kortere actie-timeouts/cooldowns op gameplay-actions; gevangenistijd (`jailRelease`) blijft ongewijzigd.
 - Player VIP krijgt wekelijks 100 premium credits (ledger-traceerbaar via credit-transacties).
 - Admin kan een speler **volledig resetten** (gameplay/progressie wissen). **Account, VIP-abonnement/auto-renew en restant gekochte creditpacks blijven behouden**; wekelijkse VIP-credits, event-credits en vault-prijzen tellen niet als betaald en verdwijnen. Ledger en betaalhistorie blijven staan.
-- Het adminpanel (https://admin.themobstate.com) gebruikt hetzelfde noir/goud-uiterlijk als de game. **Ops lab** start cron-jobs en (SUPER_ADMIN) event-chips; NPC-tab kan botten pauzeren/activeren en allemaal simuleren. Sessie wordt bij laden gecontroleerd.
+- Het adminpanel (https://admin.themobstate.com) gebruikt hetzelfde noir/goud-uiterlijk als de game. Tabs delen `AdminPageIntro`/KPI-chrome; **Ops lab** start cron-jobs en (SUPER_ADMIN) event-chips; NPC-tab kan botten pauzeren/activeren en allemaal simuleren. Sessie wordt bij laden gecontroleerd.
 - Admin → spelerdetail → **VIP-dagen toekennen** (1–365) verlengt Player VIP zonder het hele beheerformulier. Een bestaande VIP-periode wordt doorgeteld; dit is geen credit- of euro-aankoop.
 - Kill-reset met actieve Player VIP: contant geld reset naar â‚¬500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).

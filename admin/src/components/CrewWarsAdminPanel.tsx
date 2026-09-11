@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { adminService, type AdminCrewWarOverview } from '../services/adminService'
 import type { AdminLanguage } from '../i18n/translations'
 import { getAdminTr } from '../i18n/inlineMessages'
+import { AdminPageIntro, RuntimeKpi, RuntimeKpiGrid } from './adminChrome'
 
 type Props = {
   locale: AdminLanguage
@@ -77,6 +78,29 @@ export function CrewWarsAdminPanel({ locale }: Props) {
 
   return (
     <div className="d-flex flex-column gap-3">
+      <AdminPageIntro
+        kicker={tr(locale, 'Crew · oorlogen', 'Crew · wars')}
+        description={tr(
+          locale,
+          'Declareer oorlogen, volg seizoensstanden en moderatie. Wijzigingen zijn live.',
+          'Declare wars, track season standings and moderation. Changes apply live.',
+        )}
+      />
+      <RuntimeKpiGrid>
+        <RuntimeKpi
+          label={tr(locale, 'Actief seizoen', 'Active season')}
+          value={overview?.season.seasonKey || '-'}
+          hint={overview?.season.status || undefined}
+        />
+        <RuntimeKpi
+          label={tr(locale, 'Open wars', 'Open wars')}
+          value={String(overview?.activeWars.length || 0)}
+        />
+        <RuntimeKpi
+          label={tr(locale, 'Geblokkeerde acties', 'Blocked actions')}
+          value={String(overview?.flaggedActions || 0)}
+        />
+      </RuntimeKpiGrid>
       <div className="row g-3">
         <div className="col-lg-4">
           <div className="card h-100">
@@ -126,35 +150,7 @@ export function CrewWarsAdminPanel({ locale }: Props) {
         </div>
 
         <div className="col-lg-8">
-          <div className="row g-3">
-            <div className="col-md-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <div className="text-muted small">{tr(locale, 'Actief seizoen', 'Active season')}</div>
-                  <div className="fw-bold fs-5">{overview?.season.seasonKey || '-'}</div>
-                  <div className="small text-muted mt-1">{overview?.season.status || '-'}</div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <div className="text-muted small">{tr(locale, 'Open wars', 'Open wars')}</div>
-                  <div className="fw-bold fs-5">{overview?.activeWars.length || 0}</div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <div className="text-muted small">{tr(locale, 'Geblokkeerde acties', 'Blocked actions')}</div>
-                  <div className="fw-bold fs-5">{overview?.flaggedActions || 0}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="card mt-3">
+          <div className="card">
             <div className="card-header">
               <h5 className="mb-0">{tr(locale, 'Seizoensleaderboard', 'Season leaderboard')}</h5>
             </div>

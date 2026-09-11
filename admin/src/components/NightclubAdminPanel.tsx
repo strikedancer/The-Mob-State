@@ -1,7 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { AdminLanguage } from '../i18n/translations'
 import { getAdminTr } from '../i18n/inlineMessages'
 import { adminService } from '../services/adminService'
+import {
+  AdminPageIntro,
+  RuntimeKpi,
+  RuntimeKpiGrid,
+} from './adminChrome'
 
 type Props = { locale: AdminLanguage }
 
@@ -47,8 +52,42 @@ export function NightclubAdminPanel({ locale }: Props) {
     void load()
   }, [])
 
+  const openCount = useMemo(
+    () => rows.filter((row) => row.isOpen).length,
+    [rows],
+  )
+  const sales24h = useMemo(
+    () => rows.reduce((sum, row) => sum + (row.sales24hRevenue || 0), 0),
+    [rows],
+  )
+  const thefts24h = useMemo(
+    () => rows.reduce((sum, row) => sum + (row.thefts24hLoss || 0), 0),
+    [rows],
+  )
+
   return (
-    <div className="card border-0 shadow-sm">
+    <section className="runtime-console">
+      <AdminPageIntro
+        kicker={tr(locale, 'Venues · telemetry', 'Venues · telemetry')}
+        description={tr(
+          locale,
+          'Read-only overzicht van crowd, 24u omzet/diefstal en actieve events. Geen Ops Lab-duplicaat.',
+          'Read-only overview of crowd, 24h sales/theft and active events. Not an Ops Lab duplicate.',
+        )}
+      />
+      <RuntimeKpiGrid>
+        <RuntimeKpi label={tr(locale, 'Clubs', 'Clubs')} value={String(rows.length)} />
+        <RuntimeKpi label={tr(locale, 'Open', 'Open')} value={String(openCount)} />
+        <RuntimeKpi
+          label={tr(locale, 'Sales 24u', 'Sales 24h')}
+          value={`€${sales24h.toLocaleString(locale === 'nl' ? 'nl-NL' : 'en-GB')}`}
+        />
+        <RuntimeKpi
+          label={tr(locale, 'Thefts 24u', 'Thefts 24h')}
+          value={`€${thefts24h.toLocaleString(locale === 'nl' ? 'nl-NL' : 'en-GB')}`}
+        />
+      </RuntimeKpiGrid>
+      <div className="card border-0 shadow-sm">
       <div className="card-header d-flex justify-content-between align-items-center">
         <strong>{tr(locale, 'Nightclub overzicht', 'Nightclub overview')}</strong>
         <button className="btn btn-sm btn-outline-primary" onClick={() => void load()} disabled={loading}>
@@ -56,14 +95,9 @@ export function NightclubAdminPanel({ locale }: Props) {
         </button>
       </div>
       <div className="card-body">
-        <p className="text-muted small mb-3">
-          {tr(
-            locale,
-            'Read-only telemetry: crowd, 24u sales/thefts en actieve events. Geen Ops Lab-duplicaat.',
-            'Read-only telemetry: crowd, 24h sales/thefts and active events. Not a player Ops Lab duplicate.',
-          )}
-          {generatedAt ? ` · ${generatedAt}` : ''}
-        </p>
+        {generatedAt ? (
+          <p className="text-muted small mb-3">{generatedAt}</p>
+        ) : null}
         {error ? <div className="alert alert-danger py-2">{error}</div> : null}
         {loading ? <div className="text-muted">{tr(locale, 'Laden…', 'Loading…')}</div> : null}
         {!loading && rows.length === 0 ? (
@@ -111,5 +145,6 @@ export function NightclubAdminPanel({ locale }: Props) {
         ) : null}
       </div>
     </div>
+    </section>
   )
 }

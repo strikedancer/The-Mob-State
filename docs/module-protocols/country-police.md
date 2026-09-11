@@ -11,7 +11,7 @@ Routes: `GET /police/status`, `GET /police/countries`, `POST /police/disrupt`
 Client: crimes strip + travel badges + disrupt sheet (`country_police_ui.dart`)
 
 ## Enable (production)
-Admin → **Landelijke politie**: toggle stays the source of truth after deploy. This release upserts `1` once; do not flip the code default. Dashboard already renders `CountryPoliceStrip` when the flag is on.
+Admin → **Landelijke politie**: `CountryPoliceAdminPanel` (intro + KPI + switch card). Toggle stays the source of truth after deploy. This release upserts `1` once; do not flip the code default. Dashboard already renders `CountryPoliceStrip` when the flag is on.
 
 ## Primary Frontend Entry
 - Crimes strip + disrupt: `client/lib/screens/crime_screen.dart` + `client/lib/widgets/country_police_ui.dart` (embedded in the crimes hero; `CountryPoliceStrip(embedded: true)` has no extra card chrome)

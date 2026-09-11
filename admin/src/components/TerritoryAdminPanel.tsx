@@ -1,3 +1,4 @@
+import { AdminPageIntro, RuntimeKpi, RuntimeKpiGrid } from './adminChrome'
 import { useEffect, useMemo, useState } from 'react'
 import { adminService, type AdminTerritoryOverview } from '../services/adminService'
 import type { AdminLanguage } from '../i18n/translations'
@@ -296,22 +297,26 @@ export function TerritoryAdminPanel({ locale }: Props) {
 
   return (
     <div className="d-flex flex-column gap-3">
-      <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <div>
-          <h1 className="mb-1">Territory</h1>
-          <div className="config-warning mb-0">{tr(locale, 'Beheer Territory live: regio-eigendom, contests en seizoenen.', 'Manage Territory live: region ownership, contests, and seasons.')}</div>
-        </div>
+      <div className="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <AdminPageIntro
+          kicker={tr(locale, 'Wereld · live ops', 'World · live ops')}
+          description={tr(
+            locale,
+            'Regio-eigendom, contests, seizoenen en HQ-progressie. Wijzigingen zijn runtime en direct live.',
+            'Region ownership, contests, seasons and HQ progression. Changes are runtime and apply live.',
+          )}
+        />
         <button type="button" className="btn btn-outline-secondary" onClick={() => void loadOverview()} disabled={loading || submitting}>
           <i className="ph-arrow-clockwise me-1" />{tr(locale, 'Ververs', 'Refresh')}
         </button>
       </div>
 
-      <div className="row g-3">
-        <div className="col-md-3"><div className="card h-100"><div className="card-body"><div className="text-muted small">{tr(locale, 'Landen actief', 'Active countries')}</div><div className="fw-bold fs-4">{overview?.summary.enabledCountries ?? 0}</div></div></div></div>
-        <div className="col-md-3"><div className="card h-100"><div className="card-body"><div className="text-muted small">{tr(locale, 'Regio’s actief', 'Active regions')}</div><div className="fw-bold fs-4">{overview?.summary.enabledRegions ?? 0}</div></div></div></div>
-        <div className="col-md-3"><div className="card h-100"><div className="card-body"><div className="text-muted small">{tr(locale, 'Actieve contests', 'Active contests')}</div><div className="fw-bold fs-4">{overview?.summary.activeContests ?? 0}</div></div></div></div>
-        <div className="col-md-3"><div className="card h-100"><div className="card-body"><div className="text-muted small">{tr(locale, 'Gecontroleerde regio’s', 'Controlled regions')}</div><div className="fw-bold fs-4">{overview?.summary.controlledRegions ?? 0}</div></div></div></div>
-      </div>
+      <RuntimeKpiGrid>
+        <RuntimeKpi label={tr(locale, 'Landen actief', 'Active countries')} value={String(overview?.summary.enabledCountries ?? 0)} />
+        <RuntimeKpi label={tr(locale, 'Regio’s actief', 'Active regions')} value={String(overview?.summary.enabledRegions ?? 0)} />
+        <RuntimeKpi label={tr(locale, 'Actieve contests', 'Active contests')} value={String(overview?.summary.activeContests ?? 0)} />
+        <RuntimeKpi label={tr(locale, 'Gecontroleerde regio’s', 'Controlled regions')} value={String(overview?.summary.controlledRegions ?? 0)} />
+      </RuntimeKpiGrid>
 
       <div className="card">
         <div className="card-header"><h5 className="mb-0">{tr(locale, 'Progression tuning', 'Progression tuning')}</h5></div>

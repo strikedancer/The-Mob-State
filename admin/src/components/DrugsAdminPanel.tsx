@@ -5,12 +5,21 @@ import {
 } from "../services/adminService";
 import type { AdminLanguage } from "../i18n/translations";
 import { getAdminTr } from "../i18n/inlineMessages";
+import {
+  AdminPageIntro,
+  RuntimeField,
+  RuntimeKpi,
+  RuntimeKpiGrid,
+  RuntimeToolbar,
+  formatAmount,
+  isInvalidAmount,
+  runtimeValueFor,
+  type FieldKind,
+} from "./adminChrome";
 
 type Props = {
   locale: AdminLanguage;
 };
-
-type FieldKind = "int" | "bps" | "percent" | "euro" | "hours" | "grams";
 
 type FieldDef = {
   key: string;
@@ -243,62 +252,10 @@ const ALL_FIELDS = SECTIONS.flatMap((section) => section.fields);
 const tr = (locale: AdminLanguage, nl: string, en: string) =>
   getAdminTr(locale, nl, en);
 
-function valueFor(view: DrugRuntimeConfigView | null, key: string): string {
-  if (!view) return "";
-  const raw = view.values[key] ?? view.defaults[key] ?? "";
-  return String(raw);
-}
-
-function parseAmount(raw: string): number | null {
-  const normalized = raw.trim().replace(",", ".");
-  if (!normalized) return null;
-  const value = Number(normalized);
-  return Number.isFinite(value) ? value : null;
-}
-
-function formatAmount(
-  locale: AdminLanguage,
-  kind: FieldKind,
-  raw: string,
-): string {
-  const value = parseAmount(raw);
-  if (value === null) return "—";
-  const nf = locale === "nl" ? "nl-NL" : "en-GB";
-  if (kind === "bps") {
-    return `${(value / 100).toLocaleString(nf, {
-      maximumFractionDigits: 2,
-    })}%`;
-  }
-  if (kind === "percent") {
-    return `${value.toLocaleString(nf, { maximumFractionDigits: 2 })}%`;
-  }
-  if (kind === "euro") {
-    return `€${value.toLocaleString(nf)}`;
-  }
-  if (kind === "grams") {
-    return `${value.toLocaleString(nf)} g`;
-  }
-  if (kind === "hours") {
-    return locale === "nl"
-      ? `${value.toLocaleString(nf)} u`
-      : `${value.toLocaleString(nf)} h`;
-  }
-  return value.toLocaleString(nf);
-}
-
-function unitLabel(locale: AdminLanguage, kind: FieldKind): string {
-  if (kind === "bps") return "bps";
-  if (kind === "percent") return "%";
-  if (kind === "euro") return "€";
-  if (kind === "grams") return "g";
-  if (kind === "hours") return locale === "nl" ? "u" : "h";
-  return "";
-}
-
 function valuesFromView(view: DrugRuntimeConfigView): Record<string, string> {
   const next: Record<string, string> = {};
   for (const field of ALL_FIELDS) {
-    next[field.key] = valueFor(view, field.key);
+    next[field.key] = runtimeValueFor(view, field.key);
   }
   return next;
 }
@@ -340,16 +297,14 @@ export function DrugsAdminPanel({ locale }: Props) {
   const dirtyKeys = useMemo(() => {
     if (!view) return [] as string[];
     return ALL_FIELDS.filter(
-      (field) => (values[field.key] ?? "") !== valueFor(view, field.key),
+      (field) => (values[field.key] ?? "") !== runtimeValueFor(view, field.key),
     ).map((field) => field.key);
   }, [values, view]);
 
   const invalidKeys = useMemo(
-    () =>
-      ALL_FIELDS.filter((field) => {
-        const amount = parseAmount(values[field.key] ?? "");
-        return amount === null || amount < 0;
-      }).map((field) => field.key),
+    () => ALL_FIELDS.filter((field) => isInvalidAmount(values[field.key] ?? "")).map(
+      (field) => field.key,
+    ),
     [values],
   );
 
@@ -428,85 +383,45 @@ export function DrugsAdminPanel({ locale }: Props) {
 
   return (
     <section className="runtime-console">
-      <span className="admin-kicker">
-        {tr(locale, "Economie · live runtime", "Economy · live runtime")}
-      </span>
-      <p className="text-muted mb-3">
-        {tr(
+      <AdminPageIntro
+        kicker={tr(locale, "Economie · live runtime", "Economy · live runtime")}
+        description={tr(
           locale,
           "Stuur groothandel, heat, raids, darkweb en nightclub zonder deploy. Police-pressure en Clearing House blijven op hun eigen tabs.",
           "Tune wholesale, heat, raids, darkweb and nightclub without a deploy. Police pressure and Clearing House stay on their own tabs.",
         )}
-      </p>
+      />
 
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-success">{message}</div>}
 
-      <div className="runtime-kpi-grid">
+      <RuntimeKpiGrid>
         {kpis.map((kpi) => {
           const field = kpiField(kpi.key);
           return (
-            <div className="runtime-kpi" key={kpi.key}>
-              <div className="runtime-kpi-label">
-                {tr(locale, kpi.labelNl, kpi.labelEn)}
-              </div>
-              <div className="runtime-kpi-value">
-                {field
+            <RuntimeKpi
+              key={kpi.key}
+              label={tr(locale, kpi.labelNl, kpi.labelEn)}
+              value={
+                field
                   ? formatAmount(locale, field.kind, values[kpi.key] ?? "")
-                  : "—"}
-              </div>
-            </div>
+                  : "—"
+              }
+            />
           );
         })}
-      </div>
+      </RuntimeKpiGrid>
 
-      <div className="runtime-toolbar">
-        <div>
-          <div className="fw-semibold">
-            {tr(locale, "Runtime-configuratie", "Runtime configuration")}
-          </div>
-          <div className="small text-muted">
-            {loading
-              ? tr(locale, "Laden…", "Loading…")
-              : dirtyKeys.length > 0
-                ? tr(
-                    locale,
-                    `${dirtyKeys.length} niet-opgeslagen wijziging${dirtyKeys.length === 1 ? "" : "en"}`,
-                    `${dirtyKeys.length} unsaved change${dirtyKeys.length === 1 ? "" : "s"}`,
-                  )
-                : tr(locale, "Alles opgeslagen", "All changes saved")}
-          </div>
-        </div>
-        <div className="d-flex flex-wrap gap-2">
-          <button
-            type="button"
-            className="btn btn-outline-secondary btn-sm"
-            onClick={() => void load()}
-            disabled={loading || saving}
-          >
-            <i className="ph-arrows-clockwise me-1" />
-            {tr(locale, "Ververs", "Refresh")}
-          </button>
-          <button
-            type="button"
-            className="btn btn-outline-secondary btn-sm"
-            onClick={discard}
-            disabled={!view || saving || dirtyKeys.length === 0}
-          >
-            {tr(locale, "Annuleren", "Discard")}
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary btn-sm"
-            disabled={!view || saving || dirtyKeys.length === 0}
-            onClick={() => void save()}
-          >
-            {saving
-              ? tr(locale, "Opslaan…", "Saving…")
-              : tr(locale, "Opslaan", "Save")}
-          </button>
-        </div>
-      </div>
+      <RuntimeToolbar
+        locale={locale}
+        loading={loading}
+        saving={saving}
+        dirtyCount={dirtyKeys.length}
+        disabled={!view}
+        onRefresh={() => void load()}
+        onDiscard={discard}
+        onSave={() => void save()}
+      />
 
       <div className="d-flex flex-column gap-3">
         {SECTIONS.map((section) => (
@@ -524,85 +439,25 @@ export function DrugsAdminPanel({ locale }: Props) {
             </div>
             <div className="card-body">
               <div className="row g-3">
-                {section.fields.map((field) => {
-                  const current = values[field.key] ?? "";
-                  const saved = valueFor(view, field.key);
-                  const fallback = view ? String(view.defaults[field.key] ?? "") : "";
-                  const dirty = current !== saved;
-                  const custom = saved !== fallback && fallback !== "";
-                  const invalid = invalidKeys.includes(field.key);
-                  const unit = unitLabel(locale, field.kind);
-                  return (
-                    <div className="col-lg-6" key={field.key}>
-                      <div
-                        className={`runtime-field ${dirty ? "is-dirty" : ""} ${invalid ? "is-invalid" : ""}`}
-                      >
-                        <div className="d-flex align-items-start justify-content-between gap-2 mb-1">
-                          <label className="form-label fw-semibold mb-0">
-                            {tr(locale, field.labelNl, field.labelEn)}
-                          </label>
-                          <div className="d-flex flex-wrap gap-1">
-                            {dirty && (
-                              <span className="badge bg-warning text-dark">
-                                {tr(locale, "Niet opgeslagen", "Unsaved")}
-                              </span>
-                            )}
-                            {!dirty && custom && (
-                              <span className="badge bg-secondary">
-                                {tr(locale, "Afwijkend", "Custom")}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="input-group">
-                          <input
-                            className={`form-control ${invalid ? "is-invalid" : ""}`}
-                            inputMode="decimal"
-                            value={current}
-                            onChange={(event) =>
-                              setValues((prev) => ({
-                                ...prev,
-                                [field.key]: event.target.value,
-                              }))
-                            }
-                            disabled={!view || saving}
-                            aria-label={tr(locale, field.labelNl, field.labelEn)}
-                          />
-                          {unit ? (
-                            <span className="input-group-text">{unit}</span>
-                          ) : null}
-                          <button
-                            type="button"
-                            className="btn btn-outline-secondary"
-                            title={tr(
-                              locale,
-                              "Terug naar standaard",
-                              "Reset to default",
-                            )}
-                            disabled={!view || saving || current === fallback}
-                            onClick={() => resetField(field.key)}
-                          >
-                            <i className="ph-arrow-counter-clockwise" />
-                          </button>
-                        </div>
-                        <div className="runtime-field-meta">
-                          <span>
-                            {tr(locale, "Live", "Live")}:{" "}
-                            {formatAmount(locale, field.kind, current)}
-                          </span>
-                          <span>
-                            {tr(locale, "Standaard", "Default")}:{" "}
-                            {formatAmount(locale, field.kind, fallback)}
-                          </span>
-                        </div>
-                        <div className="small text-muted mt-1">
-                          {tr(locale, field.helpNl, field.helpEn)}
-                        </div>
-                        <code className="runtime-key">{field.key}</code>
-                      </div>
-                    </div>
-                  );
-                })}
+                {section.fields.map((field) => (
+                  <div className="col-lg-6" key={field.key}>
+                    <RuntimeField
+                      locale={locale}
+                      label={tr(locale, field.labelNl, field.labelEn)}
+                      help={tr(locale, field.helpNl, field.helpEn)}
+                      fieldKey={field.key}
+                      kind={field.kind}
+                      value={values[field.key] ?? ""}
+                      saved={runtimeValueFor(view, field.key)}
+                      fallback={view ? String(view.defaults[field.key] ?? "") : ""}
+                      disabled={!view || saving}
+                      onChange={(next) =>
+                        setValues((prev) => ({ ...prev, [field.key]: next }))
+                      }
+                      onReset={() => resetField(field.key)}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>

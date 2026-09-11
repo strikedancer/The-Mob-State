@@ -36,7 +36,7 @@ Scope-afbakening:
 - Crew Wars -> Notifications (push, inbox, cooldown/event alerts, future Discord transport)
 - Crew Wars -> Payments (VIP player and VIP crew entitlements)
 - Crew Wars -> Achievements (season rewards, war titles, unlockables)
-- Crew Wars -> Admin (manual start/stop, moderation, abuse review, logs)
+- Crew Wars -> Admin (`CrewWarsAdminPanel`: declare/moderation, season KPIs, leaderboard, logs)
 - Crew Wars -> Territory (territory war targetselectie moet uit echte territory-regio\'s komen; generieke placeholder-targets gelden niet als done)
 
 ## Must Preserve

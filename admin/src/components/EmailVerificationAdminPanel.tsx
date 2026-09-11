@@ -69,7 +69,8 @@ export function EmailVerificationAdminPanel({ locale }: Props) {
   }
 
   return (
-    <div className="table-container" style={{ marginBottom: '1rem' }}>
+    <div className="card border-0 shadow-sm mb-3">
+      <div className="card-body">
       <div className="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-2">
         <div>
           <h3 className="h5 mb-1">
@@ -106,6 +107,7 @@ export function EmailVerificationAdminPanel({ locale }: Props) {
         <label className="form-check-label" htmlFor="email-verification-required">
           {tr(locale, 'Verificatie verplicht (mail sturen)', 'Verification required (send mail)')}
         </label>
+      </div>
       </div>
     </div>
   )

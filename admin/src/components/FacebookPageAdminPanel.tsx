@@ -72,7 +72,8 @@ export function FacebookPageAdminPanel({ locale }: Props) {
   }
 
   return (
-    <div className="table-container" style={{ marginBottom: '1rem' }}>
+    <div className="card border-0 shadow-sm mb-3">
+      <div className="card-body">
       <div className="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-2">
         <div>
           <h3 className="h5 mb-1">{tr(locale, 'Facebook-pagina', 'Facebook page')}</h3>
@@ -145,6 +146,7 @@ export function FacebookPageAdminPanel({ locale }: Props) {
             : tr(locale, 'Plaats op Facebook', 'Publish to Facebook')}
         </button>
       </form>
+      </div>
     </div>
   )
 }

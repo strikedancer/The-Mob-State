@@ -73,8 +73,7 @@ html.admin-game-theme .sidebar-main {
 
 html.admin-game-theme .nav-sidebar .nav-link,
 html.admin-game-theme .navbar-nav-link,
-html.admin-game-theme .text-muted,
-html.admin-game-theme .admin-kicker {
+html.admin-game-theme .text-muted {
   color: var(--admin-muted) !important;
 }
 
@@ -180,6 +179,10 @@ html.admin-game-theme .ops-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
+}
+
+html.admin-game-theme .admin-page-intro {
+  margin-bottom: 1rem;
 }
 
 html.admin-game-theme .runtime-kpi-grid {
