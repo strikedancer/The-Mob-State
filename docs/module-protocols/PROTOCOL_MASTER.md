@@ -356,7 +356,7 @@ Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitl
 **Midnight Races hero:** `client/assets/images/races/hub.png` → `runtime/client-images/races/` (`/images/races/`). Veld/uitslag gebruiken bestaande voertuigfoto’s. Gouden `i` opent de geïllustreerde `raceInfo*`-gids.
 **Pagina-info:** overige spelerspagina’s gebruiken dezelfde gouden `i` (`GamePageInfoHost`) met Help & Uitleg-tekst (`helpTopic*`). Don/Races blijven bij hun eigen geïllustreerde gids.
 
-**Job catalog art:** `client/assets/images/jobs/<id>_job.png` + wiki hub `wiki/hubs/jobs.png`. Leonardo: `backend/scripts/generate_job_images_leonardo.py --force --confirm-batch YES --mirror-client-assets`. Dedicated `jobs_background.png` is next once Leonardo tokens are available; until then Banen keeps `gym_bg.png`.
+**Job catalog art:** `client/assets/images/jobs/<id>_job.png` + wiki hub `wiki/hubs/jobs.png` + `backgrounds/jobs_background.png`. Leonardo: `backend/scripts/generate_job_images_leonardo.py --force --confirm-batch YES --mirror-client-assets`. Jobs screen and wiki `/jobs/` use the dedicated wash; gym keeps `gym_bg.png`.
 
 **Crime catalog art:** `client/assets/images/crimes/<id>_crime.png` + wiki hub `wiki/hubs/crimes.png` + `backgrounds/crime_background.png`. Leonardo: `backend/scripts/generate_crime_images_leonardo.py --force --confirm-batch YES --mirror-client-assets`. `vps_pull_and_build.ps1` copies them to `runtime/client-images/`. Same files feed the Crimes screen, wiki catalog/detail pages and the crimes hub tile. In-game Help & Uitleg has no per-crime photos.
 

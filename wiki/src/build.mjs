@@ -727,7 +727,7 @@ function restPages(data, lang) {
   simpleCatalog(
     lang,
     'jobs',
-    '/images/backgrounds/gym_bg.png',
+    '/images/backgrounds/jobs_background.png',
     data.jobs,
     (j) => `/${lang}/jobs/${j.id}/`,
     (j) => `/images/jobs/${j.id}_job.png`,

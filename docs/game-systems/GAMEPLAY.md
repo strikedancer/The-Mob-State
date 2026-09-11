@@ -340,7 +340,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ## Jobs Systeem
 
-- Op web-Banen staat geen extra paginatitel “Banen” in de contentkaart; het zijmenu toont de sectie al. De statusbalk erboven blijft. Kaarten en wiki-catalogus delen `/images/jobs/<id>_job.png`.
+- Op web-Banen staat geen extra paginatitel “Banen” in de contentkaart; het zijmenu toont de sectie al. De statusbalk erboven blijft. Kaarten, wiki-catalogus en de Banen-hub delen dezelfde noir/goud-stills (`/images/jobs/`, hub `wiki/hubs/jobs.png`, achtergrond `jobs_background.png`).
 
 ### Jobs Balans (Sessie)
 - Er geldt geen harde dagcap op jobs.

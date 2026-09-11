@@ -142,7 +142,7 @@ class _JobsScreenState extends State<JobsScreen> {
       child: EmpirePageHero(
         title: l10n.jobScreenHeroTitle,
         subtitle: l10n.jobScreenHeroSubtitle,
-        imageAsset: 'assets/images/backgrounds/gym_bg.png',
+        imageAsset: 'assets/images/backgrounds/jobs_background.png',
         topicId: 'jobs',
         fallbackIcon: Icons.work_outline,
         chips: [
@@ -1009,7 +1009,7 @@ class _JobsScreenState extends State<JobsScreen> {
                     colors: [Color(0xFF101820), Color(0xFF0C0A0A)],
                   ),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/backgrounds/gym_bg.png'),
+                    image: AssetImage('assets/images/backgrounds/jobs_background.png'),
                     fit: BoxFit.cover,
                     opacity: 0.18,
                   ),
