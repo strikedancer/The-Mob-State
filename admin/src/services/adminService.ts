@@ -1092,6 +1092,7 @@ export const adminAuthService = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
+      signal: AbortSignal.timeout(15_000),
     });
 
     if (!response.ok) {
@@ -1127,7 +1128,7 @@ export const adminAuthService = {
       | null;
   },
 
-  async getMe(): Promise<{
+  async getMe(timeoutMs = 8_000): Promise<{
     admin: {
       id: number;
       username: string;
@@ -1138,6 +1139,7 @@ export const adminAuthService = {
     const token = this.getToken();
     const response = await fetch(`${API_URL}/admin/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!response.ok) {
       throw new Error("UNAUTHORIZED");

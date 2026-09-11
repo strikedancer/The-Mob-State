@@ -59,17 +59,6 @@ export const adminAuthMiddleware = async (req: AdminRequest, res: Response, next
       });
     }
 
-    // Best-effort metadata update: auth must not fail if this write conflicts under concurrent requests
-    prisma.admin.update({
-      where: { id: admin.id },
-      data: { lastLoginAt: new Date() },
-    }).catch((updateError) => {
-      console.warn('[Admin Auth] Failed to update lastLoginAt', {
-        adminId: admin.id,
-        error: updateError,
-      });
-    });
-
     // Attach admin info to request
     req.admin = {
       id: admin.id,

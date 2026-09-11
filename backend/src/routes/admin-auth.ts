@@ -36,11 +36,17 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Update last login
-    await prisma.admin.update({
-      where: { id: admin.id },
-      data: { lastLoginAt: new Date() },
-    });
+    prisma.admin
+      .update({
+        where: { id: admin.id },
+        data: { lastLoginAt: new Date() },
+      })
+      .catch((updateError) => {
+        console.warn('[Admin Login] Failed to update lastLoginAt', {
+          adminId: admin.id,
+          error: updateError,
+        });
+      });
 
     // Generate JWT with admin role
     const token = jwt.sign(

@@ -523,7 +523,7 @@ function App() {
     localStorage.getItem("theme") === "light" ? "light" : "dark",
   );
   const [sessionReady, setSessionReady] = useState(
-    !adminAuthService.isAuthenticated(),
+    !adminAuthService.getToken(),
   );
   useEffect(() => {
     try {
@@ -539,9 +539,7 @@ function App() {
       (acc, [key, value]) => acc.replace(`{${key}}`, String(value)),
       template,
     );
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    adminAuthService.isAuthenticated(),
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminRole, setAdminRole] = useState<
     "SUPER_ADMIN" | "MODERATOR" | "VIEWER" | null
   >(adminAuthService.getAdminRole());
@@ -1041,7 +1039,7 @@ function App() {
         return;
       }
       try {
-        const me = await adminAuthService.getMe();
+        const me = await adminAuthService.getMe(8_000);
         if (cancelled) return;
         setIsAuthenticated(true);
         setAdminRole(me.admin.role);
