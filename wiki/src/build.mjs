@@ -189,7 +189,8 @@ function countryPages(data, lang) {
         ${stat(ui(lang, 'travelCost'), money(c.travelCost))}
         ${stat(ui(lang, 'trade'), String(goodsHere.length))}
         ${stat(ui(lang, 'cars'), String(carsHere.length))}
-        ${stat(ui(lang, 'boats'), String(boatsHere.length + bikesHere.length))}
+        ${stat(ui(lang, 'motorcycles'), String(bikesHere.length))}
+        ${stat(ui(lang, 'boats'), String(boatsHere.length))}
       </div>
       <div class="notice">${esc(ui(lang, 'liveNotice'))}</div>
       <div class="section-title"><h2>${esc(ui(lang, 'trade'))}</h2></div>

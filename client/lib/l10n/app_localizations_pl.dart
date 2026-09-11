@@ -17457,6 +17457,24 @@ class AppLocalizationsPl extends AppLocalizations {
       'Aktywnie kradnij pojazdy, gdy poziom Poszukiwania jest niski: wyższy Poszukiwany = większa szansa niepowodzenia podczas kradzieży. \nZawsze utrzymuj co najmniej jeden niezawodny pojazd w dobrym stanie na potrzeby przemytu: zepsuty pojazd zmniejsza o połowę Twoje szanse na sukces. \nUżyj złomowania mocno uszkodzonych pojazdów jako szybkiego resetu wydajności; sprzedaż jest często lepsza w dobrym stanie.';
 
   @override
+  String get helpTopicMotorCategory => 'Aktywa';
+
+  @override
+  String get helpTopicMotorTitle => 'Motocykle';
+
+  @override
+  String get helpTopicMotorSummary =>
+      'Kradnij motocykle i zarządzaj nimi. Magazyn motocykli to własny tor obok samochodów; naprawy, sprzedaż i złomowanie działają w ten sam sposób. Transport przebiega przez węzeł przemytniczy.';
+
+  @override
+  String get helpTopicMotorHow =>
+      'W napadzie na pojazd silnik jest odrębnym środowiskiem obok samochodu i łodzi. Wybierz kartę pasa na górze.\nMiejsce na motocykle to coś innego niż pojemność samochodu w garażu: ulepszenie samochodu nigdy nie dodaje miejsc na motocykle i odwrotnie. Ulepszenia dotyczą tylko kraju, w którym się znajdujesz i dodają miejsca, a nie kradną szansę. Są bramkowane według rang; na poziomie 5 przycisk znika.\nKatalog pokazuje każdy motocykl, który można ukraść, łącznie z najpopularniejszymi krajami i krajami odrodzenia.\nKradzież motocykla ma swoje własne bramki rangowe i czasy odnowienia. Droższe rowery są trudniejsze do kradzieży, ale można za nie zapłacić więcej.\nPo udanej kradzieży wyskakujące okienko z wynikami umożliwia natychmiastową sprzedaż, złomowanie lub zatrzymanie roweru.\nJeśli modelowy limit świata jest pełny, ten typ tymczasowo znika. Sprzedaż lub złomowanie ponownie otwiera miejsce.\nNaprawy są czasowe i współdzielone z samochodami i łodziami: bez aktywnego VIP max 1, z VIP max 2.\nZłomowanie zapewnia części motocyklowe dla TuneShop i wartość powypadkową (35% wartości bazowej), skalowaną według stanu.\nPrzemieszczanie motocykli pomiędzy krajami odbywa się w Centrum Przemytu, a nie na tym ekranie.\nPolicyjne motocykle przeznaczone wyłącznie na wydarzenie pozostają zamknięte poza oknami wydarzenia (15. pozycja podczas wydarzenia).\nPrzechowalnia samochodów załogi akceptuje także motocykle.';
+
+  @override
+  String get helpTopicMotorTips =>
+      'Ulepsz przechowalnię motocykli w kraju, w którym kradniesz najwięcej: ulepszenie we Francji nie obejmuje Holandii.\nUtrzymuj przynajmniej jeden motocykl w dobrym stanie na wypadek przemytu: zepsuty pojazd zmniejsza o połowę Twoje szanse na sukces.\nZłomuj mocno uszkodzone rowery w celu uzyskania części TuneShop, gdy wartość odsprzedaży jest niska.';
+
+  @override
   String get helpTopicMarinaCategory => 'Aktywa';
 
   @override

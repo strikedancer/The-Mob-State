@@ -600,7 +600,7 @@ class _GarageScreenState extends State<GarageScreen> {
   @override
   Widget build(BuildContext context) {
     return GamePageInfoHost(
-      topicId: 'garage',
+      topicId: widget.vehicleType == 'motorcycle' ? 'motor' : 'garage',
       child: _buildPageInfoChild(context),
     );
   }

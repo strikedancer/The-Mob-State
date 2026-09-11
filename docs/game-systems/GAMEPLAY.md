@@ -15,6 +15,7 @@
 - [Travel & Countries](#travel--countries)
 - [Territory](#territory)
 - [Trade Market](#trade-market)
+- [Voertuigen](#voertuigen)
 - [Aviation](#aviation)
 - [Casino](#casino)
 - [Weapons & Ammo](#weapons--ammo)
@@ -674,6 +675,24 @@ Onderstaande bullets beschrijven reis- en heat-risico’s voor **smokkelzendinge
 - **Bribe option**: â‚¬1,000-â‚¬5,000
 - **If caught**: 50% goods loss
 
+- Houd altijd 2-3 productieronden aan output in reserve als buffer zodat je nooit zonder ammo valt tijdens PvP.
+
+---
+
+## Voertuigen
+
+Er zijn **drie landvoertuig-omgevingen** plus vliegtuigen:
+
+- **Auto (Garage):** stelen, opslag, reparatie, verkoop/sloop. Eigen capaciteitslijn per land.
+- **Motor (Motorstalling):** dezelfde loop als auto, maar een **aparte** catalogus, cooldown, heat/reputatie en opslaglijn. Niet hetzelfde als garage-auto's.
+- **Boot (Marina):** havenopslag, eigen steelkans en world-cap.
+- **Vliegtuig (Hangar):** reizen/smokkel, catalogus in `aircraft.json`.
+
+In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin → Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen).
+
+- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond.
+- Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch).
+
 ---
 
 ## Aviation
@@ -1019,11 +1038,11 @@ Bob: â‚¬300K counter-hit
 - Admin → spelerdetail → **VIP-dagen toekennen** (1–365) verlengt Player VIP zonder het hele beheerformulier. Een bestaande VIP-periode wordt doorgeteld; dit is geen credit- of euro-aankoop.
 - Kill-reset met actieve Player VIP: contant geld reset naar â‚¬500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).
-- Op ondersteunde timeout-schermen (crime, jobs, school, voertuig- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren.
+- Op ondersteunde timeout-schermen (crime, jobs, school, voertuig-, motor- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren.
 - Voor school geldt: een credit-speedup reset alleen de cooldowntimer; XP wordt verdiend bij de trainingsactie zelf. Na reset start je direct een nieuwe training voor extra XP.
-- Bij beschadigde voertuigen in Garage/Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond.
+- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond.
 - De instant-repair knop gebruikt een gecombineerd icoon (steeksleutel + bliksem) om de actie visueel duidelijk te maken zonder extra tekstdruk op de kaart.
-- Voertuigkaarten in Garage/Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch) zodat je sneller ziet welke voertuigen het waard zijn om te houden of te verkopen.
+- Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch) zodat je sneller ziet welke voertuigen het waard zijn om te houden of te verkopen.
 - Tijdelijke premium boosts zijn bewust non pay-to-win en capped: kleine utility bonussen voor crime success/payout, hitlist attack/defense en event contribution, zonder event-reward tiers te overrulen.
 
 ### Vehicle Ops Expansion (2026-Q2)
@@ -1043,13 +1062,13 @@ Bob: â‚¬300K counter-hit
 - **Boot stelen:** boten hebben in de content hogere euro-`baseValue`-banden dan veel startersauto's, waardoor dezelfde stal-successcurve ze zonder correctie structureel **strenger** raakt. De server past daarom een beperkte boot-ease toe na heat/politiepatroon (`vehicleService.stealVehicle`; details in `docs/module-protocols/balance-economy.md` en `steel_voertuig.md`). **Arrest** na een mislukte poging: eigen catch-worp (~18–50% afhankelijk van moeilijkheid/heat, 10–45 min) óf `checkArrest` op bestaand wanted (`POLICE_RATIO`). Wanted bij stelen is 0–100 (niet meer vastgezet op 5). “Gefaald” is dus niet automatisch cel, maar herhaald stelen moet wél naar de gevangenis kunnen.
 - Cooldowns worden in Vehicle Ops enkel in de actiekaarten als primaire bron getoond om dubbele info en visuele ruis te vermijden.
 - De gecombineerde Vehicle Heist-pagina gebruikt één primaire categorie-selector (Auto/Motor/Boot lane cards) en toont geen tweede redundante tab-rij of chips met dezelfde categorieën onder de foto-hero.
-- **Garage auto vs motor**: opslag-upgrades gelden **alleen voor het land waar je nu bent** (Frankrijk-upgrade verhoogt Nederland niet) en zijn daarbinnen **onafhankelijke lijnen** (`garageTrack`: auto of motor); een autoupgrade verhoogt niet de motorcapaciteit. Upgrades geven extra **slots**, geen hogere steelkans. Help (`helpTopicGarageHow` / marina How / gouden `i` op Voertuig stelen) moet dit zo uitleggen. Motor-startcapaciteit is een eigen basis (met eigen upgrade-teller); bestaande spelers krijgen bij deploy een **motor-track** die de oude afgeleide capaciteit minimaal behoudt. Upgrades zijn daarnaast **rank-gated**: als je rank te laag is zie je een lock/tooltip en kan de upgrade niet. Bij **upgrade niveau 5** verdwijnt de upgrade-knop (garage/marina en Vehicle Heist-lanes). Server-start voegt zo nodig de DB-kolom `track` toe en vult motor-tracks eenmalig bij (idempotent).
+- **Garage auto vs motor**: opslag-upgrades gelden **alleen voor het land waar je nu bent** (Frankrijk-upgrade verhoogt Nederland niet) en zijn daarbinnen **onafhankelijke lijnen** (`garageTrack`: auto of motor); een autoupgrade verhoogt niet de motorcapaciteit. Upgrades geven extra **slots**, geen hogere steelkans. Help (`helpTopicGarageHow` / `helpTopicMotorHow` / marina How / gouden `i` op Voertuig stelen) moet dit zo uitleggen. Motor-startcapaciteit is een eigen basis (met eigen upgrade-teller); bestaande spelers krijgen bij deploy een **motor-track** die de oude afgeleide capaciteit minimaal behoudt. Upgrades zijn daarnaast **rank-gated**: als je rank te laag is zie je een lock/tooltip en kan de upgrade niet. Bij **upgrade niveau 5** verdwijnt de upgrade-knop (garage/motorstalling/marina en Vehicle Heist-lanes). Server-start voegt zo nodig de DB-kolom `track` toe en vult motor-tracks eenmalig bij (idempotent).
 - Per categoriekaart zijn quick actions voor stelen en opslag-upgrade direct beschikbaar; bij een actieve **theft-cooldown** toont de stelen-knop een **live resttijd** (geen statische "Steel …"-tekst) en zit het **bliksem-icoon om met credits te versnellen in dezelfde omlijnde control** naast die timer (geen losse knop ernaast; web-hit-testing blijft betrouwbaar). De bevestigingsmodal toont **werkelijke creditkosten en saldo**; als versnellen niet mag of te duur is, blijft de modal zichtbaar met uitleg en een uitgeschakelde bevestiging (“niet meer tonen” en weer aanzetten via Instellingen). Geen full-screen cooldown-overlay meer voor deze flow. Tijdens een lopende stel-actie is de knop kort onbereikbaar. De server levert daarvoor per type `laneTheftCooldowns` via `GET /vehicles/ops/intelligence` (embedded garage/marina volgen hetzelfde label-gedrag op de stelen-knop). Wanneer de server na een stelpoging een theft-cooldown zet, stuurt `POST /vehicles/steal/:id` in `params` altijd `cooldownRemainingSeconds` mee, zodat de client de resttijd direct toont. Voertuig-Heist toasts in dit flow gebruiken rechtsboven, niet onderaan het scherm. De client bewaart de server-fouttekst **direct na** de steal-call vóór `fetchInventory` / ops-intel verversing, omdat die calls `provider.error` wissen en anders alleen een generieke "stelen mislukt"-tekst zichtbaar is.
 - Beschikbaarheid van het voertuig-catalogus per land wordt genormaliseerd op lowercase landcodes; boten zonder expliciete `availableInCountries` lijst gelden als “globaal beschikbaar” (behalve tijdens regionale havenblokkade/blacklist events).
 - Tijdens regionale blacklist events (zoals **Haven Lockdown**) kan een segment tijdelijk geen targets hebben; de UI toont dan de **reden + resterende tijd** in plaats van “geen voertuigen beschikbaar”.
 - Per categoriekaart staat nu ook capaciteit per type (gebruikt/totaal + upgrade level) als primaire informatiebron.
 - In embedded garage/marina **zonder** de gecombineerde Vehicle Heist-scroll is de **JailOverlay** bovenin de zichtbare tabcontent verankerd. Op de **dashboard Vehicle Heist**-route rendert de cel-UI op **`VehicleHeistScreen`-niveau** boven de `NestedScrollView` (niet in de tab-body), zodat de kaart niet onder het Voertuig Ops-headerblok eindigt; embedded tabs gebruiken `suppressJailOverlay` en ouders tonen de overlay. De kaart gebruikt de werkelijke tabhoogte (`LayoutBuilder` + `Positioned.fill`), geen volledig-schermcentrering in een smalle tab. Na **stelen via de lane/ops-kaart** ververst de client meteen `GET /player/jail-status` (en vult desnoods seconden vanuit de steal-response) zodat de overlay **onmiddellijk** opent na arrest; alleen op de periodieke poll wachten geeft te lange “blinde” celstraf in de UI. Bij **succesvolle** diefstal opent dezelfde gestolen-voertuig-popup als in garage/marina (`showStolenVehicleDialog` / `VehicleTheftResultOverlay`), niet alleen een top-right toast. In die popup kun je het voertuig meteen **verkopen** of **slopen**, of **houden**.
-- Gestolen voertuigen in embedded Garage/Marina renderen responsief als card-grid (mobiel 1 kolom, tablet/desktop meerdere kolommen).
+- Gestolen voertuigen in embedded Garage / Motorstalling / Marina renderen responsief als card-grid (mobiel 1 kolom, tablet/desktop meerdere kolommen).
 - Embedded voertuigkaarten gebruiken natuurlijke hoogte (geen onnodige lege onderruimte door geforceerde hoge gridcellen).
 - Op brede schermen schaalt het embedded overzicht door naar maximaal 4 kaarten naast elkaar.
 - Kolommen schalen dynamisch op kaartbreedte, zodat 4 kaarten ook op laptopweergaves met zijpanelen haalbaar blijven.

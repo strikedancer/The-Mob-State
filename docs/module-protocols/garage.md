@@ -47,7 +47,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Scrap system: players can scrap owned vehicles to get salvage value (35% of base value, scaled by condition and **the garage upgrade level of the same track** as the vehicle type). Scrapping must not be instant; it must trigger immediately but show clear feedback. Scrap price must respect garage upgrade multipliers (up to 20% bonus at max level).
 - Scrapping in this flow also yields category parts for TuneShop upgrades (car/motorcycle parts).
 - Keep event-only police vehicles disabled outside explicit event windows.
-- Target catalog scale for this module: at least 200 cars and a broad motorcycle set, spread from common to ultra-rare tiers.
+- Admin → Voertuigen edits `backend/content/vehicles.json` for **cars, motorcycles and boats**. Saving must not drop the `motorcycles` array.
 - Event-only police vehicles can only appear during active rotation windows and must never leak into normal availability outside those windows.
 
 ## Check Before Editing

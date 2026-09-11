@@ -17539,6 +17539,24 @@ class AppLocalizationsFr extends AppLocalizations {
       'Volez activement des véhicules lorsque le niveau de recherche est faible : recherche plus élevée = risque d\'échec plus élevé lors du vol. \nGardez toujours au moins un véhicule fiable en bon état pour la contrebande : un véhicule en panne réduit de moitié vos chances de succès. \nUtiliser la mise au rebut des véhicules fortement endommagés pour réinitialiser rapidement la capacité ; la vente est souvent meilleure en bon état.';
 
   @override
+  String get helpTopicMotorCategory => 'Actifs';
+
+  @override
+  String get helpTopicMotorTitle => 'Motos';
+
+  @override
+  String get helpTopicMotorSummary =>
+      'Voler et gérer des motos. Le stockage des motos est sa propre piste à côté des voitures ; la réparation, la vente et la mise au rebut fonctionnent de la même manière. Le transport passe par Smuggling Hub.';
+
+  @override
+  String get helpTopicMotorHow =>
+      'Dans Vehicle Heist, Motor est son propre environnement à côté de Car et Boat. Choisissez cette carte de voie en haut.\nLe stockage des motos est distinct de la capacité du garage : une mise à niveau d’une voiture n’ajoute jamais d’emplacements pour motos, et vice versa. Les mises à niveau s\'appliquent uniquement au pays dans lequel vous vous trouvez et ajoutent des emplacements, et ne volent pas de chance. Ils sont classés par rang ; au niveau 5, le bouton disparaît.\nLe catalogue présente toutes les motos volables, y compris les pays les plus courants et les pays d\'apparition.\nLe vol de moto a ses propres classements et temps de recharge. Les vélos plus chers sont plus difficiles à voler mais peuvent payer plus cher.\nAprès un vol réussi, la fenêtre contextuelle des résultats vous permet de vendre ou de mettre au rebut immédiatement, ou de conserver le vélo.\nSi la capitalisation mondiale d\'un modèle est pleine, ce type disparaît temporairement. La vente ou la mise au rebut rouvre un emplacement.\nLes réparations sont chronométrées et partagent les créneaux avec les voitures et les bateaux : sans VIP max 1 actif, avec VIP max 2.\nLa mise au rebut produit des pièces de moto pour TuneShop et une valeur de récupération (35 % de la valeur de base), échelonnée selon l\'état.\nLe déplacement de motos entre les pays passe par Smuggling Hub, pas par cet écran.\nLes motos de police réservées à l\'événement restent verrouillées en dehors des fenêtres de l\'événement (rang 15 pendant l\'événement).\nLe stockage des voitures d’équipage accepte également les motos.';
+
+  @override
+  String get helpTopicMotorTips =>
+      'Surclassement du stockage moto dans le pays où vous volez le plus : un surclassement en France ne remplit pas les Pays-Bas.\nGardez au moins une moto en bon état pour la contrebande : un véhicule en panne réduit de moitié vos chances de réussite.\nMettez au rebut les vélos fortement endommagés pour les pièces TuneShop lorsque la valeur de revente est faible.';
+
+  @override
   String get helpTopicMarinaCategory => 'Actifs';
 
   @override

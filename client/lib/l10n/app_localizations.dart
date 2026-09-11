@@ -29975,6 +29975,36 @@ abstract class AppLocalizations {
   /// **'Steal vehicles actively when Wanted Level is low: higher Wanted = higher failure chance when stealing.\nAlways keep at least one reliable vehicle at high condition for smuggling: a broken vehicle halves your success chance.\nUse scrapping for heavily damaged vehicles as a fast capacity reset; selling is often better at high condition.'**
   String get helpTopicGarageTips;
 
+  /// No description provided for @helpTopicMotorCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Assets'**
+  String get helpTopicMotorCategory;
+
+  /// No description provided for @helpTopicMotorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycles'**
+  String get helpTopicMotorTitle;
+
+  /// No description provided for @helpTopicMotorSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal and manage motorcycles. Motorcycle storage is its own track next to cars; repairs, selling and scrapping work the same way. Transport runs through Smuggling Hub.'**
+  String get helpTopicMotorSummary;
+
+  /// No description provided for @helpTopicMotorHow.
+  ///
+  /// In en, this message translates to:
+  /// **'In Vehicle Heist, Motor is its own environment next to Car and Boat. Pick that lane card at the top.\nMotorcycle storage is separate from garage car capacity: a car upgrade never adds motorcycle slots, and vice versa. Upgrades only apply to the country you are in and add slots, not steal chance. They are rank-gated; at level 5 the button disappears.\nThe catalog shows every stealable motorcycle, including the most common country and spawn countries.\nMotorcycle theft has its own rank gates and cooldowns. More expensive bikes are harder to steal but can pay more.\nAfter a successful theft, the result popup lets you sell or scrap immediately, or keep the bike.\nIf a model world-cap is full, that type temporarily disappears. Selling or scrapping reopens a slot.\nRepairs are timed and share slots with cars and boats: without VIP max 1 active, with VIP max 2.\nScrapping yields motorcycle parts for TuneShop and salvage value (35% of base value), scaled by condition.\nMoving motorcycles between countries runs through Smuggling Hub, not this screen.\nEvent-only police motorcycles stay locked outside event windows (rank 15 during the event).\nCrew car storage also accepts motorcycles.'**
+  String get helpTopicMotorHow;
+
+  /// No description provided for @helpTopicMotorTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade motorcycle storage in the country where you steal most: a France upgrade does not fill the Netherlands.\nKeep at least one motorcycle in high condition for smuggling: a broken vehicle halves your success chance.\nScrap heavily damaged bikes for TuneShop parts when resale value is low.'**
+  String get helpTopicMotorTips;
+
   /// No description provided for @helpTopicMarinaCategory.
   ///
   /// In en, this message translates to:

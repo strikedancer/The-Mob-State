@@ -17540,6 +17540,24 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fahrzeuge aktiv stehlen, wenn das Wanted-Level niedrig ist: höheres Wanted = höheres Misserfolgsrisiko beim Stehlen. \nHalten Sie immer mindestens ein zuverlässiges Fahrzeug in einem guten Zustand für den Schmuggel: Ein kaputtes Fahrzeug halbiert Ihre Erfolgsaussichten. \nNutzen Sie die Verschrottung stark beschädigter Fahrzeuge als schnelle Kapazitätswiederherstellung; Bei gutem Zustand ist der Verkauf oft besser.';
 
   @override
+  String get helpTopicMotorCategory => 'Vermögenswerte';
+
+  @override
+  String get helpTopicMotorTitle => 'Motorräder';
+
+  @override
+  String get helpTopicMotorSummary =>
+      'Motorräder stehlen und verwalten. Die Motorradaufbewahrung ist neben den Autos eine eigene Strecke; Reparaturen, Verkauf und Verschrottung funktionieren auf die gleiche Weise. Der Transport erfolgt über den Schmuggelknotenpunkt.';
+
+  @override
+  String get helpTopicMotorHow =>
+      'In Vehicle Heist ist Motor neben Auto und Boot eine eigene Umgebung. Wählen Sie die Lane-Karte oben aus.\nDie Lagerung von Motorrädern ist von der Kapazität der Garagenwagen getrennt: Durch ein Auto-Upgrade werden niemals Motorradplätze hinzugefügt und umgekehrt. Upgrades gelten nur für das Land, in dem Sie sich befinden, und fügen Slots hinzu, nicht den Diebstahl von Chancen. Sie sind rangbegrenzt; Auf Stufe 5 verschwindet die Schaltfläche.\nDer Katalog zeigt jedes stiehlbare Motorrad, einschließlich der häufigsten Länder und Spawn-Länder.\nMotorraddiebstahl hat eigene Rangtore und Abklingzeiten. Teurere Fahrräder sind schwerer zu stehlen, können aber auch mehr kosten.\nNach einem erfolgreichen Diebstahl können Sie über das Ergebnis-Popup das Fahrrad sofort verkaufen, verschrotten oder behalten.\nWenn die Weltobergrenze eines Modells voll ist, verschwindet dieser Typ vorübergehend. Durch den Verkauf oder die Verschrottung wird ein Platz wieder frei.\nReparaturen sind zeitgesteuert und teilen sich Slots mit Autos und Booten: ohne VIP max. 1 aktiv, mit VIP max. 2.\nDurch die Verschrottung erhalten Sie Motorradteile für TuneShop und einen Restwert (35 % des Basiswerts), gestaffelt nach Zustand.\nDer Transport von Motorrädern zwischen Ländern erfolgt über den Smuggling Hub, nicht über diesen Bildschirm.\nPolizeimotorräder, die nur der Veranstaltung vorbehalten sind, bleiben außerhalb der Veranstaltungsfenster verschlossen (Rang 15 während der Veranstaltung).\nIn der Mannschaftswagenaufbewahrung können auch Motorräder untergebracht werden.';
+
+  @override
+  String get helpTopicMotorTips =>
+      'Erweitern Sie den Motorradlagerplatz in dem Land, in dem Sie am meisten stehlen: Ein Frankreich-Upgrade füllt die Niederlande nicht aus.\nHalten Sie mindestens ein Motorrad für den Schmuggel in gutem Zustand: Ein kaputtes Fahrzeug halbiert Ihre Erfolgsaussichten.\nVerschrotten Sie stark beschädigte Fahrräder gegen TuneShop-Ersatzteile, wenn der Wiederverkaufswert gering ist.';
+
+  @override
   String get helpTopicMarinaCategory => 'Vermögenswerte';
 
   @override

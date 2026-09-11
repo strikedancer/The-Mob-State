@@ -2340,7 +2340,10 @@ export const adminService = {
     return response.json();
   },
 
-  async addVehicle(payload: { category: "cars" | "boats"; vehicle: any }) {
+  async addVehicle(payload: {
+    category: "cars" | "boats" | "motorcycles";
+    vehicle: any;
+  }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/vehicles`, {
       method: "POST",
@@ -2361,7 +2364,10 @@ export const adminService = {
     return response.json();
   },
 
-  async deleteVehicle(category: "cars" | "boats", vehicleId: string) {
+  async deleteVehicle(
+    category: "cars" | "boats" | "motorcycles",
+    vehicleId: string,
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(
       `${API_URL}/admin/vehicles/${category}/${encodeURIComponent(vehicleId)}`,

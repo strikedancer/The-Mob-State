@@ -12,7 +12,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 ## Tabs
 
 - Auto: ondersteund door Garage-flow
-- Motor: ondersteund door Motor-flow
+- Motor: ondersteund door Motor-flow (eigen Help-hoofdstuk `motor` + catalogus `vehicles.json` → `motorcycles`)
 - Boot: ondersteund door Marina-flow
 
 ## Jail overlay (embedded dashboard)

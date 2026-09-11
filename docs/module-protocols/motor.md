@@ -7,13 +7,16 @@ Motorcycle inventory, theft flow, timed repairs, country availability catalog, m
 
 ## Primary Frontend Entry
 - client/lib/screens/vehicle_heist_screen.dart (tab: Motor)
+- client/lib/screens/garage_screen.dart (embedded tab content, `vehicleType=motorcycle`; Help topic `motor`)
+
+## Admin
+- Catalog: `backend/content/vehicles.json` → `motorcycles[]`. Admin → Voertuigen lists/adds/deletes motorcycles as their own category (do not write cars/boats without preserving this array).
 
 ## Event Rules
 - Rank-gate voor event-politiemotoren in deze flow is rank 15.
 - Police vehicle events are global vehicle events: when active, event-only police motorcycles are stealable in the same window as police cars and police boats.
 - Event-only motorcycle caps are above 1 to keep event availability meaningful.
 - Event-only police motorcycles must remain locked outside active event windows.
-- client/lib/screens/garage_screen.dart (embedded tab content, vehicleType=motorcycle)
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

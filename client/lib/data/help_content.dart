@@ -139,6 +139,11 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/garage.md',
   ),
   HelpTopic(
+    id: 'motor',
+    icon: Icons.two_wheeler,
+    protocolPath: 'docs/module-protocols/motor.md',
+  ),
+  HelpTopic(
     id: 'marina',
     icon: Icons.directions_boat,
     protocolPath: 'docs/module-protocols/marina.md',

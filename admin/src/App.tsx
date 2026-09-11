@@ -385,7 +385,7 @@ interface AdminVehicle {
 }
 
 interface NewVehicleForm {
-  category: "cars" | "boats";
+  category: "cars" | "boats" | "motorcycles";
   id: string;
   name: string;
   type: string;
@@ -833,6 +833,9 @@ function App() {
   // Vehicle content state
   const [vehiclesLoading, setVehiclesLoading] = useState(false);
   const [carDefinitions, setCarDefinitions] = useState<AdminVehicle[]>([]);
+  const [motorcycleDefinitions, setMotorcycleDefinitions] = useState<
+    AdminVehicle[]
+  >([]);
   const [boatDefinitions, setBoatDefinitions] = useState<AdminVehicle[]>([]);
   const [newVehicle, setNewVehicle] = useState<NewVehicleForm>(
     defaultNewVehicleForm,
@@ -2424,6 +2427,7 @@ function App() {
       setVehiclesLoading(true);
       const data = await adminService.getVehicles();
       setCarDefinitions(data.cars || []);
+      setMotorcycleDefinitions(data.motorcycles || []);
       setBoatDefinitions(data.boats || []);
       setApiError("");
     } catch (err) {
@@ -2485,7 +2489,7 @@ function App() {
   };
 
   const handleDeleteVehicle = async (
-    category: "cars" | "boats",
+    category: "cars" | "boats" | "motorcycles",
     vehicleId: string,
   ) => {
     const confirmed = window.confirm(
@@ -8731,10 +8735,28 @@ function App() {
                   <AdminPageIntro
                     kicker={l("Catalogus · voertuigen", "Catalog · vehicles")}
                     description={l(
-                      "Beheer voertuigen in backend/content/vehicles.json zonder handmatig files te editen.",
-                      "Manage vehicles in backend/content/vehicles.json without manual file edits.",
+                      "Beheer auto's, motoren, boten en vliegtuigen. Landvoertuigen staan in backend/content/vehicles.json; vliegtuigen in aircraft.json.",
+                      "Manage cars, motorcycles, boats and aircraft. Land vehicles live in backend/content/vehicles.json; aircraft in aircraft.json.",
                     )}
                   />
+                  <RuntimeKpiGrid>
+                    <RuntimeKpi
+                      label={l("Auto's", "Cars")}
+                      value={String(carDefinitions.length)}
+                    />
+                    <RuntimeKpi
+                      label={l("Motoren", "Motorcycles")}
+                      value={String(motorcycleDefinitions.length)}
+                    />
+                    <RuntimeKpi
+                      label={l("Boten", "Boats")}
+                      value={String(boatDefinitions.length)}
+                    />
+                    <RuntimeKpi
+                      label={l("Vliegtuigen", "Aircraft")}
+                      value={String(aircraftList.length)}
+                    />
+                  </RuntimeKpiGrid>
 
                   <div
                     className="table-container"
@@ -8755,11 +8777,17 @@ function App() {
                           onChange={(e) =>
                             setNewVehicle({
                               ...newVehicle,
-                              category: e.target.value as "cars" | "boats",
+                              category: e.target.value as
+                                | "cars"
+                                | "boats"
+                                | "motorcycles",
                             })
                           }
                         >
                           <option value="cars">{l("Auto's", "Cars")}</option>
+                          <option value="motorcycles">
+                            {l("Motoren", "Motorcycles")}
+                          </option>
                           <option value="boats">{l("Boten", "Boats")}</option>
                         </select>
                       </div>
@@ -9064,6 +9092,55 @@ function App() {
                                 className="btn-small btn-danger"
                                 onClick={() =>
                                   handleDeleteVehicle("cars", vehicle.id)
+                                }
+                              >
+                                {t.delete}
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <h2>
+                    {l("Motoren", "Motorcycles")} ({motorcycleDefinitions.length})
+                  </h2>
+                  <div
+                    className="table-container"
+                    style={{ marginBottom: "1rem" }}
+                  >
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>{l("ID", "ID")}</th>
+                          <th>{l("Naam", "Name")}</th>
+                          <th>{l("Type", "Type")}</th>
+                          <th>{l("Nieuw", "New")}</th>
+                          <th>{l("Vies", "Dirty")}</th>
+                          <th>{l("Defect", "Damaged")}</th>
+                          <th>{l("Rang", "Rank")}</th>
+                          <th>{t.actions}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {motorcycleDefinitions.map((vehicle) => (
+                          <tr key={vehicle.id}>
+                            <td>{vehicle.id}</td>
+                            <td>{vehicle.name}</td>
+                            <td>{vehicle.type}</td>
+                            <td>{vehicle.imageNew || vehicle.image || "-"}</td>
+                            <td>{vehicle.imageDirty || "-"}</td>
+                            <td>{vehicle.imageDamaged || "-"}</td>
+                            <td>{vehicle.requiredRank}</td>
+                            <td>
+                              <button
+                                className="btn-small btn-danger"
+                                onClick={() =>
+                                  handleDeleteVehicle(
+                                    "motorcycles",
+                                    vehicle.id,
+                                  )
                                 }
                               >
                                 {t.delete}

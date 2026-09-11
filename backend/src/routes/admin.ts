@@ -850,7 +850,7 @@ const vehicleSchema = z.object({
 });
 
 const addVehicleSchema = z.object({
-  category: z.enum(['cars', 'boats']),
+  category: z.enum(['cars', 'boats', 'motorcycles']),
   vehicle: vehicleSchema,
 });
 
@@ -1180,19 +1180,31 @@ const buildImageLibraryUrl = (req: express.Request, relativePath: string): strin
 type VehiclesFile = {
   cars: Array<z.infer<typeof vehicleSchema>>;
   boats: Array<z.infer<typeof vehicleSchema>>;
+  motorcycles: Array<z.infer<typeof vehicleSchema>>;
 };
 
 const readVehiclesFile = async (): Promise<VehiclesFile> => {
   const content = await fs.readFile(vehiclesFilePath, 'utf-8');
-  const parsed = JSON.parse(content);
+  const parsed = JSON.parse(content) as Record<string, unknown>;
   return {
-    cars: Array.isArray(parsed.cars) ? parsed.cars : [],
-    boats: Array.isArray(parsed.boats) ? parsed.boats : [],
+    cars: Array.isArray(parsed.cars) ? (parsed.cars as VehiclesFile['cars']) : [],
+    boats: Array.isArray(parsed.boats) ? (parsed.boats as VehiclesFile['boats']) : [],
+    motorcycles: Array.isArray(parsed.motorcycles)
+      ? (parsed.motorcycles as VehiclesFile['motorcycles'])
+      : [],
   };
 };
 
 const writeVehiclesFile = async (vehicles: VehiclesFile): Promise<void> => {
-  await fs.writeFile(vehiclesFilePath, `${JSON.stringify(vehicles, null, 2)}\n`, 'utf-8');
+  const content = await fs.readFile(vehiclesFilePath, 'utf-8');
+  const existing = JSON.parse(content) as Record<string, unknown>;
+  const next = {
+    ...existing,
+    cars: vehicles.cars,
+    boats: vehicles.boats,
+    motorcycles: vehicles.motorcycles,
+  };
+  await fs.writeFile(vehiclesFilePath, `${JSON.stringify(next, null, 2)}\n`, 'utf-8');
 };
 
 type AircraftDef = z.infer<typeof aircraftSchema>;
@@ -4886,9 +4898,11 @@ router.get('/vehicles', async (_req, res) => {
       success: true,
       cars: vehicles.cars,
       boats: vehicles.boats,
+      motorcycles: vehicles.motorcycles,
       counts: {
         cars: vehicles.cars.length,
         boats: vehicles.boats.length,
+        motorcycles: vehicles.motorcycles.length,
       },
     });
   } catch (error) {
@@ -4899,7 +4913,7 @@ router.get('/vehicles', async (_req, res) => {
 
 /**
  * POST /api/admin/vehicles
- * Add a vehicle definition to cars or boats
+ * Add a vehicle definition to cars, motorcycles or boats
  */
 router.post(
   '/vehicles',
@@ -4912,7 +4926,7 @@ router.post(
         image: vehicle.image?.trim() || vehicle.imageNew,
       };
       const vehicles = await readVehiclesFile();
-      const allVehicles = [...vehicles.cars, ...vehicles.boats];
+      const allVehicles = [...vehicles.cars, ...vehicles.boats, ...vehicles.motorcycles];
 
       const exists = allVehicles.some((entry) => entry.id === normalizedVehicle.id);
       if (exists) {
@@ -4941,7 +4955,7 @@ router.post(
 
 /**
  * DELETE /api/admin/vehicles/:category/:vehicleId
- * Remove a vehicle definition from cars or boats
+ * Remove a vehicle definition from cars, motorcycles or boats
  */
 router.delete(
   '/vehicles/:category/:vehicleId',
@@ -4951,8 +4965,12 @@ router.delete(
       const categoryParam = req.params.category;
       const vehicleId = req.params.vehicleId;
 
-      if (categoryParam !== 'cars' && categoryParam !== 'boats') {
-        return res.status(400).json({ error: 'Category must be cars or boats' });
+      if (
+        categoryParam !== 'cars' &&
+        categoryParam !== 'boats' &&
+        categoryParam !== 'motorcycles'
+      ) {
+        return res.status(400).json({ error: 'Category must be cars, motorcycles or boats' });
       }
 
       const vehicles = await readVehiclesFile();

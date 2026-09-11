@@ -17482,6 +17482,24 @@ class AppLocalizationsEs extends AppLocalizations {
       'Roba vehículos activamente cuando el nivel de búsqueda es bajo: mayor búsqueda = mayor probabilidad de falla al robar. \nMantenga siempre al menos un vehículo confiable en buenas condiciones para el contrabando: un vehículo averiado reduce a la mitad sus posibilidades de éxito. \nUtilice el desguace de vehículos muy dañados como un rápido restablecimiento de la capacidad; La venta suele ser mejor en buenas condiciones.';
 
   @override
+  String get helpTopicMotorCategory => 'Activos';
+
+  @override
+  String get helpTopicMotorTitle => 'motocicletas';
+
+  @override
+  String get helpTopicMotorSummary =>
+      'Roba y gestiona motocicletas. El almacenamiento de motocicletas tiene su propia pista junto a los automóviles; la reparación, la venta y el desguace funcionan de la misma manera. El transporte pasa por Smuggling Hub.';
+
+  @override
+  String get helpTopicMotorHow =>
+      'En Vehicle Heist, Motor tiene su propio entorno junto a Car and Boat. Elija esa tarjeta de carril en la parte superior.\nEl almacenamiento de motocicletas está separado de la capacidad del garaje para automóviles: una mejora de automóvil nunca agrega espacios para motocicletas, y viceversa. Las actualizaciones solo se aplican al país en el que se encuentra y agregan espacios, no roban oportunidades. Están controlados por rangos; en el nivel 5 el botón desaparece.\nEl catálogo muestra todas las motocicletas robables, incluidos los países más comunes y los países de generación.\nEl robo de motocicletas tiene sus propias puertas de rango y tiempos de reutilización. Las bicicletas más caras son más difíciles de robar, pero pueden costar más.\nDespués de un robo exitoso, la ventana emergente de resultados le permite venderla o desecharla inmediatamente, o quedarse con la bicicleta.\nSi un modelo con límite mundial está lleno, ese tipo desaparece temporalmente. Vender o desguazar vuelve a abrir un espacio.\nLas reparaciones están cronometradas y comparten espacios con coches y barcos: sin VIP max 1 activo, con VIP max 2.\nEl desguace produce piezas de motocicleta para TuneShop y valor de rescate (35% del valor base), escalado por condición.\nEl traslado de motocicletas entre países se realiza a través de Smuggling Hub, no de esta pantalla.\nLas motocicletas de la policía exclusivas para eventos permanecen cerradas fuera de las ventanas del evento (clasificación 15 durante el evento).\nEl almacenamiento de vehículos de la Crew también acepta motocicletas.';
+
+  @override
+  String get helpTopicMotorTips =>
+      'Mejora el almacenamiento de motocicletas en el país donde más robas: una mejora en Francia no llena los Países Bajos.\nMantenga al menos una motocicleta en buenas condiciones para el contrabando: un vehículo averiado reduce a la mitad sus posibilidades de éxito.\nDeseche las bicicletas muy dañadas por piezas TuneShop cuando el valor de reventa sea bajo.';
+
+  @override
   String get helpTopicMarinaCategory => 'Activos';
 
   @override

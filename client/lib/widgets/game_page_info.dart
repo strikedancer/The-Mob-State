@@ -153,6 +153,7 @@ List<GamePageInfoSection> gamePageInfoSections(
           body: l10n.vehicleHeistHeroSubtitle,
         ),
         ..._helpSections(l10n, 'garage'),
+        ..._helpSections(l10n, 'motor'),
         ..._helpSections(l10n, 'marina'),
       ];
     case 'player-profile':

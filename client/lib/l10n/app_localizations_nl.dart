@@ -17368,6 +17368,24 @@ class AppLocalizationsNl extends AppLocalizations {
       'Steel voertuigen actief als je Wanted Level laag is: hogere Wanted = hogere mislukkingskans bij diefstal.\nHoud altijd minimaal één betrouwbaar voertuig op hoge conditie voor smokkelen: een kapot voertuig halveeert je slagingskans.\nGebruik sloop voor zwaar beschadigde voertuigen als snelle capaciteit-reset; verkoop is vaak beter bij hoge conditie.';
 
   @override
+  String get helpTopicMotorCategory => 'Assets';
+
+  @override
+  String get helpTopicMotorTitle => 'Motoren';
+
+  @override
+  String get helpTopicMotorSummary =>
+      'Steel en beheer motoren. Motorstalling is een eigen opslaglijn naast auto\'s; reparatie, verkoop en sloop lopen hetzelfde. Transport gaat via Smuggling Hub.';
+
+  @override
+  String get helpTopicMotorHow =>
+      'In Voertuig stelen is Motor een eigen omgeving naast Auto en Boot. Je kiest die lane-card bovenaan.\nMotorstalling is gescheiden van garagecapaciteit: een autoupgrade geeft geen extra motorplaatsen, en omgekeerd. Upgrades gelden alleen voor het land waar je nu bent en geven extra slots, geen hogere steelkans. Ze zijn rank-gated; bij niveau 5 verdwijnt de knop.\nVia de catalogus zie je alle steelbare motoren, inclusief meest voorkomend land en spawn-landen.\nMotordiefstal heeft eigen rank-eisen en cooldowns. Duurdere motoren zijn lastiger te stelen maar leveren meer op.\nNa een geslaagde diefstal kun je in de popup meteen verkopen of slopen, of de motor houden.\nAls de world-cap van een model vol is, verdwijnt dat type tijdelijk. Verkoop of sloop opent weer een slot.\nReparatie is getimed en deelt slots met auto en boot: zonder VIP max 1 actief, met VIP max 2.\nSloop levert motor-onderdelen voor TuneShop en schrootwaarde (35% van basiswaarde), geschaald met conditie.\nTransport van motoren loopt via Smuggling Hub, niet vanuit dit scherm.\nEvent-only politiemotoren blijven buiten eventvensters vergrendeld (rank 15 tijdens het event).\nCrew auto-opslag accepteert ook motoren.';
+
+  @override
+  String get helpTopicMotorTips =>
+      'Upgrade motorstalling in het land waar je vaak steelt: een upgrade in Frankrijk vult Nederland niet bij.\nHoud minstens één motor op hoge conditie voor smokkel: een kapot voertuig halveert je slagingskans.\nSloop zwaar beschadigde motoren voor TuneShop-onderdelen als de verkoopwaarde laag is.';
+
+  @override
   String get helpTopicMarinaCategory => 'Assets';
 
   @override
