@@ -55,7 +55,7 @@
 - Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
 - Het dashboard heeft een **Sessie-overzicht** (link rechtsboven op Home; op native in de AppBar) met de laatste eigen acties. Web en native openen dezelfde lijst. Er staat geen aparte **Mijn activiteit**-lijst meer op het dashboard zelf.
 - Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim. **Event Pass**-prijzen staan **bovenaan** (klaar-om-te-claimen), niet alleen verspreid over de 56 doelrijen. Op mobiel blijven Claim-tegels onder het doel tappable.
-- **Misdaden** laadt de lijst in één server-batch. Als het scherm “kon niet laden / probeer opnieuw” toont, is dat een timeout of verbinding — Retry (en één automatische retry) hoort daarna de lijst te geven. Kaarten, wiki-catalogus en de Misdaden-hub delen dezelfde noir/goud-stills (`/images/crimes/`, hub `wiki/hubs/crimes.png`, achtergrond `crime_background.png`).
+- **Misdaden** laadt de lijst in één server-batch. Als het scherm “kon niet laden / probeer opnieuw” toont, is dat een timeout of verbinding — Retry (en één automatische retry) hoort daarna de lijst te geven. Kaarten, wiki-catalogus en de Misdaden-hub delen dezelfde noir/goud-stills (`/images/crimes/?v=…`, hub `wiki/hubs/crimes.png`, achtergrond `crime_background.png`).
 - **Berichten / postvak:** een badge of push “nieuw bericht” hoort bij bestaande threads (spelers + The Mob State). De inbox mag niet leeg lijken terwijl die berichten er wél zijn; bij een laadfout zie je retry, niet “Nog geen berichten”.
 - **Mobiel:** als een scherm (territory, smokkel, RLD, hitlist, vrienden, chat, shops, Event Pass) niet laadt, hoor je **Opnieuw** te zien — geen eindeloze spinner en geen valse “leeg”-tekst. Hit-kaarten stapelen naam en bounty/Hit onder ~420px zodat de knop tappable blijft.
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
@@ -340,7 +340,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ## Jobs Systeem
 
-- Op web-Banen staat geen extra paginatitel “Banen” in de contentkaart; het zijmenu toont de sectie al. De statusbalk erboven blijft. Kaarten, wiki-catalogus en de Banen-hub delen dezelfde noir/goud-stills (`/images/jobs/`, hub `wiki/hubs/jobs.png`, achtergrond `jobs_background.png`).
+- Op web-Banen staat geen extra paginatitel “Banen” in de contentkaart; het zijmenu toont de sectie al. De statusbalk erboven blijft. Kaarten, wiki-catalogus en de Banen-hub delen dezelfde noir/goud-stills (`/images/jobs/?v=…`, hub `wiki/hubs/jobs.png`, achtergrond `jobs_background.png`).
 
 ### Jobs Balans (Sessie)
 - Er geldt geen harde dagcap op jobs.

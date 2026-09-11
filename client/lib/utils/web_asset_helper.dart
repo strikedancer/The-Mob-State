@@ -1,6 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+/// Bump when catalog stills (jobs/crimes + page washes) are replaced on the
+/// runtime mount so web skips [Image.asset] and busts the 1h nginx cache.
+const kCatalogArtCacheBust = '20260911';
+
 class WebAssetHelper {
   static String _normalize(String value) => value.replaceAll('\\', '/');
 

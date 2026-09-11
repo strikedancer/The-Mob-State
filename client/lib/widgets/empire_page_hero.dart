@@ -15,6 +15,7 @@ class EmpirePageHero extends StatelessWidget {
     super.key,
     required this.title,
     required this.imageAsset,
+    this.cacheBust,
     this.subtitle,
     this.topicId,
     this.onRefresh,
@@ -27,6 +28,7 @@ class EmpirePageHero extends StatelessWidget {
   final String title;
   final String? subtitle;
   final String imageAsset;
+  final String? cacheBust;
   final String? topicId;
   final VoidCallback? onRefresh;
   final bool refreshEnabled;
@@ -67,6 +69,7 @@ class EmpirePageHero extends StatelessWidget {
             WebAssetHelper.image(
               imageAsset,
               fit: BoxFit.cover,
+              cacheBust: cacheBust,
               errorBuilder: (context, error, stackTrace) => ColoredBox(
                 color: Colors.black26,
                 child: Icon(
@@ -263,6 +266,7 @@ class EmpireHubScaffold extends StatelessWidget {
     required this.title,
     required this.imageAsset,
     required this.body,
+    this.cacheBust,
     this.embedded = false,
     this.subtitle,
     this.topicId,
@@ -279,6 +283,7 @@ class EmpireHubScaffold extends StatelessWidget {
   final String title;
   final String? subtitle;
   final String imageAsset;
+  final String? cacheBust;
   final String? topicId;
   final VoidCallback? onRefresh;
   final bool refreshEnabled;
@@ -300,6 +305,7 @@ class EmpireHubScaffold extends StatelessWidget {
               title: title,
               subtitle: subtitle,
               imageAsset: imageAsset,
+              cacheBust: cacheBust,
               topicId: topicId,
               onRefresh: onRefresh,
               refreshEnabled: refreshEnabled,

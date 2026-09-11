@@ -21,6 +21,7 @@ import 'hospital_screen.dart';
 import '../utils/crime_localization.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
 
@@ -341,6 +342,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
             title: l10n.crimeScreenHeroTitle,
             subtitle: l10n.crimeScreenHeroSubtitle,
             imageAsset: 'assets/images/backgrounds/crime_background.png',
+            cacheBust: kCatalogArtCacheBust,
             topicId: 'crimes',
             fallbackIcon: Icons.warning_amber_rounded,
             chips: [

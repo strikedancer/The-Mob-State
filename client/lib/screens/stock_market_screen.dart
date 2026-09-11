@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/stock_market_service.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
 
@@ -145,6 +146,7 @@ class _StockMarketScreenState extends State<StockMarketScreen> {
       title: _l10n.stockMarketTitle,
       subtitle: _l10n.stockMarketHint,
       imageAsset: 'assets/images/jobs/stockbroker_job.png',
+      cacheBust: kCatalogArtCacheBust,
       topicId: 'stock-market',
       onRefresh: _busy || _loading ? null : _load,
       refreshEnabled: !_busy && !_loading,

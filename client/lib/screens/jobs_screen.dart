@@ -143,6 +143,7 @@ class _JobsScreenState extends State<JobsScreen> {
         title: l10n.jobScreenHeroTitle,
         subtitle: l10n.jobScreenHeroSubtitle,
         imageAsset: 'assets/images/backgrounds/jobs_background.png',
+        cacheBust: kCatalogArtCacheBust,
         topicId: 'jobs',
         fallbackIcon: Icons.work_outline,
         chips: [
@@ -543,6 +544,7 @@ class _JobsScreenState extends State<JobsScreen> {
                     imageAsset,
                     fit: BoxFit.cover,
                     alignment: Alignment.center,
+                    cacheBust: kCatalogArtCacheBust,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         color: const Color(0xFF1E2433),

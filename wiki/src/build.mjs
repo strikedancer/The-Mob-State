@@ -14,6 +14,9 @@ const args = Object.fromEntries(
 );
 
 const ROOT = path.resolve(__dirname, '..');
+/** Bump with client `kCatalogArtCacheBust` when job/crime stills are replaced. */
+const CATALOG_ART_V = '20260911';
+const catalogArt = (url) => `${url}?v=${CATALOG_ART_V}`;
 const CONTENT = path.resolve(args.content || path.join(ROOT, '..', 'backend', 'content'));
 const OUT = path.resolve(args.out || path.join(ROOT, 'dist'));
 const HELP_PATHS = resolveHelpPaths(args, ROOT);
@@ -133,7 +136,7 @@ function homeHubs(lang) {
       return card({
         href: `/${lang}/${href}`,
         title: ui(lang, key),
-        image: `/images/wiki/hubs/${key}.png`,
+        image: catalogArt(`/images/wiki/hubs/${key}.png`),
         search: ui(lang, key),
       });
     })
@@ -707,10 +710,10 @@ function restPages(data, lang) {
   simpleCatalog(
     lang,
     'crimes',
-    '/images/backgrounds/crime_background.png',
+    catalogArt('/images/backgrounds/crime_background.png'),
     crimeItems,
     (c) => `/${lang}/crimes/${c.id}/`,
-    (c) => `/images/crimes/${c.id}_crime.png`,
+    (c) => catalogArt(`/images/crimes/${c.id}_crime.png`),
     (c) => `${money(c.minReward)}–${money(c.maxReward)}`
   );
   for (const c of crimeItems) {
@@ -718,7 +721,7 @@ function restPages(data, lang) {
       lang,
       'crimes',
       c,
-      `/images/crimes/${c.id}_crime.png`,
+      catalogArt(`/images/crimes/${c.id}_crime.png`),
       `<p class="lede">${esc(descOf(c, lang))}</p>
        <div class="stats">${stat(ui(lang, 'rank'), c.minLevel)}${stat(ui(lang, 'price'), `${money(c.minReward)}–${money(c.maxReward)}`)}</div>`
     );
@@ -727,10 +730,10 @@ function restPages(data, lang) {
   simpleCatalog(
     lang,
     'jobs',
-    '/images/backgrounds/jobs_background.png',
+    catalogArt('/images/backgrounds/jobs_background.png'),
     data.jobs,
     (j) => `/${lang}/jobs/${j.id}/`,
-    (j) => `/images/jobs/${j.id}_job.png`,
+    (j) => catalogArt(`/images/jobs/${j.id}_job.png`),
     (j) => `${money(j.minEarnings)}–${money(j.maxEarnings)}`
   );
   for (const j of data.jobs) {
@@ -738,7 +741,7 @@ function restPages(data, lang) {
       lang,
       'jobs',
       j,
-      `/images/jobs/${j.id}_job.png`,
+      catalogArt(`/images/jobs/${j.id}_job.png`),
       `<p class="lede">${esc(descOf(j, lang))}</p>
        <div class="stats">${stat(ui(lang, 'rank'), j.minLevel)}${stat(ui(lang, 'income'), `${money(j.minEarnings)}–${money(j.maxEarnings)}`)}</div>`
     );

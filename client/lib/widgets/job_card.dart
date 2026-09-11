@@ -130,6 +130,7 @@ class _JobCardState extends State<JobCard> {
                         imageAsset,
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
+                        cacheBust: kCatalogArtCacheBust,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
                             color: const Color(0xFF1E2433),
