@@ -64,14 +64,29 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _isLogin = !widget.initialRegister;
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       final auth = Provider.of<AuthProvider>(context, listen: false);
+      _loadFacebookStatus();
+      await _consumeFacebookReturn();
+      if (!mounted) return;
+      if (_isFacebookComplete) {
+        if (!auth.isAuthenticated) {
+          Provider.of<LocaleProvider>(context, listen: false).initGuestLocale();
+        }
+        return;
+      }
+      if (!widget.embeddedModal) {
+        await auth.checkAuthStatus();
+        if (!mounted) return;
+        if (auth.isAuthenticated && auth.currentPlayer != null) {
+          Navigator.of(context).pushReplacementNamed('/dashboard');
+          return;
+        }
+      }
       if (!auth.isAuthenticated) {
         Provider.of<LocaleProvider>(context, listen: false).initGuestLocale();
       }
-      _loadFacebookStatus();
-      _consumeFacebookReturn();
     });
   }
 
@@ -1045,7 +1060,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       child: ElevatedButton(
-                        onPressed: authProvider.isLoading
+                        onPressed: authProvider.isSubmitting
                             ? null
                             : _submit,
                         style: ElevatedButton.styleFrom(
@@ -1056,7 +1071,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        child: authProvider.isLoading
+                        child: authProvider.isSubmitting
                             ? const SizedBox(
                                 height: 20,
                                 width: 20,

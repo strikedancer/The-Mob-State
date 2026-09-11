@@ -59,6 +59,23 @@ class AuthService {
     );
   }
 
+  /// Push setup must never block login/register — FCM can hang on web.
+  void _syncPushInBackground() {
+    Future<void>(() async {
+      try {
+        if (!kIsWeb) {
+          await NotificationService().initialize();
+          print('✅ Push notifications initialized');
+        } else {
+          await NotificationService().syncAuthorizedSession();
+          print('ℹ️ Web push session synchronized after auth.');
+        }
+      } catch (e) {
+        print('⚠️ Push notifications failed: $e');
+      }
+    });
+  }
+
   Future<AuthResult> login(String username, String password) async {
     try {
       final response = await _apiClient.post('/auth/login', {
@@ -83,20 +100,7 @@ class AuthService {
           final player = Player.fromJson(playerData);
           print('[AuthService] Player parsed successfully: ${player.username}');
 
-          // Initialize push notifications
-          try {
-            if (!kIsWeb) {
-              await NotificationService().initialize();
-              print('✅ Push notifications initialized');
-            } else {
-              await NotificationService().syncAuthorizedSession();
-              print('ℹ️ Web push session synchronized after login.');
-            }
-          } catch (e) {
-            print('⚠️ Push notifications failed: $e');
-            // Don't fail login if notifications fail
-          }
-
+          _syncPushInBackground();
           return AuthResult(success: true, player: player);
         } catch (e) {
           print('[AuthService] Player parsing error: $e');
@@ -186,14 +190,7 @@ class AuthService {
         try {
           final player = Player.fromJson(playerData);
           print('[AuthService] Player parsed successfully: ${player.username}');
-          try {
-            if (kIsWeb) {
-              await NotificationService().syncAuthorizedSession();
-              print('ℹ️ Web push session synchronized after registration.');
-            }
-          } catch (e) {
-            print('⚠️ Push notifications failed after registration: $e');
-          }
+          _syncPushInBackground();
           return AuthResult(success: true, player: player);
         } catch (e) {
           print('[AuthService] Player parsing error: $e');
@@ -261,15 +258,7 @@ class AuthService {
         await _apiClient.clearToken();
         return AuthResult(success: false, error: 'FACEBOOK_AUTH_FAILED');
       }
-      try {
-        if (!kIsWeb) {
-          await NotificationService().initialize();
-        } else {
-          await NotificationService().syncAuthorizedSession();
-        }
-      } catch (e) {
-        print('⚠️ Push notifications failed after Facebook login: $e');
-      }
+      _syncPushInBackground();
       return AuthResult(success: true, player: player);
     } catch (e) {
       print('[AuthService] Facebook token login exception: $e');
@@ -306,13 +295,7 @@ class AuthService {
         await _apiClient.setToken(token);
         try {
           final player = Player.fromJson(playerData);
-          try {
-            if (kIsWeb) {
-              await NotificationService().syncAuthorizedSession();
-            }
-          } catch (e) {
-            print('⚠️ Push notifications failed after Facebook register: $e');
-          }
+          _syncPushInBackground();
           return AuthResult(success: true, player: player);
         } catch (e) {
           return AuthResult(

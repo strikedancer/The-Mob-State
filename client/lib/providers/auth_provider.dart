@@ -8,12 +8,17 @@ class AuthProvider with ChangeNotifier {
 
   Player? _currentPlayer;
   bool _isAuthenticated = false;
-  bool _isLoading = true;
+  /// True only while restoring a stored session (AuthWrapper splash).
+  bool _isInitializing = true;
+  /// True while login/register/Facebook submit is in flight (form spinner).
+  bool _isSubmitting = false;
   String? _error;
 
   Player? get currentPlayer => _currentPlayer;
   bool get isAuthenticated => _isAuthenticated;
-  bool get isLoading => _isLoading;
+  bool get isInitializing => _isInitializing;
+  bool get isSubmitting => _isSubmitting;
+  bool get isLoading => _isInitializing || _isSubmitting;
   String? get error => _error;
 
   void clearError() {
@@ -26,7 +31,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> checkAuthStatus() async {
-    _isLoading = true;
+    _isInitializing = true;
     notifyListeners();
 
     try {
@@ -36,11 +41,10 @@ class AuthProvider with ChangeNotifier {
           _currentPlayer = await _authService.getCurrentPlayer();
           _isAuthenticated = _currentPlayer != null;
           if (_isAuthenticated) {
-            try {
-              await NotificationService().syncAuthorizedSession();
-            } catch (e) {
+            NotificationService().syncAuthorizedSession().catchError((e) {
               debugPrint('[AuthProvider] Push session sync failed: $e');
-            }
+              return false;
+            });
           }
         } on AuthSessionException catch (e) {
           if (e.unauthorized) {
@@ -61,14 +65,14 @@ class AuthProvider with ChangeNotifier {
       _currentPlayer = null;
       _error = e.toString();
     } finally {
-      _isLoading = false;
+      _isInitializing = false;
       notifyListeners();
     }
   }
 
   Future<bool> login(String username, String password) async {
     print('[AuthProvider] Starting login for: $username');
-    _isLoading = true;
+    _isSubmitting = true;
     _error = null;
     notifyListeners();
 
@@ -82,31 +86,26 @@ class AuthProvider with ChangeNotifier {
         _currentPlayer = result.player;
         _isAuthenticated = true;
         _error = null;
-        _isLoading = false;
         print('[AuthProvider] ✅ Login successful!');
         print('[AuthProvider]    isAuthenticated: $_isAuthenticated');
         print('[AuthProvider]    currentPlayer: ${_currentPlayer?.username}');
-        print('[AuthProvider]    Calling notifyListeners()...');
-        notifyListeners();
-        print('[AuthProvider]    notifyListeners() called!');
         return true;
-      } else {
-        _error = result.error;
-        _isAuthenticated = false;
-        _currentPlayer = null;
-        _isLoading = false;
-        print('[AuthProvider] ❌ Login failed: ${result.error}');
-        notifyListeners();
-        return false;
       }
+
+      _error = result.error;
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      print('[AuthProvider] ❌ Login failed: ${result.error}');
+      return false;
     } catch (e) {
       _error = e.toString();
       _isAuthenticated = false;
       _currentPlayer = null;
-      _isLoading = false;
       print('[AuthProvider] ❌ Login exception: $e');
-      notifyListeners();
       return false;
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
     }
   }
 
@@ -118,7 +117,7 @@ class AuthProvider with ChangeNotifier {
     String? language,
   }) async {
     print('[AuthProvider] Starting registration for: $username');
-    _isLoading = true;
+    _isSubmitting = true;
     _error = null;
     notifyListeners();
 
@@ -138,44 +137,40 @@ class AuthProvider with ChangeNotifier {
         _currentPlayer = result.player;
         _isAuthenticated = true;
         _error = null;
-        _isLoading = false;
         print(
           '[AuthProvider] Registration successful! isAuthenticated=$_isAuthenticated',
         );
-        notifyListeners();
         return true;
-      } else if (result.success && result.requiresEmailVerification) {
+      }
+      if (result.success && result.requiresEmailVerification) {
         _currentPlayer = null;
         _isAuthenticated = false;
         _error = result.error;
-        _isLoading = false;
         print(
           '[AuthProvider] Registration successful, email verification required',
         );
-        notifyListeners();
         return true;
-      } else {
-        _error = result.error;
-        _isAuthenticated = false;
-        _currentPlayer = null;
-        _isLoading = false;
-        print('[AuthProvider] Registration failed: ${result.error}');
-        notifyListeners();
-        return false;
       }
+
+      _error = result.error;
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      print('[AuthProvider] Registration failed: ${result.error}');
+      return false;
     } catch (e) {
       _error = e.toString();
       _isAuthenticated = false;
       _currentPlayer = null;
-      _isLoading = false;
       print('[AuthProvider] Registration exception: $e');
-      notifyListeners();
       return false;
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
     }
   }
 
   Future<bool> loginWithToken(String token) async {
-    _isLoading = true;
+    _isSubmitting = true;
     _error = null;
     notifyListeners();
 
@@ -185,23 +180,20 @@ class AuthProvider with ChangeNotifier {
         _currentPlayer = result.player;
         _isAuthenticated = true;
         _error = null;
-        _isLoading = false;
-        notifyListeners();
         return true;
       }
       _error = result.error;
       _isAuthenticated = false;
       _currentPlayer = null;
-      _isLoading = false;
-      notifyListeners();
       return false;
     } catch (e) {
       _error = e.toString();
       _isAuthenticated = false;
       _currentPlayer = null;
-      _isLoading = false;
-      notifyListeners();
       return false;
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
     }
   }
 
@@ -212,7 +204,7 @@ class AuthProvider with ChangeNotifier {
     required bool acceptedTerms,
     String? language,
   }) async {
-    _isLoading = true;
+    _isSubmitting = true;
     _error = null;
     notifyListeners();
 
@@ -228,23 +220,20 @@ class AuthProvider with ChangeNotifier {
         _currentPlayer = result.player;
         _isAuthenticated = true;
         _error = null;
-        _isLoading = false;
-        notifyListeners();
         return true;
       }
       _error = result.error;
       _isAuthenticated = false;
       _currentPlayer = null;
-      _isLoading = false;
-      notifyListeners();
       return false;
     } catch (e) {
       _error = e.toString();
       _isAuthenticated = false;
       _currentPlayer = null;
-      _isLoading = false;
-      notifyListeners();
       return false;
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
     }
   }
 

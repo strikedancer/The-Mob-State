@@ -265,10 +265,10 @@ class _AuthWrapperState extends State<AuthWrapper> with WidgetsBindingObserver {
         // Force debug output on every build
         final timestamp = DateTime.now().millisecondsSinceEpoch;
         print(
-          '[AuthWrapper-$timestamp] Building - isLoading: ${authProvider.isLoading}, isAuthenticated: ${authProvider.isAuthenticated}, player: ${authProvider.currentPlayer?.username}',
+          '[AuthWrapper-$timestamp] Building - initializing: ${authProvider.isInitializing}, submitting: ${authProvider.isSubmitting}, isAuthenticated: ${authProvider.isAuthenticated}, player: ${authProvider.currentPlayer?.username}',
         );
 
-        if (authProvider.isLoading) {
+        if (authProvider.isInitializing) {
           print('[AuthWrapper-$timestamp] Showing Loading indicator');
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
