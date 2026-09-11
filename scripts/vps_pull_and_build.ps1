@@ -97,6 +97,10 @@ cp -f client/assets/images/wiki/hubs/*.png runtime/client-images/wiki/hubs/ 2>/d
 mkdir -p runtime/client-images/crimes runtime/client-images/backgrounds || true
 cp -f client/assets/images/crimes/*.png runtime/client-images/crimes/ 2>/dev/null || true
 cp -f client/assets/images/backgrounds/crime_background.png runtime/client-images/backgrounds/crime_background.png 2>/dev/null || true
+# Job catalog + jobs page background (/images/jobs/*, /images/backgrounds/jobs_background.png)
+mkdir -p runtime/client-images/jobs || true
+cp -f client/assets/images/jobs/*.png runtime/client-images/jobs/ 2>/dev/null || true
+cp -f client/assets/images/backgrounds/jobs_background.png runtime/client-images/backgrounds/jobs_background.png 2>/dev/null || true
 # Black-market material icons (/images/materials/*)
 mkdir -p runtime/client-images/materials || true
 cp -f client/assets/images/materials/*.png runtime/client-images/materials/ 2>/dev/null || true
