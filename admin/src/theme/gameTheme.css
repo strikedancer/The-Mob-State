@@ -255,6 +255,54 @@ html.admin-game-theme .runtime-field.is-dirty .form-control {
   border-color: var(--admin-gold) !important;
 }
 
+html.admin-game-theme .admin-image-thumb {
+  display: inline-flex;
+  width: 4.5rem;
+  height: 3rem;
+  padding: 0;
+  border: 1px solid var(--admin-hairline);
+  border-radius: 0.4rem;
+  overflow: hidden;
+  background: #0a0606;
+  cursor: zoom-in;
+}
+
+html.admin-game-theme .admin-image-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+html.admin-game-theme .admin-image-lightbox {
+  width: min(960px, 92vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.85rem;
+  background: #120909;
+  border: 1px solid var(--admin-hairline);
+}
+
+html.admin-game-theme .admin-image-lightbox img {
+  max-width: 88vw;
+  max-height: 72vh;
+  object-fit: contain;
+}
+
+html.admin-game-theme .vehicle-catalog-table th,
+html.admin-game-theme .vehicle-catalog-table td {
+  white-space: nowrap;
+}
+
+html.admin-game-theme .vehicle-catalog-table td:nth-child(1),
+html.admin-game-theme .vehicle-catalog-table td:nth-child(2) {
+  white-space: normal;
+  max-width: 14rem;
+}
+
 html.admin-game-theme .input-group-text {
   background: #1a1010 !important;
   color: var(--admin-muted) !important;

@@ -33,6 +33,18 @@ export function portraitPublicImageUrl(imagePath: string): string {
   return `${resolveGamePublicOrigin()}/images/${path}`;
 }
 
+/** Catalog stills on the public `/images/<folder>` mount (vehicles, aircraft, …). */
+export function catalogPublicImageUrl(
+  folder: "vehicles" | "aircraft",
+  file?: string | null,
+): string | null {
+  const raw = (file || "").trim();
+  if (!raw) return null;
+  const base = raw.replace(/^.*[/\\]/, "");
+  if (!base) return null;
+  return `${resolveGamePublicOrigin()}/images/${folder}/${base}`;
+}
+
 /** Preset catalog avatar (`default_1`, …) on the public `/images/avatars` mount. */
 export function presetAvatarPublicUrl(avatarKey: string): string {
   const key = avatarKey.replace(/^\/+/, "").replace(/\.png$/i, "");

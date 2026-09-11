@@ -51,6 +51,7 @@ import {
   RuntimeKpi,
   RuntimeKpiGrid,
 } from "./components/adminChrome";
+import { AdminImageThumb, VehicleCatalogTable } from "./components/AdminImageThumb";
 import {
   translations,
   type AdminLanguage,
@@ -9057,143 +9058,27 @@ function App() {
                     </div>
                   </div>
 
-                  <h2>
-                    {l("Auto's", "Cars")} ({carDefinitions.length})
-                  </h2>
-                  <div
-                    className="table-container"
-                    style={{ marginBottom: "1rem" }}
-                  >
-                    <table className="data-table">
-                      <thead>
-                        <tr>
-                          <th>{l("ID", "ID")}</th>
-                          <th>{l("Naam", "Name")}</th>
-                          <th>{l("Type", "Type")}</th>
-                          <th>{l("Nieuw", "New")}</th>
-                          <th>{l("Vies", "Dirty")}</th>
-                          <th>{l("Defect", "Damaged")}</th>
-                          <th>{l("Rang", "Rank")}</th>
-                          <th>{t.actions}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {carDefinitions.map((vehicle) => (
-                          <tr key={vehicle.id}>
-                            <td>{vehicle.id}</td>
-                            <td>{vehicle.name}</td>
-                            <td>{vehicle.type}</td>
-                            <td>{vehicle.imageNew || vehicle.image || "-"}</td>
-                            <td>{vehicle.imageDirty || "-"}</td>
-                            <td>{vehicle.imageDamaged || "-"}</td>
-                            <td>{vehicle.requiredRank}</td>
-                            <td>
-                              <button
-                                className="btn-small btn-danger"
-                                onClick={() =>
-                                  handleDeleteVehicle("cars", vehicle.id)
-                                }
-                              >
-                                {t.delete}
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h2>
-                    {l("Motoren", "Motorcycles")} ({motorcycleDefinitions.length})
-                  </h2>
-                  <div
-                    className="table-container"
-                    style={{ marginBottom: "1rem" }}
-                  >
-                    <table className="data-table">
-                      <thead>
-                        <tr>
-                          <th>{l("ID", "ID")}</th>
-                          <th>{l("Naam", "Name")}</th>
-                          <th>{l("Type", "Type")}</th>
-                          <th>{l("Nieuw", "New")}</th>
-                          <th>{l("Vies", "Dirty")}</th>
-                          <th>{l("Defect", "Damaged")}</th>
-                          <th>{l("Rang", "Rank")}</th>
-                          <th>{t.actions}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {motorcycleDefinitions.map((vehicle) => (
-                          <tr key={vehicle.id}>
-                            <td>{vehicle.id}</td>
-                            <td>{vehicle.name}</td>
-                            <td>{vehicle.type}</td>
-                            <td>{vehicle.imageNew || vehicle.image || "-"}</td>
-                            <td>{vehicle.imageDirty || "-"}</td>
-                            <td>{vehicle.imageDamaged || "-"}</td>
-                            <td>{vehicle.requiredRank}</td>
-                            <td>
-                              <button
-                                className="btn-small btn-danger"
-                                onClick={() =>
-                                  handleDeleteVehicle(
-                                    "motorcycles",
-                                    vehicle.id,
-                                  )
-                                }
-                              >
-                                {t.delete}
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h2>
-                    {l("Boten", "Boats")} ({boatDefinitions.length})
-                  </h2>
-                  <div className="table-container">
-                    <table className="data-table">
-                      <thead>
-                        <tr>
-                          <th>{l("ID", "ID")}</th>
-                          <th>{l("Naam", "Name")}</th>
-                          <th>{l("Type", "Type")}</th>
-                          <th>{l("Nieuw", "New")}</th>
-                          <th>{l("Vies", "Dirty")}</th>
-                          <th>{l("Defect", "Damaged")}</th>
-                          <th>{l("Rang", "Rank")}</th>
-                          <th>{t.actions}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {boatDefinitions.map((vehicle) => (
-                          <tr key={vehicle.id}>
-                            <td>{vehicle.id}</td>
-                            <td>{vehicle.name}</td>
-                            <td>{vehicle.type}</td>
-                            <td>{vehicle.imageNew || vehicle.image || "-"}</td>
-                            <td>{vehicle.imageDirty || "-"}</td>
-                            <td>{vehicle.imageDamaged || "-"}</td>
-                            <td>{vehicle.requiredRank}</td>
-                            <td>
-                              <button
-                                className="btn-small btn-danger"
-                                onClick={() =>
-                                  handleDeleteVehicle("boats", vehicle.id)
-                                }
-                              >
-                                {t.delete}
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <VehicleCatalogTable
+                    locale={language}
+                    title={`${l("Auto's", "Cars")} (${carDefinitions.length})`}
+                    items={carDefinitions}
+                    deleteLabel={t.delete}
+                    onDelete={(id) => handleDeleteVehicle("cars", id)}
+                  />
+                  <VehicleCatalogTable
+                    locale={language}
+                    title={`${l("Motoren", "Motorcycles")} (${motorcycleDefinitions.length})`}
+                    items={motorcycleDefinitions}
+                    deleteLabel={t.delete}
+                    onDelete={(id) => handleDeleteVehicle("motorcycles", id)}
+                  />
+                  <VehicleCatalogTable
+                    locale={language}
+                    title={`${l("Boten", "Boats")} (${boatDefinitions.length})`}
+                    items={boatDefinitions}
+                    deleteLabel={t.delete}
+                    onDelete={(id) => handleDeleteVehicle("boats", id)}
+                  />
 
                   <h2>
                     {l("Vliegtuigen", "Aircraft")} ({aircraftList.length})
@@ -9411,11 +9296,12 @@ function App() {
                   </div>
 
                   <div className="table-container">
-                    <table className="data-table">
+                    <table className="data-table vehicle-catalog-table">
                       <thead>
                         <tr>
                           <th>{l("ID", "ID")}</th>
                           <th>{l("Naam", "Name")}</th>
+                          <th>{l("Beeld", "Image")}</th>
                           <th>{l("Type", "Type")}</th>
                           <th>{l("Prijs", "Price")}</th>
                           <th>{l("Min. rang", "Min. rank")}</th>
@@ -9429,6 +9315,15 @@ function App() {
                           <tr key={ac.id}>
                             <td>{ac.id}</td>
                             <td>{ac.name}</td>
+                            <td>
+                              <AdminImageThumb
+                                locale={language}
+                                folder="aircraft"
+                                file={ac.image}
+                                alt={ac.name}
+                                caption={ac.name}
+                              />
+                            </td>
                             <td>{ac.type}</td>
                             <td>{ac.price?.toLocaleString()}</td>
                             <td>{ac.minRank}</td>
