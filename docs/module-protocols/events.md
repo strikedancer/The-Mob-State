@@ -42,7 +42,7 @@
 
 ## Admin
 
-- Preset list with single toggle: template + schedule; advanced CRUD under optional checkbox in `admin` `App.tsx`.
+- Preset list with single toggle: template + schedule; advanced CRUD under optional checkbox in `admin` `App.tsx`. SUPER_ADMIN can grant gold/silver/bronze chips from **Ops lab** or player → Manage (`POST /admin/game-events/event-items/grant`).
 
 ## Backend (Prisma) invariant
 

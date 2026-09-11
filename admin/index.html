@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
+        document.documentElement.classList.add('admin-game-theme')
         var storedTheme = localStorage.getItem('theme')
-        if (storedTheme === 'dark') {
+        if (storedTheme !== 'light') {
           document.documentElement.setAttribute('data-color-theme', 'dark')
         }
       })()

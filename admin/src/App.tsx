@@ -44,6 +44,8 @@ import { EmailVerificationAdminPanel } from "./components/EmailVerificationAdmin
 import { FacebookPageAdminPanel } from "./components/FacebookPageAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
 import { NightclubAdminPanel } from "./components/NightclubAdminPanel";
+import { OpsAdminPanel } from "./components/OpsAdminPanel";
+import { EventChipGrantCard } from "./components/EventChipGrantCard";
 import {
   translations,
   type AdminLanguage,
@@ -100,7 +102,8 @@ type TabType =
   | "casino"
   | "drugs"
   | "territory"
-  | "nightclubs";
+  | "nightclubs"
+  | "ops";
 type ConfigSection = "access" | "housing" | "combat" | "keys";
 type PlayerDetailTab = "overview" | "manage" | "financial";
 type DateRangeFilter = "24h" | "7d" | "30d" | "all";
@@ -511,7 +514,10 @@ function App() {
     readStoredAdminLanguage(),
   );
   const [theme, setTheme] = useState<"light" | "dark">(() =>
-    localStorage.getItem("theme") === "dark" ? "dark" : "light",
+    localStorage.getItem("theme") === "light" ? "light" : "dark",
+  );
+  const [sessionReady, setSessionReady] = useState(
+    !adminAuthService.isAuthenticated(),
   );
   useEffect(() => {
     try {
@@ -816,6 +822,7 @@ function App() {
   const [newNPCGender, setNewNPCGender] = useState<"male" | "female">("male");
   const [npcFormError, setNpcFormError] = useState<string | null>(null);
   const [simulatingNPC, setSimulatingNPC] = useState<NPC | null>(null);
+  const [simulateAllHours, setSimulateAllHours] = useState("1");
   const [simulateHours, setSimulateHours] = useState("1");
 
   // Vehicle content state
@@ -1015,6 +1022,35 @@ function App() {
   const [globalTodoModuleKey, setGlobalTodoModuleKey] = useState("");
   const [globalTodoAssignedAdminId, setGlobalTodoAssignedAdminId] =
     useState<string>("");
+
+  useEffect(() => {
+    let cancelled = false;
+    const boot = async () => {
+      if (!adminAuthService.getToken()) {
+        setIsAuthenticated(false);
+        setSessionReady(true);
+        return;
+      }
+      try {
+        const me = await adminAuthService.getMe();
+        if (cancelled) return;
+        setIsAuthenticated(true);
+        setAdminRole(me.admin.role);
+        localStorage.setItem("admin_role", me.admin.role);
+      } catch {
+        if (cancelled) return;
+        adminAuthService.logout();
+        setIsAuthenticated(false);
+        setAdminRole(null);
+      } finally {
+        if (!cancelled) setSessionReady(true);
+      }
+    };
+    void boot();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -1369,6 +1405,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.classList.add("admin-game-theme");
     if (theme === "dark") {
       document.documentElement.setAttribute("data-color-theme", "dark");
       localStorage.setItem("theme", "dark");
@@ -1376,7 +1413,7 @@ function App() {
     }
 
     document.documentElement.removeAttribute("data-color-theme");
-    localStorage.removeItem("theme");
+    localStorage.setItem("theme", "light");
   }, [theme]);
 
   const handleUnauthorized = (err: unknown): boolean => {
@@ -3019,6 +3056,57 @@ function App() {
     setSimulateHours("1");
   };
 
+  const handleToggleNPCActive = async (npc: NPC) => {
+    try {
+      setNPCLoading(true);
+      if (npc.isActive === false) {
+        await adminService.activateNPC(npc.id);
+      } else {
+        await adminService.deactivateNPC(npc.id);
+      }
+      await loadNPCs();
+    } catch (err) {
+      alert(
+        err instanceof Error
+          ? err.message
+          : l("NPC-status wijzigen mislukt.", "Failed to change NPC status."),
+      );
+    } finally {
+      setNPCLoading(false);
+    }
+  };
+
+  const handleSimulateAllNPCs = async () => {
+    const hours = parseFloat(simulateAllHours);
+    if (isNaN(hours) || hours <= 0 || hours > 24) {
+      alert(t.invalidSimHours);
+      return;
+    }
+    if (
+      !window.confirm(
+        l(
+          `Alle actieve NPC's ${hours} uur simuleren?`,
+          `Simulate all active NPCs for ${hours} hours?`,
+        ),
+      )
+    ) {
+      return;
+    }
+    try {
+      setNPCLoading(true);
+      await adminService.simulateAllNPCs(hours);
+      await loadNPCs();
+    } catch (err) {
+      alert(
+        err instanceof Error
+          ? err.message
+          : l("Bulk-simulatie mislukt.", "Bulk simulation failed."),
+      );
+    } finally {
+      setNPCLoading(false);
+    }
+  };
+
   const handleConfirmSimulate = async () => {
     if (!simulatingNPC) return;
 
@@ -4609,6 +4697,7 @@ function App() {
       label: l("Systeem Logs", "System Logs"),
       icon: "bi-bug-fill",
     },
+    { id: "ops", label: l("Ops lab", "Ops lab"), icon: "bi-cpu" },
     { id: "admins", label: l("Admins", "Admins"), icon: "bi-person-gear" },
     { id: "images", label: t.navImages, icon: "bi-images" },
     { id: "premium-offers", label: t.navPremium, icon: "bi-gem" },
@@ -4660,6 +4749,14 @@ function App() {
   const toggleTheme = () => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
+
+  if (!sessionReady) {
+    return (
+      <div className="session-boot">
+        {l("Sessie controleren…", "Checking session…")}
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
@@ -7671,6 +7768,12 @@ function App() {
                                   )}
                                 </div>
                               </div>
+                              {adminRole === "SUPER_ADMIN" && selectedPlayerId && (
+                                <EventChipGrantCard
+                                  locale={language}
+                                  defaultPlayerId={selectedPlayerId}
+                                />
+                              )}
                               <div className="card mb-3">
                               <div className="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                                 <h5 className="mb-0">
@@ -10830,6 +10933,14 @@ function App() {
                   <h1>{l("Nightclubs", "Nightclubs")}</h1>
                   <NightclubAdminPanel locale={language} />
                 </>
+              )}
+
+              {activeTab === "ops" && (
+                <OpsAdminPanel
+                  locale={language}
+                  canManage={canManagePlayers}
+                  isSuperAdmin={adminRole === "SUPER_ADMIN"}
+                />
               )}
 
               {activeTab === "audit-logs" && (
@@ -14512,6 +14623,29 @@ function App() {
                       >
                         {npcLoading ? t.loading : t.refresh}
                       </button>
+                      {canManagePlayers && (
+                        <div className="d-flex align-items-center gap-2">
+                          <input
+                            className="form-control"
+                            style={{ width: 88 }}
+                            type="number"
+                            min="0.1"
+                            max="24"
+                            step="0.5"
+                            value={simulateAllHours}
+                            onChange={(e) => setSimulateAllHours(e.target.value)}
+                            disabled={npcLoading}
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => void handleSimulateAllNPCs()}
+                            disabled={npcLoading}
+                          >
+                            {l("Simuleer allen", "Simulate all")}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -14586,6 +14720,17 @@ function App() {
                                 >
                                   {t.simulate}
                                 </button>{" "}
+                                {canManagePlayers && (
+                                  <button
+                                    className="btn-small"
+                                    onClick={() => void handleToggleNPCActive(npc)}
+                                    disabled={npcLoading}
+                                  >
+                                    {npc.isActive === false
+                                      ? l("Activeer", "Activate")
+                                      : l("Pauzeer", "Pause")}
+                                  </button>
+                                )}{" "}
                                 <button
                                   className="btn-small btn-danger"
                                   onClick={() => void handleDeleteNPC(npc)}

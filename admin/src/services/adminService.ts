@@ -1114,6 +1114,24 @@ export const adminAuthService = {
       | "VIEWER"
       | null;
   },
+
+  async getMe(): Promise<{
+    admin: {
+      id: number;
+      username: string;
+      role: "SUPER_ADMIN" | "MODERATOR" | "VIEWER";
+      isActive: boolean;
+    };
+  }> {
+    const token = this.getToken();
+    const response = await fetch(`${API_URL}/admin/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) {
+      throw new Error("UNAUTHORIZED");
+    }
+    return response.json();
+  },
 };
 
 export const adminService = {
@@ -2456,6 +2474,76 @@ export const adminService = {
       throw new Error(error.message || "Failed to simulate NPC");
     }
 
+    return response.json();
+  },
+
+  async activateNPC(npcId: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/npcs/${npcId}/activate`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to activate NPC");
+    return response.json();
+  },
+
+  async deactivateNPC(npcId: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/npcs/${npcId}/deactivate`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to deactivate NPC");
+    return response.json();
+  },
+
+  async simulateAllNPCs(hours: number = 1) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/npcs/simulate-all/run`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ hours }),
+    });
+    await ensureOk(response, "Failed to simulate all NPCs");
+    return response.json();
+  },
+
+  async getCronStatus(): Promise<{
+    lastExecutions?: Record<string, unknown>;
+    jobs?: Record<string, string>;
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/cron/status`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to fetch cron status");
+    return response.json();
+  },
+
+  async triggerCron(jobName: string) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/cron/trigger/${jobName}`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to trigger cron job");
+    return response.json();
+  },
+
+  async grantEventItem(playerId: number, itemKey: string, quantity: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/game-events/event-items/grant`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ playerId, itemKey, quantity }),
+    });
+    await ensureOk(response, "Failed to grant event item");
     return response.json();
   },
 

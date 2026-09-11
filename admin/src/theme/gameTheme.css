@@ -1,0 +1,183 @@
+/* The Mob State admin — same noir / gold language as the player client. */
+:root,
+[data-color-theme="dark"],
+html.admin-game-theme {
+  --admin-gold: #ffb347;
+  --admin-gold-dim: #d4923a;
+  --admin-bg-start: #120808;
+  --admin-bg-mid: #1c1010;
+  --admin-bg-end: #0c0606;
+  --admin-panel: #161010;
+  --admin-panel-2: #221616;
+  --admin-hairline: rgba(255, 179, 71, 0.2);
+  --admin-muted: rgba(255, 255, 255, 0.6);
+  --admin-text: #f6efe6;
+  --admin-danger: #c62828;
+  --admin-ok: #3d9b6e;
+  --bs-body-bg: var(--admin-bg-end);
+  --bs-body-color: var(--admin-text);
+  --bs-secondary-bg: var(--admin-panel);
+  --bs-tertiary-bg: var(--admin-panel-2);
+  --bs-border-color: var(--admin-hairline);
+  --bs-border-color-translucent: var(--admin-hairline);
+  --bs-primary: var(--admin-gold);
+  --bs-link-color: var(--admin-gold);
+  --bs-emphasis-color: var(--admin-text);
+}
+
+html.admin-game-theme,
+html.admin-game-theme body,
+html.admin-game-theme #root {
+  background:
+    radial-gradient(1200px 700px at 12% -10%, rgba(255, 179, 71, 0.08), transparent 55%),
+    linear-gradient(165deg, var(--admin-bg-start), var(--admin-bg-mid) 46%, var(--admin-bg-end));
+  color: var(--admin-text);
+}
+
+html.admin-game-theme body {
+  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+}
+
+html.admin-game-theme .login-container {
+  background: transparent;
+}
+
+html.admin-game-theme .login-card,
+html.admin-game-theme .card,
+html.admin-game-theme .table-container,
+html.admin-game-theme .admin-modal,
+html.admin-game-theme .page-header,
+html.admin-game-theme .sidebar {
+  background: linear-gradient(180deg, var(--admin-panel-2), var(--admin-panel)) !important;
+  color: var(--admin-text) !important;
+  border: 1px solid var(--admin-hairline) !important;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+html.admin-game-theme .card-header,
+html.admin-game-theme .card-body,
+html.admin-game-theme .page-header-light,
+html.admin-game-theme .content,
+html.admin-game-theme .content-wrapper,
+html.admin-game-theme .content-inner,
+html.admin-game-theme .page-content {
+  background: transparent !important;
+  color: var(--admin-text) !important;
+}
+
+html.admin-game-theme .sidebar-dark,
+html.admin-game-theme .sidebar-main {
+  background: #100909 !important;
+  border-right: 1px solid var(--admin-hairline) !important;
+}
+
+html.admin-game-theme .nav-sidebar .nav-link,
+html.admin-game-theme .navbar-nav-link,
+html.admin-game-theme .text-muted,
+html.admin-game-theme .admin-kicker {
+  color: var(--admin-muted) !important;
+}
+
+html.admin-game-theme .nav-sidebar .nav-link.active,
+html.admin-game-theme .nav-sidebar .nav-link:hover {
+  color: var(--admin-gold) !important;
+  background: rgba(255, 179, 71, 0.08) !important;
+}
+
+html.admin-game-theme h1,
+html.admin-game-theme h2,
+html.admin-game-theme h3,
+html.admin-game-theme h4,
+html.admin-game-theme h5,
+html.admin-game-theme .form-label,
+html.admin-game-theme label {
+  color: var(--admin-text) !important;
+}
+
+html.admin-game-theme .form-control,
+html.admin-game-theme .form-select,
+html.admin-game-theme input,
+html.admin-game-theme textarea,
+html.admin-game-theme select {
+  background: #120b0b !important;
+  color: var(--admin-text) !important;
+  border-color: var(--admin-hairline) !important;
+}
+
+html.admin-game-theme .form-control:focus,
+html.admin-game-theme .form-select:focus {
+  border-color: var(--admin-gold) !important;
+  box-shadow: 0 0 0 0.15rem rgba(255, 179, 71, 0.2) !important;
+}
+
+html.admin-game-theme .btn-primary,
+html.admin-game-theme .btn-success {
+  background: var(--admin-gold) !important;
+  border-color: var(--admin-gold-dim) !important;
+  color: #1a0e08 !important;
+  font-weight: 600;
+}
+
+html.admin-game-theme .btn-outline-secondary,
+html.admin-game-theme .btn-flat-white,
+html.admin-game-theme .btn-light {
+  background: transparent !important;
+  border-color: var(--admin-hairline) !important;
+  color: var(--admin-text) !important;
+}
+
+html.admin-game-theme .btn-danger {
+  background: var(--admin-danger) !important;
+  border-color: #8e1c1c !important;
+}
+
+html.admin-game-theme .data-table th,
+html.admin-game-theme .table th {
+  color: var(--admin-gold);
+  border-color: var(--admin-hairline) !important;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+html.admin-game-theme .data-table td,
+html.admin-game-theme .table td {
+  border-color: var(--admin-hairline) !important;
+  color: var(--admin-text);
+}
+
+html.admin-game-theme .badge.bg-success {
+  background: var(--admin-ok) !important;
+}
+
+html.admin-game-theme .alert {
+  border-color: var(--admin-hairline);
+}
+
+html.admin-game-theme .alert-light,
+html.admin-game-theme .alert-info,
+html.admin-game-theme .config-warning {
+  background: rgba(255, 179, 71, 0.08) !important;
+  color: var(--admin-text) !important;
+  border: 1px solid var(--admin-hairline);
+}
+
+html.admin-game-theme .admin-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--admin-gold) !important;
+}
+
+html.admin-game-theme .session-boot {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: var(--admin-gold);
+}
+
+html.admin-game-theme .ops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}

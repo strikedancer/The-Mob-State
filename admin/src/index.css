@@ -1,3 +1,5 @@
+@import "./theme/gameTheme.css";
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
