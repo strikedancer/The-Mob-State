@@ -1616,9 +1616,10 @@
       "Bij registratie kies je mannelijk of vrouwelijk. Dat bepaalt je start-avatar (`default_1` of `default_2`) en later de stijl van een selfie-portret.",
       "Preset-avatars wissel je in Instellingen. Gratis looks staan voor iedereen open; VIP-looks alleen met Player VIP. Een preset kiezen zet een custom portret uit.",
       "Je kunt een preset-avatar maximaal eens per 7 dagen wisselen. Gebruikersnaam wijzigen kan maximaal eens per 30 dagen (3–20 tekens).",
-      "Avatar van foto of selfie: in Instellingen kies je een look (classic noir, street casual, sharp suit of avondglamour), vink je toestemming aan en upload je een scherpe gezichtsfoto (max. 5 MB).",
+      "Avatar van foto of selfie: in Instellingen of via je profiel → Avatar wijzigen kies je een look (classic noir, street casual, sharp suit of avondglamour), vink je toestemming aan en upload je een scherpe gezichtsfoto (max. 5 MB).",
       "Elke geslaagde generatie kost 100 premium credits. Mislukt de AI-run, dan word je niet belast. Je kunt tot 20 custom portretten bewaren.",
       "Tijdens het maken blijft een wachtdialoog open (kan een paar minuten duren). Daarna tik je een portret aan om het als avatar te gebruiken, download je de PNG of verwijder je het.",
+      "Een selfie-portret kun je later opnieuw als PNG downloaden: open je profiel → Avatar wijzigen (blauwe knop per tegel, of Portret downloaden voor je huidige look). Hetzelfde kan in Instellingen.",
       "De selfie wordt niet bewaard na generatie. Je accountgeslacht uit registratie stuurt de AI-prompt; alle looks blijven binnen de spelregels (avondglamour blijft classy)."
     ],
     "howEn": [
@@ -1630,9 +1631,10 @@
       "At registration you choose male or female. That sets your starter avatar (`default_1` or `default_2`) and later the selfie-portrait style.",
       "Switch preset avatars in Settings. Free looks are open to everyone; VIP looks need Player VIP. Picking a preset turns a custom portrait off.",
       "You can change a preset avatar at most once every 7 days. Username can change at most once every 30 days (3–20 characters).",
-      "Avatar from a photo or selfie: in Settings pick a look (classic noir, street casual, sharp suit or evening glamour), accept consent and upload a sharp face photo (max 5 MB).",
+      "Avatar from a photo or selfie: in Settings or via your profile → Change avatar pick a look (classic noir, street casual, sharp suit or evening glamour), accept consent and upload a sharp face photo (max 5 MB).",
       "Each successful generation costs 100 premium credits. A failed AI run is not charged. You can keep up to 20 custom portraits.",
       "While it generates, a wait dialog stays open (this can take a few minutes). Then tap a portrait to use it as your avatar, download the PNG or remove it.",
+      "You can download a selfie portrait as a PNG later: open your profile → Change avatar (blue button on each tile, or Download portrait for your current look). The same actions are in Settings.",
       "The selfie is not stored after generation. Your registration gender steers the AI prompt; every look stays within the game rules (evening glamour stays classy)."
     ],
     "tipsNl": [

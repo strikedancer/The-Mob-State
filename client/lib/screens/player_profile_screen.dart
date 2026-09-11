@@ -3,18 +3,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 import '../models/vehicle.dart';
+import '../providers/auth_provider.dart';
 import '../screens/crew_screen.dart';
 import '../utils/achievement_display.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/game_event_rewards.dart';
+import '../utils/portrait_download.dart';
 import '../utils/property_display.dart';
 import '../utils/rank_display.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/avatar_picker_sheet.dart';
 import '../widgets/game_page_info.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
@@ -57,6 +61,55 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
   int get _likesCount => (_playerData?['likesCount'] as num?)?.toInt() ?? 0;
   bool get _viewerHasLiked => _playerData?['viewerHasLiked'] == true;
+
+  bool get _isOwnProfile {
+    final me = context.read<AuthProvider>().currentPlayer;
+    return me != null && me.id == widget.playerId;
+  }
+
+  bool get _hasCustomPortrait {
+    final id = (_playerData?['activePortraitId'] as num?)?.toInt();
+    final path = _playerData?['activePortraitPath']?.toString().trim();
+    return id != null && id > 0 && path != null && path.isNotEmpty;
+  }
+
+  Future<void> _openAvatarPicker() async {
+    await AvatarPickerSheet.show(
+      context,
+      onChanged: () {
+        if (mounted) _loadPlayerProfile(showSpinner: false);
+      },
+    );
+    if (!mounted) return;
+    await context.read<AuthProvider>().refreshPlayer();
+    await _loadPlayerProfile(showSpinner: false);
+  }
+
+  Future<void> _downloadActivePortrait() async {
+    final id = (_playerData?['activePortraitId'] as num?)?.toInt();
+    if (id == null) return;
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      await downloadOwnedPortraitPng(id);
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.settingsPortraitDownloaded),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.settingsPortraitDownloadFailed),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   String _formatNumber(num value) {
     final raw = value.toInt().toString();
@@ -116,11 +169,13 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     _loadPlayerProfile();
   }
 
-  Future<void> _loadPlayerProfile() async {
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
+  Future<void> _loadPlayerProfile({bool showSpinner = true}) async {
+    if (showSpinner) {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+    }
 
     try {
       const storage = FlutterSecureStorage();
@@ -589,6 +644,30 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
               ),
             ],
           ),
+          if (_isOwnProfile) ...[
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                OutlinedButton.icon(
+                  onPressed: _openAvatarPicker,
+                  icon: const Icon(Icons.face_outlined),
+                  label: Text(
+                    AppLocalizations.of(context)!.profileChangeAvatar,
+                  ),
+                ),
+                if (_hasCustomPortrait)
+                  FilledButton.icon(
+                    onPressed: _downloadActivePortrait,
+                    icon: const Icon(Icons.download_outlined),
+                    label: Text(
+                      AppLocalizations.of(context)!.profileDownloadPortrait,
+                    ),
+                  ),
+              ],
+            ),
+          ],
           const SizedBox(height: 14),
           Row(
             children: [

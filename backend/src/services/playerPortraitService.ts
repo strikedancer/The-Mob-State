@@ -38,6 +38,48 @@ export async function listPortraits(playerId: number) {
   });
 }
 
+function isResolvedPathInsideRoot(absFile: string, root: string): boolean {
+  const rel = path.relative(path.resolve(root), path.resolve(absFile));
+  return rel !== '' && !rel.startsWith('..') && !path.isAbsolute(rel);
+}
+
+/** Own-library PNG only. Used for authenticated later download (not the public /images URL). */
+export async function getOwnedPortraitFile(
+  playerId: number,
+  portraitId: number
+): Promise<{ absPath: string; filename: string }> {
+  const row = await prisma.playerPortrait.findFirst({
+    where: { id: portraitId, playerId },
+    select: { id: true, imagePath: true },
+  });
+  if (!row) {
+    const err = new Error('PORTRAIT_NOT_FOUND') as Error & { code?: string };
+    err.code = 'PORTRAIT_NOT_FOUND';
+    throw err;
+  }
+
+  const root = getRuntimeClientImagesRoot();
+  const absPath = absolutePathForPortraitImage(row.imagePath);
+  if (!isResolvedPathInsideRoot(absPath, root)) {
+    const err = new Error('PORTRAIT_NOT_FOUND') as Error & { code?: string };
+    err.code = 'PORTRAIT_NOT_FOUND';
+    throw err;
+  }
+
+  try {
+    await fs.access(absPath);
+  } catch {
+    const err = new Error('PORTRAIT_FILE_MISSING') as Error & { code?: string };
+    err.code = 'PORTRAIT_FILE_MISSING';
+    throw err;
+  }
+
+  return {
+    absPath,
+    filename: `mob_state_portrait_${row.id}.png`,
+  };
+}
+
 export async function createPortraitFromSelfie(
   playerId: number,
   selfieBuffer: Buffer,

@@ -3648,6 +3648,19 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.';
 
   @override
+  String get settingsPortraitLaterDownloadHint =>
+      'Puedes volver a descargar cualquier retrato selfie más tarde desde tu perfil (Cambiar avatar) o con el botón azul de aquí.';
+
+  @override
+  String get settingsPortraitDownloaded => 'Retrato guardado.';
+
+  @override
+  String get profileChangeAvatar => 'Cambiar avatar';
+
+  @override
+  String get profileDownloadPortrait => 'Descargar retrato';
+
+  @override
   String get settingsPortraitDownloadFailed =>
       'No se pudo descargar el retrato. Comprueba tu conexión y vuelve a intentarlo.';
 

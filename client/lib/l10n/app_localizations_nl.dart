@@ -3629,6 +3629,19 @@ class AppLocalizationsNl extends AppLocalizations {
       'Tik op een portret om het te kiezen. Download (links) slaat je PNG op; verwijderen (rechts) haalt het uit de game.';
 
   @override
+  String get settingsPortraitLaterDownloadHint =>
+      'Je kunt elk selfie-portret later opnieuw downloaden vanaf je profiel (Avatar wijzigen) of via de blauwe knop hier.';
+
+  @override
+  String get settingsPortraitDownloaded => 'Portret opgeslagen.';
+
+  @override
+  String get profileChangeAvatar => 'Avatar wijzigen';
+
+  @override
+  String get profileDownloadPortrait => 'Portret downloaden';
+
+  @override
   String get settingsPortraitDownloadFailed =>
       'Portret kon niet worden gedownload. Controleer je verbinding en probeer opnieuw.';
 
@@ -18794,7 +18807,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicProfileHow =>
-      'Je eigen publieke profiel open je via de avatar-knop rechtsboven → Mijn profiel. Op web blijft de zijbalk staan; het profiel opent in het contentpaneel.\nTik op een naam of avatar van een andere speler (vrienden, crew, chat, hitlist, leaderboards) om hun profiel te openen.\nHet publieke profiel toont je rangtitel (dezelfde als op het dashboard), behaalde badges, event-chips (goud/zilver/brons), crew-naam en eigendommen (catalogusfoto + niveau).\nWat verborgen blijft: huidig land, opslaginhoud, locked achievement-voortgang en het oude landgoed-composiet. Online betekent een echte sessie in de laatste minuten, geen world-tick.\nAnderen kunnen je profiel liken. Crew-naam is tappable. Event-chips zijn prestige en verkoopbaar op Zwarte Markt → Marktplaats, geen extra power.\nBij registratie kies je mannelijk of vrouwelijk. Dat bepaalt je start-avatar (`default_1` of `default_2`) en later de stijl van een selfie-portret.\nPreset-avatars wissel je in Instellingen. Gratis looks staan voor iedereen open; VIP-looks alleen met Player VIP. Een preset kiezen zet een custom portret uit.\nJe kunt een preset-avatar maximaal eens per 7 dagen wisselen. Gebruikersnaam wijzigen kan maximaal eens per 30 dagen (3–20 tekens).\nAvatar van foto of selfie: in Instellingen kies je een look (classic noir, street casual, sharp suit of avondglamour), vink je toestemming aan en upload je een scherpe gezichtsfoto (max. 5 MB).\nElke geslaagde generatie kost 100 premium credits. Mislukt de AI-run, dan word je niet belast. Je kunt tot 20 custom portretten bewaren.\nTijdens het maken blijft een wachtdialoog open (kan een paar minuten duren). Daarna tik je een portret aan om het als avatar te gebruiken, download je de PNG of verwijder je het.\nDe selfie wordt niet bewaard na generatie. Je accountgeslacht uit registratie stuurt de AI-prompt; alle looks blijven binnen de spelregels (avondglamour blijft classy).';
+      'Je eigen publieke profiel open je via de avatar-knop rechtsboven → Mijn profiel. Op web blijft de zijbalk staan; het profiel opent in het contentpaneel.\nTik op een naam of avatar van een andere speler (vrienden, crew, chat, hitlist, leaderboards) om hun profiel te openen.\nHet publieke profiel toont je rangtitel (dezelfde als op het dashboard), behaalde badges, event-chips (goud/zilver/brons), crew-naam en eigendommen (catalogusfoto + niveau).\nWat verborgen blijft: huidig land, opslaginhoud, locked achievement-voortgang en het oude landgoed-composiet. Online betekent een echte sessie in de laatste minuten, geen world-tick.\nAnderen kunnen je profiel liken. Crew-naam is tappable. Event-chips zijn prestige en verkoopbaar op Zwarte Markt → Marktplaats, geen extra power.\nBij registratie kies je mannelijk of vrouwelijk. Dat bepaalt je start-avatar (`default_1` of `default_2`) en later de stijl van een selfie-portret.\nPreset-avatars wissel je in Instellingen. Gratis looks staan voor iedereen open; VIP-looks alleen met Player VIP. Een preset kiezen zet een custom portret uit.\nJe kunt een preset-avatar maximaal eens per 7 dagen wisselen. Gebruikersnaam wijzigen kan maximaal eens per 30 dagen (3–20 tekens).\nAvatar van foto of selfie: in Instellingen of via je profiel → Avatar wijzigen kies je een look (classic noir, street casual, sharp suit of avondglamour), vink je toestemming aan en upload je een scherpe gezichtsfoto (max. 5 MB).\nElke geslaagde generatie kost 100 premium credits. Mislukt de AI-run, dan word je niet belast. Je kunt tot 20 custom portretten bewaren.\nTijdens het maken blijft een wachtdialoog open (kan een paar minuten duren). Daarna tik je een portret aan om het als avatar te gebruiken, download je de PNG of verwijder je het.\nEen selfie-portret kun je later opnieuw als PNG downloaden: open je profiel → Avatar wijzigen (blauwe knop per tegel, of Portret downloaden voor je huidige look). Hetzelfde kan in Instellingen.\nDe selfie wordt niet bewaard na generatie. Je accountgeslacht uit registratie stuurt de AI-prompt; alle looks blijven binnen de spelregels (avondglamour blijft classy).';
 
   @override
   String get helpTopicProfileTips =>

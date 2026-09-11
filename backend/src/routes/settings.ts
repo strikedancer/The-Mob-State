@@ -14,6 +14,7 @@ import {
 import {
   createPortraitFromSelfie,
   deletePortrait,
+  getOwnedPortraitFile,
   listPortraits,
   selectPortrait,
 } from '../services/playerPortraitService';
@@ -256,6 +257,37 @@ router.get('/portraits', authenticate, async (req: AuthRequest, res: Response) =
       },
     });
   } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.get('/portraits/:id/file', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player!.id;
+    const id = parseInt(req.params.id, 10);
+    if (Number.isNaN(id) || id < 1) {
+      return res.status(400).json({ event: 'error.invalid_request', params: {} });
+    }
+
+    const file = await getOwnedPortraitFile(playerId, id);
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${file.filename}"`
+    );
+    res.setHeader('Cache-Control', 'private, no-store');
+    return res.sendFile(file.absPath);
+  } catch (e: unknown) {
+    const err = e as { code?: string };
+    if (err.code === 'PORTRAIT_NOT_FOUND' || err.code === 'PORTRAIT_FILE_MISSING') {
+      return res.status(404).json({
+        event: 'error.portrait_not_found',
+        params: {},
+      });
+    }
     return res.status(500).json({
       event: 'error.internal',
       params: {},

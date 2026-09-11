@@ -7,10 +7,12 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 - `backend/src/constants/playerPortrait.ts` — credit cost (`100`), max portraits, Leonardo model constants, **portrait style ids** (`classic_noir`, `street_casual`, `sharp_suit`, `velvet_charm`), and `buildGangsterPortraitPrompts(gender, style)` so Leonardo prompts respect **account gender** (`Player.gender`, from registration) and the player’s chosen look. Invalid or missing `portraitStyle` in multipart defaults to `classic_noir`.
 - `backend/src/services/playerPortraitLeonardo.ts` — init-image upload + v1 generation + polling.
 - `backend/src/services/playerPortraitService.ts` — filesystem paths, Prisma transactions (deduct credits only after successful save).
-- `backend/src/routes/settings.ts` — `GET/POST/DELETE /settings/portraits*`, multipart `POST .../portraits/from-selfie`.
+- `backend/src/routes/settings.ts` — `GET/POST/DELETE /settings/portraits*`, multipart `POST .../portraits/from-selfie`, authenticated later download `GET /settings/portraits/:id/file` (own library only, `Content-Disposition: attachment`).
 
 ## Primary Frontend
-- `client/lib/screens/settings_screen.dart` — library grid, consent + cost flows, selfie upload.
+- `client/lib/widgets/avatar_picker_sheet.dart` — shared library grid, consent + cost flows, selfie upload, later PNG download.
+- `client/lib/screens/settings_screen.dart` and own `player_profile_screen.dart` open that sheet (`Avatar wijzigen` / Change avatar).
+- `client/lib/utils/portrait_download.dart` — `downloadOwnedPortraitPng` fetches the authenticated file endpoint (not a public `/images` URL).
 - `client/lib/utils/avatar_helper.dart` — `activePortraitPath` resolves to `/images/...` via `WebAssetHelper`.
 
 ## Data Model
@@ -36,7 +38,7 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 
 ## Client UX
 - During selfie→portrait generation, show a **non-dismissible** wait dialog (spinner + message) so players know the request is still running.
-- In the avatar picker, each custom portrait tile has **high-contrast circular actions**: **download** (left, saves the PNG via browser download on web or the OS share sheet on mobile/desktop) and **remove** (right, `DELETE /settings/portraits/:id`). The glyphs are drawn with **`CustomPaint`** (`portrait_tile_action_glyphs.dart`) — **no icon fonts** — because Flutter web often paints empty circles inside modals when using `Icon` / Font Awesome / Material icons (browser console may show Noto font fallback warnings). Hint text explains both.
+- In the avatar picker, each custom portrait tile has **high-contrast circular actions**: **download** (left, saves the PNG via `GET /settings/portraits/:id/file` + browser download on web or the OS share sheet on mobile/desktop) and **remove** (right, `DELETE /settings/portraits/:id`). The glyphs are drawn with **`CustomPaint`** (`portrait_tile_action_glyphs.dart`) — **no icon fonts** — because Flutter web often paints empty circles inside modals when using `Icon` / Font Awesome / Material icons (browser console may show Noto font fallback warnings). Hint text explains both. Own profile also has **Change avatar** (same picker) and **Download portrait** for the active custom look, so a selfie portrait can be saved again later.
 - Player-facing how-to lives in Help topic `profile` and Almanac `/guide/profile/`.
 - Before upload, the player picks a **portrait look** (chips). `GET /settings` includes `portraitStyleIds` for the client allowlist; the multipart field `portraitStyle` selects the preset. **Velvet / evening glamour** stays **classy and PG-appropriate** (extra negative-prompt guards); all styles follow general game and ToS expectations in `PROTOCOL_MASTER.md`.
 - Download and remove buttons use **localized tooltips** (`settingsPortraitDownloadTooltip`, `settingsPortraitDeleteTooltip` in `app_*.arb`; NL/EN curated, other locales via merge + optional machine/human follow-up per `PROTOCOL_MASTER.md` i18n rules).
@@ -46,3 +48,4 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 2. Successful generation → new row, balance −100, new portrait selected active.
 3. Preset avatar change clears `activePortraitId` (preset visible).
 4. Friends/messages/hitlist show `activePortraitPath` when present.
+5. Later download works from Settings picker and from own Profile → Change avatar / Download portrait (`GET /settings/portraits/:id/file` with session). Other profiles do not show those actions.

@@ -12,6 +12,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 ## Change Rules
 - Player-facing how-to for profile, preset avatars and selfie portraits lives in Help topic `profile` and Almanac `/guide/profile/`.
 - Dashboard header user menu (avatar) includes **My profile** so a player can open their own public profile without going through friends/chat.
+- Own profile can **change avatar** (same picker as Settings) and **download** an active selfie portrait later (`GET /settings/portraits/:id/file`). Other players do not see those actions.
 - Elke screen die een andere speler toont met bruikbare `playerId` moet navigatie naar het profiel bieden.
 - Profielnavigatie moet klikbaar en zichtbaar gesignaleerd worden; verstop dit niet achter impliciete of hover-only affordances.
 - Publieke profieldata mag geen live gameplay-intel lekken zoals huidig land of andere locatiecontext die hitlist/onderzoek beïnvloedt.
@@ -57,6 +58,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 9. Open eigen en andermans profiel: Event chips-kaart toont goud/zilver/brons (0 als leeg). Geen live land.
 10. Open eigen en andermans profiel: Prestaties-kaart toont alleen behaalde badges (PNG + titel bij tik). Leeg = “Nog geen badges”. Locked/hidden progress niet zichtbaar.
 11. Open eigen en andermans profiel: Eigendommen-kaart toont catalogusfoto’s + niveau. Geen landgoed-composiet, geen land, geen opslag.
+12. Eigen profiel: **Avatar wijzigen** opent de portretkieslijst; bij een actief selfie-portret is **Portret downloaden** zichtbaar. Andermans profiel toont die knoppen niet.
 
 ## Implementation Pattern
 

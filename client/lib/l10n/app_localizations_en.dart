@@ -3612,6 +3612,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tap a portrait to select it. Use the download button (left) to save your PNG, or the remove button (right) to delete it from the game.';
 
   @override
+  String get settingsPortraitLaterDownloadHint =>
+      'You can download any selfie portrait again later from your profile (Change avatar) or with the blue button here.';
+
+  @override
+  String get settingsPortraitDownloaded => 'Portrait saved.';
+
+  @override
+  String get profileChangeAvatar => 'Change avatar';
+
+  @override
+  String get profileDownloadPortrait => 'Download portrait';
+
+  @override
   String get settingsPortraitDownloadFailed =>
       'Could not download the portrait. Check your connection and try again.';
 
@@ -18753,7 +18766,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicProfileHow =>
-      'Open your own public profile from the avatar button at the top right → My profile. On web the sidebar stays; the profile opens in the content pane.\nTap another player’s name or avatar (friends, crew, chat, hitlist, leaderboards) to open their profile.\nThe public profile shows your rank title (same as the dashboard), earned badges, event chips (gold/silver/bronze), crew name and properties (catalog photo + level).\nWhat stays hidden: current country, storage contents, locked achievement progress and the old estate composite. Online means a real session in the last minutes, not a world tick.\nOthers can like your profile. The crew name is tappable. Event chips are prestige and sellable on Black Market → Marketplace; they add no power.\nAt registration you choose male or female. That sets your starter avatar (`default_1` or `default_2`) and later the selfie-portrait style.\nSwitch preset avatars in Settings. Free looks are open to everyone; VIP looks need Player VIP. Picking a preset turns a custom portrait off.\nYou can change a preset avatar at most once every 7 days. Username can change at most once every 30 days (3–20 characters).\nAvatar from a photo or selfie: in Settings pick a look (classic noir, street casual, sharp suit or evening glamour), accept consent and upload a sharp face photo (max 5 MB).\nEach successful generation costs 100 premium credits. A failed AI run is not charged. You can keep up to 20 custom portraits.\nWhile it generates, a wait dialog stays open (this can take a few minutes). Then tap a portrait to use it as your avatar, download the PNG or remove it.\nThe selfie is not stored after generation. Your registration gender steers the AI prompt; every look stays within the game rules (evening glamour stays classy).';
+      'Open your own public profile from the avatar button at the top right → My profile. On web the sidebar stays; the profile opens in the content pane.\nTap another player’s name or avatar (friends, crew, chat, hitlist, leaderboards) to open their profile.\nThe public profile shows your rank title (same as the dashboard), earned badges, event chips (gold/silver/bronze), crew name and properties (catalog photo + level).\nWhat stays hidden: current country, storage contents, locked achievement progress and the old estate composite. Online means a real session in the last minutes, not a world tick.\nOthers can like your profile. The crew name is tappable. Event chips are prestige and sellable on Black Market → Marketplace; they add no power.\nAt registration you choose male or female. That sets your starter avatar (`default_1` or `default_2`) and later the selfie-portrait style.\nSwitch preset avatars in Settings. Free looks are open to everyone; VIP looks need Player VIP. Picking a preset turns a custom portrait off.\nYou can change a preset avatar at most once every 7 days. Username can change at most once every 30 days (3–20 characters).\nAvatar from a photo or selfie: in Settings or via your profile → Change avatar pick a look (classic noir, street casual, sharp suit or evening glamour), accept consent and upload a sharp face photo (max 5 MB).\nEach successful generation costs 100 premium credits. A failed AI run is not charged. You can keep up to 20 custom portraits.\nWhile it generates, a wait dialog stays open (this can take a few minutes). Then tap a portrait to use it as your avatar, download the PNG or remove it.\nYou can download a selfie portrait as a PNG later: open your profile → Change avatar (blue button on each tile, or Download portrait for your current look). The same actions are in Settings.\nThe selfie is not stored after generation. Your registration gender steers the AI prompt; every look stays within the game rules (evening glamour stays classy).';
 
   @override
   String get helpTopicProfileTips =>

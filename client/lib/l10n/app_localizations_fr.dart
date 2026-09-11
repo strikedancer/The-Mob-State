@@ -3663,6 +3663,19 @@ class AppLocalizationsFr extends AppLocalizations {
       'Tap a portrait to use it as your avatar. Tap the trash icon to remove it.';
 
   @override
+  String get settingsPortraitLaterDownloadHint =>
+      'Tu peux retélécharger un portrait selfie plus tard depuis ton profil (Modifier l’avatar) ou avec le bouton bleu ici.';
+
+  @override
+  String get settingsPortraitDownloaded => 'Portrait enregistré.';
+
+  @override
+  String get profileChangeAvatar => 'Modifier l’avatar';
+
+  @override
+  String get profileDownloadPortrait => 'Télécharger le portrait';
+
+  @override
   String get settingsPortraitDownloadFailed =>
       'Could not download the portrait. Check your connection and try again.';
 
