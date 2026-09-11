@@ -27,6 +27,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Which timers, locks, rank gates or country rules affect the flow?
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
+- Crime stills live at `client/assets/images/crimes/<id>_crime.png` (same files on `/images/crimes/` for web + wiki). Hub tile: `wiki/hubs/crimes.png`. Page wash: `backgrounds/crime_background.png`. Leonardo: `backend/scripts/generate_crime_images_leonardo.py`. Deploy copies those three paths onto the runtime mount. Do not keep a second copy under `client/images/crimes/`.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.
