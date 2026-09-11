@@ -181,3 +181,79 @@ html.admin-game-theme .ops-grid {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
+
+html.admin-game-theme .runtime-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+html.admin-game-theme .runtime-kpi {
+  border: 1px solid var(--admin-hairline);
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+html.admin-game-theme .runtime-kpi-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--admin-gold);
+  margin-bottom: 0.2rem;
+}
+
+html.admin-game-theme .runtime-kpi-value {
+  font-size: 1.28rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+html.admin-game-theme .runtime-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  background: rgba(12, 6, 6, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--admin-hairline);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+html.admin-game-theme .runtime-section-icon {
+  color: var(--admin-gold);
+}
+
+html.admin-game-theme .runtime-field-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+}
+
+html.admin-game-theme .runtime-key {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.38);
+  word-break: break-all;
+}
+
+html.admin-game-theme .runtime-field.is-dirty .form-control {
+  border-color: var(--admin-gold) !important;
+}
+
+html.admin-game-theme .input-group-text {
+  background: #1a1010 !important;
+  color: var(--admin-muted) !important;
+  border-color: var(--admin-hairline) !important;
+}

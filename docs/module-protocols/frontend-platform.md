@@ -27,7 +27,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Player UI gebruikt `client/lib/l10n/app_*.arb` (key-pariteit afdwingen via `node scripts/verify_arb_parity.mjs`).
 - Voor initiële, niet-handmatige vertalingen van `app_de/fr/es/it/pl/pt.arb`: gebruik `scripts/translate_app_arb_from_en.mjs` (placeholder-safe).
 - Admin dashboard UI-vertalingen worden gegenereerd naar `admin/src/i18n/` via `scripts/build_admin_i18n.mjs`.
-- Admin gebruikt hetzelfde noir/goud-thema als de player-client (`admin/src/theme/gameTheme.css`). Session bootstrap via `GET /admin/auth/me`. Ops lab: cron triggers + event-chip grants; NPC tab: activate/deactivate + simulate-all.
+- Admin gebruikt hetzelfde noir/goud-thema als de player-client (`admin/src/theme/gameTheme.css`). Session bootstrap via `GET /admin/auth/me`. Ops lab: cron triggers + event-chip grants; NPC tab: activate/deactivate + simulate-all. **Drugs-tab:** gegroepeerde runtime-console (wholesale/heat/raids/darkweb/nightclub) i.p.v. een platte key-lijst.
 - Voor consistente terminologie (bijv. `Crew`, `Nightclub`, `VIP`): pas de conservatieve regels in `scripts/terminology.mjs` toe (wordt door beide scripts gebruikt).
 - Dashboard navigatie/quick-actions labels moeten via **AppLocalizations** lopen (dus ARB keys), niet via hardcoded NL/EN strings of `_isNl`/`_tr`-helpers; anders vallen extra talen terug op Engels.
 - Voor kleine dialog-buttons/CTA’s in dashboard (bv. `Close`, `View offer`): voeg ook ARB keys toe i.p.v. inline tekst.

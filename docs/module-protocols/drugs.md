@@ -48,7 +48,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Metadata lock: `wholesale`, `unitPrice`, `payout`, `destinationCountry`, `drugType`, `quality`, `quantity`, `settledAt`.
 - Tick + quote/list settle due rows. Ready wholesale is paid immediately; seized pays nothing.
 - Heat on send (`DRUG_WHOLESALE_DRUG_HEAT`, includes smuggle +2). FBI heat per kg on successful arrival. Country police `drug_wholesale` (origin on send, dest on success) only if pressure flag is already on.
-- Admin → Drugs runtime tab. Do not flip Clearing House or `COUNTRY_POLICE_PRESSURE_ENABLED` here.
+- Admin → Drugs: grouped runtime console (wholesale, heat, raids, darkweb, nightclub) with live units/%, default vs current, unsaved tracking and per-field reset. Do not flip Clearing House or `COUNTRY_POLICE_PRESSURE_ENABLED` here.
 - Client entry: Inventory **Exporteren** (personal). Crew storage tab lists quality lots with **Exporteren** (`scope=crew`). Hub shows a short shipment strip under the photo header (crew rows prefixed). Smuggling Hub stays general cargo; do not add a second wholesale wizard.
 
 ### Crew wholesale

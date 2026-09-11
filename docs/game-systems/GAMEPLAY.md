@@ -114,6 +114,7 @@ Elke **5 minuten** gebeurt er automatisch:
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
 - Empire-pagina’s delen dezelfde foto-header als Don/Midnight Races/Drugs. De foto-hero **scrollt mee**; als er tabs zijn blijven die bovenaan (alleen tekst, goud). De gouden `i` zit in de hero. Dashboard-home, Help en Instellingen hebben deze kop niet.
+- **Admin → Drugs** groepeert groothandel, heat, raids, darkweb en nightclub in kaarten met leesbare eenheden (g, %, €, uur), live-waardes en onopgeslagen-status. Police-pressure en Clearing House blijven op hun eigen tabs.
 
 ---
 
