@@ -18,6 +18,7 @@ import {
 import { getRankFromXP, getXPForRank } from '../config';
 import { notificationService } from '../services/notificationService';
 import { existsCached, isRedisConnected } from '../services/redisClient';
+import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 import { queueService } from '../queues/queueService';
 import { supportTicketService } from '../services/supportTicketService';
 import { systemLogService } from '../services/systemLogService';
@@ -1868,6 +1869,7 @@ router.get('/players', async (req, res) => {
           health: true,
           currentCountry: true,
           avatar: true,
+          activePortrait: { select: { imagePath: true } },
           createdAt: true,
           updatedAt: true,
         },
@@ -1877,10 +1879,14 @@ router.get('/players', async (req, res) => {
 
     const onlineFlags = await Promise.all(players.map((p) => existsCached(`online:${p.id}`)));
 
-    const playersWithOnline = players.map((p, i) => ({
-      ...p,
-      isOnline: onlineFlags[i],
-    }));
+    const playersWithOnline = players.map((p, i) => {
+      const { activePortrait, ...rest } = p;
+      return {
+        ...rest,
+        activePortraitPath: activePortraitPathFromRow(activePortrait?.imagePath),
+        isOnline: onlineFlags[i],
+      };
+    });
 
     res.json({
       players: playersWithOnline,
@@ -1961,6 +1967,8 @@ router.get('/players/:playerId/overview', async (req, res) => {
           hitCount: true,
           inventory_slots_used: true,
           max_inventory_slots: true,
+          avatar: true,
+          activePortrait: { select: { imagePath: true } },
           createdAt: true,
           updatedAt: true,
         },
@@ -2147,6 +2155,11 @@ router.get('/players/:playerId/overview', async (req, res) => {
       return res.status(404).json({ error: 'Player not found' });
     }
 
+    const activePortraitPath = activePortraitPathFromRow(
+      (player as { activePortrait?: { imagePath?: string | null } }).activePortrait
+        ?.imagePath
+    );
+
     const correctedRank = getRankFromXP(player.xp);
     if (correctedRank !== player.rank) {
       player = await prisma.player.update({
@@ -2241,7 +2254,11 @@ router.get('/players/:playerId/overview', async (req, res) => {
     const weaponDistinctTypes = new Set(weaponAssets.map((item) => item.weaponId)).size;
 
     res.json({
-      player,
+      player: {
+        ...player,
+        activePortrait: undefined,
+        activePortraitPath,
+      },
       stats: {
         crimes: {
           total: crimeAggregate._count._all,

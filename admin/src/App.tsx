@@ -4,6 +4,7 @@ import {
   adminAuthService,
   adminService,
   portraitPublicImageUrl,
+  playerDisplayImageUrl,
   type PremiumOffer,
   type CreatePremiumOfferPayload,
   type CreditShopItem,
@@ -274,6 +275,7 @@ interface Player {
   health: number;
   currentCountry: string;
   avatar: string | null;
+  activePortraitPath?: string | null;
   isOnline: boolean;
   createdAt: string;
   updatedAt: string;
@@ -4611,7 +4613,10 @@ function App() {
     { id: "images", label: t.navImages, icon: "bi-images" },
     { id: "premium-offers", label: t.navPremium, icon: "bi-gem" },
     { id: "config", label: t.navConfig, icon: "bi-sliders" },
-  ];
+  ].filter(
+    (item): item is { id: TabType; label: string; icon: string } =>
+      item.id !== "admins" || adminRole === "SUPER_ADMIN",
+  );
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -6206,9 +6211,15 @@ function App() {
 
                           {/* Avatar + health indicator */}
                           <div className="status-indicator-container flex-shrink-0">
-                            {player.avatar ? (
+                            {playerDisplayImageUrl(
+                              player.avatar,
+                              player.activePortraitPath,
+                            ) ? (
                               <img
-                                src={`http://localhost:3000/assets/images/avatars/${player.avatar}.png`}
+                                src={playerDisplayImageUrl(
+                                  player.avatar,
+                                  player.activePortraitPath,
+                                )!}
                                 className="w-40px h-40px rounded-pill object-fit-cover"
                                 alt={player.username}
                                 onError={(e) => {
@@ -6431,9 +6442,11 @@ function App() {
                       const weaponDistinctTypes =
                         ov.assetSummary?.weaponDistinctTypes ??
                         ov.assets.weapons.length;
-                      const avatarUrl = selectedPlayerAvatar
-                        ? `http://localhost:3000/assets/images/avatars/${selectedPlayerAvatar}.png`
-                        : null;
+                      const avatarUrl = playerDisplayImageUrl(
+                        selectedPlayerOverview?.player.avatar ??
+                          selectedPlayerAvatar,
+                        selectedPlayerOverview?.player.activePortraitPath,
+                      );
 
                       return (
                         <>

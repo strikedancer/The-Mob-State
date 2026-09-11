@@ -257,11 +257,11 @@ Harde regel:
 - `GET /player/dashboard-stats` bevat voor crewleaders ook territory economy samenvattingen uit gecontroleerde regio's en `territory_reward_log`
 
 Admin moderation:
-- `POST /admin/territory/contest/resolve`
-- `POST /admin/territory/region/assign`
-- `POST /admin/territory/region/reset`
-- `POST /admin/territory/season/start`
-- `POST /admin/territory/season/close`
+- `POST /territory/admin/contest/resolve`
+- `POST /territory/admin/region/assign`
+- `POST /territory/admin/region/reset`
+- `POST /territory/admin/season/start`
+- `POST /territory/admin/season/close`
 
 ## Frontend UX Guardrails (Responsive)
 - Desktop: kaart + side panel split.

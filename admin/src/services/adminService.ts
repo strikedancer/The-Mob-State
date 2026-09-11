@@ -33,6 +33,23 @@ export function portraitPublicImageUrl(imagePath: string): string {
   return `${resolveGamePublicOrigin()}/images/${path}`;
 }
 
+/** Preset catalog avatar (`default_1`, …) on the public `/images/avatars` mount. */
+export function presetAvatarPublicUrl(avatarKey: string): string {
+  const key = avatarKey.replace(/^\/+/, "").replace(/\.png$/i, "");
+  return `${resolveGamePublicOrigin()}/images/avatars/${key}.png`;
+}
+
+export function playerDisplayImageUrl(
+  avatar?: string | null,
+  activePortraitPath?: string | null,
+): string | null {
+  const portrait = activePortraitPath?.trim();
+  if (portrait) return portraitPublicImageUrl(portrait);
+  const key = avatar?.trim();
+  if (key) return presetAvatarPublicUrl(key);
+  return null;
+}
+
 const parseErrorMessage = async (
   response: Response,
   fallback: string,
@@ -158,6 +175,8 @@ export interface PlayerOverview {
     xp: number;
     health: number;
     currentCountry: string;
+    avatar?: string | null;
+    activePortraitPath?: string | null;
     isVip: boolean;
     vipExpiresAt: string | null;
     isBanned: boolean;

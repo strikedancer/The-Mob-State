@@ -313,7 +313,7 @@ WS_URL=wss://yourdomain.com/ws
 Create `admin/.env.production`:
 
 ```env
-VITE_API_BASE_URL=https://yourdomain.com/api
+VITE_ADMIN_API_URL=https://api.themobstate.com
 ```
 
 ---

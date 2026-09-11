@@ -34,7 +34,7 @@ Premium-credit sink: players upload a selfie; the backend generates a film-noir 
 - Player must accept consent checkbox before upload (ToS alignment).
 
 ## Admin moderation (guideline violations)
-- Staff can list and delete stored custom portraits without the player’s session: `GET /admin/players/:playerId/portraits`, `DELETE /admin/players/:playerId/portraits/:portraitId` (moderator+; **VIEWER** cannot delete). Optional query `?reason=` is recorded with the audit entry (`DELETE_PLAYER_PORTRAIT`). Admin UI: player → **Manage** tab → **Custom portretten (selfie)** with thumbnails and delete per tile. Follows the same admin-auth and audit conventions as other moderation endpoints in `PROTOCOL_MASTER.md`.
+- Staff can list and delete stored custom portraits without the player’s session: `GET /admin/players/:playerId/portraits`, `DELETE /admin/players/:playerId/portraits/:portraitId` (moderator+; **VIEWER** cannot delete). Optional query `?reason=` is recorded with the audit entry (`DELETE_PLAYER_PORTRAIT`). Admin UI: player list/detail shows the active selfie when `activePortraitPath` is set; player → **Manage** tab → **Custom portretten (selfie)** with thumbnails and delete per tile. Follows the same admin-auth and audit conventions as other moderation endpoints in `PROTOCOL_MASTER.md`.
 
 ## Client UX
 - During selfie→portrait generation, show a **non-dismissible** wait dialog (spinner + message) so players know the request is still running.
