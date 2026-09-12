@@ -93,8 +93,8 @@ cp -f client/assets/images/logo.png runtime/client-images/logo.png 2>/dev/null |
 # Almanac chapter tiles (/images/wiki/hubs/*)
 mkdir -p runtime/client-images/wiki/hubs || true
 cp -f client/assets/images/wiki/hubs/*.png runtime/client-images/wiki/hubs/ 2>/dev/null || true
-# Jail overlay still (/images/cooldown_jail.png)
-cp -f client/assets/images/cooldown_jail.png runtime/client-images/cooldown_jail.png 2>/dev/null || true
+# Jail + action-timeout overlay stills (/images/cooldown_*.png)
+cp -f client/assets/images/cooldown_*.png runtime/client-images/ 2>/dev/null || true
 # Crime catalog + crimes page background (/images/crimes/*, /images/backgrounds/crime_background.png)
 mkdir -p runtime/client-images/crimes runtime/client-images/backgrounds || true
 cp -f client/assets/images/crimes/*.png runtime/client-images/crimes/ 2>/dev/null || true

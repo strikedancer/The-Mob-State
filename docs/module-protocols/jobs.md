@@ -20,6 +20,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
 - Job stills live at `client/assets/images/jobs/<id>_job.png` (same files on `/images/jobs/` for web + wiki). Hub tile: `wiki/hubs/jobs.png`. Page wash: `backgrounds/jobs_background.png` (gym keeps `gym_bg.png`). Leonardo: `backend/scripts/generate_job_images_leonardo.py`. Deploy copies those paths onto the runtime mount. Do not keep a second copy under `client/images/jobs/`. Web cards/hero use `kCatalogArtCacheBust` so a new still is not stuck behind the 1h nginx/`Image.asset` cache; bump that constant (and wiki `CATALOG_ART_V`) when replacing catalog art.
+- Job timeout overlay still: `client/assets/images/cooldown_jobs.png`. Leonardo: `backend/scripts/generate_cooldown_overlay_images_leonardo.py`. Client uses `kCooldownArtCacheBust`.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.

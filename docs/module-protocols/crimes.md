@@ -36,6 +36,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Arrest feedback should be immediate message-first, optionally with a static image/icon indicator.
 - Accurate state refresh after an action completes.
 - The crime cooldown overlay ticks locally from the first `remainingSeconds`. Parent rebuilds must not snap the clock backward to that stale start value.
+- Crime timeout overlay still: `client/assets/images/cooldown_crimes.png` (`/images/cooldown_crimes.png`). Leonardo: `backend/scripts/generate_cooldown_overlay_images_leonardo.py`. Client uses `WebAssetHelper` + `kCooldownArtCacheBust`.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Crime pacing is reward-tier based, not flat-rate; low-reward crimes stay fast while high-reward crimes must pick up meaningfully longer cooldowns.

@@ -309,8 +309,8 @@ Future<void> showGamePageInfoDialog(
                                     banner,
                                     Icons.menu_book,
                                     140,
-                                    cacheBust: banner.contains('cooldown_jail')
-                                        ? kJailArtCacheBust
+                                    cacheBust: banner.contains('cooldown_')
+                                        ? kCooldownArtCacheBust
                                         : null,
                                   ),
                                   const SizedBox(height: 12),

@@ -21,6 +21,7 @@ Commercial travel does **not** move or confiscate personal trade-good warehouses
 - Which timers, locks, rank gates or country rules affect the flow?
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
+- Travel timeout overlay still: `client/assets/images/cooldown_airfield.png`. Leonardo: `backend/scripts/generate_cooldown_overlay_images_leonardo.py`. Client uses `WebAssetHelper` + `kCooldownArtCacheBust`.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.

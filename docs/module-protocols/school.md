@@ -25,6 +25,7 @@ Education tracks, certifications, gates, cash tuition, cooldowns and unlock depe
 - Which timers, locks, rank gates or country rules affect the flow?
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
+- School timeout overlay still: `client/assets/images/cooldown_school.png`. Leonardo: `backend/scripts/generate_cooldown_overlay_images_leonardo.py`. Client uses `WebAssetHelper` + `kCooldownArtCacheBust`.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.

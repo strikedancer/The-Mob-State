@@ -17,7 +17,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Which timers, locks, rank gates or country rules affect the flow?
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
-- Jail overlay still: `client/assets/images/cooldown_jail.png` served on web as `/images/cooldown_jail.png`. Leonardo: `backend/scripts/generate_jail_image_leonardo.py --force --confirm-batch YES --mirror-client-assets`. Deploy copies it onto the runtime mount. Client uses `WebAssetHelper` + `kJailArtCacheBust`. Do not keep a second copy under `client/images/`.
+- Jail overlay still: `client/assets/images/cooldown_jail.png` served on web as `/images/cooldown_jail.png`. Leonardo: `backend/scripts/generate_jail_image_leonardo.py --force --confirm-batch YES --mirror-client-assets`. Deploy copies it onto the runtime mount. Client uses `WebAssetHelper` + `kCooldownArtCacheBust`. Do not keep a second copy under `client/images/`.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.

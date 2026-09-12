@@ -8,7 +8,7 @@ import '../services/auth_service.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 
-/// Full-screen overlay showing cooldown timer with cartoon and countdown
+/// Full-screen overlay showing cooldown timer with noir still and countdown
 /// Similar to JailOverlay but for action cooldowns
 class CooldownOverlay extends StatefulWidget {
   final String actionType; // 'crime', 'job', 'travel', 'heist', 'appeal'
@@ -267,17 +267,10 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    // Determine which background image to use
-    String? backgroundImagePath;
-    if (widget.actionType == 'crime') {
-      backgroundImagePath = 'assets/images/cooldown_crimes.png';
-    } else if (widget.actionType == 'job') {
-      backgroundImagePath = 'assets/images/cooldown_jobs.png';
-    } else if (widget.actionType == 'travel') {
-      backgroundImagePath = 'assets/images/cooldown_airfield.png';
-    } else if (widget.actionType == 'school') {
-      backgroundImagePath = 'assets/images/cooldown_school.png';
-    }
+    final backgroundImagePath = CooldownInfo(
+      actionType: widget.actionType,
+      remainingSeconds: widget.remainingSeconds,
+    ).getImagePath();
 
     final canShowCooldownCreditAction =
         _cooldownResetItemKey != null && _cooldownResetItemKey!.isNotEmpty;
@@ -503,13 +496,13 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                     fit: StackFit.expand,
                     children: [
                       Container(color: Colors.black),
-                      if (backgroundImagePath != null)
-                        Positioned.fill(
-                          child: WebAssetHelper.image(
-                            backgroundImagePath,
-                            fit: BoxFit.cover,
-                          ),
+                      Positioned.fill(
+                        child: WebAssetHelper.image(
+                          backgroundImagePath,
+                          fit: BoxFit.cover,
+                          cacheBust: kCooldownArtCacheBust,
                         ),
+                      ),
                       Positioned.fill(
                         child: DecoratedBox(
                           decoration: BoxDecoration(

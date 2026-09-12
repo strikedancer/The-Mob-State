@@ -22,7 +22,7 @@ class CooldownInfo {
     return names[actionType] ?? actionType;
   }
 
-  /// Get the cartoon image path for this action type
+  /// Get the overlay still path for this action type
   String getImagePath() {
     final images = {
       'crime': 'assets/images/cooldown_crimes.png',
