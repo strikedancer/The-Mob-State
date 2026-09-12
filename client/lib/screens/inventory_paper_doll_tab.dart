@@ -464,11 +464,12 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       final quality = '${row['quality'] ?? 'C'}';
       if (drugType.isEmpty) continue;
       seenDrugKeys.add('$drugType:$quality');
+      final rawName = '${row['name'] ?? drugType}';
       items.add(
         InventoryGridItem(
           kind: InventoryItemKind.drug,
           id: drugType,
-          name: '${row['name'] ?? drugType} ($quality)',
+          name: rawName.contains('(') ? rawName : '$rawName ($quality)',
           quantity: (row['quantity'] as num?)?.toInt() ?? 0,
           zone: InventoryZone.property,
           imagePath: 'assets/images/drugs/$drugType.png',
@@ -509,7 +510,42 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         ),
       );
     }
-    _contextItems = items.where((i) => i.quantity > 0).toList();
+    _contextItems = _mergePropertyDrugsByType(
+      items.where((i) => i.quantity > 0).toList(),
+    );
+  }
+
+  List<InventoryGridItem> _mergePropertyDrugsByType(
+    List<InventoryGridItem> items,
+  ) {
+    final drugs = items.where((item) => item.kind == InventoryItemKind.drug);
+    final others = items.where((item) => item.kind != InventoryItemKind.drug);
+    final byType = <String, List<InventoryGridItem>>{};
+    for (final drug in drugs) {
+      byType.putIfAbsent(drug.id, () => []).add(drug);
+    }
+    final merged = <InventoryGridItem>[];
+    for (final group in byType.values) {
+      final quantity = group.fold(0, (sum, item) => sum + item.quantity);
+      final qualities = group
+          .map((item) => item.quality)
+          .whereType<String>()
+          .toSet()
+          .toList()
+        ..sort();
+      final baseName = group.first.name.replaceAll(RegExp(r' \([^)]+\)$'), '');
+      final label = qualities.isEmpty
+          ? baseName
+          : '$baseName (${qualities.join(', ')})';
+      merged.add(
+        group.first.copyWith(
+          quantity: quantity,
+          name: label,
+          quality: qualities.isEmpty ? group.first.quality : qualities.first,
+        ),
+      );
+    }
+    return [...others, ...merged];
   }
 
   bool _isWeaponEquipZone(InventoryZone zone) {
@@ -653,12 +689,11 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   int _stackQuantity(InventoryGridItem source, InventoryZone target) {
     final list = target == InventoryZone.property ? _contextItems : _backpack;
     return list
-        .where(
-          (item) =>
-              item.kind == source.kind &&
-              item.id == source.id &&
-              item.quality == source.quality,
-        )
+        .where((item) {
+          if (item.kind != source.kind || item.id != source.id) return false;
+          if (source.kind == InventoryItemKind.drug) return true;
+          return item.quality == source.quality;
+        })
         .fold(0, (sum, item) => sum + item.quantity);
   }
 

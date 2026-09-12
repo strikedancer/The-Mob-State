@@ -21,7 +21,6 @@ import {
   cashSlotsForAmount,
   computePropertySlotUsage,
   DRUG_GRAMS_PER_SLOT,
-  drugSlotsForGrams,
   MATERIAL_UNITS_PER_SLOT,
   maxAddForSlotStack,
   drugStashKey,
@@ -200,7 +199,7 @@ class PropertyStorageService {
       let toolCount = 0;
       let tools: any[] = [];
       let drugCount = 0;
-      let leftoverDrugUsage = 0;
+      let leftoverDrugRows: Array<{ drugType: string; quantity: number }> = [];
       let weaponCount = 0;
       let cashAmount = 0;
       let toolUsage = 0;
@@ -212,18 +211,14 @@ class PropertyStorageService {
       }
 
       if (allowedCategories.includes('drugs')) {
-        const drugs = await prisma.propertyDrugStorage.findMany({
+        leftoverDrugRows = await prisma.propertyDrugStorage.findMany({
           where: {
             propertyId: property.id,
             NOT: NON_DRUG_STORAGE_FILTER,
           },
-          select: { quantity: true },
+          select: { drugType: true, quantity: true },
         });
-        drugCount = drugs.reduce((sum, row) => sum + row.quantity, 0);
-        leftoverDrugUsage = drugs.reduce(
-          (sum, row) => sum + drugSlotsForGrams(row.quantity),
-          0,
-        );
+        drugCount = leftoverDrugRows.reduce((sum, row) => sum + row.quantity, 0);
       }
 
       if (allowedCategories.includes('weapons')) {
@@ -261,7 +256,7 @@ class PropertyStorageService {
         ammoUsage,
         armorQuantity: armorCount,
         cashAmount,
-        leftoverDrugUsage,
+        leftoverDrugRows,
         stashRows,
       });
 
@@ -335,9 +330,11 @@ class PropertyStorageService {
       select: { drugType: true, quantity: true },
     });
     const materials = this.parseMaterialStash(stashRows);
-    const finishedDrugs = this.foldLeftoverIntoFinished(
-      drugs,
-      this.parseFinishedDrugStash(stashRows),
+    const finishedDrugs = this.mergeFinishedDrugsByType(
+      this.foldLeftoverIntoFinished(
+        drugs,
+        this.parseFinishedDrugStash(stashRows),
+      ),
     );
     const trade = this.parseTradeStash(stashRows);
     const leftoverOnly = drugs.filter((row) => !DRUG_NAMES.has(row.drugType));
@@ -345,10 +342,7 @@ class PropertyStorageService {
     const toolUsage = allowedCategories.includes('tools')
       ? await toolService.getPropertyStorageUsage(playerId, property.id)
       : 0;
-    const leftoverDrugUsage = drugs.reduce(
-      (sum, row) => sum + drugSlotsForGrams(row.quantity),
-      0,
-    );
+    const leftoverDrugRows = drugs;
     const weaponQuantity = weapons.reduce((sum, row) => sum + row.quantity, 0);
     const ammoUsage = ammo.reduce(
       (sum, row) => sum + ammoSlotsForRounds(row.quantity),
@@ -361,7 +355,7 @@ class PropertyStorageService {
       ammoUsage,
       armorQuantity,
       cashAmount,
-      leftoverDrugUsage,
+      leftoverDrugRows,
       stashRows,
     });
 
@@ -598,6 +592,73 @@ class PropertyStorageService {
       }
     }
     return merged;
+  }
+
+  private mergeFinishedDrugsByType(
+    finished: Array<{
+      drugType: string;
+      quality: string;
+      name: string;
+      quantity: number;
+    }>,
+  ) {
+    const byType = new Map<
+      string,
+      {
+        drugType: string;
+        quality: string;
+        name: string;
+        quantity: number;
+        qualities: string[];
+      }
+    >();
+    for (const row of finished) {
+      const current = byType.get(row.drugType);
+      if (!current) {
+        byType.set(row.drugType, {
+          ...row,
+          qualities: [row.quality],
+        });
+        continue;
+      }
+      current.quantity += row.quantity;
+      if (!current.qualities.includes(row.quality)) {
+        current.qualities.push(row.quality);
+      }
+    }
+    return [...byType.values()].map((row) => {
+      const qualities = [...row.qualities].sort();
+      const baseName = DRUG_NAMES.get(row.drugType) ?? row.drugType;
+      return {
+        drugType: row.drugType,
+        quality: qualities[0] ?? row.quality,
+        name:
+          qualities.length > 1
+            ? `${baseName} (${qualities.join(', ')})`
+            : `${baseName} (${qualities[0] ?? row.quality})`,
+        quantity: row.quantity,
+      };
+    });
+  }
+
+  private async findPrefixedDrugRowsOfType(
+    propertyId: number,
+    drugType: string,
+  ) {
+    const prefix = `${STASH_DRUG_PREFIX}${drugType}:`;
+    return prisma.propertyDrugStorage.findMany({
+      where: { propertyId, drugType: { startsWith: prefix } },
+      select: { drugType: true, quantity: true },
+    });
+  }
+
+  private async gramsOfDrugType(propertyId: number, drugType: string) {
+    const leftover = await this.findUnprefixedDrugRow(propertyId, drugType);
+    const prefixed = await this.findPrefixedDrugRowsOfType(propertyId, drugType);
+    return (
+      (leftover?.quantity ?? 0) +
+      prefixed.reduce((sum, row) => sum + row.quantity, 0)
+    );
   }
 
   private async findUnprefixedDrugRow(propertyId: number, drugType: string) {
@@ -849,9 +910,7 @@ class PropertyStorageService {
     );
     const absorbLeftover =
       leftover != null && leftover.quantity > 0 && otherQualities.length === 0;
-    const currentQty =
-      (existing?.quantity ?? 0) +
-      (absorbLeftover ? leftover?.quantity ?? 0 : 0);
+    const currentQty = await this.gramsOfDrugType(propertyId, drugType);
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
     quantity = this.clampStackDeposit(
       currentQty,
@@ -902,7 +961,10 @@ class PropertyStorageService {
       where: { propertyId_drugType: { propertyId, drugType: key } },
     });
     const leftover = await this.findUnprefixedDrugRow(propertyId, drugType);
-    const available = (stored?.quantity ?? 0) + (leftover?.quantity ?? 0);
+    const otherRows = await this.findPrefixedDrugRowsOfType(propertyId, drugType);
+    const available =
+      (leftover?.quantity ?? 0) +
+      otherRows.reduce((sum, row) => sum + row.quantity, 0);
     if (available < quantity) {
       throw new Error('INSUFFICIENT_DRUGS');
     }
@@ -912,28 +974,62 @@ class PropertyStorageService {
       await extraSlotsForDrugAdd(playerId, drugType, quality, quantity),
     );
 
-    await prisma.$transaction(async (tx) => {
-      let remaining = quantity;
-      if (stored && remaining > 0) {
-        const take = Math.min(stored.quantity, remaining);
-        await this.bumpStorageKey(tx, propertyId, key, -take);
-        remaining -= take;
-      }
-      if (leftover && remaining > 0) {
-        await this.bumpStorageKey(tx, propertyId, leftover.drugType, -remaining);
-      }
+    const creditBackpack = async (
+      tx: any,
+      creditQuality: string,
+      amount: number,
+    ) => {
+      if (amount <= 0) return;
       const existing = await tx.drugInventory.findUnique({
-        where: { playerId_drugType_quality: { playerId, drugType, quality } },
+        where: {
+          playerId_drugType_quality: {
+            playerId,
+            drugType,
+            quality: creditQuality,
+          },
+        },
       });
       if (existing) {
         await tx.drugInventory.update({
           where: { id: existing.id },
-          data: { quantity: existing.quantity + quantity },
+          data: { quantity: existing.quantity + amount },
         });
       } else {
         await tx.drugInventory.create({
-          data: { playerId, drugType, quality, quantity, ownProduction: false },
+          data: {
+            playerId,
+            drugType,
+            quality: creditQuality,
+            quantity: amount,
+            ownProduction: false,
+          },
         });
+      }
+    };
+
+    await prisma.$transaction(async (tx) => {
+      let remaining = quantity;
+      if (leftover && remaining > 0) {
+        const take = Math.min(leftover.quantity, remaining);
+        await this.bumpStorageKey(tx, propertyId, leftover.drugType, -take);
+        await creditBackpack(tx, 'C', take);
+        remaining -= take;
+      }
+      if (stored && remaining > 0) {
+        const take = Math.min(stored.quantity, remaining);
+        await this.bumpStorageKey(tx, propertyId, key, -take);
+        await creditBackpack(tx, quality, take);
+        remaining -= take;
+      }
+      for (const row of otherRows) {
+        if (remaining <= 0) break;
+        if (row.drugType === key) continue;
+        const parsed = parseDrugStashKey(row.drugType);
+        if (!parsed) continue;
+        const take = Math.min(row.quantity, remaining);
+        await this.bumpStorageKey(tx, propertyId, row.drugType, -take);
+        await creditBackpack(tx, parsed.quality, take);
+        remaining -= take;
       }
     });
     await refreshInventorySlotUsage(playerId);
