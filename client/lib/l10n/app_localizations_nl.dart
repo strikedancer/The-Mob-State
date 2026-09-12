@@ -8058,6 +8058,16 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String inventoryFillPartialHint(
+    int partial,
+    int full,
+    int need,
+    int rest,
+  ) {
+    return 'Eerst $partial aanvullen tot $full ($need erbij), daarna $rest in een nieuw vak.';
+  }
+
+  @override
   String get inventoryInvalidQuantity => 'Ongeldige hoeveelheid';
 
   @override

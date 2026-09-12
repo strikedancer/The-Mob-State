@@ -14097,6 +14097,12 @@ abstract class AppLocalizations {
   /// **'Max: {max}'**
   String inventoryMaxShort(int max);
 
+  /// No description provided for @inventoryFillPartialHint.
+  ///
+  /// In en, this message translates to:
+  /// **'First top up {partial} to {full} ({need} more), then {rest} goes in a new cell.'**
+  String inventoryFillPartialHint(int partial, int full, int need, int rest);
+
   /// No description provided for @inventoryInvalidQuantity.
   ///
   /// In en, this message translates to:

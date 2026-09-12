@@ -11918,5 +11918,22 @@
   "helpTopicMotorTitle": "Motociclette",
   "helpTopicMotorSummary": "Rubare e gestire motociclette. Il deposito delle moto ha una propria pista accanto alle auto; riparazione, vendita e rottamazione funzionano allo stesso modo. Il trasporto passa attraverso l'hub del contrabbando.",
   "helpTopicMotorHow": "In Vehicle Heist, Motor è un ambiente a sé stante accanto a Car e Boat. Scegli la carta corsia in alto.\nIl deposito delle motociclette è separato dalla capacità del garage: un aggiornamento dell'auto non aggiunge mai posti per le moto e viceversa. Gli aggiornamenti si applicano solo al paese in cui ti trovi e aggiungono slot, non rubano possibilità. Sono classificati in base al rango; al livello 5 il pulsante scompare.\nIl catalogo mostra tutte le motociclette rubabili, inclusi i paesi più comuni e quelli di spawn.\nIl furto di motociclette ha i propri cancelli di rango e tempi di recupero. Le biciclette più costose sono più difficili da rubare ma possono pagare di più.\nDopo un furto andato a buon fine, il popup dei risultati ti consente di vendere, rottamare immediatamente o tenere la bicicletta.\nSe un modello di limite mondiale è pieno, quel tipo scompare temporaneamente. La vendita o la rottamazione riapre uno slot.\nLe riparazioni sono a tempo e condividono gli slot con auto e barche: senza VIP max 1 attivo, con VIP max 2.\nLa rottamazione produce parti di motociclette per TuneShop e valore di recupero (35% del valore base), ridotto in base alle condizioni.\nLo spostamento di motociclette tra paesi avviene attraverso Smuggling Hub, non in questa schermata.\nLe motociclette della polizia solo per l'evento rimangono chiuse fuori dalle finestre dell'evento (grado 15 durante l'evento).\nIl deposito delle auto dell'Crew accetta anche motociclette.",
-  "helpTopicMotorTips": "Upgrade del deposito moto nel Paese in cui si ruba di più: un upgrade in Francia non riempie i Paesi Bassi.\nMantieni almeno una motocicletta in ottime condizioni per il contrabbando: un veicolo rotto dimezza le tue possibilità di successo.\nScarta le biciclette gravemente danneggiate per le parti TuneShop quando il valore di rivendita è basso."
+  "helpTopicMotorTips": "Upgrade del deposito moto nel Paese in cui si ruba di più: un upgrade in Francia non riempie i Paesi Bassi.\nMantieni almeno una motocicletta in ottime condizioni per il contrabbando: un veicolo rotto dimezza le tue possibilità di successo.\nScarta le biciclette gravemente danneggiate per le parti TuneShop quando il valore di rivendita è basso.",
+  "inventoryFillPartialHint": "First top up {partial} to {full} ({need} more), then {rest} goes in a new cell.",
+  "@inventoryFillPartialHint": {
+    "placeholders": {
+      "partial": {
+        "type": "int"
+      },
+      "full": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      },
+      "rest": {
+        "type": "int"
+      }
+    }
+  }
 }

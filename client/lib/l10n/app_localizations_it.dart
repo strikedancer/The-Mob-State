@@ -8098,6 +8098,16 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String inventoryFillPartialHint(
+    int partial,
+    int full,
+    int need,
+    int rest,
+  ) {
+    return 'First top up $partial to $full ($need more), then $rest goes in a new cell.';
+  }
+
+  @override
   String get inventoryInvalidQuantity => 'Quantità non valida';
 
   @override

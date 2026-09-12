@@ -9464,6 +9464,23 @@
       }
     }
   },
+  "inventoryFillPartialHint": "Eerst {partial} aanvullen tot {full} ({need} erbij), daarna {rest} in een nieuw vak.",
+  "@inventoryFillPartialHint": {
+    "placeholders": {
+      "partial": {
+        "type": "int"
+      },
+      "full": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      },
+      "rest": {
+        "type": "int"
+      }
+    }
+  },
   "inventoryInvalidQuantity": "Ongeldige hoeveelheid",
   "inventorySnackWeaponStored": "Wapen opgeslagen",
   "inventorySnackWeaponWithdrawn": "Wapen opgenomen",

@@ -650,12 +650,58 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     }
   }
 
-  Future<int?> _askTransferQuantity(InventoryGridItem source) async {
+  int _stackQuantity(InventoryGridItem source, InventoryZone target) {
+    final list = target == InventoryZone.property ? _contextItems : _backpack;
+    return list
+        .where(
+          (item) =>
+              item.kind == source.kind &&
+              item.id == source.id &&
+              item.quality == source.quality,
+        )
+        .fold(0, (sum, item) => sum + item.quantity);
+  }
+
+  String? _fillPartialHint(
+    AppLocalizations l10n,
+    InventoryGridItem source,
+    InventoryZone target,
+  ) {
+    if (target != InventoryZone.property &&
+        source.zone != InventoryZone.property) {
+      return null;
+    }
+    final existing = _stackQuantity(
+      source,
+      target == InventoryZone.property
+          ? InventoryZone.property
+          : InventoryZone.backpack,
+    );
+    final plan = planSlotFill(
+      currentQty: existing,
+      incoming: source.quantity,
+      unitsPerSlot: unitsPerPropertySlot(source.kind),
+    );
+    if (!plan.hasPartial || plan.overflow <= 0) return null;
+    final remainder = existing % plan.unitsPerSlot;
+    return l10n.inventoryFillPartialHint(
+      remainder,
+      plan.unitsPerSlot,
+      plan.roomInPartial,
+      plan.overflow,
+    );
+  }
+
+  Future<int?> _askTransferQuantity(
+    InventoryGridItem source,
+    InventoryZone target,
+  ) async {
     final controller = TextEditingController(text: '${source.quantity}');
     final result = await showDialog<int>(
       context: context,
       builder: (dialogContext) {
         final dlgL10n = AppLocalizations.of(dialogContext)!;
+        final fillHint = _fillPartialHint(dlgL10n, source, target);
         return AlertDialog(
           backgroundColor: const Color(0xFF1E1E1E),
           title: Text(dlgL10n.selectQuantity),
@@ -666,7 +712,10 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: dlgL10n.quantity,
-              helperText: dlgL10n.inventoryMaxShort(source.quantity),
+              helperMaxLines: 3,
+              helperText: fillHint == null
+                  ? dlgL10n.inventoryMaxShort(source.quantity)
+                  : '${dlgL10n.inventoryMaxShort(source.quantity)}\n$fillHint',
               filled: true,
               fillColor: const Color(0xFF151515),
               border: const OutlineInputBorder(),
@@ -745,7 +794,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
 
     var quantity = 1;
     if (_isStackableMove(source, target)) {
-      final chosen = await _askTransferQuantity(source);
+      final chosen = await _askTransferQuantity(source, target);
       if (!mounted) return;
       if (chosen == null) {
         setState(() => _selected = null);

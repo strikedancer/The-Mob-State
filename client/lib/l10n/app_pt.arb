@@ -11918,5 +11918,22 @@
   "helpTopicMotorTitle": "Motocicletas",
   "helpTopicMotorSummary": "Roube e gerencie motocicletas. O armazenamento de motocicletas é uma pista própria ao lado dos carros; reparos, vendas e desmantelamento funcionam da mesma maneira. O transporte passa pelo Centro de Contrabando.",
   "helpTopicMotorHow": "Em Vehicle Heist, Motor é seu próprio ambiente ao lado de Carro e Barco. Escolha aquela carta de pista no topo.\nO armazenamento de motocicletas é separado da capacidade do carro de garagem: uma atualização de carro nunca adiciona vagas para motocicletas e vice-versa. As atualizações se aplicam apenas ao país em que você está e adicionam slots, não roubam a chance. Eles são controlados por classificação; no nível 5 o botão desaparece.\nO catálogo mostra todas as motocicletas que podem ser roubadas, incluindo os países mais comuns e os países de spawn.\nO roubo de motocicleta tem seus próprios portões e tempos de espera. Bicicletas mais caras são mais difíceis de roubar, mas podem pagar mais.\nApós um roubo bem-sucedido, o pop-up de resultado permite vender ou descartar imediatamente ou ficar com a bicicleta.\nSe o limite mundial de um modelo estiver cheio, esse tipo desaparece temporariamente. Vender ou desmantelar reabre uma vaga.\nOs reparos são cronometrados e compartilham slots com carros e barcos: sem VIP max 1 ativo, com VIP max 2.\nO sucateamento rende peças de motocicleta para TuneShop e valor residual (35% do valor base), dimensionado por condição.\nA movimentação de motocicletas entre países passa pelo Smuggling Hub, não por esta tela.\nAs motocicletas da polícia exclusivas para o evento ficam trancadas fora das janelas do evento (classificação 15 durante o evento).\nO armazenamento para carros da Crew também aceita motocicletas.",
-  "helpTopicMotorTips": "Atualize o armazenamento de motocicletas no país onde você mais rouba: um upgrade na França não preenche a Holanda.\nMantenha pelo menos uma motocicleta em boas condições para contrabando: um veículo quebrado reduz pela metade suas chances de sucesso.\nDescarte bicicletas muito danificadas para obter peças TuneShop quando o valor de revenda for baixo."
+  "helpTopicMotorTips": "Atualize o armazenamento de motocicletas no país onde você mais rouba: um upgrade na França não preenche a Holanda.\nMantenha pelo menos uma motocicleta em boas condições para contrabando: um veículo quebrado reduz pela metade suas chances de sucesso.\nDescarte bicicletas muito danificadas para obter peças TuneShop quando o valor de revenda for baixo.",
+  "inventoryFillPartialHint": "First top up {partial} to {full} ({need} more), then {rest} goes in a new cell.",
+  "@inventoryFillPartialHint": {
+    "placeholders": {
+      "partial": {
+        "type": "int"
+      },
+      "full": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      },
+      "rest": {
+        "type": "int"
+      }
+    }
+  }
 }

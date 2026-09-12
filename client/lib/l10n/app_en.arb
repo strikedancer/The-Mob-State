@@ -5117,6 +5117,23 @@
       }
     }
   },
+  "inventoryFillPartialHint": "First top up {partial} to {full} ({need} more), then {rest} goes in a new cell.",
+  "@inventoryFillPartialHint": {
+    "placeholders": {
+      "partial": {
+        "type": "int"
+      },
+      "full": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      },
+      "rest": {
+        "type": "int"
+      }
+    }
+  },
   "inventoryInvalidQuantity": "Invalid quantity",
   "inventorySnackWeaponStored": "Weapon stored",
   "inventorySnackWeaponWithdrawn": "Weapon withdrawn",
