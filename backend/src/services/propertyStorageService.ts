@@ -14,16 +14,21 @@ import {
 import {
   STASH_PROPERTY_TYPES,
   STASH_TRADE_PX_PREFIX,
+  AMMO_ROUNDS_PER_SLOT,
   ammoSlotsForRounds,
+  CASH_PER_SLOT,
   cashSlotsForAmount,
   computePropertySlotUsage,
+  DRUG_GRAMS_PER_SLOT,
+  drugSlotsForGrams,
+  MATERIAL_UNITS_PER_SLOT,
+  maxAddForSlotStack,
   drugStashKey,
   isMetaStashKey,
   materialStashKey,
   parseDrugStashKey,
   parseMaterialStashKey,
   parseTradeStashKey,
-  stashSlotsForRow,
   tradePriceStashKey,
   tradeStashKey,
 } from '../utils/propertyStash';
@@ -194,6 +199,7 @@ class PropertyStorageService {
       let toolCount = 0;
       let tools: any[] = [];
       let drugCount = 0;
+      let leftoverDrugUsage = 0;
       let weaponCount = 0;
       let cashAmount = 0;
       let toolUsage = 0;
@@ -213,6 +219,10 @@ class PropertyStorageService {
           select: { quantity: true },
         });
         drugCount = drugs.reduce((sum, row) => sum + row.quantity, 0);
+        leftoverDrugUsage = drugs.reduce(
+          (sum, row) => sum + drugSlotsForGrams(row.quantity),
+          0,
+        );
       }
 
       if (allowedCategories.includes('weapons')) {
@@ -226,9 +236,14 @@ class PropertyStorageService {
 
       let ammoCount = 0;
       let armorCount = 0;
+      let ammoUsage = 0;
       if (allowedCategories.includes('ammo')) {
         const ammo = await this.getAmmoStorage(property.id);
         ammoCount = ammo.reduce((sum, row) => sum + row.quantity, 0);
+        ammoUsage = ammo.reduce(
+          (sum, row) => sum + ammoSlotsForRounds(row.quantity),
+          0,
+        );
       }
       if (allowedCategories.includes('armor')) {
         const armor = await this.getArmorStorage(property.id);
@@ -242,10 +257,10 @@ class PropertyStorageService {
       const usage = computePropertySlotUsage({
         toolUsage,
         weaponQuantity: weaponCount,
-        ammoRounds: ammoCount,
+        ammoUsage,
         armorQuantity: armorCount,
         cashAmount,
-        leftoverDrugGrams: drugCount,
+        leftoverDrugUsage,
         stashRows,
       });
 
@@ -325,17 +340,23 @@ class PropertyStorageService {
     const toolUsage = allowedCategories.includes('tools')
       ? await toolService.getPropertyStorageUsage(playerId, property.id)
       : 0;
-    const leftoverDrugGrams = drugs.reduce((sum, row) => sum + row.quantity, 0);
+    const leftoverDrugUsage = drugs.reduce(
+      (sum, row) => sum + drugSlotsForGrams(row.quantity),
+      0,
+    );
     const weaponQuantity = weapons.reduce((sum, row) => sum + row.quantity, 0);
-    const ammoRounds = ammo.reduce((sum, row) => sum + row.quantity, 0);
+    const ammoUsage = ammo.reduce(
+      (sum, row) => sum + ammoSlotsForRounds(row.quantity),
+      0,
+    );
     const armorQuantity = armor.reduce((sum, row) => sum + row.quantity, 0);
     const usage = computePropertySlotUsage({
       toolUsage,
       weaponQuantity,
-      ammoRounds,
+      ammoUsage,
       armorQuantity,
       cashAmount,
-      leftoverDrugGrams,
+      leftoverDrugUsage,
       stashRows,
     });
 
@@ -382,7 +403,8 @@ class PropertyStorageService {
     }
 
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    if (detail.usage + quantity > detail.capacity) {
+    quantity = this.clampToFreeSlots(quantity, detail.usage, detail.capacity);
+    if (quantity <= 0) {
       throw new Error('STORAGE_FULL');
     }
 
@@ -503,10 +525,6 @@ class PropertyStorageService {
     });
   }
 
-  private ammoSlotsForQuantity(rounds: number): number {
-    return ammoSlotsForRounds(rounds);
-  }
-
   private parseMaterialStash(
     rows: Array<{ drugType: string; quantity: number }>,
   ) {
@@ -584,17 +602,27 @@ class PropertyStorageService {
     }
   }
 
-  private async extraSlotsForKey(
-    propertyId: number,
-    storageKey: string,
-    newQuantity: number,
-  ): Promise<number> {
-    const existing = await prisma.propertyDrugStorage.findUnique({
-      where: { propertyId_drugType: { propertyId, drugType: storageKey } },
-    });
-    const oldSlots = stashSlotsForRow(storageKey, existing?.quantity ?? 0);
-    const nextSlots = stashSlotsForRow(storageKey, newQuantity);
-    return nextSlots - oldSlots;
+  private clampToFreeSlots(
+    requested: number,
+    usage: number,
+    capacity: number,
+  ): number {
+    const free = Math.max(0, capacity - usage);
+    return Math.min(requested, free);
+  }
+
+  private clampStackDeposit(
+    currentQty: number,
+    unitsPerSlot: number,
+    usage: number,
+    capacity: number,
+    requested: number,
+  ): number {
+    const free = Math.max(0, capacity - usage);
+    return Math.min(
+      requested,
+      maxAddForSlotStack(currentQty, unitsPerSlot, free),
+    );
   }
 
   async getTradeQuantityInCountry(
@@ -650,12 +678,14 @@ class PropertyStorageService {
       where: { propertyId_drugType: { propertyId, drugType: key } },
     });
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    const delta = await this.extraSlotsForKey(
-      propertyId,
-      key,
-      (existing?.quantity ?? 0) + quantity,
+    quantity = this.clampStackDeposit(
+      existing?.quantity ?? 0,
+      MATERIAL_UNITS_PER_SLOT,
+      detail.usage,
+      detail.capacity,
+      quantity,
     );
-    if (detail.usage + delta > detail.capacity) {
+    if (quantity <= 0) {
       throw new Error('STORAGE_FULL');
     }
 
@@ -754,12 +784,14 @@ class PropertyStorageService {
       where: { propertyId_drugType: { propertyId, drugType: key } },
     });
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    const delta = await this.extraSlotsForKey(
-      propertyId,
-      key,
-      (existing?.quantity ?? 0) + quantity,
+    quantity = this.clampStackDeposit(
+      existing?.quantity ?? 0,
+      DRUG_GRAMS_PER_SLOT,
+      detail.usage,
+      detail.capacity,
+      quantity,
     );
-    if (detail.usage + delta > detail.capacity) {
+    if (quantity <= 0) {
       throw new Error('STORAGE_FULL');
     }
 
@@ -852,12 +884,8 @@ class PropertyStorageService {
       where: { propertyId_drugType: { propertyId, drugType: key } },
     });
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    const delta = await this.extraSlotsForKey(
-      propertyId,
-      key,
-      (existing?.quantity ?? 0) + quantity,
-    );
-    if (detail.usage + delta > detail.capacity) {
+    quantity = this.clampToFreeSlots(quantity, detail.usage, detail.capacity);
+    if (quantity <= 0) {
       throw new Error('STORAGE_FULL');
     }
 
@@ -1053,12 +1081,17 @@ class PropertyStorageService {
     }
 
     const stored = await this.getAmmoStorage(propertyId);
-    const currentRounds = stored.reduce((sum, row) => sum + row.quantity, 0);
+    const currentOfType =
+      stored.find((row) => row.ammoType === ammoType)?.quantity ?? 0;
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    const deltaSlots =
-      this.ammoSlotsForQuantity(currentRounds + quantity) -
-      this.ammoSlotsForQuantity(currentRounds);
-    if (detail.usage + deltaSlots > detail.capacity) {
+    quantity = this.clampStackDeposit(
+      currentOfType,
+      AMMO_ROUNDS_PER_SLOT,
+      detail.usage,
+      detail.capacity,
+      quantity,
+    );
+    if (quantity <= 0) {
       throw new Error('STORAGE_FULL');
     }
 
@@ -1239,11 +1272,14 @@ class PropertyStorageService {
 
     const cashStored = await this.getCashStorage(propertyId);
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    const currentCashSlots = cashSlotsForAmount(cashStored);
-    const newCashSlots = cashSlotsForAmount(cashStored + amount);
-    const deltaSlots = newCashSlots - currentCashSlots;
-
-    if (detail.usage + deltaSlots > detail.capacity) {
+    amount = this.clampStackDeposit(
+      cashStored,
+      CASH_PER_SLOT,
+      detail.usage,
+      detail.capacity,
+      amount,
+    );
+    if (amount <= 0) {
       throw new Error('STORAGE_FULL');
     }
 

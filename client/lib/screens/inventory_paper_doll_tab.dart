@@ -14,6 +14,7 @@ import '../services/drug_service.dart';
 import '../services/inventory_service.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/country_helper.dart';
+import '../utils/inventory_slot_split.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/inventory_slot.dart';
 
@@ -1213,8 +1214,8 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         const SizedBox(height: 8),
         _buildGrid(
           title: l10n.inventoryStorageGrid,
-          items: _contextItems,
-          emptySlots: _contextEmptySlots(),
+          items: expandToSlotCells(_contextItems),
+          emptySlots: _contextGridSlotCount(),
           zone: InventoryZone.property,
         ),
         if (storage.allowedCategories.contains('cash'))
@@ -1271,13 +1272,11 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     );
   }
 
-  int _contextEmptySlots() {
+  int _contextGridSlotCount() {
     final storage = _selectedStorage;
-    if (storage == null) {
-      return _contextItems.isEmpty ? 0 : _contextItems.length;
-    }
-    final free = storage.slotsRemaining < 0 ? 0 : storage.slotsRemaining;
-    return _contextItems.length + free;
+    final occupied = expandToSlotCells(_contextItems).length;
+    if (storage == null) return occupied;
+    return storage.capacity > occupied ? storage.capacity : occupied;
   }
 
   String _countryLabel(String? countryId, AppLocalizations l10n) {

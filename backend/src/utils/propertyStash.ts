@@ -6,9 +6,9 @@ export const STASH_TRADE_PX_PREFIX = 'tradepx:';
 /** Sentinel `inventory.country` for trade goods in the personal backpack. */
 export const CARRIED_TRADE_LOCATION = '_carried_';
 
-/** Grams of one drug stack per property storage slot. */
-export const DRUG_GRAMS_PER_SLOT = 50;
-const MATERIAL_UNITS_PER_SLOT = 5;
+/** Grams of one drug stack per property / backpack slot. */
+export const DRUG_GRAMS_PER_SLOT = 100;
+export const MATERIAL_UNITS_PER_SLOT = 5;
 
 export const STASH_PROPERTY_TYPES = [
   'warehouse',
@@ -87,22 +87,36 @@ export function cashSlotsForAmount(amount: number): number {
   return Math.ceil(amount / CASH_PER_SLOT);
 }
 
+/** How many extra units fit without needing more than `freeSlots` new cells. */
+export function maxAddForSlotStack(
+  currentQty: number,
+  unitsPerSlot: number,
+  freeSlots: number,
+): number {
+  if (unitsPerSlot <= 0) return 0;
+  const safeCurrent = Math.max(0, currentQty);
+  const safeFree = Math.max(0, freeSlots);
+  const remainder = safeCurrent % unitsPerSlot;
+  const roomInPartial = remainder === 0 ? 0 : unitsPerSlot - remainder;
+  return roomInPartial + safeFree * unitsPerSlot;
+}
+
 export function computePropertySlotUsage(input: {
   toolUsage: number;
   weaponQuantity: number;
-  ammoRounds: number;
+  ammoUsage: number;
   armorQuantity: number;
   cashAmount: number;
-  leftoverDrugGrams: number;
+  leftoverDrugUsage: number;
   stashRows: Array<{ drugType: string; quantity: number }>;
 }): number {
   return (
     Math.max(0, input.toolUsage) +
     Math.max(0, input.weaponQuantity) +
-    ammoSlotsForRounds(input.ammoRounds) +
+    Math.max(0, input.ammoUsage) +
     Math.max(0, input.armorQuantity) +
     cashSlotsForAmount(input.cashAmount) +
-    drugSlotsForGrams(input.leftoverDrugGrams) +
+    Math.max(0, input.leftoverDrugUsage) +
     input.stashRows.reduce(
       (sum, row) => sum + stashSlotsForRow(row.drugType, row.quantity),
       0,

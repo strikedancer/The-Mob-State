@@ -29,6 +29,28 @@ class InventoryGridItem {
     this.imagePath,
     this.quality,
   });
+
+  InventoryGridItem copyWith({
+    InventoryItemKind? kind,
+    String? id,
+    String? name,
+    int? quantity,
+    int? condition,
+    InventoryZone? zone,
+    String? imagePath,
+    String? quality,
+  }) {
+    return InventoryGridItem(
+      kind: kind ?? this.kind,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      quantity: quantity ?? this.quantity,
+      condition: condition ?? this.condition,
+      zone: zone ?? this.zone,
+      imagePath: imagePath ?? this.imagePath,
+      quality: quality ?? this.quality,
+    );
+  }
 }
 
 class InventoryDragPayload {

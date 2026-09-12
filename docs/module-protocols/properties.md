@@ -34,7 +34,7 @@ Scope-afbakening:
 
 ## Must Preserve
 - Owned en available kaarten gebruiken dezelfde catalogusfoto (`house.png`, `apartment.png`, `warehouse.png`, `nightclub.png`, `car_showroom.png`, `motorcycle_showroom.png`, `boat_harbor.png`) via `WebAssetHelper`. Geen `EstateLotView` op dit scherm of op het publieke profiel. Deploy kopieert `properties/` naar `runtime/client-images`.
-- Huis/appartement/magazijn-opslagvakjes volgen `properties.json` `storageCapacity` per upgrade-level (huis 10/20/35/50/70/95). Inventaris mag niet de legacy `property_storage_capacity.max_slots` (huis=100) gebruiken.
+- Huis/appartement/magazijn-opslagvakjes volgen `properties.json` `storageCapacity` per upgrade-level (huis 10/20/35/50/70/95). Inventaris mag niet de legacy `property_storage_capacity.max_slots` (huis=100) gebruiken. Het huis-raster toont altijd die capaciteit; drugs **100g/vak**, materiaal 5/vak, munitie 50/vak (restant kan worden bijgevuld).
 - Default tab is **My properties**. Lege owned-staat heeft een CTA naar Available. **Mijn eigendommen** opent op het huidige land (niet wereldwijd). Chips: **Alles** of per land waar je panden hebt (huidig land eerst, met Hier). Elke owned-tegel toont vlag + land. Available heeft type-chips, cash/rank-lock op kopen, en geformatteerde confirm voor buy + upgrade. Fouten zijn per tab; een refresh wist geen bestaande lijst. Publiek profiel toont geen land op eigendomtegels.
 - Brede schermen (≥720px twee kolommen, ≥1180px drie). Mobiel blijft één kolom. Elke kaart heeft een info-knop met type-uitleg + stats.
 - Clear success and failure feedback for the player.
