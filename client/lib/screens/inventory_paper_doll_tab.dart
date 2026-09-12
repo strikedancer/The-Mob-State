@@ -284,7 +284,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
           (d) => InventoryGridItem(
             kind: InventoryItemKind.drug,
             id: d.drugType,
-            name: '${d.drugName} (${d.quality})',
+            name: _drugQualityLabel(d.drugName, d.quality),
             quantity: d.quantity,
             zone: InventoryZone.backpack,
             imagePath: d.getImagePath(),
@@ -464,12 +464,15 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       final quality = '${row['quality'] ?? 'C'}';
       if (drugType.isEmpty) continue;
       seenDrugKeys.add('$drugType:$quality');
-      final rawName = '${row['name'] ?? drugType}';
+      final rawName = '${row['name'] ?? drugType}'.replaceAll(
+        RegExp(r' \([^)]+\)$'),
+        '',
+      );
       items.add(
         InventoryGridItem(
           kind: InventoryItemKind.drug,
           id: drugType,
-          name: rawName.contains('(') ? rawName : '$rawName ($quality)',
+          name: _drugQualityLabel(rawName, quality),
           quantity: (row['quantity'] as num?)?.toInt() ?? 0,
           zone: InventoryZone.property,
           imagePath: 'assets/images/drugs/$drugType.png',
@@ -487,7 +490,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         InventoryGridItem(
           kind: InventoryItemKind.drug,
           id: drugType,
-          name: '${row['name'] ?? drugType}',
+          name: _drugQualityLabel('${row['name'] ?? drugType}', quality),
           quantity: (row['quantity'] as num?)?.toInt() ?? 0,
           zone: InventoryZone.property,
           imagePath: 'assets/images/drugs/$drugType.png',
@@ -510,42 +513,15 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         ),
       );
     }
-    _contextItems = _mergePropertyDrugsByType(
-      items.where((i) => i.quantity > 0).toList(),
-    );
+    _contextItems = items.where((i) => i.quantity > 0).toList();
   }
 
-  List<InventoryGridItem> _mergePropertyDrugsByType(
-    List<InventoryGridItem> items,
-  ) {
-    final drugs = items.where((item) => item.kind == InventoryItemKind.drug);
-    final others = items.where((item) => item.kind != InventoryItemKind.drug);
-    final byType = <String, List<InventoryGridItem>>{};
-    for (final drug in drugs) {
-      byType.putIfAbsent(drug.id, () => []).add(drug);
-    }
-    final merged = <InventoryGridItem>[];
-    for (final group in byType.values) {
-      final quantity = group.fold(0, (sum, item) => sum + item.quantity);
-      final qualities = group
-          .map((item) => item.quality)
-          .whereType<String>()
-          .toSet()
-          .toList()
-        ..sort();
-      final baseName = group.first.name.replaceAll(RegExp(r' \([^)]+\)$'), '');
-      final label = qualities.isEmpty
-          ? baseName
-          : '$baseName (${qualities.join(', ')})';
-      merged.add(
-        group.first.copyWith(
-          quantity: quantity,
-          name: label,
-          quality: qualities.isEmpty ? group.first.quality : qualities.first,
-        ),
-      );
-    }
-    return [...others, ...merged];
+  String _drugQualityLabel(String name, String? quality) {
+    final l10n = AppLocalizations.of(context);
+    final clean = name.replaceAll(RegExp(r' \([^)]+\)$'), '').trim();
+    if (quality == null || quality.isEmpty) return clean;
+    if (l10n == null) return '$clean ($quality)';
+    return l10n.inventoryDrugWithQuality(clean, quality);
   }
 
   bool _isWeaponEquipZone(InventoryZone zone) {
@@ -689,12 +665,63 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   int _stackQuantity(InventoryGridItem source, InventoryZone target) {
     final list = target == InventoryZone.property ? _contextItems : _backpack;
     return list
-        .where((item) {
-          if (item.kind != source.kind || item.id != source.id) return false;
-          if (source.kind == InventoryItemKind.drug) return true;
-          return item.quality == source.quality;
-        })
+        .where(
+          (item) =>
+              item.kind == source.kind &&
+              item.id == source.id &&
+              item.quality == source.quality,
+        )
         .fold(0, (sum, item) => sum + item.quantity);
+  }
+
+  List<String> _otherDrugQualities(
+    InventoryGridItem source,
+    InventoryZone target,
+  ) {
+    if (source.kind != InventoryItemKind.drug) return const [];
+    final list = target == InventoryZone.property ? _contextItems : _backpack;
+    return list
+        .where(
+          (item) =>
+              item.kind == InventoryItemKind.drug &&
+              item.id == source.id &&
+              item.quality != null &&
+              item.quality != source.quality,
+        )
+        .map((item) => item.quality!)
+        .toSet()
+        .toList()
+      ..sort();
+  }
+
+  String? _transferQualityHint(
+    AppLocalizations l10n,
+    InventoryGridItem source,
+    InventoryZone target, {
+    InventoryGridItem? onto,
+  }) {
+    if (source.kind != InventoryItemKind.drug) return null;
+    final sourceQuality = source.quality;
+    if (sourceQuality == null || sourceQuality.isEmpty) return null;
+    final baseName = source.name.replaceAll(RegExp(r' · .+$'), '').trim();
+    if (onto != null &&
+        onto.kind == InventoryItemKind.drug &&
+        onto.id == source.id &&
+        onto.quality != null &&
+        onto.quality != sourceQuality) {
+      return l10n.inventoryQualityMismatchDrop(
+        baseName,
+        onto.quality!,
+        sourceQuality,
+      );
+    }
+    final others = _otherDrugQualities(source, target);
+    if (others.isEmpty) return null;
+    return l10n.inventoryQualitySeparateHint(
+      baseName,
+      sourceQuality,
+      others.join(', '),
+    );
   }
 
   String? _fillPartialHint(
@@ -729,14 +756,28 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
 
   Future<int?> _askTransferQuantity(
     InventoryGridItem source,
-    InventoryZone target,
-  ) async {
+    InventoryZone target, {
+    InventoryGridItem? onto,
+  }) async {
     final controller = TextEditingController(text: '${source.quantity}');
     final result = await showDialog<int>(
       context: context,
       builder: (dialogContext) {
         final dlgL10n = AppLocalizations.of(dialogContext)!;
-        final fillHint = _fillPartialHint(dlgL10n, source, target);
+        final qualityHint = _transferQualityHint(
+          dlgL10n,
+          source,
+          target,
+          onto: onto,
+        );
+        final fillHint = qualityHint == null
+            ? _fillPartialHint(dlgL10n, source, target)
+            : null;
+        final helper = [
+          dlgL10n.inventoryMaxShort(source.quantity),
+          if (qualityHint != null) qualityHint,
+          if (fillHint != null) fillHint,
+        ].join('\n');
         return AlertDialog(
           backgroundColor: const Color(0xFF1E1E1E),
           title: Text(dlgL10n.selectQuantity),
@@ -747,10 +788,8 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: dlgL10n.quantity,
-              helperMaxLines: 3,
-              helperText: fillHint == null
-                  ? dlgL10n.inventoryMaxShort(source.quantity)
-                  : '${dlgL10n.inventoryMaxShort(source.quantity)}\n$fillHint',
+              helperMaxLines: 5,
+              helperText: helper,
               filled: true,
               fillColor: const Color(0xFF151515),
               border: const OutlineInputBorder(),
@@ -801,7 +840,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       setState(() => _selected = null);
       return;
     }
-    _transfer(_selected!, item.zone);
+    _transfer(_selected!, item.zone, onto: item);
   }
 
   void _onTapZone(InventoryZone zone) {
@@ -816,7 +855,11 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         a.quality == b.quality;
   }
 
-  Future<void> _transfer(InventoryGridItem source, InventoryZone target) async {
+  Future<void> _transfer(
+    InventoryGridItem source,
+    InventoryZone target, {
+    InventoryGridItem? onto,
+  }) async {
     if (_busy) return;
     if (source.zone == target) {
       setState(() => _selected = null);
@@ -829,7 +872,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
 
     var quantity = 1;
     if (_isStackableMove(source, target)) {
-      final chosen = await _askTransferQuantity(source, target);
+      final chosen = await _askTransferQuantity(source, target, onto: onto);
       if (!mounted) return;
       if (chosen == null) {
         setState(() => _selected = null);
@@ -1433,7 +1476,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
                           _selected?.zone == item.zone,
                       highlighted: candidate.isNotEmpty,
                       acceptDrop: true,
-                      onAccept: (p) => _transfer(p.item, zone),
+                      onAccept: (p) => _transfer(p.item, zone, onto: item),
                       onTap: item == null
                           ? () => _onTapZone(zone)
                           : () => _onTapItem(item),

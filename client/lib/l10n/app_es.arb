@@ -11935,5 +11935,44 @@
         "type": "int"
       }
     }
+  },
+  "inventoryDrugWithQuality": "{name} · quality {quality}",
+  "@inventoryDrugWithQuality": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "quality": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryQualitySeparateHint": "You are moving {name} quality {moved}. That stays on its own cells, separate from {name} quality {stored} already in the house.",
+  "@inventoryQualitySeparateHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "moved": {
+        "type": "String"
+      },
+      "stored": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryQualityMismatchDrop": "This cell is {name} quality {target}. Your stack is quality {source} and will not fill this cell.",
+  "@inventoryQualityMismatchDrop": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      },
+      "source": {
+        "type": "String"
+      }
+    }
   }
 }

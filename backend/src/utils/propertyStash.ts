@@ -101,38 +101,6 @@ export function maxAddForSlotStack(
   return roomInPartial + safeFree * unitsPerSlot;
 }
 
-/** Same drug type shares 100g cells across leftover + all qualities. */
-export function drugGramsByType(
-  stashRows: Array<{ drugType: string; quantity: number }>,
-  leftoverRows: Array<{ drugType: string; quantity: number }> = [],
-): Map<string, number> {
-  const grams = new Map<string, number>();
-  const add = (type: string, quantity: number) => {
-    if (!type || quantity <= 0) return;
-    grams.set(type, (grams.get(type) ?? 0) + quantity);
-  };
-  for (const row of stashRows) {
-    const parsed = parseDrugStashKey(row.drugType);
-    if (parsed) add(parsed.drugType, row.quantity);
-  }
-  for (const row of leftoverRows) {
-    if (!row.drugType || row.drugType.includes(':')) continue;
-    add(row.drugType, row.quantity);
-  }
-  return grams;
-}
-
-export function drugTypeSlotUsage(
-  stashRows: Array<{ drugType: string; quantity: number }>,
-  leftoverRows: Array<{ drugType: string; quantity: number }> = [],
-): number {
-  let slots = 0;
-  for (const grams of drugGramsByType(stashRows, leftoverRows).values()) {
-    slots += drugSlotsForGrams(grams);
-  }
-  return slots;
-}
-
 export function computePropertySlotUsage(input: {
   toolUsage: number;
   weaponQuantity: number;
@@ -148,11 +116,14 @@ export function computePropertySlotUsage(input: {
     Math.max(0, input.ammoUsage) +
     Math.max(0, input.armorQuantity) +
     cashSlotsForAmount(input.cashAmount) +
-    drugTypeSlotUsage(input.stashRows, input.leftoverDrugRows) +
-    input.stashRows.reduce((sum, row) => {
-      if (row.drugType.startsWith(STASH_DRUG_PREFIX)) return sum;
-      return sum + stashSlotsForRow(row.drugType, row.quantity);
-    }, 0)
+    input.leftoverDrugRows.reduce(
+      (sum, row) => sum + drugSlotsForGrams(row.quantity),
+      0,
+    ) +
+    input.stashRows.reduce(
+      (sum, row) => sum + stashSlotsForRow(row.drugType, row.quantity),
+      0,
+    )
   );
 }
 

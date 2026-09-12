@@ -89,6 +89,19 @@ class InventorySlot extends StatelessWidget {
                             ),
                           ),
                   ),
+                  if (item!.quality != null && item!.quality!.isNotEmpty)
+                    Positioned(
+                      left: 3,
+                      top: 2,
+                      child: Text(
+                        item!.quality!,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          color: _qualityColor(item!.quality!),
+                        ),
+                      ),
+                    ),
                   if (item!.quantity > 1)
                     Positioned(
                       right: 3,
@@ -105,7 +118,7 @@ class InventorySlot extends StatelessWidget {
                   if (item!.condition != null)
                     Positioned(
                       left: 3,
-                      top: 2,
+                      bottom: 2,
                       child: Text(
                         '${item!.condition}%',
                         style: TextStyle(
@@ -121,6 +134,23 @@ class InventorySlot extends StatelessWidget {
               ),
       ),
     );
+  }
+
+  Color _qualityColor(String quality) {
+    switch (quality) {
+      case 'S':
+        return const Color(0xFFD4AF37);
+      case 'A':
+        return const Color(0xFFB388FF);
+      case 'B':
+        return const Color(0xFF64B5F6);
+      case 'C':
+        return const Color(0xFFBDBDBD);
+      case 'D':
+        return const Color(0xFFA1887F);
+      default:
+        return Colors.white70;
+    }
   }
 
   IconData _fallbackIcon(InventoryItemKind kind) {

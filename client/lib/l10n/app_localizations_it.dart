@@ -8108,6 +8108,29 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String inventoryDrugWithQuality(String name, String quality) {
+    return '$name · quality $quality';
+  }
+
+  @override
+  String inventoryQualitySeparateHint(
+    String name,
+    String moved,
+    String stored,
+  ) {
+    return 'You are moving $name quality $moved. That stays on its own cells, separate from $name quality $stored already in the house.';
+  }
+
+  @override
+  String inventoryQualityMismatchDrop(
+    String name,
+    String target,
+    String source,
+  ) {
+    return 'This cell is $name quality $target. Your stack is quality $source and will not fill this cell.';
+  }
+
+  @override
   String get inventoryInvalidQuantity => 'Quantità non valida';
 
   @override

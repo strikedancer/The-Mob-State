@@ -14103,6 +14103,23 @@ abstract class AppLocalizations {
   /// **'First top up {partial} to {full} ({need} more), then {rest} goes in a new cell.'**
   String inventoryFillPartialHint(int partial, int full, int need, int rest);
 
+  /// No description provided for @inventoryDrugWithQuality.
+  String inventoryDrugWithQuality(String name, String quality);
+
+  /// No description provided for @inventoryQualitySeparateHint.
+  String inventoryQualitySeparateHint(
+    String name,
+    String moved,
+    String stored,
+  );
+
+  /// No description provided for @inventoryQualityMismatchDrop.
+  String inventoryQualityMismatchDrop(
+    String name,
+    String target,
+    String source,
+  );
+
   /// No description provided for @inventoryInvalidQuantity.
   ///
   /// In en, this message translates to:
@@ -29432,7 +29449,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicInventoryHow.
   ///
   /// In en, this message translates to:
-  /// **'The materials depot and property storage show only the country you are in. Stock in other countries stays there until you travel.\nBought or collected materials, drugs and trade goods first sit in unplaced stock. Place them in a house or warehouse to hold for a better price; withdraw them before you sell. Trade goods cannot go in the backpack.\nA new house has 10 storage slots; upgrades raise that. An apartment starts at 5, a warehouse at 100. The grid always shows that capacity. Stacks split across slots: drugs 100g per slot (145g = 100 + 45), materials 5 per slot, ammo 50 rounds per slot. A leftover cell of the same type can be topped up to full. You can store tools in a house as well as a warehouse.\nInventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.\nWeight determines your carrying capacity. Some crimes or travel block if you are overloaded.\nDrugs are stored and shown in inventory and storage as grams; 351 means 351g.\nItem condition degrades with use. Weapons in poor condition perform worse and tools can break.\nAt the top of Inventory you can also choose your default crime weapon. Only carried, usable weapons count for that selection.\nLoadouts let you switch quickly between a crime set (tool + weapon) and a travel set (light, minimal valuables).\nOn arrest police can confiscate items. Do not carry valuables with a high Wanted Level.\nDrugs in inventory increase the chance of FBI intervention during international travel.\nCrew storage is a safe place to keep items outside your personal carrying risk.'**
+  /// **'The materials depot and property storage show only the country you are in. Stock in other countries stays there until you travel.\nBought or collected materials, drugs and trade goods first sit in unplaced stock. Place them in a house or warehouse to hold for a better price; withdraw them before you sell. Trade goods cannot go in the backpack.\nA new house has 10 storage slots; upgrades raise that. An apartment starts at 5, a warehouse at 100. The grid always shows that capacity. Stacks split across slots: drugs 100g per slot (145g = 100 + 45), materials 5 per slot, ammo 50 rounds per slot. A leftover cell of the same quality can be topped up to full. A different quality stays on its own cells; each drug cell shows the letter (S/A/B/C/D). You can store tools in a house as well as a warehouse.\nInventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.\nWeight determines your carrying capacity. Some crimes or travel block if you are overloaded.\nDrugs are stored and shown in inventory and storage as grams; 351 means 351g.\nItem condition degrades with use. Weapons in poor condition perform worse and tools can break.\nAt the top of Inventory you can also choose your default crime weapon. Only carried, usable weapons count for that selection.\nLoadouts let you switch quickly between a crime set (tool + weapon) and a travel set (light, minimal valuables).\nOn arrest police can confiscate items. Do not carry valuables with a high Wanted Level.\nDrugs in inventory increase the chance of FBI intervention during international travel.\nCrew storage is a safe place to keep items outside your personal carrying risk.'**
   String get helpTopicInventoryHow;
 
   /// No description provided for @helpTopicInventoryTips.
