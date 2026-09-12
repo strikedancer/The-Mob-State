@@ -209,7 +209,7 @@ Voorbeelden:
 - Wanted level 10: 100 minuten
 ```
 
-De gevangenislijst toont wie nu vastzit (`jailRelease` in de toekomst). Op mobiel kun je bij een laadfout opnieuw proberen of naar beneden trekken om te verversen.
+De gevangenislijst toont wie nu vastzit (`jailRelease` in de toekomst). Op mobiel kun je bij een laadfout opnieuw proberen of naar beneden trekken om te verversen. De **in-de-cel overlay** deelt dezelfde noir/goud-still als de gevangenis-help (`/images/cooldown_jail.png`).
 
 #### Bail Amount
 ```

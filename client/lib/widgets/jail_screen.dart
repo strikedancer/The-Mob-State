@@ -8,9 +8,10 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 /// Widget shown when player is in jail
-/// Shows a cartoon prisoner with countdown timer
+/// Shows the noir jail still with countdown timer
 class JailOverlay extends StatefulWidget {
   final int remainingSeconds;
   final int? wantedLevel; // For bail calculation
@@ -654,9 +655,10 @@ class _JailOverlayState extends State<JailOverlay> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.asset(
+                      WebAssetHelper.image(
                         'assets/images/cooldown_jail.png',
                         fit: BoxFit.cover,
+                        cacheBust: kJailArtCacheBust,
                       ),
                       Container(
                         decoration: BoxDecoration(

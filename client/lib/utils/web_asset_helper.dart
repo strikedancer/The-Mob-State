@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 /// runtime mount so web skips [Image.asset] and busts the 1h nginx cache.
 const kCatalogArtCacheBust = '20260911';
 
+/// Bump when the jail overlay still is replaced on the runtime mount.
+const kJailArtCacheBust = '20260912';
+
 class WebAssetHelper {
   static String _normalize(String value) => value.replaceAll('\\', '/');
 

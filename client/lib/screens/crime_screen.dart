@@ -965,11 +965,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
             SnackBar(
               content: Row(
                 children: [
-                  Image.asset(
+                  WebAssetHelper.image(
                     'assets/images/cooldown_jail.png',
                     width: 28,
                     height: 28,
                     fit: BoxFit.cover,
+                    cacheBust: kJailArtCacheBust,
                     errorBuilder: (context, error, stackTrace) =>
                         const Icon(Icons.local_police, color: Colors.white),
                   ),

@@ -70,7 +70,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 ## Platform Guardrails
 - Voor runtime `Image.asset(...)` in Flutter web gebruik standaard keys onder `assets/images/...`.
 - Let op web output-pad: assets onder `assets/images/...` landen fysiek onder `assets/assets/images/...`; URL-fallbacks moeten dit canonical pad ondersteunen.
-- Gebruik voor brede gameplay image-loading op web een centrale helper of route (`WebAssetHelper.image(...)` of equivalent), niet losse ad-hoc `Image.asset(...)` patterns. Job/crime catalog stills must pass `kCatalogArtCacheBust` so web uses `/images/…?v=` instead of a 1h-cached `Image.asset` URL after art replacements.
+- Gebruik voor brede gameplay image-loading op web een centrale helper of route (`WebAssetHelper.image(...)` of equivalent), niet losse ad-hoc `Image.asset(...)` patterns. Job/crime catalog stills must pass `kCatalogArtCacheBust` so web uses `/images/…?v=` instead of a 1h-cached `Image.asset` URL after art replacements. The jail overlay still uses `kJailArtCacheBust` the same way (`/images/cooldown_jail.png`).
 - Voor achtergrondafbeeldingen in kritieke screens: gebruik `Stack + Positioned.fill + helper` in plaats van `DecorationImage(AssetImage(...))` als network fallback nodig is.
 - Voor web image helpers met network fallback: probeer meerdere compatibele routes (`images/...` -> `assets/assets/images/...` -> `assets/images/...`) en normaliseer runtime image strings vooraf.
 - Productie-nginx moet compatibele alias-routes kunnen bieden voor legacy imagepaden en external image mounts.

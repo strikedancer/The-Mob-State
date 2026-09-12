@@ -305,7 +305,14 @@ Future<void> showGamePageInfoDialog(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 if (banner != null) ...[
-                                  _guideImage(banner, Icons.menu_book, 140),
+                                  _guideImage(
+                                    banner,
+                                    Icons.menu_book,
+                                    140,
+                                    cacheBust: banner.contains('cooldown_jail')
+                                        ? kJailArtCacheBust
+                                        : null,
+                                  ),
                                   const SizedBox(height: 12),
                                 ],
                                 for (final section in sections)
@@ -411,7 +418,12 @@ List<Widget> _spacedBody(String body) {
   ];
 }
 
-Widget _guideImage(String asset, IconData icon, double height) {
+Widget _guideImage(
+  String asset,
+  IconData icon,
+  double height, {
+  String? cacheBust,
+}) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: SizedBox(
@@ -420,6 +432,7 @@ Widget _guideImage(String asset, IconData icon, double height) {
       child: WebAssetHelper.image(
         asset,
         fit: BoxFit.cover,
+        cacheBust: cacheBust,
         errorBuilder: (_, _, _) => ColoredBox(
           color: const Color(0xFF2A1A1A),
           child: Icon(icon, color: _pageInfoGold, size: 40),
