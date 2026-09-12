@@ -8,8 +8,15 @@ import backpackService from './backpackService';
 import { catalogStorageCapacity } from '../utils/propertyCatalogStorage';
 import tradableGoods from '../../content/tradableGoods.json';
 import {
+  allowedStorageCategories,
+  type StorageCategory,
+} from '../constants/propertyStorageRules';
+import {
   STASH_PROPERTY_TYPES,
   STASH_TRADE_PX_PREFIX,
+  ammoSlotsForRounds,
+  cashSlotsForAmount,
+  computePropertySlotUsage,
   drugStashKey,
   isMetaStashKey,
   materialStashKey,
@@ -36,16 +43,6 @@ import {
   getBackpackTradeQuantity,
   refreshInventorySlotUsage,
 } from './carriedInventory';
-
-type StorageCategory =
-  | 'tools'
-  | 'weapons'
-  | 'cash'
-  | 'ammo'
-  | 'armor'
-  | 'materials'
-  | 'drugs'
-  | 'trade';
 
 const DRUG_QUALITIES = new Set(['D', 'C', 'B', 'A', 'S']);
 
@@ -77,19 +74,6 @@ const TRADE_NAMES = new Map(
   ]),
 );
 
-const PROPERTY_STORAGE_RULES: Record<string, StorageCategory[]> = {
-  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  nightclub: ['drugs'],
-  house: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  apartment: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  mansion: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  penthouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  safehouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-};
-
-const CASH_SLOT_VALUE = 10000;
-const AMMO_ROUNDS_PER_SLOT = 50;
-
 const NON_DRUG_STORAGE_FILTER = [
   { drugType: { startsWith: 'weapon:' } },
   { drugType: { startsWith: 'weapon_' } },
@@ -112,7 +96,7 @@ function loadArmorDefinitions(): ArmorDef[] {
 
 class PropertyStorageService {
   getAllowedCategories(propertyType: string): StorageCategory[] {
-    return PROPERTY_STORAGE_RULES[propertyType] ?? [];
+    return allowedStorageCategories(propertyType);
   }
 
   private async getPlayerAndProperty(playerId: number, propertyId: number) {
@@ -212,12 +196,12 @@ class PropertyStorageService {
       let drugCount = 0;
       let weaponCount = 0;
       let cashAmount = 0;
-      let usage = 0;
+      let toolUsage = 0;
 
       if (allowedCategories.includes('tools')) {
         tools = await toolService.getPropertyStorage(playerId, property.id);
         toolCount = tools.length;
-        usage += await toolService.getPropertyStorageUsage(playerId, property.id);
+        toolUsage = await toolService.getPropertyStorageUsage(playerId, property.id);
       }
 
       if (allowedCategories.includes('drugs')) {
@@ -229,18 +213,15 @@ class PropertyStorageService {
           select: { quantity: true },
         });
         drugCount = drugs.reduce((sum, row) => sum + row.quantity, 0);
-        usage += drugCount;
       }
 
       if (allowedCategories.includes('weapons')) {
         const weapons = await this.getWeaponStorage(property.id);
         weaponCount = weapons.reduce((sum, row) => sum + row.quantity, 0);
-        usage += weaponCount;
       }
 
       if (allowedCategories.includes('cash')) {
         cashAmount = await this.getCashStorage(property.id);
-        usage += Math.ceil(cashAmount / CASH_SLOT_VALUE);
       }
 
       let ammoCount = 0;
@@ -248,22 +229,25 @@ class PropertyStorageService {
       if (allowedCategories.includes('ammo')) {
         const ammo = await this.getAmmoStorage(property.id);
         ammoCount = ammo.reduce((sum, row) => sum + row.quantity, 0);
-        usage += this.ammoSlotsForQuantity(ammoCount);
       }
       if (allowedCategories.includes('armor')) {
         const armor = await this.getArmorStorage(property.id);
         armorCount = armor.reduce((sum, row) => sum + row.quantity, 0);
-        usage += armorCount;
       }
 
       const stashRows = await prisma.propertyDrugStorage.findMany({
         where: { propertyId: property.id },
         select: { drugType: true, quantity: true },
       });
-      usage += stashRows.reduce(
-        (sum, row) => sum + stashSlotsForRow(row.drugType, row.quantity),
-        0,
-      );
+      const usage = computePropertySlotUsage({
+        toolUsage,
+        weaponQuantity: weaponCount,
+        ammoRounds: ammoCount,
+        armorQuantity: armorCount,
+        cashAmount,
+        leftoverDrugGrams: drugCount,
+        stashRows,
+      });
 
       const accessibleInCurrentCountry = player?.currentCountry === property.countryId;
 
@@ -341,19 +325,19 @@ class PropertyStorageService {
     const toolUsage = allowedCategories.includes('tools')
       ? await toolService.getPropertyStorageUsage(playerId, property.id)
       : 0;
-    const drugUsage = drugs.reduce((sum, row) => sum + row.quantity, 0);
-    const weaponUsage = weapons.reduce((sum, row) => sum + row.quantity, 0);
-    const ammoUsage = this.ammoSlotsForQuantity(
-      ammo.reduce((sum, row) => sum + row.quantity, 0),
-    );
-    const armorUsage = armor.reduce((sum, row) => sum + row.quantity, 0);
-    const cashUsage = Math.ceil(cashAmount / CASH_SLOT_VALUE);
-    const stashUsage = stashRows.reduce(
-      (sum, row) => sum + stashSlotsForRow(row.drugType, row.quantity),
-      0,
-    );
-    const usage =
-      toolUsage + drugUsage + weaponUsage + ammoUsage + armorUsage + cashUsage + stashUsage;
+    const leftoverDrugGrams = drugs.reduce((sum, row) => sum + row.quantity, 0);
+    const weaponQuantity = weapons.reduce((sum, row) => sum + row.quantity, 0);
+    const ammoRounds = ammo.reduce((sum, row) => sum + row.quantity, 0);
+    const armorQuantity = armor.reduce((sum, row) => sum + row.quantity, 0);
+    const usage = computePropertySlotUsage({
+      toolUsage,
+      weaponQuantity,
+      ammoRounds,
+      armorQuantity,
+      cashAmount,
+      leftoverDrugGrams,
+      stashRows,
+    });
 
     return {
       propertyId: property.id,
@@ -520,8 +504,7 @@ class PropertyStorageService {
   }
 
   private ammoSlotsForQuantity(rounds: number): number {
-    if (rounds <= 0) return 0;
-    return Math.ceil(rounds / AMMO_ROUNDS_PER_SLOT);
+    return ammoSlotsForRounds(rounds);
   }
 
   private parseMaterialStash(
@@ -1256,8 +1239,8 @@ class PropertyStorageService {
 
     const cashStored = await this.getCashStorage(propertyId);
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    const currentCashSlots = Math.ceil(cashStored / CASH_SLOT_VALUE);
-    const newCashSlots = Math.ceil((cashStored + amount) / CASH_SLOT_VALUE);
+    const currentCashSlots = cashSlotsForAmount(cashStored);
+    const newCashSlots = cashSlotsForAmount(cashStored + amount);
     const deltaSlots = newCashSlots - currentCashSlots;
 
     if (detail.usage + deltaSlots > detail.capacity) {

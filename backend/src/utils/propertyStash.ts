@@ -74,6 +74,42 @@ export function isCarriedTradeLocation(country: string | null | undefined): bool
   return (country ?? '') === CARRIED_TRADE_LOCATION;
 }
 
+export const CASH_PER_SLOT = 10000;
+export const AMMO_ROUNDS_PER_SLOT = 50;
+
+export function ammoSlotsForRounds(rounds: number): number {
+  if (rounds <= 0) return 0;
+  return Math.ceil(rounds / AMMO_ROUNDS_PER_SLOT);
+}
+
+export function cashSlotsForAmount(amount: number): number {
+  if (amount <= 0) return 0;
+  return Math.ceil(amount / CASH_PER_SLOT);
+}
+
+export function computePropertySlotUsage(input: {
+  toolUsage: number;
+  weaponQuantity: number;
+  ammoRounds: number;
+  armorQuantity: number;
+  cashAmount: number;
+  leftoverDrugGrams: number;
+  stashRows: Array<{ drugType: string; quantity: number }>;
+}): number {
+  return (
+    Math.max(0, input.toolUsage) +
+    Math.max(0, input.weaponQuantity) +
+    ammoSlotsForRounds(input.ammoRounds) +
+    Math.max(0, input.armorQuantity) +
+    cashSlotsForAmount(input.cashAmount) +
+    drugSlotsForGrams(input.leftoverDrugGrams) +
+    input.stashRows.reduce(
+      (sum, row) => sum + stashSlotsForRow(row.drugType, row.quantity),
+      0,
+    )
+  );
+}
+
 export function stashSlotsForRow(drugType: string, quantity: number): number {
   if (quantity <= 0) return 0;
   if (drugType.startsWith(STASH_MATERIAL_PREFIX)) {

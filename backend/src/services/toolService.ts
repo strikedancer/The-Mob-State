@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import backpackService from './backpackService';
+import { allowedStorageCategories } from '../constants/propertyStorageRules';
 import { catalogStorageCapacity } from '../utils/propertyCatalogStorage';
 
 const { getPlayerCarryingCapacity } = backpackService;
@@ -20,16 +21,6 @@ interface ToolDefinition {
 interface ToolsData {
   tools: ToolDefinition[];
 }
-
-const PROPERTY_STORAGE_RULES: Record<string, string[]> = {
-  warehouse: ['tools', 'weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  nightclub: ['drugs'],
-  house: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  apartment: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  mansion: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  penthouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-  safehouse: ['weapons', 'cash', 'ammo', 'armor', 'materials', 'drugs', 'trade'],
-};
 
 function toolConditionFlags(durability: number, maxDurability?: number) {
   const max = Math.max(1, maxDurability ?? 100);
@@ -83,7 +74,7 @@ class ToolService {
   }
 
   getAllowedStorageCategories(propertyType: string): string[] {
-    return PROPERTY_STORAGE_RULES[propertyType] ?? [];
+    return allowedStorageCategories(propertyType);
   }
 
   private async ensureCrimeToolExists(tool: ToolDefinition): Promise<void> {
@@ -635,18 +626,15 @@ class ToolService {
         return { success: false, error: 'STORAGE_TYPE_NOT_ALLOWED' };
       }
 
-      // Check property storage capacity
-      const storageUsage = await this.getPropertyStorageUsage(playerId, propertyId);
-      const capacity = await this.getPropertyStorageCapacity(
-        ownsProperty.propertyType,
-        ownsProperty.upgradeLevel,
-      );
-      
       const toolDef = this.getToolDefinition(toolId);
       const slotSize = (toolDef as any)?.slotSize || 1;
       const requiredSlots = slotSize * quantity;
-
-      if (storageUsage + requiredSlots > capacity) {
+      const { propertyStorageService } = await import('./propertyStorageService');
+      const detail = await propertyStorageService.getPropertyStorageDetail(
+        playerId,
+        propertyId,
+      );
+      if (detail.usage + requiredSlots > detail.capacity) {
         return { success: false, error: 'STORAGE_FULL' };
       }
     }

@@ -10,7 +10,7 @@ Scope-afbakening:
 - **Showrooms (`car_showroom`, `motorcycle_showroom`, `boat_harbor`):** `unique_per_player` — één van elk per account wereldwijd, te koop in elk land, gebonden aan het aankoop-land. Collectie, geen tweede garage. Plaatsen: zelfde land, 100% conditie, één per model, slotcap per upgrade (8 → 20 → 40 → 80 → alle types van die categorie). Getoonde voertuigen zijn vergrendeld en tellen niet in garage/haven. Beheer: `GET/POST /properties/:id/showroom`, `.../place`, `.../remove`. Politie/FBI doorzoekt de vitrine bij aanhouding in dat land (~40% per voertuig). Geen PvP-diefstal, geen waakhonden.
 - **Development (v1):** permanente income-boost per eigendom via bank-spend (`developmentLevel` / `lastDevelopAt`), los van warehouse capacity upgrades. Alleen op panden met passief inkomen (magazijn, nachtclub, casino, showrooms) — niet op huis/appartement.
 - **Sell:** `POST /properties/:id/sell` keert 70% van `purchasePrice` contant uit. Vereist hetzelfde land, lege property-storage (en lege nachtclubvoorraad / lege showroomcollectie). Direct, geen cooldown.
-- Residential storage (house/apartment/mansion/penthouse/safehouse): `weapons, cash, ammo, armor, materials, drugs, trade`. Warehouse: `tools, weapons, cash, ammo, armor, materials, drugs, trade`. Nightclub venue drugs stay unprefixed on the nightclub module; finished player drugs in a house use `drug:` keys.
+- Residential storage (house/apartment/mansion/penthouse/safehouse) and warehouse: `tools, weapons, cash, ammo, armor, materials, drugs, trade`. Nightclub venue drugs stay unprefixed on the nightclub module; finished player drugs in a house use `drug:` keys.
 - **Warehouse arrest search:** bij politie/FBI-arrestatie wordt het magazijn in het huidige land doorzocht (~40% van tools/wapens/ammo/vesten/cash/materialen/drugs/handelswaren). Huizen worden niet doorzocht. Bankcash blijft beschermd.
 - **Open storage** on a house or warehouse opens Inventory with **that** property selected. The Inventory menu itself cannot stash into a house. Access still requires the same country (`accessibleInCurrentCountry` / `WRONG_COUNTRY`).
 
@@ -72,7 +72,7 @@ Endpoint: `POST /properties/:id/develop`
 - Verify shop is not returned in properties list endpoints and cannot be claimed via properties flow.
 - Verify nightclub is visible in properties list and can be purchased (creating a nightclubVenue record).
 - Verify develop spends bank, raises `developmentLevel`, and increases passive income display/calc.
-- Verify a house can store weapons, ammo, a vest, materials, finished drugs and trade goods, and that a warehouse accepts tools plus the same stash types.
+- Verify a house can store tools, weapons, ammo, a vest, materials, finished drugs and trade goods, and that a warehouse accepts the same stash types.
 - Verify a player can own only one warehouse per country, and that a second buy is locked.
 - Verify an arrest in that country seizes part of warehouse stock and leaves house storage intact.
 - Verify a player can own only one of each showroom worldwide, that it binds to the purchase country, and that placing requires same-country + 100% condition + unique model + slot cap.

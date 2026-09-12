@@ -359,6 +359,32 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       return;
     }
     final storage = detail['storage'] as Map<String, dynamic>;
+    final usage = (storage['usage'] as num?)?.toInt();
+    final capacity = (storage['capacity'] as num?)?.toInt();
+    final percentFull = (storage['percentFull'] as num?)?.toInt();
+    if (usage != null && capacity != null) {
+      _properties = _properties.map((property) {
+        if (property.propertyId != info.propertyId) return property;
+        return StorageInfo(
+          propertyId: property.propertyId,
+          propertyType: property.propertyType,
+          usage: usage,
+          capacity: capacity,
+          percentFull: percentFull ??
+              (capacity > 0
+                  ? ((usage / capacity) * 100).round().clamp(0, 100)
+                  : 0),
+          allowedCategories: property.allowedCategories,
+          toolCount: property.toolCount,
+          weaponCount: property.weaponCount,
+          drugCount: property.drugCount,
+          cashAmount: property.cashAmount,
+          accessibleInCurrentCountry: property.accessibleInCurrentCountry,
+          countryId: property.countryId,
+          tools: property.tools,
+        );
+      }).toList();
+    }
     final items = <InventoryGridItem>[];
     for (final t in (storage['tools'] as List? ?? [])) {
       final row = Map<String, dynamic>.from(t as Map);
@@ -430,16 +456,36 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         ),
       );
     }
+    final seenDrugKeys = <String>{};
     for (final d in (storage['finishedDrugs'] as List? ?? [])) {
       final row = Map<String, dynamic>.from(d as Map);
       final drugType = '${row['drugType'] ?? ''}';
       final quality = '${row['quality'] ?? 'C'}';
       if (drugType.isEmpty) continue;
+      seenDrugKeys.add('$drugType:$quality');
       items.add(
         InventoryGridItem(
           kind: InventoryItemKind.drug,
           id: drugType,
           name: '${row['name'] ?? drugType} ($quality)',
+          quantity: (row['quantity'] as num?)?.toInt() ?? 0,
+          zone: InventoryZone.property,
+          imagePath: 'assets/images/drugs/$drugType.png',
+          quality: quality,
+        ),
+      );
+    }
+    for (final d in (storage['drugs'] as List? ?? [])) {
+      final row = Map<String, dynamic>.from(d as Map);
+      final drugType = '${row['drugType'] ?? ''}';
+      if (drugType.isEmpty || drugType.contains(':')) continue;
+      final quality = '${row['quality'] ?? 'C'}';
+      if (seenDrugKeys.contains('$drugType:$quality')) continue;
+      items.add(
+        InventoryGridItem(
+          kind: InventoryItemKind.drug,
+          id: drugType,
+          name: '${row['name'] ?? drugType}',
           quantity: (row['quantity'] as num?)?.toInt() ?? 0,
           zone: InventoryZone.property,
           imagePath: 'assets/images/drugs/$drugType.png',
@@ -1226,9 +1272,12 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
   }
 
   int _contextEmptySlots() {
-    final capacity = _selectedStorage?.capacity ?? 0;
-    if (capacity > 0) return capacity;
-    return _contextItems.isEmpty ? 0 : _contextItems.length;
+    final storage = _selectedStorage;
+    if (storage == null) {
+      return _contextItems.isEmpty ? 0 : _contextItems.length;
+    }
+    final free = storage.slotsRemaining < 0 ? 0 : storage.slotsRemaining;
+    return _contextItems.length + free;
   }
 
   String _countryLabel(String? countryId, AppLocalizations l10n) {
