@@ -33,7 +33,8 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - VIP `buy-missing` credits the **current-country depot** (ready to produce, no backpack transfer)
 - `GET /drugs/productions/:productionId/speedup-quote` → credit cost to finish an in-progress batch early
 - `POST /drugs/productions/:productionId/speedup` → spend premium credits; sets `finishesAt = now` (player still collects normally)
-- `GET /drug-facilities` → owned facilities + `catalog` (price, rank, owned, next-upgrade education)
+- `GET /drug-facilities` → `{ currentCountry, facilities, catalog }` — `facilities` lists **all countries** (each row has `country`); `catalog.owned` is **current country only**. Client overviews (hub chips, Facilities tab, Production cards) must filter owned/slots by `player.currentCountry`. Unique: `(playerId, country, facilityType)`.
+- `GET /drugs/productions` includes `facilityCountry` so batches started abroad stay labeled.
 - `POST /drugs/heat/cool` `{ action: cash | low_profile }`
 - `POST /drugs/raids/:id/resolve` `{ choice: lose | downtime | cash }`
 - `POST /drug-facilities/:id/auto-sale` `{ enabled }` (darkweb storefront only, default off)
@@ -92,6 +93,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Responsive usability without pushing critical actions off-screen.
 - Drug inventory and storage quantities are gram-based; capacity checks, weight totals and user-visible messages must stay aligned to grams.
 - Visibility of current productions in both Production flow and Facility context when players expect that summary.
+- Facility overviews (owned badge, slots, “can produce”) are **current country only**. Owning a greenhouse in France must not look owned or usable in Italy; show an elsewhere hint and a local Buy action.
 - Finished but uncollected productions must remain visible in the Production flow and still count against their facility slot until they are actually collected.
 - VIP auto-collect must be backed by a real background automation path; a toggle without server-side execution is not sufficient.
 - VIP quick-buy material shortcuts in production cards must remain confirm-first (cost modal with explicit Buy/Cancel actions before purchase) and server-enforced on active VIP status. The button must stay tappable on mobile (full-width control, not a tiny header icon). Stock lands in the current-country depot.

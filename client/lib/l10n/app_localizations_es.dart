@@ -16521,6 +16521,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Instalaciones como un invernadero, una granja de hongos, un laboratorio de drogas, una cocina de crack y una tienda en la web oscura determinan qué medicamentos puedes producir, cuántos espacios tienes y qué tan fuertes son tu calidad, rendimiento y velocidad.';
 
   @override
+  String drugsFacilitiesHereIn(String country) {
+    return 'Resumen de $country. Cada país tiene sus propias instalaciones y huecos.';
+  }
+
+  @override
   String get drugsFacCurrentProductions => 'Producciones actuales';
 
   @override
@@ -16549,6 +16554,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get drugsFacOwned => 'Propiedad';
+
+  @override
+  String get drugsFacOwnedHere => 'En posesión aquí';
+
+  @override
+  String drugsFacOwnedElsewhere(String countries, String country) {
+    return 'Ya lo tienes en $countries. Cómpralo aquí para producir en $country.';
+  }
 
   @override
   String get drugsFacPrice => 'Precio';
@@ -16863,6 +16876,16 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String drugsProdFacilityRequired(String facility) {
     return '$facility requerido';
+  }
+
+  @override
+  String drugsProdFacilityRequiredHere(String facility, String country) {
+    return '$facility requerido en $country';
+  }
+
+  @override
+  String drugsProdHereIn(String country) {
+    return 'Producción en $country. Una instalación en otro país no cuenta aquí.';
   }
 
   @override

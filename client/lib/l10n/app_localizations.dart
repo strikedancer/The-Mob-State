@@ -28317,6 +28317,12 @@ abstract class AppLocalizations {
   /// **'Facilities such as greenhouse, mushroom farm, drug lab, crack kitchen and darkweb storefront determine which drugs you can produce, how many slots you have and how strong your quality, yield and speed are.'**
   String get drugsFacilitiesHeroBody;
 
+  /// No description provided for @drugsFacilitiesHereIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview for {country}. Each country has its own facilities and slots.'**
+  String drugsFacilitiesHereIn(String country);
+
   /// No description provided for @drugsFacCurrentProductions.
   ///
   /// In en, this message translates to:
@@ -28370,6 +28376,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Owned'**
   String get drugsFacOwned;
+
+  /// No description provided for @drugsFacOwnedHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned here'**
+  String get drugsFacOwnedHere;
+
+  /// No description provided for @drugsFacOwnedElsewhere.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have this in {countries}. Buy one here to produce in {country}.'**
+  String drugsFacOwnedElsewhere(String countries, String country);
 
   /// No description provided for @drugsFacPrice.
   ///
@@ -28934,6 +28952,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{facility} required'**
   String drugsProdFacilityRequired(String facility);
+
+  /// No description provided for @drugsProdFacilityRequiredHere.
+  ///
+  /// In en, this message translates to:
+  /// **'{facility} required in {country}'**
+  String drugsProdFacilityRequiredHere(String facility, String country);
+
+  /// No description provided for @drugsProdHereIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Producing in {country}. A facility in another country does not count here.'**
+  String drugsProdHereIn(String country);
 
   /// No description provided for @drugsProdRankRequired.
   ///
@@ -29682,7 +29712,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDrugsHow.
   ///
   /// In en, this message translates to:
-  /// **'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a quick-buy button on production cards: after confirmation, missing materials go to the depot of your current country and are ready to produce.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
+  /// **'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nFacilities, slots and the materials depot are per country: a greenhouse in France does not count in Italy; travel back or buy a new one there.\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a quick-buy button on production cards: after confirmation, missing materials go to the depot of your current country and are ready to produce.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
   String get helpTopicDrugsHow;
 
   /// No description provided for @helpTopicDrugsTips.

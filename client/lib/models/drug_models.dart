@@ -280,6 +280,7 @@ class DrugProduction {
   final String qualityColor;
   final double qualityMultiplier;
   final int? facilityId;
+  final String? facilityCountry;
   final String? incidentNote;
   final String? incidentSeverity;
   final String? incidentType;
@@ -302,6 +303,7 @@ class DrugProduction {
     this.qualityColor = '#888888',
     this.qualityMultiplier = 1.0,
     this.facilityId,
+    this.facilityCountry,
     this.incidentNote,
     this.incidentSeverity,
     this.incidentType,
@@ -326,6 +328,7 @@ class DrugProduction {
       qualityColor: json['qualityColor'] ?? '#888888',
       qualityMultiplier: (json['qualityMultiplier'] ?? 1.0).toDouble(),
       facilityId: json['facilityId'],
+      facilityCountry: json['facilityCountry']?.toString(),
       incidentNote: json['incidentNote'],
       incidentSeverity: json['incidentSeverity'],
       incidentType: json['incidentType'],
@@ -509,6 +512,13 @@ class DrugFacilityInfo {
 
   bool get isInDowntime =>
       downtimeUntil != null && downtimeUntil!.isAfter(DateTime.now());
+
+  bool isInCountry(String? country) {
+    final here = (country ?? '').trim().toLowerCase();
+    final mine = this.country.trim().toLowerCase();
+    if (here.isEmpty || mine.isEmpty) return false;
+    return here == mine;
+  }
 
   factory DrugFacilityInfo.fromJson(Map<String, dynamic> json) {
     final multipliers = json['multipliers'] as Map<String, dynamic>? ?? const {};

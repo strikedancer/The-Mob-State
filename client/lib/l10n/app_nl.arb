@@ -4191,6 +4191,14 @@
   "drugsFacilitiesTitle": "Drugsfaciliteiten",
   "drugsFacilitiesHeroTitle": "Beheer je drugsfaciliteiten",
   "drugsFacilitiesHeroBody": "Faciliteiten zoals kas, paddenstoelenkwekerij, drugslab, crackkeuken en darkweb-winkel bepalen welke drugs je kunt produceren, hoeveel slots je hebt en hoe sterk kwaliteit, opbrengst en snelheid zijn.",
+  "drugsFacilitiesHereIn": "Overzicht voor {country}. Elk land heeft eigen faciliteiten en slots.",
+  "@drugsFacilitiesHereIn": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
   "drugsFacCurrentProductions": "Lopende producties",
   "drugsFacUnknownFacility": "Onbekende faciliteit",
   "drugsFacUnknownMessage": "Onbekend bericht",
@@ -4200,6 +4208,18 @@
   "drugsFacEquipLockedBody": "Train eerst je Narcotica-track om het volgende upgradeniveau te ontgrendelen.",
   "drugsFacBuy": "Kopen",
   "drugsFacOwned": "In bezit",
+  "drugsFacOwnedHere": "Hier in bezit",
+  "drugsFacOwnedElsewhere": "Je hebt dit al in {countries}. Koop er hier een om in {country} te produceren.",
+  "@drugsFacOwnedElsewhere": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
   "drugsFacPrice": "Prijs",
   "drugsFacRank": "Rank",
   "drugsFacDrugTypes": "Drugs",
@@ -4385,6 +4405,25 @@
   "@drugsProdFacilityRequired": {
     "placeholders": {
       "facility": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdFacilityRequiredHere": "{facility} vereist in {country}",
+  "@drugsProdFacilityRequiredHere": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdHereIn": "Productie in {country}. Een faciliteit in een ander land telt hier niet.",
+  "@drugsProdHereIn": {
+    "placeholders": {
+      "country": {
         "type": "String"
       }
     }
@@ -10522,7 +10561,7 @@
   "helpTopicDrugsCategory": "Empire",
   "helpTopicDrugsTitle": "Drugs",
   "helpTopicDrugsSummary": "Bouw een complete drugsoperatie van grondstoffen tot eindproduct. Draai productieketens, beheer opslag en verkoop voor hoge marges maar ook serieuze risico's.",
-  "helpTopicDrugsHow": "Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een snelkoopknop: na bevestiging koop je in één keer alle ontbrekende materialen naar het depot van je huidige land, klaar om te produceren.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.",
+  "helpTopicDrugsHow": "Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nFaciliteiten, slots en grondstoffendepot zijn per land: een kas in Frankrijk telt niet in Italië; reis terug of koop daar een nieuwe.\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een snelkoopknop: na bevestiging koop je in één keer alle ontbrekende materialen naar het depot van je huidige land, klaar om te produceren.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.",
   "helpTopicDrugsTips": "Upgrade opslag voor productie: volle opslag stopt je productie en je verliest die productietime.\nHoud FBI Heat onder 50: boven dat niveau word je actief gestalkt met zware raid-kansen die alles stilleggen.\nCombineer drugsverkoop met smokkelen voor hogere marges en verspreide risico's.",
   "helpTopicNightclubCategory": "Empire",
   "helpTopicNightclubTitle": "Nachtclub",

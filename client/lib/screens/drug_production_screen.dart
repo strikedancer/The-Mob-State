@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'black_market_screen.dart';
 import 'drug_facility_screen.dart';
+import '../utils/country_helper.dart';
 import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
@@ -264,13 +265,20 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   }
 
   String _currentCountry() {
+    if (!mounted) {
+      final fromStats = _stats?.currentCountry.trim() ?? '';
+      if (fromStats.isNotEmpty) return fromStats;
+      return _materialsSnapshot.currentCountry.trim();
+    }
+    final fromPlayer = Provider.of<AuthProvider>(context, listen: false)
+            .currentPlayer
+            ?.currentCountry
+            ?.trim() ??
+        '';
+    if (fromPlayer.isNotEmpty) return fromPlayer;
     final fromStats = _stats?.currentCountry.trim() ?? '';
     if (fromStats.isNotEmpty) return fromStats;
     return _materialsSnapshot.currentCountry.trim();
-  }
-
-  bool _sameCountry(String? a, String? b) {
-    return (a ?? '').trim().toLowerCase() == (b ?? '').trim().toLowerCase();
   }
 
   bool _isVipActive(AuthProvider authProvider) {
@@ -282,18 +290,11 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     final facilityType = _getFacilityTypeForDrug(drugId);
     if (facilityType == null) return null;
     final country = _currentCountry();
-    DrugFacilityInfo? fallback;
     for (final facility in _facilities) {
       if (facility.facilityType != facilityType) continue;
-      fallback ??= facility;
-      if (facility.country.isEmpty || country.isEmpty) {
-        return facility;
-      }
-      if (_sameCountry(facility.country, country)) {
-        return facility;
-      }
+      if (facility.isInCountry(country)) return facility;
     }
-    return country.isEmpty ? fallback : null;
+    return null;
   }
 
   int _getAdjustedProductionMinutes(
@@ -708,6 +709,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
           qualityColor: production.qualityColor,
           qualityMultiplier: production.qualityMultiplier,
           facilityId: production.facilityId,
+          facilityCountry: production.facilityCountry,
           raidPending: true,
           raidLossPercent: (raid['lossPercent'] as num?)?.toInt(),
           raidCashFine: (raid['cashFine'] as num?)?.toInt(),
@@ -1015,6 +1017,20 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.74),
                                         fontSize: isMobile ? 13 : 14,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      t.drugsProdHereIn(
+                                        CountryHelper.getLocalizedCountryName(
+                                          _currentCountry(),
+                                          t,
+                                        ),
+                                      ),
+                                      style: const TextStyle(
+                                        color: Color(0xFFFFB347),
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 13,
                                       ),
                                     ),
                                     if (_stats != null) ...[
@@ -1668,9 +1684,14 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                               '${facility!.activeProductions}',
                                                               '${facility.effectiveSlots}',
                                                             )
-                                                          : t.drugsProdFacilityRequired(
+                                                          : t.drugsProdFacilityRequiredHere(
                                                               _getFacilityDisplayName(
                                                                 facilityType,
+                                                                t,
+                                                              ),
+                                                              CountryHelper
+                                                                  .getLocalizedCountryName(
+                                                                _currentCountry(),
                                                                 t,
                                                               ),
                                                             ),

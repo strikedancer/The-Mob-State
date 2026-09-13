@@ -16413,6 +16413,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Faciliteiten zoals kas, paddenstoelenkwekerij, drugslab, crackkeuken en darkweb-winkel bepalen welke drugs je kunt produceren, hoeveel slots je hebt en hoe sterk kwaliteit, opbrengst en snelheid zijn.';
 
   @override
+  String drugsFacilitiesHereIn(String country) {
+    return 'Overzicht voor $country. Elk land heeft eigen faciliteiten en slots.';
+  }
+
+  @override
   String get drugsFacCurrentProductions => 'Lopende producties';
 
   @override
@@ -16440,6 +16445,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get drugsFacOwned => 'In bezit';
+
+  @override
+  String get drugsFacOwnedHere => 'Hier in bezit';
+
+  @override
+  String drugsFacOwnedElsewhere(String countries, String country) {
+    return 'Je hebt dit al in $countries. Koop er hier een om in $country te produceren.';
+  }
 
   @override
   String get drugsFacPrice => 'Prijs';
@@ -16753,6 +16766,16 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String drugsProdFacilityRequired(String facility) {
     return '$facility vereist';
+  }
+
+  @override
+  String drugsProdFacilityRequiredHere(String facility, String country) {
+    return '$facility vereist in $country';
+  }
+
+  @override
+  String drugsProdHereIn(String country) {
+    return 'Productie in $country. Een faciliteit in een ander land telt hier niet.';
   }
 
   @override
@@ -17203,7 +17226,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een snelkoopknop: na bevestiging koop je in één keer alle ontbrekende materialen naar het depot van je huidige land, klaar om te produceren.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
+      'Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nFaciliteiten, slots en grondstoffendepot zijn per land: een kas in Frankrijk telt niet in Italië; reis terug of koop daar een nieuwe.\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een snelkoopknop: na bevestiging koop je in één keer alle ontbrekende materialen naar het depot van je huidige land, klaar om te produceren.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
 
   @override
   String get helpTopicDrugsTips =>

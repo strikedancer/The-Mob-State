@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../config/app_config.dart';
 import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
+import '../providers/auth_provider.dart';
 import '../services/drug_service.dart';
+import '../utils/country_helper.dart';
 import '../utils/drug_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
@@ -91,13 +94,40 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     }
   }
 
+  String _currentCountry() {
+    return Provider.of<AuthProvider>(context, listen: false)
+            .currentPlayer
+            ?.currentCountry
+            ?.trim() ??
+        '';
+  }
+
+  List<DrugFacilityInfo> get _localFacilities {
+    final country = _currentCountry();
+    return _facilities.where((f) => f.isInCountry(country)).toList();
+  }
+
   DrugFacilityInfo? _getOwnedFacility(String facilityType) {
-    for (final facility in _facilities) {
+    for (final facility in _localFacilities) {
       if (facility.facilityType == facilityType) {
         return facility;
       }
     }
     return null;
+  }
+
+  List<String> _elsewhereCountries(String facilityType) {
+    final country = _currentCountry();
+    return _facilities
+        .where(
+          (f) =>
+              f.facilityType == facilityType &&
+              !f.isInCountry(country) &&
+              f.country.trim().isNotEmpty,
+        )
+        .map((f) => f.country)
+        .toSet()
+        .toList();
   }
 
   String _facilityImagePath(String facilityType) {
@@ -275,6 +305,16 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
       default:
         return 999;
     }
+  }
+
+  String _productionCountrySuffix(
+    AppLocalizations t,
+    DrugProduction production,
+  ) {
+    final code = production.facilityCountry?.trim() ?? '';
+    if (code.isEmpty) return '';
+    final name = CountryHelper.getLocalizedCountryName(code, t);
+    return ' • $name';
   }
 
   String _facilityNameById(AppLocalizations t, int? facilityId) {
@@ -455,10 +495,10 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                   backgroundColor: const Color(0xCC111111),
                   title: Text(t.drugsFacilitiesTitle),
                   actions: [
-                    if (!_isLoading && _facilities.isNotEmpty)
+                    if (!_isLoading && _localFacilities.isNotEmpty)
                       _KpiChip(
                         value:
-                            '${_facilities.fold(0, (s, f) => s + f.activeProductions)}/${_facilities.fold(0, (s, f) => s + f.slots)}',
+                            '${_localFacilities.fold(0, (s, f) => s + f.activeProductions)}/${_localFacilities.fold(0, (s, f) => s + f.slots)}',
                         label: t.drugsSlotsLabel,
                         icon: Icons.grid_view_rounded,
                         color: const Color(0xFF48B8FF),
@@ -531,6 +571,19 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                                       color: Colors.white.withOpacity(0.74),
                                     ),
                                   ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    t.drugsFacilitiesHereIn(
+                                      CountryHelper.getLocalizedCountryName(
+                                        _currentCountry(),
+                                        t,
+                                      ),
+                                    ),
+                                    style: const TextStyle(
+                                      color: Color(0xFFFFB347),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -585,7 +638,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                                               const SizedBox(width: 8),
                                               Expanded(
                                                 child: Text(
-                                                  '${production.drugName} • ${production.quantity}g • ${_facilityNameById(t, production.facilityId)}',
+                                                  '${production.drugName} • ${production.quantity}g • ${_facilityNameById(t, production.facilityId)}${_productionCountrySuffix(t, production)}',
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                   ),
@@ -614,11 +667,13 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                               final config =
                                   entry.value as Map<String, dynamic>;
                               final owned = _getOwnedFacility(facilityType);
+                              final elsewhere = _elsewhereCountries(facilityType);
                               return _buildFacilityCard(
                                 t,
                                 facilityType,
                                 config,
                                 owned,
+                                elsewhere,
                               );
                             }),
                           ],
@@ -637,6 +692,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     String facilityType,
     Map<String, dynamic> config,
     DrugFacilityInfo? owned,
+    List<String> elsewhere,
   ) {
     final catalog = _catalogFor(facilityType);
     final purchasePrice = catalog?.purchasePrice ?? (config['purchasePrice'] ?? 0) as int;
@@ -716,7 +772,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
-                      t.drugsFacOwned,
+                      t.drugsFacOwnedHere,
                       style: TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.bold,
@@ -740,6 +796,18 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                   _buildStatChip(t.drugsFacRankLockedShort, '${catalog.playerRank}/$requiredRank'),
               ],
             ),
+            if (owned == null && elsewhere.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              Text(
+                t.drugsFacOwnedElsewhere(
+                  elsewhere
+                      .map((code) => CountryHelper.getLocalizedCountryName(code, t))
+                      .join(', '),
+                  CountryHelper.getLocalizedCountryName(_currentCountry(), t),
+                ),
+                style: TextStyle(color: Colors.orange[200], fontSize: 12),
+              ),
+            ],
             if (owned?.nextSlotEducation != null &&
                 owned!.nextSlotEducation!['allowed'] != true) ...[
               const SizedBox(height: 8),

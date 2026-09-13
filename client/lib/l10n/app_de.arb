@@ -6590,6 +6590,9 @@
   "drugsFacEquipLockedBody": "Trainiere zuerst deine Narcotics-Strecke, um die nächste Upgrade-Stufe freizuschalten.",
   "drugsFacBuy": "Kaufen",
   "drugsFacOwned": "Im Besitz",
+  "drugsFacOwnedHere": "Hier im Besitz",
+  "drugsFacOwnedElsewhere": "Das hast du bereits in {countries}. Kaufe eines hier, um in {country} zu produzieren.",
+  "drugsFacilitiesHereIn": "Übersicht für {country}. Jedes Land hat eigene Anlagen und Slots.",
   "drugsFacPrice": "Preis",
   "drugsFacRank": "Rang",
   "drugsFacDrugTypes": "Drogen",
@@ -6706,6 +6709,8 @@
     }
   },
   "drugsProdFacilityRequired": "{facility} erforderlich",
+  "drugsProdFacilityRequiredHere": "{facility} in {country} erforderlich",
+  "drugsProdHereIn": "Produktion in {country}. Eine Anlage in einem anderen Land zählt hier nicht.",
   "@drugsProdFacilityRequired": {
     "placeholders": {
       "facility": {
@@ -11974,6 +11979,40 @@
         "type": "String"
       },
       "source": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsFacilitiesHereIn": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsFacOwnedElsewhere": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsProdFacilityRequiredHere": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsProdHereIn": {
+    "placeholders": {
+      "country": {
         "type": "String"
       }
     }

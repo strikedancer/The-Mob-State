@@ -6590,6 +6590,9 @@
   "drugsFacEquipLockedBody": "Entrena tu pista de Narcóticos primero para desbloquear el siguiente nivel de actualización.",
   "drugsFacBuy": "Comprar",
   "drugsFacOwned": "Propiedad",
+  "drugsFacOwnedHere": "En posesión aquí",
+  "drugsFacOwnedElsewhere": "Ya lo tienes en {countries}. Cómpralo aquí para producir en {country}.",
+  "drugsFacilitiesHereIn": "Resumen de {country}. Cada país tiene sus propias instalaciones y huecos.",
   "drugsFacPrice": "Precio",
   "drugsFacRank": "Rango",
   "drugsFacDrugTypes": "Drogas",
@@ -6706,6 +6709,8 @@
     }
   },
   "drugsProdFacilityRequired": "{facility} requerido",
+  "drugsProdFacilityRequiredHere": "{facility} requerido en {country}",
+  "drugsProdHereIn": "Producción en {country}. Una instalación en otro país no cuenta aquí.",
   "@drugsProdFacilityRequired": {
     "placeholders": {
       "facility": {
@@ -11974,6 +11979,40 @@
         "type": "String"
       },
       "source": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsFacilitiesHereIn": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsFacOwnedElsewhere": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsProdFacilityRequiredHere": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsProdHereIn": {
+    "placeholders": {
+      "country": {
         "type": "String"
       }
     }

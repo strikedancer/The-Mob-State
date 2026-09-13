@@ -14,15 +14,22 @@ router.get('/config', authenticate, async (_req: Request, res: Response) => {
   }
 });
 
-// GET /drug-facilities — get all player facilities
+// GET /drug-facilities — owned facilities (all countries) + catalog for current country
 router.get('/', authenticate, async (req: Request, res: Response) => {
   try {
-    const playerId = (req as any).player.id as number;
+    const player = (req as any).player;
+    const playerId = player.id as number;
+    const currentCountry = player.currentCountry || 'netherlands';
     const [facilities, catalog] = await Promise.all([
       drugFacilityService.getPlayerFacilities(playerId),
       drugFacilityService.getFacilityCatalog(playerId),
     ]);
-    res.json({ success: true, facilities, catalog });
+    res.json({
+      success: true,
+      currentCountry,
+      facilities,
+      catalog,
+    });
   } catch (err) {
     console.error('GET /drug-facilities error:', err);
     res.status(500).json({ success: false, message: 'Server fout' });

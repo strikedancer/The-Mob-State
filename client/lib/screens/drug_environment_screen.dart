@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
+import '../providers/auth_provider.dart';
 import '../services/drug_service.dart';
+import '../utils/country_helper.dart';
 import '../utils/drug_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
@@ -109,12 +112,34 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
     }
   }
 
+  String _currentCountry() {
+    return Provider.of<AuthProvider>(context, listen: false)
+            .currentPlayer
+            ?.currentCountry
+            ?.trim() ??
+        '';
+  }
+
+  List<DrugFacilityInfo> get _localFacilities {
+    final country = _currentCountry();
+    return _facilities.where((f) => f.isInCountry(country)).toList();
+  }
+
+  List<DrugProduction> get _localProductions {
+    final country = _currentCountry();
+    return _activeProductions.where((p) {
+      final code = p.facilityCountry?.trim() ?? '';
+      if (code.isEmpty) return true;
+      return code.toLowerCase() == country.toLowerCase();
+    }).toList();
+  }
+
   int _totalSlots() {
-    return _facilities.fold(0, (sum, item) => sum + item.slots);
+    return _localFacilities.fold(0, (sum, item) => sum + item.slots);
   }
 
   int _usedSlots() {
-    return _facilities.fold(0, (sum, item) => sum + item.activeProductions);
+    return _localFacilities.fold(0, (sum, item) => sum + item.activeProductions);
   }
 
   int _totalInventoryGrams() {
@@ -277,9 +302,14 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
                     runSpacing: 8,
                     children: [
                       _statChip(
+                        icon: Icons.public,
+                        label:
+                            '${CountryHelper.getCountryFlag(_currentCountry())} ${CountryHelper.getLocalizedCountryName(_currentCountry(), t)}',
+                      ),
+                      _statChip(
                         icon: Icons.timelapse,
                         label:
-                            '${t.drugsMetricActiveBatches}: ${_activeProductions.length}',
+                            '${t.drugsMetricActiveBatches}: ${_localProductions.length}',
                       ),
                       _statChip(
                         icon: Icons.grid_view_rounded,

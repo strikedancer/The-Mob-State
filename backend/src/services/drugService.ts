@@ -1011,6 +1011,7 @@ class DrugService {
         qualityColor: qualityDef?.color ?? '#888888',
         qualityMultiplier: p.qualityMultiplier ?? 1.0,
         facilityId: p.facilityId ?? null,
+        facilityCountry: p.facility?.country || null,
         incidentNote: incidentInfo.note ?? null,
         incidentSeverity: incidentInfo.severity ?? null,
         incidentType: incidentInfo.type ?? null,

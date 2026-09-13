@@ -6590,6 +6590,9 @@
   "drugsFacEquipLockedBody": "Entraînez d'abord votre piste Narcotics pour débloquer le niveau de mise à niveau suivant.",
   "drugsFacBuy": "Acheter",
   "drugsFacOwned": "Possédée",
+  "drugsFacOwnedHere": "Possédée ici",
+  "drugsFacOwnedElsewhere": "Vous l'avez déjà dans {countries}. Achetez-en une ici pour produire en {country}.",
+  "drugsFacilitiesHereIn": "Aperçu pour {country}. Chaque pays a ses propres installations et emplacements.",
   "drugsFacPrice": "Prix",
   "drugsFacRank": "Rang",
   "drugsFacDrugTypes": "Drogues",
@@ -6706,6 +6709,8 @@
     }
   },
   "drugsProdFacilityRequired": "{facility} requis",
+  "drugsProdFacilityRequiredHere": "{facility} requis en {country}",
+  "drugsProdHereIn": "Production en {country}. Une installation dans un autre pays ne compte pas ici.",
   "@drugsProdFacilityRequired": {
     "placeholders": {
       "facility": {
@@ -11974,6 +11979,40 @@
         "type": "String"
       },
       "source": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsFacilitiesHereIn": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsFacOwnedElsewhere": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsProdFacilityRequiredHere": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@drugsProdHereIn": {
+    "placeholders": {
+      "country": {
         "type": "String"
       }
     }
