@@ -17712,7 +17712,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get legalPrivacyTitle => 'Privacy Policy';
 
   @override
-  String get legalPrivacyLastUpdated => 'Last updated: May 2026';
+  String get legalPrivacyLastUpdated => 'Last updated: September 2026';
 
   @override
   String get legalPrivacyIntro =>
@@ -17723,21 +17723,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection01Body =>
-      'The Mob State is an online game operated as a digital service. For privacy requests you can contact us through the in-game support ticket system after registration, or via the official website contact channels if published.';
+      'The Mob State is an online game operated as a digital service. For privacy requests contact us at info@themobstate.com or, after you have an account, through the in-game support ticket system.';
 
   @override
   String get legalPrivacySection02Title => 'Data we collect';
 
   @override
   String get legalPrivacySection02Body =>
-      'We may process account data (username, email if provided, hashed password), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
+      'We may process account data (username, email if provided, hashed password), Facebook Login data when you choose that option (Facebook user ID, public profile name, and email if you grant the email permission), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
 
   @override
   String get legalPrivacySection03Title => 'Purposes';
 
   @override
   String get legalPrivacySection03Body =>
-      'We use data to provide the game, secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
+      'We use data to provide the game, create or sign you in to an account (including via Facebook Login), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
 
   @override
   String get legalPrivacySection04Title => 'Legal bases (EEA/UK)';
@@ -17765,7 +17765,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
+      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
 
   @override
   String get legalPrivacySection08Title => 'International transfers';
@@ -17779,7 +17779,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection09Body =>
-      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. Contact us via support to exercise rights; we may need to verify your identity.';
+      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.';
 
   @override
   String get legalPrivacySection10Title => 'Children';
@@ -17787,6 +17787,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get legalPrivacySection10Body =>
       'The game is not directed to children under the age where parental consent is required for processing in your region. If you believe a child provided data improperly, contact us and we will take appropriate steps.';
+
+  @override
+  String get legalPrivacySection11Title => 'Facebook Login';
+
+  @override
+  String get legalPrivacySection11Body =>
+      'When you tap Continue with Facebook we send you to Meta. If you approve, we receive your Facebook user ID, public profile name, and email address when you grant the email permission. We use this only to create or sign in to your The Mob State account. We do not post on your Facebook timeline. You can remove the app in your Facebook settings and ask us to delete your game data via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Purchase of Digital Goods';
@@ -17886,7 +17893,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get legalTermsTitle => 'Terms of Service';
 
   @override
-  String get legalTermsLastUpdated => 'Last updated: May 2026';
+  String get legalTermsLastUpdated => 'Last updated: September 2026';
 
   @override
   String get legalTermsIntro =>
@@ -17897,7 +17904,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalTermsSection01Body =>
-      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You are responsible for activity under your account unless you notify us promptly via support if you suspect unauthorised access.';
+      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook; you remain responsible for that Facebook account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.';
 
   @override
   String get legalTermsSection02Title => 'Licence to use the Service';
@@ -17960,7 +17967,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalTermsSection10Body =>
-      'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.';
+      'For questions about these Terms, email info@themobstate.com or, after you have an account, use the in-game support ticket system.';
 
   @override
   String get helpTopicTrainingHubCategory => 'Training';

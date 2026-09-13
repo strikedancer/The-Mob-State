@@ -33,9 +33,10 @@ Zonder App ID + Secret blijft de inlogknop verborgen. Zonder Page ID + token bli
 2. Voeg het product **Facebook Login** toe (web).
 3. **Valid OAuth Redirect URIs:** `https://api.themobstate.com/auth/facebook/callback`
 4. App domains: `themobstate.com`, `api.themobstate.com`
-5. Privacy policy URL: `https://themobstate.com/privacy`
-6. Voor **live** login: app in Live mode (privacy policy verplicht). In Development mode werken alleen testers/rollen op de app.
-7. Kopieer App ID + App Secret naar `.env.plesk` op de VPS en herstart de backend (`.\scripts\vps_pull_and_build.ps1` of container-restart).
+5. Privacy policy URL: `https://themobstate.com/privacy` (statische HTML, crawlbaar; geen Flutter-shell)
+6. Terms of Service URL: `https://themobstate.com/terms` (statische HTML)
+7. Voor **live** login: app in Live mode (privacy + terms verplicht, crawler moet de tekst zien). In Development mode werken alleen testers/rollen op de app.
+8. Kopieer App ID + App Secret naar `.env.plesk` op de VPS en herstart de backend (`.\scripts\vps_pull_and_build.ps1` of container-restart).
 
 ### Page-token (berichten plaatsen)
 

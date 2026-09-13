@@ -17915,6 +17915,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'O jogo não é direcionado a crianças menores de idade onde o consentimento dos pais é necessário para o processamento em sua região. Se você acredita que uma criança forneceu dados indevidamente, entre em contato conosco e tomaremos as medidas adequadas.';
 
   @override
+  String get legalPrivacySection11Title => 'Facebook Login';
+
+  @override
+  String get legalPrivacySection11Body =>
+      'When you tap Continue with Facebook we send you to Meta. If you approve, we receive your Facebook user ID, public profile name, and email address when you grant the email permission. We use this only to create or sign in to your The Mob State account. We do not post on your Facebook timeline. You can remove the app in your Facebook settings and ask us to delete your game data via info@themobstate.com.';
+
+  @override
   String get legalDigitalGoodsTitle => 'Compra de bens digitais';
 
   @override

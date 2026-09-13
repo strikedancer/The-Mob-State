@@ -78,6 +78,9 @@ Widget buildLegalPrivacyDocumentColumn(BuildContext context) {
       legalMarketingSection(context,
           title: l10n.legalPrivacySection10Title,
           body: l10n.legalPrivacySection10Body),
+      legalMarketingSection(context,
+          title: l10n.legalPrivacySection11Title,
+          body: l10n.legalPrivacySection11Body),
       const SizedBox(height: 32),
     ],
   );

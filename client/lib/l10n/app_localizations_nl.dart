@@ -17751,7 +17751,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get legalPrivacyTitle => 'Privacybeleid';
 
   @override
-  String get legalPrivacyLastUpdated => 'Laatst bijgewerkt: mei 2026';
+  String get legalPrivacyLastUpdated => 'Laatst bijgewerkt: september 2026';
 
   @override
   String get legalPrivacyIntro =>
@@ -17762,21 +17762,21 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection01Body =>
-      'The Mob State is een online game als digitale dienst. Voor privacyverzoeken kun je na registratie contact opnemen via het supportticketssysteem in het spel, of via officiële contactkanalen op de website indien gepubliceerd.';
+      'The Mob State is een online game als digitale dienst. Voor privacyverzoeken mail je info@themobstate.com of, als je een account hebt, het supportticketssysteem in het spel.';
 
   @override
   String get legalPrivacySection02Title => 'Gegevens die we verwerken';
 
   @override
   String get legalPrivacySection02Body =>
-      'We kunnen accountgegevens (gebruikersnaam, e-mail indien opgegeven, gehasht wachtwoord), gameplay- en voortgangsdaten, technische logs (IP-adres, apparaat/browsertype, tijdstempels), betalingsreferenties van betaalproviders (geen volledige kaartnummers) en door jou naar support gestuurde berichten verwerken.';
+      'We kunnen accountgegevens (gebruikersnaam, e-mail indien opgegeven, gehasht wachtwoord), Facebook-logingegevens als je die optie kiest (Facebook-gebruikers-ID, openbare profielnaam en e-mail als je de e-mailtoestemming geeft), gameplay- en voortgangsdata, technische logs (IP-adres, apparaat/browsertype, tijdstempels), betalingsreferenties van betaalproviders (geen volledige kaartnummers) en door jou naar support gestuurde berichten verwerken.';
 
   @override
   String get legalPrivacySection03Title => 'Doeleinden';
 
   @override
   String get legalPrivacySection03Body =>
-      'We gebruiken gegevens om de game te leveren, accounts te beveiligen, misbruik en fraude te voorkomen, aankopen af te handelen, prestaties te verbeteren, servicemeldingen te sturen en aan wettelijke verplichtingen te voldoen.';
+      'We gebruiken gegevens om de game te leveren, een account aan te maken of je in te loggen (ook via Facebook Login), accounts te beveiligen, misbruik en fraude te voorkomen, aankopen af te handelen, prestaties te verbeteren, servicemeldingen te sturen en aan wettelijke verplichtingen te voldoen.';
 
   @override
   String get legalPrivacySection04Title => 'Rechtsgronden (EER/VK)';
@@ -17804,7 +17804,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
+      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. Als je Facebook Login gebruikt, ontvangt Meta het OAuth-verzoek dat jij goedkeurt; we plaatsen niets op je Facebook-profiel en mailen je vrienden niet. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
 
   @override
   String get legalPrivacySection08Title => 'Internationale doorgifte';
@@ -17818,7 +17818,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection09Body =>
-      'Je kunt rechten hebben op inzage, correctie, verwijdering, beperking of bezwaar, en op gegevensoverdraagbaarheid. Je kunt een klacht indienen bij een toezichthouder. Neem via support contact op om rechten uit te oefenen; we kunnen je identiteit verifiëren.';
+      'Je kunt rechten hebben op inzage, correctie, verwijdering, beperking of bezwaar, en op gegevensoverdraagbaarheid. Je kunt een klacht indienen bij een toezichthouder. Om rechten uit te oefenen, inclusief verwijdering van je account en Facebook-gekoppelde data, mail je info@themobstate.com of gebruik je in-game support; we kunnen je identiteit verifiëren.';
 
   @override
   String get legalPrivacySection10Title => 'Kinderen';
@@ -17826,6 +17826,13 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get legalPrivacySection10Body =>
       'De game richt zich niet op kinderen onder de leeftijd waar ouderlijke toestemming vereist is. Neem contact op als je denkt dat een kind onterecht gegevens heeft verstrekt.';
+
+  @override
+  String get legalPrivacySection11Title => 'Facebook Login';
+
+  @override
+  String get legalPrivacySection11Body =>
+      'Als je Doorgaan met Facebook kiest, sturen we je naar Meta. Als je akkoord gaat, ontvangen we je Facebook-gebruikers-ID, openbare profielnaam en e-mailadres als je de e-mailtoestemming geeft. We gebruiken dit alleen om je The Mob State-account aan te maken of in te loggen. We plaatsen niets op je Facebook-tijdlijn. Je kunt de app verwijderen in je Facebook-instellingen en ons vragen je gamegegevens te wissen via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Aankoop van digitale goederen';
@@ -17926,7 +17933,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get legalTermsTitle => 'Algemene voorwaarden';
 
   @override
-  String get legalTermsLastUpdated => 'Laatst bijgewerkt: mei 2026';
+  String get legalTermsLastUpdated => 'Laatst bijgewerkt: september 2026';
 
   @override
   String get legalTermsIntro =>
@@ -17937,7 +17944,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalTermsSection01Body =>
-      'Je moet voldoen aan de minimumleeftijd die bij registratie voor jouw regio wordt getoond. Je bent verantwoordelijk voor juiste registratiegegevens en het geheim houden van je inloggegevens. Je bent verantwoordelijk voor activiteit onder je account, tenzij je ons via support onverwijld informeert bij vermoeden van ongeautoriseerde toegang.';
+      'Je moet voldoen aan de minimumleeftijd die bij registratie voor jouw regio wordt getoond. Je bent verantwoordelijk voor juiste registratiegegevens en het geheim houden van je inloggegevens. Je kunt ook een account aanmaken of inloggen met Facebook; je blijft verantwoordelijk voor dat Facebook-account en voor extra profielstappen die wij vragen. Je bent verantwoordelijk voor activiteit onder je account, tenzij je ons via support of info@themobstate.com onverwijld informeert bij vermoeden van ongeautoriseerde toegang.';
 
   @override
   String get legalTermsSection02Title => 'Licentie voor gebruik';
@@ -18000,7 +18007,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalTermsSection10Body =>
-      'Voor vragen over deze Voorwaarden kun je na registratie contact opnemen via het supportticketssysteem in het spel, of via officiële contactkanalen op de website indien gepubliceerd.';
+      'Voor vragen over deze Voorwaarden mail je info@themobstate.com of, als je een account hebt, het supportticketssysteem in het spel.';
 
   @override
   String get helpTopicTrainingHubCategory => 'Training';

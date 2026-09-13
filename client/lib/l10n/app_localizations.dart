@@ -30600,7 +30600,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacyLastUpdated.
   ///
   /// In en, this message translates to:
-  /// **'Last updated: May 2026'**
+  /// **'Last updated: September 2026'**
   String get legalPrivacyLastUpdated;
 
   /// No description provided for @legalPrivacyIntro.
@@ -30618,7 +30618,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection01Body.
   ///
   /// In en, this message translates to:
-  /// **'The Mob State is an online game operated as a digital service. For privacy requests you can contact us through the in-game support ticket system after registration, or via the official website contact channels if published.'**
+  /// **'The Mob State is an online game operated as a digital service. For privacy requests contact us at info@themobstate.com or, after you have an account, through the in-game support ticket system.'**
   String get legalPrivacySection01Body;
 
   /// No description provided for @legalPrivacySection02Title.
@@ -30630,7 +30630,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection02Body.
   ///
   /// In en, this message translates to:
-  /// **'We may process account data (username, email if provided, hashed password), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.'**
+  /// **'We may process account data (username, email if provided, hashed password), Facebook Login data when you choose that option (Facebook user ID, public profile name, and email if you grant the email permission), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.'**
   String get legalPrivacySection02Body;
 
   /// No description provided for @legalPrivacySection03Title.
@@ -30642,7 +30642,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection03Body.
   ///
   /// In en, this message translates to:
-  /// **'We use data to provide the game, secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.'**
+  /// **'We use data to provide the game, create or sign you in to an account (including via Facebook Login), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.'**
   String get legalPrivacySection03Body;
 
   /// No description provided for @legalPrivacySection04Title.
@@ -30690,7 +30690,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection07Body.
   ///
   /// In en, this message translates to:
-  /// **'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.'**
+  /// **'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.'**
   String get legalPrivacySection07Body;
 
   /// No description provided for @legalPrivacySection08Title.
@@ -30714,7 +30714,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection09Body.
   ///
   /// In en, this message translates to:
-  /// **'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. Contact us via support to exercise rights; we may need to verify your identity.'**
+  /// **'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.'**
   String get legalPrivacySection09Body;
 
   /// No description provided for @legalPrivacySection10Title.
@@ -30728,6 +30728,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The game is not directed to children under the age where parental consent is required for processing in your region. If you believe a child provided data improperly, contact us and we will take appropriate steps.'**
   String get legalPrivacySection10Body;
+
+  /// No description provided for @legalPrivacySection11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook Login'**
+  String get legalPrivacySection11Title;
+
+  /// No description provided for @legalPrivacySection11Body.
+  ///
+  /// In en, this message translates to:
+  /// **'When you tap Continue with Facebook we send you to Meta. If you approve, we receive your Facebook user ID, public profile name, and email address when you grant the email permission. We use this only to create or sign in to your The Mob State account. We do not post on your Facebook timeline. You can remove the app in your Facebook settings and ask us to delete your game data via info@themobstate.com.'**
+  String get legalPrivacySection11Body;
 
   /// No description provided for @legalDigitalGoodsTitle.
   ///
@@ -30900,7 +30912,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalTermsLastUpdated.
   ///
   /// In en, this message translates to:
-  /// **'Last updated: May 2026'**
+  /// **'Last updated: September 2026'**
   String get legalTermsLastUpdated;
 
   /// No description provided for @legalTermsIntro.
@@ -30918,7 +30930,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalTermsSection01Body.
   ///
   /// In en, this message translates to:
-  /// **'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You are responsible for activity under your account unless you notify us promptly via support if you suspect unauthorised access.'**
+  /// **'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook; you remain responsible for that Facebook account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.'**
   String get legalTermsSection01Body;
 
   /// No description provided for @legalTermsSection02Title.
@@ -31026,7 +31038,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalTermsSection10Body.
   ///
   /// In en, this message translates to:
-  /// **'For questions about these Terms, contact us through the in-game support ticket system after registration, or via official website contact channels if published.'**
+  /// **'For questions about these Terms, email info@themobstate.com or, after you have an account, use the in-game support ticket system.'**
   String get legalTermsSection10Body;
 
   /// No description provided for @helpTopicTrainingHubCategory.

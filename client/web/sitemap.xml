@@ -57,4 +57,16 @@
     <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/mafia-game"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/mafia-game"/>
   </url>
+  <url>
+    <loc>https://themobstate.com/privacy</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://themobstate.com/terms</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
 </urlset>
