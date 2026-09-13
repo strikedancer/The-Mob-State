@@ -92,6 +92,7 @@
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="The Mob State">
   <link rel="apple-touch-icon" href="logo.png">
@@ -108,6 +109,62 @@
   <title>The Mob State — Text-based Mafia Game (Browser/PWA)</title>
 </head>
 <body>
+  <script>
+    (function () {
+      var pwa = {
+        deferred: null,
+        listeners: [],
+        isStandalone: function () {
+          try {
+            if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+              return true;
+            }
+          } catch (_) {}
+          return window.navigator.standalone === true;
+        },
+        isIos: function () {
+          var ua = (window.navigator.userAgent || '').toLowerCase();
+          if (/iphone|ipad|ipod/.test(ua)) return true;
+          return window.navigator.platform === 'MacIntel' && (window.navigator.maxTouchPoints || 0) > 1;
+        },
+        canPrompt: function () {
+          return !!this.deferred;
+        },
+        onReady: function (cb) {
+          this.listeners.push(cb);
+          if (this.deferred) {
+            try { cb(); } catch (_) {}
+          }
+        },
+        promptInstall: function (done) {
+          var ev = this.deferred;
+          if (!ev) {
+            done('unavailable');
+            return;
+          }
+          this.deferred = null;
+          ev.prompt().then(function () {
+            return ev.userChoice;
+          }).then(function (choice) {
+            done((choice && choice.outcome) || 'dismissed');
+          }).catch(function () {
+            done('error');
+          });
+        }
+      };
+      window.__mobstatePwa = pwa;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        pwa.deferred = e;
+        pwa.listeners.forEach(function (cb) {
+          try { cb(); } catch (_) {}
+        });
+      });
+      window.addEventListener('appinstalled', function () {
+        pwa.deferred = null;
+      });
+    })();
+  </script>
   <script>
     (function () {
       const BUILD_FINGERPRINT_KEY = 'mobstate.buildFingerprint';

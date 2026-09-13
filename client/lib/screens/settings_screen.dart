@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
@@ -12,7 +13,9 @@ import '../services/notification_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/theft_cooldown_confirm_prefs.dart';
 import '../widgets/avatar_picker_sheet.dart';
+import '../utils/pwa_install.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/pwa_install_banner.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool embedded;
@@ -722,6 +725,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
               ),
+              if (kIsWeb && !pwaIsStandalone()) ...[
+                const SizedBox(height: 8),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.smartphone, color: Colors.amber),
+                    title: Text(l10n.settingsPwaInstallTitle),
+                    subtitle: Text(l10n.settingsPwaInstallSubtitle),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => startPwaHomeScreenInstall(context),
+                  ),
+                ),
+              ],
               const SizedBox(height: 8),
               Card(
                 child: SwitchListTile(

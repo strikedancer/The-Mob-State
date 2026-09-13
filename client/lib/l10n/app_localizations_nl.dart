@@ -119,6 +119,40 @@ class AppLocalizationsNl extends AppLocalizations {
       'Liever gebruikersnaam en wachtwoord';
 
   @override
+  String get pwaInstallTitle => 'Gebruik The Mob State als app';
+
+  @override
+  String get pwaInstallBody =>
+      'Zet deze pagina op je beginscherm voor een icoon op volledig scherm.';
+
+  @override
+  String get pwaInstallButton => 'Zet op beginscherm';
+
+  @override
+  String get pwaInstallLater => 'Niet nu';
+
+  @override
+  String get pwaInstallIosTitle => 'Toevoegen op iPhone of iPad';
+
+  @override
+  String get pwaInstallIosBody =>
+      'Apple laat websites geen icoon automatisch plaatsen. Tik op Delen (vierkant met pijl), kies Zet op beginscherm en bevestig. Daarna opent The Mob State als een app.';
+
+  @override
+  String get pwaInstallManualTitle => 'Zet op je beginscherm';
+
+  @override
+  String get pwaInstallManualBody =>
+      'Open het menu van je browser en kies App installeren of Zet op beginscherm. Daarna open je The Mob State full screen vanaf je beginscherm.';
+
+  @override
+  String get settingsPwaInstallTitle => 'Zet op beginscherm';
+
+  @override
+  String get settingsPwaInstallSubtitle =>
+      'Installeer The Mob State als app-icoon op deze telefoon of tablet.';
+
+  @override
   String get loginFailed => 'Inloggen mislukt';
 
   @override
@@ -17658,7 +17692,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Taal: schakel tussen Nederlands en Engels. Alle UI-teksten, systeemberichten en notificaties worden direct bijgewerkt.\nAvatar en selfie-portret: wissel een preset in Instellingen (maximaal eens per week; VIP-looks alleen met Player VIP) of maak een gangsterportret van een foto. De complete stappen staan in Help → Profiel & avatar en in de Almanak-handleiding.\nPrivacy: stel in wie je online-status, locatie (huidig land) en statistieken kan zien — alleen jezelf, crew, vrienden of iedereen.\nPush-notificaties: schakel per systeem in/uit. Categorieën: Crimes, Crypto-handel, Prijsalerts, Orders, live spelerevents (competitie), Marktregime, Heist, Nightclub, algemene berichten.\nAls push al was toegestaan, koppelt de web/PWA-versie na refresh of update automatisch opnieuw aan je actuele apparaat-token; alleen als je browser meldingen blokkeert moet je dit opnieuw via Instellingen toestaan.\nCrypto-notificatievoorkeuren blijven bewaard nadat je Instellingen verlaat en later opnieuw opent.\nIn-app notificaties: apart instelbaar naast push. In-app toont meldingen in de app zonder een systeemnotificatie te sturen.\nBeveiliging: verander wachtwoord, stel twee-factor authenticatie in en bekijk actieve sessies.\nNotificatie-voorkeur per systeem: stel scherpte af zodat je geen meldingen-storm krijgt van systemen die je niet actief speelt.';
+      'Taal: schakel tussen Nederlands en Engels. Alle UI-teksten, systeemberichten en notificaties worden direct bijgewerkt.\nAvatar en selfie-portret: wissel een preset in Instellingen (maximaal eens per week; VIP-looks alleen met Player VIP) of maak een gangsterportret van een foto. De complete stappen staan in Help → Profiel & avatar en in de Almanak-handleiding.\nPrivacy: stel in wie je online-status, locatie (huidig land) en statistieken kan zien — alleen jezelf, crew, vrienden of iedereen.\nPush-notificaties: schakel per systeem in/uit. Categorieën: Crimes, Crypto-handel, Prijsalerts, Orders, live spelerevents (competitie), Marktregime, Heist, Nightclub, algemene berichten.\nAls push al was toegestaan, koppelt de web/PWA-versie na refresh of update automatisch opnieuw aan je actuele apparaat-token; alleen als je browser meldingen blokkeert moet je dit opnieuw via Instellingen toestaan.\nCrypto-notificatievoorkeuren blijven bewaard nadat je Instellingen verlaat en later opnieuw opent.\nIn-app notificaties: apart instelbaar naast push. In-app toont meldingen in de app zonder een systeemnotificatie te sturen.\nBeveiliging: verander wachtwoord, stel twee-factor authenticatie in en bekijk actieve sessies.\nNotificatie-voorkeur per systeem: stel scherpte af zodat je geen meldingen-storm krijgt van systemen die je niet actief speelt.\nOp telefoon of tablet kun je The Mob State op het beginscherm zetten: Android Chrome opent een install-venster via de banner of Instellingen → Zet op beginscherm. Op iPhone/iPad: Delen → Zet op beginscherm (Apple laat volledig automatisch toevoegen niet toe).';
 
   @override
   String get helpTopicSettingsTips =>

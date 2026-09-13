@@ -20,6 +20,7 @@ import '../widgets/daily_goals_card.dart';
 import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/pwa_install_banner.dart';
 import '../widgets/live_event_rail.dart';
 import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
@@ -933,12 +934,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: !showLeftSidebar ? _buildDrawer(context, l10n) : null,
-      bottomNavigationBar: !showLeftSidebar
-          ? ValueListenableBuilder<Map<String, int>>(
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const PwaInstallBanner(),
+          if (!showLeftSidebar)
+            ValueListenableBuilder<Map<String, int>>(
               valueListenable: _navCooldowns,
               builder: (_, __, ___) => _buildMobileQuickNavBar(l10n),
-            )
-          : null,
+            ),
+        ],
+      ),
       body: Stack(
         children: [
           Column(

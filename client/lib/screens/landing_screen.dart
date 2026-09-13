@@ -12,6 +12,7 @@ import '../providers/auth_provider.dart';
 import '../providers/locale_provider.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/guest_legal_footer.dart';
+import '../widgets/pwa_install_banner.dart';
 import 'login_screen.dart';
 
 const Color _landingGold = Color(0xFFC0A060);
@@ -765,6 +766,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     },
                   ),
                 ),
+                const PwaInstallBanner(),
                 const SafeArea(top: false, child: GuestLegalFooter()),
               ],
             ),

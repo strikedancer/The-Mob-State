@@ -120,6 +120,40 @@ class AppLocalizationsDe extends AppLocalizations {
       'Verwenden Sie stattdessen Benutzername und Passwort';
 
   @override
+  String get pwaInstallTitle => 'Use The Mob State as an app';
+
+  @override
+  String get pwaInstallBody =>
+      'Add this page to your home screen for a full-screen app icon.';
+
+  @override
+  String get pwaInstallButton => 'Add to Home Screen';
+
+  @override
+  String get pwaInstallLater => 'Not now';
+
+  @override
+  String get pwaInstallIosTitle => 'Add on iPhone or iPad';
+
+  @override
+  String get pwaInstallIosBody =>
+      'Apple does not let websites add an icon automatically. Tap Share (the square with an arrow), then Add to Home Screen, and confirm. The Mob State then opens like an app.';
+
+  @override
+  String get pwaInstallManualTitle => 'Add to your home screen';
+
+  @override
+  String get pwaInstallManualBody =>
+      'Open your browser menu and choose Install app or Add to Home Screen. After that, The Mob State opens full screen from your home screen.';
+
+  @override
+  String get settingsPwaInstallTitle => 'Add to Home Screen';
+
+  @override
+  String get settingsPwaInstallSubtitle =>
+      'Install The Mob State as an app icon on this phone or tablet.';
+
+  @override
   String get loginFailed => 'Fehler bei der Anmeldung';
 
   @override

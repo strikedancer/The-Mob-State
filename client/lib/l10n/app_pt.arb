@@ -12018,5 +12018,15 @@
     }
   },
   "legalPrivacySection11Title": "Facebook Login",
-  "legalPrivacySection11Body": "When you tap Continue with Facebook we send you to Meta. If you approve, we receive your Facebook user ID, public profile name, and email address when you grant the email permission. We use this only to create or sign in to your The Mob State account. We do not post on your Facebook timeline. You can remove the app in your Facebook settings and ask us to delete your game data via info@themobstate.com."
+  "legalPrivacySection11Body": "When you tap Continue with Facebook we send you to Meta. If you approve, we receive your Facebook user ID, public profile name, and email address when you grant the email permission. We use this only to create or sign in to your The Mob State account. We do not post on your Facebook timeline. You can remove the app in your Facebook settings and ask us to delete your game data via info@themobstate.com.",
+  "pwaInstallTitle": "Use The Mob State as an app",
+  "pwaInstallBody": "Add this page to your home screen for a full-screen app icon.",
+  "pwaInstallButton": "Add to Home Screen",
+  "pwaInstallLater": "Not now",
+  "pwaInstallIosTitle": "Add on iPhone or iPad",
+  "pwaInstallIosBody": "Apple does not let websites add an icon automatically. Tap Share (the square with an arrow), then Add to Home Screen, and confirm. The Mob State then opens like an app.",
+  "pwaInstallManualTitle": "Add to your home screen",
+  "pwaInstallManualBody": "Open your browser menu and choose Install app or Add to Home Screen. After that, The Mob State opens full screen from your home screen.",
+  "settingsPwaInstallTitle": "Add to Home Screen",
+  "settingsPwaInstallSubtitle": "Install The Mob State as an app icon on this phone or tablet."
 }

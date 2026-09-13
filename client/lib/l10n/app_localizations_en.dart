@@ -116,6 +116,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get facebookUsePasswordInstead => 'Use username and password instead';
 
   @override
+  String get pwaInstallTitle => 'Use The Mob State as an app';
+
+  @override
+  String get pwaInstallBody =>
+      'Add this page to your home screen for a full-screen app icon.';
+
+  @override
+  String get pwaInstallButton => 'Add to Home Screen';
+
+  @override
+  String get pwaInstallLater => 'Not now';
+
+  @override
+  String get pwaInstallIosTitle => 'Add on iPhone or iPad';
+
+  @override
+  String get pwaInstallIosBody =>
+      'Apple does not let websites add an icon automatically. Tap Share (the square with an arrow), then Add to Home Screen, and confirm. The Mob State then opens like an app.';
+
+  @override
+  String get pwaInstallManualTitle => 'Add to your home screen';
+
+  @override
+  String get pwaInstallManualBody =>
+      'Open your browser menu and choose Install app or Add to Home Screen. After that, The Mob State opens full screen from your home screen.';
+
+  @override
+  String get settingsPwaInstallTitle => 'Add to Home Screen';
+
+  @override
+  String get settingsPwaInstallSubtitle =>
+      'Install The Mob State as an app icon on this phone or tablet.';
+
+  @override
   String get loginFailed => 'Login failed';
 
   @override
@@ -17619,7 +17653,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.';
+      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).';
 
   @override
   String get helpTopicSettingsTips =>
