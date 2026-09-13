@@ -23,6 +23,7 @@ import { ensureNightclubPlayerSupplySchema } from './startup/ensureNightclubPlay
 import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
+import { playerStartService } from './services/playerStartService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
@@ -69,6 +70,11 @@ async function startServer() {
   await ensureDailyGoalsSchema();
   await ensureCrewRecruitingSchema();
   await ensureCrewTradeStorageSchema();
+  try {
+    await playerStartService.ensureStarterCrew();
+  } catch (error) {
+    console.error('[Startup] Failed to ensure starter crew:', error);
+  }
   await ensureGarageUpgradeTrackSchema();
   await ensureGarageMotorcycleTrackBackfill();
   await ensureGameEventPresets();

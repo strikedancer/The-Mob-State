@@ -703,6 +703,24 @@ class _LandingScreenState extends State<LandingScreen> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 10),
+                          Text(
+                            l10n.landingFairPlay,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.78),
+                              fontSize: isMobile ? 13 : 14,
+                              height: 1.4,
+                              fontWeight: FontWeight.w600,
+                              shadows: const [
+                                Shadow(
+                                  blurRadius: 8,
+                                  color: Colors.black87,
+                                  offset: Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(height: 32),
                           Text(
                             l10n.landingAboutTitle,

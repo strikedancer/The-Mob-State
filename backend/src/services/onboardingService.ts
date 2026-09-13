@@ -44,10 +44,10 @@ const STEP_COPY: Record<
   },
   crew: {
     ctaRoute: '/crew',
-    titleNl: 'Zoek of maak een crew',
-    titleEn: 'Find or create a crew',
-    bodyNl: 'Open crews kun je meteen joinen. Samen verdien je meer.',
-    bodyEn: 'Open crews can be joined instantly. You earn more together.',
+    titleNl: 'Join The Rookies of een open crew',
+    titleEn: 'Join The Rookies or an open crew',
+    bodyNl: 'The Rookies neemt iedereen aan. Morgen krijgt je crew een seintje als je vastzit.',
+    bodyEn: 'The Rookies accepts everyone. Tomorrow your crew gets a ping if you are jailed.',
   },
   done: {
     ctaRoute: '/dashboard',
@@ -99,7 +99,7 @@ async function inferAndMark(playerId: number): Promise<{
         where: { playerId, NOT: { crimeId: 'police_arrest' } },
       }),
       prisma.jobAttempt.count({
-        where: { playerId, completedAt: { not: null } },
+        where: { playerId },
       }),
       prisma.crewMember.findUnique({
         where: { playerId },

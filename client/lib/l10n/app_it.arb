@@ -12080,5 +12080,17 @@
       }
     }
   },
-  "friendsInviteLoadFailed": "Impossibile caricare il link di invito"
+  "friendsInviteLoadFailed": "Impossibile caricare il link di invito",
+  "menuUnlocksAtRank": "Si sblocca al grado {rank}",
+  "@menuUnlocksAtRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiActionBrowseOpenCrews": "Sfoglia gli equipaggi aperti",
+  "crewUiActionBrowseOpenCrewsShort": "Equipaggi aperti",
+  "crewUiJoinRookiesHint": "I Rookies accettano tutti: iscriviti da Crews.",
+  "landingFairPlay": "I VIP accorciano le attese. Non compra le vincite."
 }

@@ -12080,5 +12080,17 @@
       }
     }
   },
-  "friendsInviteLoadFailed": "Nie można załadować linku z zaproszeniem"
+  "friendsInviteLoadFailed": "Nie można załadować linku z zaproszeniem",
+  "menuUnlocksAtRank": "Odblokowuje się na poziomie {rank}",
+  "@menuUnlocksAtRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiActionBrowseOpenCrews": "Przeglądaj otwarte załogi",
+  "crewUiActionBrowseOpenCrewsShort": "Otwarte załogi",
+  "crewUiJoinRookiesHint": "The Rookies przyjmują wszystkich — dołącz z Crews.",
+  "landingFairPlay": "VIP skraca czas oczekiwania. Nie kupuje zwycięstw."
 }

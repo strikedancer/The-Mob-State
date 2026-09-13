@@ -10,7 +10,7 @@ class LocaleProvider with ChangeNotifier {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   static const String _guestPrefsKey = 'guest_ui_language_code';
 
-  Locale _locale = const Locale('nl'); // Default to Dutch
+  Locale _locale = const Locale('en'); // Pre-init default; device/saved locale wins after initGuestLocale
 
   Locale get locale => _locale;
 
@@ -98,7 +98,7 @@ class LocaleProvider with ChangeNotifier {
 
   /// Reset to default locale (on logout)
   void reset() {
-    _locale = const Locale('nl');
+    _locale = const Locale('en');
     notifyListeners();
   }
 }

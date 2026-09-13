@@ -12080,5 +12080,17 @@
       }
     }
   },
-  "friendsInviteLoadFailed": "Não foi possível carregar o link do seu convite"
+  "friendsInviteLoadFailed": "Não foi possível carregar o link do seu convite",
+  "menuUnlocksAtRank": "Desbloqueia na classificação {rank}",
+  "@menuUnlocksAtRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiActionBrowseOpenCrews": "Procure equipes abertas",
+  "crewUiActionBrowseOpenCrewsShort": "Equipes abertas",
+  "crewUiJoinRookiesHint": "The Rookies aceita todos – junte-se a partir de Crews.",
+  "landingFairPlay": "VIP encurta esperas. Não compra vitórias."
 }

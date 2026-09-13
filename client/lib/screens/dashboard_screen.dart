@@ -344,6 +344,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
   static const double _tabletBreakpoint = 900;
   // Wide desktop threshold (native tile-grid column count)
   static const double _wideDesktopBreakpoint = 1200;
+  static const int _lateMenuUnlockRank = 5;
+  static const Set<_WebSection> _lateMenuSections = {
+    _WebSection.vault,
+    _WebSection.hitlist,
+    _WebSection.aviation,
+    _WebSection.territory,
+    _WebSection.casino,
+    _WebSection.crypto,
+    _WebSection.stockMarket,
+    _WebSection.smuggling,
+    _WebSection.drugs,
+    _WebSection.nightclub,
+    _WebSection.properties,
+    _WebSection.don,
+    _WebSection.races,
+    _WebSection.prostitution,
+    _WebSection.redLightDistricts,
+    _WebSection.ammoFactory,
+    _WebSection.tuneShop,
+  };
 
   int _unreadCount = 0;
   int _pendingFriendRequestCount = 0;
@@ -428,7 +448,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _syncOnNavigate();
   }
 
+  int _currentPlayerRank() =>
+      context.read<AuthProvider>().currentPlayer?.rank ?? 1;
+
+  bool _isLateMenuLocked(_WebSection section) =>
+      _lateMenuSections.contains(section) &&
+      _currentPlayerRank() < _lateMenuUnlockRank;
+
+  void _showLateMenuLocked() {
+    final l10n = AppLocalizations.of(context)!;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(l10n.menuUnlocksAtRank(_lateMenuUnlockRank)),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.zero,
+      ),
+    );
+  }
+
   void _selectWebSection(_WebSection section, {String? focusProductKey}) {
+    if (_isLateMenuLocked(section)) {
+      _showLateMenuLocked();
+      return;
+    }
     if (section == _WebSection.tools) {
       _openBlackMarket(BlackMarketScreen.tabTools);
       return;
@@ -521,6 +564,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _expandedNavGroup = _navGroupForSection(_selectedWebSection);
     // Connect to event stream when dashboard opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _isLateMenuLocked(_selectedWebSection)) {
+        setState(() {
+          _selectedWebSection = _WebSection.dashboard;
+          _expandedNavGroup = _navGroupForSection(_WebSection.dashboard);
+        });
+      }
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
       eventProvider.connect();
       _refreshDashboardBadges();
@@ -1615,6 +1664,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     VoidCallback? onBeforeNavigate,
   ) {
     final selected = _selectedWebSection == item.section;
+    final locked = _isLateMenuLocked(item.section);
+    final iconColor = locked
+        ? Colors.white38
+        : (selected ? _dashboardGold : Colors.white70);
+    final labelColor = locked
+        ? Colors.white38
+        : (selected ? Colors.white : const Color(0xCCFFFFFF));
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
       child: Material(
@@ -1622,6 +1678,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: InkWell(
           borderRadius: BorderRadius.circular(6),
           onTap: () {
+            if (locked) {
+              _showLateMenuLocked();
+              return;
+            }
             onBeforeNavigate?.call();
             if (item.section == _WebSection.vehicleHeist) {
               _openVehicleHeist(0);
@@ -1650,7 +1710,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Icon(
                   item.icon,
                   size: 16,
-                  color: selected ? _dashboardGold : Colors.white70,
+                  color: iconColor,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -1659,12 +1719,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: selected ? Colors.white : const Color(0xCCFFFFFF),
+                      color: labelColor,
                       fontSize: 13,
                       fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                     ),
                   ),
                 ),
+                if (locked)
+                  const Icon(Icons.lock_outline, size: 14, color: Colors.white38),
                 if (item.badge > 0)
                   Container(
                     height: 18,
@@ -2092,6 +2154,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildWebContentBody(BuildContext context) {
+    if (_isLateMenuLocked(_selectedWebSection)) {
+      return _WebDashboardHomeContent(
+        onOpenMarket: () =>
+            _openBlackMarket(BlackMarketScreen.tabMarketplace),
+      );
+    }
     switch (_selectedWebSection) {
       case _WebSection.support:
         return SupportTicketsScreen(

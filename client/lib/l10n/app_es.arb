@@ -12080,5 +12080,17 @@
       }
     }
   },
-  "friendsInviteLoadFailed": "No se pudo cargar el enlace de invitación"
+  "friendsInviteLoadFailed": "No se pudo cargar el enlace de invitación",
+  "menuUnlocksAtRank": "Se desbloquea en el rango {rank}",
+  "@menuUnlocksAtRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiActionBrowseOpenCrews": "Explorar equipos abiertos",
+  "crewUiActionBrowseOpenCrewsShort": "Tripulaciones abiertas",
+  "crewUiJoinRookiesHint": "The Rookies acepta a todas - únete a Crews.",
+  "landingFairPlay": "VIP acorta las esperas. No compra victorias."
 }

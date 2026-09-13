@@ -12080,5 +12080,17 @@
       }
     }
   },
-  "friendsInviteLoadFailed": "Ihr Einladungslink konnte nicht geladen werden"
+  "friendsInviteLoadFailed": "Ihr Einladungslink konnte nicht geladen werden",
+  "menuUnlocksAtRank": "Wird bei Rang {rank} freigeschaltet",
+  "@menuUnlocksAtRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiActionBrowseOpenCrews": "Durchsuchen Sie offene Crews",
+  "crewUiActionBrowseOpenCrewsShort": "Offene Mannschaften",
+  "crewUiJoinRookiesHint": "Die Rookies akzeptieren jeden – kommen Sie aus den Crews.",
+  "landingFairPlay": "VIP verkürzt Wartezeiten. Es werden keine Gewinne gekauft."
 }

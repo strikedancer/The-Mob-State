@@ -1,7 +1,7 @@
 # Referrals (share link)
 
 ## Scope
-Personal invite URLs from **Friends → Deel link**. A recruit who registers with `?ref=` gets starter cash and an accepted friendship. The referrer is paid after the recruit’s first successful crime or job. No Facebook friend-list import.
+Personal invite URLs from **Friends → Deel link**. Every new account already gets starter cash (`PLAYER_STARTER_CASH`). A recruit who registers with `?ref=` gets the recruit bonus on top plus an accepted friendship. The referrer is paid after the recruit’s first successful crime or job. No Facebook friend-list import.
 
 ## Primary Frontend Entry
 - `client/lib/screens/friends_screen.dart` — share / copy / Facebook sharer
@@ -39,8 +39,9 @@ Personal invite URLs from **Friends → Deel link**. A recruit who registers wit
 
 ## Runtime Keys
 - `REFERRAL_REFERRER_CASH` (default 5000)
-- `REFERRAL_RECRUIT_CASH` (default 2000)
+- `REFERRAL_RECRUIT_CASH` (default 2000; stacked on `PLAYER_STARTER_CASH`)
 - `REFERRAL_DAILY_CAP` (default 5)
+- `PLAYER_STARTER_CASH` (default 2000; all new accounts, see [balance-economy.md](balance-economy.md))
 
 ## QA Checklist
 1. Friends → Deel link shows URL, copy, share, Facebook sharer

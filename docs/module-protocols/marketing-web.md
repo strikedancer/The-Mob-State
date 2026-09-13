@@ -9,7 +9,8 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 - **Google Sign-In (web):** zelfde patroon via `GET /auth/google/status` en terugkomst op `/login?g=ok|pending|error`. Details: `google.md`.
 - **Publieke rankings:** `GET /public/home` met basis-URL `AppConfig.apiBaseUrl` (apex `themobstate.com` / `themobstate.nl` → `api.themobstate.com` zonder dart-define; zie `app_config.dart` + Docker `WEB_API_BASE_URL`).
 - `client/lib/main.dart` — `_resolveHome` + `routes` voor `/`, `/login`, `/register`, `/privacy`, `/terms`, `/digital-goods`; `AuthWrapper` toont `LandingScreen` zonder sessie. Query `?ref=` op `/`, `/login` of `/register` wordt bewaard tot registratie (deel-link). Zie [referrals.md](referrals.md).
-- `client/lib/providers/locale_provider.dart` — `initGuestLocale`, `persistGuestLocale` (geen `PUT /player/language` voor gasten).
+- `client/lib/providers/locale_provider.dart` — pre-init default is **`en`** (geen NL-flash voor internationale gasten). `initGuestLocale` / `persistGuestLocale` winnen daarna (browser of opgeslagen keuze; geen `PUT /player/language` voor gasten).
+- Landing hero: korte first-hour hook (`landingHeroSubtitle`) plus fair-play regel (`landingFairPlay`: VIP verkort wachttijden, koopt geen winst).
 
 ## Backend
 - `backend/src/routes/publicMarketing.ts` — `GET /public/home` (read-only, geen auth), rate limit.

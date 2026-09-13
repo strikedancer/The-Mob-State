@@ -20,8 +20,11 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Credits:** `ACTION_COOLDOWN_RESET` for `actionType=school` skips an active school cooldown only.
 - See [school.md](school.md).
 
+## Documented static modifiers (new accounts)
+- **Starter cash:** `PLAYER_STARTER_CASH` default **€2.000** for every new password / Facebook / Google account (`playerStartService.grantStarterBundle`). Existing players are not backfilled.
+
 ## Documented static modifiers (referrals)
-- **Recruit cash:** `REFERRAL_RECRUIT_CASH` default **€2.000** at register via a valid `?ref=` code.
+- **Recruit cash:** `REFERRAL_RECRUIT_CASH` default **€2.000** at register via a valid `?ref=`, stacked on top of starter cash.
 - **Referrer cash:** `REFERRAL_REFERRER_CASH` default **€5.000** after the recruit’s first successful crime or job.
 - **Daily cap:** `REFERRAL_DAILY_CAP` default **5** referrer payouts per UTC day. Extra qualified recruits wait until the next day.
 - Cash only, no premium credits. Self-referral ignored. See [referrals.md](referrals.md).

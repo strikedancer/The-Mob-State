@@ -1082,6 +1082,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get menuSearchNoResults => 'Keine passenden Seiten';
 
   @override
+  String menuUnlocksAtRank(int rank) {
+    return 'Wird bei Rang $rank freigeschaltet';
+  }
+
+  @override
   String get menuNavCategoryActions => 'Aktionen';
 
   @override
@@ -4318,6 +4323,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get crewUiActionCreateCrewShort => 'Crew erstellen (50.000 €)';
+
+  @override
+  String get crewUiActionBrowseOpenCrews => 'Durchsuchen Sie offene Crews';
+
+  @override
+  String get crewUiActionBrowseOpenCrewsShort => 'Offene Mannschaften';
+
+  @override
+  String get crewUiJoinRookiesHint =>
+      'Die Rookies akzeptieren jeden – kommen Sie aus den Crews.';
 
   @override
   String get crewUiStateNotInCrewYet => 'Du bist noch nicht in einer Crew';
@@ -18000,6 +18015,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get landingHeroSubtitle =>
       'Ein tiefgründiges, textbasiertes Kriminalstrategiespiel in Ihrem Browser. Bauen Sie Ihr Imperium auf, leiten Sie Mannschaften, handeln Sie, kämpfen Sie um Territorien – und steigen Sie im Rang auf.';
+
+  @override
+  String get landingFairPlay =>
+      'VIP verkürzt Wartezeiten. Es werden keine Gewinne gekauft.';
 
   @override
   String get landingAboutTitle => 'Was erwartet Sie';

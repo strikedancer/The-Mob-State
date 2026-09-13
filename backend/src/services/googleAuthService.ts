@@ -285,6 +285,13 @@ export const googleAuthService = {
     });
 
     try {
+      const { playerStartService } = await import('./playerStartService');
+      await playerStartService.grantStarterBundle(player.id);
+    } catch (error) {
+      console.error('[GoogleAuth] Failed to grant starter bundle:', error);
+    }
+
+    try {
       const { referralService } = await import('./referralService');
       await referralService.attachOnRegister(player.id, input.referralCode);
     } catch (error) {

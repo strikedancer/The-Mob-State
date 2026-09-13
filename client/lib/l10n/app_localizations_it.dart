@@ -1071,6 +1071,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get menuSearchNoResults => 'Nessuna pagina corrispondente';
 
   @override
+  String menuUnlocksAtRank(int rank) {
+    return 'Si sblocca al grado $rank';
+  }
+
+  @override
   String get menuNavCategoryActions => 'Azioni';
 
   @override
@@ -4302,6 +4307,16 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get crewUiActionCreateCrewShort => 'Crea Crew (€50k)';
+
+  @override
+  String get crewUiActionBrowseOpenCrews => 'Sfoglia gli equipaggi aperti';
+
+  @override
+  String get crewUiActionBrowseOpenCrewsShort => 'Equipaggi aperti';
+
+  @override
+  String get crewUiJoinRookiesHint =>
+      'I Rookies accettano tutti: iscriviti da Crews.';
 
   @override
   String get crewUiStateNotInCrewYet => 'Non fai ancora parte di un Crew';
@@ -17973,6 +17988,10 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get landingHeroSubtitle =>
       'Un profondo gioco di strategia criminale basato su testo nel tuo browser. Costruisci il tuo impero, gestisci equipaggi, commercia, combatti per il territorio e scala le classifiche.';
+
+  @override
+  String get landingFairPlay =>
+      'I VIP accorciano le attese. Non compra le vincite.';
 
   @override
   String get landingAboutTitle => 'Cosa ti aspetta';

@@ -13,6 +13,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - The compact status-bar health meter opens Hospital. Crimes shows a wounded banner (`hospitalGoHeal`) when HP is below 70.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - Web dashboard navigation is sidebar-first: add or change module navigation via the sidebar source (`_buildWebMenuItems` + `_WebSection` content switch) and not only via the legacy tile grid. Sidebar and hamburger menu are grouped (Acties / Wereld / Sociaal / Economie / Empire / Assets / Meer) and have a search field.
+- **Early-rank menu:** until rank 5, grey and lock late systems (vault, hitlist, aviation, territory, casino, crypto, stocks, smuggling, drugs, nightclub, properties, don, races, prostitution, RLD, ammo factory, tune shop). Keep crimes, jobs, vehicle heist, events, court, travel, crew, friends, support, bank, black market, premium, inventory, training, school, help, hospital, prison and achievements open. Locked taps show `menuUnlocksAtRank`.
 - Don lives under **Empire** next to properties (`_WebSection.don` → `don_screen.dart`). Keep the mobile extra-tile entry in sync. See [don.md](don.md). Don collect/office/loan/contract timers stay on the Don hub (per racket / per job), not as a single Home footer cooldown.
 - Midnight Races live under **Empire** (`_WebSection.races` → `race_screen.dart`). See [races.md](races.md). Settle/refund writes `race.settled` / `race.refunded` to the personal activity feed plus inbox + push.
 - Drugs live under **Empire** (`_WebSection.drugs` → `drug_environment_screen.dart`) with the same photo-hero + tab pattern as Don. Page-info `i` lives in the Drugs hero, not the HUD. See [drugs.md](drugs.md).
@@ -91,6 +92,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verifieer dat de avatar-knop **Mijn profiel** het eigen publieke profiel in de content-pane toont (sidebar blijft zichtbaar).
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer dat nieuwe accounts een Start-kaart met één CTA zien (crime → daily/job → crew) en dat rank 3+ of afgeronde onboarding die kaart niet meer ziet.
+- Verifieer onder rang 5 dat late menu-items grijs/slot zijn en een toast `menuUnlocksAtRank` geven; vanaf rang 5 zijn ze weer open.
 - Verifieer dat dagdoelen **één keer** in de gestylede paneelkaart staan (niet dubbel bovenaan), dat elke regel cash + XP toont, dat Claim een toast met bedragen geeft, en dat autodiefstal niet featured is onder rank 5.
 - Verifieer dat **Eten & Drinken** nergens meer in zijbalk of hamburger-menu staat.
 - Verifieer dat een klaar dag- of weekdoel **geen** rood cijfer op weekevent-avatars zet. Alleen het maandelijkse Empire-avatar mag een Event Pass-claimcijfer tonen.

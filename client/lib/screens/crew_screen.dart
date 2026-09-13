@@ -121,6 +121,9 @@ class _CrewScreenState extends State<CrewScreen>
         case 'tab.allCrews': return l10n.crewUiTabAllCrews;
         case 'tab.chat': return l10n.crewUiTabChat;
         case 'action.createCrewShort': return l10n.crewUiActionCreateCrewShort;
+        case 'action.browseOpenCrews': return l10n.crewUiActionBrowseOpenCrews;
+        case 'action.browseOpenCrewsShort': return l10n.crewUiActionBrowseOpenCrewsShort;
+        case 'hint.joinRookies': return l10n.crewUiJoinRookiesHint;
         case 'state.notInCrewYet': return l10n.crewUiStateNotInCrewYet;
         case 'action.createCrew': return l10n.crewUiActionCreateCrew;
         case 'label.crewBank': return l10n.crewUiLabelCrewBank;
@@ -4277,9 +4280,9 @@ class _CrewScreenState extends State<CrewScreen>
             ),
       floatingActionButton: _myCrew == null
           ? FloatingActionButton.extended(
-              onPressed: _createCrew,
-              icon: const Icon(Icons.add),
-              label: Text(_t(l10n, 'action.createCrewShort')),
+              onPressed: () => _tabController.animateTo(6),
+              icon: const Icon(Icons.groups),
+              label: Text(_t(l10n, 'action.browseOpenCrewsShort')),
             )
           : null,
     );
@@ -4297,22 +4300,23 @@ class _CrewScreenState extends State<CrewScreen>
               _t(l10n, 'state.notInCrewYet'),
               style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
+            const SizedBox(height: 8),
+            Text(
+              _t(l10n, 'hint.joinRookies'),
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 14, color: Colors.white70),
+            ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: _createCrew,
-              icon: const Icon(Icons.add),
-              label: Text(
-                _t(l10n, 'action.createCrew'),
-              ),
+              onPressed: () => _tabController.animateTo(6),
+              icon: const Icon(Icons.groups),
+              label: Text(_t(l10n, 'action.browseOpenCrews')),
             ),
             const SizedBox(height: 12),
-            TextButton(
-              onPressed: () => _tabController.animateTo(6),
-              child: Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Bekijk open crews'
-                    : 'Browse open crews',
-              ),
+            TextButton.icon(
+              onPressed: _createCrew,
+              icon: const Icon(Icons.add),
+              label: Text(_t(l10n, 'action.createCrew')),
             ),
           ],
         ),
