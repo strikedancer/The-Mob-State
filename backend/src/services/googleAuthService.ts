@@ -228,6 +228,7 @@ export const googleAuthService = {
     gender: 'male' | 'female';
     preferredLanguage?: string;
     acceptedTerms: boolean;
+    referralCode?: string;
   }) {
     if (!input.acceptedTerms) {
       throw new Error('TERMS_REQUIRED');
@@ -282,6 +283,13 @@ export const googleAuthService = {
           : {}),
       },
     });
+
+    try {
+      const { referralService } = await import('./referralService');
+      await referralService.attachOnRegister(player.id, input.referralCode);
+    } catch (error) {
+      console.error('[GoogleAuth] Failed to attach referral:', error);
+    }
 
     return authService.issueSession(player.id);
   },

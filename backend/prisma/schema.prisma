@@ -44,6 +44,15 @@ model Player {
   email                           String?                          @db.VarChar(255)
   facebookId                      String?                          @unique @db.VarChar(32)
   googleId                        String?                          @unique @db.VarChar(64)
+  /// Public invite code for share links (`/register?ref=`).
+  referralCode                    String?                          @unique @db.VarChar(12)
+  referredById                    Int?
+  referredBy                      Player?                          @relation("PlayerReferrals", fields: [referredById], references: [id], onDelete: SetNull)
+  referrals                       Player[]                         @relation("PlayerReferrals")
+  /// Set when this recruit completed a first crime or job.
+  referralQualifiedAt             DateTime?
+  /// Set when the referrer received the cash payout for this recruit.
+  referralReferrerPaidAt          DateTime?
   emailFriendAccepted             Boolean                          @default(true)
   emailFriendRequest              Boolean                          @default(true)
   emailVerified                   Boolean                          @default(false)
@@ -166,6 +175,7 @@ model Player {
   @@index([username])
   @@index([jailRelease])
   @@index([fbiHeat])
+  @@index([referredById])
   @@map("players")
 }
 

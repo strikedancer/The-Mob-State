@@ -7451,6 +7451,66 @@ abstract class AppLocalizations {
   /// **'Crew: {name}'**
   String friendsUiLineCrew(String name);
 
+  /// No description provided for @friendsInviteShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share link'**
+  String get friendsInviteShare;
+
+  /// No description provided for @friendsInviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends'**
+  String get friendsInviteTitle;
+
+  /// No description provided for @friendsInviteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this link. A new player gets {recruit} to start. You get {referrer} after their first crime or job (max {cap} payouts a day).'**
+  String friendsInviteBody(String recruit, String referrer, int cap);
+
+  /// No description provided for @friendsInviteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'They become your friend in the game when they join.'**
+  String get friendsInviteHint;
+
+  /// No description provided for @friendsInviteCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get friendsInviteCopy;
+
+  /// No description provided for @friendsInviteCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get friendsInviteCopied;
+
+  /// No description provided for @friendsInviteFacebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on Facebook'**
+  String get friendsInviteFacebook;
+
+  /// No description provided for @friendsInviteShareAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get friendsInviteShareAction;
+
+  /// No description provided for @friendsInviteShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Join me in The Mob State: {url}'**
+  String friendsInviteShareText(String url);
+
+  /// No description provided for @friendsInviteLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your invite link'**
+  String get friendsInviteLoadFailed;
+
   /// No description provided for @crewUiAppCrews.
   ///
   /// In en, this message translates to:
@@ -29622,13 +29682,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicFriendsHow.
   ///
   /// In en, this message translates to:
-  /// **'Friends page shows three lists: current friends, sent requests and received requests.\nFrom a friend you can directly send a message, view their profile or start a collaboration.\nYou can see when friends are active in the game, which helps planning heists or trades.\nFriend requests do not expire automatically; keep the list tidy so pending requests do not distract you.\nFriends outside your crew are valuable for jail escapes (a friend can help you break out) and information sharing.\nWhen a friend gets arrested, accepted friends now also receive a push notification that the player is waiting for help in prison.'**
+  /// **'Friends page shows three lists: current friends, sent requests and received requests.\nShare link on Friends sends your personal invite URL. A new player who registers with it gets a starter cash bonus and becomes your friend. You get cash after their first successful crime or job, with a daily payout cap.\nFrom a friend you can directly send a message, view their profile or start a collaboration.\nYou can see when friends are active in the game, which helps planning heists or trades.\nFriend requests do not expire automatically; keep the list tidy so pending requests do not distract you.\nFriends outside your crew are valuable for jail escapes (a friend can help you break out) and information sharing.\nWhen a friend gets arrested, accepted friends now also receive a push notification that the player is waiting for help in prison.'**
   String get helpTopicFriendsHow;
 
   /// No description provided for @helpTopicFriendsTips.
   ///
   /// In en, this message translates to:
-  /// **'Add friends who share your play style: heist partners, trader networks or crime support.\nA friend who executes a jail escape earns €500-€2.000 reward on success. Arrange this for emergencies.'**
+  /// **'Add friends who share your play style: heist partners, trader networks or crime support.\nUse Share link for Facebook, messages or any chat — Facebook does not give us your friend list.\nA friend who executes a jail escape earns €500-€2.000 reward on success. Arrange this for emergencies.'**
   String get helpTopicFriendsTips;
 
   /// No description provided for @helpTopicMessagesCategory.

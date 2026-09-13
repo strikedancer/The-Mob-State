@@ -16,6 +16,7 @@ import '../config/supported_languages.dart';
 import '../widgets/guest_legal_footer.dart';
 import '../widgets/guest_legal_document_modal.dart';
 import '../utils/web_history.dart';
+import '../utils/referral_invite_store.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -70,6 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _isLogin = !widget.initialRegister;
+    ReferralInviteStore.captureFromUri(Uri.base);
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       final auth = Provider.of<AuthProvider>(context, listen: false);

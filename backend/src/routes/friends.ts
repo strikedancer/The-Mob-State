@@ -1,9 +1,30 @@
 import { Router } from 'express';
 import { friendService } from '../services/friendService';
+import { referralService } from '../services/referralService';
 import { authenticate } from '../middleware/authenticate';
 import { worldEventService } from '../services/worldEventService';
 
 const router = Router();
+
+/**
+ * GET /friends/invite
+ * Share-link payload for this player (creates a code on first visit).
+ */
+router.get('/invite', authenticate, async (req, res) => {
+  try {
+    const invite = await referralService.getInvite(req.player!.id);
+    return res.json({
+      event: 'friends.invite',
+      params: invite,
+    });
+  } catch (error) {
+    console.error('[friends/invite] Failed to load invite:', error);
+    return res.status(500).json({
+      event: 'error.invite_failed',
+      params: {},
+    });
+  }
+});
 
 /**
  * POST /friends/request

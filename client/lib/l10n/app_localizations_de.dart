@@ -4236,6 +4236,42 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get friendsInviteShare => 'Link teilen';
+
+  @override
+  String get friendsInviteTitle => 'Freunde einladen';
+
+  @override
+  String friendsInviteBody(String recruit, String referrer, int cap) {
+    return 'Teilen Sie diesen Link. Ein neuer Spieler erhält zum Start $recruit. Sie erhalten $referrer nach dem ersten Verbrechen oder Job (maximal $cap Auszahlungen pro Tag).';
+  }
+
+  @override
+  String get friendsInviteHint =>
+      'Wenn sie beitreten, werden sie zu deinen Freunden im Spiel.';
+
+  @override
+  String get friendsInviteCopy => 'Link kopieren';
+
+  @override
+  String get friendsInviteCopied => 'Link kopiert';
+
+  @override
+  String get friendsInviteFacebook => 'Auf Facebook teilen';
+
+  @override
+  String get friendsInviteShareAction => 'Aktie';
+
+  @override
+  String friendsInviteShareText(String url) {
+    return 'Begleiten Sie mich in The Mob State: $url';
+  }
+
+  @override
+  String get friendsInviteLoadFailed =>
+      'Ihr Einladungslink konnte nicht geladen werden';
+
+  @override
   String get crewUiAppCrews => 'Besatzungen';
 
   @override
@@ -17340,11 +17376,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicFriendsHow =>
-      'Auf der Seite „Freunde“ werden drei Listen angezeigt: aktuelle Freunde, gesendete Anfragen und empfangene Anfragen. \nVon einem Freund aus können Sie direkt eine Nachricht senden, sein Profil anzeigen oder eine Zusammenarbeit starten. \nSie können sehen, wann Freunde im Spiel aktiv sind, was bei der Planung von Raubüberfällen oder Tauschgeschäften hilfreich ist. \nFreundschaftsanfragen verfallen nicht automatisch; Halten Sie die Liste aufgeräumt, damit Sie durch ausstehende Anfragen nicht abgelenkt werden. \nFreunde außerhalb Ihrer Crew sind bei Gefängnisausbrüchen (ein Freund kann Ihnen beim Ausbruch helfen) und dem Informationsaustausch wertvoll. \nWenn ein Freund verhaftet wird, erhalten akzeptierte Freunde jetzt auch eine Push-Benachrichtigung, dass der Spieler im Gefängnis auf Hilfe wartet.';
+      'Auf der Seite „Freunde“ werden drei Listen angezeigt: aktuelle Freunde, gesendete Anfragen und empfangene Anfragen. \nDer Link „Teilen“ bei „Freunde“ sendet Ihre persönliche Einladungs-URL. Ein neuer Spieler, der sich dort registriert, erhält einen Starter-Cash-Bonus und wird Ihr Freund. Nach dem ersten erfolgreichen Verbrechen oder Auftrag erhalten Sie Bargeld mit einer täglichen Auszahlungsobergrenze. \nVon einem Freund aus können Sie direkt eine Nachricht senden, sein Profil anzeigen oder eine Zusammenarbeit starten. \nSie können sehen, wann Freunde im Spiel aktiv sind, was bei der Planung von Raubüberfällen oder Tauschgeschäften hilfreich ist. \nFreundschaftsanfragen verfallen nicht automatisch; Halten Sie die Liste aufgeräumt, damit Sie durch ausstehende Anfragen nicht abgelenkt werden. \nFreunde außerhalb Ihrer Crew sind bei Gefängnisausbrüchen (ein Freund kann Ihnen beim Ausbruch helfen) und dem Informationsaustausch wertvoll. \nWenn ein Freund verhaftet wird, erhalten akzeptierte Freunde jetzt auch eine Push-Benachrichtigung, dass der Spieler im Gefängnis auf Hilfe wartet.';
 
   @override
   String get helpTopicFriendsTips =>
-      'Fügen Sie Freunde hinzu, die Ihren Spielstil teilen: Raubüberfallpartner, Händlernetzwerke oder Kriminalitätsunterstützung. \nEin Freund, der einen Gefängnisausbruch durchführt, erhält bei Erfolg eine Belohnung von 500 bis 2.000 €. Vereinbaren Sie dies für Notfälle.';
+      'Fügen Sie Freunde hinzu, die Ihren Spielstil teilen: Raubüberfallpartner, Händlernetzwerke oder Kriminalitätsunterstützung. \nVerwenden Sie den Link „Teilen“ für Facebook, Nachrichten oder andere Chats – Facebook gibt uns Ihre Freundesliste nicht weiter. \nEin Freund, der einen Gefängnisausbruch durchführt, erhält bei Erfolg eine Belohnung von 500 bis 2.000 €. Vereinbaren Sie dies für Notfälle.';
 
   @override
   String get helpTopicMessagesCategory => 'Sozial';

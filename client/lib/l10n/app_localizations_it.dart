@@ -4220,6 +4220,42 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get friendsInviteShare => 'Condividi collegamento';
+
+  @override
+  String get friendsInviteTitle => 'Invita amici';
+
+  @override
+  String friendsInviteBody(String recruit, String referrer, int cap) {
+    return 'Condividi questo collegamento. Un nuovo giocatore ottiene $recruit per iniziare. Ottieni $referrer dopo il loro primo crimine o lavoro (massimo $cap pagamenti al giorno).';
+  }
+
+  @override
+  String get friendsInviteHint =>
+      'Diventano tuoi amici nel gioco quando si uniscono.';
+
+  @override
+  String get friendsInviteCopy => 'Copia collegamento';
+
+  @override
+  String get friendsInviteCopied => 'Collegamento copiato';
+
+  @override
+  String get friendsInviteFacebook => 'Condividi su Facebook';
+
+  @override
+  String get friendsInviteShareAction => 'Condividere';
+
+  @override
+  String friendsInviteShareText(String url) {
+    return 'Unisciti a me in The Mob State: $url';
+  }
+
+  @override
+  String get friendsInviteLoadFailed =>
+      'Impossibile caricare il link di invito';
+
+  @override
   String get crewUiAppCrews => 'Equipaggi';
 
   @override
@@ -17313,11 +17349,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicFriendsHow =>
-      'La pagina Amici mostra tre elenchi: amici attuali, richieste inviate e richieste ricevute. \nDa un amico puoi inviare direttamente un messaggio, visualizzare il suo profilo o avviare una collaborazione. \nPuoi vedere quando gli amici sono attivi nel gioco, il che aiuta a pianificare rapine o scambi. \nLe richieste di amicizia non scadono automaticamente; mantieni l\'elenco in ordine in modo che le richieste in sospeso non ti distraggano. \nGli amici esterni al tuo Crew sono preziosi per le fughe di prigione (un amico può aiutarti a evadere) e per la condivisione di informazioni. \nQuando un amico viene arrestato, anche gli amici accettati ora ricevono una notifica push che il giocatore sta aspettando aiuto in prigione.';
+      'La pagina Amici mostra tre elenchi: amici attuali, richieste inviate e richieste ricevute. \nIl collegamento Condividi su Amici invia il tuo URL di invito personale. Un nuovo giocatore che si registra riceve un bonus in denaro iniziale e diventa tuo amico. Ottieni denaro dopo il loro primo crimine o lavoro di successo, con un limite di pagamento giornaliero. \nDa un amico puoi inviare direttamente un messaggio, visualizzare il suo profilo o avviare una collaborazione. \nPuoi vedere quando gli amici sono attivi nel gioco, il che aiuta a pianificare rapine o scambi. \nLe richieste di amicizia non scadono automaticamente; mantieni l\'elenco in ordine in modo che le richieste in sospeso non ti distraggano. \nGli amici esterni al tuo Crew sono preziosi per le fughe di prigione (un amico può aiutarti a evadere) e per la condivisione di informazioni. \nQuando un amico viene arrestato, anche gli amici accettati ora ricevono una notifica push che il giocatore sta aspettando aiuto in prigione.';
 
   @override
   String get helpTopicFriendsTips =>
-      'Aggiungi amici che condividono il tuo stile di gioco: partner nelle rapine, reti di commercianti o supporto al crimine. \nUn amico che esegue una fuga di prigione guadagna una ricompensa di € 500-€ 2.000 in caso di successo. Organizzalo per le emergenze.';
+      'Aggiungi amici che condividono il tuo stile di gioco: partner nelle rapine, reti di commercianti o supporto al crimine. \nUtilizza il collegamento Condividi per Facebook, messaggi o qualsiasi chat: Facebook non ci fornisce il tuo elenco di amici. \nUn amico che esegue una fuga di prigione guadagna una ricompensa di € 500-€ 2.000 in caso di successo. Organizzalo per le emergenze.';
 
   @override
   String get helpTopicMessagesCategory => 'Sociale';

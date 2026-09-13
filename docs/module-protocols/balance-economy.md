@@ -20,6 +20,12 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Credits:** `ACTION_COOLDOWN_RESET` for `actionType=school` skips an active school cooldown only.
 - See [school.md](school.md).
 
+## Documented static modifiers (referrals)
+- **Recruit cash:** `REFERRAL_RECRUIT_CASH` default **€2.000** at register via a valid `?ref=` code.
+- **Referrer cash:** `REFERRAL_REFERRER_CASH` default **€5.000** after the recruit’s first successful crime or job.
+- **Daily cap:** `REFERRAL_DAILY_CAP` default **5** referrer payouts per UTC day. Extra qualified recruits wait until the next day.
+- Cash only, no premium credits. Self-referral ignored. See [referrals.md](referrals.md).
+
 ## Documented static modifiers (crimes → onboarding)
 - **Listed success chance** starts at catalog `baseSuccessChance` (pickpocket 70%, shoplift 65%, graffiti 80%, vandalism 75%). Do **not** multiply by `0.385` — that made the UI show ~27% while the roll used the catalog base. Rank 1–5 street crimes (`minLevel` 1) also have a **60% floor** after HP/police penalties.
 - **Attempt roll** uses `computePlayerSuccessChanceFromContext` (rank/mastery/weapon/training/country-police/HP), clamped 5–95%. Same number as the Crimes list.

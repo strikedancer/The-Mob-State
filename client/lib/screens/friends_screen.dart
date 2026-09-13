@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import '../services/auth_service.dart';
 import '../models/friendship.dart';
@@ -16,6 +19,7 @@ import '../widgets/responsive_modal.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../utils/formatters.dart';
 
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key, this.embedded = false});
@@ -561,12 +565,112 @@ class _FriendsScreenState extends State<FriendsScreen>
     );
   }
 
+  Future<void> _openInviteSheet() async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final response = await AuthService().apiClient.get('/friends/invite');
+      if (response.statusCode != 200) {
+        throw Exception(l10n.friendsInviteLoadFailed);
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] as Map<String, dynamic>? ?? {};
+      final url = params['url'] as String? ?? '';
+      if (url.isEmpty) {
+        throw Exception(l10n.friendsInviteLoadFailed);
+      }
+      final referrerCash = formatCurrency((params['referrerCash'] as num?)?.toInt() ?? 0);
+      final recruitCash = formatCurrency((params['recruitCash'] as num?)?.toInt() ?? 0);
+      final dailyCap = (params['dailyCap'] as num?)?.toInt() ?? 5;
+      if (!mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: const Color(0xFF2A2A2A),
+            title: Text(
+              l10n.friendsInviteTitle,
+              style: const TextStyle(color: Colors.white),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.friendsInviteBody(recruitCash, referrerCash, dailyCap),
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.friendsInviteHint,
+                  style: TextStyle(color: Colors.grey[500], fontSize: 13),
+                ),
+                const SizedBox(height: 12),
+                SelectableText(
+                  url,
+                  style: const TextStyle(color: kEmpireGold, fontSize: 13),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  await Clipboard.setData(ClipboardData(text: url));
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                  showTopRightFromSnackBar(
+                    this.context,
+                    SnackBar(content: Text(l10n.friendsInviteCopied)),
+                  );
+                },
+                child: Text(l10n.friendsInviteCopy),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final shareUri = Uri.parse(
+                    'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(url)}',
+                  );
+                  await launchUrl(shareUri, mode: LaunchMode.externalApplication);
+                },
+                child: Text(l10n.friendsInviteFacebook),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await Share.share(l10n.friendsInviteShareText(url));
+                },
+                child: Text(l10n.friendsInviteShareAction),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.friendsInviteLoadFailed),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Widget _buildMessagesBar() {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Stack(
+      child: Row(
+        children: [
+          TextButton.icon(
+            onPressed: _openInviteSheet,
+            icon: const Icon(Icons.ios_share, color: kEmpireGold, size: 18),
+            label: Text(
+              l10n.friendsInviteShare,
+              style: const TextStyle(color: kEmpireGold),
+            ),
+          ),
+          const Spacer(),
+          Stack(
           children: [
             IconButton(
               icon: const Icon(
@@ -609,6 +713,7 @@ class _FriendsScreenState extends State<FriendsScreen>
               ),
           ],
         ),
+        ],
       ),
     );
   }

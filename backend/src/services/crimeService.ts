@@ -1035,6 +1035,11 @@ export const crimeService = {
         await onboardingService.markCrime(playerId);
       });
 
+      await runCrimeSideEffect('referral qualify', async () => {
+        const { referralService } = await import('./referralService');
+        await referralService.qualifyFromGameplay(playerId);
+      });
+
       await runCrimeSideEffect('worldEvent crime.success', async () => {
         await worldEventService.createEvent(
           'crime.success',

@@ -8240,8 +8240,8 @@
   "helpTopicFriendsCategory": "Społeczny",
   "helpTopicFriendsTitle": "Przyjaciele",
   "helpTopicFriendsSummary": "Zarządzaj listą znajomych, aby przyspieszyć koordynację, przeglądanie profili i opinie społecznościowe.",
-  "helpTopicFriendsHow": "Strona znajomych wyświetla trzy listy: aktualnych znajomych, wysłane prośby i otrzymane prośby. \nOd znajomego możesz bezpośrednio wysłać wiadomość, wyświetlić jego profil lub rozpocząć współpracę. \nMożesz zobaczyć, kiedy znajomi są aktywni w grze, co pomaga w planowaniu napadów lub transakcji. \nZaproszenia do znajomych nie wygasają automatycznie; utrzymuj listę w porządku, aby oczekujące prośby nie rozpraszały Cię. \nPrzyjaciele spoza twojej załogi są cenni w ucieczce z więzienia (znajomy może pomóc ci się wydostać) i dzieleniu się informacjami. \nKiedy znajomy zostanie aresztowany, zaakceptowani znajomi otrzymają teraz również powiadomienie push, że gracz czeka na pomoc w więzieniu.",
-  "helpTopicFriendsTips": "Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nPrzyjaciel, który ucieknie z więzienia, za sukces otrzyma nagrodę w wysokości 500–2000 euro. Zorganizuj to na wypadek sytuacji awaryjnych.",
+  "helpTopicFriendsHow": "Strona znajomych wyświetla trzy listy: aktualnych znajomych, wysłane prośby i otrzymane prośby. \nUdostępnij link znajomym, wysyła Twój osobisty adres URL zaproszenia. Nowy gracz, który się tam zarejestruje, otrzyma startowy bonus pieniężny i zostanie Twoim przyjacielem. Otrzymujesz gotówkę po pierwszym udanym przestępstwie lub pracy, z dziennym limitem wypłat. \nOd znajomego możesz bezpośrednio wysłać wiadomość, wyświetlić jego profil lub rozpocząć współpracę. \nMożesz zobaczyć, kiedy znajomi są aktywni w grze, co pomaga w planowaniu napadów lub transakcji. \nZaproszenia do znajomych nie wygasają automatycznie; utrzymuj listę w porządku, aby oczekujące prośby nie rozpraszały Cię. \nPrzyjaciele spoza twojej załogi są cenni w ucieczce z więzienia (znajomy może pomóc ci się wydostać) i dzieleniu się informacjami. \nKiedy znajomy zostanie aresztowany, zaakceptowani znajomi otrzymają teraz również powiadomienie push, że gracz czeka na pomoc w więzieniu.",
+  "helpTopicFriendsTips": "Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nUżyj linku Udostępnij na Facebooku, w wiadomościach lub na dowolnym czacie — Facebook nie udostępnia nam Twojej listy znajomych. \nPrzyjaciel, który ucieknie z więzienia, za sukces otrzyma nagrodę w wysokości 500–2000 euro. Zorganizuj to na wypadek sytuacji awaryjnych.",
   "helpTopicMessagesCategory": "Społeczny",
   "helpTopicMessagesTitle": "Wiadomości",
   "helpTopicMessagesSummary": "Twoja skrzynka odbiorcza z osobistymi wiadomościami graczy i oddzielnymi powiadomieniami systemowymi dotyczącymi każdej nagrody, zamówienia lub wydarzenia w grze.",
@@ -12050,5 +12050,35 @@
   "messagesHideConversationConfirm": "Usunąć tę rozmowę ze swojej skrzynki odbiorczej? Pozostaje dla innego gracza. Nowa wiadomość przywraca sytuację.",
   "messagesHideUnreadBlocked": "Nieprzeczytanych wiadomości nie można jeszcze usunąć.",
   "messagesHidden": "Usunięto z Twojej skrzynki odbiorczej",
-  "messagesHideFailed": "Nie można usunąć tych wiadomości"
+  "messagesHideFailed": "Nie można usunąć tych wiadomości",
+  "friendsInviteShare": "Udostępnij link",
+  "friendsInviteTitle": "Zaproś znajomych",
+  "friendsInviteBody": "Udostępnij ten link. Nowy gracz otrzymuje na start {recruit}. Otrzymujesz {referrer} po ich pierwszym przestępstwie lub pracy (maksymalnie {cap} wypłat dziennie).",
+  "@friendsInviteBody": {
+    "placeholders": {
+      "recruit": {
+        "type": "String"
+      },
+      "referrer": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "friendsInviteHint": "Kiedy dołączą, staną się Twoimi przyjaciółmi w grze.",
+  "friendsInviteCopy": "Skopiuj link",
+  "friendsInviteCopied": "Link skopiowany",
+  "friendsInviteFacebook": "Udostępnij na Facebooku",
+  "friendsInviteShareAction": "Udział",
+  "friendsInviteShareText": "Dołącz do mnie w Stanie Mafii: {url}",
+  "@friendsInviteShareText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsInviteLoadFailed": "Nie można załadować linku z zaproszeniem"
 }

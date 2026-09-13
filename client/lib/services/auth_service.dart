@@ -5,6 +5,7 @@ import 'api_client.dart';
 import '../config/supported_languages.dart';
 import '../models/player.dart';
 import 'notification_service.dart';
+import '../utils/referral_invite_store.dart';
 
 class AuthSessionException implements Exception {
   final String reason;
@@ -164,6 +165,10 @@ class AuthService {
       if (email != null && email.isNotEmpty) {
         body['email'] = email;
       }
+      final referralCode = await ReferralInviteStore.peek();
+      if (referralCode != null) {
+        body['referralCode'] = referralCode;
+      }
 
       final response = await _apiClient.post(
         '/auth/register',
@@ -178,6 +183,7 @@ class AuthService {
         final data = jsonDecode(response.body);
 
         if (data['requiresEmailVerification'] == true) {
+          await ReferralInviteStore.clear();
           return AuthResult(
             success: true,
             requiresEmailVerification: true,
@@ -196,6 +202,7 @@ class AuthService {
         try {
           final player = Player.fromJson(playerData);
           print('[AuthService] Player parsed successfully: ${player.username}');
+          await ReferralInviteStore.clear();
           _syncPushInBackground();
           return AuthResult(success: true, player: player);
         } catch (e) {
@@ -305,15 +312,20 @@ class AuthService {
   }) async {
     try {
       final selectedLanguage = language ?? _getDeviceLanguage();
+      final body = <String, dynamic>{
+        'pendingToken': pendingToken,
+        'username': username,
+        'gender': gender,
+        'preferredLanguage': selectedLanguage,
+        'acceptedTerms': acceptedTerms,
+      };
+      final referralCode = await ReferralInviteStore.peek();
+      if (referralCode != null) {
+        body['referralCode'] = referralCode;
+      }
       final response = await _apiClient.post(
         '/auth/facebook/complete',
-        {
-          'pendingToken': pendingToken,
-          'username': username,
-          'gender': gender,
-          'preferredLanguage': selectedLanguage,
-          'acceptedTerms': acceptedTerms,
-        },
+        body,
         includeAuth: false,
       );
 
@@ -324,6 +336,7 @@ class AuthService {
         await _apiClient.setToken(token);
         try {
           final player = Player.fromJson(playerData);
+          await ReferralInviteStore.clear();
           _syncPushInBackground();
           return AuthResult(success: true, player: player);
         } catch (e) {
@@ -355,15 +368,20 @@ class AuthService {
   }) async {
     try {
       final selectedLanguage = language ?? _getDeviceLanguage();
+      final body = <String, dynamic>{
+        'pendingToken': pendingToken,
+        'username': username,
+        'gender': gender,
+        'preferredLanguage': selectedLanguage,
+        'acceptedTerms': acceptedTerms,
+      };
+      final referralCode = await ReferralInviteStore.peek();
+      if (referralCode != null) {
+        body['referralCode'] = referralCode;
+      }
       final response = await _apiClient.post(
         '/auth/google/complete',
-        {
-          'pendingToken': pendingToken,
-          'username': username,
-          'gender': gender,
-          'preferredLanguage': selectedLanguage,
-          'acceptedTerms': acceptedTerms,
-        },
+        body,
         includeAuth: false,
       );
 
@@ -374,6 +392,7 @@ class AuthService {
         await _apiClient.setToken(token);
         try {
           final player = Player.fromJson(playerData);
+          await ReferralInviteStore.clear();
           _syncPushInBackground();
           return AuthResult(success: true, player: player);
         } catch (e) {

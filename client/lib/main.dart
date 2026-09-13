@@ -36,9 +36,11 @@ import 'screens/premium_screen.dart';
 import 'screens/vault_screen.dart';
 import 'widgets/mobile_web_sticky_player_header.dart';
 import 'services/notification_service.dart';
+import 'utils/referral_invite_store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ReferralInviteStore.captureFromUri(Uri.base);
 
   // Initialize Firebase (only if not already initialized)
   try {

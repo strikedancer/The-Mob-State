@@ -4206,6 +4206,42 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get friendsInviteShare => 'Deel link';
+
+  @override
+  String get friendsInviteTitle => 'Vrienden uitnodigen';
+
+  @override
+  String friendsInviteBody(String recruit, String referrer, int cap) {
+    return 'Deel deze link. Een nieuwe speler krijgt $recruit om te beginnen. Jij krijgt $referrer na hun eerste misdaad of baan (max $cap uitbetalingen per dag).';
+  }
+
+  @override
+  String get friendsInviteHint =>
+      'Wie via jouw link meedoet, staat meteen als vriend in het spel.';
+
+  @override
+  String get friendsInviteCopy => 'Kopieer link';
+
+  @override
+  String get friendsInviteCopied => 'Link gekopieerd';
+
+  @override
+  String get friendsInviteFacebook => 'Deel op Facebook';
+
+  @override
+  String get friendsInviteShareAction => 'Delen';
+
+  @override
+  String friendsInviteShareText(String url) {
+    return 'Speel The Mob State via mijn link: $url';
+  }
+
+  @override
+  String get friendsInviteLoadFailed =>
+      'Je uitnodigingslink kon niet worden geladen';
+
+  @override
   String get crewUiAppCrews => 'Crews';
 
   @override
@@ -17168,11 +17204,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicFriendsHow =>
-      'Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.\nJe kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.\nVrienden zien elke keer als ze actief zijn in het spel. Dat helpt bij planning van gezamenlijke heists of trades.\nVriendverzoeken verlopen niet automatisch; houd de lijst actueel zodat ongewenste verzoeken je niet afleiden.\nVrienden buiten je crew zijn waardevol voor jail-escapes (een vriend kan je helpen ontsnappen) en voor informatie-uitwisseling.\nAls een vriend wordt opgepakt krijgen geaccepteerde vrienden nu ook een pushmelding dat die speler op hulp wacht in de gevangenis.';
+      'Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.\nDeel link op Vrienden stuurt jouw persoonlijke uitnodiging. Wie zich daarmee registreert krijgt startgeld en wordt meteen je vriend. Jij krijgt cash na hun eerste geslaagde misdaad of baan, met een daglimiet.\nJe kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.\nVrienden zien elke keer als ze actief zijn in het spel. Dat helpt bij planning van gezamenlijke heists of trades.\nVriendverzoeken verlopen niet automatisch; houd de lijst actueel zodat ongewenste verzoeken je niet afleiden.\nVrienden buiten je crew zijn waardevol voor jail-escapes (een vriend kan je helpen ontsnappen) en voor informatie-uitwisseling.\nAls een vriend wordt opgepakt krijgen geaccepteerde vrienden nu ook een pushmelding dat die speler op hulp wacht in de gevangenis.';
 
   @override
   String get helpTopicFriendsTips =>
-      'Voeg vrienden toe die in dezelfde speelstijl zitten: heist-partners, trader-netwerk of crime-support.\nEen vriend die een jail-escape doet krijgt €500-€2.000 beloning als het lukt. Spreek dit af voor noodsituaties.';
+      'Voeg vrienden toe die in dezelfde speelstijl zitten: heist-partners, trader-netwerk of crime-support.\nGebruik Deel link voor Facebook, berichten of elke chat — Facebook geeft ons geen vriendenlijst.\nEen vriend die een jail-escape doet krijgt €500-€2.000 beloning als het lukt. Spreek dit af voor noodsituaties.';
 
   @override
   String get helpTopicMessagesCategory => 'Sociaal';

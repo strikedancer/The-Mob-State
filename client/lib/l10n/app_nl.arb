@@ -9751,6 +9751,36 @@
       }
     }
   },
+  "friendsInviteShare": "Deel link",
+  "friendsInviteTitle": "Vrienden uitnodigen",
+  "friendsInviteBody": "Deel deze link. Een nieuwe speler krijgt {recruit} om te beginnen. Jij krijgt {referrer} na hun eerste misdaad of baan (max {cap} uitbetalingen per dag).",
+  "@friendsInviteBody": {
+    "placeholders": {
+      "recruit": {
+        "type": "String"
+      },
+      "referrer": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "friendsInviteHint": "Wie via jouw link meedoet, staat meteen als vriend in het spel.",
+  "friendsInviteCopy": "Kopieer link",
+  "friendsInviteCopied": "Link gekopieerd",
+  "friendsInviteFacebook": "Deel op Facebook",
+  "friendsInviteShareAction": "Delen",
+  "friendsInviteShareText": "Speel The Mob State via mijn link: {url}",
+  "@friendsInviteShareText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsInviteLoadFailed": "Je uitnodigingslink kon niet worden geladen",
   "friendsUiReject": "Afwijzen",
   "premiumUiLoadError": "Premiumgegevens konden niet worden geladen.",
   "premiumUiRedirectPaidOneTime": "Aankoop ontvangen. Je credits en premium-overzicht worden ververst.",
@@ -10546,8 +10576,8 @@
   "helpTopicFriendsCategory": "Sociaal",
   "helpTopicFriendsTitle": "Vrienden",
   "helpTopicFriendsSummary": "Beheer je vriendenlijst voor snellere samenwerking, profieldoorzoeken en social feedback.",
-  "helpTopicFriendsHow": "Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.\nJe kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.\nVrienden zien elke keer als ze actief zijn in het spel. Dat helpt bij planning van gezamenlijke heists of trades.\nVriendverzoeken verlopen niet automatisch; houd de lijst actueel zodat ongewenste verzoeken je niet afleiden.\nVrienden buiten je crew zijn waardevol voor jail-escapes (een vriend kan je helpen ontsnappen) en voor informatie-uitwisseling.\nAls een vriend wordt opgepakt krijgen geaccepteerde vrienden nu ook een pushmelding dat die speler op hulp wacht in de gevangenis.",
-  "helpTopicFriendsTips": "Voeg vrienden toe die in dezelfde speelstijl zitten: heist-partners, trader-netwerk of crime-support.\nEen vriend die een jail-escape doet krijgt €500-€2.000 beloning als het lukt. Spreek dit af voor noodsituaties.",
+  "helpTopicFriendsHow": "Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.\nDeel link op Vrienden stuurt jouw persoonlijke uitnodiging. Wie zich daarmee registreert krijgt startgeld en wordt meteen je vriend. Jij krijgt cash na hun eerste geslaagde misdaad of baan, met een daglimiet.\nJe kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.\nVrienden zien elke keer als ze actief zijn in het spel. Dat helpt bij planning van gezamenlijke heists of trades.\nVriendverzoeken verlopen niet automatisch; houd de lijst actueel zodat ongewenste verzoeken je niet afleiden.\nVrienden buiten je crew zijn waardevol voor jail-escapes (een vriend kan je helpen ontsnappen) en voor informatie-uitwisseling.\nAls een vriend wordt opgepakt krijgen geaccepteerde vrienden nu ook een pushmelding dat die speler op hulp wacht in de gevangenis.",
+  "helpTopicFriendsTips": "Voeg vrienden toe die in dezelfde speelstijl zitten: heist-partners, trader-netwerk of crime-support.\nGebruik Deel link voor Facebook, berichten of elke chat — Facebook geeft ons geen vriendenlijst.\nEen vriend die een jail-escape doet krijgt €500-€2.000 beloning als het lukt. Spreek dit af voor noodsituaties.",
   "helpTopicMessagesCategory": "Sociaal",
   "helpTopicMessagesTitle": "Berichten",
   "helpTopicMessagesSummary": "Je inbox met persoonlijke berichten van andere spelers en een aparte systeemmelding voor elke beloning, order of game-event.",

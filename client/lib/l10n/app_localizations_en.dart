@@ -4184,6 +4184,41 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get friendsInviteShare => 'Share link';
+
+  @override
+  String get friendsInviteTitle => 'Invite friends';
+
+  @override
+  String friendsInviteBody(String recruit, String referrer, int cap) {
+    return 'Share this link. A new player gets $recruit to start. You get $referrer after their first crime or job (max $cap payouts a day).';
+  }
+
+  @override
+  String get friendsInviteHint =>
+      'They become your friend in the game when they join.';
+
+  @override
+  String get friendsInviteCopy => 'Copy link';
+
+  @override
+  String get friendsInviteCopied => 'Link copied';
+
+  @override
+  String get friendsInviteFacebook => 'Share on Facebook';
+
+  @override
+  String get friendsInviteShareAction => 'Share';
+
+  @override
+  String friendsInviteShareText(String url) {
+    return 'Join me in The Mob State: $url';
+  }
+
+  @override
+  String get friendsInviteLoadFailed => 'Could not load your invite link';
+
+  @override
   String get crewUiAppCrews => 'Crews';
 
   @override
@@ -17127,11 +17162,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicFriendsHow =>
-      'Friends page shows three lists: current friends, sent requests and received requests.\nFrom a friend you can directly send a message, view their profile or start a collaboration.\nYou can see when friends are active in the game, which helps planning heists or trades.\nFriend requests do not expire automatically; keep the list tidy so pending requests do not distract you.\nFriends outside your crew are valuable for jail escapes (a friend can help you break out) and information sharing.\nWhen a friend gets arrested, accepted friends now also receive a push notification that the player is waiting for help in prison.';
+      'Friends page shows three lists: current friends, sent requests and received requests.\nShare link on Friends sends your personal invite URL. A new player who registers with it gets a starter cash bonus and becomes your friend. You get cash after their first successful crime or job, with a daily payout cap.\nFrom a friend you can directly send a message, view their profile or start a collaboration.\nYou can see when friends are active in the game, which helps planning heists or trades.\nFriend requests do not expire automatically; keep the list tidy so pending requests do not distract you.\nFriends outside your crew are valuable for jail escapes (a friend can help you break out) and information sharing.\nWhen a friend gets arrested, accepted friends now also receive a push notification that the player is waiting for help in prison.';
 
   @override
   String get helpTopicFriendsTips =>
-      'Add friends who share your play style: heist partners, trader networks or crime support.\nA friend who executes a jail escape earns €500-€2.000 reward on success. Arrange this for emergencies.';
+      'Add friends who share your play style: heist partners, trader networks or crime support.\nUse Share link for Facebook, messages or any chat — Facebook does not give us your friend list.\nA friend who executes a jail escape earns €500-€2.000 reward on success. Arrange this for emergencies.';
 
   @override
   String get helpTopicMessagesCategory => 'Social';

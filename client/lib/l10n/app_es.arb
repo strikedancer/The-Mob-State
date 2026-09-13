@@ -8240,8 +8240,8 @@
   "helpTopicFriendsCategory": "Social",
   "helpTopicFriendsTitle": "Amigas",
   "helpTopicFriendsSummary": "Administre su lista de amigos para una coordinación, exploración de perfiles y comentarios sociales más rápidos.",
-  "helpTopicFriendsHow": "La página de amigos muestra tres listas: amigos actuales, solicitudes enviadas y solicitudes recibidas. \nDe un amigo puedes enviarle un mensaje directamente, ver su perfil o iniciar una colaboración. \nPuedes ver cuándo tus amigos están activos en el juego, lo que ayuda a planificar atracos o intercambios. \nLas solicitudes de amistad no caducan automáticamente; Mantenga la lista ordenada para que las solicitudes pendientes no lo distraigan. \nLos amigos ajenos a tu Crew son valiosos para escapar de la cárcel (un amigo puede ayudarte a escapar) y compartir información. \nCuando arrestan a un amigo, los amigos aceptados ahora también reciben una notificación automática de que el jugador está esperando ayuda en prisión.",
-  "helpTopicFriendsTips": "Añade amigos que compartan tu estilo de juego: compañeros de atracos, redes de comerciantes o apoyo contra el crimen. \nUn amigo que escapa de la cárcel gana entre 500 y 2.000 euros de recompensa si lo logra. Organice esto para emergencias.",
+  "helpTopicFriendsHow": "La página de amigos muestra tres listas: amigos actuales, solicitudes enviadas y solicitudes recibidas. \nCompartir enlace en Amigos envía su URL de invitación personal. Un nuevo jugador que se registra obtiene un bono inicial en efectivo y se convierte en su amigo. Obtiene dinero en efectivo después de su primer delito o trabajo exitoso, con un límite de pago diario. \nDe un amigo puedes enviarle un mensaje directamente, ver su perfil o iniciar una colaboración. \nPuedes ver cuándo tus amigos están activos en el juego, lo que ayuda a planificar atracos o intercambios. \nLas solicitudes de amistad no caducan automáticamente; Mantenga la lista ordenada para que las solicitudes pendientes no lo distraigan. \nLos amigos ajenos a tu Crew son valiosos para escapar de la cárcel (un amigo puede ayudarte a escapar) y compartir información. \nCuando arrestan a un amigo, los amigos aceptados ahora también reciben una notificación automática de que el jugador está esperando ayuda en prisión.",
+  "helpTopicFriendsTips": "Añade amigos que compartan tu estilo de juego: compañeros de atracos, redes de comerciantes o apoyo contra el crimen. \nUtilice el enlace Compartir para Facebook, mensajes o cualquier chat: Facebook no nos proporciona su lista de amigos. \nUn amigo que escapa de la cárcel gana entre 500 y 2.000 euros de recompensa si lo logra. Organice esto para emergencias.",
   "helpTopicMessagesCategory": "Social",
   "helpTopicMessagesTitle": "Mensajes",
   "helpTopicMessagesSummary": "Su bandeja de entrada con mensajes personales del jugador y un aviso del sistema separado para cada recompensa, pedido o evento del juego.",
@@ -12050,5 +12050,35 @@
   "messagesHideConversationConfirm": "¿Eliminar esta conversación de tu bandeja de entrada? Queda para el otro jugador. Un nuevo mensaje lo trae de vuelta.",
   "messagesHideUnreadBlocked": "Los mensajes no leídos aún no se pueden eliminar.",
   "messagesHidden": "Eliminado de tu bandeja de entrada",
-  "messagesHideFailed": "No se pudieron eliminar esos mensajes"
+  "messagesHideFailed": "No se pudieron eliminar esos mensajes",
+  "friendsInviteShare": "Compartir enlace",
+  "friendsInviteTitle": "Invitar a amigas",
+  "friendsInviteBody": "Comparte este enlace. Un nuevo jugador obtiene {recruit} para comenzar. Obtienes {referrer} después de su primer delito o trabajo (máximo {cap} pagos por día).",
+  "@friendsInviteBody": {
+    "placeholders": {
+      "recruit": {
+        "type": "String"
+      },
+      "referrer": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "friendsInviteHint": "Se convierten en tus amigos en el juego cuando se unen.",
+  "friendsInviteCopy": "Copiar enlace",
+  "friendsInviteCopied": "Enlace copiado",
+  "friendsInviteFacebook": "Compartir en Facebook",
+  "friendsInviteShareAction": "Compartir",
+  "friendsInviteShareText": "Únase a mí en The Mob State: {url}",
+  "@friendsInviteShareText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsInviteLoadFailed": "No se pudo cargar el enlace de invitación"
 }

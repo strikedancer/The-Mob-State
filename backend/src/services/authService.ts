@@ -37,6 +37,7 @@ interface RegisterInput {
   preferredLanguage?: string;
   /** Required on new registration; stored with default avatar by gender. */
   gender: PlayerGender;
+  referralCode?: string;
 }
 
 interface LoginInput {
@@ -136,6 +137,13 @@ export const authService = {
     } catch (error) {
       console.error('[AuthService] Failed to create player during register:', error);
       throw error;
+    }
+
+    try {
+      const { referralService } = await import('./referralService');
+      await referralService.attachOnRegister(player.id, input.referralCode);
+    } catch (error) {
+      console.error('[AuthService] Failed to attach referral:', error);
     }
 
     const requireVerification = await isEmailVerificationRequired();

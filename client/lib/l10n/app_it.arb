@@ -8240,8 +8240,8 @@
   "helpTopicFriendsCategory": "Sociale",
   "helpTopicFriendsTitle": "Amiche",
   "helpTopicFriendsSummary": "Gestisci la tua lista di amici per un coordinamento più rapido, la navigazione del profilo e il feedback sui social.",
-  "helpTopicFriendsHow": "La pagina Amici mostra tre elenchi: amici attuali, richieste inviate e richieste ricevute. \nDa un amico puoi inviare direttamente un messaggio, visualizzare il suo profilo o avviare una collaborazione. \nPuoi vedere quando gli amici sono attivi nel gioco, il che aiuta a pianificare rapine o scambi. \nLe richieste di amicizia non scadono automaticamente; mantieni l'elenco in ordine in modo che le richieste in sospeso non ti distraggano. \nGli amici esterni al tuo Crew sono preziosi per le fughe di prigione (un amico può aiutarti a evadere) e per la condivisione di informazioni. \nQuando un amico viene arrestato, anche gli amici accettati ora ricevono una notifica push che il giocatore sta aspettando aiuto in prigione.",
-  "helpTopicFriendsTips": "Aggiungi amici che condividono il tuo stile di gioco: partner nelle rapine, reti di commercianti o supporto al crimine. \nUn amico che esegue una fuga di prigione guadagna una ricompensa di € 500-€ 2.000 in caso di successo. Organizzalo per le emergenze.",
+  "helpTopicFriendsHow": "La pagina Amici mostra tre elenchi: amici attuali, richieste inviate e richieste ricevute. \nIl collegamento Condividi su Amici invia il tuo URL di invito personale. Un nuovo giocatore che si registra riceve un bonus in denaro iniziale e diventa tuo amico. Ottieni denaro dopo il loro primo crimine o lavoro di successo, con un limite di pagamento giornaliero. \nDa un amico puoi inviare direttamente un messaggio, visualizzare il suo profilo o avviare una collaborazione. \nPuoi vedere quando gli amici sono attivi nel gioco, il che aiuta a pianificare rapine o scambi. \nLe richieste di amicizia non scadono automaticamente; mantieni l'elenco in ordine in modo che le richieste in sospeso non ti distraggano. \nGli amici esterni al tuo Crew sono preziosi per le fughe di prigione (un amico può aiutarti a evadere) e per la condivisione di informazioni. \nQuando un amico viene arrestato, anche gli amici accettati ora ricevono una notifica push che il giocatore sta aspettando aiuto in prigione.",
+  "helpTopicFriendsTips": "Aggiungi amici che condividono il tuo stile di gioco: partner nelle rapine, reti di commercianti o supporto al crimine. \nUtilizza il collegamento Condividi per Facebook, messaggi o qualsiasi chat: Facebook non ci fornisce il tuo elenco di amici. \nUn amico che esegue una fuga di prigione guadagna una ricompensa di € 500-€ 2.000 in caso di successo. Organizzalo per le emergenze.",
   "helpTopicMessagesCategory": "Sociale",
   "helpTopicMessagesTitle": "Messaggi",
   "helpTopicMessagesSummary": "La tua casella di posta con messaggi personali dei giocatori e un avviso di sistema separato per ogni premio, ordine o evento di gioco.",
@@ -12050,5 +12050,35 @@
   "messagesHideConversationConfirm": "Rimuovere questa conversazione dalla tua casella di posta? Resta per l'altro giocatore. Un nuovo messaggio lo riporta.",
   "messagesHideUnreadBlocked": "I messaggi non letti non possono ancora essere rimossi.",
   "messagesHidden": "Rimosso dalla tua casella di posta",
-  "messagesHideFailed": "Impossibile rimuovere quei messaggi"
+  "messagesHideFailed": "Impossibile rimuovere quei messaggi",
+  "friendsInviteShare": "Condividi collegamento",
+  "friendsInviteTitle": "Invita amici",
+  "friendsInviteBody": "Condividi questo collegamento. Un nuovo giocatore ottiene {recruit} per iniziare. Ottieni {referrer} dopo il loro primo crimine o lavoro (massimo {cap} pagamenti al giorno).",
+  "@friendsInviteBody": {
+    "placeholders": {
+      "recruit": {
+        "type": "String"
+      },
+      "referrer": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "friendsInviteHint": "Diventano tuoi amici nel gioco quando si uniscono.",
+  "friendsInviteCopy": "Copia collegamento",
+  "friendsInviteCopied": "Collegamento copiato",
+  "friendsInviteFacebook": "Condividi su Facebook",
+  "friendsInviteShareAction": "Condividere",
+  "friendsInviteShareText": "Unisciti a me in The Mob State: {url}",
+  "@friendsInviteShareText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "friendsInviteLoadFailed": "Impossibile caricare il link di invito"
 }

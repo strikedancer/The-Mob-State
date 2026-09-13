@@ -50,6 +50,7 @@ Zonder App ID + Secret blijft de inlogknop verborgen. Zonder Page ID + token bli
 - Nieuwe Facebook-spelers kiezen nog steeds **username + gender + voorwaarden**. Facebook-email (indien gegeven) wordt meteen `emailVerified: true`.
 - Facebook-only accounts krijgen een random `passwordHash`; inloggen gaat daarna via Facebook. Wachtwoord-reset kan als er een e-mail is.
 - Geen auto-spam naar de pagina vanuit game-acties.
+- Vrienden uitnodigen loopt via een **deel-link** (Facebook sharer), niet via `user_friends` of de Graph-vriendenlijst. Zie [referrals.md](referrals.md).
 - Ban-check via `authService.issueSession` (zelfde als wachtwoord-login).
 
 ## Cross-Module Dependencies

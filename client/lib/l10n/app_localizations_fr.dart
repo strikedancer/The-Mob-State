@@ -4246,6 +4246,42 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get friendsInviteShare => 'Partager le lien';
+
+  @override
+  String get friendsInviteTitle => 'Inviter des amis';
+
+  @override
+  String friendsInviteBody(String recruit, String referrer, int cap) {
+    return 'Partagez ce lien. Un nouveau joueur reçoit $recruit pour commencer. Vous recevez $referrer après leur premier crime ou emploi (maximum $cap paiements par jour).';
+  }
+
+  @override
+  String get friendsInviteHint =>
+      'Ils deviennent vos amis dans le jeu lorsqu\'ils rejoignent le jeu.';
+
+  @override
+  String get friendsInviteCopy => 'Copier le lien';
+
+  @override
+  String get friendsInviteCopied => 'Lien copié';
+
+  @override
+  String get friendsInviteFacebook => 'Partager sur Facebook';
+
+  @override
+  String get friendsInviteShareAction => 'Partager';
+
+  @override
+  String friendsInviteShareText(String url) {
+    return 'Rejoignez-moi dans The Mob State : $url';
+  }
+
+  @override
+  String get friendsInviteLoadFailed =>
+      'Impossible de charger votre lien d\'invitation';
+
+  @override
   String get crewUiAppCrews => 'Équipages';
 
   @override
@@ -17337,11 +17373,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicFriendsHow =>
-      'La page Amis affiche trois listes : amis actuels, demandes envoyées et demandes reçues. \nDepuis un ami, vous pouvez directement envoyer un message, consulter son profil ou démarrer une collaboration. \nVous pouvez voir quand vos amis sont actifs dans le jeu, ce qui facilite la planification de braquages ​​ou d\'échanges. \nLes demandes d\'amis n\'expirent pas automatiquement ; gardez la liste bien rangée afin que les demandes en attente ne vous distraient pas. \nLes amis extérieurs à votre équipe sont précieux pour les évasions de prison (un ami peut vous aider à vous évader) et le partage d\'informations. \nLorsqu\'un ami est arrêté, les amis acceptés reçoivent désormais également une notification push indiquant que le joueur attend de l\'aide en prison.';
+      'La page Amis affiche trois listes : amis actuels, demandes envoyées et demandes reçues. \nLe lien de partage sur Friends envoie votre URL d’invitation personnelle. Un nouveau joueur qui s\'inscrit reçoit un bonus en espèces de démarrage et devient votre ami. Vous recevez de l’argent après leur premier crime ou emploi réussi, avec un plafond de paiement quotidien. \nDepuis un ami, vous pouvez directement envoyer un message, consulter son profil ou démarrer une collaboration. \nVous pouvez voir quand vos amis sont actifs dans le jeu, ce qui facilite la planification de braquages ​​ou d\'échanges. \nLes demandes d\'amis n\'expirent pas automatiquement ; gardez la liste bien rangée afin que les demandes en attente ne vous distraient pas. \nLes amis extérieurs à votre équipe sont précieux pour les évasions de prison (un ami peut vous aider à vous évader) et le partage d\'informations. \nLorsqu\'un ami est arrêté, les amis acceptés reçoivent désormais également une notification push indiquant que le joueur attend de l\'aide en prison.';
 
   @override
   String get helpTopicFriendsTips =>
-      'Ajoutez des amis qui partagent votre style de jeu : partenaires de braquage, réseaux de commerçants ou soutien au crime. \nUn ami qui réussit une évasion de prison gagne entre 500 et 2 000 € de récompense. Organisez-le en cas d\'urgence.';
+      'Ajoutez des amis qui partagent votre style de jeu : partenaires de braquage, réseaux de commerçants ou soutien au crime. \nUtilisez le lien Partager pour Facebook, les messages ou tout autre chat – Facebook ne nous donne pas votre liste d\'amis. \nUn ami qui réussit une évasion de prison gagne entre 500 et 2 000 € de récompense. Organisez-le en cas d\'urgence.';
 
   @override
   String get helpTopicMessagesCategory => 'Sociale';

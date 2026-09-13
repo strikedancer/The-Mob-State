@@ -222,6 +222,7 @@ export const facebookAuthService = {
     gender: 'male' | 'female';
     preferredLanguage?: string;
     acceptedTerms: boolean;
+    referralCode?: string;
   }) {
     if (!input.acceptedTerms) {
       throw new Error('TERMS_REQUIRED');
@@ -276,6 +277,13 @@ export const facebookAuthService = {
           : {}),
       },
     });
+
+    try {
+      const { referralService } = await import('./referralService');
+      await referralService.attachOnRegister(player.id, input.referralCode);
+    } catch (error) {
+      console.error('[FacebookAuth] Failed to attach referral:', error);
+    }
 
     return authService.issueSession(player.id);
   },

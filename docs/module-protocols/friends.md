@@ -4,7 +4,7 @@
 Friend graph, requests, social activity and player-to-player discovery.
 
 ## Primary Frontend Entry
-- client/lib/screens/friends_screen.dart
+- client/lib/screens/friends_screen.dart — list/requests/search plus **Deel link** (`GET /friends/invite`)
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -18,6 +18,10 @@ Friend graph, requests, social activity and player-to-player discovery.
 - Which timers, locks, rank gates or country rules affect the flow?
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
+
+## Invite share link
+- Personal URL `/register?ref=CODE`. Recruit starter cash + auto-friend; referrer cash after first successful crime/job. See [referrals.md](referrals.md).
+- This is a shareable link (clipboard / OS share / Facebook sharer), not a Facebook friend-list import.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.

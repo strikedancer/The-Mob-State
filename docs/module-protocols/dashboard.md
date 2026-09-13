@@ -49,6 +49,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Sessie-overzicht toont alleen events van de ingelogde speler (API + SSE scoped op `playerId`). Geen wereldwijde feed van andere spelers.
 - Chat-events (`direct_message.*`) komen wél via SSE (berichtenbadge/chat) maar **niet** in Sessie-overzicht.
 - **Berichten / postvak:** de badge (`GET /messages/unread`) mag nooit groener zijn dan de inbox-lijst. `GET /messages/conversations` blijft één gebatchte query; bij laadfout retry, geen lege “geen berichten”-staat. Gelezen threads mogen uit de eigen inbox verdwijnen (`hiddenForSender` / `hiddenForReceiver`); ongelezen niet.
+- **Deel-link (Vrienden):** cash van recruit-bonus of referrer-payout moet in de HUD verschijnen na refresh; de referrer krijgt een systeembericht. Zie [referrals.md](referrals.md).
 - Travel-regels in de feed gebruiken `toCountry`/`destination` (gelokaliseerde landnaam); niet alleen het legacy-veld `country`.
 - Weekdoelen moeten claimbaar zijn wanneer ze als “klaar”/“ready” worden getoond; zorg dat weekly-claims dezelfde window/key gebruiken als de weekdoelen-status (week start maandag UTC) zodat “1 klaar om te claimen” nooit in een claim-fout resulteert.
 - Claims en beloningen mogen niet falen door DB transaction timeouts: doe alleen de noodzakelijke DB-writes in de transaction en schrijf activity/world events best-effort ná commit.

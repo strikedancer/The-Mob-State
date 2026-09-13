@@ -78,6 +78,7 @@ router.post('/google/complete', async (req: Request, res: Response) => {
       gender,
       preferredLanguage,
       acceptedTerms: Boolean(acceptedTerms),
+      referralCode: req.body?.referralCode,
     });
 
     return res.status(201).json({
@@ -120,6 +121,7 @@ router.post('/facebook/complete', async (req: Request, res: Response) => {
       gender,
       preferredLanguage,
       acceptedTerms: Boolean(acceptedTerms),
+      referralCode: req.body?.referralCode,
     });
 
     return res.status(201).json({
@@ -155,7 +157,7 @@ router.post('/facebook/complete', async (req: Request, res: Response) => {
 
 router.post('/register', async (req: Request, res: Response) => {
   try {
-    const { username, password, email, preferredLanguage, gender } = req.body;
+    const { username, password, email, preferredLanguage, gender, referralCode } = req.body;
 
     const result = await authService.register({
       username,
@@ -163,6 +165,7 @@ router.post('/register', async (req: Request, res: Response) => {
       email,
       preferredLanguage,
       gender,
+      referralCode,
     });
 
     if (result.requiresEmailVerification) {

@@ -308,6 +308,7 @@
     "summaryEn": "Manage your friends list for faster coordination, profile browsing and social feedback.",
     "howNl": [
       "Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.",
+      "Deel link op Vrienden stuurt jouw persoonlijke uitnodiging. Wie zich daarmee registreert krijgt startgeld en wordt meteen je vriend. Jij krijgt cash na hun eerste geslaagde misdaad of baan, met een daglimiet.",
       "Je kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.",
       "Vrienden zien elke keer als ze actief zijn in het spel. Dat helpt bij planning van gezamenlijke heists of trades.",
       "Vriendverzoeken verlopen niet automatisch; houd de lijst actueel zodat ongewenste verzoeken je niet afleiden.",
@@ -316,6 +317,7 @@
     ],
     "howEn": [
       "Friends page shows three lists: current friends, sent requests and received requests.",
+      "Share link on Friends sends your personal invite URL. A new player who registers with it gets a starter cash bonus and becomes your friend. You get cash after their first successful crime or job, with a daily payout cap.",
       "From a friend you can directly send a message, view their profile or start a collaboration.",
       "You can see when friends are active in the game, which helps planning heists or trades.",
       "Friend requests do not expire automatically; keep the list tidy so pending requests do not distract you.",
@@ -324,10 +326,12 @@
     ],
     "tipsNl": [
       "Voeg vrienden toe die in dezelfde speelstijl zitten: heist-partners, trader-netwerk of crime-support.",
+      "Gebruik Deel link voor Facebook, berichten of elke chat — Facebook geeft ons geen vriendenlijst.",
       "Een vriend die een jail-escape doet krijgt €500-€2.000 beloning als het lukt. Spreek dit af voor noodsituaties."
     ],
     "tipsEn": [
       "Add friends who share your play style: heist partners, trader networks or crime support.",
+      "Use Share link for Facebook, messages or any chat — Facebook does not give us your friend list.",
       "A friend who executes a jail escape earns €500-€2.000 reward on success. Arrange this for emergencies."
     ],
     "protocolPath": "docs/module-protocols/friends.md"

@@ -4217,6 +4217,42 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get friendsInviteShare => 'Udostępnij link';
+
+  @override
+  String get friendsInviteTitle => 'Zaproś znajomych';
+
+  @override
+  String friendsInviteBody(String recruit, String referrer, int cap) {
+    return 'Udostępnij ten link. Nowy gracz otrzymuje na start $recruit. Otrzymujesz $referrer po ich pierwszym przestępstwie lub pracy (maksymalnie $cap wypłat dziennie).';
+  }
+
+  @override
+  String get friendsInviteHint =>
+      'Kiedy dołączą, staną się Twoimi przyjaciółmi w grze.';
+
+  @override
+  String get friendsInviteCopy => 'Skopiuj link';
+
+  @override
+  String get friendsInviteCopied => 'Link skopiowany';
+
+  @override
+  String get friendsInviteFacebook => 'Udostępnij na Facebooku';
+
+  @override
+  String get friendsInviteShareAction => 'Udział';
+
+  @override
+  String friendsInviteShareText(String url) {
+    return 'Dołącz do mnie w Stanie Mafii: $url';
+  }
+
+  @override
+  String get friendsInviteLoadFailed =>
+      'Nie można załadować linku z zaproszeniem';
+
+  @override
   String get crewUiAppCrews => 'Załogi';
 
   @override
@@ -17254,11 +17290,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicFriendsHow =>
-      'Strona znajomych wyświetla trzy listy: aktualnych znajomych, wysłane prośby i otrzymane prośby. \nOd znajomego możesz bezpośrednio wysłać wiadomość, wyświetlić jego profil lub rozpocząć współpracę. \nMożesz zobaczyć, kiedy znajomi są aktywni w grze, co pomaga w planowaniu napadów lub transakcji. \nZaproszenia do znajomych nie wygasają automatycznie; utrzymuj listę w porządku, aby oczekujące prośby nie rozpraszały Cię. \nPrzyjaciele spoza twojej załogi są cenni w ucieczce z więzienia (znajomy może pomóc ci się wydostać) i dzieleniu się informacjami. \nKiedy znajomy zostanie aresztowany, zaakceptowani znajomi otrzymają teraz również powiadomienie push, że gracz czeka na pomoc w więzieniu.';
+      'Strona znajomych wyświetla trzy listy: aktualnych znajomych, wysłane prośby i otrzymane prośby. \nUdostępnij link znajomym, wysyła Twój osobisty adres URL zaproszenia. Nowy gracz, który się tam zarejestruje, otrzyma startowy bonus pieniężny i zostanie Twoim przyjacielem. Otrzymujesz gotówkę po pierwszym udanym przestępstwie lub pracy, z dziennym limitem wypłat. \nOd znajomego możesz bezpośrednio wysłać wiadomość, wyświetlić jego profil lub rozpocząć współpracę. \nMożesz zobaczyć, kiedy znajomi są aktywni w grze, co pomaga w planowaniu napadów lub transakcji. \nZaproszenia do znajomych nie wygasają automatycznie; utrzymuj listę w porządku, aby oczekujące prośby nie rozpraszały Cię. \nPrzyjaciele spoza twojej załogi są cenni w ucieczce z więzienia (znajomy może pomóc ci się wydostać) i dzieleniu się informacjami. \nKiedy znajomy zostanie aresztowany, zaakceptowani znajomi otrzymają teraz również powiadomienie push, że gracz czeka na pomoc w więzieniu.';
 
   @override
   String get helpTopicFriendsTips =>
-      'Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nPrzyjaciel, który ucieknie z więzienia, za sukces otrzyma nagrodę w wysokości 500–2000 euro. Zorganizuj to na wypadek sytuacji awaryjnych.';
+      'Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nUżyj linku Udostępnij na Facebooku, w wiadomościach lub na dowolnym czacie — Facebook nie udostępnia nam Twojej listy znajomych. \nPrzyjaciel, który ucieknie z więzienia, za sukces otrzyma nagrodę w wysokości 500–2000 euro. Zorganizuj to na wypadek sytuacji awaryjnych.';
 
   @override
   String get helpTopicMessagesCategory => 'Społeczny';

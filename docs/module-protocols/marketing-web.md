@@ -8,7 +8,7 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 - **Facebook Login (web):** knop op login/register als `GET /auth/facebook/status` `loginEnabled` is. OAuth verlaat de pagina naar Facebook en landt terug op `/login?fb=ok|pending|error` (niet in de landing-modal). Nieuwe Facebook-spelers ronden username/gender/voorwaarden af op dat scherm. Details: `facebook.md`.
 - **Google Sign-In (web):** zelfde patroon via `GET /auth/google/status` en terugkomst op `/login?g=ok|pending|error`. Details: `google.md`.
 - **Publieke rankings:** `GET /public/home` met basis-URL `AppConfig.apiBaseUrl` (apex `themobstate.com` / `themobstate.nl` → `api.themobstate.com` zonder dart-define; zie `app_config.dart` + Docker `WEB_API_BASE_URL`).
-- `client/lib/main.dart` — `_resolveHome` + `routes` voor `/`, `/login`, `/register`, `/privacy`, `/terms`, `/digital-goods`; `AuthWrapper` toont `LandingScreen` zonder sessie.
+- `client/lib/main.dart` — `_resolveHome` + `routes` voor `/`, `/login`, `/register`, `/privacy`, `/terms`, `/digital-goods`; `AuthWrapper` toont `LandingScreen` zonder sessie. Query `?ref=` op `/`, `/login` of `/register` wordt bewaard tot registratie (deel-link). Zie [referrals.md](referrals.md).
 - `client/lib/providers/locale_provider.dart` — `initGuestLocale`, `persistGuestLocale` (geen `PUT /player/language` voor gasten).
 
 ## Backend

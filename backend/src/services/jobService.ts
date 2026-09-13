@@ -431,6 +431,13 @@ class JobService {
       }
 
       try {
+        const { referralService } = await import('./referralService');
+        await referralService.qualifyFromGameplay(playerId);
+      } catch (err) {
+        console.error('[JobService] Failed to qualify referral:', err);
+      }
+
+      try {
         await worldEventService.createEvent(
           'job.completed',
           {
