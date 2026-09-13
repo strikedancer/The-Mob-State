@@ -909,14 +909,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSystemBadge => 'SYSTEM';
 
   @override
-  String get messageSystemInboxPreview => 'Achievements and system messages';
+  String get messageSystemInboxPreview => 'System notice';
 
   @override
-  String get messageSystemThreadSubtitle => 'Achievements and system messages';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Achievements and system messages appear here automatically.';
+      'This system notice is no longer available.';
 
   @override
   String get messageSendFirst => 'Send the first message!';
@@ -17108,11 +17108,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'Your inbox with personal player messages and system messages about rewards, orders and game events.';
+      'Your inbox with personal player messages and a separate system notice for each reward, order or game event.';
 
   @override
   String get helpTopicMessagesHow =>
-      'Messages are split into personal conversations and The Mob State system thread.\nSystem messages are sent automatically for: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.';
+      'Messages are split into personal conversations and individual The Mob State notices.\nEach system event is its own inbox item: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges do not share one long thread.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.';
 
   @override
   String get helpTopicMessagesTips =>

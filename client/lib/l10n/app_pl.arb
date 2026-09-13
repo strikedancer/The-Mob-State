@@ -384,9 +384,9 @@
     }
   },
   "messageSystemBadge": "SYSTEM",
-  "messageSystemInboxPreview": "Osiągnięcia i komunikaty systemowe",
-  "messageSystemThreadSubtitle": "Osiągnięcia i komunikaty systemowe",
-  "messageSystemThreadEmptyDetail": "Osiągnięcia i komunikaty systemowe pojawiają się tutaj automatycznie.",
+  "messageSystemInboxPreview": "Uwaga systemowa",
+  "messageSystemThreadSubtitle": "The Mob State",
+  "messageSystemThreadEmptyDetail": "To powiadomienie systemowe nie jest już dostępne.",
   "messageSendFirst": "Wyślij pierwszą wiadomość!",
   "chatFriendRankLine": "★ Ranga {rank}",
   "@chatFriendRankLine": {
@@ -8244,8 +8244,8 @@
   "helpTopicFriendsTips": "Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nPrzyjaciel, który ucieknie z więzienia, za sukces otrzyma nagrodę w wysokości 500–2000 euro. Zorganizuj to na wypadek sytuacji awaryjnych.",
   "helpTopicMessagesCategory": "Społeczny",
   "helpTopicMessagesTitle": "Wiadomości",
-  "helpTopicMessagesSummary": "Twoja skrzynka odbiorcza z osobistymi wiadomościami graczy i wiadomościami systemowymi dotyczącymi nagród, zamówień i wydarzeń w grze.",
-  "helpTopicMessagesHow": "Wiadomości są podzielone na rozmowy osobiste i wątek systemowy The Mob State. \nWiadomości systemowe są wysyłane automatycznie w przypadku: transakcji kryptowalutowych, realizacji zamówień, wypłat w rankingach, wyników napadów, ucieczek z więzienia i odznak za osiągnięcia. \nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności. \nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym. \nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie. \nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.",
+  "helpTopicMessagesSummary": "Twoja skrzynka odbiorcza z osobistymi wiadomościami graczy i oddzielnymi powiadomieniami systemowymi dotyczącymi każdej nagrody, zamówienia lub wydarzenia w grze.",
+  "helpTopicMessagesHow": "Wiadomości są podzielone na rozmowy osobiste i indywidualne powiadomienia o stanie mafii.\nKażde zdarzenie systemowe to osobna pozycja w skrzynce odbiorczej: transakcje kryptowalutowe, realizacja zamówień, wypłaty w rankingach, wyniki napadów, ucieczki z więzienia i odznaki za osiągnięcia nie mają wspólnego długiego wątku.\nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności.\nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym.\nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie.\nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.",
   "helpTopicMessagesTips": "Sprawdź swoją skrzynkę odbiorczą po długich okresach offline: nagrody, zrealizowane zamówienia i wydarzenia są tam rejestrowane. \nSkonfiguruj preferencje powiadomień w Ustawieniach, aby otrzymywać powiadomienia push tylko o naprawdę ważnych wydarzeniach.",
   "helpTopicInventoryCategory": "Kierownictwo",
   "helpTopicInventoryTitle": "Spis",

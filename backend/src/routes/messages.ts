@@ -31,7 +31,7 @@ router.post(
         });
       }
 
-      if (receiverId === 0) {
+      if (receiverId <= 0) {
         return res.status(403).json({
           event: 'error.system_thread_read_only',
           params: {},

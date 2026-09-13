@@ -19,7 +19,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 
 ## Cross-Module Dependencies
 - Settings -> Notifications (permission entrypoint)
-- Messages/Support/Bank/Crypto -> Notifications (player-facing signalering)
+- Messages/Support/Bank/Crypto -> Notifications (player-facing signalering). System inbox notices are listed as separate inbox rows, not one shared The Mob State thread.
 - Cooldown-gedreven modules -> Notifications (expiry meldingen)
 - Crew Missions -> Notifications (start, result, cooldown-ready)
 - Territory -> Notifications (contest start, prep-ready/active, capture, loss)

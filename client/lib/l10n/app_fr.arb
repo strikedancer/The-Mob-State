@@ -384,9 +384,9 @@
     }
   },
   "messageSystemBadge": "SYSTÈME",
-  "messageSystemInboxPreview": "Réalisations et messages système",
-  "messageSystemThreadSubtitle": "Réalisations et messages système",
-  "messageSystemThreadEmptyDetail": "Les succès et les messages système apparaissent automatiquement ici.",
+  "messageSystemInboxPreview": "Avis système",
+  "messageSystemThreadSubtitle": "The Mob State",
+  "messageSystemThreadEmptyDetail": "Cette notice système n'est plus disponible.",
   "messageSendFirst": "Envoyez le premier message !",
   "chatFriendRankLine": "★ Rang {rank}",
   "@chatFriendRankLine": {
@@ -8244,8 +8244,8 @@
   "helpTopicFriendsTips": "Ajoutez des amis qui partagent votre style de jeu : partenaires de braquage, réseaux de commerçants ou soutien au crime. \nUn ami qui réussit une évasion de prison gagne entre 500 et 2 000 € de récompense. Organisez-le en cas d'urgence.",
   "helpTopicMessagesCategory": "Sociale",
   "helpTopicMessagesTitle": "Messages",
-  "helpTopicMessagesSummary": "Votre boîte de réception avec les messages personnels des joueurs et les messages système concernant les récompenses, les commandes et les événements du jeu.",
-  "helpTopicMessagesHow": "Les messages sont divisés en conversations personnelles et en fil de discussion du système The Mob State. \nLes messages système sont envoyés automatiquement pour : les transactions cryptographiques, les exécutions de commandes, les paiements du classement, les résultats de braquage, les évasions de prison et les badges de réussite. \nVous pouvez envoyer des messages à d'autres joueurs tant que leurs paramètres de confidentialité le permettent. \nLes messages non lus apparaissent sous forme de badge sur l'icône de message et sont visibles depuis le tableau de bord. \nLes messages n'expirent pas et sont conservés sous forme d'historique des événements du compte. \nUtilisez le journal de la boîte de réception en cas de doute sur un paiement, une exécution de commande manquée ou un changement de solde inattendu.",
+  "helpTopicMessagesSummary": "Votre boîte de réception avec les messages personnels des joueurs et une notification système distincte pour chaque récompense, commande ou événement de jeu.",
+  "helpTopicMessagesHow": "Les messages sont divisés en conversations personnelles et en notifications individuelles de The Mob State.\nChaque événement système est son propre élément de boîte de réception : les transactions cryptographiques, les exécutions de commandes, les paiements du classement, les résultats des braquages, les évasions de prison et les badges de réussite ne partagent pas un long fil de discussion.\nVous pouvez envoyer des messages à d'autres joueurs tant que leurs paramètres de confidentialité le permettent.\nLes messages non lus apparaissent sous forme de badge sur l'icône de message et sont visibles depuis le tableau de bord.\nLes messages n'expirent pas et sont conservés sous forme d'historique des événements du compte.\nUtilisez le journal de la boîte de réception en cas de doute sur un paiement, une exécution de commande manquée ou un changement de solde inattendu.",
   "helpTopicMessagesTips": "Vérifiez votre boîte de réception après de longues périodes hors ligne : les récompenses, les commandes exécutées et les événements y sont tous enregistrés. \nConfigurez les préférences de notification via Paramètres afin de recevoir uniquement des alertes push pour les événements vraiment importants.",
   "helpTopicInventoryCategory": "Gestion",
   "helpTopicInventoryTitle": "Inventaire",

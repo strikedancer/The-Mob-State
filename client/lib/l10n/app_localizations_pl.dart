@@ -913,15 +913,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get messageSystemBadge => 'SYSTEM';
 
   @override
-  String get messageSystemInboxPreview => 'Osiągnięcia i komunikaty systemowe';
+  String get messageSystemInboxPreview => 'Uwaga systemowa';
 
   @override
-  String get messageSystemThreadSubtitle =>
-      'Osiągnięcia i komunikaty systemowe';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Osiągnięcia i komunikaty systemowe pojawiają się tutaj automatycznie.';
+      'To powiadomienie systemowe nie jest już dostępne.';
 
   @override
   String get messageSendFirst => 'Wyślij pierwszą wiadomość!';
@@ -17235,11 +17234,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'Twoja skrzynka odbiorcza z osobistymi wiadomościami graczy i wiadomościami systemowymi dotyczącymi nagród, zamówień i wydarzeń w grze.';
+      'Twoja skrzynka odbiorcza z osobistymi wiadomościami graczy i oddzielnymi powiadomieniami systemowymi dotyczącymi każdej nagrody, zamówienia lub wydarzenia w grze.';
 
   @override
   String get helpTopicMessagesHow =>
-      'Wiadomości są podzielone na rozmowy osobiste i wątek systemowy The Mob State. \nWiadomości systemowe są wysyłane automatycznie w przypadku: transakcji kryptowalutowych, realizacji zamówień, wypłat w rankingach, wyników napadów, ucieczek z więzienia i odznak za osiągnięcia. \nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności. \nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym. \nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie. \nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.';
+      'Wiadomości są podzielone na rozmowy osobiste i indywidualne powiadomienia o stanie mafii.\nKażde zdarzenie systemowe to osobna pozycja w skrzynce odbiorczej: transakcje kryptowalutowe, realizacja zamówień, wypłaty w rankingach, wyniki napadów, ucieczki z więzienia i odznaki za osiągnięcia nie mają wspólnego długiego wątku.\nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności.\nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym.\nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie.\nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.';
 
   @override
   String get helpTopicMessagesTips =>

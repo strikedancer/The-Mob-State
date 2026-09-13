@@ -19,7 +19,7 @@ class ConversationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isSystemThread = conversation.friendId == 0;
+    final isSystemThread = conversation.friendId <= 0;
 
     return Material(
       color: const Color(0xFF1E1E1E),
@@ -148,9 +148,10 @@ class ConversationCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            isSystemThread
-                                ? l10n.messageSystemInboxPreview
-                                : (conversation.lastMessage ?? l10n.noDirectMessagesYet),
+                            conversation.lastMessage ??
+                                (isSystemThread
+                                    ? l10n.messageSystemInboxPreview
+                                    : l10n.noDirectMessagesYet),
                             style: TextStyle(
                               color: conversation.unreadCount > 0
                                 ? Colors.white

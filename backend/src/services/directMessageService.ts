@@ -5,6 +5,7 @@ import { translationService } from './translationService';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 
 const SYSTEM_THREAD_ID = 0;
+const SYSTEM_NOTICE_INBOX_LIMIT = 50;
 const SYSTEM_SENDER = {
   id: SYSTEM_THREAD_ID,
   username: 'The Mob State',
@@ -12,6 +13,29 @@ const SYSTEM_SENDER = {
   avatar: null,
   activePortraitPath: null as string | null,
 };
+
+/** One inbox row per system notice. Negative so it never collides with a player id. */
+export function systemNoticeThreadId(messageId: number): number {
+  return -messageId;
+}
+
+export function systemNoticeMessageId(threadId: number): number | null {
+  if (threadId >= 0) {
+    return null;
+  }
+  return -threadId;
+}
+
+export function systemNoticeLines(body: string): { title: string; preview: string } {
+  const cleaned = body.replace(/\[\[[^\]]*\]\]/g, '').trim();
+  const lines = cleaned
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+  const title = (lines[0] ?? SYSTEM_SENDER.username).slice(0, 80);
+  const preview = lines.length > 1 ? lines.slice(1).join(' ') : title;
+  return { title, preview };
+}
 
 function mapMessageSender(s: {
   id: number;
@@ -258,6 +282,30 @@ export const directMessageService = {
    * Get conversation between two players
    */
   async getConversation(playerId: number, otherPlayerId: number, limit = 50) {
+    const noticeId = systemNoticeMessageId(otherPlayerId);
+    if (noticeId != null) {
+      const message = await prisma.directMessage.findFirst({
+        where: {
+          id: noticeId,
+          senderId: playerId,
+          receiverId: playerId,
+        },
+      });
+
+      if (!message) {
+        return [];
+      }
+
+      if (!message.read) {
+        await prisma.directMessage.update({
+          where: { id: message.id },
+          data: { read: true },
+        });
+      }
+
+      return [this.formatSystemMessage({ ...message, read: true })];
+    }
+
     if (otherPlayerId === SYSTEM_THREAD_ID) {
       const messages = await prisma.directMessage.findMany({
         where: {
@@ -341,8 +389,8 @@ export const directMessageService = {
 
   /**
    * Get all conversations for a player.
-   * One grouped query — never N+1 over friends or crime-style per-thread counts.
-   * Threads come from actual messages (including the system inbox), not only current friends.
+   * Player DMs stay one grouped query. Each system notice is its own inbox row
+   * (thread id = -messageId) so badges and payouts do not pile into one chat.
    */
   async getConversations(playerId: number) {
     const threadRows = await prisma.$queryRaw<
@@ -350,27 +398,34 @@ export const directMessageService = {
     >`
       SELECT
         CASE
-          WHEN senderId = receiverId THEN 0
           WHEN senderId = ${playerId} THEN receiverId
           ELSE senderId
         END AS threadId,
         MAX(id) AS lastId,
         SUM(CASE WHEN receiverId = ${playerId} AND \`read\` = 0 THEN 1 ELSE 0 END) AS unreadCount
       FROM direct_messages
-      WHERE senderId = ${playerId} OR receiverId = ${playerId}
+      WHERE (senderId = ${playerId} OR receiverId = ${playerId})
+        AND senderId <> receiverId
       GROUP BY threadId
       ORDER BY MAX(createdAt) DESC
-      LIMIT 80
+      LIMIT 40
     `;
 
-    if (threadRows.length === 0) {
-      return [];
-    }
+    const systemMessages = await prisma.directMessage.findMany({
+      where: {
+        senderId: playerId,
+        receiverId: playerId,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: SYSTEM_NOTICE_INBOX_LIMIT,
+    });
 
     const lastIds = threadRows.map((row) => Number(row.lastId));
-    const lastMessages = await prisma.directMessage.findMany({
-      where: { id: { in: lastIds } },
-    });
+    const lastMessages = lastIds.length
+      ? await prisma.directMessage.findMany({
+          where: { id: { in: lastIds } },
+        })
+      : [];
     const lastById = new Map(lastMessages.map((message) => [message.id, message]));
 
     const otherPlayerIds = threadRows
@@ -390,29 +445,43 @@ export const directMessageService = {
       : [];
     const playerById = new Map(players.map((player) => [player.id, player]));
 
-    return threadRows
+    const playerConversations = threadRows
       .map((row) => {
         const threadId = Number(row.threadId);
         const lastMessage = lastById.get(Number(row.lastId)) ?? null;
-        const unreadCount = Number(row.unreadCount ?? 0);
-        if (threadId === SYSTEM_THREAD_ID) {
-          return {
-            friend: SYSTEM_SENDER,
-            lastMessage,
-            unreadCount,
-          };
-        }
         const friend = playerById.get(threadId);
-        if (!friend) {
+        if (!friend || !lastMessage) {
           return null;
         }
         return {
           friend,
           lastMessage,
-          unreadCount,
+          unreadCount: Number(row.unreadCount ?? 0),
+          lastAt: lastMessage.createdAt,
         };
       })
       .filter((row): row is NonNullable<typeof row> => row != null);
+
+    const systemConversations = systemMessages.map((message) => {
+      const { title, preview } = systemNoticeLines(message.message);
+      return {
+        friend: {
+          ...SYSTEM_SENDER,
+          id: systemNoticeThreadId(message.id),
+          username: title,
+        },
+        lastMessage: {
+          ...message,
+          message: preview,
+        },
+        unreadCount: message.read ? 0 : 1,
+        lastAt: message.createdAt,
+      };
+    });
+
+    return [...playerConversations, ...systemConversations]
+      .sort((a, b) => b.lastAt.getTime() - a.lastAt.getTime())
+      .map(({ lastAt: _lastAt, ...conversation }) => conversation);
   },
 
   /**
@@ -433,6 +502,35 @@ export const directMessageService = {
    * Mark messages as read
    */
   async markAsRead(playerId: number, otherPlayerId: number) {
+    const noticeId = systemNoticeMessageId(otherPlayerId);
+    if (noticeId != null) {
+      const updatedMessages = await prisma.directMessage.updateMany({
+        where: {
+          id: noticeId,
+          senderId: playerId,
+          receiverId: playerId,
+          read: false,
+        },
+        data: {
+          read: true,
+        },
+      });
+
+      if (updatedMessages.count > 0) {
+        await worldEventService.createEvent(
+          'direct_message.read',
+          {
+            senderId: playerId,
+            receiverId: playerId,
+            count: updatedMessages.count,
+          },
+          playerId
+        );
+      }
+
+      return { success: true };
+    }
+
     if (otherPlayerId === SYSTEM_THREAD_ID) {
       const updatedMessages = await prisma.directMessage.updateMany({
         where: {

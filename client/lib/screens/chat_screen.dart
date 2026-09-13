@@ -48,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final Set<int> _investigationPendingCaseIds = <int>{};
   final Set<int> _investigationCompletedCaseIds = <int>{};
 
-  bool get _isSystemThread => widget.friendId == 0;
+  bool get _isSystemThread => widget.friendId <= 0;
 
   @override
   void initState() {
@@ -81,7 +81,15 @@ class _ChatScreenState extends State<ChatScreen> {
         final senderId = params['senderId'] as int?;
         final receiverId = params['receiverId'] as int?;
 
-        if ((senderId == widget.friendId && receiverId == _currentUserId) ||
+        final isThisSystemNotice = widget.friendId < 0 &&
+            senderId == 0 &&
+            (params['messageId'] as int?) == -widget.friendId;
+        final isLegacySystemThread = widget.friendId == 0 &&
+            senderId == 0 &&
+            receiverId == _currentUserId;
+        if (isThisSystemNotice ||
+            isLegacySystemThread ||
+            (senderId == widget.friendId && receiverId == _currentUserId) ||
             (senderId == _currentUserId && receiverId == widget.friendId)) {
           final messageId = params['messageId'] as int;
           final messageExists = _messages.any((m) => m.id == messageId);

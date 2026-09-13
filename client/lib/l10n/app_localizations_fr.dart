@@ -925,14 +925,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get messageSystemBadge => 'SYSTÈME';
 
   @override
-  String get messageSystemInboxPreview => 'Réalisations et messages système';
+  String get messageSystemInboxPreview => 'Avis système';
 
   @override
-  String get messageSystemThreadSubtitle => 'Réalisations et messages système';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Les succès et les messages système apparaissent automatiquement ici.';
+      'Cette notice système n\'est plus disponible.';
 
   @override
   String get messageSendFirst => 'Envoyez le premier message !';
@@ -17318,11 +17318,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'Votre boîte de réception avec les messages personnels des joueurs et les messages système concernant les récompenses, les commandes et les événements du jeu.';
+      'Votre boîte de réception avec les messages personnels des joueurs et une notification système distincte pour chaque récompense, commande ou événement de jeu.';
 
   @override
   String get helpTopicMessagesHow =>
-      'Les messages sont divisés en conversations personnelles et en fil de discussion du système The Mob State. \nLes messages système sont envoyés automatiquement pour : les transactions cryptographiques, les exécutions de commandes, les paiements du classement, les résultats de braquage, les évasions de prison et les badges de réussite. \nVous pouvez envoyer des messages à d\'autres joueurs tant que leurs paramètres de confidentialité le permettent. \nLes messages non lus apparaissent sous forme de badge sur l\'icône de message et sont visibles depuis le tableau de bord. \nLes messages n\'expirent pas et sont conservés sous forme d\'historique des événements du compte. \nUtilisez le journal de la boîte de réception en cas de doute sur un paiement, une exécution de commande manquée ou un changement de solde inattendu.';
+      'Les messages sont divisés en conversations personnelles et en notifications individuelles de The Mob State.\nChaque événement système est son propre élément de boîte de réception : les transactions cryptographiques, les exécutions de commandes, les paiements du classement, les résultats des braquages, les évasions de prison et les badges de réussite ne partagent pas un long fil de discussion.\nVous pouvez envoyer des messages à d\'autres joueurs tant que leurs paramètres de confidentialité le permettent.\nLes messages non lus apparaissent sous forme de badge sur l\'icône de message et sont visibles depuis le tableau de bord.\nLes messages n\'expirent pas et sont conservés sous forme d\'historique des événements du compte.\nUtilisez le journal de la boîte de réception en cas de doute sur un paiement, une exécution de commande manquée ou un changement de solde inattendu.';
 
   @override
   String get helpTopicMessagesTips =>

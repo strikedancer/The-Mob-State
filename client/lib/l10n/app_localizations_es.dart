@@ -924,14 +924,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get messageSystemBadge => 'SISTEMA';
 
   @override
-  String get messageSystemInboxPreview => 'Logros y mensajes del sistema';
+  String get messageSystemInboxPreview => 'Aviso del sistema';
 
   @override
-  String get messageSystemThreadSubtitle => 'Logros y mensajes del sistema';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Los logros y los mensajes del sistema aparecen aquí automáticamente.';
+      'Este aviso del sistema ya no está disponible.';
 
   @override
   String get messageSendFirst => '¡Envía el primer mensaje!';
@@ -17261,11 +17261,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'Tu bandeja de entrada con mensajes personales del jugador y mensajes del sistema sobre recompensas, pedidos y eventos del juego.';
+      'Su bandeja de entrada con mensajes personales del jugador y un aviso del sistema separado para cada recompensa, pedido o evento del juego.';
 
   @override
   String get helpTopicMessagesHow =>
-      'Los mensajes se dividen en conversaciones personales y el hilo del sistema The Mob State. \nLos mensajes del sistema se envían automáticamente para: intercambios de criptomonedas, cumplimiento de pedidos, pagos de tablas de clasificación, resultados de atracos, fugas de cárcel e insignias de logros. \nPuedes enviar mensajes a otros jugadores siempre que su configuración de privacidad lo permita. \nLos mensajes no leídos aparecen como una insignia en el ícono de mensaje y son visibles desde el tablero. \nLos mensajes no caducan y se mantienen como un registro histórico de los eventos de la cuenta. \nUtilice el registro de la bandeja de entrada cuando tenga dudas sobre un pago, un pedido perdido o un cambio de saldo inesperado.';
+      'Los mensajes se dividen en conversaciones personales y avisos individuales de The Mob State.\nCada evento del sistema es su propio elemento en la bandeja de entrada: intercambios de criptomonedas, cumplimiento de pedidos, pagos en tablas de clasificación, resultados de atracos, fugas de cárcel e insignias de logros no comparten un hilo largo.\nPuedes enviar mensajes a otros jugadores siempre que su configuración de privacidad lo permita.\nLos mensajes no leídos aparecen como una insignia en el ícono de mensaje y son visibles desde el tablero.\nLos mensajes no caducan y se mantienen como un registro histórico de los eventos de la cuenta.\nUtilice el registro de la bandeja de entrada cuando tenga dudas sobre un pago, un pedido perdido o un cambio de saldo inesperado.';
 
   @override
   String get helpTopicMessagesTips =>

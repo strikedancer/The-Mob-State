@@ -915,14 +915,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get messageSystemBadge => 'SISTEMA';
 
   @override
-  String get messageSystemInboxPreview => 'Conquistas e mensagens do sistema';
+  String get messageSystemInboxPreview => 'Aviso do sistema';
 
   @override
-  String get messageSystemThreadSubtitle => 'Conquistas e mensagens do sistema';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Conquistas e mensagens do sistema aparecem aqui automaticamente.';
+      'Este aviso do sistema não está mais disponível.';
 
   @override
   String get messageSendFirst => 'Envie a primeira mensagem!';
@@ -17233,11 +17233,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'Sua caixa de entrada com mensagens pessoais dos jogadores e mensagens do sistema sobre recompensas, pedidos e eventos do jogo.';
+      'Sua caixa de entrada com mensagens pessoais dos jogadores e um aviso de sistema separado para cada recompensa, pedido ou evento de jogo.';
 
   @override
   String get helpTopicMessagesHow =>
-      'As mensagens são divididas em conversas pessoais e threads do sistema The Mob State. \nAs mensagens do sistema são enviadas automaticamente para: negociações de criptografia, atendimento de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquista. \nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam. \nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel. \nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta. \nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.';
+      'As mensagens são divididas em conversas pessoais e avisos individuais do The Mob State.\nCada evento do sistema é seu próprio item de caixa de entrada: negociações criptográficas, atendimentos de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquistas não compartilham um longo tópico.\nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam.\nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel.\nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta.\nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.';
 
   @override
   String get helpTopicMessagesTips =>

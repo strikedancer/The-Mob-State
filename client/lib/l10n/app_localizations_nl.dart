@@ -917,14 +917,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get messageSystemBadge => 'SYSTEEM';
 
   @override
-  String get messageSystemInboxPreview => 'Achievements en systeemberichten';
+  String get messageSystemInboxPreview => 'Systeemmelding';
 
   @override
-  String get messageSystemThreadSubtitle => 'Achievements en systeemberichten';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Achievement- en systeemberichten verschijnen hier automatisch.';
+      'Deze systeemmelding is niet meer beschikbaar.';
 
   @override
   String get messageSendFirst => 'Stuur het eerste bericht!';
@@ -17148,11 +17148,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'Je inbox met persoonlijke berichten van andere spelers en systeemberichten over beloningen, orders en game-events.';
+      'Je inbox met persoonlijke berichten van andere spelers en een aparte systeemmelding voor elke beloning, order of game-event.';
 
   @override
   String get helpTopicMessagesHow =>
-      'Berichten zijn onderverdeeld in persoonlijke gesprekken en The Mob State systeemberg.\nSysteemberichten worden automatisch gestuurd bij: crypto trades, order fills, leaderboard uitkeringen, heist-resultaten, jail-escapes en achievement-badges.\nJe kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.\nUnread berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.\nBerichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.\nGebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging.';
+      'Berichten zijn onderverdeeld in persoonlijke gesprekken en losse The Mob State-meldingen.\nElke systeemgebeurtenis is een eigen inbox-item: crypto trades, order fills, leaderboard-uitkeringen, heist-resultaten, jail-escapes en achievement-badges delen geen lange thread.\nJe kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.\nOngelezen berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.\nBerichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.\nGebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging.';
 
   @override
   String get helpTopicMessagesTips =>

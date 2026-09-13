@@ -916,14 +916,14 @@ class AppLocalizationsIt extends AppLocalizations {
   String get messageSystemBadge => 'SISTEMA';
 
   @override
-  String get messageSystemInboxPreview => 'Risultati e messaggi di sistema';
+  String get messageSystemInboxPreview => 'Avviso di sistema';
 
   @override
-  String get messageSystemThreadSubtitle => 'Risultati e messaggi di sistema';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Gli obiettivi e i messaggi di sistema vengono visualizzati qui automaticamente.';
+      'Questo avviso di sistema non è più disponibile.';
 
   @override
   String get messageSendFirst => 'Invia il primo messaggio!';
@@ -17293,11 +17293,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'La tua casella di posta con messaggi personali dei giocatori e messaggi di sistema su premi, ordini ed eventi di gioco.';
+      'La tua casella di posta con messaggi personali dei giocatori e un avviso di sistema separato per ogni premio, ordine o evento di gioco.';
 
   @override
   String get helpTopicMessagesHow =>
-      'I messaggi sono suddivisi in conversazioni personali e thread del sistema The Mob State. \nI messaggi di sistema vengono inviati automaticamente per: scambi di criptovalute, evasione di ordini, pagamenti in classifica, risultati di rapine, evasioni di prigione e badge di conseguimento. \nPuoi inviare messaggi ad altri giocatori purché le loro impostazioni sulla privacy lo consentano. \nI messaggi non letti vengono visualizzati come badge sull\'icona del messaggio e sono visibili dalla dashboard. \nI messaggi non scadono e vengono conservati come registro cronologico degli eventi dell\'account. \nUtilizza il registro della posta in arrivo in caso di dubbi su un pagamento, un ordine mancato o una modifica imprevista del saldo.';
+      'I messaggi sono suddivisi in conversazioni personali e avvisi individuali di The Mob State.\nOgni evento di sistema è un elemento a sé stante nella casella di posta: scambi di criptovalute, evasione degli ordini, pagamenti in classifica, risultati delle rapine, evasioni dal carcere e badge degli obiettivi non condividono un lungo thread.\nPuoi inviare messaggi ad altri giocatori purché le loro impostazioni sulla privacy lo consentano.\nI messaggi non letti vengono visualizzati come badge sull\'icona del messaggio e sono visibili dalla dashboard.\nI messaggi non scadono e vengono conservati come registro cronologico degli eventi dell\'account.\nUtilizza il registro della posta in arrivo in caso di dubbi su un pagamento, un ordine mancato o una modifica imprevista del saldo.';
 
   @override
   String get helpTopicMessagesTips =>

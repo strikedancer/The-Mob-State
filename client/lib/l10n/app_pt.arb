@@ -384,9 +384,9 @@
     }
   },
   "messageSystemBadge": "SISTEMA",
-  "messageSystemInboxPreview": "Conquistas e mensagens do sistema",
-  "messageSystemThreadSubtitle": "Conquistas e mensagens do sistema",
-  "messageSystemThreadEmptyDetail": "Conquistas e mensagens do sistema aparecem aqui automaticamente.",
+  "messageSystemInboxPreview": "Aviso do sistema",
+  "messageSystemThreadSubtitle": "The Mob State",
+  "messageSystemThreadEmptyDetail": "Este aviso do sistema não está mais disponível.",
   "messageSendFirst": "Envie a primeira mensagem!",
   "chatFriendRankLine": "★ Classificação {rank}",
   "@chatFriendRankLine": {
@@ -8244,8 +8244,8 @@
   "helpTopicFriendsTips": "Adicione amigos que compartilhem seu estilo de jogo: parceiros de assalto, redes de comerciantes ou apoio ao crime. \nUm amigo que foge da prisão ganha uma recompensa de 500 a 2.000 euros em caso de sucesso. Organize isso para emergências.",
   "helpTopicMessagesCategory": "Social",
   "helpTopicMessagesTitle": "Mensagens",
-  "helpTopicMessagesSummary": "Sua caixa de entrada com mensagens pessoais dos jogadores e mensagens do sistema sobre recompensas, pedidos e eventos do jogo.",
-  "helpTopicMessagesHow": "As mensagens são divididas em conversas pessoais e threads do sistema The Mob State. \nAs mensagens do sistema são enviadas automaticamente para: negociações de criptografia, atendimento de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquista. \nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam. \nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel. \nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta. \nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.",
+  "helpTopicMessagesSummary": "Sua caixa de entrada com mensagens pessoais dos jogadores e um aviso de sistema separado para cada recompensa, pedido ou evento de jogo.",
+  "helpTopicMessagesHow": "As mensagens são divididas em conversas pessoais e avisos individuais do The Mob State.\nCada evento do sistema é seu próprio item de caixa de entrada: negociações criptográficas, atendimentos de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquistas não compartilham um longo tópico.\nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam.\nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel.\nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta.\nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.",
   "helpTopicMessagesTips": "Verifique sua caixa de entrada após longos períodos off-line: recompensas, atendimentos de pedidos e eventos são todos registrados lá. \nConfigure as preferências de notificação em Configurações para receber apenas alertas push para eventos realmente importantes.",
   "helpTopicInventoryCategory": "Gerenciamento",
   "helpTopicInventoryTitle": "Inventário",

@@ -926,14 +926,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messageSystemBadge => 'SYSTEM';
 
   @override
-  String get messageSystemInboxPreview => 'Erfolge und Systemmeldungen';
+  String get messageSystemInboxPreview => 'Systemhinweis';
 
   @override
-  String get messageSystemThreadSubtitle => 'Erfolge und Systemmeldungen';
+  String get messageSystemThreadSubtitle => 'The Mob State';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Erfolge und Systemmeldungen erscheinen hier automatisch.';
+      'Dieser Systemhinweis ist nicht mehr verfügbar.';
 
   @override
   String get messageSendFirst => 'Senden Sie die erste Nachricht!';
@@ -17319,11 +17319,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicMessagesSummary =>
-      'Ihr Posteingang mit persönlichen Spielernachrichten und Systemnachrichten zu Belohnungen, Bestellungen und Spielereignissen.';
+      'Ihr Posteingang mit persönlichen Spielernachrichten und einer separaten Systembenachrichtigung für jede Belohnung, Bestellung oder jedes Spielereignis.';
 
   @override
   String get helpTopicMessagesHow =>
-      'Die Nachrichten sind in persönliche Gespräche und den The Mob State-Systemthread unterteilt. \nSystemnachrichten werden automatisch gesendet für: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfall-Ergebnisse, Gefängnisausbrüche und Leistungsabzeichen. \nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen. \nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar. \nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert. \nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.';
+      'Die Nachrichten sind in persönliche Gespräche und einzelne The Mob State-Mitteilungen unterteilt.\nJedes Systemereignis ist ein eigener Posteingangspunkt: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfallergebnisse, Gefängnisausbrüche und Leistungsabzeichen teilen sich keinen langen Thread.\nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen.\nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar.\nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert.\nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.';
 
   @override
   String get helpTopicMessagesTips =>

@@ -488,9 +488,9 @@
     }
   },
   "messageSystemBadge": "SYSTEM",
-  "messageSystemInboxPreview": "Achievements and system messages",
-  "messageSystemThreadSubtitle": "Achievements and system messages",
-  "messageSystemThreadEmptyDetail": "Achievements and system messages appear here automatically.",
+  "messageSystemInboxPreview": "System notice",
+  "messageSystemThreadSubtitle": "The Mob State",
+  "messageSystemThreadEmptyDetail": "This system notice is no longer available.",
   "messageSendFirst": "Send the first message!",
   "chatFriendRankLine": "★ Rank {rank}",
   "@chatFriendRankLine": {
@@ -11064,8 +11064,8 @@
   "helpTopicFriendsTips": "Add friends who share your play style: heist partners, trader networks or crime support.\nA friend who executes a jail escape earns €500-€2.000 reward on success. Arrange this for emergencies.",
   "helpTopicMessagesCategory": "Social",
   "helpTopicMessagesTitle": "Messages",
-  "helpTopicMessagesSummary": "Your inbox with personal player messages and system messages about rewards, orders and game events.",
-  "helpTopicMessagesHow": "Messages are split into personal conversations and The Mob State system thread.\nSystem messages are sent automatically for: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.",
+  "helpTopicMessagesSummary": "Your inbox with personal player messages and a separate system notice for each reward, order or game event.",
+  "helpTopicMessagesHow": "Messages are split into personal conversations and individual The Mob State notices.\nEach system event is its own inbox item: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges do not share one long thread.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.",
   "helpTopicMessagesTips": "Check your inbox after long offline periods: rewards, order fills and events are all recorded there.\nConfigure notification preferences via Settings so you only receive push alerts for truly important events.",
   "helpTopicInventoryCategory": "Management",
   "helpTopicInventoryTitle": "Inventory",
