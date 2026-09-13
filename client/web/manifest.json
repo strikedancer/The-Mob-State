@@ -6,7 +6,7 @@
     "background_color": "#1a1a1a",
     "theme_color": "#d4af37",
     "description": "Text-based mafia game (browser/PWA). Build your criminal empire in The Mob State.",
-    "orientation": "portrait-primary",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
