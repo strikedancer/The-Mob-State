@@ -1633,17 +1633,6 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                               ),
                                                         ),
                                                       ),
-                                                      if (_isVipActive(
-                                                        authProvider,
-                                                      ))
-                                                        Icon(
-                                                          Icons.flash_on,
-                                                          color: hasMaterials
-                                                              ? Colors
-                                                                    .greenAccent
-                                                              : Colors
-                                                                    .amberAccent,
-                                                        ),
                                                     ],
                                                   ),
                                                   const SizedBox(height: 8),

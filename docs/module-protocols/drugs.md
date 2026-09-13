@@ -96,7 +96,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Facility overviews (owned badge, slots, “can produce”) are **current country only**. Owning a greenhouse in France must not look owned or usable in Italy; show an elsewhere hint and a local Buy action.
 - Finished but uncollected productions must remain visible in the Production flow and still count against their facility slot until they are actually collected.
 - VIP auto-collect must be backed by a real background automation path; a toggle without server-side execution is not sufficient.
-- VIP quick-buy material shortcuts in production cards must remain confirm-first (cost modal with explicit Buy/Cancel actions before purchase) and server-enforced on active VIP status. The button must stay tappable on mobile (full-width control, not a tiny header icon). Stock lands in the current-country depot.
+- VIP quick-buy material shortcuts in production cards must remain confirm-first (cost modal with explicit Buy/Cancel actions before purchase) and server-enforced on active VIP status. Use the full-width labeled button only; do not add a separate header lightning icon. Stock lands in the current-country depot.
 - Drugs hub `TabBarView` must not steal horizontal swipes on mobile (`NeverScrollableScrollPhysics`); tab changes go through the pinned tab bar so Produce / VIP buy are not interpreted as a swipe to Inventory.
 - Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
 - Credit speedup for an in-progress batch must quote remaining time server-side, confirm before spend, refuse when already ready/collected, and only move `finishesAt` forward (no auto-inventory grant).

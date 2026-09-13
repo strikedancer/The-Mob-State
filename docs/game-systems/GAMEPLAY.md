@@ -1191,7 +1191,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Aviation system
 - âœ… Casino (blackjack, slots, roulette)
 - âœ… Weapons & ammo system
-- âœ… VIP quick-buy in Drug Production (one-click missing materials into the current-country depot with cost confirmation modal)
+- âœ… VIP quick-buy in Drug Production (full-width buy-missing button into the current-country depot with cost confirmation modal; no separate header lightning icon)
 - âœ… Drug facilities, slots and production gates are per country (a greenhouse in France is not owned/usable in Italy)
 - ✅ Court & Judge (appeal / bribe, criminal record, visible law/wanted/FBI appeal odds, localized crime and judge names; web panels fill the content column)
 - âœ… Crew Wars (War Room, seasons, territory targets)
