@@ -3798,6 +3798,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsEnablePush => 'Enable push';
 
   @override
+  String get pushEnableTitle => 'Turn on push notifications';
+
+  @override
+  String get pushEnableBody =>
+      'Get alerts for messages, friend requests, crew activity and when cooldowns are ready. On iPhone, add The Mob State to your home screen first, then allow notifications.';
+
+  @override
+  String get pushEnableButton => 'Enable notifications';
+
+  @override
+  String get pushEnableLater => 'Later';
+
+  @override
   String get settingsPushEnabledToast =>
       'Push notifications enabled. New notifications will now be received.';
 
@@ -17653,7 +17666,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).';
+      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.';
 
   @override
   String get helpTopicSettingsTips =>

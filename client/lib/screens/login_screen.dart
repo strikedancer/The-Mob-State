@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
@@ -12,7 +11,6 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/avatar_helper.dart';
 import '../services/auth_service.dart';
-import '../services/notification_service.dart';
 import '../config/app_config.dart';
 import '../config/supported_languages.dart';
 import '../widgets/guest_legal_footer.dart';
@@ -298,51 +296,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Alignment.center;
   }
 
-  Future<void> _showPushPermissionDialog() async {
-    final accepted = await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1a1a2e),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text(
-          '🔔 Pushmeldingen',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        content: const Text(
-          'Wil je meldingen ontvangen voor berichten, vriendschapsverzoeken en crew-activiteit?',
-          style: TextStyle(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Later', style: TextStyle(color: Colors.white54)),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFc0a060),
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Ja, zet aan'),
-          ),
-        ],
-      ),
-    );
-
-    if (accepted == true && mounted) {
-      try {
-        await NotificationService().initialize();
-        print('[LoginScreen] ✅ Push notifications enabled via login dialog');
-      } catch (e) {
-        print('[LoginScreen] ⚠️ Push init failed: $e');
-      }
-    }
-  }
-
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -471,13 +424,6 @@ class _LoginScreenState extends State<LoginScreen> {
         duration: const Duration(seconds: 1),
       ),
     );
-    if (kIsWeb && mounted) {
-      final settings = await NotificationService().getNotificationSettings();
-      if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
-        await _showPushPermissionDialog();
-      }
-    }
-
     await Future.delayed(const Duration(milliseconds: 100));
     if (!mounted) return;
     Navigator.of(context).pushReplacementNamed('/dashboard');

@@ -12028,5 +12028,9 @@
   "pwaInstallManualTitle": "Add to your home screen",
   "pwaInstallManualBody": "Open your browser menu and choose Install app or Add to Home Screen. After that, The Mob State opens full screen from your home screen.",
   "settingsPwaInstallTitle": "Add to Home Screen",
-  "settingsPwaInstallSubtitle": "Install The Mob State as an app icon on this phone or tablet."
+  "settingsPwaInstallSubtitle": "Install The Mob State as an app icon on this phone or tablet.",
+  "pushEnableTitle": "Turn on push notifications",
+  "pushEnableBody": "Get alerts for messages, friend requests, crew activity and when cooldowns are ready. On iPhone, add The Mob State to your home screen first, then allow notifications.",
+  "pushEnableButton": "Enable notifications",
+  "pushEnableLater": "Later"
 }

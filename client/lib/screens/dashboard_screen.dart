@@ -21,6 +21,7 @@ import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/pwa_install_banner.dart';
+import '../widgets/push_enable_prompt.dart';
 import '../widgets/live_event_rail.dart';
 import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
@@ -525,7 +526,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _refreshDashboardBadges();
       _setupSSEListener();
       _startNavCooldownTimers();
-      _checkPremiumPopupOnOpen();
+      _checkPremiumPopupOnOpen().whenComplete(() {
+        if (mounted) unawaited(maybeShowPushEnablePrompt(context));
+      });
       _loadActiveGameEventsForRail();
     });
   }

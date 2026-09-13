@@ -3822,6 +3822,19 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settingsEnablePush => 'Włącz push';
 
   @override
+  String get pushEnableTitle => 'Turn on push notifications';
+
+  @override
+  String get pushEnableBody =>
+      'Get alerts for messages, friend requests, crew activity and when cooldowns are ready. On iPhone, add The Mob State to your home screen first, then allow notifications.';
+
+  @override
+  String get pushEnableButton => 'Enable notifications';
+
+  @override
+  String get pushEnableLater => 'Later';
+
+  @override
   String get settingsPushEnabledToast =>
       'Powiadomienia push włączone. Nowe powiadomienia będą teraz odbierane.';
 

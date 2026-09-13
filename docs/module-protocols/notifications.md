@@ -28,7 +28,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Midnight Races -> inbox + FCM + activity feed on settle (`race.settled`) or refund (`race.refunded`)
 
 ## Must Preserve
-- Expliciete in-app permissie-entrypoint voor web/iOS homescreen push, doorgaans via Settings.
+- Expliciete in-app permissie-entrypoint voor web/iOS homescreen push: één popup na login (`maybeShowPushEnablePrompt` op het dashboard) plus Settings. Geen automatische browser-prompt zonder knop. Later/dismiss blijft lokaal bewaard; al toegestaan of door de browser geweigerd = geen popup.
 - Web FCM berichten voor web-tokens blijven data-only om dubbele notificaties te voorkomen.
 - Safari/iOS PWA moet `payload.data.title/body` fallback houden wanneer `payload.notification` ontbreekt.
 - `firebase-messaging-sw.js` moet als update-kritieke service worker altijd met `no-cache, no-store, must-revalidate` worden geserveerd; een nieuwe deploy mag nooit op een oude push-service-worker blijven hangen.
@@ -52,6 +52,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 
 ## Frontend Guardrails
 - Settings moet een expliciete action bevatten die browser/iOS permission requests via user gesture kan starten.
+- Na inloggen (landing-modal, `/login`, Facebook) toont het dashboard een eenmalige push-popup; de Enable-knop is de user gesture. Gameplay mag niet wachten op de browser-prompt.
 - Service worker fallbacktekst moet `payload.data` kunnen lezen als `payload.notification` ontbreekt.
 - Bij app-refresh, PWA-herstart of nieuwe client-build moet een eerder toegestane push-permissie automatisch opnieuw aan het actuele FCM token worden gekoppeld; de speler mag push niet handmatig opnieuw hoeven inschakelen na elke deploy of page refresh.
 - Token-registratie moet idempotent zijn: hernieuwde register-calls moeten dezelfde token kunnen verversen en oude tokens voor dezelfde speler/platform mogen niet blijven domineren.
