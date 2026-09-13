@@ -951,6 +951,34 @@ class AppLocalizationsPl extends AppLocalizations {
   String get messageDeleteFailed => 'Nie udało się usunąć wiadomości';
 
   @override
+  String get messagesClearRead => 'Wyczyść przeczytane';
+
+  @override
+  String get messagesClearReadConfirm =>
+      'Usunąć wszystkie przeczytane wiadomości ze swojej skrzynki odbiorczej? Czaty graczy pozostają widoczne dla drugiej osoby. Wracają nowe wiadomości.';
+
+  @override
+  String get messagesClearReadEmpty =>
+      'Brak przeczytanych wiadomości do usunięcia.';
+
+  @override
+  String get messagesHideConversation => 'Usuń ze skrzynki odbiorczej';
+
+  @override
+  String get messagesHideConversationConfirm =>
+      'Usunąć tę rozmowę ze swojej skrzynki odbiorczej? Pozostaje dla innego gracza. Nowa wiadomość przywraca sytuację.';
+
+  @override
+  String get messagesHideUnreadBlocked =>
+      'Nieprzeczytanych wiadomości nie można jeszcze usunąć.';
+
+  @override
+  String get messagesHidden => 'Usunięto z Twojej skrzynki odbiorczej';
+
+  @override
+  String get messagesHideFailed => 'Nie można usunąć tych wiadomości';
+
+  @override
   String get investigationWindowExpired =>
       'Upłynął okres dochodzenia (24 godziny).';
 
@@ -17244,7 +17272,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'Wiadomości są podzielone na rozmowy osobiste i indywidualne powiadomienia o stanie mafii. \nNa klawiaturze Enter wysyła wiadomość, a Shift+Enter rozpoczyna nową linię. Skróty do wydarzeń pozostają ukryte w Wiadomościach, więc nie zakrywają przycisku wysyłania. \nKażde zdarzenie systemowe to osobna pozycja w skrzynce odbiorczej: transakcje kryptowalutowe, realizacja zamówień, wypłaty w rankingach, wyniki napadów, ucieczki z więzienia i odznaki za osiągnięcia nie mają wspólnego długiego wątku. \nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności. \nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym. \nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie. \nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.';
+      'Wiadomości są podzielone na rozmowy osobiste i indywidualne powiadomienia o stanie mafii. \nNa klawiaturze Enter wysyła wiadomość, a Shift+Enter rozpoczyna nową linię. Skróty do wydarzeń pozostają ukryte w Wiadomościach, więc nie zakrywają przycisku wysyłania. \nPo przeczytaniu powiadomienia lub czatu możesz usunąć je ze skrzynki odbiorczej (przesunięciem, ikoną kosza lub Wyczyść przeczytane). Drugi gracz prowadzi czat. Nowa wiadomość przywraca sytuację. Nieprzeczytane elementy pozostają, dopóki ich nie otworzysz. \nKażde zdarzenie systemowe to osobna pozycja w skrzynce odbiorczej: transakcje kryptowalutowe, realizacja zamówień, wypłaty w rankingach, wyniki napadów, ucieczki z więzienia i odznaki za osiągnięcia nie mają wspólnego długiego wątku. \nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności. \nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym. \nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie. \nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.';
 
   @override
   String get helpTopicMessagesTips =>

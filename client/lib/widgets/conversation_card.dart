@@ -8,12 +8,14 @@ class ConversationCard extends StatelessWidget {
   final Conversation conversation;
   final VoidCallback onTap;
   final VoidCallback? onAvatarTap;
+  final VoidCallback? onHide;
 
   const ConversationCard({
     super.key,
     required this.conversation,
     required this.onTap,
     this.onAvatarTap,
+    this.onHide,
   });
 
   @override
@@ -166,6 +168,19 @@ class ConversationCard extends StatelessWidget {
                           ),
                         ),
                         
+                        if (onHide != null && conversation.unreadCount <= 0) ...[
+                          const SizedBox(width: 4),
+                          IconButton(
+                            tooltip: l10n.messagesHideConversation,
+                            onPressed: onHide,
+                            visualDensity: VisualDensity.compact,
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: Colors.grey[500],
+                              size: 20,
+                            ),
+                          ),
+                        ],
                         // Unread badge
                         if (conversation.unreadCount > 0) ...[
                           const SizedBox(width: 8),

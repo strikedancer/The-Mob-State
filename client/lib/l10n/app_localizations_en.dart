@@ -947,6 +947,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageDeleteFailed => 'Failed to delete message';
 
   @override
+  String get messagesClearRead => 'Clear read';
+
+  @override
+  String get messagesClearReadConfirm =>
+      'Remove every message you have already read from your inbox? Player chats stay visible for the other person. New messages come back.';
+
+  @override
+  String get messagesClearReadEmpty => 'There are no read messages to clear.';
+
+  @override
+  String get messagesHideConversation => 'Remove from inbox';
+
+  @override
+  String get messagesHideConversationConfirm =>
+      'Remove this conversation from your inbox? It stays for the other player. A new message brings it back.';
+
+  @override
+  String get messagesHideUnreadBlocked =>
+      'Unread messages cannot be removed yet.';
+
+  @override
+  String get messagesHidden => 'Removed from your inbox';
+
+  @override
+  String get messagesHideFailed => 'Could not remove those messages';
+
+  @override
   String get investigationWindowExpired =>
       'Investigation window expired (24 hours).';
 
@@ -17118,7 +17145,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'Messages are split into personal conversations and individual The Mob State notices.\nOn a keyboard, Enter sends the message and Shift+Enter starts a new line. Event shortcuts stay hidden on Messages so they do not cover the send button.\nEach system event is its own inbox item: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges do not share one long thread.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.';
+      'Messages are split into personal conversations and individual The Mob State notices.\nOn a keyboard, Enter sends the message and Shift+Enter starts a new line. Event shortcuts stay hidden on Messages so they do not cover the send button.\nAfter you have read a notice or chat you can remove it from your inbox (swipe, trash icon, or Clear read). The other player keeps the chat. A new message brings it back. Unread items stay until you open them.\nEach system event is its own inbox item: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges do not share one long thread.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.';
 
   @override
   String get helpTopicMessagesTips =>

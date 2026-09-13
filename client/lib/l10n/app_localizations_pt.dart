@@ -955,6 +955,33 @@ class AppLocalizationsPt extends AppLocalizations {
   String get messageDeleteFailed => 'Falha ao excluir mensagem';
 
   @override
+  String get messagesClearRead => 'Limpar lidas';
+
+  @override
+  String get messagesClearReadConfirm =>
+      'Remover todas as mensagens que você já leu da sua caixa de entrada? Os bate-papos dos jogadores permanecem visíveis para a outra pessoa. Novas mensagens voltam.';
+
+  @override
+  String get messagesClearReadEmpty => 'Não há mensagens lidas para limpar.';
+
+  @override
+  String get messagesHideConversation => 'Remover da caixa de entrada';
+
+  @override
+  String get messagesHideConversationConfirm =>
+      'Remover esta conversa da sua caixa de entrada? Fica para o outro jogador. Uma nova mensagem o traz de volta.';
+
+  @override
+  String get messagesHideUnreadBlocked =>
+      'Mensagens não lidas ainda não podem ser removidas.';
+
+  @override
+  String get messagesHidden => 'Removido da sua caixa de entrada';
+
+  @override
+  String get messagesHideFailed => 'Não foi possível remover essas mensagens';
+
+  @override
   String get investigationWindowExpired =>
       'A janela de investigação expirou (24 horas).';
 
@@ -17243,7 +17270,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'As mensagens são divididas em conversas pessoais e avisos individuais do The Mob State. \nEm um teclado, Enter envia a mensagem e Shift+Enter inicia uma nova linha. Os atalhos de eventos ficam ocultos nas Mensagens para que não cubram o botão enviar. \nCada evento do sistema é seu próprio item de caixa de entrada: negociações criptográficas, atendimentos de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquistas não compartilham um longo tópico. \nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam. \nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel. \nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta. \nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.';
+      'As mensagens são divididas em conversas pessoais e avisos individuais do The Mob State. \nEm um teclado, Enter envia a mensagem e Shift+Enter inicia uma nova linha. Os atalhos de eventos ficam ocultos nas Mensagens para que não cubram o botão enviar. \nDepois de ler um aviso ou bate-papo, você pode removê-lo da sua caixa de entrada (deslizar, ícone de lixeira ou Limpar leitura). O outro jogador mantém o chat. Uma nova mensagem o traz de volta. Os itens não lidos permanecem até você abri-los. \nCada evento do sistema é seu próprio item de caixa de entrada: negociações criptográficas, atendimentos de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquistas não compartilham um longo tópico. \nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam. \nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel. \nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta. \nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.';
 
   @override
   String get helpTopicMessagesTips =>

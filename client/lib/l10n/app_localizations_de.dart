@@ -965,6 +965,35 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messageDeleteFailed => 'Nachricht konnte nicht gelöscht werden';
 
   @override
+  String get messagesClearRead => 'Gelesene löschen';
+
+  @override
+  String get messagesClearReadConfirm =>
+      'Jede Nachricht, die Sie bereits gelesen haben, aus Ihrem Posteingang entfernen? Spielerchats bleiben für die andere Person sichtbar. Neue Nachrichten kommen zurück.';
+
+  @override
+  String get messagesClearReadEmpty =>
+      'Es sind keine gelesenen Nachrichten zum Löschen vorhanden.';
+
+  @override
+  String get messagesHideConversation => 'Aus Posteingang entfernen';
+
+  @override
+  String get messagesHideConversationConfirm =>
+      'Diese Konversation aus Ihrem Posteingang entfernen? Es bleibt für den anderen Spieler. Eine neue Nachricht bringt es zurück.';
+
+  @override
+  String get messagesHideUnreadBlocked =>
+      'Ungelesene Nachrichten können noch nicht entfernt werden.';
+
+  @override
+  String get messagesHidden => 'Aus Ihrem Posteingang entfernt';
+
+  @override
+  String get messagesHideFailed =>
+      'Diese Nachrichten konnten nicht entfernt werden';
+
+  @override
   String get investigationWindowExpired =>
       'Das Untersuchungsfenster ist abgelaufen (24 Stunden).';
 
@@ -17329,7 +17358,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'Die Nachrichten sind in persönliche Gespräche und einzelne The Mob State-Mitteilungen unterteilt. \nAuf einer Tastatur sendet Enter die Nachricht und Shift+Enter beginnt eine neue Zeile. Ereignisverknüpfungen bleiben in Nachrichten verborgen, sodass sie die Schaltfläche „Senden“ nicht verdecken. \nJedes Systemereignis ist ein eigener Posteingang: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfall-Ergebnisse, Gefängnisausbrüche und Leistungsabzeichen teilen sich keinen langen Thread. \nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen. \nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar. \nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert. \nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.';
+      'Die Nachrichten sind in persönliche Gespräche und einzelne The Mob State-Mitteilungen unterteilt. \nAuf einer Tastatur sendet Enter die Nachricht und Shift+Enter beginnt eine neue Zeile. Ereignisverknüpfungen bleiben in Nachrichten verborgen, sodass sie die Schaltfläche „Senden“ nicht verdecken. \nNachdem Sie eine Mitteilung oder einen Chat gelesen haben, können Sie diese aus Ihrem Posteingang entfernen (Wischen, Papierkorbsymbol oder „Lesen löschen“). Der andere Spieler führt den Chat. Eine neue Nachricht bringt es zurück. Ungelesene Elemente bleiben erhalten, bis Sie sie öffnen. \nJedes Systemereignis ist ein eigener Posteingangspunkt: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfallergebnisse, Gefängnisausbrüche und Leistungsabzeichen teilen sich keinen langen Thread. \nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen. \nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar. \nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert. \nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.';
 
   @override
   String get helpTopicMessagesTips =>

@@ -584,15 +584,18 @@ model DirectMessage {
   id         Int      @id @default(autoincrement())
   senderId   Int
   receiverId Int
-  message    String   @db.Text
-  read       Boolean  @default(false)
-  createdAt  DateTime @default(now())
+  message            String   @db.Text
+  read               Boolean  @default(false)
+  hiddenForSender    Boolean  @default(false)
+  hiddenForReceiver  Boolean  @default(false)
+  createdAt          DateTime @default(now())
   receiver   Player   @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
   sender     Player   @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 
   @@index([senderId])
   @@index([receiverId])
   @@index([receiverId, read])
+  @@index([receiverId, hiddenForReceiver, read])
   @@index([read])
   @@index([createdAt])
   @@map("direct_messages")

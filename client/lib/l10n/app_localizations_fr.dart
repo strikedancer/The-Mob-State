@@ -964,6 +964,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get messageDeleteFailed => 'Échec de la suppression du message';
 
   @override
+  String get messagesClearRead => 'Effacer les lus';
+
+  @override
+  String get messagesClearReadConfirm =>
+      'Supprimer de votre boîte de réception tous les messages que vous avez déjà lus ? Les discussions des joueurs restent visibles pour l\'autre personne. De nouveaux messages reviennent.';
+
+  @override
+  String get messagesClearReadEmpty => 'Il n\'y a aucun message lu à effacer.';
+
+  @override
+  String get messagesHideConversation => 'Supprimer de la boîte de réception';
+
+  @override
+  String get messagesHideConversationConfirm =>
+      'Supprimer cette conversation de votre boîte de réception ? Cela reste pour l\'autre joueur. Un nouveau message le ramène.';
+
+  @override
+  String get messagesHideUnreadBlocked =>
+      'Les messages non lus ne peuvent pas encore être supprimés.';
+
+  @override
+  String get messagesHidden => 'Supprimé de votre boîte de réception';
+
+  @override
+  String get messagesHideFailed => 'Impossible de supprimer ces messages';
+
+  @override
   String get investigationWindowExpired =>
       'La fenêtre d\'enquête a expiré (24 heures).';
 
@@ -17328,7 +17355,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'Les messages sont divisés en conversations personnelles et en notifications individuelles de The Mob State. \nSur un clavier, Entrée envoie le message et Maj+Entrée démarre une nouvelle ligne. Les raccourcis d\'événements restent masqués dans Messages afin qu\'ils ne couvrent pas le bouton d\'envoi. \nChaque événement système est son propre élément de boîte de réception : les transactions cryptographiques, les exécutions de commandes, les paiements du classement, les résultats des braquages, les évasions de prison et les badges de réussite ne partagent pas un long fil de discussion. \nVous pouvez envoyer des messages à d\'autres joueurs tant que leurs paramètres de confidentialité le permettent. \nLes messages non lus apparaissent sous forme de badge sur l\'icône de message et sont visibles depuis le tableau de bord. \nLes messages n\'expirent pas et sont conservés sous forme d\'historique des événements du compte. \nUtilisez le journal de la boîte de réception en cas de doute sur un paiement, une exécution de commande manquée ou un changement de solde inattendu.';
+      'Les messages sont divisés en conversations personnelles et en notifications individuelles de The Mob State. \nSur un clavier, Entrée envoie le message et Maj+Entrée démarre une nouvelle ligne. Les raccourcis d\'événements restent masqués dans Messages afin qu\'ils ne couvrent pas le bouton d\'envoi. \nAprès avoir lu un avis ou discuté, vous pouvez le supprimer de votre boîte de réception (balayage, icône de la corbeille ou Effacer la lecture). L\'autre joueur conserve le chat. Un nouveau message le ramène. Les éléments non lus restent jusqu\'à ce que vous les ouvriez. \nChaque événement système est son propre élément de boîte de réception : les transactions cryptographiques, les exécutions de commandes, les paiements du classement, les résultats des braquages, les évasions de prison et les badges de réussite ne partagent pas un long fil de discussion. \nVous pouvez envoyer des messages à d\'autres joueurs tant que leurs paramètres de confidentialité le permettent. \nLes messages non lus apparaissent sous forme de badge sur l\'icône de message et sont visibles depuis le tableau de bord. \nLes messages n\'expirent pas et sont conservés sous forme d\'historique des événements du compte. \nUtilisez le journal de la boîte de réception en cas de doute sur un paiement, une exécution de commande manquée ou un changement de solde inattendu.';
 
   @override
   String get helpTopicMessagesTips =>

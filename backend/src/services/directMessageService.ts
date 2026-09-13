@@ -289,6 +289,7 @@ export const directMessageService = {
           id: noticeId,
           senderId: playerId,
           receiverId: playerId,
+          hiddenForReceiver: false,
         },
       });
 
@@ -311,6 +312,7 @@ export const directMessageService = {
         where: {
           senderId: playerId,
           receiverId: playerId,
+          hiddenForReceiver: false,
         },
         orderBy: { createdAt: 'desc' },
         take: limit,
@@ -349,8 +351,8 @@ export const directMessageService = {
     const messages = await prisma.directMessage.findMany({
       where: {
         OR: [
-          { senderId: playerId, receiverId: otherPlayerId },
-          { senderId: otherPlayerId, receiverId: playerId },
+          { senderId: playerId, receiverId: otherPlayerId, hiddenForSender: false },
+          { senderId: otherPlayerId, receiverId: playerId, hiddenForReceiver: false },
         ],
       },
       include: {
@@ -406,6 +408,10 @@ export const directMessageService = {
       FROM direct_messages
       WHERE (senderId = ${playerId} OR receiverId = ${playerId})
         AND senderId <> receiverId
+        AND NOT (
+          (senderId = ${playerId} AND hiddenForSender = 1)
+          OR (receiverId = ${playerId} AND hiddenForReceiver = 1)
+        )
       GROUP BY threadId
       ORDER BY MAX(createdAt) DESC
       LIMIT 40
@@ -415,6 +421,7 @@ export const directMessageService = {
       where: {
         senderId: playerId,
         receiverId: playerId,
+        hiddenForReceiver: false,
       },
       orderBy: { createdAt: 'desc' },
       take: SYSTEM_NOTICE_INBOX_LIMIT,
@@ -492,6 +499,7 @@ export const directMessageService = {
       where: {
         receiverId: playerId,
         read: false,
+        hiddenForReceiver: false,
       },
     });
 
@@ -593,6 +601,112 @@ export const directMessageService = {
     }
 
     return { success: true };
+  },
+
+  /**
+   * Hide a fully-read inbox thread for this player only.
+   * Unread threads stay. New messages after this are not hidden.
+   */
+  async hideReadConversation(playerId: number, otherPlayerId: number) {
+    const noticeId = systemNoticeMessageId(otherPlayerId);
+    if (noticeId != null) {
+      const message = await prisma.directMessage.findFirst({
+        where: {
+          id: noticeId,
+          senderId: playerId,
+          receiverId: playerId,
+        },
+      });
+      if (!message) {
+        throw new Error('MESSAGE_NOT_FOUND');
+      }
+      if (!message.read) {
+        throw new Error('CONVERSATION_UNREAD');
+      }
+      if (message.hiddenForReceiver) {
+        return { hidden: 0 };
+      }
+      await prisma.directMessage.update({
+        where: { id: noticeId },
+        data: { hiddenForReceiver: true },
+      });
+      return { hidden: 1 };
+    }
+
+    if (otherPlayerId === SYSTEM_THREAD_ID) {
+      const unread = await prisma.directMessage.count({
+        where: {
+          senderId: playerId,
+          receiverId: playerId,
+          read: false,
+          hiddenForReceiver: false,
+        },
+      });
+      if (unread > 0) {
+        throw new Error('CONVERSATION_UNREAD');
+      }
+      const updated = await prisma.directMessage.updateMany({
+        where: {
+          senderId: playerId,
+          receiverId: playerId,
+          read: true,
+          hiddenForReceiver: false,
+        },
+        data: { hiddenForReceiver: true },
+      });
+      return { hidden: updated.count };
+    }
+
+    if (otherPlayerId <= 0) {
+      throw new Error('INVALID_THREAD');
+    }
+
+    const unread = await prisma.directMessage.count({
+      where: {
+        senderId: otherPlayerId,
+        receiverId: playerId,
+        read: false,
+        hiddenForReceiver: false,
+      },
+    });
+    if (unread > 0) {
+      throw new Error('CONVERSATION_UNREAD');
+    }
+
+    const [received, sent] = await prisma.$transaction([
+      prisma.directMessage.updateMany({
+        where: {
+          senderId: otherPlayerId,
+          receiverId: playerId,
+          hiddenForReceiver: false,
+        },
+        data: { hiddenForReceiver: true },
+      }),
+      prisma.directMessage.updateMany({
+        where: {
+          senderId: playerId,
+          receiverId: otherPlayerId,
+          hiddenForSender: false,
+        },
+        data: { hiddenForSender: true },
+      }),
+    ]);
+
+    return { hidden: received.count + sent.count };
+  },
+
+  /** Hide every fully-read inbox thread (system notices + player chats). */
+  async hideAllReadConversations(playerId: number) {
+    const conversations = await this.getConversations(playerId);
+    let hidden = 0;
+    for (const conversation of conversations) {
+      if (conversation.unreadCount > 0) {
+        continue;
+      }
+      const result = await this.hideReadConversation(playerId, conversation.friend.id);
+      hidden += result.hidden;
+    }
+    return { hidden };
   },
 
   /**

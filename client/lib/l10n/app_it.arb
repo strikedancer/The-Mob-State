@@ -8245,7 +8245,7 @@
   "helpTopicMessagesCategory": "Sociale",
   "helpTopicMessagesTitle": "Messaggi",
   "helpTopicMessagesSummary": "La tua casella di posta con messaggi personali dei giocatori e un avviso di sistema separato per ogni premio, ordine o evento di gioco.",
-  "helpTopicMessagesHow": "I messaggi sono suddivisi in conversazioni personali e avvisi individuali di The Mob State. \nSu una tastiera, Invio invia il messaggio e Maiusc+Invio inizia una nuova riga. I collegamenti agli eventi rimangono nascosti in Messaggi in modo da non coprire il pulsante di invio. \nOgni evento di sistema è un elemento a sé stante nella casella di posta: scambi di criptovalute, evasione degli ordini, pagamenti in classifica, risultati delle rapine, evasioni dal carcere e badge degli obiettivi non condividono un lungo thread. \nPuoi inviare messaggi ad altri giocatori purché le loro impostazioni sulla privacy lo consentano. \nI messaggi non letti vengono visualizzati come badge sull'icona del messaggio e sono visibili dalla dashboard. \nI messaggi non scadono e vengono conservati come registro cronologico degli eventi dell'account. \nUtilizza il registro della posta in arrivo in caso di dubbi su un pagamento, un ordine mancato o una modifica imprevista del saldo.",
+  "helpTopicMessagesHow": "I messaggi sono suddivisi in conversazioni personali e avvisi individuali di The Mob State. \nSu una tastiera, Invio invia il messaggio e Maiusc+Invio inizia una nuova riga. I collegamenti agli eventi rimangono nascosti in Messaggi in modo da non coprire il pulsante di invio. \nDopo aver letto un avviso o chattato, puoi rimuoverlo dalla tua casella di posta (scorri, sull'icona del cestino o Cancella lettura). L'altro giocatore mantiene la chat. Un nuovo messaggio lo riporta. Gli elementi non letti rimangono finché non li apri. \nOgni evento di sistema è un elemento a sé stante nella casella di posta: scambi di criptovalute, evasione degli ordini, pagamenti in classifica, risultati delle rapine, evasioni dal carcere e badge degli obiettivi non condividono un lungo thread. \nPuoi inviare messaggi ad altri giocatori purché le loro impostazioni sulla privacy lo consentano. \nI messaggi non letti vengono visualizzati come badge sull'icona del messaggio e sono visibili dalla dashboard. \nI messaggi non scadono e vengono conservati come registro cronologico degli eventi dell'account. \nUtilizza il registro della posta in arrivo in caso di dubbi su un pagamento, un ordine mancato o una modifica imprevista del saldo.",
   "helpTopicMessagesTips": "Controlla la tua casella di posta dopo lunghi periodi offline: premi, evasione degli ordini ed eventi sono tutti registrati lì. \nConfigura le preferenze di notifica tramite Impostazioni in modo da ricevere avvisi push solo per eventi veramente importanti.",
   "helpTopicInventoryCategory": "Gestione",
   "helpTopicInventoryTitle": "Inventario",
@@ -12042,5 +12042,13 @@
   "legalPrivacySection12Title": "Google Sign-In",
   "legalPrivacySection12Body": "When you tap Continue with Google we send you to Google. If you approve, we receive your Google user ID, public profile name, and verified email address. We use this only to create or sign in to your The Mob State account. We do not access Gmail, Drive, or other Google data, and we do not post anything to your Google account. You can remove access in your Google account settings and ask us to delete your game data via info@themobstate.com.",
   "liveEventRailExpand": "Mostra eventi dal vivo",
-  "liveEventRailCollapse": "Nascondi i collegamenti agli eventi"
+  "liveEventRailCollapse": "Nascondi i collegamenti agli eventi",
+  "messagesClearRead": "Cancella letti",
+  "messagesClearReadConfirm": "Rimuovere tutti i messaggi che hai già letto dalla tua casella di posta? Le chat dei giocatori rimangono visibili per l'altra persona. Tornano nuovi messaggi.",
+  "messagesClearReadEmpty": "Non ci sono messaggi letti da cancellare.",
+  "messagesHideConversation": "Rimuovi dalla posta in arrivo",
+  "messagesHideConversationConfirm": "Rimuovere questa conversazione dalla tua casella di posta? Resta per l'altro giocatore. Un nuovo messaggio lo riporta.",
+  "messagesHideUnreadBlocked": "I messaggi non letti non possono ancora essere rimossi.",
+  "messagesHidden": "Rimosso dalla tua casella di posta",
+  "messagesHideFailed": "Impossibile rimuovere quei messaggi"
 }

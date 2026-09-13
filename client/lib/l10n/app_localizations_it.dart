@@ -955,6 +955,34 @@ class AppLocalizationsIt extends AppLocalizations {
   String get messageDeleteFailed => 'Impossibile eliminare il messaggio';
 
   @override
+  String get messagesClearRead => 'Cancella letti';
+
+  @override
+  String get messagesClearReadConfirm =>
+      'Rimuovere tutti i messaggi che hai già letto dalla tua casella di posta? Le chat dei giocatori rimangono visibili per l\'altra persona. Tornano nuovi messaggi.';
+
+  @override
+  String get messagesClearReadEmpty =>
+      'Non ci sono messaggi letti da cancellare.';
+
+  @override
+  String get messagesHideConversation => 'Rimuovi dalla posta in arrivo';
+
+  @override
+  String get messagesHideConversationConfirm =>
+      'Rimuovere questa conversazione dalla tua casella di posta? Resta per l\'altro giocatore. Un nuovo messaggio lo riporta.';
+
+  @override
+  String get messagesHideUnreadBlocked =>
+      'I messaggi non letti non possono ancora essere rimossi.';
+
+  @override
+  String get messagesHidden => 'Rimosso dalla tua casella di posta';
+
+  @override
+  String get messagesHideFailed => 'Impossibile rimuovere quei messaggi';
+
+  @override
   String get investigationWindowExpired =>
       'Il periodo di indagine è scaduto (24 ore).';
 
@@ -17303,7 +17331,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'I messaggi sono suddivisi in conversazioni personali e avvisi individuali di The Mob State. \nSu una tastiera, Invio invia il messaggio e Maiusc+Invio inizia una nuova riga. I collegamenti agli eventi rimangono nascosti in Messaggi in modo da non coprire il pulsante di invio. \nOgni evento di sistema è un elemento a sé stante nella casella di posta: scambi di criptovalute, evasione degli ordini, pagamenti in classifica, risultati delle rapine, evasioni dal carcere e badge degli obiettivi non condividono un lungo thread. \nPuoi inviare messaggi ad altri giocatori purché le loro impostazioni sulla privacy lo consentano. \nI messaggi non letti vengono visualizzati come badge sull\'icona del messaggio e sono visibili dalla dashboard. \nI messaggi non scadono e vengono conservati come registro cronologico degli eventi dell\'account. \nUtilizza il registro della posta in arrivo in caso di dubbi su un pagamento, un ordine mancato o una modifica imprevista del saldo.';
+      'I messaggi sono suddivisi in conversazioni personali e avvisi individuali di The Mob State. \nSu una tastiera, Invio invia il messaggio e Maiusc+Invio inizia una nuova riga. I collegamenti agli eventi rimangono nascosti in Messaggi in modo da non coprire il pulsante di invio. \nDopo aver letto un avviso o chattato, puoi rimuoverlo dalla tua casella di posta (scorri, sull\'icona del cestino o Cancella lettura). L\'altro giocatore mantiene la chat. Un nuovo messaggio lo riporta. Gli elementi non letti rimangono finché non li apri. \nOgni evento di sistema è un elemento a sé stante nella casella di posta: scambi di criptovalute, evasione degli ordini, pagamenti in classifica, risultati delle rapine, evasioni dal carcere e badge degli obiettivi non condividono un lungo thread. \nPuoi inviare messaggi ad altri giocatori purché le loro impostazioni sulla privacy lo consentano. \nI messaggi non letti vengono visualizzati come badge sull\'icona del messaggio e sono visibili dalla dashboard. \nI messaggi non scadono e vengono conservati come registro cronologico degli eventi dell\'account. \nUtilizza il registro della posta in arrivo in caso di dubbi su un pagamento, un ordine mancato o una modifica imprevista del saldo.';
 
   @override
   String get helpTopicMessagesTips =>

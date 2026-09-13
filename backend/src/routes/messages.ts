@@ -243,6 +243,71 @@ router.post(
 );
 
 /**
+ * DELETE /messages/read
+ * Hide every fully-read inbox thread for this player.
+ */
+router.delete(
+  '/read',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player!.id;
+      const result = await directMessageService.hideAllReadConversations(playerId);
+      return res.json({
+        event: 'messages.read_hidden',
+        params: result,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+/**
+ * DELETE /messages/conversation/:otherPlayerId
+ * Hide one fully-read inbox thread for this player.
+ */
+router.delete(
+  '/conversation/:otherPlayerId',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player!.id;
+      const otherPlayerId = parseInt(req.params.otherPlayerId);
+      if (isNaN(otherPlayerId)) {
+        return res.status(400).json({
+          event: 'error.invalid_player_id',
+          params: {},
+        });
+      }
+
+      const result = await directMessageService.hideReadConversation(
+        playerId,
+        otherPlayerId,
+      );
+      return res.json({
+        event: 'conversation.hidden',
+        params: result,
+      });
+    } catch (error: any) {
+      if (error.message === 'CONVERSATION_UNREAD') {
+        return res.status(409).json({
+          event: 'error.conversation_unread',
+          params: {},
+        });
+      }
+      if (error.message === 'MESSAGE_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.message_not_found',
+          params: {},
+        });
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
  * DELETE /messages/:messageId
  * Delete a message
  */

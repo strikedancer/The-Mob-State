@@ -956,6 +956,34 @@ class AppLocalizationsNl extends AppLocalizations {
   String get messageDeleteFailed => 'Verwijderen mislukt';
 
   @override
+  String get messagesClearRead => 'Wis gelezen';
+
+  @override
+  String get messagesClearReadConfirm =>
+      'Alle berichten die je al gelezen hebt uit je inbox halen? Spelerchats blijven bij de ander staan. Nieuwe berichten komen terug.';
+
+  @override
+  String get messagesClearReadEmpty =>
+      'Er zijn geen gelezen berichten om te wissen.';
+
+  @override
+  String get messagesHideConversation => 'Uit inbox halen';
+
+  @override
+  String get messagesHideConversationConfirm =>
+      'Dit gesprek uit je inbox halen? De andere speler houdt het. Een nieuw bericht zet het weer terug.';
+
+  @override
+  String get messagesHideUnreadBlocked =>
+      'Ongelezen berichten kun je nog niet wissen.';
+
+  @override
+  String get messagesHidden => 'Uit je inbox gehaald';
+
+  @override
+  String get messagesHideFailed => 'Die berichten konden niet worden gewist';
+
+  @override
   String get investigationWindowExpired =>
       'Onderzoeksvenster verlopen (24 uur).';
 
@@ -17158,7 +17186,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'Berichten zijn onderverdeeld in persoonlijke gesprekken en losse The Mob State-meldingen.\nOp het toetsenbord verstuurt Enter het bericht; Shift+Enter maakt een nieuwe regel. Event-snelkoppelingen blijven op Berichten verborgen zodat ze niet over de verzendknop liggen.\nElke systeemgebeurtenis is een eigen inbox-item: crypto trades, order fills, leaderboard-uitkeringen, heist-resultaten, jail-escapes en achievement-badges delen geen lange thread.\nJe kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.\nOngelezen berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.\nBerichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.\nGebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging.';
+      'Berichten zijn onderverdeeld in persoonlijke gesprekken en losse The Mob State-meldingen.\nOp het toetsenbord verstuurt Enter het bericht; Shift+Enter maakt een nieuwe regel. Event-snelkoppelingen blijven op Berichten verborgen zodat ze niet over de verzendknop liggen.\nGelezen meldingen en chats kun je uit je inbox halen (swipe, prullenbak of Wis gelezen). De andere speler houdt de chat. Een nieuw bericht zet hem terug. Ongelezen items blijven staan tot je ze opent.\nElke systeemgebeurtenis is een eigen inbox-item: crypto trades, order fills, leaderboard-uitkeringen, heist-resultaten, jail-escapes en achievement-badges delen geen lange thread.\nJe kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.\nOngelezen berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.\nBerichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.\nGebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging.';
 
   @override
   String get helpTopicMessagesTips =>

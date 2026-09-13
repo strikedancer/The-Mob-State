@@ -346,6 +346,7 @@
       "Systeemberichten worden automatisch gestuurd bij: crypto trades, order fills, leaderboard uitkeringen, heist-resultaten, jail-escapes en achievement-badges.",
       "Je kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.",
       "Op het toetsenbord verstuurt Enter het bericht; Shift+Enter maakt een nieuwe regel. Event-snelkoppelingen blijven op Berichten verborgen zodat ze niet over de verzendknop liggen.",
+      "Gelezen meldingen en chats kun je uit je inbox halen (swipe, prullenbak of Wis gelezen). De andere speler houdt de chat. Een nieuw bericht zet hem terug. Ongelezen items blijven staan tot je ze opent.",
       "Unread berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.",
       "Berichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.",
       "Gebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging."
@@ -355,6 +356,7 @@
       "System messages are sent automatically for: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges.",
       "You can send messages to other players as long as their privacy settings allow it.",
       "On a keyboard, Enter sends the message and Shift+Enter starts a new line. Event shortcuts stay hidden on Messages so they do not cover the send button.",
+      "After you have read a notice or chat you can remove it from your inbox (swipe, trash icon, or Clear read). The other player keeps the chat. A new message brings it back. Unread items stay until you open them.",
       "Unread messages appear as a badge on the message icon and are visible from the dashboard.",
       "Messages do not expire and are kept as a historical log of account events.",
       "Use the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change."
