@@ -24,8 +24,9 @@ Om alsnog indexeerbare content te hebben voor belangrijke zoekintents, gebruiken
   - `/en/` → `client/web/seo/en/index.html`
   - `/en/text-based-mafia-game` → `client/web/seo/en/text-based-mafia-game.html`
   - `/en/mafia-game` → `client/web/seo/en/mafia-game.html`
+- **Overige UI-talen** (`de`, `fr`, `es`, `it`, `pl`, `pt`): `/{lang}/text-based-mafia-game` — zelfde intent (appnaam **The Mob State** + *text-based mafia game*). Bron: `scripts/generate_seo_landings.mjs`.
 
-Tussen NL- en EN-landings (en de homepage) gebruiken we **hreflang** + **`x-default`** in:
+Tussen de landings (en de homepage) gebruiken we **hreflang** + **`x-default`** in:
 
 - de `<head>` van de statische landings, en
 - `sitemap.xml` via `xhtml:link` alternates (zie bestand; `xmlns:xhtml` is meegenomen).
@@ -36,8 +37,9 @@ Deze paden staan ook in `sitemap.xml`.
 
 ## robots.txt en sitemap
 
-- `client/web/robots.txt` bevat de verwijzing naar `https://themobstate.com/sitemap.xml`.
-- `client/web/sitemap.xml` bevat de homepage en de SEO landings.
+- `client/web/robots.txt` verwijst naar `https://themobstate.com/sitemap.xml` **en** `https://wiki.themobstate.com/sitemap.xml`.
+- `client/web/sitemap.xml` bevat homepage, meertalige text-based landings, wiki-homes en legal.
+- Wiki genereert `https://wiki.themobstate.com/sitemap.xml` bij elke almanak-build (hubs + handleiding, hreflang op die URLs).
 
 In `client/docker/nginx.conf` staan expliciete `location =` blocks zodat `robots.txt`, `sitemap.xml` en de SEO landings niet door de SPA fallback worden overruled.
 
@@ -49,17 +51,29 @@ In `client/web/index.html` hebben we:
 - Open Graph (`og:*`) en Twitter cards
 - JSON-LD voor `Organization`, `WebSite` en `VideoGame`
 
+## Search Console (kort)
+
+Twee properties, beide als URL-prefix:
+
+1. `https://themobstate.com/` — sitemap `https://themobstate.com/sitemap.xml`
+2. `https://wiki.themobstate.com/` — sitemap `https://wiki.themobstate.com/sitemap.xml`
+
+Daarna:
+
+3. **URL-inspectie → Indexering aanvragen** (eenmalig per nieuwe URL): `/`, `/en/`, `/text-based-mafia-game`, `/en/text-based-mafia-game`, plus één extra taal (bijv. `/de/text-based-mafia-game`), en `https://wiki.themobstate.com/nl/` + `/en/`.
+4. **Prestaties**: filter queries op `the mob state`, `themobstate`, `text based mafia`, `text-based mafia game`. Merknaam eerst; generic `mafia game` is later.
+5. **Pagina’s**: geen 404 op de landings; wiki niet als “uitgesloten / redirected” laten staan.
+6. `themobstate.nl` niet als aparte canonieke property pushen — blijft alias van `.com`.
+
+Niet indienen: `api.` / `admin.`.
+
 ## Release / verificatie checklist
 
 Na deploy:
 
-1. **Google Search Console**: property voor `https://themobstate.com` verifiëren.
-2. Sitemap indienen: `https://themobstate.com/sitemap.xml`.
-3. URL inspectie (minimaal):
-   - `https://themobstate.com/`
-   - `https://themobstate.com/en/`
-   - `https://themobstate.com/text-based-mafia-game` en `https://themobstate.com/en/text-based-mafia-game`
-   - `https://themobstate.com/mafia-game` en `https://themobstate.com/en/mafia-game`
-4. Controleer robots: `https://themobstate.com/robots.txt`.
-5. Controleer social preview (Open Graph) via een preview tool (Facebook/Twitter/LinkedIn) en pas `og:image` aan als nodig. Voor beste previews op social: gebruik liefst een **1200×630** marketing image (nu vaak `logo.png` als placeholder).
+1. Search Console-stappen hierboven.
+2. Controleer robots: `https://themobstate.com/robots.txt` (twee Sitemap-regels).
+3. Steekproef: `https://themobstate.com/de/text-based-mafia-game` is echte HTML (geen Flutter-shell).
+4. Wiki-home title bevat **The Mob State** + text-based zin in die taal.
+5. Social preview: liefst **1200×630** marketing image (nu vaak `logo.png`).
 

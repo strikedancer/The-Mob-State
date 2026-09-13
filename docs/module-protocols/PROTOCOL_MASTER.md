@@ -490,6 +490,7 @@ Zie FILE_INVENTORY.md voor volledige lijst van verwijderde/archiveerde files.
 PROTOCOL_MASTER.md (JIJ BENT HIER)
     ├── docs/module-protocols/ (gameplay rules & data contracts)
     │   ├── marketing-web.md (landing, public home, juridisch)
+    │   ├── docs/seo.md (Search Console, meertalige text-based landings, wiki-sitemap)
     │   ├── facebook.md (Facebook Login web OAuth + admin Page-posts)
     │   ├── google.md (Google Sign-In web OAuth)
     │   ├── drugs.md → Game-system: docs/game-systems/GAMEPLAY.md

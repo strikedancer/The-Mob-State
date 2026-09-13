@@ -1,7 +1,7 @@
 # Player Almanac (wiki.themobstate.com)
 
 ## Scope
-Public, read-only player almanac generated from `backend/content/*.json` and served at `https://wiki.themobstate.com`. Pages are regenerated automatically when those catalogs (or wiki templates) change on the VPS. Noir/gold static HTML in all player locales (`nl`, `en`, `de`, `fr`, `es`, `it`, `pl`, `pt`). Original game images come from the same `runtime/client-images` mount as the Flutter client (`/images/...`).
+Public, read-only player almanac generated from `backend/content/*.json` and served at `https://wiki.themobstate.com`. Pages are regenerated automatically when those catalogs (or wiki templates) change on the VPS. Noir/gold static HTML in all player locales (`nl`, `en`, `de`, `fr`, `es`, `it`, `pl`, `pt`). Original game images come from the same `runtime/client-images` mount as the Flutter client (`/images/...`). Home titles/descriptions name **The Mob State** plus a local “text-based mafia game” phrase (`seoDocumentTitle` / `seoDocumentDescription` in `wiki/src/i18n.mjs`). Sitemap: `https://wiki.themobstate.com/sitemap.xml` (also listed from `themobstate.com/robots.txt`). Search Console: aparte URL-prefix property — zie `docs/seo.md`.
 
 This is a catalogue and typical-relative guide, not live Black Market quotes. Street prices still move in-game. The **Handleiding** chapter (`/{lang}/guide/`) publishes the full in-game Help & Uitleg, including **Profiel & avatar** (preset swap + selfie→portrait).
 

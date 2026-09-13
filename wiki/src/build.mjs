@@ -846,37 +846,45 @@ function robotsAndSitemap() {
     'robots.txt',
     `User-agent: *\nAllow: /\nSitemap: https://wiki.themobstate.com/sitemap.xml\n`
   );
+  const hubPaths = [
+    '',
+    ...guideSitemapPaths(help),
+    'countries',
+    'trade',
+    'vehicles',
+    'weapons',
+    'ammo',
+    'security',
+    'drugs',
+    'materials',
+    'facilities',
+    'properties',
+    'aircraft',
+    'backpacks',
+    'travel',
+    'crimes',
+    'jobs',
+    'crew',
+    'school',
+  ];
+  const altsFor = (suffix) =>
+    LANGS.map(
+      (l) =>
+        `<xhtml:link rel="alternate" hreflang="${l}" href="https://wiki.themobstate.com/${l}/${suffix}"/>`,
+    ).join('') +
+    `<xhtml:link rel="alternate" hreflang="x-default" href="https://wiki.themobstate.com/en/${suffix}"/>`;
   const urls = [];
-  for (const lang of LANGS) {
-    urls.push(`https://wiki.themobstate.com/${lang}/`);
-    for (const p of [
-      ...guideSitemapPaths(help),
-      'countries',
-      'trade',
-      'vehicles',
-      'weapons',
-      'ammo',
-      'security',
-      'drugs',
-      'materials',
-      'facilities',
-      'properties',
-      'aircraft',
-      'backpacks',
-      'travel',
-      'crimes',
-      'jobs',
-      'crew',
-      'school',
-    ]) {
-      urls.push(`https://wiki.themobstate.com/${lang}/${p}/`);
+  for (const p of hubPaths) {
+    const suffix = p ? `${p}/` : '';
+    for (const lang of LANGS) {
+      urls.push(
+        `<url><loc>https://wiki.themobstate.com/${lang}/${suffix}</loc>${altsFor(suffix)}</url>`,
+      );
     }
   }
   write(
     'sitemap.xml',
-    `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls
-      .map((u) => `<url><loc>${u}</loc></url>`)
-      .join('')}</urlset>`
+    `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${urls.join('')}</urlset>`,
   );
 }
 
@@ -895,7 +903,8 @@ for (const lang of LANGS) {
     page({
       lang,
       path: '',
-        title: ui(lang, 'heroTitle'),
+      title: ui(lang, 'seoDocumentTitle'),
+      description: ui(lang, 'seoDocumentDescription'),
       hero: {
         image: '/images/backgrounds/login_background.png',
         kicker: ui(lang, 'heroKicker'),

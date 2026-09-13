@@ -16,6 +16,26 @@ const pack = (nl, en, de, fr, es, it, pl, pt) => ({ nl, en, de, fr, es, it, pl, 
 export const UI = {
   siteTitle: pack('Almanak', 'Almanac', 'Almanach', 'Almanach', 'Almanaque', 'Almanacco', 'Almanach', 'Almanaque'),
   brand: pack('The Mob State', 'The Mob State', 'The Mob State', 'The Mob State', 'The Mob State', 'The Mob State', 'The Mob State', 'The Mob State'),
+  seoDocumentTitle: pack(
+    'The Mob State — text-based mafia game',
+    'The Mob State — text-based mafia game',
+    'The Mob State — textbasiertes Mafia-Spiel',
+    'The Mob State — jeu de mafia textuel',
+    'The Mob State — juego de mafia de texto',
+    'The Mob State — gioco mafia testuale',
+    'The Mob State — tekstowa gra mafijna',
+    'The Mob State — jogo de máfia em texto'
+  ),
+  seoDocumentDescription: pack(
+    'Officiële almanak van The Mob State, een text-based mafia game: handleiding, landen, voertuigen, wapens en meer.',
+    'Official almanac of The Mob State, a text-based mafia game: handbook, countries, vehicles, weapons and more.',
+    'Offizieller Almanach von The Mob State, einem text-based mafia game: Handbuch, Länder, Fahrzeuge, Waffen und mehr.',
+    'Almanach officiel de The Mob State, un text-based mafia game : manuel, pays, véhicules, armes et plus.',
+    'Almanaque oficial de The Mob State, un text-based mafia game: manual, países, vehículos, armas y más.',
+    'Almanacco ufficiale di The Mob State, un text-based mafia game: manuale, paesi, veicoli, armi e altro.',
+    'Oficjalny almanach The Mob State, text-based mafia game: poradnik, kraje, pojazdy, broń i więcej.',
+    'Almanaque oficial de The Mob State, um text-based mafia game: manual, países, veículos, armas e mais.'
+  ),
   search: pack('Zoek in de almanak…', 'Search the almanac…', 'Almanach durchsuchen…', 'Rechercher l’almanach…', 'Buscar en el almanaque…', 'Cerca nell’almanacco…', 'Szukaj w almanachu…', 'Pesquisar o almanaque…'),
   play: pack('Speel nu', 'Play now', 'Jetzt spielen', 'Jouer', 'Jugar ahora', 'Gioca ora', 'Graj teraz', 'Jogar agora'),
   home: pack('Overzicht', 'Overview', 'Übersicht', 'Aperçu', 'Resumen', 'Panoramica', 'Przegląd', 'Visão geral'),

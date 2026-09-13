@@ -21,6 +21,6 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 
 ## QA (kort)
 - Op telefoon/tablet toont de landing een **PWA-banner** (ARB `pwaInstall*`) om de site als app-icoon op het beginscherm te zetten. Chrome opent het install-sheet; iOS toont stappen. Zie `frontend-platform.md`.
-- Footer-links privacy / terms / digital goods openen een **modal** (ARB). **Almanak** opent `https://wiki.themobstate.com/{lang}/` in een nieuw tabblad. Deep links `/privacy` en `/terms` zijn **statische HTML** (`client/web/seo/privacy.html`, `terms.html`) zodat Meta-crawlers de tekst zien. `/digital-goods` blijft het Flutter-scherm; gasttaal wisselt mee.
+- Footer-links privacy / terms / digital goods openen een **modal** (ARB). **Almanak** opent `https://wiki.themobstate.com/{lang}/` in een nieuw tabblad. Deep links `/privacy` en `/terms` zijn **statische HTML** (`client/web/seo/privacy.html`, `terms.html`) zodat Meta-crawlers de tekst zien. **SEO-landings** `/{lang}/text-based-mafia-game` (NL zonder prefix) noemen de appnaam + text-based mafia game; generator `scripts/generate_seo_landings.mjs`. `/digital-goods` blijft het Flutter-scherm; gasttaal wisselt mee.
 - Zonder token: `/public/home` retourneert JSON; geen e-mail of andere PII in het payload.
 - Cross-origin van `themobstate.com` of `themobstate.nl` → `api.themobstate.com`: backend **CORS** (shell-origins + `.env` union in `config/index.ts`; `cors` vóór Prisma in `app.ts` zodat 503’s nog leesbare CORS-headers hebben).

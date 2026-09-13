@@ -5,7 +5,7 @@
 >
   <url>
     <loc>https://themobstate.com/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/"/>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://themobstate.com/en/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/"/>
@@ -23,50 +23,200 @@
   </url>
   <url>
     <loc>https://themobstate.com/text-based-mafia-game</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
   </url>
   <url>
     <loc>https://themobstate.com/en/text-based-mafia-game</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
+  </url>
+  <url>
+    <loc>https://themobstate.com/de/text-based-mafia-game</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
+  </url>
+  <url>
+    <loc>https://themobstate.com/fr/text-based-mafia-game</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
+  </url>
+  <url>
+    <loc>https://themobstate.com/es/text-based-mafia-game</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
+  </url>
+  <url>
+    <loc>https://themobstate.com/it/text-based-mafia-game</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
+  </url>
+  <url>
+    <loc>https://themobstate.com/pl/text-based-mafia-game</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
+  </url>
+  <url>
+    <loc>https://themobstate.com/pt/text-based-mafia-game</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://themobstate.com/de/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://themobstate.com/fr/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://themobstate.com/es/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://themobstate.com/it/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://themobstate.com/pl/text-based-mafia-game"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://themobstate.com/pt/text-based-mafia-game"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game"/>
   </url>
   <url>
     <loc>https://themobstate.com/mafia-game</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/mafia-game"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/mafia-game"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/mafia-game"/>
   </url>
   <url>
     <loc>https://themobstate.com/en/mafia-game</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://themobstate.com/en/mafia-game"/>
     <xhtml:link rel="alternate" hreflang="nl" href="https://themobstate.com/mafia-game"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://themobstate.com/mafia-game"/>
   </url>
   <url>
+    <loc>https://wiki.themobstate.com/nl/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wiki.themobstate.com/en/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wiki.themobstate.com/de/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://wiki.themobstate.com/fr/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://wiki.themobstate.com/es/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://wiki.themobstate.com/it/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://wiki.themobstate.com/pl/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://wiki.themobstate.com/pt/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://themobstate.com/privacy</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://themobstate.com/terms</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.3</priority>
   </url>
 </urlset>
