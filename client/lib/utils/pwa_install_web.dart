@@ -23,6 +23,20 @@ bool pwaIsStandalone() {
   return false;
 }
 
+/// Chrome on a large tablet (especially landscape) can look like a desktop viewport.
+bool pwaLooksLikeMobileWeb() {
+  try {
+    final points = html.window.navigator.maxTouchPoints ?? 0;
+    if (points > 1) return true;
+  } catch (_) {}
+  final ua = html.window.navigator.userAgent.toLowerCase();
+  return ua.contains('android') ||
+      ua.contains('iphone') ||
+      ua.contains('ipad') ||
+      ua.contains('ipod') ||
+      ua.contains('mobile');
+}
+
 bool pwaIsIosSafari() {
   final bridge = _bridge();
   if (bridge != null) {

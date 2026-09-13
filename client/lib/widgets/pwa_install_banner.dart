@@ -6,6 +6,8 @@ import '../l10n/app_localizations.dart';
 import '../utils/pwa_install.dart';
 
 const _dismissPrefKey = 'pwa_install_banner_dismissed';
+const _dismissAtPrefKey = 'pwa_install_banner_dismissed_at';
+const _dismissTtl = Duration(hours: 24);
 const Color _gold = Color(0xFFC0A060);
 
 /// Compact add-to-home-screen prompt for phone/tablet web (not already installed).
@@ -40,22 +42,32 @@ class _PwaInstallBannerState extends State<PwaInstallBanner> {
       return;
     }
     final prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool(_dismissPrefKey) == true) {
+      await prefs.remove(_dismissPrefKey);
+    }
+    final dismissedAtMs = prefs.getInt(_dismissAtPrefKey);
+    final dismissed = dismissedAtMs != null &&
+        DateTime.now().difference(
+              DateTime.fromMillisecondsSinceEpoch(dismissedAtMs),
+            ) <
+            _dismissTtl;
     if (!mounted) return;
     setState(() {
-      _dismissed = prefs.getBool(_dismissPrefKey) ?? false;
+      _dismissed = dismissed;
       _canPrompt = pwaCanNativePrompt();
       _ready = true;
     });
   }
 
   bool _isPhoneOrTablet(BuildContext context) {
+    if (pwaLooksLikeMobileWeb()) return true;
     final size = MediaQuery.sizeOf(context);
     return size.shortestSide < 1100;
   }
 
   Future<void> _dismiss() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_dismissPrefKey, true);
+    await prefs.setInt(_dismissAtPrefKey, DateTime.now().millisecondsSinceEpoch);
     if (mounted) setState(() => _dismissed = true);
   }
 
@@ -67,7 +79,7 @@ class _PwaInstallBannerState extends State<PwaInstallBanner> {
         final outcome = await pwaPromptNativeInstall();
         if (!mounted) return;
         if (outcome == 'accepted') {
-          await _dismiss();
+          if (mounted) setState(() => _dismissed = true);
           return;
         }
         if (outcome == 'unavailable') {
