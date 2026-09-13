@@ -25,6 +25,7 @@ import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
 import { ensureSiteVisitorsSchema } from './startup/ensureSiteVisitorsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
 import { playerStartService } from './services/playerStartService';
+import { ensureVenueNpcOccupancy } from './services/venueNpcOccupancyService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
@@ -76,6 +77,11 @@ async function startServer() {
     await playerStartService.ensureStarterCrew();
   } catch (error) {
     console.error('[Startup] Failed to ensure starter crew:', error);
+  }
+  try {
+    await ensureVenueNpcOccupancy(true);
+  } catch (error) {
+    console.error('[Startup] Failed to ensure venue NPC occupancy:', error);
   }
   await ensureGarageUpgradeTrackSchema();
   await ensureGarageMotorcycleTrackBackfill();

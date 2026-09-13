@@ -34,6 +34,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
   bool _isLoading = true;
   String? _error;
   bool _isOwned = false;
+  bool _forSale = false;
   Map<String, dynamic>? _ownerInfo;
   int _casinoPrice = 0;
   bool _isOwner = false;
@@ -86,7 +87,11 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
         setState(() {
           _isOwned = params['owned'] ?? false;
-          _ownerInfo = params['owner'];
+          _ownerInfo = params['owner'] is Map
+              ? Map<String, dynamic>.from(params['owner'] as Map)
+              : null;
+          final ownerIsNpc = _ownerInfo?['isNpc'] == true;
+          _forSale = params['forSale'] == true || !_isOwned || ownerIsNpc;
           _casinoPrice = params['price'] ?? 0;
           _isOwner =
               _isOwned && _ownerInfo != null && _ownerInfo!['id'] == playerId;
@@ -828,6 +833,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
                   ),
                 ),
               ),
+              if (_forSale && !_isOwner)
+                SliverToBoxAdapter(child: _buildNpcForSaleBanner(l10n)),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 sliver: SliverGrid(
@@ -845,6 +852,74 @@ class _CasinoScreenState extends State<CasinoScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNpcForSaleBanner(AppLocalizations l10n) {
+    final ownerName = _ownerInfo?['username']?.toString();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.green.withOpacity(0.16),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.greenAccent.withOpacity(0.45)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.22),
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Text(
+                l10n.casinoNpcForSaleBadge,
+                style: const TextStyle(
+                  color: Colors.greenAccent,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              ownerName != null && ownerName.isNotEmpty
+                  ? l10n.casinoNpcOperatorForSale(ownerName)
+                  : l10n.casinoNoOwner,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '${l10n.casinoPurchasePriceLabel} €${_casinoPrice.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.78),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _purchaseCasino,
+                icon: const Icon(Icons.shopping_cart),
+                label: Text(l10n.buyCasino),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green[700],
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

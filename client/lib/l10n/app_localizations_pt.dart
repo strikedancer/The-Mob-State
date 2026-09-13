@@ -6393,6 +6393,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get casinoNoOwner => 'Este cassino ainda não tem dono';
 
   @override
+  String casinoNpcOperatorForSale(String name) {
+    return '$name está administrando esta casa. Você ainda pode comprá-lo.';
+  }
+
+  @override
+  String get casinoNpcForSaleBadge => 'À venda';
+
+  @override
   String get casinoPurchasePriceLabel => 'Preço de compra:';
 
   @override
@@ -9926,6 +9934,14 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get factoryUnowned => 'Disponível';
+
+  @override
+  String get factoryNpcForSaleBadge => 'À venda';
+
+  @override
+  String factoryNpcOperatorForSale(String name) {
+    return 'Administrado por $name — ainda à venda';
+  }
 
   @override
   String factoryOwnedBy(String owner) {
@@ -17494,7 +17510,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Jogos: slots, blackjack, roleta, dados, bacará e vídeo póquer.\nCada mesa usa a aposta máxima do piso e um rake visível que fica no bankroll do dono.\nPúblico / VIP / Privado sobem aposta máxima e rake. O dono contrata um dealer, segurança e promotor. O dealer sobe um pouco o rake; o promotor sobe a aposta máxima e o heat; a segurança reduz o dreno de casino_ledger_raid.\nOs salários saem do bankroll em cada tick. Se faltar dinheiro, o mais barato é despedido.\nUm casino_ledger_raid bem-sucedido drena uma % do bankroll no país de início. A recompensa da crew mantém-se; é pressão extra, não um segundo print.\nSó dinheiro. Apostas perdidas desaparecem.';
+      'Jogos disponíveis: Slots (aposta baixa, pagamento aleatório), Blackjack (questões de estratégia), Roleta (apostas externas/internas com probabilidades próprias), Dados (alta variância), Bacará (jogador/banca/empate), Vídeo Poker (pagamentos de classificação de mão de 5 cartas). \nCada jogo tem uma aposta mínima. As taxas de pagamento diferem por tipo de jogo (por exemplo, aposta externa de roleta ~ 1,97x, número único 35x). \nO cassino usa apenas dinheiro, não seu saldo bancário. Certifique-se de ter dinheiro antes de jogar. \nNão há tempo de espera entre as rodadas: você pode jogar o mais rápido que quiser. \nGrandes vitórias acima de um limite podem desencadear um evento visível para outros jogadores. \nAs apostas perdidas desaparecem permanentemente; não há seguro ou recompra. \nAs casas de campo vagas são administradas por operadores NPC, então o andar permanece aberto; você ainda pode comprar o cassino deles pelo preço listado.';
 
   @override
   String get helpTopicCasinoTips =>
@@ -17836,7 +17852,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'A fábrica de munição possui níveis de produção (Nível 1 a 5). Nível mais alto = mais rodadas por reclamação e melhor qualidade. \nDurante uma sessão ativa, você reivindica produção a cada 20 minutos (até 8 horas de backlog nessa sessão). \nA produção continua aumentando enquanto você está off-line: quando você retornar, poderá reivindicar várias vezes até que o backlog seja recuperado. \nSimplesmente ver a fábrica de munição ou viajar de ida e volta não deve mudar de propriedade; uma fábrica não deve mudar para “à venda” só porque a tela foi aberta. \nA munição produzida é usada pessoalmente em crimes e PvP. Para comprar e vender munição, passe pelo Mercado Negro; a própria tela de fábrica não vende balas diretamente. \nAs atualizações de produção aumentam as rodadas por reivindicação; atualizações de qualidade melhoram o valor de mercado. \nO preço de mercado da munição flutua com a demanda. Estocar quando os preços estiverem baixos e vender quando os preços estiverem altos. \nDurante uma invasão à fábrica, você perde parte da produção armazenada. A segurança reduz esse risco.';
+      'A fábrica de munição possui níveis de produção (Nível 1 a 5). Nível mais alto = mais rodadas por reclamação e melhor qualidade. \nDurante uma sessão ativa, você reivindica produção a cada 10 minutos (até 8 horas de backlog nessa sessão). \nA produção continua aumentando enquanto você está off-line: quando você retornar, poderá reivindicar várias vezes até que o backlog seja recuperado. \nSimplesmente ver a fábrica de munição ou viajar de ida e volta não deve mudar de propriedade; uma fábrica não deve mudar para “à venda” só porque a tela foi aberta. \nA munição produzida é usada pessoalmente em crimes e PvP. Para comprar e vender munição, passe pelo Mercado Negro; a própria tela de fábrica não vende balas diretamente. \nAs atualizações de produção aumentam as rodadas por reivindicação; atualizações de qualidade melhoram o valor de mercado. \nO preço de mercado da munição flutua com a demanda. Estocar quando os preços estiverem baixos e vender quando os preços estiverem altos. \nDurante uma invasão à fábrica, você perde parte da produção armazenada. A segurança reduz esse risco. \nUma fábrica vazia é ocupada por um operador NPC para que o lote não fique vazio; você ainda pode comprá-lo pelo preço listado.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

@@ -523,7 +523,8 @@
       "Casino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.",
       "Er is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.",
       "Grote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.",
-      "Verloren inzetten zijn definitief weg; er is geen verzekering of terugkoop."
+      "Verloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.",
+      "Lege-land casino's worden gerund door NPC-uitbaters zodat de zaak openblijft; je kunt het casino nog steeds van hen kopen tegen de vraagprijs."
     ],
     "howEn": [
       "Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).",
@@ -531,7 +532,8 @@
       "Casino uses cash only, not your bank balance. Make sure you have cash before you play.",
       "There is no cooldown between rounds: you can play as fast as you want.",
       "Large wins above a threshold can trigger an event visible to other players.",
-      "Lost bets are permanently gone; there is no insurance or buyback."
+      "Lost bets are permanently gone; there is no insurance or buyback.",
+      "Vacant-country houses are run by NPC operators so the floor stays open; you can still buy the casino from them at the listed price."
     ],
     "tipsNl": [
       "Stel altijd een maximale sessie-bankroll in: nooit meer dan 10% van je totale cash per sessie.",
@@ -1329,7 +1331,8 @@
       "Je gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.",
       "Output-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.",
       "Marktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.",
-      "Bij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico."
+      "Bij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.",
+      "Een lege fabriek wordt bezet door een NPC-uitbater zodat het terrein niet leeg oogt; je kunt die nog steeds kopen tegen de vraagprijs."
     ],
     "howEn": [
       "The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.",
@@ -1339,7 +1342,8 @@
       "Produced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.",
       "Output upgrades increase rounds per claim; quality upgrades improve market value.",
       "Ammo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.",
-      "During a factory raid you lose part of stored output. Security lowers this risk."
+      "During a factory raid you lose part of stored output. Security lowers this risk.",
+      "A vacant factory is occupied by an NPC operator so the lot is not empty; you can still buy it at the listed price."
     ],
     "tipsNl": [
       "Upgrade je factory zo snel mogelijk naar Level 3: de output-verdubbeling t.o.v. Level 1 maakt het zelfvoorzienend in ammo.",

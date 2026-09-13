@@ -6445,6 +6445,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get casinoNoOwner => 'Ce casino n\'a pas encore de propriétaire';
 
   @override
+  String casinoNpcOperatorForSale(String name) {
+    return '$name dirige cette maison. Vous pouvez toujours l\'acheter.';
+  }
+
+  @override
+  String get casinoNpcForSaleBadge => 'À vendre';
+
+  @override
   String get casinoPurchasePriceLabel => 'Prix ​​d\'achat :';
 
   @override
@@ -9996,6 +10004,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get factoryUnowned => 'Disponible';
+
+  @override
+  String get factoryNpcForSaleBadge => 'À vendre';
+
+  @override
+  String factoryNpcOperatorForSale(String name) {
+    return 'Géré par $name — toujours à vendre';
+  }
 
   @override
   String factoryOwnedBy(String owner) {
@@ -17578,7 +17594,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Jeux : machines, blackjack, roulette, dés, baccarat et vidéo poker.\nChaque table utilise la mise max de l\'étage et un rake visible qui reste dans la bankroll du propriétaire.\nPublic / VIP / Privé augmentent mise max et rake. Le propriétaire embauche un croupier, une sécurité et un promoteur. Le croupier augmente un peu le rake ; le promoteur augmente la mise max et la heat ; la sécurité réduit le drain casino_ledger_raid.\nLes salaires viennent de la bankroll à chaque tick. Trop bas : le moins cher est renvoyé.\nUn casino_ledger_raid réussi draine un % de la bankroll du pays de départ. La récompense cash d\'équipage reste ; c\'est une pression extra, pas un second print.\nCash uniquement. Les mises perdues sont perdues.';
+      'Jeux disponibles : Machines à sous (faible mise, paiement aléatoire), Blackjack (questions de stratégie), Roulette (paris extérieurs/intérieurs avec propres cotes), Dés (variance élevée), Baccarat (joueur/banquier/égalité), Vidéo Poker (paiements à 5 cartes selon le classement manuel). \nChaque jeu a une mise minimale. Les taux de redistribution diffèrent selon le type de jeu (par exemple, pari extérieur à la roulette ~ 1,97x, numéro unique 35x). \nLe casino utilise uniquement de l\'argent liquide, pas votre solde bancaire. Assurez-vous d\'avoir de l\'argent liquide avant de jouer. \nIl n\'y a pas de temps de recharge entre les tours : vous pouvez jouer aussi vite que vous le souhaitez. \nDes gains importants au-dessus d\'un seuil peuvent déclencher un événement visible par les autres joueurs. \nLes paris perdus disparaissent définitivement ; il n\'y a ni assurance ni rachat. \nLes maisons de campagne vacantes sont gérées par des opérateurs PNJ afin que l\'étage reste ouvert ; vous pouvez toujours acheter le casino chez eux au prix indiqué.';
 
   @override
   String get helpTopicCasinoTips =>
@@ -17920,7 +17936,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'L\'usine de munitions a des niveaux de production (niveau 1 à 5). Niveau supérieur = plus de tours par réclamation et meilleure qualité. \nAu cours d\'une session active, vous réclamez la production toutes les 20 minutes environ (jusqu\'à 8 heures de retard au cours de cette session). \nLa production continue de s\'accumuler pendant que vous êtes hors ligne : lorsque vous revenez, vous pouvez réclamer plusieurs fois jusqu\'à ce que le retard soit rattrapé. \nLe simple fait de visiter l’usine de munitions ou de voyager et revenir ne doit pas changer de propriétaire ; une usine ne devrait pas passer à l\'état « à vendre » simplement parce que l\'écran a été ouvert. \nLes munitions produites sont utilisées personnellement dans des crimes et en PvP. Pour acheter et vendre des munitions, passez par le marché noir ; l\'écran d\'usine lui-même ne vend pas de balles directement. \nLes mises à niveau de sortie augmentent le nombre de tours par réclamation ; les améliorations de qualité améliorent la valeur marchande. \nLe prix du marché des munitions fluctue en fonction de la demande. Faites des réserves lorsque les prix sont bas et vendez lorsque les prix sont élevés. \nLors d\'un raid dans une usine, vous perdez une partie de la production stockée. La sécurité réduit ce risque.';
+      'L\'usine de munitions a des niveaux de production (niveau 1 à 5). Niveau supérieur = plus de tours par réclamation et meilleure qualité. \nAu cours d\'une session active, vous réclamez la production toutes les 10 minutes environ (jusqu\'à 8 heures de retard au cours de cette session). \nLa production continue de s\'accumuler pendant que vous êtes hors ligne : lorsque vous revenez, vous pouvez réclamer plusieurs fois jusqu\'à ce que le retard soit rattrapé. \nLe simple fait de visiter l’usine de munitions ou de voyager et revenir ne doit pas changer de propriétaire ; une usine ne devrait pas passer à l\'état « à vendre » simplement parce que l\'écran a été ouvert. \nLes munitions produites sont utilisées personnellement dans des crimes et en PvP. Pour acheter et vendre des munitions, passez par le marché noir ; l\'écran d\'usine lui-même ne vend pas de balles directement. \nLes mises à niveau de sortie augmentent le nombre de tours par réclamation ; les améliorations de qualité améliorent la valeur marchande. \nLe prix du marché des munitions fluctue en fonction de la demande. Faites des réserves lorsque les prix sont bas et vendez lorsque les prix sont élevés. \nLors d\'un raid dans une usine, vous perdez une partie de la production stockée. La sécurité réduit ce risque. \nUne usine vacante est occupée par un opérateur PNJ donc le terrain n\'est pas vide ; vous pouvez toujours l\'acheter au prix indiqué.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

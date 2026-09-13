@@ -6344,6 +6344,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get casinoNoOwner => 'This casino has no owner yet';
 
   @override
+  String casinoNpcOperatorForSale(String name) {
+    return '$name is running this house. You can still buy it.';
+  }
+
+  @override
+  String get casinoNpcForSaleBadge => 'For sale';
+
+  @override
   String get casinoPurchasePriceLabel => 'Purchase price:';
 
   @override
@@ -9867,6 +9875,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get factoryUnowned => 'Available';
+
+  @override
+  String get factoryNpcForSaleBadge => 'For sale';
+
+  @override
+  String factoryNpcOperatorForSale(String name) {
+    return 'Run by $name — still for sale';
+  }
 
   @override
   String factoryOwnedBy(String owner) {
@@ -17365,7 +17381,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.';
+      'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.\nVacant-country houses are run by NPC operators so the floor stays open; you can still buy the casino from them at the listed price.';
 
   @override
   String get helpTopicCasinoTips =>
@@ -17707,7 +17723,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 10 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.';
+      'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 10 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.\nA vacant factory is occupied by an NPC operator so the lot is not empty; you can still buy it at the listed price.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

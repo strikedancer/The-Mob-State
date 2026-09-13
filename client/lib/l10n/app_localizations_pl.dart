@@ -6396,6 +6396,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get casinoNoOwner => 'To kasyno nie ma jeszcze właściciela';
 
   @override
+  String casinoNpcOperatorForSale(String name) {
+    return '$name prowadzi ten dom. Nadal możesz go kupić.';
+  }
+
+  @override
+  String get casinoNpcForSaleBadge => 'Na sprzedaż';
+
+  @override
   String get casinoPurchasePriceLabel => 'Cena zakupu:';
 
   @override
@@ -9931,6 +9939,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get factoryUnowned => 'Dostępny';
+
+  @override
+  String get factoryNpcForSaleBadge => 'Na sprzedaż';
+
+  @override
+  String factoryNpcOperatorForSale(String name) {
+    return 'Prowadzony przez $name — nadal na sprzedaż';
+  }
 
   @override
   String factoryOwnedBy(String owner) {
@@ -17494,7 +17510,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Gry: automaty, blackjack, ruletka, kości, bakarat i poker wideo.\nKażdy stół używa max zakładu piętra i widocznego rake, który zostaje w bankrollu właściciela.\nPublic / VIP / Private podnoszą max zakład i rake. Właściciel zatrudnia jednego krupiera, ochronę i promotora. Krupier lekko podnosi rake; promotor podnosi max zakład i heat; ochrona zmniejsza drenaż casino_ledger_raid.\nPensje idą z bankrollu co tick. Za mało: najtańszy etat wypada.\nUdany casino_ledger_raid drenuje % bankrollu w kraju startu. Nagroda gotówkowa załogi zostaje; to dodatkowa presja, nie drugi print.\nTylko gotówka. Przegrane zakłady znikają.';
+      'Dostępne gry: Automaty (niska stawka, losowa wypłata), Blackjack (liczy się strategia), Ruletka (zakłady zewnętrzne/wewnętrzne z własnymi kursami), Kości (wysoka wariancja), Baccarat (gracz/bankier/remis), Video Poker (wypłaty 5-kartowe według kolejności rąk). \nKażda gra ma minimalny zakład. Współczynniki wypłat różnią się w zależności od rodzaju gry (np. ruletka poza zakładem ~1,97x, pojedynczy numer 35x). \nKasyno używa wyłącznie gotówki, a nie salda bankowego. Zanim zaczniesz grać, upewnij się, że masz gotówkę. \nPomiędzy rundami nie ma czasu odnowienia: możesz grać tak szybko, jak chcesz. \nDuże wygrane powyżej progu mogą wywołać wydarzenie widoczne dla innych graczy. \nPrzegrane zakłady znikają na zawsze; nie ma ubezpieczenia ani wykupu. \nPuste domy wiejskie są prowadzone przez operatorów NPC, więc piętro pozostaje otwarte; nadal możesz kupić od nich kasyno po podanej cenie.';
 
   @override
   String get helpTopicCasinoTips =>
@@ -17836,7 +17852,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'Fabryka amunicji ma poziomy produkcji (od poziomu 1 do 5). Wyższy poziom = więcej rund na roszczenie i lepsza jakość. \nPodczas aktywnej sesji przejmujesz produkcję mniej więcej co 20 minut (do 8 godzin zaległości w tej sesji). \nProdukcja stale rośnie, gdy jesteś offline: po powrocie możesz zgłaszać roszczenia wielokrotnie, aż do nadrobienia zaległości. \nSamo obejrzenie fabryki amunicji lub podróżowanie tam i z powrotem nie może zmienić właściciela; fabryka nie powinna przełączać się na komunikat „na sprzedaż” tylko dlatego, że ekran został otwarty. \nWyprodukowana amunicja jest wykorzystywana osobiście w przestępstwach i PvP. Aby kupować i sprzedawać amunicję, przejdź przez Czarny Rynek; sam ekran fabryczny nie sprzedaje bezpośrednio naboi. \nUlepszenia wyjściowe zwiększają liczbę rund na roszczenie; ulepszenia jakości zwiększają wartość rynkową. \nCena rynkowa amunicji zmienia się w zależności od popytu. Gromadź zapasy, gdy ceny są niskie i sprzedawaj, gdy ceny są wysokie. \nPodczas nalotu na fabrykę tracisz część zmagazynowanej produkcji. Bezpieczeństwo zmniejsza to ryzyko.';
+      'Fabryka amunicji ma poziomy produkcji (od poziomu 1 do 5). Wyższy poziom = więcej rund na roszczenie i lepsza jakość. \nPodczas aktywnej sesji przejmujesz produkcję mniej więcej co 10 minut (do 8 godzin zaległości w tej sesji). \nProdukcja stale rośnie, gdy jesteś offline: po powrocie możesz zgłaszać roszczenia wielokrotnie, aż do nadrobienia zaległości. \nSamo obejrzenie fabryki amunicji lub podróżowanie tam i z powrotem nie może zmienić właściciela; fabryka nie powinna przełączać się na komunikat „na sprzedaż” tylko dlatego, że ekran został otwarty. \nWyprodukowana amunicja jest wykorzystywana osobiście w przestępstwach i PvP. Aby kupować i sprzedawać amunicję, przejdź przez Czarny Rynek; sam ekran fabryczny nie sprzedaje bezpośrednio naboi. \nUlepszenia wyjściowe zwiększają liczbę rund na roszczenie; ulepszenia jakości zwiększają wartość rynkową. \nCena rynkowa amunicji zmienia się w zależności od popytu. Gromadź zapasy, gdy ceny są niskie i sprzedawaj, gdy ceny są wysokie. \nPodczas nalotu na fabrykę tracisz część zmagazynowanej produkcji. Bezpieczeństwo zmniejsza to ryzyko. \nPusta fabryka jest zajęta przez operatora NPC, więc działka nie jest pusta; nadal możesz go kupić po podanej cenie.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

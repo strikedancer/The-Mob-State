@@ -148,6 +148,7 @@ Implementatievoorkeur:
 - **Google Sign-In:** zelfde web-OAuth-patroon (`GET /auth/google/start` → callback → `/login?g=ok|pending|error`, daarna `POST /auth/google/complete`). Alleen `openid email profile`. Secrets: `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` in `.env.plesk`. Zonder Client ID+Secret blijft de knop verborgen. Protocol: `google.md`.
 - **Admin Config-indeling:** Config is opgesplitst in rubrieken (Toegang, Wonen & RLD, Combat, Alle keys). NPC-aanmaken staat als vast formulier op **Admin → NPCs**, niet in een verborgen modal.
 - **NPC live-loop:** NPCs spelen via dezelfde services als spelers (`crimeService`, `jobService`, travel, hospital, gym, school, shooting range, tools, weapons, vehicle theft, properties, bank). Start-rang en XP volgen `getXPForRank`. Geen hitlist en geen automatische crew-create. Scheduler: elke 5 min, maar max één cyclus per tick-interval (MATIG 20 min, GEMIDDELD 12, CONTINU 10) en max een normale speeldag (2,5 / 5 / 8 actieve uren). **Admin simuleren N uur** = N kalenderuren, waarvan alleen het actieve deel acties doet; de rest is slaap waarin jail/cooldowns doorlopen. Crimes kiezen naar rang (niet blijven hangen op `car_theft`). Bank max 1× per 4 actieve uren.
+- **Venue-caretakers:** lege casino’s en munitiefabrieken krijgen een **inactieve** NPC-uitbater (`isActive=false`, geen live-loop) zodat het pand bezet oogt en het casino openblijft, maar **te koop** blijft. Zie `casino.md` / `ammo-factory.md`.
 
 ### Player client: ARB-bestanden versus allowlist (niet verwarren)
 

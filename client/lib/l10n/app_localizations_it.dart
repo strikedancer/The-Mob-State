@@ -6416,6 +6416,14 @@ class AppLocalizationsIt extends AppLocalizations {
   String get casinoNoOwner => 'Questo casinò non ha ancora un proprietario';
 
   @override
+  String casinoNpcOperatorForSale(String name) {
+    return '$name gestisce questa casa. Puoi ancora acquistarlo.';
+  }
+
+  @override
+  String get casinoNpcForSaleBadge => 'In vendita';
+
+  @override
   String get casinoPurchasePriceLabel => 'Prezzo d\'acquisto:';
 
   @override
@@ -9971,6 +9979,14 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get factoryUnowned => 'Disponibile';
+
+  @override
+  String get factoryNpcForSaleBadge => 'In vendita';
+
+  @override
+  String factoryNpcOperatorForSale(String name) {
+    return 'Gestito da $name — ancora in vendita';
+  }
 
   @override
   String factoryOwnedBy(String owner) {
@@ -17554,7 +17570,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Giochi: slot, blackjack, roulette, dadi, baccarat e video poker.\nOgni tavolo usa la puntata max del piano e un rake visibile che resta nel bankroll del proprietario.\nPublic / VIP / Private alzano puntata max e rake. Il proprietario assume un dealer, una security e un promoter. Il dealer alza un po\' il rake; il promoter alza la puntata max e il heat; la security riduce il drain di casino_ledger_raid.\nGli stipendi escono dal bankroll a ogni tick. Troppo basso: licenzia il più economico.\nUn casino_ledger_raid riuscito drena una % del bankroll nel paese di partenza. Il premio cash della crew resta; è pressione extra, non un secondo print.\nSolo contanti. Le puntate perse spariscono.';
+      'Giochi disponibili: Slot (puntata bassa, pagamento casuale), Blackjack (la strategia conta), Roulette (scommesse esterne/interne con quote proprie), Dadi (alta varianza), Baccarat (giocatore/banco/pareggio), Video Poker (vincite per valore della mano di 5 carte). \nOgni gioco ha una scommessa minima. I rapporti di pagamento differiscono in base al tipo di gioco (ad esempio, puntata esterna alla roulette ~1,97x, numero singolo 35x). \nIl casinò utilizza solo contanti, non il tuo saldo bancario. Assicurati di avere contanti prima di giocare. \nNon c\'è tempo di recupero tra un round e l\'altro: puoi giocare quanto velocemente vuoi. \nGrandi vincite al di sopra di una soglia possono innescare un evento visibile agli altri giocatori. \nLe scommesse perse sono perse definitivamente; non c\'è assicurazione o riacquisto. \nLe case di campagna libere sono gestite da operatori NPC, quindi il piano rimane aperto; puoi comunque acquistare il casinò da loro al prezzo indicato.';
 
   @override
   String get helpTopicCasinoTips =>
@@ -17896,7 +17912,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'La fabbrica di munizioni ha livelli di produzione (da livello 1 a 5). Livello più alto = più colpi per reclamo e migliore qualità. \nDurante una sessione attiva richiedi la produzione circa ogni 20 minuti (fino a 8 ore di arretrato all\'interno di quella sessione). \nLa produzione continua ad aumentare mentre sei offline: quando ritorni puoi richiedere più volte fino a quando non viene recuperato l\'arretrato. \nLa semplice visita della fabbrica di munizioni o il viaggio di andata e ritorno non devono cambiare proprietà; una fabbrica non dovrebbe passare allo stato \"in vendita\" solo perché lo schermo è stato aperto. \nLe munizioni prodotte vengono utilizzate personalmente nei crimini e nel PvP. Per acquistare e vendere munizioni, attraversa il mercato nero; lo schermo di fabbrica stesso non vende direttamente i proiettili. \nGli aggiornamenti dell\'output aumentano i giri per reclamo; gli aggiornamenti di qualità migliorano il valore di mercato. \nIl prezzo di mercato delle munizioni varia in base alla domanda. Fai scorta quando i prezzi sono bassi e vendi quando i prezzi sono alti. \nDurante un raid in fabbrica perdi parte della produzione immagazzinata. La sicurezza riduce questo rischio.';
+      'La fabbrica di munizioni ha livelli di produzione (da livello 1 a 5). Livello più alto = più colpi per reclamo e migliore qualità. \nDurante una sessione attiva richiedi la produzione circa ogni 10 minuti (fino a 8 ore di arretrato all\'interno di quella sessione). \nLa produzione continua ad aumentare mentre sei offline: quando ritorni puoi richiedere più volte fino a quando non viene recuperato l\'arretrato. \nLa semplice visita della fabbrica di munizioni o il viaggio di andata e ritorno non devono cambiare proprietà; una fabbrica non dovrebbe passare allo stato \"in vendita\" solo perché lo schermo è stato aperto. \nLe munizioni prodotte vengono utilizzate personalmente nei crimini e nel PvP. Per acquistare e vendere munizioni, attraversa il mercato nero; lo schermo di fabbrica stesso non vende direttamente i proiettili. \nGli aggiornamenti dell\'output aumentano i giri per reclamo; gli aggiornamenti di qualità migliorano il valore di mercato. \nIl prezzo di mercato delle munizioni varia in base alla domanda. Fai scorta quando i prezzi sono bassi e vendi quando i prezzi sono alti. \nDurante un raid in fabbrica perdi parte della produzione immagazzinata. La sicurezza riduce questo rischio. \nUna fabbrica vuota è occupata da un operatore NPC quindi il lotto non è vuoto; puoi comunque acquistarlo al prezzo di listino.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

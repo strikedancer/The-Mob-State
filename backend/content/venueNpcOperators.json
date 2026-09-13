@@ -1,0 +1,82 @@
+{
+  "netherlands": {
+    "casino": { "username": "RicoBellini", "gender": "male" },
+    "factory": { "username": "KarelVos", "gender": "male" }
+  },
+  "belgium": {
+    "casino": { "username": "LieveDupont", "gender": "female" },
+    "factory": { "username": "MarcJanssens", "gender": "male" }
+  },
+  "germany": {
+    "casino": { "username": "KlausWeber", "gender": "male" },
+    "factory": { "username": "IngridKeller", "gender": "female" }
+  },
+  "france": {
+    "casino": { "username": "ColetteMoreau", "gender": "female" },
+    "factory": { "username": "LucBenard", "gender": "male" }
+  },
+  "spain": {
+    "casino": { "username": "RafaMorales", "gender": "male" },
+    "factory": { "username": "PilarVega", "gender": "female" }
+  },
+  "italy": {
+    "casino": { "username": "EnzoGreco", "gender": "male" },
+    "factory": { "username": "GinaRomano", "gender": "female" }
+  },
+  "uk": {
+    "casino": { "username": "NigelHargreaves", "gender": "male" },
+    "factory": { "username": "MoiraBlake", "gender": "female" }
+  },
+  "switzerland": {
+    "casino": { "username": "AlainFournier", "gender": "male" },
+    "factory": { "username": "GretaKeller", "gender": "female" }
+  },
+  "usa": {
+    "casino": { "username": "VinceMorelli", "gender": "male" },
+    "factory": { "username": "JackieRhodes", "gender": "female" }
+  },
+  "mexico": {
+    "casino": { "username": "DiegoSalinas", "gender": "male" },
+    "factory": { "username": "LuzHerrera", "gender": "female" }
+  },
+  "colombia": {
+    "casino": { "username": "CamiloRestrepo", "gender": "male" },
+    "factory": { "username": "MartaDuque", "gender": "female" }
+  },
+  "brazil": {
+    "casino": { "username": "PauloMendes", "gender": "male" },
+    "factory": { "username": "RitaAlves", "gender": "female" }
+  },
+  "argentina": {
+    "casino": { "username": "TomasQuiroga", "gender": "male" },
+    "factory": { "username": "ElenaPaz", "gender": "female" }
+  },
+  "japan": {
+    "casino": { "username": "KenjiArai", "gender": "male" },
+    "factory": { "username": "YukiSaito", "gender": "female" }
+  },
+  "china": {
+    "casino": { "username": "WeiCheng", "gender": "male" },
+    "factory": { "username": "MeiLin", "gender": "female" }
+  },
+  "russia": {
+    "casino": { "username": "ViktorOrlov", "gender": "male" },
+    "factory": { "username": "NinaVolkova", "gender": "female" }
+  },
+  "turkey": {
+    "casino": { "username": "EmreYildiz", "gender": "male" },
+    "factory": { "username": "AylaKaya", "gender": "female" }
+  },
+  "united_arab_emirates": {
+    "casino": { "username": "RashidFaris", "gender": "male" },
+    "factory": { "username": "LaylaNasser", "gender": "female" }
+  },
+  "south_africa": {
+    "casino": { "username": "JohanBotha", "gender": "male" },
+    "factory": { "username": "ThandiMokoena", "gender": "female" }
+  },
+  "australia": {
+    "casino": { "username": "ShaneWhitlock", "gender": "male" },
+    "factory": { "username": "BreeCallahan", "gender": "female" }
+  }
+}

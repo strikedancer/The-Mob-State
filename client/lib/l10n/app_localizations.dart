@@ -11319,6 +11319,18 @@ abstract class AppLocalizations {
   /// **'This casino has no owner yet'**
   String get casinoNoOwner;
 
+  /// No description provided for @casinoNpcOperatorForSale.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is running this house. You can still buy it.'**
+  String casinoNpcOperatorForSale(String name);
+
+  /// No description provided for @casinoNpcForSaleBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'For sale'**
+  String get casinoNpcForSaleBadge;
+
   /// No description provided for @casinoPurchasePriceLabel.
   ///
   /// In en, this message translates to:
@@ -17351,6 +17363,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Available'**
   String get factoryUnowned;
+
+  /// No description provided for @factoryNpcForSaleBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'For sale'**
+  String get factoryNpcForSaleBadge;
+
+  /// No description provided for @factoryNpcOperatorForSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Run by {name} — still for sale'**
+  String factoryNpcOperatorForSale(String name);
 
   /// No description provided for @factoryOwnedBy.
   ///
@@ -30036,7 +30060,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCasinoHow.
   ///
   /// In en, this message translates to:
-  /// **'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.'**
+  /// **'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.\nVacant-country houses are run by NPC operators so the floor stays open; you can still buy the casino from them at the listed price.'**
   String get helpTopicCasinoHow;
 
   /// No description provided for @helpTopicCasinoTips.
@@ -30606,7 +30630,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicAmmoFactoryHow.
   ///
   /// In en, this message translates to:
-  /// **'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 10 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.'**
+  /// **'The ammo factory has production levels (Level 1 through 5). Higher level = more rounds per claim and better quality.\nDuring an active session you claim production about every 10 minutes (up to 8 hours of backlog within that session).\nProduction keeps accruing while you are offline: when you return you can claim multiple times until backlog is caught up.\nSimply viewing the ammo factory or travelling away and back must not change ownership; a factory should not flip to `for sale` just because the screen was opened.\nProduced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.\nOutput upgrades increase rounds per claim; quality upgrades improve market value.\nAmmo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.\nDuring a factory raid you lose part of stored output. Security lowers this risk.\nA vacant factory is occupied by an NPC operator so the lot is not empty; you can still buy it at the listed price.'**
   String get helpTopicAmmoFactoryHow;
 
   /// No description provided for @helpTopicAmmoFactoryTips.

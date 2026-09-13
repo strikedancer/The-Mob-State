@@ -5,6 +5,8 @@ import * as casinoOwnershipService from '../services/casinoOwnershipService';
 import prisma from '../lib/prisma';
 import { AppError } from '../utils/errors';
 import { effectiveRaidDrainPct } from '../services/casinoHouseConfig';
+import { isNpcPlayerId } from '../services/npcLookup';
+import { ensureVenueNpcOccupancy } from '../services/venueNpcOccupancyService';
 
 const router = Router();
 
@@ -1008,8 +1010,13 @@ router.get('/:casinoId/history', authenticate, async (req: AuthRequest, res: Res
 router.get('/ownership/:countryId', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const countryId = String(req.params.countryId);
+    await ensureVenueNpcOccupancy();
+
     const ownership = await casinoOwnershipService.getOwnershipByCountry(countryId);
     const price = casinoOwnershipService.getCasinoPrice(countryId);
+    const ownerIsNpc = ownership
+      ? await isNpcPlayerId(ownership.owner.id)
+      : false;
 
     const house = ownership
       ? await casinoOwnershipService.getHouseSnapshot(countryId)
@@ -1020,10 +1027,12 @@ router.get('/ownership/:countryId', authenticate, async (req: AuthRequest, res: 
       params: {
         countryId,
         owned: !!ownership,
+        forSale: !ownership || ownerIsNpc,
         owner: ownership ? {
           id: ownership.owner.id,
           username: ownership.owner.username,
-          rank: ownership.owner.rank
+          rank: ownership.owner.rank,
+          isNpc: ownerIsNpc,
         } : null,
         purchasePrice: ownership?.purchasePrice || price,
         price,

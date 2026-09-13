@@ -2,6 +2,8 @@ import prisma from '../lib/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { educationService } from './educationService';
+import { getNpcPlayerIdSet, isNpcPlayerId } from './npcLookup';
+import { ensureVenueNpcOccupancy } from './venueNpcOccupancyService';
 
 interface CountryDef {
   id: string;
@@ -112,13 +114,23 @@ class AmmoFactoryService {
 
   async listFactories() {
     await this.ensureFactoriesExist();
+    await ensureVenueNpcOccupancy();
 
-    return prisma.ammoFactory.findMany({
+    const factories = await prisma.ammoFactory.findMany({
       include: {
         owner: { select: { id: true, username: true } },
       },
       orderBy: { countryId: 'asc' },
     });
+    const npcIds = await getNpcPlayerIdSet();
+
+    return factories.map((factory) => ({
+      ...factory,
+      forSale: !factory.ownerId || npcIds.has(factory.ownerId),
+      owner: factory.owner
+        ? { ...factory.owner, isNpc: npcIds.has(factory.owner.id) }
+        : null,
+    }));
   }
 
   async getPlayerFactory(playerId: number) {
@@ -275,19 +287,25 @@ class AmmoFactoryService {
       return { success: false, error: 'FACTORY_NOT_FOUND', cost: 0 };
     }
 
-    if (factory.ownerId && factory.ownerId !== playerId && this.isInactive(factory)) {
-      await this.revokeFactoriesForPlayer(factory.ownerId);
-      factory = await prisma.ammoFactory.findUnique({
-        where: { countryId },
-      });
+    if (factory.ownerId && factory.ownerId !== playerId) {
+      const ownerIsNpc = await isNpcPlayerId(factory.ownerId);
+      if (!ownerIsNpc && this.isInactive(factory)) {
+        await this.revokeFactoriesForPlayer(factory.ownerId);
+        factory = await prisma.ammoFactory.findUnique({
+          where: { countryId },
+        });
 
-      if (!factory) {
-        return { success: false, error: 'FACTORY_NOT_FOUND', cost: 0 };
+        if (!factory) {
+          return { success: false, error: 'FACTORY_NOT_FOUND', cost: 0 };
+        }
       }
     }
 
     if (factory.ownerId && factory.ownerId !== playerId) {
-      return { success: false, error: 'FACTORY_OWNED', cost: 0 };
+      const ownerIsNpc = await isNpcPlayerId(factory.ownerId);
+      if (!ownerIsNpc) {
+        return { success: false, error: 'FACTORY_OWNED', cost: 0 };
+      }
     }
 
     if (factory.ownerId === playerId) {

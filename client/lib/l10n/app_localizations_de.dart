@@ -6431,6 +6431,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get casinoNoOwner => 'Dieses Casino hat noch keinen Besitzer';
 
   @override
+  String casinoNpcOperatorForSale(String name) {
+    return '$name leitet dieses Haus. Sie können es immer noch kaufen.';
+  }
+
+  @override
+  String get casinoNpcForSaleBadge => 'Zu verkaufen';
+
+  @override
   String get casinoPurchasePriceLabel => 'Kaufpreis:';
 
   @override
@@ -9991,6 +9999,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get factoryUnowned => 'Verfügbar';
+
+  @override
+  String get factoryNpcForSaleBadge => 'Zu verkaufen';
+
+  @override
+  String factoryNpcOperatorForSale(String name) {
+    return 'Geführt von $name – steht noch zum Verkauf';
+  }
 
   @override
   String factoryOwnedBy(String owner) {
@@ -17580,7 +17596,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Verfügbare Spiele: Slots, Blackjack, Roulette, Würfel, Baccarat und Videopoker.\nJeder Tisch nutzt den Maximaleinsatz der Etage und einen sichtbaren Rake, der in der Owner-Bankroll bleibt.\nPublic / VIP / Private erhöhen Einsatzlimit und House-Rake. Besitzer stellen je einen Dealer, Security und Promoter ein. Dealer erhöht den Rake leicht; Promoter erhöht Max-Einsatz und Heat; Security senkt den casino_ledger_raid-Abfluss.\nGehälter kommen aus der Bankroll pro Game-Tick. Zu niedrig: der günstigste Hire fliegt.\nEin erfolgreicher Crew-casino_ledger_raid zieht Prozent von der Bankroll im Startland des Runs. Die Crew-Cash-Belohnung bleibt; das ist Extra-Druck, kein zweiter Cash-Print.\nNur Bargeld, kein Bankguthaben. Verlorene Einsätze sind weg.';
+      'Verfügbare Spiele: Spielautomaten (geringer Einsatz, zufällige Auszahlung), Blackjack (Strategiefragen), Roulette (Außen-/Innenwetten mit eigenen Gewinnchancen), Würfel (hohe Varianz), Baccarat (Spieler/Banker/Unentschieden), Video Poker (Auszahlungen mit 5 Karten auf der Hand). \nFür jedes Spiel gilt ein Mindesteinsatz. Die Auszahlungsquoten variieren je nach Spieltyp (z. B. Roulette-Außeneinsatz ~1,97x, Einzelzahl 35x). \nDas Casino verwendet nur Bargeld, nicht Ihr Bankguthaben. Stellen Sie sicher, dass Sie Bargeld haben, bevor Sie spielen. \nEs gibt keine Abklingzeit zwischen den Runden: Sie können so schnell spielen, wie Sie möchten. \nGroße Gewinne über einem bestimmten Schwellenwert können ein für andere Spieler sichtbares Ereignis auslösen. \nVerlorene Wetten sind dauerhaft verschwunden; Es gibt keine Versicherung oder Rückkauf. \nLeerstehende Landhäuser werden von NPC-Betreibern betrieben, sodass die Etage offen bleibt; Sie können das Casino immer noch zum angegebenen Preis bei ihnen kaufen.';
 
   @override
   String get helpTopicCasinoTips =>
@@ -17922,7 +17938,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'Die Munitionsfabrik verfügt über Produktionsstufen (Stufe 1 bis 5). Höheres Level = mehr Runden pro Anspruch und bessere Qualität. \nWährend einer aktiven Sitzung beanspruchen Sie etwa alle 20 Minuten eine Produktion (bis zu 8 Stunden Rückstand innerhalb dieser Sitzung). \nAuch wenn Sie offline sind, steigt die Produktion weiter an: Wenn Sie zurückkommen, können Sie mehrere Ansprüche geltend machen, bis der Rückstand aufgeholt ist. \nEine bloße Besichtigung der Munitionsfabrik oder Hin- und Rückfahrt darf nicht den Besitzer wechseln; Eine Fabrik sollte nicht auf „zu verkaufen“ wechseln, nur weil der Bildschirm geöffnet wurde. \nProduzierte Munition wird persönlich für Verbrechen und PvP verwendet. Um Munition zu kaufen und zu verkaufen, gehen Sie über den Schwarzmarkt; Der Fabrikbildschirm selbst verkauft keine Kugeln direkt. \nLeistungsverbesserungen erhöhen die Anzahl der Runden pro Anspruch; Qualitätsverbesserungen steigern den Marktwert. \nDer Marktpreis für Munition schwankt je nach Nachfrage. Füllen Sie Vorräte auf, wenn die Preise niedrig sind, und verkaufen Sie, wenn die Preise hoch sind. \nBei einem Fabriküberfall verlierst du einen Teil der gespeicherten Produktion. Sicherheit senkt dieses Risiko.';
+      'Die Munitionsfabrik verfügt über Produktionsstufen (Stufe 1 bis 5). Höheres Level = mehr Runden pro Anspruch und bessere Qualität. \nWährend einer aktiven Sitzung beanspruchen Sie etwa alle 10 Minuten eine Produktion (bis zu 8 Stunden Rückstand innerhalb dieser Sitzung). \nAuch wenn Sie offline sind, steigt die Produktion weiter an: Wenn Sie zurückkommen, können Sie mehrere Ansprüche geltend machen, bis der Rückstand aufgeholt ist. \nEine bloße Besichtigung der Munitionsfabrik oder Hin- und Rückfahrt darf nicht den Besitzer wechseln; Eine Fabrik sollte nicht auf „zu verkaufen“ wechseln, nur weil der Bildschirm geöffnet wurde. \nProduzierte Munition wird persönlich für Verbrechen und PvP verwendet. Um Munition zu kaufen und zu verkaufen, gehen Sie über den Schwarzmarkt. Der Fabrikbildschirm selbst verkauft keine Kugeln direkt. \nLeistungsverbesserungen erhöhen die Anzahl der Runden pro Anspruch; Qualitätsverbesserungen steigern den Marktwert. \nDer Marktpreis für Munition schwankt je nach Nachfrage. Füllen Sie Vorräte auf, wenn die Preise niedrig sind, und verkaufen Sie, wenn die Preise hoch sind. \nBei einem Fabriküberfall verlierst du einen Teil der gespeicherten Produktion. Sicherheit senkt dieses Risiko. \nEine leere Fabrik wird von einem NPC-Betreiber besetzt, sodass das Grundstück nicht leer ist. Sie können es weiterhin zum angegebenen Preis kaufen.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

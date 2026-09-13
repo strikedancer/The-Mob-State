@@ -6380,6 +6380,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get casinoNoOwner => 'Dit casino heeft nog geen eigenaar';
 
   @override
+  String casinoNpcOperatorForSale(String name) {
+    return '$name runt dit huis. Je kunt het nog kopen.';
+  }
+
+  @override
+  String get casinoNpcForSaleBadge => 'Te koop';
+
+  @override
   String get casinoPurchasePriceLabel => 'Aankoopprijs:';
 
   @override
@@ -9912,6 +9920,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get factoryUnowned => 'Beschikbaar';
+
+  @override
+  String get factoryNpcForSaleBadge => 'Te koop';
+
+  @override
+  String factoryNpcOperatorForSale(String name) {
+    return 'Uitbater: $name — nog te koop';
+  }
 
   @override
   String factoryOwnedBy(String owner) {
@@ -17408,7 +17424,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).\nElke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).\nCasino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.\nEr is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.\nGrote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.\nVerloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.';
+      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).\nElke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).\nCasino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.\nEr is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.\nGrote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.\nVerloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.\nLege-land casino\'s worden gerund door NPC-uitbaters zodat de zaak openblijft; je kunt het casino nog steeds van hen kopen tegen de vraagprijs.';
 
   @override
   String get helpTopicCasinoTips =>
@@ -17750,7 +17766,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAmmoFactoryHow =>
-      'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer patronen per claim en betere kwaliteit.\nTijdens een actieve sessie claim je productie ongeveer elke 10 minuten (tot 8 uur backlog binnen die sessie).\nProductie loopt door terwijl je offline bent: bij terugkomst kun je meerdere claims achter elkaar doen tot de backlog op is.\nAlleen kijken naar de munitiefabriek of heen en weer reizen mag eigendom niet veranderen; een fabriek springt dus niet zomaar naar `te koop` door het scherm te openen.\nJe gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.\nOutput-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.\nMarktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.\nBij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.';
+      'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer patronen per claim en betere kwaliteit.\nTijdens een actieve sessie claim je productie ongeveer elke 10 minuten (tot 8 uur backlog binnen die sessie).\nProductie loopt door terwijl je offline bent: bij terugkomst kun je meerdere claims achter elkaar doen tot de backlog op is.\nAlleen kijken naar de munitiefabriek of heen en weer reizen mag eigendom niet veranderen; een fabriek springt dus niet zomaar naar `te koop` door het scherm te openen.\nJe gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.\nOutput-upgrades verhogen het aantal patronen per claim; kwaliteits-upgrades verbeteren marktwaarde.\nMarktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.\nBij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.\nEen lege fabriek wordt bezet door een NPC-uitbater zodat het terrein niet leeg oogt; je kunt die nog steeds kopen tegen de vraagprijs.';
 
   @override
   String get helpTopicAmmoFactoryTips =>

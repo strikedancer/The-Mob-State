@@ -788,8 +788,9 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
   Widget _buildPurchaseCard(
     BuildContext context,
     AppLocalizations l10n,
-    int playerMoney,
-  ) {
+    int playerMoney, {
+    String? operatorName,
+  }) {
     final countryId = _currentCountryFactory?['countryId']?.toString();
     final countryName = countryId == null
         ? '-'
@@ -843,7 +844,9 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                   border: Border.all(color: Colors.green.withOpacity(0.35)),
                 ),
                 child: Text(
-                  l10n.factoryUnowned,
+                  operatorName != null && operatorName.isNotEmpty
+                      ? l10n.factoryNpcForSaleBadge
+                      : l10n.factoryUnowned,
                   style: const TextStyle(
                     color: Colors.greenAccent,
                     fontWeight: FontWeight.w700,
@@ -854,6 +857,16 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
             ],
           ),
           const SizedBox(height: 18),
+          if (operatorName != null && operatorName.isNotEmpty) ...[
+            Text(
+              l10n.factoryNpcOperatorForSale(operatorName),
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.82),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
           Text(
             l10n.ammoFactoryPurchasePriceLabel,
             style: TextStyle(
@@ -1040,7 +1053,11 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         _myFactory != null &&
         _myFactory?['countryId'] == _currentCountryFactory?['countryId'];
     final currentOwner = _currentCountryFactory?['owner'];
-    final isAvailableToBuy = currentOwner == null && !ownsCurrentCountryFactory;
+    final ownerIsNpc = currentOwner is Map && currentOwner['isNpc'] == true;
+    final isAvailableToBuy =
+        !ownsCurrentCountryFactory && (currentOwner == null || ownerIsNpc);
+    final operatorName =
+        ownerIsNpc ? currentOwner['username']?.toString() : null;
 
     final list = _isLoading
         ? const Center(child: CircularProgressIndicator(color: kEmpireGold))
@@ -1051,7 +1068,12 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
           const SizedBox(height: 12),
           if (_currentCountryFactory != null) ...[
             if (isAvailableToBuy)
-              _buildPurchaseCard(context, l10n, playerMoney)
+              _buildPurchaseCard(
+                context,
+                l10n,
+                playerMoney,
+                operatorName: operatorName,
+              )
             else if (!ownsCurrentCountryFactory)
               _buildPanel(
                 child: Column(

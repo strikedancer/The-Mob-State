@@ -13,6 +13,7 @@ import {
   invalidateCasinoHouseConfigCache,
   type CasinoStaffRole,
 } from './casinoHouseConfig';
+import { isNpcPlayerId } from './npcLookup';
 
 export {
   CASINO_HOUSE_RUNTIME_SETTING_DEFAULTS,
@@ -92,13 +93,6 @@ export async function purchaseCasino(playerId: number, countryId: string, initia
     throw new AppError('INSUFFICIENT_DEPOSIT', `Minimum deposit is €${minDeposit.toLocaleString()} (20% of purchase price)`);
   }
 
-  // Check if casino already owned
-  const existingOwnership = await getOwnershipByCountry(countryId);
-  if (existingOwnership) {
-    throw new AppError('ALREADY_OWNED', `Casino in ${countryId} is already owned by ${existingOwnership.owner.username}`);
-  }
-
-  // Check player has enough money for purchase + initial deposit
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true, rank: true }
@@ -131,15 +125,27 @@ export async function purchaseCasino(playerId: number, countryId: string, initia
     throw new AppError('INSUFFICIENT_FUNDS', `You need €${totalCost.toLocaleString()} (€${price.toLocaleString()} purchase + €${initialDeposit.toLocaleString()} deposit)`);
   }
 
-  // Create ownership and set initial bankroll
   const ownership = await prisma.$transaction(async (tx) => {
-    // Deduct total cost from player
+    const current = await tx.casinoOwnership.findUnique({
+      where: { casinoId },
+      select: { ownerId: true },
+    });
+
+    if (current) {
+      const npcOwner = await tx.nPCPlayer.findUnique({
+        where: { playerId: current.ownerId },
+        select: { id: true },
+      });
+      if (!npcOwner) {
+        throw new AppError('ALREADY_OWNED', `Casino in ${countryId} is already owned`);
+      }
+    }
+
     await tx.player.update({
       where: { id: playerId },
       data: { money: { decrement: totalCost } }
     });
 
-    // Ensure casino property exists
     await tx.property.upsert({
       where: { propertyId: casinoId },
       create: {
@@ -156,8 +162,29 @@ export async function purchaseCasino(playerId: number, countryId: string, initia
       }
     });
 
-    // Create ownership record with initial bankroll
-    const newOwnership = await tx.casinoOwnership.create({
+    if (current) {
+      return tx.casinoOwnership.update({
+        where: { casinoId },
+        data: {
+          ownerId: playerId,
+          purchasePrice: price,
+          purchasedAt: new Date(),
+          bankroll: { increment: initialDeposit },
+        },
+        include: {
+          owner: {
+            select: {
+              id: true,
+              username: true,
+              rank: true,
+              money: true
+            }
+          }
+        }
+      });
+    }
+
+    return tx.casinoOwnership.create({
       data: {
         casinoId,
         ownerId: playerId,
@@ -177,8 +204,6 @@ export async function purchaseCasino(playerId: number, countryId: string, initia
         }
       }
     });
-
-    return newOwnership;
   });
 
   return ownership;
@@ -399,6 +424,7 @@ export async function checkLowBalance(countryId: string, previousBankroll?: numb
   });
 
   if (!ownership) return;
+  if (await isNpcPlayerId(ownership.ownerId)) return;
 
   const currentBankroll = ownership.bankroll;
 
@@ -500,20 +526,22 @@ export function getCasinoPrice(countryId: string): number {
 export async function getAvailableCasinos() {
   const allCountries = Object.keys(CASINO_PRICES);
   const ownedCasinos = await prisma.casinoOwnership.findMany({
-    select: { casinoId: true }
+    select: { casinoId: true, ownerId: true }
   });
+  const playerOwnedIds = new Set<string>();
+  for (const row of ownedCasinos) {
+    if (!(await isNpcPlayerId(row.ownerId))) {
+      playerOwnedIds.add(row.casinoId);
+    }
+  }
 
-  const ownedCasinoIds = new Set(ownedCasinos.map(o => o.casinoId));
-  
-  const available = allCountries
-    .filter(country => !ownedCasinoIds.has(`casino_${country}`))
-    .map(country => ({
+  return allCountries
+    .filter((country) => !playerOwnedIds.has(`casino_${country}`))
+    .map((country) => ({
       countryId: country,
       casinoId: `casino_${country}`,
-      price: CASINO_PRICES[country]
+      price: CASINO_PRICES[country],
     }));
-
-  return available;
 }
 
 export async function getHouseSnapshot(countryId: string) {
