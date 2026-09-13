@@ -9,7 +9,7 @@ Speler-login en -registratie via **Google** (web OAuth, alleen `openid email pro
 ## Primary Backend Entry
 - `GET /auth/google/status` — `{ loginEnabled }` (geen auth)
 - `GET /auth/google/start` — redirect naar Google OAuth
-- `GET /auth/google/callback` — code → sessie of pending-registratie, daarna redirect naar `APP_BASE_URL/login?g=ok|pending|error`
+- `GET /auth/google/callback` — code → sessie of pending-registratie, daarna redirect naar `APP_BASE_URL/login?g=ok|pending|error` (token/pending staan kort in de query; de client leest ze en vervangt de URL naar `/login` of `/` zodat de JWT niet in de adresbalk blijft)
 - `POST /auth/google/complete` — `{ pendingToken, username, gender, preferredLanguage, acceptedTerms }`
 - Service: `backend/src/services/googleAuthService.ts`, `authService.issueSession`
 
@@ -53,7 +53,7 @@ Zonder Client ID + Secret blijft de knop verborgen.
 
 ## QA Checklist
 1. Zonder env: geen Google-knop
-2. Met Client ID/Secret: knop zichtbaar; bestaande `googleId` logt in; nieuwe speler krijgt complete-formulier
+2. Met Client ID/Secret: knop zichtbaar; bestaande `googleId` logt in; nieuwe speler krijgt complete-formulier. Na return is de adresbalk schoon (geen `?g=ok&token=…`).
 3. Geverifieerd e-mailadres koppelt het bestaande account
 4. User weigert Google-toestemming → foutmelding, geen 500
 

@@ -54,7 +54,7 @@ Zonder App ID + Secret blijft de inlogknop verborgen. Zonder Page ID + token bli
 
 ## Cross-Module Dependencies
 - Auth / e-mailverificatie → Facebook slaat de mail-gate over (Facebook bevestigt het adres)
-- Marketing web → OAuth landt op `/login?fb=ok|pending|error`
+- Marketing web → OAuth landt op `/login?fb=ok|pending|error`; de client stripte de query daarna (zelfde als Google) zodat de JWT niet in de adresbalk blijft
 - Admin Config Toegang → naast e-mailverificatie-gate
 
 ## Must Preserve
@@ -64,7 +64,7 @@ Zonder App ID + Secret blijft de inlogknop verborgen. Zonder Page ID + token bli
 
 ## QA Checklist
 1. Zonder env: geen Facebook-knop, admin-pagina UIT
-2. Met App ID/Secret: knop zichtbaar; bestaande Facebook-id logt in; nieuwe speler krijgt complete-formulier
+2. Met App ID/Secret: knop zichtbaar; bestaande Facebook-id logt in; nieuwe speler krijgt complete-formulier. Na return is de adresbalk schoon (geen `?fb=ok&token=…`).
 3. Geverifieerd e-mailadres koppelt het bestaande account
 4. Admin kan een testbericht + link publiceren
 5. User weigert Facebook-toestemming → foutmelding, geen 500

@@ -15,6 +15,7 @@ import '../config/app_config.dart';
 import '../config/supported_languages.dart';
 import '../widgets/guest_legal_footer.dart';
 import '../widgets/guest_legal_document_modal.dart';
+import '../utils/web_history.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -110,29 +111,42 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _consumeOAuthReturn() async {
     if (!kIsWeb) return;
     final params = Uri.base.queryParameters;
-    if (params['g'] != null && params['g']!.isNotEmpty) {
+    final googleStatus = params['g']?.trim() ?? '';
+    final facebookStatus = params['fb']?.trim() ?? '';
+    if (googleStatus.isEmpty && facebookStatus.isEmpty) {
+      return;
+    }
+
+    final pending = params['pending']?.trim() ?? '';
+    final suggested = params['suggested']?.trim() ?? '';
+    final token = params['token']?.trim() ?? '';
+    final googleReason = params['reason'] ?? 'GOOGLE_AUTH_FAILED';
+    final facebookReason = params['reason'] ?? 'FACEBOOK_AUTH_FAILED';
+
+    replaceBrowserPath('/login');
+
+    if (googleStatus.isNotEmpty) {
       await _applyOAuthReturn(
-        status: params['g']!,
+        status: googleStatus,
         provider: 'google',
         fallbackError: 'GOOGLE_AUTH_FAILED',
-        pending: params['pending']?.trim() ?? '',
-        suggested: params['suggested']?.trim() ?? '',
-        reason: params['reason'] ?? 'GOOGLE_AUTH_FAILED',
-        token: params['token']?.trim() ?? '',
+        pending: pending,
+        suggested: suggested,
+        reason: googleReason,
+        token: token,
       );
       return;
     }
-    if (params['fb'] != null && params['fb']!.isNotEmpty) {
-      await _applyOAuthReturn(
-        status: params['fb']!,
-        provider: 'facebook',
-        fallbackError: 'FACEBOOK_AUTH_FAILED',
-        pending: params['pending']?.trim() ?? '',
-        suggested: params['suggested']?.trim() ?? '',
-        reason: params['reason'] ?? 'FACEBOOK_AUTH_FAILED',
-        token: params['token']?.trim() ?? '',
-      );
-    }
+
+    await _applyOAuthReturn(
+      status: facebookStatus,
+      provider: 'facebook',
+      fallbackError: 'FACEBOOK_AUTH_FAILED',
+      pending: pending,
+      suggested: suggested,
+      reason: facebookReason,
+      token: token,
+    );
   }
 
   Future<void> _applyOAuthReturn({
@@ -496,6 +510,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     await Future.delayed(const Duration(milliseconds: 100));
     if (!mounted) return;
+    replaceBrowserPath('/');
     Navigator.of(context).pushReplacementNamed('/dashboard');
   }
 
