@@ -549,7 +549,12 @@ function App() {
     totalPlayers: 0,
     activePlayers: 0,
     bannedPlayers: 0,
+    visitorHits: 0,
+    visitorUniqueIps: 0,
   });
+  const [visitorRows, setVisitorRows] = useState<
+    Array<{ ip: string; hits: number; firstSeen: string; lastSeen: string }>
+  >([]);
   const [systemHealth, setSystemHealth] = useState<SystemHealthDetails | null>(
     null,
   );
@@ -1444,7 +1449,30 @@ function App() {
   const loadStats = async () => {
     try {
       const data = await adminService.getStats();
-      setStats(data);
+      let visitorHits = data.visitorHits ?? 0;
+      let visitorUniqueIps = data.visitorUniqueIps ?? 0;
+      let rows: Array<{
+        ip: string;
+        hits: number;
+        firstSeen: string;
+        lastSeen: string;
+      }> = [];
+      try {
+        const visitors = await adminService.getVisitors();
+        visitorHits = visitors.totalHits ?? visitorHits;
+        visitorUniqueIps = visitors.uniqueIps ?? visitorUniqueIps;
+        rows = visitors.visitors ?? [];
+      } catch (visitorError) {
+        console.error("Failed to load visitors:", visitorError);
+      }
+      setStats({
+        totalPlayers: data.totalPlayers ?? 0,
+        activePlayers: data.activePlayers ?? 0,
+        bannedPlayers: data.bannedPlayers ?? 0,
+        visitorHits,
+        visitorUniqueIps,
+      });
+      setVisitorRows(rows);
       setDashboardLastUpdated((current) => ({
         ...current,
         stats: new Date().toISOString(),
@@ -5110,6 +5138,22 @@ function App() {
                         badgeClass: "bg-danger-subtle text-danger",
                         badgeText: l("Moderatie", "Moderation"),
                       },
+                      {
+                        key: "visitorHits",
+                        label: l("Bezoeken", "Visits"),
+                        value: stats.visitorHits,
+                        icon: "ph-eye",
+                        badgeClass: "bg-info-subtle text-info",
+                        badgeText: l("Totaal", "Total"),
+                      },
+                      {
+                        key: "visitorIps",
+                        label: l("Unieke IP's", "Unique IPs"),
+                        value: stats.visitorUniqueIps,
+                        icon: "ph-globe",
+                        badgeClass: "bg-warning-subtle text-warning",
+                        badgeText: l("Bezoekers", "Visitors"),
+                      },
                     ].map((item) => (
                       <div key={item.key} className="col-sm-6 col-xl-4">
                         <div className="card dashboard-summary-card h-100">
@@ -5134,6 +5178,59 @@ function App() {
                         </div>
                       </div>
                     ))}
+                  </div>
+
+                  <div className="card dashboard-panel mb-3">
+                    <div className="card-header">
+                      <h5 className="mb-0 dashboard-section-title">
+                        <i className="ph-globe me-2" />
+                        {l("Bezoekers per IP", "Visitors by IP")}
+                      </h5>
+                      <small className="text-muted">
+                        {l(
+                          "Landing /public/home. Totaal hits en unieke IP-adressen.",
+                          "Landing /public/home. Total hits and distinct IP addresses.",
+                        )}
+                      </small>
+                    </div>
+                    <div className="table-responsive">
+                      <table className="table table-sm table-striped mb-0">
+                        <thead>
+                          <tr>
+                            <th>{l("IP", "IP")}</th>
+                            <th className="text-end">{l("Hits", "Hits")}</th>
+                            <th>{l("Eerste bezoek", "First seen")}</th>
+                            <th>{l("Laatste bezoek", "Last seen")}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {visitorRows.length === 0 ? (
+                            <tr>
+                              <td colSpan={4} className="text-muted">
+                                {l("Nog geen bezoekers geteld.", "No visitors counted yet.")}
+                              </td>
+                            </tr>
+                          ) : (
+                            visitorRows.map((row) => (
+                              <tr key={row.ip}>
+                                <td>
+                                  <code>{row.ip}</code>
+                                </td>
+                                <td className="text-end">
+                                  {row.hits.toLocaleString()}
+                                </td>
+                                <td>
+                                  {new Date(row.firstSeen).toLocaleString()}
+                                </td>
+                                <td>
+                                  {new Date(row.lastSeen).toLocaleString()}
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   <div className="row g-3 align-items-start">

@@ -12092,5 +12092,32 @@
   "crewUiActionBrowseOpenCrews": "Przeglądaj otwarte załogi",
   "crewUiActionBrowseOpenCrewsShort": "Otwarte załogi",
   "crewUiJoinRookiesHint": "The Rookies przyjmują wszystkich — dołącz z Crews.",
-  "landingFairPlay": "VIP skraca czas oczekiwania. Nie kupuje zwycięstw."
+  "landingFairPlay": "VIP skraca czas oczekiwania. Nie kupuje zwycięstw.",
+  "donToastClaimed": "Sklep zgłosił reklamację.",
+  "donToastCollected": "Hołd zebrany.",
+  "donToastContested": "Konkurs rozpoczęty. Właściciel może jeszcze przetrzymać.",
+  "donToastHeld": "Trzymałeś sklep.",
+  "donToastTributeCash": "Hołd trafia teraz do Twojej gotówki.",
+  "donToastTributeCrew": "Hołd trafia teraz do banku załogi.",
+  "donToastLoanNpc": "Pożyczka udzielona NPC.",
+  "donToastLoanOffered": "Oferta pożyczki wysłana.",
+  "donToastLoanAccepted": "Pożyczka przyjęta.",
+  "donToastLoanRepaid": "Pożyczka spłacona.",
+  "donToastLoanCollected": "Zebrałeś domyślnie.",
+  "donToastBribed": "Biuro jest Twoje — na razie.",
+  "donToastBid": "Oferta kontraktowa zaakceptowana.",
+  "evStreamDonClaimed": "Zajął sklep Don",
+  "evStreamDonCollected": "Zebrany hołd od darowizny: {amount}",
+  "@evStreamDonCollected": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDonFled": "Don sklep uciekł po ściśnięciu",
+  "evStreamDonContested": "Rozpoczął konkurs na Dona",
+  "evStreamDonSeized": "Przejąłem sklep Don",
+  "evStreamDonBribed": "Przekupił urzędnika Dona",
+  "evStreamDonCollectReady": "Darowizna jest gotowa do odbioru"
 }

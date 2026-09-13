@@ -10,6 +10,7 @@ import { weaponService } from './weaponService';
 import * as policeService from './policeService';
 import { educationService } from './educationService';
 import { getCrewStorageCapacity } from './crewBuildingService';
+import { donBusinessLabel, donOfficeLabel, formatDonCash, notifyDon } from './donNotify';
 
 type DonBusinessDef = { key: string; baseTribute: number; minIntimidation: number };
 type DonOfficeDef = { key: string; baseCost: number };
@@ -254,6 +255,7 @@ async function abandonStaleRackets(now: Date, abandonMs: number): Promise<number
   for (const racket of stale) {
     const anchor = racket.lastCollectAt ?? racket.claimedAt;
     if (!anchor || anchor.getTime() >= cutoff.getTime()) continue;
+    const previousOwnerId = racket.ownerPlayerId;
     await prisma.donRacket.update({
       where: { id: racket.id },
       data: {
@@ -266,6 +268,13 @@ async function abandonStaleRackets(now: Date, abandonMs: number): Promise<number
         lastCollectAt: null,
       },
     });
+    if (previousOwnerId) {
+      const shop = racket.businessKey;
+      void notifyDon(previousOwnerId, {
+        nl: `Je ${donBusinessLabel(shop, true)} in ${racket.countryCode} is vervallen. Innen op tijd, anders raak je de zaak kwijt.`,
+        en: `Your ${donBusinessLabel(shop, false)} in ${racket.countryCode} was abandoned. Collect on time or you lose the shop.`,
+      });
+    }
     count += 1;
   }
   return count;
@@ -289,12 +298,24 @@ async function resolveExpiredContests(now: Date): Promise<number> {
         tributeToCrew: false,
       },
     });
+    const previousOwnerId = racket.ownerPlayerId;
+    const shop = racket.businessKey;
     if (racket.contestPlayerId) {
       void worldEventService.createEvent(
         'don.racket_seized',
-        { racketId: racket.id, countryCode: racket.countryCode, businessKey: racket.businessKey },
+        { racketId: racket.id, countryCode: racket.countryCode, businessKey: shop },
         racket.contestPlayerId
       );
+      void notifyDon(racket.contestPlayerId, {
+        nl: `Je hebt de ${donBusinessLabel(shop, true)} in ${racket.countryCode} overgenomen. De contest is afgelopen.`,
+        en: `You took the ${donBusinessLabel(shop, false)} in ${racket.countryCode}. The contest is over.`,
+      });
+    }
+    if (previousOwnerId && previousOwnerId !== racket.contestPlayerId) {
+      void notifyDon(previousOwnerId, {
+        nl: `Je ${donBusinessLabel(shop, true)} in ${racket.countryCode} is overgenomen. Je hebt de contest niet gehouden.`,
+        en: `Your ${donBusinessLabel(shop, false)} in ${racket.countryCode} was taken. You did not hold the contest.`,
+      });
     }
     count += 1;
   }
@@ -503,6 +524,14 @@ export const donService = {
       { racketId, countryCode: racket.countryCode, businessKey: racket.businessKey },
       playerId
     );
+    void notifyDon(
+      playerId,
+      {
+        nl: `Je hebt de ${donBusinessLabel(updated.businessKey, true)} geclaimd.`,
+        en: `You claimed the ${donBusinessLabel(updated.businessKey, false)}.`,
+      },
+      { push: false }
+    );
     return { racketId: updated.id, businessKey: updated.businessKey };
   },
 
@@ -537,6 +566,14 @@ export const donService = {
       { racketId, amount, paidTo: paid.paidTo, businessKey: racket.businessKey },
       playerId
     );
+    void notifyDon(
+      playerId,
+      {
+        nl: `Tribute ${formatDonCash(amount, true)} geïnd van je ${donBusinessLabel(racket.businessKey, true)} (${paid.paidTo === 'crew' ? 'crew-bank' : 'cash'}).`,
+        en: `Collected ${formatDonCash(amount, false)} tribute from your ${donBusinessLabel(racket.businessKey, false)} (${paid.paidTo === 'crew' ? 'crew bank' : 'cash'}).`,
+      },
+      { push: false }
+    );
     return { amount, paidTo: paid.paidTo, newMoney: paid.newMoney };
   },
 
@@ -568,6 +605,10 @@ export const donService = {
         { racketId, businessKey: racket.businessKey, countryCode: racket.countryCode },
         playerId
       );
+      void notifyDon(playerId, {
+        nl: `De ${donBusinessLabel(racket.businessKey, true)} is gevlucht na je squeeze.`,
+        en: `The ${donBusinessLabel(racket.businessKey, false)} fled after your squeeze.`,
+      });
       return { fled: true };
     }
     const until = new Date(Date.now() + cfg.squeezeDurationSeconds * 1000);
@@ -617,6 +658,25 @@ export const donService = {
       { racketId, businessKey: racket.businessKey, countryCode: racket.countryCode },
       playerId
     );
+    const attacker = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { username: true },
+    });
+    const attackerName = attacker?.username || '???';
+    void notifyDon(
+      playerId,
+      {
+        nl: `Contest gestart op de ${donBusinessLabel(racket.businessKey, true)}. De eigenaar kan nog houden.`,
+        en: `Contest started on the ${donBusinessLabel(racket.businessKey, false)}. The owner can still hold.`,
+      },
+      { push: false }
+    );
+    if (racket.ownerPlayerId) {
+      void notifyDon(racket.ownerPlayerId, {
+        nl: `${attackerName} betwist je ${donBusinessLabel(racket.businessKey, true)}. Houd de zaak op Don voordat de tijd om is.`,
+        en: `${attackerName} is contesting your ${donBusinessLabel(racket.businessKey, false)}. Hold it on Don before time runs out.`,
+      });
+    }
     return { contestUntil: until.toISOString() };
   },
 
@@ -628,10 +688,25 @@ export const donService = {
     if (!racket.contestPlayerId) throw new Error('DON_NO_CONTEST');
     const def = businessDef(racket.businessKey);
     await requireIntimidation(playerId, def.minIntimidation);
+    const challengerId = racket.contestPlayerId;
     await prisma.donRacket.update({
       where: { id: racketId },
       data: { contestPlayerId: null, contestUntil: null },
     });
+    void notifyDon(
+      playerId,
+      {
+        nl: `Je hebt je ${donBusinessLabel(racket.businessKey, true)} gehouden.`,
+        en: `You held your ${donBusinessLabel(racket.businessKey, false)}.`,
+      },
+      { push: false }
+    );
+    if (challengerId) {
+      void notifyDon(challengerId, {
+        nl: `De eigenaar hield de ${donBusinessLabel(racket.businessKey, true)}. Je contest is afgewezen.`,
+        en: `The owner held the ${donBusinessLabel(racket.businessKey, false)}. Your contest failed.`,
+      });
+    }
     return { held: true };
   },
 
@@ -665,6 +740,14 @@ export const donService = {
         data: { money: { decrement: amount } },
       }),
     ]);
+    void notifyDon(
+      playerId,
+      {
+        nl: `Je leende ${formatDonCash(amount, true)} aan een NPC. Opeisbaar ${formatDonCash(dueAmount(amount, npc.interestBps), true)}.`,
+        en: `You lent ${formatDonCash(amount, false)} to an NPC. Due ${formatDonCash(dueAmount(amount, npc.interestBps), false)}.`,
+      },
+      { push: false }
+    );
     return { loanId: loan.id, dueAt: dueAt.toISOString(), dueAmount: dueAmount(amount, npc.interestBps) };
   },
 
@@ -699,6 +782,22 @@ export const donService = {
         data: { money: { decrement: amount } },
       }),
     ]);
+    const lender = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { username: true },
+    });
+    void notifyDon(
+      playerId,
+      {
+        nl: `Lening van ${formatDonCash(amount, true)} aangeboden.`,
+        en: `Loan offer of ${formatDonCash(amount, false)} sent.`,
+      },
+      { push: false }
+    );
+    void notifyDon(borrowerId, {
+      nl: `${lender?.username || 'Iemand'} biedt je een Don-lening van ${formatDonCash(amount, true)}. Accepteer of laat verlopen op Don.`,
+      en: `${lender?.username || 'Someone'} offered you a Don loan of ${formatDonCash(amount, false)}. Accept or let it expire on Don.`,
+    });
     return { loanId: loan.id, dueAt: dueAt.toISOString() };
   },
 
@@ -715,6 +814,18 @@ export const donService = {
         data: { money: { increment: loan.principal } },
         select: { money: true },
       });
+    });
+    void notifyDon(
+      playerId,
+      {
+        nl: `Je accepteerde een Don-lening van ${formatDonCash(loan.principal, true)}.`,
+        en: `You accepted a Don loan of ${formatDonCash(loan.principal, false)}.`,
+      },
+      { push: false }
+    );
+    void notifyDon(loan.lenderId, {
+      nl: `Je Don-lening van ${formatDonCash(loan.principal, true)} is geaccepteerd.`,
+      en: `Your Don loan of ${formatDonCash(loan.principal, false)} was accepted.`,
     });
     return { newMoney: updated.money };
   },
@@ -739,6 +850,18 @@ export const donService = {
       });
       await tx.donLoan.update({ where: { id: loanId }, data: { status: 'repaid' } });
     });
+    void notifyDon(
+      playerId,
+      {
+        nl: `Je loste ${formatDonCash(amount, true)} af op een Don-lening.`,
+        en: `You repaid ${formatDonCash(amount, false)} on a Don loan.`,
+      },
+      { push: false }
+    );
+    void notifyDon(loan.lenderId, {
+      nl: `Een lener betaalde ${formatDonCash(amount, true)} terug op je Don-lening.`,
+      en: `A borrower repaid ${formatDonCash(amount, false)} on your Don loan.`,
+    });
     return { repaid: amount };
   },
 
@@ -760,6 +883,14 @@ export const donService = {
         prisma.donLoan.update({ where: { id: loanId }, data: { status: 'collected' } }),
       ]);
       await policeService.increaseWantedLevel(playerId, 6);
+      void notifyDon(
+        playerId,
+        {
+          nl: `Je inde ${formatDonCash(take, true)} op een NPC-default.`,
+          en: `You collected ${formatDonCash(take, false)} on an NPC default.`,
+        },
+        { push: false }
+      );
       return { collected: take, fromNpc: true };
     }
     if (!loan.borrowerPlayerId) throw new Error('DON_LOAN_NOT_FOUND');
@@ -782,6 +913,18 @@ export const donService = {
       await tx.donLoan.update({ where: { id: loanId }, data: { status: 'collected' } });
     });
     await policeService.increaseWantedLevel(loan.borrowerPlayerId, 8);
+    void notifyDon(
+      playerId,
+      {
+        nl: `Je inde ${formatDonCash(seized, true)} op een wanbetaling.`,
+        en: `You collected ${formatDonCash(seized, false)} on a default.`,
+      },
+      { push: false }
+    );
+    void notifyDon(loan.borrowerPlayerId, {
+      nl: `De shark inde ${formatDonCash(seized, true)} op je Don-lening. Wanted ging omhoog.`,
+      en: `The shark collected ${formatDonCash(seized, false)} on your Don loan. Wanted went up.`,
+    });
     return { collected: seized, fromNpc: false };
   },
 
@@ -813,11 +956,26 @@ export const donService = {
         },
       }),
     ]);
+    const replaced = active && row.patronPlayerId && row.patronPlayerId !== playerId;
     void worldEventService.createEvent(
       'don.official_bribed',
-      { office, countryCode: player.currentCountry, cost, replaced: active && row.patronPlayerId !== playerId },
+      { office, countryCode: player.currentCountry, cost, replaced: Boolean(replaced) },
       playerId
     );
+    void notifyDon(
+      playerId,
+      {
+        nl: `Je kocht de ${donOfficeLabel(office, true)} voor ${formatDonCash(cost, true)}.`,
+        en: `You bought the ${donOfficeLabel(office, false)} for ${formatDonCash(cost, false)}.`,
+      },
+      { push: false }
+    );
+    if (replaced) {
+      void notifyDon(row.patronPlayerId, {
+        nl: `Iemand overbood je als ${donOfficeLabel(office, true)} in ${player.currentCountry}.`,
+        en: `Someone outbid you as ${donOfficeLabel(office, false)} in ${player.currentCountry}.`,
+      });
+    }
     return { office, cost, paidUntil: paidUntil.toISOString() };
   },
 
@@ -884,6 +1042,14 @@ export const donService = {
         greedy: opts.greedy,
       },
     });
+    void notifyDon(
+      playerId,
+      {
+        nl: `Contract aangenomen. Inzet ${formatDonCash(bidCost, true)}, payout ${formatDonCash(payout, true)}.`,
+        en: `Contract bid accepted. Stake ${formatDonCash(bidCost, false)}, payout ${formatDonCash(payout, false)}.`,
+      },
+      { push: false }
+    );
     return { endsAt: endsAt.toISOString(), payout, bidCost };
   },
 
@@ -939,6 +1105,10 @@ export const donService = {
       const defaults = Math.random() * 100 < cfg.loanNpcDefaultPercent;
       if (defaults) {
         await prisma.donLoan.update({ where: { id: loan.id }, data: { status: 'defaulted' } });
+        void notifyDon(loan.lenderId, {
+          nl: 'Een NPC-lening is in default. Innen op Don.',
+          en: 'An NPC loan defaulted. Collect it on Don.',
+        });
       } else {
         const amount = dueAmount(loan.principal, loan.interestBps);
         await prisma.$transaction([
@@ -948,6 +1118,10 @@ export const donService = {
           }),
           prisma.donLoan.update({ where: { id: loan.id }, data: { status: 'repaid' } }),
         ]);
+        void notifyDon(loan.lenderId, {
+          nl: `Een NPC betaalde ${formatDonCash(amount, true)} terug op je Don-lening.`,
+          en: `An NPC repaid ${formatDonCash(amount, false)} on your Don loan.`,
+        });
       }
       loans += 1;
     }
@@ -963,6 +1137,16 @@ export const donService = {
         }),
         prisma.donLoan.update({ where: { id: loan.id }, data: { status: 'expired' } }),
       ]);
+      void notifyDon(loan.lenderId, {
+        nl: `Je Don-leningaanbod verliep. ${formatDonCash(loan.principal, true)} is terug op je cash.`,
+        en: `Your Don loan offer expired. ${formatDonCash(loan.principal, false)} is back in your cash.`,
+      });
+      if (loan.borrowerPlayerId) {
+        void notifyDon(loan.borrowerPlayerId, {
+          nl: 'Een Don-leningaanbod aan jou is verlopen.',
+          en: 'A Don loan offer to you expired.',
+        });
+      }
       loans += 1;
     }
 
@@ -971,6 +1155,16 @@ export const donService = {
     });
     for (const loan of dueP2p) {
       await prisma.donLoan.update({ where: { id: loan.id }, data: { status: 'defaulted' } });
+      void notifyDon(loan.lenderId, {
+        nl: 'Een spelerlening is in default. Innen op Don.',
+        en: 'A player loan defaulted. Collect it on Don.',
+      });
+      if (loan.borrowerPlayerId) {
+        void notifyDon(loan.borrowerPlayerId, {
+          nl: 'Je Don-lening is in default. De shark kan innen.',
+          en: 'Your Don loan defaulted. The shark can collect.',
+        });
+      }
       loans += 1;
     }
 
@@ -1009,7 +1203,44 @@ export const donService = {
         });
       }
       await prisma.donContract.update({ where: { id: row.id }, data: { status: 'completed' } });
+      void notifyDon(row.bidderPlayerId, {
+        nl: `Je stadscontract is klaar. Payout ${formatDonCash(payout, true)} staat op ${row.crewId ? 'de crew-bank of je cash' : 'je cash'}.`,
+        en: `Your city contract finished. Payout ${formatDonCash(payout, false)} went to ${row.crewId ? 'the crew bank or your cash' : 'your cash'}.`,
+      });
       contracts += 1;
+    }
+
+    const readyFrom = new Date(now.getTime() - (cfg.collectCooldownSeconds + 12 * 60) * 1000);
+    const readyUntil = new Date(now.getTime() - cfg.collectCooldownSeconds * 1000);
+    const readyRackets = await prisma.donRacket.findMany({
+      where: {
+        ownerPlayerId: { not: null },
+        lastCollectAt: { gte: readyFrom, lte: readyUntil },
+      },
+      select: { id: true, ownerPlayerId: true, businessKey: true, lastCollectAt: true },
+    });
+    for (const racket of readyRackets) {
+      if (!racket.ownerPlayerId || !racket.lastCollectAt) continue;
+      const already = await prisma.worldEvent.findFirst({
+        where: {
+          playerId: racket.ownerPlayerId,
+          eventKey: 'don.collect_ready',
+          createdAt: { gte: racket.lastCollectAt },
+        },
+        select: { id: true },
+      });
+      if (already) continue;
+      void notifyDon(
+        racket.ownerPlayerId,
+        {
+          nl: `Je ${donBusinessLabel(racket.businessKey, true)} is klaar om te innen.`,
+          en: `Your ${donBusinessLabel(racket.businessKey, false)} is ready to collect.`,
+        },
+        {
+          eventKey: 'don.collect_ready',
+          params: { racketId: racket.id, businessKey: racket.businessKey },
+        }
+      );
     }
 
     for (const countryCode of COUNTRY_IDS.slice(0, 8)) {

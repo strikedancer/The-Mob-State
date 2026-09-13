@@ -22,6 +22,7 @@ import { ensureDeepEconomySchema } from './startup/ensureDeepEconomySchema';
 import { ensureNightclubPlayerSupplySchema } from './startup/ensureNightclubPlayerSupplySchema';
 import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
+import { ensureSiteVisitorsSchema } from './startup/ensureSiteVisitorsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
 import { playerStartService } from './services/playerStartService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
@@ -68,6 +69,7 @@ async function startServer() {
   await ensureNightclubPlayerSupplySchema();
   await ensureVipPrestigeSchema();
   await ensureDailyGoalsSchema();
+  await ensureSiteVisitorsSchema();
   await ensureCrewRecruitingSchema();
   await ensureCrewTradeStorageSchema();
   try {

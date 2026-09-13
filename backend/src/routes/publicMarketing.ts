@@ -3,6 +3,7 @@ import { createRateLimiter } from '../middleware/rateLimit';
 import { leaderboardService } from '../services/leaderboardService';
 import { getLeaderboard as getTerritoryCrewLeaderboard } from '../services/territoryService';
 import { getTerritoryDramaSnapshot } from '../services/territoryMetaService';
+import { siteVisitorService } from '../services/siteVisitorService';
 
 const router = Router();
 
@@ -20,7 +21,8 @@ const publicHomeLimiter = createRateLimiter({
  * GET /public/home
  * Read-only marketing payload (no auth). Safe fields only.
  */
-router.get('/home', publicHomeLimiter, async (_req: Request, res: Response) => {
+router.get('/home', publicHomeLimiter, async (req: Request, res: Response) => {
+  void siteVisitorService.recordVisit(req);
   try {
     const playerLimit = 10;
     const crewLimit = 10;

@@ -1358,6 +1358,31 @@ export const adminService = {
     return response.json();
   },
 
+  async getVisitors(limit = 100): Promise<{
+    totalHits: number;
+    uniqueIps: number;
+    visitors: Array<{
+      ip: string;
+      hits: number;
+      firstSeen: string;
+      lastSeen: string;
+    }>;
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/visitors?limit=${encodeURIComponent(String(limit))}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    await ensureOk(response, "Failed to fetch visitors");
+
+    return response.json();
+  },
+
   async getPlayers(page = 1, limit = 20, search = "") {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({

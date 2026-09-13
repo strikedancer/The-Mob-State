@@ -3301,6 +3301,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get donSqueezeHeld => 'The shop paid extra — for now.';
 
   @override
+  String get donToastClaimed => 'Shop claimed.';
+
+  @override
+  String get donToastCollected => 'Tribute collected.';
+
+  @override
+  String get donToastContested => 'Contest started. The owner can still hold.';
+
+  @override
+  String get donToastHeld => 'You held the shop.';
+
+  @override
+  String get donToastTributeCash => 'Tribute now goes to your cash.';
+
+  @override
+  String get donToastTributeCrew => 'Tribute now goes to the crew bank.';
+
+  @override
+  String get donToastLoanNpc => 'Loan placed with the NPC.';
+
+  @override
+  String get donToastLoanOffered => 'Loan offer sent.';
+
+  @override
+  String get donToastLoanAccepted => 'Loan accepted.';
+
+  @override
+  String get donToastLoanRepaid => 'Loan repaid.';
+
+  @override
+  String get donToastLoanCollected => 'You collected on the default.';
+
+  @override
+  String get donToastBribed => 'The office is yours — for now.';
+
+  @override
+  String get donToastBid => 'Contract bid accepted.';
+
+  @override
+  String get evStreamDonClaimed => 'Claimed a Don shop';
+
+  @override
+  String evStreamDonCollected(String amount) {
+    return 'Collected Don tribute: $amount';
+  }
+
+  @override
+  String get evStreamDonFled => 'Don shop fled after a squeeze';
+
+  @override
+  String get evStreamDonContested => 'Started a Don contest';
+
+  @override
+  String get evStreamDonSeized => 'Took over a Don shop';
+
+  @override
+  String get evStreamDonBribed => 'Bribed a Don official';
+
+  @override
+  String get evStreamDonCollectReady => 'Don tribute is ready to collect';
+
+  @override
   String get pageInfoTooltip => 'How this page works';
 
   @override
@@ -17249,7 +17311,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Open Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. Defaults cost wanted and let you collect part of the debt — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.';
+      'Contest, overbid, loan and contract results also land in your inbox with a push when you are away. Each action on the hub shows a clear toast.\nOpen Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. Defaults cost wanted and let you collect part of the debt — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.';
 
   @override
   String get helpTopicDonTips =>

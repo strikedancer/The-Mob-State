@@ -61,7 +61,7 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 - Don -> Crimes (weapon intimidation gate; commissioner wanted mult on fail bump)
 - Don -> School (engineering gate on large contracts)
 - Don -> Territory (`regionKey` optional; **no** contest-reuse)
-- Don -> Dashboard (Empire section), Notifications/world events (`don.*`), Balance
+- Don -> Dashboard (Empire section), Notifications/world events (`don.*`), inbox + push, Balance
 
 ## Must Preserve
 - Street `protection_racket` crime must not also grant persistent shops.
@@ -69,6 +69,7 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 - Commissioner is a light wanted multiplier, not arrest immunity.
 - Crew-bank tribute requires role + (for capo) matching country; overflow falls back to cash.
 - Clear success/failure feedback and refresh after every Don action.
+- Away-from-hub Don results (contest, seize, abandon, loan offer/default/repay, official overbid, contract payout, collect-ready) send an inbox row plus push. Self-actions still show a specific toast; they may also write inbox without push.
 
 ## QA Checklist
 1. Empire → Don: claim, collect, squeeze, rival contest + hold, tribute toggle cash vs crew-bank.
@@ -80,3 +81,4 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 7. Help topic `don` NL/EN; Don hub does not own war-theater / races / police / Clearing House.
 8. Empire → Don looks noir/gold: hero photo, racket/NPC/official/contract photo cards in a 3–4 column grid on desktop (2 on tablet, 1 on narrow), gold CTAs; images load on web (`/images/don/*`) with icon fallback. Scroll tab content: the hero leaves the viewport; the tab strip stays.
 9. Owned rackets show a live collect countdown; Collect is disabled until ready. Contest, squeeze, office, loan and contract remaining time also tick on the card.
+10. Claim/collect/squeeze/contest/hold/loan/bribe/bid each show a specific toast, not a generic “Don” or squeeze line. A contested owner gets inbox + push.

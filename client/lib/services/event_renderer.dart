@@ -323,6 +323,20 @@ class EventRenderer {
         return l10n.evStreamTest(
           params['message']?.toString() ?? '—',
         );
+      case 'don.racket_claimed':
+        return l10n.evStreamDonClaimed;
+      case 'don.racket_collected':
+        return l10n.evStreamDonCollected('${params['amount'] ?? 0}');
+      case 'don.racket_fled':
+        return l10n.evStreamDonFled;
+      case 'don.racket_contested':
+        return l10n.evStreamDonContested;
+      case 'don.racket_seized':
+        return l10n.evStreamDonSeized;
+      case 'don.official_bribed':
+        return l10n.evStreamDonBribed;
+      case 'don.collect_ready':
+        return l10n.evStreamDonCollectReady;
 
       default:
         return l10n.evStreamUnknownKey(eventKey);

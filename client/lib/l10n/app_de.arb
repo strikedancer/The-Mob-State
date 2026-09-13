@@ -12092,5 +12092,32 @@
   "crewUiActionBrowseOpenCrews": "Durchsuchen Sie offene Crews",
   "crewUiActionBrowseOpenCrewsShort": "Offene Mannschaften",
   "crewUiJoinRookiesHint": "Die Rookies akzeptieren jeden – kommen Sie aus den Crews.",
-  "landingFairPlay": "VIP verkürzt Wartezeiten. Es werden keine Gewinne gekauft."
+  "landingFairPlay": "VIP verkürzt Wartezeiten. Es werden keine Gewinne gekauft.",
+  "donToastClaimed": "Shop beansprucht.",
+  "donToastCollected": "Tribut gesammelt.",
+  "donToastContested": "Der Wettbewerb hat begonnen. Der Besitzer kann noch halten.",
+  "donToastHeld": "Du hast den Laden gehalten.",
+  "donToastTributeCash": "Der Tribut geht jetzt an Ihr Geld.",
+  "donToastTributeCrew": "Der Tribut geht nun an die Crew-Bank.",
+  "donToastLoanNpc": "Beim NPC platziertes Darlehen.",
+  "donToastLoanOffered": "Kreditangebot gesendet.",
+  "donToastLoanAccepted": "Kredit angenommen.",
+  "donToastLoanRepaid": "Kredit zurückgezahlt.",
+  "donToastLoanCollected": "Sie haben standardmäßig gesammelt.",
+  "donToastBribed": "Das Büro gehört Ihnen – vorerst.",
+  "donToastBid": "Vertragsangebot angenommen.",
+  "evStreamDonClaimed": "Habe einen Don-Laden beansprucht",
+  "evStreamDonCollected": "Gesammelter Don-Tribut: {amount}",
+  "@evStreamDonCollected": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDonFled": "Don Shop floh nach einer Auseinandersetzung",
+  "evStreamDonContested": "Habe einen Don-Wettbewerb gestartet",
+  "evStreamDonSeized": "Übernahm einen Don-Laden",
+  "evStreamDonBribed": "Einen Don-Beamten bestochen",
+  "evStreamDonCollectReady": "Don Tribute ist zum Abholen bereit"
 }

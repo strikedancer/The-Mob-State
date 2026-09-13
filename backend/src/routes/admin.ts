@@ -1270,14 +1270,45 @@ router.get('/stats', async (_req, res) => {
       }),
     ]);
 
+    let visitorHits = 0;
+    let visitorUniqueIps = 0;
+    try {
+      const visitors = await (await import('../services/siteVisitorService')).siteVisitorService.getSummary();
+      visitorHits = visitors.totalHits;
+      visitorUniqueIps = visitors.uniqueIps;
+    } catch (visitorError) {
+      console.error('Admin visitor summary error:', visitorError);
+    }
+
     res.json({
       totalPlayers,
       activePlayers,
       bannedPlayers,
+      visitorHits,
+      visitorUniqueIps,
     });
   } catch (error) {
     console.error('Admin stats error:', error);
     res.status(500).json({ error: 'Failed to fetch stats' });
+  }
+});
+
+router.get('/visitors', async (req, res) => {
+  try {
+    const { siteVisitorService } = await import('../services/siteVisitorService');
+    const limit = Number.parseInt(String(req.query.limit || '100'), 10);
+    const [summary, rows] = await Promise.all([
+      siteVisitorService.getSummary(),
+      siteVisitorService.getBreakdown(limit),
+    ]);
+    return res.json({
+      totalHits: summary.totalHits,
+      uniqueIps: summary.uniqueIps,
+      visitors: rows,
+    });
+  } catch (error) {
+    console.error('Admin visitors error:', error);
+    return res.status(500).json({ error: 'Failed to fetch visitors' });
   }
 });
 

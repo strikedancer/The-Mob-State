@@ -3330,6 +3330,70 @@ class AppLocalizationsIt extends AppLocalizations {
   String get donSqueezeHeld => 'Il negozio ha pagato un extra, per ora.';
 
   @override
+  String get donToastClaimed => 'Negozio rivendicato.';
+
+  @override
+  String get donToastCollected => 'Omaggio raccolto.';
+
+  @override
+  String get donToastContested =>
+      'Il concorso è iniziato. Il proprietario può ancora trattenere.';
+
+  @override
+  String get donToastHeld => 'Hai tenuto il negozio.';
+
+  @override
+  String get donToastTributeCash => 'Il tributo ora va ai tuoi soldi.';
+
+  @override
+  String get donToastTributeCrew => 'Il tributo ora va alla banca dell\'Crew.';
+
+  @override
+  String get donToastLoanNpc => 'Prestito collocato presso l\'NPC.';
+
+  @override
+  String get donToastLoanOffered => 'Offerta di prestito inviata.';
+
+  @override
+  String get donToastLoanAccepted => 'Prestito accettato.';
+
+  @override
+  String get donToastLoanRepaid => 'Prestito rimborsato.';
+
+  @override
+  String get donToastLoanCollected => 'Hai raccolto il valore predefinito.';
+
+  @override
+  String get donToastBribed => 'L\'ufficio è tuo, per ora.';
+
+  @override
+  String get donToastBid => 'Offerta contrattuale accettata.';
+
+  @override
+  String get evStreamDonClaimed => 'Ha rivendicato un negozio Don';
+
+  @override
+  String evStreamDonCollected(String amount) {
+    return 'Omaggio a Don raccolto: $amount';
+  }
+
+  @override
+  String get evStreamDonFled => 'Don Shop è fuggito dopo una stretta';
+
+  @override
+  String get evStreamDonContested => 'Ho avviato un concorso Don';
+
+  @override
+  String get evStreamDonSeized => 'Ha rilevato un negozio Don';
+
+  @override
+  String get evStreamDonBribed => 'Ho corrotto un funzionario del Don';
+
+  @override
+  String get evStreamDonCollectReady =>
+      'Il tributo a Don è pronto per essere raccolto';
+
+  @override
   String get pageInfoTooltip => 'Come funziona questa pagina';
 
   @override

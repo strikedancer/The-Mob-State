@@ -13,7 +13,7 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 - Landing hero: korte first-hour hook (`landingHeroSubtitle`) plus fair-play regel (`landingFairPlay`: VIP verkort wachttijden, koopt geen winst).
 
 ## Backend
-- `backend/src/routes/publicMarketing.ts` — `GET /public/home` (read-only, geen auth), rate limit.
+- `backend/src/routes/publicMarketing.ts` — `GET /public/home` (read-only, geen auth), rate limit. Elke hit telt een bezoek (`site_visitors`: totaal hits + unieke IP). Admin dashboard toont die cijfers plus een IP-tabel.
 - `backend/src/app.ts` — router op `/public`; SPA-fallback: GET naar onbekende niet-API-paden levert `client/build/web/index.html` wanneer aanwezig (deep links). Gebruik `app.use` met GET-gate i.p.v. `app.get('*', …)` (Express 5 / path-to-regexp v8).
 
 ## i18n

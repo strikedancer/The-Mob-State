@@ -3319,6 +3319,69 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donSqueezeHeld => 'De zaak betaalt extra — voorlopig.';
 
   @override
+  String get donToastClaimed => 'Zaak geclaimd.';
+
+  @override
+  String get donToastCollected => 'Tribute geïnd.';
+
+  @override
+  String get donToastContested =>
+      'Contest gestart. De eigenaar kan nog houden.';
+
+  @override
+  String get donToastHeld => 'Je hebt de zaak gehouden.';
+
+  @override
+  String get donToastTributeCash => 'Tribute gaat nu naar je cash.';
+
+  @override
+  String get donToastTributeCrew => 'Tribute gaat nu naar de crew-bank.';
+
+  @override
+  String get donToastLoanNpc => 'Lening bij de NPC geplaatst.';
+
+  @override
+  String get donToastLoanOffered => 'Leningaanbod verstuurd.';
+
+  @override
+  String get donToastLoanAccepted => 'Lening geaccepteerd.';
+
+  @override
+  String get donToastLoanRepaid => 'Lening afgelost.';
+
+  @override
+  String get donToastLoanCollected => 'Je hebt de wanbetaling geïnd.';
+
+  @override
+  String get donToastBribed => 'Het ambt is van jou — voorlopig.';
+
+  @override
+  String get donToastBid => 'Contractbod geaccepteerd.';
+
+  @override
+  String get evStreamDonClaimed => 'Don-zaak geclaimd';
+
+  @override
+  String evStreamDonCollected(String amount) {
+    return 'Don-tribute geïnd: $amount';
+  }
+
+  @override
+  String get evStreamDonFled => 'Don-zaak gevlucht na squeeze';
+
+  @override
+  String get evStreamDonContested => 'Don-contest gestart';
+
+  @override
+  String get evStreamDonSeized => 'Don-zaak overgenomen';
+
+  @override
+  String get evStreamDonBribed => 'Don-ambt omgekocht';
+
+  @override
+  String get evStreamDonCollectReady => 'Don-tribute is klaar om te innen';
+
+  @override
   String get pageInfoTooltip => 'Hoe deze pagina werkt';
 
   @override
@@ -17291,7 +17354,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Open Don onder Empire vanaf rang 7. Je handelt altijd in het land waar je staat.\nRackets zijn NPC-zaken. Claim ze met een wapen dat genoeg intimidatie heeft en innen daarna handmatig na de cooldown. Laat je een zaak ongeveer drie dagen staan, dan wordt hij weer vrij.\nUitknijpen verhoogt de volgende tribute maar ook wanted, en de zaak kan afhaken. Een rivaal in hetzelfde land kan een korte contest starten; de eigenaar kan vasthouden.\nTribute gaat naar cash tenzij je leader, co-leider of capo (in het capo-land) bent en naar de crew-bank stuurt.\nLeningen: jij bent de shark. Leen aan NPC\'s of bied escrow aan een andere speler. Default kost wanted en laat je een deel innen — nooit een full wipe.\nInvloed: koop de rechter, commissaris of wethouder voor 24 uur. Rivalen kunnen overbieden. De rechter geeft alleen een kleine begrensde beroepbonus; per-zaak court-omkoping blijft. De commissaris verlaagt wanted bij mislukte crimes. De wethouder ontgrendelt of versterkt grote contracten.\nStadscontracten betalen legaal na een bod (cash of crew-bank). Off-books extra alleen met rackets in dat land. Hebberige biedingen betalen meer en geven heat. Grote klussen kunnen engineering-school vereisen.\nStraatmisdaad protection racket blijft een eenmalige shake en geeft deze zaken niet extra.';
+      'Contest, overbieding, leningen en contracten komen ook in je inbox, met een push als je weg bent. Elke actie op de hub toont een duidelijke melding.\nOpen Don onder Empire vanaf rang 7. Je handelt altijd in het land waar je staat.\nRackets zijn NPC-zaken. Claim ze met een wapen dat genoeg intimidatie heeft en innen daarna handmatig na de cooldown. Laat je een zaak ongeveer drie dagen staan, dan wordt hij weer vrij.\nUitknijpen verhoogt de volgende tribute maar ook wanted, en de zaak kan afhaken. Een rivaal in hetzelfde land kan een korte contest starten; de eigenaar kan vasthouden.\nTribute gaat naar cash tenzij je leader, co-leider of capo (in het capo-land) bent en naar de crew-bank stuurt.\nLeningen: jij bent de shark. Leen aan NPC\'s of bied escrow aan een andere speler. Default kost wanted en laat je een deel innen — nooit een full wipe.\nInvloed: koop de rechter, commissaris of wethouder voor 24 uur. Rivalen kunnen overbieden. De rechter geeft alleen een kleine begrensde beroepbonus; per-zaak court-omkoping blijft. De commissaris verlaagt wanted bij mislukte crimes. De wethouder ontgrendelt of versterkt grote contracten.\nStadscontracten betalen legaal na een bod (cash of crew-bank). Off-books extra alleen met rackets in dat land. Hebberige biedingen betalen meer en geven heat. Grote klussen kunnen engineering-school vereisen.\nStraatmisdaad protection racket blijft een eenmalige shake en geeft deze zaken niet extra.';
 
   @override
   String get helpTopicDonTips =>

@@ -12092,5 +12092,32 @@
   "crewUiActionBrowseOpenCrews": "Explorar equipos abiertos",
   "crewUiActionBrowseOpenCrewsShort": "Tripulaciones abiertas",
   "crewUiJoinRookiesHint": "The Rookies acepta a todas - únete a Crews.",
-  "landingFairPlay": "VIP acorta las esperas. No compra victorias."
+  "landingFairPlay": "VIP acorta las esperas. No compra victorias.",
+  "donToastClaimed": "Tienda reclamada.",
+  "donToastCollected": "Homenaje recogido.",
+  "donToastContested": "Comenzó el concurso. El dueño todavía puede aguantar.",
+  "donToastHeld": "Tú ocupaste la tienda.",
+  "donToastTributeCash": "El tributo ahora va a su dinero en efectivo.",
+  "donToastTributeCrew": "El tributo ahora va al banco de la Crew.",
+  "donToastLoanNpc": "Préstamo colocado con el NPC.",
+  "donToastLoanOffered": "Oferta de préstamo enviada.",
+  "donToastLoanAccepted": "Préstamo aceptado.",
+  "donToastLoanRepaid": "Préstamo reembolsado.",
+  "donToastLoanCollected": "Usted cobró por defecto.",
+  "donToastBribed": "La oficina es suya... por ahora.",
+  "donToastBid": "Oferta de contrato aceptada.",
+  "evStreamDonClaimed": "Reclamó una tienda Don",
+  "evStreamDonCollected": "Tributo a Don recopilado: {amount}",
+  "@evStreamDonCollected": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamDonFled": "Don shop huyó después de un apretón",
+  "evStreamDonContested": "Comenzó un concurso de Don",
+  "evStreamDonSeized": "Se hizo cargo de una tienda Don",
+  "evStreamDonBribed": "Sobornó a una oficial de Don",
+  "evStreamDonCollectReady": "Don homenaje está listo para recoger."
 }

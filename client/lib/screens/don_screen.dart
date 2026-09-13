@@ -127,49 +127,68 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     }
   }
 
-  Future<void> _post(String path, [Map<String, dynamic> body = const {}]) async {
-    if (_busy) return;
-    setState(() => _busy = true);
-    try {
-      final response = await _api.post(path, body);
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      if (!mounted) return;
-      if (response.statusCode != 200) {
-        showActionResultToast(
-          context,
-          title: _errorFromPayload(data),
-          success: false,
-        );
-        return;
-      }
-      final fled = data['result'] is Map && (data['result']['fled'] == true);
-      showActionResultToast(
-        context,
-        title: fled
-            ? AppLocalizations.of(context)!.donSqueezeFled
-            : AppLocalizations.of(context)!.donSqueezeHeld,
-        success: !fled,
-      );
-      await _load();
-    } catch (_) {
-      if (!mounted) return;
-      showActionResultToast(
-        context,
-        title: AppLocalizations.of(context)!.donErrorGeneric,
-        success: false,
-      );
-    } finally {
-      if (mounted) setState(() => _busy = false);
+  String _successTitle(AppLocalizations l10n, String event, Map result) {
+    switch (event) {
+      case 'don.racket_claimed':
+        return l10n.donToastClaimed;
+      case 'don.racket_collected':
+        return l10n.donToastCollected;
+      case 'don.racket_squeezed':
+        return result['fled'] == true ? l10n.donSqueezeFled : l10n.donSqueezeHeld;
+      case 'don.tribute_set':
+        return result['tributeToCrew'] == true
+            ? l10n.donToastTributeCrew
+            : l10n.donToastTributeCash;
+      case 'don.racket_contested':
+        return l10n.donToastContested;
+      case 'don.racket_held':
+        return l10n.donToastHeld;
+      case 'don.loan_npc':
+        return l10n.donToastLoanNpc;
+      case 'don.loan_offered':
+        return l10n.donToastLoanOffered;
+      case 'don.loan_accepted':
+        return l10n.donToastLoanAccepted;
+      case 'don.loan_repaid':
+        return l10n.donToastLoanRepaid;
+      case 'don.loan_collected':
+        return l10n.donToastLoanCollected;
+      case 'don.official_bribed':
+        return l10n.donToastBribed;
+      case 'don.contract_bid':
+        return l10n.donToastBid;
+      default:
+        return l10n.donMenuLabel;
     }
   }
 
-  Future<void> _postQuietSuccess(String path, [Map<String, dynamic> body = const {}]) async {
+  String? _successMoney(Map result) {
+    final amount = result['amount'] ??
+        result['collected'] ??
+        result['repaid'] ??
+        result['payout'] ??
+        result['cost'] ??
+        result['bidCost'] ??
+        result['dueAmount'];
+    return amount is num ? formatCurrency(amount) : null;
+  }
+
+  Future<void> _post(String path, [Map<String, dynamic> body = const {}]) {
+    return _postDon(path, body);
+  }
+
+  Future<void> _postQuietSuccess(String path, [Map<String, dynamic> body = const {}]) {
+    return _postDon(path, body);
+  }
+
+  Future<void> _postDon(String path, [Map<String, dynamic> body = const {}]) async {
     if (_busy) return;
     setState(() => _busy = true);
     try {
       final response = await _api.post(path, body);
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       if (response.statusCode != 200) {
         showActionResultToast(
           context,
@@ -178,12 +197,15 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
         );
         return;
       }
-      final result = data['result'] is Map ? data['result'] as Map : const {};
-      final amount = result['amount'] ?? result['collected'] ?? result['repaid'] ?? result['payout'];
+      final result = data['result'] is Map
+          ? Map<String, dynamic>.from(data['result'] as Map)
+          : <String, dynamic>{};
+      final fled = result['fled'] == true;
       showActionResultToast(
         context,
-        title: AppLocalizations.of(context)!.donMenuLabel,
-        moneyDelta: amount is num ? formatCurrency(amount) : null,
+        title: _successTitle(l10n, data['event']?.toString() ?? '', result),
+        moneyDelta: _successMoney(result),
+        success: !fled,
       );
       await _load();
     } catch (_) {

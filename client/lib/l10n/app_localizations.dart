@@ -5879,6 +5879,126 @@ abstract class AppLocalizations {
   /// **'The shop paid extra — for now.'**
   String get donSqueezeHeld;
 
+  /// No description provided for @donToastClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop claimed.'**
+  String get donToastClaimed;
+
+  /// No description provided for @donToastCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'Tribute collected.'**
+  String get donToastCollected;
+
+  /// No description provided for @donToastContested.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest started. The owner can still hold.'**
+  String get donToastContested;
+
+  /// No description provided for @donToastHeld.
+  ///
+  /// In en, this message translates to:
+  /// **'You held the shop.'**
+  String get donToastHeld;
+
+  /// No description provided for @donToastTributeCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Tribute now goes to your cash.'**
+  String get donToastTributeCash;
+
+  /// No description provided for @donToastTributeCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Tribute now goes to the crew bank.'**
+  String get donToastTributeCrew;
+
+  /// No description provided for @donToastLoanNpc.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan placed with the NPC.'**
+  String get donToastLoanNpc;
+
+  /// No description provided for @donToastLoanOffered.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan offer sent.'**
+  String get donToastLoanOffered;
+
+  /// No description provided for @donToastLoanAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan accepted.'**
+  String get donToastLoanAccepted;
+
+  /// No description provided for @donToastLoanRepaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan repaid.'**
+  String get donToastLoanRepaid;
+
+  /// No description provided for @donToastLoanCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'You collected on the default.'**
+  String get donToastLoanCollected;
+
+  /// No description provided for @donToastBribed.
+  ///
+  /// In en, this message translates to:
+  /// **'The office is yours — for now.'**
+  String get donToastBribed;
+
+  /// No description provided for @donToastBid.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract bid accepted.'**
+  String get donToastBid;
+
+  /// No description provided for @evStreamDonClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed a Don shop'**
+  String get evStreamDonClaimed;
+
+  /// No description provided for @evStreamDonCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected Don tribute: {amount}'**
+  String evStreamDonCollected(String amount);
+
+  /// No description provided for @evStreamDonFled.
+  ///
+  /// In en, this message translates to:
+  /// **'Don shop fled after a squeeze'**
+  String get evStreamDonFled;
+
+  /// No description provided for @evStreamDonContested.
+  ///
+  /// In en, this message translates to:
+  /// **'Started a Don contest'**
+  String get evStreamDonContested;
+
+  /// No description provided for @evStreamDonSeized.
+  ///
+  /// In en, this message translates to:
+  /// **'Took over a Don shop'**
+  String get evStreamDonSeized;
+
+  /// No description provided for @evStreamDonBribed.
+  ///
+  /// In en, this message translates to:
+  /// **'Bribed a Don official'**
+  String get evStreamDonBribed;
+
+  /// No description provided for @evStreamDonCollectReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Don tribute is ready to collect'**
+  String get evStreamDonCollectReady;
+
   /// No description provided for @pageInfoTooltip.
   ///
   /// In en, this message translates to:
@@ -29826,7 +29946,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDonHow.
   ///
   /// In en, this message translates to:
-  /// **'Open Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. Defaults cost wanted and let you collect part of the debt — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.'**
+  /// **'Contest, overbid, loan and contract results also land in your inbox with a push when you are away. Each action on the hub shows a clear toast.\nOpen Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. Defaults cost wanted and let you collect part of the debt — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.'**
   String get helpTopicDonHow;
 
   /// No description provided for @helpTopicDonTips.
