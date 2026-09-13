@@ -20,6 +20,13 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Credits:** `ACTION_COOLDOWN_RESET` for `actionType=school` skips an active school cooldown only.
 - See [school.md](school.md).
 
+## Documented static modifiers (crimes → onboarding)
+- **Listed success chance** starts at catalog `baseSuccessChance` (pickpocket 70%, shoplift 65%, graffiti 80%, vandalism 75%). Do **not** multiply by `0.385` — that made the UI show ~27% while the roll used the catalog base. Rank 1–5 street crimes (`minLevel` 1) also have a **60% floor** after HP/police penalties.
+- **Attempt roll** uses `computePlayerSuccessChanceFromContext` (rank/mastery/weapon/training/country-police/HP), clamped 5–95%. Same number as the Crimes list.
+- **Early street fail mercy:** `isEarlyStreetCrime` = rank ≤ 5 and crime `minLevel` ≤ 1. Those fails jail only 28% of the time; otherwise `FLED_NO_LOOT` (no extra `crimeJailChance`, no fail XP loss). Mid/late crimes still jail on a normal fail.
+- **Starter catalog:** vandalism and graffiti have no `requiredTools`, so rank-1 players have four street crimes (plus jobs) instead of only pickpocket/shoplift.
+- See [crimes.md](crimes.md) and `backend/src/utils/crimeJailScaling.ts`.
+
 ## Documented static modifiers (training → crimes)
 - **Combo-readiness:** when the player has **at least one gym train (any track; `gymLastTrainedAt` = latest of strength/speed/stamina `lastTrainedAt`) and one shooting-range train** on the **same UTC calendar day**, `crimeService` adds **`TRAINING_COMBO_READINESS_BONUS`** (**+0.5%** success chance as a fraction, see `backend/src/lib/trainingComboReadiness.ts`) on top of existing gym aggregate + shooting-range training bonuses. Still clamped with all other modifiers to **5–95%** final success chance. Exposed for UI as `trainingComboReadiness` on **`GET /training/status`**.
 

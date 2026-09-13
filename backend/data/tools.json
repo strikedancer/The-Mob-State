@@ -48,7 +48,7 @@
       "maxDurability": 10,
       "loseChance": 1.0,
       "wearPerUse": 100,
-      "requiredFor": ["graffiti", "vandalism"]
+      "requiredFor": []
     },
     {
       "id": "crowbar",

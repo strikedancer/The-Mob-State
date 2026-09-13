@@ -1,4 +1,5 @@
 import { Crime } from '../types/crime';
+import { pettyCrimeFailJailChance } from './crimeJailScaling';
 import {
   computeVehicleConditionLoss,
   computeVehicleFuelUse,
@@ -164,7 +165,7 @@ export async function processCrimeAttempt(
   playerRank: number,
   vehicle?: Vehicle,
   tool?: Tool,
-  options?: { successPenaltyPp?: number },
+  options?: { successPenaltyPp?: number; successChanceOverride?: number },
 ): Promise<CrimeResult> {
   const result: CrimeResult = {
     outcome: CrimeOutcome.SUCCESS,
@@ -223,8 +224,14 @@ export async function processCrimeAttempt(
   }
   
   // SCENARIO 3: Calculate success chance
-  let successChance = calculateCrimeSuccessChance(crime, playerRank, vehicle, tool);
-  if (options?.successPenaltyPp && options.successPenaltyPp > 0) {
+  let successChance =
+    options?.successChanceOverride ??
+    calculateCrimeSuccessChance(crime, playerRank, vehicle, tool);
+  if (
+    options?.successChanceOverride == null &&
+    options?.successPenaltyPp &&
+    options.successPenaltyPp > 0
+  ) {
     successChance = Math.max(0.05, Math.min(0.95, successChance - options.successPenaltyPp / 100));
   }
   const roll = Math.random();
@@ -284,13 +291,23 @@ export async function processCrimeAttempt(
       }
     }
     
-    // SCENARIO 6: Regular caught
-    result.outcome = CrimeOutcome.CAUGHT;
-    result.caught = true;
-    result.jailed = true;
-    result.jailTime = crime.jailTime;
-    result.message = 'Caught by police';
-    result.messageKey = 'crime.outcome.caught';
+    // SCENARIO 6: Caught — or fled empty-handed on early street crimes
+    const jailOnFail = Math.random() < pettyCrimeFailJailChance(playerRank, crime.minLevel);
+    if (!jailOnFail) {
+      result.outcome = CrimeOutcome.FLED_NO_LOOT;
+      result.caught = false;
+      result.jailed = false;
+      result.jailTime = 0;
+      result.message = 'Fled the scene without loot';
+      result.messageKey = 'crime.outcome.fledNoLoot';
+    } else {
+      result.outcome = CrimeOutcome.CAUGHT;
+      result.caught = true;
+      result.jailed = true;
+      result.jailTime = crime.jailTime;
+      result.message = 'Caught by police';
+      result.messageKey = 'crime.outcome.caught';
+    }
   }
   
   // Apply vehicle wear and tear (if used) — scaled by crime reward tier.

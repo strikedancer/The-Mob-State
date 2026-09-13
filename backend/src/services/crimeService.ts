@@ -32,6 +32,7 @@ import { latestGymTrainAt } from './gymService';
 import {
   scaleCrimeJailMinutes,
   crimeFailWantedIncrease,
+  isEarlyStreetCrime,
 } from '../utils/crimeJailScaling';
 import {
   applyCrimeHealthMitigation,
@@ -432,17 +433,32 @@ export const crimeService = {
 
     const activeBoosts = await getActiveEventBoostEffects(playerId);
 
-    let successPenaltyPp = 0;
-    try {
-      const { countryPoliceService } = await import('./countryPoliceService');
-      const mods = await countryPoliceService.getModifiersForCountry(
-        player.currentCountry || 'netherlands',
+    // Same success math as the Crimes list (catalog base + rank/mastery/gear/training/police/HP).
+    const readinessContext = await this.buildCrimeReadinessContext(
+      playerId,
+      player.rank,
+      player.currentCountry || 'netherlands',
+      player.health,
+    );
+    let successChance = this.computePlayerSuccessChanceFromContext(
+      crimeId,
+      readinessContext,
+      weaponUsed || undefined,
+      selectedVehicle
+        ? {
+            speed: selectedVehicle.speed,
+            armor: selectedVehicle.armor,
+            cargo: selectedVehicle.cargo,
+            stealth: selectedVehicle.stealth,
+            condition: selectedVehicle.condition,
+          }
+        : undefined,
+    );
+    if (activeBoosts.crimeSuccessPct > 0) {
+      successChance = Math.max(
+        0.05,
+        Math.min(0.95, successChance * (1 + activeBoosts.crimeSuccessPct)),
       );
-      if (mods.enabled) {
-        successPenaltyPp = mods.successPenaltyPp;
-      }
-    } catch {
-      successPenaltyPp = 0;
     }
 
     // Normalize requirement field names for outcome engine compatibility
@@ -462,7 +478,7 @@ export const crimeService = {
       player.rank,
       selectedVehicle || undefined,
       primaryTool || undefined,
-      { successPenaltyPp },
+      { successChanceOverride: successChance },
     );
 
     try {
@@ -517,18 +533,22 @@ export const crimeService = {
 
     // Handle XP loss on failure
     if (!success) {
-      // Failure: Lose XP (10-25% of potential XP gain)
-      const potentialXp = Math.round(
-        ((crime.minXpReward ?? crime.xpReward) + (crime.maxXpReward ?? crime.xpReward)) / 2,
-      );
-      const xpLossPercent = 
-        config.xpLoss.crimeFailed.min + 
-        Math.random() * (config.xpLoss.crimeFailed.max - config.xpLoss.crimeFailed.min);
-      const xpToLose = Math.floor(potentialXp * xpLossPercent);
-      
-      if (xpToLose > 0) {
-        const lossResult = await playerService.loseXP(playerId, xpToLose);
-        xpLost = lossResult.xpLost;
+      const fledEmptyHanded = crimeResult.outcome === CrimeOutcome.FLED_NO_LOOT;
+
+      // Failure: Lose XP (10-25% of potential XP gain). Fleeing empty-handed keeps try-XP.
+      if (!fledEmptyHanded) {
+        const potentialXp = Math.round(
+          ((crime.minXpReward ?? crime.xpReward) + (crime.maxXpReward ?? crime.xpReward)) / 2,
+        );
+        const xpLossPercent =
+          config.xpLoss.crimeFailed.min +
+          Math.random() * (config.xpLoss.crimeFailed.max - config.xpLoss.crimeFailed.min);
+        const xpToLose = Math.floor(potentialXp * xpLossPercent);
+
+        if (xpToLose > 0) {
+          const lossResult = await playerService.loseXP(playerId, xpToLose);
+          xpLost = lossResult.xpLost;
+        }
       }
 
       // Failure: Increase wanted level OR FBI heat (not both)
@@ -547,19 +567,21 @@ export const crimeService = {
         await policeService.increaseWantedLevel(playerId, wantedBump);
       }
 
-      // Additional jail check if outcome engine didn't jail
-      if (!jailed) {
+      // Extra jail only for mid/late fails that were not already a flee/caught outcome.
+      if (
+        !jailed &&
+        !fledEmptyHanded &&
+        !isEarlyStreetCrime(player.rank, crime.minLevel)
+      ) {
         const jailRoll = Math.random();
         if (jailRoll < config.crimeJailChance) {
-          // 50% chance of getting caught and additional XP loss
           jailed = true;
           jailTime = scaleCrimeJailMinutes(crime.jailTime, player.rank, crime.minLevel);
-          
-          // Additional XP loss when jailed (5% of current rank's XP requirement)
+
           const { getXPForRank } = await import('../config');
           const currentRankXP = getXPForRank(player.rank + 1) - getXPForRank(player.rank);
           const jailXPLoss = Math.floor(currentRankXP * config.xpLoss.crimeJailed);
-          
+
           if (jailXPLoss > 0) {
             const jailLossResult = await playerService.loseXP(playerId, jailXPLoss);
             xpLost += jailLossResult.xpLost;
@@ -1297,10 +1319,9 @@ export const crimeService = {
       return 0;
     }
 
-    // Base scaling: keep early game challenging.
-    // Example: easiest crime 70% base -> ~27% starting chance.
-    const baseScaledChance = crime.baseSuccessChance * 0.385;
-    let successChance = baseScaledChance;
+    // Listed chance starts from the catalog base so new players see ~65–70%
+    // on pickpocket/shoplift — the same number the attempt roll uses.
+    let successChance = crime.baseSuccessChance;
 
     // 1️⃣ RANK ADVANTAGE: modest bonus only for ranks above crime minimum
     // +0.2% per level above requirement (max +8%)
@@ -1384,6 +1405,10 @@ export const crimeService = {
     const healthPenalty = crimeSuccessPenaltyFromHealth(context.playerHealth);
     if (healthPenalty > 0) {
       successChance -= healthPenalty;
+    }
+
+    if (isEarlyStreetCrime(context.playerRank, crime.minLevel)) {
+      successChance = Math.max(successChance, 0.6);
     }
 
     return Math.max(0.05, Math.min(successChance, 0.95));

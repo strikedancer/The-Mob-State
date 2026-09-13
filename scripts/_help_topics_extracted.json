@@ -68,6 +68,9 @@
     "summaryNl": "Pleeg illegale acties voor cash en XP, maar elke poging brengt kans op schade, arrestatie of extra Wanted Level mee. De late-game crime Strafblad Wissen wist bij succes je volledige strafblad, maar vereist zware tools en heeft hoge federale risico's.",
     "summaryEn": "Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk.",
     "howNl": [
+      "Op rang 1–5 tonen straatcrimes (minimale rang 1) de echte cataloguskans: zakkenrollen en winkeldiefstal starten rond 65–70%. Vandalisme en graffiti kun je meteen doen, zonder spuitbus.",
+      "Mislukt zo'n vroege straatcrime, dan vlucht je meestal zonder buit in plaats van naar de cel. Cel blijft mogelijk, maar is niet meer de standaarduitkomst.",
+      "Banen blijven vanaf rang 1 beschikbaar zolang je niet vastzit — gebruik die loop als je cash wilt zonder misdaadrisico.",
       "Crime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.",
       "Richtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.",
       "Er is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.",
@@ -85,6 +88,9 @@
       "FBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen."
     ],
     "howEn": [
+      "At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.",
+      "If those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.",
+      "Jobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.",
       "Crime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.",
       "Guideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.",
       "There is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.",
@@ -102,11 +108,13 @@
       "FBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances."
     ],
     "tipsNl": [
+      "Begin met zakkenrollen, winkeldiefstal, vandalisme of graffiti. Mislukt het, dan zit je meestal niet vast — daarna kun je een baan doen.",
       "Gebruik snelle beginner crimes om XP op te bouwen terwijl je grote cooldowns afwacht.",
       "Borg jezelf altijd uit als je Wanted Level hoog staat — lang in de cel zitten blokkeert al je loops.",
       "Houd HP boven 30 voor je aan een reeks crimes begint: elke poging kost HP en bij 0 HP beland je 3 uur in de ICU."
     ],
     "tipsEn": [
+      "Start with pickpocket, shoplift, vandalism or graffiti. A fail usually means no loot, not jail — then run a job for safe cash.",
       "Use fast beginner crimes to build XP while waiting for big cooldowns.",
       "Always bail out if your Wanted Level is high — sitting in jail blocks all your loops.",
       "Keep HP above 30 before starting a crime run: every attempt costs HP and at 0 HP you spend 3 hours in ICU."

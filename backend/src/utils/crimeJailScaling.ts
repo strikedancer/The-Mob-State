@@ -1,3 +1,19 @@
+/** Rank 1–5 street crimes (minLevel 1): onboarding loop, not a jail treadmill. */
+export function isEarlyStreetCrime(playerRank: number, crimeMinLevel: number): boolean {
+  return playerRank <= 5 && crimeMinLevel <= 1;
+}
+
+/**
+ * Chance a failed early street crime still jails (rest flee empty-handed).
+ * Other crimes keep a 100% jail-on-fail from the outcome engine.
+ */
+export function pettyCrimeFailJailChance(playerRank: number, crimeMinLevel: number): number {
+  if (isEarlyStreetCrime(playerRank, crimeMinLevel)) {
+    return 0.28;
+  }
+  return 1;
+}
+
 /**
  * Scale crime jail sentences for early-game ranks and petty crimes.
  * JSON jailTime values assume mid/late game; rank 1–5 street crimes should hurt less.

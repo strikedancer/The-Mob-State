@@ -135,10 +135,11 @@ Elke **5 minuten** gebeurt er automatisch:
    - Wanted level stijgt met 1-2 punten
 4. Bij falen:
    - Geen reward
-   - Wel XP (verminderd)
+   - Wel XP (verminderd), behalve bij vluchten zonder buit
    - **Health damage**: 5-15 HP
-   - Wanted level stijgt met 2-4 punten
-5. Na elke crime: arrest check door politie/FBI
+   - Wanted level stijgt met 2-4 punten (rank 1–5: max +1)
+   - Rank 1–5 + straatcrime (`minLevel` 1): meestal `FLED_NO_LOOT` in plaats van cel
+5. Na elke crime: arrest check door politie/FBI (niet nog eens extra jail na een flee)
 
 ### Crime Cooldowns
 - **Pickpocket/Shoplift/Steal Bike**: 30 seconden
@@ -166,10 +167,10 @@ Elke **5 minuten** gebeurt er automatisch:
 ### Crime Categories
 
 #### Beginner Crimes (Level 1–4)
-- **Zakkenrollen** (Pickpocket): ~70% kans, €50–€200, **25 XP**, 5 min cel
-- **Winkeldiefstal** (Shoplift): ~65% kans, €100–€300, **35 XP**, 10 min cel
-- **Fiets stelen**: ~60% kans, €80–€150, **28 XP**
-- **Vandalisme / Graffiti**: lage payout, **18 / 12 XP**
+- **Zakkenrollen** (Pickpocket): ~70% kans, €50–€200, **25 XP** — fail is meestal vluchten, geen cel
+- **Winkeldiefstal** (Shoplift): ~65% kans, €100–€300, **35 XP**
+- **Vandalisme / Graffiti**: geen spuitbus nodig, ~75% / ~80% kans, **18 / 12 XP**
+- **Fiets stelen**: ~60% kans, €80–€150, **28 XP** (boutensnijder)
 - **Beroving** (rank 2+): **40 XP**; **Auto-diefstal** (rank 3+): **65 XP**; **Kleine drugsdeal** (rank 3+): **50 XP**; **Autoonderdelen** (rank 4+): **55 XP**
 
 Vroege XP is expres wat hoger zodat spelers sneller richting rang 5 (meer content) komen. Smokkel-claim en handelswaar-verkoop geven **kleine** XP (niet de hoofdbron).
@@ -1123,11 +1124,9 @@ interest = 0
 
 ### Crime Success
 ```javascript
-baseChance = crime.baseSuccessChance
-rankBonus = player.rank * 0.01
-vehicleBonus = hasRequiredVehicle ? 0.1 : 0
-
-finalChance = min(baseChance + rankBonus + vehicleBonus, 0.95)
+// Lijst én roll: computePlayerSuccessChanceFromContext (5–95%)
+baseChance = crime.baseSuccessChance  // geen 0.385-scaler
+// + rank/mastery/weapon/tool/vehicle/training/combo − police − low HP
 ```
 
 ### Health Damage

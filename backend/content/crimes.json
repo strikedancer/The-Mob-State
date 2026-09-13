@@ -174,8 +174,7 @@
       "xpReward": 18,
       "jailTime": 5,
       "requiredVehicle": false,
-      "breakdownChance": 0,
-      "requiredTools": ["spray_paint"]
+      "breakdownChance": 0
     },
     {
       "id": "graffiti",
@@ -188,8 +187,7 @@
       "xpReward": 12,
       "jailTime": 3,
       "requiredVehicle": false,
-      "breakdownChance": 0,
-      "requiredTools": ["spray_paint"]
+      "breakdownChance": 0
     },
     {
       "id": "drug_deal_small",
