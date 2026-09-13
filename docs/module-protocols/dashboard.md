@@ -45,7 +45,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Dashboard toont een compacte **Markt**-tegel (actieve listings + CTA). Geen locatie-intel. Op web opent de tegel **Zwarte Markt → Marktplaats** in de dashboard-content (`_openBlackMarket(tabMarketplace)`), niet als fullscreen-route. Recente eigen acties staan **niet** als vaste **Mijn activiteit**-lijst op Home: open **Sessie-overzicht** (rechtsboven op web, AppBar op native). Dezelfde sheet (`showSessionRecapSheet`) dekt beide. Data blijft `GET /events?limit=50` + SSE (scoped op `playerId`).
 - **Munitiefabriek → Zwarte Markt** opent eveneens in de dashboard-content (`onOpenBlackMarket` → `_openBlackMarket(tabAmmo)`), niet als fullscreen-route.
 - Home toont **geen** Trainingscircuit-balk. Circuit blijft in de zijbalk onder Acties; bonussen staan op Misdaden.
-- **Live event rail** (rechtsonder, niet op Events-sectie): foto-avatar + resterende-tijd-badge; Monthly Empire altijd zichtbaar (dichtst bij de duim); tap opent dezelfde event-detailpopup als Events (maandevent: dezelfde Event Pass-lijst als Evenementen). Rode claim-cijfer alleen op het maandevent (Event Pass), nooit op week-avatars en nooit voor dashboard dag-/weekdoelen. Zie `events.md`.
+- **Live event rail** (rechtsonder, niet op Events / Berichten / Crew): standaard één ingeklapte chip zodat avatars geen tekst of verzendknop bedekken; tik opent de foto-avatars + resterende-tijd-badge. Monthly Empire onderaan de open stack (dichtst bij de duim); tap opent dezelfde event-detailpopup als Events (maandevent: dezelfde Event Pass-lijst als Evenementen). Rode claim-cijfer alleen op het maandevent (Event Pass), nooit op week-avatars en nooit voor dashboard dag-/weekdoelen. Zie `events.md`.
 - Sessie-overzicht toont alleen events van de ingelogde speler (API + SSE scoped op `playerId`). Geen wereldwijde feed van andere spelers.
 - Chat-events (`direct_message.*`) komen wél via SSE (berichtenbadge/chat) maar **niet** in Sessie-overzicht.
 - **Berichten / postvak:** de badge (`GET /messages/unread`) mag nooit groener zijn dan de inbox-lijst. `GET /messages/conversations` blijft één gebatchte query; bij laadfout retry, geen lege “geen berichten”-staat.
@@ -85,6 +85,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verifieer dat een fout in een gekoppelde submodule zoals Crew Wars de dashboard-statistieken niet volledig leeg of op nul laat terugvallen.
 - Verifieer dat Vehicle Ops-data per voertuigtype (auto/motor/boot) op dashboard blijft renderen, ook als één type tijdelijk geen intelligence payload teruggeeft.
 - Verify no text overflows or clipped buttons appear.
+- Live event rail starts as one bottom-right chip (not a full avatar stack). Expand/collapse still opens the same event popup; rail is absent on Events, Messages and Crew.
 - Verifieer op smalle breedte de sticky footer (Misdaden, Stelen, Werken, Bank, Crew), klaar-stippen na cooldown, en dat zoeken in het hamburger-menu groepen filtert.
 - Verifieer dat de avatar-knop **Mijn profiel** het eigen publieke profiel in de content-pane toont (sidebar blijft zichtbaar).
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.

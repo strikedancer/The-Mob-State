@@ -1,5 +1,6 @@
 // ignore_for_file: unused_element
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/direct_message.dart';
 import '../models/crew_message.dart';
 import '../utils/avatar_helper.dart';
@@ -409,16 +410,19 @@ class MessageInput extends StatefulWidget {
 
 class _MessageInputState extends State<MessageInput> {
   bool _hasText = false;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_onTextChanged);
+    _focusNode = FocusNode(onKeyEvent: _onComposerKey);
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_onTextChanged);
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -429,6 +433,24 @@ class _MessageInputState extends State<MessageInput> {
         _hasText = hasText;
       });
     }
+  }
+
+  KeyEventResult _onComposerKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) {
+      return KeyEventResult.ignored;
+    }
+    final isEnter = event.logicalKey == LogicalKeyboardKey.enter ||
+        event.logicalKey == LogicalKeyboardKey.numpadEnter;
+    if (!isEnter) {
+      return KeyEventResult.ignored;
+    }
+    if (HardwareKeyboard.instance.isShiftPressed) {
+      return KeyEventResult.ignored;
+    }
+    if (_hasText && widget.enabled) {
+      widget.onSend();
+    }
+    return KeyEventResult.handled;
   }
 
   @override
@@ -452,8 +474,10 @@ class _MessageInputState extends State<MessageInput> {
               ),
               child: TextField(
                 controller: widget.controller,
+                focusNode: _focusNode,
                 enabled: widget.enabled,
                 maxLines: null,
+                textInputAction: TextInputAction.newline,
                 maxLength: 1000,
                 buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
                 style: const TextStyle(color: Colors.white),

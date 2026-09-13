@@ -11,6 +11,7 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - `GET /messages/conversations` uses one grouped query for player DMs (max 40) plus one latest-system-notices query (max 50). Never N+1 per friend. Player threads stay grouped. **Each system notice is its own inbox row** (`friendId = -messageId`) so badges, payouts and orders do not share one long The Mob State chat. `friendId = 0` still loads the legacy combined system thread. The inbox lists existing threads (player DMs + system notices), not only current accepted friends.
 - A load failure on mobile must show retry — never the empty “no messages” state while unread badges are still green.
 - Chat thread (`chat_screen.dart`) follows the same rule: failed conversation load shows retry, not “no messages”.
+- Composer (`MessageInput`): **Enter** sends, **Shift+Enter** inserts a new line. Same widget for player DMs and crew chat. The live-event rail is hidden on Messages and Crew so it cannot cover the send button.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -43,6 +44,7 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Open inbox on mobile after an unread/push badge: existing player threads and **separate** system notices must appear (one row per notice, not one combined The Mob State thread). A timeout must show retry, not “Nog geen berichten”.
+- In a player or crew chat, Enter sends and Shift+Enter adds a new line. The live-event rail must not cover the send button.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

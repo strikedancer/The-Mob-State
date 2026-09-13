@@ -1254,7 +1254,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-          if (_selectedWebSection != _WebSection.events)
+          if (_selectedWebSection != _WebSection.events &&
+              _selectedWebSection != _WebSection.messages &&
+              _selectedWebSection != _WebSection.crew)
             LiveEventRail(
               activeEvents: _gameEventsActive,
               eventPassClaimableCount: _eventPassClaimableCount,

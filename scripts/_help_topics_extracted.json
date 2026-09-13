@@ -19,6 +19,7 @@
       "Het dashboard toont nu ook een uitgebreide economie-sectie met contant, bank, crypto, voertuigwaarde, eigendomswaarde, netto waarde en 24-uurs cashflowtrend.",
       "In het operations-blok zie je nu actieve productie, langste cooldown, voertuigstatus (actief/listing/transit) en eerstvolgende productie/event timers.",
       "Als er spelers-events live zijn (bijv. wekelijkse competitie) zie je in hetzelfde rechterblok kort de titels en een link naar de Events-pagina. Push bij start/einde van een ronde kun je aan of uit zetten onder Instellingen → Spelerevents (naast overige push-rechten en device-permissies).",
+      "Live-eventfoto’s staan rechtsonder als een kleine ingeklapte chip — tik om de avatars te openen, tik op de pijl om ze weer weg te klappen zodat ze geen tekst bedekken. Op Berichten, Crew-chat en Evenementen blijven ze verborgen.",
       "Meldingen & risico bevat ongelezen DM, supporttickets die op jouw reactie wachten, events van de laatste 24 uur en een compacte risicoscore (wanted + FBI).",
       "Als je crew meedoet aan Crew Wars toont het dashboard nu ook een Crew Wars-samenvatting met status, tegenstander, crewpunten, seizoensrang en de resterende tijd van de huidige fase.",
       "Dashboard toont nu ook een Vehicle Ops-overzicht per Auto/Motor/Boot met live cooldownchips (Hotspot, Crew, Crew-duel, Chop, Contract en Tegenactie), plus heat/reputatie, contract- en claimaantallen en seizoenspunten.",
@@ -38,6 +39,7 @@
       "The dashboard now also has an expanded economy section with cash, bank, crypto, vehicle value, property value, net worth and a 24-hour cashflow trend.",
       "The operations block now shows active production, longest cooldown, vehicle status (active/listed/transit), and next production/event timers.",
       "When player events are live (e.g. weekly competition), the same right-hand panel briefly lists their titles and links to the Events page. You can turn push for round start/end on or off under Settings → Player events (in addition to device permissions and other push categories).",
+      "Live-event photos sit as a small collapsed chip at the bottom-right — tap to expand the avatars, tap the chevron to hide them again so they do not cover page text. They stay hidden on Messages, Crew chat and Events.",
       "Notifications & risk now includes unread DMs, support tickets waiting for your reply, events from the last 24 hours, and a compact risk score (wanted + FBI).",
       "When your crew is involved in Crew Wars, the dashboard also shows a Crew Wars summary with status, opponent, crew points, season rank and the remaining time in the current phase.",
       "The dashboard now also includes a Vehicle Ops overview per Car/Motorcycle/Boat with live cooldown chips (Hotspot, Crew, Crew match, Chop, Contract and Counter), plus heat/reputation, contract and claim counts, and season points.",
@@ -343,6 +345,7 @@
       "Berichten zijn onderverdeeld in persoonlijke gesprekken en The Mob State systeemberg.",
       "Systeemberichten worden automatisch gestuurd bij: crypto trades, order fills, leaderboard uitkeringen, heist-resultaten, jail-escapes en achievement-badges.",
       "Je kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.",
+      "Op het toetsenbord verstuurt Enter het bericht; Shift+Enter maakt een nieuwe regel. Event-snelkoppelingen blijven op Berichten verborgen zodat ze niet over de verzendknop liggen.",
       "Unread berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.",
       "Berichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.",
       "Gebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging."
@@ -351,6 +354,7 @@
       "Messages are split into personal conversations and The Mob State system thread.",
       "System messages are sent automatically for: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges.",
       "You can send messages to other players as long as their privacy settings allow it.",
+      "On a keyboard, Enter sends the message and Shift+Enter starts a new line. Event shortcuts stay hidden on Messages so they do not cover the send button.",
       "Unread messages appear as a badge on the message icon and are visible from the dashboard.",
       "Messages do not expire and are kept as a historical log of account events.",
       "Use the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change."
