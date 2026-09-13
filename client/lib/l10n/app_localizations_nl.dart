@@ -119,6 +119,29 @@ class AppLocalizationsNl extends AppLocalizations {
       'Liever gebruikersnaam en wachtwoord';
 
   @override
+  String get googleContinue => 'Doorgaan met Google';
+
+  @override
+  String get googleCompleteHint =>
+      'Kies een gebruikersnaam en personage. De volgende keer kun je inloggen met Google.';
+
+  @override
+  String get googleEmailInUse =>
+      'Dit Google-e-mailadres hoort al bij een ander account. Log in met je gebruikersnaam en wachtwoord.';
+
+  @override
+  String get googleAuthFailed =>
+      'Inloggen via Google is mislukt. Probeer het opnieuw of gebruik je gebruikersnaam en wachtwoord.';
+
+  @override
+  String get googleNotConfigured =>
+      'Inloggen via Google is nog niet beschikbaar.';
+
+  @override
+  String get googlePendingExpired =>
+      'Je Google-aanmelding is verlopen. Begin opnieuw.';
+
+  @override
   String get pwaInstallTitle => 'Gebruik The Mob State als app';
 
   @override
@@ -17816,14 +17839,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection02Body =>
-      'We kunnen accountgegevens (gebruikersnaam, e-mail indien opgegeven, gehasht wachtwoord), Facebook-logingegevens als je die optie kiest (Facebook-gebruikers-ID, openbare profielnaam en e-mail als je de e-mailtoestemming geeft), gameplay- en voortgangsdata, technische logs (IP-adres, apparaat/browsertype, tijdstempels), betalingsreferenties van betaalproviders (geen volledige kaartnummers) en door jou naar support gestuurde berichten verwerken.';
+      'We kunnen accountgegevens (gebruikersnaam, e-mail indien opgegeven, gehasht wachtwoord), Facebook- of Google-logingegevens als je die optie kiest (provider-gebruikers-ID, openbare profielnaam en e-mail als die wordt gegeven), gameplay- en voortgangsdata, technische logs (IP-adres, apparaat/browsertype, tijdstempels), betalingsreferenties van betaalproviders (geen volledige kaartnummers) en door jou naar support gestuurde berichten verwerken.';
 
   @override
   String get legalPrivacySection03Title => 'Doeleinden';
 
   @override
   String get legalPrivacySection03Body =>
-      'We gebruiken gegevens om de game te leveren, een account aan te maken of je in te loggen (ook via Facebook Login), accounts te beveiligen, misbruik en fraude te voorkomen, aankopen af te handelen, prestaties te verbeteren, servicemeldingen te sturen en aan wettelijke verplichtingen te voldoen.';
+      'We gebruiken gegevens om de game te leveren, een account aan te maken of je in te loggen (ook via Facebook Login of Google Sign-In), accounts te beveiligen, misbruik en fraude te voorkomen, aankopen af te handelen, prestaties te verbeteren, servicemeldingen te sturen en aan wettelijke verplichtingen te voldoen.';
 
   @override
   String get legalPrivacySection04Title => 'Rechtsgronden (EER/VK)';
@@ -17851,7 +17874,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. Als je Facebook Login gebruikt, ontvangt Meta het OAuth-verzoek dat jij goedkeurt; we plaatsen niets op je Facebook-profiel en mailen je vrienden niet. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
+      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. Als je Facebook Login gebruikt, ontvangt Meta het OAuth-verzoek dat jij goedkeurt; we plaatsen niets op je Facebook-profiel en mailen je vrienden niet. Als je Google Sign-In gebruikt, ontvangt Google het OAuth-verzoek dat jij goedkeurt; we openen geen Gmail, Drive of andere Google-diensten. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
 
   @override
   String get legalPrivacySection08Title => 'Internationale doorgifte';
@@ -17865,7 +17888,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection09Body =>
-      'Je kunt rechten hebben op inzage, correctie, verwijdering, beperking of bezwaar, en op gegevensoverdraagbaarheid. Je kunt een klacht indienen bij een toezichthouder. Om rechten uit te oefenen, inclusief verwijdering van je account en Facebook-gekoppelde data, mail je info@themobstate.com of gebruik je in-game support; we kunnen je identiteit verifiëren.';
+      'Je kunt rechten hebben op inzage, correctie, verwijdering, beperking of bezwaar, en op gegevensoverdraagbaarheid. Je kunt een klacht indienen bij een toezichthouder. Om rechten uit te oefenen, inclusief verwijdering van je account en Facebook- of Google-gekoppelde data, mail je info@themobstate.com of gebruik je in-game support; we kunnen je identiteit verifiëren.';
 
   @override
   String get legalPrivacySection10Title => 'Kinderen';
@@ -17880,6 +17903,13 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get legalPrivacySection11Body =>
       'Als je Doorgaan met Facebook kiest, sturen we je naar Meta. Als je akkoord gaat, ontvangen we je Facebook-gebruikers-ID, openbare profielnaam en e-mailadres als je de e-mailtoestemming geeft. We gebruiken dit alleen om je The Mob State-account aan te maken of in te loggen. We plaatsen niets op je Facebook-tijdlijn. Je kunt de app verwijderen in je Facebook-instellingen en ons vragen je gamegegevens te wissen via info@themobstate.com.';
+
+  @override
+  String get legalPrivacySection12Title => 'Google Sign-In';
+
+  @override
+  String get legalPrivacySection12Body =>
+      'Als je Doorgaan met Google kiest, sturen we je naar Google. Als je akkoord gaat, ontvangen we je Google-gebruikers-ID, openbare profielnaam en geverifieerd e-mailadres. We gebruiken dit alleen om je The Mob State-account aan te maken of in te loggen. We openen geen Gmail, Drive of andere Google-data en plaatsen niets op je Google-account. Je kunt de toegang intrekken in je Google-accountinstellingen en ons vragen je gamegegevens te wissen via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Aankoop van digitale goederen';
@@ -17991,7 +18021,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalTermsSection01Body =>
-      'Je moet voldoen aan de minimumleeftijd die bij registratie voor jouw regio wordt getoond. Je bent verantwoordelijk voor juiste registratiegegevens en het geheim houden van je inloggegevens. Je kunt ook een account aanmaken of inloggen met Facebook; je blijft verantwoordelijk voor dat Facebook-account en voor extra profielstappen die wij vragen. Je bent verantwoordelijk voor activiteit onder je account, tenzij je ons via support of info@themobstate.com onverwijld informeert bij vermoeden van ongeautoriseerde toegang.';
+      'Je moet voldoen aan de minimumleeftijd die bij registratie voor jouw regio wordt getoond. Je bent verantwoordelijk voor juiste registratiegegevens en het geheim houden van je inloggegevens. Je kunt ook een account aanmaken of inloggen met Facebook of Google; je blijft verantwoordelijk voor dat provider-account en voor extra profielstappen die wij vragen. Je bent verantwoordelijk voor activiteit onder je account, tenzij je ons via support of info@themobstate.com onverwijld informeert bij vermoeden van ongeautoriseerde toegang.';
 
   @override
   String get legalTermsSection02Title => 'Licentie voor gebruik';

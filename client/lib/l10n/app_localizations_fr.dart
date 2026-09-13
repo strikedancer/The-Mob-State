@@ -120,6 +120,28 @@ class AppLocalizationsFr extends AppLocalizations {
       'Utilisez plutôt le nom d\'utilisateur et le mot de passe';
 
   @override
+  String get googleContinue => 'Continue with Google';
+
+  @override
+  String get googleCompleteHint =>
+      'Choose a username and character. Next time you can sign in with Google.';
+
+  @override
+  String get googleEmailInUse =>
+      'This Google email already belongs to another account. Log in with your username and password.';
+
+  @override
+  String get googleAuthFailed =>
+      'Google sign-in failed. Try again or use your username and password.';
+
+  @override
+  String get googleNotConfigured => 'Google sign-in is not available yet.';
+
+  @override
+  String get googlePendingExpired =>
+      'Your Google sign-in expired. Start again.';
+
+  @override
   String get pwaInstallTitle => 'Use The Mob State as an app';
 
   @override
@@ -18052,6 +18074,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get legalPrivacySection11Body =>
       'When you tap Continue with Facebook we send you to Meta. If you approve, we receive your Facebook user ID, public profile name, and email address when you grant the email permission. We use this only to create or sign in to your The Mob State account. We do not post on your Facebook timeline. You can remove the app in your Facebook settings and ask us to delete your game data via info@themobstate.com.';
+
+  @override
+  String get legalPrivacySection12Title => 'Google Sign-In';
+
+  @override
+  String get legalPrivacySection12Body =>
+      'When you tap Continue with Google we send you to Google. If you approve, we receive your Google user ID, public profile name, and verified email address. We use this only to create or sign in to your The Mob State account. We do not access Gmail, Drive, or other Google data, and we do not post anything to your Google account. You can remove access in your Google account settings and ask us to delete your game data via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Achat de biens numériques';

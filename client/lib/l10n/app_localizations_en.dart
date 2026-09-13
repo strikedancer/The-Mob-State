@@ -116,6 +116,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get facebookUsePasswordInstead => 'Use username and password instead';
 
   @override
+  String get googleContinue => 'Continue with Google';
+
+  @override
+  String get googleCompleteHint =>
+      'Choose a username and character. Next time you can sign in with Google.';
+
+  @override
+  String get googleEmailInUse =>
+      'This Google email already belongs to another account. Log in with your username and password.';
+
+  @override
+  String get googleAuthFailed =>
+      'Google sign-in failed. Try again or use your username and password.';
+
+  @override
+  String get googleNotConfigured => 'Google sign-in is not available yet.';
+
+  @override
+  String get googlePendingExpired =>
+      'Your Google sign-in expired. Start again.';
+
+  @override
   String get pwaInstallTitle => 'Use The Mob State as an app';
 
   @override
@@ -17777,14 +17799,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection02Body =>
-      'We may process account data (username, email if provided, hashed password), Facebook Login data when you choose that option (Facebook user ID, public profile name, and email if you grant the email permission), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
+      'We may process account data (username, email if provided, hashed password), Facebook Login or Google Sign-In data when you choose those options (provider user ID, public profile name, and email if granted), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
 
   @override
   String get legalPrivacySection03Title => 'Purposes';
 
   @override
   String get legalPrivacySection03Body =>
-      'We use data to provide the game, create or sign you in to an account (including via Facebook Login), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
+      'We use data to provide the game, create or sign you in to an account (including via Facebook Login or Google Sign-In), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
 
   @override
   String get legalPrivacySection04Title => 'Legal bases (EEA/UK)';
@@ -17812,7 +17834,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
+      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. If you use Google Sign-In, Google receives the OAuth request you approve; we do not access Gmail, Drive, or other Google services. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
 
   @override
   String get legalPrivacySection08Title => 'International transfers';
@@ -17826,7 +17848,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection09Body =>
-      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.';
+      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook- or Google-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.';
 
   @override
   String get legalPrivacySection10Title => 'Children';
@@ -17841,6 +17863,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get legalPrivacySection11Body =>
       'When you tap Continue with Facebook we send you to Meta. If you approve, we receive your Facebook user ID, public profile name, and email address when you grant the email permission. We use this only to create or sign in to your The Mob State account. We do not post on your Facebook timeline. You can remove the app in your Facebook settings and ask us to delete your game data via info@themobstate.com.';
+
+  @override
+  String get legalPrivacySection12Title => 'Google Sign-In';
+
+  @override
+  String get legalPrivacySection12Body =>
+      'When you tap Continue with Google we send you to Google. If you approve, we receive your Google user ID, public profile name, and verified email address. We use this only to create or sign in to your The Mob State account. We do not access Gmail, Drive, or other Google data, and we do not post anything to your Google account. You can remove access in your Google account settings and ask us to delete your game data via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Purchase of Digital Goods';
@@ -17951,7 +17980,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalTermsSection01Body =>
-      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook; you remain responsible for that Facebook account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.';
+      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook or Google; you remain responsible for that provider account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.';
 
   @override
   String get legalTermsSection02Title => 'Licence to use the Service';

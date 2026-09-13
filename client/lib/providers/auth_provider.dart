@@ -169,13 +169,59 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> loginWithToken(String token) async {
+  Future<bool> loginWithToken(
+    String token, {
+    String fallbackError = 'FACEBOOK_AUTH_FAILED',
+  }) async {
     _isSubmitting = true;
     _error = null;
     notifyListeners();
 
     try {
-      final result = await _authService.loginWithToken(token);
+      final result = await _authService.loginWithToken(
+        token,
+        fallbackError: fallbackError,
+      );
+      if (result.success && result.player != null) {
+        _currentPlayer = result.player;
+        _isAuthenticated = true;
+        _error = null;
+        return true;
+      }
+      _error = result.error;
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      return false;
+    } catch (e) {
+      _error = e.toString();
+      _isAuthenticated = false;
+      _currentPlayer = null;
+      return false;
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> completeGoogle({
+    required String pendingToken,
+    required String username,
+    required String gender,
+    required bool acceptedTerms,
+    String? language,
+  }) async {
+    _isSubmitting = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final result = await _authService.completeGoogle(
+        pendingToken: pendingToken,
+        username: username,
+        gender: gender,
+        acceptedTerms: acceptedTerms,
+        language: language,
+      );
       if (result.success && result.player != null) {
         _currentPlayer = result.player;
         _isAuthenticated = true;

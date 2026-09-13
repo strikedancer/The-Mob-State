@@ -31,6 +31,12 @@ class FacebookAuthStatus {
   });
 }
 
+class GoogleAuthStatus {
+  final bool loginEnabled;
+
+  const GoogleAuthStatus({required this.loginEnabled});
+}
+
 class AuthService {
   final ApiClient _apiClient;
   static const Set<String> _terminalAuthReasons = {
@@ -250,20 +256,43 @@ class AuthService {
     }
   }
 
-  Future<AuthResult> loginWithToken(String token) async {
+  Future<GoogleAuthStatus> googleStatus() async {
+    try {
+      final response = await _apiClient.get(
+        '/auth/google/status',
+        includeAuth: false,
+      );
+      if (response.statusCode != 200) {
+        return const GoogleAuthStatus(loginEnabled: false);
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] is Map<String, dynamic>
+          ? data['params'] as Map<String, dynamic>
+          : data;
+      return GoogleAuthStatus(loginEnabled: params['loginEnabled'] == true);
+    } catch (e) {
+      print('[AuthService] Google status exception: $e');
+      return const GoogleAuthStatus(loginEnabled: false);
+    }
+  }
+
+  Future<AuthResult> loginWithToken(
+    String token, {
+    String fallbackError = 'FACEBOOK_AUTH_FAILED',
+  }) async {
     try {
       await _apiClient.setToken(token);
       final player = await getCurrentPlayer();
       if (player == null) {
         await _apiClient.clearToken();
-        return AuthResult(success: false, error: 'FACEBOOK_AUTH_FAILED');
+        return AuthResult(success: false, error: fallbackError);
       }
       _syncPushInBackground();
       return AuthResult(success: true, player: player);
     } catch (e) {
-      print('[AuthService] Facebook token login exception: $e');
+      print('[AuthService] Social token login exception: $e');
       await _apiClient.clearToken();
-      return AuthResult(success: false, error: 'FACEBOOK_AUTH_FAILED');
+      return AuthResult(success: false, error: fallbackError);
     }
   }
 
@@ -313,6 +342,56 @@ class AuthService {
       return AuthResult(success: false, error: errorMessage);
     } catch (e) {
       print('[AuthService] Facebook complete exception: $e');
+      return AuthResult(success: false, error: 'Connection error: $e');
+    }
+  }
+
+  Future<AuthResult> completeGoogle({
+    required String pendingToken,
+    required String username,
+    required String gender,
+    required bool acceptedTerms,
+    String? language,
+  }) async {
+    try {
+      final selectedLanguage = language ?? _getDeviceLanguage();
+      final response = await _apiClient.post(
+        '/auth/google/complete',
+        {
+          'pendingToken': pendingToken,
+          'username': username,
+          'gender': gender,
+          'preferredLanguage': selectedLanguage,
+          'acceptedTerms': acceptedTerms,
+        },
+        includeAuth: false,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        final token = data['token'] as String;
+        final playerData = data['player'] as Map<String, dynamic>;
+        await _apiClient.setToken(token);
+        try {
+          final player = Player.fromJson(playerData);
+          _syncPushInBackground();
+          return AuthResult(success: true, player: player);
+        } catch (e) {
+          return AuthResult(
+            success: false,
+            error: 'Failed to parse player data: $e',
+          );
+        }
+      }
+
+      final data = jsonDecode(response.body);
+      String errorMessage = 'GOOGLE_AUTH_FAILED';
+      if (data['event'] == 'auth.error' && data['params'] != null) {
+        errorMessage = (data['params']['reason'] as String?) ?? errorMessage;
+      }
+      return AuthResult(success: false, error: errorMessage);
+    } catch (e) {
+      print('[AuthService] Google complete exception: $e');
       return AuthResult(success: false, error: 'Connection error: $e');
     }
   }

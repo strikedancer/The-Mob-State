@@ -143,6 +143,7 @@ Implementatievoorkeur:
 - **Tweede webdomein `themobstate.nl`:** zelfde Flutter-shell als `.com` (Plesk alias of zelfde proxy naar client `:8080`). API blijft `api.themobstate.com`. CORS-shells in `config/index.ts` bevatten `.nl` + `www`. Let's Encrypt + ACME `ProxyPass !` zoals bij `.com` (zie `docs/operations/DEPLOY.md`). Canonical/SEO blijft `themobstate.com`.
 - **E-mailverificatie-gate:** runtime key `AUTH_REQUIRE_EMAIL_VERIFICATION` (`1` = aan / default, `0` = uit). Beheer via **Admin → Config → Toegang**. Uit: login slaat `EMAIL_NOT_VERIFIED` over, registratie geeft direct een JWT en stuurt geen verificatiemail. Accounts blijven `emailVerified: false`. Aan: registratie stuurt weer mail, login eist verificatie. Geen mass-resend bij aanzetten. Live na opslaan, geen deploy nodig.
 - **Facebook Login + Page:** speler-login via web OAuth (`GET /auth/facebook/start` → callback → `/login?fb=ok|pending|error`). Nieuwe spelers ronden username/gender/voorwaarden af via `POST /auth/facebook/complete`. Pagina-berichten handmatig via **Admin → Config → Toegang**. Secrets: `FACEBOOK_APP_ID` / `FACEBOOK_APP_SECRET` / `FACEBOOK_PAGE_ID` / `FACEBOOK_PAGE_ACCESS_TOKEN` in `.env.plesk` (`docker-compose.plesk.yml`). Zonder App ID+Secret blijft de knop verborgen. Protocol: `facebook.md`. Native Facebook SDK is geen onderdeel van deze flow.
+- **Google Sign-In:** zelfde web-OAuth-patroon (`GET /auth/google/start` → callback → `/login?g=ok|pending|error`, daarna `POST /auth/google/complete`). Alleen `openid email profile`. Secrets: `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` in `.env.plesk`. Zonder Client ID+Secret blijft de knop verborgen. Protocol: `google.md`.
 - **Admin Config-indeling:** Config is opgesplitst in rubrieken (Toegang, Wonen & RLD, Combat, Alle keys). NPC-aanmaken staat als vast formulier op **Admin → NPCs**, niet in een verborgen modal.
 - **NPC live-loop:** NPCs spelen via dezelfde services als spelers (`crimeService`, `jobService`, travel, hospital, gym, school, shooting range, tools, weapons, vehicle theft, properties, bank). Start-rang en XP volgen `getXPForRank`. Geen hitlist en geen automatische crew-create. Scheduler: elke 5 min, maar max één cyclus per tick-interval (MATIG 20 min, GEMIDDELD 12, CONTINU 10) en max een normale speeldag (2,5 / 5 / 8 actieve uren). **Admin simuleren N uur** = N kalenderuren, waarvan alleen het actieve deel acties doet; de rest is slaap waarin jail/cooldowns doorlopen. Crimes kiezen naar rang (niet blijven hangen op `car_theft`). Bank max 1× per 4 actieve uren.
 
@@ -490,6 +491,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     ├── docs/module-protocols/ (gameplay rules & data contracts)
     │   ├── marketing-web.md (landing, public home, juridisch)
     │   ├── facebook.md (Facebook Login web OAuth + admin Page-posts)
+    │   ├── google.md (Google Sign-In web OAuth)
     │   ├── drugs.md → Game-system: docs/game-systems/GAMEPLAY.md
     │   ├── nightclub.md → Game-systems: NIGHTCLUB_SYSTEM.md + TRADE_RISK_MECHANICS.md
     │   ├── black-market.md (UI hub incl. contraband) → trade.md (API) → TRADE_RISK_MECHANICS.md

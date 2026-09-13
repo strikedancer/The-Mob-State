@@ -43,6 +43,7 @@ model Player {
   bannedUntil                     DateTime?
   email                           String?                          @db.VarChar(255)
   facebookId                      String?                          @unique @db.VarChar(32)
+  googleId                        String?                          @unique @db.VarChar(64)
   emailFriendAccepted             Boolean                          @default(true)
   emailFriendRequest              Boolean                          @default(true)
   emailVerified                   Boolean                          @default(false)
